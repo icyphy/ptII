@@ -121,12 +121,12 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 80.0]">
             </property>
         </property>
-        <entity name="init" class="ptolemy.actor.gt.controller.InitContainingModelEvent">
+        <entity name="Init" class="ptolemy.actor.gt.controller.InitContainingModel">
             <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <property name="isInitialEvent" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="InitEventIcon" class="ptolemy.vergil.erg.EventIcon">
+            <property name="InitIcon" class="ptolemy.vergil.erg.EventIcon">
                 <property name="_fill" class="ptolemy.data.expr.Parameter" value="{1.0, 0.8, 0.8, 0.8}">
                 </property>
             </property>

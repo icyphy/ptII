@@ -27,19 +27,17 @@
 */
 package ptolemy.actor.gt.controller;
 
-import ptolemy.actor.TypedCompositeActor;
+import ptolemy.data.ActorToken;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.ParserScope;
-import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
-//// InitialEvent
+//// InputEvent
 
 /**
 
@@ -50,52 +48,33 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class InitEvent extends GTEvent {
+public class Input extends GTEvent {
 
-    public InitEvent(CompositeEntity container, String name)
+    public Input(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        isInitialEvent.setToken(BooleanToken.TRUE);
-        modelName = new StringParameter(this, "modelName");
-    }
-
-    public void attributeChanged(Attribute attribute)
-    throws IllegalActionException {
-        if (attribute == modelName) {
-            _emptyModel = new TypedCompositeActor(new Workspace());
-            try {
-                _emptyModel.setName(modelName.stringValue());
-            } catch (NameDuplicationException e) {
-                throw new IllegalActionException(this, e, "Unexpected error.");
-            }
-        } else {
-            super.attributeChanged(attribute);
-        }
+        fireOnInput.setToken(BooleanToken.TRUE);
     }
 
     public void fire(ArrayToken arguments) throws IllegalActionException {
         ParserScope scope = _getParserScope(arguments);
         actions.execute(scope);
 
-        ModelAttribute modelAttribute = getModelAttribute();
-        if (modelAttribute.getModel() == null) {
-            modelAttribute.setModel(_getInitialModel());
+        final String inputPort = "modelInput";
+        BooleanToken inputPortPresent = (BooleanToken) scope.get(inputPort +
+                "_isPresent");
+        if (inputPortPresent != null && inputPortPresent.booleanValue()) {
+            ActorToken modelToken = (ActorToken) scope.get(inputPort);
+            Entity entity = modelToken.getEntity();
+            if (!(entity instanceof CompositeEntity)) {
+                throw new IllegalActionException("Only instances of " +
+                        "CompositeEntity are accepted in the input " +
+                        "ActorTokens to the transformation controller.");
+            }
+            getModelAttribute().setModel((CompositeEntity) entity);
             getMatchedParameter().setToken(BooleanToken.getInstance(true));
-        }
-
-        _scheduleEvents(scope);
-    }
-
-    public StringParameter modelName;
-
-    protected CompositeEntity _getInitialModel() throws IllegalActionException {
-        try {
-            return (CompositeEntity) _emptyModel.clone(new Workspace());
-        } catch (CloneNotSupportedException e) {
-            throw new IllegalActionException("Unable to clone an empty model.");
+            _scheduleEvents(scope);
         }
     }
-
-    private CompositeEntity _emptyModel;
 }

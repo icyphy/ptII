@@ -2130,48 +2130,10 @@ Edward A. Lee</text></svg></configure>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 85.0]">
             </property>
-            <entity name="CarController" class="ptolemy.domains.erg.kernel.ERGModalModel">
-            </entity>
-            <entity name="Queue" class="ptolemy.domains.de.lib.Queue">
-            </entity>
             <entity name="CarArrival" class="ptolemy.actor.lib.PoissonClock">
                 <property name="meanTime" class="ptolemy.data.expr.Parameter" value="0.0125">
                 </property>
             </entity>
-            <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
-            </entity>
-            <entity name="LocalPolicy" class="RequestPolicyExecutor">
-            </entity>
-            <entity name="OrthogonalPolicy" class="RequestPolicyExecutor">
-            </entity>
-            <entity name="TimeCompare" class="ptolemy.domains.de.lib.TimeCompare">
-            </entity>
-            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-            </relation>
         </entity>
         <entity name="PedLightN" class="PedLight">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 85.0]">
@@ -2204,8 +2166,6 @@ Edward A. Lee</text></svg></configure>
                 <property name="meanTime" class="ptolemy.data.expr.Parameter" value="0.0125">
                 </property>
             </entity>
-            <entity name="Register" class="ptolemy.domains.de.lib.Register">
-            </entity>
             <entity name="Const" class="ptolemy.actor.lib.Const">
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -2213,8 +2173,6 @@ Edward A. Lee</text></svg></configure>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                     </property>
                 </property>
-            </entity>
-            <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
             </entity>
             <entity name="Exp2" class="ptolemy.actor.lib.Expression">
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -2232,8 +2190,6 @@ Edward A. Lee</text></svg></configure>
                     </property>
                 </property>
             </entity>
-            <entity name="Switch" class="ptolemy.actor.lib.BooleanSwitch">
-            </entity>
             <entity name="Exp3" class="ptolemy.actor.lib.Expression">
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -2242,44 +2198,6 @@ Edward A. Lee</text></svg></configure>
                     </property>
                 </property>
             </entity>
-            <entity name="Switch2" class="ptolemy.actor.lib.BooleanSwitch">
-            </entity>
-            <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
-            </entity>
-            <entity name="PedController" class="ptolemy.domains.fsm.kernel.FSMActor">
-            </entity>
-            <entity name="TimeCompare" class="ptolemy.domains.de.lib.TimeCompare">
-            </entity>
-            <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation15" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation14" class="ptolemy.actor.TypedIORelation">
-            </relation>
         </entity>
         <entity name="PedControlChannelN" class="ptolemy.domains.wireless.lib.LimitedRangeChannel">
             <property name="defaultProperties" class="ptolemy.data.expr.Parameter" value="{range = 1000}">
@@ -2344,48 +2262,10 @@ Edward A. Lee</text></svg></configure>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 165.0]">
             </property>
-            <entity name="CarController" class="ptolemy.domains.erg.kernel.ERGModalModel">
-            </entity>
-            <entity name="Queue" class="ptolemy.domains.de.lib.Queue">
-            </entity>
             <entity name="CarArrival" class="ptolemy.actor.lib.PoissonClock">
                 <property name="meanTime" class="ptolemy.data.expr.Parameter" value="0.0166666666667">
                 </property>
             </entity>
-            <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
-            </entity>
-            <entity name="LocalPolicy" class="RequestPolicyExecutor">
-            </entity>
-            <entity name="OrthogonalPolicy" class="RequestPolicyExecutor">
-            </entity>
-            <entity name="TimeCompare" class="ptolemy.domains.de.lib.TimeCompare">
-            </entity>
-            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-            </relation>
         </entity>
         <entity name="PedLightE" class="PedLight">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 165.0]">
@@ -2418,8 +2298,6 @@ Edward A. Lee</text></svg></configure>
                 <property name="meanTime" class="ptolemy.data.expr.Parameter" value="0.0166666666667">
                 </property>
             </entity>
-            <entity name="Register" class="ptolemy.domains.de.lib.Register">
-            </entity>
             <entity name="Const" class="ptolemy.actor.lib.Const">
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -2427,8 +2305,6 @@ Edward A. Lee</text></svg></configure>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                     </property>
                 </property>
-            </entity>
-            <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
             </entity>
             <entity name="Exp2" class="ptolemy.actor.lib.Expression">
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -2446,8 +2322,6 @@ Edward A. Lee</text></svg></configure>
                     </property>
                 </property>
             </entity>
-            <entity name="Switch" class="ptolemy.actor.lib.BooleanSwitch">
-            </entity>
             <entity name="Exp3" class="ptolemy.actor.lib.Expression">
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -2456,44 +2330,6 @@ Edward A. Lee</text></svg></configure>
                     </property>
                 </property>
             </entity>
-            <entity name="Switch2" class="ptolemy.actor.lib.BooleanSwitch">
-            </entity>
-            <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
-            </entity>
-            <entity name="PedController" class="ptolemy.domains.fsm.kernel.FSMActor">
-            </entity>
-            <entity name="TimeCompare" class="ptolemy.domains.de.lib.TimeCompare">
-            </entity>
-            <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation15" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation14" class="ptolemy.actor.TypedIORelation">
-            </relation>
         </entity>
         <entity name="CarLightS" class="CarLight">
             <property name="MeanCarArrival" class="ptolemy.data.expr.Parameter" value="MeanCarArrivalNS">
@@ -2532,48 +2368,10 @@ Edward A. Lee</text></svg></configure>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 240.0]">
             </property>
-            <entity name="CarController" class="ptolemy.domains.erg.kernel.ERGModalModel">
-            </entity>
-            <entity name="Queue" class="ptolemy.domains.de.lib.Queue">
-            </entity>
             <entity name="CarArrival" class="ptolemy.actor.lib.PoissonClock">
                 <property name="meanTime" class="ptolemy.data.expr.Parameter" value="0.0125">
                 </property>
             </entity>
-            <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
-            </entity>
-            <entity name="LocalPolicy" class="RequestPolicyExecutor">
-            </entity>
-            <entity name="OrthogonalPolicy" class="RequestPolicyExecutor">
-            </entity>
-            <entity name="TimeCompare" class="ptolemy.domains.de.lib.TimeCompare">
-            </entity>
-            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-            </relation>
         </entity>
         <entity name="PedLightS" class="PedLight">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 240.0]">
@@ -2606,8 +2404,6 @@ Edward A. Lee</text></svg></configure>
                 <property name="meanTime" class="ptolemy.data.expr.Parameter" value="0.0125">
                 </property>
             </entity>
-            <entity name="Register" class="ptolemy.domains.de.lib.Register">
-            </entity>
             <entity name="Const" class="ptolemy.actor.lib.Const">
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -2615,8 +2411,6 @@ Edward A. Lee</text></svg></configure>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                     </property>
                 </property>
-            </entity>
-            <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
             </entity>
             <entity name="Exp2" class="ptolemy.actor.lib.Expression">
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -2634,8 +2428,6 @@ Edward A. Lee</text></svg></configure>
                     </property>
                 </property>
             </entity>
-            <entity name="Switch" class="ptolemy.actor.lib.BooleanSwitch">
-            </entity>
             <entity name="Exp3" class="ptolemy.actor.lib.Expression">
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -2644,44 +2436,6 @@ Edward A. Lee</text></svg></configure>
                     </property>
                 </property>
             </entity>
-            <entity name="Switch2" class="ptolemy.actor.lib.BooleanSwitch">
-            </entity>
-            <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
-            </entity>
-            <entity name="PedController" class="ptolemy.domains.fsm.kernel.FSMActor">
-            </entity>
-            <entity name="TimeCompare" class="ptolemy.domains.de.lib.TimeCompare">
-            </entity>
-            <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation15" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation14" class="ptolemy.actor.TypedIORelation">
-            </relation>
         </entity>
         <entity name="PedControlChannelS" class="ptolemy.domains.wireless.lib.LimitedRangeChannel">
             <property name="defaultProperties" class="ptolemy.data.expr.Parameter" value="{range = 1000}">
@@ -2734,48 +2488,10 @@ Edward A. Lee</text></svg></configure>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 165.0]">
             </property>
-            <entity name="CarController" class="ptolemy.domains.erg.kernel.ERGModalModel">
-            </entity>
-            <entity name="Queue" class="ptolemy.domains.de.lib.Queue">
-            </entity>
             <entity name="CarArrival" class="ptolemy.actor.lib.PoissonClock">
                 <property name="meanTime" class="ptolemy.data.expr.Parameter" value="0.0166666666667">
                 </property>
             </entity>
-            <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
-            </entity>
-            <entity name="LocalPolicy" class="RequestPolicyExecutor">
-            </entity>
-            <entity name="OrthogonalPolicy" class="RequestPolicyExecutor">
-            </entity>
-            <entity name="TimeCompare" class="ptolemy.domains.de.lib.TimeCompare">
-            </entity>
-            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-            </relation>
         </entity>
         <entity name="PedLightW" class="PedLight">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 165.0]">
@@ -2808,8 +2524,6 @@ Edward A. Lee</text></svg></configure>
                 <property name="meanTime" class="ptolemy.data.expr.Parameter" value="0.0166666666667">
                 </property>
             </entity>
-            <entity name="Register" class="ptolemy.domains.de.lib.Register">
-            </entity>
             <entity name="Const" class="ptolemy.actor.lib.Const">
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -2817,8 +2531,6 @@ Edward A. Lee</text></svg></configure>
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                     </property>
                 </property>
-            </entity>
-            <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
             </entity>
             <entity name="Exp2" class="ptolemy.actor.lib.Expression">
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -2836,8 +2548,6 @@ Edward A. Lee</text></svg></configure>
                     </property>
                 </property>
             </entity>
-            <entity name="Switch" class="ptolemy.actor.lib.BooleanSwitch">
-            </entity>
             <entity name="Exp3" class="ptolemy.actor.lib.Expression">
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -2846,44 +2556,6 @@ Edward A. Lee</text></svg></configure>
                     </property>
                 </property>
             </entity>
-            <entity name="Switch2" class="ptolemy.actor.lib.BooleanSwitch">
-            </entity>
-            <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
-            </entity>
-            <entity name="PedController" class="ptolemy.domains.fsm.kernel.FSMActor">
-            </entity>
-            <entity name="TimeCompare" class="ptolemy.domains.de.lib.TimeCompare">
-            </entity>
-            <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation15" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation14" class="ptolemy.actor.TypedIORelation">
-            </relation>
         </entity>
         <entity name="LightSetter" class="ptolemy.domains.wireless.kernel.WirelessComposite">
             <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
@@ -4385,10 +4057,6 @@ Edward A. Lee</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 70.0]">
                 </property>
             </property>
-            <entity name="init" class="ptolemy.actor.gt.controller.InitContainingModelEvent">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 35.0]">
-                </property>
-            </entity>
             <entity name="Monitor" class="ptolemy.domains.erg.kernel.Event">
                 <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="&#10;IncreaseNS =&#10;    (Intersection.CarCountN - Intersection.PedCountN) +&#10;    (Intersection.CarCountS - Intersection.PedCountS) &gt;&#10;    Threshold;&#10;DecreaseNS =&#10;    (Intersection.CarCountN - Intersection.PedCountN) +&#10;    (Intersection.CarCountS - Intersection.PedCountS) &lt;&#10;    -Threshold;&#10;IncreaseEW =&#10;    (Intersection.CarCountE - Intersection.PedCountE) +&#10;    (Intersection.CarCountW - Intersection.PedCountW) &gt;&#10;    Threshold;&#10;DecreaseEW =&#10;    (Intersection.CarCountE - Intersection.PedCountE) +&#10;    (Intersection.CarCountW - Intersection.PedCountW) &lt;&#10;    -Threshold&#10;">
                 </property>
@@ -4858,7 +4526,7 @@ Edward A. Lee</text></svg></configure>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
-            <link port="init.outgoingPort" relation="relation_1_8"/>
+            <link port="Init.outgoingPort" relation="relation_1_8"/>
             <link port="Monitor.incomingPort" relation="relation"/>
             <link port="Monitor.outgoingPort" relation="relation_1_3"/>
             <link port="Monitor.outgoingPort" relation="relation_1_5"/>
@@ -4882,7 +4550,7 @@ Edward A. Lee</text></svg></configure>
         <property name="FileUpdater" class="ptolemy.actor.gt.controller.FileUpdater" value="$NSRoad">
         </property>
         <entity name="_Controller" class="ptolemy.domains.erg.kernel.ERGController">
-            <entity name="init" class="ptolemy.actor.gt.controller.InitContainingModelEvent">
+            <entity name="Init" class="ptolemy.actor.gt.controller.InitContainingModel">
                 <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="i = 0; j = 0">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 45.0]">
@@ -4896,7 +4564,7 @@ Edward A. Lee</text></svg></configure>
         <property name="FileUpdater" class="ptolemy.actor.gt.controller.FileUpdater" value="$EWRoad">
         </property>
         <entity name="_Controller" class="ptolemy.domains.erg.kernel.ERGController">
-            <entity name="init" class="ptolemy.actor.gt.controller.InitContainingModelEvent">
+            <entity name="Init" class="ptolemy.actor.gt.controller.InitContainingModel">
                 <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="i = 0; j = 0">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 45.0]">

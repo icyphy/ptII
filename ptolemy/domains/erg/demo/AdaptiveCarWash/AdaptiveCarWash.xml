@@ -600,10 +600,6 @@ are reset at the start of each run.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 335.0]">
                 </property>
             </property>
-            <entity name="init" class="ptolemy.actor.gt.controller.InitContainingModelEvent">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 35.0]">
-                </property>
-            </entity>
             <entity name="SwitchToSlowMode" class="ptolemy.actor.gt.controller.Transform">
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -1045,7 +1041,7 @@ are reset at the start of each run.</text></svg></configure>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
-            <link port="init.outgoingPort" relation="relation"/>
+            <link port="Init.outgoingPort" relation="relation"/>
             <link port="SwitchToSlowMode.incomingPort" relation="relation"/>
             <link port="SwitchToSlowMode.incomingPort" relation="relation_1_6"/>
             <link port="SwitchToSlowMode.outgoingPort" relation="relation_1_2"/>

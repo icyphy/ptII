@@ -27,18 +27,19 @@
 */
 package ptolemy.actor.gt.controller;
 
-import ptolemy.data.ActorToken;
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.ParserScope;
-import ptolemy.domains.erg.kernel.ERGController;
-import ptolemy.domains.fsm.modal.RefinementPort;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
-//// FinalEvent
+//// InitialEvent
 
 /**
 
@@ -49,26 +50,52 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class OutputEvent extends GTEvent {
+public class Init extends GTEvent {
 
-    public OutputEvent(CompositeEntity container, String name)
+    public Init(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+
+        isInitialEvent.setToken(BooleanToken.TRUE);
+        modelName = new StringParameter(this, "modelName");
+    }
+
+    public void attributeChanged(Attribute attribute)
+    throws IllegalActionException {
+        if (attribute == modelName) {
+            _emptyModel = new TypedCompositeActor(new Workspace());
+            try {
+                _emptyModel.setName(modelName.stringValue());
+            } catch (NameDuplicationException e) {
+                throw new IllegalActionException(this, e, "Unexpected error.");
+            }
+        } else {
+            super.attributeChanged(attribute);
+        }
     }
 
     public void fire(ArrayToken arguments) throws IllegalActionException {
         ParserScope scope = _getParserScope(arguments);
         actions.execute(scope);
 
-        CompositeEntity entity = getModelAttribute().getModel();
-        ERGController container = (ERGController) getContainer();
-        final String outputPort = "modelOutput";
-        RefinementPort destination = (RefinementPort) container.getPort(
-                outputPort);
-        destination.broadcastClear();
-        destination.broadcast(new ActorToken(entity));
-        getMatchedParameter().setToken(BooleanToken.getInstance(true));
+        ModelAttribute modelAttribute = getModelAttribute();
+        if (modelAttribute.getModel() == null) {
+            modelAttribute.setModel(_getInitialModel());
+            getMatchedParameter().setToken(BooleanToken.getInstance(true));
+        }
 
         _scheduleEvents(scope);
     }
+
+    public StringParameter modelName;
+
+    protected CompositeEntity _getInitialModel() throws IllegalActionException {
+        try {
+            return (CompositeEntity) _emptyModel.clone(new Workspace());
+        } catch (CloneNotSupportedException e) {
+            throw new IllegalActionException("Unable to clone an empty model.");
+        }
+    }
+
+    private CompositeEntity _emptyModel;
 }

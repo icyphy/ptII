@@ -54,13 +54,13 @@ JSRCS = \
 	Configurer.java \
 	FileUpdater.java \
 	GTEvent.java \
-	InitContainingModelEvent.java \
-	InitEvent.java \
-	InputEvent.java \
+	InitContainingModel.java \
+	Init.java \
+	Input.java \
 	Match.java \
 	ModelAttribute.java \
 	ModelIOPort.java \
-	OutputEvent.java \
+	Output.java \
 	Test.java \
 	Transform.java \
 	TransformationAttribute.java

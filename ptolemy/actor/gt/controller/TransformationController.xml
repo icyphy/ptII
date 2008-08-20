@@ -138,12 +138,12 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 200.0]">
             </property>
         </port>
-        <entity name="init" class="ptolemy.actor.gt.controller.InitEvent">
+        <entity name="Init" class="ptolemy.actor.gt.controller.Init">
             <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <property name="isInitialEvent" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="InitEventIcon" class="ptolemy.vergil.erg.EventIcon">
+            <property name="InitIcon" class="ptolemy.vergil.erg.EventIcon">
                 <property name="_fill" class="ptolemy.data.expr.Parameter" value="{1.0, 0.8, 0.8, 0.8}">
                 </property>
             </property>
@@ -152,20 +152,20 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 40.0]">
             </property>
         </entity>
-        <entity name="input" class="ptolemy.actor.gt.controller.InputEvent">
+        <entity name="Input" class="ptolemy.actor.gt.controller.Input">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 80.0]">
             </property>
-            <property name="InputEventIcon" class="ptolemy.vergil.erg.EventIcon">
+            <property name="InputIcon" class="ptolemy.vergil.erg.EventIcon">
                 <property name="_fill" class="ptolemy.data.expr.Parameter" value="{1.0, 0.8, 0.8, 0.8}">
                 </property>
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </entity>
-        <entity name="output" class="ptolemy.actor.gt.controller.OutputEvent">
+        <entity name="Output" class="ptolemy.actor.gt.controller.Output">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 355.0]">
             </property>
-            <property name="OutputEventIcon" class="ptolemy.vergil.erg.EventIcon">
+            <property name="OutputIcon" class="ptolemy.vergil.erg.EventIcon">
                 <property name="_fill" class="ptolemy.data.expr.Parameter" value="{1.0, 0.8, 0.8, 0.8}">
                 </property>
             </property>
@@ -216,10 +216,10 @@
             <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </relation>
-        <link port="init.outgoingPort" relation="relation"/>
-        <link port="input.incomingPort" relation="relation"/>
-        <link port="input.incomingPort" relation="relation2"/>
-        <link port="input.outgoingPort" relation="relation2"/>
+        <link port="Init.outgoingPort" relation="relation"/>
+        <link port="Input.incomingPort" relation="relation"/>
+        <link port="Input.incomingPort" relation="relation2"/>
+        <link port="Input.outgoingPort" relation="relation2"/>
     </entity>
     <relation name="modelInputRelation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">

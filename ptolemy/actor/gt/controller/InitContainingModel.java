@@ -6,9 +6,9 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-public class InitContainingModelEvent extends InitEvent {
+public class InitContainingModel extends Init {
 
-    public InitContainingModelEvent(CompositeEntity container, String name)
+    public InitContainingModel(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }

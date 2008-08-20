@@ -536,7 +536,7 @@
                         <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
                     </relation>
-                    <link port="init.outgoingPort" relation="relation"/>
+                    <link port="Init.outgoingPort" relation="relation"/>
                     <link port="CreateActors.incomingPort" relation="relation"/>
                     <link port="CreateActors.outgoingPort" relation="relation_1_2"/>
                     <link port="LinkRelations.incomingPort" relation="relation_1_2"/>
@@ -677,7 +677,7 @@
                         <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
                     </relation>
-                    <link port="init.outgoingPort" relation="relation"/>
+                    <link port="Init.outgoingPort" relation="relation"/>
                     <link port="CleanUp.incomingPort" relation="relation"/>
                     <link port="CleanUp.incomingPort" relation="relation_1_3"/>
                     <link port="CleanUp.outgoingPort" relation="relation_1_2"/>
@@ -988,7 +988,7 @@
                         <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
                     </relation>
-                    <link port="init.outgoingPort" relation="relation"/>
+                    <link port="Init.outgoingPort" relation="relation"/>
                     <link port="CreateActors.incomingPort" relation="relation"/>
                     <link port="CreateActors.outgoingPort" relation="relation_1_2"/>
                     <link port="LinkRelations.incomingPort" relation="relation_1_2"/>

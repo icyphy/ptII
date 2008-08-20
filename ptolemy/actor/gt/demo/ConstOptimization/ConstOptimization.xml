@@ -77,10 +77,6 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 265.0]">
                 </property>
             </port>
-            <entity name="output" class="ptolemy.actor.gt.controller.OutputEvent">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 300.0]">
-                </property>
-            </entity>
             <entity name="Transform" class="ptolemy.actor.gt.controller.Transform">
                 <property name="mode" class="ptolemy.actor.gt.TransformationMode" value="replace any">
                 </property>
@@ -393,8 +389,8 @@
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
-            <link port="input.outgoingPort" relation="relation_1_2"/>
-            <link port="output.incomingPort" relation="relation_1_4"/>
+            <link port="Input.outgoingPort" relation="relation_1_2"/>
+            <link port="Output.incomingPort" relation="relation_1_4"/>
             <link port="Transform.incomingPort" relation="relation_1_2"/>
             <link port="Transform.incomingPort" relation="relation_1_6"/>
             <link port="Transform.outgoingPort" relation="relation_1_3"/>

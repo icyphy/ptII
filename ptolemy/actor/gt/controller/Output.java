@@ -31,13 +31,14 @@ import ptolemy.data.ActorToken;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.ParserScope;
+import ptolemy.domains.erg.kernel.ERGController;
+import ptolemy.domains.fsm.modal.RefinementPort;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
-//// InputEvent
+//// FinalEvent
 
 /**
 
@@ -48,33 +49,26 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class InputEvent extends GTEvent {
+public class Output extends GTEvent {
 
-    public InputEvent(CompositeEntity container, String name)
+    public Output(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-
-        fireOnInput.setToken(BooleanToken.TRUE);
     }
 
     public void fire(ArrayToken arguments) throws IllegalActionException {
         ParserScope scope = _getParserScope(arguments);
         actions.execute(scope);
 
-        final String inputPort = "modelInput";
-        BooleanToken inputPortPresent = (BooleanToken) scope.get(inputPort +
-                "_isPresent");
-        if (inputPortPresent != null && inputPortPresent.booleanValue()) {
-            ActorToken modelToken = (ActorToken) scope.get(inputPort);
-            Entity entity = modelToken.getEntity();
-            if (!(entity instanceof CompositeEntity)) {
-                throw new IllegalActionException("Only instances of " +
-                        "CompositeEntity are accepted in the input " +
-                        "ActorTokens to the transformation controller.");
-            }
-            getModelAttribute().setModel((CompositeEntity) entity);
-            getMatchedParameter().setToken(BooleanToken.getInstance(true));
-            _scheduleEvents(scope);
-        }
+        CompositeEntity entity = getModelAttribute().getModel();
+        ERGController container = (ERGController) getContainer();
+        final String outputPort = "modelOutput";
+        RefinementPort destination = (RefinementPort) container.getPort(
+                outputPort);
+        destination.broadcastClear();
+        destination.broadcast(new ActorToken(entity));
+        getMatchedParameter().setToken(BooleanToken.getInstance(true));
+
+        _scheduleEvents(scope);
     }
 }
