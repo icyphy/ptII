@@ -60,9 +60,7 @@ ValueIterator {
         constraint = new Parameter(this, "constraint");
         constraint.setTypeAtMost(BaseType.BOOLEAN);
         next = new Parameter(this, "next");
-        stopIfNotMatch = new Parameter(this, "stopIfNotMatch");
-        stopIfNotMatch.setTypeEquals(BaseType.BOOLEAN);
-        stopIfNotMatch.setToken(BooleanToken.FALSE);
+        mode = new ChoiceParameter(this, "mode", Mode.class);
 
         new IterativeParameterIcon(this, "_icon");
 
@@ -103,11 +101,15 @@ ValueIterator {
     }
 
     public Token next() throws IllegalActionException {
-        if (((BooleanToken) stopIfNotMatch.getToken()).booleanValue()
-                && !_foundMatch) {
+        Object mode = this.mode.getChosenValue();
+        if (mode == Mode.STOP_WHEN_MATCH && _foundMatch) {
+            throw new IllegalActionException("Stop because the last match " +
+                    "was successful.");
+        } else if (mode == Mode.STOP_WHEN_NOT_MATCH && !_foundMatch) {
             throw new IllegalActionException("Stop because the last match " +
                     "was not successful.");
         }
+
         Token nextToken = next.getToken();
         setToken(nextToken);
         validate();
@@ -125,9 +127,9 @@ ValueIterator {
 
     public Parameter initial;
 
-    public Parameter next;
+    public ChoiceParameter mode;
 
-    public Parameter stopIfNotMatch;
+    public Parameter next;
 
     public class ConstraintViolationException extends IllegalActionException {
 
@@ -135,6 +137,24 @@ ValueIterator {
             super("Constraint " + constraint.getExpression() +
                     " is not satisfied.");
         }
+    }
+
+    public enum Mode {
+        ALL_VALUES {
+            public String toString() {
+                return "try all values";
+            }
+        },
+        STOP_WHEN_MATCH {
+            public String toString() {
+                return "stop when match";
+            }
+        },
+        STOP_WHEN_NOT_MATCH {
+            public String toString() {
+                return "stop when not match";
+            }
+        },
     }
 
     protected void _validateConstraint() throws IllegalActionException {

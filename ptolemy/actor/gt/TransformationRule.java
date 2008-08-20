@@ -90,7 +90,8 @@ public class TransformationRule extends MultiCompositeActor implements
         if (attribute == mode || attribute == repeatUntilFixpoint) {
             // Check whether the mode is not set to single run but
             // repeatUntilFixpoint is set to true. If so, raise exception.
-            TransformationMode.Mode modeValue = mode.getMode();
+            TransformationMode.Mode modeValue =
+                (TransformationMode.Mode) mode.getChosenValue();
             boolean singleRunMode =
                 modeValue == TransformationMode.Mode.REPLACE_FIRST
                     || modeValue == TransformationMode.Mode.REPLACE_ANY
@@ -128,7 +129,8 @@ public class TransformationRule extends MultiCompositeActor implements
                 _workspace.doneReading();
             }
 
-            TransformationMode.Mode modeValue = mode.getMode();
+            TransformationMode.Mode modeValue =
+                (TransformationMode.Mode) mode.getChosenValue();
 
             if (modelInput.hasToken(0)) {
                 ActorToken token = (ActorToken) modelInput.get(0);
@@ -237,7 +239,8 @@ public class TransformationRule extends MultiCompositeActor implements
     public boolean prefire() throws IllegalActionException {
         if (super.prefire()) {
             _removeFirst = false;
-            TransformationMode.Mode modeValue = mode.getMode();
+            TransformationMode.Mode modeValue =
+                (TransformationMode.Mode) mode.getChosenValue();
             if (modeValue == TransformationMode.Mode.REPLACE_FIRST
                     || modeValue == TransformationMode.Mode.REPLACE_ANY
                     || modeValue == TransformationMode.Mode.REPLACE_ALL) {

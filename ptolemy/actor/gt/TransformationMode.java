@@ -7,7 +7,6 @@ import java.util.Set;
 
 import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.data.expr.ScopeExtender;
-import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -16,17 +15,12 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
-public class TransformationMode extends StringParameter
+public class TransformationMode extends ChoiceParameter
 implements MatchCallback {
 
     public TransformationMode(NamedObj container, String name)
     throws IllegalActionException, NameDuplicationException {
-        super(container, name);
-
-        for (Mode mode : Mode.values()) {
-            addChoice(mode.toString());
-        }
-        setExpression(Mode.REPLACE_FIRST.toString());
+        super(container, name, Mode.class);
     }
 
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
@@ -56,16 +50,6 @@ implements MatchCallback {
         return !_collectAllMatches;
     }
 
-    public Mode getMode() {
-        String modeString = getExpression();
-        for (Mode mode : Mode.values()) {
-            if (modeString.equals(mode.toString())) {
-                return mode;
-            }
-        }
-        return null;
-    }
-
     public TransformationRule getWorkingCopy(TransformationRule masterRule)
     throws IllegalActionException {
         if (_masterRule != masterRule || _workingCopy == null
@@ -90,13 +74,18 @@ implements MatchCallback {
     }
 
     public boolean isMatchOnly() {
-        return getMode() == Mode.MATCH_ONLY;
+        try {
+            return getChosenValue() == Mode.MATCH_ONLY;
+        } catch (IllegalActionException e) {
+            // If the expression cannot be recognized, just return false.
+            return false;
+        }
     }
 
     public boolean transform(TransformationRule workingCopy,
             CompositeEntity model) throws IllegalActionException {
         Pattern pattern = workingCopy.getPattern();
-        Mode mode = getMode();
+        Mode mode = (Mode) getChosenValue();
 
         _matcher.setMatchCallback(this);
         _matchResults.clear();
@@ -136,21 +125,6 @@ implements MatchCallback {
     }
 
     public enum Mode {
-        MATCH_ONLY {
-            public String toString() {
-                return "match only";
-            }
-        },
-        REPLACE_ALL {
-            public String toString() {
-                return "replace all";
-            }
-        },
-        REPLACE_ANY {
-            public String toString() {
-                return "replace any";
-            }
-        },
         REPLACE_FIRST {
             public String toString() {
                 return "replace first";
@@ -159,6 +133,21 @@ implements MatchCallback {
         REPLACE_LAST {
             public String toString() {
                 return "replace last";
+            }
+        },
+        REPLACE_ANY {
+            public String toString() {
+                return "replace any";
+            }
+        },
+        REPLACE_ALL {
+            public String toString() {
+                return "replace all";
+            }
+        },
+        MATCH_ONLY {
+            public String toString() {
+                return "match only";
             }
         }
     }
