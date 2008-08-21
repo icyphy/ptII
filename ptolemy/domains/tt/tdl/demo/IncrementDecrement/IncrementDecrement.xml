@@ -13,7 +13,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{153.7727272727272, 92.9089133522728}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.5">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="3.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-100.0, -85.0]">
         </property>
@@ -25,7 +25,7 @@
         </property>
     </property>
     <entity name="Scope" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={405, 642, 617, 214}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={405, 642, 609, 203}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[609, 159]">
         </property>
@@ -38,8 +38,8 @@
 <title>TimedPlotter3</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="0.5"/>
-<yRange min="180.0" max="330.0"/>
+<xRange min="0.01" max="0.5"/>
+<yRange min="50.0" max="330.0"/>
 <default marks="dots"/>
 </plot>?>
         </configure>
@@ -115,6 +115,8 @@
             </port>
             <entity name="regular" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="regular">
+                </property>
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -891,6 +893,8 @@
             </port>
             <entity name="sum" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="sum">
+                </property>
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>

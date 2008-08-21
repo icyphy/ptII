@@ -19,6 +19,7 @@ import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.Time;
+import ptolemy.actor.util.TimedEvent;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
@@ -42,11 +43,20 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
 /**
- * Director for a TDL module. Schedule is generated statically in the initialize
- * method after setting output ports and actuators and after each slot in the
- * schedule, the control is handed to the outside director to enable executing
- * other actors outside the TDL module.
+ * Director for a TDL (= Timing Definition Language) module. A TDL module
+ * consists of modes, modes consist of TDL tasks and TDL tasks are SDF actors.
+ * All actions inside a TDL module are executed periodically and the timing
+ * information is specified in parameters. This director parses the parameters
+ * and builds a schedule for all the TDL actions. The schedule is represented in
+ * a graph showing the dependencies between the TDL actions (see
+ * TDLActionsGraph).
  * 
+ * <p>
+ * In the initialization, output ports and actuators are initialized with values 
+ * specified in the parameters of the ports. The schedule is generated and events
+ * are scheduled. Events that are safe to process at current model time are executed,
+ * then the fireAt(time) of the enclosing director is called with the time stamp of the
+ * next event. Events are processed in the order specified in the graph.  
  * @author Patricia Derler
  */
 public class TDLModuleDirector extends ModalDirector {
@@ -73,15 +83,9 @@ public class TDLModuleDirector extends ModalDirector {
         super(container, name);
     }
 
-    @Override
-    public Dependency defaultDependency() {
-        return ((CompositeActor) getContainer()).getExecutiveDirector()
-                .defaultDependency();
-    }
-    
     Time previousEventTime = null;
     Time previousTime = new Time(this);
-    
+
     @Override
     public void setModelTime(Time newTime) throws IllegalActionException {
         // TODO Auto-generated method stub
@@ -100,175 +104,128 @@ public class TDLModuleDirector extends ModalDirector {
      */
     public void fire() throws IllegalActionException {
         if (getModelTime().getDoubleValue() < 0.0)
-            return; // how can that happen?
-        System.out.println(_nextEvents.size() + " " + _nodesDependentoOnPreviousActions.size());
-        _currentWCET = 0;
-        Time modePeriod = getModePeriod(getController().currentState());
-        List<Node> eventsToFire = new ArrayList();
-        getController().readInputs();
-        Time scheduleTime = new Time(this, getModelTime().getLongValue()
+            return; // TODO how can that happen? happens with DE ...
+        boolean iterate = true;
+        while (iterate) {
+            iterate = false;
+            System.out.println(_nextEvents.size() + " "
+                    + _nodesDependentoOnPreviousActions.size());
+            _currentWCET = 0;
+            Time modePeriod = getModePeriod(getController().currentState());
+            List<Node> eventsToFire = new ArrayList();
+
+            //getController().readInputs();
+
+            Time scheduleTime = new Time(this, getModelTime().getLongValue()
                     % modePeriod.getLongValue());
- 
-        for (Node node : _nextEvents) {
-            TDLAction action = (TDLAction) node.getWeight(); 
-            if ((action.time.compareTo(scheduleTime) == 0 || action.time
-                    .compareTo(scheduleTime.add(modePeriod)) == 0)
-                    && (previousEventTime == null || (previousEventTime != null && action.time
-                            .compareTo(previousEventTime) <= 0))) {
-                eventsToFire.add(node);
-                previousEventTime = action.time;
-            }  
-        }
-        boolean doneAction;
-        for (Node node : eventsToFire) {
-            doneAction = true;
-            TDLAction action = (TDLAction) node.getWeight(); 
 
-            Object obj = action.object;
-
-            if (!_hasGuard((NamedObj) obj) || _guardIsTrue((NamedObj) obj)) {
-                // execute task
-                if (action.actionType == TDLAction.EXECUTETASK) {
-                    Actor actor = (Actor) obj;
-                    actor.prefire(); // will never return false, receivers ensure inputs availability
-                    actor.iterate(1);
-                    actor.postfire();
-                    _currentWCET = getWCETParameter(actor);
-                    
-                } else if (action.actionType == TDLAction.WRITEACTUATOR) {
-                    _updateActuator((IOPort) obj);
-                } else if (action.actionType == TDLAction.WRITEOUTPUT) {
-                    _updateOutputPort((IOPort) obj);
-                    _currentWCET = 0.0;
-                } else if (action.actionType == TDLAction.READSENSOR) {
-                    doneAction = ((TDLActor) getController()).readInput(node,
-                            (IOPort) action.object, modePeriod.getLongValue());
-                } else if (action.actionType == TDLAction.READINPUT) {
-                    _updateInputPort((IOPort) obj);
-                } else if (action.actionType == TDLAction.MODESWITCH) {
-                    State targetState;
-                    if (!_chooseTransition((Transition) obj))
-                        targetState = getController().currentState();
-                    else
-                        targetState = ((Transition) obj).destinationState(); // choose transition in the graph
-                    _nextEvents.clear();
-                    _nodesDependentoOnPreviousActions.clear();
-                    Node startNode = _graph
-                            .getNode(new TDLAction(new Time(this, 0.0),
-                                    TDLAction.AFTERMODESWITCH, targetState));
-
-                    _fireAt(startNode, new Time(this, 0));
-                    scheduleEventsAfterAction(startNode);
-                } else if (action.actionType == TDLAction.AFTERMODESWITCH) {
-                    // nothing to do
-                } else {
-                    throw new IllegalArgumentException(obj
-                            + " cannot be executed.");
+            for (Node node : _nextEvents) {
+                TDLAction action = (TDLAction) node.getWeight();
+                if ((action.time.compareTo(scheduleTime) == 0 || action.time
+                        .compareTo(scheduleTime.add(modePeriod)) == 0)
+                        && (previousEventTime == null || (previousEventTime != null && action.time
+                                .compareTo(previousEventTime) <= 0))) {
+                    eventsToFire.add(node);
+                    previousEventTime = action.time;
                 }
             }
-            if (doneAction) {
-                if (_nextEvents.size() == 1 && _nodesDependentoOnPreviousActions.size() == 0) {
-                    _fireAt(node, new Time(this, 0));
-                     scheduleEventsAfterAction(node);
+            boolean doneAction;
+            for (Node node : eventsToFire) {
+                System.out.println("  TDL: " + getModelTime() + " " + node);
+                doneAction = true;
+                TDLAction action = (TDLAction) node.getWeight();
+                Object obj = action.object;
+                if (!_hasGuard((NamedObj) obj) || _guardIsTrue((NamedObj) obj)) {
+                    // execute task
+                    if (action.actionType == TDLAction.EXECUTETASK) {
+                        Actor actor = (Actor) obj;
+                        actor.prefire(); // will never return false, receivers ensure inputs availability
+                        actor.iterate(1);
+                        actor.postfire();
+                        _currentWCET = getWCETParameter(actor);
+
+                    } else if (action.actionType == TDLAction.WRITEACTUATOR) {
+                        _updateActuator((IOPort) obj);
+                    } else if (action.actionType == TDLAction.WRITEOUTPUT) {
+                        _updateOutputPort((IOPort) obj);
+                        _currentWCET = 0.0;
+                    } else if (action.actionType == TDLAction.READSENSOR) {
+                        doneAction = ((TDLActor) getController()).readInput(
+                                node, (IOPort) action.object, modePeriod
+                                        .getLongValue());
+                    } else if (action.actionType == TDLAction.READINPUT) {
+                        _updateInputPort((IOPort) obj);
+                    } else if (action.actionType == TDLAction.MODESWITCH) {
+                        State targetState;
+                        if (!_chooseTransition((Transition) obj))
+                            targetState = getController().currentState();
+                        else
+                            targetState = ((Transition) obj).destinationState(); // choose transition in the graph
+                        _nextEvents.clear();
+                        _nextEventsTimeStamps.clear();
+                        _nodesDependentoOnPreviousActions.clear();
+                        Node startNode = _graph.getNode(new TDLAction(new Time(
+                                this, 0.0), TDLAction.AFTERMODESWITCH,
+                                targetState));
+
+                        _fireAt(startNode, getModelTime());
+                        scheduleEventsAfterAction(startNode);
+                    } else if (action.actionType == TDLAction.AFTERMODESWITCH) {
+                        // nothing to do
+                    } else {
+                        throw new IllegalArgumentException(obj
+                                + " cannot be executed.");
+                    }
                 }
-                _nextEvents.remove(node);
+                if (doneAction) {
+                    if (_nextEvents.size() == 1
+                            && _nodesDependentoOnPreviousActions.size() == 0) {
+                        _fireAt(node, new Time(this, 0));
+                        scheduleEventsAfterAction(node);
+                        iterate = true;
+                    }
+                    _nextEvents.remove(node);
+                    _nextEventsTimeStamps.remove(node);
+                    List<Node> nodesToRemove = new ArrayList();
 
-                List<Node> nodesToRemove = new ArrayList();
+                    if (_nodesDependentoOnPreviousActions != null
+                            && _nodesDependentoOnPreviousActions.size() != 0) {
+                        Set<Node> s = new HashSet();
+                        s.addAll(_nodesDependentoOnPreviousActions.keySet());
+                        for (Node n : s) {
+                            List<TDLAction> actionsToRemove = new ArrayList();
 
-                if (_nodesDependentoOnPreviousActions != null && _nodesDependentoOnPreviousActions.size() != 0) {
-                    Set<Node> s = new HashSet();
-                    s.addAll(_nodesDependentoOnPreviousActions.keySet());
-                    for (Node n : s) {
-                        List<TDLAction> actionsToRemove = new ArrayList();
-
-                        if (_nodesDependentoOnPreviousActions.get(n) != null
-                                && _nodesDependentoOnPreviousActions.size() > 0) {
-                            for (TDLAction waitForAction : _nodesDependentoOnPreviousActions.get(n)) {
-                                if (waitForAction.sameActionAs(action,
-                                        modePeriod)) {
-                                    actionsToRemove.add(waitForAction);
+                            if (_nodesDependentoOnPreviousActions.get(n) != null
+                                    && _nodesDependentoOnPreviousActions.size() > 0) {
+                                for (TDLAction waitForAction : _nodesDependentoOnPreviousActions
+                                        .get(n)) {
+                                    if (waitForAction.sameActionAs(action,
+                                            modePeriod)) {
+                                        actionsToRemove.add(waitForAction);
+                                    }
                                 }
+                                for (TDLAction actionToRemove : actionsToRemove)
+                                    _nodesDependentoOnPreviousActions.get(n)
+                                            .remove(actionToRemove);
                             }
-                            for (TDLAction actionToRemove : actionsToRemove)
-                                _nodesDependentoOnPreviousActions.get(n).remove(actionToRemove);
-                        }
-                        if (_nodesDependentoOnPreviousActions.get(n) == null
-                                || _nodesDependentoOnPreviousActions.get(n).size() == 0) {
-                            _fireAt(n, new Time(this, 0));
-                            scheduleEventsAfterAction(n);
-                            nodesToRemove.add(n);
+                            if (_nodesDependentoOnPreviousActions.get(n) == null
+                                    || _nodesDependentoOnPreviousActions.get(n)
+                                            .size() == 0) {
+                                _fireAt(n, new Time(this, 0));
+                                scheduleEventsAfterAction(n);
+                                nodesToRemove.add(n);
+                                iterate = true;
+                            }
                         }
                     }
                 }
-            }
-            if (_currentWCET > 0.0) { 
-                return; 
+                if (_currentWCET > 0.0) {
+                    _fireAt(null, _getSmallestTimeStampInEventsToFire());
+                    return;
+                }
             }
         }
     }
-
-    //    public void fire() throws IllegalActionException {
-    //        _currentWCET = 0;
-    //        Time time = getModelTime();
-    //        List actions = (List) _eventQueue.get(time);
-    //        for (Iterator it = _sensorEventQueues.keySet().iterator(); it.hasNext(); ) {
-    //            HashMap eventQueue = (HashMap) it.next();
-    //            actions.add(eventQueue.get(time));
-    //        }
-    //        if (actions.size() == 0) // nothing to do
-    //            return;
-    //        else {
-    //            // TODO sort must also consider fast tasks
-    //            Collections.sort(actions, new TDLAction.TDLActionComparator());
-    //            for (Iterator it = actions.iterator(); it.hasNext(); ) {
-    //                TDLAction action = (TDLAction) it.next();
-    //                if (!_hasGuard((NamedObj) action.object) || _guardIsTrue((NamedObj) action.object)) {
-    //                    switch (action.actionType) {
-    //                        case TDLAction.WRITEOUTPUT:
-    //                            _updateOutputPort((IOPort) action.object);
-    //                            _currentWCET = 0.0;
-    //                            break;
-    //                        case TDLAction.WRITEACTUATOR:
-    //                            _updateActuator((IOPort) action.object);
-    //                            break;
-    //                        case TDLAction.MODESWITCH:
-    //                            if (_chooseTransition((Transition) action.object)) {
-    //                                _eventQueue.clear();
-    //                                _sensorEventQueues.clear();
-    //                                _computeInitialEvents(((Transition) action.object).g)
-    //                            }
-    //                            break;
-    //                        case TDLAction.READSENSOR:
-    //                            break;
-    //                        case TDLAction.READINPUT:
-    //                            Director executiveDirector = ((Actor) getContainer()
-    //                                    .getContainer()).getDirector();
-    //                            if (i > 0) {
-    //                                fireAt((TDLModule) getContainer(), getModelTime());
-    //                                return;
-    //                            }
-    //                            i--;
-    //                            _updateInputPort((IOPort) action.object);
-    //                            break;
-    //                        case TDLAction.EXECUTETASK:
-    //                            Actor actor = (Actor) action.object;
-    //                            if (actor.prefire()) { // TODO prefire should never return
-    //                                // false ?
-    //                                actor.iterate(1);
-    //                                actor.postfire();
-    //                                _currentWCET = getWorstCaseET(actor);
-    //                                if (_currentWCET > 0)
-    //                                    break;
-    //                            } else {
-    //                                .println(actor.getName()
-    //                                        + " .prefire() = false");
-    //                            }
-    //                            break;
-    //                    }
-    //                }
-    //            }
-    //        }
-    //    }
 
     /**
      * Get mode period from state parameter "period".
@@ -343,7 +300,7 @@ public class TDLModuleDirector extends ModalDirector {
      * Initialize the director, calculate schedule and schedule first firing.
      */
     public void initialize() throws IllegalActionException {
-        super.initialize(); 
+        super.initialize();
         _resetReceivers();
         _graph = new TDLActionsGraph(((TDLModule) getContainer()),
                 getController());
@@ -352,8 +309,9 @@ public class TDLModuleDirector extends ModalDirector {
         fireAt((TDLModule) getContainer(), getModelTime());
         _nodesDependentoOnPreviousActions = new HashMap();
         _nextEvents = new LinkedList();
+        _nextEventsTimeStamps = new HashMap();
         //nextEvents.add(new TDLAction(0, TDLAction.AFTERMODESWITCH, getController().currentState()));
-        
+
         Node startNode = _graph.getNode(new TDLAction(new Time(this, 0.0),
                 TDLAction.AFTERMODESWITCH, getController().getInitialState()));
 
@@ -385,8 +343,7 @@ public class TDLModuleDirector extends ModalDirector {
             return false;
         }
     }
-    
-    
+
     /**
      * Get frequency of the task.
      * 
@@ -410,7 +367,7 @@ public class TDLModuleDirector extends ModalDirector {
             return 1;
         }
     }
-    
+
     /**
      * Get frequency of the task.
      * 
@@ -468,7 +425,8 @@ public class TDLModuleDirector extends ModalDirector {
             throws IllegalActionException {
         _nodesDependentoOnPreviousActions.remove(node);
         List<Node> events = _graph.getEventsFollowingAction(node);
-        _nodesDependentoOnPreviousActions.putAll(_graph.getNextJoinNodes(node, node, new ArrayList()));
+        _nodesDependentoOnPreviousActions.putAll(_graph.getNextJoinNodes(node,
+                node, new ArrayList()));
         Time additionalTime = new Time(this, 0);
         for (Node n : events) {
             if (((TDLAction) n.getWeight()).actionType == TDLAction.AFTERMODESWITCH)
@@ -541,97 +499,13 @@ public class TDLModuleDirector extends ModalDirector {
         return wasTransferred;
     }
 
-    /**
-     * Build the schedule for the TDL module by reading all model elements.
-     * 
-     * @throws IllegalActionException
-     */
-    //    private void _buildSchedule() throws IllegalActionException {
-    //        Iterator stateIterator = getController().entityList().iterator();
-    //        _modeSchedules = new HashMap();
-    //        while (stateIterator.hasNext()) {
-    //            State state = (State) stateIterator.next();
-    //            TDLModeScheduler scheduler = new TDLModeScheduler();
-    //            try {
-    //                Time modePeriod = getModePeriod(state);
-    //                //scheduler.setModePeriod(modePeriod, getTimeResolution());
-    //                
-    //                // get transitions
-    //                for (Iterator transitionIterator = state
-    //                        .nonpreemptiveTransitionList().iterator(); transitionIterator
-    //                        .hasNext();) {
-    //                    TDLTransition transition = (TDLTransition) transitionIterator
-    //                            .next();
-    //                    scheduler.addModeSwitch(transition);
-    //                }
-    //                Refinement refinement = (Refinement) state.getRefinement()[0];
-    //
-    //                // get tasks (regular and fast tasks)
-    //                Iterator taskIterator = refinement.entityList().iterator();
-    //                while (taskIterator.hasNext()) {
-    //                    Actor actor = (Actor) taskIterator.next();
-    //
-    //                    // get sensors
-    //                    // List sensors = null;
-    //                    // for (Iterator inputIt = actor.inputPortList().iterator();
-    //                    // inputIt.hasNext(); ) {
-    //                    // IOPort port = (IOPort) inputIt.next();
-    //                    // sensors = port.connectedPortList();
-    //                    // sensors.retainAll(((TDLModule)this.getContainer()).inputPortList());
-    //                    // }
-    //
-    //                    // add fast task and connected fast actuators
-    //                    if (TDLModuleDirector.isFast((NamedObj) actor)) {
-    //                        ArrayList fastActuators = new ArrayList();
-    //                        for (Iterator outputIt = actor.outputPortList()
-    //                                .iterator(); outputIt.hasNext();) {
-    //                            IOPort port = (IOPort) outputIt.next();
-    //                            // List l = port.connectedPortList();
-    //                            Receiver[][] channelArray = port
-    //                                    .getRemoteReceivers();
-    //                            for (int i = 0; i < channelArray.length; i++) {
-    //                                Receiver[] receiverArray = channelArray[i];
-    //                                for (int j = 0; j < receiverArray.length; j++) {
-    //                                    TDLReceiver receiver = (TDLReceiver) receiverArray[j];
-    //                                    if (receiver.getContainer() instanceof RefinementPort) {
-    //                                        IOPort refinementPort = receiver
-    //                                                .getContainer();
-    //                                        if (TDLModuleDirector
-    //                                                .isFast(refinementPort)) {
-    //                                            fastActuators.add(refinementPort);
-    //                                        }
-    //                                    }
-    //                                }
-    //                            }
-    //                        }
-    //                        scheduler.addFastTask(/*sensors, */actor,
-    //                                fastActuators);
-    //                    } else {
-    //                        scheduler.addTask(/*sensors, */actor);
-    //                    }
-    //                }
-    //
-    //                // get regular actuators
-    //                Iterator portIterator = refinement.outputPortList().iterator();
-    //                Nameable container = getContainer();
-    //                while (portIterator.hasNext()) {
-    //                    IOPort port = (IOPort) portIterator.next();
-    //                    if (!isFast(port))
-    //                        scheduler.addActuator((IOPort) port);
-    //                }
-    //
-    //                // compute schedule
-    //                //TDLModeSchedule schedule = scheduler.getModeSchedule();
-    ////                if (schedule == null)
-    ////                    return;
-    ////                HashMap modeSchedule = schedule.modeSchedule;
-    ////                _modeSchedules.put(state, schedule);
-    ////                _printSchedule(modeSchedule);
-    //            } catch (Exception e) {
-    //                e.printStackTrace();
-    //            }
-    //        }
-    //    }
+    @Override
+    public void wrapup() throws IllegalActionException {
+        super.wrapup();
+        _nextEvents.clear();
+        _nextEventsTimeStamps.clear();
+    }
+
     /**
      * Check if transition (=mode switch) should be executed.
      * 
@@ -660,10 +534,16 @@ public class TDLModuleDirector extends ModalDirector {
         if (_nextEvents == null) {
             _nextEvents = new LinkedList();
         }
-        Time time = getModelTime().add(((TDLAction) node.getWeight()).time)
-                .add(additionalTime);
-        _nextEvents.add(node);
-        System.out.println("fireAt: " + time + " " + node);
+        Time time;
+        if (node != null)
+            time = getModelTime().add(((TDLAction) node.getWeight()).time).add(
+                    additionalTime);
+        else
+            time = additionalTime;
+        if (node != null) {
+            _nextEvents.add(node);
+            _nextEventsTimeStamps.put(node, time);
+        }
         super.fireAt((Actor) getContainer(), time);
     }
 
@@ -687,6 +567,21 @@ public class TDLModuleDirector extends ModalDirector {
             }
         }
         return tasks;
+    }
+
+    /**
+     * Returns the smallest time stamp of the events that will be fired next.
+     * 
+     * @return The smallest time stamp of the next events.
+     */
+    private Time _getSmallestTimeStampInEventsToFire() {
+        Time time = Time.POSITIVE_INFINITY;
+        for (Node node : _nextEventsTimeStamps.keySet()) {
+            Time t = _nextEventsTimeStamps.get(node);
+            if (t.compareTo(time) < 0)
+                time = t;
+        }
+        return time;
     }
 
     /**
@@ -803,27 +698,8 @@ public class TDLModuleDirector extends ModalDirector {
     }
 
     /**
-     * Only for debugging purposes, prints the current status of the TDL module.
-     * 
-     * @throws IllegalActionException
-     *             Thrown if controller could not be retrieved.
+     * Reset the TDL Receivers.
      */
-    //    private void _printStatus() throws IllegalActionException {
-    //        double d = getModelTime().getDoubleValue();
-    //        StringBuilder sb = new StringBuilder();
-    //        Formatter formatter = new Formatter(sb, Locale.US);
-    //        formatter
-    //                .format(
-    //                        "%1$5f state %2$10s schedTime %3$2d of %4$2d schedPos %5$2d of %6$2d",
-    //                        new Object[] { Double.valueOf(d),
-    //                                getController().currentState().getName(),
-    //                                _currentSchedule.currentScheduleTime,
-    //                                _currentSchedule.modeSchedule.size(),
-    //                                _currentSchedule.currentPositionInSlot,
-    //                                _schedule.size() });
-    //        System.out.println();
-    //        System.out.print(sb + " ");
-    //    }
     private void _resetReceivers() {
         ListIterator receivers = _receivers.listIterator();
         while (receivers.hasNext()) {
@@ -977,8 +853,9 @@ public class TDLModuleDirector extends ModalDirector {
         }
     }
 
-    /** Current worst case execution time, this is set when the execution of
-     * a TDL task is started 
+    /**
+     * Current worst case execution time, this is set when the execution of a
+     * TDL task is started
      */
     private double _currentWCET = 0.0;
     /**
@@ -988,7 +865,11 @@ public class TDLModuleDirector extends ModalDirector {
 
     /** Events that can be processed in the next iteration. */
     private Queue<Node> _nextEvents;
-    
+
+    /**
+     * store timestamps from _fireAt() to detect missed executions
+     */
+    private HashMap<Node, Time> _nextEventsTimeStamps;
     /** Nodes containing actions that depend on previous actions. */
     private HashMap<Node, List<TDLAction>> _nodesDependentoOnPreviousActions;
     /**
