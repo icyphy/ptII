@@ -414,11 +414,12 @@
       <artifactId>jdom</artifactId>
       <version>1.0</version>
     </dependency>
-    <dependency>
+    <!-- <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
       <version>1.2.15</version>
     </dependency>
+     -->
     <dependency>
       <groupId>colt</groupId>
       <artifactId>colt</artifactId>
@@ -567,6 +568,8 @@
            <exclude>ptolemy/domains/ct/demo/Saber/**</exclude>
            <exclude>ptolemy/domains/gr/**</exclude>
            <exclude>ptolemy/domains/gr/lib/experimental/**</exclude>
+           <exclude>ptolemy/domains/ptinyos/util/nc2moml/**</exclude>
+           <exclude>ptolemy/domains/ptinyos/util/ncapp2moml/**</exclude>
            <exclude>ptolemy/domains/pdf/**</exclude>
            <exclude>ptolemy/domains/space/**</exclude>
            <exclude>ptolemy/plot/servlet/**</exclude>
@@ -690,6 +693,8 @@
 	  <arguments>
 	    <argument>-classpath</argument>
 	    <classpath/>
+	    <!-- <argument>ptolemy.actor.gui.MoMLSimpleApplication</argument>
+	    <argument>${project.basedir}/ptolemy/actor/lib/test/FileWriter.xml</argument> -->
 	    <argument>ptolemy.vergil.VergilApplication</argument>
 	  </arguments>
 	</configuration>
