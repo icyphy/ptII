@@ -64,7 +64,8 @@ public class TDLActionsGraph {
                 _getTasks(state, refinement, modePeriod);
                 _getActuators(refinement, modePeriod);
             } catch (Exception e) {
-                e.printStackTrace();
+                throw new IllegalActionException("Schedule could not be "
+                        + "computed; " + e.getMessage());
             }
 
             _resetsTempVars();
@@ -77,7 +78,6 @@ public class TDLActionsGraph {
             startNode = getNode(new TDLAction(((TDLModuleDirector) _module
                     .getDirector()).getModePeriod(startmode),
                     TDLAction.AFTERMODESWITCH, startmode));
-        _printGraph(startNode, new ArrayList(), "");
     }
 
     /**
@@ -85,9 +85,11 @@ public class TDLActionsGraph {
      * time.
      * 
      * @param invocationTime
+     *            Time the actor is being invoked.
      * @param actor
-     * @return The node that is used for the execution of an actor at
-     * a certain time.
+     *            Actor that is scheduled for that time.
+     * @return The node that is used for the execution of an actor at a certain
+     *         time.
      */
     public Node getNode(Time invocationTime, Object actor) {
         List<Node> nodes = (List<Node>) _graph.nodes();
@@ -100,6 +102,13 @@ public class TDLActionsGraph {
         return null;
     }
 
+    /**
+     * Get node for a given TDLAction.
+     * 
+     * @param action
+     *            Given TDLAction.
+     * @return Node for the given TDLAction.
+     */
     public Node getNode(TDLAction action) {
         List<Node> nodes = (List<Node>) _graph.nodes();
         for (Node node : nodes) {
@@ -111,66 +120,26 @@ public class TDLActionsGraph {
     }
 
     /**
-     * Get a node which is used for writing an output port. This output port is
-     * written in a certain time frame defined by the two parameters lower and
-     * upper.
+     * Get a node which executes a given actor. This output port is written in a
+     * certain time frame defined by the two parameters lower and upper.
      * 
-     * @param port
+     * @param actor
+     *            Actor that is executed.
      * @param lower
+     *            Lower time bound.
      * @param upper
-     * @return The node to be used for writing to an output port.
+     *            Upper time bound.
+     * @return The node used to execute the actor.
      */
-    public Node getNode(Object port, Time lower, Time upper) {
+    public Node getNode(Object actor, Time lower, Time upper) {
         List<Node> nodes = (List<Node>) _graph.nodes();
         for (Node node : nodes) {
             TDLAction gnode = (TDLAction) node.getWeight();
-            if (gnode.object.equals(port) && lower.compareTo(gnode.time) <= 0
+            if (gnode.object.equals(actor) && lower.compareTo(gnode.time) <= 0
                     && upper.compareTo(gnode.time) > 0)
                 return node;
         }
         return null;
-    }
-
-    /**
-     * @param nextMode
-     *            Is null except for if a mode switch was taken.
-     * @throws IllegalActionException
-     */
-    public void nextNodes(State nextMode) throws IllegalActionException {
-        Collection sinkNodes = _graph.successors(_currentNode);
-        if (sinkNodes.size() == 0) {
-            throw new IllegalActionException(
-                    "Graph Error: no sink nodes from node " + _currentNode);
-        } else if (sinkNodes.size() == 1) {
-            _nextNodes.add((Node) sinkNodes.iterator().next());
-        } else {
-            // current node is task output port that is connected to
-            // another tasks input port
-            if (((TDLAction) _currentNode.getWeight()).actionType == TDLAction.WRITEOUTPUT) {
-                _nextNodes.addAll(sinkNodes);
-            }
-            // current node is transition 
-            else if (((TDLAction) _currentNode.getWeight()).actionType == TDLAction.AFTERMODESWITCH
-                    && nextMode != null) {
-                _nextNodes.add((Node) (_modeSwitches.get(nextMode)).get(1));
-            } else {
-                throw new IllegalActionException(
-                        "Graph Error: multiple sink nodes but not an output port or mode switch");
-            }
-        }
-    }
-
-    private void _printGraph(Node node, List<Node> visited, String s) {
-        if (visited.contains(node)) {
-            return;
-        } else {
-            visited.add(node);
-            Collection<Edge> edges = _graph.outputEdges(node);
-            for (Edge edge : edges) {
-                System.out.println(s + edge);
-                _printGraph(edge.sink(), visited, s + "    ");
-            }
-        }
     }
 
     /**
@@ -224,11 +193,11 @@ public class TDLActionsGraph {
      * @param actor
      * @param modePeriod
      * @return
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      * @throws TDLModeSchedulerException
      */
-    private LetTask _analyzeSlotSelection(TDLTask actor, Time modePeriodTime) throws IllegalActionException
-           {
+    private LetTask _analyzeSlotSelection(TDLTask actor, Time modePeriodTime)
+            throws IllegalActionException {
         long modePeriod = modePeriodTime.getLongValue();
         String slots = TDLModuleDirector.getSlots((NamedObj) actor);
         int frequency = TDLModuleDirector.getFrequency((NamedObj) actor);
@@ -287,6 +256,12 @@ public class TDLActionsGraph {
         }
     }
 
+    /**
+     * Connect partial graphs for modes. The connection points are the mode
+     * switch and after mode switch actions.
+     * 
+     * @throws IllegalActionException If new Time cannot be created.
+     */
     private void _connectModes() throws IllegalActionException {
         // connect mode switches of all modes.
         Set<State> states = (Set<State>) _modeSwitches.keySet();
@@ -314,14 +289,14 @@ public class TDLActionsGraph {
     }
 
     /**
-     * Connect a node to the next mode switch in time.
+     * Connect a node for a TDL action to the next mode switch in time.
      * 
-     * @param prev
-     * @param taskInvocationTime
-     * @param taskInvocationPeriod
+     * @param prev Previous node to connect to.
+     * @param actorInvocationTime Invocation time of that actor.
+     * @param actorInvocationPeriod Invocation period of that actor.
      */
     private void _connectToIntermediateModeSwitch(Node prev,
-            Time taskInvocationTime, Time taskInvocationPeriod) {
+            Time actorInvocationTime, Time actorInvocationPeriod) {
         // if there is a mode switch between now and the next invocation, add
         // edge to graphStart and graphEnd
         Time nextModeSwitchTime = new Time(_module.getDirector(), 0);
@@ -332,9 +307,9 @@ public class TDLActionsGraph {
             return;
         Set<Time> invocationTimes = _tmpModeSwitchStarts.keySet();
         for (Time invocationTime : invocationTimes) {
-            if (invocationTime.compareTo(taskInvocationTime) > 0
-                    && invocationTime.compareTo(taskInvocationTime
-                            .add(taskInvocationPeriod)) < 0) {
+            if (invocationTime.compareTo(actorInvocationTime) > 0
+                    && invocationTime.compareTo(actorInvocationTime
+                            .add(actorInvocationPeriod)) < 0) {
                 nextModeSwitchTime = invocationTime;
                 modeSwitchTimeBeforeNextTaskInvocation = invocationTime;
             }
@@ -380,13 +355,13 @@ public class TDLActionsGraph {
     }
 
     /**
-     * Create a new node with an edge to the previous node
+     * Create a TDL action and a new node with an edge to the previous node
      * 
-     * @param invocationTime
-     * @param actionType
-     * @param actor
-     * @param previous
-     * @return
+     * @param invocationTime Invocation time of the node.
+     * @param actionType Action type of the TDL action in the node.
+     * @param actor Actor of the TDL action.
+     * @param previous Previous node.
+     * @return New node.
      */
     private Node _createNode(Time invocationTime, int actionType, Object actor,
             Node previous) {
@@ -402,13 +377,12 @@ public class TDLActionsGraph {
     }
 
     /**
-     * Create a new node.
+     * Create TDL action and a new node.
      * 
-     * @param invocationTime
-     * @param actionType
-     * @param actor
-     * @param previous
-     * @return
+     * @param invocationTime Invocation time of the node.
+     * @param actionType Action type of the TDL action in the node.
+     * @param actor Actor of the TDL action. 
+     * @return New node.
      */
     private Node _createNode(Time invocationTime, int actionType, Object actor) {
         Node node = new Node(new TDLAction(invocationTime, actionType, actor));
@@ -419,8 +393,8 @@ public class TDLActionsGraph {
     /**
      * Add actuator updates to the graph.
      * 
-     * @param refinement
-     * @param modePeriod
+     * @param refinement Refinement containing the actuator ports.
+     * @param modePeriod Period of the mode defined by the refinement.
      */
     private void _getActuators(Refinement refinement, Time modePeriod) {
         List<IOPort> outputPorts = refinement.outputPortList();
@@ -472,6 +446,12 @@ public class TDLActionsGraph {
         }
     }
 
+    /**
+     * Return invocation of node for a port closest to a given time.
+     * @param port 
+     * @param upper
+     * @return
+     */
     private Node getLastNodeBeforeTime(IOPort port, Time upper) {
         List<Node> nodes = (List<Node>) _graph.nodes();
         Node lastNodeBeforeTime = null;
@@ -488,15 +468,15 @@ public class TDLActionsGraph {
     }
 
     /**
-     * Analyze the slot seleciton string.
+     * Analyze the slot selection string.
      * 
      * @param slots
      * @param frequency
      * @return
-     * @throws IllegalActionException  
+     * @throws IllegalActionException
      */
-    private ArrayList _getInvocations(String slots, int frequency) throws IllegalActionException
-             {
+    private ArrayList _getInvocations(String slots, int frequency)
+            throws IllegalActionException {
         String slotSelection = slots + "\n";
         ArrayList invocations = new ArrayList();
         String number = "";
@@ -610,7 +590,8 @@ public class TDLActionsGraph {
             if (_tmpModeSwitchStarts == null
                     || _tmpModeSwitchStarts.size() == 0) {
                 Time time = new Time(_module.getDirector(), 0);
-                modeSwitchStart = modeSwitchEnd = _createNode(time, TDLAction.AFTERMODESWITCH, mode);
+                modeSwitchStart = modeSwitchEnd = _createNode(time,
+                        TDLAction.AFTERMODESWITCH, mode);
                 _tmpModeSwitchStarts.put(time, modeSwitchStart);
                 _tmpModeSwitchEnds.put(time, modeSwitchStart);
             } else {
@@ -887,13 +868,6 @@ public class TDLActionsGraph {
     }
 
     /**
-     * Node describing the next TDL action.
-     */
-    private Node _currentNode;
-
-    private Collection<Node> _nextNodes;
-
-    /**
      * Controller of the TDL module.
      */
     private FSMActor _controller;
@@ -947,11 +921,14 @@ public class TDLActionsGraph {
     private HashMap<IOPort, List<Time>> _tmpReadTaskInputPorts = new HashMap();
 
     /**
-     * Recursively compute the list of forward reachable nodes that only
-     * depend on one previous node and are scheduled for the same 
-     * time as the current node.
-     * @param node Node from which the reachable nodes are computed from.
-     * @param visited Already visited nodes to avoid loops.
+     * Recursively compute the list of forward reachable nodes that only depend
+     * on one previous node and are scheduled for the same time as the current
+     * node.
+     * 
+     * @param node
+     *            Node from which the reachable nodes are computed from.
+     * @param visited
+     *            Already visited nodes to avoid loops.
      * @return List of forward reachable nodes.
      */
     private List<Node> getForwardReachableIndependentNodes(Node node,
@@ -978,14 +955,19 @@ public class TDLActionsGraph {
     }
 
     /**
-     * Recursively compute the set of nodes reachable from a given node that depend
-     * on more than one node or are scheduled to happen at a future time. Examples for
-     * the latter are nodes describing the writing of an output port 
-     * @param justExecuted Node that was just executed.
-     * @param node Node from which the reachable Nodes are computed.
-     * @param visited Already visited nodes, used to avoid loops.
-     * @return Set of reachable nodes taht depend on more than one input port or 
-     * contain actions that should happen later than the given node.
+     * Recursively compute the set of nodes reachable from a given node that
+     * depend on more than one node or are scheduled to happen at a future time.
+     * Examples for the latter are nodes describing the writing of an output
+     * port
+     * 
+     * @param justExecuted
+     *            Node that was just executed.
+     * @param node
+     *            Node from which the reachable Nodes are computed.
+     * @param visited
+     *            Already visited nodes, used to avoid loops.
+     * @return Set of reachable nodes taht depend on more than one input port or
+     *         contain actions that should happen later than the given node.
      */
     public HashMap<Node, List<TDLAction>> getNextJoinNodes(Node justExecuted,
             Node node, List<Node> visited) {
@@ -1024,10 +1006,13 @@ public class TDLActionsGraph {
     }
 
     /**
-     * Returns all forward reachable nodes in the graph that are connected to the given node.
-     * Those forward reachable nodes do not depend on other nodes and the actions defined in the
-     * nodes are scheduled to happen at the same time as the action in the given node.
-     * @param node Given node.
+     * Returns all forward reachable nodes in the graph that are connected to
+     * the given node. Those forward reachable nodes do not depend on other
+     * nodes and the actions defined in the nodes are scheduled to happen at the
+     * same time as the action in the given node.
+     * 
+     * @param node
+     *            Given node.
      * @return List of nodes that are forward reachable from the given node.
      */
     public List<Node> getEventsFollowingAction(Node node) {

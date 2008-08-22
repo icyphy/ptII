@@ -1,8 +1,6 @@
 package ptolemy.domains.tt.tdl.kernel;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import ptolemy.actor.Director;
@@ -14,7 +12,6 @@ import ptolemy.actor.util.CausalityInterfaceForComposites;
 import ptolemy.actor.util.Dependency;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.fsm.modal.ModalPort;
-import ptolemy.domains.fsm.modal.Refinement;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;

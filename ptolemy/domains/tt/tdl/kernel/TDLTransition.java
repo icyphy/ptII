@@ -69,27 +69,6 @@ public class TDLTransition extends Transition {
      */
     public Parameter frequency;
 
-    /**
-     * Initialize the parameters of a transition.
-     * @throws IllegalActionException Thrown if frequency parameter cannot be created.
-     * @throws NameDuplicationException Thrown if The frequency parameter cannot be created.
-     */
-    private void _init() throws
-            NameDuplicationException, IllegalActionException {
-        outputActions.setVisibility(Settable.NONE);
-        setActions.setVisibility(Settable.NONE);
-        reset.setVisibility(Settable.NONE);
-        preemptive.setVisibility(Settable.NONE);
-        defaultTransition.setVisibility(Settable.NONE);
-        nondeterministic.setVisibility(Settable.NONE);
-        refinementName.setVisibility(Settable.NONE);
-        frequency = new Parameter(this, "frequency");
-        frequency.setExpression("1");
-        
-        requiredPorts = new ArrayList();
-        requiredSensors = new ArrayList();
-    }
-    
     @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -130,6 +109,27 @@ public class TDLTransition extends Transition {
         }
     }
     
+    /**
+     * Initialize the parameters of a transition.
+     * @throws IllegalActionException Thrown if frequency parameter cannot be created.
+     * @throws NameDuplicationException Thrown if The frequency parameter cannot be created.
+     */
+    private void _init() throws
+            NameDuplicationException, IllegalActionException {
+        outputActions.setVisibility(Settable.NONE);
+        setActions.setVisibility(Settable.NONE);
+        reset.setVisibility(Settable.NONE);
+        preemptive.setVisibility(Settable.NONE);
+        defaultTransition.setVisibility(Settable.NONE);
+        nondeterministic.setVisibility(Settable.NONE);
+        refinementName.setVisibility(Settable.NONE);
+        frequency = new Parameter(this, "frequency");
+        frequency.setExpression("1");
+        
+        requiredPorts = new ArrayList();
+        requiredSensors = new ArrayList();
+    }
+
     /**
      * List of Sensors that are used in this guard expression.
      */

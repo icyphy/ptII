@@ -12,14 +12,11 @@ import java.util.Queue;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.Time;
-import ptolemy.actor.util.TimedEvent;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
@@ -50,13 +47,14 @@ import ptolemy.kernel.util.NamedObj;
  * and builds a schedule for all the TDL actions. The schedule is represented in
  * a graph showing the dependencies between the TDL actions (see
  * TDLActionsGraph).
- * 
  * <p>
- * In the initialization, output ports and actuators are initialized with values 
- * specified in the parameters of the ports. The schedule is generated and events
- * are scheduled. Events that are safe to process at current model time are executed,
- * then the fireAt(time) of the enclosing director is called with the time stamp of the
- * next event. Events are processed in the order specified in the graph.  
+ * In the initialization, output ports and actuators are initialized with values
+ * specified in the parameters of the ports. The schedule is generated and
+ * events are scheduled. Events that are safe to process at current model time
+ * are executed, then the fireAt(time) of the enclosing director is called with
+ * the time stamp of the next event. Events are processed in the order specified
+ * in the graph.
+ * 
  * @author Patricia Derler
  */
 public class TDLModuleDirector extends ModalDirector {
@@ -83,24 +81,22 @@ public class TDLModuleDirector extends ModalDirector {
         super(container, name);
     }
 
-    Time previousEventTime = null;
-    Time previousTime = new Time(this);
-
-    @Override
+    /**
+     * Set the new model time.
+     */
     public void setModelTime(Time newTime) throws IllegalActionException {
         // TODO Auto-generated method stub
         super.setModelTime(newTime);
-        if (!previousTime.equals(newTime)) {
-            previousEventTime = newTime;
-            previousEventTime = null;
+        if (!_previousTime.equals(newTime)) {
+            _previousEventTime = newTime;
+            _previousEventTime = null;
         }
     }
 
     /**
-     * pick the next action in the schedule and execute it leave the fire method -
-     * if mode switch has to be made - before input ports are read and updated -
-     * every part of the schedule for the current time was executed (= a slot in
-     * the schedule was executed).
+     * Select all actions that can be fired at the current model time. After 
+     * executing an action, schedule actions dependent on that action. If an action
+     * with a WCET > 0 was started, schedule a refiring and return.
      */
     public void fire() throws IllegalActionException {
         if (getModelTime().getDoubleValue() < 0.0)
@@ -112,9 +108,7 @@ public class TDLModuleDirector extends ModalDirector {
                     + _nodesDependentoOnPreviousActions.size());
             _currentWCET = 0;
             Time modePeriod = getModePeriod(getController().currentState());
-            List<Node> eventsToFire = new ArrayList();
-
-            //getController().readInputs();
+            List<Node> eventsToFire = new ArrayList(); 
 
             Time scheduleTime = new Time(this, getModelTime().getLongValue()
                     % modePeriod.getLongValue());
@@ -123,10 +117,10 @@ public class TDLModuleDirector extends ModalDirector {
                 TDLAction action = (TDLAction) node.getWeight();
                 if ((action.time.compareTo(scheduleTime) == 0 || action.time
                         .compareTo(scheduleTime.add(modePeriod)) == 0)
-                        && (previousEventTime == null || (previousEventTime != null && action.time
-                                .compareTo(previousEventTime) <= 0))) {
+                        && (_previousEventTime == null || (_previousEventTime != null && action.time
+                                .compareTo(_previousEventTime) <= 0))) {
                     eventsToFire.add(node);
-                    previousEventTime = action.time;
+                    _previousEventTime = action.time;
                 }
             }
             boolean doneAction;
@@ -253,6 +247,10 @@ public class TDLModuleDirector extends ModalDirector {
         }
     }
 
+    /**
+     * Return the current model time which is the model time of the excecutive
+     * director.
+     */
     public Time getModelTime() {
         return ((Actor) this.getContainer()).getExecutiveDirector()
                 .getModelTime();
@@ -421,6 +419,12 @@ public class TDLModuleDirector extends ModalDirector {
         return super.prefire();
     }
 
+    /**
+     * Schedules actions which depend on the action specified in the given node.
+     * 
+     * @param node Given node.
+     * @throws IllegalActionException Not thrown here but in the base class.
+     */
     public void scheduleEventsAfterAction(Node node)
             throws IllegalActionException {
         _nodesDependentoOnPreviousActions.remove(node);
@@ -499,7 +503,9 @@ public class TDLModuleDirector extends ModalDirector {
         return wasTransferred;
     }
 
-    @Override
+    /**
+     * Clear private variables and lists.
+     */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         _nextEvents.clear();
@@ -529,6 +535,14 @@ public class TDLModuleDirector extends ModalDirector {
         return false;
     }
 
+    /**
+     * Schedule a refiring of this actor for a TDL action.
+     * @param node Node containing a TDL action that is scheduled to execute
+     * at the given time.
+     * @param additionalTime Time to be added to the current model time and the
+     * schedule time of the TDL action node.
+     * @throws IllegalActionException Thrown if fireAt() returns false.
+     */
     private void _fireAt(Node node, Time additionalTime)
             throws IllegalActionException {
         if (_nextEvents == null) {
@@ -585,8 +599,7 @@ public class TDLModuleDirector extends ModalDirector {
     }
 
     /**
-     * Test a guard expression.
-     * 
+     * Test a guard expression on an actor.  
      * @param obj
      *            The object containing a guard expression.
      * @return True if the guard expression evaluates to true.
@@ -791,6 +804,13 @@ public class TDLModuleDirector extends ModalDirector {
         getController().readOutputsFromRefinement();
     }
 
+    /**
+     * Update the TDL receivers. An update of a TDL receiver means that a value
+     * previously sent to this port will now be accessible too.
+     * 
+     * @param portList
+     *            Ports containing TDL receivers that should be updated.
+     */
     private void _updateReceivers(Collection portList) {
         Iterator it = portList.iterator();
         while (it.hasNext()) {
@@ -867,14 +887,26 @@ public class TDLModuleDirector extends ModalDirector {
     private Queue<Node> _nextEvents;
 
     /**
-     * store timestamps from _fireAt() to detect missed executions
+     * Store time stamps from _fireAt() to detect missed executions
      */
     private HashMap<Node, Time> _nextEventsTimeStamps;
+
     /** Nodes containing actions that depend on previous actions. */
     private HashMap<Node, List<TDLAction>> _nodesDependentoOnPreviousActions;
+
     /**
      * All receivers.
      */
     private LinkedList _receivers = new LinkedList();
+
+    /**
+     * Schedule time of the previous event fired in this iteration.
+     */
+    private Time _previousEventTime = null;
+
+    /**
+     * Time this director was previously fired.
+     */
+    private Time _previousTime = new Time(this);
 
 }

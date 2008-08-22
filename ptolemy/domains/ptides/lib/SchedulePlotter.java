@@ -158,16 +158,11 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
             plot.addPoint(actorDataset, x, actorY,
                     scheduleEvent == ScheduleEventType.STOP);
             plot.addPoint(nodeDataSet, x, nodeY,
-                    scheduleEvent == ScheduleEventType.STOP);
-            nodeActive[nodes.indexOf(node)] = scheduleEvent == ScheduleEventType.START;
-        } else if (scheduleEvent == ScheduleEventType.TRANSFERINPUT) {
-            plot.addPoint(nodeDataSet, x, nodeY, false || nodeActive[nodes
-                    .indexOf(node)]);
+                    scheduleEvent == ScheduleEventType.STOP); 
+        } else if (scheduleEvent == ScheduleEventType.TRANSFERINPUT) { 
             plot.addPoint(nodeDataSet, x - 0.05, nodeY - 0.05, false);
             plot.addPoint(nodeDataSet, x, nodeY, true);
-        } else if (scheduleEvent == ScheduleEventType.TRANSFEROUTPUT) {
-            plot.addPoint(nodeDataSet, x, nodeY, false || nodeActive[nodes
-                    .indexOf(node)]);
+        } else if (scheduleEvent == ScheduleEventType.TRANSFEROUTPUT) { 
             plot.addPoint(nodeDataSet, x + 0.05, nodeY - 0.05, false);
             plot.addPoint(nodeDataSet, x, nodeY, true);
         } else if (scheduleEvent == ScheduleEventType.MISSEDEXECUTION) {
@@ -185,11 +180,11 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
      */
     private ArrayList nodes = new ArrayList();
 
-    /**
-     * Contains all nodes and is true for nodes on which actors are currently
-     * executing.
-     */
-    private boolean[] nodeActive;
+//    /**
+//     * Contains all nodes and is true for nodes on which actors are currently
+//     * executing.
+//     */
+//    private boolean[] nodeActive;
 
     /**
      * Contains the list of actors for each node.
@@ -241,7 +236,7 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
             plot.clear(false);
             plot.clearLegends();
             nodes.addAll(nodesActors.keySet());
-            nodeActive = new boolean[nodes.size()];
+//            nodeActive = new boolean[nodes.size()];
             this.nodeActors = nodesActors;
             for (int i = 0; i < nodes.size(); i++) {
                 Actor node = (Actor) nodes.get(i);

@@ -399,6 +399,10 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
                     displaySchedule(actorToFire, _currentPhysicalTime
                             .getDoubleValue(), ScheduleEventType.STOP);
                     if (_eventsInExecution.size() > 0)
+                        displaySchedule((Actor) _eventsInExecution.getFirst().contents,
+                                _currentPhysicalTime.getDoubleValue(),
+                                ScheduleEventType.START);
+                    if (_eventsInExecution.size() > 0)
                         _currentModelTime = _eventsInExecution
                                 .getFirst().timeStamp;
                     else
@@ -429,6 +433,10 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
                             eventsForActorAndTime.remove(time);
                         }
                     }
+                    if (_eventsInExecution.size() > 0)
+                        displaySchedule((Actor) _eventsInExecution.getFirst().contents,
+                                _currentPhysicalTime.getDoubleValue(),
+                                ScheduleEventType.STOP);
                     displaySchedule(actorToFire, _currentPhysicalTime
                             .getDoubleValue(), ScheduleEventType.START);
                     if (_fireAtTheBeginningOfTheWcet(actorToFire)) {
@@ -845,9 +853,6 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
             if (!_eventsInExecution.contains(actor)) {
                 List<IOPort> inputPorts = actor.inputPortList();
                 for (IOPort port : inputPorts) {
-                    CausalityInterfaceForComposites causalityInterface = 
-                        (CausalityInterfaceForComposites) ((CompositeActor) this.getContainer())
-                        .getCausalityInterface();
                     
                     if (PtidesActorProperties.portIsTriggerPort(port)) {
                         Receiver[][] receivers = port.getReceivers();

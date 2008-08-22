@@ -1,16 +1,13 @@
 package ptolemy.domains.tt.tdl.kernel;
 
-import java.util.Iterator;
 import java.util.List;
 
 import ptolemy.actor.IOPort;
-import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.CausalityInterfaceForComposites;
 import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.RealDependency;
 import ptolemy.actor.util.Time;
 import ptolemy.domains.fsm.kernel.FSMActor;
-import ptolemy.domains.fsm.modal.ModalPort;
 import ptolemy.domains.fsm.modal.RefinementPort;
 import ptolemy.graph.Node;
 import ptolemy.kernel.ComponentRelation;
