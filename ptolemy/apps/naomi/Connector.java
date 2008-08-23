@@ -1018,6 +1018,10 @@ public class Connector extends MoMLApplication {
                     }
                 }
 
+                // Re-evaluate the attribute because in some cases the value is
+                // not up to date if the attribute refers to variables inside
+                // CompositeActors.
+                attr.invalidate();
                 String newValue = attr.getToken().toString();
                 System.out.println("Save: " + attributeName + " = " + newValue);
 
