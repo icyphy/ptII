@@ -73,7 +73,6 @@ public class Input extends GTEvent {
                         "ActorTokens to the transformation controller.");
             }
             getModelAttribute().setModel((CompositeEntity) entity);
-            getMatchedParameter().setToken(BooleanToken.getInstance(true));
             _scheduleEvents(scope);
         }
     }

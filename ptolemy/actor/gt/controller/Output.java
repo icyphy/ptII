@@ -29,7 +29,6 @@ package ptolemy.actor.gt.controller;
 
 import ptolemy.data.ActorToken;
 import ptolemy.data.ArrayToken;
-import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.ParserScope;
 import ptolemy.domains.erg.kernel.ERGController;
 import ptolemy.domains.fsm.modal.RefinementPort;
@@ -67,7 +66,6 @@ public class Output extends GTEvent {
                 outputPort);
         destination.broadcastClear();
         destination.broadcast(new ActorToken(entity));
-        getMatchedParameter().setToken(BooleanToken.getInstance(true));
 
         _scheduleEvents(scope);
     }
