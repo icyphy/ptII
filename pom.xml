@@ -1,5 +1,10 @@
 <!-- $Id$ 
- Maven configuration
+Ptolemy II Maven configuration
+
+You will need to increase the amount of memory Maven uses, under bash try:
+export MAVEN_OPTS="-Xms512m -Xmx512m -XX:PermSize=48m"
+
+See $PTII/doc/coding/maven.htm
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <version>7.1.devel</version>
@@ -550,6 +555,7 @@
 	<configuration>
 	  <source>1.5</source>
 	  <target>1.5</target>
+	  <maxmem>1024m</maxmem>
 	  <excludes>
 	    <!-- grep excluding .classpath.in | awk -F "|" '{for(i=2;i<NF;i++) {print "           <exclude>" $i "</exclude>"}}' | sed 's@/</exclude>@/**</exclude>@' -->
            <exclude>**/adm/**</exclude>
@@ -591,6 +597,12 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>javacc-maven-plugin</artifactId>
+	    <configuration>
+	      <directory>${project.basedir}</directory>
+	      <outputDirectory>${project.basedir}</outputDirectory>
+	      <sourceDirectory>${project.basedir}</sourceDirectory>
+	      <interimDirectory>${project.basedir}</interimDirectory>
+	    </configuration>
         <version>2.4</version>
         <executions>
           <execution>
@@ -602,6 +614,7 @@
 	      <directory>${project.basedir}</directory>
 	      <outputDirectory>${project.basedir}</outputDirectory>
 	      <sourceDirectory>${project.basedir}</sourceDirectory>
+	      <interimDirectory>${project.basedir}</interimDirectory>
 	      <isStatic>false</isStatic>
 	      <buildNodeFiles>false</buildNodeFiles>
 	      <includes>
@@ -626,6 +639,10 @@
               <goal>jjtree-javacc</goal>
             </goals>
 	    <configuration>
+	      <directory>${project.basedir}</directory>
+	      <outputDirectory>${project.basedir}</outputDirectory>
+	      <sourceDirectory>${project.basedir}</sourceDirectory>
+	      <interimDirectory>${project.basedir}</interimDirectory>
 	      <isStatic>true</isStatic>
 	      <buildNodeFiles>false</buildNodeFiles>
 	      <includes>
@@ -646,12 +663,40 @@
               <goal>jjtree-javacc</goal>
             </goals>
 	    <configuration>
+	      <directory>${project.basedir}</directory>
+	      <outputDirectory>${project.basedir}</outputDirectory>
+	      <sourceDirectory>${project.basedir}</sourceDirectory>
+	      <interimDirectory>${project.basedir}</interimDirectory>
 	      <isStatic>false</isStatic>
 	      <buildNodeFiles>true</buildNodeFiles>
 	      <excludes>
 		<exclude>**/PtParser.jjt</exclude>
 		<exclude>**/MatrixParser.jjt</exclude>
 	      </excludes>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>javacc-maven-plugin</artifactId>
+        <version>2.4</version>
+        <executions>
+          <execution>
+            <id>javacc-uparser</id>
+            <goals>
+              <goal>jjtree-javacc</goal>
+            </goals>
+	    <configuration>
+	      <directory>${project.basedir}</directory>
+	      <outputDirectory>${project.basedir}</outputDirectory>
+	      <sourceDirectory>${project.basedir}</sourceDirectory>
+	      <interimDirectory>${project.basedir}</interimDirectory>
+	      <isStatic>false</isStatic>
+	      <buildNodeFiles>false</buildNodeFiles>
+	      <includes>
+		<include>**/UParser.jjt</include>
+	      </includes>
             </configuration>
           </execution>
         </executions>
