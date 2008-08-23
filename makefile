@@ -200,6 +200,12 @@ update:
 	-svn update
 	$(MAKE) -k clean fast
 
+mvnClean:
+	(cd $(PTII)/ptolemy/actor/ptalon; rm -f `make -s echo_OPTIONAL_JSRCS`)
+	(cd $(PTII)/ptolemy/data/expr; rm -f `make -s echo_OPTIONAL_JSRCS`)
+	(cd $(PTII)/ptolemy/moml/unit; rm -f `make -s echo_OPTIONAL_JSRCS`)
+	-(cd $(PTII)/ptolemy/copernicus/kernel/fragment; rm -f `make -s echo_OPTIONAL_JSRCS`)
+
 cleanDerivedJavaFiles:
 	(cd $(PTII)/ptolemy/actor/ptalon; rm -f `make -s echo_OPTIONAL_JSRCS`)
 	(cd $(PTII)/ptolemy/data/expr; rm -f `make -s echo_OPTIONAL_JSRCS`)
