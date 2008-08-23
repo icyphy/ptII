@@ -48,6 +48,7 @@
 *.ihtml = svn:eol-style=native
 *.in = svn:eol-style=native
 *.java = svn:eol-style=native
+*.jjt = svn:eol-style=native
 *.jmx = svn:eol-style=LF
 *.jpg = svn:mime-type=image/jpeg
 *.jpg= svn:mime-type=image/jpeg
