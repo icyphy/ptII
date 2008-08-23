@@ -75,22 +75,13 @@ MISC_FILES = test
 # javadoc generates html for files in $(OPTIONAL_JSRCS)
 #	ASCII_CharStream.java 
 OPTIONAL_JSRCS = \
-	ExpandPortNames.java  \
 	ParseException.java  \
 	SimpleCharStream.java  \
 	Token.java  \
 	TokenMgrError.java  \
 	UParser.java  \
 	UParserConstants.java  \
-	UParserTokenManager.java  \
-	UnitAttribute.java  \
-	UnitConstraint.java  \
-	UnitConstraints.java  \
-	UnitEquation.java  \
-	UnitExpr.java  \
-	UnitInEquality.java  \
-	UnitPresentation.java  \
-	UnitTerm.java 
+	UParserTokenManager.java
 
 # OPTIONAL_JSRCS depends on UParser.java, but we want javadoc
 # to generate docs for UParser, so we modify the javadoc
