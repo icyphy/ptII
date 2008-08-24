@@ -30,7 +30,6 @@ package ptolemy.actor.gt.controller;
 import ptolemy.data.ActorToken;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.expr.ParserScope;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -58,14 +57,13 @@ public class Input extends GTEvent {
     }
 
     public void fire(ArrayToken arguments) throws IllegalActionException {
-        ParserScope scope = _getParserScope(arguments);
-        actions.execute(scope);
+        super.fire(arguments);
 
-        final String inputPort = "modelInput";
-        BooleanToken inputPortPresent = (BooleanToken) scope.get(inputPort +
-                "_isPresent");
+        BooleanToken inputPortPresent = (BooleanToken) _lastScope.get(
+                _INPUT_PORT_NAME + "_isPresent");
         if (inputPortPresent != null && inputPortPresent.booleanValue()) {
-            ActorToken modelToken = (ActorToken) scope.get(inputPort);
+            ActorToken modelToken = (ActorToken) _lastScope.get(
+                    _INPUT_PORT_NAME);
             Entity entity = modelToken.getEntity();
             if (!(entity instanceof CompositeEntity)) {
                 throw new IllegalActionException("Only instances of " +
@@ -73,7 +71,16 @@ public class Input extends GTEvent {
                         "ActorTokens to the transformation controller.");
             }
             getModelAttribute().setModel((CompositeEntity) entity);
-            _scheduleEvents(scope);
         }
     }
+
+    public void scheduleEvents() throws IllegalActionException {
+        BooleanToken inputPortPresent = (BooleanToken) _lastScope.get(
+                _INPUT_PORT_NAME + "_isPresent");
+        if (inputPortPresent != null && inputPortPresent.booleanValue()) {
+            super.scheduleEvents();
+        }
+    }
+
+    private static final String _INPUT_PORT_NAME = "modelInput";
 }

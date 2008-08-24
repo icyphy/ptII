@@ -416,18 +416,18 @@ public class ERGDirector extends Director implements TimedDirector {
     public boolean postfire() throws IllegalActionException {
         boolean result = super.postfire();
         if (result) {
-            if (!_eventQueue.isEmpty()) {
+            if (_eventQueue.isEmpty()) {
+                result = false;
+            } else {
                 if (_isTopLevel()) {
                     TimedEvent event = _eventQueue.peek();
                     setModelTime(event.timeStamp);
                 }
-            } else {
-                result = false;
+                if (_isEmbedded()) {
+                    _requestFiring();
+                    _delegateFireAt = true;
+                }
             }
-        }
-        if (_isEmbedded()) {
-            _requestFiring();
-            _delegateFireAt = true;
         }
         return result;
     }
@@ -559,6 +559,8 @@ public class ERGDirector extends Director implements TimedDirector {
         }
 
         /** Display timeStamp and contents.
+         *
+         *  @return A string that describes this timed event.
          */
         public String toString() {
             String result = "timeStamp: " + timeStamp + ", contents: " +
@@ -646,7 +648,26 @@ public class ERGDirector extends Director implements TimedDirector {
                 _inputQueue.remove(timedEvent);
 
                 actor.fire();
-                actor.postfire();
+                if (!actor.postfire()) {
+                    List<Event> events = getController().entityList(
+                            Event.class);
+                    for (Event event : events) {
+                        TypedActor[] refinements = event.getRefinement();
+                        boolean scheduled = false;
+                        if (refinements != null) {
+                            for (TypedActor refinement : refinements) {
+                                if (refinement == actor) {
+                                    event.scheduleEvents();
+                                    scheduled = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if (scheduled) {
+                            break;
+                        }
+                    }
+                }
                 return true;
             } else {
                 return false;
@@ -659,8 +680,20 @@ public class ERGDirector extends Director implements TimedDirector {
             controller._setCurrentEvent(event);
             event.fire(timedEvent.arguments);
 
+            TypedActor[] refinements = event.getRefinement();
+            boolean scheduled = false;
+            if (refinements != null) {
+                for (TypedActor refinement : refinements) {
+                    if (event._scheduleRefinement(refinement)) {
+                        scheduled = true;
+                    }
+                }
+            }
+
             if (((BooleanToken) event.isFinalEvent.getToken()).booleanValue()) {
                 _eventQueue.clear();
+            } else if (!scheduled) {
+                event.scheduleEvents();
             }
 
             return true;

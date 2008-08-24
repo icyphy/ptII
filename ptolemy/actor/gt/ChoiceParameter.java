@@ -32,8 +32,7 @@ public class ChoiceParameter extends StringParameter {
                 return enumObject;
             }
         }
-        throw new IllegalActionException("Choice \"" + expression + "\" " +
-                "cannot be recognized.");
+        return null;
     }
 
     private Class<?> _enumClass;

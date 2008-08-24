@@ -37,7 +37,6 @@ import ptolemy.actor.gt.TransformationMode;
 import ptolemy.actor.gt.TransformationRule;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.expr.ParserScope;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -113,8 +112,7 @@ public class Transform extends GTEvent implements ConfigurableEntity {
     }
 
     public void fire(ArrayToken arguments) throws IllegalActionException {
-        ParserScope scope = _getParserScope(arguments);
-        actions.execute(scope);
+        super.fire(arguments);
 
         CompositeEntity model = getModelAttribute().getModel();
         model.setDeferringChangeRequests(false);
@@ -122,13 +120,11 @@ public class Transform extends GTEvent implements ConfigurableEntity {
                 model);
         getModelAttribute().setModel(model);
         getMatchedParameter().setToken(BooleanToken.getInstance(matched));
-
-        _scheduleEvents(scope);
     }
 
-    public String getConfigureSource() {
-        return _configureSource;
-    }
+   public String getConfigureSource() {
+    return _configureSource;
+}
 
     public String getConfigureText() {
         return null;
@@ -182,6 +178,24 @@ public class Transform extends GTEvent implements ConfigurableEntity {
         _transformation.exportMoML(output, depth + 1);
         output.write("</configure>\n");
     }
+
+    /** Schedule the given actor, which is a refinement of this event, unless
+        *  the refinement is a transformation rule (which is executed in the action
+        *  instead).
+        *
+        *  @param refinement The refinement to be scheduled to fire.
+        *  @return true if the refinement is scheduled; false otherwise.
+        *  @throws IllegalActionException If thrown when trying to initialize the
+        *  schedule of an ERGController refinement.
+        */
+       protected boolean _scheduleRefinement(TypedActor refinement)
+               throws IllegalActionException {
+           if (refinement == _transformation) {
+               return false;
+           } else {
+               return super._scheduleRefinement(refinement);
+           }
+       }
 
     protected TransformationRule _transformation;
 

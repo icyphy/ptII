@@ -83,8 +83,6 @@ public class Init extends GTEvent {
             modelAttribute.setModel(_getInitialModel());
             getMatchedParameter().setToken(BooleanToken.getInstance(true));
         }
-
-        _scheduleEvents(scope);
     }
 
     public StringParameter modelName;

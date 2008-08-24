@@ -39,9 +39,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import ptolemy.actor.Actor;
 import ptolemy.actor.Executable;
 import ptolemy.actor.Initializable;
+import ptolemy.actor.TypedActor;
 import ptolemy.actor.util.Time;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
@@ -166,6 +166,7 @@ public class Event extends State implements Initializable, ValueListener {
      *  preinitialize(), intialize(), and wrapup()
      *  methods should be invoked upon invocation of the corresponding
      *  methods of this object.
+     *
      *  @param initializable The object whose methods should be invoked.
      *  @see #removeInitializable(Initializable)
      *  @see ptolemy.actor.CompositeActor#addPiggyback(Executable)
@@ -207,6 +208,7 @@ public class Event extends State implements Initializable, ValueListener {
     /** Clone the state into the specified workspace. This calls the
      *  base class and then sets the attribute and port public members
      *  to refer to the attributes and ports of the new state.
+     *
      *  @param workspace The workspace for the new event.
      *  @return A new event.
      *  @exception CloneNotSupportedException If a derived class contains
@@ -214,6 +216,7 @@ public class Event extends State implements Initializable, ValueListener {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Event newObject = (Event) super.clone(workspace);
+        newObject._lastScope = null;
         newObject._monitoredVariables = null;
         return newObject;
     }
@@ -236,10 +239,8 @@ public class Event extends State implements Initializable, ValueListener {
      *   evaluated.
      */
     public void fire(ArrayToken arguments) throws IllegalActionException {
-        ParserScope scope = _getParserScope(arguments);
-        actions.execute(scope);
-        _fireRefinements();
-        _scheduleEvents(scope);
+        _lastScope = _getParserScope(arguments);
+        actions.execute(_lastScope);
     }
 
     /** Return whether this event is an input event, which is processed when any
@@ -257,7 +258,8 @@ public class Event extends State implements Initializable, ValueListener {
 
     /** Begin execution of the actor and start to monitor the variables whose
      *  values this event listens to. Also invoke the initialize methods of
-     *  objects that have been added using {@link #addInitializable()}.
+     *  objects that have been added using {@link
+     *  #addInitializable(Initializable)}.
      *
      *  @exception IllegalActionException Not thrown in this base class.
      */
@@ -272,7 +274,8 @@ public class Event extends State implements Initializable, ValueListener {
     }
 
     /** Do nothing except invoke the preinitialize methods
-     *  of objects that have been added using {@link #addInitializable()}.
+     *  of objects that have been added using {@link
+     *  #addInitializable(Initializable)}.
      *  @exception IllegalActionException If one of the added objects
      *   throws it.
      */
@@ -299,6 +302,50 @@ public class Event extends State implements Initializable, ValueListener {
             _initializables.remove(initializable);
             if (_initializables.size() == 0) {
                 _initializables = null;
+            }
+        }
+    }
+
+    /** Schedule the next events by evaluating all scheduling relations from
+     *  this event. This method uses the argument values passed to this event by
+     *  the previous invocation to {@link #fire(ArrayToken)}. If {@link
+     *  #fire(ArrayToken)} has never been called, it uses a default scope in
+     *  which no argument value has been given.
+     *  <p>
+     *  All the scheduling relations from this events are tested with their
+     *  guards. If a scheduling relation's guard returns true, then the event
+     *  that it points to is scheduled to occur after the amount of model time
+     *  specified by the scheduling relation's delay parameter.
+     *
+     *  @exception IllegalActionException If the scheduling relations cannot be
+     *  evaluated.
+     */
+    public void scheduleEvents() throws IllegalActionException {
+        ERGController controller = (ERGController) getContainer();
+        ERGDirector director = controller.director;
+        if (_lastScope == null) {
+            _lastScope = _getParserScope(null);
+        }
+
+        List<?>[] schedulesArray = new List<?>[2];
+        schedulesArray[0] = preemptiveTransitionList();
+        schedulesArray[1] = nonpreemptiveTransitionList();
+        for (List<?> schedules : schedulesArray) {
+            for (Object scheduleObject : schedules) {
+                SchedulingRelation schedule =
+                    (SchedulingRelation) scheduleObject;
+                if (schedule.isEnabled(_lastScope)) {
+                    double delay = schedule.getDelay(_lastScope);
+                    Event nextEvent = (Event) schedule.destinationState();
+                    if (schedule.isCanceling()) {
+                        director.cancel(nextEvent);
+                    } else {
+                        ArrayToken edgeArguments = schedule.getArguments(
+                                _lastScope);
+                        director.fireAt(nextEvent, director.getModelTime().add(
+                                delay), edgeArguments);
+                    }
+                }
             }
         }
     }
@@ -367,7 +414,8 @@ public class Event extends State implements Initializable, ValueListener {
     }
 
     /** Stop monitoring variables. Also invoke the wrapup methods of
-     *  objects that have been added using {@link #addInitializable()}.
+     *  objects that have been added using {@link
+     *  #addInitializable(Initializable)}.
      *
      *  @exception IllegalActionException Not thrown in this base class.
      */
@@ -500,33 +548,6 @@ public class Event extends State implements Initializable, ValueListener {
 
     }
 
-    /** Fire all the refinements in this event once, if there is any. The
-     *  refinements can be either ERG models or actor models. For ERG models,
-     *  the initial events in them are scheduled for immediate processing.
-     *
-     *  @exception IllegalActionException If the refinements cannot be obtained,
-     *  or the refinements cannot be fired.
-     */
-    protected void _fireRefinements() throws IllegalActionException {
-        ERGController controller = (ERGController) getContainer();
-        ERGDirector director = controller.director;
-
-        Actor[] refinements = getRefinement();
-        if (refinements != null) {
-            for (Actor refinement : refinements) {
-                if (refinement instanceof ERGController) {
-                    ((ERGController) refinement).director._initializeSchedule();
-                    director.fireAt(refinement, director.getModelTime());
-                } else {
-                    if (refinement.prefire()) {
-                        refinement.fire();
-                        refinement.postfire();
-                    }
-                }
-            }
-        }
-    }
-
     /** Return the parser scope used to evaluate the actions and values
      *  associated with scheduling relations. The parser scope can evaluate
      *  names in the parameter list of this event. The values for those names
@@ -569,39 +590,25 @@ public class Event extends State implements Initializable, ValueListener {
         return scope;
     }
 
-    /** Schedule the next events by evaluating all scheduling relations from
-     *  this event.
+    /** Schedule the given actor, which is a refinement of this event.
      *
-     *  @param scope The parser scope used in the evaluation.
-     *  @exception IllegalActionException If the scheduling relations cannot be
-     *  evaluated.
+     *  @param refinement The refinement to be scheduled to fire.
+     *  @return true if the refinement is scheduled; false otherwise.
+     *  @throws IllegalActionException If thrown when trying to initialize the
+     *  schedule of an ERGController refinement.
      */
-    protected void _scheduleEvents(ParserScope scope)
+    protected boolean _scheduleRefinement(TypedActor refinement)
             throws IllegalActionException {
         ERGController controller = (ERGController) getContainer();
         ERGDirector director = controller.director;
-
-        List<?>[] schedulesArray = new List<?>[2];
-        schedulesArray[0] = preemptiveTransitionList();
-        schedulesArray[1] = nonpreemptiveTransitionList();
-        for (List<?> schedules : schedulesArray) {
-            for (Object scheduleObject : schedules) {
-                SchedulingRelation schedule =
-                    (SchedulingRelation) scheduleObject;
-                if (schedule.isEnabled(scope)) {
-                    double delay = schedule.getDelay(scope);
-                    Event nextEvent = (Event) schedule.destinationState();
-                    if (schedule.isCanceling()) {
-                        director.cancel(nextEvent);
-                    } else {
-                        ArrayToken edgeArguments = schedule.getArguments(scope);
-                        director.fireAt(nextEvent, director.getModelTime().add(
-                                delay), edgeArguments);
-                    }
-                }
-            }
-        }
+        refinement.initialize();
+        director.fireAt(refinement, director.getModelTime());
+        return true;
     }
+
+    /** The parser scope created with the most recently received arguments.
+     */
+    protected ParserScope _lastScope;
 
     /** Remove this event from the value listener lists of the previously
      *  monitored variables, and register in the value listener lists of the

@@ -47,7 +47,6 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.IntMatrixToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.ParserScope;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.URIAttribute;
@@ -92,8 +91,7 @@ public class View extends GTEvent implements WindowListener {
     }
 
     public void fire(ArrayToken arguments) throws IllegalActionException {
-        ParserScope scope = _getParserScope(arguments);
-        actions.execute(scope);
+        super.fire(arguments);
 
         CompositeEntity entity = getModelAttribute().getModel();
         entity = (CompositeEntity) GTTools.cleanupModel(entity);
@@ -107,8 +105,7 @@ public class View extends GTEvent implements WindowListener {
 
         try {
             // Compute size of the new frame.
-            IntMatrixToken size = (IntMatrixToken) screenSize
-                    .getToken();
+            IntMatrixToken size = (IntMatrixToken) screenSize.getToken();
             int width = size.getElementAt(0, 0);
             int height = size.getElementAt(0, 1);
             Dimension newSize = null;
@@ -123,8 +120,8 @@ public class View extends GTEvent implements WindowListener {
                         newSize.height + "]");
             }
 
-            boolean reopen = ((BooleanToken) reopenWindow
-                    .getToken()).booleanValue();
+            boolean reopen = ((BooleanToken) reopenWindow.getToken())
+                    .booleanValue();
             boolean modelChanged;
             if (_tableau == null || reopen
                     || !(_tableau.getFrame() instanceof BasicGraphFrame)) {
@@ -187,14 +184,10 @@ public class View extends GTEvent implements WindowListener {
             _tableau.setTitle(titleString);
             entity.setDeferringChangeRequests(false);
         } catch (NameDuplicationException e) {
-            throw new IllegalActionException(this, e,
-                    "Cannot open model.");
+            throw new IllegalActionException(this, e, "Cannot open model.");
         } catch (Exception e) {
-            throw new IllegalActionException(this, e,
-                    "Cannot parse model.");
+            throw new IllegalActionException(this, e, "Cannot parse model.");
         }
-
-        _scheduleEvents(scope);
     }
 
     public void windowActivated(WindowEvent e) {

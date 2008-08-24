@@ -29,7 +29,6 @@ package ptolemy.actor.gt.controller;
 
 import ptolemy.data.ActorToken;
 import ptolemy.data.ArrayToken;
-import ptolemy.data.expr.ParserScope;
 import ptolemy.domains.erg.kernel.ERGController;
 import ptolemy.domains.fsm.modal.RefinementPort;
 import ptolemy.kernel.CompositeEntity;
@@ -56,8 +55,7 @@ public class Output extends GTEvent {
     }
 
     public void fire(ArrayToken arguments) throws IllegalActionException {
-        ParserScope scope = _getParserScope(arguments);
-        actions.execute(scope);
+        super.fire(arguments);
 
         CompositeEntity entity = getModelAttribute().getModel();
         ERGController container = (ERGController) getContainer();
@@ -66,7 +64,5 @@ public class Output extends GTEvent {
                 outputPort);
         destination.broadcastClear();
         destination.broadcast(new ActorToken(entity));
-
-        _scheduleEvents(scope);
     }
 }

@@ -88,10 +88,10 @@ public class ERGController extends ModalController {
      *
      *  @param container The container, which must be an {@link ERGModalModel}.
      *  @param name The name.
-     *  @exception IllegalActionException If the container is incompatible
-     *  with this actor.
-     *  @exception NameDuplicationException If the name coincides with
-     *  an actor already in the container.
+     *  @exception IllegalActionException If the container is incompatible with
+     *   this actor.
+     *  @exception NameDuplicationException If the name coincides with an actor
+     *   already in the container.
      */
     public ERGController(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -104,6 +104,10 @@ public class ERGController extends ModalController {
      *  null, then use the default workspace.
      *
      *  @param workspace The workspace that will list the controller.
+     *  @exception IllegalActionException If the container is incompatible with
+     *   this actor.
+     *  @exception NameDuplicationException If the name coincides with an actor
+     *   already in the container.
      */
     public ERGController(Workspace workspace) throws IllegalActionException,
     NameDuplicationException {
@@ -500,6 +504,8 @@ public class ERGController extends ModalController {
 
         /** Look up and return the attribute with the specified name in the
          *  scope. Return null if such an attribute does not exist.
+         *
+         *  @param name The name of the variable to be looked up.
          *  @return The attribute with the specified name in the scope.
          *  @exception IllegalActionException If a value in the scope
          *  exists with the given name, but cannot be evaluated.
@@ -521,6 +527,8 @@ public class ERGController extends ModalController {
         /** Look up and return the type of the attribute with the
          *  specified name in the scope. Return null if such an
          *  attribute does not exist.
+         *
+         *  @param name The name of the variable to be looked up.
          *  @return The attribute with the specified name in the scope.
          *  @exception IllegalActionException If a value in the scope
          *  exists with the given name, but cannot be evaluated.

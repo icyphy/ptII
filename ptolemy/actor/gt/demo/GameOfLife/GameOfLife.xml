@@ -3,13 +3,13 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="GameOfLife" class="ptolemy.actor.gt.controller.ModelUpdater">
     <entity name="_Controller" class="ptolemy.domains.erg.kernel.ERGController">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={288, 215, 823, 620}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={288, 223, 823, 604}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 506]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 490]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{297.0, 253.0}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{297.0, 245.0}">
         </property>
         <property name="HostModel" class="ptolemy.actor.gt.controller.ModelAttribute">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 45.0]">
@@ -17,25 +17,6 @@
         </property>
         <property name="Matched" class="ptolemy.data.expr.Parameter" value="false">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 80.0]">
-            </property>
-        </property>
-        <property name="Tick" class="ptolemy.data.expr.Parameter" value="12">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 80.0]">
             </property>
         </property>
         <property name="Rows" class="ptolemy.data.expr.Parameter" value="5">
@@ -92,7 +73,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 60.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 60.0]">
             </property>
         </property>
         <property name="SynchronizeToRealtime" class="ptolemy.domains.erg.lib.SynchronizeToRealtime" value="true">
@@ -109,7 +90,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 100.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 80.0]">
             </property>
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -119,7 +100,7 @@
             </property>
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Game of Life">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 15.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{240.0, 15.0}">
             </property>
             <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
@@ -131,7 +112,7 @@
             </property>
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="    Conway's game of life captures the behavior of a system evolving over generations. On a&#10;grid there are Rows*Columns cells (unoccupied ones shown as hollow circles and occupied&#10;ones as filled circles). Initially there are InitialOccupants occupied cells randomly located on&#10;the grid. The rules to compute the next generation based on the the current occupancy are&#10;as follows:&#10;        1. If a cell is currently occupied and it has 2 or 3 neighbors (in eight directions), it&#10;    remains occupied in the next generation.&#10;        2. A cell that is not occupied but has exactly 3 neighbors becomes occupied in the next&#10;    generation.&#10;        3. All other cells are unoccupied in the next generation.&#10;    The grid is toroidal (that is, it wraps around on the four borders).&#10;    This model uses model transformation to generate an initial grid. It repeatedly computes&#10;the next generations with model transformation, until a stable state is reached. Compare to&#10;another game of life demo implemented in Ptalon.">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 230.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 215.0]">
             </property>
             <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
@@ -143,15 +124,13 @@
             </property>
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Thomas Huining Feng (Inspired by Adam Cataldo)">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 480.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 465.0]">
             </property>
             <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
         <entity name="Init" class="ptolemy.actor.gt.controller.InitContainingModel">
-            <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Tick = 0">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 40.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 35.0]">
             </property>
         </entity>
         <entity name="CreateMap" class="ptolemy.domains.erg.kernel.Event">
@@ -165,21 +144,21 @@
                 <property name="className" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.gt.controller.EmbeddedTransformationController">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 115.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 105.0]">
             </property>
         </entity>
         <entity name="View" class="ptolemy.actor.gt.controller.View">
-            <property name="monitoredVariables" class="ptolemy.data.expr.StringParameter" value="Tick">
+            <property name="monitoredVariables" class="ptolemy.data.expr.StringParameter" value="">
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 175.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[281.12914576141355, 170.2018634722928]">
             </property>
         </entity>
         <entity name="InitializeOccupants" class="ptolemy.domains.erg.kernel.Event">
             <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="InitializeOccupants">
             </property>
-            <property name="monitoredVariables" class="ptolemy.data.expr.StringParameter" value="Tick">
+            <property name="monitoredVariables" class="ptolemy.data.expr.StringParameter" value="">
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
@@ -189,7 +168,7 @@
                 <property name="className" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.gt.controller.EmbeddedTransformationController">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 175.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[131.12914576141355, 170.2018634722928]">
             </property>
         </entity>
         <entity name="Update" class="ptolemy.domains.erg.kernel.Event">
@@ -205,15 +184,15 @@
                 <property name="className" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.gt.controller.EmbeddedTransformationController">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 175.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[396.12914576141355, 170.2018634722928]">
             </property>
         </entity>
         <entity name="Test" class="ptolemy.actor.gt.controller.Test">
-            <property name="monitoredVariables" class="ptolemy.data.expr.StringParameter" value="Tick">
+            <property name="monitoredVariables" class="ptolemy.data.expr.StringParameter" value="">
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{515.0, 175.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[516.1291457614136, 170.2018634722928]">
             </property>
         </entity>
         <relation name="relation" class="ptolemy.domains.erg.kernel.SchedulingRelation">
@@ -241,9 +220,9 @@
         <relation name="relation_1_2" class="ptolemy.domains.erg.kernel.SchedulingRelation">
             <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
             </property>
-            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.3757154977330509">
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.3957838224039363">
             </property>
-            <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.1128199811681079">
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.0437623076599885">
             </property>
             <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -253,7 +232,7 @@
             </property>
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="Infinity">
+            <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="0.0">
             </property>
             <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
             </property>
@@ -275,7 +254,7 @@
             </property>
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="Infinity">
+            <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="0.0">
             </property>
             <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
             </property>
@@ -297,7 +276,7 @@
             </property>
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="Infinity">
+            <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="0.0">
             </property>
             <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
             </property>
@@ -331,9 +310,9 @@
             </property>
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Matched">
 <display name="condition"/>            </property>
-            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.5557245032735415">
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.7138413416696751">
             </property>
-            <property name="gamma" class="ptolemy.data.expr.Parameter" value="3.1379660232197275">
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="-3.1372444342730996">
             </property>
             <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -380,7 +359,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{320.0, 55.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 40.0]">
             </property>
         </property>
         <property name="Y" class="ptolemy.data.expr.Parameter" value="5">
@@ -399,7 +378,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{320.0, 80.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 65.0]">
             </property>
         </property>
         <entity name="Start" class="ptolemy.domains.erg.kernel.Event">
@@ -418,26 +397,12 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 45.0]">
             </property>
         </entity>
-        <entity name="End" class="ptolemy.domains.erg.kernel.Event">
-            <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Tick = Tick + 1">
-            </property>
-            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
-            </property>
-            <property name="Embedded Transformation Controller" class="ptolemy.domains.fsm.modal.RefinementExtender">
-                <property name="className" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.gt.controller.EmbeddedTransformationController">
-                </property>
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 350.0]">
-            </property>
-        </entity>
         <entity name="Initialize" class="ptolemy.actor.gt.controller.Transform">
             <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="X = 0; Y = 0">
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[103.04978767032367, 120.54449462890625]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 120.0]">
             </property>
             <configure>
                 <entity name="Transformation" class="ptolemy.actor.gt.TransformationRule">
@@ -563,7 +528,7 @@
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[328.04978767032367, 230.54449462890625]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 200.0]">
             </property>
             <configure>
                 <entity name="Transformation" class="ptolemy.actor.gt.TransformationRule">
@@ -748,7 +713,7 @@
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[328.04978767032367, 120.54449462890625]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 90.0]">
             </property>
             <configure>
                 <entity name="Transformation" class="ptolemy.actor.gt.TransformationRule">
@@ -933,7 +898,7 @@
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[468.04978767032367, 120.54449462890625]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 90.0]">
             </property>
             <configure>
                 <entity name="Transformation" class="ptolemy.actor.gt.TransformationRule">
@@ -975,7 +940,7 @@
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[468.04978767032367, 245.54449462890625]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 200.0]">
             </property>
             <configure>
                 <entity name="Transformation" class="ptolemy.actor.gt.TransformationRule">
@@ -1155,9 +1120,9 @@
         <relation name="relation_1_2" class="ptolemy.domains.erg.kernel.SchedulingRelation">
             <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
             </property>
-            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.4883933171645134">
             </property>
-            <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.2594760302834689">
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.044315905470018">
             </property>
             <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -1291,31 +1256,9 @@
             </property>
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Y &gt;= Rows">
 <display name="condition"/>            </property>
-            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6525144064968107">
             </property>
-            <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.9904996638016802">
-            </property>
-            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="0.0">
-            </property>
-            <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
-            </property>
-            <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-        </relation>
-        <relation name="relation_1_6" class="ptolemy.domains.erg.kernel.SchedulingRelation">
-            <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
-            </property>
-            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
-            </property>
-            <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.5737141277810776">
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.1027926489488293">
             </property>
             <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -1333,7 +1276,6 @@
             </property>
         </relation>
         <link port="Start.outgoingPort" relation="relation"/>
-        <link port="End.incomingPort" relation="relation_1_6"/>
         <link port="Initialize.incomingPort" relation="relation"/>
         <link port="Initialize.outgoingPort" relation="relation_1_2"/>
         <link port="CreateCell.incomingPort" relation="relation_1_2"/>
@@ -1349,7 +1291,6 @@
         <link port="HideRelations.incomingPort" relation="relation_1__1_2"/>
         <link port="HideRelations.outgoingPort" relation="relation_1__1_3"/>
         <link port="HideNames.incomingPort" relation="relation_1__1_3"/>
-        <link port="HideNames.outgoingPort" relation="relation_1_6"/>
     </entity>
     <entity name="InitializeOccupants" class="ptolemy.actor.gt.controller.EmbeddedTransformationController">
         <property name="Count" class="ptolemy.data.expr.Parameter" value="8">
@@ -1471,20 +1412,6 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 55.0}">
             </property>
         </entity>
-        <entity name="End" class="ptolemy.domains.erg.kernel.Event">
-            <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Tick = Tick + 1">
-            </property>
-            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
-            </property>
-            <property name="Embedded Transformation Controller" class="ptolemy.domains.fsm.modal.RefinementExtender">
-                <property name="className" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.gt.controller.EmbeddedTransformationController">
-                </property>
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 330.0]">
-            </property>
-        </entity>
         <relation name="relation_1_" class="ptolemy.domains.erg.kernel.SchedulingRelation">
             <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
             </property>
@@ -1553,38 +1480,12 @@
             <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </relation>
-        <relation name="relation_1_2" class="ptolemy.domains.erg.kernel.SchedulingRelation">
-            <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
-            </property>
-            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Count &gt;= InitialOccupants">
-<display name="condition"/>            </property>
-            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
-            </property>
-            <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.1315719041308465">
-            </property>
-            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="0.0">
-            </property>
-            <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
-            </property>
-            <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-        </relation>
         <link port="CreateOccupant.incomingPort" relation="relation_1__1_2"/>
         <link port="CreateOccupant.incomingPort" relation="relation"/>
         <link port="CreateOccupant.outgoingPort" relation="relation_1_"/>
         <link port="Test.incomingPort" relation="relation_1_"/>
         <link port="Test.outgoingPort" relation="relation_1__1_2"/>
-        <link port="Test.outgoingPort" relation="relation_1_2"/>
         <link port="Start.outgoingPort" relation="relation"/>
-        <link port="End.incomingPort" relation="relation_1_2"/>
     </entity>
     <entity name="Update" class="ptolemy.actor.gt.controller.EmbeddedTransformationController">
         <entity name="ResetAttributes" class="ptolemy.actor.gt.controller.Transform">
@@ -2896,7 +2797,7 @@
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 235.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[509.0551635427324, 265.7966918945313]">
             </property>
             <configure>
                 <entity name="Transformation" class="ptolemy.actor.gt.TransformationRule">
@@ -3010,21 +2911,7 @@
         <entity name="Test" class="ptolemy.actor.gt.controller.Test">
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[364.89245063347323, 139.00878395432434]">
-            </property>
-        </entity>
-        <entity name="End" class="ptolemy.domains.erg.kernel.Event">
-            <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Tick = Tick + 1">
-            </property>
-            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
-            </property>
-            <property name="Embedded Transformation Controller" class="ptolemy.domains.fsm.modal.RefinementExtender">
-                <property name="className" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.gt.controller.EmbeddedTransformationController">
-                </property>
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 335.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 140.0]">
             </property>
         </entity>
         <entity name="Start" class="ptolemy.domains.erg.kernel.Event">
@@ -3046,7 +2933,7 @@
         <entity name="CheckStability" class="ptolemy.actor.gt.controller.Match">
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 235.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[344.0551635427324, 265.7966918945313]">
             </property>
             <configure>
                 <entity name="Transformation" class="ptolemy.actor.gt.TransformationRule">
@@ -3260,28 +3147,6 @@
             <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </relation>
-        <relation name="relation" class="ptolemy.domains.erg.kernel.SchedulingRelation">
-            <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
-            </property>
-            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.5103411366974093">
-            </property>
-            <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.1858087626174916">
-            </property>
-            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="0.0">
-            </property>
-            <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
-            </property>
-            <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-        </relation>
         <relation name="relation_1_2" class="ptolemy.domains.erg.kernel.SchedulingRelation">
             <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
             </property>
@@ -3304,45 +3169,17 @@
             <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </relation>
-        <relation name="relation_1_3" class="ptolemy.domains.erg.kernel.SchedulingRelation">
-            <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
-            </property>
-            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="!Matched">
-<display name="condition"/>            </property>
-            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6782237453532086">
-            </property>
-            <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.6573975293512079">
-            </property>
-            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="0.0">
-            </property>
-            <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
-            </property>
-            <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-        </relation>
         <link port="ResetAttributes.incomingPort" relation="relation_1_2"/>
         <link port="ResetAttributes.outgoingPort" relation="relation_1_"/>
         <link port="Compute.incomingPort" relation="relation_1_"/>
         <link port="Compute.incomingPort" relation="relation_1__1_4"/>
         <link port="Compute.outgoingPort" relation="relation_1__1_3"/>
         <link port="Update.incomingPort" relation="relation_1__1_2"/>
-        <link port="Update.outgoingPort" relation="relation"/>
         <link port="Test.incomingPort" relation="relation_1__1_3"/>
         <link port="Test.outgoingPort" relation="relation_1__1_4"/>
         <link port="Test.outgoingPort" relation="relation_1__1_5"/>
-        <link port="End.incomingPort" relation="relation"/>
-        <link port="End.incomingPort" relation="relation_1_3"/>
         <link port="Start.outgoingPort" relation="relation_1_2"/>
         <link port="CheckStability.incomingPort" relation="relation_1__1_5"/>
         <link port="CheckStability.outgoingPort" relation="relation_1__1_2"/>
-        <link port="CheckStability.outgoingPort" relation="relation_1_3"/>
     </entity>
 </entity>

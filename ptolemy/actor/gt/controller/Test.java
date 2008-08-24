@@ -27,8 +27,6 @@
 */
 package ptolemy.actor.gt.controller;
 
-import ptolemy.data.ArrayToken;
-import ptolemy.data.expr.ParserScope;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -50,11 +48,5 @@ public class Test extends GTEvent {
     public Test(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-    }
-
-    public void fire(ArrayToken arguments) throws IllegalActionException {
-        ParserScope scope = _getParserScope(arguments);
-        actions.execute(scope);
-        _scheduleEvents(scope);
     }
 }
