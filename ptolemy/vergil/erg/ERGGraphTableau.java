@@ -132,7 +132,9 @@ public class ERGGraphTableau extends FSMGraphTableau {
                 Configuration configuration = (Configuration) effigy.toplevel();
                 ERGController controller = (ERGController)
                         ((ERGModalModel) model).getController();
-                return configuration.openModel(controller);
+                Tableau tableau = configuration.openModel(controller);
+                tableau.setContainer(effigy);
+                return tableau;
             } else if (model instanceof ERGController) {
                 // Check to see whether this factory contains a
                 // default library.

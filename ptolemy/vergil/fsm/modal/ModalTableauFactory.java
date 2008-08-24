@@ -82,6 +82,8 @@ public class ModalTableauFactory extends TableauFactory {
         ModalModel model = (ModalModel) ((PtolemyEffigy) effigy).getModel();
         FSMActor controller = ((FSMDirector) model.getDirector())
                 .getController();
-        return configuration.openModel(controller);
+        Tableau tableau = configuration.openModel(controller);
+        tableau.setContainer(effigy);
+        return tableau;
     }
 }
