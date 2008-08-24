@@ -60,19 +60,37 @@ public class GTEvent extends Event {
 
     public Parameter getMatchedParameter() throws IllegalActionException {
         ERGController controller = (ERGController) getContainer();
-        Parameter parameter = (Parameter) controller.getAttribute("Matched",
+        Parameter parameter = null;
+        while (parameter == null && controller != null) {
+            parameter = (Parameter) controller.getAttribute("Matched",
                 Parameter.class);
+            if (parameter == null) {
+                Event event = (Event) controller.getRefinedState();
+                if (event != null) {
+                    controller = (ERGController) event.getContainer();
+                }
+            }
+        }
         if (parameter == null) {
-            throw new IllegalActionException("Unable to find the " +
-                    "PatternMatched parameter in the ERG controller.");
+            throw new IllegalActionException("Unable to find the Matched " +
+                    "parameter in the ERG controller.");
         }
         return parameter;
     }
 
     public ModelAttribute getModelAttribute() throws IllegalActionException {
         ERGController controller = (ERGController) getContainer();
-        ModelAttribute actorParameter = (ModelAttribute) controller
-                .getAttribute("HostModel", ModelAttribute.class);
+        ModelAttribute actorParameter = null;
+        while (actorParameter == null && controller != null) {
+            actorParameter = (ModelAttribute) controller.getAttribute(
+                    "HostModel", ModelAttribute.class);
+            if (actorParameter == null) {
+                Event event = (Event) controller.getRefinedState();
+                if (event != null) {
+                    controller = (ERGController) event.getContainer();
+                }
+            }
+        }
         if (actorParameter == null) {
             throw new IllegalActionException("Unable to find the HostModel " +
                     "parameter in the ERG controller of type ActorParameter.");

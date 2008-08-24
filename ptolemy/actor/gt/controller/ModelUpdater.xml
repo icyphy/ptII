@@ -8,7 +8,7 @@
     </property>
     <property name="_ignore" class="ptolemy.actor.gt.IgnoringAttribute">
     </property>
-    <property name="FileUpdater" class="ptolemy.actor.gt.controller.FileUpdater">
+    <property name="FileUpdater" class="ptolemy.actor.gt.controller.FileUpdater" value="">
     </property>
     <entity name="_Controller" class="ptolemy.domains.erg.kernel.ERGController">
         <property name="_Director" class="ptolemy.domains.erg.kernel.ERGDirector">
@@ -17,7 +17,7 @@
         </property>
         <property name="_library" class="ptolemy.moml.LibraryAttribute">
             <configure>
-        <entity name="EventLibrary" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="Event" class="ptolemy.domains.erg.kernel.Event"><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity><entity name="Match" class="ptolemy.actor.gt.controller.Match"></entity><entity name="Test" class="ptolemy.actor.gt.controller.Test"></entity><entity name="Transform" class="ptolemy.actor.gt.controller.Transform"></entity><property name="SynchronizeToRealtime" class="ptolemy.domains.erg.lib.SynchronizeToRealtime"><property name="_icon" class="ptolemy.vergil.icon.ValueIcon"><property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}"></property></property><property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute"><configure>
+        <entity name="EventLibrary" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="Event" class="ptolemy.domains.erg.kernel.Event"><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property><property name="Embedded Transformation Controller" class="ptolemy.domains.fsm.modal.RefinementExtender"><property name="className" value="ptolemy.actor.gt.controller.EmbeddedTransformationController"></property></property></entity><entity name="Match" class="ptolemy.actor.gt.controller.Match"></entity><entity name="Test" class="ptolemy.actor.gt.controller.Test"></entity><entity name="Transform" class="ptolemy.actor.gt.controller.Transform"></entity><entity name="View" class="ptolemy.actor.gt.controller.View"></entity><property name="SynchronizeToRealtime" class="ptolemy.domains.erg.lib.SynchronizeToRealtime"><property name="_icon" class="ptolemy.vergil.icon.ValueIcon"><property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}"></property></property><property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute"><configure>
                   <svg>
                     <circle cx="3" cy="3" r="2" style="fill:#0000FF"></circle>
                   </svg>

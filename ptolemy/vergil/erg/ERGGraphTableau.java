@@ -31,11 +31,15 @@ package ptolemy.vergil.erg;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
+import ptolemy.actor.gui.SizeAttribute;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
+import ptolemy.actor.gui.WindowPropertiesAttribute;
+import ptolemy.data.expr.Parameter;
 import ptolemy.domains.erg.kernel.ERGController;
 import ptolemy.domains.erg.kernel.ERGModalModel;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -134,6 +138,34 @@ public class ERGGraphTableau extends FSMGraphTableau {
                         ((ERGModalModel) model).getController();
                 Tableau tableau = configuration.openModel(controller);
                 tableau.setContainer(effigy);
+                
+                if (model.getContainer() == null) {
+                    // Record the size in its controller.
+                    Attribute windowsPropertiesAttribute = controller
+                            .getAttribute("_windowProperties",
+                                    WindowPropertiesAttribute.class);
+                    if (windowsPropertiesAttribute != null) {
+                        windowsPropertiesAttribute.setPersistent(true);
+                    }
+                    
+                    Attribute sizeAttribute = controller.getAttribute(
+                            "_vergilSize", SizeAttribute.class);
+                    if (sizeAttribute != null) {
+                        sizeAttribute.setPersistent(true);
+                    }
+                    
+                    Attribute zoomFactorAttribute = controller.getAttribute(
+                            "_vergilZoomFactor", Parameter.class);
+                    if (zoomFactorAttribute != null) {
+                        zoomFactorAttribute.setPersistent(true);
+                    }
+                    
+                    Attribute centerAttribute = controller.getAttribute(
+                            "_vergilCenter", Parameter.class);
+                    if (centerAttribute != null) {
+                        centerAttribute.setPersistent(true);
+                    }
+                }
                 return tableau;
             } else if (model instanceof ERGController) {
                 // Check to see whether this factory contains a

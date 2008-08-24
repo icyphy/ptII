@@ -63,16 +63,20 @@ JSRCS = \
 	Output.java \
 	Test.java \
 	Transform.java \
-	TransformationAttribute.java
+	TransformationAttribute.java \
+	View.java
 
 OTHER_FILES_TO_BE_JARED = \
+	EmbeddedTransformationController.xml \
+	EmbeddedTransformationControllerWithPorts.xml \
 	MatchIcon.xml \
 	ModelUpdater.xml \
 	ModelUpdaterIcon.xml \
 	TestIcon.xml \
 	TransformIcon.xml \
 	TransformationController.xml \
-	TransformationControllerIcon.xml
+	TransformationControllerIcon.xml \
+	ViewIcon.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

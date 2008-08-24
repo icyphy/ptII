@@ -348,7 +348,8 @@ public class Event extends State implements Initializable, ValueListener {
             ERGDirector director =
                 (ERGDirector) ((ERGController) getContainer()).getDirector();
             try {
-                ERGDirector.TimedEvent timedEvent = director.findFirst(this);
+                ERGDirector.TimedEvent timedEvent = director.findFirst(this,
+                        false);
                 if (timedEvent != null) {
                     // This event has been scheduled at least once.
                     Time modelTime = director.getModelTime();

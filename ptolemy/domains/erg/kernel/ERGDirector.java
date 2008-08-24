@@ -152,7 +152,7 @@ public class ERGDirector extends Director implements TimedDirector {
      *  (if any) cannot be obtained.
      */
     public TimedEvent cancel(Event event) throws IllegalActionException {
-        TimedEvent timedEvent = findFirst(event);
+        TimedEvent timedEvent = findFirst(event, true);
         if (timedEvent != null) {
             _eventQueue.remove(timedEvent);
             _inputQueue.remove(timedEvent);
@@ -190,7 +190,8 @@ public class ERGDirector extends Director implements TimedDirector {
         return BooleanDependency.OTIMES_IDENTITY;
     }
 
-    public TimedEvent findFirst(Event event) throws IllegalActionException {
+    public TimedEvent findFirst(Event event, boolean findRefinements)
+    throws IllegalActionException {
         Set<TypedActor> refinementSet = new HashSet<TypedActor>();
         TypedActor[] refinements = event.getRefinement();
         if (refinements != null) {

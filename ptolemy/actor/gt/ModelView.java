@@ -151,6 +151,10 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
                     }
 
                     Effigy effigy = Configuration.findEffigy(toplevel());
+                    if (effigy == null) {
+                        // The effigy may be null if the model is closed.
+                        return;
+                    }
                     Configuration configuration = (Configuration) effigy
                             .toplevel();
                     try {
@@ -169,7 +173,8 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
                                 sizeAttribute = new SizeAttribute(model,
                                         "_vergilSize");
                             }
-                            sizeAttribute.setExpression("[" + newSize.width + ", " + newSize.height + "]");
+                            sizeAttribute.setExpression("[" + newSize.width +
+                                    ", " + newSize.height + "]");
                         }
 
                         Tableau tableau = _tableaus[i];
