@@ -169,7 +169,8 @@ public class StateController extends AttributeController {
                     if ((refinements != null) && (refinements.length > 0)) {
                         for (int i = 0; i < refinements.length; i++) {
                             // Open each refinement.
-                            _configuration.openModel((NamedObj) refinements[i]);
+                            _configuration.openInstance(
+                                    (NamedObj) refinements[i]);
                         }
                     } else {
                         MessageHandler.error("State has no refinement.");

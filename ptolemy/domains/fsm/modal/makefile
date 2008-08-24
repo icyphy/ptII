@@ -53,6 +53,7 @@ JSRCS = \
 	ModalModel.java \
 	ModalPort.java \
 	Refinement.java \
+	RefinementExtender.java \
 	RefinementPort.java \
 	TransitionRefinement.java \
 	TransitionRefinementPort.java

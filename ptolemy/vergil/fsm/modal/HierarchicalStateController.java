@@ -42,12 +42,14 @@ import ptolemy.domains.fsm.kernel.State;
 import ptolemy.domains.fsm.kernel.Transition;
 import ptolemy.domains.fsm.modal.ModalController;
 import ptolemy.domains.fsm.modal.Refinement;
+import ptolemy.domains.fsm.modal.RefinementExtender;
 import ptolemy.domains.fsm.modal.RefinementPort;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
@@ -178,6 +180,19 @@ public class HierarchicalStateController extends StateController {
                 refinementClasses = getRefinementClasses();
             }
 
+            // If refinement extenders are defined, add the classes specified in
+            // them to the list of choices.
+            List<RefinementExtender> extenders = state.attributeList(
+                    RefinementExtender.class);
+            for (RefinementExtender extender : extenders) {
+                try {
+                    refinementClasses.put(extender.getDisplayName(),
+                            extender.className.stringValue());
+                } catch (IllegalActionException e1) {
+                    // Ignore.
+                }
+            }
+
             String[] choiceNames = (String[]) refinementClasses.keySet()
                     .toArray(new String[refinementClasses.size()]);
             query.addChoice("Class", "Class", choiceNames, choiceNames[0],
@@ -259,7 +274,11 @@ public class HierarchicalStateController extends StateController {
                                         .setMirrorDisable(true);
                             }
 
-                            Port newPort = entity.newPort(port.getName());
+                            String name = port.getName();
+                            Port newPort = entity.getPort(name);
+                            if (newPort == null) {
+                                newPort = entity.newPort(port.getName());
+                            }
 
                             if (newPort instanceof RefinementPort
                                     && port instanceof IOPort) {
@@ -308,7 +327,7 @@ public class HierarchicalStateController extends StateController {
 
                     if (_configuration != null) {
                         // Look inside.
-                        _configuration.openModel(entity);
+                        _configuration.openInstance(entity);
                     }
                 }
             };
