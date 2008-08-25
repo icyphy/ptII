@@ -274,8 +274,6 @@ are reset at the start of each run.</text></svg></configure>
                 </property>
             </port>
             <entity name="Run" class="ptolemy.domains.erg.kernel.Event">
-                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
                 <property name="isInitialEvent" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">

@@ -382,8 +382,6 @@
             </property>
         </property>
         <entity name="Start" class="ptolemy.domains.erg.kernel.Event">
-            <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
             <property name="isInitialEvent" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -1313,8 +1311,6 @@
             </property>
         </property>
         <entity name="CreateOccupant" class="ptolemy.actor.gt.controller.Transform">
-            <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
             <property name="mode" class="ptolemy.actor.gt.TransformationMode" value="replace any">
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -1395,8 +1391,6 @@
             </property>
         </entity>
         <entity name="Start" class="ptolemy.domains.erg.kernel.Event">
-            <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
             <property name="isInitialEvent" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Count = 0">
@@ -1489,8 +1483,6 @@
     </entity>
     <entity name="Update" class="ptolemy.actor.gt.controller.EmbeddedTransformationController">
         <entity name="ResetAttributes" class="ptolemy.actor.gt.controller.Transform">
-            <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
             <property name="mode" class="ptolemy.actor.gt.TransformationMode" value="replace all">
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -2915,8 +2907,6 @@
             </property>
         </entity>
         <entity name="Start" class="ptolemy.domains.erg.kernel.Event">
-            <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
             <property name="isInitialEvent" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">

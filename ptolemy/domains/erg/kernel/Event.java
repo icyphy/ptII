@@ -137,7 +137,9 @@ public class Event extends State implements Initializable, ValueListener {
         //isInitialState.setDisplayName("isInitialEvent");
         //isFinalState.setDisplayName("isFinalEvent");
         isInitialState.setVisibility(Settable.NONE);
+        isInitialState.setPersistent(false);
         isFinalState.setVisibility(Settable.NONE);
+        isFinalState.setPersistent(false);
 
         isInitialEvent = new Parameter(this, "isInitialEvent");
         isInitialEvent.setTypeEquals(BaseType.BOOLEAN);

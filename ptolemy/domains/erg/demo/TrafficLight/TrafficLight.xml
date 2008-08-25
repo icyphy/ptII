@@ -380,8 +380,6 @@ hierarchically contained in it will be fired again.</text></svg></configure>
             <entity name="Normal" class="ptolemy.domains.erg.kernel.Event">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Normal">
                 </property>
-                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
                 <property name="isInitialEvent" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -795,8 +793,6 @@ The inputs are simply ignored.</text></svg></configure>
                 </property>
             </port>
             <entity name="CRed" class="ptolemy.domains.erg.kernel.Event">
-                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
                 <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Cred = 1;&#10;  Cyel = 0;&#10;  Cgrn = 0">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -1031,8 +1027,6 @@ event has a parameter named "param" with type int, which takes value 0 or 1.</te
                 </property>
             </port>
             <entity name="TurnYellowLight" class="ptolemy.domains.erg.kernel.Event">
-                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
                 <property name="parameters" class="ptolemy.domains.erg.kernel.ParametersAttribute" value="(param: int)">
                 </property>
                 <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Cred = 0; Cyel = param; Cgrn = 0">
@@ -1278,8 +1272,6 @@ event has a parameter named "param" with type int, which takes value 0 or 1.</te
                 </property>
             </port>
             <entity name="Init" class="ptolemy.domains.erg.kernel.Event">
-                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
                 <property name="isInitialEvent" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">

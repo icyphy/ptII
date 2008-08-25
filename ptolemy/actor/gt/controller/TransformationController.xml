@@ -135,8 +135,6 @@
             </property>
         </port>
         <entity name="Init" class="ptolemy.actor.gt.controller.Init">
-            <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 40.0]">

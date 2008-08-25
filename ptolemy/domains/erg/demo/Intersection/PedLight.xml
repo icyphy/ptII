@@ -529,8 +529,6 @@
             </property>
         </port>
         <entity name="Red" class="ptolemy.domains.fsm.kernel.State">
-            <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
@@ -539,8 +537,6 @@
             </property>
         </entity>
         <entity name="Init" class="ptolemy.domains.fsm.kernel.State">
-            <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
