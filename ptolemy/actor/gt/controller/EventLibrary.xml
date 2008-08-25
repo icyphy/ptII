@@ -1,0 +1,33 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<group>
+    <entity name="Match" class="ptolemy.actor.gt.controller.Match">
+    </entity>
+    <entity name="ReadModel" class="ptolemy.actor.gt.controller.ReadModel">
+    </entity>
+    <entity name="Test" class="ptolemy.actor.gt.controller.Test">
+    </entity>
+    <entity name="Transform" class="ptolemy.actor.gt.controller.Transform">
+    </entity>
+    <entity name="View" class="ptolemy.actor.gt.controller.View">
+    </entity>
+    <entity name="WriteModel" class="ptolemy.actor.gt.controller.WriteModel">
+    </entity>
+    <property name="SynchronizeToRealtime" class="ptolemy.domains.erg.lib.SynchronizeToRealtime">
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+                <svg>
+                    <circle cx="3" cy="3" r="2" style="fill:#0000FF">
+                    </circle>
+                </svg>
+            </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+    </property>
+</group>

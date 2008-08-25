@@ -153,7 +153,7 @@ public class TestIcon extends NameIcon {
     protected Paint _getFill() {
         Parameter colorParameter;
         try {
-            colorParameter = (Parameter) (getAttribute("_fill",
+            colorParameter = (Parameter) (getAttribute("fill",
                     Parameter.class));
             if (colorParameter != null) {
                 ArrayToken array = (ArrayToken) colorParameter.getToken();

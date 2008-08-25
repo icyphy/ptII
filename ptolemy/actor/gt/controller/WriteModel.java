@@ -27,20 +27,18 @@
 */
 package ptolemy.actor.gt.controller;
 
-import ptolemy.actor.TypedCompositeActor;
+import java.io.IOException;
+import java.io.Writer;
+
 import ptolemy.data.ArrayToken;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.expr.ParserScope;
+import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Settable;
-import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
-//// Init
+//// ExportMoML
 
 /**
 
@@ -51,51 +49,44 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class Init extends GTEvent {
+public class WriteModel extends GTEvent {
 
-    public Init(CompositeEntity container, String name)
+    /**
+     * @param container
+     * @param name
+     * @throws IllegalActionException
+     * @throws NameDuplicationException
+     */
+    public WriteModel(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        isInitialEvent.setToken(BooleanToken.TRUE);
-        isInitialEvent.setVisibility(Settable.NONE);
-        modelName = new StringParameter(this, "modelName");
-    }
-
-    public void attributeChanged(Attribute attribute)
-    throws IllegalActionException {
-        if (attribute == modelName) {
-            _emptyModel = new TypedCompositeActor(new Workspace());
-            try {
-                _emptyModel.setName(modelName.stringValue());
-            } catch (NameDuplicationException e) {
-                throw new IllegalActionException(this, e, "Unexpected error.");
-            }
-        } else {
-            super.attributeChanged(attribute);
-        }
+        modelFile = new FileParameter(this, "modelFile");
     }
 
     public void fire(ArrayToken arguments) throws IllegalActionException {
-        ParserScope scope = _getParserScope(arguments);
-        actions.execute(scope);
+        super.fire(arguments);
 
-        ModelAttribute modelAttribute = getModelAttribute();
-        if (modelAttribute.getModel() == null) {
-            modelAttribute.setModel(_getInitialModel());
-            getMatchedParameter().setToken(BooleanToken.getInstance(true));
-        }
-    }
-
-    public StringParameter modelName;
-
-    protected CompositeEntity _getInitialModel() throws IllegalActionException {
+        CompositeEntity model = getModelAttribute().getModel();
+        Writer writer = modelFile.openForWriting();
         try {
-            return (CompositeEntity) _emptyModel.clone(new Workspace());
-        } catch (CloneNotSupportedException e) {
-            throw new IllegalActionException("Unable to clone an empty model.");
+            String fileName = modelFile.asFile().getName();
+            int period = fileName.indexOf('.');
+            String modelName;
+            if (period >= 0) {
+                modelName = fileName.substring(0, period);
+            } else {
+                modelName = fileName;
+            }
+            model.exportMoML(writer, 0, modelName);
+            writer.close();
+        } catch (IOException e) {
+            throw new IllegalActionException(this, e, "Unable to output " +
+                    "to file \"" + modelFile.stringValue().trim() + "\".");
         }
     }
 
-    private CompositeEntity _emptyModel;
+    public FileParameter modelFile;
+
+    public StringParameter moml;
 }

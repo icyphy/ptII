@@ -30,6 +30,7 @@ package ptolemy.actor.gt.controller;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 
 //////////////////////////////////////////////////////////////////////////
 //// Test
@@ -48,5 +49,8 @@ public class Test extends GTEvent {
     public Test(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        
+        isInitialEvent.setVisibility(Settable.NONE);
+        isFinalEvent.setVisibility(Settable.NONE);
     }
 }

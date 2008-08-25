@@ -2060,7 +2060,9 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_L));
         }
 
-        /** Lay out the graph. */
+        /** Lay out the graph. 
+         *  @param e The action event.
+         */
         public void actionPerformed(ActionEvent e) {
             try {
                 layoutGraph();

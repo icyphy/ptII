@@ -61,22 +61,31 @@ JSRCS = \
 	ModelAttribute.java \
 	ModelIOPort.java \
 	Output.java \
+	ReadModel.java \
 	Test.java \
 	Transform.java \
 	TransformationAttribute.java \
-	View.java
+	View.java \
+	WriteModel.java
 
 OTHER_FILES_TO_BE_JARED = \
 	EmbeddedTransformationController.xml \
 	EmbeddedTransformationControllerWithPorts.xml \
+	EventLibrary.xml \
+	InitContainingModelIcon.xml \
+	InitIcon.xml \
+	InputIcon.xml \
 	MatchIcon.xml \
 	ModelUpdater.xml \
 	ModelUpdaterIcon.xml \
+	OutputIcon.xml \
+	ReadModelIcon.xml \
 	TestIcon.xml \
 	TransformIcon.xml \
 	TransformationController.xml \
 	TransformationControllerIcon.xml \
-	ViewIcon.xml
+	ViewIcon.xml \
+	WriteModelIcon.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

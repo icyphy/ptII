@@ -125,7 +125,9 @@ public class ERGGraphController extends FSMGraphController {
                     .valueOf(KeyEvent.VK_W));
         }
 
-        /** Execute the action. */
+        /** Execute the action.
+         *  @param e The action event.
+         */
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
 

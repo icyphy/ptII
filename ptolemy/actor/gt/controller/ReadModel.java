@@ -27,20 +27,16 @@
 */
 package ptolemy.actor.gt.controller;
 
-import ptolemy.actor.TypedCompositeActor;
 import ptolemy.data.ArrayToken;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.expr.ParserScope;
-import ptolemy.data.expr.StringParameter;
+import ptolemy.data.expr.FileParameter;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.moml.MoMLParser;
 
 //////////////////////////////////////////////////////////////////////////
-//// Init
+//// ReadMoML
 
 /**
 
@@ -51,51 +47,49 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class Init extends GTEvent {
+public class ReadModel extends GTEvent {
 
-    public Init(CompositeEntity container, String name)
+    /**
+     * @param container
+     * @param name
+     * @throws IllegalActionException
+     * @throws NameDuplicationException
+     */
+    public ReadModel(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        isInitialEvent.setToken(BooleanToken.TRUE);
-        isInitialEvent.setVisibility(Settable.NONE);
-        modelName = new StringParameter(this, "modelName");
+        modelFile = new FileParameter(this, "modelFile");
     }
 
-    public void attributeChanged(Attribute attribute)
-    throws IllegalActionException {
-        if (attribute == modelName) {
-            _emptyModel = new TypedCompositeActor(new Workspace());
-            try {
-                _emptyModel.setName(modelName.stringValue());
-            } catch (NameDuplicationException e) {
-                throw new IllegalActionException(this, e, "Unexpected error.");
-            }
-        } else {
-            super.attributeChanged(attribute);
-        }
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ReadModel newObject = (ReadModel) super.clone(workspace);
+        newObject._parser = null;
+        return newObject;
     }
 
     public void fire(ArrayToken arguments) throws IllegalActionException {
-        ParserScope scope = _getParserScope(arguments);
-        actions.execute(scope);
+        super.fire(arguments);
 
-        ModelAttribute modelAttribute = getModelAttribute();
-        if (modelAttribute.getModel() == null) {
-            modelAttribute.setModel(_getInitialModel());
-            getMatchedParameter().setToken(BooleanToken.getInstance(true));
+        if (_parser == null) {
+            _parser = new MoMLParser();
+        } else {
+            _parser.reset();
         }
-    }
 
-    public StringParameter modelName;
-
-    protected CompositeEntity _getInitialModel() throws IllegalActionException {
+        CompositeEntity model;
         try {
-            return (CompositeEntity) _emptyModel.clone(new Workspace());
-        } catch (CloneNotSupportedException e) {
-            throw new IllegalActionException("Unable to clone an empty model.");
+            model = (CompositeEntity) _parser.parse(modelFile.asURL(),
+                    modelFile.openForReading());
+        } catch (Exception e) {
+            throw new IllegalActionException(this, e, "Unable to parse the " +
+                    "model from file \"" + modelFile.stringValue().trim() +
+                    "\" as a CompositeEntity.");
         }
+        getModelAttribute().setModel(model);
     }
 
-    private CompositeEntity _emptyModel;
+    public FileParameter modelFile;
+
+    private MoMLParser _parser;
 }

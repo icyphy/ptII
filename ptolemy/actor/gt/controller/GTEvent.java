@@ -54,8 +54,6 @@ public class GTEvent extends Event {
         super(container, name);
 
         fireOnInput.setVisibility(Settable.NONE);
-        isInitialEvent.setVisibility(Settable.NONE);
-        isFinalEvent.setVisibility(Settable.NONE);
     }
 
     public Parameter getMatchedParameter() throws IllegalActionException {
