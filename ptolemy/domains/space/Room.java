@@ -74,7 +74,7 @@ public class Room extends DatabaseSelect {
         columns.setExpression(
                 "{bldg=string, room=string, lname=string, " +
                 "fnames=string, deskno=string, spaceid=string, " +
-                "sponsorlname=string}");
+                "sponsorlname=string, email=string, spacenotes=string}");
         
         hide = new Parameter(columns.getPort(), "_hide");
         hide.setExpression("true");
