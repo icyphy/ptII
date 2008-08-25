@@ -57,6 +57,7 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	database.xml \
+	DatabaseManagerIcon.xml \
 	mysql-copyright.htm \
 	ojdbc-copyright.htm
 
