@@ -47,6 +47,8 @@ import ptolemy.data.ArrayToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 
 //////////////////////////////////////////////////////////////////////////
 //// ArrayOfRecordsPane
@@ -83,10 +85,20 @@ public class ArrayOfRecordsPane extends JPanel {
     }
 
     /** Set the array to display in the table.
+     *  This method results in all fields of the records being displayed.
      *  @param array The array of records to display in the table.
      */
     public void display(ArrayToken array) {
-        table.setModel(new ArrayAsTable(array));
+        display(array, null);
+    }
+
+    /** Set the array to display in the table.
+     *  @param array The array of records to display in the table.
+     *  @param columns The array of strings giving the column names
+     *   to display.
+     */
+    public void display(ArrayToken array, ArrayToken columns) {
+        table.setModel(new ArrayAsTable(array, columns));
         table.setTableHeader(new JTableHeader(table.getColumnModel()));
         _initColumnSizes(table);
     }
@@ -135,9 +147,6 @@ public class ArrayOfRecordsPane extends JPanel {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** Empty string. */
-    private static Token _emptyStringToken = new StringToken("");
-
     /** Empty table model. */
     private static EmptyTableModel _emptyTableModel = new EmptyTableModel();
 
@@ -145,29 +154,46 @@ public class ArrayOfRecordsPane extends JPanel {
     ////                         inner class                       ////
 
     /** This class provides an implementation of the
-     *  TableModel interface for viewing matrix tokens.
-     *  Each element of the matrix is represented as an instance
-     *  of Token, so all matrix types are supported.
+     *  TableModel interface for viewing an array of records.
      */
-    private static class ArrayAsTable extends AbstractTableModel {
+    public static class ArrayAsTable extends AbstractTableModel {
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
         
-        /** Construct a table for the specified array.
-         *  @param matrix The matrix.
+        /** Construct a table for the specified array to display
+         *  all fields in the records contained by the array.
+         *  @param array An array of record tokens to display.
          */
         ArrayAsTable(ArrayToken array) {
+            this(array, null);
+        }
+
+        /** Construct a table for the specified array to display
+         *  the fields given by <i>columns</i> of records in the specified
+         *  <i>array</i>.
+         *  @param array An array of record tokens to display.
+         *  @param columns An array of string tokens giving the names
+         *   of fields to display, or null to display all the fields.
+         */
+        ArrayAsTable(ArrayToken array, ArrayToken columns) {
             _array = array;
             
-            // Figure out what the column names are.
-            for(int i = 0; i < _array.length(); i++) {
-                RecordToken record = (RecordToken)_array.getElement(i);
-                Iterator labels = record.labelSet().iterator();
-                while (labels.hasNext()) {
-                    String column = (String)labels.next();
-                    if (!_columns.contains(column)) {
-                        _columns.add(column);
+            if (columns == null) {
+                // Figure out what the column names are.
+                for(int i = 0; i < _array.length(); i++) {
+                    RecordToken record = (RecordToken)_array.getElement(i);
+                    Iterator labels = record.labelSet().iterator();
+                    while (labels.hasNext()) {
+                        String column = (String)labels.next();
+                        if (!_columns.contains(column)) {
+                            _columns.add(column);
+                        }
                     }
+                }
+            } else {
+                for (int i = 0; i < columns.length(); i++) {
+                    StringToken column = (StringToken)columns.getElement(i);
+                    _columns.add(column.stringValue());
                 }
             }
         }
@@ -200,7 +226,7 @@ public class ArrayOfRecordsPane extends JPanel {
             return _array.length();
         }
 
-        /** Get the specified entry from the matrix as a Token.
+        /** Get the specified entry as a String.
          *  @param row The row number.
          *  @param column The column number.
          *  @return An instance of Token representing the matrix value
@@ -211,17 +237,41 @@ public class ArrayOfRecordsPane extends JPanel {
             // rows and columns that are outside of range.
             if ((row >= _array.length())
                     || (column >= _columns.size())) {
-                return (_emptyStringToken);
+                return ("");
             }
             Token element = ((RecordToken)_array.getElement(row)).get(_columns.get(column));
             if (element == null) {
-                return (_emptyStringToken);
+                return ("");
             }
             // Strip off the extra quotation marks if necessary.
             if(element instanceof StringToken) {
                 return ((StringToken)element).stringValue();
             }
             return element.toString();
+        }
+        
+        /** Remove the specified row from the table.
+         *  If the row is out of range, do nothing.
+         *  @param row The row to remove, starting with index 0.
+         */
+        public void removeRow(int row) {
+            if (row < _array.length()) {
+                // Since tokens are immutable, we have to create a whole new token.
+                Token[] newArray = new Token[_array.length() - 1];
+                for (int i = 0; i < row; i++) {
+                    newArray[i] = _array.getElement(i);
+                }
+                for (int i = row + 1; i < _array.length(); i++) {
+                    newArray[i - 1] = _array.getElement(i);
+                }
+                try {
+                    ArrayToken newToken = new ArrayToken(newArray);
+                    _array = newToken;
+                    super.fireTableRowsDeleted(row, row);
+                } catch (IllegalActionException e) {
+                    throw new InternalErrorException(e);
+                }
+            }
         }
 
         ///////////////////////////////////////////////////////////////////
@@ -256,14 +306,13 @@ public class ArrayOfRecordsPane extends JPanel {
             return 0;
         }
 
-        /** Get the specified entry from the matrix as a Token.
+        /** Get the specified entry from the matrix as a String.
          *  @param row The row number.
          *  @param column The column number.
-         *  @return An instance of Token representing the matrix value
-         *   at the specified row and columun.
+         *  @return An empty String.
          */
         public Object getValueAt(int row, int column) {
-            return (_emptyStringToken);
+            return ("");
         }
     }
     
