@@ -34,12 +34,14 @@ import ptolemy.actor.gui.EditorFactory;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
+import ptolemy.data.type.ArrayType;
+import ptolemy.data.type.BaseType;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.MessageHandler;
 
 //////////////////////////////////////////////////////////////////////////
@@ -72,14 +74,26 @@ public class ArrayOfRecordsConfigureFactory extends EditorFactory {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        parameterName = new StringAttribute(this, "parameterName");
+        parameterName = new StringParameter(this, "parameterName");
+        columns = new Parameter(this, "columns");
+        columns.setTypeEquals(new ArrayType(BaseType.STRING));
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
-    /** The name of the attribute that is to be edited. */
-    public StringAttribute parameterName;
+    /** The names of the fields to be displayed from the records, in
+     *  the order in which they should be displayed. This is required
+     *  to be an array of string tokens. This defaults to null (no value)
+     *  which results in all fields being displayed in alphabetical
+     *  order.
+     */
+    public Parameter columns;
+    
+    /** The name of the attribute that is to be displayed.
+     *  That attribute is required to contain an array of record tokens.
+     */
+    public StringParameter parameterName;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -97,6 +111,12 @@ public class ArrayOfRecordsConfigureFactory extends EditorFactory {
             Parameter attributeToEdit = (Parameter)object
                     .getAttribute(parameterName.getExpression(),
                     Parameter.class);
+            if (attributeToEdit == null) {
+                MessageHandler.error(
+                        "No such parameter: "
+                        + parameterName.getExpression());
+                return;
+            }
             Token value = attributeToEdit.getToken();
             if (!(value instanceof ArrayToken)) {
                 MessageHandler.error(
@@ -105,7 +125,7 @@ public class ArrayOfRecordsConfigureFactory extends EditorFactory {
                 return;
             }
             ArrayOfRecordsPane pane = new ArrayOfRecordsPane();
-            pane.display((ArrayToken)value);
+            pane.display((ArrayToken)value, (ArrayToken)columns.getToken());
             new ComponentDialog(parent, object.getFullName(), pane);
         } catch (KernelException ex) {
             MessageHandler.error(
