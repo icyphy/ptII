@@ -204,6 +204,8 @@ public class Event extends State implements Initializable, ValueListener {
             _addValueListener();
         } else if (attribute == parameters) {
             actions._updateParserScope();
+        } else if (attribute == isInitialEvent) {
+            isInitialState.setToken(isInitialEvent.getToken());
         }
     }
 
