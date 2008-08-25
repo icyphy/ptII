@@ -27,22 +27,14 @@
  */
 package ptolemy.actor.lib.database;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.lib.Source;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.ArrayType;
@@ -50,7 +42,6 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -192,17 +183,7 @@ public class DatabaseSelect extends Source {
         pattern.update();
 
         String databaseName = databaseManager.stringValue();
-        CompositeActor container = (CompositeActor)getContainer();
-        NamedObj database = container.getEntity(databaseName);
-        while (!(database instanceof DatabaseManager)) {
-            // Work recursively up the tree.
-            container = (CompositeActor)container.getContainer();
-            if (container == null) {
-                throw new IllegalActionException(this,
-                    "Cannot find database manager named " + databaseName);
-            }
-            database = container.getEntity(databaseName);
-        }
+        DatabaseManager database = DatabaseManager.findDatabaseManager(databaseName, this);
         // Prepare query.
         // Construct a SQL query from the specified parameters.
         StringBuffer sqlQuery = new StringBuffer();
@@ -230,59 +211,16 @@ public class DatabaseSelect extends Source {
             sqlQuery.append(" order by ");
             sqlQuery.append(orderByValue);
         }
-
-        PreparedStatement statement = null;
-        ArrayList<RecordToken> matches = new ArrayList<RecordToken>();
-        try {
-            Connection connection = ((DatabaseManager)database).getConnection();
-            // If there is no connection, return without producing a token.
-            if (connection == null) {
-                return;
-            }
-            String query = sqlQuery.toString();
-            if(_debugging) {
-                _debug("Issuing query:\n" + query);
-            }
-            statement = connection.prepareStatement(query);
-            
-            // Perform the query.
-            ResultSet rset = statement.executeQuery();
-            
-            // For each matching row, construct a record token.
-            while (rset.next()) {
-                HashMap<String,Token> map = new HashMap<String,Token>();
-                columnEntries = columnValue.labelSet().iterator();
-                while (columnEntries.hasNext()) {
-                    String label = columnEntries.next();
-                    String value = rset.getString(label);
-                    if (value == null) {
-                        value = "";
-                    }
-                    map.put(label, new StringToken(value));
-                }
-                matches.add(new RecordToken(map));
-            }
-        } catch (SQLException e) {
-            throw new IllegalActionException(this, e,
-                    "Failed to update room from database.");
-        }
-        int numberOfMatches = matches.size();
-        ArrayToken result;
-        if (numberOfMatches == 0) {
-            // There are no matches.
-            // Output an empty record.
-            result = new ArrayToken(columns.getToken().getType());
-        } else {
-            RecordToken[] array = new RecordToken[numberOfMatches];
-            int k = 0;
-            for (RecordToken recordToken : matches) {
-                array[k++] = recordToken;
-            }
-            result = new ArrayToken(array);
-        }
+        String query = sqlQuery.toString();
         if(_debugging) {
-            _debug("Result of query:\n" + result);
+            _debug("Issuing query:\n" + query);
         }
-        output.send(0, result);
+        ArrayToken result = database.executeQuery(query);
+        if (result != null) {
+            if(_debugging) {
+                _debug("Result of query:\n" + result);
+            }
+            output.send(0, result);
+        }
     }
 }

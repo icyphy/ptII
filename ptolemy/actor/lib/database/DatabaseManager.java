@@ -29,21 +29,33 @@ package ptolemy.actor.lib.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.JFrame;
 
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
+import ptolemy.data.ArrayToken;
+import ptolemy.data.RecordToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
 //// DatabaseManager
@@ -142,6 +154,7 @@ public class DatabaseManager extends TypedAtomicActor {
             throws IllegalActionException {
         if (attribute == database || attribute == userName) {
             closeConnection();
+            _password = null;
         } else {
             super.attributeChanged(attribute);
         }
@@ -162,47 +175,183 @@ public class DatabaseManager extends TypedAtomicActor {
             _connection = null;
         }
     }
+    
+    /** Execute the SQL query given in the specified string
+     *  and return an array of record tokens containing the results.
+     *  Note that if there is no connection to the database, this
+     *  will open one. The caller is responsible for calling
+     *  closeConnection() after this.
+     *  @param sql The query.
+     *  @return An array of record tokens containing the results,
+     *   which may be empty (zero length), or null if the connection
+     *   fails or is canceled.
+     *  @throws IllegalActionException If the query fails.
+     */
+    public ArrayToken executeQuery(String sql)
+            throws IllegalActionException {
+        PreparedStatement statement = null;
+        ArrayList<RecordToken> matches = new ArrayList<RecordToken>();
+        try {
+            Connection connection = getConnection();
+            // If there is no connection, return without producing a token.
+            if (connection == null) {
+                return null;
+            }
+            statement = connection.prepareStatement(sql);
+            
+            // Perform the query.
+            ResultSet rset = statement.executeQuery();
+            ResultSetMetaData metaData = rset.getMetaData();
+            int columnCount = metaData.getColumnCount();
+            // For each matching row, construct a record token.
+            while (rset.next()) {
+                HashMap<String,Token> map = new HashMap<String,Token>();
+                for (int c = 1; c <= columnCount; c++) {
+                    String columnName = metaData.getColumnName(c);
+                    String value = rset.getString(c);
+                    if (value == null) {
+                        value = "";
+                    }
+                    map.put(columnName, new StringToken(value));
+                }
+                matches.add(new RecordToken(map));
+            }
+        } catch (SQLException e) {
+            throw new IllegalActionException(this, e,
+                    "Database query failed.");
+        }
+        int numberOfMatches = matches.size();
+        ArrayToken result;
+        if (numberOfMatches == 0) {
+            // There are no matches.
+            // Output an empty array of empty records.
+            result = new ArrayToken(BaseType.RECORD);
+        } else {
+            RecordToken[] array = new RecordToken[numberOfMatches];
+            int k = 0;
+            for (RecordToken recordToken : matches) {
+                array[k++] = recordToken;
+            }
+            result = new ArrayToken(array);
+        }
+        return result;
+    }
+    
+    /** Execute the SQL update given in the specified string
+     *  and return the number of affected rows or zero if the update
+     *  does not return anything.
+     *  Note that if there is no connection to the database, this
+     *  will open one. The caller is responsible for calling
+     *  closeConnection() after this.
+     *  @param sql The query.
+     *  @param expectedResult If a non-negative number is given here, then
+     *   the update is not committed unless the result matches.
+     *  @return The number of rows affected or 0 if the update
+     *   does not return a value, or -1 if the connection is canceled.
+     *  @throws IllegalActionException If the query fails or if the
+     *   result does not match the value of <i>expectedResult</i>.
+     */
+    public int executeUpdate(String sql, int expectedResult)
+            throws IllegalActionException {
+        PreparedStatement statement = null;
+        Connection connection = getConnection();
+        try {
+            // If there is no connection, return -1.
+            // This should only occur if the user cancels.
+            if (connection == null) {
+                return -1;
+            }
+            connection.setAutoCommit(false);  //use transaction!
+            statement = connection.prepareStatement(sql);
+            int result = statement.executeUpdate();
+            if (expectedResult >= 0 && result != expectedResult) {
+                  throw new IllegalActionException(this,
+                          "Update affected "
+                          + result
+                          + " rows, but should have affected "
+                          + expectedResult);
+            }
+            connection.commit();
+            return result;
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                // Not much we can do here...
+            }
+            throw new IllegalActionException(this, e,
+                    "Update failed.");
+        }
+    }
+    
+    /** Find a database manager with the specified name for the specified
+     *  actor.
+     *  @param name Database manager name.
+     *  @param actor The actor.
+     *  @return A database manager.
+     *  @throws IllegalActionException If no database manager is found.
+     */
+    public static DatabaseManager findDatabaseManager(String name, NamedObj actor)
+            throws IllegalActionException {
+        CompositeActor container = (CompositeActor)actor.getContainer();
+        NamedObj database = container.getEntity(name);
+        while (!(database instanceof DatabaseManager)) {
+            // Work recursively up the tree.
+            container = (CompositeActor)container.getContainer();
+            if (container == null) {
+                throw new IllegalActionException(actor,
+                    "Cannot find database manager named " + name);
+            }
+            database = container.getEntity(name);
+        }
+        return (DatabaseManager)database;
+    }
 
     /** Get a connection to the database.
      *  If one is already open, then simply return that one.
      *  Otherwise, use the parameter values and prompt for a password to
      *  open a new connection.
-     *  @return A connection to the database, or null if none is
-     *   successfully created.
+     *  @return A connection to the database, or null if the user cancels.
+     *  @throws IllegalActionException If 
      */
     public Connection getConnection() throws IllegalActionException {
         if (_connection != null) {
             return _connection;
         }
-        // Open a dialog to get the password.
-        // First find a frame to "own" the dialog.
-        // Note that if we run in an applet, there may
-        // not be an effigy.
-        Effigy effigy = Configuration.findEffigy(toplevel());
-        JFrame frame = null;
-        if (effigy != null) {
-            Tableau tableau = effigy.showTableaux();
-            if (tableau != null) {
-                frame = tableau.getFrame();
+        if (_password == null) {
+            // Open a dialog to get the password.
+            // First find a frame to "own" the dialog.
+            // Note that if we run in an applet, there may
+            // not be an effigy.
+            Effigy effigy = Configuration.findEffigy(toplevel());
+            JFrame frame = null;
+            if (effigy != null) {
+                Tableau tableau = effigy.showTableaux();
+                if (tableau != null) {
+                    frame = tableau.getFrame();
+                }
+            }
+
+            // Next construct a query for user name and password.
+            Query query = new Query();
+            query.setTextWidth(60);
+            query.addLine("database", "Database", database.stringValue());
+            query.addLine("userName", "User name", userName.stringValue());
+            query.addPassword("password", "Password", "");
+            ComponentDialog dialog = new ComponentDialog(frame, "Open Connection", query);
+
+            if (dialog.buttonPressed().equals("OK")) {
+                // Update the parameter values.
+                database.setExpression(query.getStringValue("database"));
+                userName.setExpression(query.getStringValue("userName"));
+
+                // The password is not stored as a parameter.
+                _password = query.getCharArrayValue("password");
+            } else {
+                return null;
             }
         }
-        
-        // Next construct a query for user name and password.
-        Query query = new Query();
-        query.setTextWidth(60);
-        query.addLine("database", "Database", database.stringValue());
-        query.addLine("userName", "User name", userName.stringValue());
-        query.addPassword("password", "Password", "");
-        ComponentDialog dialog = new ComponentDialog(frame, "Open Connection", query);
-
-        if (dialog.buttonPressed().equals("OK")) {
-            // Update the parameter values.
-            database.setExpression(query.getStringValue("database"));
-            userName.setExpression(query.getStringValue("userName"));
-            
-            // The password is not stored as a parameter.
-            char[] passwordValue = query.getCharArrayValue("password");
-
+        if (_connection == null) {
             // Get database connection.
             try {
                 // The following lines explicitly register drivers.
@@ -217,10 +366,11 @@ public class DatabaseManager extends TypedAtomicActor {
                 _connection = DriverManager.getConnection(
                         database.getExpression(),
                         userName.getExpression(),
-                        new String(passwordValue));
+                        new String(_password));
                 // If updating, use single transaction.
                 _connection.setAutoCommit(false);
             } catch (SQLException e) {
+                _password = null;
                 throw new IllegalActionException(this, e,
                         "Failed to open connection to the database.");
             }
@@ -260,4 +410,7 @@ public class DatabaseManager extends TypedAtomicActor {
     
     /** The currently open connection. */
     private Connection _connection;
+    
+    /** The password last entered. */
+    private char[] _password;
 }

@@ -90,14 +90,18 @@ public class ArrayOfRecordsRecorder extends Sink {
         columns = new Parameter(this, "columns");
         columns.setTypeEquals(new ArrayType(BaseType.STRING));
         columns.setExpression("ALL");
-        
+
+        iconColumns = new Parameter(this, "iconColumns");
+        iconColumns.setTypeEquals(new ArrayType(BaseType.STRING));
+        iconColumns.setExpression("ALL");
+
         colorKey = new StringParameter(this, "colorKey");
 
         // FIXME: This should be in the library, not in the
         // Java code, since it depends on vergil.
         TableIcon icon = new TableIcon(this, "_icon");
         icon.variableName.setExpression("records");
-        icon.fields.setExpression("columns");
+        icon.fields.setExpression("iconColumns");
         icon.colorKey.setExpression("$colorKey");
         
         // Customize the interaction by inserting this property.
@@ -123,7 +127,7 @@ public class ArrayOfRecordsRecorder extends Sink {
      */
     public StringParameter colorKey;
     
-    /** The columns to display in the table.
+    /** The columns to display when double clicking on the icon.
      *  This is an array of strings specifying the column
      *  names to display, and the order in which they are
      *  displayed. It defaults to ALL, which indicates
@@ -131,6 +135,15 @@ public class ArrayOfRecordsRecorder extends Sink {
      *  the columns are organized alphabetically.
      */
     public Parameter columns;
+
+    /** The columns to display in the icon.
+     *  This is an array of strings specifying the column
+     *  names to display, and the order in which they are
+     *  displayed. It defaults to ALL, which indicates
+     *  that all fields should be displayed. In this case,
+     *  the columns are organized alphabetically.
+     */
+    public Parameter iconColumns;
 
     /** Parameter to store the array of records read at the input.
      *  This is an array of records that is by default empty.
@@ -148,9 +161,8 @@ public class ArrayOfRecordsRecorder extends Sink {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ArrayOfRecordsRecorder newObject = (ArrayOfRecordsRecorder) super.clone(workspace);
-
-	newObject.input.setTypeAtMost(new ArrayType(RecordType.EMPTY_RECORD));
-	return newObject;
+        newObject.input.setTypeAtMost(new ArrayType(RecordType.EMPTY_RECORD));
+        return newObject;
     }
 
     /** Read the input and update the display.
@@ -163,54 +175,9 @@ public class ArrayOfRecordsRecorder extends Sink {
             ArrayToken array = (ArrayToken)input.get(0);
             records.setToken(array);
             records.setPersistent(true);
-            /* FIXME
-            StringBuffer display = new StringBuffer();
-            for (int i = 0; i < array.length(); i++) {
-                RecordToken record = (RecordToken)array.getElement(i);
-                if (i > 0) {
-                    display.append("\n");
-                }
-                String desk = sanitize(
-                        record.get("deskno").toString(),
-                        "?");
-                display.append(desk);
-                display.append(": ");
-                String name = sanitize(
-                        record.get("lname").toString(),
-                        "VACANT");
-                display.append(name);
-            }
-            // This needs to be recorded via MoML or it isn't persistent.
-            // Why?
-            String moml = "<property name=\"contents\" value=\""
-                + StringUtilities.escapeForXML(display.toString())
-                + "\"/>";
-            MoMLChangeRequest request = new MoMLChangeRequest(this, this, moml);
-            requestChange(request);
-            */
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
-//    /** Given a string, remove quotation marks if it has them.
-//     *  If the string is then empty, return the specified default.
-//     *  Otherwise, return the string without quotation marks.
-//     *  This method also trims white space, unless the white
-//     *  space is inside quotation marks.
-//     *  @param string String to sanitize.
-//     *  @param ifEmpty Default to use if result is empty.
-//     *  @return A string with no quotation marks that is not empty.
-//     */
-//    private String sanitize(String string, String ifEmpty) {
-//        string = string.trim();
-//        if (string.startsWith("\"") && string.endsWith("\"")) {
-//            string = string.substring(1, string.length() - 1);
-//        }
-//        if (string.trim().equals("")) {
-//            string = ifEmpty;
-//        }
-//        return string;
-//    }
 }

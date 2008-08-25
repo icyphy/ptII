@@ -16,6 +16,8 @@
         <property name="_configurer" class="ptolemy.vergil.toolbox.ArrayOfRecordsConfigureFactory">
           <property name="parameterName" value="records">
           </property>
+          <property name="columns" value="columns">
+          </property>
         </property>
       </entity>
       </group>
