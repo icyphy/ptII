@@ -207,21 +207,42 @@ public class Event extends State implements Initializable, ValueListener {
                 }
             }
 
-            List<?> names = parameters.getParameterNames();
+            List<String> names = parameters.getParameterNames();
             int paramCount = names == null ? 0 : names.size();
             if (paramCount > 0) {
                 Type[] types = parameters.getParameterTypes();
-                for (int i = 0; i < names.size(); i++) {
-                    String name = (String) names.get(i);
-                    try {
-                        EventParameter parameter = new EventParameter(this,
-                                name);
-                        parameter.setTypeEquals(types[i]);
-                    } catch (NameDuplicationException e) {
-                        throw new IllegalActionException("Unable to create a " +
-                                "parameter named \"" + name + "\".");
+                int i = 0;
+                for (String name : names) {
+                    Type type = types[i++];
+                    Attribute existingAttribute = getAttribute(name);
+                    if (existingAttribute != null) {
+                        boolean compatible = false;
+                        if (existingAttribute instanceof Variable) {
+                            Variable variable = (Variable) existingAttribute;
+                            Type declaredType = variable.getDeclaredType();
+                            if (type.isCompatible(declaredType)) {
+                                compatible = true;
+                            }
+                        }
+                        if (!compatible) {
+                            throw new IllegalActionException(this, "An " +
+                                    "attribute named \"" + name + "\" is " +
+                                    "found, but either it is not a variable, " +
+                                    "or its type is not compatible with the " +
+                                    "declared type of the parameter, which " +
+                                    "is " + type + ".");
+                        }
+                    } else {
+                        try {
+                            EventParameter parameter = new EventParameter(this,
+                                    name);
+                            parameter.setTypeEquals(type);
+                        } catch (NameDuplicationException e) {
+                            throw new IllegalActionException(this, "Unable " +
+                                    "to create a parameter named \"" + name +
+                                    "\".");
+                        }
                     }
-
                 }
             }
         } else if (attribute == isInitialEvent) {
@@ -270,8 +291,8 @@ public class Event extends State implements Initializable, ValueListener {
         if (paramCount > 0) {
             int i = 0;
             for (String name : names) {
-                ((EventParameter) getAttribute(name)).setToken(arguments
-                        .getElement(i++));
+                ((Variable) getAttribute(name)).setToken(arguments.getElement(
+                        i++));
             }
         }
 
