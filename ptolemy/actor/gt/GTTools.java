@@ -46,6 +46,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
+import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -71,7 +72,15 @@ public class GTTools {
         try {
             workspace.getReadAccess();
             MoMLParser parser = new MoMLParser(workspace);
-            NamedObj newModel = parser.parse(model.exportMoML());
+            URIAttribute uriAttribute = (URIAttribute) model.getAttribute(
+                    "_uri", URIAttribute.class);
+            NamedObj newModel;
+            if (uriAttribute != null) {
+                newModel = parser.parse(uriAttribute.getURL(),
+                        model.exportMoML());
+            } else {
+                newModel = parser.parse(model.exportMoML());
+            }
             return newModel;
         } catch (Exception e) {
             throw new IllegalActionException(model, e,

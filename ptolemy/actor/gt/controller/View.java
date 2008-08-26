@@ -129,6 +129,9 @@ public class View extends GTEvent implements WindowListener {
                     _tableau.close();
                 }
                 _tableau = configuration.openModel(entity, effigy);
+                // Set uri to null so that we don't accidentally overwrite the
+                // original file by pressing Ctrl-S.
+                ((Effigy) _tableau.getContainer()).uri.setURI(null);
                 modelChanged = false;
             } else {
                 GTFrameTools.changeModel((BasicGraphFrame) _tableau.getFrame(),

@@ -27,6 +27,8 @@
 */
 package ptolemy.actor.gt.controller;
 
+import java.net.URL;
+
 import ptolemy.data.ArrayToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.kernel.CompositeEntity;
@@ -79,8 +81,8 @@ public class ReadModel extends GTEvent {
 
         CompositeEntity model;
         try {
-            model = (CompositeEntity) _parser.parse(modelFile.asURL(),
-                    modelFile.openForReading());
+            URL url = modelFile.asURL();
+            model = (CompositeEntity) _parser.parse(url, url);
         } catch (Exception e) {
             throw new IllegalActionException(this, e, "Unable to parse the " +
                     "model from file \"" + modelFile.stringValue().trim() +

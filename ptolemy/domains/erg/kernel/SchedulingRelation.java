@@ -184,7 +184,6 @@ public class SchedulingRelation extends Transition {
         relation._delayTree = null;
         relation._delayTreeVersion = -1;
         relation._parseTreeEvaluator = new ParseTreeEvaluator();
-        relation._parser = new PtParser();
         return relation;
     }
 
@@ -336,8 +335,8 @@ public class SchedulingRelation extends Transition {
      */
     private void _parseArguments() throws IllegalActionException {
         try {
-            _argumentsTree = (ASTPtArrayConstructNode)
-                    _parser.generateParseTree(arguments.getExpression());
+            _argumentsTree = (ASTPtArrayConstructNode) new PtParser()
+                    .generateParseTree(arguments.getExpression());
             _argumentsTreeVersion = _workspace.getVersion();
         } catch (ClassCastException e) {
             throw new IllegalActionException(this, "The arguments for a " +
@@ -351,7 +350,7 @@ public class SchedulingRelation extends Transition {
      *  @exception IllegalActionException If thrown when when parsing the delay.
      */
     private void _parseDelay() throws IllegalActionException {
-        _delayTree = _parser.generateParseTree(delay.getExpression());
+        _delayTree = new PtParser().generateParseTree(delay.getExpression());
         _delayTreeVersion = _workspace.getVersion();
     }
 
@@ -369,7 +368,4 @@ public class SchedulingRelation extends Transition {
 
     /** The evaluated to evaluate all parse trees. */
     private ParseTreeEvaluator _parseTreeEvaluator = new ParseTreeEvaluator();
-
-    /** The parser to generate all parse trees. */
-    private PtParser _parser = new PtParser();
 }
