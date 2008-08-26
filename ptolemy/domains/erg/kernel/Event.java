@@ -137,7 +137,11 @@ public class Event extends State implements Initializable, ValueListener {
 
         isInitialEvent = new Parameter(this, "isInitialEvent");
         isInitialEvent.setTypeEquals(BaseType.BOOLEAN);
-        isInitialEvent.setToken(isInitialState.getToken());
+        isInitialEvent.setExpression("false");
+        if (((BooleanToken) isInitialState.getToken()).booleanValue()) {
+            isInitialEvent.setExpression("true");
+            isInitialEvent.setPersistent(true);
+        }
         isFinalEvent = new Parameter(this, "isFinalEvent");
         isFinalEvent.setTypeEquals(BaseType.BOOLEAN);
         isFinalEvent.setExpression("false");
