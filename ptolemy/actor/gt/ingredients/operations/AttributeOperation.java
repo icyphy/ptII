@@ -241,8 +241,8 @@ public class AttributeOperation extends Operation {
     }
 
     protected void _reparse() throws IllegalActionException {
-        _valueParseTree = _parser
-                .generateStringParseTree(_attributeValue.get());
+        _valueParseTree = new PtParser().generateStringParseTree(_attributeValue
+                .get());
     }
 
     private static final OperationElement[] _ELEMENTS = {
@@ -255,8 +255,6 @@ public class AttributeOperation extends Operation {
     private String _attributeName;
 
     private PtolemyExpressionString _attributeValue;
-
-    private PtParser _parser = new PtParser();
 
     private ASTPtRootNode _valueParseTree;
 }

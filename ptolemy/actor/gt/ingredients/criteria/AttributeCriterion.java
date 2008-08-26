@@ -135,10 +135,10 @@ public class AttributeCriterion extends Criterion {
                     String expression = settable.getExpression();
                     VariableScope scope = new VariableScope(object);
                     try {
-                        ASTPtRootNode tree = _TYPE_PARSER
-                                .generateParseTree(expression);
-                        Token token = _TYPE_EVALUATOR.evaluateParseTree(tree,
-                                scope);
+                        ASTPtRootNode tree = new PtParser().generateParseTree(
+                                expression);
+                        Token token = new ParseTreeEvaluator()
+                                .evaluateParseTree(tree, scope);
 
                         if (isAttributeTypeEnabled()) {
                             Type ruleType = _attributeType.getToken().getType();
@@ -231,10 +231,6 @@ public class AttributeCriterion extends Criterion {
             new StringCriterionElement("name", false, false, false),
             new ChoiceCriterionElement("type", true, false, true, true),
             new StringCriterionElement("value", true, false, true) };
-
-    private static final ParseTreeEvaluator _TYPE_EVALUATOR = new ParseTreeEvaluator();
-
-    private static final PtParser _TYPE_PARSER = new PtParser();
 
     private RegularExpressionString _attributeName;
 

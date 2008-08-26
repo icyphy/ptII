@@ -69,8 +69,9 @@ public class PtolemyExpressionString {
 
     public Token getToken() throws IllegalActionException {
         if (_needReparse) {
-            ASTPtRootNode tree = _TYPE_PARSER.generateParseTree(_value);
-            _token = _TYPE_EVALUATOR.evaluateParseTree(tree, _variableScope);
+            ASTPtRootNode tree = new PtParser().generateParseTree(_value);
+            _token = new ParseTreeEvaluator().evaluateParseTree(tree,
+                    _variableScope);
             _needReparse = false;
         }
         return _token;
@@ -84,11 +85,6 @@ public class PtolemyExpressionString {
     public String toString() {
         return get();
     }
-
-    private static final ParseTreeEvaluator _TYPE_EVALUATOR =
-        new ParseTreeEvaluator();
-
-    private static final PtParser _TYPE_PARSER = new PtParser();
 
     private boolean _needReparse;
 

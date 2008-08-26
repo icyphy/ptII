@@ -53,7 +53,7 @@ import ptolemy.moml.MoMLChangeRequest;
 
 @author Thomas Huining Feng
 @version $Id$
-@since Ptolemy II 6.1
+@since Ptolemy II 7.1
 @Pt.ProposedRating Red (tfeng)
 @Pt.AcceptedRating Red (tfeng)
 */
@@ -165,7 +165,7 @@ public class RenameOperation extends Operation {
     }
 
     protected void _reparse() throws IllegalActionException {
-        _valueParseTree = _parser.generateStringParseTree(_name.get());
+        _valueParseTree = new PtParser().generateStringParseTree(_name.get());
     }
 
     private static final OperationElement[] _ELEMENTS = {
@@ -173,8 +173,6 @@ public class RenameOperation extends Operation {
     };
 
     private PtolemyExpressionString _name;
-
-    private PtParser _parser = new PtParser();
 
     private ASTPtRootNode _valueParseTree;
 }
