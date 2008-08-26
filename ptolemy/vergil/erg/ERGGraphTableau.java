@@ -130,15 +130,20 @@ public class ERGGraphTableau extends FSMGraphTableau {
                 return null;
             }
 
+            Tableau tableau = (Tableau) effigy.getEntity("ergGraphTableau");
+            if (tableau != null) {
+                return tableau;
+            }
+
             NamedObj model = ((PtolemyEffigy) effigy).getModel();
 
             if (model instanceof ERGModalModel) {
                 Configuration configuration = (Configuration) effigy.toplevel();
                 ERGController controller = (ERGController)
                         ((ERGModalModel) model).getController();
-                Tableau tableau = configuration.openModel(controller);
+                tableau = configuration.openModel(controller);
                 tableau.setContainer(effigy);
-                
+
                 if (model.getContainer() == null) {
                     // Record the size in its controller.
                     Attribute windowsPropertiesAttribute = controller
@@ -147,19 +152,19 @@ public class ERGGraphTableau extends FSMGraphTableau {
                     if (windowsPropertiesAttribute != null) {
                         windowsPropertiesAttribute.setPersistent(true);
                     }
-                    
+
                     Attribute sizeAttribute = controller.getAttribute(
                             "_vergilSize", SizeAttribute.class);
                     if (sizeAttribute != null) {
                         sizeAttribute.setPersistent(true);
                     }
-                    
+
                     Attribute zoomFactorAttribute = controller.getAttribute(
                             "_vergilZoomFactor", Parameter.class);
                     if (zoomFactorAttribute != null) {
                         zoomFactorAttribute.setPersistent(true);
                     }
-                    
+
                     Attribute centerAttribute = controller.getAttribute(
                             "_vergilCenter", Parameter.class);
                     if (centerAttribute != null) {
@@ -173,9 +178,8 @@ public class ERGGraphTableau extends FSMGraphTableau {
                 LibraryAttribute library = (LibraryAttribute) getAttribute(
                         "_library", LibraryAttribute.class);
 
-                ERGGraphTableau tableau = new ERGGraphTableau(
-                        (PtolemyEffigy) effigy, effigy.uniqueName("tableau"),
-                        library);
+                tableau = new ERGGraphTableau((PtolemyEffigy) effigy,
+                        "ergGraphTableau", library);
                 return tableau;
             } else {
                 return null;

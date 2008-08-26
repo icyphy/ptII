@@ -171,6 +171,11 @@ public class FSMGraphTableau extends Tableau {
                 return null;
             }
 
+            Tableau tableau = (Tableau) effigy.getEntity("fsmGraphTableau");
+            if (tableau != null) {
+                return tableau;
+            }
+            
             NamedObj model = ((PtolemyEffigy) effigy).getModel();
 
             if (model instanceof FSMActor) {
@@ -179,9 +184,8 @@ public class FSMGraphTableau extends Tableau {
                 LibraryAttribute library = (LibraryAttribute) getAttribute(
                         "_library", LibraryAttribute.class);
 
-                FSMGraphTableau tableau = new FSMGraphTableau(
-                        (PtolemyEffigy) effigy, effigy.uniqueName("tableau"),
-                        library);
+                tableau = new FSMGraphTableau((PtolemyEffigy) effigy,
+                        "fsmGraphTableau", library);
                 return tableau;
             } else {
                 return null;
