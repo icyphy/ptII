@@ -30,6 +30,7 @@ package ptolemy.vergil.icon;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Paint;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import javax.swing.SwingConstants;
@@ -109,21 +110,6 @@ public class NameIcon extends EditorIcon {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         parameters                        ////
-
-    /** The amount of rounding of the corners.
-     *  This is a double that defaults to 0.0, which indicates no rounding.
-     */
-    public Parameter rounding;
-
-    /** If greater than zero, then use a double box where the outside
-     *  one is the specified size larger than the inside one.
-     *  This is a double that defaults to 0.0, which indicates a single
-     *  box.
-     */
-    public Parameter spacing;
-
-    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** React to a changes in the attributes by changing
@@ -171,25 +157,9 @@ public class NameIcon extends EditorIcon {
      *  @return A new figure.
      */
     public Figure createBackgroundFigure() {
-        String name = "No Name";
-        NamedObj container = getContainer();
-        if (container != null) {
-            name = container.getDisplayName();
-        }
-
-        double width = 60;
-        double height = 30;
-
-        // Measure width of the text.  Unfortunately, this
-        // requires generating a label figure that we will not use.
-        LabelFigure label = new LabelFigure(name, _labelFont, 1.0,
-                SwingConstants.CENTER);
-        Rectangle2D stringBounds = label.getBounds();
-
-        // NOTE: Padding of 20. Quantize the height so that
-        // snap to grid still works.
-        width = Math.floor(stringBounds.getWidth()) + 20;
-        height = Math.floor(stringBounds.getHeight()) + 10;
+        Point2D size = _getBackgroundSize();
+        double width = size.getX();
+        double height = size.getY();
 
         if (_spacingValue == 0.0) {
             if (_roundingValue == 0.0) {
@@ -272,7 +242,46 @@ public class NameIcon extends EditorIcon {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         parameters                        ////
+
+    /** The amount of rounding of the corners.
+     *  This is a double that defaults to 0.0, which indicates no rounding.
+     */
+    public Parameter rounding;
+
+    /** If greater than zero, then use a double box where the outside
+     *  one is the specified size larger than the inside one.
+     *  This is a double that defaults to 0.0, which indicates a single
+     *  box.
+     */
+    public Parameter spacing;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    protected Point2D _getBackgroundSize() {
+        String name = "No Name";
+        NamedObj container = getContainer();
+        if (container != null) {
+            name = container.getDisplayName();
+        }
+
+        double width = 60;
+        double height = 30;
+
+        // Measure width of the text.  Unfortunately, this
+        // requires generating a label figure that we will not use.
+        LabelFigure label = new LabelFigure(name, _labelFont, 1.0,
+                SwingConstants.CENTER);
+        Rectangle2D stringBounds = label.getBounds();
+
+        // NOTE: Padding of 20. Quantize the height so that
+        // snap to grid still works.
+        width = Math.floor(stringBounds.getWidth()) + _xPadding;
+        height = Math.floor(stringBounds.getHeight()) + _yPadding;
+
+        return new Point2D.Double(width, height);
+    }
 
     /** Return the paint to use to fill the icon.
      *  This base class returns Color.white.
@@ -301,4 +310,10 @@ public class NameIcon extends EditorIcon {
 
     /** Most recent value of the spacing parameter. */
     protected double _spacingValue = 0.0;
+
+    /** The horizontal padding on the left and right sides of the name. */
+    protected double _xPadding = 20.0;
+
+    /** The vertical padding above and below the name. */
+    protected double _yPadding = 10.0;
 }

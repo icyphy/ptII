@@ -31,6 +31,7 @@ package ptolemy.vergil.erg;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Paint;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import javax.swing.Icon;
@@ -67,6 +68,7 @@ public class EventIcon extends StateIcon {
     public EventIcon(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
+        _yPadding = 8.0;
     }
 
     public Figure createFigure() {
@@ -130,6 +132,14 @@ public class EventIcon extends StateIcon {
         figure.setFillPaint(_getFill());
         _iconCache = new FigureIcon(figure, 20, 15);
         return _iconCache;
+    }
+
+    protected Point2D _getBackgroundSize() {
+        Point2D size = super._getBackgroundSize();
+        if (size.getY() < _MIN_HEIGHT) {
+            size = new Point2D.Double(size.getX(), _MIN_HEIGHT);
+        }
+        return size;
     }
 
     protected Paint _getFill() {
@@ -257,4 +267,6 @@ public class EventIcon extends StateIcon {
     private static final Color _FINAL_COLOR = new Color(255, 64, 64);
 
     private static final Color _INITIAL_COLOR = new Color(64, 255, 64);
+
+    private static final double _MIN_HEIGHT = 20.0;
 }
