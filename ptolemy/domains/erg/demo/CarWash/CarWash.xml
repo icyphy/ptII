@@ -511,8 +511,8 @@ are reset at the start of each run.</text></svg></configure>
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>TimedPlotter</title>
-<xRange min="0.0" max="1998.8213886611002"/>
-<yRange min="0.0" max="6.0"/>
+<xRange min="0.0" max="1999.1956195723"/>
+<yRange min="0.0" max="8.0"/>
 </plot>?>
         </configure>
     </entity>

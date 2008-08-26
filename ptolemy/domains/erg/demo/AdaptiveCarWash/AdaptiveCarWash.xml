@@ -118,7 +118,7 @@ the number of waiting cars drops below 10.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 310.0]">
         </property>
     </property>
-    <property name="QueueSize" class="ptolemy.data.expr.Parameter" value="9">
+    <property name="QueueSize" class="ptolemy.data.expr.Parameter" value="17">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -206,7 +206,7 @@ ModelUpdate component and is not adaptive.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
                 </property>
             </property>
-            <property name="Queue" class="ptolemy.data.expr.Parameter" value="9">
+            <property name="Queue" class="ptolemy.data.expr.Parameter" value="17">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -426,7 +426,7 @@ are reset at the start of each run.</text></svg></configure>
                 </property>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="10.0 + 20.0 * random()">
+                <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="5.0 + 20.0 * random()">
                 </property>
                 <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
                 </property>
@@ -551,8 +551,8 @@ are reset at the start of each run.</text></svg></configure>
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>TimedPlotter</title>
-<xRange min="0.0" max="1997.7460468275"/>
-<yRange min="0.0" max="26.0"/>
+<xRange min="0.0" max="1995.6430685674002"/>
+<yRange min="0.0" max="22.0"/>
 </plot>?>
         </configure>
     </entity>
@@ -620,6 +620,8 @@ are reset at the start of each run.</text></svg></configure>
                                 <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 95.0]">
                                 </property>
                                 <entity name="Start" class="ptolemy.actor.gt.StateMatcher">
+                                    <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                                    </property>
                                     <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.NameCriterion/false/&quot;Start&quot;)">
                                     </property>
                                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -677,6 +679,8 @@ are reset at the start of each run.</text></svg></configure>
                                 <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 95.0]">
                                 </property>
                                 <entity name="Start" class="ptolemy.actor.gt.StateMatcher">
+                                    <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                                    </property>
                                     <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="ERGModalModel.Start">
                                     </property>
                                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -766,6 +770,8 @@ are reset at the start of each run.</text></svg></configure>
                                 <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 95.0]">
                                 </property>
                                 <entity name="Start" class="ptolemy.actor.gt.StateMatcher">
+                                    <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                                    </property>
                                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                     </property>
                                     <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 70.0]">
@@ -819,6 +825,8 @@ are reset at the start of each run.</text></svg></configure>
                                 <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 95.0]">
                                 </property>
                                 <entity name="Start" class="ptolemy.actor.gt.StateMatcher">
+                                    <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                                    </property>
                                     <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="ERGModalModel.Start">
                                     </property>
                                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
