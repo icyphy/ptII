@@ -35,11 +35,11 @@ import java.util.List;
 
 import ptolemy.data.expr.ASTPtFunctionDefinitionNode;
 import ptolemy.data.expr.PtParser;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
 /**
@@ -50,11 +50,11 @@ import ptolemy.kernel.util.Workspace;
 
  @author Thomas Huining Feng
  @version $Id$
- @since Ptolemy II 6.1
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class ParametersAttribute extends StringAttribute {
+public class ParametersAttribute extends StringParameter {
 
     /** Construct a attribute for a list of typed parameters with the given name
      *  contained by the specified container. The container argument must not be
@@ -86,9 +86,8 @@ public class ParametersAttribute extends StringAttribute {
      *  @return The new Attribute.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ParametersAttribute attribute =
-            (ParametersAttribute) super.clone(workspace);
-        attribute._parser = new PtParser();
+        ParametersAttribute attribute = (ParametersAttribute) super.clone(
+                workspace);
         attribute._parseTree = null;
         attribute._parseTreeVersion = -1;
         return attribute;
@@ -102,10 +101,8 @@ public class ParametersAttribute extends StringAttribute {
      *   parsed.
      *  @see #getParameterTypes()
      */
-    public List<?> getParameterNames() throws IllegalActionException {
-        if (_parseTreeVersion != _workspace.getVersion()) {
-            _parse();
-        }
+    public List<String> getParameterNames() throws IllegalActionException {
+        _parse();
         return _parseTree.getArgumentNameList();
     }
 
@@ -117,27 +114,23 @@ public class ParametersAttribute extends StringAttribute {
      *  @see #getParameterNames()
      */
     public Type[] getParameterTypes() throws IllegalActionException {
-        if (_parseTreeVersion != _workspace.getVersion()) {
-            _parse();
-        }
+        _parse();
         return _parseTree.getArgumentTypes();
     }
 
-    /** Set the parameters and their types with an expression. The expression
-     *  must be a parentheses enclosed string with comma-separated pairs of
-     *  parameter names and types. Each name and type must be separated by a
-     *  colon. An example of an acceptable expression is this:
+    /** Evaluate the current expression to a token. The expression of this
+     *  parameter must be a parentheses enclosed string with comma-separated
+     *  pairs of parameter names and types. Each name and type must be separated
+     *  by a colon. Examples of an acceptable expressions are:
+     *  <pre>(a)</pre>
+     *  and
      *  <pre>(a:int, b:double)</pre>
      *
-     *  @param expression The expression that contains pairs of parameter names
-     *   and types.
-     *  @exception IllegalActionException If the format of the expression is
-     *   invalid, or some parameter names are invalid, or some of the types
-     *   cannot be evaluated.
+     *  @exception IllegalActionException If the expression cannot
+     *   be parsed or cannot be evaluated, or if a dependency loop is found.
      */
-    public void setExpression(String expression) throws IllegalActionException {
-        super.setExpression(expression);
-
+    protected void _evaluate() throws IllegalActionException {
+        super._evaluate();
         _parse();
     }
 
@@ -154,14 +147,18 @@ public class ParametersAttribute extends StringAttribute {
      *   cannot be evaluated.
      */
     private void _parse() throws IllegalActionException {
-        try {
-            String function = "function" + getExpression() + " 1";
-            _parseTree = (ASTPtFunctionDefinitionNode) _parser
-                    .generateParseTree(function);
-            _parseTreeVersion = _workspace.getVersion();
-        } catch (Exception e) {
-            throw new IllegalActionException("The parameter list must be in "
-                    + "the form of (v1 : type1, v2 : type2, ...).");
+        if (_parseTree == null || _parseTreeVersion != _workspace
+                .getVersion()) {
+            try {
+                String function = "function" + getExpression() + " 1";
+                _parseTree = (ASTPtFunctionDefinitionNode) new PtParser()
+                        .generateParseTree(function);
+                _parseTreeVersion = _workspace.getVersion();
+            } catch (Exception e) {
+                throw new IllegalActionException(this, e, "The parameter " +
+                        "list must be in the form of (v1 : type1, v2 : " +
+                        "type2, ...).");
+            }
         }
     }
 
@@ -171,7 +168,4 @@ public class ParametersAttribute extends StringAttribute {
 
     /** Version of _parseTree. */
     private long _parseTreeVersion = -1;
-
-    /** The parser used to parse the expression. */
-    private PtParser _parser = new PtParser();
 }

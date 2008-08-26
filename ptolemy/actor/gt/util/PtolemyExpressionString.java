@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                        PT_COPYRIGHT_VERSION_2
+                        COPYRIGHTENDKEY
 
 
 
@@ -35,6 +35,7 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.PtParser;
+import ptolemy.domains.erg.kernel.VariableScope;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -84,13 +85,14 @@ public class PtolemyExpressionString {
         return get();
     }
 
+    private static final ParseTreeEvaluator _TYPE_EVALUATOR =
+        new ParseTreeEvaluator();
+
+    private static final PtParser _TYPE_PARSER = new PtParser();
+
     private boolean _needReparse;
 
     private Token _token;
-
-    private static final ParseTreeEvaluator _TYPE_EVALUATOR = new ParseTreeEvaluator();
-
-    private static final PtParser _TYPE_PARSER = new PtParser();
 
     private String _value;
 

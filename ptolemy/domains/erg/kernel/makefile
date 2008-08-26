@@ -54,7 +54,8 @@ JSRCS = \
 	ERGModalModel.java \
 	Event.java \
 	ParametersAttribute.java \
-	SchedulingRelation.java
+	SchedulingRelation.java \
+	VariableScope.java
 
 OTHER_FILES_TO_BE_JARED = \
 	ERGModalModelIcon.xml \
@@ -69,13 +70,12 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	'ActionsAttribute$$ParametersParserScope.class' \
 	'ERGController$$1.class' \
 	'ERGController$$ERGObjectScope.class' \
 	'ERGDirector$$1.class' \
 	'ERGDirector$$EventComparator.class' \
 	'ERGDirector$$TimedEvent.class' \
-	'Event$$ParameterParserScope.class' \
+	'Event$$EventParameter.class' \
 	'SchedulingRelation$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)

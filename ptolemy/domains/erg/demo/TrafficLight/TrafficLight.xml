@@ -793,6 +793,8 @@ The inputs are simply ignored.</text></svg></configure>
                 </property>
             </port>
             <entity name="CRed" class="ptolemy.domains.erg.kernel.Event">
+                <property name="isInitialEvent" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
                 <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Cred = 1;&#10;  Cyel = 0;&#10;  Cgrn = 0">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -1027,6 +1029,8 @@ event has a parameter named "param" with type int, which takes value 0 or 1.</te
                 </property>
             </port>
             <entity name="TurnYellowLight" class="ptolemy.domains.erg.kernel.Event">
+                <property name="isInitialEvent" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
                 <property name="parameters" class="ptolemy.domains.erg.kernel.ParametersAttribute" value="(param: int)">
                 </property>
                 <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Cred = 0; Cyel = param; Cgrn = 0">
@@ -1304,12 +1308,6 @@ event has a parameter named "param" with type int, which takes value 0 or 1.</te
             <relation name="relation" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute">
-<display name="condition"/>                </property>
-                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
-                </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
-                </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.6740226082493742">
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.6898558364193725">
@@ -1322,8 +1320,6 @@ event has a parameter named "param" with type int, which takes value 0 or 1.</te
                 </property>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
-                </property>
                 <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="-log(1.0 - random()) * meanErrorTime">
                 </property>
                 <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
@@ -1333,12 +1329,6 @@ event has a parameter named "param" with type int, which takes value 0 or 1.</te
             </relation>
             <relation name="relation2" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
-                </property>
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute">
-<display name="condition"/>                </property>
-                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
-                </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>
@@ -1352,8 +1342,6 @@ event has a parameter named "param" with type int, which takes value 0 or 1.</te
                 </property>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
-                </property>
                 <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="10.0">
                 </property>
                 <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
@@ -1363,12 +1351,6 @@ event has a parameter named "param" with type int, which takes value 0 or 1.</te
             </relation>
             <relation name="relation3" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
-                </property>
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute">
-<display name="condition"/>                </property>
-                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
-                </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>
@@ -1381,8 +1363,6 @@ event has a parameter named "param" with type int, which takes value 0 or 1.</te
                 <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
                 <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="-log(1.0 - random()) * meanErrorTime">
                 </property>

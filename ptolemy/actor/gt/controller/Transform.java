@@ -65,7 +65,7 @@ public class Transform extends GTEvent implements ConfigurableEntity {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        _configurer = new EmbeddedConfigurer(workspace());
+        _configurer = new EmbeddedConfigurer(_workspace);
         _configurer.setName("Configurer");
         _configurer.setConfiguredObject(this);
 

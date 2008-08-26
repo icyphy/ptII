@@ -31,13 +31,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.erg.kernel;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import ptolemy.actor.Executable;
 import ptolemy.actor.Initializable;
@@ -45,7 +40,6 @@ import ptolemy.actor.TypedActor;
 import ptolemy.actor.util.Time;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.ModelScope;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.ParserScope;
@@ -54,12 +48,12 @@ import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.domains.fsm.kernel.State;
-import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.ValueListener;
 import ptolemy.kernel.util.Workspace;
@@ -106,7 +100,7 @@ import ptolemy.kernel.util.Workspace;
 
  @author Thomas Huining Feng
  @version $Id$
- @since Ptolemy II 6.1
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
@@ -203,7 +197,33 @@ public class Event extends State implements Initializable, ValueListener {
         if (attribute == monitoredVariables) {
             _addValueListener();
         } else if (attribute == parameters) {
-            actions._updateParserScope();
+            List<EventParameter> eventParameters = attributeList(
+                    EventParameter.class);
+            for (EventParameter parameter : eventParameters) {
+                try {
+                    parameter.setContainer(null);
+                } catch (NameDuplicationException e) {
+                    // This should not happen. Ignore.
+                }
+            }
+
+            List<?> names = parameters.getParameterNames();
+            int paramCount = names == null ? 0 : names.size();
+            if (paramCount > 0) {
+                Type[] types = parameters.getParameterTypes();
+                for (int i = 0; i < names.size(); i++) {
+                    String name = (String) names.get(i);
+                    try {
+                        EventParameter parameter = new EventParameter(this,
+                                name);
+                        parameter.setTypeEquals(types[i]);
+                    } catch (NameDuplicationException e) {
+                        throw new IllegalActionException("Unable to create a " +
+                                "parameter named \"" + name + "\".");
+                    }
+
+                }
+            }
         } else if (attribute == isInitialEvent) {
             isInitialState.setToken(isInitialEvent.getToken());
         }
@@ -220,21 +240,16 @@ public class Event extends State implements Initializable, ValueListener {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Event newObject = (Event) super.clone(workspace);
-        newObject._lastScope = null;
         newObject._monitoredVariables = null;
+        newObject._parserScope = null;
+        newObject._parserScopeVersion = -1;
         return newObject;
     }
 
     /** Process this event with the given arguments. The number of arguments
      *  provided must be equal to the number of formal parameters defined for
-     *  this event, and their types must match. This method first executes the
-     *  actions, then searches for all the events that are scheduled or
-     *  cancelled by this event. For each scheduling relation from this event,
-     *  the guard is tested. If it is true, the ending event (which could be the
-     *  same as this event) is scheduled to occur after the specified amount of
-     *  delay. Arguments to that event, if any, are also computed at this time.
-     *  For each cancelling edge from this event, the ending event is cancelled
-     *  in the containing ERG controller's event queue, if it is in it.
+     *  this event, and their types must match. The actions of this event are
+     *  executed.
      *
      *  @param arguments The arguments used to process this event.
      *  @exception IllegalActionException If the number of the arguments or
@@ -243,8 +258,24 @@ public class Event extends State implements Initializable, ValueListener {
      *   evaluated.
      */
     public void fire(ArrayToken arguments) throws IllegalActionException {
-        _lastScope = _getParserScope(arguments);
-        actions.execute(_lastScope);
+        List<String> names = parameters.getParameterNames();
+        int paramCount = names == null ? 0 : names.size();
+        int argCount = arguments == null ? 0 : arguments.length();
+        if (paramCount > argCount) {
+            throw new IllegalActionException(this, "The number of arguments to "
+                    + "this event must be greater than or equal to the number "
+                    + "of declared parameters, which is " + paramCount + ".");
+        }
+
+        if (paramCount > 0) {
+            int i = 0;
+            for (String name : names) {
+                ((EventParameter) getAttribute(name)).setToken(arguments
+                        .getElement(i++));
+            }
+        }
+
+        actions.execute();
     }
 
     /** Return whether this event is an input event, which is processed when any
@@ -258,6 +289,14 @@ public class Event extends State implements Initializable, ValueListener {
         } catch (IllegalActionException e) {
             return false;
         }
+    }
+
+    /** Return the ERG controller that contains this event.
+     *
+     *  @return The ERG controller.
+     */
+    public ERGController getController() {
+        return (ERGController) getContainer();
     }
 
     /** Begin execution of the actor and start to monitor the variables whose
@@ -316,6 +355,14 @@ public class Event extends State implements Initializable, ValueListener {
      *  #fire(ArrayToken)} has never been called, it uses a default scope in
      *  which no argument value has been given.
      *  <p>
+     *  This method searches for all the events that are scheduled or
+     *  cancelled by this event. For each scheduling relation from this event,
+     *  the guard is tested. If it is true, the ending event (which could be the
+     *  same as this event) is scheduled to occur after the specified amount of
+     *  delay. Arguments to that event, if any, are also computed at this time.
+     *  For each cancelling edge from this event, the ending event is cancelled
+     *  in the containing ERG controller's event queue, if it is in it.
+     *  <p>
      *  All the scheduling relations from this events are tested with their
      *  guards. If a scheduling relation's guard returns true, then the event
      *  that it points to is scheduled to occur after the amount of model time
@@ -327,9 +374,7 @@ public class Event extends State implements Initializable, ValueListener {
     public void scheduleEvents() throws IllegalActionException {
         ERGController controller = (ERGController) getContainer();
         ERGDirector director = controller.director;
-        if (_lastScope == null) {
-            _lastScope = _getParserScope(null);
-        }
+        ParserScope scope = _getParserScope();
 
         List<?>[] schedulesArray = new List<?>[2];
         schedulesArray[0] = preemptiveTransitionList();
@@ -338,14 +383,13 @@ public class Event extends State implements Initializable, ValueListener {
             for (Object scheduleObject : schedules) {
                 SchedulingRelation schedule =
                     (SchedulingRelation) scheduleObject;
-                if (schedule.isEnabled(_lastScope)) {
-                    double delay = schedule.getDelay(_lastScope);
+                if (schedule.isEnabled(scope)) {
+                    double delay = schedule.getDelay(scope);
                     Event nextEvent = (Event) schedule.destinationState();
                     if (schedule.isCanceling()) {
                         director.cancel(nextEvent);
                     } else {
-                        ArrayToken edgeArguments = schedule.getArguments(
-                                _lastScope);
+                        ArrayToken edgeArguments = schedule.getArguments(scope);
                         director.fireAt(nextEvent, director.getModelTime().add(
                                 delay), edgeArguments);
                     }
@@ -453,11 +497,11 @@ public class Event extends State implements Initializable, ValueListener {
     public ParametersAttribute parameters;
 
     //////////////////////////////////////////////////////////////////////////
-    //// ParameterParserScope
+    //// EventParameter
 
     /**
-     The parser scope that resolves the parameters for an ERG event with their
-     actual values supplied when the event is processed.
+     The parameter to store an argument passed on a scheduling relation to this
+     event.
 
      @author Thomas Huining Feng
      @version $Id$
@@ -465,91 +509,30 @@ public class Event extends State implements Initializable, ValueListener {
      @Pt.ProposedRating Red (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */
-    public static class ParameterParserScope implements ParserScope {
+    public static class EventParameter extends Parameter {
 
-        /** Look up and return the value with the specified name in the
-         *  scope. Return null if the name is not defined in this scope.
-         *
-         *  @param name The name of the variable to be looked up.
-         *  @return The token associated with the given name in the scope.
-         *  @exception IllegalActionException If a value in the scope
-         *  exists with the given name, but cannot be evaluated.
+        /** Construct a parameter with the given name contained by the specified
+         *  entity. The container argument must not be null, or a
+         *  NullPointerException will be thrown.  This parameter will use the
+         *  workspace of the container for synchronization and version counts.
+         *  If the name argument is null, then the name is set to the empty
+         *  string. The object is not added to the list of objects in the
+         *  workspace unless the container is null.
+         *  Increment the version of the workspace.
+         *  @param container The container.
+         *  @param name The name of the parameter.
+         *  @exception IllegalActionException If the parameter is not of an
+         *   acceptable class for the container.
+         *  @exception NameDuplicationException If the name coincides with
+         *   a parameter already in the container.
          */
-        public Token get(String name) throws IllegalActionException {
-            if (_parameterMap.containsKey(name)) {
-                return _parameterMap.get(name);
-            } else {
-                return _superscope.get(name);
-            }
+        public EventParameter(NamedObj container, String name)
+                throws IllegalActionException, NameDuplicationException {
+            super(container, name);
+
+            setVisibility(Settable.EXPERT);
+            setPersistent(false);
         }
-
-        /** Look up and return the type of the value with the specified
-         *  name in the scope. Return null if the name is not defined in
-         *  this scope.
-         *
-         *  @param name The name of the variable to be looked up.
-         *  @return The token associated with the given name in the scope.
-         *  @exception IllegalActionException If a value in the scope
-         *  exists with the given name, but cannot be evaluated.
-         */
-        public Type getType(String name) throws IllegalActionException {
-            return get(name).getType();
-        }
-
-        /** Look up and return the type term for the specified name
-         *  in the scope. Return null if the name is not defined in this
-         *  scope, or is a constant type.
-         *
-         *  @param name The name of the variable to be looked up.
-         *  @return The InequalityTerm associated with the given name in
-         *  the scope.
-         *  @exception IllegalActionException If a value in the scope
-         *  exists with the given name, but cannot be evaluated.
-         */
-        public InequalityTerm getTypeTerm(String name)
-                throws IllegalActionException {
-            return _superscope.getTypeTerm(name);
-        }
-
-        /** Return a list of names corresponding to the identifiers
-         *  defined by this scope.  If an identifier is returned in this
-         *  list, then get() and getType() will return a value for the
-         *  identifier.  Note that generally speaking, this list is
-         *  extremely expensive to compute, and users should avoid calling
-         *  it.  It is primarily used for debugging purposes.
-         *
-         *  @return A list of names corresponding to the identifiers
-         *  defined by this scope.
-         *  @exception IllegalActionException If constructing the list causes
-         *  it.
-         */
-        public Set<?> identifierSet() throws IllegalActionException {
-            Set<Object> set = new HashSet<Object>(_parameterMap.keySet());
-            set.addAll(_superscope.identifierSet());
-            return set;
-        }
-
-        /** Construct a parser scope with the given map from parameter names to
-         *  their values, and a given scope used to look up names if they cannot
-         *  be resolved as parameters.
-         *
-         *  @param parameterMap The parameter map.
-         *  @param superscope The scope used to look up names if they cannot
-         *  be resolved as parameters.
-         */
-        ParameterParserScope(Map<String, Token> parameterMap,
-                ParserScope superscope) {
-            _parameterMap = parameterMap;
-            _superscope = superscope;
-        }
-
-        /** The parameter map. */
-        private Map<String, Token> _parameterMap;
-
-        /** The scope used to look up names if they cannot be resolved as
-            parameters. */
-        private ParserScope _superscope;
-
     }
 
     /** Return the parser scope used to evaluate the actions and values
@@ -562,36 +545,14 @@ public class Event extends State implements Initializable, ValueListener {
      *  @exception IllegalActionException If the number or types of the given
      *  arguments do not match those of the defined parameters.
      */
-    protected ParserScope _getParserScope(ArrayToken arguments)
-            throws IllegalActionException {
-        ERGController controller = (ERGController) getContainer();
-        ParserScope scope = controller.getPortScope();
-
-        List<?> names = parameters.getParameterNames();
-        int paramCount = names == null ? 0 : names.size();
-        int argCount = arguments == null ? 0 : arguments.length();
-        if (paramCount > argCount) {
-            throw new IllegalActionException(this, "The number of arguments to "
-                    + "this event must be greater than or equal to the number "
-                    + "of declared parameters, which is " + paramCount + ".");
+    protected ParserScope _getParserScope() {
+        if (_parserScope == null || _parserScopeVersion != _workspace
+                .getVersion()) {
+            _parserScope = new VariableScope(this, getController()
+                    .getPortScope());
+            _parserScopeVersion = _workspace.getVersion();
         }
-
-        if (paramCount > 0) {
-            Map<String, Token> parameterMap = new HashMap<String, Token>();
-            Iterator<?> namesIter = names.iterator();
-            Type[] types = parameters.getParameterTypes();
-            for (int i = 0; namesIter.hasNext(); i++) {
-                String name = (String) namesIter.next();
-                Token argument = arguments.getElement(i);
-                if (!types[i].isCompatible(argument.getType())) {
-                    throw new IllegalActionException(this, "Argument " + (i + 1)
-                            + "must have type " + types[i]);
-                }
-                parameterMap.put(name, argument);
-            }
-            scope = new ParameterParserScope(parameterMap, scope);
-        }
-        return scope;
+        return _parserScope;
     }
 
     /** Schedule the given actor, which is a refinement of this event.
@@ -609,10 +570,6 @@ public class Event extends State implements Initializable, ValueListener {
         director.fireAt(refinement, director.getModelTime());
         return true;
     }
-
-    /** The parser scope created with the most recently received arguments.
-     */
-    protected ParserScope _lastScope;
 
     /** Remove this event from the value listener lists of the previously
      *  monitored variables, and register in the value listener lists of the
@@ -664,4 +621,12 @@ public class Event extends State implements Initializable, ValueListener {
     /** Whether this event is monitoring the change of values of the monitored
     variables. */
     private boolean _monitoring = false;
+
+    /** The parser scope used to execute actions and evaluate arguments.
+     */
+    private VariableScope _parserScope;
+
+    /** Version of _parserScope.
+     */
+    private long _parserScopeVersion = -1;
 }

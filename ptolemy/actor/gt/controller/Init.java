@@ -30,7 +30,6 @@ package ptolemy.actor.gt.controller;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.expr.ParserScope;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -77,8 +76,7 @@ public class Init extends GTEvent {
     }
 
     public void fire(ArrayToken arguments) throws IllegalActionException {
-        ParserScope scope = _getParserScope(arguments);
-        actions.execute(scope);
+        super.fire(arguments);
 
         ModelAttribute modelAttribute = getModelAttribute();
         if (modelAttribute.getModel() == null) {

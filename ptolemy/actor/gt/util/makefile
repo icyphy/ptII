@@ -51,8 +51,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	PtolemyExpressionString.java \
-	RegularExpressionString.java \
-	VariableScope.java
+	RegularExpressionString.java
 
 EXTRA_SRCS =	$(JSRCS)
 

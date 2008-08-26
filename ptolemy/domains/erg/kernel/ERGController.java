@@ -251,9 +251,10 @@ public class ERGController extends ModalController {
      *  the containing ERG modal model in scope.
      */
     public ParserScope getPortScope() {
-        if (_objectScopeVersion != workspace().getVersion()) {
+        if (_objectScope == null || _objectScopeVersion != _workspace
+                .getVersion()) {
             _objectScope = new ERGObjectScope();
-            _objectScopeVersion = workspace().getVersion();
+            _objectScopeVersion = _workspace.getVersion();
         }
         return _objectScope;
     }
@@ -493,6 +494,7 @@ public class ERGController extends ModalController {
     /** The scope used to evaluate actions. */
     private ERGObjectScope _objectScope = new ERGObjectScope();
 
+    /** Version of _objectScope. */
     private long _objectScopeVersion = -1;
 
     /** This class implements a scope, which is used to evaluate the

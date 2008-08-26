@@ -81,7 +81,7 @@ public class EventIcon extends StateIcon {
         if (event != null) {
             try {
                 if (event.parameters.getParameterNames().size() > 0) {
-                    parameters = event.parameters.getValueAsString();
+                    parameters = event.parameters.stringValue();
                 }
             } catch (IllegalActionException ex) {
                 throw new InternalErrorException(event.parameters, ex,

@@ -30,6 +30,7 @@ package ptolemy.actor.gt.controller;
 import ptolemy.data.ActorToken;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.ParserScope;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -59,11 +60,11 @@ public class Input extends GTEvent {
     public void fire(ArrayToken arguments) throws IllegalActionException {
         super.fire(arguments);
 
-        BooleanToken inputPortPresent = (BooleanToken) _lastScope.get(
+        ParserScope scope = _getParserScope();
+        BooleanToken inputPortPresent = (BooleanToken) scope.get(
                 _INPUT_PORT_NAME + "_isPresent");
         if (inputPortPresent != null && inputPortPresent.booleanValue()) {
-            ActorToken modelToken = (ActorToken) _lastScope.get(
-                    _INPUT_PORT_NAME);
+            ActorToken modelToken = (ActorToken) scope.get(_INPUT_PORT_NAME);
             Entity entity = modelToken.getEntity();
             if (!(entity instanceof CompositeEntity)) {
                 throw new IllegalActionException("Only instances of " +
@@ -75,7 +76,8 @@ public class Input extends GTEvent {
     }
 
     public void scheduleEvents() throws IllegalActionException {
-        BooleanToken inputPortPresent = (BooleanToken) _lastScope.get(
+        ParserScope scope = _getParserScope();
+        BooleanToken inputPortPresent = (BooleanToken) scope.get(
                 _INPUT_PORT_NAME + "_isPresent");
         if (inputPortPresent != null && inputPortPresent.booleanValue()) {
             super.scheduleEvents();

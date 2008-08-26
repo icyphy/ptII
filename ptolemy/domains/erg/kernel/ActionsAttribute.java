@@ -31,12 +31,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.erg.kernel;
 
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
@@ -46,19 +41,16 @@ import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ParserScope;
 import ptolemy.data.expr.UnknownResultException;
 import ptolemy.data.expr.Variable;
-import ptolemy.data.type.Type;
 import ptolemy.domains.fsm.kernel.AbstractActionsAttribute;
 import ptolemy.domains.fsm.kernel.CommitActionsAttribute;
 import ptolemy.domains.fsm.kernel.OutputActionsAttribute;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.domains.fsm.modal.ModalController;
-import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
@@ -108,34 +100,21 @@ public class ActionsAttribute extends AbstractActionsAttribute {
      *  string as a name.
      *  The attribute is added to the directory of the workspace.
      *  Increment the version number of the workspace.
-     *  
+     *
      *  @param workspace The workspace that will list the attribute.
      */
     public ActionsAttribute(Workspace workspace) {
         super(workspace);
     }
 
-    /** Clone the attribute into the specified workspace. This calls the base
-     *  class and then resets the scope in which variable and port names are
-     *  looked up.
-     *
-     *  @param workspace The workspace.
-     *  @return A new ActionsAttribute.
-     *  @exception CloneNotSupportedException If the superclass throws it.
+    /** Execute this action.  For each destination identified in the
+     *  action, compute the value in the action and perform the
+     *  particular assignment.
+     *  
+     *  @exception IllegalActionException If a destination is not found or if
+     *  thrown while evaluating the expressions.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ActionsAttribute attribute = (ActionsAttribute) super.clone(workspace);
-        attribute._scope = null;
-        attribute._scopeVersion = -1;
-        return attribute;
-    }
-
-    /** Execute the actions in this attribute in the given parser scope.
-     *
-     *  @param scope The parser scope in which the actions are to be executed.
-     *  @exception IllegalActionException If the actions cannot be executed.
-     */
-    public void execute(ParserScope scope) throws IllegalActionException {
+    public void execute() throws IllegalActionException {
         super.execute();
 
         if (_destinations != null) {
@@ -153,7 +132,7 @@ public class ActionsAttribute extends AbstractActionsAttribute {
 
                 try {
                     token = _parseTreeEvaluator.evaluateParseTree(parseTree,
-                            scope);
+                            _getParserScope());
                 } catch (IllegalActionException ex) {
                     throw new IllegalActionException(this, ex,
                             "Expression invalid.");
@@ -204,103 +183,6 @@ public class ActionsAttribute extends AbstractActionsAttribute {
         }
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    //// ParametersParserScope
-
-    /**
-     The parser scope that contains an parameter map. This parser scope is for
-     type-checking only. For evaluation of the actions, a different parser scope
-     needs to be
-
-     @author Thomas Huining Feng
-     @version $Id$
-     @since Ptolemy II 7.1
-     @Pt.ProposedRating Red (tfeng)
-     @Pt.AcceptedRating Red (tfeng)
-     */
-    public static class ParametersParserScope implements ParserScope {
-
-        /** Throw an exception because this method is not expected to be called
-         *  in type-checking.
-         *
-         *  @param name The name of a variable or a port.
-         *  @return None.
-         *  @exception IllegalActionException Thrown always.
-         */
-        public Token get(String name) throws IllegalActionException {
-            throw new IllegalActionException("This parser scope is for "
-                    + "type-checking only, and the get() method is not "
-                    + "implemented.");
-        }
-
-        /** Get the type of a variable or a port specified by the given name. If
-         *  a parameter is found in the parameter map, the type of that
-         *  parameter is returned. Otherwise, the super-scope is looked up.
-         *
-         *  @param name The name of a variable or a port.
-         *  @return The type.
-         *  @exception IllegalActionException If the getType() method of the
-         *  super-scope throws it.
-         */
-        public Type getType(String name) throws IllegalActionException {
-            if (_paramMap.containsKey(name)) {
-                return _paramMap.get(name);
-            } else {
-                return _superscope.getType(name);
-            }
-        }
-
-        /** Look up and return the type term for the specified name
-         *  in the scope. Return null if the name is not defined in this
-         *  scope, or is a constant type.
-         *  @param name The name of the variable to be looked up.
-         *  @return The InequalityTerm associated with the given name in
-         *  the scope.
-         *  @exception IllegalActionException If a value in the scope
-         *  exists with the given name, but cannot be evaluated.
-         */
-        public InequalityTerm getTypeTerm(String name)
-                throws IllegalActionException {
-            return _superscope.getTypeTerm(name);
-        }
-
-        /** Return a list of names corresponding to the identifiers
-         *  defined by this scope.  If an identifier is returned in this
-         *  list, then get() and getType() will return a value for the
-         *  identifier.  Note that generally speaking, this list is
-         *  extremely expensive to compute, and users should avoid calling
-         *  it.  It is primarily used for debugging purposes.
-         *  @return A list of names corresponding to the identifiers
-         *  defined by this scope.
-         *  @exception IllegalActionException If constructing the list causes
-         *  it.
-         */
-        public Set<?> identifierSet() throws IllegalActionException {
-            Set<Object> set = new HashSet<Object>(_paramMap.keySet());
-            set.addAll(_superscope.identifierSet());
-            return set;
-
-        }
-
-        /** Construct a parser scope with a parameter map and a super-scope.
-         *
-         *  @param paramMap The parameter map.
-         *  @param superscope The super-scope.
-         */
-        ParametersParserScope(Map<String, Type> paramMap,
-                ParserScope superscope) {
-            _paramMap = paramMap;
-            _superscope = superscope;
-        }
-
-        /** The parameter map. */
-        private Map<String, Type> _paramMap;
-
-        /** The super-scope. */
-        private ParserScope _superscope;
-
-    }
-
     /** Given a destination name, return a NamedObj that matches that
      *  destination.  This method never returns null (throw an exception
      *  instead).
@@ -329,7 +211,7 @@ public class ActionsAttribute extends AbstractActionsAttribute {
         IOPort port = (IOPort) erg.getPort(name);
 
         if (port == null) {
-            NamedObj container = erg;
+            NamedObj container = event;
             Attribute variable = null;
             while (variable == null && container != null) {
                 variable = _getAttribute(container, name);
@@ -376,42 +258,7 @@ public class ActionsAttribute extends AbstractActionsAttribute {
      *  @return The parser scope.
      */
     protected ParserScope _getParserScope() {
-        if (_scopeVersion != _workspace.getVersion()) {
-            try {
-                _updateParserScope();
-            } catch (IllegalActionException e) {
-                throw new InternalErrorException(e);
-            }
-        }
-        return _scope;
-    }
-
-    /** Update the parser scope.
-     *
-     *  @exception IllegalActionException If the format of the parameter list in
-     *  the event has errors.
-     */
-    protected void _updateParserScope() throws IllegalActionException {
-        Event event = (Event) getContainer();
-        NamedObj eventContainer = event.getContainer();
-        if (eventContainer instanceof ERGController) {
-            ERGController controller = (ERGController) event.getContainer();
-            ParserScope superscope = controller.getPortScope();
-            List<?> names = event.parameters.getParameterNames();
-            Type[] types = event.parameters.getParameterTypes();
-            if (types != null && types.length > 0) {
-                Iterator<?> namesIter = names.iterator();
-                Map<String, Type> paramMap = new HashMap<String, Type>();
-                for (int i = 0; namesIter.hasNext(); i++) {
-                    String name = (String) namesIter.next();
-                    paramMap.put(name, types[i]);
-                }
-                _scope = new ParametersParserScope(paramMap, superscope);
-           } else {
-               _scope = superscope;
-           }
-        }
-        _scopeVersion = _workspace.getVersion();
+        return ((Event) getContainer())._getParserScope();
     }
 
     /** Get an attribute with the given name in the given container. The
@@ -462,10 +309,4 @@ public class ActionsAttribute extends AbstractActionsAttribute {
 
         return null;
     }
-
-    /** The parser scope used to type-check the actions. */
-    private ParserScope _scope;
-
-    /** The version of the workspace when _scope was last updated. */
-    private long _scopeVersion = -1;
 }
