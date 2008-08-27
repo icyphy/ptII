@@ -51,6 +51,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	PtolemyExpressionString.java \
+	RecursiveFileFilter.java \
 	RegularExpressionString.java
 
 EXTRA_SRCS =	$(JSRCS)
@@ -61,7 +62,8 @@ MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	'RecursiveFileFilter$$FileComparator.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

@@ -187,7 +187,7 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
                             if (tableau != null) {
                                 tableau.close();
                             }
-                            tableau = configuration.openModel(model, effigy);
+                            tableau = configuration.openInstance(model, effigy);
                             ((Effigy) tableau.getContainer()).uri.setURI(null);
                             _tableaus[i] = tableau;
                             modelChanged = false;

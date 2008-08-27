@@ -68,7 +68,11 @@ public class GTTools {
 
     public static NamedObj cleanupModel(NamedObj model)
     throws IllegalActionException {
-        Workspace workspace = model.workspace();
+        return cleanupModel(model, new Workspace());
+    }
+
+    public static NamedObj cleanupModel(NamedObj model, Workspace workspace)
+    throws IllegalActionException {
         try {
             workspace.getReadAccess();
             MoMLParser parser = new MoMLParser(workspace);

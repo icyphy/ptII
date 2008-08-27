@@ -40,6 +40,8 @@ import ptolemy.actor.TypedActor;
 import ptolemy.actor.util.Time;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Constants;
 import ptolemy.data.expr.ModelScope;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.ParserScope;
@@ -237,6 +239,10 @@ public class Event extends State implements Initializable, ValueListener {
                             EventParameter parameter = new EventParameter(this,
                                     name);
                             parameter.setTypeEquals(type);
+                            Token defaultToken = Constants.get(type.toString());
+                            if (defaultToken != null) {
+                                parameter.setToken(defaultToken);
+                            }
                         } catch (NameDuplicationException e) {
                             throw new IllegalActionException(this, "Unable " +
                                     "to create a parameter named \"" + name +

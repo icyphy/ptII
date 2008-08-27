@@ -50,15 +50,11 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.InputStream;
-import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -114,6 +110,7 @@ import ptolemy.actor.gt.Replacement;
 import ptolemy.actor.gt.TransformationRule;
 import ptolemy.actor.gt.data.CombinedCollection;
 import ptolemy.actor.gt.data.MatchResult;
+import ptolemy.actor.gt.util.RecursiveFileFilter;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Configurer;
 import ptolemy.actor.gui.EditorFactory;
@@ -300,23 +297,23 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             String header = "";
             if (GTTools.isInPattern(model)) {
                 header = _COPY_FROM_PATTERN_HEADER;
-                
+
                 try {
-                	model.workspace().getReadAccess();
+                    model.workspace().getReadAccess();
                     _setOrClearPatternObjectAttributes(model, true,
                             _getSelectionSet());
                 } finally {
-                	model.workspace().doneReading();
+                    model.workspace().doneReading();
                 }
-                
+
                 super.copy();
-                
+
                 try {
-                	model.workspace().getReadAccess();
-	                _setOrClearPatternObjectAttributes(model, false,
-	                        _getSelectionSet());
+                    model.workspace().getReadAccess();
+                    _setOrClearPatternObjectAttributes(model, false,
+                            _getSelectionSet());
                 } finally {
-                	model.workspace().doneReading();
+                    model.workspace().doneReading();
                 }
             } else if (GTTools.isInReplacement(model)) {
                 header = _COPY_FROM_REPLACEMENT_HEADER;
@@ -1551,36 +1548,36 @@ public class TransformationEditor extends GTFrame implements ActionListener,
 
     private void _setOrClearPatternObjectAttributes(NamedObj object,
             boolean isSet, Collection<?> filter) {
-    	try {
-	    	Collection<?> children;
-	        if (filter == null) {
-	            children = GTTools.getChildren(object, false, true, true, true);
-	        } else {
-	            children = filter;
-	        }
-	        for (Object childObject : children) {
-	            NamedObj child = (NamedObj) childObject;
-	            PatternObjectAttribute patternObject = GTTools
-	                    .getPatternObjectAttribute(child);
-	            if (isSet) {
-	                if (patternObject == null) {
-	                    patternObject = new PatternObjectAttribute(child,
-	                            "patternObject");
-	                }
-	                String name = _getNameWithinContainer(child,
-	                        getFrameController().getTransformationRule()
-	                        .getPattern());
-	                patternObject.setPersistent(true);
-	                patternObject.setExpression(name);
-	            } else if (patternObject != null) {
-	                patternObject.setPersistent(false);
-	                patternObject.setExpression("");
-	            }
-	            if (child instanceof CompositeEntity) {
-	                _setOrClearPatternObjectAttributes((CompositeEntity) child,
-	                		isSet, null);
-	            }
-	        }
+        try {
+            Collection<?> children;
+            if (filter == null) {
+                children = GTTools.getChildren(object, false, true, true, true);
+            } else {
+                children = filter;
+            }
+            for (Object childObject : children) {
+                NamedObj child = (NamedObj) childObject;
+                PatternObjectAttribute patternObject = GTTools
+                        .getPatternObjectAttribute(child);
+                if (isSet) {
+                    if (patternObject == null) {
+                        patternObject = new PatternObjectAttribute(child,
+                                "patternObject");
+                    }
+                    String name = _getNameWithinContainer(child,
+                            getFrameController().getTransformationRule()
+                            .getPattern());
+                    patternObject.setPersistent(true);
+                    patternObject.setExpression(name);
+                } else if (patternObject != null) {
+                    patternObject.setPersistent(false);
+                    patternObject.setExpression("");
+                }
+                if (child instanceof CompositeEntity) {
+                    _setOrClearPatternObjectAttributes((CompositeEntity) child,
+                            isSet, null);
+                }
+            }
         } catch (KernelException e) {
             throw new KernelRuntimeException(e, "Cannot set attribute.");
         }
@@ -1718,12 +1715,12 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                     .getAttribute("DefaultDirectory");
             File directoryFile = null;
             String fileFilter = "";
-            boolean subdirs = true;
+            boolean recursive = true;
             if (attribute != null) {
                 try {
                     directoryFile = attribute.directory.asFile();
-                    fileFilter = attribute.fileFilter.getExpression();
-                    subdirs = ((BooleanToken) attribute.subdirs.getToken())
+                    fileFilter = attribute.fileFilter.stringValue();
+                    recursive = ((BooleanToken) attribute.subdirs.getToken())
                             .booleanValue();
                 } catch (IllegalActionException e) {
                     throw new KernelRuntimeException(e,
@@ -1739,8 +1736,8 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                     try {
                         directoryFile = _attribute.directory.asFile();
                         fileFilter = _attribute.fileFilter.getExpression();
-                        subdirs = ((BooleanToken) _attribute.subdirs.getToken())
-                                .booleanValue();
+                        recursive = ((BooleanToken) _attribute.subdirs
+                                .getToken()).booleanValue();
                     } catch (IllegalActionException e) {
                         throw new KernelRuntimeException(e, "Unable to get "
                                 + "boolean token.");
@@ -1757,64 +1754,13 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             if (directoryFile == null) {
                 return null;
             } else {
-                File[] files = _listFiles(directoryFile, subdirs, fileFilter);
+                File[] files = RecursiveFileFilter.listFiles(directoryFile,
+                        recursive, fileFilter);
                 return files;
             }
         }
 
-        private File[] _listFiles(File directory, boolean includeSubdir,
-                String fileFilter) {
-            ModelFileFilter collector = new ModelFileFilter(includeSubdir,
-                    fileFilter);
-            directory.list(collector);
-            List<File> files = collector._files;
-            Collections.sort(files, new FileComparator());
-            return files.toArray(new File[files.size()]);
-        }
-
         private DefaultDirectoryAttribute _attribute;
-
-        private/*static*/class ModelFileFilter implements FilenameFilter {
-            // FindBugs suggests making this class static so as to decrease
-            // the size of instances and avoid dangling references.
-            // However, jdk1.5.0_11 says: modifier static not allowed here
-            public boolean accept(File dir, String name) {
-                File file = new File(dir, name);
-                boolean isDirectory = _includeSubdir && file.isDirectory();
-                boolean isFile = file.isFile()
-                        && (_pattern == null ? name.toLowerCase().endsWith(
-                                ".xml") : _pattern.matcher(name).matches());
-                if (isDirectory) {
-                    file.list(this);
-                } else if (isFile) {
-                    _files.add(file);
-                }
-                return false;
-            }
-
-            ModelFileFilter(boolean includeSubdir, String fileFilter) {
-                _includeSubdir = includeSubdir;
-                if (!fileFilter.equals("")) {
-                    _pattern = java.util.regex.Pattern
-                            .compile(_escape(fileFilter));
-                }
-            }
-
-            private String _escape(String string) {
-                String escaped = _ESCAPER.matcher(string).replaceAll("\\\\$1");
-                return escaped.replaceAll("\\\\\\*", ".*").replaceAll(
-                        "\\\\\\?", ".?");
-            }
-
-            private final java.util.regex.Pattern _ESCAPER = java.util.regex.Pattern
-                    .compile("([^a-zA-z0-9])");
-
-            private List<File> _files = new LinkedList<File>();
-
-            private boolean _includeSubdir;
-
-            private java.util.regex.Pattern _pattern;
-        }
 
         private class MultipleViewController extends ViewController {
 
@@ -1990,14 +1936,6 @@ public class TransformationEditor extends GTFrame implements ActionListener,
         }
     }
 
-    private static class FileComparator implements Comparator<File>,
-    Serializable {
-
-        public int compare(File file1, File file2) {
-            return file1.getAbsolutePath().compareTo(file2.getAbsolutePath());
-        }
-    }
-
     private static class GTEntityConfigureAction extends ConfigureAction {
 
         public GTEntityConfigureAction(String description) {
@@ -2060,7 +1998,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_L));
         }
 
-        /** Lay out the graph. 
+        /** Lay out the graph.
          *  @param e The action event.
          */
         public void actionPerformed(ActionEvent e) {
@@ -2285,13 +2223,13 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             while (topObjects.hasNext()) {
                 NamedObj topObject = (NamedObj) topObjects.next();
                 if (_isToPattern || _isFromReplacement && _isToReplacement) {
-                	try {
-                		topObject.workspace().getReadAccess();
-                		_setOrClearPatternObjectAttributes(topObject, false,
-                				null);
-                	} finally {
-                		topObject.workspace().doneReading();
-                	}
+                    try {
+                        topObject.workspace().getReadAccess();
+                        _setOrClearPatternObjectAttributes(topObject, false,
+                                null);
+                    } finally {
+                        topObject.workspace().doneReading();
+                    }
                 }
             }
             if (_isFromPattern && _isToReplacement || _isFromReplacement

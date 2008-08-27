@@ -2,6 +2,8 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <group>
+    <entity name="ListDirectory" class="ptolemy.actor.gt.controller.ListDirectory">
+    </entity>
     <entity name="Match" class="ptolemy.actor.gt.controller.Match">
     </entity>
     <entity name="ReadModel" class="ptolemy.actor.gt.controller.ReadModel">

@@ -57,6 +57,7 @@ JSRCS = \
 	InitContainingModel.java \
 	Init.java \
 	Input.java \
+	ListDirectory.java \
 	Match.java \
 	ModelAttribute.java \
 	ModelIOPort.java \
@@ -75,6 +76,7 @@ OTHER_FILES_TO_BE_JARED = \
 	InitContainingModelIcon.xml \
 	InitIcon.xml \
 	InputIcon.xml \
+	ListDirectoryIcon.xml \
 	MatchIcon.xml \
 	ModelUpdater.xml \
 	ModelUpdaterIcon.xml \

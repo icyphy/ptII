@@ -128,7 +128,7 @@ public class View extends GTEvent implements WindowListener {
                 if (_tableau != null) {
                     _tableau.close();
                 }
-                _tableau = configuration.openModel(entity, effigy);
+                _tableau = configuration.openInstance(entity, effigy);
                 // Set uri to null so that we don't accidentally overwrite the
                 // original file by pressing Ctrl-S.
                 ((Effigy) _tableau.getContainer()).uri.setURI(null);
