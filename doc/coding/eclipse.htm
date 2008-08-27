@@ -258,7 +258,7 @@ and browse to the PTII directory. Finish.
    <li> <a href="http://tortoisesvn.tigris.org/" target="_top">Tortoise SVN</a> - Windows GUI Client
    <br> <i>If you are not installing Subclipse, then choose TortoiseSVN</i>
    <li> <a href="http://www.cygwin.com" target="_top">Cygwin</a> - Windows command line client
-   <br> If you are more comfortable with a command line, then choose Cygwin.
+   <br> If you are more comfortable with a command line, then choose Cygwin. Make sure that you also install Cygwin's Subversion package.
 <li> To check out the ptII svn repository with <b>read-only</b> access:
 <pre>
 svn co svn://source.eecs.berkeley.edu/chess/ptII/trunk ptII
@@ -274,7 +274,7 @@ svn co svn+ssh://source.eecs.berkeley.edu/chess/ptII/trunk ptII
 Or, if your user id on source.eecs is different than your current user id
 on your machine:
 <pre>
-svn co svn+ssh://<I>yourID</I>source.eecs.berkeley.edu/chess/ptII/trunk ptII
+svn co svn+ssh://<I>yourID@</I>source.eecs.berkeley.edu/chess/ptII/trunk ptII
 </pre>
 
 <li>Configure the .classpath and .project files. See <a href="#.classpath.default"><CODE>.classpath.default</CODE></a>. below.
@@ -342,7 +342,7 @@ settings, and have Cygwin ssh installed, then
 is called.
 
 <p>The fix is to set Subclipse to use SVNKit
-<code>Window</code> | <code>Preferences</code> | <code>SVNKit (Pure Java)</code>
+<code>Window</code> | <code>Preferences</code> | <code>Team</code> | <code>SVN</code> | <code>SVN interface</code> | <code>SVNKit (Pure Java)</code>
 | <code>OK</code>
 
 <h3>Setup the Subversion Configuration to Sane setting</h3>
@@ -585,7 +585,7 @@ on your machine:
 svn co svn+ssh://<I>yourID</I>@source.eecs.berkeley.edu/chess/ptII
 </pre>
 Read/write users will be prompted for their source.eecs.berkeley.edu
-username and password. 
+username and password. This typically happens more than once since in case the svn+ssh protocol is being used passwords are not cached.
 
 <li>In the SVN Repository view, right click on <code>trunk</code> and select <code>checkout</code>
 
@@ -671,7 +671,7 @@ You will get many warnings that you can ignore, but hopefully no errors.
 <h3><a name="runningPtolemy">Running Ptolemy II</a></h3>
 
 <ol>
- <li> In the Run menu, select "Open Run Dialog".
+ <li> In the Run menu, select "Run Configurations...".
 
 <p> <li> In the resulting dialog, select "Java Application" and click "New".
 
