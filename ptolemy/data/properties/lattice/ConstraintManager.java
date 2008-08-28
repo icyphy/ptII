@@ -41,9 +41,9 @@ public class ConstraintManager {
     }
     
     /**
-     * 
-     * @param object
-     * @return
+     * Return the list of constrainting terms for the given object.
+     * @param object The given object.
+     * @return The list of constrainting terms for the given object.
      */
     public List<PropertyTerm> getConstraintingTerms(Object object) {        
         boolean least = _solver.solvingFixedPoint.getExpression().equals("least");

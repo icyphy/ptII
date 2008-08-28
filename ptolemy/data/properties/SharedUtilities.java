@@ -12,7 +12,10 @@ import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.kernel.util.Attribute;
 
 public class SharedUtilities {
-    
+
+    /**
+     * Construct a new SharedUtilities object.
+     */
     public SharedUtilities() {
         // Since this is a shared (singleton) object per model,
         // it is important that all model-specific references 
@@ -21,7 +24,11 @@ public class SharedUtilities {
         // will occur.
         id = count++;
     }
-    
+
+    /**
+     * Clear the states of this shared object. The states include
+     * all previously recorded information.
+     */
     public void resetAll() {
         _ranSolvers = new HashSet<PropertySolver>();
         _parseTrees = new HashMap<Attribute, ASTPtRootNode>();
@@ -30,26 +37,34 @@ public class SharedUtilities {
 
         PropertyHelper.resetAll();
     }
-    
+
     /**
-     * @param _parseTrees the _parseTrees to set
+     * Record the mapping between the given attribute and the
+     * given root ast node.
+     * @param attribute The given attribute.
+     * @param root The given root ast node.
      */
     public void putParseTrees(Attribute attribute, ASTPtRootNode root) {
         _parseTrees.put(attribute, root);
     }
 
     /**
-     * @return the _parseTrees
+     * Return the map that maps attributes (keys) to their root ast 
+     * nodes (values).
+     * @return The mappings for attributes to their root ast nodes.
      */
     public Map<Attribute, ASTPtRootNode> getParseTrees() {
         return _parseTrees;
     }
 
+    /**
+     * Return the representation for the SharedUtilities object.
+     */
     public String toString() {
         String result = "sharedUtilities#" + id;
         return result;
     }
-    
+
     /**
      * Record the association between the given ast node and the
      * given attribute.
@@ -59,17 +74,16 @@ public class SharedUtilities {
     protected void putAttribute(ASTPtRootNode node, Attribute attribute) {
         _attributes.put(node, attribute);
     }
-    
+
     /**
-     * @return the _attributes
+     * Return the map that maps root ast node (keys) to the 
+     * corresponding attribute (values).
+     * @return The mappings for root ast nodes to attributes.
      */
     public  Map<ASTPtRootNode, Attribute> getAttributes() {
         return _attributes;
     }
 
-    public int id;
-    public static int count = 0;
-    
     /**
      * The set of solvers that have already been invoked.
      */
@@ -80,37 +94,54 @@ public class SharedUtilities {
 
     private Map<ASTPtRootNode, Attribute> _attributes = 
         new HashMap<ASTPtRootNode, Attribute>();
-            
+
     private ArrayList<String> _errors = new ArrayList<String>();
 
     protected PropertySolver _previousInvokedSolver = null;
 
+    /**
+     * Return the set of solvers that were marked activated.
+     * @return The set of solvers that were activated previously.
+     */
     public Set<PropertySolver> getRanSolvers() {
         return _ranSolvers;
     }
 
+    /**
+     * Mard the given property solver as already activated.
+     * @param solver The given solver.
+     */
     public void addRanSolvers(PropertySolver solver) {
         _ranSolvers.add(solver);
     }
 
     /**
-     * @return the _errors
+     * Record the given error message.
+     * @param error The error message to record.
      */
     public void addErrors(String error) {
         _errors.add(error);
     }
 
     /**
-     * @return the _errors
+     * Return the list of error strings.
+     * @return The list of error strings.
      */
-    public ArrayList<String> getErrors() {
+    public List<String> getErrors() {
         Collections.sort(_errors);
         return _errors;
     }
 
+    /**
+     * Clear and return the previously recorded errors.
+     * @return The previously recorded errors.
+     */
     public List removeErrors() {
         List result = new ArrayList(_errors);
         _errors.clear();
-	return result;
+        return result;
     }
+    
+    public int id;
+    public static int count = 0;
 }

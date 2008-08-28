@@ -34,8 +34,8 @@ import ptolemy.graph.CPO;
 import ptolemy.graph.DirectedAcyclicGraph;
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
-//// PropertyLattice
+
+////PropertyLattice
 
 /**
  Property hierarchy base class.
@@ -57,289 +57,262 @@ import ptolemy.kernel.util.IllegalActionException;
  @see ptolemy.graph.CPO
  */
 public class PropertyLattice extends DirectedAcyclicGraph {
-    
+
     protected PropertyLattice() {
     }
-        
-//    protected class ThePropertyLattice implements CPO {
-        
-        /** Return the bottom element of the property lattice, which is UNKNOWN.
-         *  @return The Property object representing UNKNOWN.
-         */
-        public Object bottom() {
-            synchronized (PropertyLattice.class) {
-                return /*_basicLattice*/super.bottom();
-            }
-        }
-        
-        public CPO basicLattice() {
-            return this; //_basicLattice;
-        }
 
-        /** Compare two properties in the property lattice. The arguments must be
-         *  instances of Property, otherwise an exception will be thrown.
-         *  This method returns one of ptolemy.graph.CPO.LOWER,
-         *  ptolemy.graph.CPO.SAME, ptolemy.graph.CPO.HIGHER,
-         *  ptolemy.graph.CPO.INCOMPARABLE, indicating the first argument
-         *  is lower than, equal to, higher than, or incomparable with the
-         *  second argument in the property hierarchy, respectively.
-         *  @param t1 an instance of Property.
-         *  @param t2 an instance of Property.
-         *  @return An integer.
-         *  @exception IllegalArgumentException If one or both arguments
-         *   are not instances of Property.
-         */
-        public int compare(Object t1, Object t2) {
-            synchronized (PropertyLattice.class) {
-                if (!(t1 instanceof Property) || !(t2 instanceof Property)) {
-                    throw new IllegalArgumentException("ThePropertyLattice.compare: "
-                            + "Arguments are not instances of Property: " + " property1 = "
-                            + t1 + ", property2 = " + t2);
-                }
-                return /*_basicLattice*/super.compare((Property)t1, (Property)t2);
-            }
-        }
+//  protected class ThePropertyLattice implements CPO {
 
-        /** Throw an exception. This operation is not supported since we don't
-         *  need it.
-         *  @exception UnsupportedOperationException Always thrown.
-         */
-        public Object[] downSet(Object e) {
-            throw new UnsupportedOperationException(
-                    "ThePropertyLattice.downSet(): operation not supported for "
-                            + "the property lattice.");
-        }
-
-        /** Return the greatest lower bound of two properties.
-         *  @param t1 an instance of Property.
-         *  @param t2 an instance of Property.
-         *  @return an instance of Property.
-         *  @exception IllegalArgumentException If one or both of the
-         *   specified arguments are not instances of Property.
-         */
-        public Object greatestLowerBound(Object t1, Object t2) {
-            synchronized (PropertyLattice.class) {
-                if (t1 == null || t2 == null) {
-                    return null;
-                } 
-                
-                if (!(t1 instanceof Property) || !(t2 instanceof Property)) {
-                    throw new IllegalArgumentException(
-                            "ThePropertyLattice.greatestLowerBound: "
-                            + "Arguments are not instances of Property.");
-                }
-                if (!/*_basicLattice*/super.containsNodeWeight(t1)) {
-                    throw new IllegalArgumentException(
-                            "ThePropertyLattice does not contain " + t1);
-                }
-                if (!/*_basicLattice*/super.containsNodeWeight(t2)) {
-                    throw new IllegalArgumentException(
-                            "ThePropertyLattice does not contain " + t2);
-                }
-                int relation = /*_basicLattice*/super.compare(t1, t2);
-                if (relation == SAME) {
-                    return t1;
-                } else if (relation == LOWER) {
-                    return t1;
-                } else if (relation == HIGHER) {
-                    return t2;
-                } else { // INCOMPARABLE
-                    return /*_basicLattice*/super.greatestLowerBound(t1, t2);
-                }
-            }
-        }
-
-        /** Return the greatest lower bound of a subset.
-         *  @param subset an array of properties.
-         *  @return an instance of Property.
-         */
-        public Object greatestLowerBound(Object[] subset) {
-            throw new UnsupportedOperationException(
-                    "ThePropertyLattice.greatestUpperBound(Object[]) :" +
-                    " operation not supported for the property lattice.");
-        }
-
-        /** Return the greatest property of a set of properties, or null if the
-         *  greatest one does not exist.
-         *  @param subset an array of properties.
-         *  @return A Property or null.
-         */
-        public Object greatestElement(Object[] subset) {
-            synchronized (PropertyLattice.class) {
-                // Compare each element with all of the other elements to search
-                // for the greatest one. This is a simple, brute force algorithm,
-                // but may be inefficient. A more efficient one is used in
-                // the graph package, but more complex.
-                for (int i = 0; i < subset.length; i++) {
-                    boolean isGreatest = true;
-
-                    for (int j = 0; j < subset.length; j++) {
-                        int result = compare(subset[i], subset[j]);
-
-                        if ((result == CPO.LOWER) || (result == CPO.INCOMPARABLE)) {
-                            isGreatest = false;
-                            break;
-                        }
-                    }
-
-                    if (isGreatest == true) {
-                        return subset[i];
-                    }
-                }
-                // FIXME: Shouldn't this return GENERAL?
-                return null;
-            }
-        }
-
-        /** Return true.
-         *  @return true.
-         */
-        public boolean isLattice() {
-            return true;
-        }
-
-        /** Return the least property of a set of properties, or null if the
-         *  least one does not exist.
-         *  @param subset an array of properties.
-         *  @return A Property or null.
-         */
-        public Object leastElement(Object[] subset) {
-            synchronized (PropertyLattice.class) {
-                // Compare each element with all of the other elements to search
-                // for the least one. This is a simple, brute force algorithm,
-                // but may be inefficient. A more efficient one is used in
-                // the graph package, but more complex.
-                for (int i = 0; i < subset.length; i++) {
-                    boolean isLeast = true;
-
-                    for (int j = 0; j < subset.length; j++) {
-                        int result = compare(subset[i], subset[j]);
-
-                        if ((result == CPO.HIGHER) || (result == CPO.INCOMPARABLE)) {
-                            isLeast = false;
-                            break;
-                        }
-                    }
-
-                    if (isLeast == true) {
-                        return subset[i];
-                    }
-                }
-                // FIXME: Shouldn't thir return bottom?
-                return null;
-            }
-        }
-
-        /** Return the least upper bound of two properties.
-         *  @param t1 an instance of Property.
-         *  @param t2 an instance of Property.
-         *  @return an instance of Property.
-         */
-        public Object leastUpperBound(Object t1, Object t2) {
-            synchronized (PropertyLattice.class) {
-                if (t1 == null) {
-                    return t2;
-                } 
-                if (t2 == null) {
-                    return t1;
-                }
-                
-                if (!(t1 instanceof Property) || !(t2 instanceof Property)) {
-                    throw new IllegalArgumentException(
-                            "ThePropertyLattice.leastUpperBound: "
-                            + "Arguments are not instances of Property.");
-                }
-
-                    // Both are neither the same structured property, nor an array
-                    // and non-array pair, so their property relation is defined
-                    // by the basic lattice.
-                    int relation = /*_basicLattice*/super.compare(t1, t2);
-
-                    if (relation == SAME) {
-                        return t1;
-                    } else if (relation == LOWER) {
-                        return t2;
-                    } else if (relation == HIGHER) {
-                        return t1;
-                    } else { // INCOMPARABLE
-                        return /*_basicLattice*/super.leastUpperBound(t1, t2);
-                    }
-            }
-        }
-
-        /** Return the least upper bound of a subset.
-         *  @param subset an array of properties.
-         *  @return an instance of Property.
-         */
-        public Object leastUpperBound(Object[] subset) {
-            throw new UnsupportedOperationException(
-                    "ThePropertyLattice.leastUpperBound(Object[]) :" +
-                    " operation not supported for the property lattice.");
-        }
-
-        /** Return the top element of the property lattice, which is General.
-         *  @return The Property object representing General.
-         */
-        public Object top() {
-            synchronized (PropertyLattice.class) {
-                return /*_basicLattice*/super.top(); 
-            }
-        }
-
-        /** Throw an exception. This operation is not supported since the
-         *  property lattice is infinite,
-         *  this operation is not supported.
-         *  @exception UnsupportedOperationException Always thrown.
-         */
-        public Object[] upSet(Object e) {
-            throw new UnsupportedOperationException(
-                    "ThePropertyLattice.upSet(): operation not supported for "
-                            + "the property lattice.");
-        }
-        
-        protected DirectedAcyclicGraph _basicLattice = this; //new DirectedAcyclicGraph();
-
-        public void setBasicLattice(DirectedAcyclicGraph graph) {
-            //_basicLattice = graph;
-        }
-//    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-   
-    /** Return the an instance of CPO representing the basic property
-     *  lattice.
-     *  @return an instance of CPO.
+    /** Return the bottom element of the property lattice, which is UNKNOWN.
+     *  @return The Property object representing UNKNOWN.
      */
-//    public CPO basicLattice() {
-//        return _lattice.basicLattice();
-//    }
+    public Object bottom() {
+        synchronized (PropertyLattice.class) {
+            return /*_basicLattice*/super.bottom();
+        }
+    }
 
-    /** Compare two properties in the property lattice.
+    public CPO basicLattice() {
+        return this; //_basicLattice;
+    }
+
+    /** Compare two properties in the property lattice. The arguments must be
+     *  instances of Property, otherwise an exception will be thrown.
      *  This method returns one of ptolemy.graph.CPO.LOWER,
      *  ptolemy.graph.CPO.SAME, ptolemy.graph.CPO.HIGHER,
      *  ptolemy.graph.CPO.INCOMPARABLE, indicating the first argument
      *  is lower than, equal to, higher than, or incomparable with the
      *  second argument in the property hierarchy, respectively.
-     *  @param property1 an instance of Property.
-     *  @param property2 an instance of Property.
+     *  @param t1 an instance of Property.
+     *  @param t2 an instance of Property.
      *  @return An integer.
+     *  @exception IllegalArgumentException If one or both arguments
+     *   are not instances of Property.
      */
-//    public synchronized int compare(Property property1, Property property2) {
-//        if ((property1 == null) || (property2 == null)) {
-//            throw new IllegalArgumentException(
-//                    "PropertyLattice.compare(Property, Property): "
-//                            + "one or both of the argument properties is null: "
-//                            + " property1 = " + property1 + ", property2 = " + property2);
-//        }
-//
-//        return _lattice.compare(property1, property2);
-//    }
+    public int compare(Object t1, Object t2) {
+        synchronized (PropertyLattice.class) {
+            if (!(t1 instanceof Property) || !(t2 instanceof Property)) {
+                throw new IllegalArgumentException("ThePropertyLattice.compare: "
+                        + "Arguments are not instances of Property: " + " property1 = "
+                        + t1 + ", property2 = " + t2);
+            }
+            return /*_basicLattice*/super.compare((Property)t1, (Property)t2);
+        }
+    }
 
+    /** Throw an exception. This operation is not supported since we don't
+     *  need it.
+     *  @exception UnsupportedOperationException Always thrown.
+     */
+    public Object[] downSet(Object e) {
+        throw new UnsupportedOperationException(
+                "ThePropertyLattice.downSet(): operation not supported for "
+                + "the property lattice.");
+    }
+
+    /** Return the greatest lower bound of two properties.
+     *  @param t1 an instance of Property.
+     *  @param t2 an instance of Property.
+     *  @return an instance of Property.
+     *  @exception IllegalArgumentException If one or both of the
+     *   specified arguments are not instances of Property.
+     */
+    public Object greatestLowerBound(Object t1, Object t2) {
+        synchronized (PropertyLattice.class) {
+            if (t1 == null || t2 == null) {
+                return null;
+            } 
+
+            if (!(t1 instanceof Property) || !(t2 instanceof Property)) {
+                throw new IllegalArgumentException(
+                        "ThePropertyLattice.greatestLowerBound: "
+                        + "Arguments are not instances of Property.");
+            }
+            if (!/*_basicLattice*/super.containsNodeWeight(t1)) {
+                throw new IllegalArgumentException(
+                        "ThePropertyLattice does not contain " + t1);
+            }
+            if (!/*_basicLattice*/super.containsNodeWeight(t2)) {
+                throw new IllegalArgumentException(
+                        "ThePropertyLattice does not contain " + t2);
+            }
+            int relation = /*_basicLattice*/super.compare(t1, t2);
+            if (relation == SAME) {
+                return t1;
+            } else if (relation == LOWER) {
+                return t1;
+            } else if (relation == HIGHER) {
+                return t2;
+            } else { // INCOMPARABLE
+                return /*_basicLattice*/super.greatestLowerBound(t1, t2);
+            }
+        }
+    }
+
+    /** Return the greatest lower bound of a subset.
+     *  @param subset an array of properties.
+     *  @return an instance of Property.
+     */
+    public Object greatestLowerBound(Object[] subset) {
+        throw new UnsupportedOperationException(
+                "ThePropertyLattice.greatestUpperBound(Object[]) :" +
+        " operation not supported for the property lattice.");
+    }
+
+    /** Return the greatest property of a set of properties, or null if the
+     *  greatest one does not exist.
+     *  @param subset an array of properties.
+     *  @return A Property or null.
+     */
+    public Object greatestElement(Object[] subset) {
+        synchronized (PropertyLattice.class) {
+            // Compare each element with all of the other elements to search
+            // for the greatest one. This is a simple, brute force algorithm,
+            // but may be inefficient. A more efficient one is used in
+            // the graph package, but more complex.
+            for (int i = 0; i < subset.length; i++) {
+                boolean isGreatest = true;
+
+                for (int j = 0; j < subset.length; j++) {
+                    int result = compare(subset[i], subset[j]);
+
+                    if ((result == CPO.LOWER) || (result == CPO.INCOMPARABLE)) {
+                        isGreatest = false;
+                        break;
+                    }
+                }
+
+                if (isGreatest == true) {
+                    return subset[i];
+                }
+            }
+            // FIXME: Shouldn't this return GENERAL?
+            return null;
+        }
+    }
+
+    /** Return true.
+     *  @return true.
+     */
+    public boolean isLattice() {
+        return true;
+    }
+
+    /** Return the least property of a set of properties, or null if the
+     *  least one does not exist.
+     *  @param subset an array of properties.
+     *  @return A Property or null.
+     */
+    public Object leastElement(Object[] subset) {
+        synchronized (PropertyLattice.class) {
+            // Compare each element with all of the other elements to search
+            // for the least one. This is a simple, brute force algorithm,
+            // but may be inefficient. A more efficient one is used in
+            // the graph package, but more complex.
+            for (int i = 0; i < subset.length; i++) {
+                boolean isLeast = true;
+
+                for (int j = 0; j < subset.length; j++) {
+                    int result = compare(subset[i], subset[j]);
+
+                    if ((result == CPO.HIGHER) || (result == CPO.INCOMPARABLE)) {
+                        isLeast = false;
+                        break;
+                    }
+                }
+
+                if (isLeast == true) {
+                    return subset[i];
+                }
+            }
+            // FIXME: Shouldn't thir return bottom?
+            return null;
+        }
+    }
+
+    /** Return the least upper bound of two properties.
+     *  @param t1 an instance of Property.
+     *  @param t2 an instance of Property.
+     *  @return an instance of Property.
+     */
+    public Object leastUpperBound(Object t1, Object t2) {
+        synchronized (PropertyLattice.class) {
+            if (t1 == null) {
+                return t2;
+            } 
+            if (t2 == null) {
+                return t1;
+            }
+
+            if (!(t1 instanceof Property) || !(t2 instanceof Property)) {
+                throw new IllegalArgumentException(
+                        "ThePropertyLattice.leastUpperBound: "
+                        + "Arguments are not instances of Property.");
+            }
+
+            // Both are neither the same structured property, nor an array
+            // and non-array pair, so their property relation is defined
+            // by the basic lattice.
+            int relation = /*_basicLattice*/super.compare(t1, t2);
+
+            if (relation == SAME) {
+                return t1;
+            } else if (relation == LOWER) {
+                return t2;
+            } else if (relation == HIGHER) {
+                return t1;
+            } else { // INCOMPARABLE
+                return /*_basicLattice*/super.leastUpperBound(t1, t2);
+            }
+        }
+    }
+
+    /** Return the least upper bound of a subset.
+     *  @param subset an array of properties.
+     *  @return an instance of Property.
+     */
+    public Object leastUpperBound(Object[] subset) {
+        throw new UnsupportedOperationException(
+                "ThePropertyLattice.leastUpperBound(Object[]) :" +
+        " operation not supported for the property lattice.");
+    }
+
+    /** Return the top element of the property lattice, which is General.
+     *  @return The Property object representing General.
+     */
+    public Object top() {
+        synchronized (PropertyLattice.class) {
+            return /*_basicLattice*/super.top(); 
+        }
+    }
+
+    /** Throw an exception. This operation is not supported since the
+     *  property lattice is infinite,
+     *  this operation is not supported.
+     *  @exception UnsupportedOperationException Always thrown.
+     */
+    public Object[] upSet(Object e) {
+        throw new UnsupportedOperationException(
+                "ThePropertyLattice.upSet(): operation not supported for "
+                + "the property lattice.");
+    }
+
+    protected DirectedAcyclicGraph _basicLattice = this; //new DirectedAcyclicGraph();
+
+    public void setBasicLattice(DirectedAcyclicGraph graph) {
+        //_basicLattice = graph;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /**
+     * Globally reset all solvers in the model.
+     */
     public static void resetAll() {
         _lattices.clear();
     }
-    
+
     /**
      * Return the property lattice described by the given lattice
      * description file. If the lattice was not created already, 
@@ -355,7 +328,7 @@ public class PropertyLattice extends DirectedAcyclicGraph {
                 // Create a new instance of PropertyLattice.
                 //PropertyLattice newLattice = new PropertyLattice();
                 PropertyLattice newLattice = (PropertyLattice)
-                    latticeClass.getConstructor(new Class[0]).newInstance(new Object[0]);                
+                latticeClass.getConstructor(new Class[0]).newInstance(new Object[0]);                
 
                 _lattices.put(latticeName, newLattice);
 
@@ -363,9 +336,9 @@ public class PropertyLattice extends DirectedAcyclicGraph {
                 e.printStackTrace();
             }            
         }
-        
+
         PropertyLattice lattice = _lattices.get(latticeName);
-        
+
         return lattice;
     }
 
@@ -374,12 +347,12 @@ public class PropertyLattice extends DirectedAcyclicGraph {
         try {
             return (Property) getClass().getField(fieldName).get(this);
         } catch (Exception ex) {
-//            return null;
+//          return null;
             throw new IllegalActionException(
                     "No lattice element named \"" + fieldName + "\".");
         }
     }
-    
+
     /** Return the greatest lower bound of the two given properties.
      *  @param property1 The first given property.
      *  @param property2 The second given property.
@@ -427,7 +400,7 @@ public class PropertyLattice extends DirectedAcyclicGraph {
         String name = getClass().getPackage().getName();
         return name.substring(name.lastIndexOf('.') + 1);
     }
-    
+
     public String getName() {
         return toString();
     }

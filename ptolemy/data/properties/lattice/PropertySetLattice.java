@@ -53,9 +53,6 @@ import ptolemy.graph.CPO;
  */
 public class PropertySetLattice extends PropertyLattice {
     
-    protected PropertySetLattice() {
-    }
-        
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
    
@@ -65,8 +62,8 @@ public class PropertySetLattice extends PropertyLattice {
      *  ptolemy.graph.CPO.INCOMPARABLE, indicating the first argument
      *  is lower than, equal to, higher than, or incomparable with the
      *  second argument in the property hierarchy, respectively.
-     *  @param property1 an instance of Property.
-     *  @param property2 an instance of Property.
+     *  @param t1 an instance of PropertySet.
+     *  @param t2 an instance of PropertySet.
      *  @return An integer.
      */
     public int compare(Object t1, Object t2) {
@@ -94,8 +91,8 @@ public class PropertySetLattice extends PropertyLattice {
     }
     
     /** Return the greatest lower bound of the two given properties.
-     *  @param property1 The first given property.
-     *  @param property2 The second given property.
+     *  @param t1 an instance of PropertySet.
+     *  @param t2 an instance of PropertySet.
      *  @return The greatest lower bound of property1 and property2.
      */
     public Object greatestLowerBound(Object t1, Object t2) {
@@ -118,8 +115,8 @@ public class PropertySetLattice extends PropertyLattice {
     }
 
     /** Return the least upper bound of the two given properties.
-     *  @param property1 The first given property.
-     *  @param property2 The second given property.
+     *  @param t1 an instance of PropertySet.
+     *  @param t2 an instance of PropertySet.
      *  @return The least upper bound of property1 and property2.
      */
     public Object leastUpperBound(Object t1, Object t2) {
@@ -130,14 +127,6 @@ public class PropertySetLattice extends PropertyLattice {
         return union;
     }
 
-    public String toString() {
-        String name = getClass().getPackage().getName();
-        return name.substring(name.lastIndexOf('.') + 1);
-    }
-    
-    public String getName() {
-        return toString();
-    }
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
