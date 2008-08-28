@@ -177,8 +177,9 @@ public class Query extends JPanel {
      *  @param name The name used to identify the entry (when calling get).
      *  @param label The label to attach to the entry.
      *  @param defaultValue The default value (true for on).
+     *  @return The check box.
      */
-    public void addCheckBox(String name, String label, boolean defaultValue) {
+    public JCheckBox addCheckBox(String name, String label, boolean defaultValue) {
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
 
@@ -191,6 +192,8 @@ public class Query extends JPanel {
         // Add the listener last so that there is no notification
         // of the first value.
         checkbox.addItemListener(new QueryItemListener(name));
+
+        return checkbox;
     }
 
     /** Create an uneditable choice menu.
@@ -227,8 +230,9 @@ public class Query extends JPanel {
      *   to the choices in values.
      *  @param background The background color for the editable part.
      *  @param foreground The foreground color for the editable part.
+     *  @return The combo box for the choice.
      */
-    public void addChoice(String name, String label, String[] values,
+    public JComboBox addChoice(String name, String label, String[] values,
             String defaultChoice, boolean editable, final Color background,
             final Color foreground) {
         JLabel lbl = new JLabel(label + ": ");
@@ -255,20 +259,25 @@ public class Query extends JPanel {
         // Add the listener last so that there is no notification
         // of the first value.
         combobox.addItemListener(new QueryItemListener(name));
+
+        return combobox;
     }
 
     /** Create a ColorChooser.
      *  @param name The name used to identify the entry (when calling get).
      *  @param label The label to attach to the entry.
      *  @param defaultColor The default color to use.
+     *  @return The color chooser.
      */
-    public void addColorChooser(String name, String label, String defaultColor) {
+    public QueryColorChooser addColorChooser(String name, String label,
+            String defaultColor) {
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
 
         QueryColorChooser colorChooser = new QueryColorChooser(name,
                 defaultColor);
         _addPair(name, lbl, colorChooser, colorChooser);
+        return colorChooser;
     }
 
     /** Create a simple one-line text display, a non-editable value that
@@ -276,8 +285,9 @@ public class Query extends JPanel {
      *  @param name The name used to identify the entry (when calling get).
      *  @param label The label to attach to the entry.
      *  @param theValue Default string to display.
+     *  @return The text area that displays the value.
      */
-    public void addDisplay(String name, String label, String theValue) {
+    public JTextArea addDisplay(String name, String label, String theValue) {
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
 
@@ -288,6 +298,7 @@ public class Query extends JPanel {
         displayField.setEditable(false);
         displayField.setBackground(_background);
         _addPair(name, lbl, displayField, displayField);
+        return displayField;
     }
 
     /** Create a FileChooser that selects files only, not directories, and
@@ -351,10 +362,12 @@ public class Query extends JPanel {
      *  @param allowDirectories True if directories may be chosen.
      *  @param background The background color for the text entry box.
      *  @param foreground The foreground color for the text entry box.
+     *  @return The file chooser.
      */
-    public void addFileChooser(String name, String label, String defaultName,
-            URI base, File startingDirectory, boolean allowFiles,
-            boolean allowDirectories, Color background, Color foreground) {
+    public QueryFileChooser addFileChooser(String name, String label,
+            String defaultName, URI base, File startingDirectory,
+            boolean allowFiles, boolean allowDirectories, Color background,
+            Color foreground) {
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
 
@@ -362,6 +375,7 @@ public class Query extends JPanel {
                 base, startingDirectory, allowFiles, allowDirectories,
                 background, foreground);
         _addPair(name, lbl, fileChooser, fileChooser);
+        return fileChooser;
     }
 
     /** Create a single-line entry box with the specified name, label, and
@@ -423,10 +437,12 @@ public class Query extends JPanel {
      *   the entry).
      *  @param label The label to attach to the entry.
      *  @param defaultValue Default value to appear in the entry box.
+     *  @return The password field for the input.
      *  @since Ptolemy II 3.1
      */
-    public void addPassword(String name, String label, String defaultValue) {
-        addPassword(name, label, defaultValue, Color.white, Color.black);
+    public JPasswordField addPassword(String name, String label,
+            String defaultValue) {
+        return addPassword(name, label, defaultValue, Color.white, Color.black);
     }
 
     /** Create a single-line password box with the specified name,
@@ -447,10 +463,11 @@ public class Query extends JPanel {
      *  @param defaultValue Default value to appear in the entry box.
      *  @param background The background color.
      *  @param foreground The foreground color.
+     *  @return The password field for the input.
      *  @since Ptolemy II 3.1
      */
-    public void addPassword(String name, String label, String defaultValue,
-            Color background, Color foreground) {
+    public JPasswordField addPassword(String name, String label,
+            String defaultValue, Color background, Color foreground) {
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
 
@@ -475,6 +492,8 @@ public class Query extends JPanel {
         // later, the focus is lost and the entered value becomes
         // the value of the parameter.  I don't know of any workaround.
         entryBox.addFocusListener(new QueryFocusListener(name));
+
+        return entryBox;
     }
 
     /** Add a listener.  The changed() method of the listener will be
@@ -610,10 +629,11 @@ public class Query extends JPanel {
      *  @param defaultValue Initial position of slider.
      *  @param maximum Maximum value of slider.
      *  @param minimum Minimum value of slider.
+     *  @return The slider.
      *  @exception IllegalArgumentException If the desired default value
      *   is not between the minimum and maximum.
      */
-    public void addSlider(String name, String label, int defaultValue,
+    public JSlider addSlider(String name, String label, int defaultValue,
             int minimum, int maximum) throws IllegalArgumentException {
         JLabel lbl = new JLabel(label + ": ");
 
@@ -632,6 +652,7 @@ public class Query extends JPanel {
         JSlider slider = new JSlider(minimum, maximum, defaultValue);
         _addPair(name, lbl, slider, slider);
         slider.addChangeListener(new SliderListener(name));
+        return slider;
     }
 
     /**  Create a text area.
@@ -666,8 +687,9 @@ public class Query extends JPanel {
      *  @param foreground The foreground color.
      *  @param height The height.
      *  @param width The width.
+     *  @return The text area.
      */
-    public void addTextArea(String name, String label, String theValue,
+    public JTextArea addTextArea(String name, String label, String theValue,
             Color background, Color foreground, int height, int width) {
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
@@ -680,6 +702,7 @@ public class Query extends JPanel {
         QueryScrollPane textPane = new QueryScrollPane(textArea);
         _addPair(name, lbl, textPane, textPane);
         textArea.addFocusListener(new QueryFocusListener(name));
+        return textArea;
     }
 
     /** Get the current value in the entry with the given name
@@ -1928,7 +1951,7 @@ public class Query extends JPanel {
         QueryScrollPane(JTextArea c) {
             super(c);
             textArea = c;
-            
+
             // Set the undo listener
             textArea.getDocument().addUndoableEditListener(new UndoListener(textArea));
 

@@ -32,10 +32,10 @@ import java.io.File;
 import ptolemy.actor.gt.util.RecursiveFileFilter;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.StringToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.data.expr.Variable;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -43,6 +43,7 @@ import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
+import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// ListDirectory
@@ -84,18 +85,31 @@ public class ListDirectory extends GTEvent {
         files.setExpression("{}");
         files.setVisibility(Settable.NOT_EDITABLE);
         files.setPersistent(false);
+        Variable variable = new Variable(files, "_textHeightHint");
+        variable.setExpression("5");
+        variable.setPersistent(false);
     }
 
     public void fire(ArrayToken arguments) throws IllegalActionException {
         File[] listedFiles = RecursiveFileFilter.listFiles(directory.asFile(),
                 ((BooleanToken) recursive.getToken()).booleanValue(),
                 filter.stringValue());
-        StringToken[] stringTokens = new StringToken[listedFiles.length];
-        for (int i = 0; i < listedFiles.length; i++) {
-            stringTokens[i] = new StringToken(listedFiles[i].getPath());
+        StringBuffer buffer = new StringBuffer("{ ");
+        int i = 0;
+        for (File file : listedFiles) {
+            if (i++ > 0) {
+                buffer.append(",\n  ");
+            }
+            buffer.append('\"');
+            buffer.append(StringUtilities.escapeString(file.getPath()));
+            buffer.append('\"');
         }
-        files.setToken(new ArrayToken(stringTokens));
-        
+        if (listedFiles.length > 0) {
+            buffer.append(' ');
+        }
+        buffer.append('}');
+        files.setExpression(buffer.toString());
+
         super.fire(arguments);
     }
 

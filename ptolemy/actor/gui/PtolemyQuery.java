@@ -39,9 +39,12 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.Box;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
+import javax.swing.text.JTextComponent;
 
 import ptolemy.actor.gui.style.ParameterEditorStyle;
 import ptolemy.actor.parameters.DoubleRangeParameter;
@@ -184,18 +187,14 @@ public class PtolemyQuery extends Query implements QueryListener,
             String displayName = attribute.getDisplayName();
 
             try {
-                if (attribute.getVisibility() == Settable.NOT_EDITABLE) {
-                    String defaultValue = attribute.getExpression();
-                    addDisplay(name, displayName, defaultValue);
-                    attachParameter(attribute, name);
-                    foundStyle = true;
-                } else if (attribute instanceof IntRangeParameter) {
+                JComponent component = null;
+                if (attribute instanceof IntRangeParameter) {
                     int current = ((IntRangeParameter) attribute)
                             .getCurrentValue();
                     int min = ((IntRangeParameter) attribute).getMinValue();
                     int max = ((IntRangeParameter) attribute).getMaxValue();
 
-                    addSlider(name, displayName, current, min, max);
+                    component = addSlider(name, displayName, current, min, max);
                     attachParameter(attribute, name);
                     foundStyle = true;
                 } else if (attribute instanceof DoubleRangeParameter) {
@@ -211,20 +210,22 @@ public class PtolemyQuery extends Query implements QueryListener,
                     // Get the quantized integer for the current value.
                     int quantized = ((int) Math
                             .round(((current - min) * precision) / (max - min)));
-                    addSlider(name, displayName, quantized, 0, precision);
+                    component = addSlider(name, displayName, quantized, 0,
+                            precision);
                     attachParameter(attribute, name);
                     foundStyle = true;
                 } else if (attribute instanceof ColorAttribute) {
-                    addColorChooser(name, displayName, attribute
+                    component = addColorChooser(name, displayName, attribute
                             .getExpression());
                     attachParameter(attribute, name);
                     foundStyle = true;
                } else if (attribute instanceof CustomQueryBoxParameter) {
-		    JLabel label = new JLabel(displayName + ": ");
-		    label.setBackground(_background);
-		    Box box = ((CustomQueryBoxParameter) attribute).createQueryBox(this, attribute);
-		    _addPair(name, label, box, box);
-		    attachParameter(attribute, name);
+            JLabel label = new JLabel(displayName + ": ");
+            label.setBackground(_background);
+            component = ((CustomQueryBoxParameter) attribute)
+                    .createQueryBox(this, attribute);
+            _addPair(name, label, component, component);
+            attachParameter(attribute, name);
                   foundStyle = true;
                 } else if (attribute instanceof FileParameter
                         || attribute instanceof FilePortParameter) {
@@ -286,7 +287,7 @@ public class PtolemyQuery extends Query implements QueryListener,
 
                     // FIXME: Should remember previous browse location?
                     // Next to last argument is the starting directory.
-                    addFileChooser(name, displayName,
+                    component = addFileChooser(name, displayName,
                             attribute.getExpression(), base, directory,
                             allowFiles, allowDirectories,
                             preferredBackgroundColor(attribute),
@@ -294,7 +295,7 @@ public class PtolemyQuery extends Query implements QueryListener,
                     attachParameter(attribute, name);
                     foundStyle = true;
                 } else if (attribute instanceof PasswordAttribute) {
-                    addPassword(name, displayName, "");
+                    component = addPassword(name, displayName, "");
                     attachParameter(attribute, name);
                     foundStyle = true;
                 } else if (attribute instanceof Parameter
@@ -303,7 +304,8 @@ public class PtolemyQuery extends Query implements QueryListener,
 
                     // NOTE: Make this always editable since Parameter
                     // supports a form of expressions for value propagation.
-                    addChoice(name, displayName, castAttribute.getChoices(),
+                    component = addChoice(name, displayName,
+                            castAttribute.getChoices(),
                             castAttribute.getExpression(), true,
                             preferredBackgroundColor(attribute),
                             preferredForegroundColor(attribute));
@@ -338,7 +340,8 @@ public class PtolemyQuery extends Query implements QueryListener,
                         }
                     }
 
-                    addTextArea(name, displayName, attribute.getExpression(),
+                    component = addTextArea(name, displayName,
+                            attribute.getExpression(),
                             preferredBackgroundColor(attribute),
                             preferredForegroundColor(attribute), heightValue,
                             widthValue);
@@ -356,7 +359,7 @@ public class PtolemyQuery extends Query implements QueryListener,
                         // and the default Line style should be used.
                         if (attribute.getExpression().equals("true")
                                 || attribute.getExpression().equals("false")) {
-                            addCheckBox(name, displayName,
+                            component = addCheckBox(name, displayName,
                                     ((BooleanToken) current).booleanValue());
                             attachParameter(attribute, name);
                             foundStyle = true;
@@ -365,6 +368,20 @@ public class PtolemyQuery extends Query implements QueryListener,
                 }
 
                 // NOTE: Other attribute classes?
+
+                if (attribute.getVisibility() == Settable.NOT_EDITABLE) {
+                    if (component == null) {
+                        String defaultValue = attribute.getExpression();
+                        component = addDisplay(name, displayName, defaultValue);
+                        attachParameter(attribute, name);
+                        foundStyle = true;
+                    } else if (component instanceof JTextComponent) {
+                        component.setBackground(_background);
+                        ((JTextComponent) component).setEditable(false);
+                    } else {
+                        component.setEnabled(false);
+                    }
+                }
             } catch (IllegalActionException ex) {
                 // Ignore and create a line entry.
             }
