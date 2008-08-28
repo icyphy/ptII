@@ -277,7 +277,7 @@ public class PropertyConstraintFSMHelper extends PropertyConstraintCompositeHelp
         
         Iterator iterator = parseTrees.iterator();
         while (iterator.hasNext()) {
-            putAttributes((ASTPtRootNode) iterator.next(), actions);
+            putAttribute((ASTPtRootNode) iterator.next(), actions);
         }
         return parseTrees;
     }
