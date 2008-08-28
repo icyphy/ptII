@@ -45,9 +45,11 @@ public abstract class PropertyHelper {
     }
 
     /**
-     * @param attribute
-     * @return
-     * @throws IllegalActionException
+     * Return the root ast node for the given attribute.
+     * @param attribute The given attribute.
+     * @return The root ast node for the given attribute.
+     * @throws IllegalActionException Thrown if 
+     * PropertySolver.getParseTree(Attribute) throws it.
      */
     protected ASTPtRootNode getParseTree(Attribute attribute) 
     throws IllegalActionException {
@@ -64,10 +66,13 @@ public abstract class PropertyHelper {
 
 
     /**
-     * @param _attributes the _attributes to set
+     * Record the association between the given ast node and the
+     * given attribute.
+     * @param node The given ast node.
+     * @param attribute The given attribute.
      */
-    protected void putAttributes(ASTPtRootNode node, Attribute attribute) {
-        _solver.getSharedUtilities().putAttributes(node, attribute);
+    protected void putAttribute(ASTPtRootNode node, Attribute attribute) {
+        _solver.getSharedUtilities().putAttribute(node, attribute);
     }
 
 
@@ -99,12 +104,13 @@ public abstract class PropertyHelper {
     public abstract List<Object> getPropertyables();
 
     /**
-     * 
-     * @return
+     * Return the list of sub-helpers.
+     * @return The list of sub-helpers.
      * @throws IllegalActionException
      */
     protected abstract List<PropertyHelper> _getSubHelpers() throws IllegalActionException;
 
+    
     protected static List<Port> _getSinkPortList(IOPort port) {
         List<Port> result = new ArrayList<Port>();
 
@@ -276,8 +282,8 @@ public abstract class PropertyHelper {
     }
 
     /**
-     * 
-     * @return
+     * Get the list of propertyable attributes for this helper.
+     * @return The list of propertyable attributes.
      */
     protected List<Attribute> _getPropertyableAttributes() {
         List<Attribute> result = new LinkedList<Attribute>();

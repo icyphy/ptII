@@ -247,12 +247,11 @@ public abstract class PropertySolver extends Attribute {
     }
 
     /**
-     * Find a constraint solver that is associated with the given 
-     * property lattice name. There can be more than one solvers with
-     * the same lattice. This method returns whichever it finds first. 
-     * @param latticeName The given name of the property lattice. 
-     * @return The property constraint solver associated with the
-     *  given lattice name. 
+     * Find a solver that is associated with the given label. There 
+     * can be more than one solvers with the label. This method returns 
+     * whichever it finds first.
+     * @param identifier The given label. 
+     * @return The property solver associated with the given label.
      * @throws IllegalActionException Thrown if no matched solver
      *  is found.
      */
@@ -288,8 +287,8 @@ public abstract class PropertySolver extends Attribute {
     throws IllegalActionException;
 
     /**
-     * @param attribute
-     * @return
+     * @param attribute The given attribute.
+     * @return The root ast node associated with the given attribute.
      * @throws IllegalActionException
      */
     public ASTPtRootNode getParseTree(Attribute attribute) throws IllegalActionException {
@@ -318,7 +317,7 @@ public abstract class PropertySolver extends Attribute {
             }
 
             parseTrees.put(attribute, parseTree);
-            getSharedUtilities().putAttributes(parseTree, attribute);
+            getSharedUtilities().putAttribute(parseTree, attribute);
         }
         return parseTrees.get(attribute);
     }
@@ -381,8 +380,12 @@ public abstract class PropertySolver extends Attribute {
     }
 
     /**
-     * Resolve the property values for the given top-level entity.
-     * @param topLevel The given top level entity.
+     * Resolve the property values for the top-level entity that contains
+     * the solver.
+     * @param analyzer The model analyzer that invokes the solver. However, 
+     *  this is null if the solver is invoked directly from its GUI.
+     * @param isInvoked Whether the solver is directly invoked or activated
+     *  through solver dependencies.
      * @return True if resolution succeeds as expected; Otherwise, false.
      * @throws IllegalActionException TODO
      */
@@ -592,8 +595,9 @@ public abstract class PropertySolver extends Attribute {
     }
 
     /**
-     * @param propertyable
-     * @return
+     * Get the propertyable attribute contained by the given propertyable.
+     * @param propertyable The given propertyable object.
+     * @return The property attribute contained by the given propertyable.
      * @throws IllegalActionException
      */
     protected PropertyAttribute _getPropertyAttribute(NamedObj propertyable) 
@@ -675,12 +679,9 @@ public abstract class PropertySolver extends Attribute {
     }
 
     /**
-     * 
-     * @param object
-     * @return
-     * @throws IllegalActionException
+     * Get the name of the package that contains the class of this solver.
+     * @return A string that contains the package name. 
      */
-
     protected String _getPackageName() {
         return getClass().getPackage().getName() + "." + getUseCaseName();
     }
@@ -1247,6 +1248,7 @@ public abstract class PropertySolver extends Attribute {
             }
 
         } catch (KernelException e) {
+            resetAll();
             throw new InternalErrorException(e);
         } 
         
@@ -1277,9 +1279,11 @@ public abstract class PropertySolver extends Attribute {
     }
 
     /**
-     * 
-     * @param usecase
-     * @return
+     * Return true if the solver can be identified by the given
+     * use-case string; otherwise, false.
+     * @param usecase The given use-case label.
+     * @return True if the solver can be identified by the given
+     * use-case string; otherwise, false.
      */
     public boolean isIdentifiable(String usecase) {
         return usecase.equals(getName()) ||
@@ -1381,6 +1385,11 @@ public abstract class PropertySolver extends Attribute {
         _resolvedProperties.remove(object);
     }
 
+    /**
+     * Return the resolved property for the given object. 
+     * @param object The given object
+     * @return The resolved property for the given object.
+     */
     public Property getResolvedProperty(Object object) {
         return getResolvedProperty(object, true);
     }
@@ -1419,18 +1428,30 @@ public abstract class PropertySolver extends Attribute {
         return (Property) _resolvedProperties.get(object);
     }
 
+    /**
+     * Return the declared property for the given object. 
+     * @param object The given object
+     * @return The declared property for the given object.
+     */
     public Property getDeclaredProperty(Object object) {
         return (Property) _declaredProperties.get(object);
     }
 
+    /**
+     * Return the previous resolved property for the given object. 
+     * @param object The given object.
+     * @return The previous resolved property for the given object.
+     */
     public Property getPreviousProperty(Object object) {
         return (Property) _previousProperties.get(object);
     }
 
     /**
-     * 
-     * @param node
-     * @return
+     * Get the attribute that corresponds to the given root ast node.
+     * This assumes that the correspondence is recorded previously
+     * through calling PropertyHelper.putAttribute(ASTPtRootNode, Attribute).
+     * @param node The given ast node.
+     * @return The attribute associated with the given ast node.
      * @throws IllegalActionException 
      */
     public Attribute getAttribute(ASTPtRootNode node) {
@@ -1465,6 +1486,9 @@ public abstract class PropertySolver extends Attribute {
         return getResolvedProperty(object);
     }
 
+    /**
+     * The PropertyHighlighter that controls the property visualization.
+     */
     protected PropertyHighlighter _highlighter;
 
     /** 
@@ -1480,7 +1504,9 @@ public abstract class PropertySolver extends Attribute {
     private HashMap<Object, Property> _resolvedProperties = new HashMap<Object, Property>();
 
     /**
-     * The set of property-able objects that??? 
+     * The set of propertyable objects that are marked non-settable.
+     * A non-settable propertyable object results from setting an object
+     * to a fixed property through PropertyHelper.setEquals().
      */
     private HashSet<Object> _nonSettables = new HashSet<Object>();
 
@@ -1494,7 +1520,7 @@ public abstract class PropertySolver extends Attribute {
     protected Map<Object, Object> _stats = new LinkedHashMap<Object, Object>();
 
     /**
-     * @return the _parser
+     * @return The expression parser shared by all solvers.
      */
     public static PtParser getParser() {
         if (_parser == null) {
@@ -1504,15 +1530,14 @@ public abstract class PropertySolver extends Attribute {
     }
 
     /**
-     * @return the _sharedUtilities
+     * @return The SharedUtilities object. 
      */
     public SharedUtilities getSharedUtilities() {
         return _sharedUtilities; 
     }
 
     /**
-     * 
-     * @return
+     * Record tracing statistics.
      */
     protected void _addStatistics() {
         _stats.put("# of helpers", _helperStore.size());
@@ -1522,6 +1547,11 @@ public abstract class PropertySolver extends Attribute {
         _stats.put("has trained resolution errors", getTrainedException().length() > 0);
     }
 
+    /**
+     * 
+     * @param separator
+     * @return
+     */
     protected String _getStatsAsString(String separator) {
         StringBuffer result = new StringBuffer();
         for (Object field : _stats.keySet()) {
@@ -1532,6 +1562,10 @@ public abstract class PropertySolver extends Attribute {
 
     private static PtParser _parser;
 
+    /**
+     * Return the list of all PropertyHelpers.
+     * @return The list of all PropertyHelper.
+     */
     public List<PropertyHelper> getAllHelpers() {
         NamedObj topLevel = toplevel();
         List<PropertyHelper> result = new LinkedList<PropertyHelper>();
@@ -1553,6 +1587,10 @@ public abstract class PropertySolver extends Attribute {
         return result;
     }
 
+    /**
+     * Return the list of all propertyable objects.
+     * @return The list of all propertyable objects.
+     */
     public List getAllPropertyables() {
         List result = new LinkedList();
 
@@ -1562,6 +1600,11 @@ public abstract class PropertySolver extends Attribute {
         return result;
     }
     
+    /**
+     * 
+     * @param sharedParameter
+     * @return
+     */
     public static List<PropertySolver> getAllSolvers(SharedParameter sharedParameter) {
         List<NamedObj> parameters = new ArrayList<NamedObj>(sharedParameter.sharedParameterSet());
         List<PropertySolver>  solvers= new LinkedList<PropertySolver>();
@@ -1612,9 +1655,6 @@ public abstract class PropertySolver extends Attribute {
     /** The display label for "view" in the action choices */
     protected static final String VIEW = "VIEW";
 
-    /** The display label for "manual annotation" in the action choices */
-    //protected static final String MANUAL_ANNOTATE = "MANUAL ANNOTATE";
-
     public static final String NONDEEP_TEST_OPTION = "-nondeep"; 
 
     /**
@@ -1626,6 +1666,11 @@ public abstract class PropertySolver extends Attribute {
         return _dependentSolvers;
     }
 
+    /**
+     * Return the trained exception message string. If there is no
+     * trained exception, an empty string is return.
+     * @return The trained exception message string.
+     */
     public String getTrainedException() {
         StringAttribute attribute = (StringAttribute)
         getAttribute(_TRAINED_EXCEPTION_ATTRIBUTE_NAME);
@@ -1652,10 +1697,19 @@ public abstract class PropertySolver extends Attribute {
         getSharedUtilities().resetAll();        
     }
 
+    /**
+     * Record the previous property of the given object.
+     * @param object The given object.
+     * @param property The given property.
+     */
     public void recordPreviousProperty(Object object, Property property)  {
         _previousProperties.put(object, property);
     }
 
+    /**
+     * @param exceptionMessage
+     * @throws IllegalActionException
+     */
     public void recordTrainedException(String exceptionMessage) throws IllegalActionException {
         StringAttribute attribute = (StringAttribute)
         getAttribute(_TRAINED_EXCEPTION_ATTRIBUTE_NAME);
@@ -1672,10 +1726,20 @@ public abstract class PropertySolver extends Attribute {
         attribute.setExpression(exceptionMessage);
     }
 
+    /**
+     * Record the declared property of the given object.
+     * @param object The given object.
+     * @param property The given property.
+     */
     public void setDeclaredProperty(Object object, Property property)  {
         _declaredProperties.put(object, property);
     }
 
+    /**
+     * Record the resolved property of the given object.
+     * @param object The given object.
+     * @param property The given property.
+     */
     public void setResolvedProperty(Object object, Property property) {
         _resolvedProperties.put(object, property);
     }
@@ -1761,14 +1825,22 @@ public abstract class PropertySolver extends Attribute {
         System.out.println(_getStatsAsString(": "));        
     }
 
+    /**
+     * Set the solver to testing mode.
+     */
     public void setTesting() {
         action.setPersistent(true);
         setAction(TEST);
         _repaintGUI();
     }
 
-    // FIXME: Check that the container is an instance of PropertyConstraintSolver.
 
+    /**
+     * 
+     * @param exception
+     * @param trainedException
+     * @return
+     */
     public static String getTrainedExceptionMismatchMessage(
             String exception, String trainedException) {
         return "The generated exception:" + _eol + 
@@ -1781,6 +1853,10 @@ public abstract class PropertySolver extends Attribute {
         "-------------------------------------------------------" + _eol;
     }
 
+    /**
+     * Return the name of the trained exception attribute.
+     * @return The name of the trained exception attribute.
+     */
     public Attribute getTrainedExceptionAttribute() {
         return getAttribute(_TRAINED_EXCEPTION_ATTRIBUTE_NAME);
     }

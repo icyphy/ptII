@@ -53,8 +53,8 @@ public class ParseTreeASTNodeHelperCollector extends AbstractParseTreeVisitor {
     /** Infer the property of the parse tree with the specified root node using
      *  the specified scope to resolve the values of variables.
      *  @param node The root of the parse tree.
-     *  @param scope The scope for evaluation.
-     *  @return The result of evaluation.
+     *  @param solver The given solver.
+     *  @return The list of property helpers.
      *  @exception IllegalActionException If an error occurs during
      *   evaluation.
      */

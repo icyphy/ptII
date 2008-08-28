@@ -60,8 +60,7 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
     /** Infer the property of the parse tree with the specified root node using
      *  the specified scope to resolve the values of variables.
      *  @param node The root of the parse tree.
-     *  @param scope The scope for evaluation.
-     *  @return The result of evaluation.
+     *  @param helper The given property helper.
      *  @exception IllegalActionException If an error occurs during
      *   evaluation.
      */
@@ -71,6 +70,9 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
         node.visit(this);
     }
     
+    /**
+     * 
+     */
     public void visitAssignmentNode(ASTPtAssignmentNode node)
     throws IllegalActionException {
         ((ASTPtRootNode) node.jjtGetChild(0)).visit(this);
@@ -86,6 +88,9 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
         }
     }
 
+    /**
+     * 
+     */
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
         _evaluatedObject = _resolveLabel(_getNodeLabel(node), _helper.getComponent());
 

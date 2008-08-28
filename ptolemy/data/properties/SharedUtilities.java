@@ -51,9 +51,12 @@ public class SharedUtilities {
     }
     
     /**
-     * @param _attributes the _attributes to set
+     * Record the association between the given ast node and the
+     * given attribute.
+     * @param node The given ast node.
+     * @param attribute The given attribute.
      */
-    protected void putAttributes(ASTPtRootNode node, Attribute attribute) {
+    protected void putAttribute(ASTPtRootNode node, Attribute attribute) {
         _attributes.put(node, attribute);
     }
     

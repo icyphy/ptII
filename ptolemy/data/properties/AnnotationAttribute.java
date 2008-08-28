@@ -28,7 +28,7 @@ public class AnnotationAttribute extends StringAttribute {
     public void setName(String name) throws IllegalActionException,
     NameDuplicationException {
         super.setName(name);
-        _checkAttributeName(name);
+        //_checkAttributeName(name);
     }
 
     /**

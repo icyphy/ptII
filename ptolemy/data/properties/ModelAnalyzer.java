@@ -167,6 +167,7 @@ public class ModelAnalyzer extends Transformer {
             
             String actionValue = action.getExpression();
             
+            PropertySolver chosenSolver = null;
             try {
 
                 URIAttribute attribute = (URIAttribute) 
@@ -178,8 +179,6 @@ public class ModelAnalyzer extends Transformer {
                     URI uri = _getModelURI(getName() + "_" + entity.getName());
                     attribute.setURI(uri);
                 }
-                
-                PropertySolver chosenSolver = null;
                 
                 List solversInModel = entity.attributeList(PropertySolver.class);
                 if (solversInModel.size() > 0) {
@@ -230,6 +229,9 @@ public class ModelAnalyzer extends Transformer {
                         entity, null, ex, "Failed: Checking/annotating failed while in progress.") + "\n\n"));
             } */
             finally {
+                if (chosenSolver != null) {
+                    chosenSolver.resetAll();
+                }
 //                _removeSolvers(entity);
             }
         }
