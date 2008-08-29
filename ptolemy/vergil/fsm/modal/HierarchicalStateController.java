@@ -186,7 +186,7 @@ public class HierarchicalStateController extends StateController {
                     RefinementExtender.class);
             for (RefinementExtender extender : extenders) {
                 try {
-                    refinementClasses.put(extender.getDisplayName(),
+                    refinementClasses.put(extender.description.stringValue(),
                             extender.className.stringValue());
                 } catch (IllegalActionException e1) {
                     // Ignore.

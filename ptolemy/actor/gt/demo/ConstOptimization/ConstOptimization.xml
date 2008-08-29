@@ -265,16 +265,12 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 180.0]">
                 </property>
             </entity>
-            <entity name="Finish" class="ptolemy.domains.erg.kernel.Event">
+            <entity name="Finish" class="ptolemy.actor.gt.controller.GTEvent">
                 <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="finished = true">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
-                </property>
-                <property name="Embedded Transformation Controller" class="ptolemy.domains.fsm.modal.RefinementExtender">
-                    <property name="className" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.gt.controller.EmbeddedTransformationControllerWithPorts">
-                    </property>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 180.0]">
                 </property>

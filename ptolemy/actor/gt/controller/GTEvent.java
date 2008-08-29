@@ -30,9 +30,11 @@ package ptolemy.actor.gt.controller;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.erg.kernel.ERGController;
 import ptolemy.domains.erg.kernel.Event;
+import ptolemy.domains.fsm.modal.RefinementExtender;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 
 //////////////////////////////////////////////////////////////////////////
@@ -54,10 +56,21 @@ public class GTEvent extends Event {
         super(container, name);
 
         fireOnInput.setVisibility(Settable.NONE);
+        new ModelParameter(this, "HostModel");
+        refinementExtender = new RefinementExtender(this, "refinementExtender");
+        refinementExtender.description.setExpression(
+                "Embedded Transformation Controller");
+        refinementExtender.setPersistent(false);
+        _setRefinementExtender();
     }
 
     public Parameter getMatchedParameter() throws IllegalActionException {
-        ERGController controller = (ERGController) getContainer();
+        NamedObj container = getContainer();
+        if (!(container instanceof ERGController)) {
+            return null;
+        }
+
+        ERGController controller = (ERGController) container;
         Parameter parameter = null;
         while (parameter == null && controller != null) {
             parameter = (Parameter) controller.getAttribute("Matched",
@@ -77,7 +90,12 @@ public class GTEvent extends Event {
     }
 
     public ModelAttribute getModelAttribute() throws IllegalActionException {
-        ERGController controller = (ERGController) getContainer();
+        NamedObj container = getContainer();
+        if (!(container instanceof ERGController)) {
+            return null;
+        }
+
+        ERGController controller = (ERGController) container;
         ModelAttribute actorParameter = null;
         while (actorParameter == null && controller != null) {
             actorParameter = (ModelAttribute) controller.getAttribute(
@@ -94,5 +112,33 @@ public class GTEvent extends Event {
                     "parameter in the ERG controller of type ActorParameter.");
         }
         return actorParameter;
+    }
+
+    public void setContainer(CompositeEntity container)
+            throws IllegalActionException, NameDuplicationException {
+        super.setContainer(container);
+
+        _setRefinementExtender();
+    }
+
+    public RefinementExtender refinementExtender;
+
+    private void _setRefinementExtender() {
+        NamedObj container = getContainer();
+        if (container == null || !(container instanceof ERGController)) {
+            return;
+        }
+
+        ERGController controller = (ERGController) container;
+        if (controller != null && refinementExtender != null) {
+            if (controller.getPort("modelInput") != null &&
+                    controller.getPort("modelOutput") != null) {
+                refinementExtender.className.setExpression("ptolemy.actor.gt." +
+                        "controller.EmbeddedTransformationControllerWithPorts");
+            } else {
+                refinementExtender.className.setExpression("ptolemy.actor.gt." +
+                        "controller.EmbeddedTransformationController");
+            }
+        }
     }
 }

@@ -61,6 +61,7 @@ JSRCS = \
 	Match.java \
 	ModelAttribute.java \
 	ModelIOPort.java \
+	ModelParameter.java \
 	Output.java \
 	ReadModel.java \
 	Test.java \
@@ -73,6 +74,7 @@ OTHER_FILES_TO_BE_JARED = \
 	EmbeddedTransformationController.xml \
 	EmbeddedTransformationControllerWithPorts.xml \
 	EventLibrary.xml \
+	GTEventIcon.xml \
 	InitContainingModelIcon.xml \
 	InitIcon.xml \
 	InputIcon.xml \

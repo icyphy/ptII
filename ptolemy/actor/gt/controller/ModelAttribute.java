@@ -27,6 +27,8 @@
 */
 package ptolemy.actor.gt.controller;
 
+import java.lang.ref.WeakReference;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -63,6 +65,19 @@ public class ModelAttribute extends Attribute implements Initializable {
         _initializables.add(initializable);
     }
 
+    public boolean addModelListener(ModelListener listener) {
+        if (_modelListeners == null) {
+            _modelListeners = new LinkedList<WeakReference<ModelListener>>();
+        }
+        for (WeakReference<ModelListener> reference : _modelListeners) {
+            if (reference.get() == listener) {
+                return false;
+            }
+        }
+        _modelListeners.add(new WeakReference<ModelListener>(listener));
+        return true;
+    }
+
     public CompositeEntity getModel() {
         return _model;
     }
@@ -77,7 +92,7 @@ public class ModelAttribute extends Attribute implements Initializable {
     }
 
     public void preinitialize() throws IllegalActionException {
-        _model = null;
+        setModel(null);
         // Invoke initializable methods.
         if (_initializables != null) {
             for (Initializable initializable : _initializables) {
@@ -95,6 +110,20 @@ public class ModelAttribute extends Attribute implements Initializable {
         }
     }
 
+    public boolean removeModelListener(ModelListener listener) {
+        if (_modelListeners != null) {
+            Iterator<WeakReference<ModelListener>> iterator =
+                _modelListeners.iterator();
+            while (iterator.hasNext()) {
+                if (iterator.next().get() == listener) {
+                    iterator.remove();
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public void setContainer(NamedObj container) throws IllegalActionException,
     NameDuplicationException {
         NamedObj oldContainer = getContainer();
@@ -109,6 +138,7 @@ public class ModelAttribute extends Attribute implements Initializable {
 
     public void setModel(CompositeEntity model) {
         _model = model;
+        _notifyModelListeners();
     }
 
     public void wrapup() throws IllegalActionException {
@@ -118,7 +148,20 @@ public class ModelAttribute extends Attribute implements Initializable {
                 initializable.wrapup();
             }
         }
-        _model = null;
+        setModel(null);
+    }
+
+    public interface ModelListener {
+
+        public void modelChanged();
+    }
+
+    private void _notifyModelListeners() {
+        if (_modelListeners != null) {
+            for (WeakReference<ModelListener> reference : _modelListeners) {
+                reference.get().modelChanged();
+            }
+        }
     }
 
     /** List of objects whose (pre)initialize() and wrapup() methods should be
@@ -127,4 +170,6 @@ public class ModelAttribute extends Attribute implements Initializable {
     private transient List<Initializable> _initializables;
 
     private CompositeEntity _model;
+
+    private List<WeakReference<ModelListener>> _modelListeners;
 }

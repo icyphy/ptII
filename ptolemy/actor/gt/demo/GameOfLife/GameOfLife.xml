@@ -133,16 +133,12 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 35.0]">
             </property>
         </entity>
-        <entity name="CreateMap" class="ptolemy.domains.erg.kernel.Event">
+        <entity name="CreateMap" class="ptolemy.actor.gt.controller.GTEvent">
             <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="CreateMap">
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
-            </property>
-            <property name="Embedded Transformation Controller" class="ptolemy.domains.fsm.modal.RefinementExtender">
-                <property name="className" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.gt.controller.EmbeddedTransformationController">
-                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 105.0]">
             </property>
@@ -155,7 +151,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[281.12914576141344, 165.20186347229279]">
             </property>
         </entity>
-        <entity name="InitializeOccupants" class="ptolemy.domains.erg.kernel.Event">
+        <entity name="InitializeOccupants" class="ptolemy.actor.gt.controller.GTEvent">
             <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="InitializeOccupants">
             </property>
             <property name="monitoredVariables" class="ptolemy.data.expr.StringParameter" value="">
@@ -164,14 +160,10 @@
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
             </property>
-            <property name="Embedded Transformation Controller" class="ptolemy.domains.fsm.modal.RefinementExtender">
-                <property name="className" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.gt.controller.EmbeddedTransformationController">
-                </property>
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[131.12914576141344, 165.20186347229279]">
             </property>
         </entity>
-        <entity name="Update" class="ptolemy.domains.erg.kernel.Event">
+        <entity name="Update" class="ptolemy.actor.gt.controller.GTEvent">
             <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Update">
             </property>
             <property name="monitoredVariables" class="ptolemy.data.expr.StringParameter" value="">
@@ -179,10 +171,6 @@
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
-            </property>
-            <property name="Embedded Transformation Controller" class="ptolemy.domains.fsm.modal.RefinementExtender">
-                <property name="className" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.gt.controller.EmbeddedTransformationController">
-                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[396.12914576141344, 165.20186347229279]">
             </property>
@@ -381,16 +369,12 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 65.0]">
             </property>
         </property>
-        <entity name="Start" class="ptolemy.domains.erg.kernel.Event">
+        <entity name="Start" class="ptolemy.actor.gt.controller.GTEvent">
             <property name="isInitialEvent" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
-            </property>
-            <property name="Embedded Transformation Controller" class="ptolemy.domains.fsm.modal.RefinementExtender">
-                <property name="className" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.gt.controller.EmbeddedTransformationController">
-                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 45.0]">
             </property>
@@ -1392,7 +1376,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{400.0, 195.0}">
             </property>
         </entity>
-        <entity name="Start" class="ptolemy.domains.erg.kernel.Event">
+        <entity name="Start" class="ptolemy.actor.gt.controller.GTEvent">
             <property name="isInitialEvent" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Count = 0">
@@ -1400,10 +1384,6 @@
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
-            </property>
-            <property name="Embedded Transformation Controller" class="ptolemy.domains.fsm.modal.RefinementExtender">
-                <property name="className" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.gt.controller.EmbeddedTransformationController">
-                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 55.0}">
             </property>
@@ -2967,16 +2947,12 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 185.0]">
             </property>
         </entity>
-        <entity name="Start" class="ptolemy.domains.erg.kernel.Event">
+        <entity name="Start" class="ptolemy.actor.gt.controller.GTEvent">
             <property name="isInitialEvent" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
-            </property>
-            <property name="Embedded Transformation Controller" class="ptolemy.domains.fsm.modal.RefinementExtender">
-                <property name="className" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.gt.controller.EmbeddedTransformationController">
-                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 95.0]">
             </property>
