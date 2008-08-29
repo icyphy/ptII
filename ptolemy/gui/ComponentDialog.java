@@ -119,6 +119,28 @@ public class ComponentDialog extends JDialog {
      */
     public ComponentDialog(Frame owner, String title, Component component,
             String[] buttons, String message) {
+        this(owner, title, component, buttons, message, false);
+    }
+    
+    /** Construct a dialog with the specified owner, title, component,
+     *  buttons, and message.  The message is placed above the component.
+     *  The first button is the "default" in that
+     *  it is the one activated by "Enter" or "Return" keys.
+     *  If the <i>buttons</i> argument is null, then an "OK"
+     *  and a "Cancel" button will be created.
+     *  The dialog is placed relative to the owner.
+     *  @param owner The object that, per the user, appears to be
+     *   generating the dialog.
+     *  @param title The title of the dialog.
+     *  @param component The component to insert in the dialog.
+     *  @param buttons An array of labels for buttons at the bottom
+     *   of the dialog.
+     *  @param message A message to place above the component, or null
+     *   if no message is needed.
+     *  @param resizable True to allow the dialog to be resized.
+     */
+    public ComponentDialog(Frame owner, String title, Component component,
+            String[] buttons, String message, boolean resizable) {
         super(owner, title, true);
 
         // Create a panel that contains the optional message
@@ -202,7 +224,7 @@ public class ComponentDialog extends JDialog {
 
         getContentPane().add(_optionPane);
         pack();
-        setResizable(false);
+        setResizable(resizable);
 
         if (owner != null) {
             setLocationRelativeTo(owner);
