@@ -27,10 +27,7 @@
  */
 package ptolemy.actor.lib.io.comm;
 
-import gnu.io.CommPortIdentifier;
-import gnu.io.SerialPort;
-import gnu.io.SerialPortEvent;
-import gnu.io.SerialPortEventListener;
+import javax.comm.*;
 
 import java.io.IOException;
 import java.io.InputStream;
