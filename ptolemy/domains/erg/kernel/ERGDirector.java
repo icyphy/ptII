@@ -502,10 +502,27 @@ public class ERGDirector extends Director implements TimedDirector {
         if (_eventQueue != null) {
             synchronized (_eventQueue) {
                 _stopRequested = true;
+                _eventQueue.notifyAll();
             }
         }
 
         super.stop();
+    }
+
+    /** Request the execution of the current iteration to complete.
+     *  If the director is paused waiting for events to appear in the
+     *  event queue, then it stops waiting,
+     *  and calls stopFire() for all actors
+     *  that are deeply contained by the container of this director.
+     */
+    public void stopFire() {
+        if (_eventQueue != null) {
+            synchronized (_eventQueue) {
+                _eventQueue.notifyAll();
+            }
+        }
+
+        super.stopFire();
     }
 
     /** Invoke the wrapup() method of the superclass, and clear the event queue.
