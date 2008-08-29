@@ -27,7 +27,6 @@
  */
 package ptolemy.actor.lib.database;
 
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.lib.Source;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ArrayToken;
@@ -38,7 +37,6 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
 //// DatabaseQuery
