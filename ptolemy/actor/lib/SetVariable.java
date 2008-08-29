@@ -35,6 +35,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.ExplicitChangeContext;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.ModelScope;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
@@ -191,13 +192,8 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
 
         if (!variableNameValue.equals("")) {
             // Look for the variableName anywhere in the hierarchy
-            while ((_attribute == null) && (container != null)) {
-                _attribute = container.getAttribute(variableNameValue);
-
-                if (_attribute == null) {
-                    container = container.getContainer();
-                }
-            }
+            _attribute = ModelScope.getScopedVariable(null, container,
+                    variableNameValue);
 
             if (_attribute == null) {
                 try {
