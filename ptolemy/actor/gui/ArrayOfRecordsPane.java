@@ -30,7 +30,6 @@ package ptolemy.actor.gui;
 
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -73,7 +72,12 @@ public class ArrayOfRecordsPane extends JPanel {
      */
     public ArrayOfRecordsPane() {
         super();
-        add(new SimpleTable());
+        table = new SimpleTable();
+        // FIXME: As usual with Swing, the scrollpane doesn't appear.
+        // But if we don't do this, then the table headers don't appear!
+        // Go figure...
+        JScrollPane scrollPane = new JScrollPane(table);
+        add(scrollPane);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -102,7 +106,7 @@ public class ArrayOfRecordsPane extends JPanel {
         table.setTableHeader(new JTableHeader(table.getColumnModel()));
         _initColumnSizes(table);
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
@@ -112,8 +116,8 @@ public class ArrayOfRecordsPane extends JPanel {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** This method picks good column sizes. As usual with Swing,
-     *  what it does is completely ignored...
+    /** This method picks good column sizes and sets the preferred
+     *  size for the table.
      *  It is adapted from the Java Tutorials from Sun Microsystems.
      */
     private void _initColumnSizes(JTable table) {
@@ -123,12 +127,15 @@ public class ArrayOfRecordsPane extends JPanel {
         TableCellRenderer headerRenderer =
             table.getTableHeader().getDefaultRenderer();
 
+        int tableWidth = 0;
+        int tableHeight = 0;
         for (int i = 0; i < model.getColumnCount(); i++) {
             column = table.getColumnModel().getColumn(i);
             component = headerRenderer.getTableCellRendererComponent(
                     null, column.getHeaderValue(),
                     false, false, 0, 0);
             int width = component.getPreferredSize().width;
+            int columnHeight = 0;
             for (int j = 0; j < model.getRowCount(); j++) {
                 component = table.getDefaultRenderer(
                         model.getColumnClass(i)).
@@ -139,9 +146,17 @@ public class ArrayOfRecordsPane extends JPanel {
                 if (cellWidth > width) {
                     width = cellWidth;
                 }
+                columnHeight += component.getPreferredSize().height;
             }
             column.setPreferredWidth(width);
+            tableWidth += width;
+            
+            if (columnHeight > tableHeight) {
+                tableHeight = columnHeight;
+            }
         }
+        Dimension tableSize = new Dimension(tableWidth, tableHeight);
+        table.setPreferredSize(tableSize);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -149,7 +164,7 @@ public class ArrayOfRecordsPane extends JPanel {
 
     /** Empty table model. */
     private static EmptyTableModel _emptyTableModel = new EmptyTableModel();
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
 
@@ -317,23 +332,18 @@ public class ArrayOfRecordsPane extends JPanel {
     }
     
     /** Table panel. */
-    private class SimpleTable extends JPanel {
+    private class SimpleTable extends JTable {
         public SimpleTable() {
-            super(new GridLayout(1,0));
-            table = new JTable();
+            super();
             // Adjust column widths automatically.
-            table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+            setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 
             // FIXME: Don't hardwire the size here ?
-            table.setPreferredScrollableViewportSize(new Dimension(500, 300));
+            // Sadly, as usual with swing, the preferred size of the table has
+            // no effect. Also, the scrollbar does not appear... This is really lame...
+            setPreferredScrollableViewportSize(new Dimension(800, 200));
             // This is Java 1.6 specific:
-            //table.setFillsViewportHeight(true);
-
-            //Create the scroll pane and add the table to it.
-            JScrollPane scrollPane = new JScrollPane(table);
-
-            //Add the scroll pane to this panel.
-            add(scrollPane);
+            // table.setFillsViewportHeight(true);
         }
     }
 }
