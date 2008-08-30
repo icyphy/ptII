@@ -33,7 +33,7 @@ import java.awt.Frame;
 import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.Manager;
 import ptolemy.actor.gt.GTTools;
-import ptolemy.actor.gt.controller.ModelAttribute;
+import ptolemy.actor.gt.controller.ModelParameter;
 import ptolemy.actor.gt.controller.TransformationAttribute;
 import ptolemy.actor.gui.EditorFactory;
 import ptolemy.data.BooleanToken;
@@ -103,7 +103,7 @@ public class TransformationAttributeEditorFactory extends EditorFactory {
                 _frame.report("Applying model transformation: " +
                         _attribute.getName());
                 ERGModalModel modelUpdater = _attribute.getModelUpdater();
-                ModelAttribute modelAttribute = (ModelAttribute) modelUpdater
+                ModelParameter modelAttribute = (ModelParameter) modelUpdater
                         .getController().getAttribute("HostModel");
                 modelAttribute.setModel(_model);
             }
