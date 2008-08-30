@@ -31,6 +31,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
+import java.util.Random;
 
 import javax.swing.SwingConstants;
 
@@ -328,17 +329,19 @@ public class TableIcon extends DynamicEditorIcon {
     }
     
     private Color _uniqueColor(Object object) {
-        // Get a color from the has code. We will use
+        // Get a color from the hash code. We will use
         // the low order 24 bits only.
-        int code = object.hashCode();
+        int hashCode = object.hashCode();
+        // Use the code as a seed for a random number generator.
+        int code = (new Random(hashCode).nextInt());
         float red = ((code >> 16) & 0xff)/256.0f;
         float green = ((code >> 8) & 0xff)/256.0f;
         float blue = (code & 0xff)/256.0f;
-        // Make sure the color is at least as dark as a pure red, green, or blue.
+        // Make sure the color is at least as dark as close to a pure red, green, or blue.
         // This means that the magnitude of the r,g,b vector is no greater than 1.0.
         float magnitude = (new Float(Math.sqrt(red*red + green*green + blue*blue))).floatValue();
-        if (magnitude < 1.0f) {
-            magnitude = 1.0f;
+        if (magnitude < 0.8f) {
+            magnitude = 0.8f;
         }
         
         Color result = new Color(red/magnitude, green/magnitude, blue/magnitude);
