@@ -93,7 +93,7 @@ public class View extends GTEvent implements WindowListener {
     public void fire(ArrayToken arguments) throws IllegalActionException {
         super.fire(arguments);
 
-        CompositeEntity entity = getModelAttribute().getModel();
+        CompositeEntity entity = getModelParameter().getModel();
         entity = (CompositeEntity) GTTools.cleanupModel(entity);
 
         Effigy effigy = Configuration.findEffigy(toplevel());

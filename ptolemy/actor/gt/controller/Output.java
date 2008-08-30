@@ -57,7 +57,7 @@ public class Output extends GTEvent {
     public void fire(ArrayToken arguments) throws IllegalActionException {
         super.fire(arguments);
 
-        CompositeEntity entity = getModelAttribute().getModel();
+        CompositeEntity entity = getModelParameter().getModel();
         ERGController container = (ERGController) getContainer();
         final String outputPort = "modelOutput";
         RefinementPort destination = (RefinementPort) container.getPort(

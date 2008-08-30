@@ -67,7 +67,7 @@ public class WriteModel extends GTEvent {
     public void fire(ArrayToken arguments) throws IllegalActionException {
         super.fire(arguments);
 
-        CompositeEntity model = getModelAttribute().getModel();
+        CompositeEntity model = getModelParameter().getModel();
         Writer writer = modelFile.openForWriting();
         try {
             String fileName = modelFile.asFile().getName();

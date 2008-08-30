@@ -56,7 +56,6 @@ public class GTEvent extends Event {
         super(container, name);
 
         fireOnInput.setVisibility(Settable.NONE);
-        new ModelParameter(this, "HostModel");
         refinementExtender = new RefinementExtender(this, "refinementExtender");
         refinementExtender.description.setExpression(
                 "Embedded Transformation Controller");
@@ -89,17 +88,17 @@ public class GTEvent extends Event {
         return parameter;
     }
 
-    public ModelAttribute getModelAttribute() throws IllegalActionException {
+    public ModelParameter getModelParameter() throws IllegalActionException {
         NamedObj container = getContainer();
         if (!(container instanceof ERGController)) {
             return null;
         }
 
         ERGController controller = (ERGController) container;
-        ModelAttribute actorParameter = null;
+        ModelParameter actorParameter = null;
         while (actorParameter == null && controller != null) {
-            actorParameter = (ModelAttribute) controller.getAttribute(
-                    "HostModel", ModelAttribute.class);
+            actorParameter = (ModelParameter) controller.getAttribute(
+                    "HostModel", ModelParameter.class);
             if (actorParameter == null) {
                 Event event = (Event) controller.getRefinedState();
                 if (event != null) {

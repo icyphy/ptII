@@ -11,14 +11,6 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{297.0, 245.0}">
         </property>
-        <property name="HostModel" class="ptolemy.actor.gt.controller.ModelAttribute">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 45.0]">
-            </property>
-        </property>
-        <property name="Matched" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 80.0]">
-            </property>
-        </property>
         <property name="Rows" class="ptolemy.data.expr.Parameter" value="5">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>

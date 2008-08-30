@@ -78,9 +78,9 @@ public class Init extends GTEvent {
     public void fire(ArrayToken arguments) throws IllegalActionException {
         super.fire(arguments);
 
-        ModelAttribute modelAttribute = getModelAttribute();
-        if (modelAttribute.getModel() == null) {
-            modelAttribute.setModel(_getInitialModel());
+        ModelParameter modelParameter = getModelParameter();
+        if (modelParameter.getModel() == null) {
+            modelParameter.setModel(_getInitialModel());
             getMatchedParameter().setToken(BooleanToken.getInstance(true));
         }
     }

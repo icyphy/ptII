@@ -54,12 +54,11 @@ JSRCS = \
 	Configurer.java \
 	FileUpdater.java \
 	GTEvent.java \
-	InitContainingModel.java \
 	Init.java \
+	InitContainingModel.java \
 	Input.java \
 	ListDirectory.java \
 	Match.java \
-	ModelAttribute.java \
 	ModelIOPort.java \
 	ModelParameter.java \
 	Output.java \

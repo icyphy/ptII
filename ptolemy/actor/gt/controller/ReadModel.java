@@ -88,7 +88,7 @@ public class ReadModel extends GTEvent {
                     "model from file \"" + modelFile.stringValue().trim() +
                     "\" as a CompositeEntity.");
         }
-        getModelAttribute().setModel(model);
+        getModelParameter().setModel(model);
     }
 
     public FileParameter modelFile;

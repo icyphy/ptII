@@ -114,11 +114,11 @@ public class Transform extends GTEvent implements ConfigurableEntity {
     public void fire(ArrayToken arguments) throws IllegalActionException {
         super.fire(arguments);
 
-        CompositeEntity model = getModelAttribute().getModel();
+        CompositeEntity model = getModelParameter().getModel();
         model.setDeferringChangeRequests(false);
         boolean matched = mode.transform(mode.getWorkingCopy(_transformation),
                 model);
-        getModelAttribute().setModel(model);
+        getModelParameter().setModel(model);
         getMatchedParameter().setToken(BooleanToken.getInstance(matched));
     }
 
