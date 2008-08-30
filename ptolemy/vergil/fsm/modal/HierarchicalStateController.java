@@ -38,9 +38,11 @@ import java.util.TreeMap;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.gui.Configuration;
+import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.domains.fsm.kernel.Transition;
 import ptolemy.domains.fsm.modal.ModalController;
+import ptolemy.domains.fsm.modal.ModalModel;
 import ptolemy.domains.fsm.modal.Refinement;
 import ptolemy.domains.fsm.modal.RefinementExtender;
 import ptolemy.domains.fsm.modal.RefinementPort;
@@ -50,6 +52,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
@@ -309,6 +312,32 @@ public class HierarchicalStateController extends StateController {
                                      (TypedIOPort)port);
                                      }
                                      */
+                                    
+                                    // Copy the location to the new port if any.
+                                    // (tfeng 08/29/08)
+                                    if (container instanceof ModalModel) {
+                                        FSMActor controller =
+                                            ((ModalModel) container)
+                                                    .getController();
+                                        if (controller != null &&
+                                                controller != container) {
+                                            Port controllerPort = controller
+                                                    .getPort(port.getName());
+                                            if (controllerPort != null) {
+                                                Location location = (Location)
+                                                        controllerPort
+                                                        .getAttribute(
+                                                                "_location",
+                                                                Location.class);
+                                                if (location != null) {
+                                                    location = (Location)
+                                                            location.clone(
+                                                            newPort.workspace());
+                                                    location.setContainer(newPort);
+                                                }
+                                            }
+                                        }
+                                    }
                                 } finally {
                                     ((RefinementPort) newPort)
                                             .setMirrorDisable(false);
