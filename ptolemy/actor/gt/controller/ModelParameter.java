@@ -32,7 +32,9 @@ import java.io.Writer;
 import java.util.LinkedList;
 import java.util.List;
 
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Initializable;
+import ptolemy.actor.Manager;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.data.ActorToken;
 import ptolemy.data.Token;
@@ -50,7 +52,7 @@ import ptolemy.kernel.util.Workspace;
 
 
  @author Thomas Huining Feng
- @version $Id$
+ @version $Id: ModelParameter.java 50553 2008-08-30 03:27:08Z tfeng $
  @since Ptolemy II 7.1
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
@@ -71,29 +73,54 @@ public class ModelParameter extends Parameter implements Initializable {
         _initializables.add(initializable);
     }
 
-        public void exportMoML(Writer output, int depth, String name)
-                throws IOException {
-            if (_isMoMLSuppressed(depth)) {
-                return;
-            }
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ModelParameter newObject = (ModelParameter) super.clone(workspace);
+        newObject._model = null;
+        newObject._token = null;
+        newObject._tokenVersion = -1;
+        return newObject;
+    }
 
-            output.write(_getIndentPrefix(depth) + "<" + _elementName + " name=\""
-                    + name + "\" class=\"" + getClassName() + "\">\n");
-            _exportMoMLContents(output, depth + 1);
-            output.write(_getIndentPrefix(depth) + "</" + _elementName + ">\n");
-            }
+    public void exportMoML(Writer output, int depth, String name)
+            throws IOException {
+        if (_isMoMLSuppressed(depth)) {
+            return;
+        }
+
+        output.write(_getIndentPrefix(depth) + "<" + _elementName + " name=\""
+                + name + "\" class=\"" + getClassName() + "\">\n");
+        _exportMoMLContents(output, depth + 1);
+        output.write(_getIndentPrefix(depth) + "</" + _elementName + ">\n");
+    }
 
     public CompositeEntity getModel() {
         return _model;
     }
 
     public Token getToken() throws IllegalActionException {
-    CompositeEntity model = getModel();
-    if (model == null) {
-        model = new TypedCompositeActor(new Workspace());
+        CompositeEntity model = getModel();
+
+        boolean createEmptyModel = model == null;
+        if (!createEmptyModel && model instanceof CompositeActor) {
+            Manager manager = ((CompositeActor) model).getManager();
+            if (manager != null && manager.getState() != Manager.IDLE) {
+                // FIXME: If the model is being executed, we can't clone it.
+                createEmptyModel = true;
+            }
+        }
+
+        if (createEmptyModel) {
+            model = new TypedCompositeActor(new Workspace());
+            _token = new ActorToken(model);
+            _tokenVersion = -1;
+        } else if (_token == null ||
+                _tokenVersion != model.workspace().getVersion()) {
+            _token = new ActorToken(model);
+            _tokenVersion = model.workspace().getVersion();
+        }
+
+        return _token;
     }
-    return new ActorToken(model);
-   }
 
     public void initialize() throws IllegalActionException {
         // Invoke initializable methods.
@@ -141,12 +168,17 @@ public class ModelParameter extends Parameter implements Initializable {
 
     public void setModel(CompositeEntity model) {
         _model = model;
+        _token = null;
+        _tokenVersion = -1;
         invalidate();
     }
 
     public void setToken(Token token) throws IllegalActionException {
         ActorToken actorToken = (ActorToken) ActorToken.TYPE.convert(token);
-        setModel((CompositeEntity) actorToken.getEntity());
+        CompositeEntity model = (CompositeEntity) actorToken.getEntity();
+        setModel(model);
+        _token = actorToken;
+        _tokenVersion = model.workspace().getVersion();
     }
 
     public void wrapup() throws IllegalActionException {
@@ -165,4 +197,8 @@ public class ModelParameter extends Parameter implements Initializable {
     private transient List<Initializable> _initializables;
 
     private CompositeEntity _model;
+
+    private ActorToken _token;
+
+    private long _tokenVersion = -1;
 }

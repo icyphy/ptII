@@ -140,10 +140,8 @@ public class ContainmentExtender extends Attribute implements
      */
     public NamedObj getExtendedContainer() throws IllegalActionException {
         NamedObj container = getContainer();
-        if (container instanceof ModalController) {
-            return ((ModalController) container).getRefinedState();
-        } else if (container instanceof Refinement) {
-            return ((Refinement) container).getRefinedState();
+        if (container instanceof RefinementActor) {
+            return ((RefinementActor) container).getRefinedState();
         } else {
             return container.getContainer();
         }

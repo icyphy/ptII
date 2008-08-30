@@ -53,6 +53,8 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.domains.fsm.kernel.FSMActor;
+import ptolemy.domains.fsm.kernel.RefinementActor;
+import ptolemy.domains.fsm.modal.ModalModel;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
@@ -400,7 +402,19 @@ public class ERGDirector extends Director implements TimedDirector {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+
         _initializeSchedule();
+
+        NamedObj container = getContainer();
+        if (container instanceof ModalModel) {
+            ((ModalModel) container).getController().initialize();
+        }
+    }
+
+    public void initialize(Actor actor) throws IllegalActionException {
+        if (!(actor instanceof RefinementActor)) {
+            super.initialize(actor);
+        }
     }
 
     /** Return true if the director wishes to be scheduled for another

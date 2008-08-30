@@ -71,6 +71,7 @@ JSRCS = \
 	NonStrictFSMDirector.java \
 	OutputActionsAttribute.java \
 	ParseTreeEvaluatorForGuardExpression.java \
+	RefinementActor.java \
 	RelationList.java \
 	RelationNode.java \
 	RelationType.java \
