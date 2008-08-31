@@ -50,12 +50,16 @@ import java.util.regex.Pattern;
  */
 public class RecursiveFileFilter implements FilenameFilter {
 
-    public RecursiveFileFilter(boolean recursive) {
-        this(recursive, null);
+    public RecursiveFileFilter(boolean recursive, boolean includeFiles,
+            boolean includeDirectories) {
+        this(recursive, includeFiles, includeDirectories, null);
     }
 
-    public RecursiveFileFilter(boolean recursive, String fileFilter) {
+    public RecursiveFileFilter(boolean recursive, boolean includeFiles,
+            boolean includeDirectories, String fileFilter) {
         _recursive = recursive;
+        _includeFiles = includeFiles;
+        _includeDirectories = includeDirectories;
         if (fileFilter != null && !fileFilter.equals("")) {
             _pattern = Pattern.compile(_escape(fileFilter));
         }
@@ -63,14 +67,15 @@ public class RecursiveFileFilter implements FilenameFilter {
 
     public boolean accept(File dir, String name) {
         File file = new File(dir, name);
-        boolean isDirectory = _recursive && file.isDirectory();
-        boolean isFile = file.isFile()
-                && (_pattern == null ? name.toLowerCase().endsWith(".xml") :
-                    _pattern.matcher(name).matches());
-        if (isDirectory) {
+        boolean isDirectory = file.isDirectory();
+        boolean isFile = file.isFile();
+        if (isFile && _includeFiles || isDirectory && _includeDirectories) {
+            if (_pattern == null || _pattern.matcher(name).matches()) {
+                _files.add(file);
+            }
+        }
+        if (_recursive && isDirectory) {
             file.list(this);
-        } else if (isFile) {
-            _files.add(file);
         }
         return false;
     }
@@ -80,9 +85,10 @@ public class RecursiveFileFilter implements FilenameFilter {
     }
 
     public static File[] listFiles(File directory, boolean recursive,
+            boolean includeFiles, boolean includeDirectories,
             String fileFilter) {
         RecursiveFileFilter filter = new RecursiveFileFilter(recursive,
-                fileFilter);
+                includeFiles, includeDirectories, fileFilter);
         directory.list(filter);
         List<File> files = filter.getFiles();
         Collections.sort(files, new FileComparator());
@@ -98,6 +104,10 @@ public class RecursiveFileFilter implements FilenameFilter {
     private final Pattern _ESCAPER = Pattern.compile("([^a-zA-z0-9])");
 
     private List<File> _files = new LinkedList<File>();
+
+    private boolean _includeDirectories;
+
+    private boolean _includeFiles;
 
     private Pattern _pattern;
 

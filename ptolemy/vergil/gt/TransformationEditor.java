@@ -1755,7 +1755,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                 return null;
             } else {
                 File[] files = RecursiveFileFilter.listFiles(directoryFile,
-                        recursive, fileFilter);
+                        recursive, true, false, fileFilter);
                 return files;
             }
         }
