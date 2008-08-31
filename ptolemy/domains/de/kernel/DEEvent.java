@@ -27,9 +27,13 @@
  */
 package ptolemy.domains.de.kernel;
 
+import java.util.List;
+
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.util.Time;
+import ptolemy.data.IntToken;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
@@ -80,13 +84,12 @@ public final class DEEvent implements Comparable {
      *  @param timeStamp The time when the event occurs.
      *  @param microstep The phase of execution within a fixed time.
      *  @param depth The topological depth of the destination actor.
+     *  @exception IllegalActionException If the actor has a priority parameter,
+     *  but its value cannot be obtained, which should be an integer.
      */
-    public DEEvent(Actor actor, Time timeStamp, int microstep, int depth) {
-        _actor = actor;
-        _ioPort = null;
-        _timestamp = timeStamp;
-        _microstep = microstep;
-        _depth = depth;
+    public DEEvent(Actor actor, Time timeStamp, int microstep, int depth)
+            throws IllegalActionException {
+        this(actor, null, timeStamp, microstep, depth);
     }
 
     /** Construct a trigger event with the specified destination IO port,
@@ -95,17 +98,13 @@ public final class DEEvent implements Comparable {
      *  @param timeStamp The time when the event occurs.
      *  @param microstep The phase of execution within a fixed time.
      *  @param depth The topological depth of the destination IO Port.
+     *  @exception IllegalActionException If the actor has a priority parameter,
+     *  but its value cannot be obtained, which should be an integer.
      */
-    public DEEvent(IOPort ioPort, Time timeStamp, int microstep, int depth) {
-        if (ioPort != null) {
-            _actor = (Actor) ioPort.getContainer();
-        } else {
-            _actor = null;
-        }
-        _ioPort = ioPort;
-        _timestamp = timeStamp;
-        _microstep = microstep;
-        _depth = depth;
+    public DEEvent(IOPort ioPort, Time timeStamp, int microstep, int depth)
+            throws IllegalActionException {
+        this(ioPort == null ? null : (Actor) ioPort.getContainer(), ioPort,
+                timeStamp, microstep, depth);
     }
 
     /** Return the destination actor for this event.
@@ -113,20 +112,6 @@ public final class DEEvent implements Comparable {
      */
     public final Actor actor() {
         return _actor;
-    }
-
-    /** Compare this event with the argument event for an order.
-     *  See {@link #compareTo(DEEvent event)} for the comparison rules.
-     *  The argument event has to be an instance of DEEvent. Otherwise, a
-     *  ClassCastException will be thrown.
-     *
-     *  @param event The event to compare against.
-     *  @return -1, 0, or 1, depending on the order of the events.
-     *  @exception ClassCastException If the argument event is not an instance
-     *  of DEEvent.
-     */
-    public final int compareTo(Object event) {
-        return compareTo((DEEvent) event);
     }
 
     /** Compare the tag and depth of this event with those of the argument
@@ -158,9 +143,27 @@ public final class DEEvent implements Comparable {
             return 1;
         } else if (_depth < event.depth()) {
             return -1;
+        } else if (_priority < event._priority) {
+            return -1;
+        } else if (_priority > event._priority) {
+            return 1;
         } else {
             return 0;
         }
+    }
+
+    /** Compare this event with the argument event for an order.
+     *  See {@link #compareTo(DEEvent event)} for the comparison rules.
+     *  The argument event has to be an instance of DEEvent. Otherwise, a
+     *  ClassCastException will be thrown.
+     *
+     *  @param event The event to compare against.
+     *  @return -1, 0, or 1, depending on the order of the events.
+     *  @exception ClassCastException If the argument event is not an instance
+     *  of DEEvent.
+     */
+    public final int compareTo(Object event) {
+        return compareTo((DEEvent) event);
     }
 
     /** Return the depth of this event. For a pure event, it is the depth of
@@ -187,23 +190,6 @@ public final class DEEvent implements Comparable {
         return (compareTo(object) == 0 && ((DEEvent)object).actor() == _actor);
     }
 
-    /** Return the hash code for the event object.
-     *  @return The hash code for the event object.
-     *  @see #equals(Object)
-     */
-    public int hashCode() {
-        int primitiveFieldHash = _depth >>> _microstep;
-        int objectFieldHash = ((_actor != null) ? _actor.hashCode() : 1) >>>
-            ((_ioPort != null) ? _ioPort.hashCode() : 1);
-        // If the exclusive or of the primitive is 0, then just
-        // return the xor of the hashes of the actor and ioport
-        if (primitiveFieldHash == 0) {
-            return objectFieldHash;
-        }
-        return primitiveFieldHash >>> objectFieldHash;
-
-    }
-
     /** Return true if this event has the same tag with the specified one,
      *  and their depths are the same.
      *  @param event The event to compare against.
@@ -221,6 +207,23 @@ public final class DEEvent implements Comparable {
     public final boolean hasTheSameTagAs(DEEvent event) {
         return (_timestamp.equals(event.timeStamp()))
                 && (_microstep == event.microstep());
+    }
+
+    /** Return the hash code for the event object.
+     *  @return The hash code for the event object.
+     *  @see #equals(Object)
+     */
+    public int hashCode() {
+        int primitiveFieldHash = _depth >>> _microstep;
+        int objectFieldHash = ((_actor != null) ? _actor.hashCode() : 1) >>>
+            ((_ioPort != null) ? _ioPort.hashCode() : 1);
+        // If the exclusive or of the primitive is 0, then just
+        // return the xor of the hashes of the actor and ioport
+        if (primitiveFieldHash == 0) {
+            return objectFieldHash;
+        }
+        return primitiveFieldHash >>> objectFieldHash;
+
     }
 
     /** Return the destination IO port of this event. Note that
@@ -267,9 +270,6 @@ public final class DEEvent implements Comparable {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         package protected methods         ////
-
     /** Update the depth of this event if the new depth is no less than
      *  0. Otherwise, do nothing.
      *  @param newDepth The new depth for this event.
@@ -280,6 +280,38 @@ public final class DEEvent implements Comparable {
         // DEDirector calls _updateDepth in two locations
         if (_depth >= 0) {
             _depth = newDepth;
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         package protected methods         ////
+
+    /** Construct a pure event with the specified destination actor, IO port
+     *  timestamp, microstep, and depth.
+     *  @param actor The destination actor
+     *  @param ioPort The destination IO port.
+     *  @param timeStamp The time when the event occurs.
+     *  @param microstep The phase of execution within a fixed time.
+     *  @param depth The topological depth of the destination actor or the IO
+     *  port (if not null).
+     *  @exception IllegalActionException If the actor has a priority parameter,
+     *  but its value cannot be obtained, which should be an integer.
+     */
+    private DEEvent(Actor actor, IOPort ioPort, Time timeStamp, int microstep,
+            int depth) throws IllegalActionException {
+        _actor = actor;
+        _ioPort = ioPort;
+        _timestamp = timeStamp;
+        _microstep = microstep;
+        _depth = depth;
+        _priority = 0;
+        if (_actor != null) {
+            List<Priority> priorityList = ((NamedObj) _actor).attributeList(
+                    Priority.class);
+            if (!priorityList.isEmpty()) {
+                Priority priority = priorityList.get(0);
+                _priority = ((IntToken) priority.getToken()).intValue();
+            }
         }
     }
 
@@ -296,6 +328,10 @@ public final class DEEvent implements Comparable {
 
     // The microstep of this event.
     private int _microstep;
+
+    // The priority of the event (used when the timestamp, depth and microstep
+    // cannot resolve a conflict.
+    private int _priority;
 
     // The timestamp of the event.
     private Time _timestamp;
