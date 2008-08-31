@@ -36,7 +36,6 @@ import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
-import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.URIAttribute;
@@ -76,13 +75,20 @@ public class ListDirectory extends GTEvent {
         filter = new StringParameter(this, "filter");
         filter.setExpression("*.xml");
 
+        includeFiles = new Parameter(this, "includeFiles");
+        includeFiles.setTypeEquals(BaseType.BOOLEAN);
+        includeFiles.setExpression("true");
+
+        includeDirectories = new Parameter(this, "includeDirectories");
+        includeDirectories.setTypeEquals(BaseType.BOOLEAN);
+        includeDirectories.setExpression("false");
+
         recursive = new Parameter(this, "recursive");
         recursive.setTypeEquals(BaseType.BOOLEAN);
         recursive.setExpression("false");
 
         files = new Parameter(this, "files");
-        files.setTypeEquals(new ArrayType(BaseType.GENERAL));
-        files.setExpression("{}");
+        files.setExpression("{ }");
         files.setVisibility(Settable.NOT_EDITABLE);
         files.setPersistent(false);
         Variable variable = new Variable(files, "_textHeightHint");
@@ -93,6 +99,8 @@ public class ListDirectory extends GTEvent {
     public void fire(ArrayToken arguments) throws IllegalActionException {
         File[] listedFiles = RecursiveFileFilter.listFiles(directory.asFile(),
                 ((BooleanToken) recursive.getToken()).booleanValue(),
+                ((BooleanToken) includeFiles.getToken()).booleanValue(),
+                ((BooleanToken) includeDirectories.getToken()).booleanValue(),
                 filter.stringValue());
         StringBuffer buffer = new StringBuffer("{ ");
         int i = 0;
@@ -127,6 +135,10 @@ public class ListDirectory extends GTEvent {
     public Parameter files;
 
     public StringParameter filter;
+
+    public Parameter includeDirectories;
+
+    public Parameter includeFiles;
 
     public Parameter recursive;
 }
