@@ -45,6 +45,7 @@ import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.ParserScope;
 import ptolemy.data.expr.PtParser;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.de.kernel.Priority;
 import ptolemy.domains.fsm.kernel.Transition;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -68,6 +69,13 @@ import ptolemy.kernel.util.Workspace;
  <p>
  If the guard of a scheduling relation is omitted, it is defaulted to true,
  which means the scheduling relation is unconditional.
+ <p>
+ A scheduling relation can be assigned a priority, which is an integer number.
+ The default priority is 0. Priorities are used to order the scheduling
+ relations from the same event. Scheduling relations with higher priorities
+ (smaller priority numbers) are scheduled before those with lower priorities
+ from the same event, if they are scheduled at exactly the same time in the
+ future.
 
  @author Thomas Huining Feng
  @version $Id$
@@ -124,6 +132,8 @@ public class SchedulingRelation extends Transition {
         canceling = new Parameter(this, "canceling");
         canceling.setTypeEquals(BaseType.BOOLEAN);
         canceling.setExpression("false");
+
+        priority = new Priority(this, "priority");
     }
 
     /** React to a change in an attribute. If the changed attribute is
@@ -311,6 +321,9 @@ public class SchedulingRelation extends Transition {
         scheduling relation is to be considered by the starting event but not
         when this attribute is set by the designer. */
     public StringAttribute delay;
+
+    /** The priority of this scheduling relation. */
+    public Priority priority;
 
     /** Return whether the delay is statically equal to 0.0.
      *

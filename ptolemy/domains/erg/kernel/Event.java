@@ -31,6 +31,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.erg.kernel;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -40,6 +42,7 @@ import ptolemy.actor.TypedActor;
 import ptolemy.actor.util.Time;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Constants;
 import ptolemy.data.expr.ModelScope;
@@ -54,6 +57,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
@@ -403,23 +407,26 @@ public class Event extends State implements Initializable, ValueListener {
         ERGDirector director = controller.director;
         ParserScope scope = _getParserScope();
 
-        List<?>[] schedulesArray = new List<?>[2];
-        schedulesArray[0] = preemptiveTransitionList();
-        schedulesArray[1] = nonpreemptiveTransitionList();
-        for (List<?> schedules : schedulesArray) {
-            for (Object scheduleObject : schedules) {
-                SchedulingRelation schedule =
-                    (SchedulingRelation) scheduleObject;
-                if (schedule.isEnabled(scope)) {
-                    double delay = schedule.getDelay(scope);
-                    Event nextEvent = (Event) schedule.destinationState();
-                    if (schedule.isCanceling()) {
-                        director.cancel(nextEvent);
-                    } else {
-                        ArrayToken edgeArguments = schedule.getArguments(scope);
-                        director.fireAt(nextEvent, director.getModelTime().add(
-                                delay), edgeArguments);
-                    }
+        List<SchedulingRelation> schedules = new LinkedList<SchedulingRelation>(
+                preemptiveTransitionList());
+        schedules.addAll(nonpreemptiveTransitionList());
+        boolean lifo = ((BooleanToken) getController().LIFO.getToken())
+                .booleanValue();
+        if (lifo) {
+            Collections.sort(schedules, _LIFO_COMPARATOR);
+        } else {
+            Collections.sort(schedules, _FIFO_COMPARATOR);
+        }
+        for (SchedulingRelation schedule : schedules) {
+            if (schedule.isEnabled(scope)) {
+                double delay = schedule.getDelay(scope);
+                Event nextEvent = (Event) schedule.destinationState();
+                if (schedule.isCanceling()) {
+                    director.cancel(nextEvent);
+                } else {
+                    ArrayToken edgeArguments = schedule.getArguments(scope);
+                    director.fireAt(nextEvent, director.getModelTime().add(
+                            delay), edgeArguments);
                 }
             }
         }
@@ -637,6 +644,16 @@ public class Event extends State implements Initializable, ValueListener {
         }
     }
 
+    /** The scheduling relation comparator to be used when LIFO is set to false.
+     */
+    private static final PriorityComparator _FIFO_COMPARATOR =
+        new PriorityComparator(false);
+
+    /** The scheduling relation comparator to be used when LIFO is set to true.
+     */
+    private static final PriorityComparator _LIFO_COMPARATOR =
+        new PriorityComparator(true);
+
     /** List of objects whose (pre)initialize() and wrapup() methods should be
      *  slaved to these.
      */
@@ -656,4 +673,61 @@ public class Event extends State implements Initializable, ValueListener {
     /** Version of _parserScope.
      */
     private long _parserScopeVersion = -1;
+
+    //////////////////////////////////////////////////////////////////////////
+    //// PriorityComparator
+
+    /**
+     The comparator to compare the priority of two scheduling relations from
+     this event.
+
+     @author Thomas Huining Feng
+     @version $Id$
+     @since Ptolemy II 7.1
+     @Pt.ProposedRating Red (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
+     */
+    private static class PriorityComparator
+            implements Comparator<SchedulingRelation> {
+
+        /** Compare two scheduling relations from the same event.
+         *
+         *  @param schedule1 The first scheduling relation.
+         *  @param schedule2 The second scheduling relation.
+         *  @return 1 if the first scheduling relation is greater; -1 if the
+         *  second scheduling relation is greater; 0 if the order is
+         *  unspecified.
+         */
+        public int compare(SchedulingRelation schedule1,
+                SchedulingRelation schedule2) {
+            try {
+                int priority1 = ((IntToken) schedule1.priority.getToken())
+                        .intValue();
+                int priority2 = ((IntToken) schedule2.priority.getToken())
+                        .intValue();
+                if (priority1 > priority2) {
+                    return _lifo ? -1 : 1;
+                } else if (priority1 < priority2) {
+                    return _lifo ? 1 : -1;
+                } else {
+                    return 0;
+                }
+            } catch (IllegalActionException e) {
+                throw new KernelRuntimeException(e, "Unable to obtain event " +
+                        "priority.");
+            }
+        }
+
+        /** Construct a comparator.
+         *
+         *  @param lifo Whether the current scheme of ordering events is LIFO or
+         *  not.
+         */
+        private PriorityComparator(boolean lifo) {
+            _lifo = lifo;
+        }
+
+        /** Whether the current scheme of ordering events is LIFO or not. */
+        private boolean _lifo;
+    }
 }
