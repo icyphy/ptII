@@ -56,6 +56,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// DatabaseManager
@@ -207,7 +208,7 @@ public class DatabaseManager extends TypedAtomicActor {
             while (rset.next()) {
                 HashMap<String,Token> map = new HashMap<String,Token>();
                 for (int c = 1; c <= columnCount; c++) {
-                    String columnName = metaData.getColumnName(c);
+                    String columnName = StringUtilities.sanitizeName(metaData.getColumnName(c));
                     String value = rset.getString(c);
                     if (value == null) {
                         value = "";
