@@ -177,7 +177,7 @@ public class PtidesReceiver extends AbstractReceiver {
         if (_queue.size() == 0) {
             return false;
         }
-        return ((_queue.first())._timeStamp.equals(time));
+        return ((_queue.first())._timeStamp.compareTo(time) <= 0);
     }
 
     /**

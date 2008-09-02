@@ -26,6 +26,7 @@ import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.PtParser;
+import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.ModalDirector;
 import ptolemy.domains.fsm.kernel.State;
@@ -82,47 +83,30 @@ public class TDLModuleDirector extends ModalDirector {
     }
 
     /**
-     * Set the new model time.
-     */
-    public void setModelTime(Time newTime) throws IllegalActionException {
-        // TODO Auto-generated method stub
-        super.setModelTime(newTime);
-        if (!_previousTime.equals(newTime)) {
-            _previousEventTime = newTime;
-            _previousEventTime = null;
-        }
-    }
-
-    /**
-     * Select all actions that can be fired at the current model time. After 
-     * executing an action, schedule actions dependent on that action. If an action
-     * with a WCET > 0 was started, schedule a refiring and return.
+     * Select all actions that can be fired at the current model time. After
+     * executing an action, schedule actions dependent on that action. If an
+     * action with a WCET > 0 was started, schedule a refiring and return.
      */
     public void fire() throws IllegalActionException {
+        System.out.println(this.getContainer().getName()
+                + " "
+                + getModelTime()
+                + " "
+                + ((Actor) getContainer()).getExecutiveDirector()
+                        .getModelTime());
         if (getModelTime().getDoubleValue() < 0.0)
             return; // TODO how can that happen? happens with DE ...
         boolean iterate = true;
+        Time modePeriod = getModePeriod(getController().currentState());
+        Time scheduleTime = new Time(this, getModelTime().getLongValue()
+                % modePeriod.getLongValue());
         while (iterate) {
             iterate = false;
             System.out.println(_nextEvents.size() + " "
                     + _nodesDependentoOnPreviousActions.size());
             _currentWCET = 0;
-            Time modePeriod = getModePeriod(getController().currentState());
-            List<Node> eventsToFire = new ArrayList(); 
 
-            Time scheduleTime = new Time(this, getModelTime().getLongValue()
-                    % modePeriod.getLongValue());
-
-            for (Node node : _nextEvents) {
-                TDLAction action = (TDLAction) node.getWeight();
-                if ((action.time.compareTo(scheduleTime) == 0 || action.time
-                        .compareTo(scheduleTime.add(modePeriod)) == 0)
-                        && (_previousEventTime == null || (_previousEventTime != null && action.time
-                                .compareTo(_previousEventTime) <= 0))) {
-                    eventsToFire.add(node);
-                    _previousEventTime = action.time;
-                }
-            }
+            List<Node> eventsToFire = _getEventsToFire(scheduleTime, modePeriod);
             boolean doneAction;
             for (Node node : eventsToFire) {
                 System.out.println("  TDL: " + getModelTime() + " " + node);
@@ -144,17 +128,25 @@ public class TDLModuleDirector extends ModalDirector {
                         _updateOutputPort((IOPort) obj);
                         _currentWCET = 0.0;
                     } else if (action.actionType == TDLAction.READSENSOR) {
-                        doneAction = ((TDLActor) getController()).readInput(
-                                node, (IOPort) action.object, modePeriod
+                        // before reading a sensor, return control to the outside to see if other actors want to fire
+                        doneAction = ((TDLActor) getController())
+                                .inputIsSafeToProcess((IOPort) action.object);
+                        ((TDLActor) getController()).readInput(node,
+                                (IOPort) action.object, modePeriod
                                         .getLongValue());
+                        if (doneAction) {
+                            scheduleEventsAfterAction(node);
+                        }
                     } else if (action.actionType == TDLAction.READINPUT) {
                         _updateInputPort((IOPort) obj);
                     } else if (action.actionType == TDLAction.MODESWITCH) {
                         State targetState;
                         if (!_chooseTransition((Transition) obj))
                             targetState = getController().currentState();
-                        else
+                        else {
                             targetState = ((Transition) obj).destinationState(); // choose transition in the graph
+                            iterate = true;
+                        }
                         _nextEvents.clear();
                         _nextEventsTimeStamps.clear();
                         _nodesDependentoOnPreviousActions.clear();
@@ -174,13 +166,12 @@ public class TDLModuleDirector extends ModalDirector {
                 if (doneAction) {
                     if (_nextEvents.size() == 1
                             && _nodesDependentoOnPreviousActions.size() == 0) {
-                        _fireAt(node, new Time(this, 0));
+                        _fireAt(node, getModelTime());
                         scheduleEventsAfterAction(node);
                         iterate = true;
                     }
                     _nextEvents.remove(node);
                     _nextEventsTimeStamps.remove(node);
-                    List<Node> nodesToRemove = new ArrayList();
 
                     if (_nodesDependentoOnPreviousActions != null
                             && _nodesDependentoOnPreviousActions.size() != 0) {
@@ -205,13 +196,19 @@ public class TDLModuleDirector extends ModalDirector {
                             if (_nodesDependentoOnPreviousActions.get(n) == null
                                     || _nodesDependentoOnPreviousActions.get(n)
                                             .size() == 0) {
-                                _fireAt(n, new Time(this, 0));
+                                if (!_nextEvents.contains(n))
+                                    _fireAt(n, getModelTime());
                                 scheduleEventsAfterAction(n);
-                                nodesToRemove.add(n);
-                                iterate = true;
+
+                                //nodesToRemove.add(n);
+                                //iterate = true;
                             }
                         }
                     }
+                }
+                if (!doneAction) {
+                    _fireAt(null, getModelTime());
+                    return;
                 }
                 if (_currentWCET > 0.0) {
                     _fireAt(null, _getSmallestTimeStampInEventsToFire());
@@ -289,9 +286,15 @@ public class TDLModuleDirector extends ModalDirector {
      * execution time was specified.
      * 
      * @return The worst case execution time.
+     * @throws IllegalActionException
      */
-    public double getWCET() {
-        return _currentWCET;
+    public double getWCET() throws IllegalActionException {
+        if (_currentWCET > 0)
+            return _currentWCET;
+        else {
+
+            return 0.0;
+        }
     }
 
     /**
@@ -312,7 +315,7 @@ public class TDLModuleDirector extends ModalDirector {
 
         Node startNode = _graph.getNode(new TDLAction(new Time(this, 0.0),
                 TDLAction.AFTERMODESWITCH, getController().getInitialState()));
-
+        _nextEventsTimeStamps.put(startNode, new Time(this, 0.0));
         _fireAt(startNode, new Time(this, 0));
         scheduleEventsAfterAction(startNode);
         //nextJoinNodes.put(_graph.getNode(new TDLAction(0, TDLAction.AFTERMODESWITCH, getController().getInitialState())), null);
@@ -411,19 +414,79 @@ public class TDLModuleDirector extends ModalDirector {
      */
     public boolean prefire() throws IllegalActionException {
         // read inputs although they are not used to avoid piling up tokens
-        for (Iterator it = ((TDLModule) getContainer()).inputPortList()
-                .iterator(); it.hasNext();) {
-            IOPort port = (IOPort) it.next();
-            transferInputs(port);
+        //        
+        if (((Actor) getContainer().getContainer()).getDirector() instanceof DEDirector) {
+            for (Iterator it = ((TDLModule) getContainer()).inputPortList()
+                    .iterator(); it.hasNext();) {
+                IOPort port = (IOPort) it.next();
+                if (_debugging) {
+                    _debug("Calling transferInputs on port: "
+                            + port.getFullName());
+                }
+                if (!port.isInput() || !port.isOpaque()) {
+                    throw new IllegalActionException(this, port,
+                            "Attempted to transferInputs on a port is not an opaque"
+                                    + "input port.");
+                }
+                boolean wasTransferred = false;
+                for (int i = 0; i < port.getWidth(); i++) {
+                    try {
+                        if (i < port.getWidthInside()) {
+                            if (port.hasToken(i)) {
+                                Token t = port.get(i);
+                                if (_debugging) {
+                                    _debug(getName(),
+                                            "transferring input from "
+                                                    + port.getName());
+                                }
+                                port.sendInside(i, t);
+                                wasTransferred = true;
+                            }
+                        } else {
+                            // No inside connection to transfer tokens to.
+                            // In this case, consume one input token if there is one.
+                            if (_debugging) {
+                                _debug(getName(), "Dropping single input from "
+                                        + port.getName());
+                            }
+                            if (port.hasToken(i)) {
+                                port.get(i);
+                            }
+                        }
+                    } catch (NoTokenException ex) {
+                        // this shouldn't happen.
+                        throw new InternalErrorException(this, ex, null);
+                    }
+                }
+
+            }
+            return super.prefire();
         }
-        return super.prefire();
+
+        Time modePeriod = getModePeriod(getController().currentState());
+        Time scheduleTime = new Time(this, getModelTime().getLongValue()
+                % modePeriod.getLongValue());
+        boolean fire = false;
+        List<Node> eventsToFire = _getEventsToFire(scheduleTime, modePeriod);
+        for (Node node : eventsToFire) {
+            TDLAction action = (TDLAction) node.getWeight();
+            if (action.actionType == TDLAction.READSENSOR) {
+                if (((TDLActor) getController())
+                        .inputIsSafeToProcess((IOPort) action.object))
+                    fire = true;
+            } else
+                fire = true;
+        }
+        return fire;
     }
 
     /**
      * Schedules actions which depend on the action specified in the given node.
      * 
-     * @param node Given node.
-     * @throws IllegalActionException Not thrown here but in the base class.
+     * @param node
+     *            Given node.
+     * @throws IllegalActionException
+     *             Not thrown here but in the base class.
      */
     public void scheduleEventsAfterAction(Node node)
             throws IllegalActionException {
@@ -435,7 +498,7 @@ public class TDLModuleDirector extends ModalDirector {
         for (Node n : events) {
             if (((TDLAction) n.getWeight()).actionType == TDLAction.AFTERMODESWITCH)
                 additionalTime = getModePeriod(getController().currentState()); // TODO ???
-            _fireAt(n, additionalTime);
+            _fireAt(n, additionalTime.add(getModelTime()));
         }
     }
 
@@ -452,7 +515,7 @@ public class TDLModuleDirector extends ModalDirector {
     }
 
     /**
-     * Get all inputs for a port.
+     * Don't read inputs as this is specifically scheduled by a TDLModule.
      * 
      * @param port
      *            Input port.
@@ -462,45 +525,7 @@ public class TDLModuleDirector extends ModalDirector {
      *             input port.
      */
     public boolean transferInputs(IOPort port) throws IllegalActionException {
-        if (_debugging) {
-            _debug("Calling transferInputs on port: " + port.getFullName());
-        }
-        if (!port.isInput() || !port.isOpaque()) {
-            throw new IllegalActionException(this, port,
-                    "Attempted to transferInputs on a port is not an opaque"
-                            + "input port.");
-        }
-        boolean wasTransferred = false;
-        for (int i = 0; i < port.getWidth(); i++) {
-            try {
-                if (i < port.getWidthInside()) {
-                    if (port.hasToken(i)) {
-                        Token t = port.get(i);
-                        if (_debugging) {
-                            _debug(getName(), "transferring input from "
-                                    + port.getName());
-                        }
-                        port.sendInside(i, t);
-                        wasTransferred = true;
-                    }
-                } else {
-                    // No inside connection to transfer tokens to.
-                    // In this case, consume one input token if there is one.
-                    if (_debugging) {
-                        _debug(getName(), "Dropping single input from "
-                                + port.getName());
-                    }
-                    if (port.hasToken(i)) {
-                        port.get(i);
-                    }
-                }
-            } catch (NoTokenException ex) {
-                // this shouldn't happen.
-                throw new InternalErrorException(this, ex, null);
-            }
-        }
-
-        return wasTransferred;
+        return true;
     }
 
     /**
@@ -537,27 +562,37 @@ public class TDLModuleDirector extends ModalDirector {
 
     /**
      * Schedule a refiring of this actor for a TDL action.
-     * @param node Node containing a TDL action that is scheduled to execute
-     * at the given time.
-     * @param additionalTime Time to be added to the current model time and the
-     * schedule time of the TDL action node.
-     * @throws IllegalActionException Thrown if fireAt() returns false.
+     * 
+     * @param node
+     *            Node containing a TDL action that is scheduled to execute at
+     *            the given time.
+     * @param additionalTime
+     *            Time to be added to the current model time and the schedule
+     *            time of the TDL action node.
+     * @throws IllegalActionException
+     *             Thrown if fireAt() returns false.
      */
     private void _fireAt(Node node, Time additionalTime)
             throws IllegalActionException {
         if (_nextEvents == null) {
             _nextEvents = new LinkedList();
         }
+        Time modePeriod = getModePeriod(getController().currentState());
+        Time scheduleTime = new Time(this, getModelTime().getLongValue()
+                % modePeriod.getLongValue());
         Time time;
-        if (node != null)
-            time = getModelTime().add(((TDLAction) node.getWeight()).time).add(
-                    additionalTime);
-        else
+        if (node != null) {
+            time = (((TDLAction) node.getWeight()).time.subtract(scheduleTime))
+                    .add(additionalTime);
+        } else
             time = additionalTime;
         if (node != null) {
-            _nextEvents.add(node);
+
             _nextEventsTimeStamps.put(node, time);
+            _nextEvents.add(node);
+
         }
+        System.out.println("fireAt " + time + " " + node);
         super.fireAt((Actor) getContainer(), time);
     }
 
@@ -584,6 +619,24 @@ public class TDLModuleDirector extends ModalDirector {
     }
 
     /**
+     * Return events that can be fired at current model time.
+     * 
+     * @param scheduleTime
+     *            Time in the schedule (= between 0 and modePeriod) which is
+     * @param modePeriod
+     *            Period of the current mode.
+     * @return List of events that can be fired at current model time.
+     */
+    private List<Node> _getEventsToFire(Time scheduleTime, Time modePeriod) {
+        List<Node> eventsToFire = new ArrayList();
+        for (Node node : _nextEvents) {
+            if (_nextEventsTimeStamps.get(node).equals(getModelTime()))
+                eventsToFire.add(node);
+        }
+        return eventsToFire;
+    }
+
+    /**
      * Returns the smallest time stamp of the events that will be fired next.
      * 
      * @return The smallest time stamp of the next events.
@@ -599,7 +652,8 @@ public class TDLModuleDirector extends ModalDirector {
     }
 
     /**
-     * Test a guard expression on an actor.  
+     * Test a guard expression on an actor.
+     * 
      * @param obj
      *            The object containing a guard expression.
      * @return True if the guard expression evaluates to true.
@@ -898,15 +952,5 @@ public class TDLModuleDirector extends ModalDirector {
      * All receivers.
      */
     private LinkedList _receivers = new LinkedList();
-
-    /**
-     * Schedule time of the previous event fired in this iteration.
-     */
-    private Time _previousEventTime = null;
-
-    /**
-     * Time this director was previously fired.
-     */
-    private Time _previousTime = new Time(this);
 
 }

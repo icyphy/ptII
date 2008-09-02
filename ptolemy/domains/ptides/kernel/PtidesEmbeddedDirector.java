@@ -376,6 +376,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
      * @throws IllegalActionException Thrown if an execution was missed. 
      */
     public void fire() throws IllegalActionException {
+        System.out.println("--- fired: " + _currentPhysicalTime);
         List<TimedEvent> eventsToFire = null;
         TimedEvent event = null;
         boolean iterate = true;
@@ -387,10 +388,13 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
             // take events out of the list of events in execution if the WCET 
             // of the actor has passed
             if (_eventsInExecution.size() > 0) {
-                Actor actorToFire = (Actor) _eventsInExecution.getFirst().contents;
+                TimedEvent eventInExecution = _eventsInExecution.getFirst();
+                Actor actorToFire = (Actor) eventInExecution.contents;
                 Time time = getFinishingTime(actorToFire);
                 if (time.equals(_currentPhysicalTime)) {
+                    System.out.println(" x " + _currentPhysicalTime + " " + _currentTime + " " + actorToFire);
                     _eventsInExecution.removeFirst();
+                    _currentModelTime = eventInExecution.timeStamp;
                     if (!_fireAtTheBeginningOfTheWcet(actorToFire))
                         _fireActorInZeroModelTime(actorToFire);
                     
@@ -566,6 +570,10 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
         if (_finishingTimesOfActorsInExecution.get(actor) != null)
             _finishingTimesOfActorsInExecution.remove(actor);
         _finishingTimesOfActorsInExecution.put(actor, finishingTime);
+    }
+    
+    public void scheduleTimeForInputSafeToProcess(Time time, Object actor) {
+        _inputSafeToProcess.put(new TimedEvent(time, actor)); 
     }
 
     /**
@@ -844,45 +852,53 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
         List<TimedEvent> events = new LinkedList<TimedEvent>();
         for (Actor actor : _eventQueues.keySet()) {
             TreeSet<Time> set = _eventQueues.get(actor);
+            // don't take actor if it is already in execution
+            for (TimedEvent event : _eventsInExecution) {
+                if (event.contents == actor)
+                    continue;
+            }
+            
             // take pure events
             if (!set.isEmpty()) {
                 Time time = set.first();
-                events.add(new TimedEvent(time, actor));
+                _currentModelTime = time;
+                if (actor.prefire())
+                    events.add(new TimedEvent(time, actor));
+                _currentModelTime = null;
             }
-            // take trigger events
-            if (!_eventsInExecution.contains(actor)) {
-                List<IOPort> inputPorts = actor.inputPortList();
-                for (IOPort port : inputPorts) {
-                    
-                    if (PtidesActorProperties.portIsTriggerPort(port)) {
-                        Receiver[][] receivers = port.getReceivers();
-                        for (int i = 0; i < receivers.length; i++) {
-                            Receiver[] recv = receivers[i];
-                            for (int j = 0; j < recv.length; j++) {
-                                PtidesActorReceiver receiver = (PtidesActorReceiver) recv[j];
-                                Time time = receiver.getNextTime();
-                                if (time != null
-                                        && (isSafeToProcessStatically(time,
-                                                port) || _isSafeToProcess(port,
-                                                new ArrayList(), new Time(this,
-                                                        0.0), time))) {
-                                    List<TimedEvent> toRemove = new ArrayList<TimedEvent>();
-                                    for (int k = 0; k < events.size(); k++) {
-                                        TimedEvent event = events
-                                                .get(k);
-                                        if (event.contents == actor
-                                                && event.timeStamp.equals(time))
-                                            toRemove.add(event);
-                                    }
-                                    for (int k = 0; k < toRemove.size(); k++)
-                                        events.remove(toRemove.get(k));
-                                    events.add(new TimedEvent(time, port));
+            // take trigger events 
+            List<IOPort> inputPorts = actor.inputPortList();
+            for (IOPort port : inputPorts) {
+                
+                if (PtidesActorProperties.portIsTriggerPort(port)) {
+                    Receiver[][] receivers = port.getReceivers();
+                    for (int i = 0; i < receivers.length; i++) {
+                        Receiver[] recv = receivers[i];
+                        for (int j = 0; j < recv.length; j++) {
+                            PtidesActorReceiver receiver = (PtidesActorReceiver) recv[j];
+                            Time time = receiver.getNextTime();
+                            if (time != null
+                                    && (isSafeToProcessStatically(time,
+                                            port) || _isSafeToProcess(port,
+                                            new ArrayList(), new Time(this,
+                                                    0.0), time))) {
+                                List<TimedEvent> toRemove = new ArrayList<TimedEvent>();
+                                for (int k = 0; k < events.size(); k++) {
+                                    TimedEvent event = events
+                                            .get(k);
+                                    if (event.contents == actor
+                                            && event.timeStamp.equals(time))
+                                        toRemove.add(event);
                                 }
+                                for (int k = 0; k < toRemove.size(); k++)
+                                    events.remove(toRemove.get(k));
+                                events.add(new TimedEvent(time, port));
                             }
                         }
                     }
                 }
             }
+            
         }
         return events;
     }
@@ -899,9 +915,11 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
         for (int i = 0; i < receivers.length; i++) {
             Receiver[] recv = receivers[i];
             for (int j = 0; j < recv.length; j++) { 
-                PtidesReceiver receiver = (PtidesReceiver) recv[j];
-                if (receiver.getNextTime() != null && time.compareTo(receiver.getNextTime()) > 0)
-                    time = receiver.getNextTime(); 
+                if (recv[j] instanceof PtidesReceiver) {
+                    PtidesReceiver receiver = (PtidesReceiver) recv[j];
+                    if (receiver.getNextTime() != null && time.compareTo(receiver.getNextTime()) > 0)
+                        time = receiver.getNextTime(); 
+                }
             }
         } 
         return time;

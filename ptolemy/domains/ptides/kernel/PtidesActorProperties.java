@@ -101,14 +101,14 @@ public class PtidesActorProperties {
      * @param actor
      *            The actor for which the worst case execution time is
      *            requested.
-     * @return The worst case execution time.
+     * @return The worst case execution time. 
      */
-    public static double getWCET(Actor actor) {
-        if (actor instanceof TDLModule) {
-            return ((TDLModuleDirector) ((TDLModule) actor).getDirector())
-                    .getWCET();
-        }
+    public static double getWCET(Actor actor) { 
         try {
+            if (actor instanceof TDLModule) {
+                return ((TDLModuleDirector) ((TDLModule) actor).getDirector())
+                        .getWCET();
+            }
             Parameter parameter = (Parameter) ((NamedObj) actor)
                     .getAttribute("WCET");
 
@@ -147,6 +147,6 @@ public class PtidesActorProperties {
 
     public static boolean portIsTriggerPort(IOPort port) {
         return !(port instanceof ParameterPort)
-                && !(((Actor) port.getContainer()) instanceof TDLModule);
+                && !(port.getContainer() instanceof TDLModule);
     }
 }

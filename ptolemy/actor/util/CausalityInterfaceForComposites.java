@@ -820,7 +820,7 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
             return _minimumDelays.get(port);
         }
 
-        Dependency minimumDelay = getDefaultDependency();
+        Dependency minimumDelay = getDefaultDependency().oPlusIdentity();
         if (port.isInput()) {
             // if port is input port of this actor
             if (this._actor.inputPortList().contains(port)) {
@@ -844,13 +844,15 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
                             .getContainer()).getCausalityInterface())
                             .equivalentPorts(port);
                     for (IOPort equivalentPort : equivalentPorts) {
-                        Collection<IOPort> sourcePorts = equivalentPort
-                                .sourcePortList(); // contains only one item (?)
-                        for (IOPort sourcePort : sourcePorts) {
-                            Dependency dependency = _getMinimumDelay(
-                                    sourcePort, visitedPorts);
-                            if (dependency.compareTo(minimumDelay) == Dependency.LESS_THAN) {
-                                minimumDelay = dependency;
+                        if (equivalentPort.isInput()) {
+                            Collection<IOPort> sourcePorts = equivalentPort
+                                    .sourcePortList(); // contains only one item (?)
+                            for (IOPort sourcePort : sourcePorts) {
+                                Dependency dependency = _getMinimumDelay(
+                                        sourcePort, visitedPorts);
+                                if (dependency.compareTo(minimumDelay) == Dependency.LESS_THAN) {
+                                    minimumDelay = dependency;
+                                }
                             }
                         }
                     }

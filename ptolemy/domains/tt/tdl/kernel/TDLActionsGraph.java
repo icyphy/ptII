@@ -81,6 +81,71 @@ public class TDLActionsGraph {
     }
 
     /**
+     * Returns all forward reachable nodes in the graph that are connected to
+     * the given node. Those forward reachable nodes do not depend on other
+     * nodes and the actions defined in the nodes are scheduled to happen at the
+     * same time as the action in the given node.
+     * 
+     * @param node
+     *            Given node.
+     * @return List of nodes that are forward reachable from the given node.
+     */
+    public List<Node> getEventsFollowingAction(Node node) {
+        return _getForwardReachableIndependentNodes(node, new ArrayList());
+    }
+
+    /**
+     * Recursively compute the set of nodes reachable from a given node that
+     * depend on more than one node or are scheduled to happen at a future time.
+     * Examples for the latter are nodes describing the writing of an output
+     * port
+     * 
+     * @param justExecuted
+     *            Node that was just executed.
+     * @param node
+     *            Node from which the reachable Nodes are computed.
+     * @param visited
+     *            Already visited nodes, used to avoid loops.
+     * @return Set of reachable nodes taht depend on more than one input port or
+     *         contain actions that should happen later than the given node.
+     */
+    public HashMap<Node, List<TDLAction>> getNextJoinNodes(Node justExecuted,
+            Node node, List<Node> visited) {
+        if (visited.contains(node))
+            return new HashMap();
+        else
+            visited.add(node);
+        HashMap<Node, List<TDLAction>> events = new HashMap();
+        List<Edge> edges = (List<Edge>) _graph.outputEdges(node);
+        for (Edge edge : edges) {
+            Node targetNode = edge.sink();
+    
+            if (((TDLAction) targetNode.getWeight()).actionType == TDLAction.MODESWITCH
+                    || ((TDLAction) targetNode.getWeight()).actionType == TDLAction.WRITEOUTPUT
+                    || ((TDLAction) targetNode.getWeight()).actionType == TDLAction.AFTERMODESWITCH
+                    || _graph.inputEdges(targetNode).size() > 1) {
+                List<TDLAction> actions = new ArrayList();
+                Collection<Edge> backwardEdges = _graph.inputEdges(targetNode);
+                for (Edge backwardNode : backwardEdges) {
+                    if (!justExecuted.equals(backwardNode.source()))
+                        actions.add((TDLAction) backwardNode.source()
+                                .getWeight());
+                }
+                if (actions.size() > 0)
+                    events.put(targetNode, actions);
+                else
+                    events.putAll(getNextJoinNodes(justExecuted, targetNode,
+                            visited));
+            } else {
+                events.putAll(getNextJoinNodes(justExecuted, targetNode,
+                        visited));
+            }
+    
+        }
+        return events;
+    }
+
+    /**
      * Return the node that is used for the execution of an actor at a certain
      * time.
      * 
@@ -420,7 +485,7 @@ public class TDLActionsGraph {
                     Time invocationEndTime = new Time(_module.getDirector(),
                             modePeriod.getLongValue() / frequency * (i));
 
-                    Node node = getLastNodeBeforeTime(connectedPort,
+                    Node node = _getLastNodeBeforeTime(connectedPort,
                             invocationEndTime);
                     Node next = null;
                     Edge edge = null;
@@ -447,24 +512,38 @@ public class TDLActionsGraph {
     }
 
     /**
-     * Return invocation of node for a port closest to a given time.
-     * @param port 
-     * @param upper
-     * @return
+     * Recursively compute the list of forward reachable nodes that only depend
+     * on one previous node and are scheduled for the same time as the current
+     * node.
+     * 
+     * @param node
+     *            Node from which the reachable nodes are computed from.
+     * @param visited
+     *            Already visited nodes to avoid loops.
+     * @return List of forward reachable nodes.
      */
-    private Node getLastNodeBeforeTime(IOPort port, Time upper) {
-        List<Node> nodes = (List<Node>) _graph.nodes();
-        Node lastNodeBeforeTime = null;
-        Time time = Time.NEGATIVE_INFINITY;
-        for (Node node : nodes) {
-            TDLAction gnode = (TDLAction) node.getWeight();
-            if (gnode.object.equals(port) && upper.compareTo(gnode.time) >= 0
-                    && time.compareTo(gnode.time) < 0) {
-                lastNodeBeforeTime = node;
-                time = gnode.time;
+    private List<Node> _getForwardReachableIndependentNodes(Node node,
+            List<Node> visited) {
+        if (visited.contains(node))
+            return new ArrayList();
+        else
+            visited.add(node);
+        List<Node> events = new ArrayList();
+        List<Edge> edges = (List<Edge>) _graph.outputEdges(node); 
+        for (Edge edge : edges) {
+            Node targetNode = edge.sink();
+            if (_graph.inputEdgeCount(targetNode) == 1) { 
+                events.add(targetNode);
+                if (((TDLAction) targetNode.getWeight()).actionType != TDLAction.READSENSOR
+                        && ((TDLAction) targetNode.getWeight()).actionType != TDLAction.MODESWITCH
+                        && ((TDLAction) targetNode.getWeight()).actionType != TDLAction.EXECUTETASK
+                        && ((TDLAction) targetNode.getWeight()).actionType != TDLAction.AFTERMODESWITCH)
+                    events.addAll(_getForwardReachableIndependentNodes(
+                            targetNode, visited));
             }
+            
         }
-        return lastNodeBeforeTime;
+        return events;
     }
 
     /**
@@ -565,6 +644,27 @@ public class TDLActionsGraph {
             }
         }
         return invocations;
+    }
+
+    /**
+     * Return invocation of node for a port closest to a given time.
+     * @param port 
+     * @param upper
+     * @return
+     */
+    private Node _getLastNodeBeforeTime(IOPort port, Time upper) {
+        List<Node> nodes = (List<Node>) _graph.nodes();
+        Node lastNodeBeforeTime = null;
+        Time time = Time.NEGATIVE_INFINITY;
+        for (Node node : nodes) {
+            TDLAction gnode = (TDLAction) node.getWeight();
+            if (gnode.object.equals(port) && upper.compareTo(gnode.time) >= 0
+                    && time.compareTo(gnode.time) < 0) {
+                lastNodeBeforeTime = node;
+                time = gnode.time;
+            }
+        }
+        return lastNodeBeforeTime;
     }
 
     /**
@@ -723,7 +823,7 @@ public class TDLActionsGraph {
                     .getFrequency((NamedObj) transition);
             long invocationPeriod = modePeriod.getLongValue() / frequency;
             transition.invocationPeriod = invocationPeriod;
-            for (int i = 1; i <= frequency; i++) {
+            for (int i = 0; i < frequency; i++) {
                 List l = (List) sensorsAndTransitions.get(i);
                 if (l == null) {
                     l = new ArrayList();
@@ -919,104 +1019,5 @@ public class TDLActionsGraph {
      * Store the times task input ports are read.
      */
     private HashMap<IOPort, List<Time>> _tmpReadTaskInputPorts = new HashMap();
-
-    /**
-     * Recursively compute the list of forward reachable nodes that only depend
-     * on one previous node and are scheduled for the same time as the current
-     * node.
-     * 
-     * @param node
-     *            Node from which the reachable nodes are computed from.
-     * @param visited
-     *            Already visited nodes to avoid loops.
-     * @return List of forward reachable nodes.
-     */
-    private List<Node> getForwardReachableIndependentNodes(Node node,
-            List<Node> visited) {
-        if (visited.contains(node))
-            return new ArrayList();
-        else
-            visited.add(node);
-        List<Node> events = new ArrayList();
-        List<Edge> edges = (List<Edge>) _graph.outputEdges(node);
-        for (Edge edge : edges) {
-            Node targetNode = edge.sink();
-            if (_graph.inputEdgeCount(targetNode) == 1) {
-                events.add(targetNode);
-                if (((TDLAction) targetNode.getWeight()).actionType != TDLAction.READSENSOR
-                        && ((TDLAction) targetNode.getWeight()).actionType != TDLAction.MODESWITCH
-                        && ((TDLAction) targetNode.getWeight()).actionType != TDLAction.EXECUTETASK
-                        && ((TDLAction) targetNode.getWeight()).actionType != TDLAction.AFTERMODESWITCH)
-                    events.addAll(getForwardReachableIndependentNodes(
-                            targetNode, visited));
-            }
-        }
-        return events;
-    }
-
-    /**
-     * Recursively compute the set of nodes reachable from a given node that
-     * depend on more than one node or are scheduled to happen at a future time.
-     * Examples for the latter are nodes describing the writing of an output
-     * port
-     * 
-     * @param justExecuted
-     *            Node that was just executed.
-     * @param node
-     *            Node from which the reachable Nodes are computed.
-     * @param visited
-     *            Already visited nodes, used to avoid loops.
-     * @return Set of reachable nodes taht depend on more than one input port or
-     *         contain actions that should happen later than the given node.
-     */
-    public HashMap<Node, List<TDLAction>> getNextJoinNodes(Node justExecuted,
-            Node node, List<Node> visited) {
-        if (visited.contains(node))
-            return new HashMap();
-        else
-            visited.add(node);
-        HashMap<Node, List<TDLAction>> events = new HashMap();
-        List<Edge> edges = (List<Edge>) _graph.outputEdges(node);
-        for (Edge edge : edges) {
-            Node targetNode = edge.sink();
-
-            if (((TDLAction) targetNode.getWeight()).actionType == TDLAction.MODESWITCH
-                    || ((TDLAction) targetNode.getWeight()).actionType == TDLAction.WRITEOUTPUT
-                    || ((TDLAction) targetNode.getWeight()).actionType == TDLAction.AFTERMODESWITCH
-                    || _graph.inputEdges(targetNode).size() > 1) {
-                List<TDLAction> actions = new ArrayList();
-                Collection<Edge> backwardEdges = _graph.inputEdges(targetNode);
-                for (Edge backwardNode : backwardEdges) {
-                    if (!justExecuted.equals(backwardNode.source()))
-                        actions.add((TDLAction) backwardNode.source()
-                                .getWeight());
-                }
-                if (actions.size() > 0)
-                    events.put(targetNode, actions);
-                else
-                    events.putAll(getNextJoinNodes(justExecuted, targetNode,
-                            visited));
-            } else {
-                events.putAll(getNextJoinNodes(justExecuted, targetNode,
-                        visited));
-            }
-
-        }
-        return events;
-    }
-
-    /**
-     * Returns all forward reachable nodes in the graph that are connected to
-     * the given node. Those forward reachable nodes do not depend on other
-     * nodes and the actions defined in the nodes are scheduled to happen at the
-     * same time as the action in the given node.
-     * 
-     * @param node
-     *            Given node.
-     * @return List of nodes that are forward reachable from the given node.
-     */
-    public List<Node> getEventsFollowingAction(Node node) {
-        return getForwardReachableIndependentNodes(node, new ArrayList());
-    }
 
 }

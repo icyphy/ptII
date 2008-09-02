@@ -81,8 +81,10 @@ public class PtidesActorReceiver extends PtidesReceiver {
         Actor actor = (Actor) port.getContainer();
 
         return (port.isOutput() && super.hasToken())
-                || (!(actor.getDirector() instanceof PtidesEmbeddedDirector) && super
-                        .hasToken()) || (hasToken(getModelTime()));
+//                || (!(actor.getDirector() instanceof PtidesEmbeddedDirector) && super
+//                        .hasToken()) 
+                        || 
+                        (hasToken(getModelTime()));
     }
 
     /**
@@ -117,13 +119,7 @@ public class PtidesActorReceiver extends PtidesReceiver {
      *            The time stamp for the token.
      */
     public void put(Token token, Time time) {
-        try {
-            _getDirector();
-            // dir._enqueueEvent(getContainer(), time);
-            super.put(token, time);
-        } catch (IllegalActionException ex) {
-            throw new InternalErrorException(null, ex, null);
-        }
+        super.put(token, time);
     }
 
     /**

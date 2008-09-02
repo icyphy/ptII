@@ -55,14 +55,14 @@ JSRCS = \
 	TDLCodeGenerator.java \
 	TDLCodeGeneratorUtilities.java \
 	TDLController.java \
-	TDLMode.java \
-	TDLModeException.java \
+	TDLMode.java \ 
 	TDLModule.java \
 	TDLModuleDirector.java \
 	TDLReceiver.java \
 	TDLRefinement.java \
 	TDLRefinementPort.java \
 	TDLTask.java \
+	TDLTaskPort.java \
 	TDLTransition.java 
 
 OTHER_FILES_TO_BE_JARED = \

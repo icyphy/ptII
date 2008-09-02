@@ -42,6 +42,7 @@ import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
 import ptolemy.domains.ptides.kernel.PtidesActorProperties;
 import ptolemy.domains.ptides.lib.ScheduleListener.ScheduleEventType;
+import ptolemy.domains.tt.tdl.kernel.TDLModule;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
@@ -105,6 +106,8 @@ public class PreemptivePlatformExecutionStrategy extends
                     event1.contents);
             boolean fireAtRT2 = PtidesActorProperties.mustBeFiredAtRealTime(
                     event2.contents);
+            boolean fixedWCET1 = !(actor1 instanceof TDLModule);
+            boolean fixedWCET2 = !(actor2 instanceof TDLModule);
             int index1 = -1;
             int index2 = -1;
             int priority1 = PtidesActorProperties.getPriority(actor1);
@@ -119,50 +122,24 @@ public class PreemptivePlatformExecutionStrategy extends
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
+            
+           
 
             if (priority1 != priority2) {
                 return priority2 - priority1;
-            }
-            if (wcet1 == 0
-                    && (!fireAtRT1 || (fireAtRT1 && time1.equals(_physicalTime)))) {
+            } 
+            if (wcet1 > 0 && wcet2 == 0) {
+                return 1;
+            } else if (wcet2 > 0 && wcet1 == 0) {
                 return -1;
             }
-            if (wcet2 == 0
-                    && (!fireAtRT2 || (fireAtRT2 && time2.equals(_physicalTime)))) {
-                return 1;
-            }
-            if (wcet1 > 0 && wcet2 == 0) {
-                if (!fireAtRT2 || time2.equals(_physicalTime)) {
-                    return 1;
-                }
-            }
             if (wcet1 == 0 && wcet2 == 0) {
-                if (fireAtRT1 && time1.equals(_physicalTime) && !fireAtRT2) {
+                if (fixedWCET1 && !fixedWCET2)
                     return -1;
-                }
-                if (fireAtRT1 && time1.compareTo(_physicalTime) > 0
-                        && !fireAtRT2) {
+                else if (fixedWCET2 && !fixedWCET1)
                     return 1;
-                }
-                if (fireAtRT2 && time2.equals(_physicalTime) && !fireAtRT1) {
-                    return 1;
-                }
-                if (fireAtRT2 && time2.compareTo(_physicalTime) > 0
-                        && !fireAtRT1) {
-                    return -1;
-                }
-                if (fireAtRT1 && fireAtRT2 && time1.equals(_physicalTime)
-                        && time2.equals(_physicalTime)) {
-                    return 0;
-                }
-                if (time1.compareTo(time2) < 0) {
-                    return -1;
-                }
-                if (time2.compareTo(time1) < 0) {
-                    return 1;
-                } else {
-                    return index2 - index1;
-                }
+                else 
+                    return index1 - index2;
             } else { // wcet1 > 0 && wcet2 > 0
                 if (fireAtRT1 && fireAtRT2) {
                     if (time1.compareTo(time2) < 0) {
@@ -235,12 +212,13 @@ public class PreemptivePlatformExecutionStrategy extends
                 if (physicalTime.compareTo(event.timeStamp) > 0) {
                     _displaySchedule(actorToFire, event.timeStamp
                             .getDoubleValue(), ScheduleEventType.MISSEDEXECUTION);
-                    throw new IllegalActionException("missed execution!");
+                    throw new IllegalActionException("missed execution of " + event);
                 } else if (physicalTime.compareTo(event.timeStamp) < 0) {
                     index++;
                     continue;
                 }
             }
+            eventsToFire.remove(event);
             return new TimedEvent(event.timeStamp, actorToFire);
 
         }

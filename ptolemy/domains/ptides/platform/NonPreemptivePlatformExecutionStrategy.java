@@ -247,6 +247,7 @@ public class NonPreemptivePlatformExecutionStrategy extends
                     && actorsFiring.size() > 0 || eventsToFire.size() == 0) {
                 return null;
             }
+            eventsToFire.remove(event);
             return new TimedEvent(event.timeStamp, actorToFire);
 
         }
