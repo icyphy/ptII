@@ -202,8 +202,6 @@
                     </property>
                 </entity>
                 <entity name="Split" class="ptolemy.actor.TypedCompositeActor">
-                    <property name="_tableauFactory" class="ptolemy.vergil.gt.GTTableau$Factory">
-                    </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 140.0]">
                     </property>
                     <port name="keys" class="ptolemy.actor.TypedIOPort">
@@ -335,8 +333,6 @@
                         </property>
                     </port>
                     <entity name="Map" class="ptolemy.actor.TypedCompositeActor">
-                        <property name="_tableauFactory" class="ptolemy.vergil.gt.GTTableau$Factory">
-                        </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 200.0]">
                         </property>
                         <port name="inputKey" class="ptolemy.actor.TypedIOPort">
@@ -650,8 +646,6 @@
                         </property>
                     </port>
                     <entity name="Reduce" class="ptolemy.actor.TypedCompositeActor">
-                        <property name="_tableauFactory" class="ptolemy.vergil.gt.GTTableau$Factory">
-                        </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 200.0]">
                         </property>
                         <port name="inputKey" class="ptolemy.actor.TypedIOPort">
@@ -986,8 +980,6 @@
                 </entity>
                 <entity name="Replacement" class="ptolemy.actor.gt.Replacement">
                     <entity name="WaitingStop" class="ptolemy.actor.TypedCompositeActor">
-                        <property name="_tableauFactory" class="ptolemy.vergil.gt.GTTableau$Factory">
-                        </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 295.0]">
                         </property>
                         <property name="and" class="ptolemy.actor.ptalon.PtalonParameter" value="ptolemy.actor.lib.logic.LogicFunction">
