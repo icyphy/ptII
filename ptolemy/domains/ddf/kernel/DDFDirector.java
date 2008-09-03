@@ -993,6 +993,9 @@ public class DDFDirector extends Director {
             Receiver[][] farReceivers = outputPort.getRemoteReceivers();
 
             for (int i = 0; i < farReceivers.length; i++) {
+                if (farReceivers[i] == null) {
+                    continue;
+                }
                 for (int j = 0; j < farReceivers[i].length; j++) {
                     QueueReceiver farReceiver = (QueueReceiver) farReceivers[i][j];
                     IOPort port = farReceiver.getContainer();
