@@ -360,11 +360,6 @@ THALESPACKAGES = \
 	thales.vergil \
 	thales.vergil.navigable
 
-# Time Triggered (TT) domain packages
-TT_PACKAGES = \
-	ptolemy.domains.tt.kernel \
-	ptolemy.domains.tt.tdl.kernel
-
 # All the Viptos generated documentation
 VIPTOS_DOCS = \
 	codeDocViptos/doc/codeDoc/tree.html \
@@ -436,7 +431,6 @@ ALL1_4PACKAGES = \
 	$(PTX10_PACKAGES) \
 	$(SUPERBPACKAGES) \
 	$(THALESPACKAGES) \
-	$(TT_PACKAGES) \
 	$(VIPTOSPACKAGES) \
 	$(VISUALSENSEPACKAGES) \
 	doc.doclets \
