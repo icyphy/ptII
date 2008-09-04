@@ -53,7 +53,6 @@ PTPACKAGE = 	properties
 PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	ConstraintAttribute.java \
 	ConstraintManager.java \
 	InequalitySolver.java \
 	LatticeProperty.java \
