@@ -55,7 +55,7 @@ JSRCS = \
 	TDLCodeGenerator.java \
 	TDLCodeGeneratorUtilities.java \
 	TDLController.java \
-	TDLMode.java \ 
+	TDLMode.java \
 	TDLModule.java \
 	TDLModuleDirector.java \
 	TDLReceiver.java \
