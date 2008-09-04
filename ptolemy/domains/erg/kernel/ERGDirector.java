@@ -629,11 +629,15 @@ public class ERGDirector extends Director implements TimedDirector {
                 boolean isInitial = ((BooleanToken) event.isInitialEvent
                         .getToken()).booleanValue();
                 if (isInitial) {
-                    _eventQueue.add(new TimedEvent(_currentTime, event, null));
+                    TimedEvent newEvent = new TimedEvent(_currentTime, event,
+                            null);
+                    _addEvent(newEvent, false);
                 }
             }
         } else {
-            _eventQueue.add(new TimedEvent(_currentTime, controller, null));
+            TimedEvent newEvent = new TimedEvent(_currentTime, controller,
+                    null);
+            _addEvent(newEvent, false);
             if (_isEmbedded()) {
                 _requestFiring();
             }
@@ -757,15 +761,17 @@ public class ERGDirector extends Director implements TimedDirector {
         if (!_eventQueue.isEmpty()) {
             topTime = _eventQueue.peek().timeStamp;
         }
-        _eventQueue.add(timedEvent);
+
+        boolean addToInputQueue = false;
         if (object instanceof Actor) {
-            _inputQueue.add(timedEvent);
+            addToInputQueue = true;
         } else if (object instanceof Event) {
             Event event = (Event) object;
             if (event.fireOnInput()) {
-                _inputQueue.add(timedEvent);
+                addToInputQueue = true;
             }
         }
+        _addEvent(timedEvent, addToInputQueue);
 
         if (_delegateFireAt && (topTime == null || topTime.compareTo(time)
                 > 0)) {
@@ -862,6 +868,25 @@ public class ERGDirector extends Director implements TimedDirector {
         return true;
     }
 
+    /** Add an event to the event queue in this director. If addToInputQueue is
+     *  true, add that event to the input queue as well.
+     *
+     *  @param event The event.
+     *  @param addToInputQueue Whether the event should be added to the input
+     *  queue as well.
+     */
+    private void _addEvent(TimedEvent event, boolean addToInputQueue) {
+        try {
+            _eventComparator.setNewEvent(event);
+            _eventQueue.add(event);
+            if (addToInputQueue) {
+                _inputQueue.add(event);
+            }
+        } finally {
+            _eventComparator.setNewEvent(null);
+        }
+    }
+
     /** Cached reference to mode controller. */
     private ERGController _controller = null;
 
@@ -918,18 +943,48 @@ public class ERGDirector extends Director implements TimedDirector {
          *   second.
          */
         public int compare(TimedEvent a, TimedEvent b) {
+            if (a == b) {
+                return 0;
+            }
+
             int result = a.timeStamp.compareTo(b.timeStamp);
             if (result == 0) {
-                try {
-                    boolean isLIFO =
-                        ((BooleanToken) LIFO.getToken()).booleanValue();
-                    result = isLIFO ? -1 : 1;
-                } catch (IllegalActionException e) {
-                    throw new KernelRuntimeException(e,
-                            "Unable to obtain value for the LIFO parameter.");
+                if (_newEvent == null || a != _newEvent && b != _newEvent) {
+                    return 0;
+                } else {
+                    try {
+                        boolean isLIFO =
+                            ((BooleanToken) LIFO.getToken()).booleanValue();
+                        if (a == _newEvent) {
+                            return isLIFO ? -1 : 1;
+                        } else if (b == _newEvent) {
+                            return isLIFO ? 1 : -1;
+                        } else {
+                            // Shouldn't reach here.
+                            return 0;
+                        }
+                    } catch (IllegalActionException e) {
+                        throw new KernelRuntimeException(e, "Unable to " +
+                                "obtain value for the LIFO parameter.");
+                    }
                 }
+            } else {
+                return result;
             }
-            return result;
         }
+
+        /** Set the new event to be added to a queue that uses this comparator,
+         *  so that the return value of {@link #compare(TimedEvent, TimedEvent)}
+         *  depends on the LIFO setting.
+         *
+         *  @param newEvent The new event, or null if this comparator is not
+         *  being used for adding a new event.
+         */
+        public void setNewEvent(TimedEvent newEvent) {
+            _newEvent = newEvent;
+        }
+
+        /** The new event, or null. */
+        private TimedEvent _newEvent;
     }
 }
