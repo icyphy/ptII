@@ -48,7 +48,6 @@ PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = \
 	AnnotationAttribute.java \
-	FSMGraphReader.java \
 	ModelAnalyzer.java \
 	ModelWriter.java \
 	ParseTreeAnnotationEvaluator.java \
