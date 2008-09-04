@@ -88,7 +88,6 @@ PTAUXALLJARS = \
 		ptides/ptides.jar \
 		$(PTSPACEDOMAIN_JAR) \
 		tm/tm.jar \
-		tt/tt.jar \
 		wireless/wireless.jar
 
 # Are we shipping these domains?
