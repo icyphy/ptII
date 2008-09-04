@@ -31,13 +31,8 @@ package ptolemy.domains.tdl.kernel;
 import java.util.ArrayList;
 import java.util.List;
 
-import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedCompositeActor;
-import ptolemy.actor.util.BooleanDependency;
-import ptolemy.actor.util.CausalityInterface;
-import ptolemy.actor.util.CausalityInterfaceForComposites;
-import ptolemy.actor.util.Dependency;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.fsm.modal.ModalPort;
 import ptolemy.domains.sdf.kernel.SDFDirector;
@@ -115,6 +110,9 @@ public class TDLTask extends TypedCompositeActor {
 		super(container, name);
 		_init();
 	}
+	
+	///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
 	/**
 	 * Frequency of the task invocation in the mode period.
@@ -131,16 +129,16 @@ public class TDLTask extends TypedCompositeActor {
 	 */
 	public Parameter slots;
 	
-    public CausalityInterface getCausalityInterface() {
-        Director executiveDirector = getExecutiveDirector(); 
-        Dependency defaultDependency = BooleanDependency.OTIMES_IDENTITY;
-        if (executiveDirector != null) {
-            defaultDependency = executiveDirector.defaultDependency();
-        }
-        _causalityInterface = new CausalityInterfaceForComposites(this, defaultDependency); 
-        return _causalityInterface;
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 	
+	/**
+	 * Return the list of ports of the modal model that this task reads from.
+	 * @param rrefinementInputPorts Inputports of the refinement which is 
+	 * the container of this task.
+	 * @param moduleInputPorts Inputports of the module that contains this task.
+	 * @return List of modal ports.
+	 */
 	public List<ModalPort> getSensorsReadFrom(List refinementInputPorts, List moduleInputPorts) {
 	    if (_readsFromSensors == null) {
 	        _readsFromSensors = new ArrayList();
@@ -185,6 +183,10 @@ public class TDLTask extends TypedCompositeActor {
 			workspace().doneWriting();
 		}
 	}
+	
+	///////////////////////////////////////////////////////////////////
+    ////                         preivate methods                  ////
+
 
 	/**
 	 * Initialize the TDL task.
@@ -204,11 +206,8 @@ public class TDLTask extends TypedCompositeActor {
 		slots.setExpression("'1*'");
 	}
 	
+	/**
+	 * List of modal ports this task reads from.
+	 */
 	private ArrayList _readsFromSensors;
-
-    public Long offset;
-
-    public Long invocationPeriod;
-
-    public Long let;
 }

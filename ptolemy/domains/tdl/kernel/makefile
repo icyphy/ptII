@@ -3,7 +3,7 @@
 #
 # @Authors: Patricia Derler (makefile only)
 #
-# @Version: $Id$
+# @Version: $Id:makefile 50570 2008-09-04 03:18:09Z derler $
 #
 # @Copyright (c) 2008 The Regents of the University of California.
 # All rights reserved.
@@ -47,8 +47,7 @@ include $(CONFIG)
 PTPACKAGE = 	kernel
 PTCLASSJAR =	$(PTPACKAGE).jar
 
-JSRCS = \
-	MathUtilities.java \
+JSRCS = \ 
 	TDLAction.java \
 	TDLActionsGraph.java \
 	TDLActor.java  \

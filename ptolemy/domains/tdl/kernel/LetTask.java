@@ -28,6 +28,9 @@ public class LetTask {
         _actor = actor;
         _offset = start;
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Return the invocation period of the task.

@@ -91,11 +91,29 @@ public class TDLTransition extends Transition {
         super(container, name);
         _init();
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public parameter                  ////
+
 
     /**
      * The frequency of the transition.
      */
     public Parameter frequency;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    
+    /**
+     * List of all ports that are used in this guard expression.
+     */
+    public List requiredPorts;
+
+    /**
+     * List of Sensors that are used in this guard expression.
+     */
+    public List requiredSensors;
 
     @Override
     public void attributeChanged(Attribute attribute)
@@ -105,6 +123,10 @@ public class TDLTransition extends Transition {
         }
         super.attributeChanged(attribute);
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                  ////
+
     
     /**
      * Compute the list of ports that are used in this guard expression. 
@@ -158,16 +180,5 @@ public class TDLTransition extends Transition {
         requiredSensors = new ArrayList();
     }
 
-    /**
-     * List of Sensors that are used in this guard expression.
-     */
-    public List requiredSensors;
-    
-    /**
-     * List of all ports that are used in this guard expression.
-     */
-    public List requiredPorts;
-
-    public long invocationPeriod;
 
 }

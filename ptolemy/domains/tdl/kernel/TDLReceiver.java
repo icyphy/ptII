@@ -65,8 +65,8 @@ public class TDLReceiver extends AbstractReceiver implements StateReceiver {
 		super(container);
 	}
 
-	// /////////////////////////////////////////////////////////////////
-	// // public methods ////
+	///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
 	/**
 	 * Clear this receiver of any contained tokens. FIXME. Should rename and
@@ -223,8 +223,8 @@ public class TDLReceiver extends AbstractReceiver implements StateReceiver {
 
 	}
 
-	// /////////////////////////////////////////////////////////////////
-	// // private variables ////
+	///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////	
 	/** The next token. */
 	private Token _nextToken = null;
 

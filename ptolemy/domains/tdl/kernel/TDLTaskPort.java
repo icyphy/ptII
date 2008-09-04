@@ -127,11 +127,19 @@ public class TDLTaskPort extends TypedIOPort {
 		_init();
 	}
 
+	///////////////////////////////////////////////////////////////////
+    ////                         public parameter                  ////
+
+	
 	/**
 	 * The initial value of the task.
 	 */
 	public Parameter initialValue;
 
+	///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+	
 	/**
 	 * Sets the port of a task to an input port.
 	 * 
@@ -155,6 +163,10 @@ public class TDLTaskPort extends TypedIOPort {
 		super.setOutput(isOutput);
 		initialValue.setVisibility(Settable.FULL);
 	}
+	
+	///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
 
 	/**
 	 * Initialize the task, set an initial value parameter.

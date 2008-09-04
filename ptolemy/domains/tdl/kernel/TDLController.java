@@ -77,8 +77,8 @@ public class TDLController extends TDLActor {
 		super(container, name);
 	}
 
-	// /////////////////////////////////////////////////////////////////
-	// // public methods ////
+	///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
 	/**
 	 * Create a new port with the specified name in the container of this
@@ -151,8 +151,8 @@ public class TDLController extends TDLActor {
 		_mirrorDisable = disable;
 	}
 
-	// /////////////////////////////////////////////////////////////////
-	// // protected methods ////
+	///////////////////////////////////////////////////////////////////
+    ////                       protected methods                   ////
 
 	/**
 	 * Override the base class to ensure that the proposed container is a
@@ -173,9 +173,8 @@ public class TDLController extends TDLActor {
 		}
 	}
 
-	// /////////////////////////////////////////////////////////////////
-	// // protected variables ////
-	// These are protected to be accessible to ModalModel.
+	///////////////////////////////////////////////////////////////////
+    ////                     protected variables                   ////
 
 	/** Indicator that we are processing a newPort request. */
 	protected boolean _mirrorDisable = false;

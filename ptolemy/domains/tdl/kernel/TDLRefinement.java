@@ -68,8 +68,8 @@ public class TDLRefinement extends Refinement {
 		setClassName("ptolemy.domains.tt.tdl.kernel.TDLRefinement");
 	}
 
-	// /////////////////////////////////////////////////////////////////
-	// // public methods ////
+	///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
 	/**
 	 * Create a new port with the specified name in the container of this

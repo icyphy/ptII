@@ -1,30 +1,19 @@
 /*
-@Copyright (c) 2008 The Regents of the University of California.
-All rights reserved.
-
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
-
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
-
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
-
-                        PT_COPYRIGHT_VERSION_2
-                        COPYRIGHTENDKEY
-
-
+ * @Copyright (c) 2008 The Regents of the University of California. All rights
+ * reserved. Permission is hereby granted, without written agreement and without
+ * license or royalty fees, to use, copy, modify, and distribute this software
+ * and its documentation for any purpose, provided that the above copyright
+ * notice and the following two paragraphs appear in all copies of this
+ * software. IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY
+ * PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ * ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE
+ * UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ * FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN
+ * "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE
+ * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+ * PT_COPYRIGHT_VERSION_2 COPYRIGHTENDKEY
  */
 package ptolemy.domains.tdl.kernel;
 
@@ -40,7 +29,7 @@ import ptolemy.actor.util.Time;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.domains.fsm.modal.ModalPort;
-import ptolemy.domains.fsm.modal.Refinement; 
+import ptolemy.domains.fsm.modal.Refinement;
 import ptolemy.graph.DirectedGraph;
 import ptolemy.graph.Edge;
 import ptolemy.graph.Node;
@@ -70,6 +59,9 @@ public class TDLActionsGraph {
         this._controller = controller;
         this._module = module;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Build the graph by iterating through all the modes of the TDL module.
@@ -235,6 +227,9 @@ public class TDLActionsGraph {
         return null;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
     /**
      * Add the connections between task output ports and other tasks input
      * ports.
@@ -337,10 +332,6 @@ public class TDLActionsGraph {
                     * ((Integer) invocations.get(0) - 1);
             let = (modePeriod / let) / frequency;
             inv = (modePeriod / inv) / frequency;
-
-            actor.let = let;
-            actor.invocationPeriod = inv;
-            actor.offset = offset;
             return new LetTask(actor, let, inv, offset);
         } else { // schedule single task as a set of tasks with different
             // lets and invocation periods
@@ -880,8 +871,7 @@ public class TDLActionsGraph {
         for (TDLTransition transition : transitions) {
             int frequency = TDLModuleDirector
                     .getFrequency((NamedObj) transition);
-            long invocationPeriod = modePeriod.getLongValue() / frequency;
-            transition.invocationPeriod = invocationPeriod;
+            long invocationPeriod = modePeriod.getLongValue() / frequency; 
             for (int i = 0; i < frequency; i++) {
                 List l = (List) sensorsAndTransitions.get(i);
                 if (l == null) {
@@ -947,7 +937,7 @@ public class TDLActionsGraph {
         // transitions for the same time are connected
         // graphStarts and graphEnds contain starts end ends of those subgraphs
 
-    }
+    } 
 
     /**
      * Return true if the character at position i in the string slotSeleciton is
@@ -1025,6 +1015,9 @@ public class TDLActionsGraph {
         _tmpModeSwitchStarts.clear();
         _tmpModeSwitchEnds.clear();
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
     /**
      * Controller of the TDL module.

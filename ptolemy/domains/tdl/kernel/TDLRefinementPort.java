@@ -85,6 +85,9 @@ public class TDLRefinementPort extends RefinementPort {
 		super(container, name);
 		_init();
 	}
+	
+	///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
 	/**
 	 * frequency for the port update.
@@ -105,7 +108,11 @@ public class TDLRefinementPort extends RefinementPort {
 	 * Slot selection string.
 	 */
 	public Parameter slots;
-
+	
+	
+	///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+	
 	/**
 	 * Make port to an output port, for TDL this means that it is an actuator.
 	 * 
@@ -137,9 +144,12 @@ public class TDLRefinementPort extends RefinementPort {
 			slots.setVisibility(Settable.NONE);
 		}
 	}
+	
+	///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
 	/**
-	 * Initialize the port.
+	 * Initialize the parameters of the port.
 	 * @throws IllegalActionException Thrown if parameters cannot be set.
 	 * @throws NameDuplicationException Thrown if parameters cannot be set.
 	 */

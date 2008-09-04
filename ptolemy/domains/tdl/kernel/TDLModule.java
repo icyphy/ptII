@@ -96,8 +96,8 @@ public class TDLModule extends ModalModel {
 		_init();
 	}
 
-	// /////////////////////////////////////////////////////////////////
-	// // public methods ////
+	///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
 	/**
 	 * React to a change of the director or other property.
@@ -281,8 +281,9 @@ public class TDLModule extends ModalModel {
 		}
 	}
 
-	// /////////////////////////////////////////////////////////////////
-	// // private methods ////
+	///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+	
 	/** 
 	 * Initialize the model.
 	 */

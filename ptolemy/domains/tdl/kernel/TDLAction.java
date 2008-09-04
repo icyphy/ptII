@@ -105,6 +105,9 @@ public class TDLAction {
      */
     public Object object;
     
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+    
     @Override
     public String toString() {
         return actionType + "@" + time + "@" + object;

@@ -110,6 +110,9 @@ public class TDLModuleDirector extends ModalDirector {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Select all actions that can be fired at the current model time. After
@@ -565,6 +568,9 @@ public class TDLModuleDirector extends ModalDirector {
         if (_nextEventsTimeStamps != null)
             _nextEventsTimeStamps.clear();
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /**
      * Check if transition (=mode switch) should be executed.
@@ -967,6 +973,9 @@ public class TDLModuleDirector extends ModalDirector {
             }
         }
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                        private variables                  ////
 
     /**
      * Current worst case execution time, this is set when the execution of a
