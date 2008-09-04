@@ -54,8 +54,7 @@ JSRCS = DEActor.java \
 	DEEvent.java \
 	DEEventQueue.java \
 	DEReceiver.java\
-	DEThreadActor.java  \
-	Priority.java
+	DEThreadActor.java
 
 EXTRA_SRCS =	$(JSRCS)
 

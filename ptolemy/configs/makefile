@@ -99,6 +99,7 @@ OTHER_FILES_TO_BE_JARED = \
 	utilityParameter.xml \
 	utilityParameters.xml \
 	utilityPortParameter.xml \
+	utilityPriority.xml \
 	utilityRequireVersion.xml \
 	utilityScopeExtender.xml \
 	utilitySharedParameter.xml \

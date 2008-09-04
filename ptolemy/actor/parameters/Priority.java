@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
 */
-package ptolemy.domains.de.kernel;
+package ptolemy.actor.parameters;
 
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;

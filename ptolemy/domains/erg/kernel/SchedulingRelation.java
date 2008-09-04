@@ -34,6 +34,7 @@ package ptolemy.domains.erg.kernel;
 import java.io.IOException;
 import java.io.Writer;
 
+import ptolemy.actor.parameters.Priority;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.ScalarToken;
@@ -45,7 +46,6 @@ import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.ParserScope;
 import ptolemy.data.expr.PtParser;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.de.kernel.Priority;
 import ptolemy.domains.fsm.kernel.Transition;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;

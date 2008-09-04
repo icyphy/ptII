@@ -16,6 +16,7 @@
 <input source="ptolemy/configs/utilityPortParameter.xml"/>
 <input source="ptolemy/configs/utilityRequireVersion.xml"/>
 <input source="ptolemy/configs/utilityScopeExtender.xml"/>
+<input source="ptolemy/configs/utilityPriority.xml"/>
       </group>
     ?>
   </configure>

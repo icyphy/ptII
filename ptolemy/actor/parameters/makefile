@@ -57,6 +57,7 @@ JSRCS = \
 	ParameterPort.java \
 	ParameterSet.java \
 	PortParameter.java \
+	Priority.java \
 	SharedParameter.java
 
 EXTRA_SRCS =	$(JSRCS)

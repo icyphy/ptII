@@ -1,10 +1,10 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="Priority4" class="ptolemy.actor.TypedCompositeActor">
+<entity name="Priority1" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
-    <property name="P" class="ptolemy.data.expr.Parameter" value="1">
+    <property name="P" class="ptolemy.data.expr.Parameter" value="2">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -45,8 +45,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 110.0]">
         </property>
-        <property name="_priority" class="ptolemy.domains.de.kernel.Priority" value="0">
-        </property>
     </entity>
     <entity name="Const2" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="2">
@@ -72,6 +70,8 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 110.0]">
         </property>
+        <property name="_priority" class="ptolemy.actor.parameters.Priority" value="-1">
+        </property>
     </entity>
     <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
         <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="P">
@@ -84,7 +84,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 180.0]">
         </property>
-        <property name="_priority" class="ptolemy.domains.de.kernel.Priority" value="-1">
+        <property name="_priority" class="ptolemy.actor.parameters.Priority" value="0">
         </property>
     </entity>
     <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
@@ -109,7 +109,7 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 260.0]">
         </property>

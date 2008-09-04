@@ -31,6 +31,7 @@ import java.util.List;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.parameters.Priority;
 import ptolemy.actor.util.Time;
 import ptolemy.data.IntToken;
 import ptolemy.kernel.util.IllegalActionException;
