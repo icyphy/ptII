@@ -1,0 +1,287 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ZeroTimeDEActorLoop" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.0.beta">
+    </property>
+    <property name="TDL Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 35.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={540, 47, 815, 505}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This example shows the interaction of a TDL module with an actor that &#10;executes in logical zero time and gets output ports from the TDL module&#10;and writes to input ports of the TDL module. &#10;&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{125, 290}">
+        </property>
+    </property>
+    <entity name="zeroTimeDEActor" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 220.0]">
+        </property>
+        <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{85, 65}">
+            </property>
+        </property>
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
+            </property>
+        </port>
+        <port name="port2" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 200.0}">
+            </property>
+        </port>
+        <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{280, 205}">
+            </property>
+        </entity>
+        <entity name="Const" class="ptolemy.actor.lib.Const">
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{165, 250}">
+            </property>
+        </entity>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <vertex name="vertex1" value="{110.0, 200.0}">
+            </vertex>
+        </relation>
+        <link port="port" relation="relation"/>
+        <link port="port2" relation="relation4"/>
+        <link port="AddSubtract.plus" relation="relation"/>
+        <link port="AddSubtract.minus" relation="relation5"/>
+        <link port="AddSubtract.output" relation="relation4"/>
+        <link port="Const.output" relation="relation5"/>
+        <link port="Const.trigger" relation="relation"/>
+    </entity>
+    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={205, 0, 508, 491}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 442]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 155.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="10.0"/>
+<yRange min="0.0" max="10.0"/>
+<default marks="dots"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="TDLModule" class="ptolemy.domains.tdl.kernel.TDLModule">
+        <property name="_tdltableauFactory" class="ptolemy.vergil.tdl.TdlTableauFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 115.0]">
+        </property>
+        <port name="port" class="ptolemy.domains.fsm.modal.ModalPort">
+            <property name="input"/>
+        </port>
+        <port name="port2" class="ptolemy.domains.fsm.modal.ModalPort">
+            <property name="output"/>
+        </port>
+        <entity name="_Controller" class="ptolemy.domains.tdl.kernel.TDLController">
+            <property name="_library" class="ptolemy.moml.LibraryAttribute">
+                <configure>
+        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="mode" class="ptolemy.domains.tdl.kernel.TDLMode"><property name="period" class="ptolemy.data.expr.Parameter" value="1"></property><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.tdl.HierarchicalModeControllerFactory"></property></entity></entity>
+      </configure>
+            </property>
+            <port name="port" class="ptolemy.domains.tdl.kernel.TDLRefinementPort">
+                <property name="input"/>
+                <property name="frequency" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <property name="initialValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="fast" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 85.0]">
+                </property>
+            </port>
+            <port name="port2" class="ptolemy.domains.tdl.kernel.TDLRefinementPort">
+                <property name="input"/>
+                <property name="output"/>
+                <property name="frequency" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <property name="initialValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="fast" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 105.0]">
+                </property>
+            </port>
+            <entity name="mode" class="ptolemy.domains.tdl.kernel.TDLMode">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="mode">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="period" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.tdl.HierarchicalModeControllerFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{245, 95}">
+                </property>
+            </entity>
+        </entity>
+        <entity name="mode" class="ptolemy.domains.tdl.kernel.TDLRefinement">
+            <port name="port" class="ptolemy.domains.tdl.kernel.TDLRefinementPort">
+                <property name="input"/>
+                <property name="frequency" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <property name="initialValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="fast" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 160.0]">
+                </property>
+            </port>
+            <port name="port2" class="ptolemy.domains.tdl.kernel.TDLRefinementPort">
+                <property name="output"/>
+                <property name="frequency" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <property name="initialValue" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="fast" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 105.0]">
+                </property>
+            </port>
+            <entity name="reg task +" class="ptolemy.domains.tdl.kernel.TDLTask">
+                <property name="SDF director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 90.0]">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 110.0]">
+                </property>
+                <port name="rt_o" class="ptolemy.domains.tdl.kernel.TDLTaskOutputPort">
+                    <property name="output"/>
+                    <property name="initialValue" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 200.0}">
+                    </property>
+                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
+                <port name="rt_i" class="ptolemy.domains.tdl.kernel.TDLTaskOutputPort">
+                    <property name="input"/>
+                    <property name="initialValue" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
+                    </property>
+                    <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                    </property>
+                </port>
+                <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{260, 185}">
+                    </property>
+                </entity>
+                <entity name="Const" class="ptolemy.actor.lib.Const">
+                    <property name="value" class="ptolemy.data.expr.Parameter" value="2">
+                    </property>
+                    <doc>Create a constant sequence.</doc>
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                        </property>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{125, 265}">
+                    </property>
+                </entity>
+                <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </relation>
+                <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </relation>
+                <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </relation>
+                <link port="rt_o" relation="relation"/>
+                <link port="rt_i" relation="relation2"/>
+                <link port="AddSubtract.plus" relation="relation2"/>
+                <link port="AddSubtract.plus" relation="relation3"/>
+                <link port="AddSubtract.output" relation="relation"/>
+                <link port="Const.output" relation="relation3"/>
+            </entity>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <vertex name="vertex1" value="{125.0, 160.0}">
+                </vertex>
+            </relation>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </relation>
+            <link port="port" relation="relation"/>
+            <link port="port2" relation="relation2"/>
+            <link port="reg task +.rt_o" relation="relation2"/>
+            <link port="reg task +.rt_i" relation="relation"/>
+        </entity>
+        <relation name="portRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <relation name="port2Relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <link port="port" relation="portRelation"/>
+        <link port="port2" relation="port2Relation"/>
+        <link port="_Controller.port" relation="portRelation"/>
+        <link port="_Controller.port2" relation="port2Relation"/>
+        <link port="mode.port" relation="portRelation"/>
+        <link port="mode.port2" relation="port2Relation"/>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="{300.0, 175.0}">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="zeroTimeDEActor.port" relation="relation"/>
+    <link port="zeroTimeDEActor.port2" relation="relation2"/>
+    <link port="TimedPlotter.input" relation="relation"/>
+    <link port="TDLModule.port" relation="relation2"/>
+    <link port="TDLModule.port2" relation="relation"/>
+</entity>

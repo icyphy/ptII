@@ -1,0 +1,15 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="TDL" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+      <doc>TDL Domain</doc>
+	<property name="CodeGenerator" class="ptolemy.domains.tdl.kernel.TDLCodeGenerator"/>
+					<input source="ptolemy/configs/utilityTTModule.xml"/>
+				<input source="ptolemy/configs/utilityTTTask.xml"/>
+      </group>
+    ?>
+  </configure>
+</entity>

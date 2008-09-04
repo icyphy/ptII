@@ -13,7 +13,7 @@ import ptolemy.domains.fsm.kernel.Transition;
 import ptolemy.domains.fsm.modal.ModalController;
 import ptolemy.domains.fsm.modal.Refinement;
 import ptolemy.domains.fsm.modal.RefinementPort;
-import ptolemy.domains.tt.tdl.kernel.TDLMode;
+import ptolemy.domains.tdl.kernel.TDLMode;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
 import ptolemy.kernel.CompositeEntity;
