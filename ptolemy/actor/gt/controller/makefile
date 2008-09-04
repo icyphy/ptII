@@ -63,6 +63,7 @@ JSRCS = \
 	ModelParameter.java \
 	Output.java \
 	ReadModel.java \
+	Report.java \
 	Test.java \
 	Transform.java \
 	TransformationAttribute.java \
@@ -83,6 +84,7 @@ OTHER_FILES_TO_BE_JARED = \
 	ModelUpdaterIcon.xml \
 	OutputIcon.xml \
 	ReadModelIcon.xml \
+	ReportIcon.xml \
 	TestIcon.xml \
 	TransformIcon.xml \
 	TransformationController.xml \

@@ -12,6 +12,8 @@
     </entity>
     <entity name="ReadModel" class="ptolemy.actor.gt.controller.ReadModel">
     </entity>
+    <entity name="Report" class="ptolemy.actor.gt.controller.Report">
+    </entity>
     <entity name="Test" class="ptolemy.actor.gt.controller.Test">
     </entity>
     <entity name="Transform" class="ptolemy.actor.gt.controller.Transform">
