@@ -42,7 +42,7 @@ import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
 import ptolemy.domains.ptides.kernel.PtidesActorProperties;
 import ptolemy.domains.ptides.lib.ScheduleListener.ScheduleEventType;
-import ptolemy.domains.tt.tdl.kernel.TDLModule;
+import ptolemy.domains.tdl.kernel.TDLModule;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**

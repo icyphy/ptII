@@ -77,12 +77,8 @@ public class PtidesActorReceiver extends PtidesReceiver {
      * @return True if there are more tokens.
      */
     public boolean hasToken() {
-        IOPort port = getContainer();
-        Actor actor = (Actor) port.getContainer();
-
-        return (port.isOutput() && super.hasToken())
-//                || (!(actor.getDirector() instanceof PtidesEmbeddedDirector) && super
-//                        .hasToken()) 
+        IOPort port = getContainer();  
+        return (port.isOutput() && super.hasToken()) 
                         || 
                         (hasToken(getModelTime()));
     }

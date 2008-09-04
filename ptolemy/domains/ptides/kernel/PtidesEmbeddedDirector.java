@@ -59,7 +59,7 @@ import ptolemy.domains.ptides.lib.ScheduleListener.ScheduleEventType;
 import ptolemy.domains.ptides.platform.NonPreemptivePlatformExecutionStrategy;
 import ptolemy.domains.ptides.platform.PlatformExecutionStrategy;
 import ptolemy.domains.ptides.platform.PreemptivePlatformExecutionStrategy;
-import ptolemy.domains.tt.tdl.kernel.TDLModule;
+import ptolemy.domains.tdl.kernel.TDLModule;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;

@@ -8,8 +8,8 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
-import ptolemy.domains.tt.tdl.kernel.TDLModule;
-import ptolemy.domains.tt.tdl.kernel.TDLModuleDirector;
+import ptolemy.domains.tdl.kernel.TDLModule;
+import ptolemy.domains.tdl.kernel.TDLModuleDirector;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
