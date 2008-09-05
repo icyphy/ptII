@@ -51,8 +51,8 @@ public class Const extends Source {
      * Construct a Const helper for the staticDynamic lattice.
      * This set a permanent constraint for the output port to
      * be STATIC, but does not use the default actor constraints.
-     * @param actor The given Source actor
-     * @param lattice The staticDynamic lattice.
+     * @param solver The given solver.
+     * @param actor The given Const actor
      * @throws IllegalActionException 
      */
     public Const(PropertyConstraintSolver solver, 

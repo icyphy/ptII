@@ -50,8 +50,8 @@ public class CompositeEntity extends PropertyConstraintCompositeHelper {
      * CompositeActor. This is the helper class for any 
      * CompositeActor that does not have a specific defined
      * helper class.
+     * @param solver The given solver.
      * @param actor The given CompositeActor.
-     * @param lattice The staticDynamic lattice.
      * @throws IllegalActionException 
      */
     public CompositeEntity(PropertyConstraintSolver solver, 

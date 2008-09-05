@@ -50,8 +50,8 @@ public class Sequence extends AtomicActor {
 
     /**
      * Construct a Sequence helper for the logicalAND lattice.
+     * @param solver The given solver.
      * @param actor The given Source actor
-     * @param lattice The logicalAND lattice.
      * @throws IllegalActionException 
      */
     public Sequence(PropertyConstraintSolver solver, 
