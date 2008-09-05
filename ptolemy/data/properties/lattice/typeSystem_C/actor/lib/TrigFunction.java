@@ -52,8 +52,8 @@ public class TrigFunction extends AtomicActor {
      * Construct a Const helper for the staticDynamic lattice.
      * This set a permanent constraint for the output port to
      * be STATIC, but does not use the default actor constraints.
+     * @param solver The given solver.
      * @param actor The given Source actor
-     * @param lattice The staticDynamic lattice.
      * @throws IllegalActionException 
      */
     public TrigFunction(PropertyConstraintSolver solver, 
