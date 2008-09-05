@@ -1,3 +1,20 @@
+/*
+ * @Copyright (c) 2008 The Regents of the University of California. All rights
+ * reserved. Permission is hereby granted, without written agreement and without
+ * license or royalty fees, to use, copy, modify, and distribute this software
+ * and its documentation for any purpose, provided that the above copyright
+ * notice and the following two paragraphs appear in all copies of this
+ * software. IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY
+ * PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ * ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE
+ * UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ * FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN
+ * "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE
+ * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+ * PT_COPYRIGHT_VERSION_2 COPYRIGHTENDKEY
+ */
 package ptolemy.domains.ptides.kernel;
 
 import ptolemy.actor.Actor;
@@ -13,24 +30,25 @@ import ptolemy.domains.tdl.kernel.TDLModuleDirector;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
+/**
+ * This is a collection of static methods used in the Ptides domain to determin
+ * static properties of actors such as:
+ * <ul>
+ * <li>Is the actor a sensor?</li>
+ * <li>Is the actor an actuator?</li>
+ * <li>What is the WCET of the actor?</li>
+ * <li>Can the actor be triggered by an event on the given port? Some actors,
+ * for instance, have trigger ports where events don't cause an immediate firing
+ * of the actor but determine if the actor produces an output token at the next
+ * scheduled time. An example is the clock actor. Another example is the TDL
+ * module, tokens on input ports of TDL modules don't cause a firing of the
+ * actor, the firing is caused by pure events scheduled by the TDL module.</li>
+ * <li>Does this actor have to be fired at real time?</li>
+ * </ul>
+ * 
+ * @author Patricia Derler
+ */
 public class PtidesActorProperties {
-
-    public static boolean mustBeFiredAtRealTime(Object object) {
-        if (object instanceof IOPort
-                && ((Actor) ((IOPort) object).getContainer()) instanceof Source
-                && ((Source) ((Actor) ((IOPort) object).getContainer())).trigger == object) {
-            // trigger ports don't have to be fired at real time
-            return false;
-        }
-
-        Actor actor = null;
-        if (object instanceof IOPort) {
-            actor = (Actor) ((IOPort) object).getContainer();
-        } else {
-            actor = (Actor) object;
-        }
-        return isSensor(actor) || isActuator(actor);
-    }
 
     /**
      * Returns true if the actor is an actuator. A parameter of an actuator
@@ -101,9 +119,9 @@ public class PtidesActorProperties {
      * @param actor
      *            The actor for which the worst case execution time is
      *            requested.
-     * @return The worst case execution time. 
+     * @return The worst case execution time.
      */
-    public static double getWCET(Actor actor) { 
+    public static double getWCET(Actor actor) {
         try {
             if (actor instanceof TDLModule) {
                 return ((TDLModuleDirector) ((TDLModule) actor).getDirector())
@@ -126,6 +144,14 @@ public class PtidesActorProperties {
         }
     }
 
+    /**
+     * Returns the priority of the actor. The priority is an int value. The
+     * default return value is 0.
+     * 
+     * @param actor
+     *            Given actor.
+     * @return Priority of the given actor.
+     */
     public static int getPriority(Actor actor) {
         try {
             Parameter parameter = (Parameter) ((NamedObj) actor)
@@ -145,8 +171,42 @@ public class PtidesActorProperties {
         }
     }
 
+    /**
+     * Returns true if the port is a trigger port, i.e. an event on that port
+     * causes a firing of the actor.
+     * 
+     * @param port
+     *            Given port.
+     * @return True if given port is a trigger port.
+     */
     public static boolean portIsTriggerPort(IOPort port) {
         return !(port instanceof ParameterPort)
                 && !(port.getContainer() instanceof TDLModule);
+    }
+
+    /**
+     * Returns true if the actor or port object must be fired at real time equal
+     * to model time.
+     * 
+     * @param object
+     *            Given actor or port object.
+     * @return True if the given actor or actor containing the port must be
+     *         fired at real time equal to model time.
+     */
+    public static boolean mustBeFiredAtRealTime(Object object) {
+        if (object instanceof IOPort
+                && ((Actor) ((IOPort) object).getContainer()) instanceof Source
+                && ((Source) ((Actor) ((IOPort) object).getContainer())).trigger == object) {
+            // trigger ports don't have to be fired at real time
+            return false;
+        }
+
+        Actor actor = null;
+        if (object instanceof IOPort) {
+            actor = (Actor) ((IOPort) object).getContainer();
+        } else {
+            actor = (Actor) object;
+        }
+        return isSensor(actor) || isActuator(actor);
     }
 }

@@ -36,8 +36,7 @@ import ptolemy.actor.NoRoomException;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.util.Time;
 import ptolemy.data.Token;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.IllegalActionException; 
 
 /**
  * Receiver used inside platforms of a ptides domain.
@@ -147,74 +146,7 @@ public class PtidesActorReceiver extends PtidesReceiver {
     }
 
     // /////////////////////////////////////////////////////////////////
-    // // private methods ////
-
-    /**
-     * Return the director that created this receiver. If this receiver is an
-     * inside receiver of an output port of an opaque composite actor, then the
-     * director will be the local director of the container of its port.
-     * Otherwise, it's the executive director of the container of its port.Note
-     * that the director returned is guaranteed to be non-null. This method is
-     * read synchronized on the workspace.
-     * 
-     * @return An instance of DEDirector.
-     * @exception IllegalActionException
-     *                If there is no container port, or if the port has no
-     *                container actor, or if the actor has no director, or if
-     *                the director is not an instance of DEDirector.
-     */
-    private PtidesEmbeddedDirector _getDirector() throws IllegalActionException {
-        IOPort port = getContainer();
-
-        if (port != null) {
-            if (_directorVersion == port.workspace().getVersion()) {
-                return _director;
-            }
-
-            // Cache is invalid. Reconstruct it.
-            try {
-                port.workspace().getReadAccess();
-                Actor actor = (Actor) port.getContainer();
-                if (actor != null) {
-                    Director dir;
-
-                    if (!port.isInput() && (actor instanceof CompositeActor)
-                            && ((CompositeActor) actor).isOpaque()) {
-                        dir = actor.getDirector();
-                    } else {
-                        dir = actor.getExecutiveDirector();
-                    }
-
-                    if (dir != null) {
-                        if (dir instanceof PtidesEmbeddedDirector) {
-                            _director = (PtidesEmbeddedDirector) dir;
-                            _directorVersion = port.workspace().getVersion();
-                            return _director;
-                        } else {
-                            throw new IllegalActionException(getContainer(),
-                                    "Does not have a "
-                                            + "EmbeddedDEDirector4Ptides.");
-                        }
-                    }
-                }
-            } finally {
-                port.workspace().doneReading();
-            }
-        }
-
-        throw new IllegalActionException(getContainer(),
-                "Does not have a IOPort as the container of the receiver.");
-    }
-
-    // /////////////////////////////////////////////////////////////////
     // // private variables ////
-    /** The director where this DEReceiver should register for De events. */
-    private PtidesEmbeddedDirector _director;
-
-    /**
-     * Version of the director.
-     */
-    private long _directorVersion = -1;
 
     public void removeEvents(Time modelTime) {
         while (_queue.size() > 0 && _queue.first()._timeStamp.equals(modelTime)) {

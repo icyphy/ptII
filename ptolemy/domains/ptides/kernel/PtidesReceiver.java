@@ -234,14 +234,12 @@ public class PtidesReceiver extends AbstractReceiver {
         // exists
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // private variables ////
+    ///////////////////////////////////////////////////////////////////
+    //// protected variables ////
 
     /** The set in which this receiver stores tokens. */
     protected TreeSet<Event> _queue = new TreeSet<Event>(new TimeComparator());
 
-    // The time stamp of the earliest token that is still in the queue.
-    // private Time _receiverTime;
 
     /**
      * An Event is an aggregation consisting of a Token, a time stamp and

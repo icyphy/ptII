@@ -72,11 +72,8 @@ public class PreemptivePlatformExecutionStrategy extends
      */
     private class WCETComparator implements Comparator {
         
-        protected WCETComparator(Time physicalTime) {
-            _physicalTime = physicalTime;
-        }
-
-        private Time _physicalTime;
+        protected WCETComparator(Time physicalTime) { 
+        } 
         
 
         /**
