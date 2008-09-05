@@ -83,11 +83,10 @@ public class PropertyConstraintHelper extends PropertyHelper {
     /**
      * Construct the property constraint helper for the given
      * component and property lattice.
-     * @param solver TODO
+     * @param solver The given property lattice.
      * @param component The given component.
      * @param useDefaultConstraints Indicate whether this helper
      *  uses the default actor constraints. 
-     * @param solver The given property lattice.
      * @throws IllegalActionException Thrown if the helper cannot
      *  be initialized.
      */
@@ -165,9 +164,12 @@ public class PropertyConstraintHelper extends PropertyHelper {
     }
 
     /**
-     * @param constraintSource
-     * @param port
-     * @return
+     * Return the list of constraining ports on a given port,
+     * given whether source or sink ports should be constrainted.
+     * @param constraintSource The flag that indicates whether
+     *  source or sink ports are constrainted.
+     * @param port The given port.
+     * @return The list of constrainting ports.
      */
     protected static List _getConstraintingPorts(
             boolean constraintSource, TypedIOPort port) {
@@ -177,9 +179,14 @@ public class PropertyConstraintHelper extends PropertyHelper {
     }
 
     /**
-     * @param actor
-     * @param constraintSource
-     * @return
+     * Return the list of constrained ports given the flag
+     * whether source or sink ports should be constrainted.
+     * If source ports are constrained, it returns the list
+     * of input ports of the assoicated actor; otherwise, it
+     * returns the list of output ports. 
+     * @param constraintSource The flag that indicates whether
+     *  source or sink ports are constrainted.
+     * @return The list of constrainted ports.
      */
     protected List _getConstraintedPorts(boolean constraintSource) {
         Actor actor = (Actor) getComponent();
@@ -215,8 +222,14 @@ public class PropertyConstraintHelper extends PropertyHelper {
     }
 
     /**
-     * @param constraints
-     * @throws IllegalActionException
+     * Iterate through the list of sub helpers and gather
+     * the constraints for each one. Note that the helper stores
+     * a new set of constraints each time this is invoked. Therefore,
+     * multiple invocations will generate excessive constraints and
+     * result in inefficiency during resolution. 
+     * @throws IllegalActionException Thrown if there is any errors
+     *  in getting the sub helpers and gathering the constraints for
+     *  each one.
      */
     protected void _addSubHelperConstraints() throws IllegalActionException {
         Iterator helpers = _getSubHelpers().iterator();
@@ -291,11 +304,12 @@ public class PropertyConstraintHelper extends PropertyHelper {
     }
 
     /**
-     * Create a constraint that set the property of the given port 
-     * to be same as the given function term.
-     * @param object The given port.
-     * @param term The given function term.
-     * @throws IllegalActionException 
+     * Create constraints that set the property of the given objects
+     * same as each other. It creates two inequalities that constraint
+     * the first object to be at least the second, and then constraint 
+     * the second to be at least the first.
+     * @param object1 The given port.
+     * @param object2 The given function term.
      */
     public void setSameAs(Object object1, Object object2) {
         setAtLeast(object1, object2);
@@ -322,9 +336,11 @@ public class PropertyConstraintHelper extends PropertyHelper {
     }
 
     /**
-     * 
-     * @param object
-     * @return
+     * Return the list of constraining terms for a given object.
+     * It delegates to the constraint manager of the solver
+     * linked with this helper.
+     * @param object The given object.
+     * @return The list of constrainting terms.
      */
     public List<PropertyTerm> getConstraintingTerms(Object object) {
         return getSolver().getConstraintManager()
@@ -452,7 +468,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
     /**
      * @param constraintType
      * @param object
-     * @param portList2
+     * @param objectList
      * @throws IllegalActionException
      */
     protected void _constraintObject(
@@ -499,27 +515,15 @@ public class PropertyConstraintHelper extends PropertyHelper {
         }
     }
     
-//    private List<InequalityTerm> _deepGetVariables(InequalityTerm[] variables) {
-//        List<InequalityTerm> result = new ArrayList<InequalityTerm>();
-//        
-//        for (int i = 0; i < variables.length; i++) {
-//            if (variables[i].getAssociatedObject() != null) {
-//
-//                result.addAll(Arrays.asList(variables[i].getVariables()));                
-//            } else {
-//                
-//                result.addAll(_deepGetVariables(variables[i].getVariables()));
-//            }
-//        }
-//        return result;
-//    }
-
     /**
-     * 
-     * @return
-     * @throws IllegalActionException
+     * Return the list of sub-helpers. By default, this
+     * returns the list of ASTNode helpers that are associated
+     * with the expressions of the propertyable attributes. 
+     * @return The list of sub-helpers.
+     * @throws IllegalActionException Not thrown in this base class.
      */
-    protected List<PropertyHelper> _getSubHelpers() throws IllegalActionException {
+    protected List<PropertyHelper> _getSubHelpers() 
+            throws IllegalActionException {
         return _getASTNodeHelpers();
     }
 

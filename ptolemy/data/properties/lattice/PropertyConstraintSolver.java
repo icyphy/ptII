@@ -278,8 +278,10 @@ public class PropertyConstraintSolver extends PropertySolver {
     }
 
     /**
-     * Resolve the property values for the given top-level entity.
-     * @param toplevel The given top level entity.
+     * Resolve the property values for the toplevel
+     * entity that contains this solver, given the
+     * model analyzer that invokes this.
+     * @param analyzer The given model analyzer.
      */
     protected void _resolveProperties(ModelAnalyzer analyzer) 
     throws KernelException {
@@ -907,7 +909,10 @@ public class PropertyConstraintSolver extends PropertySolver {
 
 
     /**
-     * @return
+     * Return a new property term manager. Subclass can
+     * implements a its own manager and override this method
+     * to instantiate a instance of the new class.
+     * @return A property term manager.
      */
     protected PropertyTermManager _getPropertyTermManager() {
 //      FIXME: doesn't work for other use-cases!

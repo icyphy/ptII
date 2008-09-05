@@ -65,10 +65,14 @@ public class PropertyTermManager implements PropertyTermFactory {
     }
     
     /**
-     * 
-     * @param object
-     * @return
-     * @throws IllegalActionException
+     * Return the property term for the given object.
+     * If the given object is null or a property term itself,
+     * it returns the given object. Otherwise, it checks
+     * its cache if a term object was created previously. Returns
+     * the property term if it is found; otherwise, it creates
+     * and cache a new property term before returning it. 
+     * @param object The given object.
+     * @return The property term.
      */
     public PropertyTerm getPropertyTerm(Object object) {
         if (object == null || object instanceof PropertyTerm) {
@@ -226,8 +230,8 @@ public class PropertyTermManager implements PropertyTermFactory {
             _isEffective = isEffective; 
         }
         
-        /** Set the property of this port.
-         *  @parameter property The given property.
+        /** Set the property value of this term.
+         *  @param property The given property.
          *  @exception IllegalActionException If the new type violates
          *   the declared property of this port.
          */

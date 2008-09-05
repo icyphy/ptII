@@ -197,7 +197,7 @@ public class PropertyConstraintASTNodeHelper
      * @return The list of sub-helpers.
      * @throws IllegalActionException
      */
-    protected List<PropertyHelper> _getSubHelpers() throws IllegalActionException {
+    protected List<PropertyHelper> _getSubHelpers() {
         return new ArrayList<PropertyHelper>();
     }
     

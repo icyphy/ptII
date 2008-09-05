@@ -30,8 +30,6 @@ package ptolemy.data.properties.lattice;
 
 import java.util.List;
 
-import ptolemy.kernel.util.IllegalActionException;
-
 //////////////////////////////////////////////////////////////////////////
 //// PropertyTermPartialEvaluator.
 
@@ -47,11 +45,10 @@ Interface for a property term partial evaluator.
 public interface PropertyTermPartialEvaluator {
 
     /**
-     * 
-     * @param object
-     * @return
-     * @throws IllegalActionException
+     * Return the list of ineffective terms for the given term.
+     * @param term The given term.
+     * @return The list of ineffective terms.
      */
-    public abstract List<PropertyTerm> getIneffectiveTerms(PropertyTerm updateTerm);
+    public abstract List<PropertyTerm> getIneffectiveTerms(PropertyTerm term);
 
 }

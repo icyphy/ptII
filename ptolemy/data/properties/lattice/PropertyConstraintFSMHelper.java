@@ -64,13 +64,13 @@ import ptolemy.kernel.util.NamedObj;
 public class PropertyConstraintFSMHelper extends PropertyConstraintCompositeHelper {
 
     /**
-     * Construct a helper for the given AtomicActor. This is the
-     * helper class for any ActomicActor that does not have a
+     * Construct a helper for the given FSMActor. This is the
+     * base helper class for any FSMActor that does not have a
      * specific defined helper class. Default actor constraints
      * are set for this helper. 
+     * @param solver The given solver.
      * @param actor The given ActomicActor.
-     * @param lattice The staticDynamic lattice.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException Thrown if super class throws it.
      */
     public PropertyConstraintFSMHelper(PropertyConstraintSolver solver, 
             ptolemy.domains.fsm.kernel.FSMActor actor)
@@ -283,8 +283,10 @@ public class PropertyConstraintFSMHelper extends PropertyConstraintCompositeHelp
     }
     
     /**
-     * 
-     * @return
+     * Get the list of propertyable attributes for this helper.
+     * In this base helper class for FSM, it considers all guard 
+     * expressions as propertyable attributes.
+     * @return The list of propertyable attributes.
      */
     protected List<Attribute> _getPropertyableAttributes() {
         List<Attribute> result = super._getPropertyableAttributes();
@@ -309,9 +311,11 @@ public class PropertyConstraintFSMHelper extends PropertyConstraintCompositeHelp
     }
 
     /**
-     * 
-     * @return
-     * @throws IllegalActionException
+     * Return the list of sub-helpers. In this base class, it
+     * returns the list of ASTNode helpers that are associated
+     * with the expressions of the propertyable attributes. 
+     * @return The list of sub-helpers.
+     * @throws IllegalActionException Not thrown in this base class.
      */
     protected List<PropertyHelper> _getSubHelpers() throws IllegalActionException {
         return _getASTNodeHelpers();

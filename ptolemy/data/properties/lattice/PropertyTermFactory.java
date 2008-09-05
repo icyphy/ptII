@@ -28,7 +28,6 @@
  */
 package ptolemy.data.properties.lattice;
 
-import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// PropertyTermFactory.
@@ -46,10 +45,9 @@ Interface for a property term factory.
 public interface PropertyTermFactory {
 
     /**
-     * 
-     * @param object
-     * @return
-     * @throws IllegalActionException
+     * Return the property term for the given object.
+     * @param object The given object.
+     * @return The property term.
      */
     public abstract PropertyTerm getPropertyTerm(Object object);
 
