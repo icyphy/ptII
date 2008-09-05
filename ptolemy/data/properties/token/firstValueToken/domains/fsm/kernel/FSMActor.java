@@ -54,8 +54,8 @@ public class FSMActor extends PropertyTokenFSMHelper {
      * helper class for any ActomicActor that does not have a
      * specific defined helper class. Default actor constraints
      * are set for this helper. 
+     * @param solver The given solver.
      * @param actor The given ActomicActor.
-     * @param lattice The staticDynamic lattice.
      * @throws IllegalActionException 
      */
     public FSMActor(PropertyTokenSolver solver, 
