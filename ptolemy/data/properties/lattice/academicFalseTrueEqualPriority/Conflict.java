@@ -47,8 +47,8 @@ import ptolemy.data.properties.lattice.PropertyLattice;
 public class Conflict extends LatticeProperty {
         
     /**
-     * Construct a Dynamic property object
-     * @param lattice
+     * Construct a Conflict property object
+     * @param lattice The given lattice.
      */
     public Conflict(PropertyLattice lattice) {
         super(lattice);

@@ -47,8 +47,8 @@ import ptolemy.data.properties.lattice.PropertyLattice;
 public class False extends LatticeProperty {
         
     /**
-     * Construct a Dynamic property object
-     * @param lattice
+     * Construct a False property object
+     * @param lattice The given lattice.
      */
     public False(PropertyLattice lattice) {
         super(lattice);
