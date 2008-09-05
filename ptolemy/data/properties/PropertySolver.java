@@ -536,8 +536,8 @@ public abstract class PropertySolver extends Attribute {
      * Resolve the property values for the given top-level entity.
      * Print out the name of the this solver. Sub-classes should
      * overrides this method.
-     * @param topLevel The given top level entity.
-     * @throws IllegalActionException TODO
+     * @param analyzer The given model analyzer.
+     * @throws KernelException Not thrown in this base class.
      */
     protected void _resolveProperties(ModelAnalyzer analyzer) 
     throws KernelException {
@@ -637,12 +637,13 @@ public abstract class PropertySolver extends Attribute {
     }
 
     /**
-     * 
-     * @param propertyableObject
-     * @param namedObj
-     * @param attribute
-     * @param property
-     * @throws IllegalActionException
+     * Check the given property against the trained property recorded
+     * on the given NamedObj. It also restore the trained property that
+     * is temporarily cleared for regression testing.
+     * @param namedObj The given NamedObj.
+     * @param property The given resolved property.
+     * @throws PropertyResolutionException Thrown if there are errors
+     *  restoring the trained property.
      */
     protected void _regressionTest(NamedObj namedObj, Property property) 
     throws PropertyResolutionException {
@@ -1475,12 +1476,9 @@ public abstract class PropertySolver extends Attribute {
     }
 
     /**
-     * Return the property value associated with the given property lattice
-     * and the given port.  
-     * @param object The given port.
-     * @param lattice The given lattice.
-     * @return The property value of the given port. 
-     * @throws IllegalActionException 
+     * Return the property value associated with the given object.  
+     * @param object The given object.
+     * @return The property of the given object. 
      */
     public Property getProperty(Object object) {
         return getResolvedProperty(object);
@@ -1548,9 +1546,9 @@ public abstract class PropertySolver extends Attribute {
     }
 
     /**
-     * 
-     * @param separator
-     * @return
+     * Return the string representation of the recorded statistics.
+     * @param separator The delimiter to separate the statistics fields.
+     * @return The string representation of the recorded statistics.
      */
     protected String _getStatsAsString(String separator) {
         StringBuffer result = new StringBuffer();
@@ -1601,9 +1599,12 @@ public abstract class PropertySolver extends Attribute {
     }
     
     /**
-     * 
-     * @param sharedParameter
-     * @return
+     * The list of all solvers that shared the same utility object 
+     * wrapped by the given SharedParameter (e.g. all solvers from
+     * the same model).
+     * @param sharedParameter The given SharedParameter that wraps a
+     *  shared utility object.
+     * @return A list of solvers.
      */
     public static List<PropertySolver> getAllSolvers(SharedParameter sharedParameter) {
         List<NamedObj> parameters = new ArrayList<NamedObj>(sharedParameter.sharedParameterSet());
@@ -1836,10 +1837,16 @@ public abstract class PropertySolver extends Attribute {
 
 
     /**
-     * 
-     * @param exception
-     * @param trainedException
-     * @return
+     * Return the error message string that shows the mismatch between
+     * the two given exception strings. This method does not compare
+     * the content between the input strings. It merely wraps the input 
+     * strings into a larger error message that says there is a mismatch
+     * between the two. This is used to generate the error message for 
+     * failed regression test that detects a mismatch between the 
+     * expected (trained) exception and the generate exception.
+     * @param exception The first input error message.
+     * @param trainedException The second input error message.
+     * @return The exception message string.
      */
     public static String getTrainedExceptionMismatchMessage(
             String exception, String trainedException) {
