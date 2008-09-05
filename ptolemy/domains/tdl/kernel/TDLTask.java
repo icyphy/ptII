@@ -44,7 +44,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 /**
- * A TDL task is an SDF actor with some TDL specific parameters.
+ * A TDL task is an SDF actor with TDL specific parameters.
  * 
  * @author Patricia Derler
  * 
