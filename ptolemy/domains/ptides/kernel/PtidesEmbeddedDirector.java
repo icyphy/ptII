@@ -61,6 +61,7 @@ import ptolemy.domains.ptides.platform.PlatformExecutionStrategy;
 import ptolemy.domains.ptides.platform.PreemptivePlatformExecutionStrategy;
 import ptolemy.domains.tdl.kernel.TDLModule;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -581,9 +582,11 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();_eventQueues = new Hashtable<Actor, TreeSet<Time>>();
-        List<CompositeActor> platforms = ((CompositeActor)getContainer()).entityList();
-        for (Actor platform : platforms) {
-            _eventQueues.put(platform, new TreeSet<Time>());
+        List<ComponentEntity> platforms = ((CompositeActor)getContainer()).entityList();
+        for (ComponentEntity platform : platforms) {
+            if (platform instanceof Actor) {
+                _eventQueues.put((Actor)platform, new TreeSet<Time>());
+            }
         } 
         _currentPhysicalTime = ((Actor) getContainer()).getExecutiveDirector()
                 .getModelTime(); 
