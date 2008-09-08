@@ -90,7 +90,7 @@ public class TransformationAttributeIcon extends EditorIcon {
     }
 
     private static final Color _BACKGROUND_COLOR = new Color(1.0f, 1.0f, 0.8f,
-            0.8f);
+            1.0f);
 
     private static final Font _LABEL_FONT = new Font("SansSerif", Font.PLAIN,
             12);
