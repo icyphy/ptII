@@ -51,7 +51,7 @@ public class CompositeEntity extends PropertyConstraintCompositeHelper {
      * CompositeActor that does not have a specific defined
      * helper class.
      * @param solver The given solver.
-     * @param actor The given CompositeActor.
+     * @param entity The given CompositeEntity.
      * @throws IllegalActionException 
      */
     public CompositeEntity(PropertyConstraintSolver solver, 
