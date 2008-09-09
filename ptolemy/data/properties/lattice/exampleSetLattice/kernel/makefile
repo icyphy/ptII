@@ -1,4 +1,4 @@
-# Makefile for Java Ptolemy Data Properties Lattice ExampleSetLattice Kernel
+# Makefile for Java Ptolemy Data Properties Lattice NamingSetLattice Kernel
 #
 # @Authors: Man-Kit Leung, based on a file by Christopher Brooks
 #
@@ -29,7 +29,7 @@
 #                       PT_COPYRIGHT_VERSION_2
 #                       COPYRIGHTENDKEY
 
-ME =        ptolemy/data/properties/lattice/exampleSetLattice/kernel
+ME =        ptolemy/data/properties/lattice/namingSetLattice/kernel
 
 DIRS =      
 
