@@ -76,8 +76,8 @@ public class PropertyCombineSolver extends PropertySolver {
    
     /**
      * Returns the helper that contains property information for
-     * the given component.
-     * @param component The given component
+     * the given object.
+     * @param object The given object.
      * @return The associated property constraint helper.
      */    
     public PropertyHelper getHelper(Object object) throws IllegalActionException {
