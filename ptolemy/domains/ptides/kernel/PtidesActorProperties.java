@@ -44,7 +44,7 @@ import ptolemy.kernel.util.NamedObj;
  * module, tokens on input ports of TDL modules don't cause a firing of the
  * actor, the firing is caused by pure events scheduled by the TDL module.</li>
  * <li>Does this actor have to be fired at real time?</li>
- * </ul>
+ * </ul>.
  * 
  * @author Patricia Derler
  */
