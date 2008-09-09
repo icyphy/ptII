@@ -195,7 +195,7 @@ public class PropertyConstraintASTNodeHelper
      * Return the list of sub-helpers. In this base class,
      * return an empty list.
      * @return The list of sub-helpers.
-     * @throws IllegalActionException
+     * @throws IllegalActionException Not thrown in this base class.
      */
     protected List<PropertyHelper> _getSubHelpers() {
         return new ArrayList<PropertyHelper>();
