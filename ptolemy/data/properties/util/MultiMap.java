@@ -24,9 +24,6 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
- added description() method
- made many methods throw IllegalActionException
-
  */
 package ptolemy.data.properties.util;
 import java.util.Map;
@@ -65,9 +62,10 @@ public interface MultiMap extends Map {
     
     /**
      * Removes a specific value from map.
-     * @param key
-     * @param item
-     * @return
+     * @param key The key which the given item maps to.
+     * @param item The item to remove.
+     * @return The removed item, or null if the item
+     *  didn't exist.
      */
     public Object remove(Object key, Object item);
     
