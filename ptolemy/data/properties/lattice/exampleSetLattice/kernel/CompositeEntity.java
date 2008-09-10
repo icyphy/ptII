@@ -25,20 +25,10 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.data.properties.lattice.namingSetLattice.kernel;
+package ptolemy.data.properties.lattice.exampleSetLattice.kernel;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import ptolemy.actor.IOPort;
-import ptolemy.data.StringToken;
-import ptolemy.data.properties.Property;
 import ptolemy.data.properties.lattice.PropertyConstraintCompositeHelper;
 import ptolemy.data.properties.lattice.PropertyConstraintSolver;
-import ptolemy.data.properties.lattice.PropertySet;
-import ptolemy.data.properties.lattice.PropertyConstraintHelper.Inequality;
-import ptolemy.data.properties.token.PropertyToken;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -47,7 +37,7 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
  A property constraint helper for composite actor.
 
- @author Man-Kit Leung
+ @author Man-Kit Leung, Thomas Mandl
  @version $Id$
  @since Ptolemy II 6.2
  @Pt.ProposedRating Red (mankit)
@@ -65,30 +55,9 @@ public class CompositeEntity extends PropertyConstraintCompositeHelper {
      * @throws IllegalActionException 
      */
     public CompositeEntity(PropertyConstraintSolver solver, 
-            ptolemy.kernel.CompositeEntity CompositeEntity)
+            ptolemy.kernel.CompositeEntity entity)
         throws IllegalActionException {
 
-        super(solver, CompositeEntity);
-    }
-    
-
-    public List<Inequality> constraintList() throws IllegalActionException {
-        ptolemy.kernel.CompositeEntity actor = 
-            (ptolemy.kernel.CompositeEntity) getComponent();
-        
-        Property name = new PropertyToken(
-                new StringToken(actor.getName()));
-        
-        PropertySet nameSet = new PropertySet(
-                getSolver().getLattice(), new Property[] {name});
-        
-        for (IOPort port : (List<IOPort>) actor.portList()) {
-            setAtLeast(port, nameSet);
-        }
-        return super.constraintList();
-    }
-    
-    protected List<Attribute> _getPropertyableAttributes() {
-        return new LinkedList<Attribute>();
+        super(solver, entity);
     }
 }
