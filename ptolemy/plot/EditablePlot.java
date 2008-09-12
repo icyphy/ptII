@@ -35,6 +35,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Stack;
 import java.util.Vector;
@@ -119,12 +120,12 @@ public class EditablePlot extends Plot {
     public double[][] getData(int dataset) {
         _checkDatasetIndex(dataset);
 
-        Vector pts = (Vector) _points.elementAt(dataset);
+        ArrayList<PlotPoint> pts = _points.get(dataset);
         int size = pts.size();
         double[][] result = new double[2][size];
 
         for (int i = 0; i < size; i++) {
-            PlotPoint pt = (PlotPoint) pts.elementAt(i);
+            PlotPoint pt =  pts.get(i);
             result[0][i] = pt.x;
             result[1][i] = pt.y;
         }
@@ -245,10 +246,10 @@ public class EditablePlot extends Plot {
         _editPoint(x, y);
 
         // Edit the points in the signal.
-        Vector pts = (Vector) _points.elementAt(_dataset);
+        ArrayList<PlotPoint> pts = _points.get(_dataset);
 
         for (int i = 0; i < pts.size(); i++) {
-            PlotPoint pt = (PlotPoint) pts.elementAt(i);
+            PlotPoint pt = pts.get(i);
 
             // Only bother with points in visual range
             if ((pt.x >= _xMin) && (pt.x <= _xMax)) {
@@ -408,7 +409,7 @@ public class EditablePlot extends Plot {
     private void _setData(int dataset, double[][] data) {
         _checkDatasetIndex(dataset);
 
-        Vector pts = (Vector) _points.elementAt(dataset);
+        ArrayList<PlotPoint> pts = _points.get(dataset);
         int size = pts.size();
 
         if (data[0].length < size) {
@@ -416,7 +417,7 @@ public class EditablePlot extends Plot {
         }
 
         for (int i = 0; i < size; i++) {
-            PlotPoint pt = (PlotPoint) pts.elementAt(i);
+            PlotPoint pt = pts.get(i);
             pt.x = data[0][i];
             pt.y = data[1][i];
         }

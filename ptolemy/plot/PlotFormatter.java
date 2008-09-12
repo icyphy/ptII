@@ -29,6 +29,7 @@ package ptolemy.plot;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Frame;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Vector;
 
@@ -402,17 +403,17 @@ public class PlotFormatter extends JPanel {
     // the Plot class, taking advantage of the fact that this class is
     // in the same package.
     private void _saveConnected() {
-        Vector points = ((Plot) _plot)._points;
+        ArrayList<ArrayList<PlotPoint>> points = ((Plot) _plot)._points;
         _originalConnected = new boolean[points.size()][];
         _originalPoints = new PlotPoint[points.size()][];
 
         for (int dataset = 0; dataset < points.size(); dataset++) {
-            Vector pts = (Vector) points.elementAt(dataset);
+            ArrayList<PlotPoint> pts = points.get(dataset);
             _originalConnected[dataset] = new boolean[pts.size()];
             _originalPoints[dataset] = new PlotPoint[pts.size()];
 
             for (int i = 0; i < pts.size(); i++) {
-                PlotPoint pt = (PlotPoint) pts.elementAt(i);
+                PlotPoint pt = pts.get(i);
                 _originalConnected[dataset][i] = pt.connected;
                 _originalPoints[dataset][i] = pt;
             }
@@ -424,7 +425,7 @@ public class PlotFormatter extends JPanel {
     // the Plot class, taking advantage of the fact that this class is
     // in the same package.
     private void _setConnected(boolean value) {
-        Vector points = ((Plot) _plot)._points;
+        ArrayList<ArrayList<PlotPoint>> points = ((Plot) _plot)._points;
 
         // Make sure the default matches.
         ((Plot) _plot).setConnected(value);
@@ -432,13 +433,13 @@ public class PlotFormatter extends JPanel {
         boolean[][] result = new boolean[points.size()][];
 
         for (int dataset = 0; dataset < points.size(); dataset++) {
-            Vector pts = (Vector) points.elementAt(dataset);
+            ArrayList<PlotPoint> pts = points.get(dataset);
             result[dataset] = new boolean[pts.size()];
 
             boolean first = true;
 
             for (int i = 0; i < pts.size(); i++) {
-                PlotPoint pt = (PlotPoint) pts.elementAt(i);
+                PlotPoint pt = pts.get(i);
                 pt.connected = value && !first;
                 first = false;
             }

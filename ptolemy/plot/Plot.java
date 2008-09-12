@@ -52,10 +52,7 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.Serializable;
 import java.net.URL;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.Vector;
-
+import java.util.ArrayList;
 import javax.swing.JComponent;
 
 //////////////////////////////////////////////////////////////////////////
@@ -213,7 +210,7 @@ import javax.swing.JComponent;
  the <code>_gridInit()</code> method in the PlotBox class.
  </ul>
 
- @author Edward A. Lee, Christopher Brooks, Contributor: Tom Peachey
+ @author Edward A. Lee, Christopher Brooks, Contributor: Tom Peachey, Bert Rodiers
  @version $Id$
  @since Ptolemy II 0.2
  @Pt.ProposedRating Yellow (cxh)
@@ -271,11 +268,11 @@ public class Plot extends PlotBox {
      */
     public synchronized void addPoint(final int dataset, final double x,
             final double y, final boolean connected) {
-        Runnable doAddPoint = new Runnable() {
+        Runnable doAddPoint = new RunnableExceptionCatcher(new Runnable() {
             public void run() {
                 _addPoint(dataset, x, y, 0, 0, connected, false);
             }
-        };
+        });
 
         deferIfNecessary(doAddPoint);
     }
@@ -311,11 +308,11 @@ public class Plot extends PlotBox {
     public synchronized void addPointWithErrorBars(final int dataset,
             final double x, final double y, final double yLowEB,
             final double yHighEB, final boolean connected) {
-        Runnable doAddPoint = new Runnable() {
+        Runnable doAddPoint = new RunnableExceptionCatcher(new Runnable() {
             public void run() {
                 _addPoint(dataset, x, y, yLowEB, yHighEB, connected, true);
             }
-        };
+        });
 
         deferIfNecessary(doAddPoint);
     }
@@ -335,11 +332,11 @@ public class Plot extends PlotBox {
      *  called them.
      */
     public synchronized void clear(final boolean format) {
-        Runnable doClear = new Runnable() {
+        Runnable doClear = new RunnableExceptionCatcher(new Runnable() {
             public void run() {
                 _clear(format);
             }
-        };
+        });
 
         deferIfNecessary(doClear);
     }
@@ -358,18 +355,17 @@ public class Plot extends PlotBox {
      *  @param dataset The dataset to clear.
      */
     public synchronized void clear(final int dataset) {
-        Runnable doClear = new Runnable() {
+        Runnable doClear = new RunnableExceptionCatcher(new Runnable() {
             public void run() {
                 _clear(dataset);
             }
-        };
+        });
 
         deferIfNecessary(doClear);
     }
-
     /** Erase the point at the given index in the given dataset.  If
-     *  lines are being drawn, also erase the line to the next points
-     *  (note: not to the previous point).  The point is not checked to
+     * lines are being drawn, these lines are erased and if necessary new
+     * ones will be drawn. The point is not checked to
      *  see whether it is in range, so care must be taken by the caller
      *  to ensure that it is.
      *  <p>
@@ -385,14 +381,17 @@ public class Plot extends PlotBox {
      *  @param index The index of the point to erase.
      */
     public synchronized void erasePoint(final int dataset, final int index) {
-        Runnable doErasePoint = new Runnable() {
+        Runnable doErasePoint = new RunnableExceptionCatcher(new Runnable() {
             public void run() {
                 _erasePoint(dataset, index);
             }
-        };
+        });
 
         deferIfNecessary(doErasePoint);
     }
+
+
+    
 
     /** Rescale so that the data that is currently plotted just fits.
      *  This overrides the base class method to ensure that the protected
@@ -409,11 +408,11 @@ public class Plot extends PlotBox {
      *  called them.
      */
     public synchronized void fillPlot() {
-        Runnable doFill = new Runnable() {
+        Runnable doFill = new RunnableExceptionCatcher(new Runnable() {
             public void run() {
                 _fillPlot();
             }
-        };
+        });
 
         deferIfNecessary(doFill);
     }
@@ -473,6 +472,7 @@ public class Plot extends PlotBox {
      *  This method is deprecated, since there is no longer an upper bound.
      *  @deprecated
      */
+    @Deprecated
     public int getMaxDataSets() {
         return Integer.MAX_VALUE;
     }
@@ -501,6 +501,7 @@ public class Plot extends PlotBox {
      *  the new (XML) file format.
      *  @deprecated
      */
+    @Deprecated
     public void parseFile(String filespec, URL documentBase) {
         _firstInSet = true;
         _sawFirstDataSet = false;
@@ -528,7 +529,7 @@ public class Plot extends PlotBox {
      */
     public synchronized void samplePlot() {
         // This needs to be done in the event thread.
-        Runnable sample = new Runnable() {
+        Runnable sample = new RunnableExceptionCatcher(new Runnable() {
             public void run() {
                 synchronized (Plot.this) {
                     // Create a sample plot.
@@ -588,7 +589,7 @@ public class Plot extends PlotBox {
 
                 repaint();
             } // run method
-        }; // Runnable class
+        }); // Runnable class
 
         deferIfNecessary(sample);
     }
@@ -613,7 +614,7 @@ public class Plot extends PlotBox {
     public synchronized void setBars(double width, double offset) {
         // Ensure replot of offscreen buffer.
         _plotImage = null;
-        barWidth = width;
+        _barWidth = width;
         _barOffset = offset;
         _bars = true;
     }
@@ -650,7 +651,7 @@ public class Plot extends PlotBox {
         _plotImage = null;
         _checkDatasetIndex(dataset);
 
-        Format fmt = (Format) _formats.elementAt(dataset);
+        Format fmt = _formats.get(dataset);
         fmt.connected = on;
         fmt.connectedUseDefault = false;
     }
@@ -678,7 +679,7 @@ public class Plot extends PlotBox {
         _plotImage = null;
         _checkDatasetIndex(dataset);
 
-        Format fmt = (Format) _formats.elementAt(dataset);
+        Format fmt = _formats.get(dataset);
         fmt.impulses = on;
         fmt.impulsesUseDefault = false;
     }
@@ -695,7 +696,7 @@ public class Plot extends PlotBox {
         _plotImage = null;
         _checkDatasetIndex(dataset);
 
-        Format format = (Format) _formats.elementAt(dataset);
+        Format format = _formats.get(dataset);
         if (styleString.equalsIgnoreCase("solid")) {
             format.lineStroke = new BasicStroke(_width,
                     BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL,
@@ -737,12 +738,11 @@ public class Plot extends PlotBox {
                     dashvalues, 0);
         } else {
             StringBuffer results = new StringBuffer();
-            Iterator styles = java.util.Arrays.asList(_lineStylesArray).iterator();
-            while (styles.hasNext()) {
+            for (String style : java.util.Arrays.asList(_LINE_STYLES_ARRAY)) {
                 if (results.length() > 0) {
                     results.append(", ");
                 }
-                results.append("\"" + (String)styles.next() + "\"");
+                results.append("\"" + style + "\"");
             }
             throw new IllegalArgumentException("Line style \""
                     + styleString + "\" is not found, style must be one of "
@@ -763,9 +763,7 @@ public class Plot extends PlotBox {
         _plotImage = null;
         _lineStyles = lineStyles;
         if (!_lineStyles) {
-            Enumeration formats = _formats.elements();
-            while (formats.hasMoreElements()) {
-                Format fmt = (Format) formats.nextElement();
+            for (Format fmt : _formats) {
                 fmt.lineStyle = null;
                 fmt.lineStroke = null;
                 fmt.lineStyleUseDefault = true;
@@ -810,7 +808,7 @@ public class Plot extends PlotBox {
         _plotImage = null;
         _checkDatasetIndex(dataset);
 
-        Format fmt = (Format) _formats.elementAt(dataset);
+        Format fmt = _formats.get(dataset);
 
         if (style.equalsIgnoreCase("none")) {
             fmt.marks = 0;
@@ -820,7 +818,7 @@ public class Plot extends PlotBox {
             fmt.marks = 2;
         } else if (style.equalsIgnoreCase("various")) {
             fmt.marks = 3;
-        } else if (style.equalsIgnoreCase("bigdots")) {	
+        } else if (style.equalsIgnoreCase("bigdots")) { 
             fmt.marks = 4;
         } else if (style.equalsIgnoreCase("pixels")) {
             fmt.marks = 5;
@@ -835,6 +833,7 @@ public class Plot extends PlotBox {
      *  @param numSets The number of data sets.
      *  @deprecated
      */
+    @Deprecated
     public void setNumSets(int numSets) {
         // Ensure replot of offscreen buffer.
         _plotImage = null;
@@ -845,16 +844,17 @@ public class Plot extends PlotBox {
         }
 
         _currentdataset = -1;
-        _points.removeAllElements();
-        _formats.removeAllElements();
-        _prevx.removeAllElements();
-        _prevy.removeAllElements();
+        _points.clear();
+        _bins.clear();
+        _formats.clear();
+        _prevxpos.clear();
+        _prevypos.clear();
 
         for (int i = 0; i < numSets; i++) {
-            _points.addElement(new Vector());
-            _formats.addElement(new Format());
-            _prevx.addElement(_initialPreviousValue);
-            _prevy.addElement(_initialPreviousValue);
+            _points.add(new ArrayList<PlotPoint>());
+            _formats.add(new Format());
+            _prevxpos.add(_INITIAL_PREVIOUS_VALUE);
+            _prevypos.add(_INITIAL_PREVIOUS_VALUE);
         }
     }
 
@@ -928,7 +928,7 @@ public class Plot extends PlotBox {
         for (int dataset = 0; dataset < _points.size(); dataset++) {
             StringBuffer options = new StringBuffer();
 
-            Format fmt = (Format) _formats.elementAt(dataset);
+            Format fmt = _formats.get(dataset);
 
             if (!fmt.connectedUseDefault) {
                 if (_isConnected(dataset)) {
@@ -959,10 +959,10 @@ public class Plot extends PlotBox {
             output.println("<dataset" + options.toString() + ">");
 
             // Write the data
-            Vector pts = (Vector) _points.elementAt(dataset);
+            ArrayList<PlotPoint> pts = _points.get(dataset);
 
             for (int pointnum = 0; pointnum < pts.size(); pointnum++) {
-                PlotPoint pt = (PlotPoint) pts.elementAt(pointnum);
+                PlotPoint pt = pts.get(pointnum);
 
                 if (!pt.connected) {
                     output.print("<m ");
@@ -1033,7 +1033,7 @@ public class Plot extends PlotBox {
         }
 
         if (_bars) {
-            output.println("<barGraph width=\"" + barWidth + "\" offset=\""
+            output.println("<barGraph width=\"" + _barWidth + "\" offset=\""
                     + _barOffset + "\"/>");
         }
     }
@@ -1057,10 +1057,11 @@ public class Plot extends PlotBox {
         }
 
         while (dataset >= _points.size()) {
-            _points.addElement(new Vector());
-            _formats.addElement(new Format());
-            _prevx.addElement(_initialPreviousValue);
-            _prevy.addElement(_initialPreviousValue);
+            _points.add(new ArrayList<PlotPoint>());
+            _bins.add(new ArrayList<Bin>());
+            _formats.add(new Format());
+            _prevxpos.add(_INITIAL_PREVIOUS_VALUE);
+            _prevypos.add(_INITIAL_PREVIOUS_VALUE);
         }
     }
 
@@ -1092,11 +1093,11 @@ public class Plot extends PlotBox {
 
         if ((ypos <= _lry) && (xpos <= _lrx) && (xpos >= _ulx)) {
             // left x position of bar.
-            int barlx = (int) (xpos - ((barWidth * _xscale) / 2) + (dataset
+            int barlx = (int) (xpos - ((_barWidth * _xscale) / 2) + (dataset
                     * _barOffset * _xscale));
 
             // right x position of bar
-            int barrx = (int) (barlx + (barWidth * _xscale));
+            int barrx = (int) (barlx + (_barWidth * _xscale));
 
             if (barlx < _ulx) {
                 barlx = _ulx;
@@ -1234,7 +1235,7 @@ public class Plot extends PlotBox {
             long starty, long endx, long endy, boolean clip, float width) {
         _setWidth(graphics, width);
 
-        Format format = (Format) _formats.elementAt(dataset);
+        Format format = _formats.get(dataset);
         Stroke previousStroke = null;
         if (!format.lineStyleUseDefault && graphics instanceof Graphics2D) {
             previousStroke = ((Graphics2D)graphics).getStroke();
@@ -1336,25 +1337,29 @@ public class Plot extends PlotBox {
             // graphics, see test/onePointStem.plt for an example that
             // requires this change.
             _graphics = graphics;
-            _prevx = new Vector();
-            _prevy = new Vector();
+            _prevxpos.clear();
+            _prevypos.clear();
             for (int dataset = 0; dataset < _points.size(); dataset++) {
-                _prevx.addElement(_initialPreviousValue);
-                _prevy.addElement(_initialPreviousValue);
+                _prevxpos.add(_INITIAL_PREVIOUS_VALUE);
+                _prevypos.add(_INITIAL_PREVIOUS_VALUE);
             }
         }
 
         // We must call PlotBox._drawPlot() before calling _drawPlotPoint
         // so that _xscale and _yscale are set.
         super._drawPlot(graphics, clearfirst, drawRectangle);
+        
+        // Divide the points into different Bins. This should be done each time
+        // _xscale and _yscale are set
+        _dividePointsIntoBins();
 
         // Plot the points in reverse order so that the first colors
         // appear on top.
-        for (int dataset = _points.size() - 1; dataset >= 0; dataset--) {
-            Vector data = (Vector) _points.elementAt(dataset);
+        for (int dataset = _bins.size() - 1; dataset >= 0; dataset--) {
+            ArrayList<Bin> data = _bins.get(dataset);
 
-            for (int pointnum = 0; pointnum < data.size(); pointnum++) {
-                _drawPlotPoint(graphics, dataset, pointnum);
+            for (int binnum = 0; binnum < data.size(); binnum++) {
+                _drawBin(graphics, dataset, binnum);
             }
         }
 
@@ -1386,7 +1391,7 @@ public class Plot extends PlotBox {
             int yposi = (int) ypos;
 
             // Check to see whether the dataset has a marks directive
-            Format fmt = (Format) _formats.elementAt(dataset);
+            Format fmt = _formats.get(dataset);
             int marks = _marks;
 
             if (!fmt.marksUseDefault) {
@@ -1566,11 +1571,11 @@ public class Plot extends PlotBox {
                     if (graphics instanceof Graphics2D) {
                         Object obj = ((Graphics2D) graphics).getRenderingHint(RenderingHints.KEY_ANTIALIASING);
                         ((Graphics2D) graphics).setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                                RenderingHints.VALUE_ANTIALIAS_ON);		
+                                RenderingHints.VALUE_ANTIALIAS_ON);             
                         graphics.fillOval(xposi - 4, yposi - 4,
                                 8, 8);
                         ((Graphics2D) graphics).setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                                obj);		
+                                obj);           
                     } else {
                         graphics.fillOval(xposi - 4, yposi - 4,
                                 8, 8);
@@ -1684,10 +1689,8 @@ public class Plot extends PlotBox {
                     // it fmt.connectedUseDefault is true, then
                     // set fmt.connectedUseDefault to false and set
                     // the value of fmt.connected
-                    Enumeration formats = _formats.elements();
 
-                    while (formats.hasMoreElements()) {
-                        Format format = (Format) formats.nextElement();
+                    for (Format format : _formats) {
 
                         if (format.connectedUseDefault) {
                             format.connectedUseDefault = false;
@@ -1729,19 +1732,19 @@ public class Plot extends PlotBox {
                     setBars(true);
 
                     int comma = line.indexOf(",", 5);
-                    String barwidth;
+                    String _barWidth;
                     String baroffset = null;
 
                     if (comma > 0) {
-                        barwidth = (line.substring(5, comma)).trim();
+                        _barWidth = (line.substring(5, comma)).trim();
                         baroffset = (line.substring(comma + 1)).trim();
                     } else {
-                        barwidth = (line.substring(5)).trim();
+                        _barWidth = (line.substring(5)).trim();
                     }
 
                     try {
                         // Use Double.parseDouble() and avoid creating a Double
-                        double bwidth = Double.parseDouble(barwidth);
+                        double bwidth = Double.parseDouble(_barWidth);
                         double boffset = _barOffset;
 
                         if (baroffset != null) {
@@ -1877,9 +1880,9 @@ public class Plot extends PlotBox {
         if (graphics instanceof Graphics2D) {
             // We cache the two most common cases.
             if (width == 1f) {
-                ((Graphics2D) graphics).setStroke(_lineStroke1);
+                ((Graphics2D) graphics).setStroke(_LINE_STROKE1);
             } else if (width == 2f) {
-                ((Graphics2D) graphics).setStroke(_lineStroke2);
+                ((Graphics2D) graphics).setStroke(_LINE_STROKE2);
             } else {
                 ((Graphics2D) graphics).setStroke(new BasicStroke(width,
                         BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND));
@@ -1896,6 +1899,7 @@ public class Plot extends PlotBox {
      *  @param output A buffered print writer.
      *  @deprecated
      */
+    @Deprecated
     protected void _writeOldSyntax(PrintWriter output) {
         super._writeOldSyntax(output);
 
@@ -1909,7 +1913,7 @@ public class Plot extends PlotBox {
         }
 
         if (_bars) {
-            output.println("Bars: " + barWidth + ", " + _barOffset);
+            output.println("Bars: " + _barWidth + ", " + _barOffset);
         }
 
         // Write the defaults for formats that can be controlled by dataset
@@ -1946,7 +1950,7 @@ public class Plot extends PlotBox {
             }
 
             // Write dataset-specific format information
-            Format fmt = (Format) _formats.elementAt(dataset);
+            Format fmt = _formats.get(dataset);
 
             if (!fmt.impulsesUseDefault) {
                 if (fmt.impulses) {
@@ -1985,10 +1989,10 @@ public class Plot extends PlotBox {
             }
 
             // Write the data
-            Vector pts = (Vector) _points.elementAt(dataset);
+            ArrayList<PlotPoint> pts = _points.get(dataset);
 
             for (int pointnum = 0; pointnum < pts.size(); pointnum++) {
-                PlotPoint pt = (PlotPoint) pts.elementAt(pointnum);
+                PlotPoint pt = pts.get(pointnum);
 
                 if (!pt.connected) {
                     output.print("move: ");
@@ -2010,13 +2014,13 @@ public class Plot extends PlotBox {
     /** @serial The current dataset. */
     protected int _currentdataset = -1;
 
-    /** @serial A vector of datasets. */
-    protected Vector _points = new Vector();
-
     /** @serial An indicator of the marks style.  See _parseLine method for
      * interpretation.
      */
     protected int _marks;
+    
+    /** @serial A vector of datasets. */
+    protected ArrayList<ArrayList<PlotPoint>> _points = new ArrayList<ArrayList<PlotPoint>>();
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -2107,29 +2111,34 @@ public class Plot extends PlotBox {
             }
         }
 
-        Vector pts = (Vector) _points.elementAt(dataset);
+        ArrayList<Bin> bins = _bins.get(dataset);
+        ArrayList<PlotPoint> points = _points.get(dataset);
 
         // If X persistence has been set, then delete any old points.
         if (_xPersistence > 0.0) {
             int numToDelete = 0;
+            int nbrOfBins = bins.size();
 
-            while (numToDelete < pts.size()) {
-                PlotPoint old = (PlotPoint) (pts.elementAt(numToDelete));
+            while (numToDelete < nbrOfBins) {
+                Bin old = bins.get(numToDelete);
 
-                if ((x - old.originalx) <= _xPersistence) {
+                if ((x - points.get(old.firstPointIndex()- _pointInBinOffset).originalx) <= _xPersistence) {
                     break;
                 }
 
                 numToDelete++;
             }
+            
+            numToDelete = Math.min(numToDelete, nbrOfBins-1);
+                //We want to keep at least one bin.
 
             for (int i = 0; i < numToDelete; i++) {
-                erasePoint(dataset, 0);
+                _eraseFirstBin(dataset); // Again, we are in the event thread, so this is safe...
             }
         }
 
         // Get the new size after deletions.
-        int size = pts.size();
+        int size = points.size();
 
         PlotPoint pt = new PlotPoint();
 
@@ -2200,19 +2209,22 @@ public class Plot extends PlotBox {
             pt.connected = false;
         } else if (_wrap) {
             // Do not connect points if wrapping...
-            PlotPoint old = (PlotPoint) (pts.elementAt(size - 1));
+            PlotPoint old = points.get(size - 1);
 
             if (old.x > x) {
                 pt.connected = false;
             }
         }
 
-        pts.addElement(pt);
+        points.add(pt);
+        _addPointToBin(dataset, pt, size);               
 
-        // If points persistence has been set, then delete one old point.
+        // If points persistence has been set, then delete first bin if there are to many points
+        //      However we don't want to delete all bins...
         if (_pointsPersistence > 0) {
-            if (size > _pointsPersistence) {
-                erasePoint(dataset, 0);
+            if (size > _pointsPersistence && bins.size() > 1) {
+                // Again, we are in the event thread, so this is safe...
+                _eraseFirstBin(dataset);
             }
         }
 
@@ -2275,15 +2287,47 @@ public class Plot extends PlotBox {
                 }
             }
 
+            assert _bins.get(dataset).size() > 0;
             // Again, we are in the event thread, so this is safe...
-            _drawPlotPoint(graphics, dataset, pts.size() - 1);
+            _drawBin(graphics, dataset, _bins.get(dataset).size() - 1);
         }
 
         if (_wrap && (Math.abs(x - _wrapHigh)) < 0.00001) {
             // Plot a second point at the low end of the range.
             _addPoint(dataset, _wrapLow, y, yLowEB, yHighEB, false, errorBar);
         }
-    }
+    }    
+
+    /** Add point to the corresponding Bin. If the point fits into the last bin
+     * (the same xpos) it will be added to this one, otherwise a new bin will
+     * be created 
+     */
+    private void _addPointToBin(int dataset, PlotPoint point, int pointIndex) {
+        ArrayList<Bin> bins = _bins.get(dataset); //we could move this out of this function (for performance)
+        
+        // Use long for positions because these numbers can be quite large
+        // (when we are zoomed out a lot).
+        
+        // _drawPlot should have been called to fill in _xscale and _yscale
+        
+        long xpos = _ulx + (long) ((point.x - _xMin) * _xscale);
+        long ypos = _lry - (long) ((point.y - _yMin) * _yscale);
+        int nbrOfBins = bins.size(); 
+            //Cached since it came out in JProfiler (everything becomes costly if you
+            //  do it a lot of times)
+        
+        Bin lastBin = nbrOfBins > 0 ? bins.get(nbrOfBins - 1) : null;
+            //Cached since it came out in JProfiler (everything becomes costly if you do
+            //  it a lot of times)
+        
+        if (nbrOfBins == 0 || lastBin.xpos != xpos) { 
+            // Does not fall within last bin => add one bin
+            nbrOfBins += 1;
+            lastBin = new Bin(xpos);
+            bins.add(lastBin);                                       
+        }
+        lastBin.addPoint(point, pointIndex, ypos);        
+    }    
 
     /* Clear the plot of all data points.  If the argument is true, then
      * reset all parameters to their initial conditions, including
@@ -2299,9 +2343,10 @@ public class Plot extends PlotBox {
         _plotImage = null;
         super.clear(format);
         _currentdataset = -1;
-        _points = new Vector();
-        _prevx = new Vector();
-        _prevy = new Vector();
+        _points.clear();
+        _bins.clear();        
+        _prevxpos.clear();
+        _prevypos.clear();        
         _maxDataset = -1;
         _firstInSet = true;
         _sawFirstDataSet = false;
@@ -2311,12 +2356,12 @@ public class Plot extends PlotBox {
             _showing = false;
 
             // Reset format controls
-            _formats = new Vector();
+            _formats.clear();
             _marks = 0;
             _pointsPersistence = 0;
             _xPersistence = 0;
             _bars = false;
-            barWidth = 0.5;
+            _barWidth = 0.5;
             _barOffset = 0.05;
             _connected = true;
             _impulses = false;
@@ -2337,29 +2382,46 @@ public class Plot extends PlotBox {
         _checkDatasetIndex(dataset);
         _xyInvalid = true;
 
-        Vector points = (Vector) _points.elementAt(dataset);
+        ArrayList<PlotPoint> points = _points.get(dataset);
 
-        // Vector.clear() is new in JDK1.2, so we use just
-        // create a new Vector here so that we can compile
-        // this with JDK1.1 for use in JDK1.1 browsers
         points.clear();
 
-        //_points.setElementAt(new Vector(), dataset);
-        _points.setElementAt(points, dataset);
+        _points.set(dataset, points);
         repaint();
     }
+    
+    /** Subdivide all points into different bins. A bin is represents a number of
+     * points that are all displayed on the same x position. When calling this function
+     * all existing bins will first be cleared.
+     */
+    private void _dividePointsIntoBins() {
+        _pointInBinOffset = 0;
+        _bins.clear();
+        int nbrOfDataSets = _points.size();
+        for (int i = 0; i < nbrOfDataSets; ++i)
+            _bins.add(new ArrayList<Bin>());            
+                
+        for (int dataset = 0; dataset < nbrOfDataSets; ++dataset) {
+            ArrayList<PlotPoint> points = _points.get(dataset);
+            int numberOfPoints = points.size();
+            for (int pointIndex = 0; pointIndex < numberOfPoints; ++pointIndex) {
+                _addPointToBin(dataset, points.get(pointIndex), pointIndex);
+            }            
+        }
+    }    
 
-    /* Draw the specified point and associated lines, if any.
+
+    /* Draw the points within a specific bin and associated lines, if any.
      * Note that paintComponent() should be called before
      * calling this method so that it calls _drawPlot(), which sets
-     * _xscale and _yscale. Note that this does not check the dataset
+     * _xscale and _yscale, and subdivides the points into different Bins. Note that this does not check the dataset
      * index.  It is up to the caller to do that.
      *
      * Note that this method is not synchronized, so the caller should be.
      * Moreover this method should always be called from the event thread
      * when being used to write to the screen.
      */
-    private void _drawPlotPoint(Graphics graphics, int dataset, int index) {
+    private void _drawBin(Graphics graphics, int dataset, int binIndex) {
         if ((_pointsPersistence > 0) || (_xPersistence > 0.0)) {
             // To allow erasing to work by just redrawing the points.
             if (_background == null) {
@@ -2381,70 +2443,93 @@ public class Plot extends PlotBox {
         }
 
         if (_lineStyles) {
-            int lineStyle = dataset % _lineStylesArray.length;
-            setLineStyle(_lineStylesArray[lineStyle], dataset);
+            int lineStyle = dataset % _LINE_STYLES_ARRAY.length;
+            setLineStyle(_LINE_STYLES_ARRAY[lineStyle], dataset);
         }
 
-        Vector pts = (Vector) _points.elementAt(dataset);
-        PlotPoint pt = (PlotPoint) pts.elementAt(index);
+        assert dataset < _bins.size();
+        ArrayList<Bin> bins = _bins.get(dataset);
+        assert binIndex < bins.size();
+        Bin bin = bins.get(binIndex);
+        long xpos = bin.xpos;
+        
+        assert bin.needReplot();
+        
+        if (bin.needConnectionWithPreviousBin()) {
+            Bin previousBin = bins.get(binIndex - 1);
+            _drawLine(graphics, dataset, xpos, bin.firstYPos(), previousBin.xpos, previousBin.lastYPos(), true, _DEFAULT_WIDTH);
+        }
 
-        // Use long here because these numbers can be quite large
-        // (when we are zoomed out a lot).
-        long ypos = _lry - (long) ((pt.y - _yMin) * _yscale);
-        long xpos = _ulx + (long) ((pt.x - _xMin) * _xscale);
+        if (bin.rangeChanged() && bin.minYPos() != bin.maxYPos()) {
+            _drawLine(graphics, dataset, xpos, bin.minYPos(), xpos, bin.maxYPos(), true, _DEFAULT_WIDTH);
+        }
 
-        // Draw the line to the previous point.
-        long prevx = ((Long) _prevx.elementAt(dataset)).longValue();
-        long prevy = ((Long) _prevy.elementAt(dataset)).longValue();
+        // Draw decorations that may be specified on a per-dataset basis
+        Format fmt = _formats.get(dataset);
 
-        // Avoid drawing points and lines that are invisible.
-        // Note that if the size of the dataset is 1, then we have only
-        // one point, so we should be sure to draw it.
-        if ((xpos != prevx) || (ypos != prevy) || (pts.size() == 1)) {
-            // MIN_VALUE is a flag that there has been no previous x or y.
-            if (pt.connected) {
-                _drawLine(graphics, dataset, xpos, ypos, prevx, prevy, true, _DEFAULT_WIDTH);
-            }
+        int startPosition = bin.nextPointToPlot();
+        int endPosition = bin.afterLastPointIndex();      
+        
+        long prevypos = _prevypos.get(dataset);
+        long prevxpos = _prevxpos.get(dataset);
 
-            // Save the current point as the "previous" point for future
-            // line drawing.
-            _prevx.setElementAt(Long.valueOf(xpos), dataset);
-            _prevy.setElementAt(Long.valueOf(ypos), dataset);
-
-            // Draw decorations that may be specified on a per-dataset basis
-            Format fmt = (Format) _formats.elementAt(dataset);
-
-            if (fmt.impulsesUseDefault) {
-                if (_impulses) {
+        ArrayList<PlotPoint> points = _points.get(dataset);
+        
+        if ((fmt.impulsesUseDefault && _impulses) || (!fmt.impulsesUseDefault && fmt.impulses)) {
+            for (int i = startPosition; i < endPosition; ++i) {
+                PlotPoint point = points.get(i); 
+                long ypos = _lry - (long) ((point.y - _yMin) * _yscale);
+                if (prevypos != ypos || prevxpos != xpos) {
                     _drawImpulse(graphics, xpos, ypos, true);
                 }
-            } else {
-                if (fmt.impulses) {
-                    _drawImpulse(graphics, xpos, ypos, true);
+            }
+        }
+
+        // Check to see whether the dataset has a marks directive
+        int marks = _marks;
+
+        if (!fmt.marksUseDefault) {
+            marks = fmt.marks;
+        }
+
+        if (marks != 0) {
+            for (int i = startPosition; i < endPosition; ++i) {
+                PlotPoint point = points.get(i);  
+                long ypos = _lry - (long) ((point.y - _yMin) * _yscale);
+                if (prevypos != ypos || prevxpos != xpos) {
+                    _drawPoint(graphics, dataset, xpos, ypos, true);
                 }
             }
-
-            // Check to see whether the dataset has a marks directive
-            int marks = _marks;
-
-            if (!fmt.marksUseDefault) {
-                marks = fmt.marks;
-            }
-
-            if (marks != 0) {
-                _drawPoint(graphics, dataset, xpos, ypos, true);
-            }
-
-            if (_bars) {
-                _drawBar(graphics, dataset, xpos, ypos, true);
-            }
         }
 
-        if (pt.errorBar) {
-            _drawErrorBar(graphics, dataset, xpos, _lry
-                    - (long) ((pt.yLowEB - _yMin) * _yscale), _lry
-                    - (long) ((pt.yHighEB - _yMin) * _yscale), true);
+        if (_bars) {
+            for (int i = startPosition; i < endPosition; ++i) {
+                PlotPoint point = points.get(i); 
+                long ypos = _lry - (long) ((point.y - _yMin) * _yscale);
+                if (prevypos != ypos || prevxpos != xpos) {
+                    _drawBar(graphics, dataset, xpos, ypos, true);
+                }
+            }            
         }
+
+        if (bin.errorBar()) {
+            for (int i = startPosition; i < endPosition; ++i) {
+                PlotPoint point = points.get(i); 
+                if (point.errorBar) {
+                    long ypos = _lry - (long) ((point.y - _yMin) * _yscale);
+                    if (prevypos != ypos || prevxpos != xpos) {
+                        _drawErrorBar(graphics, dataset, xpos, _lry
+                                - (long) ((point.yLowEB - _yMin) * _yscale), _lry
+                                - (long) ((point.yHighEB - _yMin) * _yscale), true);                    
+                    }
+                }
+            }
+        }       
+
+        _prevxpos.set(dataset, xpos);
+        _prevypos.set(dataset, bin.lastYPos()); 
+        
+        bin.resetDisplayStateAfterPlot();
 
         // Restore the color, in case the box gets redrawn.
         graphics.setColor(_foreground);
@@ -2453,17 +2538,16 @@ public class Plot extends PlotBox {
             // Restore paint mode in case axes get redrawn.
             graphics.setPaintMode();
         }
-    }
+    }   
 
-    /* Erase the point at the given index in the given dataset.  If
-     * lines are being drawn, also erase the line to the next points
-     * (note: not to the previous point).
+    /* Erase the points within the first bin in the given dataset.  If
+     * lines are being drawn, also erase the line to the next points.
      *
      * This is not synchronized, so the caller should be.  Moreover, this
      * should only be called in the event dispatch thread. It should only
      * be called via deferIfNecessary().
      */
-    private void _erasePoint(int dataset, int index) {
+     private void _eraseFirstBin(int dataset) {        
         // Ensure replot of offscreen buffer.
         _plotImage = null;
 
@@ -2472,6 +2556,19 @@ public class Plot extends PlotBox {
         // Plot has probably been dismissed.  Return.
         Graphics graphics = getGraphics();
 
+
+        ArrayList<PlotPoint> points = _points.get(dataset);
+        ArrayList<Bin> bins = _bins.get(dataset);
+        Bin bin = bins.get(0);
+        int nbrOfBins = bins.size();
+        assert nbrOfBins > 0;
+
+        long xpos = bin.xpos;
+        int startPosition = bin.firstPointIndex();
+        assert startPosition >= 0;
+        int endPosition = bin.afterLastPointIndex();
+        assert endPosition > startPosition; //Otherwise there is nothing to remove
+        
         // Need to check that graphics is not null because plot may have
         // been dismissed.
         if (_showing && (graphics != null)) {
@@ -2491,39 +2588,35 @@ public class Plot extends PlotBox {
             } else {
                 graphics.setColor(_foreground);
             }
-
-            Vector pts = (Vector) _points.elementAt(dataset);
-            PlotPoint pt = (PlotPoint) pts.elementAt(index);
-            long ypos = _lry - (long) ((pt.y - _yMin) * _yscale);
-            long xpos = _ulx + (long) ((pt.x - _xMin) * _xscale);
-
-            // Erase line to the next point, if appropriate.
-            if (index < (pts.size() - 1)) {
-                PlotPoint nextp = (PlotPoint) pts.elementAt(index + 1);
-                int nextx = _ulx + (int) ((nextp.x - _xMin) * _xscale);
-                int nexty = _lry - (int) ((nextp.y - _yMin) * _yscale);
+            //First clear bin itself
+            long minYPos = bin.minYPos();
+            long maxYPos = bin.maxYPos();
+            if (minYPos != maxYPos) {
+                _drawLine(graphics, dataset, xpos, minYPos, xpos, maxYPos, true, _DEFAULT_WIDTH);
+            }                      
+            
+            // Erase line to the next bin, if appropriate.
+            if (nbrOfBins > 1) { //We have more than one bin
+                Bin nextBin = bins.get(1);
+                long nextx = nextBin.xpos; 
 
                 // NOTE: I have no idea why I have to give this point backwards.
-                if (nextp.connected) {
-                    _drawLine(graphics, dataset, nextx, nexty, xpos, ypos,
+                if (nextBin.isConnectedWithPreviousBin()) {
+                    _drawLine(graphics, dataset, nextx, nextBin.firstYPos(), xpos, bin.lastYPos(),
                             true, 2f);
-                }
-
-                nextp.connected = false;
+                }                
             }
 
             // Draw decorations that may be specified on a per-dataset basis
-            Format fmt = (Format) _formats.elementAt(dataset);
-
-            if (fmt.impulsesUseDefault) {
-                if (_impulses) {
+            Format fmt = _formats.get(dataset);
+            
+            if ((fmt.impulsesUseDefault && _impulses) || (!fmt.impulsesUseDefault && fmt.impulses)) {
+                for (int i = startPosition; i < endPosition; ++i) {
+                    PlotPoint point = points.get(i); 
+                    long ypos = _lry - (long) ((point.y - _yMin) * _yscale);
                     _drawImpulse(graphics, xpos, ypos, true);
                 }
-            } else {
-                if (fmt.impulses) {
-                    _drawImpulse(graphics, xpos, ypos, true);
-                }
-            }
+            }            
 
             // Check to see whether the dataset has a marks directive
             int marks = _marks;
@@ -2532,19 +2625,34 @@ public class Plot extends PlotBox {
                 marks = fmt.marks;
             }
 
+
             if (marks != 0) {
-                _drawPoint(graphics, dataset, xpos, ypos, true);
+                for (int i = startPosition; i < endPosition; ++i) {
+                    PlotPoint point = points.get(i);  
+                    long ypos = _lry - (long) ((point.y - _yMin) * _yscale);
+                    _drawPoint(graphics, dataset, xpos, ypos, true);
+                }
             }
 
             if (_bars) {
-                _drawBar(graphics, dataset, xpos, ypos, true);
+                for (int i = startPosition; i < endPosition; ++i) {
+                    PlotPoint point = points.get(i); 
+                    long ypos = _lry - (long) ((point.y - _yMin) * _yscale);
+                    _drawBar(graphics, dataset, xpos, ypos, true);
+                }            
             }
 
-            if (pt.errorBar) {
-                _drawErrorBar(graphics, dataset, xpos, _lry
-                        - (long) ((pt.yLowEB - _yMin) * _yscale), _lry
-                        - (long) ((pt.yHighEB - _yMin) * _yscale), true);
-            }
+            if (bin.errorBar()) {
+                for (int i = startPosition; i < endPosition; ++i) {
+                    PlotPoint point = points.get(i); 
+                    if (point.errorBar) {
+                        _drawErrorBar(graphics, dataset, xpos, _lry
+                                - (long) ((point.yLowEB - _yMin) * _yscale), _lry
+                                - (long) ((point.yHighEB - _yMin) * _yscale), true);                    
+                    }
+                }
+            }            
+
 
             // Restore the color, in case the box gets redrawn.
             graphics.setColor(_foreground);
@@ -2556,24 +2664,64 @@ public class Plot extends PlotBox {
         }
 
         // The following is executed whether the plot is showing or not.
-        // Remove the point from the model.
-        Vector points = (Vector) _points.elementAt(dataset);
+        // Remove the bin from the model.
 
-        if (points != null) {
-            // If this point is at the maximum or minimum x or y boundary,
-            // then flag that boundary needs to be recalculated next time
-            // fillPlot() is called.
-            PlotPoint pt = (PlotPoint) points.elementAt(index);
-
-            if (pt != null) {
-                if ((pt.x == _xBottom) || (pt.x == _xTop) || (pt.y == _yBottom)
-                        || (pt.y == _yTop)) {
-                    _xyInvalid = true;
-                }
-
-                points.removeElementAt(index);
-            }
+        if (nbrOfBins > 1) {
+            Bin nextBin = bins.get(1);
+            nextBin.setNotConnectedWithPreviousBin(dataset);
         }
+        
+        if (nbrOfBins == 1) {
+            //No bins left in the end
+            _prevxpos.set(dataset, _INITIAL_PREVIOUS_VALUE);
+            _prevypos.set(dataset, _INITIAL_PREVIOUS_VALUE);                
+        }
+        
+        // If a point is at the maximum or minimum x or y boundary,
+        // then flag that boundary needs to be recalculated next time
+        // fillPlot() is called.
+        if (xpos == _xBottom || xpos == _xTop || bin.minYPos() == _yBottom || bin.maxYPos() == _yTop) {
+            _xyInvalid = true;
+        }
+        
+        //Delete points and bin
+        assert startPosition == 0; //No actually necessary in this code, but it should be valid
+        for (int i = startPosition; i < endPosition; ++i) {
+            points.remove(startPosition);
+        }
+        assert bin.firstPointIndex() >= 0;
+
+        _pointInBinOffset += (bin.afterLastPointIndex() - bin.firstPointIndex());
+            //FIXME? Warning: Could overflow for scopes with a really large history...
+            //  (the points aren't kept in memory, since it is only here where it goes wrong.
+            //  We could check for overflow and in this case reset the _pointInBinOffset to
+            //  zero, recalculate all bins, and repaint everything. 
+        
+        //This code is actually only checking some invariants. Not revelant in
+        //      production code
+        if (nbrOfBins > 1) {
+            Bin nextBin = bins.get(1);
+            assert nextBin.firstPointIndex()  >= 0; //otherwise out of box
+            assert nextBin.firstPointIndex() == 0;
+                //This is a combination of two things: first of all we are deleting the first bin and secondly all points should be in a bin
+                //      => the first point in the first bin (once this one has deleted) has to be the first point of all points
+            
+        }                
+        bins.remove(0);            
+    }
+
+    
+    /* Erase the point at the given index in the given dataset.  If
+     * lines are being drawn, these lines are erased and if necessary new
+     * ones will be drawn.
+     *
+     * This is not synchronized, so the caller should be.  Moreover, this
+     * should only be called in the event dispatch thread. It should only
+     * be called via deferIfNecessary().
+     */
+    private void _erasePoint(int dataset, int index) {        
+        _points.get(dataset).remove(index);
+        repaint();        
     }
 
     /* Rescale so that the data that is currently plotted just fits.
@@ -2595,10 +2743,10 @@ public class Plot extends PlotBox {
             _yTop = -Double.MAX_VALUE;
 
             for (int dataset = 0; dataset < _points.size(); dataset++) {
-                Vector points = (Vector) _points.elementAt(dataset);
+                ArrayList<PlotPoint> points = _points.get(dataset);
 
                 for (int index = 0; index < points.size(); index++) {
-                    PlotPoint pt = (PlotPoint) points.elementAt(index);
+                    PlotPoint pt = points.get(index);
 
                     if (pt.x < _xBottom) {
                         _xBottom = pt.x;
@@ -2643,7 +2791,7 @@ public class Plot extends PlotBox {
 
         _checkDatasetIndex(dataset);
 
-        Format fmt = (Format) _formats.elementAt(dataset);
+        Format fmt = _formats.get(dataset);
 
         if (fmt.connectedUseDefault) {
             return _connected;
@@ -2655,111 +2803,323 @@ public class Plot extends PlotBox {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** @serial Number of points to persist for. */
-    private int _pointsPersistence = 0;
-
-    /** @serial Persistence in units of the horizontal axis. */
-    private double _xPersistence = 0.0;
-
+    /** @serial Offset per dataset in x axis units. */
+    private double _barOffset = 0.05;
+    
     /** @serial True if this is a bar plot. */
     private boolean _bars = false;
 
     /** @serial Width of a bar in x axis units. */
-    private double barWidth = 0.5;
+    private double _barWidth = 0.5;
 
-    /** @serial Offset per dataset in x axis units. */
-    private double _barOffset = 0.05;
+    /**
+     * An arraylist of the bins in the plot. A bin is represents a number of points that are all displayed on the same x position.
+     * A bin is meant to avoid superfluous drawings of lines. So instaed of having to draw 
+     * a line between each point, you can draw a line between the minimum and maximum and maximum
+     * position.
+     */    
+    private ArrayList<ArrayList<Bin>> _bins = new ArrayList<ArrayList<Bin>>();
 
     /** @serial True if the points are connected. */
     private boolean _connected = true;
 
-    /** @serial True if this is an impulse plot. */
-    private boolean _impulses = false;
+    /** @serial Give the diameter of a point for efficiency. */
+    private int _diameter = 6;
 
-    /** @serial The highest data set used. */
-    private int _maxDataset = -1;
-
-    /** @serial True if we saw 'reusedatasets: on' in the file. */
-    private boolean _reuseDatasets = false;
+    /** The initial default width.
+     */
+    private static final float _DEFAULT_WIDTH = 2f;
+    
+    // Half of the length of the error bar horizontal leg length;
+    private static final int _ERRORBAR_LEG_LENGTH = 5;
 
     /** @serial Is this the first datapoint in a set? */
     private boolean _firstInSet = true;
 
-    /** @serial Have we seen a DataSet line in the current data file? */
-    private boolean _sawFirstDataSet = false;
+    /** @serial Format information on a per data set basis. */
+    private ArrayList<Format> _formats = new ArrayList<Format>();
+    
+    /** Cached copy of graphics, needed to reset when we are exporting
+     *  to EPS.
+     */
+    private Graphics _graphics = null;
 
-    /** @serial Give the radius of a point for efficiency. */
-    private int _radius = 3;
-
-    /** @serial Give the diameter of a point for efficiency. */
-    private int _diameter = 6;
-
-    /** @serial Information about the previously plotted point. */
-    private Vector _prevx = new Vector();
-
-    /** @serial Information about the previously plotted point. */
-    private Vector _prevy = new Vector();
-
-    // Half of the length of the error bar horizontal leg length;
-    private static final int _ERRORBAR_LEG_LENGTH = 5;
-
-    // Maximum number of different marks
-    // NOTE: There are 11 colors in the base class.  Combined with 10
-    // marks, that makes 110 unique signal identities.
-    private static final int _MAX_MARKS = 10;
-
-    // A stroke of width 1.
-    private static final BasicStroke _lineStroke1 = new BasicStroke(1f,
-            BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND);
-
-    // A stroke of width 2.
-    private static final BasicStroke _lineStroke2 = new BasicStroke(2f,
-            BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND);
+    /** @serial True if this is an impulse plot. */
+    private boolean _impulses = false;
+    
+    /** Initial value for elements in _prevx and _prevy that indicate
+     *  we have not yet seen data.
+     */
+    private static final Long _INITIAL_PREVIOUS_VALUE = Long.MIN_VALUE;
+    
+    /** @serial The highest data set used. */
+    private int _maxDataset = -1;
 
     // The stroke to use for thin lines in the plot.
     //private static final BasicStroke _thinStroke = new BasicStroke(
     //        1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND);
+    
+    // A stroke of width 1.
+    private static final BasicStroke _LINE_STROKE1 = new BasicStroke(1f,
+            BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND);
+    
+    // A stroke of width 2.
+    private static final BasicStroke _LINE_STROKE2 = new BasicStroke(2f,
+            BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND);
+    
+    /** True if different line styles should be used. */
+    private boolean _lineStyles = false;
+    
+    /** True if different line styles should be used. */
+    private static String [] _LINE_STYLES_ARRAY = {
+        "solid", "dotted", "dashed", "dotdashed", "dotdotdashed"};
+    
+    // Maximum number of different marks
+    // NOTE: There are 11 colors in the base class.  Combined with 10
+    // marks, that makes 110 unique signal identities.
+    private static final int _MAX_MARKS = 10;
+    
+    /**
+     * Points in bins have an absolute index within the virtual array
+     *  of all points that once existed in Plot. This is done to avoid
+     *  having to change all bins when points in the beginning are removed.
+     *  The offset _pointInBinOffset is a positive number that denotes the 
+     *  difference between the index of the point in the current point arraylist
+     *  and the virtual one containing all points.
+     */
+    private int _pointInBinOffset = 0;
+    
+    /** @serial Number of points to persist for. */
+    private int _pointsPersistence = 0;
+
+    /** @serial Information about the previously plotted point. */
+    private ArrayList<Long> _prevxpos = new ArrayList<Long>();
+
+    /** @serial Information about the previously plotted point. */
+    private ArrayList<Long> _prevypos = new ArrayList<Long>();
+    
+    /** @serial Give the radius of a point for efficiency. */
+    private int _radius = 3;
+
+    /** @serial True if we saw 'reusedatasets: on' in the file. */
+    private boolean _reuseDatasets = false;
+
+    /** @serial Have we seen a DataSet line in the current data file? */
+    private boolean _sawFirstDataSet = false;
+
+    /** @serial Set by _drawPlot(), and reset by clear(). */
+    private boolean _showing = false;
+    
+    /** @serial Persistence in units of the horizontal axis. */
+    private double _xPersistence = 0.0;
 
     /** @serial Flag indicating validity of _xBottom, _xTop,
      *  _yBottom, and _yTop.
      */
     private boolean _xyInvalid = true;
 
-    /** @serial Set by _drawPlot(), and reset by clear(). */
-    private boolean _showing = false;
-
-    /** The initial default width.
-     */
-    private static final float _DEFAULT_WIDTH = 2f;
-
     /** The width of the current stroke.  Only effective if the
      *  Graphics is a Graphics2D.
      *
      */
     private float _width = _DEFAULT_WIDTH;
-        
-    /** True if different line styles should be used. */
-    private boolean _lineStyles = false;
 
-    /** True if different line styles should be used. */
-    private static String [] _lineStylesArray = {
-        "solid", "dotted", "dashed", "dotdashed", "dotdotdashed"};
-
-    /** @serial Format information on a per data set basis. */
-    private Vector _formats = new Vector();
-
-    /** Initial value for elements in _prevx and _prevy that indicate
-     *  we have not yet seen data.
-     */
-    private static final Long _initialPreviousValue = Long.MIN_VALUE;
-
-    /** Cached copy of graphics, needed to reset when we are exporting
-     *  to EPS.
-     */
-    private Graphics _graphics = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
+    
+    /** 
+     * A bin is represents a number of points that are all displayed on the same x position.
+     * A bin is meant to avoid superfluous drawings of lines. So instaed of having to draw 
+     * a line between each point, you can draw a line between the minimum and maximum and maximum
+     * y position.
+    */    
+    private class Bin {
+        Bin(long xPos) {
+            xpos = xPos;            
+        }
+        
+        /**
+         * Add a point to the bin, with a certain pointIndex (the index in the array of all points in a Plot),
+         *      and a certain ypos.
+         * Precondition: The xpos of the point should be same as other points already within the bin 
+         */
+        void addPoint(PlotPoint point, int pointIndex, long ypos) {
+            int absolutePointIndex = pointIndex + _pointInBinOffset;
+            //The absolute point index is a index in the list of
+            //  all points that once existed in the plot
+            
+            if (_maxYPos < ypos) {
+                _maxYPos = ypos;
+                _rangeChanged = true;
+            }
+            if (_minYPos > ypos) {
+                _minYPos = ypos;
+                _rangeChanged = true;
+            } 
+            
+            if (_firstPointIndex == -1) {
+                _needConnectionWithPreviousBin = point.connected;
+                _firstYPos = ypos;
+                _firstPointIndex = absolutePointIndex;
+            } else {
+                assert _afterLastPointIndex == absolutePointIndex; //Bin intervals should be contiguous intervals
+            }
+            
+            _afterLastPointIndex = absolutePointIndex+1;
+            _lastYPos = ypos;
+            _connected |= point.connected;
+                // if one point is connected within the bin, all points will be (it is difficult to do this otherwise)
+            
+            _errorBar |= point.errorBar;
+        }
+
+        /**
+         * Return the position after the last point of the range of points within the bin
+         * This index is the index within the current points of the plot.
+         */
+        public int afterLastPointIndex() {
+            assert _firstPointIndex != -1;
+            return _afterLastPointIndex - _pointInBinOffset;
+        }
+        
+        /**
+         *  Return true in case there is one point that needs an error bar, otherwise false
+         */
+        boolean errorBar() {
+            return _errorBar;
+        }
+        
+        /**
+         * Return the position of the first point of the range of points within the bin
+         * This index is the index within the current points of the plot.
+         */
+        public int firstPointIndex() {
+            assert _firstPointIndex != -1;
+            return _firstPointIndex - _pointInBinOffset;
+        }
+        
+        /**
+         *  Return the y position of the first added point in the bin.
+         */
+        // Precondition: only valid in case there is at least one point 
+        public long firstYPos() {
+            assert _firstPointIndex != -1;
+            return _firstYPos;
+        }
+        
+        /**
+         *  Return the minimum y position of the bin.
+         * Precondition: only valid in case there is at least one point
+         */
+        public long minYPos() {
+            assert _firstPointIndex != -1;
+            return _minYPos;
+        }
+        
+        /**
+         * Return the y position of the last added point in the bin.
+         * Precondition: only valid in case there is at least one point
+         */
+        public long lastYPos() {
+            assert _firstPointIndex != -1;
+            return _lastYPos;
+        }
+
+        /**
+         * Return the maximum y position of the bin.
+         * Precondition: only valid in case there is at least one point
+         */
+        public long maxYPos() {
+            assert _firstPointIndex != -1;
+            return _maxYPos;
+        }
+        
+        /**
+         * Return whether a line should be drawn with the previous bin.
+         * After you have reset the display state, the boolean return false
+         */
+        public boolean needConnectionWithPreviousBin() {
+            return _needConnectionWithPreviousBin;
+        }
+
+        /**
+         * Return true a line has been drawn to the previous bin.
+         */
+        public boolean isConnectedWithPreviousBin() {
+            return _isConnectedWithPreviousBin;
+        }
+        
+
+        /**
+         * Return true when the bin should be plotted (again)
+         */
+        public boolean needReplot() {
+            return _needConnectionWithPreviousBin || _rangeChanged || _nextPointToPlot != _afterLastPointIndex;
+        }
+        /**
+         * Return the position of the next point of the bin that should be plotted
+         * This index is the index within the current points of the plot.
+         */        
+        public int nextPointToPlot() {
+            return _firstPointIndex - _pointInBinOffset + _nextPointToPlot;
+        }
+
+        /**
+         * Return true when the rangeChanged
+         */
+        public boolean rangeChanged() {
+            return _rangeChanged;
+        }
+
+        /**
+         * Reset the plot state for this bin when you have
+         * plotted this bin/
+         */
+        public void resetDisplayStateAfterPlot() {
+            if (_needConnectionWithPreviousBin) {
+                _isConnectedWithPreviousBin = true;
+                _needConnectionWithPreviousBin = false;
+            }
+            _rangeChanged = false;
+            _nextPointToPlot = _afterLastPointIndex;
+        }
+        
+        /**
+         * Disconnect this bin with the previous bin.
+         */
+        void setNotConnectedWithPreviousBin(int dataset) {
+            _needConnectionWithPreviousBin = false;
+            _isConnectedWithPreviousBin = false;
+            _points.get(dataset).get(_firstPointIndex - _pointInBinOffset).connected = false;
+        }
+        
+        public final long xpos;
+        
+        private int _afterLastPointIndex = 0;        
+        
+        // _errorBar is true in case there is one point that needs an error bar, otherwise false
+        private boolean _errorBar = false;
+        
+        private int _firstPointIndex = -1; 
+        
+        private long _firstYPos = java.lang.Long.MIN_VALUE;        
+        
+        private boolean _isConnectedWithPreviousBin = false;
+        
+        private long _lastYPos = java.lang.Long.MIN_VALUE;
+
+        private long _maxYPos = java.lang.Long.MIN_VALUE;
+        private long _minYPos = java.lang.Long.MAX_VALUE;
+        
+        // Indicate whether a line has to be added with previous bin or not
+        // Once the line has been drawn, the boolean should be switched to false
+        private boolean _needConnectionWithPreviousBin = false;
+        
+        private boolean _rangeChanged = false;
+        private int _nextPointToPlot = 0;               
+    }
+    
     private static class Format implements Serializable {
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
@@ -2794,5 +3154,28 @@ public class Plot extends PlotBox {
 
         // Indicate whether the above variable should be ignored.
         public boolean marksUseDefault = true;
+    }
+    
+    /**
+     * A proxy design patterns that encapsulates a runable, catches the exception
+     *  somewhere in the future will notify it... (TODO rodiers, should also be moved)  
+     */
+    class RunnableExceptionCatcher implements Runnable{
+        RunnableExceptionCatcher(Runnable runnable) {
+            _runnable = runnable;           
+        }
+        
+        public void run() {
+            try {
+                _runnable.run();
+            } catch (RuntimeException e) {
+                //TODO rodiers
+                //Now only used to be able to have breakpoints
+                e.printStackTrace();
+                throw e;
+            }
+        }
+        
+        private Runnable _runnable;       
     }
 }
