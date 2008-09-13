@@ -52,6 +52,7 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	MapReduce.xml \
+	MapReduceDDF.xml \
 	ReadTest.map
 
 EXTRA_SRCS = \
