@@ -495,6 +495,11 @@ public class Event extends State implements Initializable, ValueListener {
         }
     }
 
+    /** Request that the event cease execution altogether.
+     */
+    public void stop() {
+    }
+
     /** Stop monitoring variables. Also invoke the wrapup methods of
      *  objects that have been added using {@link
      *  #addInitializable(Initializable)}.

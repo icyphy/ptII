@@ -509,8 +509,7 @@ public class ERGDirector extends Director implements TimedDirector {
         _realStartTime = System.currentTimeMillis();
     }
 
-    /** Request that the director cease execution altogether. stop() of the
-     *  superclass is called.
+    /** Request that the director cease execution altogether.
      */
     public void stop() {
         if (_eventQueue != null) {
@@ -520,6 +519,17 @@ public class ERGDirector extends Director implements TimedDirector {
             }
         }
 
+        ERGController controller;
+        try {
+            controller = getController();
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(e);
+        }
+        List<Event> events = controller.entityList(Event.class);
+        for (Event event : events) {
+            event.stop();
+        }
+        
         super.stop();
     }
 

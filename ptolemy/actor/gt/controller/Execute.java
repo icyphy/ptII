@@ -27,6 +27,9 @@
 */
 package ptolemy.actor.gt.controller;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
 import ptolemy.actor.gui.Configuration;
@@ -68,6 +71,7 @@ public class Execute extends GTEvent {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Execute newObject = (Execute) super.clone(workspace);
         newObject._effigy = null;
+        newObject._managers = new LinkedList<Manager>();
         return newObject;
     }
 
@@ -91,10 +95,16 @@ public class Execute extends GTEvent {
                 _effigy.setModel(actor);
                 Manager oldManager = actor.getManager();
                 Manager manager = new Manager(actor.workspace(), "_manager");
+                synchronized(_managers) {
+                    _managers.add(manager);
+                }
                 actor.setManager(manager);
                 try {
                     manager.execute();
                 } finally {
+                    synchronized(_managers) {
+                        _managers.remove(manager);
+                    }
                     actor.workspace().remove(manager);
                     actor.setManager(oldManager);
                 }
@@ -110,5 +120,15 @@ public class Execute extends GTEvent {
         }
     }
 
+    public void stop() {
+        synchronized(_managers) {
+            for (Manager manager : _managers) {
+                manager.stop();
+            }
+        }
+    }
+
     private PtolemyEffigy _effigy;
+
+    private List<Manager> _managers = new LinkedList<Manager>();
 }
