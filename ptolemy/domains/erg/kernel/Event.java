@@ -347,6 +347,33 @@ public class Event extends State implements Initializable, ValueListener {
         }
     }
 
+    /** Return whether this event is a final event, so that its execution causes
+     *  the event queue of the ERG director to be cleared.
+     *
+     *  @return true if this event is a final event, or false otherwise.
+     *  @exception IllegalActionException If the expression of the isFinalEvent
+     *   parameter cannot be parsed or cannot be evaluated, or if the result of
+     *   evaluation violates type constraints, or if the result of evaluation is
+     *   null and there are variables that depend on this one.
+     */
+    public boolean isFinalEvent() throws IllegalActionException {
+        return ((BooleanToken) isFinalEvent.getToken()).booleanValue();
+    }
+
+    /** Return whether this event is an initial event, so that it is
+     *  automatically scheduled at model time 0 in the ERG director's event
+     *  queue.
+     *
+     *  @return true if this event is a final event, or false otherwise.
+     *  @exception IllegalActionException If the expression of the
+     *   isInitialEvent parameter cannot be parsed or cannot be evaluated, or if
+     *   the result of evaluation violates type constraints, or if the result of
+     *   evaluation is null and there are variables that depend on this one.
+     */
+    public boolean isInitialEvent() throws IllegalActionException {
+        return ((BooleanToken) isInitialEvent.getToken()).booleanValue();
+    }
+
     /** Do nothing except invoke the preinitialize methods
      *  of objects that have been added using {@link
      *  #addInitializable(Initializable)}.
@@ -466,6 +493,11 @@ public class Event extends State implements Initializable, ValueListener {
         }
     }
 
+    /** Request that the event cease execution altogether.
+     */
+    public void stop() {
+    }
+
     /** Monitor the change of a variable specified by the <code>settable</code>
      *  argument if the execution has started, and invokes fireAt() of the
      *  director to request to fire this event at the current model time.
@@ -493,11 +525,6 @@ public class Event extends State implements Initializable, ValueListener {
                 throw new InternalErrorException(e);
             }
         }
-    }
-
-    /** Request that the event cease execution altogether.
-     */
-    public void stop() {
     }
 
     /** Stop monitoring variables. Also invoke the wrapup methods of

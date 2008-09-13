@@ -38,7 +38,6 @@ import javax.swing.Icon;
 import javax.swing.SwingConstants;
 
 import ptolemy.data.ArrayToken;
-import ptolemy.data.BooleanToken;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.erg.kernel.Event;
@@ -168,14 +167,10 @@ public class EventIcon extends StateIcon {
 
         Event event = (Event) getContainer();
         try {
-            boolean isInitial = ((BooleanToken) event.isInitialEvent.getToken())
-                    .booleanValue();
-            if (isInitial) {
+            if (event.isInitialEvent()) {
                 return _INITIAL_COLOR;
             }
-            boolean isFinal = ((BooleanToken) event.isFinalEvent.getToken())
-                    .booleanValue();
-            if (isFinal) {
+            if (event.isFinalEvent()) {
                 return _FINAL_COLOR;
             }
         } catch (Throwable t) {
@@ -194,8 +189,7 @@ public class EventIcon extends StateIcon {
         NamedObj container = getContainer();
         if (container instanceof Event) {
             try {
-                if (((BooleanToken) (((Event) container).isInitialEvent
-                        .getToken())).booleanValue()) {
+                if (((Event) container).isInitialEvent()) {
                     return 2.0f;
                 }
             } catch (IllegalActionException e) {

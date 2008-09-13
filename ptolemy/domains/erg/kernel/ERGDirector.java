@@ -529,7 +529,7 @@ public class ERGDirector extends Director implements TimedDirector {
         for (Event event : events) {
             event.stop();
         }
-        
+
         super.stop();
     }
 
@@ -636,9 +636,7 @@ public class ERGDirector extends Director implements TimedDirector {
             Iterator<?> entities = controller.deepEntityList().iterator();
             while (entities.hasNext()) {
                 Event event = (Event) entities.next();
-                boolean isInitial = ((BooleanToken) event.isInitialEvent
-                        .getToken()).booleanValue();
-                if (isInitial) {
+                if (event.isInitialEvent()) {
                     TimedEvent newEvent = new TimedEvent(_currentTime, event,
                             null);
                     _addEvent(newEvent, false);
@@ -702,7 +700,11 @@ public class ERGDirector extends Director implements TimedDirector {
                         if (refinements != null) {
                             for (TypedActor refinement : refinements) {
                                 if (refinement == actor) {
-                                    event.scheduleEvents();
+                                    if (event.isFinalEvent()) {
+                                        _eventQueue.clear();
+                                    } else {
+                                        event.scheduleEvents();
+                                    }
                                     scheduled = true;
                                     break;
                                 }
@@ -735,10 +737,12 @@ public class ERGDirector extends Director implements TimedDirector {
                 }
             }
 
-            if (((BooleanToken) event.isFinalEvent.getToken()).booleanValue()) {
-                _eventQueue.clear();
-            } else if (!scheduled) {
-                event.scheduleEvents();
+            if (!scheduled) {
+                if (event.isFinalEvent()) {
+                    _eventQueue.clear();
+                } else {
+                    event.scheduleEvents();
+                }
             }
 
             return true;
