@@ -1152,7 +1152,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // First invoke initializable methods.
         if (_initializables != null) {
             for (Initializable initializable : _initializables) {
-                initializable.initialize();
+                initializable.wrapup();
             }
         }
     }
