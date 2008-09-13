@@ -6,6 +6,8 @@
         <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
         </property>
     </entity>
+    <entity name="Execute" class="ptolemy.actor.gt.controller.Execute">
+    </entity>
     <entity name="ListDirectory" class="ptolemy.actor.gt.controller.ListDirectory">
     </entity>
     <entity name="Match" class="ptolemy.actor.gt.controller.Match">

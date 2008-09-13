@@ -52,6 +52,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	ConfigurableEntity.java \
 	Configurer.java \
+	Execute.java \
 	FileUpdater.java \
 	GTEvent.java \
 	Init.java \
@@ -74,6 +75,7 @@ OTHER_FILES_TO_BE_JARED = \
 	EmbeddedTransformationController.xml \
 	EmbeddedTransformationControllerWithPorts.xml \
 	EventLibrary.xml \
+	ExecuteIcon.xml \
 	GTEventIcon.xml \
 	InitContainingModelIcon.xml \
 	InitIcon.xml \
