@@ -29,6 +29,8 @@ package ptolemy.vergil.actor;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Shape;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 
@@ -232,6 +234,7 @@ public class ExternalIOPortController extends AttributeController {
          *  @return The figure that is rendered.
          */
         public Figure render(Object n) {
+            Shape shape;
             Polygon2D.Double polygon = new Polygon2D.Double();
 
             Figure figure;
@@ -309,8 +312,7 @@ public class ExternalIOPortController extends AttributeController {
                             polygon.lineTo(-5, -4);
                             polygon.lineTo(-8, -4);
                         } else {
-                            throw new InternalErrorException(port, null,
-                                    "Port is neither input nor output");
+                            polygon = null;
                         }
                     } else {
                         if (ioport instanceof ParameterPort) {
@@ -349,12 +351,19 @@ public class ExternalIOPortController extends AttributeController {
                             polygon.lineTo(0, -4);
                             polygon.lineTo(-8, -4);
                         } else {
-                            throw new InternalErrorException(port, null,
-                                    "Port is neither input nor output");
+                            polygon = null;
                         }
                     }
                 }
-                polygon.closePath();
+
+                if (polygon == null) {
+                    Ellipse2D.Double ellipse = new Ellipse2D.Double(0.0, 0.0,
+                            16.0, 16.0);
+                    shape = ellipse;
+                } else {
+                    polygon.closePath();
+                    shape = polygon;
+                }
 
                 if (port instanceof ParameterPort) {
                     // Create a PaintedList that has two PaintedPaths,
@@ -382,10 +391,10 @@ public class ExternalIOPortController extends AttributeController {
                     //                     polygon2.closePath();
                     //                     paintedList.add(new PaintedPath(polygon2, (float) 1.0, Color.black));
                     //                     figure = new PaintedFigure(paintedList);
-                    figure = new BasicFigure(polygon, new Color(0, 0, 0, 0),
+                    figure = new BasicFigure(shape, new Color(0, 0, 0, 0),
                             (float) 0.0);
                 } else {
-                    figure = new BasicFigure(polygon, fill, (float) 1.5);
+                    figure = new BasicFigure(shape, fill, (float) 1.5);
                 }
 
                 if (!(port instanceof IOPort)) {
