@@ -1,0 +1,219 @@
+/*
+
+ Copyright (c) 2008 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+
+*/
+package ptolemy.actor.gt.controller;
+
+import java.awt.Dimension;
+import java.awt.Point;
+
+import javax.swing.JFrame;
+
+import ptolemy.actor.gt.ChoiceParameter;
+import ptolemy.actor.gui.Tableau;
+import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.IntMatrixToken;
+import ptolemy.data.ObjectToken;
+import ptolemy.data.expr.ModelScope;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
+import ptolemy.data.expr.Variable;
+import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+
+//////////////////////////////////////////////////////////////////////////
+//// SetTableau
+
+/**
+
+
+ @author Thomas Huining Feng
+ @version $Id$
+ @since Ptolemy II 7.1
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ */
+public class SetTableau extends GTEvent {
+
+    /**
+     *  @param container
+     *  @param name
+     *  @throws IllegalActionException
+     *  @throws NameDuplicationException
+     */
+    public SetTableau(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name);
+
+        referredTableau = new StringParameter(this, "referredTableau");
+
+        alwaysOnTop = new Parameter(this, "alwaysOnTop");
+        alwaysOnTop.setTypeAtMost(BaseType.BOOLEAN);
+        alwaysOnTop.setToken(BooleanToken.FALSE);
+
+        enabled = new Parameter(this, "enabled");
+        enabled.setTypeAtMost(BaseType.BOOLEAN);
+        enabled.setToken(BooleanToken.TRUE);
+
+        resizable = new Parameter(this, "resizable");
+        resizable.setTypeAtMost(BaseType.BOOLEAN);
+        resizable.setToken(BooleanToken.TRUE);
+
+        screenLocation = new Parameter(this, "screenLocation");
+        screenLocation.setTypeEquals(BaseType.INT_MATRIX);
+        screenLocation.setToken("[-1, -1]");
+
+        screenSize = new Parameter(this, "screenSize");
+        screenSize.setTypeEquals(BaseType.INT_MATRIX);
+        screenSize.setToken("[-1, -1]");
+
+        state = new ChoiceParameter(this, "state", TableauState.class);
+        state.setExpression(TableauState.NORMAL.toString());
+
+        title = new StringParameter(this, "title");
+
+        visible = new Parameter(this, "visible");
+        visible.setTypeAtMost(BaseType.BOOLEAN);
+        visible.setToken(BooleanToken.TRUE);
+    }
+
+    public void fire(ArrayToken arguments) throws IllegalActionException {
+        super.fire(arguments);
+
+        String tableauName = referredTableau.stringValue().trim();
+        if (tableauName.equals("")) {
+            throw new IllegalActionException("referredTableau has not been " +
+                    "specified in " + getName() + ".");
+        }
+        Variable variable = ModelScope.getScopedVariable(null, this,
+                tableauName);
+        if (variable == null || !(variable instanceof TableauParameter)) {
+            throw new IllegalActionException(this, "Unable to find " +
+                    "variable with name \"" + tableauName + "\", or the " +
+                    "variable is not an instanceof TableauParameter.");
+        }
+        Tableau tableau = (Tableau) ((ObjectToken) ((TableauParameter) variable)
+                .getToken()).getValue();
+        JFrame frame = tableau.getFrame();
+
+        boolean isAlwaysOnTop = ((BooleanToken) alwaysOnTop.getToken())
+                .booleanValue();
+        frame.setAlwaysOnTop(isAlwaysOnTop);
+
+        boolean isEnabled = ((BooleanToken) enabled.getToken()).booleanValue();
+        frame.setEnabled(isEnabled);
+
+        boolean isResizable = ((BooleanToken) resizable.getToken())
+                .booleanValue();
+        frame.setResizable(isResizable);
+
+        IntMatrixToken newLocation =
+            (IntMatrixToken) screenLocation.getToken();
+        Point location = frame.getLocation();
+        int x = newLocation.getElementAt(0, 0);
+        if (x >= 0) {
+            location.x = x;
+        }
+        int y = newLocation.getElementAt(0, 1);
+        if (y >= 0) {
+            location.y = y;
+        }
+        frame.setLocation(location);
+
+        IntMatrixToken newSize =
+            (IntMatrixToken) screenSize.getToken();
+        Dimension size = frame.getSize();
+        int width = newSize.getElementAt(0, 0);
+        if (width >= 0) {
+            size.width = width;
+        }
+        int height = newSize.getElementAt(0, 1);
+        if (height >= 0) {
+            size.height = height;
+        }
+        frame.setSize(size);
+
+        TableauState newState = (TableauState) state.getChosenValue();
+        switch (newState) {
+        case ICONIFIED:
+            frame.setExtendedState(JFrame.ICONIFIED);
+            break;
+        case MAXIMIZED:
+            frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            break;
+        case NORMAL:
+            frame.setExtendedState(JFrame.NORMAL);
+            break;
+        }
+
+        String newTitle = title.stringValue().trim();
+        if (!newTitle.equals("")) {
+            frame.setTitle(newTitle);
+        }
+
+        boolean isVisible = ((BooleanToken) visible.getToken()).booleanValue();
+        frame.setVisible(isVisible);
+    }
+
+    public Parameter alwaysOnTop;
+
+    public Parameter enabled;
+
+    public StringParameter referredTableau;
+
+    public Parameter resizable;
+
+    public Parameter screenLocation;
+
+    public Parameter screenSize;
+
+    public ChoiceParameter state;
+
+    public StringParameter title;
+
+    public Parameter visible;
+
+    public enum TableauState {
+        ICONIFIED {
+            public String toString() {
+                return "iconified";
+            }
+        },
+        MAXIMIZED {
+            public String toString() {
+                return "mazimized";
+            }
+        },
+        NORMAL {
+            public String toString() {
+                return "normal";
+            }
+        }
+    }
+}

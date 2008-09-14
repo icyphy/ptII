@@ -65,6 +65,8 @@ JSRCS = \
 	Output.java \
 	ReadModel.java \
 	Report.java \
+	SetTableau.java \
+	TableauParameter.java \
 	Test.java \
 	Transform.java \
 	TransformationAttribute.java \
@@ -87,6 +89,7 @@ OTHER_FILES_TO_BE_JARED = \
 	OutputIcon.xml \
 	ReadModelIcon.xml \
 	ReportIcon.xml \
+	SetTableauIcon.xml \
 	TestIcon.xml \
 	TransformIcon.xml \
 	TransformationController.xml \
@@ -105,6 +108,17 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	'Configurer$$ContainmentExtender.class' \
 	'FileUpdater$$MoMLContentFilter.class' \
+	'Report$$1.class' \
+	'Report$$Mode$$1.class' \
+	'Report$$Mode$$2.class' \
+	'Report$$Mode$$3.class' \
+	'Report$$Mode$$4.class' \
+	'Report$$Mode.class' \
+	'SetTableau$$1.class' \
+	'SetTableau$$TableauState$$1.class' \
+	'SetTableau$$TableauState$$2.class' \
+	'SetTableau$$TableauState$$3.class' \
+	'SetTableau$$TableauState.class' \
 	'Transform$$EmbeddedConfigurer.class'
 
 JCLASS = $(JSRCS:%.java=%.class)

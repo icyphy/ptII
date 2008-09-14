@@ -45,13 +45,18 @@ import ptolemy.actor.gui.Tableau;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntMatrixToken;
+import ptolemy.data.ObjectToken;
 import ptolemy.data.StringToken;
+import ptolemy.data.expr.ModelScope;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
+import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.gt.GTFrameTools;
 
@@ -88,16 +93,12 @@ public class View extends GTEvent implements WindowListener {
         reopenWindow = new Parameter(this, "reopenWindow");
         reopenWindow.setTypeEquals(BaseType.BOOLEAN);
         reopenWindow.setToken(BooleanToken.FALSE);
-    }
 
-    public void initialize() throws IllegalActionException {
-        super.initialize();
+        defaultTableau = new TableauParameter(this, "defaultTableau");
+        defaultTableau.setPersistent(false);
+        defaultTableau.setVisibility(Settable.EXPERT);
 
-        if (_tableau != null) {
-            _tableau.close();
-            _tableau.getFrame().removeWindowListener(this);
-            _tableau = null;
-        }
+        referredTableau = new StringParameter(this, "referredTableau");
     }
 
     public void fire(ArrayToken arguments) throws IllegalActionException {
@@ -133,24 +134,26 @@ public class View extends GTEvent implements WindowListener {
             boolean reopen = ((BooleanToken) reopenWindow.getToken())
                     .booleanValue();
             boolean modelChanged;
-            if (_tableau == null || reopen
-                    || !(_tableau.getFrame() instanceof BasicGraphFrame)) {
-                if (_tableau != null) {
-                    _tableau.close();
+            Tableau tableau = _getTableau();
+            if (tableau == null || reopen
+                    || !(tableau.getFrame() instanceof BasicGraphFrame)) {
+                if (tableau != null) {
+                    tableau.close();
                 }
-                _tableau = configuration.openInstance(entity, effigy);
+                tableau = configuration.openInstance(entity, effigy);
+                _setTableau(tableau);
                 // Set uri to null so that we don't accidentally overwrite the
                 // original file by pressing Ctrl-S.
-                ((Effigy) _tableau.getContainer()).uri.setURI(null);
+                ((Effigy) tableau.getContainer()).uri.setURI(null);
                 modelChanged = false;
             } else {
-                GTFrameTools.changeModel((BasicGraphFrame) _tableau.getFrame(),
+                GTFrameTools.changeModel((BasicGraphFrame) tableau.getFrame(),
                         entity, true, true);
                 modelChanged = true;
             }
 
             if (!modelChanged) {
-                JFrame frame = _tableau.getFrame();
+                JFrame frame = tableau.getFrame();
 
                 // Compute location of the new frame.
                 IntMatrixToken location =
@@ -194,7 +197,7 @@ public class View extends GTEvent implements WindowListener {
             } else {
                 titleString = titleValue;
             }
-            _tableau.setTitle(titleString);
+            tableau.setTitle(titleString);
             entity.setDeferringChangeRequests(false);
         } catch (NameDuplicationException e) {
             throw new IllegalActionException(this, e, "Cannot open model.");
@@ -203,34 +206,55 @@ public class View extends GTEvent implements WindowListener {
         }
     }
 
-    public void windowActivated(WindowEvent e) {
-    }
+    public void initialize() throws IllegalActionException {
+        super.initialize();
 
-    public void windowClosed(WindowEvent e) {
-        Window window = (Window) e.getSource();
-        if (_tableau != null) {
-            JFrame frame = _tableau.getFrame();
-            if (frame == window) {
-                frame.removeWindowListener(this);
-                _tableau = null;
-            }
+        Tableau tableau = _getTableau();
+        if (tableau != null) {
+            tableau.close();
+            tableau.getFrame().removeWindowListener(this);
+            _setTableau(null);
         }
     }
 
-    public void windowClosing(WindowEvent e) {
+    public void windowActivated(WindowEvent event) {
     }
 
-    public void windowDeactivated(WindowEvent e) {
+    public void windowClosed(WindowEvent event) {
+        Window window = (Window) event.getSource();
+
+        try {
+            Tableau tableau = _getTableau();
+            if (tableau != null) {
+                JFrame frame = tableau.getFrame();
+                if (frame == window) {
+                    frame.removeWindowListener(this);
+                    tableau = null;
+                }
+            }
+        } catch (IllegalActionException e) {
+            // Ignore the error if we cannot retrieve the tableau.
+        }
     }
 
-    public void windowDeiconified(WindowEvent e) {
+    public void windowClosing(WindowEvent event) {
     }
 
-    public void windowIconified(WindowEvent e) {
+    public void windowDeactivated(WindowEvent event) {
     }
 
-    public void windowOpened(WindowEvent e) {
+    public void windowDeiconified(WindowEvent event) {
     }
+
+    public void windowIconified(WindowEvent event) {
+    }
+
+    public void windowOpened(WindowEvent event) {
+    }
+
+    public TableauParameter defaultTableau;
+
+    public StringParameter referredTableau;
 
     public Parameter reopenWindow;
 
@@ -240,5 +264,31 @@ public class View extends GTEvent implements WindowListener {
 
     public Parameter title;
 
-    private Tableau _tableau;
+    private Tableau _getTableau() throws IllegalActionException {
+        Tableau tableau = (Tableau) ((ObjectToken) _getTableauParameter()
+                .getToken()).getValue();
+        return tableau;
+    }
+
+    private TableauParameter _getTableauParameter()
+    throws IllegalActionException {
+        String tableauName = referredTableau.stringValue().trim();
+        if (tableauName.equals("")) {
+            return defaultTableau;
+        } else {
+            Variable variable = ModelScope.getScopedVariable(null, this,
+                    tableauName);
+            if (variable == null || !(variable instanceof TableauParameter)) {
+                throw new IllegalActionException(this, "Unable to find " +
+                        "variable with name \"" + tableauName + "\", or the " +
+                        "variable is not an instanceof TableauParameter.");
+            }
+            return (TableauParameter) variable;
+        }
+    }
+
+    private void _setTableau(Tableau tableau) throws IllegalActionException {
+        ObjectToken token = new ObjectToken(tableau, Tableau.class);
+        _getTableauParameter().setToken(token);
+    }
 }

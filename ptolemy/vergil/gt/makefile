@@ -117,8 +117,12 @@ OPTIONAL_FILES = \
 	'MatchResultViewer$$FileSelectionStatus.class' \
 	'MatchResultViewer$$MatchResultActorController.class' \
 	'MatchResultViewer$$MatchResultActorGraphController.class' \
+	'MatchResultViewer$$MatchResultExternalPortController$$Renderer.class' \
+	'MatchResultViewer$$MatchResultExternalPortController.class' \
 	'MatchResultViewer$$MatchResultFSMGraphController.class' \
 	'MatchResultViewer$$MatchResultLinkController.class' \
+	'MatchResultViewer$$MatchResultPortController$$Renderer.class' \
+	'MatchResultViewer$$MatchResultPortController.class' \
 	'MatchResultViewer$$MatchResultRelationController.class' \
 	'MatchResultViewer$$MatchResultStateController.class' \
 	'MatchResultViewer$$MatchResultTransitionController.class' \
@@ -138,12 +142,10 @@ OPTIONAL_FILES = \
 	'TransformationEditor$$1.class' \
 	'TransformationEditor$$2.class' \
 	'TransformationEditor$$3.class' \
-	'TransformationEditor$$BatchMatchAction$$ModelFileFilter.class' \
 	'TransformationEditor$$BatchMatchAction$$MultipleViewController.class' \
 	'TransformationEditor$$BatchMatchAction.class' \
 	'TransformationEditor$$CellEditor.class' \
 	'TransformationEditor$$CreationAttributeAction.class' \
-	'TransformationEditor$$FileComparator.class' \
 	'TransformationEditor$$GTEntityConfigureAction.class' \
 	'TransformationEditor$$IgnoringAttributeAction.class' \
 	'TransformationEditor$$LayoutAction.class' \
@@ -159,8 +161,12 @@ OPTIONAL_FILES = \
 	'TransformationEditor$$TransformationActorController.class' \
 	'TransformationEditor$$TransformationActorGraphController$$NewRelationAction.class' \
 	'TransformationEditor$$TransformationActorGraphController.class' \
+	'TransformationEditor$$TransformationExternalPortController$$Renderer.class' \
+	'TransformationEditor$$TransformationExternalPortController.class' \
 	'TransformationEditor$$TransformationFSMGraphController.class' \
 	'TransformationEditor$$TransformationLinkController.class' \
+	'TransformationEditor$$TransformationPortController$$Renderer.class' \
+	'TransformationEditor$$TransformationPortController.class' \
 	'TransformationEditor$$TransformationRelationController.class' \
 	'TransformationEditor$$TransformationStateController$$Renderer.class' \
 	'TransformationEditor$$TransformationStateController.class' \

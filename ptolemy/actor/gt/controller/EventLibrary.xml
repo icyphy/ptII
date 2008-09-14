@@ -2,28 +2,34 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <group>
-    <entity name="Event" class="ptolemy.actor.gt.controller.GTEvent">
-        <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+    <property name="Tableau" class="ptolemy.actor.gt.controller.TableauParameter">
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-13.0, -9.0]">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="40.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="30.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8, 0.8, 0.8, 1.0}">
+                </property>
+            </property>
+            <property name="rectangle2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="-13.0, -9.0">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="20.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
         </property>
-    </entity>
-    <entity name="Execute" class="ptolemy.actor.gt.controller.Execute">
-    </entity>
-    <entity name="ListDirectory" class="ptolemy.actor.gt.controller.ListDirectory">
-    </entity>
-    <entity name="Match" class="ptolemy.actor.gt.controller.Match">
-    </entity>
-    <entity name="ReadModel" class="ptolemy.actor.gt.controller.ReadModel">
-    </entity>
-    <entity name="Report" class="ptolemy.actor.gt.controller.Report">
-    </entity>
-    <entity name="Test" class="ptolemy.actor.gt.controller.Test">
-    </entity>
-    <entity name="Transform" class="ptolemy.actor.gt.controller.Transform">
-    </entity>
-    <entity name="View" class="ptolemy.actor.gt.controller.View">
-    </entity>
-    <entity name="WriteModel" class="ptolemy.actor.gt.controller.WriteModel">
-    </entity>
+    </property>
     <property name="SynchronizeToRealtime" class="ptolemy.domains.erg.lib.SynchronizeToRealtime">
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
             <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
@@ -40,4 +46,37 @@
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
     </property>
+    <entity name="Utilities" class="ptolemy.moml.EntityLibrary">
+        <configure>
+            <?moml
+                <group>
+                    <input source="ptolemy/configs/basicUtilities.xml"/>
+                </group>
+            ?>
+        </configure>
+    </entity>
+    <entity name="Event" class="ptolemy.actor.gt.controller.GTEvent">
+        <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+        </property>
+    </entity>
+    <entity name="Execute" class="ptolemy.actor.gt.controller.Execute">
+    </entity>
+    <entity name="ListDirectory" class="ptolemy.actor.gt.controller.ListDirectory">
+    </entity>
+    <entity name="Match" class="ptolemy.actor.gt.controller.Match">
+    </entity>
+    <entity name="ReadModel" class="ptolemy.actor.gt.controller.ReadModel">
+    </entity>
+    <entity name="Report" class="ptolemy.actor.gt.controller.Report">
+    </entity>
+    <entity name="SetTableau" class="ptolemy.actor.gt.controller.SetTableau">
+    </entity>
+    <entity name="Test" class="ptolemy.actor.gt.controller.Test">
+    </entity>
+    <entity name="Transform" class="ptolemy.actor.gt.controller.Transform">
+    </entity>
+    <entity name="View" class="ptolemy.actor.gt.controller.View">
+    </entity>
+    <entity name="WriteModel" class="ptolemy.actor.gt.controller.WriteModel">
+    </entity>
 </group>
