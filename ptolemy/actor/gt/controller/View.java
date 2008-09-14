@@ -94,11 +94,8 @@ public class View extends GTEvent implements WindowListener {
         super.initialize();
 
         if (_tableau != null) {
-            boolean reopen = ((BooleanToken) reopenWindow.getToken())
-                    .booleanValue();
-            if (!reopen) {
-                _tableau.getFrame().toFront();
-            }
+            _tableau.close();
+            _tableau = null;
         }
     }
 
