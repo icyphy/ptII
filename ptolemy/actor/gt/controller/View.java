@@ -95,6 +95,7 @@ public class View extends GTEvent implements WindowListener {
 
         if (_tableau != null) {
             _tableau.close();
+            _tableau.getFrame().removeWindowListener(this);
             _tableau = null;
         }
     }
