@@ -32,6 +32,7 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Point2D;
+import java.util.List;
 
 import javax.swing.Action;
 import javax.swing.JButton;
@@ -41,13 +42,13 @@ import javax.swing.JToolBar;
 
 import ptolemy.domains.erg.kernel.Event;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.vergil.basic.BasicGraphFrame;
+import ptolemy.moml.MoMLParser;
 import ptolemy.vergil.fsm.FSMGraphController;
 import ptolemy.vergil.fsm.FSMGraphModel;
 import ptolemy.vergil.fsm.StateController;
@@ -131,13 +132,14 @@ public class ERGGraphController extends FSMGraphController {
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
 
-            double x;
-            double y;
+            ERGGraphFrame frame = (ERGGraphFrame) ERGGraphController.this
+                    .getFrame();
 
+            final double x;
+            final double y;
             if ((getSourceType() == TOOLBAR_TYPE)
                     || (getSourceType() == MENUBAR_TYPE)) {
                 // No location in the action, so put it in the middle.
-                BasicGraphFrame frame = ERGGraphController.this.getFrame();
                 Point2D center;
 
                 if (frame != null) {
@@ -160,22 +162,45 @@ public class ERGGraphController extends FSMGraphController {
             FSMGraphModel graphModel = (FSMGraphModel) getGraphModel();
             NamedObj toplevel = graphModel.getPtolemyModel();
 
-            String stateName = toplevel.uniqueName("Event");
-
             // Create the state.
-            String moml = null;
-            String locationName = "_location";
+            String moml = "<group name=\"auto\">" +
+                    frame._getDefaultEventMoML() + "</group>";
 
-            if (moml == null) {
-                moml = "<entity name=\"" + stateName
-                        + "\" class=\"ptolemy.domains.erg.kernel.Event\">\n"
-                        + "<property name=\"" + locationName
-                        + "\" class=\"ptolemy.kernel.util.Location\""
-                        + " value=\"[" + x + ", " + y + "]\"/>\n"
-                        + "</entity>\n";
-            }
+            MoMLChangeRequest request = new MoMLChangeRequest(this, toplevel,
+                    moml) {
 
-            ChangeRequest request = new MoMLChangeRequest(this, toplevel, moml);
+                protected void _postParse(MoMLParser parser) {
+                    List<NamedObj> topObjects = parser.topObjectsCreated();
+                    if (topObjects == null) {
+                        return;
+                    }
+                    for (NamedObj object : topObjects) {
+                        Location location = (Location) object.getAttribute(
+                                "_location");
+                        if (location == null) {
+                            try {
+                                location = new Location(object, "_location");
+                            } catch (KernelException e) {
+                                // Ignore.
+                            }
+                        }
+                        if (location != null) {
+                            try {
+                                location.setLocation(new double[]{x, y});
+                            } catch (IllegalActionException e) {
+                                // Ignore.
+                            }
+                        }
+                    }
+                    parser.clearTopObjectsList();
+                    super._postParse(parser);
+                }
+
+                protected void _preParse(MoMLParser parser) {
+                    super._preParse(parser);
+                    parser.clearTopObjectsList();
+                }
+            };
             toplevel.requestChange(request);
 
             try {

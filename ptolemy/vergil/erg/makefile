@@ -69,9 +69,10 @@ MISC_FILES =    $(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
     $(PTCLASSJAR) \
+	'ERGGraphController$$NewEventAction$$1.class' \
 	'ERGGraphController$$NewEventAction.class' \
-    'ERGGraphTableau$$Factory.class' \
-    'SchedulingRelationController$$SchedulingRelationRenderer.class'
+	'ERGGraphTableau$$Factory.class' \
+	'SchedulingRelationController$$SchedulingRelationRenderer.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

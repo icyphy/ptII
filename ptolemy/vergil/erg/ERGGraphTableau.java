@@ -66,7 +66,6 @@ public class ERGGraphTableau extends FSMGraphTableau {
     public ERGGraphTableau(PtolemyEffigy container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        // TODO Auto-generated constructor stub
     }
 
     /**

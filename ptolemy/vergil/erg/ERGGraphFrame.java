@@ -28,7 +28,9 @@
 
 package ptolemy.vergil.erg;
 
+import ptolemy.actor.gt.GTTools;
 import ptolemy.actor.gui.Tableau;
+import ptolemy.domains.erg.kernel.Event;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
@@ -74,5 +76,16 @@ public class ERGGraphFrame extends FSMGraphFrame {
         final FSMGraphModel graphModel = new FSMGraphModel(
                 (CompositeEntity) entity);
         return new FSMGraphPane(_controller, graphModel, entity);
+    }
+    
+    protected String _getDefaultEventMoML() {
+        NamedObj child = GTTools.getChild(_topLibrary, "Event", false, false,
+                true, false);
+        if (child instanceof Event) {
+            return child.exportMoML();
+        } else {
+            return "<entity name=\"Event\" class=\"ptolemy.domains.erg" +
+            		".kernel.Event\">";
+        }
     }
 }
