@@ -330,13 +330,11 @@ public class SchedulingRelation extends Transition {
      *  @return True if the delay is statically equal to 0.0.
      */
     private boolean _isZeroDelay() {
-        try {
-            double d =
-                getDelay(((ERGController) getContainer()).getPortScope());
-            if (d == 0.0) {
+        String expression = delay.getExpression().trim().toLowerCase();
+        for (String zeroConst : _ZERO_CONSTS) {
+            if (expression.equals(zeroConst)) {
                 return true;
             }
-        } catch (IllegalActionException e) {
         }
         return false;
     }
@@ -366,6 +364,11 @@ public class SchedulingRelation extends Transition {
         _delayTree = new PtParser().generateParseTree(delay.getExpression());
         _delayTreeVersion = _workspace.getVersion();
     }
+
+    /** An array of all recognizable constant values that equal to 0.0d. */
+    private static final String[] _ZERO_CONSTS = new String[] {
+        "0", "0.0", "0l", "0s", "0ub", "0.0d", "0.0f"
+    };
 
     /** The parse tree of arguments. */
     private ASTPtArrayConstructNode _argumentsTree;
