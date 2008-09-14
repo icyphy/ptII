@@ -90,6 +90,18 @@ public class View extends GTEvent implements WindowListener {
         reopenWindow.setToken(BooleanToken.FALSE);
     }
 
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+
+        if (_tableau != null) {
+            boolean reopen = ((BooleanToken) reopenWindow.getToken())
+                    .booleanValue();
+            if (!reopen) {
+                _tableau.getFrame().toFront();
+            }
+        }
+    }
+
     public void fire(ArrayToken arguments) throws IllegalActionException {
         super.fire(arguments);
 
