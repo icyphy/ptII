@@ -80,13 +80,15 @@ public class ReadModel extends GTEvent {
         }
 
         CompositeEntity model;
+        URL url = modelFile.asURL();
         try {
-            URL url = modelFile.asURL();
             model = (CompositeEntity) _parser.parse(url, url);
         } catch (Exception e) {
             throw new IllegalActionException(this, e, "Unable to parse the " +
                     "model from file \"" + modelFile.stringValue().trim() +
                     "\" as a CompositeEntity.");
+        } finally {
+            MoMLParser.purgeModelRecord(url);
         }
         getModelParameter().setModel(model);
     }
