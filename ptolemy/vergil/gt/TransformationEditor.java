@@ -123,6 +123,7 @@ import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.ChangeRequest;
@@ -143,9 +144,10 @@ import ptolemy.util.MessageHandler;
 import ptolemy.vergil.actor.ActorController;
 import ptolemy.vergil.actor.ActorEditorGraphController;
 import ptolemy.vergil.actor.ActorGraphFrame;
+import ptolemy.vergil.actor.ExternalIOPortController;
+import ptolemy.vergil.actor.IOPortController;
 import ptolemy.vergil.actor.LinkController;
 import ptolemy.vergil.basic.OffsetMoMLChangeRequest;
-import ptolemy.vergil.basic.ParameterizedNodeController;
 import ptolemy.vergil.basic.RunnableGraphController;
 import ptolemy.vergil.fsm.FSMGraphController;
 import ptolemy.vergil.fsm.StateController;
@@ -154,7 +156,6 @@ import ptolemy.vergil.kernel.PortDialogAction;
 import ptolemy.vergil.kernel.RelationController;
 import ptolemy.vergil.toolbox.ConfigureAction;
 import ptolemy.vergil.toolbox.FigureAction;
-import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.MenuItemFactory;
 import ptolemy.vergil.toolbox.MenuItemListener;
 import diva.canvas.CompositeFigure;
@@ -164,7 +165,6 @@ import diva.canvas.Site;
 import diva.canvas.connector.AbstractConnector;
 import diva.canvas.connector.Connector;
 import diva.canvas.interactor.SelectionModel;
-import diva.canvas.toolbox.BasicFigure;
 import diva.canvas.toolbox.BasicRectangle;
 import diva.canvas.toolbox.RoundedRectangle;
 import diva.graph.GraphController;
@@ -750,77 +750,82 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                 _add(submenu, new ConfigureCriteriaAction(), false);
                 submenu.addSeparator();
 
-                ButtonGroup group = new ButtonGroup();
-                JMenuItem hiddenItem = _add(submenu, new FigureAction("hidden"),
-                        true);
-                hiddenItem.setVisible(false);
-                group.add(hiddenItem);
-
-                MatchingAttributeAction[] radioActions =
-                    new MatchingAttributeAction[4];
-                radioActions[0] = new CreationAttributeAction("Created",
-                        radioActions);
-                radioActions[1] = new IgnoringAttributeAction("Ignored",
-                        radioActions);
-                radioActions[2] = new NegationAttributeAction("Negated",
-                        radioActions);
-                radioActions[3] = new PreservationAttributeAction("Preserved",
-                        radioActions);
-                JMenuItem[] radioItems = new JMenuItem[radioActions.length];
-                int i = 0;
-                for (Action radioAction : radioActions) {
-                    radioItems[i] = _add(submenu, radioAction, true);
-                    group.add(radioItems[i]);
-                    i++;
-                }
-
-                JMenuItem noneItem = _add(submenu, new MatchingAttributeAction(
-                        "None", radioActions), true);
-                group.add(noneItem);
-
                 Collection<?> objects = _getSelectionSet(true);
                 if (objects.isEmpty()) {
                     HashSet<NamedObj> set = new HashSet<NamedObj>();
                     set.add(object);
                     objects = set;
                 }
-                boolean setHidden = false;
-                Class<? extends MatchingAttribute> attributeClass = null;
-                i = 0;
-                for (Object childObject : objects) {
-                    NamedObj child = (NamedObj) childObject;
-                    MatchingAttribute attribute = _getRadioAttribute(child,
+
+                if (!(object instanceof Port)) {
+                    ButtonGroup group = new ButtonGroup();
+                    JMenuItem hiddenItem = _add(submenu, new FigureAction(
+                            "hidden"), true);
+                    hiddenItem.setVisible(false);
+                    group.add(hiddenItem);
+
+                    MatchingAttributeAction[] radioActions =
+                        new MatchingAttributeAction[4];
+                    radioActions[0] = new CreationAttributeAction("Created",
                             radioActions);
-                    if (attributeClass == null && attribute != null && i == 0) {
-                        attributeClass = attribute.getClass();
-                    } else if (attributeClass == null && attribute != null
-                            || attributeClass != null &&
-                                    !attributeClass.isInstance(attribute)) {
-                        hiddenItem.setSelected(true);
-                        attributeClass = null;
-                        setHidden = true;
-                        break;
+                    radioActions[1] = new IgnoringAttributeAction("Ignored",
+                            radioActions);
+                    radioActions[2] = new NegationAttributeAction("Negated",
+                            radioActions);
+                    radioActions[3] = new PreservationAttributeAction(
+                            "Preserved", radioActions);
+                    JMenuItem[] radioItems = new JMenuItem[radioActions.length];
+                    int i = 0;
+                    for (Action radioAction : radioActions) {
+                        radioItems[i] = _add(submenu, radioAction, true);
+                        group.add(radioItems[i]);
+                        i++;
                     }
-                    i++;
-                }
-                if (!setHidden) {
-                    if (attributeClass == null) {
-                        noneItem.setSelected(true);
-                    } else {
-                        i = 0;
-                        for (MatchingAttributeAction radioAction
-                                : radioActions) {
-                            if (radioAction.getAttributeClass().equals(
-                                    attributeClass)) {
-                                radioItems[i].setSelected(true);
-                                break;
+
+                    JMenuItem noneItem = _add(submenu,
+                            new MatchingAttributeAction("None", radioActions),
+                            true);
+                    group.add(noneItem);
+
+                    boolean setHidden = false;
+                    Class<? extends MatchingAttribute> attributeClass = null;
+                    i = 0;
+                    for (Object childObject : objects) {
+                        NamedObj child = (NamedObj) childObject;
+                        MatchingAttribute attribute = _getRadioAttribute(child,
+                                radioActions);
+                        if (attributeClass == null && attribute != null &&
+                                i == 0) {
+                            attributeClass = attribute.getClass();
+                        } else if (attributeClass == null && attribute != null
+                                || attributeClass != null &&
+                                        !attributeClass.isInstance(attribute)) {
+                            hiddenItem.setSelected(true);
+                            attributeClass = null;
+                            setHidden = true;
+                            break;
+                        }
+                        i++;
+                    }
+                    if (!setHidden) {
+                        if (attributeClass == null) {
+                            noneItem.setSelected(true);
+                        } else {
+                            i = 0;
+                            for (MatchingAttributeAction radioAction
+                                    : radioActions) {
+                                if (radioAction.getAttributeClass().equals(
+                                        attributeClass)) {
+                                    radioItems[i].setSelected(true);
+                                    break;
+                                }
+                                i++;
                             }
-                            i++;
                         }
                     }
-                }
 
-                submenu.addSeparator();
+                    submenu.addSeparator();
+                }
 
                 OptionAttributeAction action = new OptionAttributeAction(
                         "Optional", null);
@@ -895,7 +900,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                 GraphModel model = getController().getGraphModel();
                 Object object = model.getSemanticObject(node);
                 CompositeFigure cf = _getCompositeFigure(nf);
-                _renderActorOrRelation(cf, object);
+                _renderNamedObj(cf, object);
             }
 
             return nf;
@@ -946,14 +951,10 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             super._createControllers();
 
             _entityController = new TransformationActorController(this);
-            _relationController = new TransformationRelationController(this);
+            _entityPortController = new TransformationPortController(this);
             _linkController = new TransformationLinkController(this);
-
-            if (_portController instanceof ParameterizedNodeController) {
-                MenuActionFactory factory = ((ParameterizedNodeController)
-                        _portController).getConfigureMenuFactory();
-                factory.addMenuItemListener(TransformationEditor.this);
-            }
+            _portController = new TransformationExternalPortController(this);
+            _relationController = new TransformationRelationController(this);
         }
 
         private class NewRelationAction extends
@@ -969,6 +970,48 @@ public class TransformationEditor extends GTFrame implements ActionListener,
 
             private NewRelationAction(String[][] iconRoles) {
                 super(iconRoles);
+            }
+        }
+    }
+
+    protected class TransformationExternalPortController
+    extends ExternalIOPortController {
+
+        TransformationExternalPortController(GraphController controller) {
+            super(controller);
+
+            _menuFactory.addMenuItemFactory(
+                    new MatchingAttributeActionsFactory());
+
+            Action oldConfigureAction = _configureAction;
+            _configureAction = new GTEntityConfigureAction("Configure");
+            _configureMenuFactory.substitute(oldConfigureAction,
+                    _configureAction);
+
+            getConfigureMenuFactory().addMenuItemListener(
+                    TransformationEditor.this);
+
+            setNodeRenderer(new Renderer());
+        }
+
+        private class Renderer extends PortRenderer {
+
+            public Figure render(Object node) {
+                if ((node != null) && !_hide(node)) {
+                    Figure nf = super.render(node);
+                    GraphModel graphModel = getController().getGraphModel();
+                    Object object = graphModel.getSemanticObject(node);
+                    CompositeFigure cf = _getCompositeFigure(nf);
+                    if (cf == null) {
+                        cf = new CompositeFigure(nf);
+                        _renderNamedObj(cf, object);
+                        return cf;
+                    } else {
+                        _renderNamedObj(cf, object);
+                        return nf;
+                    }
+                }
+                return null;
             }
         }
     }
@@ -1022,6 +1065,44 @@ public class TransformationEditor extends GTFrame implements ActionListener,
         }
     }
 
+    protected class TransformationPortController extends IOPortController {
+
+        TransformationPortController(GraphController controller) {
+            super(controller);
+
+            _menuFactory.addMenuItemFactory(
+                    new MatchingAttributeActionsFactory());
+
+            Action oldConfigureAction = _configureAction;
+            _configureAction = new GTEntityConfigureAction("Configure");
+            _configureMenuFactory.substitute(oldConfigureAction,
+                    _configureAction);
+
+            setNodeRenderer(new Renderer());
+        }
+
+        private class Renderer extends EntityPortRenderer {
+
+            public Figure render(Object node) {
+                if ((node != null) && !_hide(node)) {
+                    Figure nf = super.render(node);
+                    GraphModel graphModel = getController().getGraphModel();
+                    Object object = graphModel.getSemanticObject(node);
+                    CompositeFigure cf = _getCompositeFigure(nf);
+                    if (cf == null) {
+                        cf = new CompositeFigure(nf);
+                        _renderNamedObj(cf, object);
+                        return cf;
+                    } else {
+                        _renderNamedObj(cf, object);
+                        return nf;
+                    }
+                }
+                return null;
+            }
+        }
+    }
+
     protected class TransformationRelationController
             extends RelationController {
 
@@ -1031,7 +1112,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                 GraphModel graphModel = getController().getGraphModel();
                 Object object = graphModel.getSemanticObject(node);
                 CompositeFigure cf = _getCompositeFigure(nf);
-                _renderActorOrRelation(cf, object);
+                _renderNamedObj(cf, object);
                 return nf;
             }
 
@@ -1458,36 +1539,6 @@ public class TransformationEditor extends GTFrame implements ActionListener,
         }
     }
 
-    private void _renderActorOrRelation(CompositeFigure figure,
-            Object semanticObject) {
-        if (semanticObject instanceof NamedObj && figure != null) {
-            Color color = _getHighlightColor((NamedObj) semanticObject);
-            if (color != null) {
-                Rectangle2D bounds = figure.getBackgroundFigure().getBounds();
-                float padding = _HIGHLIGHT_PADDING;
-                boolean isOptional = GTTools.isOptional(semanticObject);
-                float thickness = isOptional ? _OPTION_HIGHLIGHT_THICKNESS
-                        : _HIGHLIGHT_THICKNESS;
-                BasicFigure bf = new BasicRectangle(bounds.getX() - padding,
-                        bounds.getY() - padding,
-                        bounds.getWidth() + padding * 2.0,
-                        bounds.getHeight() + padding * 2.0,
-                        thickness);
-                bf.setStrokePaint(color);
-
-                if (isOptional) {
-                    bf.setDashArray(new float[] {3.0f, 7.0f});
-                }
-
-                int index = figure.getFigureCount();
-                if (index < 0) {
-                    index = 0;
-                }
-                figure.add(index, bf);
-            }
-        }
-    }
-
     private void _renderLink(Connector connector, Object semanticObject) {
         if (semanticObject instanceof NamedObj && connector != null) {
             Color color = _getHighlightColor((NamedObj) semanticObject);
@@ -1501,6 +1552,36 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                 } else {
                     c.setStroke(new BasicStroke(_HIGHLIGHT_THICKNESS));
                 }
+            }
+        }
+    }
+
+    private void _renderNamedObj(CompositeFigure figure,
+            Object semanticObject) {
+        if (semanticObject instanceof NamedObj && figure != null) {
+            Color color = _getHighlightColor((NamedObj) semanticObject);
+            if (color != null) {
+                Rectangle2D bounds = figure.getBackgroundFigure().getBounds();
+                float padding = _HIGHLIGHT_PADDING;
+                boolean isOptional = GTTools.isOptional(semanticObject);
+                float thickness = isOptional ? _OPTION_HIGHLIGHT_THICKNESS
+                        : _HIGHLIGHT_THICKNESS;
+                BasicRectangle bf = new BasicRectangle(bounds.getX() - padding,
+                        bounds.getY() - padding,
+                        bounds.getWidth() + padding * 2.0,
+                        bounds.getHeight() + padding * 2.0,
+                        thickness);
+                bf.setStrokePaint(color);
+
+                if (isOptional) {
+                    bf.setDashArray(new float[] {3.0f, 5.0f});
+                }
+
+                int index = figure.getFigureCount();
+                if (index < 0) {
+                    index = 0;
+                }
+                figure.add(index, bf);
             }
         }
     }
@@ -1656,7 +1737,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
 
     private static final Color _OPTION_COLOR = Color.BLACK;
 
-    private static final float _OPTION_HIGHLIGHT_THICKNESS = 2.0f;
+    private static final float _OPTION_HIGHLIGHT_THICKNESS = 1.5f;
 
     private static final Color _PRESERVATION_COLOR = new Color(64, 64, 255);
 

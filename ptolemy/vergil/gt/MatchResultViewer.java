@@ -71,6 +71,8 @@ import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.actor.ActorController;
 import ptolemy.vergil.actor.ActorEditorGraphController;
+import ptolemy.vergil.actor.ExternalIOPortController;
+import ptolemy.vergil.actor.IOPortController;
 import ptolemy.vergil.actor.LinkController;
 import ptolemy.vergil.basic.RunnableGraphController;
 import ptolemy.vergil.fsm.FSMGraphController;
@@ -316,7 +318,7 @@ public class MatchResultViewer extends GTFrame {
                 GraphModel model = getController().getGraphModel();
                 Object object = model.getSemanticObject(node);
                 CompositeFigure cf = _getCompositeFigure(nf);
-                _renderActorOrRelation(cf, object);
+                _renderNamedObj(cf, object);
                 return nf;
             }
 
@@ -335,8 +337,41 @@ public class MatchResultViewer extends GTFrame {
             super._createControllers();
 
             _entityController = new MatchResultActorController(this);
-            _relationController = new MatchResultRelationController(this);
+            _entityPortController = new MatchResultPortController(this);
             _linkController = new MatchResultLinkController(this);
+            _portController = new MatchResultExternalPortController(this);
+            _relationController = new MatchResultRelationController(this);
+        }
+    }
+
+    protected class MatchResultExternalPortController
+    extends ExternalIOPortController {
+
+        MatchResultExternalPortController(GraphController controller) {
+            super(controller);
+
+            setNodeRenderer(new Renderer());
+        }
+
+        private class Renderer extends PortRenderer {
+
+            public Figure render(Object node) {
+                if ((node != null) && !_hide(node)) {
+                    Figure nf = super.render(node);
+                    GraphModel graphModel = getController().getGraphModel();
+                    Object object = graphModel.getSemanticObject(node);
+                    CompositeFigure cf = _getCompositeFigure(nf);
+                    if (cf == null) {
+                        cf = new CompositeFigure(nf);
+                        _renderNamedObj(cf, object);
+                        return cf;
+                    } else {
+                        _renderNamedObj(cf, object);
+                        return nf;
+                    }
+                }
+                return null;
+            }
         }
     }
 
@@ -375,6 +410,36 @@ public class MatchResultViewer extends GTFrame {
         }
     }
 
+    protected class MatchResultPortController extends IOPortController {
+
+        MatchResultPortController(GraphController controller) {
+            super(controller);
+
+            setNodeRenderer(new Renderer());
+        }
+
+        private class Renderer extends EntityPortRenderer {
+
+            public Figure render(Object node) {
+                if ((node != null) && !_hide(node)) {
+                    Figure nf = super.render(node);
+                    GraphModel graphModel = getController().getGraphModel();
+                    Object object = graphModel.getSemanticObject(node);
+                    CompositeFigure cf = _getCompositeFigure(nf);
+                    if (cf == null) {
+                        cf = new CompositeFigure(nf);
+                        _renderNamedObj(cf, object);
+                        return cf;
+                    } else {
+                        _renderNamedObj(cf, object);
+                        return nf;
+                    }
+                }
+                return null;
+            }
+        }
+    }
+
     protected class MatchResultRelationController extends RelationController {
 
         protected Figure _renderNode(Object node) {
@@ -383,7 +448,7 @@ public class MatchResultViewer extends GTFrame {
                 GraphModel model = getController().getGraphModel();
                 Object object = model.getSemanticObject(node);
                 CompositeFigure cf = _getCompositeFigure(nf);
-                _renderActorOrRelation(cf, object);
+                _renderNamedObj(cf, object);
                 return nf;
             }
 
@@ -652,7 +717,18 @@ public class MatchResultViewer extends GTFrame {
         }
     }
 
-    private void _renderActorOrRelation(CompositeFigure figure,
+    private void _renderLink(Connector connector, Object semanticObject) {
+        if (semanticObject instanceof NamedObj && connector != null) {
+            Color color = _getHighlightColor((NamedObj) semanticObject);
+            if (color != null) {
+                AbstractConnector c = (AbstractConnector) connector;
+                c.setStrokePaint(color);
+                c.setStroke(new BasicStroke(_HIGHLIGHT_THICKNESS));
+            }
+        }
+    }
+
+    private void _renderNamedObj(CompositeFigure figure,
             Object semanticObject) {
         if (semanticObject instanceof NamedObj && figure != null) {
             Color color = _getHighlightColor((NamedObj) semanticObject);
@@ -671,17 +747,6 @@ public class MatchResultViewer extends GTFrame {
                     index = 0;
                 }
                 figure.add(index, bf);
-            }
-        }
-    }
-
-    private void _renderLink(Connector connector, Object semanticObject) {
-        if (semanticObject instanceof NamedObj && connector != null) {
-            Color color = _getHighlightColor((NamedObj) semanticObject);
-            if (color != null) {
-                AbstractConnector c = (AbstractConnector) connector;
-                c.setStrokePaint(color);
-                c.setStroke(new BasicStroke(_HIGHLIGHT_THICKNESS));
             }
         }
     }
@@ -740,7 +805,8 @@ public class MatchResultViewer extends GTFrame {
         CompositeEntity currentModel = (CompositeEntity) getModel();
         CompositeEntity oldModel;
         try {
-            oldModel = (CompositeEntity) GTTools.cleanupModel(currentModel);
+            oldModel = (CompositeEntity) GTTools.cleanupModel(currentModel,
+                    currentModel.workspace());
             currentModel.workspace().remove(currentModel);
             _delegateUndoStack(getModel(), oldModel);
 

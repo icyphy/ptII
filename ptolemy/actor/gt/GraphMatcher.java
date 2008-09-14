@@ -1192,6 +1192,11 @@ public class GraphMatcher extends GraphAnalyzer {
     }
 
     private static boolean _shallowMatchPort(Port patternPort, Port hostPort) {
+
+        if (!_checkCriterion(patternPort, hostPort)) {
+            return false;
+        }
+
         if (patternPort instanceof IOPort) {
             if (hostPort instanceof IOPort) {
                 IOPort patternIOPort = (IOPort) patternPort;
