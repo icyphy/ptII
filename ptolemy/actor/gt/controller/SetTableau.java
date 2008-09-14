@@ -37,11 +37,8 @@ import ptolemy.actor.gui.Tableau;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntMatrixToken;
-import ptolemy.data.ObjectToken;
-import ptolemy.data.expr.ModelScope;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -59,7 +56,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class SetTableau extends GTEvent {
+public class SetTableau extends TableauControllerEvent {
 
     /**
      *  @param container
@@ -70,8 +67,6 @@ public class SetTableau extends GTEvent {
     public SetTableau(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-
-        referredTableau = new StringParameter(this, "referredTableau");
 
         alwaysOnTop = new Parameter(this, "alwaysOnTop");
         alwaysOnTop.setTypeAtMost(BaseType.BOOLEAN);
@@ -106,20 +101,7 @@ public class SetTableau extends GTEvent {
     public void fire(ArrayToken arguments) throws IllegalActionException {
         super.fire(arguments);
 
-        String tableauName = referredTableau.stringValue().trim();
-        if (tableauName.equals("")) {
-            throw new IllegalActionException("referredTableau has not been " +
-                    "specified in " + getName() + ".");
-        }
-        Variable variable = ModelScope.getScopedVariable(null, this,
-                tableauName);
-        if (variable == null || !(variable instanceof TableauParameter)) {
-            throw new IllegalActionException(this, "Unable to find " +
-                    "variable with name \"" + tableauName + "\", or the " +
-                    "variable is not an instanceof TableauParameter.");
-        }
-        Tableau tableau = (Tableau) ((ObjectToken) ((TableauParameter) variable)
-                .getToken()).getValue();
+        Tableau tableau = _getTableau();
         JFrame frame = tableau.getFrame();
 
         boolean isAlwaysOnTop = ((BooleanToken) alwaysOnTop.getToken())
@@ -185,8 +167,6 @@ public class SetTableau extends GTEvent {
 
     public Parameter enabled;
 
-    public StringParameter referredTableau;
-
     public Parameter resizable;
 
     public Parameter screenLocation;
@@ -215,5 +195,9 @@ public class SetTableau extends GTEvent {
                 return "normal";
             }
         }
+    }
+
+    protected TableauParameter _getDefaultTableau() {
+        return null;
     }
 }

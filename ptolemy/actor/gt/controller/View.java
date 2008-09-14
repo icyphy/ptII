@@ -45,12 +45,8 @@ import ptolemy.actor.gui.Tableau;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntMatrixToken;
-import ptolemy.data.ObjectToken;
 import ptolemy.data.StringToken;
-import ptolemy.data.expr.ModelScope;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.StringParameter;
-import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.URIAttribute;
@@ -72,7 +68,7 @@ import ptolemy.vergil.gt.GTFrameTools;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class View extends GTEvent implements WindowListener {
+public class View extends TableauControllerEvent implements WindowListener {
 
     public View(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -94,11 +90,9 @@ public class View extends GTEvent implements WindowListener {
         reopenWindow.setTypeEquals(BaseType.BOOLEAN);
         reopenWindow.setToken(BooleanToken.FALSE);
 
-        defaultTableau = new TableauParameter(this, "defaultTableau");
-        defaultTableau.setPersistent(false);
-        defaultTableau.setVisibility(Settable.EXPERT);
-
-        referredTableau = new StringParameter(this, "referredTableau");
+        tableau = new TableauParameter(this, "tableau");
+        tableau.setPersistent(false);
+        tableau.setVisibility(Settable.EXPERT);
     }
 
     public void fire(ArrayToken arguments) throws IllegalActionException {
@@ -133,10 +127,16 @@ public class View extends GTEvent implements WindowListener {
 
             boolean reopen = ((BooleanToken) reopenWindow.getToken())
                     .booleanValue();
-            boolean modelChanged;
             Tableau tableau = _getTableau();
-            if (tableau == null || reopen
-                    || !(tableau.getFrame() instanceof BasicGraphFrame)) {
+            boolean openNewWindow = true;
+            if (!reopen  && tableau != null) {
+                JFrame frame = tableau.getFrame();
+                if (frame instanceof BasicGraphFrame &&
+                        ((BasicGraphFrame) frame).getEffigy() != null) {
+                    openNewWindow = false;
+                }
+            }
+            if (openNewWindow) {
                 if (tableau != null) {
                     tableau.close();
                 }
@@ -145,14 +145,12 @@ public class View extends GTEvent implements WindowListener {
                 // Set uri to null so that we don't accidentally overwrite the
                 // original file by pressing Ctrl-S.
                 ((Effigy) tableau.getContainer()).uri.setURI(null);
-                modelChanged = false;
             } else {
                 GTFrameTools.changeModel((BasicGraphFrame) tableau.getFrame(),
                         entity, true, true);
-                modelChanged = true;
             }
 
-            if (!modelChanged) {
+            if (openNewWindow) {
                 JFrame frame = tableau.getFrame();
 
                 // Compute location of the new frame.
@@ -252,43 +250,17 @@ public class View extends GTEvent implements WindowListener {
     public void windowOpened(WindowEvent event) {
     }
 
-    public TableauParameter defaultTableau;
-
-    public StringParameter referredTableau;
-
     public Parameter reopenWindow;
 
     public Parameter screenLocation;
 
     public Parameter screenSize;
 
+    public TableauParameter tableau;
+
     public Parameter title;
 
-    private Tableau _getTableau() throws IllegalActionException {
-        Tableau tableau = (Tableau) ((ObjectToken) _getTableauParameter()
-                .getToken()).getValue();
+    protected TableauParameter _getDefaultTableau() {
         return tableau;
-    }
-
-    private TableauParameter _getTableauParameter()
-    throws IllegalActionException {
-        String tableauName = referredTableau.stringValue().trim();
-        if (tableauName.equals("")) {
-            return defaultTableau;
-        } else {
-            Variable variable = ModelScope.getScopedVariable(null, this,
-                    tableauName);
-            if (variable == null || !(variable instanceof TableauParameter)) {
-                throw new IllegalActionException(this, "Unable to find " +
-                        "variable with name \"" + tableauName + "\", or the " +
-                        "variable is not an instanceof TableauParameter.");
-            }
-            return (TableauParameter) variable;
-        }
-    }
-
-    private void _setTableau(Tableau tableau) throws IllegalActionException {
-        ObjectToken token = new ObjectToken(tableau, Tableau.class);
-        _getTableauParameter().setToken(token);
     }
 }

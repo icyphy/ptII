@@ -64,8 +64,10 @@ JSRCS = \
 	ModelParameter.java \
 	Output.java \
 	ReadModel.java \
+	ReceiveInput.java \
 	Report.java \
 	SetTableau.java \
+	TableauControllerEvent.java \
 	TableauParameter.java \
 	Test.java \
 	Transform.java \
@@ -88,6 +90,7 @@ OTHER_FILES_TO_BE_JARED = \
 	ModelUpdaterIcon.xml \
 	OutputIcon.xml \
 	ReadModelIcon.xml \
+	ReceiveInputIcon.xml \
 	ReportIcon.xml \
 	SetTableauIcon.xml \
 	TestIcon.xml \
@@ -108,6 +111,7 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	'Configurer$$ContainmentExtender.class' \
 	'FileUpdater$$MoMLContentFilter.class' \
+	'ReceiveInput$$InputListener.class' \
 	'Report$$1.class' \
 	'Report$$Mode$$1.class' \
 	'Report$$Mode$$2.class' \
