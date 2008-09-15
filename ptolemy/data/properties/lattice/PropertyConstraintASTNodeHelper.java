@@ -38,7 +38,6 @@ import ptolemy.data.expr.ModelScope;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.properties.PropertyHelper;
 import ptolemy.data.properties.lattice.PropertyConstraintSolver.ConstraintType;
-import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
