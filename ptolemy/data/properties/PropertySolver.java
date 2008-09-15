@@ -1332,7 +1332,7 @@ public abstract class PropertySolver extends Attribute {
         URL modelURL;
 
         try {
-            modelURL = new File(path).toURL();
+            modelURL = new File(path).toURI().toURL();
         } catch (Exception ex) {
             throw new IllegalActionException(null, ex, 
                     "Could not open \"" + path + "\"");
