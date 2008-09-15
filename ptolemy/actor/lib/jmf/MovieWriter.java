@@ -167,7 +167,7 @@ public class MovieWriter extends Sink implements ControllerListener,
             _file = fileOrURL.asFile();
 
             try {
-                _fileRoot = _file.toURL().toString();
+                _fileRoot = _file.toURI().toURL().toString();
             } catch (MalformedURLException ex) {
                 throw new IllegalActionException(this, ex, "URL malformed");
             }
