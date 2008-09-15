@@ -1051,13 +1051,13 @@ fi
 if test -z "$PTDOCLETS_DIR"; then
    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|doc/doclets/"
 else
-   addToolJarToEclipse=yes
+   addToolsJarToEclipse=yes
 
    case "`uname -s`" in
 	Darwin) 
 	    case "$TOOLS_JAR" in
 		*/Classes/classes.jar)
-		    addToolJarToEclipse=no
+		    addToolsJarToEclipse=no
   	            AC_MSG_WARN([Not including $TOOLS_JAR 
    to the Eclipse classpath under Darwin because it is already present.]);;
             esac;;
