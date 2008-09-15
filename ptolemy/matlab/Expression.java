@@ -141,8 +141,7 @@ public class Expression extends TypedAtomicActor {
 
         output = new TypedIOPort(this, "output", false, true);
         expression = new StringParameter(this, "expression");
-        TextStyle expressionTextStyle = new TextStyle(expression,
-                "Matlab expression");
+        new TextStyle(expression, "Matlab expression");
 
         _dataParameters = new Engine.ConversionParameters();
 
