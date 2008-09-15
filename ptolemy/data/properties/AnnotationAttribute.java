@@ -42,13 +42,13 @@ public class AnnotationAttribute extends StringAttribute {
      *  be found using the given name.
      * @throws NameDuplicationException Not thrown in this method.
      */
-    private void _checkAttributeName(String name) 
-    throws IllegalActionException, NameDuplicationException {
-        /*String usecaseName =*/ getUseCaseIdentifier();
-
-        // FIXME: Cannot check if there is an assoicated solver
-        // because it may not be instantiated yet.
-        
+//    private void _checkAttributeName(String name) 
+//    throws IllegalActionException, NameDuplicationException {
+//        /*String usecaseName =*/ getUseCaseIdentifier();
+//
+//        // FIXME: Cannot check if there is an assoicated solver
+//        // because it may not be instantiated yet.
+//        
 //        List solvers = toplevel().attributeList(PropertySolver.class);
 //        if (solvers.isEmpty()) {
 //            throw new IllegalActionException(
@@ -62,7 +62,7 @@ public class AnnotationAttribute extends StringAttribute {
 //                        "No use case found for annotation: " + usecaseName + ".");
 //            }
 //        }
-    }
+//    }
 
     public String getUseCaseIdentifier() throws IllegalActionException {
         String[] tokens = getName().split("::");
