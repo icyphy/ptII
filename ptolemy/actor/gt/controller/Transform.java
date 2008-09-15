@@ -111,8 +111,8 @@ public class Transform extends GTEvent implements ConfigurableEntity {
         }
     }
 
-    public void fire(ArrayToken arguments) throws IllegalActionException {
-        super.fire(arguments);
+    public RefiringData fire(ArrayToken arguments) throws IllegalActionException {
+        RefiringData data = super.fire(arguments);
 
         CompositeEntity model = getModelParameter().getModel();
         model.setDeferringChangeRequests(false);
@@ -120,6 +120,8 @@ public class Transform extends GTEvent implements ConfigurableEntity {
                 model);
         getModelParameter().setModel(model);
         getMatchedParameter().setToken(BooleanToken.getInstance(matched));
+
+        return data;
     }
 
    public String getConfigureSource() {

@@ -57,7 +57,8 @@ JSRCS = \
 	ERGGraphFrame.java \
 	ERGGraphTableau.java \
 	EventIcon.java \
-	SchedulingRelationController.java
+	SchedulingRelationController.java \
+	TimeAdvanceEventIcon.java
 
 EXTRA_SRCS =    $(JSRCS)
 

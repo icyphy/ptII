@@ -57,8 +57,8 @@ public class Input extends GTEvent {
         fireOnInput.setToken(BooleanToken.TRUE);
     }
 
-    public void fire(ArrayToken arguments) throws IllegalActionException {
-        super.fire(arguments);
+    public RefiringData fire(ArrayToken arguments) throws IllegalActionException {
+        RefiringData data = super.fire(arguments);
 
         ParserScope scope = _getParserScope();
         BooleanToken inputPortPresent = (BooleanToken) scope.get(
@@ -73,6 +73,8 @@ public class Input extends GTEvent {
             }
             getModelParameter().setModel((CompositeEntity) entity);
         }
+
+        return data;
     }
 
     public void scheduleEvents() throws IllegalActionException {

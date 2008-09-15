@@ -70,8 +70,8 @@ public class ReadModel extends GTEvent {
         return newObject;
     }
 
-    public void fire(ArrayToken arguments) throws IllegalActionException {
-        super.fire(arguments);
+    public RefiringData fire(ArrayToken arguments) throws IllegalActionException {
+        RefiringData data = super.fire(arguments);
 
         if (_parser == null) {
             _parser = new MoMLParser();
@@ -91,6 +91,8 @@ public class ReadModel extends GTEvent {
             MoMLParser.purgeModelRecord(url);
         }
         getModelParameter().setModel(model);
+
+        return data;
     }
 
     public FileParameter modelFile;

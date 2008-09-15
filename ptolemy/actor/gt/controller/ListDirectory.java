@@ -96,7 +96,7 @@ public class ListDirectory extends GTEvent {
         variable.setPersistent(false);
     }
 
-    public void fire(ArrayToken arguments) throws IllegalActionException {
+    public RefiringData fire(ArrayToken arguments) throws IllegalActionException {
         File[] listedFiles = RecursiveFileFilter.listFiles(directory.asFile(),
                 ((BooleanToken) recursive.getToken()).booleanValue(),
                 ((BooleanToken) includeFiles.getToken()).booleanValue(),
@@ -118,7 +118,7 @@ public class ListDirectory extends GTEvent {
         buffer.append('}');
         files.setExpression(buffer.toString());
 
-        super.fire(arguments);
+        return super.fire(arguments);
     }
 
     public void setContainer(CompositeEntity container)

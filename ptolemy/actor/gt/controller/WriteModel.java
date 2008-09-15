@@ -64,8 +64,8 @@ public class WriteModel extends GTEvent {
         modelFile = new FileParameter(this, "modelFile");
     }
 
-    public void fire(ArrayToken arguments) throws IllegalActionException {
-        super.fire(arguments);
+    public RefiringData fire(ArrayToken arguments) throws IllegalActionException {
+        RefiringData data = super.fire(arguments);
 
         CompositeEntity model = getModelParameter().getModel();
         Writer writer = modelFile.openForWriting();
@@ -84,6 +84,8 @@ public class WriteModel extends GTEvent {
             throw new IllegalActionException(this, e, "Unable to output " +
                     "to file \"" + modelFile.stringValue().trim() + "\".");
         }
+
+        return data;
     }
 
     public FileParameter modelFile;

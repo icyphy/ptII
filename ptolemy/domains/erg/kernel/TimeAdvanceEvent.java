@@ -1,4 +1,4 @@
-/*
+/* An interface for an event that has time advance, such as ReceiveInput in GT.
 
  Copyright (c) 2008 The Regents of the University of California.
  All rights reserved.
@@ -25,18 +25,13 @@
  COPYRIGHTENDKEY
 
 */
-package ptolemy.actor.gt.controller;
-
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Settable;
+package ptolemy.domains.erg.kernel;
 
 //////////////////////////////////////////////////////////////////////////
-//// Test
+//// TimeAdvanceEvent
 
 /**
-
+ An interface for an event that has time advance, such as ReceiveInput in GT.
 
  @author Thomas Huining Feng
  @version $Id$
@@ -44,13 +39,8 @@ import ptolemy.kernel.util.Settable;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class Test extends GTEvent {
+public interface TimeAdvanceEvent {
 
-    public Test(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
-        super(container, name);
-
-        isInitialEvent.setVisibility(Settable.NONE);
-        isFinalEvent.setVisibility(Settable.NONE);
-    }
+    /** Return the text that describes the time advance expression. */
+    public String getTimeAdvanceText();
 }

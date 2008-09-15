@@ -95,8 +95,8 @@ public class View extends TableauControllerEvent implements WindowListener {
         tableau.setVisibility(Settable.EXPERT);
     }
 
-    public void fire(ArrayToken arguments) throws IllegalActionException {
-        super.fire(arguments);
+    public RefiringData fire(ArrayToken arguments) throws IllegalActionException {
+        RefiringData data = super.fire(arguments);
 
         CompositeEntity entity = getModelParameter().getModel();
         entity = (CompositeEntity) GTTools.cleanupModel(entity);
@@ -104,7 +104,7 @@ public class View extends TableauControllerEvent implements WindowListener {
         Effigy effigy = Configuration.findEffigy(toplevel());
         if (effigy == null) {
             // The effigy may be null if the model is closed.
-            return;
+            return data;
         }
         Configuration configuration = (Configuration) effigy.toplevel();
 
@@ -202,6 +202,8 @@ public class View extends TableauControllerEvent implements WindowListener {
         } catch (Exception e) {
             throw new IllegalActionException(this, e, "Cannot parse model.");
         }
+
+        return data;
     }
 
     public void initialize() throws IllegalActionException {

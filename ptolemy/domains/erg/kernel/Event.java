@@ -283,12 +283,17 @@ public class Event extends State implements Initializable, ValueListener {
      *  executed.
      *
      *  @param arguments The arguments used to process this event.
+     *  @return A refiring data structure that contains a non-negative double
+     *   number if refire() should be called after that amount of model time, or
+     *   null if refire() need not be called.
      *  @exception IllegalActionException If the number of the arguments or
      *   their types do not match, the actions cannot be executed, or any
      *   expression (such as guards and arguments to the next events) cannot be
      *   evaluated.
+     *  @see #refire(ArrayToken, RefiringData)
      */
-    public void fire(ArrayToken arguments) throws IllegalActionException {
+    public RefiringData fire(ArrayToken arguments)
+            throws IllegalActionException {
         List<String> names = parameters.getParameterNames();
         int paramCount = names == null ? 0 : names.size();
         int argCount = arguments == null ? 0 : arguments.length();
@@ -307,6 +312,8 @@ public class Event extends State implements Initializable, ValueListener {
         }
 
         actions.execute();
+
+        return null;
     }
 
     /** Return whether this event is an input event, which is processed when any
@@ -387,6 +394,29 @@ public class Event extends State implements Initializable, ValueListener {
                 initializable.preinitialize();
             }
         }
+    }
+
+    /** Continue the processing of this event with the given arguments from the
+     *  previous fire() or refire(). The number of arguments
+     *  provided must be equal to the number of formal parameters defined for
+     *  this event, and their types must match. The actions of this event are
+     *  executed.
+     *
+     *  @param arguments The arguments used to process this event.
+     *  @param data The refiring data structure returned by the previous fire()
+     *   or refire().
+     *  @return A refiring data structure that contains a non-negative double
+     *   number if refire() should be called after that amount of model time, or
+     *   null if refire() need not be called.
+     *  @exception IllegalActionException If the number of the arguments or
+     *   their types do not match, the actions cannot be executed, or any
+     *   expression (such as guards and arguments to the next events) cannot be
+     *   evaluated.
+     *  @see #fire(ArrayToken)
+     */
+    public RefiringData refire(ArrayToken arguments, RefiringData data)
+            throws IllegalActionException {
+        return null;
     }
 
     /** Remove the specified object from the list of objects whose
@@ -563,7 +593,7 @@ public class Event extends State implements Initializable, ValueListener {
     public ParametersAttribute parameters;
 
     //////////////////////////////////////////////////////////////////////////
-    //// EventParameter
+    //// RefiringData
 
     /**
      The parameter to store an argument passed on a scheduling relation to this
@@ -599,6 +629,41 @@ public class Event extends State implements Initializable, ValueListener {
             setVisibility(Settable.EXPERT);
             setPersistent(false);
         }
+    }
+
+    //////////////////////////////////////////////////////////////////////////
+    //// EventParameter
+
+    /**
+     A data structure to store the model time advance for the refire() method to
+     be called. This data structure is returned by fire() and refire().
+
+     @author Thomas Huining Feng
+     @version $Id$
+     @since Ptolemy II 7.1
+     @Pt.ProposedRating Red (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
+     */
+    public static class RefiringData {
+
+        /** Construct a refiring data structure.
+         *
+         *  @param timeAdvance The time advance for the next refire() call.
+         */
+        public RefiringData(double timeAdvance) {
+            _timeAdvance = timeAdvance;
+        }
+
+        /** Return the time advance.
+         *
+         *  @return The time advance.
+         */
+        public double getTimeAdvance() {
+            return _timeAdvance;
+        }
+
+        /** The time advance. */
+        private double _timeAdvance;
     }
 
     /** Return the parser scope used to evaluate the actions and values

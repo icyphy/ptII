@@ -54,8 +54,8 @@ public class Output extends GTEvent {
         super(container, name);
     }
 
-    public void fire(ArrayToken arguments) throws IllegalActionException {
-        super.fire(arguments);
+    public RefiringData fire(ArrayToken arguments) throws IllegalActionException {
+        RefiringData data = super.fire(arguments);
 
         CompositeEntity entity = getModelParameter().getModel();
         ERGController container = (ERGController) getContainer();
@@ -64,5 +64,7 @@ public class Output extends GTEvent {
                 outputPort);
         destination.broadcastClear();
         destination.broadcast(new ActorToken(entity));
+
+        return data;
     }
 }

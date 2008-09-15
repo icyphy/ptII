@@ -58,7 +58,7 @@ public class TableauParameter extends Parameter {
         setTypeEquals(new ObjectType(Tableau.class));
         setToken(new ObjectToken(null, Tableau.class));
     }
-    
+
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         TableauParameter newObject = (TableauParameter) super.clone(workspace);
         try {

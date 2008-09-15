@@ -45,9 +45,11 @@ import javax.swing.JFrame;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.erg.kernel.TimeAdvanceEvent;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -66,7 +68,8 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class ReceiveInput extends TableauControllerEvent {
+public class ReceiveInput extends TableauControllerEvent
+        implements TimeAdvanceEvent {
 
     /**
      *  @param container
@@ -77,6 +80,10 @@ public class ReceiveInput extends TableauControllerEvent {
     public ReceiveInput(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+
+        timeAdvance = new Parameter(this, "timeAdvance");
+        timeAdvance.setTypeEquals(BaseType.DOUBLE);
+        timeAdvance.setExpression("0.0");
 
         acceptableComponentType = new StringParameter(this,
                 "acceptableComponentType");
@@ -113,7 +120,7 @@ public class ReceiveInput extends TableauControllerEvent {
         return newObject;
     }
 
-    public void fire(ArrayToken arguments) throws IllegalActionException {
+    public RefiringData fire(ArrayToken arguments) throws IllegalActionException {
         super.fire(arguments);
 
         Pattern keyPattern;
@@ -136,7 +143,12 @@ public class ReceiveInput extends TableauControllerEvent {
                         "type " + componentTypeName + ".");
             }
         }
+
+        Tableau tableau = _getTableau();
+        JFrame frame = tableau.getFrame();
+
         InputListener listener = new InputListener(
+                ((DoubleToken) timeAdvance.getToken()).doubleValue(), frame,
                 componentClass,
                 ((BooleanToken) receiveKeyPress.getToken()).booleanValue(),
                 keyPattern,
@@ -147,19 +159,30 @@ public class ReceiveInput extends TableauControllerEvent {
             }
             _inputListeners.add(listener);
         }
-
-        Tableau tableau = _getTableau();
-        JFrame frame = tableau.getFrame();
         _addListener(frame, listener);
         frame.addWindowListener(listener);
+
+        return listener;
+    }
+
+    public String getTimeAdvanceText() {
+        return timeAdvance.getExpression();
+    }
+
+    public RefiringData refire(ArrayToken arguments, RefiringData data)
+            throws IllegalActionException {
+        InputListener listener = (InputListener) data;
+
         synchronized (listener) {
-            try {
-                listener.wait();
-            } catch (InterruptedException e) {
-                // Ignore.
+            if (!listener._finished) {
+                try {
+                    listener.wait();
+                } catch (InterruptedException e) {
+                    // Ignore.
+                }
             }
         }
-        _removeListener(frame, listener);
+        _removeListener(listener._frame, listener);
         synchronized (this) {
             if (_inputListeners != null) {
                 _inputListeners.remove(listener);
@@ -176,6 +199,7 @@ public class ReceiveInput extends TableauControllerEvent {
                     listener._mousePressLocation.x + ", " +
                     listener._mousePressLocation.y + "]");
         }
+        return null;
     }
 
     public void stop() {
@@ -203,6 +227,8 @@ public class ReceiveInput extends TableauControllerEvent {
     public Parameter receiveKeyPress;
 
     public Parameter receiveMousePress;
+
+    public Parameter timeAdvance;
 
     protected TableauParameter _getDefaultTableau() {
         return null;
@@ -238,8 +264,8 @@ public class ReceiveInput extends TableauControllerEvent {
 
     private List<InputListener> _inputListeners;
 
-    private class InputListener implements KeyListener, MouseListener,
-    WindowListener {
+    private class InputListener extends RefiringData implements KeyListener,
+            MouseListener, WindowListener {
 
         public void keyPressed(KeyEvent e) {
             if (_receiveKeyPress && (_acceptableComponentType == null ||
@@ -250,7 +276,7 @@ public class ReceiveInput extends TableauControllerEvent {
                     e.consume();
                     _componentType = e.getComponent().getClass();
                     _keyPressText = text;
-                    finish();
+                    _finish();
                 }
             }
         }
@@ -276,7 +302,7 @@ public class ReceiveInput extends TableauControllerEvent {
                 e.consume();
                 _componentType = e.getComponent().getClass();
                 _mousePressLocation = new Point(e.getX(), e.getY());
-                finish();
+                _finish();
             }
         }
 
@@ -290,7 +316,7 @@ public class ReceiveInput extends TableauControllerEvent {
         }
 
         public void windowClosing(WindowEvent e) {
-            finish();
+            _finish();
         }
 
         public void windowDeactivated(WindowEvent e) {
@@ -305,16 +331,20 @@ public class ReceiveInput extends TableauControllerEvent {
         public void windowOpened(WindowEvent e) {
         }
 
-        InputListener(Class<?> acceptableComponentType, boolean receiveKeyPress,
+        InputListener(double timeAdvance, JFrame frame,
+                Class<?> acceptableComponentType, boolean receiveKeyPress,
                 Pattern keyPattern, boolean receiveMousePress) {
+            super(timeAdvance);
+            _frame = frame;
             _acceptableComponentType = acceptableComponentType;
             _receiveKeyPress = receiveKeyPress;
             _keyPattern = keyPattern;
             _receiveMousePress = receiveMousePress;
         }
 
-        private void finish() {
+        private void _finish() {
             synchronized (this) {
+                _finished = true;
                 notify();
             }
         }
@@ -322,6 +352,10 @@ public class ReceiveInput extends TableauControllerEvent {
         private Class<?> _acceptableComponentType;
 
         private Class<?> _componentType;
+
+        private boolean _finished;
+
+        private JFrame _frame;
 
         private Pattern _keyPattern;
 

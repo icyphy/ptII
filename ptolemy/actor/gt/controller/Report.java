@@ -74,8 +74,8 @@ public class Report extends GTEvent {
         response.setPersistent(false);
     }
 
-    public void fire(ArrayToken arguments) throws IllegalActionException {
-        super.fire(arguments);
+    public RefiringData fire(ArrayToken arguments) throws IllegalActionException {
+        RefiringData data = super.fire(arguments);
 
         Mode choice = (Mode) mode.getChosenValue();
         switch (choice) {
@@ -101,6 +101,8 @@ public class Report extends GTEvent {
             throw new IllegalActionException("Unrecognized mode choice \"" +
                     mode.getExpression() + "\".");
         }
+
+        return data;
     }
 
     public StringParameter message;

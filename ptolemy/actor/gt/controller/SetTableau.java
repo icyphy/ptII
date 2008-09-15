@@ -98,8 +98,8 @@ public class SetTableau extends TableauControllerEvent {
         visible.setToken(BooleanToken.TRUE);
     }
 
-    public void fire(ArrayToken arguments) throws IllegalActionException {
-        super.fire(arguments);
+    public RefiringData fire(ArrayToken arguments) throws IllegalActionException {
+        RefiringData data = super.fire(arguments);
 
         Tableau tableau = _getTableau();
         JFrame frame = tableau.getFrame();
@@ -161,6 +161,8 @@ public class SetTableau extends TableauControllerEvent {
 
         boolean isVisible = ((BooleanToken) visible.getToken()).booleanValue();
         frame.setVisible(isVisible);
+
+        return data;
     }
 
     public Parameter alwaysOnTop;

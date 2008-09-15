@@ -75,8 +75,8 @@ public class Execute extends GTEvent {
         return newObject;
     }
 
-    public void fire(ArrayToken arguments) throws IllegalActionException {
-        super.fire(arguments);
+    public RefiringData fire(ArrayToken arguments) throws IllegalActionException {
+        RefiringData data = super.fire(arguments);
 
         NamedObj toplevel = getModelParameter().getModel().toplevel();
         if (toplevel instanceof CompositeActor) {
@@ -118,6 +118,8 @@ public class Execute extends GTEvent {
             throw new IllegalActionException("Unable to execute a model that " +
                     "is not a CompositeActor.");
         }
+
+        return data;
     }
 
     public void stop() {

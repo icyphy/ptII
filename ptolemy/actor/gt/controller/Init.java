@@ -75,14 +75,16 @@ public class Init extends GTEvent {
         }
     }
 
-    public void fire(ArrayToken arguments) throws IllegalActionException {
-        super.fire(arguments);
+    public RefiringData fire(ArrayToken arguments) throws IllegalActionException {
+        RefiringData data = super.fire(arguments);
 
         ModelParameter modelParameter = getModelParameter();
         if (modelParameter.getModel() == null) {
             modelParameter.setModel(_getInitialModel());
             getMatchedParameter().setToken(BooleanToken.getInstance(true));
         }
+
+        return data;
     }
 
     public StringParameter modelName;
