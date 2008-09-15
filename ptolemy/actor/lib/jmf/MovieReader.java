@@ -132,7 +132,7 @@ public class MovieReader extends Source implements ControllerListener {
                                 .toString(), "JMFMovieReader", null, null);
 
                         File copyFile = new File(copyFileName);
-                        urlCopy = copyFile.toURL();
+                        urlCopy = copyFile.toURI().toURL();
                         _dataSource = Manager.createDataSource(urlCopy);
                     } catch (Exception ex2) {
                         // Ignore this exception, throw the original.
