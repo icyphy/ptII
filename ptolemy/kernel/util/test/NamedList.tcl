@@ -102,6 +102,39 @@ test NamedList-3.1 {Test append by using a class that can take null names} {
 ######################################################################
 ####
 #
+test NamedList-3.1.5 {Test append with duplicate names} {
+    set dir [java::new ptolemy.kernel.util.NamedList]
+
+    # Two NamedObjs in two different workspaces with the same name
+    set W1a [java::new ptolemy.kernel.util.Workspace "W1a"]
+    set W1b [java::new ptolemy.kernel.util.Workspace "W1b"]
+    set n1a [java::new ptolemy.kernel.util.NamedObj $W1a "n1"]
+    set n1b [java::new ptolemy.kernel.util.NamedObj $W1b "n1"]
+    $dir append $n1a
+
+    catch {$dir append $n1a} errMsg
+    catch {$dir append $n1b} errMsg2
+
+    # NamedLists are not Sets
+    set namedSet [java::new java.util.HashSet]
+    $namedSet add $n1a
+    # In a NamedList, this would fail, but not in a Set
+    $namedSet add $n1b
+    $namedSet add $n1a
+
+    # NamedLists are not Maps
+    set namedMap [java::new java.util.HashMap]
+    $namedMap put $n1a [$n1a getFullName]
+    # In a NamedList, this would fail, but not in a Map
+    $namedMap put $n1b [$n1b getFullName]
+    $namedMap put $n1a [$n1a getFullName]
+
+    list "$errMsg \n $errMsg2"
+} {}
+
+######################################################################
+####
+#
 test NamedList-3.2 {Test clone} {
     set dir [java::new ptolemy.kernel.util.NamedList]
     set n1 [java::new ptolemy.kernel.util.NamedObj "n1"]
