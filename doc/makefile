@@ -643,7 +643,7 @@ DERIVED_FILES = \
 	whatsnewVergil.htm 
 
 update: $(DERIVED_FILES)
-	cvs commit -m "Master files changed" \
+	svn commit -m "Master files changed" \
 		mainVergil.htm \
 		mainVergilPtiny.htm \
 		ptII$(PTVERSION).releaseVergil.htm \
