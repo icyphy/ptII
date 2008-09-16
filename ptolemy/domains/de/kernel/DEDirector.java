@@ -658,8 +658,7 @@ public class DEDirector extends Director implements TimedDirector {
 
     /** Schedule an actor to be fired at the specified time by posting
      *  a pure event to the director. If the requested time is in the past
-     *  relative to the current time, then replace it with the current
-     *  model time.
+     *  relative to the current time, an exception is thrown.
      *  @param actor The scheduled actor to fire.
      *  @param time The scheduled time to fire.
      *  @exception IllegalActionException If event queue is not ready.
