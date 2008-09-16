@@ -4139,3 +4139,15 @@ test MoMLParser-30.1 {If an actor has no package, then we should be able to have
 	[[$compositeEntity getEntity {NoPackageActor}] getFullName] \
 	[[$compositeEntity getEntity {NoPackageActor2}] getFullName]
 } {.NoPackageActors.NoPackageActor .NoPackageActors.NoPackageActor2}
+
+test MoMLParser-31.1 {Make sure that the error message refers to the proper file} {
+    $parser reset
+    set file [java::new java.io.File NonexistantDirectorTest.xml] 
+    set url [[$file toURI] toURL]
+    catch {$parser {parse java.net.URL java.net.URL} [java::null] $url} errMsg
+    java::call ptolemy.moml.MoMLParser purgeModelRecord $url
+    # The error message used to refer to http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd
+    list $errMsg
+} {{com.microstar.xml.XmlException: XML element "property" triggers exception. in file:/Users/cxh/Documents/workspace/ptII/ptolemy/moml/test/NonexistantDirectorTest.xml at line 5 and column 95
+Caused by:
+ java.lang.ClassNotFoundException: ptolemy.domains.DoesNotExist.kernel.DoesNotExistDirector}}

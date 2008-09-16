@@ -1264,7 +1264,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         throw ex;
                     }
                 }
-                NamedObj result = parse(base, inputStream);
+		// Pass the input URL in case we need it for an error message.
+		// See test MoMLParser-31.1
+                NamedObj result = parse(base, input.toString(), inputStream);
                 _imports.put(input, new WeakReference(result));
                 return result;
             } finally {
@@ -1289,9 +1291,29 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  @return The top-level composite entity of the Ptolemy II model, or
      *   null if the file is not recognized as a MoML file.
      *  @exception Exception If the parser fails.
+     *  @deprecated Use parse(URL base, String systemID, InputStream input) for better
+     *  error messages.
      */
     public NamedObj parse(URL base, InputStream input) throws Exception {
         return parse(base, new InputStreamReader(input));
+    }
+
+    /** Parse the given stream, using the specified url as the base
+     *  to expand any external references within the MoML file.
+     *  This method uses parse(URL, Reader).  Note that this
+     *  bypasses the mechanism of parse(URL, URL) that returns
+     *  a previously parsed model. This method will always re-parse
+     *  using data from the stream.
+     *  @param base The base URL for relative references, or null if
+     *   not known.
+     *  @param systemId The URI of the document.
+     *  @param input The stream from which to read XML.
+     *  @return The top-level composite entity of the Ptolemy II model, or
+     *   null if the file is not recognized as a MoML file.
+     *  @exception Exception If the parser fails.
+     */
+    public NamedObj parse(URL base, String systemID, InputStream input) throws Exception {
+        return parse(base, systemID, new InputStreamReader(input));
     }
 
     /** Parse the given stream, using the specified url as the base
@@ -1306,8 +1328,28 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  @return The top-level composite entity of the Ptolemy II model, or
      *   null if the file is not recognized as a MoML file.
      *  @exception Exception If the parser fails.
+     *  @deprecated Use parse(URL base, String systemID, Reader reader) for better
+     *  error messages.
      */
     public NamedObj parse(URL base, Reader reader) throws Exception {
+	return parse(base, null, reader);
+    }
+
+    /** Parse the given stream, using the specified url as the base
+     *  The reader is wrapped in a BufferedReader before being used.
+     *  Note that this
+     *  bypasses the mechanism of parse(URL, URL) that returns
+     *  a previously parsed model. This method will always re-parse
+     *  using data from the stream.
+     *  @param base The base URL for relative references, or null if
+     *   not known.
+     *  @param systemId The URI of the document.
+     *  @param reader The reader from which to read XML.
+     *  @return The top-level composite entity of the Ptolemy II model, or
+     *   null if the file is not recognized as a MoML file.
+     *  @exception Exception If the parser fails.
+     */
+    public NamedObj parse(URL base, String systemID, Reader reader) throws Exception {
         _base = base;
 
         Reader buffered = new BufferedReader(reader);
@@ -1317,7 +1359,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             _xmlParser = new XmlParser();
             _xmlParser.setHandler(this);
             if (base == null) {
-                _xmlParser.parse(null, null, buffered);
+                _xmlParser.parse(systemID, null, buffered);
             } else {
                 // If we have tmp.moml and tmp/tmp2.moml and tmp.moml
                 // contains     <entity name="tmp2" class="tmp.tmp2">

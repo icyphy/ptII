@@ -96,6 +96,7 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
 	CompositeCopyAndPasteTest.xml \
 	ConstClassDefinition.xml \
 	NoPackageActor.java.in \
+	NonexistantDirectorTest.xml \
 	NoPackageActors.xml \
 	UndoDeleteEntityComposite.xml \
 	p1.moml \
