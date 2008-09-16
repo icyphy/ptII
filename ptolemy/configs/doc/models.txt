@@ -25,6 +25,7 @@ $CLASSPATH/ptolemy/domains/ct/demo/CartPendulum/CartPendulum.xml
 $CLASSPATH/ptolemy/domains/ct/demo/HybridPlant/RandomHybridPlant.xml
 $CLASSPATH/ptolemy/domains/ct/demo/Starmac/Starmac.xml
 $CLASSPATH/ptolemy/domains/csp/demo/ResourcePool/ResourcePool.xml
+$CLASSPATH/ptolemy/domains/erg/demo/AdaptiveCarWash/AdaptiveCarWash.xml
 $CLASSPATH/ptolemy/domains/ct/demo/NewtonsCradle/NewtonsCradleNondeterministic.xml
 $CLASSPATH/ptolemy/actor/gt/demo/DiningPhilosophers/DiningPhilosophers.xml
 $CLASSPATH/ptolemy/domains/ct/demo/Switch/Switch.xml
@@ -122,6 +123,7 @@ $CLASSPATH/ptolemy/domains/ct/demo/Spontaneous/Poisson.xml
 $CLASSPATH/ptolemy/domains/pn/demo/QR/QR.xml
 $CLASSPATH/ptolemy/domains/gr/demo/SolarSystem/SolarSystem.xml
 $CLASSPATH/ptolemy/domains/tm/demo/FFT/FFT.xml
+$CLASSPATH/ptolemy/actor/gt/demo/GameOfLife/GameOfLife.xml
 $CLASSPATH/ptolemy/domains/ct/demo/V2V/V2V.xml
 $CLASSPATH/ptolemy/domains/wireless/demo/MatlabWirelessSoundDetection/MatlabWirelessSoundDetection.xml
 $CLASSPATH/ptolemy/domains/tm/demo/SimpleTasks/SimpleTasks.xml
