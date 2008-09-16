@@ -57,6 +57,7 @@ EXTRA_SRCS = \
 	installers.htm \
 	javalinks.htm \
 	main.htm \
+	maven.htm \
 	packages.htm \
 	performance.htm \
 	releasemgt.htm \
