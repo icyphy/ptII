@@ -70,6 +70,7 @@ OPTIONAL_FILES = \
 	doc \
 	'EmbeddedCActor$$DummyActor.class' \
 	'EmbeddedCActor$$EmbeddedActor.class' \
+	'EmbeddedCFileActor$$EmbeddedFileActor.class' \
 	'PointerToken$$1.class' \
 	'PointerToken$$PointerType.class'
 
