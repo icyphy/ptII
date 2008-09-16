@@ -126,7 +126,7 @@ implements Configurable {
             MoMLParser parser = new MoMLParser(workspace());
             _configurer.removeAllEntities();
             parser.setContext(_configurer);
-            parser.parse(base, new StringReader(text));
+            parser.parse(base, source, new StringReader(text));
             _modelUpdater = (ERGModalModel) _configurer.entityList().get(0);
             _clearURI(_modelUpdater);
         }

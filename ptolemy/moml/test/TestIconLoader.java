@@ -70,7 +70,7 @@ public class TestIconLoader implements IconLoader {
         InputStream input = xmlFile.openStream();
         MoMLParser newParser = new MoMLParser();
         newParser.setContext(context);
-        newParser.parse(null, input);
+        newParser.parse(null, fileName, input);
         return true;
     }
 

@@ -99,7 +99,7 @@ public class TestApplication implements ChangeListener {
 
         try {
             URL url = new URL(null, xmlFilename);
-            toplevel = (CompositeActor) parser.parse(url, url.openStream());
+            toplevel = (CompositeActor) parser.parse(url, xmlFilename, url.openStream());
         } catch (Exception ex) {
             File f = new File(xmlFilename);
             URL url = f.toURI().toURL();

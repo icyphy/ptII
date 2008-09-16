@@ -101,7 +101,7 @@ public class Transform extends GTEvent implements ConfigurableEntity {
             MoMLParser parser = new MoMLParser(workspace());
             _configurer.removeAllEntities();
             parser.setContext(_configurer);
-            parser.parse(base, new StringReader(text));
+            parser.parse(base, source, new StringReader(text));
             _transformation = (TransformationRule) _configurer.entityList().get(
                     0);
             TransformationMode helper = new TransformationMode(_transformation,

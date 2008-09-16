@@ -270,7 +270,7 @@ public class BacktrackTransformer {
             if (iconFile != null) {
                 try {
                     Reader reader = new InputStreamReader(iconFile.openStream());
-                    _parse(reader, container);
+                    _parse(reader, iconFileName, container);
                     reader.close();
                 } catch (Exception e) {
                     throw new IllegalActionException(e.toString());
@@ -308,14 +308,14 @@ public class BacktrackTransformer {
          *  @return The NamedObj returned by the parser.
          *  @exception Exception If the parsing is not successful.
          */
-        private NamedObj _parse(Reader reader, NamedObj container)
+        private NamedObj _parse(Reader reader, String systemID, NamedObj container)
                 throws Exception {
             if (_parser == null) {
                 _parser = new MoMLParser();
             }
 
             _parser.setContext(container);
-            NamedObj result = _parser.parse(null, reader);
+            NamedObj result = _parser.parse(null, systemID, reader);
             MoMLParser.setModified(true);
             return result;
         }

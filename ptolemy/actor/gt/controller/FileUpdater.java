@@ -110,7 +110,7 @@ public class FileUpdater extends FileParameter {
         MoMLParser.addMoMLFilter(filter);
         boolean isModified = MoMLParser.isModified();
         try {
-            parser.parse(getBaseDirectory().toURL(), reader);
+            parser.parse(getBaseDirectory().toURL(), stringValue(), reader);
         } catch (Exception e) {
             throw new IllegalActionException(this, e, "Unable to apply the " +
                     "update in file \"" + stringValue() + "\".");

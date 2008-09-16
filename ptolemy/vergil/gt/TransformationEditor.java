@@ -2114,7 +2114,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             _parser.reset();
             InputStream stream = file.toURI().toURL().openStream();
             CompositeEntity model = (CompositeEntity) _parser.parse(null,
-                    stream);
+                    file.getCanonicalPath(), stream);
             return model;
         }
 
