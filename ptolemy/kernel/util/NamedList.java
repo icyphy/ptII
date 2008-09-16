@@ -36,6 +36,7 @@ package ptolemy.kernel.util;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -60,11 +61,11 @@ import java.util.NoSuchElementException;
  An instance of this class may have a container, but that container
  is only used for error reporting.
 
- @author Mudit Goel, Edward A. Lee
+ @author Mudit Goel, Edward A. Lee, Contributor: Jason E. Smith
  @version $Id$
  @since Ptolemy II 0.2
  @Pt.ProposedRating Green (eal)
- @Pt.AcceptedRating Green (johnr)
+ @Pt.AcceptedRating Green (cxh)
  @see Nameable
  */
 public final class NamedList implements Cloneable, Serializable {
@@ -93,6 +94,10 @@ public final class NamedList implements Cloneable, Serializable {
 
         if (original != null) {
             _namedList.addAll(original.elementList());
+            if (_hashEnabled) {
+                _hashedList = (HashMap<String, Nameable>) original._hashedList
+                        .clone();
+            }
         }
 
         _container = null;
@@ -121,6 +126,9 @@ public final class NamedList implements Cloneable, Serializable {
         // NOTE: Having to do this named lookup each time is expensive.
         if (get(newName) == null) {
             _namedList.add(element);
+            if (_hashEnabled) {
+                _hashedList.put(newName, element);
+            }
         } else {
             throw new NameDuplicationException(_container, element);
         }
@@ -154,7 +162,7 @@ public final class NamedList implements Cloneable, Serializable {
      *  @return The specified element.
      */
     public Nameable first() throws NoSuchElementException {
-        return (Nameable) _namedList.getFirst();
+        return _namedList.getFirst();
     }
 
     /** Get an element by name.
@@ -162,6 +170,10 @@ public final class NamedList implements Cloneable, Serializable {
      *  @return The requested element if it is found, and null otherwise.
      */
     public Nameable get(String name) {
+        if (_hashEnabled) {
+            return _hashedList.get(name);
+        }
+
         Iterator iterator = _namedList.iterator();
 
         while (iterator.hasNext()) {
@@ -180,6 +192,9 @@ public final class NamedList implements Cloneable, Serializable {
      *  @return A boolean indicating whether the element is on the list.
      */
     public boolean includes(Nameable element) {
+        if (_hashEnabled) {
+            return _hashedList.get(element.getName()) != null;
+        }
         return _namedList.contains(element);
     }
 
@@ -203,6 +218,9 @@ public final class NamedList implements Cloneable, Serializable {
             // name exists in list
             _insertAt((index + 1), element);
         }
+        if (_hashEnabled) {
+            _hashedList.put(name, element);
+        }
     }
 
     /** Insert a new element before the specified element.
@@ -225,6 +243,9 @@ public final class NamedList implements Cloneable, Serializable {
             // name exists in the list
             _insertAt(index, element);
         }
+        if (_hashEnabled) {
+            _hashedList.put(name, element);
+        }
     }
 
     /** Get the last element.
@@ -232,7 +253,7 @@ public final class NamedList implements Cloneable, Serializable {
      *  @return The last element.
      */
     public Nameable last() throws NoSuchElementException {
-        return (Nameable) _namedList.getLast();
+        return _namedList.getLast();
     }
 
     /** Move the specified element down by one in the list.
@@ -374,6 +395,9 @@ public final class NamedList implements Cloneable, Serializable {
     public void prepend(Nameable element) throws IllegalActionException,
             NameDuplicationException {
         _insertAt(0, element);
+        if (_hashEnabled) {
+            _hashedList.put(element.getName(), element);
+        }
     }
 
     /** Remove the specified element.  If the element is not on the
@@ -382,6 +406,9 @@ public final class NamedList implements Cloneable, Serializable {
      */
     public void remove(Nameable element) {
         _namedList.remove(element);
+        if (_hashEnabled) {
+            _hashedList.remove(element.getName());
+        }
     }
 
     /** Remove an element specified by name.  If no such element exists
@@ -391,10 +418,18 @@ public final class NamedList implements Cloneable, Serializable {
      *   object with the specified name is found.
      */
     public Nameable remove(String name) {
-        Nameable element = get(name);
+        Nameable element = null;
+        if (_hashEnabled) {
+            element = _hashedList.get(name);
+        } else {
+            element = get(name);
+        }
 
         if (element != null) {
             remove(element);
+            if (_hashEnabled) {
+                _hashedList.remove(name);
+            }
             return element;
         }
 
@@ -404,6 +439,9 @@ public final class NamedList implements Cloneable, Serializable {
     /** Remove all elements from the list. */
     public void removeAll() {
         _namedList.clear();
+        if (_hashEnabled) {
+            _hashedList.clear();
+        }
     }
 
     /** Return the number of elements in the list.
@@ -465,15 +503,48 @@ public final class NamedList implements Cloneable, Serializable {
         throw new NameDuplicationException(_container, element);
     }
 
+    /*
+     * Activates use of a hashmap to quicken lookup times of items stored in this list.
+     */
+    private void enableHash() {
+
+        _hashedList = new HashMap<String, Nameable>(101, 3.0f);
+
+        Iterator iterator = _namedList.iterator();
+
+        while (iterator.hasNext()) {
+            Nameable obj = (Nameable) iterator.next();
+            _hashedList.put(obj.getName(), obj);
+        }
+
+        _hashEnabled = true;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** @serial The container (owner) of this list. */
     private Nameable _container;
 
+    private static final int _threshhold = 100;
+
     /** @serial A LinkedList containing the elements. */
-    private LinkedList _namedList = new LinkedList();
+    private LinkedList<Nameable> _namedList = new LinkedList<Nameable>() {
+        public boolean add(Nameable obj) {
+            if (size() > _threshhold && !_hashEnabled) {
+                enableHash();
+            }
+            return super.add(obj);
+        }
+    };
+
+    /** @serial A HashMap linking names to LinkedList entries */
+    private HashMap<String, Nameable> _hashedList = null;
+
+    /** @serial A boolean indicating that the hashmap was enabled */
+    private boolean _hashEnabled = false;
 
     // Constant strings.
     private static final String _NULL_NAME_EXCEPTION_STRING = "Attempt to add an object with a null name to a NamedList.";
+
 }
