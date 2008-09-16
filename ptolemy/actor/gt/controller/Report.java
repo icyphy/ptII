@@ -27,11 +27,21 @@
 */
 package ptolemy.actor.gt.controller;
 
+import javax.swing.JFrame;
+import javax.swing.text.BadLocationException;
+
 import ptolemy.actor.gt.ChoiceParameter;
+import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.Effigy;
+import ptolemy.actor.gui.Tableau;
+import ptolemy.actor.gui.TextEditor;
+import ptolemy.actor.gui.TextEffigy;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -51,7 +61,7 @@ import ptolemy.util.CancelException;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class Report extends GTEvent {
+public class Report extends TableauControllerEvent {
 
     /**
      *  @param container
@@ -63,31 +73,116 @@ public class Report extends GTEvent {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
+        rowsDisplayed = new Parameter(this, "rowsDisplayed");
+        rowsDisplayed.setTypeEquals(BaseType.INT);
+        rowsDisplayed.setExpression("10");
+
+        columnsDisplayed = new Parameter(this, "columnsDisplayed");
+        columnsDisplayed.setTypeEquals(BaseType.INT);
+        columnsDisplayed.setExpression("40");
+
         message = new StringParameter(this, "message");
         message.setExpression("Report from " + getName() + ".");
 
         mode = new ChoiceParameter(this, "mode", Mode.class);
+        mode.setExpression(Mode.TABLEAU.toString());
 
         response = new Parameter(this, "response");
         response.setExpression("true");
         response.setVisibility(Settable.NOT_EDITABLE);
         response.setPersistent(false);
+
+        tableau = new TableauParameter(this, "tableau");
+        tableau.setPersistent(false);
+        tableau.setVisibility(Settable.EXPERT);
     }
 
-    public RefiringData fire(ArrayToken arguments) throws IllegalActionException {
+    public RefiringData fire(ArrayToken arguments)
+        throws IllegalActionException {
         RefiringData data = super.fire(arguments);
 
         Mode choice = (Mode) mode.getChosenValue();
+        String text = message.stringValue();
         switch (choice) {
         case ERROR:
-            GraphicalMessageHandler.error(message.stringValue());
+            GraphicalMessageHandler.error(text);
             break;
         case MESSAGE:
-            GraphicalMessageHandler.message(message.stringValue());
+            GraphicalMessageHandler.message(text);
+            break;
+        case TABLEAU:
+            Effigy effigy = Configuration.findEffigy(toplevel());
+            if (effigy == null) {
+                // The effigy may be null if the model is closed.
+                return data;
+            }
+
+            Tableau tableau = _getTableau();
+            if (tableau != null && !(tableau.getFrame() instanceof TextEditor)) {
+                _setTableau(null);
+                _closeTableau(tableau);
+                tableau = null;
+            }
+
+            boolean openNewWindow = true;
+            String previousText = null;
+            if (tableau != null) {
+                JFrame frame = tableau.getFrame();
+                if (frame instanceof TextEditor) {
+                    TextEditor editor = (TextEditor) frame;
+                    if (editor.getEffigy() == null) {
+                        previousText = editor.text.getText();
+                    } else {
+                        openNewWindow = false;
+                    }
+                }
+            }
+
+            TextEditor frame;
+            if (openNewWindow) {
+                TextEffigy textEffigy;
+                try {
+                    textEffigy = TextEffigy.newTextEffigy(effigy, "");
+                } catch (Exception e) {
+                    throw new IllegalActionException(this, e, "Unable to " +
+                            "create effigy.");
+                }
+                try {
+                    tableau = new Tableau(textEffigy, "tableau");
+                } catch (NameDuplicationException e) {
+                    throw new IllegalActionException(this, e, "Unable to " +
+                            "create tableau.");
+                }
+                frame = new TextEditor(tableau.getTitle(),
+                        textEffigy.getDocument());
+                frame.text.setColumns(((IntToken) columnsDisplayed.getToken())
+                        .intValue());
+                frame.text.setRows(((IntToken) rowsDisplayed.getToken())
+                        .intValue());
+                tableau.setFrame(frame);
+                frame.setTableau(tableau);
+                _setTableau(tableau);
+                frame.pack();
+                frame.setVisible(true);
+                if (previousText != null) {
+                    frame.text.setText(previousText);
+                }
+            } else {
+                frame = (TextEditor) tableau.getFrame();
+            }
+            frame.text.append(text + "\n");
+            try {
+                int lineOffset = frame.text.getLineStartOffset(frame.text
+                        .getLineCount() - 1);
+                frame.text.setCaretPosition(lineOffset);
+            } catch (BadLocationException ex) {
+                // Ignore ... worst case is that the scrollbar
+                // doesn't move.
+            }
             break;
         case WARNING:
             try {
-                GraphicalMessageHandler.warning(message.stringValue());
+                GraphicalMessageHandler.warning(text);
                 response.setToken(BooleanToken.TRUE);
             } catch (CancelException e) {
                 response.setToken(BooleanToken.FALSE);
@@ -95,7 +190,7 @@ public class Report extends GTEvent {
             break;
         case YES_OR_NO:
             response.setToken(BooleanToken.getInstance(GraphicalMessageHandler
-                    .yesNoQuestion(message.stringValue())));
+                    .yesNoQuestion(text)));
             break;
         default:
             throw new IllegalActionException("Unrecognized mode choice \"" +
@@ -105,11 +200,32 @@ public class Report extends GTEvent {
         return data;
     }
 
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+
+        Tableau tableau = _getTableau();
+        if (tableau != null) {
+            _setTableau(null);
+            _closeTableau(tableau);
+        }
+    }
+
+    /** The horizontal size of the display, in columns. This contains
+     *  an integer, and defaults to 40.
+     */
+    public Parameter columnsDisplayed;
+
     public StringParameter message;
 
     public ChoiceParameter mode;
 
     public Parameter response;
+
+    /** The vertical size of the display, in rows. This contains an integer, and
+        defaults to 10. */
+    public Parameter rowsDisplayed;
+
+    public TableauParameter tableau;
 
     public enum Mode {
         ERROR {
@@ -122,6 +238,11 @@ public class Report extends GTEvent {
                 return "message";
             }
         },
+        TABLEAU {
+            public String toString() {
+                return "tableau";
+            }
+        },
         WARNING {
             public String toString() {
                 return "warning";
@@ -132,5 +253,9 @@ public class Report extends GTEvent {
                 return "yes or no";
             }
         }
+    }
+
+    protected TableauParameter _getDefaultTableau() {
+        return tableau;
     }
 }

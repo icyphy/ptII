@@ -117,12 +117,14 @@ OPTIONAL_FILES = \
 	'Report$$Mode$$2.class' \
 	'Report$$Mode$$3.class' \
 	'Report$$Mode$$4.class' \
+	'Report$$Mode$$5.class' \
 	'Report$$Mode.class' \
 	'SetTableau$$1.class' \
 	'SetTableau$$TableauState$$1.class' \
 	'SetTableau$$TableauState$$2.class' \
 	'SetTableau$$TableauState$$3.class' \
 	'SetTableau$$TableauState.class' \
+	'TableauControllerEvent$$1.class' \
 	'Transform$$EmbeddedConfigurer.class'
 
 JCLASS = $(JSRCS:%.java=%.class)

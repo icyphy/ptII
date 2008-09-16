@@ -76,6 +76,10 @@ public class SetTableau extends TableauControllerEvent {
         enabled.setTypeAtMost(BaseType.BOOLEAN);
         enabled.setToken(BooleanToken.TRUE);
 
+        focused = new Parameter(this, "focused");
+        focused.setTypeAtMost(BaseType.BOOLEAN);
+        focused.setToken(BooleanToken.FALSE);
+
         resizable = new Parameter(this, "resizable");
         resizable.setTypeAtMost(BaseType.BOOLEAN);
         resizable.setToken(BooleanToken.TRUE);
@@ -106,14 +110,25 @@ public class SetTableau extends TableauControllerEvent {
 
         boolean isAlwaysOnTop = ((BooleanToken) alwaysOnTop.getToken())
                 .booleanValue();
-        frame.setAlwaysOnTop(isAlwaysOnTop);
+        if (frame.isAlwaysOnTop() != isAlwaysOnTop) {
+            frame.setAlwaysOnTop(isAlwaysOnTop);
+        }
 
         boolean isEnabled = ((BooleanToken) enabled.getToken()).booleanValue();
-        frame.setEnabled(isEnabled);
+        if (frame.isEnabled() != isEnabled) {
+            frame.setEnabled(isEnabled);
+        }
+
+        boolean isFocused = ((BooleanToken) focused.getToken()).booleanValue();
+        if (isFocused) {
+            frame.requestFocus();
+        }
 
         boolean isResizable = ((BooleanToken) resizable.getToken())
                 .booleanValue();
-        frame.setResizable(isResizable);
+        if (frame.isResizable() != isResizable) {
+            frame.setResizable(isResizable);
+        }
 
         IntMatrixToken newLocation =
             (IntMatrixToken) screenLocation.getToken();
@@ -144,23 +159,33 @@ public class SetTableau extends TableauControllerEvent {
         TableauState newState = (TableauState) state.getChosenValue();
         switch (newState) {
         case ICONIFIED:
-            frame.setExtendedState(JFrame.ICONIFIED);
+            if ((frame.getExtendedState() & JFrame.ICONIFIED) !=
+                    JFrame.ICONIFIED) {
+                frame.setExtendedState(JFrame.ICONIFIED);
+            }
             break;
         case MAXIMIZED:
-            frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            if ((frame.getExtendedState() & JFrame.MAXIMIZED_BOTH) !=
+                    JFrame.MAXIMIZED_BOTH) {
+                frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            }
             break;
         case NORMAL:
-            frame.setExtendedState(JFrame.NORMAL);
+            if ((frame.getExtendedState() & JFrame.NORMAL) != JFrame.NORMAL) {
+                frame.setExtendedState(JFrame.NORMAL);
+            }
             break;
         }
 
         String newTitle = title.stringValue().trim();
-        if (!newTitle.equals("")) {
+        if (!newTitle.equals("") && frame.getTitle().equals(newTitle)) {
             frame.setTitle(newTitle);
         }
 
         boolean isVisible = ((BooleanToken) visible.getToken()).booleanValue();
-        frame.setVisible(isVisible);
+        if (frame.isVisible() != isVisible) {
+            frame.setVisible(isVisible);
+        }
 
         return data;
     }
@@ -168,6 +193,8 @@ public class SetTableau extends TableauControllerEvent {
     public Parameter alwaysOnTop;
 
     public Parameter enabled;
+
+    public Parameter focused;
 
     public Parameter resizable;
 

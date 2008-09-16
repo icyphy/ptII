@@ -870,6 +870,8 @@ are reset at the start of each run.</text></svg></configure>
 </configure>
             </entity>
             <entity name="TooFast?" class="ptolemy.actor.gt.controller.Test">
+                <property name="fireOnInput" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
                 <property name="monitoredVariables" class="ptolemy.data.expr.StringParameter" value="QueueSize">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">

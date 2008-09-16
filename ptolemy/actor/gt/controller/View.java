@@ -30,9 +30,6 @@ package ptolemy.actor.gt.controller;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Toolkit;
-import java.awt.Window;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.net.URI;
 
 import javax.swing.JFrame;
@@ -54,6 +51,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.vergil.basic.BasicGraphFrame;
+import ptolemy.vergil.basic.ExtendedGraphFrame;
 import ptolemy.vergil.gt.GTFrameTools;
 
 //////////////////////////////////////////////////////////////////////////
@@ -68,7 +66,7 @@ import ptolemy.vergil.gt.GTFrameTools;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class View extends TableauControllerEvent implements WindowListener {
+public class View extends TableauControllerEvent {
 
     public View(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -98,15 +96,14 @@ public class View extends TableauControllerEvent implements WindowListener {
     public RefiringData fire(ArrayToken arguments) throws IllegalActionException {
         RefiringData data = super.fire(arguments);
 
-        CompositeEntity entity = getModelParameter().getModel();
-        entity = (CompositeEntity) GTTools.cleanupModel(entity);
-
         Effigy effigy = Configuration.findEffigy(toplevel());
         if (effigy == null) {
             // The effigy may be null if the model is closed.
             return data;
         }
-        Configuration configuration = (Configuration) effigy.toplevel();
+
+        CompositeEntity entity = getModelParameter().getModel();
+        entity = (CompositeEntity) GTTools.cleanupModel(entity);
 
         try {
             // Compute size of the new frame.
@@ -128,6 +125,13 @@ public class View extends TableauControllerEvent implements WindowListener {
             boolean reopen = ((BooleanToken) reopenWindow.getToken())
                     .booleanValue();
             Tableau tableau = _getTableau();
+            if (tableau != null &&
+                    !(tableau.getFrame() instanceof ExtendedGraphFrame)) {
+                _setTableau(null);
+                _closeTableau(tableau);
+                tableau = null;
+            }
+
             boolean openNewWindow = true;
             if (!reopen  && tableau != null) {
                 JFrame frame = tableau.getFrame();
@@ -138,8 +142,9 @@ public class View extends TableauControllerEvent implements WindowListener {
             }
             if (openNewWindow) {
                 if (tableau != null) {
-                    tableau.close();
+                    _closeTableau(tableau);
                 }
+                Configuration configuration = (Configuration) effigy.toplevel();
                 tableau = configuration.openInstance(entity, effigy);
                 _setTableau(tableau);
                 // Set uri to null so that we don't accidentally overwrite the
@@ -178,7 +183,6 @@ public class View extends TableauControllerEvent implements WindowListener {
                 newLocation.y = Math.min(newLocation.y,
                         screenSize.height - newSize.height);
                 frame.setLocation(newLocation);
-                frame.addWindowListener(this);
             }
 
             String titleValue = ((StringToken) title.getToken()).stringValue();
@@ -211,45 +215,9 @@ public class View extends TableauControllerEvent implements WindowListener {
 
         Tableau tableau = _getTableau();
         if (tableau != null) {
-            tableau.close();
-            tableau.getFrame().removeWindowListener(this);
             _setTableau(null);
+            _closeTableau(tableau);
         }
-    }
-
-    public void windowActivated(WindowEvent event) {
-    }
-
-    public void windowClosed(WindowEvent event) {
-        Window window = (Window) event.getSource();
-
-        try {
-            Tableau tableau = _getTableau();
-            if (tableau != null) {
-                JFrame frame = tableau.getFrame();
-                if (frame == window) {
-                    frame.removeWindowListener(this);
-                    tableau = null;
-                }
-            }
-        } catch (IllegalActionException e) {
-            // Ignore the error if we cannot retrieve the tableau.
-        }
-    }
-
-    public void windowClosing(WindowEvent event) {
-    }
-
-    public void windowDeactivated(WindowEvent event) {
-    }
-
-    public void windowDeiconified(WindowEvent event) {
-    }
-
-    public void windowIconified(WindowEvent event) {
-    }
-
-    public void windowOpened(WindowEvent event) {
     }
 
     public Parameter reopenWindow;

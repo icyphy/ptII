@@ -106,16 +106,18 @@ public class EventIcon extends StateIcon {
             _addLabel(figure, actions);
         }
 
-        Rectangle2D bounds = figure.getBounds();
-        double y = bounds.getMinY() + 12.5;
-        double x = bounds.getMinX();
-        if (monitor) {
-            _addTrianglarIcon(figure, fireOnInput ? x - 1.0 : x + 4.0, y,
-                    Color.blue);
-        }
+        if (_addTrianglarIcons()) {
+            Rectangle2D bounds = figure.getBounds();
+            double y = bounds.getMinY() + 12.5;
+            double x = bounds.getMinX();
+            if (monitor) {
+                _addTrianglarIcon(figure, fireOnInput ? x - 1.0 : x + 4.0, y,
+                        Color.blue);
+            }
 
-        if (fireOnInput) {
-            _addTrianglarIcon(figure, x + 4.0, y, Color.red);
+            if (fireOnInput) {
+                _addTrianglarIcon(figure, x + 4.0, y, Color.red);
+            }
         }
 
         return figure;
@@ -131,6 +133,10 @@ public class EventIcon extends StateIcon {
         figure.setFillPaint(_getFill());
         _iconCache = new FigureIcon(figure, 20, 15);
         return _iconCache;
+    }
+
+    protected boolean _addTrianglarIcons() {
+        return true;
     }
 
     protected Point2D _getBackgroundSize() {

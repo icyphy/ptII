@@ -35,7 +35,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
 
 //////////////////////////////////////////////////////////////////////////
 //// GTEvent
@@ -55,7 +54,6 @@ public class GTEvent extends Event {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        fireOnInput.setVisibility(Settable.NONE);
         refinementExtender = new RefinementExtender(this, "refinementExtender");
         refinementExtender.description.setExpression(
                 "Embedded Transformation Controller");

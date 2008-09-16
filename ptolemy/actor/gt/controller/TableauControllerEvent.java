@@ -27,6 +27,8 @@
 */
 package ptolemy.actor.gt.controller;
 
+import javax.swing.SwingUtilities;
+
 import ptolemy.actor.gui.Tableau;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.expr.ModelScope;
@@ -64,6 +66,14 @@ public abstract class TableauControllerEvent extends GTEvent {
     }
 
     public StringParameter referredTableau;
+
+    protected void _closeTableau(final Tableau tableau) {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                tableau.close();
+            }
+        });
+    }
 
     protected abstract TableauParameter _getDefaultTableau();
 
