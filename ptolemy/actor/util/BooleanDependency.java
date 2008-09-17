@@ -1,6 +1,6 @@
 /* Interface representing a dependency between ports.
 
- Copyright (c) 2003-2006 The Regents of the University of California.
+ Copyright (c) 2008 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -31,13 +31,13 @@ package ptolemy.actor.util;
 //// BooleanDependency
 
 /**
- This dependency represents causal relationships that are either present
- or not. That is, given any two ports, either one depends causally on the
- other or not. See the paper "Causality Interfaces for Actor Networks" by Ye Zhou and
- Edward A. Lee, ACM Transactions on Embedded Computing Systems (TECS),
- April 2008, as available as <a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2006/EECS-2006-148.pdf">
- Technical Report No. UCB/EECS-2006-148</a>,
- November 16, 2006.
+ This dependency represents causal relationships that are either
+ present or not. That is, given any two ports, either one depends
+ causally on the other or not. See the paper "Causality Interfaces for
+ Actor Networks" by Ye Zhou and Edward A. Lee, ACM Transactions on
+ Embedded Computing Systems (TECS), April 2008, as available as <a
+ href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2006/EECS-2006-148.pdf">
+ Technical Report No. UCB/EECS-2006-148</a>, November 16, 2006.
 
  @author Edward A. Lee
  @version $Id$
@@ -79,8 +79,9 @@ public class BooleanDependency implements Dependency {
 
     /** Return true if the value of this dependency equals that
      *  of the specified one, and the specified one is an instance
-     *  of RealDepedency.
+     *  of RealDependency.
      *  @param object The object to compare against.
+     *  @return true if the values are equal
      */
     public boolean equals(Object object) {
         if (object instanceof BooleanDependency) {
@@ -165,6 +166,10 @@ public class BooleanDependency implements Dependency {
     /** Return an instance of BooleanDependency with the specified
      *  value. This is preferable to use over the constructor
      *  because there are only ever two possible values.
+     *  @param value  The specified value.
+     *  @return an instance of BooleanDependency, if value
+     *  is true, then {@link #OTIMES_IDENTITY} is returned, if 
+     *  value is false, then {@link #OPLUS_IDENTITY}. 
      */
     public static BooleanDependency valueOf(boolean value) {
         if (value) {

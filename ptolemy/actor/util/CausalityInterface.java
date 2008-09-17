@@ -37,18 +37,17 @@ import ptolemy.kernel.util.IllegalActionException;
 //// CausalityInterface
 
 /**
- This interface defines a causality interfaces for actor networks as described
- in the paper "Causality Interfaces for Actor Networks" by Ye Zhou and
- Edward A. Lee, ACM Transactions on Embedded Computing Systems (TECS),
- April 2008, as available as <a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2006/EECS-2006-148.pdf">
- Technical Report No. UCB/EECS-2006-148</a>,
- November 16, 2006.
- Causality interfaces represent dependencies between input and output ports
- of an actor and can be used to perform scheduling or static analysis
- on actor models.
- Implementers of this interface must ensure consistency between the methods
- {@link #dependentPorts(IOPort)}, {@link #equivalentPorts(IOPort)}, and
- {@link #getDependency(IOPort, IOPort)}.
+ This interface defines a causality interfaces for actor networks as
+ described in the paper "Causality Interfaces for Actor Networks" by
+ Ye Zhou and Edward A. Lee, ACM Transactions on Embedded Computing
+ Systems (TECS), April 2008, as available as <a
+ href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2006/EECS-2006-148.pdf">
+ Technical Report No. UCB/EECS-2006-148</a>, November 16, 2006.
+ Causality interfaces represent dependencies between input and output
+ ports of an actor and can be used to perform scheduling or static
+ analysis on actor models.  Implementers of this interface must ensure
+ consistency between the methods {@link #dependentPorts(IOPort)},
+ {@link #equivalentPorts(IOPort)}, and {@link #getDependency(IOPort, IOPort)}.
  
  @see Dependency
 
@@ -73,6 +72,8 @@ public interface CausalityInterface {
      *  @param port The port to find the dependents of.
      *  @exception IllegalActionException If the dependency
      *   cannot be determined.
+     *  @return a collection of ports that this actor depends
+     *  on or are depended on by the specified port.
      */
     public Collection<IOPort> dependentPorts(IOPort port)
             throws IllegalActionException;
@@ -92,6 +93,8 @@ public interface CausalityInterface {
      *  @param input The port to find the equivalence class of.
      *  @exception IllegalActionException If the equivalent ports
      *   cannot be determined.
+     *  @return a collection of input ports that are in the same equivalence
+     *  class as the specified input port.
      */
     public Collection<IOPort> equivalentPorts(IOPort input)
             throws IllegalActionException;;
@@ -108,6 +111,8 @@ public interface CausalityInterface {
 
     /** Return the dependency between the specified input port
      *  and the specified output port.
+     *  @param input The specified input port.
+     *  @param output The specified output port.
      *  @return The dependency between the specified input port
      *   and the specified output port.
      *  @exception IllegalActionException If the dependency

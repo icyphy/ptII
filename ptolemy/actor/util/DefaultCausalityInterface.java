@@ -1,6 +1,6 @@
 /* Causality interface where all outputs depend on all inputs.
 
- Copyright (c) 2003-2006 The Regents of the University of California.
+ Copyright (c) 2008 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -107,6 +107,8 @@ public class DefaultCausalityInterface implements CausalityInterface {
      *  also override {@link #getDependency(IOPort, IOPort)}
      *  and {@link #equivalentPorts(IOPort)} to be consistent.
      *  @param port The port to find the dependents of.
+     *  @return a collection of ports that depend on or are depended on
+     *  by the specified port.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public Collection<IOPort> dependentPorts(IOPort port)
@@ -205,7 +207,9 @@ public class DefaultCausalityInterface implements CausalityInterface {
      *  equivalence class. Otherwise, they are not in the same
      *  equivalence class.
      *  @param input The port to find the equivalence class of.
-     *  @throws IllegalArgumentException If the argument is not
+     *  @return set of the input ports in this actor that are
+     *  in an equivalence class with the specified input.
+     *  @exception IllegalArgumentException If the argument is not
      *   contained by the associated actor.
      *  @exception IllegalActionException Not thrown in this base class.
      */
@@ -277,6 +281,8 @@ public class DefaultCausalityInterface implements CausalityInterface {
      *  actor-specific dependency information. If they do so,
      *  then they may also need to override {@link #equivalentPorts(IOPort)}
      *  and {@link #dependentPorts(IOPort)} to be consistent.
+     *  @param input The input port.
+     *  @param output The output port.
      *  @return The dependency between the specified input port
      *   and the specified output port.
      *  @exception IllegalActionException Not thrown in this base class.
@@ -367,6 +373,11 @@ public class DefaultCausalityInterface implements CausalityInterface {
      *  output dependents were not already in the outputs set,
      *  add them, and then recursively invoke this same method
      *  on all input ports that depend on those outputs.
+     *  @param input The input port.
+     *  @param inputs The set of inputs to which input is added if
+     *  it is not already present.
+     *  @param outpus The set of output dependents to which the output
+     *  dependents are added if input was not in the inputs set.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     protected void _growDependencies(IOPort input, Set<IOPort> inputs,

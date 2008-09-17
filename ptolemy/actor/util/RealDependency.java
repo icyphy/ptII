@@ -1,6 +1,6 @@
 /* Interface representing a dependency between ports.
 
- Copyright (c) 2003-2006 The Regents of the University of California.
+ Copyright (c) 2008 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -69,7 +69,7 @@ public class RealDependency implements Dependency {
      *  on top.
      *  @param dependency The dependency to compare against.
      *  @return The result of comparison.
-     *  @throws ClassCastException If the argument is not an instance
+     *  @exception ClassCastException If the argument is not an instance
      *   of RealDependency.
      */
     public int compareTo(Dependency dependency) {
@@ -86,6 +86,7 @@ public class RealDependency implements Dependency {
      *  of the specified one, and the specified one is an instance
      *  of RealDepedency.
      *  @param object The object to compare against.
+     *  @return true if this object is the same as the object argument.
      */
     public boolean equals(Object object) {
         if (object instanceof RealDependency) {
@@ -154,6 +155,13 @@ public class RealDependency implements Dependency {
      *  value. This is preferable to use over the constructor
      *  because it uses the same instances for the most common
      *  values.
+     *  @param value The value used to determine the RealDependency
+     *  to be returned.
+     *  @return an instance of RealDependency, if value
+     *  is 0.0, then {@link #OTIMES_IDENTITY} is returned, if 
+     *  value is Double.POSITIVE_INFINITY, then {@link #OPLUS_IDENTITY}
+     *  is returned.  Otherwise the RealDependency constructor
+     *  is called.
      */
     public static RealDependency valueOf(double value) {
         if (value == 0.0) {

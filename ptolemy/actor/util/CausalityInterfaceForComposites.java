@@ -70,6 +70,8 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
      *   This is required to be an instance of CompositeEntity.
      *  @param defaultDependency The default dependency of an output
      *   port on an input port.
+     *  @exception IllegalArgumentException If the actor parameter is not
+     *  an instance of CompositeEntity.
      */
     public CausalityInterfaceForComposites(Actor actor,
             Dependency defaultDependency) throws IllegalArgumentException {
@@ -112,6 +114,8 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
      *  also override {@link #getDependency(IOPort, IOPort)}
      *  and {@link #equivalentPorts(IOPort)} to be consistent.
      *  @param port The port to find the dependents of.
+     *  @return a collection of ports that depend on or are depended on
+     *  by the specified port.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public Collection<IOPort> dependentPorts(IOPort port)
@@ -144,9 +148,10 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
     }
 
     /** Return a string that describes the depths of actors and their ports.
+     *  @return s string that describes the depths of actors and their ports.
+     *  @exception IllegalActionException If there is a causality loop.
      *  @see #getDepthOfActor(Actor)
      *  @see #getDepthOfPort(IOPort)
-     *  @exception IllegalActionException If there is a causality loop.
      */
     public String describeDepths() throws IllegalActionException {
         _computeActorDepth();
@@ -191,7 +196,9 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
      *  state and return the equivalence classes determined
      *  only by the common dependence of output ports.
      *  @param input The port to find the equivalence class of.
-     *  @throws IllegalActionException If the argument is not
+     *  @return set of the input ports in this actor that are
+     *  in an equivalence class with the specified input.
+     *  @exception IllegalActionException If the argument is not
      *   contained by the associated actor.
      */
     public Collection<IOPort> equivalentPorts(IOPort input)
@@ -445,7 +452,7 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
      *  {@link CompositeEntity#deepEntityList()}.
      *  This method always creates a new list.
      *  @return A sorted list of actors.
-     *  @throws IllegalActionException If a cycle is found.
+     *  @exception IllegalActionException If a cycle is found.
      */
     public List<Actor> topologicalSort() throws IllegalActionException {
         // Ensure the cache is up to date and check for cycles.
@@ -507,7 +514,7 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
      *  This typically delays the response to fireAt() until all input
      *  events with the same tag have arrived.
      *  If there are no input ports or output ports, the depth is zero.
-     *  @throws IllegalActionException If a zero-delay loop is found.
+     *  @exception IllegalActionException If a zero-delay loop is found.
      */
     protected void _computeActorDepth() throws IllegalActionException {
         if (_actorDepthVersion == ((NamedObj) _actor).workspace().getVersion()) {
@@ -673,7 +680,7 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
      *   in this round.
      *  @param visitedOutputs The set of output ports that have been visited
      *   in this round.
-     *  @throws IllegalActionException If a zero-delay loop is found.
+     *  @exception IllegalActionException If a zero-delay loop is found.
      */
     private void _computeInputDepth(IOPort inputPort,
             Set<IOPort> visitedInputs, Set<IOPort> visitedOutputs)
@@ -756,7 +763,7 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
      *   in this round.
      *  @param visitedOutputs The set of output ports that have been visited
      *   in this round.
-     *  @throws IllegalActionException If a zero-delay loop is found.
+     *  @exception IllegalActionException If a zero-delay loop is found.
      */
     private void _computeOutputPortDepth(IOPort outputPort,
             Set<IOPort> visitedInputs, Set<IOPort> visitedOutputs)

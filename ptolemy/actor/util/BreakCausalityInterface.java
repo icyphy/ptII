@@ -1,6 +1,6 @@
 /* Causality interface where no output depends on any input.
 
- Copyright (c) 2003-2006 The Regents of the University of California.
+ Copyright (c) 2008 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -87,6 +87,8 @@ public class BreakCausalityInterface extends DefaultCausalityInterface {
      *  also override {@link #getDependency(IOPort, IOPort)}
      *  and {@link #equivalentPorts(IOPort)} to be consistent.
      *  @param port The port to find the dependents of.
+     *  @return a collection of ports, this method returns
+     *  an empty collection of ports
      */
     public Collection<IOPort> dependentPorts(IOPort port) {
         return _EMPTY_COLLECTION;
@@ -101,6 +103,9 @@ public class BreakCausalityInterface extends DefaultCausalityInterface {
      *  and {@link #dependentPorts(IOPort)} to be consistent.
      *  The returned result should always include the specified input port.
      *  @param input The port to find the equivalence class of.
+     *  @return a collection of ports that are in the same equivalence
+     *  class.  This method returns a collection containing only
+     *  the specified port.
      */
     public Collection<IOPort> equivalentPorts(IOPort input) {
         // FIXME: Should the result be cached?
@@ -128,6 +133,8 @@ public class BreakCausalityInterface extends DefaultCausalityInterface {
      *  actor-specific dependency information. If they do so,
      *  then they may also need to override {@link #equivalentPorts(IOPort)}
      *  and {@link #dependentPorts(IOPort)} to be consistent.
+     *  @param input The specified input port.
+     *  @param output The specified output port.
      *  @return The dependency between the specified input port
      *   and the specified output port.
      */
