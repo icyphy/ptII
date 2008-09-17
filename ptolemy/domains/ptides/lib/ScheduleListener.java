@@ -69,18 +69,19 @@ public interface ScheduleListener {
     public void initialize(Hashtable nodesActors);
 
 	/**
-	 * Type of schedule event:
-	 * <ul>
-	 * <li>start. Started the execution of an actor.</li>
-	 * <li>stop. Stopped the execution of an actor.</li>
-	 * <li>transferoutput. An Event is sent from a platform </li>
-	 * <li> transferinput. An Event is sent to a platform </li>
-	 * <li> missedexecution. An actors should have been executed at a previous
-	 * time </li>
-	 * </ul>.
+	 * Type of schedule event.
 	 */
     public static enum ScheduleEventType {
-        START, STOP, TRANSFEROUTPUT, TRANSFERINPUT, MISSEDEXECUTION
+        /** Started the execution of an actor. */
+        START, 
+        /** Stopped the execution of an actor. */
+        STOP, 
+        /** An Event is sent from a platform. */
+        TRANSFEROUTPUT, 
+        /** An Event is sent to a platform. */
+        TRANSFERINPUT, 
+        /** An actors should have been executed at a previous. */
+        MISSEDEXECUTION
     }
 
 }

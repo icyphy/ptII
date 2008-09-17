@@ -28,6 +28,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.domains.ptides.kernel;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -46,6 +47,7 @@ import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.RealDependency;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -55,6 +57,7 @@ import ptolemy.domains.ptides.lib.ScheduleListener.ScheduleEventType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
@@ -214,6 +217,8 @@ public class PtidesDirector extends TimedPNDirector {
      * The value defaults to Infinity.
      */
     public Parameter stopTime;
+    
+    public Parameter synchronizeToRealTime;
 
     // /////////////////////////////////////////////////////////////////
     // // public methods ////
@@ -245,6 +250,9 @@ public class PtidesDirector extends TimedPNDirector {
         } else if (attribute == networkDelay) {
             _networkDelay = ((DoubleToken) networkDelay.getToken())
                     .doubleValue();
+        } else if (attribute == synchronizeToRealTime) {
+            _synchronizeToRealTime = ((BooleanToken) synchronizeToRealTime
+                    .getToken()).booleanValue();
         } else {
             super.attributeChanged(attribute);
         }
@@ -331,6 +339,7 @@ public class PtidesDirector extends TimedPNDirector {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _currentTime = new Time(this, 0.0);
+        _realStartTime = System.currentTimeMillis();
         _stopTime = new Time(this, ((DoubleToken) stopTime.getToken())
                 .doubleValue());
         
@@ -485,9 +494,119 @@ public class PtidesDirector extends TimedPNDirector {
             notifyAll();
             return true;
         } else {
-            return super._resolveDeadlock();
+            if (_writeBlockedQueues.size() != 0) {
+                // Artificial deadlock based on write blocks.
+                _incrementLowestWriteCapacityPort();
+                return true;
+            } else if (_delayBlockCount == 0) {
+                // Real deadlock with no delayed processes.
+                return false;
+            } else {
+                // Artificial deadlock due to delayed processes.
+                // Advance time to next possible time.
+                synchronized (this) {
+                    // There could be multiple events for the same
+                    // actor for the same time (e.g. by sending events
+                    // to this actor with same time stamps on different
+                    // input ports. Thus, only _informOfDelayUnblock() 
+                    // for events with the same time stamp but different
+                    // actors. 7/15/08 Patricia Derler
+                    List unblockedActors = new ArrayList();
+                    if (!_eventQueue.isEmpty()) {
+                        //Take the first time-blocked process from the queue.
+                        TimedEvent event = (TimedEvent) _eventQueue.take();
+                        unblockedActors.add(event.contents);
+                        //Advance time to the resumption time of this process.
+                        if (_synchronizeToRealTime) {
+                            // If synchronized to the real time.
+                            Time currentTime;
+                            synchronized (this) {
+                                while (!_stopRequested && !_stopFireRequested) {
+                                    currentTime = getModelTime();
+
+                                    long elapsedTime = System.currentTimeMillis()
+                                            - _realStartTime; 
+                                    double elapsedTimeInSeconds = elapsedTime / 1000.0;
+                                    ptolemy.actor.util.Time elapsed
+                                            = new ptolemy.actor.util.Time(this, elapsedTimeInSeconds);
+                                    if (currentTime.compareTo(elapsed) <= 0) {
+                                        break;
+                                    } 
+                                    long timeToWait = (long) (currentTime.subtract(
+                                            elapsed).getDoubleValue() * 1000.0);
+
+                                    if (timeToWait > 0) {
+                                        if (_debugging) {
+                                            _debug("Waiting for real time to pass: "
+                                                    + timeToWait);
+                                        }
+
+                                        try {
+                                            _workspace.wait(this, timeToWait);
+                                        } catch (InterruptedException ex) {
+                                            throw new IllegalActionException(this, ex,
+                                                    "Thread interrupted when waiting for" +
+                                                    " real time to match model time.");
+                                        }
+                                    }
+                                } // while
+                            } // sync
+                        } // if (_synchronizeToRealTime)
+                        setModelTime(event.timeStamp);
+                        _informOfDelayUnblock();
+                    } else {
+                        throw new InternalErrorException("Inconsistency"
+                                + " in number of actors blocked on delays count"
+                                + " and the entries in the CalendarQueue");
+                    }
+
+                    //Remove any other process waiting to be resumed at the new
+                    //advanced time (the new currentTime).
+                    boolean sameTime = true;
+
+                    while (sameTime) {
+                        //If queue is not empty, then determine the resumption
+                        //time of the next process.
+                        if (!_eventQueue.isEmpty()) {
+                            //Remove the first process from the queue.
+                            TimedEvent event = (TimedEvent) _eventQueue.take();
+                            Actor actor = (Actor) event.contents;
+
+                            //Get the resumption time of the newly removed
+                            //process.
+                            Time newTime = event.timeStamp;
+
+                            //If the resumption time of the newly removed
+                            //process is the same as the newly advanced time
+                            //then unblock it. Else put the newly removed
+                            //process back on the event queue.
+                            if (newTime.equals(getModelTime())) {
+                                if (unblockedActors.contains(actor))
+                                    continue;
+                                else 
+                                    unblockedActors.add(actor);
+                                _informOfDelayUnblock();
+                            } else {
+                                _eventQueue.put(new TimedEvent(newTime, actor));
+                                sameTime = false;
+                            }
+                        } else {
+                            sameTime = false;
+                        }
+                    }
+
+                    //Wake up all delayed actors
+                    notifyAll();
+                }
+            }
+
+            return true;
         }
     }
+    
+    
+    
+    
     
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -510,6 +629,10 @@ public class PtidesDirector extends TimedPNDirector {
             clockSyncError = new Parameter(this, "clockSyncError");
             clockSyncError.setExpression("0.1");
             clockSyncError.setTypeEquals(BaseType.DOUBLE);
+            
+            synchronizeToRealTime = new Parameter(this, "synchronizeToRealTime");
+            synchronizeToRealTime.setExpression("false");
+            synchronizeToRealTime.setTypeEquals(BaseType.BOOLEAN);
 
             networkDelay = new Parameter(this, "networkDelay");
             networkDelay.setExpression("0.1");
@@ -551,5 +674,13 @@ public class PtidesDirector extends TimedPNDirector {
      * The stop time of the model.
      */
     private Time _stopTime;
+    
+    /** Specify whether the director should wait for elapsed real time to
+     *  catch up with model time.
+     */
+    private boolean _synchronizeToRealTime;
+    
+    /** The real time at which the model begins executing. */
+    private long _realStartTime = 0;
 
 }

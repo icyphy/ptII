@@ -46,7 +46,8 @@ import ptolemy.domains.tdl.kernel.TDLModule;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- * This execution strategy 
+ * This execution strategy schedules events for a PTIDES platform considering that 
+ * actors can preempt each other. 
  * 
  * @author Patricia Derler
  * 

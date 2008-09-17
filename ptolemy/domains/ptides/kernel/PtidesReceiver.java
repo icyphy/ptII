@@ -151,7 +151,7 @@ public class PtidesReceiver extends AbstractReceiver {
      *            Number of tokens to be stored.
      * @return true because this is an unbounded receiver.
      */
-    public boolean hasRoom(int numberOfTokens) throws IllegalArgumentException {
+    public boolean hasRoom(int numberOfTokens) {
         return true;
     }
 
