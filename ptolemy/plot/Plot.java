@@ -55,6 +55,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import javax.swing.JComponent;
 
+import ptolemy.util.RunnableExceptionCatcher;
+
 //////////////////////////////////////////////////////////////////////////
 //// Plot
 
@@ -3154,28 +3156,5 @@ public class Plot extends PlotBox {
 
         // Indicate whether the above variable should be ignored.
         public boolean marksUseDefault = true;
-    }
-    
-    /**
-     * A proxy design patterns that encapsulates a runable, catches the exception
-     *  somewhere in the future will notify it... (TODO rodiers, should also be moved)  
-     */
-    class RunnableExceptionCatcher implements Runnable{
-        RunnableExceptionCatcher(Runnable runnable) {
-            _runnable = runnable;           
-        }
-        
-        public void run() {
-            try {
-                _runnable.run();
-            } catch (RuntimeException e) {
-                //TODO rodiers
-                //Now only used to be able to have breakpoints
-                e.printStackTrace();
-                throw e;
-            }
-        }
-        
-        private Runnable _runnable;       
-    }
+    }    
 }

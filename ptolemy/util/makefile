@@ -56,7 +56,8 @@ JSRCS = \
 	StreamExec.java \
 	StringBufferExec.java \
 	StringUtilities.java \
-	XSLTUtilities.java
+	XSLTUtilities.java \
+	RunnableExceptionCatcher.java
 
 EXTRA_SRCS =	$(JSRCS)
 
