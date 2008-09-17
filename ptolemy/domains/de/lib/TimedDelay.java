@@ -32,7 +32,7 @@ import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.BreakCausalityInterface;
 import ptolemy.actor.util.CalendarQueue;
 import ptolemy.actor.util.CausalityInterface;
-import ptolemy.actor.util.DelayCausalityInterface;
+import ptolemy.actor.util.DefaultCausalityInterface; 
 import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.RealDependency;
 import ptolemy.actor.util.Time;
@@ -215,7 +215,7 @@ public class TimedDelay extends DETransformer {
                         new BreakCausalityInterface(
                                 this, dependency);
                 } else if (dependency instanceof RealDependency) {
-                    _causalityInterface = new DelayCausalityInterface(
+                    _causalityInterface = new DefaultCausalityInterface(
                           this, dependency);
                 } else {
                    // TODO throw new IllegalActionException(this, "Type of delay dependency not recognized");
