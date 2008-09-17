@@ -111,6 +111,7 @@ public class RealDependency implements Dependency {
      *  @exception ClassCastException if d is not a RealDependency.
      */
     public Dependency oPlus(Dependency d) {
+	// FIXME: Findbugs reports this as an Unchecked/unconfirmed cast
         if (((RealDependency) d)._value < _value) {
             return d;
         }
@@ -133,6 +134,7 @@ public class RealDependency implements Dependency {
      *  @exception ClassCastException if d is not a RealDependency.
      */
     public Dependency oTimes(Dependency d) {
+	// FIXME: Findbugs reports this as an Unchecked/unconfirmed cast
         return new RealDependency(_value + ((RealDependency) d)._value);
     }
 
@@ -174,6 +176,13 @@ public class RealDependency implements Dependency {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
+
+
+    // FIXME: FindBugs suggests that both these fields be final
+    // "MS: Field isn't final but should be (MS_SHOULD_BE_FINAL)
+    // A mutable static field could be changed by malicious code or by
+    // accident from another package. The field could be made final to avoid
+    // this vulnerability."
 
     /** The additive identity. */
     public static RealDependency OPLUS_IDENTITY = new RealDependency(

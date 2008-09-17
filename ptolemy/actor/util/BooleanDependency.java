@@ -113,6 +113,7 @@ public class BooleanDependency implements Dependency {
      *  @exception ClassCastException if d is not a BooleanDependency.
      */
     public Dependency oPlus(Dependency d) {
+	// FIXME: Findbugs reports this as an Unchecked/unconfirmed cast
         if (((BooleanDependency) d)._value || _value) {
             return OTIMES_IDENTITY;
         }
@@ -137,6 +138,7 @@ public class BooleanDependency implements Dependency {
      *  @exception ClassCastException if d is not a BooleanDependency.
      */
     public Dependency oTimes(Dependency d) {
+	// FIXME: Findbugs reports this as an Unchecked/unconfirmed cast
         if (_value && ((BooleanDependency) d)._value) {
             return OTIMES_IDENTITY;
         }
@@ -180,6 +182,12 @@ public class BooleanDependency implements Dependency {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
+
+    // FIXME: FindBugs suggests that both these fields be final
+    // "MS: Field isn't final but should be (MS_SHOULD_BE_FINAL)
+    // A mutable static field could be changed by malicious code or by
+    // accident from another package. The field could be made final to avoid
+    // this vulnerability."
 
     /** The additive identity, which has value false and indicates
      *  that there is no dependency.
