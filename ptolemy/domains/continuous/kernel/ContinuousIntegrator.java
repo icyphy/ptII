@@ -1,6 +1,6 @@
 /* An integrator for the continuous domain.
 
- Copyright (c) 1998-2007 The Regents of the University of California.
+ Copyright (c) 1997-2008 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -53,11 +53,11 @@ import ptolemy.kernel.util.StringAttribute;
 //// ContinuousIntegrator
 
 /**
- The integrator in the continuous domain.
- The <i>derivative</i> port receives the derivative of the state of the integrator
- with respect to time. The <i>state</i> output port shows the state of the
- integrator. So an ordinary differential equation (ODE),
- dx/dt = f(x, t), can be built as follows:
+ The integrator in the continuous domain.  The <i>derivative</i> port
+ receives the derivative of the state of the integrator with respect
+ to time. The <i>state</i> output port shows the state of the
+ integrator. So an ordinary differential equation (ODE), dx/dt = f(x,
+ t), can be built as follows:
  <P>
  <pre>
             +---------------+
@@ -70,41 +70,41 @@ import ptolemy.kernel.util.StringAttribute;
  +-------------| f(x, t) |<-----------+
                |---------|
  </pre>
- <P>
- An integrator also has a port-parameter called <i>initialState</i>. The
- parameter provides the initial state for integration during the initialization
- stage of execution. If during execution an input token is provided on
- the port, then the state of the integrator will be reset at that time
- to the value of the token. The default value of the parameter is 0.0.
- <P>
- An integrator also has an input port named <i>impulse</i>.
- When present, a token at the <i>impulse</i> input
- port is interpreted as the weight of a Dirac delta function.
- It cause an instantaneous increment or decrement to the state.
- If both <i>impulse</i> and <i>initialState</i> have data, then
- <i>initialState</i> dominates.
- <P>
- An integrator can generate an output (its current state) before
+
+ <P> An integrator also has a port-parameter called
+ <i>initialState</i>. The parameter provides the initial state for
+ integration during the initialization stage of execution. If during
+ execution an input token is provided on the port, then the state of
+ the integrator will be reset at that time to the value of the
+ token. The default value of the parameter is 0.0.
+
+ <P> An integrator also has an input port named <i>impulse</i>.  When
+ present, a token at the <i>impulse</i> input port is interpreted as
+ the weight of a Dirac delta function.  It cause an instantaneous
+ increment or decrement to the state.  If both <i>impulse</i> and
+ <i>initialState</i> have data, then <i>initialState</i> dominates.
+
+ <P> An integrator can generate an output (its current state) before
  the derivative input is known, and hence can be used in feedback
- loops like that above without creating a causality loop.
- The <i>impulse</i> and <i>initialState</i> inputs
- ports must be known, however, before an output can be produced.
- The effect of data at these inputs on the output is instantaneous.
- <P>
- For different ODE solving methods, the functionality
- of an integrator may be different. The delegation and strategy design
- patterns are used in this class, the abstract ODESolver class, and the
- concrete ODE solver classes. Some solver-dependent methods of integrators
- delegate to the concrete ODE solvers.
- <P>
- An integrator can possibly have several auxiliary variables for the
- the ODE solvers to use. The ODE solver class provides the number of
- variables needed for that particular solver.
- The auxiliary variables can be set and get by setAuxVariables()
- and getAuxVariables() methods.
- <p>
- This class is based on the CTBaseIntegrator by Jie Liu and Haiyang Zheng,
- but it has more ports and provides more functionality.
+ loops like that above without creating a causality loop.  The
+ <i>impulse</i> and <i>initialState</i> inputs ports must be known,
+ however, before an output can be produced.  The effect of data at
+ these inputs on the output is instantaneous.  
+
+ <P> For different ODE solving methods, the functionality of an
+ integrator may be different. The delegation and strategy design
+ patterns are used in this class, the abstract ODESolver class, and
+ the concrete ODE solver classes. Some solver-dependent methods of
+ integrators delegate to the concrete ODE solvers.
+
+ <P> An integrator can possibly have several auxiliary variables for
+ the the ODE solvers to use. The ODE solver class provides the number
+ of variables needed for that particular solver.  The auxiliary
+ variables can be set and get by setAuxVariables() and
+ getAuxVariables() methods.  
+
+ <p> This class is based on the CTBaseIntegrator by Jie Liu and
+ Haiyang Zheng, but it has more ports and provides more functionality.
 
  @author Haiyang Zheng and Edward A. Lee
  @version $Id$
@@ -119,7 +119,8 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
      *  The integrator is in the same workspace as the container.
      *  @param container The container.
      *  @param name The name.
-     *  @exception NameDuplicationException If the name is used by another actor in the container.
+     *  @exception NameDuplicationException If the name is used by
+     *  another actor in the container.
      *  @exception IllegalActionException If ports can not be created, or
      *   thrown by the super class.
      */
@@ -187,17 +188,18 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
         }
     }
 
-    /** If the value at the <i>derivative</i> port is known, and the current
-     *  step size is bigger than 0, perform an integration.
+    /** If the value at the <i>derivative</i> port is known, and the
+     *  current step size is bigger than 0, perform an integration.
      *  If the <i>impulse</i> port is known and has data, then add the
      *  value provided to the state; if the <i>initialState</i> port
      *  is known and has data, then reset the state to the provided
      *  value. If both <i>impulse</i> and <i>initialState</i> have
-     *  data, then <i>initialState</i> dominates. If either is unknown,
-     *  then simply return, leaving the output unknown. Note that the signals
-     *  provided at these two ports are required to be purely discrete.
-     *  This is enforced by throwing an exception if the current step
-     *  size is greater than zero when they have input data.
+     *  data, then <i>initialState</i> dominates. If either is
+     *  unknown, then simply return, leaving the output unknown. Note
+     *  that the signals provided at these two ports are required to
+     *  be purely discrete.  This is enforced by throwing an exception
+     *  if the current step size is greater than zero when they have
+     *  input data.
      *  @exception IllegalActionException If the input is infinite or
      *   not a number, or if thrown by the solver,
      *   or if data is present at either <i>impulse</i>
@@ -209,24 +211,25 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
             return;
         }
         // Question: should the above go to the prefire() method?
-        // Answer: No, because of the design of the fixed point director.
-        // In particular, since this actor is a nonstrict actor, it is "ready
-        // to fire". If this actor returns false from the prefire() method,
-        // then all outputs will be cleared (set to absent). This is not
-        // what we want to do. In this case, we allow the actor to be fired,
-        // and the fire() method should do the right thing.
-        // Similar cases arise from any composite actor (including modal
-        // models), which may contain some source actor inside while the
-        // interface ports indicate the actor is a strict actor. Therefore,
-        // the prefire() actor of any composite actor should return true
-        // at any time, and they should be ready to be fired at any time.
+        // Answer: No, because of the design of the fixed point
+        // director.  In particular, since this actor is a nonstrict
+        // actor, it is "ready to fire". If this actor returns false
+        // from the prefire() method, then all outputs will be cleared
+        // (set to absent). This is not what we want to do. In this
+        // case, we allow the actor to be fired, and the fire() method
+        // should do the right thing.  Similar cases arise from any
+        // composite actor (including modal models), which may contain
+        // some source actor inside while the interface ports indicate
+        // the actor is a strict actor. Therefore, the prefire() actor
+        // of any composite actor should return true at any time, and
+        // they should be ready to be fired at any time.
 
         ContinuousDirector dir = (ContinuousDirector) getDirector();
         double stepSize = dir.getCurrentStepSize();
 
-        // The state at the current model time depends on the inputs from both
-        // impulse and initialState ports (causal relation), but not on the
-        // derivative at the current model time.
+        // The state at the current model time depends on the inputs
+        // from both impulse and initialState ports (causal relation),
+        // but not on the derivative at the current model time.
         for (int i = 0; i < impulse.getWidth(); i++) {
             if (impulse.hasToken(i)) {
                 if (stepSize != 0.0) {
@@ -245,7 +248,8 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
             if (statePort.hasToken(i)) {
                 if (stepSize != 0.0) {
                     throw new IllegalActionException(this,
-                            "Signal at the initialState port is not purely discrete.");
+                            "Signal at the initialState port is not "
+                            + "purely discrete.");
                 }
                 double currentState = ((DoubleToken) statePort.get(i))
                         .doubleValue();
@@ -253,15 +257,18 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
             }
         }
 
-        // Prefire() resets receivers, also each firing of this actor changes
-        // the _tentativeState variable, therefore the following statements
-        // may broadcast the newly calculated _tentativeState at a wrong time.
-        // For example, an opaque composite actor containing an integrator is
-        // scheduled to run multiple times during the same round.
+        // Prefire() resets receivers, also each firing of this actor
+        // changes the _tentativeState variable, therefore the
+        // following statements may broadcast the newly calculated
+        // _tentativeState at a wrong time.  For example, an opaque
+        // composite actor containing an integrator is scheduled to
+        // run multiple times during the same round.
 
-        // Since prefire() can be called any number of times, and the semantics
-        // of prefire() requires the results not to be affected by the numbers
-        // of callings. Therefore, the following statements do not work.
+        // Since prefire() can be called any number of times, and the
+        // semantics of prefire() requires the results not to be
+        // affected by the numbers of callings. Therefore, the
+        // following statements do not work.
+
         //        if (!state.isKnown()) {
         //            state.broadcast(new DoubleToken(getTentativeState()));
         //        }
@@ -303,23 +310,23 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
         return _auxVariables;
     }
 
-    /** Return a causality interface for this actor. This causality interface
-     *  expresses dependencies that are instances of BooleanDependency
-     *  that declare that the <i>state</i> output port does not depend
-     *  on the <i>derivative</i> input port, but does depend on the
-     *  <i>initialState</i> and <i>impulse</i> input ports. Moreover,
-     *  the latter two input ports are equivalent (to process inputs
-     *  at either, you need to know about inputs at the other).
-     *  You do not need to know about inputs at <i>derivative</i>.
-     *  Moreover, the way fire() is implemented, you do not need to
-     *  know the inputs at <i>initialState</i> and <i>impulse</i>
-     *  in order to invoke fire(). If these inputs are not known
-     *  when fire() is invoked, then fire() returns leaving the
-     *  output unknown. Thus, we rely on the fixed-point semantics
-     *  to converge to the right solution even if the scheduler
-     *  chooses to react to an input at <i>derivative</i> before
-     *  those other inputs are known. Hence, <i>derivative</i>
-     *  is in its own equivalence class.
+    /** Return a causality interface for this actor. This causality
+     *  interface expresses dependencies that are instances of
+     *  BooleanDependency that declare that the <i>state</i> output
+     *  port does not depend on the <i>derivative</i> input port, but
+     *  does depend on the <i>initialState</i> and <i>impulse</i>
+     *  input ports. Moreover, the latter two input ports are
+     *  equivalent (to process inputs at either, you need to know
+     *  about inputs at the other).  You do not need to know about
+     *  inputs at <i>derivative</i>.  Moreover, the way fire() is
+     *  implemented, you do not need to know the inputs at
+     *  <i>initialState</i> and <i>impulse</i> in order to invoke
+     *  fire(). If these inputs are not known when fire() is invoked,
+     *  then fire() returns leaving the output unknown. Thus, we rely
+     *  on the fixed-point semantics to converge to the right solution
+     *  even if the scheduler chooses to react to an input at
+     *  <i>derivative</i> before those other inputs are known. Hence,
+     *  <i>derivative</i> is in its own equivalence class.
      *  @return A representation of the dependencies between input ports
      *   and output ports.
      */
@@ -354,8 +361,9 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
         return _tentativeState;
     }
 
-    /** Initialize the integrator. Check for the existence of a director and
-     *  an ODE solver. Set the state to the value given by <i>initialState</i>.
+    /** Initialize the integrator. Check for the existence of a
+     *  director and an ODE solver. Set the state to the value given
+     *  by <i>initialState</i>.
      *  @exception IllegalActionException If there is no director,
      *   or the director has no ODE solver, or the initialState
      *   parameter does not contain a valid token, or the superclass
@@ -365,13 +373,15 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
         ContinuousDirector dir = (ContinuousDirector) getDirector();
 
         if (dir == null) {
-            throw new IllegalActionException(this, " no director available");
+            throw new IllegalActionException(this,
+                    " no director available");
         }
 
         ContinuousODESolver solver = dir._getODESolver();
 
         if (solver == null) {
-            throw new IllegalActionException(this, " no ODE solver available");
+            throw new IllegalActionException(this,
+                    " no ODE solver available");
         }
 
         super.initialize();
@@ -384,7 +394,8 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
             _debug("Initialize: initial state = " + _tentativeState);
         }
 
-        // The number of auxiliary variables that are used depends on the solver.
+        // The number of auxiliary variables that are used depends on
+        // the solver.
         int n = solver.getIntegratorAuxVariableCount();
         if ((_auxVariables == null) || (_auxVariables.length != n)) {
             _auxVariables = new double[n];
@@ -403,9 +414,9 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
         return _successful;
     }
 
-    /** Return false. This actor can produce some outputs even the inputs
-     *  are unknown. This actor is crucial at breaking feedback loops during
-     *  simulation.
+    /** Return false. This actor can produce some outputs even the
+     *  inputs are unknown. This actor is crucial at breaking feedback
+     *  loops during simulation.
      *
      *  @return False.
      */
@@ -469,10 +480,11 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
         _tentativeState = _state;
     }
 
-    /** Set the value of an auxiliary variable. The index indicates which
-     *  auxiliary variable in the auxVariables array. If the index is out of
-     *  the bound of the auxiliary variable array, an InvalidStateException
-     *  is thrown to indicate an inconsistency in the ODE solver.
+    /** Set the value of an auxiliary variable. The index indicates
+     *  which auxiliary variable in the auxVariables array. If the
+     *  index is out of the bound of the auxiliary variable array, an
+     *  InvalidStateException is thrown to indicate an inconsistency
+     *  in the ODE solver.
      *
      *  @param index The index in the auxVariables array.
      *  @param value The value to be set.
@@ -533,7 +545,8 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
 
     /** Custom causality interface that fine tunes the equivalent ports.
      */
-    private class IntegratorCausalityInterface extends DefaultCausalityInterface {
+    private class IntegratorCausalityInterface
+        extends DefaultCausalityInterface {
         public IntegratorCausalityInterface(Actor actor,
                 Dependency defaultDependency) {
             super(actor, defaultDependency);
@@ -542,12 +555,14 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
             _otherEquivalents.add(initialState.getPort());
         }
 
-        /** Override the base class to declare that the <i>initialState</i>
-         *  and <i>impulse</i> inputs are equivalent, but not the <i>derivative</i>
-         *  input port.  This is because to react to inputs at either <i>initialState</i>
-         *  or <i>impulse</i>, we have to know what the input at the other is.
-         *  But the input at <i>derivative</i> does not need to be known.
-         *  It will affect the future only.
+        /** Override the base class to declare that the
+         *  <i>initialState</i> and <i>impulse</i> inputs are
+         *  equivalent, but not the <i>derivative</i> input port.
+         *  This is because to react to inputs at either
+         *  <i>initialState</i> or <i>impulse</i>, we have to know
+         *  what the input at the other is.  But the input at
+         *  <i>derivative</i> does not need to be known.  It will
+         *  affect the future only.
          *  @param input The port to find the equivalence class of.
          *  @throws IllegalArgumentException If the argument is not
          *   contained by the associated actor.
