@@ -994,6 +994,33 @@ public class StringUtilities {
      */
     public static String usageString(String commandTemplate,
             String[][] commandOptions, String[] commandFlags) {
+	String [][] commandFlagsWithDescriptions = new String [commandFlags.length][2];
+        for (int i = 0; i < commandFlags.length; i++) {
+	    commandFlagsWithDescriptions[i][0] = commandFlags[i];
+	    commandFlagsWithDescriptions[i][1] = "";
+	}
+	return usageString(commandTemplate, commandOptions,
+			   commandFlagsWithDescriptions);
+    }
+
+    /** Return a string that contains a description of how to use a
+     *  class that calls this method.  For example, this method is
+     *  called by "$PTII/bin/vergil -help".
+     *  @param commandTemplate  A string naming the command and the
+     *  format of the arguments, for example
+     *  "moml [options] [file . . .]"
+     *  @param commandOptions A 2xN array of Strings that list command-line
+     *  options that take arguments where the first
+     *  element is a String naming the command line option, and the
+     *  second element is the argument, for example
+     *  <code>{"-class", "<classname>")</code>
+     *  @param commandFlagsWithDescriptions A 2xM array of Strings that list
+     *  command-line options that are either present or not and a description
+     *  of what the command line option does.
+     *  @return A string that describes the command.
+     */
+    public static String usageString(String commandTemplate,
+            String[][] commandOptions, String[][] commandFlagsWithDescriptions) {
         // This method is static so that we can reuse it in places
         // like copernicus/kernel/Copernicus and actor/gui/MoMLApplication
         StringBuffer result = new StringBuffer("Usage: " + commandTemplate
@@ -1008,8 +1035,9 @@ public class StringUtilities {
 
         result.append("\nBoolean flags:\n");
 
-        for (i = 0; i < commandFlags.length; i++) {
-            result.append(" " + commandFlags[i]);
+        for (i = 0; i < commandFlagsWithDescriptions.length; i++) {
+            result.append(" " + commandFlagsWithDescriptions[i][0] + "\t"
+			  + commandFlagsWithDescriptions[i][1] + "\n");
         }
 
         return result.toString();

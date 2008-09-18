@@ -608,13 +608,38 @@ public class MoMLApplication implements ExecutionListener {
      *  then -full is a legitimate argument.
      *  @param commandTemplate The form of the command line
      *  @param commandOptions Command-line options that take arguments.
-     *  @param commandFlags Command-line options that are either present
-     *  or not.
+     *  @param commandFlags An array of Strings that list command-line
+     *  options that are either present or not.
      *  @return A usage string.
      *  @see ptolemy.util.StringUtilities#usageString(String, String [][], String [])
      */
     protected String _configurationUsage(String commandTemplate,
             String[][] commandOptions, String[] commandFlags) {
+	String [][] commandFlagsWithDescriptions = new String [commandFlags.length][2];
+        for (int i = 0; i < commandFlags.length; i++) {
+	    commandFlagsWithDescriptions[i][0] = commandFlags[i];
+	    commandFlagsWithDescriptions[i][1] = "";
+	}
+	return _configurationUsage(commandTemplate, commandOptions,
+				   commandFlagsWithDescriptions);
+    }
+
+    /** Return a string summarizing the command-line arguments,
+     *  including any configuration directories in a base path,
+     *  typically "ptolemy/configs".
+     *  Some subclasses of this class use configurations from ptolemy/configs.
+     *  For example, if ptolemy/configs/full/configuration.xml exists
+     *  then -full is a legitimate argument.
+     *  @param commandTemplate The form of the command line
+     *  @param commandOptions Command-line options that take arguments.
+     *  @param commandFlagsWithDescriptions A 2xM array of Strings that list
+     *  command-line options that are either present or not and a description
+     *  of what the command line option does.
+     *  @return A usage string.
+     *  @see ptolemy.util.StringUtilities#usageString(String, String [][], String [][])
+     */
+    protected String _configurationUsage(String commandTemplate,
+            String[][] commandOptions, String[][] commandFlagsWithDescriptions) {
         StringBuffer result = new StringBuffer("Usage: " + commandTemplate
                 + "\n\n" + "Options that take values:\n");
         int i;
@@ -633,12 +658,13 @@ public class MoMLApplication implements ExecutionListener {
         result.append("\nFlags (do not take values):\n");
 
         // Print any command flags from this class first
-        for (i = 0; i < _commandFlags.length; i++) {
-            result.append(" " + _commandFlags[i] + "\n");
+        for (i = 0; i < _commandFlagsWithDescriptions.length; i++) {
+            result.append(" " + _commandFlagsWithDescriptions[i][0] + "\t"
+			  + _commandFlagsWithDescriptions[i][1] + "\n");
         }
-
-        for (i = 0; i < commandFlags.length; i++) {
-            result.append(" " + commandFlags[i] + "\n");
+        for (i = 0; i < commandFlagsWithDescriptions.length; i++) {
+            result.append(" " + commandFlagsWithDescriptions[i][0] + "\t"
+			  + commandFlagsWithDescriptions[i][1] + "\n");
         }
 
         try {
@@ -1166,7 +1192,7 @@ public class MoMLApplication implements ExecutionListener {
     protected String _usage() {
         // Call the static method that generates the usage strings.
         return StringUtilities.usageString(_commandTemplate, _commandOptions,
-                _commandFlags);
+                _commandFlagsWithDescriptions);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1179,8 +1205,12 @@ public class MoMLApplication implements ExecutionListener {
     protected String _basePath = "ptolemy/configs";
 
     /** The command-line options that are either present or not. */
-    protected String[] _commandFlags = { "-help", "-run", "-runThenExit",
-            "-test", "-version", };
+    protected String[][] _commandFlagsWithDescriptions = {
+	{"-help", "Print this help message"},
+	{"-run", "Run the models"},
+	{"-runThenExit", "Run the models, then exit after the models finish."},
+	{"-test", "Exit after two seconds."},
+	{"-version", "Print version information."}};
 
     /** The command-line options that take arguments. */
     protected static String[][] _commandOptions = {
