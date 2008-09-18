@@ -63,8 +63,6 @@ public class PropertySet extends LatticeProperty implements Set {
         _elements = new HashSet(elements);
     }
 
-    HashSet _elements;
-
     public boolean add(Object e) {
         return _elements.add(e);
     }
@@ -85,6 +83,13 @@ public class PropertySet extends LatticeProperty implements Set {
         return _elements.containsAll(c);
     }
 
+    public boolean equals (Object object) {
+        if (object instanceof PropertySet) {
+            return _elements.equals(((PropertySet) object)._elements);
+        }
+        return false;
+    }
+    
     /**
      * Return true if this is an acceptable solution.
      * @return true if this is an acceptable solution; otherwise, false;
@@ -140,4 +145,7 @@ public class PropertySet extends LatticeProperty implements Set {
         
         return result.toString();
     }
+
+    HashSet _elements;
+
 }
