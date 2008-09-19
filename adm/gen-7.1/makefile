@@ -1237,6 +1237,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/petrinet/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sr/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sr/lib \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/sr/gui \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/tm/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/tm/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/wireless/kernel \
