@@ -9,4 +9,4 @@ if [ ! -f $textfilenames]; then
    $PTII/adm/bin/ptIItxtfiles > $textfilenames
 fi
 
-cat $textfilenames | xargs 
+cat $textfilenames | xargs $PTII/adm/bin/svnpropcheck

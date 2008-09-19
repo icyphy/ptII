@@ -2,12 +2,16 @@
 # $Id$
 # Script to check for proper svn properties in text files
 
-keywords=`svn propget svn:keywords $1`
-if [ "$keywords" != "Author Date Id Revision" ] ;then
-   echo "$1  keywords: $keywords"
-fi
+while [ $# -gt 1 ];
+do
+    keywords=`svn propget svn:keywords $1`
+    if [ "$keywords" != "Author Date Id Revision" ] ;then
+       echo "$1  keywords: $keywords"
+    fi
 
-eolstyle=`svn propget svn:eol-style $1`
-if [ "$eolstyle" != "native" ] ;then
-   echo "$1  eolstyle: $eolstyle"
-fi
+    eolstyle=`svn propget svn:eol-style $1`
+    if [ "$eolstyle" != "native" ] ;then
+       echo "$1  eolstyle: $eolstyle"
+    fi
+    shift
+done
