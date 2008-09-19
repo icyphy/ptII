@@ -191,10 +191,21 @@ ChangeLog:
 	@if [ -d .svn ]; then \
 		echo "Running ./util/testsuite/gnuify-changelog.pl"; \
 		echo " This could take several minutes"; \
+		echo " Consider running 'make ChangeLogThisYear.txt' instead"; \
+		echo " See also http://chess.eecs.berkeley.edu/ptexternal/nightly/ChangeLog.txt"; \
 		svn log | ./util/testsuite/gnuify-changelog.pl > ChangeLog; \
 	else \
 		echo ".svn directory not present, so we can't update $@"; \
 	fi
+
+# Produce a better ChangeLog.  Running it on the entire repository
+# is too slow.  The nightly build has a copy, see 
+# http://chess.eecs.berkeley.edu/ptexternal/nightly/ChangeLog.txt
+
+# svn2cl, by Arthur de Jong, from http://ch.tudelft.nl/~arthur/svn2cl/
+SVN2CLDIR=util/testsuite/svn2cl-0.10
+ChangeLogThisYear.txt:
+	$(SVN2CLDIR)/svn2cl.sh --include-rev -r "{`date +%Y`-12-31}:{`date +%Y`-01-01}" --stdout > ChangeLogThisYear.txt
 
 update:
 	-svn update
