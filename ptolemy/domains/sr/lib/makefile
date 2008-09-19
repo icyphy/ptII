@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/sr/lib
 
-DIRS = 		test #demo
+DIRS = 		gui test #demo
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -45,8 +45,13 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	lib
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTCLASSJAR =
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+		gui/gui.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
 	Absent.java \
