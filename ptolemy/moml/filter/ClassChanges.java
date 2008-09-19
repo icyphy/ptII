@@ -266,6 +266,13 @@ public class ClassChanges implements MoMLFilter {
 
         _classChanges.put("ptolemy.actor.lib.gui.ModelDisplay",
                 "ptolemy.vergil.actor.lib.ModelDisplay");
+
+        _classChanges.put("ptolemy.domains.sr.lib.ButtonTime",
+			  "ptolemy.domains.sr.lib.gui.ButtonTime");
+
+        _classChanges.put("ptolemy.domains.sr.lib.NonStrictDisplay",
+			  "ptolemy.domains.sr.lib.gui.NonStrictDisplay");
+
         
         // Look for Kepler's NamedObjId, and if we don't find it, then
         // add it to the filter.  This makes it much easier to open
