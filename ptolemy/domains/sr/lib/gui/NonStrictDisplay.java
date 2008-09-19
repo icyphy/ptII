@@ -30,6 +30,7 @@ package ptolemy.domains.sr.lib.gui;
 
 import javax.swing.text.BadLocationException;
 
+import ptolemy.data.StringToken;
 import ptolemy.actor.lib.gui.Display;
 import ptolemy.data.Token;
 import ptolemy.kernel.CompositeEntity;
@@ -88,28 +89,37 @@ public class NonStrictDisplay extends Display {
      *  @exception IllegalActionException If there is no director.
      */
     public boolean postfire() throws IllegalActionException {
+	// We don't invoke super.postfire() here, but we should
+	// do what Display.super.postfire() does, which is eventually
+	// call AtomicActor.postfire(), which prints debugging.
+        if (_debugging) {
+            _debug("Called postfire()");
+        }
+
         int width = input.getWidth();
+
+        boolean currentInputIsBlankLine = true;
 
         for (int i = 0; i < width; i++) {
             String value;
+
+	    if (!_initialized) {
+		_initialized = true;
+		_openWindow();
+	    }
 
             if (input.isKnown(i)) {
                 if (input.hasToken(i)) {
                     Token token = input.get(i);
 
-                    // If the window has been deleted, read the
-                    // rest of the inputs.
-                    if (textArea == null) {
-                        continue;
-                    }
-
-                    value = token.toString();
-
-                    // If it is a pure string, strip the quotation marks.
-                    if ((value.length() > 1) && value.startsWith("\"")
-                            && value.endsWith("\"")) {
-                        value = value.substring(1, value.length() - 1);
-                    }
+		    // The toString() method yields a string that can be parsed back
+		    // in the expression language to get the original token.
+		    // However, if the token is a StringToken, that probably is
+		    // not what we want. So we treat StringToken separately.
+		    value = token.toString();
+		    if (token instanceof StringToken) {
+			value = ((StringToken) token).stringValue();
+		    }
                 } else {
                     value = ABSENT_STRING;
                 }
@@ -117,34 +127,59 @@ public class NonStrictDisplay extends Display {
                 value = UNDEFINED_STRING;
             }
 
-            textArea.append(value);
+	    // If the window has been deleted, read the
+	    // rest of the inputs.
+	    if (textArea == null) {
+		continue;
+	    }
 
-            // Append a newline character.
-            if (width > (i + 1)) {
-                textArea.append("\n");
-            }
+	    // FIXME: There is a race condition here.
+	    // textArea can be set to null during execution of this method
+	    // if another thread closes the display window.
 
-            // Regrettably, the default in swing is that the top
-            // of the textArea is visible, not the most recent text.
-            // So we have to manually move the scrollbar.
-            // The (undocumented) way to do this is to set the
-            // caret position (despite the fact that the caret
-            // is already where want it).
-            try {
-                int lineOffset = textArea.getLineStartOffset(textArea
-                        .getLineCount() - 1);
-                textArea.setCaretPosition(lineOffset);
-            } catch (BadLocationException ex) {
-                // Ignore ... worst case is that the scrollbar
-                // doesn't move.
-            }
-        }
+	    // If the value is not an empty string, set the
+	    // currentInputIsBlankLine to false.
+	    // Note that if there are multiple input ports, and if any of
+	    // the input ports has data, the current input is considered
+	    // to be non-empty.
+	    if (value.length() > 0) {
+		currentInputIsBlankLine = false;
+	    }
 
-        if (textArea != null) {
+	    textArea.append(value);
+
+	    // Append a newline character.
+	    if (width > (i + 1)) {
+		textArea.append("\n");
+	    }
+
+	    // Regrettably, the default in swing is that the top
+	    // of the textArea is visible, not the most recent text.
+	    // So we have to manually move the scrollbar.
+	    // The (undocumented) way to do this is to set the
+	    // caret position (despite the fact that the caret
+	    // is already where want it).
+	    try {
+		int lineOffset = textArea.getLineStartOffset(textArea
+							     .getLineCount() - 1);
+		textArea.setCaretPosition(lineOffset);
+	    } catch (BadLocationException ex) {
+		// Ignore ... worst case is that the scrollbar
+		// doesn't move.
+	    }
+	}
+
+        // If the current input is not a blank line, or the supressBlankLines
+        // parameter is configured to false, append a newline character.
+        if ((textArea != null)
+                && !(_suppressBlankLines && currentInputIsBlankLine)) {
             textArea.append("\n");
         }
 
-        return true;
+	// We don't invoke super.postfire() here, but we should
+	// do what Display.super.postfire() does, which is eventually
+	// call AtomicActor.postfire(), which returns the value of !_stopRequested.
+        return !_stopRequested;
     }
 
     ///////////////////////////////////////////////////////////////////

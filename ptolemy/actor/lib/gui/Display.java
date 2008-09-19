@@ -443,10 +443,13 @@ public class Display extends AbstractPlaceableActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
+    ////                         protected methods                 ////
 
-    /** Open the display window if it has not been opened. */
-    private void _openWindow() throws IllegalActionException {
+    /** Open the display window if it has not been opened.
+     *  @exception IllegalActionException If there is a problem creating
+     *  the effigy and tableau.
+     */
+    protected void _openWindow() throws IllegalActionException {
         if (textArea == null) {
             // No container has been specified for display.
             // Place the text area in its own frame.
@@ -505,6 +508,9 @@ public class Display extends AbstractPlaceableActor {
          */
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
     /** Remove the display from the current container, if there is one.
      */
     private void _remove() {
@@ -524,12 +530,18 @@ public class Display extends AbstractPlaceableActor {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected members                 ////
+
+    /** Indicator that the display window has been opened. */
+    protected boolean _initialized = false;
+
+    /** The flag indicating whether the blank lines will be suppressed. */
+    protected boolean _suppressBlankLines = false;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
     // The container for the text display, if there is one.
     private Container _container;
-
-    // Indicator that the display window has been opened.
-    private boolean _initialized = false;
 
     // Record of previous columns.
     private int _previousNumColumns = 0;
@@ -539,9 +551,6 @@ public class Display extends AbstractPlaceableActor {
 
     // The scroll pane.
     private JScrollPane _scrollPane;
-
-    // The flag indicating whether the blank lines will be suppressed.
-    private boolean _suppressBlankLines = false;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
