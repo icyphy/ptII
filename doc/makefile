@@ -493,6 +493,7 @@ ALL1_4PACKAGES = \
 	ptolemy.domains.space \
 	ptolemy.domains.sr.kernel \
 	ptolemy.domains.sr.lib \
+	ptolemy.domains.sr.lib.gui \
 	ptolemy.domains.tm.kernel \
 	ptolemy.domains.tm.lib \
 	ptolemy.data \
@@ -753,6 +754,7 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/domains/space/*.java \
 			../ptolemy/domains/sr/kernel/*.java \
 			../ptolemy/domains/sr/lib/*.java \
+			../ptolemy/domains/sr/lib/gui/*.java \
 			../ptolemy/domains/tm/kernel/*.java \
 			../ptolemy/domains/tm/lib/*.java \
 			../ptolemy/domains/wireless/kernel/*.java \
