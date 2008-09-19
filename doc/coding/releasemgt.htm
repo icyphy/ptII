@@ -191,12 +191,14 @@ You may need to use dos2unix to fix the files.
 
 <p>Check keywords in all files:
 <pre>
-cd $PTI
+cd $PTII
 adm/bin/ptIIsvnpropcheck > /tmp/props
 grep keywords: /tmp/props | grep / | awk '{print $1}' > /tmp/keys
 grep eolstyle: /tmp/props | grep / | awk '{print $1}' > /tmp/eols
 cat /tmp/keys | xargs svn propset svn:keywords "Author Date Id Revision"
-cat /tmp/eols | xargs svn propset svn:eol-style native `cat /tmp/cmfs`
+cat /tmp/eols | xargs svn propset svn:eol-style native 
+</pre>
+
 <br>Also, check that text files that have control-ms are not
 checked in to cvs with -kb:
 <pre>
