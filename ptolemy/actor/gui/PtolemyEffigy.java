@@ -428,20 +428,26 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                         }
 
                         if (toplevel != null) {
-                            String entityClassName = StringUtilities
+			    try {
+				String entityClassName = StringUtilities
                                     .getProperty("entityClassName");
-                            if ((entityClassName.length() > 0 || endTime > startTime + 10000)
+				if ((entityClassName.length() > 0 || endTime > startTime + 10000)
                                     && toplevel instanceof CompositeEntity) {
-                                System.out
+				    System.out
                                         .println("Opened "
-                                                + input
-                                                + " in "
-                                                + (System.currentTimeMillis() - startTime)
-                                                + " ms.");
+						 + input
+						 + " in "
+						 + (System.currentTimeMillis() - startTime)
+						 + " ms.");
 
-                                System.out.println(((CompositeEntity) toplevel)
-                                        .statistics(entityClassName));
-                            }
+				    System.out.println(((CompositeEntity) toplevel)
+						       .statistics(entityClassName));
+				}
+			    } catch (SecurityException ex) {
+				System.err.println("Warning, while trying to print timing statistics,"
+						   + " failed to read the entityClassName"
+						   + " property (-sandbox always causes this)");
+			    }
                             effigy.setModel(toplevel);
 
                             // A MoMLFilter may have modified the model
