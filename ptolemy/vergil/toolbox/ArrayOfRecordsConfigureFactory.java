@@ -56,7 +56,7 @@ import ptolemy.util.MessageHandler;
  It is required that the parameter contain an array of records.
 
  @author Edward A. Lee
- @version $Id: ArrayOfRecordsConfigureFactory.java 47482 2007-12-06 18:33:55Z cxh $
+ @version $Id$
  @since Ptolemy II 4.0
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (ptolemy)

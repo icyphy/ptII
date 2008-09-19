@@ -2,7 +2,7 @@
 #
 # @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
-# $Id: makefile 49956 2008-06-25 06:02:43Z mankit $
+# $Id$
 #
 # @Copyright (c) 2007 The Regents of the University of California.
 # All rights reserved.

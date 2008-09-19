@@ -41,7 +41,7 @@ import ptolemy.graph.InequalityTerm;
  and getVariables() abstract methods.
 
  @author Steve Neuendorffer
- @version $Id: MonotonicFunction.java,v 1.21 2007/12/07 06:31:45 cxh Exp $
+ @version $Id$
  @since Ptolemy II 4.0
  @Pt.ProposedRating Yellow (neuendor)
  @Pt.AcceptedRating Red (neuendor)

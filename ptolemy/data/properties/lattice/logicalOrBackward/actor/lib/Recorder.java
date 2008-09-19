@@ -41,7 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
  A helper class for ptolemy.actor.lib.Recorder.
 
  @author Thomas Mandl, Man-Kit Leung
- @version $Id: Recorder.java,v 1.2 2007/06/13 22:41:54 mankit Exp $
+ @version $Id$
  @since Ptolemy II 6.2
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)

@@ -62,7 +62,7 @@ import ptolemy.kernel.util.InternalErrorException;
  in various ways.
 
  @author Edward A. Lee
- @version $Id: ArrayOfRecordsPane.java 47561 2007-12-16 07:29:50Z cxh $
+ @version $Id$
  @since Ptolemy II 2.1
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (eal)

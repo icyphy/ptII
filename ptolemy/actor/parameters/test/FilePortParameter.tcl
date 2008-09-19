@@ -2,7 +2,7 @@
 #
 # @Author: Christopher Brooks, based on Parameter.tcl by Neil Smyth
 #
-# @Version: $Id: FilePortParameter.tcl 49508 2008-05-23 14:37:48Z cxh $
+# @Version: $Id$
 #
 # @Copyright (c) 2006-2007 The Regents of the University of California.
 # All rights reserved.

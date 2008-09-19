@@ -54,7 +54,7 @@ import ptolemy.vergil.icon.TableIcon;
  the actor.
 
  @author Edward A. Lee
- @version $Id: Occupants.java 49820 2008-06-14 18:56:43Z eal $
+ @version $Id$
  @since Ptolemy II 0.3
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (cxh)

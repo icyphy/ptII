@@ -47,7 +47,7 @@ import ptolemy.kernel.util.IllegalActionException;
  A helper class for ptolemy.data.expr.ASTPtArrayConstructNode.
 
  @author Thomas Mandl
- @version $Id: ASTPtLeafNode.java,v 1.2 2008/04/20 06:22:49 mankit Exp $
+ @version $Id$
  @since Ptolemy II 6.2
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)

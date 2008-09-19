@@ -47,7 +47,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  in the returned result.
 
  @author Edward A. Lee
- @version $Id: DatabaseQuery.java 49830 2008-06-15 20:18:03Z eal $
+ @version $Id$
  @since Ptolemy II 0.3
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (cxh)

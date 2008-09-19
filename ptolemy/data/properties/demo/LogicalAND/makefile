@@ -1,6 +1,6 @@
 # Makefile for Ptolemy Data Properties Demo LogicalAND
 #
-# @Version: $Id: makefile,v 1.2 2006/10/27 22:10:06 cxh Exp $
+# @Version: $Id$
 # @Author: Christopher Brooks
 #
 # @Copyright (c) 2006 The Regents of the University of California

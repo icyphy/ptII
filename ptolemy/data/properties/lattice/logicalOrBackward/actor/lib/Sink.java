@@ -43,7 +43,7 @@ import ptolemy.kernel.util.IllegalActionException;
  A helper class for ptolemy.actor.lib.Sink.
 
  @author Man-Kit Leung, Thomas Mandl
- @version $Id: Const.java,v 1.1 2007/06/26 16:48:54 mankit Exp $
+ @version $Id$
  @since Ptolemy II 6.2
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)

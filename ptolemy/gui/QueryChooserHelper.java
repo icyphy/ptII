@@ -36,7 +36,7 @@ import java.awt.Frame;
  * A little helper class for QueryChooser classes.
  * 
  * @author  fracpete (fracpete at waikato dot ac dot nz)
- * @version $Revision: 41 $
+ * @version $Revision$
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)

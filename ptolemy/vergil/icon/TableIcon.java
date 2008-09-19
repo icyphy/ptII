@@ -66,7 +66,7 @@ import diva.canvas.toolbox.LabelFigure;
  the <i>fields</i> parameter is displayed in the icon.
 
  @author Edward A. Lee
- @version $Id: TableIcon.java 43428 2006-08-20 19:56:05Z cxh $
+ @version $Id$
  @since Ptolemy II 2.0
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (johnr)

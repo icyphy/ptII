@@ -44,7 +44,7 @@ import ptolemy.data.properties.Property;
  Property set base class.
 
  @author Man-Kit Leung
- @version $Id: PropertySet.java,v 1.8 2008/04/20 07:32:02 mankit Exp $
+ @version $Id$
  @since Ptolemy II 7.0
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)

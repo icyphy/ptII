@@ -48,7 +48,7 @@ import ptolemy.kernel.util.Workspace;
  actor reads that token and overwrites the last token with it.
 
  @author tfeng
- @version $Id: MovingMaximum.java 49822 2008-06-15 05:54:25Z tfeng $
+ @version $Id$
  @since Ptolemy II 7.1
  @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)

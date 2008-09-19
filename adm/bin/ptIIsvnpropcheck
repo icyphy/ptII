@@ -4,7 +4,7 @@
 
 textfilenames=/tmp/ptIItxtfiles.txt
 
-if [ ! -f $textfilenames]; then
+if [ ! -f $textfilenames ]; then
    echo "Creating $textfilenames"
    $PTII/adm/bin/ptIItxtfiles > $textfilenames
 fi

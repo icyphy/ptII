@@ -40,7 +40,7 @@ import ptolemy.kernel.util.IllegalActionException;
  A helper class for ptolemy.actor.FSMActor.
 
  @author Man-Kit Leung, Thomas Mandl
- @version $Id: AtomicActor.java,v 1.2 2007/07/09 22:47:29 mankit Exp $
+ @version $Id$
  @since Ptolemy II 6.2
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)

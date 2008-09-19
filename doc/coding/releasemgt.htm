@@ -186,9 +186,17 @@ grep "has controlms" /tmp/cms | awk '{print $1}' > /tmp/cmfs
 svn propset svn:keywords "Author Date Id Revision" `cat /tmp/cmfs`
 svn propset svn:eol-style native `cat /tmp/cmfs`
 svn commit -m "Added keywords and eol-style properties" `cat /tmp/cmfs`
-<pre>
+</pre>
 You may need to use dos2unix to fix the files.
 
+<p>Check keywords in all files:
+<pre>
+cd $PTI
+adm/bin/ptIIsvnpropcheck > /tmp/props
+grep keywords: /tmp/props | grep / | awk '{print $1}' > /tmp/keys
+grep eolstyle: /tmp/props | grep / | awk '{print $1}' > /tmp/eols
+cat /tmp/keys | xargs svn propset svn:keywords "Author Date Id Revision"
+cat /tmp/eols | xargs svn propset svn:eol-style native `cat /tmp/cmfs`
 <br>Also, check that text files that have control-ms are not
 checked in to cvs with -kb:
 <pre>

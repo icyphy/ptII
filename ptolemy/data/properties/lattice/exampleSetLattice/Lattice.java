@@ -48,7 +48,7 @@ import ptolemy.graph.DirectedAcyclicGraph;
  thread safety, the methods need to be synchronized.
 
  @author Thomas Mandl, Man-Kit Leung, Edward A. Lee
- @version $Id: Lattice.java,v 1.1 2007/06/26 16:48:54 mankit Exp $
+ @version $Id$
  @since Ptolemy II 0.4
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)

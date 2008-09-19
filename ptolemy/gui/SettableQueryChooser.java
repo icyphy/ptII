@@ -32,7 +32,7 @@ package ptolemy.gui;
  * Interface for custom query chooser boxes.
  * 
  * @author  fracpete (fracpete at waikato dot ac dot nz)
- * @version $Revision: 39 $
+ * @version $Revision$
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
