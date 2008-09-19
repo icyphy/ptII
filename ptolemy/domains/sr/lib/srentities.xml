@@ -49,7 +49,7 @@
    </property>
 </entity>
 
-<entity name="NonStrictDisplay" class="ptolemy.domains.sr.lib.NonStrictDisplay">
+<entity name="NonStrictDisplay" class="ptolemy.domains.sr.lib.gui.NonStrictDisplay">
 </entity>
 
 <entity name="NonStrictLogicFunction" class="ptolemy.domains.sr.lib.NonStrictLogicFunction">
