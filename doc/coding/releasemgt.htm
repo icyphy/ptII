@@ -74,7 +74,7 @@ to test the Web Start release.
 <li> Check out a clean tree and build:
 <pre>
 # Check out a clean tree
-cvs -d :ext:source.eecs.berkeley.edu:/home/cvs co ptII
+svn co svn+ssh://source.eecs.berkeley.edu/chess/ptII/trunk ptII
 cd ptII
 # Make sure empty directories are removed
 cvs update -P -d
@@ -192,27 +192,12 @@ You may need to use dos2unix to fix the files.
 <p>Check keywords in all files:
 <pre>
 cd $PTII
-adm/bin/ptIIsvnpropcheck > /tmp/props
+cat /tmp/f | xargs $PTII/adm/bin/svnpropcheck
 grep keywords: /tmp/props | grep / | awk '{print $1}' > /tmp/keys
 grep eolstyle: /tmp/props | grep / | awk '{print $1}' > /tmp/eols
 cat /tmp/keys | xargs svn propset svn:keywords "Author Date Id Revision"
 cat /tmp/eols | xargs svn propset svn:eol-style native 
 </pre>
-
-<br>Also, check that text files that have control-ms are not
-checked in to cvs with -kb:
-<pre>
-cat /tmp/f | xargs cvs status >& /tmp/cv.out
-</pre>
-Then search /tmp/cv.out for <code>-k</code>, and fix all 
-files that have <code>-kv</code> and <code>-kb</code> (except
-the <code>.plt</code> files, which can be <code>-kb</code>).
-To fix these files do:
-<pre>
-cvs admin -kkv <i>filename</i>
-cvs update -A <i>filename</i>
-</pre>
-
 
 <li> Run <CODE>$PTII/adm/copyright/fixcopyrights</CODE> (not shipped with
 the release) and update the copyrights on the <CODE>.java</CODE>, <CODE>.tcl</CODE> and makefiles
@@ -220,7 +205,7 @@ the release) and update the copyrights on the <CODE>.java</CODE>, <CODE>.tcl</CO
 <li> Check out all the files again so we can build a release:
 <pre>
 cd $PTII
-cvs update -P -d -A
+svn update
 </pre>
 <li> Run the nightly build, build a release:
 <br>For each release, we copy the most recent
@@ -287,16 +272,12 @@ below are some things to be aware of
   </menu>
 
 
-<li> Log on to the cvs server and fix the permissions:
+<li> Look for files with bad permissions
 <pre>
-cd /home/cvs/ptII
-chmod -R a+rX .
-find . -name "*.java,v" -exec chmod a-x {} \;
-find . -name "*.htm,v" -exec chmod a-x {} \;
-find . -name "*.html,v" -exec chmod a-x {} \;
-find . -name "*makefile,v" -exec chmod a-x {} \;
-find . -name "*.tcl,v" -exec chmod a-x {} \;
-find . -name "*.xml,v" -exec chmod a-x {} \;
+cat /tmp/f | egrep "(.java$|.htm$|.html$|makefile$|.tcl$|.xml$)" | xargs ls -l | awk '{ if ($1 ~ /x/) print $NF}' | grep -v chkjava > /tmp/execs
+cat /tmp/execs | xargs svn proplist
+cat /tmp/execs | xargs svn propdel svn:executable
+svn commit -m "Made regular .java files and other files not executable" `cat /tmp/execs`
 </pre>
 
 <li> Tag the tree as the release tree and create a branch
