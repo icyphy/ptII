@@ -1,6 +1,6 @@
 /* Query dialog.
 
- Copyright (c) 1998-2007 The Regents of the University of California.
+ Copyright (c) 1998-2008 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -96,7 +96,7 @@ import javax.swing.plaf.basic.BasicComboBoxEditor;
  query.addRadioButtons("radio", "Radio buttons", options, "water");
  </pre>
 
- @author  Edward A. Lee, Manda Sutijono, Elaine Cheong
+ @author  Edward A. Lee, Manda Sutijono, Elaine Cheong, Contributor:  Peter Reutemann
  @version $Id$
  @since Ptolemy II 0.3
  @Pt.ProposedRating Yellow (eal)
@@ -191,7 +191,7 @@ public class Query extends JPanel {
 
         // Add the listener last so that there is no notification
         // of the first value.
-        checkbox.addItemListener(new QueryItemListener(name));
+        checkbox.addItemListener(new QueryItemListener(this, name));
 
         return checkbox;
     }
@@ -258,7 +258,7 @@ public class Query extends JPanel {
 
         // Add the listener last so that there is no notification
         // of the first value.
-        combobox.addItemListener(new QueryItemListener(name));
+        combobox.addItemListener(new QueryItemListener(this, name));
 
         return combobox;
     }
@@ -274,7 +274,7 @@ public class Query extends JPanel {
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
 
-        QueryColorChooser colorChooser = new QueryColorChooser(name,
+        QueryColorChooser colorChooser = new QueryColorChooser(this, name,
                 defaultColor);
         _addPair(name, lbl, colorChooser, colorChooser);
         return colorChooser;
@@ -371,9 +371,9 @@ public class Query extends JPanel {
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
 
-        QueryFileChooser fileChooser = new QueryFileChooser(name, defaultName,
-                base, startingDirectory, allowFiles, allowDirectories,
-                background, foreground);
+        QueryFileChooser fileChooser = new QueryFileChooser(this, name,
+                defaultName, base, startingDirectory, allowFiles,
+                allowDirectories, background, foreground);
         _addPair(name, lbl, fileChooser, fileChooser);
         return fileChooser;
     }
@@ -412,7 +412,7 @@ public class Query extends JPanel {
 
         // Add the listener last so that there is no notification
         // of the first value.
-        entryBox.addActionListener(new QueryActionListener(name));
+        entryBox.addActionListener(new QueryActionListener(this, name));
 
         // Add a listener for loss of focus.  When the entry gains
         // and then loses focus, listeners are notified of an update,
@@ -425,7 +425,7 @@ public class Query extends JPanel {
         // the value is restored to the original, and then sometime
         // later, the focus is lost and the entered value becomes
         // the value of the parameter.  I don't know of any workaround.
-        entryBox.addFocusListener(new QueryFocusListener(name));
+        entryBox.addFocusListener(new QueryFocusListener(this, name));
     }
 
     /** Create a single-line password box with the specified name, label, and
@@ -478,7 +478,7 @@ public class Query extends JPanel {
 
         // Add the listener last so that there is no notification
         // of the first value.
-        entryBox.addActionListener(new QueryActionListener(name));
+        entryBox.addActionListener(new QueryActionListener(this, name));
 
         // Add a listener for loss of focus.  When the entry gains
         // and then loses focus, listeners are notified of an update,
@@ -491,7 +491,7 @@ public class Query extends JPanel {
         // the value is restored to the original, and then sometime
         // later, the focus is lost and the entered value becomes
         // the value of the parameter.  I don't know of any workaround.
-        entryBox.addFocusListener(new QueryFocusListener(name));
+        entryBox.addFocusListener(new QueryFocusListener(this, name));
 
         return entryBox;
     }
@@ -541,7 +541,7 @@ public class Query extends JPanel {
         JPanel buttonPanel = new JPanel(flow);
 
         ButtonGroup group = new ButtonGroup();
-        QueryActionListener listener = new QueryActionListener(name);
+        QueryActionListener listener = new QueryActionListener(this, name);
 
         // Regrettably, ButtonGroup provides no method to find out
         // which button is selected, so we have to go through a
@@ -591,7 +591,7 @@ public class Query extends JPanel {
         // This must be a JPanel, not a Panel, or the scroll bars won't work.
         JPanel buttonPanel = new JPanel(flow);
 
-        QueryActionListener listener = new QueryActionListener(name);
+        QueryActionListener listener = new QueryActionListener(this, name);
 
         if (initiallySelected == null) {
             initiallySelected = new HashSet();
@@ -651,7 +651,7 @@ public class Query extends JPanel {
 
         JSlider slider = new JSlider(minimum, maximum, defaultValue);
         _addPair(name, lbl, slider, slider);
-        slider.addChangeListener(new SliderListener(name));
+        slider.addChangeListener(new SliderListener(this, name));
         return slider;
     }
 
@@ -701,7 +701,7 @@ public class Query extends JPanel {
 
         QueryScrollPane textPane = new QueryScrollPane(textArea);
         _addPair(name, lbl, textPane, textPane);
-        textArea.addFocusListener(new QueryFocusListener(name));
+        textArea.addFocusListener(new QueryFocusListener(this, name));
         return textArea;
     }
 
@@ -1134,7 +1134,7 @@ public class Query extends JPanel {
         } else if (result instanceof QueryColorChooser) {
             ((QueryColorChooser) result).setColor(value);
         } else if (result instanceof SettableQueryChooser) {
-           ((SettableQueryChooser) result).setQueryValue(value);
+            ((SettableQueryChooser) result).setQueryValue(value);
         } else if (result instanceof QueryFileChooser) {
             ((QueryFileChooser) result).setFileName(value);
         } else {
@@ -1675,26 +1675,30 @@ public class Query extends JPanel {
 
     /** Listener for "line" and radio button entries.
      */
-    class QueryActionListener implements ActionListener {
-        public QueryActionListener(String name) {
+    public static class QueryActionListener implements ActionListener {
+        public QueryActionListener(Query owner, String name) {
             _name = name;
+            _owner = owner;
         }
 
         /** Call all registered QueryListeners. */
         public void actionPerformed(ActionEvent e) {
-            _notifyListeners(_name);
+            _owner._notifyListeners(_name);
         }
+
+        private Query _owner;
 
         private String _name;
     }
 
     /** Panel containing an entry box and color chooser.
      */
-    class QueryColorChooser extends Box implements ActionListener {
-        public QueryColorChooser(String name, String defaultColor) {
+    public static class QueryColorChooser extends Box implements ActionListener {
+        public QueryColorChooser(Query owner, String name, String defaultColor) {
             super(BoxLayout.X_AXIS);
+            _owner = owner;
             //_defaultColor = defaultColor;
-            _entryBox = new JTextField(defaultColor, _width);
+            _entryBox = new JTextField(defaultColor, _owner.getTextWidth());
 
             JButton button = new JButton("Choose");
             button.addActionListener(this);
@@ -1703,7 +1707,7 @@ public class Query extends JPanel {
 
             // Add the listener last so that there is no notification
             // of the first value.
-            _entryBox.addActionListener(new QueryActionListener(name));
+            _entryBox.addActionListener(new QueryActionListener(_owner, name));
 
             // Add a listener for loss of focus.  When the entry gains
             // and then loses focus, listeners are notified of an update,
@@ -1716,7 +1720,7 @@ public class Query extends JPanel {
             // the value is restored to the original, and then sometime
             // later, the focus is lost and the entered value becomes
             // the value of the parameter.  I don't know of any workaround.
-            _entryBox.addFocusListener(new QueryFocusListener(name));
+            _entryBox.addFocusListener(new QueryFocusListener(_owner, name));
 
             _name = name;
         }
@@ -1724,8 +1728,8 @@ public class Query extends JPanel {
         public void actionPerformed(ActionEvent e) {
             // Read the current color from the text field.
             String spec = getSelectedColor().trim();
-            Color newColor = JColorChooser.showDialog(Query.this,
-                    "Choose Color", stringToColor(spec));
+            Color newColor = JColorChooser.showDialog(_owner, "Choose Color",
+                    stringToColor(spec));
 
             if (newColor != null) {
                 float[] components = newColor.getRGBComponents(null);
@@ -1743,7 +1747,7 @@ public class Query extends JPanel {
                 }
 
                 _entryBox.setText(string.toString());
-                _notifyListeners(_name);
+                _owner._notifyListeners(_name);
             }
         }
 
@@ -1759,23 +1763,26 @@ public class Query extends JPanel {
 
         private String _name;
 
+        private Query _owner;
+
         //private String _defaultColor;
     }
 
     /** Panel containing an entry box and file chooser.
      */
-    class QueryFileChooser extends Box implements ActionListener {
-        public QueryFileChooser(String name, String defaultName, URI base,
-                File startingDirectory, boolean allowFiles,
+    public static class QueryFileChooser extends Box implements ActionListener {
+        public QueryFileChooser(Query owner, String name, String defaultName,
+                URI base, File startingDirectory, boolean allowFiles,
                 boolean allowDirectories) {
-            this(name, defaultName, base, startingDirectory, allowFiles,
+            this(owner, name, defaultName, base, startingDirectory, allowFiles,
                     allowDirectories, Color.white, Color.black);
         }
 
-        public QueryFileChooser(String name, String defaultName, URI base,
-                File startingDirectory, boolean allowFiles,
+        public QueryFileChooser(Query owner, String name, String defaultName,
+                URI base, File startingDirectory, boolean allowFiles,
                 boolean allowDirectories, Color background, Color foreground) {
             super(BoxLayout.X_AXIS);
+            _owner = owner;
             _base = base;
             _startingDirectory = startingDirectory;
 
@@ -1786,7 +1793,7 @@ public class Query extends JPanel {
 
             _allowFiles = allowFiles;
             _allowDirectories = allowDirectories;
-            _entryBox = new JTextField(defaultName, _width);
+            _entryBox = new JTextField(defaultName, _owner.getTextWidth());
             _entryBox.setBackground(background);
             _entryBox.setForeground(foreground);
 
@@ -1797,7 +1804,7 @@ public class Query extends JPanel {
 
             // Add the listener last so that there is no notification
             // of the first value.
-            _entryBox.addActionListener(new QueryActionListener(name));
+            _entryBox.addActionListener(new QueryActionListener(_owner, name));
 
             // Add a listener for loss of focus.  When the entry gains
             // and then loses focus, listeners are notified of an update,
@@ -1810,7 +1817,7 @@ public class Query extends JPanel {
             // the value is restored to the original, and then sometime
             // later, the focus is lost and the entered value becomes
             // the value of the parameter.  I don't know of any workaround.
-            _entryBox.addFocusListener(new QueryFocusListener(name));
+            _entryBox.addFocusListener(new QueryFocusListener(_owner, name));
 
             _name = name;
         }
@@ -1839,7 +1846,7 @@ public class Query extends JPanel {
                         "QueryFileChooser: nothing to be chosen.");
             }
 
-            int returnValue = fileChooser.showOpenDialog(Query.this);
+            int returnValue = fileChooser.showOpenDialog(_owner);
 
             if (returnValue == JFileChooser.APPROVE_OPTION) {
                 if (_base == null) {
@@ -1876,7 +1883,7 @@ public class Query extends JPanel {
                     _entryBox.setText(relativeURI.toString());
                 }
 
-                _notifyListeners(_name);
+                _owner._notifyListeners(_name);
             }
         }
 
@@ -1887,6 +1894,8 @@ public class Query extends JPanel {
         public void setFileName(String name) {
             _entryBox.setText(name);
         }
+
+        private Query _owner;
 
         private URI _base;
 
@@ -1903,9 +1912,10 @@ public class Query extends JPanel {
 
     /** Listener for line entries, for when they lose the focus.
      */
-    class QueryFocusListener implements FocusListener {
-        public QueryFocusListener(String name) {
+    public static class QueryFocusListener implements FocusListener {
+        public QueryFocusListener(Query owner, String name) {
             _name = name;
+            _owner = owner;
         }
 
         public void focusGained(FocusEvent e) {
@@ -1920,23 +1930,28 @@ public class Query extends JPanel {
             // notification was an erroneous one and the value has not
             // changed, then no further notification occurs.
             // This could be a problem for some users of this class.
-            _notifyListeners(_name);
+            _owner._notifyListeners(_name);
         }
+
+        private Query _owner;
 
         private String _name;
     }
 
     /** Listener for "CheckBox" and "Choice" entries.
      */
-    class QueryItemListener implements ItemListener {
-        public QueryItemListener(String name) {
+    public static class QueryItemListener implements ItemListener {
+        public QueryItemListener(Query owner, String name) {
             _name = name;
+            _owner = owner;
         }
 
         /** Call all registered QueryListeners. */
         public void itemStateChanged(ItemEvent e) {
-            _notifyListeners(_name);
+            _owner._notifyListeners(_name);
         }
+
+        private Query _owner;
 
         private String _name;
     }
@@ -1953,7 +1968,8 @@ public class Query extends JPanel {
             textArea = c;
 
             // Set the undo listener
-            textArea.getDocument().addUndoableEditListener(new UndoListener(textArea));
+            textArea.getDocument().addUndoableEditListener(
+                    new UndoListener(textArea));
 
         }
 
@@ -1969,15 +1985,18 @@ public class Query extends JPanel {
 
     /** Listener for changes in slider.
      */
-    class SliderListener implements ChangeListener {
-        public SliderListener(String name) {
+    public static class SliderListener implements ChangeListener {
+        public SliderListener(Query owner, String name) {
             _name = name;
+            _owner = owner;
         }
 
         /** Call all registered QueryListeners. */
         public void stateChanged(ChangeEvent event) {
-            _notifyListeners(_name);
+            _owner._notifyListeners(_name);
         }
+
+        private Query _owner;
 
         private String _name;
     }

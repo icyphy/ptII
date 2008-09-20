@@ -82,7 +82,6 @@ JSRCS = \
 	ContainmentExtender.java \
 	ConversionUtilities.java \
 	CParseTreeCodeGenerator.java \
-	CustomQueryBoxParameter.java \
 	ExpertParameter.java \
 	ExplicitScope.java \
 	ExpressionFunction.java \

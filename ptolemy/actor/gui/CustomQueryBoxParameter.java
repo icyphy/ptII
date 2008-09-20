@@ -26,13 +26,12 @@
 
  */
 
-package ptolemy.data.expr;
-
-import ptolemy.actor.gui.PtolemyQuery;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.Settable;
+package ptolemy.actor.gui;
 
 import javax.swing.Box;
+
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Settable;
 
 /**
  * An interface for Parameter classes that supply their own
@@ -48,12 +47,13 @@ import javax.swing.Box;
  */
 public interface CustomQueryBoxParameter {
 
-  /**
-   * Create a customized query box for the given query.
-   * 
-   * @param query			the query to add the custom box to
-   * @param attribute			the attribute the query box is associated with
-   * @throws IllegalActionException 	if something goes wrong
-   */
-  public Box createQueryBox(PtolemyQuery query, Settable attribute) throws IllegalActionException;
+    /**
+     * Create a customized query box for the given query.
+     * 
+     * @param query			the query to add the custom box to
+     * @param attribute			the attribute the query box is associated with
+     * @throws IllegalActionException 	if something goes wrong
+     */
+    public Box createQueryBox(PtolemyQuery query, Settable attribute)
+            throws IllegalActionException;
 }
