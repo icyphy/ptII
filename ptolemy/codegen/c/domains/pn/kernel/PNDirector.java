@@ -435,6 +435,7 @@ public class PNDirector extends Director {
      * @throws IllegalActionException
      */
     private void _generateThreadFunctionCode(StringBuffer code) throws IllegalActionException {
+        
         List actorList = 
             ((CompositeActor) _director.getContainer()).deepEntityList();
         boolean inline = ((BooleanToken) _codeGenerator.inline.getToken())
@@ -445,6 +446,8 @@ public class PNDirector extends Director {
         // Generate the function for each actor thread.
         actors = actorList.iterator();
         while (actors.hasNext()) {
+            StringBuffer functionCode = new StringBuffer();
+
             Actor actor = (Actor) actors.next();
             CodeGeneratorHelper helper = 
                 (CodeGeneratorHelper) _getHelper((NamedObj) actor);
@@ -456,12 +459,6 @@ public class PNDirector extends Director {
             code.append(_eol + "void* " + 
                     _getActorThreadLabel(actor) + "(void* arg) {" + _eol);
 
-            // init
-            String initializeCode = helper.generateInitializeCode(); 
-            String variableInitializeCode = helper.generateVariableInitialization();
-            code.append(variableInitializeCode);
-            code.append(initializeCode);
-            
             // mainLoop
             
             // Check if the actor is an opague CompositeActor. 
@@ -473,9 +470,9 @@ public class PNDirector extends Director {
                 // If so, it should contain a different Director.
                 assert (directorHelper != this);
                 
-                code.append(directorHelper.generateMainLoop());            
+                functionCode.append(directorHelper.generateMainLoop());            
                 
-                code.append("$incrementReadBlockingThreads(&" +
+                functionCode.append("$incrementReadBlockingThreads(&" +
                         generateDirectorHeader() + ");" + _eol);
             } else {
 
@@ -485,26 +482,26 @@ public class PNDirector extends Director {
                 if (actor instanceof LimitedFiringSource) {
                     int firingCount = ((IntToken) ((LimitedFiringSource) actor)
                             .firingCountLimit.getToken()).intValue();
-                    code.append("int i = 0;" + _eol);
-                    code.append("for (; i < " + firingCount 
+                    functionCode.append("int i = 0;" + _eol);
+                    functionCode.append("for (; i < " + firingCount 
                             + "; i++) {" + _eol);
                     
                     pnPostfireCode = _eol;
                 } else {
-                    code.append("while (true) {" + _eol);                
+                    functionCode.append("while (true) {" + _eol);                
                     //code.append("{" + _eol);
                 }
                 
-                code.append(helper.generateFireCode());
+                functionCode.append(helper.generateFireCode());
 
                 // If not inline, generateFireCode() would be a call
                 // to the fire function which already includes the 
                 // type conversion code.
                 if (inline) {
-                    code.append(helper.generateTypeConvertFireCode());
+                    functionCode.append(helper.generateTypeConvertFireCode());
                 }
                 
-                code.append(helper.generatePostfireCode());
+                functionCode.append(helper.generatePostfireCode());
 
                 boolean forComposite = actor instanceof CompositeActor;
 
@@ -530,18 +527,28 @@ public class PNDirector extends Director {
                 }
 
                 // Code for incrementing buffer offsets.
-                code.append(pnPostfireCode);
+                functionCode.append(pnPostfireCode);
                 
-                code.append("}" + _eol);
-                code.append("$incrementReadBlockingThreads(&" +
+                functionCode.append("}" + _eol);
+                functionCode.append("$incrementReadBlockingThreads(&" +
                         generateDirectorHeader() + ");" + _eol);
             }            
 
             // wrapup
-            code.append(helper.generateWrapupCode());
+            functionCode.append(helper.generateWrapupCode());
             
-            code.append("return NULL;" + _eol);
-            code.append("}" + _eol);
+            functionCode.append("return NULL;" + _eol);
+            functionCode.append("}" + _eol);
+            
+            // init
+            // This needs to be called last because all references
+            // need to be collected before generating their initialization.
+            String initializeCode = helper.generateInitializeCode(); 
+            String variableInitializeCode = helper.generateVariableInitialization();
+            code.append(variableInitializeCode);
+            code.append(initializeCode);
+            
+            code.append(functionCode);
         }
     }
 
