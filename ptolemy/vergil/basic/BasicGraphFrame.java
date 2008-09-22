@@ -604,10 +604,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                         // selected.
                         Object head = graphModel.getHead(userObject);
 
-                        System.out.println("head:" +((NamedObj)head).getName());
+                        // System.out.println("head:" +((NamedObj)head).getName());
                         Object tail = graphModel.getTail(userObject);
 
-                        System.out.println("tail:" +((NamedObj)tail).getName());
+                        // System.out.println("tail:" +((NamedObj)tail).getName());
                         boolean headOK = nodeSet.contains(head);
                         boolean tailOK = nodeSet.contains(tail);
                         Iterator<Object> objects = nodeSet.iterator();
@@ -821,7 +821,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 }
             }
 
-            System.out.println(" new ports:" + newPorts);
+            // System.out.println(" new ports:" + newPorts);
 
             // Create the MoML command.
             StringBuffer moml = new StringBuffer();
@@ -875,7 +875,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
             moml.append("</group>\n");
 
-            System.out.println(moml.toString());
+            // System.out.println(moml.toString());
 
             MoMLChangeRequest request = null;
             request = new MoMLChangeRequest(this, container, moml.toString());
