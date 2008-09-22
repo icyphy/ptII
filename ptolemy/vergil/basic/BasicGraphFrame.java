@@ -159,7 +159,7 @@ import diva.util.java2d.ShapeUtilities;
  the hierarchy of a ptolemy model as a diva graph.  Cut, copy and
  paste operations are supported using MoML.
 
- @author  Steve Neuendorffer, Edward A. Lee, Contributors: Chad Berkeley (Kepler), Ian Brown (HSBC)
+ @author  Steve Neuendorffer, Edward A. Lee, Contributors: Chad Berkeley (Kepler), Ian Brown (HSBC), Bert Rodiers
  @version $Id$
  @since Ptolemy II 2.0
  @Pt.ProposedRating Red (neuendor)
@@ -485,18 +485,18 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  and place them on the clipboard in MoML format.
      */
     public void copy() {
-        HashSet namedObjSet = _getSelectionSet();
+        HashSet<NamedObj> namedObjSet = _getSelectionSet();
         StringWriter buffer = new StringWriter();
 
         try {
             NamedObj container = (NamedObj) _getGraphModel().getRoot();
 
             // NOTE: The order in the model must be respected.
-            Iterator elements = container.sortContainedObjects(namedObjSet)
+            Iterator<NamedObj> elements = container.sortContainedObjects(namedObjSet)
                     .iterator();
 
             while (elements.hasNext()) {
-                NamedObj element = (NamedObj) elements.next();
+                NamedObj element = elements.next();
 
                 // first level to avoid obnoxiousness with
                 // toplevel translations.
@@ -548,8 +548,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
         // A set, because some objects may represent the same
         // ptolemy object.
-        HashSet namedObjSet = new HashSet();
-        HashSet nodeSet = new HashSet();
+        HashSet<NamedObj> namedObjSet = new HashSet<NamedObj>();
+        HashSet<Object> nodeSet = new HashSet<Object>();
 
         StringBuffer newPorts = new StringBuffer();
         StringBuffer extRelations = new StringBuffer();
@@ -604,13 +604,13 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                         // selected.
                         Object head = graphModel.getHead(userObject);
 
-                        //System.out.println("head:" +((NamedObj)head).getName());
+                        System.out.println("head:" +((NamedObj)head).getName());
                         Object tail = graphModel.getTail(userObject);
 
-                        //System.out.println("tail:" +((NamedObj)tail).getName());
+                        System.out.println("tail:" +((NamedObj)tail).getName());
                         boolean headOK = nodeSet.contains(head);
                         boolean tailOK = nodeSet.contains(tail);
-                        Iterator objects = nodeSet.iterator();
+                        Iterator<Object> objects = nodeSet.iterator();
 
                         while (!(headOK && tailOK) && objects.hasNext()) {
                             Object object = objects.next();
@@ -627,36 +627,43 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                                 tailOK = true;
                             }
                         }
-
+                        
                         // For the edges at the boundary.
                         if ((!headOK && tailOK) || (headOK && !tailOK)) {
-                            IOPort port = null;
-                            IORelation relation = null;
-                            boolean duplicateRelation = false;
 
-                            if (head instanceof IOPort) {
-                                port = (IOPort) head;
-
-                                if (tail instanceof IOPort) {
-                                    relation = (IORelation) graphModel
-                                            .getSemanticObject(userObject);
-                                    duplicateRelation = true;
-                                } else {
-                                    relation = (IORelation) graphModel
-                                            .getSemanticObject(tail);
-                                }
-                            } else if (tail instanceof IOPort) {
-                                port = (IOPort) tail;
-                                relation = (IORelation) graphModel
-                                        .getSemanticObject(head);
+                            LinkElementProperties headProperties
+                                = LinkElementProperties.extractLinkProperties(head);
+                            LinkElementProperties tailProperties
+                                = LinkElementProperties.extractLinkProperties(tail);
+                           
+                            
+                            if (headProperties.port == null && tailProperties.port != null) {
+                                //Swap head and tail
+                                LinkElementProperties temp = headProperties;
+                                headProperties = tailProperties;
+                                tailProperties = temp;                                
                             }
-
-                            if (port != null) {
-                                ComponentEntity entity = (ComponentEntity) port
+                            
+                            IORelation relation = null;
+                            
+                            boolean duplicateRelation = true;
+                            if (headProperties.type == ElementInLinkType.RELATION) {
+                                relation = (IORelation) graphModel.getSemanticObject(headProperties.element);
+                                duplicateRelation = false;
+                            } else if (tailProperties.type == ElementInLinkType.RELATION) {
+                                relation = (IORelation) graphModel.getSemanticObject(tailProperties.element);
+                                duplicateRelation = false;
+                            } else {                                
+                                relation = (IORelation) graphModel.getSemanticObject(userObject);
+                                duplicateRelation = true;
+                            }
+                            
+                            if (headProperties.port != null) {                                                       
+                                ComponentEntity entity = (ComponentEntity) headProperties.port
                                         .getContainer();
                                 String portName = "port_" + i;
-                                boolean isInput = port.isInput();
-                                boolean isOutput = port.isOutput();
+                                boolean isInput = headProperties.port.isInput();
+                                boolean isOutput = headProperties.port.isOutput();
                                 newPorts
                                         .append("<port name=\""
                                                 + portName
@@ -692,7 +699,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                                                     + "ptolemy.actor.TypedIORelation\"/>\n");
                                     intConnections.append("<link port=\""
                                             + entity.getName() + "."
-                                            + port.getName() + "\" relation=\""
+                                            + headProperties.port.getName() + "\" relation=\""
                                             + relationName + "\"/>\n");
                                     intConnections.append("<link port=\""
                                             + portName + "\" relation=\""
@@ -706,15 +713,14 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                                                         + "\" class=\""
                                                         + "ptolemy.actor.TypedIORelation\"/>\n");
 
-                                        IOPort otherPort = (IOPort) tail;
-                                        ComponentEntity otherEntity = (ComponentEntity) otherPort
+                                        ComponentEntity otherEntity = (ComponentEntity) tailProperties.port
                                                 .getContainer();
 
                                         if (otherEntity == container) {
                                             // This is a boundary port at a higher level.
                                             extConnections
                                                     .append("<link port=\""
-                                                            + otherPort
+                                                            + tailProperties.port
                                                                     .getName()
                                                             + "\" relation=\""
                                                             + relation
@@ -726,7 +732,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                                                             + otherEntity
                                                                     .getName()
                                                             + "."
-                                                            + otherPort
+                                                            + tailProperties.port
                                                                     .getName()
                                                             + "\" relation=\""
                                                             + relation
@@ -742,12 +748,14 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                                 } else {
                                     // The port is outside the hierarchy.
                                     // The relation must be inside.
-                                    if (isInput) {
+                                    if ((isInput && headProperties.type == ElementInLinkType.PORT_IN_ACTOR) || 
+                                            (isOutput && headProperties.type == ElementInLinkType.STANDALONE_PORT)){
                                         newPorts
                                                 .append("<property name=\"output\"/>");
                                     }
 
-                                    if (isOutput) {
+                                    if ((isOutput && headProperties.type == ElementInLinkType.PORT_IN_ACTOR) || 
+                                            (isInput && headProperties.type == ElementInLinkType.STANDALONE_PORT)){                                        
                                         newPorts
                                                 .append("<property name=\"input\"/>");
                                     }
@@ -761,9 +769,13 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                                                     + relationName
                                                     + "\" class=\""
                                                     + "ptolemy.actor.TypedIORelation\"/>\n");
+                                    String entityPrefix = "";
+                                    if (getModel() !=  entity) {
+                                        entityPrefix = entity.getName() + ".";                                        
+                                    }
                                     extConnections.append("<link port=\""
-                                            + entity.getName() + "."
-                                            + port.getName() + "\" relation=\""
+                                            + entityPrefix
+                                            + headProperties.port.getName() + "\" relation=\""
                                             + relationName + "\"/>\n");
                                     extConnections.append("<link port=\""
                                             + compositeActorName + "."
@@ -778,14 +790,18 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                                                         + "\" class=\""
                                                         + "ptolemy.actor.TypedIORelation\"/>\n");
 
-                                        IOPort otherPort = (IOPort) tail;
-                                        ComponentEntity otherEntity = (ComponentEntity) otherPort
+                                        ComponentEntity otherEntity = (ComponentEntity) tailProperties.port
                                                 .getContainer();
+                                        
+                                        String otherEntityPrefix = "";
+                                        if (getModel() !=  otherEntity) {
+                                            otherEntityPrefix = otherEntity.getName() + ".";                                        
+                                        }
+                                        
                                         intConnections
                                                 .append("<link port=\""
-                                                        + otherEntity.getName()
-                                                        + "."
-                                                        + otherPort.getName()
+                                                        + otherEntityPrefix
+                                                        + tailProperties.port.getName()
                                                         + "\" relation=\""
                                                         + relation.getName()
                                                         + "\"/>\n");
@@ -805,7 +821,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 }
             }
 
-            // System.out.println(" new ports:" + newPorts);
+            System.out.println(" new ports:" + newPorts);
 
             // Create the MoML command.
             StringBuffer moml = new StringBuffer();
@@ -859,7 +875,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
             moml.append("</group>\n");
 
-            // System.out.println(moml.toString());
+            System.out.println(moml.toString());
 
             MoMLChangeRequest request = null;
             request = new MoMLChangeRequest(this, container, moml.toString());
@@ -1524,11 +1540,11 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  @return True if any element in the list is implied.
      *  @see NamedObj#getDerivedLevel()
      */
-    protected boolean _checkForImplied(List elements) {
-        Iterator elementIterator = elements.iterator();
+    protected boolean _checkForImplied(List<NamedObj> elements) {
+        Iterator<NamedObj> elementIterator = elements.iterator();
 
         while (elementIterator.hasNext()) {
-            NamedObj element = (NamedObj) elementIterator.next();
+            NamedObj element = elementIterator.next();
 
             if (element.getDerivedLevel() < Integer.MAX_VALUE) {
                 MessageHandler.error("Cannot change the position of "
@@ -1647,11 +1663,11 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  used when trying to create the SizeAttribute.
      */
     protected SizeAttribute _createSizeAttribute()
-    		throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
         // Have to also record the size of the JGraph because
         // setting the size of the frame is ignored if we don't
         // also set the size of the JGraph. Why? Who knows. Swing.
-    	SizeAttribute size = (SizeAttribute) getModel().getAttribute(
+        SizeAttribute size = (SizeAttribute) getModel().getAttribute(
                 "_vergilSize", SizeAttribute.class);
 
         if (size == null) {
@@ -1704,7 +1720,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  on the container to sort the result.
      *  @return The set of selected objects.
      */
-    protected HashSet _getSelectionSet() {
+    protected HashSet<NamedObj> _getSelectionSet() {
         GraphController controller = _getGraphController();
         GraphModel graphModel = controller.getGraphModel();
         SelectionModel model = controller.getSelectionModel();
@@ -1712,8 +1728,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
         // A set, because some objects may represent the same
         // ptolemy object.
-        HashSet namedObjSet = new HashSet();
-        HashSet nodeSet = new HashSet();
+        HashSet<NamedObj> namedObjSet = new HashSet<NamedObj>();
+        HashSet<Object> nodeSet = new HashSet<Object>();
 
         // First get all the nodes.
         for (int i = 0; i < selection.length; i++) {
@@ -1741,7 +1757,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                     Object tail = graphModel.getTail(userObject);
                     boolean headOK = nodeSet.contains(head);
                     boolean tailOK = nodeSet.contains(tail);
-                    Iterator objects = nodeSet.iterator();
+                    Iterator<Object> objects = nodeSet.iterator();
 
                     while (!(headOK && tailOK) && objects.hasNext()) {
                         Object object = objects.next();
@@ -1948,7 +1964,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         // Create a set to hold those elements whose deletion
         // does not go through MoML. This is only links that
         // are not connected to another port or a relation.
-        HashSet edgeSet = new HashSet();
+        HashSet<Object> edgeSet = new HashSet<Object>();
 
         StringBuffer moml = new StringBuffer("<group>\n");
 
@@ -2012,7 +2028,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // removal does not trigger graph redrawing.
             graphModel.setDispatchEnabled(false);
 
-            Iterator edges = edgeSet.iterator();
+            Iterator<Object> edges = edgeSet.iterator();
 
             while (edges.hasNext()) {
                 Object nextEdge = edges.next();
@@ -2042,7 +2058,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             "Open the container");
 
     /** List of references to graph frames that are open. */
-    private static LinkedList _openGraphFrames = new LinkedList();
+    private static LinkedList<BasicGraphFrame> _openGraphFrames = new LinkedList<BasicGraphFrame>();
 
     /** X coordinate of where we last processed a press or drag of the
      *  middle mouse button.
@@ -2084,32 +2100,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     ///////////////////////////////////////////////////////////////////
     ////                     private inner classes                 ////
 
-    ///////////////////////////////////////////////////////////////////
-    //// DocumentationMenuItemFactory
-
-    /**
-     *  Create a menu item that will show documentation
-     */
-    private class DocumentationMenuItemFactory implements MenuItemFactory {
-        /**
-         * Add an item to the given context menu that bring up the
-         * documentation for the given object
-         */
-        public JMenuItem create(final JContextMenu menu, final NamedObj object) {
-            Action action = new GetDocumentationAction() {
-                public void actionPerformed(ActionEvent e) {
-                    Configuration configuration = getConfiguration();
-                    setConfiguration(configuration);
-                    super.actionPerformed(e);
-                }
-            };
-
-            action.putValue("tooltip", "Get Documentation.");
-            action.putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, Integer
-                    .valueOf(KeyEvent.VK_D));
-            return menu.add(action, (String) action.getValue(Action.NAME));
-        }
-    }
 
     ///////////////////////////////////////////////////////////////////
     //// CopyAction
@@ -2153,7 +2143,34 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             cut();
         }
     }
+    ///////////////////////////////////////////////////////////////////
+    //// DocumentationMenuItemFactory
 
+    /**
+     *  Create a menu item that will show documentation
+     */
+    private class DocumentationMenuItemFactory implements MenuItemFactory {
+        /**
+         * Add an item to the given context menu that bring up the
+         * documentation for the given object
+         */
+        public JMenuItem create(final JContextMenu menu, final NamedObj object) {
+            Action action = new GetDocumentationAction() {
+                public void actionPerformed(ActionEvent e) {
+                    Configuration configuration = getConfiguration();
+                    setConfiguration(configuration);
+                    super.actionPerformed(e);
+                }
+            };
+
+            action.putValue("tooltip", "Get Documentation.");
+            action.putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, Integer
+                    .valueOf(KeyEvent.VK_D));
+            return menu.add(action, (String) action.getValue(Action.NAME));
+        }
+    }
+
+    
     ///////////////////////////////////////////////////////////////////
     //// EditPreferencesAction
 
@@ -2198,10 +2215,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
                 // If any parameter has changed, all open vergil
                 // windows need to be notified.
-                Iterator frames = _openGraphFrames.iterator();
+                Iterator<BasicGraphFrame> frames = _openGraphFrames.iterator();
 
                 while (frames.hasNext()) {
-                    BasicGraphFrame frame = (BasicGraphFrame) frames.next();
+                    BasicGraphFrame frame = frames.next();
                     GraphModel graphModel = frame._getGraphController()
                             .getGraphModel();
                     graphModel
@@ -2230,6 +2247,13 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     }
 
     ///////////////////////////////////////////////////////////////////
+    //// ElementInLinkType
+    /**
+     * An enumerate to specifies what kind of element the element (head or tail) is in a link. 
+     */
+    private enum ElementInLinkType { PORT_IN_ACTOR, STANDALONE_PORT, RELATION }
+    
+    ///////////////////////////////////////////////////////////////////
     //// ExecuteSystemAction
 
     /** An action to open a run control window. */
@@ -2255,6 +2279,55 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     //            }
     //        }
     //    }
+    
+    
+    ///////////////////////////////////////////////////////////////////
+    //// LinkElementProperties
+    /**
+     * A class that keeps stores basic properties of element (head, tail) in a link
+     */
+    static private class LinkElementProperties
+    {
+        /**
+         * Create a LinkElementProperties from the element (head or tail), a port if one is available and the ElementInLinkType
+         */
+        LinkElementProperties(Object element, IOPort port, ElementInLinkType type) {
+            this.element = element;
+            this.port = port;
+            this.type = type;
+        }
+        
+        /**
+         * Extract the properties from an element (head or tail) in a link a return these as an ElementInLinkType
+         */        
+        static LinkElementProperties extractLinkProperties(Object element) {
+            IOPort elementPort = null;
+            ElementInLinkType elementType = ElementInLinkType.PORT_IN_ACTOR;
+            if (element instanceof IOPort) {
+                //This is a port of an actor
+                elementPort = (IOPort) element;
+                elementType =  ElementInLinkType.PORT_IN_ACTOR;                         }
+            else if (element instanceof Location) {
+                //Either a port (not one of an actor) or a relation
+                NamedObj elementContainer = ((Location) element).getContainer();
+                if (elementContainer instanceof IOPort) {
+                    //This is a port
+                    elementPort = (IOPort) elementContainer;
+                    elementType =  ElementInLinkType.STANDALONE_PORT;
+                } else {
+                    //This is a relation
+                    assert elementContainer instanceof IORelation;
+                    elementType =  ElementInLinkType.RELATION;
+                }                                
+            }
+            return new LinkElementProperties(element, elementPort, elementType);
+        }
+        
+        public final Object element;
+        public final IOPort port;        
+        public final ElementInLinkType type;
+    }
+    
     ///////////////////////////////////////////////////////////////////
     //// MoveToBackAction
     /** Action to move the current selection to the back (which corresponds
@@ -2277,8 +2350,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
             // Get the selection objects.
             // NOTE: The order in the model must be respected.
-            HashSet namedObjSet = _getSelectionSet();
-            final List elements = container.sortContainedObjects(namedObjSet);
+            HashSet<NamedObj> namedObjSet = _getSelectionSet();
+            final List<NamedObj> elements = container.sortContainedObjects(namedObjSet);
 
             // Return if any is a derived object.
             if (_checkForImplied(elements)) {
@@ -2319,8 +2392,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
             // Get the selection objects.
             // NOTE: The order in the model must be respected.
-            HashSet namedObjSet = _getSelectionSet();
-            final List elements = container.sortContainedObjects(namedObjSet);
+            HashSet<NamedObj> namedObjSet = _getSelectionSet();
+            final List<NamedObj> elements = container.sortContainedObjects(namedObjSet);
 
             // Return if any is a derived object.
             if (_checkForImplied(elements)) {
@@ -2392,7 +2465,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             GraphModel model = target.getGraphModel();
             diva.graph.basic.BasicGraphModel local = getLocalGraphModel();
             Object copyComposite = local.createComposite(null);
-            HashMap map = new HashMap();
+            HashMap<Object, Object> map = new HashMap<Object, Object>();
 
             // Copy all the nodes for the graph.
             for (Iterator i = model.nodes(origComposite); i.hasNext();) {
@@ -2948,4 +3021,5 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             zoom(1.0 / 1.25);
         }
     }
+    
 }
