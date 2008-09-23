@@ -504,15 +504,15 @@ public class TDLActionsGraph {
 
             // get connected task output ports
             List<IOPort> taskOutputPorts = outputPort.deepInsidePortList();
-            for (IOPort taskOuputPort : taskOutputPorts) {
-                if (taskOuputPort.getContainer() instanceof TDLTask) {
-                    connectedPort = taskOuputPort; // only one task, not multiple
+            for (IOPort taskOutputPort : taskOutputPorts) {
+                if (taskOutputPort.isOutput() && taskOutputPort.getContainer() instanceof TDLTask) {
+                    connectedPort = taskOutputPort; // only one task, not multiple
                     // tasks, can write to one
                     // actuator!!
                 }
             }
 
-            if (connectedPort != null) {
+            if (connectedPort != null && connectedPort.isOutput()) {
                 for (int i = 1; i <= frequency; i++) {
                     Time invocationEndTime = new Time(_module.getDirector(),
                             modePeriod.getLongValue() / frequency * (i));
@@ -691,7 +691,7 @@ public class TDLActionsGraph {
         Time time = Time.NEGATIVE_INFINITY;
         for (Node node : nodes) {
             TDLAction gnode = (TDLAction) node.getWeight();
-            if (gnode.object.equals(port) && upper.compareTo(gnode.time) >= 0
+            if (gnode.object != null && gnode.object.equals(port) && upper.compareTo(gnode.time) >= 0
                     && time.compareTo(gnode.time) < 0) {
                 lastNodeBeforeTime = node;
                 time = gnode.time;
@@ -713,6 +713,7 @@ public class TDLActionsGraph {
             throws IllegalActionException {
         // schedule tasks
         List<TDLTask> tasks = (List<TDLTask>) refinement.entityList();
+        Time timeZero = new Time(_module.getDirector(), 0.0);
 
         for (TDLTask taskActor : tasks) {
             LetTask task = _analyzeSlotSelection(taskActor, modePeriod);
@@ -721,22 +722,19 @@ public class TDLActionsGraph {
 
             Node modeSwitchEnd = null, modeSwitchStart = null;
             if (_tmpModeSwitchStarts == null
-                    || _tmpModeSwitchStarts.size() == 0) {
-                Time time = new Time(_module.getDirector(), 0);
-                modeSwitchStart = modeSwitchEnd = _createNode(time,
+                    || _tmpModeSwitchStarts.size() == 0) { 
+                modeSwitchStart = modeSwitchEnd = _createNode(timeZero,
                         TDLAction.AFTERMODESWITCH, mode);
-                _tmpModeSwitchStarts.put(time, modeSwitchStart);
-                _tmpModeSwitchEnds.put(time, modeSwitchStart);
+                _tmpModeSwitchStarts.put(timeZero, modeSwitchStart);
+                _tmpModeSwitchEnds.put(timeZero, modeSwitchStart);
             } else {
-                modeSwitchStart = _tmpModeSwitchStarts.get(new Time(_module
-                        .getDirector(), 0.0));
+                modeSwitchStart = _tmpModeSwitchStarts.get(timeZero);
                 if (modeSwitchStart == null)
                     modeSwitchStart = (Node) _tmpModeSwitchStarts
                             .get(modePeriod);
             }
             if (_tmpModeSwitchEnds != null && _tmpModeSwitchEnds.size() != 0) { // no mode switches, only one mode
-                modeSwitchEnd = (Node) _tmpModeSwitchEnds.get(new Time(_module
-                        .getDirector(), 0.0));
+                modeSwitchEnd = (Node) _tmpModeSwitchEnds.get(timeZero);
                 if (modeSwitchEnd == null)
                     modeSwitchEnd = (Node) _tmpModeSwitchEnds.get(modePeriod);
             }
@@ -746,6 +744,7 @@ public class TDLActionsGraph {
             for (long i = task.getOffset(); i < modePeriod.getLongValue(); i += task
                     .getInvocationPeriod()) {
                 Time invocationTime = new Time(_module.getDirector(), i);
+                
                 List<IOPort> notConnectedToSensors = new ArrayList();
                 notConnectedToSensors.addAll(taskActor.inputPortList());
                 List<Node> inputPortNodes = new ArrayList();
@@ -790,6 +789,8 @@ public class TDLActionsGraph {
                             _registerTaskInputPortReading(invocationTime,
                                     (IOPort) inputPort);
                             _connectToOtherTasksOutputPorts(inputPort);
+                        } else {
+                            
                         }
                     }
                 }
@@ -817,6 +818,10 @@ public class TDLActionsGraph {
                 for (IOPort outputPort : outputPorts) {
                     Time writePortTime = new Time(_module.getDirector(), i
                             + task.getLet());
+                    Time nextInvocationTime = new Time(_module.getDirector(), i
+                            + task.getLet() + task.getOffset());
+                    if (nextInvocationTime.equals(modePeriod))
+                        nextInvocationTime = timeZero;
                     outputPortNode = _createNode(writePortTime,
                             TDLAction.WRITEOUTPUT, outputPort,
                             taskExecutionNode);
@@ -824,6 +829,14 @@ public class TDLActionsGraph {
                     _connectToIntermediateModeSwitch(outputPortNode, new Time(
                             _module.getDirector(), i), new Time(_module
                             .getDirector(), task.getInvocationPeriod()));
+//                    List<IOPort> ports = outputPort.connectedPortList();
+//                    for (IOPort port : ports) {
+//                        if (port.isInput() && port.getContainer().equals(taskActor)) { 
+//                            // output port is connected to input port of the same task
+//                            Edge edge = new Edge(outputPortNode, getNode(nextInvocationTime, port));
+//                            _graph.addEdge(edge);
+//                        }
+//                    }
                 }
                 // need a single invocation end node
                 if (outputPortNodes.size() == 0) {
