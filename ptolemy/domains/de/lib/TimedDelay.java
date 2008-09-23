@@ -204,8 +204,10 @@ public class TimedDelay extends DETransformer {
      *  the delay of this actor.
      *  @return A representation of the dependencies between input ports
      *   and output ports.
+     * @exception IllegalActionException Thrown if the director is not a timed director or
+     * the type of dependency that is required cannot be resolved.
      */
-    public CausalityInterface getCausalityInterface() { 
+    public CausalityInterface getCausalityInterface() throws IllegalActionException { 
         if (_causalityInterface == null) { 
             // TODO if director changed another interface might be required
             if (getDirector() instanceof TimedDirector) {
@@ -218,10 +220,10 @@ public class TimedDelay extends DETransformer {
                     _causalityInterface = new DefaultCausalityInterface(
                           this, dependency);
                 } else {
-                   // TODO throw new IllegalActionException(this, "Type of delay dependency not recognized");
+                   throw new IllegalActionException(this, "Type of dependency not recognized");
                 } 
             } else {
-                // TODO throw new IllegalActionException(this, "Director must be a TimedDirector");
+                throw new IllegalActionException(this, "Director must be a TimedDirector");
             }
         }
         return _causalityInterface;

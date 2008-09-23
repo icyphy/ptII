@@ -714,9 +714,11 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *  composite actor.
      *
      *  @return True if the local director's isStrict() method returns true or
-     *   if this actor is not opaque.
+     *   if this actor is not opaque. 
+     *  @exception IllegalActionException Thrown if causality interface 
+     *  cannot be computed.
      */
-    public boolean isStrict() {
+    public boolean isStrict() throws IllegalActionException {
         if (isOpaque()) {
             return getDirector().isStrict();
         } else {

@@ -299,8 +299,10 @@ public class ERGController extends ModalController {
     /** Return the result of isStrict() from the director.
     *
     *  @return The result of isStrict() from the director.
+     * @exception IllegalActionException Thrown if causality interface 
+     *  cannot be computed.
     */
-    public boolean isStrict() {
+    public boolean isStrict() throws IllegalActionException {
         return director.isStrict();
     }
 

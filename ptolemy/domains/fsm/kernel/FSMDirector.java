@@ -616,8 +616,10 @@ public class FSMDirector extends Director implements
      *  directly on all inputs of the container.
      *  @return False if there is any output that does not
      *   depend directly on an input.
+     *  @exception IllegalActionException Thrown if causality interface 
+     *  cannot be computed.
      */
-    public boolean isStrict() {
+    public boolean isStrict() throws IllegalActionException {
         Actor container = (Actor)getContainer();
         CausalityInterface causality = container.getCausalityInterface();
         int numberOfOutputs = container.outputPortList().size();

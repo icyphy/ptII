@@ -66,8 +66,9 @@ public interface Actor extends Executable, Nameable {
     /** Return a causality interface for this actor.
      *  @return A representation of the dependencies between input ports
      *   and output ports.
+     * @exception IllegalActionException Thrown if causality interface cannot be computed.
      */
-    public CausalityInterface getCausalityInterface();
+    public CausalityInterface getCausalityInterface() throws IllegalActionException;
 
     /** Return the Manager, if there is one. Otherwise, return null.
      *  @return The Manager.

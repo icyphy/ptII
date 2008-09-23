@@ -225,8 +225,10 @@ public class AtomicActor extends ComponentEntity implements Actor,
      *  which case a new object is returned.
      *  @return A representation of the dependencies between input ports
      *   and output ports.
+     * @exception IllegalActionException Thrown in subclasses if causality 
+     * interface cannot be computed.
      */
-    public CausalityInterface getCausalityInterface() {
+    public CausalityInterface getCausalityInterface() throws IllegalActionException {
         Director director = getDirector();
         if (_causalityInterface != null
                 && _causalityInterfaceDirector == director) {
@@ -601,13 +603,15 @@ public class AtomicActor extends ComponentEntity implements Actor,
      *  can call removeDependency(input, output) rather than implementing
      *  a specialized {@link CausalityInterface}, at least for the simple
      *  cases where output ports do not depend at all on input ports.
+     *  @exception IllegalActionException Thrown by subclasses if causality interface 
+     *  cannot be computed.
      *  @see ptolemy.domains.de.lib.TimedDelay
      *  @see #removeDependency(IOPort, IOPort)
      *  @see #getCausalityInterface()
      *  @deprecated There is no need to override this method anymore.
      *   Just call removeDependency() in preinitialize().
      */
-    public void pruneDependencies() {
+    public void pruneDependencies() throws IllegalActionException {
     }
 
     /** Record a firing event.
@@ -654,9 +658,11 @@ public class AtomicActor extends ComponentEntity implements Actor,
      *  @param input The input port.
      *  @param output The output port that does not depend on the
      *   input port.
+     *  @exception IllegalActionException Thrown if causality interface 
+     *  cannot be computed.
      *  @see #getCausalityInterface()
      */
-    public void removeDependency(IOPort input, IOPort output) {
+    public void removeDependency(IOPort input, IOPort output) throws IllegalActionException {
         CausalityInterface causality = getCausalityInterface();
         causality.removeDependency(input, output);
     }

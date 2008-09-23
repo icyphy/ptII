@@ -731,8 +731,9 @@ public class Director extends Attribute implements Executable {
      *  should override this method to return false.
      *
      *  @return True.
+     *  @exception IllegalActionException Thrown by subclass.
      */
-    public boolean isStrict() {
+    public boolean isStrict() throws IllegalActionException {
         return true;
     }
 

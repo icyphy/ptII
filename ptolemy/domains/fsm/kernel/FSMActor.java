@@ -743,8 +743,10 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  directly on all inputs.
      *  @return False if there is any output that does not
      *   depend directly on an input.
+     *  @exception IllegalActionException Thrown if causality interface 
+     *  cannot be computed.
      */
-    public boolean isStrict() {
+    public boolean isStrict() throws IllegalActionException {
         CausalityInterface causality = getCausalityInterface();
         int numberOfOutputs = outputPortList().size();
         Collection<IOPort> inputs = inputPortList();
@@ -759,7 +761,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                     return false;
                 }
             } catch (IllegalActionException e) {
-                throw new InternalErrorException(e);
+                throw new InternalErrorException(e); 
             }
         }
         return true;
