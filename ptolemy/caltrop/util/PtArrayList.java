@@ -32,6 +32,7 @@ package ptolemy.caltrop.util;
 import java.util.AbstractList;
 
 import ptolemy.data.ArrayToken;
+import ptolemy.data.Token;
 
 //////////////////////////////////////////////////////////////////////////
 //// PtArrayList
@@ -44,7 +45,7 @@ import ptolemy.data.ArrayToken;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class PtArrayList extends AbstractList {
+public class PtArrayList extends AbstractList<Token> {
     /** Construct a PtArrayList from an ArrayToken.
      *  @param arrayToken The arrayToken with which to construct the List.
      */
@@ -59,7 +60,7 @@ public class PtArrayList extends AbstractList {
      *  @exception ArrayIndexOutOfBoundException If the specified index is
      *   outside the range of the token array.
      */
-    public Object get(int index) {
+    public Token get(int index) {
         return _arrayToken.getElement(index);
     }
 

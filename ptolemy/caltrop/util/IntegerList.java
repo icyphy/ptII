@@ -44,7 +44,7 @@ import caltrop.interpreter.Context;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class IntegerList extends AbstractList {
+public class IntegerList extends AbstractList<Integer> {
     /** Construct a list of Integers IntegerList object.
      *
      * @param context  a Caltrop interpreter context.
@@ -67,13 +67,13 @@ public class IntegerList extends AbstractList {
      *  n+a must be less than or equal to b.
      *  @return the integer at slot a+n.
      */
-    public Object get(int n) {
+    public Integer get(int n) {
         if ((_a + n) > _b) {
             throw new IndexOutOfBoundsException(_a + " + " + n
                     + " is greater than " + _b);
         }
 
-        return _context.createInteger(_a + n);
+        return (Integer) _context.createInteger(_a + n);
     }
 
     /** The size of the list.
