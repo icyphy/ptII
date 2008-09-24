@@ -94,12 +94,8 @@ JSRCS = \
 	PlotLiveApplet.java \
 	PlotPoint.java
 
-# Used to build distributions with InstallShield's isjava tool
-ISJAVA_SRC = ptplot.isj
-
 # Files that are not compiled, such as .tcl and .itcl files.
 EXTRA_SRCS = $(JSRCS) \
-	$(ISJAVA_SRC) \
 	copyright.txt \
 	index.htm \
 	ptplot.jnlp.in
