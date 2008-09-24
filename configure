@@ -681,6 +681,7 @@ CHIC_DIR
 CLASSPATHSEPARATOR
 COLT_DIR
 CMKIT_DIR
+ECLIPSE_CLASSPATHENTRY_PDE_REQUIREDPLUGINS
 ECLIPSE_DIR
 GC_INCLUDE_DIR
 GC_LD_DIRECTIVE
@@ -2868,6 +2869,24 @@ ECLIPSE_EXCLUDING_SRC=""
 
 # Jar files to include in the Eclipse library
 #ECLIPSE_CLASSPATHENTRY_LIBS='<classpathentry kind="lib" path="lib/diva.jar"/>'
+
+
+case "`uname -s`" in
+     Darwin)
+         { echo "$as_me:$LINENO: WARNING: Under Eclipse on Mac OS X, you must use Java 1.6
+    within Eclipse. Under Mac OS X, Java 1.5.0_13 will fail to run
+    within Eclipse, but _will_ work outside of Eclipse. Note that the
+    backtracking and Eclipse tools will _not_ work on the Mac.
+    For details, see http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Mac" >&5
+echo "$as_me: WARNING: Under Eclipse on Mac OS X, you must use Java 1.6
+    within Eclipse. Under Mac OS X, Java 1.5.0_13 will fail to run
+    within Eclipse, but _will_ work outside of Eclipse. Note that the
+    backtracking and Eclipse tools will _not_ work on the Mac.
+    For details, see http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Mac" >&2;}
+     	;;
+     *)  ECLIPSE_CLASSPATHENTRY_PDE_REQUIREDPLUGINS = '<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>'
+	;;
+esac
 
 #####################################################################
 #####################################################################
@@ -5250,7 +5269,7 @@ PTBACKTRACK_DIR=backtrack
 # PTBACKTRACK_ECLIPSE_DIR is set to eclipse and used in
 # $PTII/ptolemy/backtrack/makefile if Eclipse was found
 # and the jar files were found
-urePTBACKTRACK_ECLIPSE_DIR=
+PTBACKTRACK_ECLIPSE_DIR=
 
 # Jar files used by ptolemy/backtrack/eclipse
 PTBACKTRACK_ECLIPSE_JARS=
@@ -5263,11 +5282,21 @@ eclipseMessage="The backtracking facility requires Eclipse 3.2 or greater.
     facility in ptolemy.backtrack.
     Eclipse may be downloaded from http://www.eclipse.org/"
 
-if test ! -d "$PTII/ptolemy/backtrack/eclipse"; then
-    if test "${PTVERBOSE:-none}" != "none"; then { echo "$as_me:$LINENO: result: $PTII/ptolemy/backtrack/eclipse is not present,
-    so we need not find Eclipse." >&5
+if test ! -d "$PTII/ptolemy/backtrack/eclipse" -o "x$ECLIPSE_CLASSPATHENTRY_PDE_REQUIREDPLUGINS" == "x"; then
+    if test ! -d "$PTII/ptolemy/backtrack/eclipse"; then
+        if test "${PTVERBOSE:-none}" != "none"; then { echo "$as_me:$LINENO: result: $PTII/ptolemy/backtrack/eclipse is not present,
+	so we need not find Eclipse." >&5
 echo "${ECHO_T}$PTII/ptolemy/backtrack/eclipse is not present,
-    so we need not find Eclipse." >&6; }; fi
+	so we need not find Eclipse." >&6; }; fi
+    fi
+    if test "x$ECLIPSE_CLASSPATHENTRY_PDE_REQUIREDPLUGINS" == "x"; then
+	if test "${PTVERBOSE:-none}" != "none"; then { echo "$as_me:$LINENO: result: You are running under Mac OS X, and backtracking
+    is not currently supported.  See
+    http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Mac" >&5
+echo "${ECHO_T}You are running under Mac OS X, and backtracking
+    is not currently supported.  See
+    http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Mac" >&6; }; fi
+    fi
 else
     if test ! "$HAS_GENERICS" = "yes"; then
         { echo "$as_me:$LINENO: WARNING: You are running Java $JVERSION, which does not
@@ -9738,6 +9767,12 @@ fi
 # used by C code generation in copernicus/c
 
 
+# Text for .classpath.  Under all platforms other than Mac OS X, this will be:
+# <classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+# Under Mac OS X, the plug-ins will not work in the project, see
+# http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Mac#EclipseProblems
+
+
 # Location of Eclipse, which is used by ptolemy/backtracking
 
 
@@ -10966,6 +11001,7 @@ CHIC_DIR!$CHIC_DIR$ac_delim
 CLASSPATHSEPARATOR!$CLASSPATHSEPARATOR$ac_delim
 COLT_DIR!$COLT_DIR$ac_delim
 CMKIT_DIR!$CMKIT_DIR$ac_delim
+ECLIPSE_CLASSPATHENTRY_PDE_REQUIREDPLUGINS!$ECLIPSE_CLASSPATHENTRY_PDE_REQUIREDPLUGINS$ac_delim
 ECLIPSE_DIR!$ECLIPSE_DIR$ac_delim
 GC_INCLUDE_DIR!$GC_INCLUDE_DIR$ac_delim
 GC_LD_DIRECTIVE!$GC_LD_DIRECTIVE$ac_delim
@@ -10995,7 +11031,6 @@ JYTHON_DIR!$JYTHON_DIR$ac_delim
 JXTA_DIR!$JXTA_DIR$ac_delim
 KVM_CLASSES!$KVM_CLASSES$ac_delim
 KVM_DIR!$KVM_DIR$ac_delim
-LEJOS_DIR!$LEJOS_DIR$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -11037,6 +11072,7 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+LEJOS_DIR!$LEJOS_DIR$ac_delim
 MAJOR_OS_NAME!$MAJOR_OS_NAME$ac_delim
 MATLAB_DIR!$MATLAB_DIR$ac_delim
 MATLAB_LIBDIR!$MATLAB_LIBDIR$ac_delim
@@ -11133,7 +11169,6 @@ PTX10_DIR!$PTX10_DIR$ac_delim
 PTX10_PACKAGES!$PTX10_PACKAGES$ac_delim
 PTII_LOCALURL!$PTII_LOCALURL$ac_delim
 QTJAVA_ZIP!$QTJAVA_ZIP$ac_delim
-RXTX_JAR!$RXTX_JAR$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -11175,6 +11210,7 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+RXTX_JAR!$RXTX_JAR$ac_delim
 RXTX_PRESENT!$RXTX_PRESENT$ac_delim
 SOOT_CLASSES!$SOOT_CLASSES$ac_delim
 SOOT_DIR!$SOOT_DIR$ac_delim
@@ -11193,7 +11229,7 @@ LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 16; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 17; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5
