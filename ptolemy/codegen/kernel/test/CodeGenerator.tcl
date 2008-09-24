@@ -255,5 +255,7 @@ Options that take values:
  -<parameter name>   <parameter value>
 
 Boolean flags:
- -help -version
+ -help
+ -version
+
 } {java.lang.Exception: Failed to parse "-version"} Version}
