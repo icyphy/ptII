@@ -332,10 +332,13 @@ Options that take values:
  -<parameter name> <parameter value>
 
 Boolean flags:
- -help -test -version}
+ -help
+ -test
+ -version
+}
 
 
-test StringUtilities-6.1 {objectToSourceFileName} {
+test StringUtilities-6.1b {objectToSourceFileName} {
     set messageHandler [java::new ptolemy.util.MessageHandler]
     java::call ptolemy.util.StringUtilities objectToSourceFileName $messageHandler
 } {ptolemy/util/MessageHandler.java}

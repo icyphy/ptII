@@ -1029,15 +1029,22 @@ public class StringUtilities {
         int i;
 
         for (i = 0; i < commandOptions.length; i++) {
-            result.append(" " + commandOptions[i][0] + " "
-                    + commandOptions[i][1] + "\n");
+            result.append(" " + commandOptions[i][0]);
+	    if (commandOptions[i][1].length() > 0) {
+		result.append(" " + commandOptions[i][1]);
+	    }
+	    result.append("\n");
         }
 
         result.append("\nBoolean flags:\n");
 
         for (i = 0; i < commandFlagsWithDescriptions.length; i++) {
-            result.append(" " + commandFlagsWithDescriptions[i][0] + "\t"
-			  + commandFlagsWithDescriptions[i][1] + "\n");
+            result.append(" " + commandFlagsWithDescriptions[i][0]);
+	    if (commandFlagsWithDescriptions[i][1].length() > 0) {
+		result.append("\t"
+			      + commandFlagsWithDescriptions[i][1]);
+	    }
+	    result.append("\n");
         }
 
         return result.toString();
