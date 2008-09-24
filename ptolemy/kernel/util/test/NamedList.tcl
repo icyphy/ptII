@@ -130,7 +130,8 @@ test NamedList-3.1.5 {Test append with duplicate names} {
     $namedMap put $n1a [$n1a getFullName]
 
     list "$errMsg \n $errMsg2"
-} {}
+} {{ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "n1" into a container that already contains an object with that name. 
+ ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "n1" into a container that already contains an object with that name.}}
 
 ######################################################################
 ####
