@@ -1291,8 +1291,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  @return The top-level composite entity of the Ptolemy II model, or
      *   null if the file is not recognized as a MoML file.
      *  @exception Exception If the parser fails.
-     *  @deprecated Use parse(URL base, String systemID, InputStream input) for better
-     *  error messages.
+     *  @deprecated Use {@link #parse(URL base, String systemID, InputStream input) 
+     *  for better error messages that include the name of the file being
+     *  read.
      */
     public NamedObj parse(URL base, InputStream input) throws Exception {
         return parse(base, new InputStreamReader(input));
@@ -1306,7 +1307,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  using data from the stream.
      *  @param base The base URL for relative references, or null if
      *   not known.
-     *  @param systemId The URI of the document.
+     *  @param systemID The URI of the document.
      *  @param input The stream from which to read XML.
      *  @return The top-level composite entity of the Ptolemy II model, or
      *   null if the file is not recognized as a MoML file.
@@ -1328,8 +1329,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  @return The top-level composite entity of the Ptolemy II model, or
      *   null if the file is not recognized as a MoML file.
      *  @exception Exception If the parser fails.
-     *  @deprecated Use parse(URL base, String systemID, Reader reader) for better
-     *  error messages.
+     *  @deprecated Use {@link #parse(URL base, String systemID, Reader reader)}
+     *  for better error messages that include the name of the file being
+     *  read.
      */
     public NamedObj parse(URL base, Reader reader) throws Exception {
 	return parse(base, null, reader);
@@ -1343,7 +1345,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  using data from the stream.
      *  @param base The base URL for relative references, or null if
      *   not known.
-     *  @param systemId The URI of the document.
+     *  @param systemID The URI of the document.
      *  @param reader The reader from which to read XML.
      *  @return The top-level composite entity of the Ptolemy II model, or
      *   null if the file is not recognized as a MoML file.
