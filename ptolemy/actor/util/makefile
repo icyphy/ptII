@@ -67,7 +67,7 @@ JSRCS = \
 	CausalityInterface.java \
 	CausalityInterfaceForComposites.java \
 	ConstVariableModelAnalysis.java \
-	CQComparator.java \ 
+	CQComparator.java \
 	Dependency.java \
 	DefaultCausalityInterface.java \
 	DelayCausalityInterface.java \
