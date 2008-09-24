@@ -603,6 +603,19 @@ ECLIPSE_EXCLUDING_SRC=""
 # Jar files to include in the Eclipse library
 #ECLIPSE_CLASSPATHENTRY_LIBS='<classpathentry kind="lib" path="lib/diva.jar"/>'
 
+
+case "`uname -s`" in
+     Darwin) 
+         AC_MSG_WARN([Under Eclipse on Mac OS X, you must use Java 1.6
+    within Eclipse. Under Mac OS X, Java 1.5.0_13 will fail to run
+    within Eclipse, but _will_ work outside of Eclipse. Note that the
+    backtracking and Eclipse tools will _not_ work on the Mac.
+    For details, see http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Mac]) 
+     	;;
+     *)  ECLIPSE_CLASSPATHENTRY_PDE_REQUIREDPLUGINS = '<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>'
+	;;
+esac
+
 #####################################################################
 #####################################################################
 #       Below here we look for various packages.
@@ -1105,7 +1118,7 @@ PTBACKTRACK_DIR=backtrack
 # PTBACKTRACK_ECLIPSE_DIR is set to eclipse and used in
 # $PTII/ptolemy/backtrack/makefile if Eclipse was found
 # and the jar files were found
-urePTBACKTRACK_ECLIPSE_DIR=
+PTBACKTRACK_ECLIPSE_DIR=
 
 # Jar files used by ptolemy/backtrack/eclipse
 PTBACKTRACK_ECLIPSE_JARS=
@@ -1118,9 +1131,16 @@ eclipseMessage="The backtracking facility requires Eclipse 3.2 or greater.
     facility in ptolemy.backtrack.
     Eclipse may be downloaded from http://www.eclipse.org/"
 
-if test ! -d "$PTII/ptolemy/backtrack/eclipse"; then
-    PT_MSG_STATUS([$PTII/ptolemy/backtrack/eclipse is not present,
-    so we need not find Eclipse.])
+if test ! -d "$PTII/ptolemy/backtrack/eclipse" -o "x$ECLIPSE_CLASSPATHENTRY_PDE_REQUIREDPLUGINS" == "x"; then
+    if test ! -d "$PTII/ptolemy/backtrack/eclipse"; then
+        PT_MSG_STATUS([$PTII/ptolemy/backtrack/eclipse is not present,
+	so we need not find Eclipse.])
+    fi
+    if test "x$ECLIPSE_CLASSPATHENTRY_PDE_REQUIREDPLUGINS" == "x"; then
+	PT_MSG_STATUS([You are running under Mac OS X, and backtracking
+    is not currently supported.  See 
+    http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Mac])
+    fi  
 else
     if test ! "$HAS_GENERICS" = "yes"; then 
         AC_MSG_WARN([You are running Java $JVERSION, which does not
@@ -3696,6 +3716,12 @@ AC_SUBST(COLT_DIR)
 # Directory that contains the CaffeineMark Java Benchmark kit
 # used by C code generation in copernicus/c
 AC_SUBST(CMKIT_DIR)
+
+# Text for .classpath.  Under all platforms other than Mac OS X, this will be:
+# <classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+# Under Mac OS X, the plug-ins will not work in the project, see
+# http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Mac#EclipseProblems
+AC_SUBST(ECLIPSE_CLASSPATHENTRY_PDE_REQUIREDPLUGINS)
 
 # Location of Eclipse, which is used by ptolemy/backtracking
 AC_SUBST(ECLIPSE_DIR)
