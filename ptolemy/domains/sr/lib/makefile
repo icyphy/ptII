@@ -56,13 +56,11 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 JSRCS = \
 	Absent.java \
 	AbsentToken.java \
-	ButtonTime.java \
 	Current.java \
 	Default.java \
 	EnabledComposite.java \
 	InstantaneousDialogGenerator.java \
 	NonStrictDelay.java \
-	NonStrictDisplay.java \
 	NonStrictLogicFunction.java \
 	NonStrictThreeBitAdder.java \
 	Pre.java \
@@ -97,7 +95,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 
 all: jclass
-install: jclass $(PTCLASSJAR)
+install: jclass jars
 
 
 # Get the rest of the rules
