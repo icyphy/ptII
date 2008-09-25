@@ -602,21 +602,25 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                         
                         // We will now add all links from and to the ports of the actor
                         //      as selected links since we don't want to lose links and relations when creating
-                        //      hierarchies                                                
-                        for (IOPort port : (List<IOPort>) ((Entity) actual).portList())
-                        {                                                    
-                            Iterator<?> outEdges =  graphModel.outEdges(port);
-                            while (outEdges.hasNext()) {
-                                Object obj = outEdges.next();
-                                selectedEdges.add(obj);
-                                selection.add(controller.getFigure(obj));
+                        //      hierarchies
+
+                        if (actual instanceof Entity)
+                        {
+                            for (IOPort port : (List<IOPort>) ((Entity) actual).portList())
+                            {                                                    
+                                Iterator<?> outEdges =  graphModel.outEdges(port);
+                                while (outEdges.hasNext()) {
+                                    Object obj = outEdges.next();
+                                    selectedEdges.add(obj);
+                                    selection.add(controller.getFigure(obj));
+                                }
+                                Iterator<?> inEdges =  graphModel.inEdges(port);
+                                while (inEdges.hasNext()) {
+                                    Object obj = inEdges.next();
+                                    selectedEdges.add(obj);
+                                    selection.add(controller.getFigure(obj));
+                                }                        
                             }
-                            Iterator<?> inEdges =  graphModel.inEdges(port);
-                            while (inEdges.hasNext()) {
-                                Object obj = inEdges.next();
-                                selectedEdges.add(obj);
-                                selection.add(controller.getFigure(obj));
-                            }                        
                         }
                     } else if (graphModel.isEdge(userObject)) {
                         selectedEdges.add(userObject);
