@@ -108,9 +108,11 @@ all_shared:
 # PtolemyII-wide test definitions.
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
+../launcher/launcher:
+	(cd ../launcher; $(MAKE))
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
+test_jsimple: ../launcher/launcher $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
 	ls -l $(ROOT)/util/testsuite
 	@echo "Put . in the path so we can find the shared libraries"
 	@echo "Put ., /usr/local an libjvm.so in LD_LIBRARY_PATH"
@@ -129,7 +131,7 @@ SHARED_LIBRARY = $(PTJNI_SHAREDLIBRARY_PREFIX)$(SHAREDBASE).$(PTJNI_SHAREDLIBRAR
 
 shared: $(SHARED_LIBRARY)
 $(SHARED_LIBRARY): $(SHAREDBASE).c $(SHAREDBASE).h makefile
-	$(PTCC) -shared $(PTJNI_SHAREDLIBRARY_LDFLAG) \
+	$(PTCC) $(PTJNI_GCC_SHARED_FLAG) $(PTJNI_SHAREDLIBRARY_LDFLAG) \
 		-o $@ \
 		$(SHAREDBASE).c
 
