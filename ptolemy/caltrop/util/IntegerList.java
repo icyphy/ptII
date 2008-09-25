@@ -31,6 +31,8 @@ package ptolemy.caltrop.util;
 
 import java.util.AbstractList;
 
+import ptolemy.data.IntToken;
+
 import caltrop.interpreter.Context;
 
 //////////////////////////////////////////////////////////////////////////
@@ -44,7 +46,7 @@ import caltrop.interpreter.Context;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class IntegerList extends AbstractList<Integer> {
+public class IntegerList extends AbstractList<IntToken> {
     /** Construct a list of Integers IntegerList object.
      *
      * @param context  a Caltrop interpreter context.
@@ -67,13 +69,13 @@ public class IntegerList extends AbstractList<Integer> {
      *  n+a must be less than or equal to b.
      *  @return the integer at slot a+n.
      */
-    public Integer get(int n) {
+    public IntToken get(int n) {
         if ((_a + n) > _b) {
             throw new IndexOutOfBoundsException(_a + " + " + n
                     + " is greater than " + _b);
         }
 
-        return (Integer) _context.createInteger(_a + n);
+        return (IntToken) _context.createInteger(_a + n);
     }
 
     /** The size of the list.
