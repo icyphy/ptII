@@ -158,6 +158,20 @@ is "1.4" or "4.0".
  <li> Click Apply. 
 </ol>
 
+Note the following restrictions about versions of Java and Eclipse
+under Mac OS X:
+<menu>
+<li>Eclipse 3.4.0 will not start up for me under Java 1.6.0_05 on the Mac.
+  This means that if "java -version" returns 1.6.0_05, then Eclipse
+  failed to start for me.
+<li> Within Eclipse 3.4.0 which was started with Java 1.5.0_13, you can
+  compile and run your project with either Java 1.5.0_13 or
+  Java 1.6.0_13.
+<li>Eclipse 3.4.0 Java Projects that include Eclipse Plug-ins don't work
+  under either Java 1.5.0_13 or Java 1.6.0_05 on the Mac
+</menu>
+For details, see <a href="http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Mac"><code>http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Mac</code>
+
 <li> Eclipse has very good compiler error/warning.  One of the
 warnings complains if a Serializable class does not have
 serialVersionUID declared.  Since this warning is only useful
