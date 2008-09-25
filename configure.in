@@ -609,8 +609,13 @@ case "`uname -s`" in
          AC_MSG_WARN([Under Eclipse on Mac OS X, you must use Java 1.6
     within Eclipse. Under Mac OS X, Java 1.5.0_13 will fail to run
     within Eclipse, but _will_ work outside of Eclipse. Note that the
-    backtracking and Eclipse tools will _not_ work on the Mac.
+    backtracking and other Eclipse code will _not_ work on the Mac.
     For details, see http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Mac]) 
+        if test -d ptolemy/apps/eclipse/awt/; then
+	    AC_MSG_WARN([Under Eclipse on Mac OS X, ptolemy/apps/eclipse/awt
+    is not supported.])
+	    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/apps/eclipse/awt/"
+        fi	    
      	;;
      *)  ECLIPSE_CLASSPATHENTRY_PDE_REQUIREDPLUGINS = '<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>'
 	;;
