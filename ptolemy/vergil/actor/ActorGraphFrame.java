@@ -426,17 +426,18 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
 
                                     director.addDebugListener(_controller);
                                     _listeningTo = director;
+                                } else {
+                                    MessageHandler
+                                            .error("Cannot find the director. Possibly this "
+                                                    + "is because this is a class, not an "
+                                                    + "instance.");
                                 }
+                                
                             } catch (NumberFormatException ex) {
                                 MessageHandler.error(
                                         "Invalid time, which is required "
                                                 + "to be an integer", ex);
                             }
-                        } else {
-                            MessageHandler
-                                    .error("Cannot find the director. Possibly this "
-                                            + "is because this is a class, not an "
-                                            + "instance.");
                         }
                     } else {
                         MessageHandler
