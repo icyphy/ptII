@@ -58,6 +58,7 @@ import java.awt.print.PrinterException;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -541,10 +542,13 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      */
     public void createHierarchy() {
         GraphController controller = _getGraphController();
-        SelectionModel model = controller.getSelectionModel();
+        SelectionModel model = controller.getSelectionModel();        
         AbstractBasicGraphModel graphModel = (AbstractBasicGraphModel) controller
                 .getGraphModel();
-        Object[] selection = model.getSelectionAsArray();
+        
+        List<Object> origSelection = Arrays.asList(model.getSelectionAsArray());
+        HashSet<Object> selection = new HashSet<Object>();
+        selection.addAll(origSelection);        
 
         // A set, because some objects may represent the same
         // ptolemy object.
@@ -556,7 +560,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         StringBuffer extConnections = new StringBuffer();
         StringBuffer intRelations = new StringBuffer();
         StringBuffer intConnections = new StringBuffer();
-
+        
+        HashSet<Object> selectedEdges = new HashSet<Object>();
+        
         // First get all the nodes.
         try {
             NamedObj container = (NamedObj) graphModel.getRoot();
@@ -567,23 +573,25 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 throw new InternalErrorException(
                         "Cannot create hierarchy if the container is not a CompositeEntity.");
             }
+            
+            CompositeEntity compositeActor = (CompositeEntity) container;
 
             String compositeActorName = container.uniqueName("CompositeActor");
 
             double[] location = new double[2];
             boolean gotLocation = false;
 
-            for (int i = 0; i < selection.length; i++) {
-                if (selection[i] instanceof Figure) {
+            for (Object selectedItem : origSelection) {
+                if (selectedItem instanceof Figure) {
                     if (!gotLocation) {
-                        location[0] = ((Figure) selection[i]).getBounds()
+                        location[0] = ((Figure) selectedItem).getBounds()
                                 .getCenterX();
-                        location[1] = ((Figure) selection[i]).getBounds()
+                        location[1] = ((Figure) selectedItem).getBounds()
                                 .getCenterY();
                         gotLocation = true;
                     }
 
-                    Object userObject = ((Figure) selection[i]).getUserObject();
+                    Object userObject = ((Figure) selectedItem).getUserObject();
 
                     if (graphModel.isNode(userObject)) {
                         nodeSet.add(userObject);
@@ -591,235 +599,254 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                         NamedObj actual = (NamedObj) graphModel
                                 .getSemanticObject(userObject);
                         namedObjSet.add(actual);
-                    }
+                        
+                        // We will now add all links from and to the ports of the actor
+                        //      as selected links since we don't want to lose links and relations when creating
+                        //      hierarchies                                                
+                        for (IOPort port : (List<IOPort>) ((Entity) actual).portList())
+                        {                                                    
+                            Iterator<?> outEdges =  graphModel.outEdges(port);
+                            while (outEdges.hasNext()) {
+                                Object obj = outEdges.next();
+                                selectedEdges.add(obj);
+                                selection.add(controller.getFigure(obj));
+                            }
+                            Iterator<?> inEdges =  graphModel.inEdges(port);
+                            while (inEdges.hasNext()) {
+                                Object obj = inEdges.next();
+                                selectedEdges.add(obj);
+                                selection.add(controller.getFigure(obj));
+                            }                        
+                        }
+                    } else if (graphModel.isEdge(userObject)) {
+                        selectedEdges.add(userObject);
+                    }                    
                 }
             }
 
-            for (int i = 0; i < selection.length; i++) {
-                if (selection[i] instanceof Figure) {
-                    Object userObject = ((Figure) selection[i]).getUserObject();
+            int i = 0;
+            for (Object userObject : selectedEdges) {
+                assert graphModel.isEdge(userObject);
+                // Check to see if the head and tail are both being
+                // selected.
+                Object head = graphModel.getHead(userObject);
 
-                    if (graphModel.isEdge(userObject)) {
-                        // Check to see if the head and tail are both being
-                        // selected.
-                        Object head = graphModel.getHead(userObject);
+                // System.out.println("head:" +((NamedObj)head).getName());
+                Object tail = graphModel.getTail(userObject);
 
-                        // System.out.println("head:" +((NamedObj)head).getName());
-                        Object tail = graphModel.getTail(userObject);
+                // System.out.println("tail:" +((NamedObj)tail).getName());
+                boolean headOK = nodeSet.contains(head);
+                boolean tailOK = nodeSet.contains(tail);
+                Iterator<Object> objects = nodeSet.iterator();
 
-                        // System.out.println("tail:" +((NamedObj)tail).getName());
-                        boolean headOK = nodeSet.contains(head);
-                        boolean tailOK = nodeSet.contains(tail);
-                        Iterator<Object> objects = nodeSet.iterator();
+                while (!(headOK && tailOK) && objects.hasNext()) {
+                    Object object = objects.next();
 
-                        while (!(headOK && tailOK) && objects.hasNext()) {
-                            Object object = objects.next();
+                    if (!headOK
+                            && GraphUtilities.isContainedNode(head,
+                                    object, graphModel)) {
+                        headOK = true;
+                    }
 
-                            if (!headOK
-                                    && GraphUtilities.isContainedNode(head,
-                                            object, graphModel)) {
-                                headOK = true;
-                            }
+                    if (!tailOK
+                            && GraphUtilities.isContainedNode(tail,
+                                    object, graphModel)) {
+                        tailOK = true;
+                    }
+                }
+                
+                // For the edges at the boundary.
+                if ((!headOK && tailOK) || (headOK && !tailOK)) {
 
-                            if (!tailOK
-                                    && GraphUtilities.isContainedNode(tail,
-                                            object, graphModel)) {
-                                tailOK = true;
-                            }
-                        }
-                        
-                        // For the edges at the boundary.
-                        if ((!headOK && tailOK) || (headOK && !tailOK)) {
+                    LinkElementProperties headProperties
+                        = LinkElementProperties.extractLinkProperties(head);
+                    LinkElementProperties tailProperties
+                        = LinkElementProperties.extractLinkProperties(tail);
+                   
+                    
+                    if (headProperties.port == null && tailProperties.port != null) {
+                        //Swap head and tail
+                        LinkElementProperties temp = headProperties;
+                        headProperties = tailProperties;
+                        tailProperties = temp;                                
+                    }
+                    
+                    IORelation relation = null;
+                    
+                    boolean duplicateRelation = true;
+                    if (headProperties.type == ElementInLinkType.RELATION) {
+                        relation = (IORelation) graphModel.getSemanticObject(headProperties.element);
+                        duplicateRelation = false;
+                    } else if (tailProperties.type == ElementInLinkType.RELATION) {
+                        relation = (IORelation) graphModel.getSemanticObject(tailProperties.element);
+                        duplicateRelation = false;
+                    } else {                                
+                        relation = (IORelation) graphModel.getSemanticObject(userObject);
+                        duplicateRelation = true;
+                    }
+                    
+                    if (headProperties.port != null) {                                                       
+                        ComponentEntity entity = (ComponentEntity) headProperties.port
+                                .getContainer();
+                        String portName = "port_" + i;
+                        boolean isInput = headProperties.port.isInput();
+                        boolean isOutput = headProperties.port.isOutput();
+                        newPorts
+                                .append("<port name=\""
+                                        + portName
+                                        + "\" class=\"ptolemy.actor.TypedIOPort"
+                                        + "\">\n");
 
-                            LinkElementProperties headProperties
-                                = LinkElementProperties.extractLinkProperties(head);
-                            LinkElementProperties tailProperties
-                                = LinkElementProperties.extractLinkProperties(tail);
-                           
-                            
-                            if (headProperties.port == null && tailProperties.port != null) {
-                                //Swap head and tail
-                                LinkElementProperties temp = headProperties;
-                                headProperties = tailProperties;
-                                tailProperties = temp;                                
-                            }
-                            
-                            IORelation relation = null;
-                            
-                            boolean duplicateRelation = true;
-                            if (headProperties.type == ElementInLinkType.RELATION) {
-                                relation = (IORelation) graphModel.getSemanticObject(headProperties.element);
-                                duplicateRelation = false;
-                            } else if (tailProperties.type == ElementInLinkType.RELATION) {
-                                relation = (IORelation) graphModel.getSemanticObject(tailProperties.element);
-                                duplicateRelation = false;
-                            } else {                                
-                                relation = (IORelation) graphModel.getSemanticObject(userObject);
-                                duplicateRelation = true;
-                            }
-                            
-                            if (headProperties.port != null) {                                                       
-                                ComponentEntity entity = (ComponentEntity) headProperties.port
-                                        .getContainer();
-                                String portName = "port_" + i;
-                                boolean isInput = headProperties.port.isInput();
-                                boolean isOutput = headProperties.port.isOutput();
+                        if (namedObjSet.contains(entity)) {
+                            // The port is inside the hierarchy.
+                            // The relation must be outside.
+                            // Create composite port.
+                            if (isInput) {
                                 newPorts
-                                        .append("<port name=\""
-                                                + portName
-                                                + "\" class=\"ptolemy.actor.TypedIOPort"
-                                                + "\">\n");
+                                        .append("<property name=\"input\"/>");
+                            }
 
-                                if (namedObjSet.contains(entity)) {
-                                    // The port is inside the hierarchy.
-                                    // The relation must be outside.
-                                    // Create composite port.
-                                    if (isInput) {
-                                        newPorts
-                                                .append("<property name=\"input\"/>");
-                                    }
+                            if (isOutput) {
+                                newPorts
+                                        .append("<property name=\"output\"/>");
+                            }
 
-                                    if (isOutput) {
-                                        newPorts
-                                                .append("<property name=\"output\"/>");
-                                    }
+                            newPorts.append("\n</port>\n");
 
-                                    newPorts.append("\n</port>\n");
+                            // Create internal relation and links.
+                            // Note we can only partially reuse
+                            // the relation name, one original relation
+                            // can be two internal relations.
+                            String relationName = relation.getName()
+                                    + "_" + i;
+                            intRelations
+                                    .append("<relation name=\""
+                                            + relationName
+                                            + "\" class=\""
+                                            + "ptolemy.actor.TypedIORelation\"/>\n");
+                            intConnections.append("<link port=\""
+                                    + entity.getName() + "."
+                                    + headProperties.port.getName() + "\" relation=\""
+                                    + relationName + "\"/>\n");
+                            intConnections.append("<link port=\""
+                                    + portName + "\" relation=\""
+                                    + relationName + "\"/>\n");
 
-                                    // Create internal relation and links.
-                                    // Note we can only partially reuse
-                                    // the relation name, one original relation
-                                    // can be two internal relations.
-                                    String relationName = relation.getName()
-                                            + "_" + i;
-                                    intRelations
-                                            .append("<relation name=\""
-                                                    + relationName
-                                                    + "\" class=\""
-                                                    + "ptolemy.actor.TypedIORelation\"/>\n");
-                                    intConnections.append("<link port=\""
-                                            + entity.getName() + "."
-                                            + headProperties.port.getName() + "\" relation=\""
-                                            + relationName + "\"/>\n");
-                                    intConnections.append("<link port=\""
-                                            + portName + "\" relation=\""
-                                            + relationName + "\"/>\n");
+                            // Create external links.
+                            if (duplicateRelation) {
+                                extRelations
+                                        .append("<relation name=\""
+                                                + relation.getName()
+                                                + "\" class=\""
+                                                + "ptolemy.actor.TypedIORelation\"/>\n");
 
-                                    // Create external links.
-                                    if (duplicateRelation) {
-                                        extRelations
-                                                .append("<relation name=\""
-                                                        + relation.getName()
-                                                        + "\" class=\""
-                                                        + "ptolemy.actor.TypedIORelation\"/>\n");
+                                ComponentEntity otherEntity = (ComponentEntity) tailProperties.port
+                                        .getContainer();
 
-                                        ComponentEntity otherEntity = (ComponentEntity) tailProperties.port
-                                                .getContainer();
-
-                                        if (otherEntity == container) {
-                                            // This is a boundary port at a higher level.
-                                            extConnections
-                                                    .append("<link port=\""
-                                                            + tailProperties.port
-                                                                    .getName()
-                                                            + "\" relation=\""
-                                                            + relation
-                                                                    .getName()
-                                                            + "\"/>\n");
-                                        } else {
-                                            extConnections
-                                                    .append("<link port=\""
-                                                            + otherEntity
-                                                                    .getName()
-                                                            + "."
-                                                            + tailProperties.port
-                                                                    .getName()
-                                                            + "\" relation=\""
-                                                            + relation
-                                                                    .getName()
-                                                            + "\"/>\n");
-                                        }
-                                    }
-
-                                    extConnections.append("<link port=\""
-                                            + compositeActorName + "."
-                                            + portName + "\" relation=\""
-                                            + relation.getName() + "\"/>\n");
+                                if (otherEntity == container) {
+                                    // This is a boundary port at a higher level.
+                                    extConnections
+                                            .append("<link port=\""
+                                                    + tailProperties.port
+                                                            .getName()
+                                                    + "\" relation=\""
+                                                    + relation
+                                                            .getName()
+                                                    + "\"/>\n");
                                 } else {
-                                    // The port is outside the hierarchy.
-                                    // The relation must be inside.
-                                    if ((isInput && headProperties.type == ElementInLinkType.PORT_IN_ACTOR) || 
-                                            (isOutput && headProperties.type == ElementInLinkType.STANDALONE_PORT)){
-                                        newPorts
-                                                .append("<property name=\"output\"/>");
-                                    }
-
-                                    if ((isOutput && headProperties.type == ElementInLinkType.PORT_IN_ACTOR) || 
-                                            (isInput && headProperties.type == ElementInLinkType.STANDALONE_PORT)){                                        
-                                        newPorts
-                                                .append("<property name=\"input\"/>");
-                                    }
-
-                                    newPorts.append("\n</port>\n");
-
-                                    String relationName = relation.getName()
-                                            + "_" + i;
-                                    extRelations
-                                            .append("<relation name=\""
-                                                    + relationName
-                                                    + "\" class=\""
-                                                    + "ptolemy.actor.TypedIORelation\"/>\n");
-                                    String entityPrefix = "";
-                                    if (getModel() !=  entity) {
-                                        entityPrefix = entity.getName() + ".";                                        
-                                    }
-                                    extConnections.append("<link port=\""
-                                            + entityPrefix
-                                            + headProperties.port.getName() + "\" relation=\""
-                                            + relationName + "\"/>\n");
-                                    extConnections.append("<link port=\""
-                                            + compositeActorName + "."
-                                            + portName + "\" relation=\""
-                                            + relationName + "\"/>\n");
-
-                                    // Create external links.
-                                    if (duplicateRelation) {
-                                        intRelations
-                                                .append("<relation name=\""
-                                                        + relation.getName()
-                                                        + "\" class=\""
-                                                        + "ptolemy.actor.TypedIORelation\"/>\n");
-
-                                        ComponentEntity otherEntity = (ComponentEntity) tailProperties.port
-                                                .getContainer();
-                                        
-                                        String otherEntityPrefix = "";
-                                        if (getModel() !=  otherEntity) {
-                                            otherEntityPrefix = otherEntity.getName() + ".";                                        
-                                        }
-                                        
-                                        intConnections
-                                                .append("<link port=\""
-                                                        + otherEntityPrefix
-                                                        + tailProperties.port.getName()
-                                                        + "\" relation=\""
-                                                        + relation.getName()
-                                                        + "\"/>\n");
-                                    }
-
-                                    intConnections.append("<link port=\""
-                                            + portName + "\" relation=\""
-                                            + relation.getName() + "\"/>\n");
+                                    extConnections
+                                            .append("<link port=\""
+                                                    + otherEntity
+                                                            .getName()
+                                                    + "."
+                                                    + tailProperties.port
+                                                            .getName()
+                                                    + "\" relation=\""
+                                                    + relation
+                                                            .getName()
+                                                    + "\"/>\n");
                                 }
                             }
-                            //                        } else if (!headOK && !tailOK) {
-                            //                            // We only selected an edge. Build one input
-                            //                            // port, one output port for it, and build
-                            //                            // a direct connection.
+
+                            extConnections.append("<link port=\""
+                                    + compositeActorName + "."
+                                    + portName + "\" relation=\""
+                                    + relation.getName() + "\"/>\n");
+                        } else {
+                            // The port is outside the hierarchy.
+                            // The relation must be inside.
+                            if ((isInput && headProperties.type == ElementInLinkType.PORT_IN_ACTOR) || 
+                                    (isOutput && headProperties.type == ElementInLinkType.STANDALONE_PORT)){
+                                newPorts
+                                        .append("<property name=\"output\"/>");
+                            }
+
+                            if ((isOutput && headProperties.type == ElementInLinkType.PORT_IN_ACTOR) || 
+                                    (isInput && headProperties.type == ElementInLinkType.STANDALONE_PORT)){                                        
+                                newPorts
+                                        .append("<property name=\"input\"/>");
+                            }
+
+                            newPorts.append("\n</port>\n");
+
+                            String relationName = relation.getName()
+                                    + "_" + i;
+                            extRelations
+                                    .append("<relation name=\""
+                                            + relationName
+                                            + "\" class=\""
+                                            + "ptolemy.actor.TypedIORelation\"/>\n");
+                            String entityPrefix = "";
+                            if (getModel() !=  entity) {
+                                entityPrefix = entity.getName() + ".";                                        
+                            }
+                            extConnections.append("<link port=\""
+                                    + entityPrefix
+                                    + headProperties.port.getName() + "\" relation=\""
+                                    + relationName + "\"/>\n");
+                            extConnections.append("<link port=\""
+                                    + compositeActorName + "."
+                                    + portName + "\" relation=\""
+                                    + relationName + "\"/>\n");
+
+                            // Create external links.
+                            if (duplicateRelation) {
+                                intRelations
+                                        .append("<relation name=\""
+                                                + relation.getName()
+                                                + "\" class=\""
+                                                + "ptolemy.actor.TypedIORelation\"/>\n");
+
+                                ComponentEntity otherEntity = (ComponentEntity) tailProperties.port
+                                        .getContainer();
+                                
+                                String otherEntityPrefix = "";
+                                if (getModel() !=  otherEntity) {
+                                    otherEntityPrefix = otherEntity.getName() + ".";                                        
+                                }
+                                
+                                intConnections
+                                        .append("<link port=\""
+                                                + otherEntityPrefix
+                                                + tailProperties.port.getName()
+                                                + "\" relation=\""
+                                                + relation.getName()
+                                                + "\"/>\n");
+                            }
+
+                            intConnections.append("<link port=\""
+                                    + portName + "\" relation=\""
+                                    + relation.getName() + "\"/>\n");
                         }
                     }
+                    //                        } else if (!headOK && !tailOK) {
+                    //                            // We only selected an edge. Build one input
+                    //                            // port, one output port for it, and build
+                    //                            // a direct connection.
                 }
+                ++i;
             }
+       
 
             // System.out.println(" new ports:" + newPorts);
 
@@ -851,8 +878,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                         "Getting data from clipboard failed.");
             }
 
-            // Generate the MoML to carry out the deletion.
-            moml.append(_deleteMoML(graphModel, selection, model));
+            // Generate the MoML to carry out the deletion.            
+
+            moml.append(_deleteMoML(graphModel, selection.toArray(new Object[]{}), model));
 
             moml.append("<entity name=\"" + compositeActorName
                     + "\" class=\"ptolemy.actor.TypedCompositeActor\">\n");
@@ -872,6 +900,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // External relations and connections.
             moml.append(extRelations);
             moml.append(extConnections);
+            
 
             moml.append("</group>\n");
 
@@ -882,8 +911,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             request.setUndoable(true);
 
             container.requestChange(request);
-            NamedObj newObject = ((CompositeEntity) container)
-                    .getEntity(compositeActorName);
+            NamedObj newObject = compositeActor.getEntity(compositeActorName);
             // Kepler wants a different icon.
             IconLoader _iconLoader = MoMLParser.getIconLoader();
             if (_iconLoader != null) {
@@ -1024,10 +1052,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             moml.append("<group>\n");
 
             // NOTE: this gives at iteration over locations.
-            Iterator nodes = model.nodes(composite);
+            Iterator<Location> nodes = model.nodes(composite);
 
             while (nodes.hasNext()) {
-                Location location = (Location) nodes.next();
+                Location location = nodes.next();
 
                 // Get the containing element
                 NamedObj element = location.getContainer();
@@ -1041,7 +1069,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 }
 
                 // Create the MoML, wrapping the location attribute
-                // in an element refering to the container
+                // in an element referring to the container
                 String containingElementName = element.getElementName();
                 moml.append("<" + containingElementName + " name=\""
                         + element.getName() + "\" >\n");
@@ -1448,7 +1476,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      * @param event The mouse wheel event.
      */
     public void mouseWheelMoved(MouseWheelEvent event) {
-        // Scrolling the wheel away from you zooms in. This is arbitary and
+        // Scrolling the wheel away from you zooms in. This is arbitrary and
         // should be configurable by the user.
         //
         // TODO: It would be nice to centre the zoom on where the
@@ -2308,6 +2336,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 elementPort = (IOPort) element;
                 elementType =  ElementInLinkType.PORT_IN_ACTOR;                         }
             else if (element instanceof Location) {
+                //FIXME Rodiers: it's weird that these Ports are as Locations in the Link
+                //      and not as IOPort. Is this a bug, or a (weird) design decision?
+                
                 //Either a port (not one of an actor) or a relation
                 NamedObj elementContainer = ((Location) element).getContainer();
                 if (elementContainer instanceof IOPort) {
@@ -2468,7 +2499,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             HashMap<Object, Object> map = new HashMap<Object, Object>();
 
             // Copy all the nodes for the graph.
-            for (Iterator i = model.nodes(origComposite); i.hasNext();) {
+            for (Iterator<?> i = model.nodes(origComposite); i.hasNext();) {
                 Object origNode = i.next();
 
                 if (target.isNodeVisible(origNode)) {
@@ -2487,7 +2518,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             }
 
             // Add all the edges.
-            Iterator i = GraphUtilities.partiallyContainedEdges(origComposite,
+            Iterator<?> i = GraphUtilities.partiallyContainedEdges(origComposite,
                     model);
 
             while (i.hasNext()) {
