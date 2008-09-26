@@ -55,6 +55,7 @@ import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.ExplicitChangeContext;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ModelScope;
 import ptolemy.data.expr.Parameter;
@@ -63,9 +64,11 @@ import ptolemy.data.expr.Variable;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.HasTypeConstraints;
+import ptolemy.data.type.ObjectType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.Typeable;
 import ptolemy.graph.Inequality;
+import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
@@ -143,7 +146,7 @@ import ptolemy.kernel.util.Workspace;
  transition is chosen, the refinement of its source state is not
  fired. A non-preemptive transition can only be chosen after the
  refinement of its source state is fired.
- 
+
  <p> By default, this actor has a conservative causality interface,
  implemented by the {@link DefaultCausalityInterface}, which declares
  that all outputs depend on all inputs. If, however, the enclosing
@@ -224,7 +227,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  set the <i>isInitialState</i> parameter of a State.
      */
     public StringAttribute initialStateName = null;
-    
+
     /** Indicate whether input/output dependencies can depend on the
      *  state. By default, this is false (the default), indicating that a conservative
      *  dependency is provided by the causality interface. Specifically,
@@ -236,7 +239,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  forces causality analysis to be redone. Note that this can be expensive.
      */
     public Parameter stateDependentCausality;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -459,7 +462,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 }
                 _causalityInterface = new DefaultCausalityInterface(this, defaultDependency);
                 _causalityInterfaceDirector = director;
-                return _causalityInterface;                
+                return _causalityInterface;
             }
         }
         boolean stateDependent = false;
@@ -743,7 +746,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  directly on all inputs.
      *  @return False if there is any output that does not
      *   depend directly on an input.
-     *  @exception IllegalActionException Thrown if causality interface 
+     *  @exception IllegalActionException Thrown if causality interface
      *  cannot be computed.
      */
     public boolean isStrict() throws IllegalActionException {
@@ -761,7 +764,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                     return false;
                 }
             } catch (IllegalActionException e) {
-                throw new InternalErrorException(e); 
+                throw new InternalErrorException(e);
             }
         }
         return true;
@@ -1034,13 +1037,13 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         }
         _setCurrentConnectionMap();
     }
-    
-    /** Set the last chosen transition. 
+
+    /** Set the last chosen transition.
      * @param transition The last chosen transition.
      */
     public void setLastChosenTransition(Transition transition) {
         // This method is used by the TDL director.
-    	_lastChosenTransition = transition;
+        _lastChosenTransition = transition;
     }
 
     /** Set the flag indicating whether we are at the start of
@@ -1186,7 +1189,19 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             if (result != null) {
                 return result.getToken();
             } else {
-                return null;
+                // If we still can't find a name, try to resolve it with
+                // ModelScope. This will look up the names of all states, as
+                // well as the names in refinements and those at higher levels
+                // of the model hierarchy.
+                // -- tfeng (09/26/2008)
+                NamedObj object = ModelScope.getScopedObject(FSMActor.this,
+                        name);
+                if (object instanceof Variable) {
+                    token = ((Variable) object).getToken();
+                } else if (object != null) {
+                    token = new ObjectToken(object, object.getClass());
+                }
+                return token;
             }
         }
 
@@ -1198,7 +1213,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
          *  @exception IllegalActionException If a value in the scope
          *  exists with the given name, but cannot be evaluated.
          */
-        public ptolemy.data.type.Type getType(String name)
+        public Type getType(String name)
                 throws IllegalActionException {
             // Check to see if this is something we refer to.
             Port port = (Port) _identifierToPort.get(name);
@@ -1225,7 +1240,20 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             if (result != null) {
                 return result.getType();
             } else {
-                return null;
+                // If we still can't find a name, try to resolve it with
+                // ModelScope. This will look up the names of all states, as
+                // well as the names in refinements and those at higher levels
+                // of the model hierarchy.
+                // -- tfeng (09/26/2008)
+                Type type = null;
+                NamedObj object = ModelScope.getScopedObject(FSMActor.this,
+                        name);
+                if (object instanceof Variable) {
+                    type = ((Variable) object).getType();
+                } else if (object != null) {
+                    type = new ObjectType(object, object.getClass());
+                }
+                return type;
             }
         }
 
@@ -1238,7 +1266,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
          *  @exception IllegalActionException If a value in the scope
          *  exists with the given name, but cannot be evaluated.
          */
-        public ptolemy.graph.InequalityTerm getTypeTerm(String name)
+        public InequalityTerm getTypeTerm(String name)
                 throws IllegalActionException {
             // Check to see if this is something we refer to.
             Port port = (Port) _identifierToPort.get(name);
@@ -1262,6 +1290,12 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         public Set identifierSet() {
             Set set = getAllScopedVariableNames(null, FSMActor.this);
             set.addAll(_identifierToPort.keySet());
+            // If we still can't find a name, try to resolve it with
+            // ModelScope. This will look up the names of all states, as
+            // well as the names in refinements and those at higher levels
+            // of the model hierarchy.
+            // -- tfeng (09/26/2008)
+            set.addAll(ModelScope.getAllScopedObjectNames(FSMActor.this));
             return set;
         }
     }
@@ -1767,7 +1801,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             stateDependentCausality = new Parameter(this, "stateDependentCausality");
             stateDependentCausality.setTypeEquals(BaseType.BOOLEAN);
             stateDependentCausality.setExpression("false");
-            
+
             initialStateName = new StringAttribute(this, "initialStateName");
             initialStateName.setExpression("");
             initialStateName.setVisibility(Settable.EXPERT);
@@ -1862,7 +1896,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  dependent.
      */
     private CausalityInterface _causalityInterface;
-    
+
     /** The causality interfaces by state, for the case
      *  where the causality interface is state dependent.
      */

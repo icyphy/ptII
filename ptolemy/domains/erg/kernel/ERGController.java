@@ -43,16 +43,10 @@ import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.BreakCausalityInterface;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
-import ptolemy.data.expr.ModelScope;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.ParserScope;
-import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.HasTypeConstraints;
-import ptolemy.data.type.ObjectType;
-import ptolemy.data.type.Type;
 import ptolemy.domains.erg.lib.SynchronizeToRealtime;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.domains.fsm.modal.ModalController;
@@ -63,7 +57,6 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.kernel.util.Workspace;
 
@@ -144,8 +137,6 @@ public class ERGController extends ModalController {
         ERGController controller = (ERGController) super.clone(workspace);
         controller._executiveDirector = null;
         controller._executiveDirectorVersion = -1;
-        controller._objectScope = null;
-        controller._objectScopeVersion = -1;
         return controller;
     }
 
@@ -239,24 +230,6 @@ public class ERGController extends ModalController {
      */
     public State getInitialState() {
         return null;
-    }
-
-    /** Return a scope object that has current values from input ports
-     *  of the containing ERG modal model in scope. This scope is used to
-     *  evaluate guard expressions and actions. This scope is also specialized
-     *  so that objects can be resolved and {@link ObjectToken} can be return
-     *  for them.
-     *
-     *  @return A scope object that has current values from input ports of
-     *  the containing ERG modal model in scope.
-     */
-    public ParserScope getPortScope() {
-        if (_objectScope == null || _objectScopeVersion != _workspace
-                .getVersion()) {
-            _objectScope = new ERGObjectScope();
-            _objectScopeVersion = _workspace.getVersion();
-        }
-        return _objectScope;
     }
 
     /** Test whether new input tokens have been received at the input ports.
@@ -492,74 +465,4 @@ public class ERGController extends ModalController {
 
     /** The version of the workspace when _executiveDirector was updated. */
     private long _executiveDirectorVersion = -1;
-
-    /** The scope used to evaluate actions. */
-    private ERGObjectScope _objectScope = new ERGObjectScope();
-
-    /** Version of _objectScope. */
-    private long _objectScopeVersion = -1;
-
-    /** This class implements a scope, which is used to evaluate the
-     *  parsed expressions.  This class is currently rather simple,
-     *  but in the future should allow the values of input ports to
-     *  be referenced without having shadow variables.
-     */
-    private class ERGObjectScope extends PortScope {
-
-        /** Look up and return the attribute with the specified name in the
-         *  scope. Return null if such an attribute does not exist.
-         *
-         *  @param name The name of the variable to be looked up.
-         *  @return The attribute with the specified name in the scope.
-         *  @exception IllegalActionException If a value in the scope
-         *  exists with the given name, but cannot be evaluated.
-         */
-        public Token get(String name) throws IllegalActionException {
-            Token token = super.get(name);
-            if (token == null) {
-                NamedObj object = ModelScope.getScopedObject(ERGController.this,
-                        name);
-                if (object instanceof Variable) {
-                    token = ((Variable) object).getToken();
-                } else if (object != null) {
-                    token = new ObjectToken(object, object.getClass());
-                }
-            }
-            return token;
-        }
-
-        /** Look up and return the type of the attribute with the
-         *  specified name in the scope. Return null if such an
-         *  attribute does not exist.
-         *
-         *  @param name The name of the variable to be looked up.
-         *  @return The attribute with the specified name in the scope.
-         *  @exception IllegalActionException If a value in the scope
-         *  exists with the given name, but cannot be evaluated.
-         */
-        public Type getType(String name) throws IllegalActionException {
-            Type type = super.getType(name);
-            if (type == null) {
-                NamedObj object = ModelScope.getScopedObject(ERGController.this,
-                        name);
-                if (object instanceof Variable) {
-                    type = ((Variable) object).getType();
-                } else if (object != null) {
-                    type = new ObjectType(object, object.getClass());
-                }
-            }
-            return type;
-        }
-
-        /** Return the list of identifiers within the scope.
-         *  @return The list of identifiers within the scope.
-         */
-        @SuppressWarnings("unchecked")
-        public Set<?> identifierSet() {
-            Set<Object> set = super.identifierSet();
-            set.addAll(ModelScope.getAllScopedObjectNames(
-                    ERGController.this));
-            return set;
-        }
-    }
 }
