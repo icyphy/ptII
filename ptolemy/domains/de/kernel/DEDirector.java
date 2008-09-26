@@ -580,7 +580,7 @@ public class DEDirector extends Director implements TimedDirector {
                 // A possible fix for the former (if we can detect it) would
                 // be to throw an exception. This would be far better than
                 // going into an infinite loop.
-                Iterator inputPorts = actorToFire.inputPortList().iterator();
+                Iterator<?> inputPorts = actorToFire.inputPortList().iterator();
 
                 while (inputPorts.hasNext() && !refire) {
                     IOPort port = (IOPort) inputPorts.next();
@@ -696,7 +696,7 @@ public class DEDirector extends Director implements TimedDirector {
             // Enqueue a pure event to fire the container of this director.
             container.getExecutiveDirector().fireAt(container, time);
         }
-    }
+    }      
 
     /** Schedule a firing of the given actor at the current time.
      *  @param actor The actor to be fired.
@@ -714,6 +714,26 @@ public class DEDirector extends Director implements TimedDirector {
             fireAt(actor, getModelTime());
         }
     }
+    
+    /** Schedule an actor to be fired at the specified time by posting
+     *  a pure event to the director. If the requested time is in the past
+     *  relative to the current time, the time of the event is increased to
+     *  the first valid fire time.
+     *  @param actor The scheduled actor to fire.
+     *  @param time The scheduled time to fire.
+     *  @exception IllegalActionException If event queue is not ready.
+     */
+    public void fireAtFirstValidTimeAfter(Actor actor, Time time) throws IllegalActionException {
+        // This has to be synchronized at this level to make sure
+        // that time does not advance between getModelTime() and
+        // the enqueueing of the event.
+        synchronized (_eventQueue) {
+            if (time.compareTo(getModelTime()) < 0) {
+                time = getModelTime();
+            }
+            fireAt(actor, time);
+        }
+    }    
 
     /** Schedule an actor to be fired in the specified time relative to
      *  the current model time.
@@ -1059,7 +1079,7 @@ public class DEDirector extends Director implements TimedDirector {
             // If the event timestamp is greater than the model timestamp,
             // we check if there's any external input.
             CompositeActor container = (CompositeActor) getContainer();
-            Iterator inputPorts = container.inputPortList().iterator();
+            Iterator<?> inputPorts = container.inputPortList().iterator();
             boolean hasInput = false;
 
             while (inputPorts.hasNext() && !hasInput) {
@@ -1119,7 +1139,7 @@ public class DEDirector extends Director implements TimedDirector {
 
         // Add debug listeners.
         if (_debugListeners != null) {
-            Iterator listeners = _debugListeners.iterator();
+            Iterator<?> listeners = _debugListeners.iterator();
 
             while (listeners.hasNext()) {
                 DebugListener listener = (DebugListener) listeners.next();
@@ -1273,7 +1293,7 @@ public class DEDirector extends Director implements TimedDirector {
             }
 
             if (_disabledActors == null) {
-                _disabledActors = new HashSet();
+                _disabledActors = new HashSet<Actor>();
             }
 
             _disabledActors.add(actor);
@@ -1860,7 +1880,7 @@ public class DEDirector extends Director implements TimedDirector {
      *  methods. Events destined for these actors are discarded and
      *  the actors are  never fired.
      */
-    private Set _disabledActors;
+    private Set<Actor> _disabledActors;
 
     /** The queue used for sorting events. */
     private DEEventQueue _eventQueue;
