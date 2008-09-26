@@ -45,8 +45,6 @@ shift; shift; shift
 #mainjar=$4
 #shift; shift; shift; shift
 
-tmpfile=/tmp/mkjnlp.$$
-
 otherJars="$@"
 
 if [ ! -d "$baseDirectory" ]; then
@@ -175,7 +173,7 @@ do
     fi	
 
     # Name of the project
-    projectName=`echo $file | sed -e 's@.jar@@' -e 's@/@.@g'`
+    projectName=`dirname $file | sed 's@/@.@g'`
 
     cat >> $featureFile <<EOF0b
    <plugin
@@ -213,6 +211,36 @@ bin.includes = META-INF/,\
                .
 EOF3
 
+    cat > "$projectDirectory/.project" <<EOFproject
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>$projectName</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.jdt.core.javabuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.pde.ManifestBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.pde.SchemaBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>org.eclipse.pde.PluginNature</nature>
+		<nature>org.eclipse.jdt.core.javanature</nature>
+	</natures>
+</projectDescription>
+EOFproject
 
     mkdir "$projectDirectory/META-INF"
 manifestFile=$projectDirectory/META-INF/MANIFEST.MF
@@ -220,10 +248,10 @@ manifestFile=$projectDirectory/META-INF/MANIFEST.MF
     cat > "$manifestFile" <<EOF4
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: $packagename Plug-in
-Bundle-SymbolicName: $packagename
+Bundle-Name: $projectName Plug-in
+Bundle-SymbolicName: $projectName
 Bundle-Version: 8.0.0
-Bundle-Activator: ptolemy.kore.Activator
+Bundle-Activator: $projectName.Activator
 Import-Package: org.osgi.framework;version="1.4.0"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 EOF4
@@ -263,26 +291,110 @@ EOF4
     
     # Add the files to MANIFEST.MF
     echo $packages | 
-    awk '{if (NR == 1) {
-		printf("Export-Package:");
-	     } else {
-	        printf(",\n",$0)
+    awk '{nf = split($0, f, " ")
+            for (i = 1; i <= nf; i++) { 
+                if (i == 1) {
+		    printf("Export-Package:");
+	        } else {
+	            printf(",\n")
+                }
+	        printf(" %s", $i)
              }
-	     printf(" %s", $0)
+             if (nf == 1) {
+                # If we have only one package . . .
+                printf("\n")
+             }
    	   }
         END {printf("\n")}' - >> $manifestFile
     #echo "packages: `echo $packages| wc` $packages"
     #otherJarspackages="$otherJarspackages $file:${packages}"
 
     # Copy the source files to the target
+    mkdir $projectDirectory/src
     for package in $packages
     do
-	mkdir $projectDirectory/src
 	sourceDirectory=`echo $package | sed 's@\.@/@g'`
 	  
-	(cd $baseDirectory; tar -cf - $sourceDirectory/{*.gif,*.html,*.java,*.jpg,*.pdf,test/,*.txt,*.xml}) | (cd $projectDirectory/src; tar -xpf -)
+	(cd $baseDirectory; tar -cf - $sourceDirectory/{*.gif,*.html,*.java,*.jpg,*.pdf,*.txt,*.xml}) | (cd $projectDirectory/src; tar -xpf -)
 	diff -r $baseDirectory/$sourceDirectory $projectDirectory/src/$sourceDirectory | egrep -v ".class$|.jar$|: makefile$|: .svn"
     done	
 done
 
-rm -f $tmpfile
+echo "</feature>" >> $featureFile 
+
+# Now try to create Require-Bundle lines in MANIFEST.MF.
+# We loop through each package and look for imports
+for file in $otherJars
+do
+    # Name of the project
+    projectName=`dirname $file | sed 's@/@.@g'`
+
+    # Directory where the project will reside
+    projectDirectory=$targetDirectory/$projectName
+
+    # File that we update with Require-Bundle lines
+    manifestFile=$projectDirectory/META-INF/MANIFEST.MF
+
+    requiredPackagesFile=/tmp/mkosgi.requiredPackages
+    find $projectDirectory/src -name "*.java" |
+        xargs egrep -h "^import ptolemy" |
+	awk -F . '{for ( i = 1; i < NF; i++) {
+                       if (i>1) {
+                           printf(".")
+                       }
+                       printf("%s", $i)
+                   }
+	           printf("\n");
+                 '} - |
+        sort | uniq | sed 's/import //' > $requiredPackagesFile
+
+    providedPackagesFile=/tmp/mkosgi.providedPackages
+    topSrcDirectory=`find $projectDirectory/src -type d | head -1`
+    find $projectDirectory/src -type d |
+        sed "s@$topSrcDirectory/@@" | 
+	grep -v "$topSrcDirectory" |
+	sed 's@/@.@g' | sort > $providedPackagesFile
+
+    externalRequiredPackages=`comm -23 $requiredPackagesFile $providedPackagesFile`
+    echo "$file: external required packages:"
+    echo $externalRequiredPackages
+
+    rm -f $requiredPackagesFile $providedPackagesFile
+
+    if [ -z "$externalRequiredPackages" ]; then
+	continue;
+    fi	
+
+    # Map the required packages to the bundles that provide that package
+    externalRequiredBundles=""
+    for packageName in "$externalRequiredPackages"
+    do
+        # If we could just parse the MANIFEST.MF files, we could
+        # ask each bundle what it provides.  Instead, we just look for
+        # the source.
+        packageDirectory=`echo $packageName | sed 's@\.@/@g'`
+	provider=`(cd ~/tmp/triq/; ls -d */src/$packageDirectory/ | sed "s@src/$packageDirectory/@@" | sed 's@/$@@')`
+	externalRequiredBundles="$externalRequiredBundles $provider"
+    done	
+
+    echo "$file: external required bundles: $externalRequiredBundles"
+
+    # Add the required bundles to MANIFEST.MF
+    echo $externalRequiredBundles |
+    awk '{nf = split($0, f, " ")
+            for (i = 1; i <= nf; i++) { 
+                if (i == 1) {
+		    printf("Require-Bundle:");
+	        } else {
+	            printf(";bundle-version=\"8.0.0\",\n")
+                }
+	        printf(" %s", $i)
+             }
+             if (nf == 1) {
+                # If we have only one required bundle . . .
+                printf(";bundle-version=\"8.0.0\"\n")
+             }
+   	   }
+        END {printf("\n")}' - >> $manifestFile
+    cat $manifestFile
+done
