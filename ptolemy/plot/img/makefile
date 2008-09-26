@@ -11,16 +11,22 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+# Used to build jar files
+PTPACKAGE = 	img
+PTCLASSJAR =	$(PTPACKAGE).jar
+
 JSRCS = 
 
-EXTRA_SRCS = \
+OTHER_FILES_TO_BE_JARED = \
 	fill.gif \
 	format.gif \
 	print.gif \
 	reset.gif
 
-all: 
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
+all: 
+install: jars
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

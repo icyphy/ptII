@@ -53,8 +53,11 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-		plotml/plotml.jar \
-		compat/compat.jar
+		img/img.jar \
+		plotml/plotml.jar
+
+# Exclude compat.jar, it is not used by Ptolemy 
+#		compat/compat.jar
 
 PTCLASSALLJAR = 	plot.jar
 
