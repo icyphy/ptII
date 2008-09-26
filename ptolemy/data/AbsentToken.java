@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
-package ptolemy.domains.sr.lib;
+package ptolemy.data;
 
 import ptolemy.data.Token;
 
@@ -41,6 +41,11 @@ import ptolemy.data.Token;
  @Pt.AcceptedRating Red (pwhitake)
  */
 public class AbsentToken extends Token {
+    // The AbsentToken class is primarily used in the
+    // Synchronous/Reactive (SR) domain.  The AbsentToken class is in
+    // the actor package so that other classes may use it, such as
+    // actor.lib.vhdl.RegisterSR
+
     /** Construct a token with value false.
      */
     public AbsentToken() {

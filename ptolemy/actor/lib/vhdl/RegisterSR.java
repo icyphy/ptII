@@ -28,16 +28,15 @@
 package ptolemy.actor.lib.vhdl;
 
 import ptolemy.actor.TypedIOPort;
+import ptolemy.data.AbsentToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.sr.lib.AbsentToken;
-import ptolemy.domains.sr.lib.Pre;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
-//// NonstrictDelay
+//// RegisterSR
 
 /**
  This actor provides a one-tick delay.  On each firing, it produces
@@ -49,7 +48,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  break causality loops.  Whereas Pre provides a one-step delay of
  non-absent values, this actor simply delays by one clock tick.
 
- @see Pre
+ @see ptolemy.domains.sr.lib.Pre
  @see ptolemy.domains.sdf.lib.SampleDelay
  @see ptolemy.domains.de.lib.TimedDelay
 

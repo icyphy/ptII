@@ -55,7 +55,6 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
 	Absent.java \
-	AbsentToken.java \
 	Current.java \
 	Default.java \
 	EnabledComposite.java \

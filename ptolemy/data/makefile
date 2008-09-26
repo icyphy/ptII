@@ -55,6 +55,7 @@ PTCLASSALLJARS = \
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
+	AbsentToken.java \
 	AbstractConvertibleToken.java \
 	AbstractNotConvertibleToken.java \
 	ActorToken.java \
