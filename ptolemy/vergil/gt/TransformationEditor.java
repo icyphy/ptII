@@ -1083,22 +1083,18 @@ public class TransformationEditor extends GTFrame implements ActionListener,
 
         private class Renderer extends EntityPortRenderer {
 
-            public Figure render(Object node) {
-                if ((node != null) && !_hide(node)) {
-                    Figure nf = super.render(node);
-                    GraphModel graphModel = getController().getGraphModel();
-                    Object object = graphModel.getSemanticObject(node);
-                    CompositeFigure cf = _getCompositeFigure(nf);
-                    if (cf == null) {
-                        cf = new CompositeFigure(nf);
-                        _renderNamedObj(cf, object);
-                        return cf;
-                    } else {
-                        _renderNamedObj(cf, object);
-                        return nf;
-                    }
+            protected Figure _decoratePortFigure(Object node, Figure figure) {
+                GraphModel graphModel = getController().getGraphModel();
+                Object object = graphModel.getSemanticObject(node);
+                CompositeFigure composite = _getCompositeFigure(figure);
+                if (composite == null) {
+                    composite = new CompositeFigure(figure);
+                    _renderNamedObj(composite, object);
+                    return composite;
+                } else {
+                    _renderNamedObj(composite, object);
+                    return figure;
                 }
-                return null;
             }
         }
     }

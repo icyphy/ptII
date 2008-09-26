@@ -279,6 +279,7 @@ public class IOPortController extends AttributeController {
      * hollow, while single ports are rendered filled.
      */
     public class EntityPortRenderer implements NodeRenderer {
+
         /**  Render a visual representation of the given node. If the
          * StringAttribute _color of the node is set then use that color to
          * render the node. If the StringAttribute _explanation of the node is
@@ -511,12 +512,14 @@ public class IOPortController extends AttributeController {
                         figure = compositeFigure;
                     }
                 }
+                figure = _decoratePortFigure(n, figure);
                 // Wrap the figure in a TerminalFigure to set the direction that
                 // connectors exit the port. Note that this direction is the
                 // same direction that is used to layout the port in the
                 // Entity Controller.
                 figure = new PortTerminal(ioPort, figure, normal, false);
             } else {
+                figure = _decoratePortFigure(n, figure);
                 Site tsite = new PerimeterSite(figure, 0);
                 tsite.setNormal(normal);
                 figure = new TerminalFigure(figure, tsite);
@@ -538,6 +541,19 @@ public class IOPortController extends AttributeController {
                 // Ignore.
             }
 
+            return figure;
+        }
+
+        /** Decorate the figure according to the properties of the node. This
+         *  method does nothing, but subclasses may override this method to
+         *  decorate the port's figure (e.g., add highlighting color).
+         *
+         *  @param node The node.
+         *  @param figure The port's figure before decoration.
+         *  @return The port's figure after decoration (which may or may not be
+         *   the figure given in the parameter).
+         */
+        protected Figure _decoratePortFigure(Object node, Figure figure) {
             return figure;
         }
     }
