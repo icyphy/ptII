@@ -1,5 +1,5 @@
 #!/bin/sh
-# Script to create osgi Eclpse projects.  See $PTII/mk/jnlp.mk
+# Script to create osgi Eclpse OSGi plugins.  See $PTII/mk/jnlp.mk
 # Based on $PTII/bin/mkjnlp
 #
 # @author: Christopher Brooks
@@ -55,12 +55,17 @@ fi
 
 if [ ! -d "$targetDirectory" ]; then
     echo "$0: '$targetDirectory' does not exist or is not a directory."
-    echo "This is the directory where the projects will be created."
+    echo "This is the directory where the features and plugins will be created."
     exit 5
 fi
 
 # Create the feature
-featureDirectory=$targetDirectory/$featureName 
+featuresDirectory=$targetDirectory/features
+if [ ! -d "$featuresDirectory" ]; then
+    mkdir $featuresDirectory
+fi
+
+featureDirectory=$featuresDirectory/$featureName 
 mkdir $featureDirectory
 featureFile=$featureDirectory/feature.xml
 
@@ -165,36 +170,42 @@ EOFfeatureProject
 # before /usr/bin/sort
 SORT=/usr/bin/sort
 
-# Create a project for each jar file
+# Create a plugin for each jar file
 for file in $otherJars
 do
     if [ ! -f "$baseDirectory/$file" ]; then
 	echo "$0: WARNING: '$baseDirectory/$file' could not be found,"
     fi	
 
-    # Name of the project
-    projectName=`dirname $file | sed 's@/@.@g'`
+    # Name of the plugin
+    pluginName=`dirname $file | sed 's@/@.@g'`
 
     cat >> $featureFile <<EOF0b
    <plugin
-         id="$projectName"
+         id="$pluginName"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 EOF0b
 
-    # Directory where the project will reside
-    projectDirectory=$targetDirectory/$projectName
+    # The directory where all the plugins reside
+    pluginsDirectory=$targetDirectory/plugins
+    if [ ! -d "$pluginsDirectory" ]; then
+	mkdir $pluginsDirectory
+    fi	
 
-    if [ -d "$projectDirectory" ]; then
-	echo "$0: '$projectDirectory exists, skipping"
+    # Directory where the plugin will reside
+    pluginDirectory=$pluginsDirectory/$pluginName
+
+    if [ -d "$pluginDirectory" ]; then
+	echo "$0: '$pluginDirectory exists, skipping"
 	continue;
     fi	
-    mkdir "$projectDirectory"
+    mkdir "$pluginDirectory"
 
 
-    cat > "$projectDirectory/.classpath" <<EOF1
+    cat > "$pluginDirectory/.classpath" <<EOF1
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>	<classpathentry kind="src" path="src"/>
@@ -204,14 +215,14 @@ EOF0b
 EOF1
 
 
-    cat > "$projectDirectory/build.properties" <<EOF3
+    cat > "$pluginDirectory/build.properties" <<EOF3
 source.. = src/
 output.. = bin/
 bin.includes = META-INF/,\
                .
 EOF3
 
-    cat > "$projectDirectory/.project" <<EOFproject
+    cat > "$pluginDirectory/.project" <<EOFproject
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
 	<name>$projectName</name>
@@ -242,16 +253,16 @@ EOF3
 </projectDescription>
 EOFproject
 
-    mkdir "$projectDirectory/META-INF"
-manifestFile=$projectDirectory/META-INF/MANIFEST.MF
+    mkdir "$pluginDirectory/META-INF"
+manifestFile=$pluginDirectory/META-INF/MANIFEST.MF
 
     cat > "$manifestFile" <<EOF4
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: $projectName Plug-in
-Bundle-SymbolicName: $projectName
+Bundle-Name: $pluginName Plug-in
+Bundle-SymbolicName: $pluginName
 Bundle-Version: 8.0.0
-Bundle-Activator: $projectName.Activator
+Bundle-Activator: $pluginName.Activator
 Import-Package: org.osgi.framework;version="1.4.0"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 EOF4
@@ -310,33 +321,39 @@ EOF4
     #otherJarspackages="$otherJarspackages $file:${packages}"
 
     # Copy the source files to the target
-    mkdir $projectDirectory/src
+    mkdir $pluginDirectory/src
     for package in $packages
     do
 	sourceDirectory=`echo $package | sed 's@\.@/@g'`
 	  
-	(cd $baseDirectory; tar -cf - $sourceDirectory/{*.gif,*.html,*.java,*.jjt,*.jpg,*.pdf,*.txt,*.xml}) | (cd $projectDirectory/src; tar -xpf -)
-	diff -r $baseDirectory/$sourceDirectory $projectDirectory/src/$sourceDirectory | egrep -v ".class$|.jar$|: makefile$|: .svn"
+	(cd $baseDirectory; tar -cf - $sourceDirectory/{*.gif,*.html,*.java,*.jjt,*.jpg,*.pdf,*.txt,*.xml}) | (cd $pluginDirectory/src; tar -xpf -)
+	diff -r $baseDirectory/$sourceDirectory $pluginDirectory/src/$sourceDirectory | egrep -v ".class$|.jar$|: makefile$|: .svn"
     done	
 done
 
 echo "</feature>" >> $featureFile 
 
+set -x
+
 # Now try to create Require-Bundle lines in MANIFEST.MF.
 # We loop through each package and look for imports
 for file in $otherJars
 do
-    # Name of the project
-    projectName=`dirname $file | sed 's@/@.@g'`
+    # Name of the plugin
+    pluginName=`dirname $file | sed 's@/@.@g'`
 
-    # Directory where the project will reside
-    projectDirectory=$targetDirectory/$projectName
+    # The directory where all the plugins reside
+    pluginsDirectory=$targetDirectory/plugins
+
+    # Directory where the plugin will reside
+    pluginDirectory=$pluginsDirectory/$pluginName
 
     # File that we update with Require-Bundle lines
-    manifestFile=$projectDirectory/META-INF/MANIFEST.MF
+    manifestFile=$pluginDirectory/META-INF/MANIFEST.MF
 
+    # Get all the required packages by looking at the imports
     requiredPackagesFile=/tmp/mkosgi.requiredPackages
-    find $projectDirectory/src -name "*.java" |
+    find $pluginDirectory/src -name "*.java" |
         xargs egrep -h "^import ptolemy" |
 	awk -F . '{for ( i = 1; i < NF; i++) {
                        if (i>1) {
@@ -348,9 +365,10 @@ do
                  '} - |
         sort | uniq | sed 's/import //' > $requiredPackagesFile
 
+    # Get all the xrequired packages that are external to this bundle
     providedPackagesFile=/tmp/mkosgi.providedPackages
-    topSrcDirectory=`find $projectDirectory/src -type d | head -1`
-    find $projectDirectory/src -type d |
+    topSrcDirectory=`find $pluginDirectory/src -type d | head -1`
+    find $pluginDirectory/src -type d |
         sed "s@$topSrcDirectory/@@" | 
 	grep -v "$topSrcDirectory" |
 	sed 's@/@.@g' | sort > $providedPackagesFile
@@ -376,7 +394,7 @@ do
         packageDirectory=`echo "$packageName" | sed 's@\.@/@g'`
 	# If we are looking for ptolemy.actor, then it can be found
 	# i
-	possibleExporters=`(cd $targetDirectory; ls -d */src/${packageDirectory}/) | 
+	possibleExporters=`(cd $pluginsDirectory; ls -d */src/${packageDirectory}/) | 
 	    sed "s@src/$packageDirectory/@@" | sed 's@/$@@' |
 	    awk '{for(i=1; i<=NF; i++) print $i}'`
 	for possibleExporter in $possibleExporters
@@ -403,13 +421,19 @@ do
                     }
 		    if ($1 == "Export-Package:" ) {
 		       sawExportPackage = 1
-                       # Strip off the trailing,
-		       if (substr($2,1,length($2)- 1) == packageName) {
-		           print possibleExporter
-			   exit
-                       } 
+		       if (substr($2,length($2), 1) == ",") {
+		           if (substr($2,1,length($2)- 1) == packageName) {
+		               print possibleExporter
+			       exit
+                           } 
+                       } else {
+			   if ($2 == packageName) {
+		               print possibleExporter
+			       exit
+                           }
+		       }
                     }
-                }' $targetDirectory/$possibleExporter/META-INF/MANIFEST.MF  >> $externalRequiredBundlesFile
+                }' $pluginsDirectory/$possibleExporter/META-INF/MANIFEST.MF  >> $externalRequiredBundlesFile
 	done    
 
     done	
@@ -429,11 +453,12 @@ do
                 }
 	        printf(" %s", $i)
              }
-   	   }
-        END {if (NR == 1) {
+             if (nf == 1) {
                  # If we have only one required bundle . . .
                  printf(";bundle-version=\"8.0.0\"\n")
               }
-              printf("\n")}' - >> $manifestFile
+
+   	   }
+        END {printf("\n")}' - >> $manifestFile
     cat $manifestFile
 done
