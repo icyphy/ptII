@@ -78,25 +78,34 @@ include $(CONFIG)
 PTPACKAGE = 	lib
 PTCLASSJAR =
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
+# Include these jars in PTAUXALLJAR
+# plotmlapplet pulls in the com/microstar/xml and util/ classes
+PTAUXALLJARS = \
 	comm/comm.jar \
 	conversions/conversions.jar \
-	gui/gui.jar \
 	hoc/hoc.jar \
-	image/image.jar \
 	io/io.jar \
+	image/image.jar \
 	logic/logic.jar \
+	string/string.jar
+
+# Common actors for Ptolemy Kore
+PTAUXALLJAR =	libKore.jar
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	$(PTAUXALLJARS) \
+	gui/gui.jar \
 	javasound/javasound.jar \
 	jni/jni.jar \
 	net/net.jar \
 	security/security.jar \
-	string/string.jar \
 	vhdl/vhdl.jar \
 	video/video.jar \
 	xslt/xslt.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
+
 
 # Keep this list alphabetized.
 JSRCS = \
