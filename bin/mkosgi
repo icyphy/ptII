@@ -262,7 +262,6 @@ Bundle-ManifestVersion: 2
 Bundle-Name: $pluginName Plug-in
 Bundle-SymbolicName: $pluginName
 Bundle-Version: 8.0.0
-Bundle-Activator: $pluginName.Activator
 Import-Package: org.osgi.framework;version="1.4.0"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 EOF4
@@ -333,7 +332,6 @@ done
 
 echo "</feature>" >> $featureFile 
 
-set -x
 
 # Now try to create Require-Bundle lines in MANIFEST.MF.
 # We loop through each package and look for imports
@@ -354,7 +352,7 @@ do
     # Get all the required packages by looking at the imports
     requiredPackagesFile=/tmp/mkosgi.requiredPackages
     find $pluginDirectory/src -name "*.java" |
-        xargs egrep -h "^import ptolemy" |
+        xargs egrep -h "^import (ptolemy|com.microstar.xml)" |
 	awk -F . '{for ( i = 1; i < NF; i++) {
                        if (i>1) {
                            printf(".")
