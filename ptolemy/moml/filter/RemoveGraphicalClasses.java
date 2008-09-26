@@ -324,9 +324,14 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         // Shallow CG of actor/lib/test/auto/URLDirectoryReader3.xml fails
         // unless we remove CheckBoxStyle
         _graphicalClasses.put("ptolemy.actor.gui.style.CheckBoxStyle", null);
+        _graphicalClasses.put("ptolemy.actor.gui.style.ChoiceStyle", null);
 
+        _graphicalClasses.put("ptolemy.actor.gui.LocationAttribute", null);
+        _graphicalClasses.put("ptolemy.actor.gui.SizeAttribute", null);
         _graphicalClasses.put("ptolemy.actor.gui.PtolemyPreferences",
                 "ptolemy.data.expr.ScopeExtendingAttribute");
+        _graphicalClasses.put("ptolemy.actor.gui.WindowPropertiesAttribute",
+                null);
 
         // Sinewave has a DocViewerFactory, which we need to remove
         _graphicalClasses.put("ptolemy.vergil.basic.DocViewerFactory",
