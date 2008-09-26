@@ -315,7 +315,7 @@ EOF4
     do
 	sourceDirectory=`echo $package | sed 's@\.@/@g'`
 	  
-	(cd $baseDirectory; tar -cf - $sourceDirectory/{*.gif,*.html,*.java,*.jpg,*.pdf,*.txt,*.xml}) | (cd $projectDirectory/src; tar -xpf -)
+	(cd $baseDirectory; tar -cf - $sourceDirectory/{*.gif,*.html,*.java,*.jjt,*.jpg,*.pdf,*.txt,*.xml}) | (cd $projectDirectory/src; tar -xpf -)
 	diff -r $baseDirectory/$sourceDirectory $projectDirectory/src/$sourceDirectory | egrep -v ".class$|.jar$|: makefile$|: .svn"
     done	
 done
@@ -366,16 +366,55 @@ do
     fi	
 
     # Map the required packages to the bundles that provide that package
-    externalRequiredBundles=""
-    for packageName in "$externalRequiredPackages"
+    externalRequiredBundlesFile=/tmp/mkosgi.externalRequiredBundlesFile.$$
+    rm -f $externalRequiredBundlesFile
+    for packageName in $externalRequiredPackages
     do
         # If we could just parse the MANIFEST.MF files, we could
         # ask each bundle what it provides.  Instead, we just look for
         # the source.
-        packageDirectory=`echo $packageName | sed 's@\.@/@g'`
-	provider=`(cd ~/tmp/triq/; ls -d */src/$packageDirectory/ | sed "s@src/$packageDirectory/@@" | sed 's@/$@@')`
-	externalRequiredBundles="$externalRequiredBundles $provider"
+        packageDirectory=`echo "$packageName" | sed 's@\.@/@g'`
+	# If we are looking for ptolemy.actor, then it can be found
+	# i
+	possibleExporters=`(cd $targetDirectory; ls -d */src/${packageDirectory}/) | 
+	    sed "s@src/$packageDirectory/@@" | sed 's@/$@@' |
+	    awk '{for(i=1; i<=NF; i++) print $i}'`
+	for possibleExporter in $possibleExporters
+	do
+            awk -v packageName=${packageName} \
+		-v possibleExporter=${possibleExporter} \
+                '{ if (sawExportPackage == 1) {
+                       # Strip off the trailing comma
+		       if (substr($1,length($1), 1) == ",") {
+		           if (substr($1,1,length($1)- 1) == packageName) {
+		               print possibleExporter
+			       exit
+                           } 
+                       } else {
+			   if ($1 == packageName) {
+		               print possibleExporter
+			       exit
+                           }
+		       }
+
+		    }
+		    if ($1 == "Require-Bundle:") {
+		       sawExportPackage = 0
+                    }
+		    if ($1 == "Export-Package:" ) {
+		       sawExportPackage = 1
+                       # Strip off the trailing,
+		       if (substr($2,1,length($2)- 1) == packageName) {
+		           print possibleExporter
+			   exit
+                       } 
+                    }
+                }' $targetDirectory/$possibleExporter/META-INF/MANIFEST.MF  >> $externalRequiredBundlesFile
+	done    
+
     done	
+    externalRequiredBundles=`sort $externalRequiredBundlesFile | uniq`
+    #rm -f $externalRequiredBundlesFile
 
     echo "$file: external required bundles: $externalRequiredBundles"
 
@@ -390,11 +429,11 @@ do
                 }
 	        printf(" %s", $i)
              }
-             if (nf == 1) {
-                # If we have only one required bundle . . .
-                printf(";bundle-version=\"8.0.0\"\n")
-             }
    	   }
-        END {printf("\n")}' - >> $manifestFile
+        END {if (NR == 1) {
+                 # If we have only one required bundle . . .
+                 printf(";bundle-version=\"8.0.0\"\n")
+              }
+              printf("\n")}' - >> $manifestFile
     cat $manifestFile
 done
