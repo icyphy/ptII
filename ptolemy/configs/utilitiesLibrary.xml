@@ -9,8 +9,12 @@
       <group>
         <input source="ptolemy/configs/utilityCompositeActor.xml"/>
         <class name="CompositeClassDefinition" extends="ptolemy.actor.TypedCompositeActor"/>
-		<input source="ptolemy/configs/utilityModalModel.xml"/>
-        <input source="ptolemy/configs/utilityERGModalModel.xml"/>
+	<input source="ptolemy/configs/utilityModalModel.xml"/>
+
+        <!-- Do not include erg or anything else that does not ship
+	     with Ptiny here.  See defaultFullConfiguration.xml -->
+        <!--input source="ptolemy/configs/utilityERGModalModel.xml"/ -->
+
         <input source="ptolemy/configs/basicUtilities.xml"/>
         <!-- Do not include this as singleton parameters are buggy. -->
         <!-- input source="ptolemy/configs/customize.xml"/ -->

@@ -69,7 +69,20 @@
 
   <!-- Main default library. -->
   <input source="ptolemy/configs/basicLibrary.xml"/>
-  
+  <!-- basicLibrary.xml is included in Ptiny. We include components
+       that are not part of Ptiny below. -->
+  <entity name="actor library" class="ptolemy.kernel.CompositeEntity">
+    <entity name="Utilities" class="ptolemy.moml.EntityLibrary">
+      <configure>
+        <?moml
+          <group>
+            <input source="ptolemy/configs/utilityERGModalModel.xml"/>
+          </group>
+        ?>
+      </configure>
+    </entity>
+  </entity>
+
   <!-- Icon editor library. -->
   <!-- NOTE: This is identical to the default, so it need not be specified. -->
   <!-- We specify it here as a guide to those writing custom configurations. -->
