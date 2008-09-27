@@ -151,11 +151,7 @@ test RemoveGraphicalClasses-1.2 {filterAttributeValue} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="MoMLFilter" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
-    </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-    </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
     <property name="annotation1" class="ptolemy.kernel.util.Attribute">
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
@@ -194,20 +190,6 @@ RemoveGraphicalClasses.</text></svg></configure>
     </entity>
     <entity name="TrigFunction" class="ptolemy.actor.lib.TrigFunction">
         <property name="function" class="ptolemy.data.expr.StringParameter" value="sin">
-            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-                <property name="acos" class="ptolemy.kernel.util.StringAttribute" value="acos">
-                </property>
-                <property name="asin" class="ptolemy.kernel.util.StringAttribute" value="asin">
-                </property>
-                <property name="atan" class="ptolemy.kernel.util.StringAttribute" value="atan">
-                </property>
-                <property name="cos" class="ptolemy.kernel.util.StringAttribute" value="cos">
-                </property>
-                <property name="sin" class="ptolemy.kernel.util.StringAttribute" value="sin">
-                </property>
-                <property name="tan" class="ptolemy.kernel.util.StringAttribute" value="tan">
-                </property>
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 165.0">
         </property>
@@ -371,10 +353,6 @@ test RemoveGraphicalClasses-2.1 {Filter a Display} {
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.Discard">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={477, 346, 484, 208}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
-        </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="7">
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
@@ -595,10 +573,6 @@ test RemoveGraphicalClasses-2.2 {Filter a SequencePlotter} {
         <property name="_location" class="ptolemy.kernel.util.Location" value="{120, 60}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={227, 353, 813, 506}, maximized=false}">
-    </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-    </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
@@ -613,42 +587,22 @@ test RemoveGraphicalClasses-2.2 {Filter a SequencePlotter} {
         </property>
     </entity>
     <entity name="RealTimePlotter" class="ptolemy.actor.lib.Discard">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={470, 278, 500, 344}, maximized=false}">
-        </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 65.0]">
         </property>
     </entity>
     <entity name="ArrayPlotter" class="ptolemy.actor.lib.Discard">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={470, 277, 500, 344}, maximized=false}">
-        </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 355.0]">
         </property>
     </entity>
     <entity name="SequencePlotter" class="ptolemy.actor.lib.Discard">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={762, 30, 500, 344}, maximized=false}">
-        </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 210.0]">
         </property>
     </entity>
     <entity name="HistogramPlotter" class="ptolemy.actor.lib.Discard">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={849, 103, 500, 344}, maximized=false}">
-        </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{505.0, 130.0}">
         </property>
     </entity>
     <entity name="BarGraph" class="ptolemy.actor.lib.Discard">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={846, 501, 500, 344}, maximized=false}">
-        </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 290.0]">
         </property>
     </entity>
@@ -718,11 +672,7 @@ test RemoveGraphicalClasses-1.6 {main} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="MoMLFilter" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
-    </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-    </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
     <property name="annotation1" class="ptolemy.kernel.util.Attribute">
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
@@ -761,20 +711,6 @@ RemoveGraphicalClasses.</text></svg></configure>
     </entity>
     <entity name="TrigFunction" class="ptolemy.actor.lib.TrigFunction">
         <property name="function" class="ptolemy.data.expr.StringParameter" value="sin">
-            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-                <property name="acos" class="ptolemy.kernel.util.StringAttribute" value="acos">
-                </property>
-                <property name="asin" class="ptolemy.kernel.util.StringAttribute" value="asin">
-                </property>
-                <property name="atan" class="ptolemy.kernel.util.StringAttribute" value="atan">
-                </property>
-                <property name="cos" class="ptolemy.kernel.util.StringAttribute" value="cos">
-                </property>
-                <property name="sin" class="ptolemy.kernel.util.StringAttribute" value="sin">
-                </property>
-                <property name="tan" class="ptolemy.kernel.util.StringAttribute" value="tan">
-                </property>
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 165.0">
         </property>
