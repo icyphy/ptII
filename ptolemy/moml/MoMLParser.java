@@ -1291,7 +1291,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  @return The top-level composite entity of the Ptolemy II model, or
      *   null if the file is not recognized as a MoML file.
      *  @exception Exception If the parser fails.
-     *  @deprecated Use {@link #parse(URL base, String systemID, InputStream input) 
+     *  @deprecated Use
+     *  {@link #parse(URL base, String systemID, InputStream input)}
      *  for better error messages that include the name of the file being
      *  read.
      */
