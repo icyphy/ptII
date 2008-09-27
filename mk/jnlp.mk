@@ -1173,6 +1173,15 @@ osgi_sr_test:
 	rm -rf $(OSGI_TARGET_DIRECTORY)/*
 	$(MKOSGI) $(PTII) $(OSGI_TARGET_DIRECTORY) ptolemy.sr.example $(OSGI_SR_TEST_JARS)
 
+OSGI_CT_TEST_JARS = \
+	$(OSGI_PTOLEMY_JARS) \
+	ptolemy/domains/ct/ct.jar \
+	ptolemy/domains/fsm/fsm.jar
+
+osgi_ct_test:
+	rm -rf $(OSGI_TARGET_DIRECTORY)/*
+	$(MKOSGI) $(PTII) $(OSGI_TARGET_DIRECTORY) ptolemy.ct.example $(OSGI_CT_TEST_JARS)
+
 OSGI_ACTOR_GUI_JARS = \
 	ptolemy/actor/gui/gui.jar
 
@@ -1201,7 +1210,7 @@ OSGI_PTINY_DOMAINS_JARS =  \
 
 OSGI_VERGIL_JARS = \
 	diva/diva.jar \
-	ptolemy.vergil.vergil.jar
+	ptolemy/vergil/vergil.jar
 
 OSGI_PTINY_JARS = \
 	$(OSGI_ACTOR_GUI_JARS) \
@@ -1211,8 +1220,8 @@ OSGI_PTINY_JARS = \
 	$(OSGI_PTOLEMY_JARS) \
 	$(OSGI_PTINY_DOMAINS_JARS) \
 	$(OSGI_VERGIL_JARS) \
-	$(PTALON_JARS) \
-	$(PTINY_ONLY_JNLP_JARS)
+	$(PTINY_ONLY_JNLP_JARS) \
+	ptolemy/actor/lib/jni/jni.jar
 
 osgi_ptiny_test:
 	rm -rf $(OSGI_TARGET_DIRECTORY)/*
@@ -1228,3 +1237,53 @@ osgi_gui_test:
 	ptolemy/gui/gui.jar \
 	ptolemy/kernel/kernel.jar \
 	ptolemy/plot/plot.jar
+
+osgi_image_test:
+	rm -rf $(OSGI_TARGET_DIRECTORY)/*
+	$(MKOSGI) $(PTII) $(OSGI_TARGET_DIRECTORY) ptolemy.actorImageKore \
+	ptolemy/actor/gui/gui.jar \
+	ptolemy/actor/lib/lib.jar \
+	ptolemy/data/data.jar \
+	ptolemy/gui/gui.jar \
+	ptolemy/kernel/kernel.jar \
+	ptolemy/media/media.jar \
+	ptolemy/moml/moml.jar \
+	ptolemy/actor/lib/image/image.jar
+
+osgi_colt_test:
+	rm -rf $(OSGI_TARGET_DIRECTORY)/*
+	$(MKOSGI) $(PTII) $(OSGI_TARGET_DIRECTORY) ptolemy.actorLibColtKore \
+	com/microstar/xml/xml.jar \
+	ptolemy/actor/actor.jar \
+	ptolemy/actor/lib/colt/colt.jar \
+	ptolemy/actor/lib/libKore.jar \
+	ptolemy/data/data.jar \
+	ptolemy/graph/graph.jar \
+	ptolemy/kernel/kernel.jar \
+	ptolemy/math/math.jar \
+	ptolemy/moml/moml.jar \
+	ptolemy/util/util.jar
+
+osgi_codegen_test:
+	rm -rf $(OSGI_TARGET_DIRECTORY)/*
+	$(MKOSGI) $(PTII) $(OSGI_TARGET_DIRECTORY) ptolemy.codgenKore \
+	com/microstar/xml/xml.jar \
+	ptolemy/actor/actor.jar \
+	ptolemy/actor/gui/gui.jar \
+	ptolemy/actor/lib/libKore.jar \
+	ptolemy/actor/lib/jni/jni.jar \
+	ptolemy/codegen/codegen.jar \
+	ptolemy/data/data.jar \
+	ptolemy/domains/fsm/fsm.jar \
+	ptolemy/domains/pn/pn.jar \
+	ptolemy/domains/sdf/sdf.jar \
+	ptolemy/graph/graph.jar \
+	ptolemy/gui/gui.jar \
+	ptolemy/kernel/kernel.jar \
+	ptolemy/math/math.jar \
+	ptolemy/moml/moml.jar \
+	ptolemy/plot/plot.jar \
+	ptolemy/util/util.jar
+
+
+

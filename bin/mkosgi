@@ -264,6 +264,10 @@ EOFproject
     # Add imports as needed
     importPackage="Import-Package: org.osgi.framework;version=\"1.4.0\""
     case "$pluginName" in
+	ptolemy.actor)
+	    importPackage="$importPackage,
+ ptolemy.util"
+	    ;;
 	ptolemy.actor.gui)
 	    importPackage="$importPackage,
  com.microstar.xml,
@@ -272,7 +276,10 @@ EOFproject
 	ptolemy.actor.lib)
 	    importPackage="$importPackage,
  com.microstar.xml,
- ptolemy.moml"
+ ptolemy.graph,
+ ptolemy.math,
+ ptolemy.moml,
+ ptolemy.util"
 	    ;;
 	ptolemy.actor.lib.image)
 	    importPackage="$importPackage,
@@ -280,6 +287,22 @@ EOFproject
  ptolemy.actor,
  ptolemy.gui,
  ptolemy.moml"
+	    ;;
+	ptolemy.codegen)
+	    importPackage="$importPackage,
+ com.microstar.xml,
+ ptolemy.actor.lib.jni,
+ ptolemy.graph,
+ ptolemy.moml"
+	    ;;
+	ptolemy.data)
+	    importPackage="$importPackage,
+ ptolemy.graph,
+ ptolemy.util"
+	    ;;
+	ptolemy.domains.ddf)
+	    importPackage="$importPackage,
+ ptolemy.graph"
 	    ;;
 	ptolemy.domains.sdf.lib.vq)
 	    importPackage="$importPackage,
@@ -290,6 +313,17 @@ EOFproject
 	ptolemy.domains.pn|ptolemy.domains.rendezvous)
 	    importPackage="$importPackage,
  ptolemy.graph"
+	    ;;
+
+	ptolemy.kernel)
+	    importPackage="$importPackage,
+ ptolemy.util"
+	    ;;
+
+	ptolemy.moml)
+	    importPackage="$importPackage,
+ com.microstar.xml,
+ ptolemy.util"
 	    ;;
     esac
 
@@ -307,7 +341,18 @@ EOF4
     case "$pluginName" in
 	ptolemy.actor.lib.colt)
 	    echo "Bundle-ClassPath: ptcolt.jar" >> "$manifestFile"
+	    echo "jars.extra.classpath = ptcolt.jar" >> "$pluginDirectory/build.properties"
             cp $PTII/lib/ptcolt.jar $pluginDirectory
+            ;;
+	ptolemy.actor.lib.python)
+	    echo "Bundle-ClassPath: jython.jar" >> "$manifestFile"
+	    echo "jars.extra.classpath = jython.jar" >> "$pluginDirectory/build.properties"
+            cp $PTII/lib/jython.jar $pluginDirectory
+            ;;
+	ptolemy.actor.ptalon)
+	    echo "Bundle-ClassPath: antlr.jar" >> "$manifestFile"
+	    echo "jars.extra.classpath = antlr.jar" >> "$pluginDirectory/build.properties"
+            cp $PTII/ptolemy/actor/ptalon/antlr/antlr.jar $pluginDirectory
             ;;
     esac
 
@@ -331,6 +376,7 @@ EOF4
     echo "$file"
     packages=`jar -tf $baseDirectory/$file |
 	grep -v '/$' | grep -v META | grep -v JNLP-INF |
+	grep -v '/[^.]*$' |
 	awk -F / '{
 		   for(i = 1; i < NF; i++) {
 			if (i == 1) {
@@ -365,7 +411,7 @@ EOF4
     do
 	sourceDirectory=`echo $package | sed 's@\.@/@g'`
 	  
-	(cd $baseDirectory; tar -cf - $sourceDirectory/{*.gif,*.htm,*.html,*.java,*.jjt,*.jpg,*.pdf,*.txt,*.xml}) | (cd $pluginDirectory/src; tar -xpf -)
+	(cd $baseDirectory; tar -cf - $sourceDirectory/{*.c,*.gif,*.h,*.htm,*.html,*.in,*.java,*.jjt,*.jpg,*.pdf,*.txt,*.xml}) | (cd $pluginDirectory/src; tar -xpf -)
 	diff -r $baseDirectory/$sourceDirectory $pluginDirectory/src/$sourceDirectory | egrep -v ".class$|.jar$|: makefile$|: .svn"
     done	
 done
@@ -413,7 +459,9 @@ do
     providedPackagesFile=/tmp/mkosgi.providedPackages
     topSrcDirectory=`find $pluginDirectory/src -type d | head -1`
     find $pluginDirectory/src -type f | 
-        awk -F / '{for(i=1; i < NF; i++) {printf("%s/")}}' | sort | uniq |
+        awk -F / '{for(i=1; i < NF; i++) {printf("%s/", $i)} printf("\n")}' |
+	sed 's@/$@@' |
+	sort | uniq | 
         sed "s@$topSrcDirectory/@@" | 
 	grep -v "$topSrcDirectory" |
 	sed 's@/@.@g' | sort > $providedPackagesFile
