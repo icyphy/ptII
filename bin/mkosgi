@@ -173,6 +173,11 @@ SORT=/usr/bin/sort
 # Create a plugin for each jar file
 for file in $otherJars
 do
+    case $file in
+	lib*) echo "Skipping $file, we can't handle jar files from lib yet"
+	    continue;;
+    esac	
+	
     if [ ! -f "$baseDirectory/$file" ]; then
 	echo "$0: WARNING: '$baseDirectory/$file' could not be found,"
     fi	
@@ -254,7 +259,39 @@ EOF3
 EOFproject
 
     mkdir "$pluginDirectory/META-INF"
-manifestFile=$pluginDirectory/META-INF/MANIFEST.MF
+    manifestFile=$pluginDirectory/META-INF/MANIFEST.MF
+
+    # Add imports as needed
+    importPackage="Import-Package: org.osgi.framework;version=\"1.4.0\""
+    case "$pluginName" in
+	ptolemy.actor.gui)
+	    importPackage="$importPackage,
+ com.microstar.xml,
+ ptolemy.moml"
+	    ;;
+	ptolemy.actor.lib)
+	    importPackage="$importPackage,
+ com.microstar.xml,
+ ptolemy.moml"
+	    ;;
+	ptolemy.actor.lib.image)
+	    importPackage="$importPackage,
+ com.microstar.xml,
+ ptolemy.actor,
+ ptolemy.gui,
+ ptolemy.moml"
+	    ;;
+	ptolemy.domains.sdf.lib.vq)
+	    importPackage="$importPackage,
+ ptolemy.actor.gui,
+ ptolemy.actor.lib.image,
+ ptolemy.gui"
+	    ;;
+	ptolemy.domains.pn|ptolemy.domains.rendezvous)
+	    importPackage="$importPackage,
+ ptolemy.graph"
+	    ;;
+    esac
 
     cat > "$manifestFile" <<EOF4
 Manifest-Version: 1.0
@@ -262,11 +299,18 @@ Bundle-ManifestVersion: 2
 Bundle-Name: $pluginName Plug-in
 Bundle-SymbolicName: $pluginName
 Bundle-Version: 8.0.0
-Import-Package: org.osgi.framework;version="1.4.0"
+$importPackage
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 EOF4
 
- 
+    # Copy necessary jar files
+    case "$pluginName" in
+	ptolemy.actor.lib.colt)
+	    echo "Bundle-ClassPath: ptcolt.jar" >> "$manifestFile"
+            cp $PTII/lib/ptcolt.jar $pluginDirectory
+            ;;
+    esac
+
     # FIXME: MANIFEST.MF should include the reqirements:
     #Require-Bundle: ptolemy.util;bundle-version="1.0.0"
 
@@ -310,10 +354,6 @@ EOF4
                 }
 	        printf(" %s", $i)
              }
-             if (nf == 1) {
-                # If we have only one package . . .
-                printf("\n")
-             }
    	   }
         END {printf("\n")}' - >> $manifestFile
     #echo "packages: `echo $packages| wc` $packages"
@@ -325,18 +365,24 @@ EOF4
     do
 	sourceDirectory=`echo $package | sed 's@\.@/@g'`
 	  
-	(cd $baseDirectory; tar -cf - $sourceDirectory/{*.gif,*.html,*.java,*.jjt,*.jpg,*.pdf,*.txt,*.xml}) | (cd $pluginDirectory/src; tar -xpf -)
+	(cd $baseDirectory; tar -cf - $sourceDirectory/{*.gif,*.htm,*.html,*.java,*.jjt,*.jpg,*.pdf,*.txt,*.xml}) | (cd $pluginDirectory/src; tar -xpf -)
 	diff -r $baseDirectory/$sourceDirectory $pluginDirectory/src/$sourceDirectory | egrep -v ".class$|.jar$|: makefile$|: .svn"
     done	
 done
 
 echo "</feature>" >> $featureFile 
 
+set -x
 
 # Now try to create Require-Bundle lines in MANIFEST.MF.
 # We loop through each package and look for imports
 for file in $otherJars
 do
+    case $file in
+	lib*) echo "Skipping $file, we can't handle jar files from lib yet"
+	    continue;;
+    esac	
+
     # Name of the plugin
     pluginName=`dirname $file | sed 's@/@.@g'`
 
@@ -352,7 +398,7 @@ do
     # Get all the required packages by looking at the imports
     requiredPackagesFile=/tmp/mkosgi.requiredPackages
     find $pluginDirectory/src -name "*.java" |
-        xargs egrep -h "^import (ptolemy|com.microstar.xml)" |
+        xargs egrep -h "^import (ptolemy|com.microstar.xml|diva)" |
 	awk -F . '{for ( i = 1; i < NF; i++) {
                        if (i>1) {
                            printf(".")
@@ -366,7 +412,8 @@ do
     # Get all the xrequired packages that are external to this bundle
     providedPackagesFile=/tmp/mkosgi.providedPackages
     topSrcDirectory=`find $pluginDirectory/src -type d | head -1`
-    find $pluginDirectory/src -type d |
+    find $pluginDirectory/src -type f | 
+        awk -F / '{for(i=1; i < NF; i++) {printf("%s/")}}' | sort | uniq |
         sed "s@$topSrcDirectory/@@" | 
 	grep -v "$topSrcDirectory" |
 	sed 's@/@.@g' | sort > $providedPackagesFile
@@ -375,7 +422,7 @@ do
     echo "$file: external required packages:"
     echo $externalRequiredPackages
 
-    rm -f $requiredPackagesFile $providedPackagesFile
+    #rm -f $requiredPackagesFile $providedPackagesFile
 
     if [ -z "$externalRequiredPackages" ]; then
 	continue;
@@ -445,6 +492,7 @@ do
     awk '{nf = split($0, f, " ")
             for (i = 1; i <= nf; i++) { 
                 if (i == 1) {
+                    printedALine=1
 		    printf("Require-Bundle:");
 	        } else {
 	            printf(";bundle-version=\"8.0.0\",\n")
@@ -453,10 +501,13 @@ do
              }
              if (nf == 1) {
                  # If we have only one required bundle . . .
-                 printf(";bundle-version=\"8.0.0\"\n")
+                 printf(";bundle-version=\"8.0.0\"")
               }
 
    	   }
-        END {printf("\n")}' - >> $manifestFile
+        END {if (printedALine==1) {
+                 printf("\n")
+             } 
+            }' - >> $manifestFile
     cat $manifestFile
 done
