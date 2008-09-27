@@ -135,12 +135,16 @@ public class CheckModelSize {
 
             RemoveGraphicalClasses removeGraphicalClasses = new RemoveGraphicalClasses();
 
-            // Remove StaticSchedulingCodeGenerator from Butterfly because during the
-            // nightly build the codegenerator is not yet built when the tests in actor.gui
-            // are run.
+            // Remove StaticSchedulingCodeGenerator from Butterfly
+            // because during the nightly build the codegenerator is
+            // not yet built when the tests in actor.gui are run.
             removeGraphicalClasses.put(
                     "ptolemy.codegen.kernel.StaticSchedulingCodeGenerator",
                     null);
+            // We need the _vergilSize attribute, which is removed by
+            // removeGraphicalClasses, so we modify removeGraphicalClasses
+            // so that it no longer removes SizeAttributes.
+            removeGraphicalClasses.remove("ptolemy.actor.gui.SizeAttribute");
 
             // Filter out any graphical classes.
             MoMLParser.addMoMLFilter(removeGraphicalClasses);
