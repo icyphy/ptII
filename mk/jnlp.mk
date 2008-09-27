@@ -1126,3 +1126,105 @@ visualsensedoc.exe: visualsensedoc_l4j.xml
 echo_jars:
 	@echo $($(JARS)) | grep -v "(doc/codeDoc|doc/design/hyvisual.jar|doc/design/design.jar|doc/design/visualsense.jar)" |  awk '{for(i=1;i<=NF;i++){ print "            <file src=\"../../jar_dist/" $$i "\""; ns = split($$i, f, "/"); dir = ""; for(s=1;s<ns;s++) {dir = dir "/" f[s]}  print "                  targetdir=\"$$INSTALL_PATH" dir "\"/>"  } }'
 
+################################################################
+################################################################
+################################################################
+# Bootstrapping OSGi bundles
+MKOSGI=$(ROOT)/bin/mkosgi
+OSGI_TARGET_DIRECTORY=~/tmp/triq
+
+KORE_JARS = \
+	ptolemy/data/data.jar \
+	ptolemy/graph/graph.jar \
+	ptolemy/kernel/kernel.jar \
+	ptolemy/math/math.jar \
+	ptolemy/util/util.jar \
+
+
+ACTOR_KORE_JARS = \
+	ptolemy/actor/actor.jar
+
+ACTOR_LIB_KORE_JARS = \
+	ptolemy/actor/lib/libKore.jar
+
+ACTOR_LIB_GUI_KORE_JARS = \
+	ptolemy/actor/lib/gui/gui.jar
+
+MOML_JARS = \
+	ptolemy/moml/moml.jar
+
+# Microstar is used by moml and ptplot, but ptplot does not use moml
+MICROSTAR_JARS = \
+	com/microstar/xml/xml.jar
+
+# Simple MoML App with no gui
+OSGI_PTOLEMY_JARS = \
+	$(KORE_JARS) \
+	$(ACTOR_KORE_JARS) \
+	$(ACTOR_LIB_KORE_JARS) \
+	$(MOML_JARS) \
+	$(MICROSTAR_JARS)
+
+OSGI_SR_TEST_JARS = \
+	$(OSGI_PTOLEMY_JARS) \
+	ptolemy/domains/sr/sr.jar 
+
+osgi_sr_test:
+	rm -rf $(OSGI_TARGET_DIRECTORY)/*
+	$(MKOSGI) $(PTII) $(OSGI_TARGET_DIRECTORY) ptolemy.sr.example $(OSGI_SR_TEST_JARS)
+
+OSGI_ACTOR_GUI_JARS = \
+	ptolemy/actor/gui/gui.jar
+
+OSGI_ACTOR_LIB_GUI_JARS = \
+	ptolemy/actor/lib/gui/gui.jar \
+	ptolemy/actor/lib/image/image.jar \
+	ptolemy/domains/sdf/lib/vq/vq.jar \
+	ptolemy/media/media.jar
+
+OSGI_GUI_JARS = \
+	ptolemy/gui/gui.jar
+
+OSGI_PLOT_JARS = \
+	ptolemy/plot/plot.jar
+
+OSGI_PTINY_DOMAINS_JARS =  \
+	ptolemy/domains/ct/ct.jar \
+	ptolemy/domains/ddf/ddf.jar \
+	ptolemy/domains/de/de.jar \
+	ptolemy/domains/fsm/fsm.jar \
+	ptolemy/domains/hdf/hdf.jar \
+	ptolemy/domains/pn/pn.jar \
+	ptolemy/domains/rendezvous/rendezvous.jar \
+	ptolemy/domains/sdf/sdf.jar \
+	ptolemy/domains/sr/sr.jar 
+
+OSGI_VERGIL_JARS = \
+	diva/diva.jar \
+	ptolemy.vergil.vergil.jar
+
+OSGI_PTINY_JARS = \
+	$(OSGI_ACTOR_GUI_JARS) \
+	$(OSGI_ACTOR_LIB_GUI_JARS) \
+	$(OSGI_GUI_JARS) \
+	$(OSGI_PLOT_JARS) \
+	$(OSGI_PTOLEMY_JARS) \
+	$(OSGI_PTINY_DOMAINS_JARS) \
+	$(OSGI_VERGIL_JARS) \
+	$(PTALON_JARS) \
+	$(PTINY_ONLY_JNLP_JARS)
+
+osgi_ptiny_test:
+	rm -rf $(OSGI_TARGET_DIRECTORY)/*
+	$(MKOSGI) $(PTII) $(OSGI_TARGET_DIRECTORY) ptolemy.ptiny $(OSGI_PTINY_JARS)
+
+osgi_gui_test:
+	rm -rf $(OSGI_TARGET_DIRECTORY)/*
+	$(MKOSGI) $(PTII) $(OSGI_TARGET_DIRECTORY) ptolemy.guiKore \
+	diva/diva.jar \
+	ptolemy/actor/actor.jar \
+	ptolemy/actor/gui.jar \
+	ptolemy/data/data.jar \
+	ptolemy/gui/gui.jar \
+	ptolemy/kernel/kernel.jar \
+	ptolemy/plot/plot.jar
