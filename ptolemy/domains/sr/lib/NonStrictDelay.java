@@ -30,6 +30,7 @@ package ptolemy.domains.sr.lib;
 import java.util.Set;
 
 import ptolemy.actor.lib.Transformer;
+import ptolemy.data.AbsentToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.graph.Inequality;
