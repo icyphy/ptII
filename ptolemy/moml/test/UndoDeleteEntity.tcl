@@ -292,11 +292,13 @@ test UndoDeleteEntity-1.3a {Delete an entity in a composite actor} {
     $manager requestChange $change
 
     # Export the modified MoML
-    $toplevel exportMoML
-} {<?xml version="1.0" standalone="no"?>
+    list [$toplevel exportMoML]
+} {{<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="UndoDeleteEntityComposite" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
+    </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -309,6 +311,10 @@ test UndoDeleteEntity-1.3a {Delete an entity in a composite actor} {
         <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
       </svg>
     </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 95.0">
         </property>
@@ -338,7 +344,7 @@ test UndoDeleteEntity-1.3a {Delete an entity in a composite actor} {
         <link port="port2" relation="relation"/>
     </entity>
 </entity>
-}
+}}
 
 test UndoDeleteEntity-1.3b {Delete an entity in a composite actor: Now call undo} {
     # Now create the MoMLUndoChangeRequest which will undo the change
@@ -348,11 +354,13 @@ test UndoDeleteEntity-1.3b {Delete an entity in a composite actor: Now call undo
     $manager requestChange $undochange
 
     # Should be back to the base model...
-    $toplevel exportMoML
-} {<?xml version="1.0" standalone="no"?>
+    list [$toplevel exportMoML]
+} {{<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="UndoDeleteEntityComposite" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
+    </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -365,6 +373,10 @@ test UndoDeleteEntity-1.3b {Delete an entity in a composite actor: Now call undo
         <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
       </svg>
     </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 95.0">
         </property>
@@ -400,7 +412,7 @@ test UndoDeleteEntity-1.3b {Delete an entity in a composite actor: Now call undo
         <link port="AddSubtract.output" relation="relation"/>
     </entity>
 </entity>
-}
+}}
 
 
 if {[info procs jdkCapture] == "" } then {
