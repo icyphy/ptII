@@ -11,6 +11,7 @@
 <input source="ptolemy/configs/annotation.xml"/>
 <property name="Ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute"/>
 <property name="Image" class="ptolemy.vergil.kernel.attributes.ImageAttribute"/>
+<property name="Arrow" class="ptolemy.vergil.kernel.attributes.ArrowAttribute"/>
 <property name="Line" class="ptolemy.vergil.kernel.attributes.LineAttribute"/>
 <property name="Polygon" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute"/>
 <property name="NameIcon" class="ptolemy.vergil.icon.NameIcon"/>
