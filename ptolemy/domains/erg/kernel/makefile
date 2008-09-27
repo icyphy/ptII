@@ -72,7 +72,6 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	'ERGController$$1.class' \
-	'ERGController$$ERGObjectScope.class' \
 	'ERGDirector$$1.class' \
 	'ERGDirector$$EventComparator.class' \
 	'ERGDirector$$TimedEvent.class' \
