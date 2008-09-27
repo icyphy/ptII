@@ -617,7 +617,7 @@ case "`uname -s`" in
 	    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/apps/eclipse/awt/"
         fi	    
      	;;
-     *)  ECLIPSE_CLASSPATHENTRY_PDE_REQUIREDPLUGINS = '<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>'
+     *)  ECLIPSE_CLASSPATHENTRY_PDE_REQUIREDPLUGINS='<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>'
 	;;
 esac
 
