@@ -47,13 +47,9 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	lib
-PTCLASSJAR =
+PTCLASSJAR =    $(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-		vq/vq.jar
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+# Don't include vq/vq.jar because vq/ImageDisplay.java imports ptolemy.media
 
 JSRCS = \
 	ArrayToSequence.java \
