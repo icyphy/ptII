@@ -583,15 +583,36 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
             for (Object selectedItem : origSelection) {
                 if (selectedItem instanceof Figure) {
+                    Object userObject = ((Figure) selectedItem).getUserObject();
+                    
+                    // We want to skip the selection of ports in composite actors since
+                    //  these should remain in the already existing composite actor.
+                    // When the wire has been selected the port will be correctly duplicated.
+                    if (userObject instanceof Location) {
+                        Location loc = (Location) userObject;
+                        NamedObj locationContainer = loc.getContainer();
+                        if (locationContainer != null && (locationContainer instanceof IOPort)) {
+                            NamedObj portContainer = locationContainer.getContainer();
+                            if (portContainer != null && portContainer instanceof CompositeEntity) {
+                                // Remove element from selection
+                                model.removeSelection(selectedItem);
+                                selection.remove(selectedItem);
+                                
+                                // Don't process this node.
+                                continue;
+                            }
+                        }
+                        
+                    }
+                    
+                    
                     if (!gotLocation) {
                         location[0] = ((Figure) selectedItem).getBounds()
                                 .getCenterX();
                         location[1] = ((Figure) selectedItem).getBounds()
                                 .getCenterY();
                         gotLocation = true;
-                    }
-
-                    Object userObject = ((Figure) selectedItem).getUserObject();
+                    }                    
 
                     if (graphModel.isNode(userObject)) {
                         nodeSet.add(userObject);
@@ -604,10 +625,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                         //      as selected links since we don't want to lose links and relations when creating
                         //      hierarchies
 
-                        if (actual instanceof Entity)
-                        {
-                            for (IOPort port : (List<IOPort>) ((Entity) actual).portList())
-                            {                                                    
+                        if (actual instanceof Entity) {
+                            for (IOPort port : (List<IOPort>) ((Entity) actual).portList()) {                                                    
                                 Iterator<?> outEdges =  graphModel.outEdges(port);
                                 while (outEdges.hasNext()) {
                                     Object obj = outEdges.next();
