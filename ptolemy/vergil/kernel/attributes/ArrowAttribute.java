@@ -29,7 +29,6 @@ package ptolemy.vergil.kernel.attributes;
 
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Path2D;
 
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
@@ -38,6 +37,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import diva.util.java2d.Polygon2D;
 
 //////////////////////////////////////////////////////////////////////////
 //// ArrowAttribute
@@ -73,7 +73,7 @@ public class ArrowAttribute extends LineAttribute {
 
         arrowLength = new Parameter(this, "arrowLength");
         arrowLength.setTypeEquals(BaseType.DOUBLE);
-        arrowLength.setExpression("20.0");
+        arrowLength.setExpression("16.0");
 
         arrowWidth = new Parameter(this, "arrowWidth");
         arrowWidth.setTypeEquals(BaseType.DOUBLE);
@@ -86,7 +86,7 @@ public class ArrowAttribute extends LineAttribute {
      *  @return An arrow.
      */
     public Shape _getDefaultShape() {
-        return _createArrow(40.0, 40.0, 20.0, 10.0);
+        return _createArrow(40.0, 40.0, 16.0, 10.0);
     }
 
     /** React to a changes in the attributes by changing the icon.
@@ -113,7 +113,7 @@ public class ArrowAttribute extends LineAttribute {
         }
     }
 
-    /** Length of the arrow head. Default to 20.0 */
+    /** Length of the arrow head. Default to 16.0 */
     public Parameter arrowLength;
 
     /** Width of the arrow head. Default to 10.0. */
@@ -129,23 +129,18 @@ public class ArrowAttribute extends LineAttribute {
      */
     private static Shape _createArrow(double x, double y, double arrowLength,
             double arrowWidth) {
-        Path2D path = new Path2D.Double();
         double halfWidth = arrowWidth / 2.0;
-        path.moveTo(arrowLength + halfWidth * 0.2, halfWidth);
-        path.curveTo(arrowLength + halfWidth * 0.2, halfWidth * 0.8,
-                arrowLength, halfWidth * 0.2, arrowLength + halfWidth * 0.6,
-                0.0);
-        path.lineTo(0.0, halfWidth);
-        path.lineTo(arrowLength + halfWidth * 0.6, arrowWidth);
-        path.curveTo(arrowLength, arrowWidth - halfWidth * 0.2,
-                arrowLength + halfWidth * 0.2, arrowWidth - halfWidth * 0.8,
-                arrowLength + halfWidth * 0.2,
-                halfWidth);
-        path.lineTo(Math.sqrt(x*x + y*y), halfWidth);
-        path.closePath();
+        Polygon2D polygon = new Polygon2D.Double();
+        polygon.moveTo(0.0, halfWidth);
+        polygon.lineTo(arrowLength + 3.0, 0.0);
+        polygon.lineTo(arrowLength, halfWidth);
+        polygon.lineTo(Math.sqrt(x*x + y*y), halfWidth);
+        polygon.lineTo(arrowLength, halfWidth);
+        polygon.lineTo(arrowLength + 3.0, arrowWidth);
+        polygon.closePath();
 
         AffineTransform transform = AffineTransform.getRotateInstance(x, y);
-        path.transform(transform);
-        return path;
+        polygon.transform(transform);
+        return polygon;
     }
 }
