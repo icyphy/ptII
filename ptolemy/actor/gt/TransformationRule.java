@@ -401,6 +401,7 @@ public class TransformationRule extends MultiCompositeActor implements
         }
 
         public void preinitialize() throws IllegalActionException {
+            _stopRequested = false;
         }
 
         public void wrapup() throws IllegalActionException {
