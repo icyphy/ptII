@@ -227,6 +227,7 @@ public class Transition extends ComponentRelation {
             // attribute used to convey expressions without being evaluated.
             // _guard is the variable that does the evaluation.
             _guardParseTree = null;
+            _guardParseTreeVersion = -1;
             _parseTreeEvaluatorVersion = -1;
         } else if (attribute == refinementName) {
             _refinementVersion = -1;
@@ -270,6 +271,7 @@ public class Transition extends ComponentRelation {
         newObject.refinementName = (StringAttribute) newObject
                 .getAttribute("refinementName");
         newObject._guardParseTree = null;
+        newObject._guardParseTreeVersion = -1;
         newObject._actionListsVersion = -1;
         newObject._choiceActionList = new LinkedList();
         newObject._commitActionList = new LinkedList();
@@ -478,12 +480,14 @@ public class Transition extends ComponentRelation {
      */
     public boolean isEnabled(ParserScope scope) throws IllegalActionException {
         ParseTreeEvaluator parseTreeEvaluator = getParseTreeEvaluator();
-        if (_guardParseTree == null) {
+        if (_guardParseTree == null || _guardParseTreeVersion
+                != _workspace.getVersion()) {
             String expr = getGuardExpression();
             // Parse the guard expression.
             PtParser parser = new PtParser();
             try {
                 _guardParseTree = parser.generateParseTree(expr);
+                _guardParseTreeVersion = _workspace.getVersion();
             } catch (IllegalActionException ex) {
                 throw new IllegalActionException(this, ex,
                         "Failed to parse guard expression \"" + expr + "\"");
@@ -850,6 +854,9 @@ public class Transition extends ComponentRelation {
 
     // The parse tree for the guard expression.
     private ASTPtRootNode _guardParseTree;
+    
+    // Version of the cached guard parse tree
+    private long _guardParseTreeVersion = -1;
 
     // Cached nondeterministic attribute value.
     private boolean _nondeterministic = false;
