@@ -376,7 +376,7 @@ public class DefaultCausalityInterface implements CausalityInterface {
      *  @param input The input port.
      *  @param inputs The set of inputs to which input is added if
      *  it is not already present.
-     *  @param outpus The set of output dependents to which the output
+     *  @param output The set of output dependents to which the output
      *  dependents are added if input was not in the inputs set.
      *  @exception IllegalActionException Not thrown in this base class.
      */
