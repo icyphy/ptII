@@ -596,7 +596,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
      * 
      * @exception IllegalActionException
      *                If the port is not an opaque output port.
-     * @param currentPort
+     * @param port
      *            The port to transfer tokens from.
      * @return True if data are transferred.
      * @throws IllegalActionException
