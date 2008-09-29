@@ -33,25 +33,26 @@ import java.awt.Font;
 import java.awt.Paint;
 import java.awt.geom.Rectangle2D;
 
-import javax.swing.Icon;
 import javax.swing.SwingConstants;
 
+import ptolemy.data.ArrayToken;
+import ptolemy.data.ScalarToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.domains.erg.kernel.Event;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.vergil.erg.EventIcon;
+import ptolemy.vergil.icon.NameIcon;
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
 import diva.canvas.ZList;
 import diva.canvas.toolbox.BasicFigure;
 import diva.canvas.toolbox.LabelFigure;
-import diva.gui.toolbox.FigureIcon;
 import diva.util.java2d.Polygon2D;
 
 //////////////////////////////////////////////////////////////////////////
-//// TestIcon
+////TestIcon
 
 /**
 
@@ -61,8 +62,8 @@ import diva.util.java2d.Polygon2D;
  @since Ptolemy II 7.1
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
- */
-public class TestIcon extends EventIcon {
+*/
+public class TestIcon extends NameIcon {
 
     public TestIcon(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {
@@ -189,21 +190,30 @@ public class TestIcon extends EventIcon {
         return figure;
     }
 
-    public Icon createIcon() {
-        // In this class, we cache the rendered icon, since creating icons from
-        // figures is expensive. (See EditorIcon)
-        if (_iconCache != null) {
-            return _iconCache;
+    protected Paint _getFill() {
+        Parameter colorParameter;
+        try {
+            colorParameter = (Parameter) (getAttribute("fill",
+                    Parameter.class));
+            if (colorParameter != null) {
+                ArrayToken array = (ArrayToken) colorParameter.getToken();
+                if (array.length() == 4) {
+                    Color color = new Color(
+                            (float) ((ScalarToken) array.getElement(0))
+                                    .doubleValue(),
+                            (float) ((ScalarToken) array.getElement(1))
+                                    .doubleValue(),
+                            (float) ((ScalarToken) array.getElement(2))
+                                    .doubleValue(),
+                            (float) ((ScalarToken) array.getElement(3))
+                                    .doubleValue());
+                    return color;
+                }
+            }
+        } catch (Throwable e) {
+            // Ignore and return the default.
         }
-
-        // No cached object, so rerender the icon.
-        Figure figure = createBackgroundFigure();
-        _iconCache = new FigureIcon(figure, 20, 15);
-        return _iconCache;
-    }
-
-    protected boolean _addTrianglarIcons() {
-        return false;
+        return super._getFill();
     }
 
     private LabelFigure _addLabel(CompositeFigure figure, Figure previous,
