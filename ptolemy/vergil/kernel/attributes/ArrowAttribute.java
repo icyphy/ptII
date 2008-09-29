@@ -139,7 +139,11 @@ public class ArrowAttribute extends LineAttribute {
         polygon.lineTo(arrowLength + 3.0, arrowWidth);
         polygon.closePath();
 
-        AffineTransform transform = AffineTransform.getRotateInstance(x, y);
+        //FIXME: getRotateInstance(double, double) is new in Java 1.6
+	// and not present in Java 1.5
+        //AffineTransform transform = AffineTransform.getRotateInstance(x, y);
+	// FIXME: this is wrong:
+        AffineTransform transform = AffineTransform.getRotateInstance(0);
         polygon.transform(transform);
         return polygon;
     }
