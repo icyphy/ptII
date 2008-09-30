@@ -474,7 +474,6 @@ JDOCSIZE=
 UPGRADE_JVM=no
 # Ptalon uses generics, which are present only in Java 1.5 and later
 HAS_GENERICS=no
-# Oracle OJDBC is Java 1.6 or later
 JAVA1_6_OR_LATER=no
 case "$JVERSION" in
 	1.1.*) UPGRADE_JVM=yes;;
@@ -3180,7 +3179,7 @@ PTSPACEDOMAIN_PACKAGES=
 # MySQL Jar mysql-connector-java-5.1.6-bin.jar
 MYSQL_JAR=
 
-# Oracle Java Database jar (ojdbc6.jar)
+# Oracle Java Database jar (ojdbc5.jar or ojdbc6.jar)
 ORACLE_OJDBC_JAR=
 
 # PTSPACEDOMAIN_JAR is the name of the jar file that includes the space
@@ -3207,22 +3206,20 @@ else
     if test -f "$MYSQL_JAR"; then
        PT_MSG_RESULT([$MYSQL_JAR])
     fi    
+    OJDBC_TARGET_JAR=ojdbc6.jar
     if test "$JAVA1_6_OR_LATER" != "yes"; then
-        AC_MSG_WARN([ojdbc6.jar requires Java 1.6 or later.
-    If MySQL is not present, you will not be able to use the database actors.])
-        ORACLE_OJDBC_JAR=
-    else 
-        AC_MSG_CHECKING([for ojdbc6.jar, used by the database actors])
-        AC_ARG_WITH(ojdbc6, [  --with-ojdbc6=/path/to/ojdbc6.jar  path to ojdbc6.jar
-                          defaults to \$PTII/ptolemy/actor/lib/database/ojdbc6.jar],
-	    ORACLE_OJDBC_JAR=$withval,
-	    ORACLE_OJDBC_JAR=$PTII/ptolemy/actor/lib/database/ojdbc6.jar)
-
-        if test -f "$ORACLE_OJDBC_JAR"; then
-	    PT_MSG_RESULT([$ORACLE_OJDBC_JAR])
-
-        fi
+        OJDBC_TARGET_JAR=ojdbc5.jar
     fi
+    AC_MSG_CHECKING([for ojdbc.jar, used by the database actors])
+    AC_ARG_WITH(ojdbc, [  --with-ojdbc=/path/to/ojdbcN.jar  path to ojdbc.jar
+                          defaults to \$PTII/ptolemy/actor/lib/database/ojdbc6.jar or ojdbc5.jar $OJDBC_TARGET_JAR],
+	    ORACLE_OJDBC_JAR=$withval,
+	    ORACLE_OJDBC_JAR=$PTII/ptolemy/actor/lib/database/$OJDBC_TARGET_JAR)
+
+    if test -f "$ORACLE_OJDBC_JAR"; then
+	PT_MSG_RESULT([$ORACLE_OJDBC_JAR])
+    fi
+
     if test -f "$MYSQL_JAR" -o -f "$ORACLE_OJDBC_JAR"; then
 	PTDATABASE_DIR=database
 	PTDATABASE_PACKAGES=ptolemy.actor.lib.database
@@ -3241,8 +3238,8 @@ else
 	fi
     else  
         AC_MSG_WARN([Failed to find 
-    PTII/actor/lib/database/$MYSQL_TARGET_JAR and 
-    PTII/actor/lib/database/ojdbc6.jar.
+    PTII/actor/lib/database/$MYSQL_TARGET_JAR and/or 
+    PTII/actor/lib/database/$OJDBC_TARGET_JAR
     If neither Java Database Connection jar is present,
     you will not be able to use the space domain or the database actors.])
 	    ORACLE_OJDBC_JAR=
@@ -3263,7 +3260,6 @@ else
    fi 
 
 fi 
-
 
 #--------------------------------------------------------------------
 #       The Batik SVG toolkit is used by Kepler so we include Batik
