@@ -31,17 +31,17 @@ public class AnnotationAttribute extends StringAttribute {
         //_checkAttributeName(name);
     }
 
-    /**
-     * Check the name of the annotation attribute. The given name contains
-     * an use case identifier and the annotation label. The two parts are
-     * separated by the symbol "::" (two consecutive semicolons). The use
-     * case identifier needs to be associated with a PropertySolver in 
-     * the model. Bad  
-     * @param name The given name of the annotation attribute.
-     * @throws IllegalActionException Thrown if no PropertySolver can
-     *  be found using the given name.
-     * @throws NameDuplicationException Not thrown in this method.
-     */
+//     /**
+//      * Check the name of the annotation attribute. The given name contains
+//      * an use case identifier and the annotation label. The two parts are
+//      * separated by the symbol "::" (two consecutive semicolons). The use
+//      * case identifier needs to be associated with a PropertySolver in 
+//      * the model. Bad  
+//      * @param name The given name of the annotation attribute.
+//      * @throws IllegalActionException Thrown if no PropertySolver can
+//      *  be found using the given name.
+//      * @throws NameDuplicationException Not thrown in this method.
+//      */
 //    private void _checkAttributeName(String name) 
 //    throws IllegalActionException, NameDuplicationException {
 //        /*String usecaseName =*/ getUseCaseIdentifier();
