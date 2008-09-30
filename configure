@@ -906,8 +906,8 @@ Optional Packages:
                           defaults to JRE java.home property with lib/rt.jar appended
   --with-mysql=/path/to/mysql.jar  path to mysql.jar
                           defaults to \$PTII/ptolemy/actor/lib/database/$MYSQL_TARGET_JAR
-  --with-ojdbc6=/path/to/ojdbc6.jar  path to ojdbc6.jar
-                          defaults to \$PTII/ptolemy/actor/lib/database/ojdbc6.jar
+  --with-ojdbc=/path/to/ojdbcN.jar  path to ojdbc.jar
+                          defaults to \$PTII/ptolemy/actor/lib/database/ojdbc6.jar or ojdbc5.jar $OJDBC_TARGET_JAR
   --with-batikjar=BATIK_JAR     use Batik jar BATIK_JAR,
                           defaults to \$KEPLER/lib/jar/batik-all-1.6.jar
   --with-tini=DIR       use TINI from DIR,
@@ -2154,7 +2154,6 @@ JDOCSIZE=
 UPGRADE_JVM=no
 # Ptalon uses generics, which are present only in Java 1.5 and later
 HAS_GENERICS=no
-# Oracle OJDBC is Java 1.6 or later
 JAVA1_6_OR_LATER=no
 case "$JVERSION" in
 	1.1.*) UPGRADE_JVM=yes;;
@@ -8380,7 +8379,7 @@ PTSPACEDOMAIN_PACKAGES=
 # MySQL Jar mysql-connector-java-5.1.6-bin.jar
 MYSQL_JAR=
 
-# Oracle Java Database jar (ojdbc6.jar)
+# Oracle Java Database jar (ojdbc5.jar or ojdbc6.jar)
 ORACLE_OJDBC_JAR=
 
 # PTSPACEDOMAIN_JAR is the name of the jar file that includes the space
@@ -8416,31 +8415,27 @@ fi;
 echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $MYSQL_JAR" >&5
 echo "${ECHO_T}$MYSQL_JAR" >&6; fi
     fi
+    OJDBC_TARGET_JAR=ojdbc6.jar
     if test "$JAVA1_6_OR_LATER" != "yes"; then
-        { echo "$as_me:$LINENO: WARNING: ojdbc6.jar requires Java 1.6 or later.
-    If MySQL is not present, you will not be able to use the database actors." >&5
-echo "$as_me: WARNING: ojdbc6.jar requires Java 1.6 or later.
-    If MySQL is not present, you will not be able to use the database actors." >&2;}
-        ORACLE_OJDBC_JAR=
-    else
-        echo "$as_me:$LINENO: checking for ojdbc6.jar, used by the database actors" >&5
-echo $ECHO_N "checking for ojdbc6.jar, used by the database actors... $ECHO_C" >&6
+        OJDBC_TARGET_JAR=ojdbc5.jar
+    fi
+    echo "$as_me:$LINENO: checking for ojdbc.jar, used by the database actors" >&5
+echo $ECHO_N "checking for ojdbc.jar, used by the database actors... $ECHO_C" >&6
 
-# Check whether --with-ojdbc6 or --without-ojdbc6 was given.
-if test "${with_ojdbc6+set}" = set; then
-  withval="$with_ojdbc6"
+# Check whether --with-ojdbc or --without-ojdbc was given.
+if test "${with_ojdbc+set}" = set; then
+  withval="$with_ojdbc"
   ORACLE_OJDBC_JAR=$withval
 else
-  ORACLE_OJDBC_JAR=$PTII/ptolemy/actor/lib/database/ojdbc6.jar
+  ORACLE_OJDBC_JAR=$PTII/ptolemy/actor/lib/database/$OJDBC_TARGET_JAR
 fi;
 
-        if test -f "$ORACLE_OJDBC_JAR"; then
-	    if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
+    if test -f "$ORACLE_OJDBC_JAR"; then
+	if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $ORACLE_OJDBC_JAR" >&5
 echo "${ECHO_T}$ORACLE_OJDBC_JAR" >&6; fi
-
-        fi
     fi
+
     if test -f "$MYSQL_JAR" -o -f "$ORACLE_OJDBC_JAR"; then
 	PTDATABASE_DIR=database
 	PTDATABASE_PACKAGES=ptolemy.actor.lib.database
@@ -8459,13 +8454,13 @@ echo "${ECHO_T}$ORACLE_OJDBC_JAR" >&6; fi
 	fi
     else
         { echo "$as_me:$LINENO: WARNING: Failed to find
-    PTII/actor/lib/database/$MYSQL_TARGET_JAR and
-    PTII/actor/lib/database/ojdbc6.jar.
+    PTII/actor/lib/database/$MYSQL_TARGET_JAR and/or
+    PTII/actor/lib/database/$OJDBC_TARGET_JAR
     If neither Java Database Connection jar is present,
     you will not be able to use the space domain or the database actors." >&5
 echo "$as_me: WARNING: Failed to find
-    PTII/actor/lib/database/$MYSQL_TARGET_JAR and
-    PTII/actor/lib/database/ojdbc6.jar.
+    PTII/actor/lib/database/$MYSQL_TARGET_JAR and/or
+    PTII/actor/lib/database/$OJDBC_TARGET_JAR
     If neither Java Database Connection jar is present,
     you will not be able to use the space domain or the database actors." >&2;}
 	    ORACLE_OJDBC_JAR=
@@ -8486,7 +8481,6 @@ else
    fi
 
 fi
-
 
 #--------------------------------------------------------------------
 #       The Batik SVG toolkit is used by Kepler so we include Batik
