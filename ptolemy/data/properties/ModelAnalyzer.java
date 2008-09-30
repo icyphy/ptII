@@ -52,6 +52,7 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.util.FileUtilities;
 
 //////////////////////////////////////////////////////////////////////////
@@ -136,8 +137,8 @@ public class ModelAnalyzer extends Transformer {
         super.attributeChanged(attribute);
     }
     
-    public Object clone() throws CloneNotSupportedException {
-        ModelAnalyzer actor = (ModelAnalyzer) super.clone();
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ModelAnalyzer actor = (ModelAnalyzer) super.clone(workspace);
         try {
             actor._solvers = _createSolvers("ptolemy.data.properties.configuredSolvers");
         } catch (IllegalActionException ex) {
