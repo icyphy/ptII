@@ -50,8 +50,10 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	gt/gt.jar \
 	lib/lib.jar
+
+# Do not include gt.jar because it is not part of Ptalon in Ptiny. 
+	gt/gt.jar \
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 

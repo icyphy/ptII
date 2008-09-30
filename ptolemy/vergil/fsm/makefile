@@ -49,9 +49,12 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-		fmv/fmv.jar \
 		ia/ia.jar \
 		modal/modal.jar
+
+# jars not included in fsm.jar because they are not in ptiny
+#		fmv/fmv.jar
+
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 

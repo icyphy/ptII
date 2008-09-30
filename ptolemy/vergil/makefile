@@ -53,15 +53,18 @@ PTAUXALLJARS = \
 		actor/actor.jar \
 		basic/basic.jar \
 		fsm/fsm.jar \
-		erg/erg.jar \
-		gt/gt.jar \
 		icon/icon.jar \
 		kernel/kernel.jar \
 		debugger/debugger.jar \
-		tdl/tdl.jar \
 		toolbox/toolbox.jar \
 		tree/tree.jar \
 		unit/unit.jar
+
+# Packages that are not part of the ptiny version of Vergil
+#		erg/erg.jar
+#		gt/gt.jar
+#		tdl/tdl.jar 
+
 
 # All the .class files necessary to run a Vergil applet
 PTAUXALLJAR =	vergilApplet.jar
