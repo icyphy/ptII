@@ -46,7 +46,6 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	nc2moml
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
@@ -86,7 +85,7 @@ all: jclass
 	@echo "Run \"make test\" for a quick test"
 
 
-install: jclass
+install: jclass jars
 	@echo "Warning: nc2moml takes about 20 minutes to run" 
 	./nc2moml
 

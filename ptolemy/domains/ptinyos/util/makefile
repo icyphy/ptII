@@ -42,15 +42,10 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	util
-PTCLASSJAR =
+PTCLASSJAR =	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-		ncapp2moml/ncapp2moml.jar \
-		nc2moml/nc2moml.jar
-
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+# ncapp2moml/ncapp2moml.jar and nc2moml/nc2moml.jar are not included
+# in util.jar because they cause problems with Maven.
 
 OTHER_FILES_TO_BE_JARED = \
 	index.htm \

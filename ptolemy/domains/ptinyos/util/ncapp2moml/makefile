@@ -83,5 +83,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: jclass
 	chmod a+x $(OTHER_FILES_TO_BE_MADE_EXECUTABLE)
 
+install: jclass jars
+
 include $(ROOT)/mk/ptcommon.mk
 
