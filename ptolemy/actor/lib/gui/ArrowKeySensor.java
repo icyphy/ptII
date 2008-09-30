@@ -30,7 +30,10 @@ package ptolemy.actor.lib.gui;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.Component;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -45,7 +48,6 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import diva.gui.toolbox.FocusMouseListener;
 
 //////////////////////////////////////////////////////////////////////////
 //// ArrowKeySensor
@@ -353,6 +355,55 @@ public class ArrowKeySensor extends TypedAtomicActor {
             pack();
             setVisible(true);
         }
+
+	/* A mouse listener that requests focus for the source of any
+	 * mouse event it receives.
+	 */
+	private class FocusMouseListener implements MouseListener {
+	    // This is a copy of diva/gui/toolbox/FocusMouseListener.java
+	    // because we don't want the dependency on diva.
+
+	    /** Invoked when the mouse is released.
+	     *  Ignored in this listener.
+	     *  @param event The corresponding event.
+             */		
+	    public void mouseReleased(MouseEvent event) {
+	    }
+
+	    /** Invoked when the mouse enters a component.
+	     *  Ignored in this listener.
+	     *  @param event The corresponding event.
+             */		
+	    public void mouseEntered(MouseEvent event) {
+	    }
+
+	    /** Invoked when the mouse exits a component.
+	     *  Ignored in this listener.
+	     *  @param event The corresponding event.
+             */		
+	    public void mouseExited(MouseEvent event) {
+	    }
+
+	    /**
+	     * Grab the keyboard focus when the component that this
+	     * listener is attached to is clicked on.
+	     *  @param event The corresponding event.
+	     */
+	    public void mousePressed(MouseEvent event) {
+		Component component = event.getComponent();
+
+		if (!component.hasFocus()) {
+		    component.requestFocus();
+		}
+	    }
+
+	    /** Invoked when the mouse is clicked (pressed and released).
+	     *  Ignored in this listener.
+	     *  @param event The corresponding event.
+             */		
+	    public void mouseClicked(MouseEvent event) {
+	    }
+	}
 
         ///////////////////////////////////////////////////////////////////
         ////                     private metods                        ////
