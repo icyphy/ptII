@@ -53,7 +53,7 @@ PTCLASSALLJARS = \
 	lib/lib.jar
 
 # Do not include gt.jar because it is not part of Ptalon in Ptiny. 
-	gt/gt.jar \
+#	gt/gt.jar \
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
