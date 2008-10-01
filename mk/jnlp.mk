@@ -147,8 +147,6 @@ CORE_JNLP_JARS = \
 	ptolemy/vergil/vergil.jar \
 	ptolemy/domains/domains.jar \
 	ptolemy/actor/parameters/demo/demo.jar \
-	ptolemy/domains/sdf/demo/demo.jar \
-	ptolemy/domains/sdf/doc/doc.jar \
 	$(MATLAB_JARS) \
 	ptolemy/ptsupport.jar
 
@@ -219,6 +217,8 @@ HYBRID_SYSTEMS_JNLP_JARS =	\
 	ptolemy/domains/ct/demo/demo.jar \
 	ptolemy/domains/ct/doc/doc.jar \
 	ptolemy/domains/fsm/doc/doc.jar \
+	ptolemy/domains/sdf/demo/demo.jar \
+	ptolemy/domains/sdf/doc/doc.jar \
 	ptolemy/ptsupport.jar \
 	ptolemy/vergil/vergil.jar \
 	ptolemy/domains/gr/lib/quicktime/quicktime.jar \
@@ -245,26 +245,12 @@ PTINY_ONLY_JNLP_JARS = \
         ptolemy/actor/lib/python/demo/demo.jar \
         ptolemy/actor/lib/security/demo/demo.jar \
 	ptolemy/codegen/codegen.jar \
+	ptolemy/codegen/codegen/c/vergil/vergil.jar \
 	ptolemy/codegen/demo/demo.jar \
 	$(PTALON_JARS) \
 	ptolemy/data/type/demo/demo.jar \
 	ptolemy/data/unit/demo/demo.jar \
-	ptolemy/domains/ct/demo/demo.jar \
-	ptolemy/domains/ct/doc/doc.jar \
-	ptolemy/domains/ddf/demo/demo.jar \
-	ptolemy/domains/ddf/doc/doc.jar \
-	ptolemy/domains/de/demo/demo.jar \
-	ptolemy/domains/de/doc/doc.jar \
-	ptolemy/domains/fsm/demo/demo.jar \
-	ptolemy/domains/fsm/doc/doc.jar \
-	ptolemy/domains/hdf/demo/demo.jar \
-	ptolemy/domains/hdf/doc/doc.jar \
-	ptolemy/domains/pn/demo/demo.jar \
-        ptolemy/domains/pn/doc/doc.jar \
-	ptolemy/domains/rendezvous/demo/demo.jar \
-        ptolemy/domains/rendezvous/doc/doc.jar \
-	ptolemy/domains/sr/demo/demo.jar \
-	ptolemy/domains/sr/doc/doc.jar \
+	ptolemy/domains/ptinyDemos.jar \
 	ptolemy/moml/demo/demo.jar \
 	ptolemy/vergil/kernel/attributes/demo/demo.jar
 
@@ -307,6 +293,7 @@ BACKTRACK_JARS =
 
 EXEC_JARS = 	ptolemy/actor/gui/exec/exec.jar
 
+
 PTJACL_JARS =	ptolemy/actor/gui/ptjacl/ptjacl.jar \
 		lib/ptjacl.jar
 # Do not include PTJACL for size reasons
@@ -346,6 +333,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/actor/lib/jxta/jxta.jar \
 	ptolemy/actor/lib/x10/x10.jar \
 	ptolemy/actor/lib/x10/demo/demo.jar \
+	ptolemy/actor/ptalon/gt/gt.jar \
 	vendors/misc/x10/tjx10p-13/lib/x10.jar \
 	lib/ptCal.jar \
 	lib/saxon8.jar \
@@ -382,6 +370,10 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/sdf/lib/vq/data/data.jar \
 	ptolemy/domains/tm/demo/demo.jar \
 	ptolemy/domains/tm/doc/doc.jar \
+	ptolemy/vergil/erg/erg.jar \
+	ptolemy/vergil/fsm/fmv.jar \
+	ptolemy/vergil/gt/gt.jar \
+	ptolemy/vergil/tdl/tdl.jar \
 	$(PTDATABASE_JNLP_JARS) \
 	$(RUN_JARS) \
 	$(WIRELESS_JARS)
@@ -1188,6 +1180,7 @@ OSGI_ACTOR_GUI_JARS = \
 OSGI_ACTOR_LIB_GUI_JARS = \
 	ptolemy/actor/lib/gui/gui.jar \
 	ptolemy/actor/lib/image/image.jar \
+	ptolemy/actor/lib/javasound/javasound.jar \
 	ptolemy/domains/sdf/lib/vq/vq.jar \
 	ptolemy/media/media.jar
 
@@ -1198,15 +1191,8 @@ OSGI_PLOT_JARS = \
 	ptolemy/plot/plot.jar
 
 OSGI_PTINY_DOMAINS_JARS =  \
-	ptolemy/domains/ct/ct.jar \
-	ptolemy/domains/ddf/ddf.jar \
-	ptolemy/domains/de/de.jar \
-	ptolemy/domains/fsm/fsm.jar \
-	ptolemy/domains/hdf/hdf.jar \
-	ptolemy/domains/pn/pn.jar \
-	ptolemy/domains/rendezvous/rendezvous.jar \
-	ptolemy/domains/sdf/sdf.jar \
-	ptolemy/domains/sr/sr.jar 
+	ptolemy/domains/domains.jar \
+	ptolemy/domains/demo.jar
 
 OSGI_VERGIL_JARS = \
 	diva/diva.jar \
@@ -1214,6 +1200,8 @@ OSGI_VERGIL_JARS = \
 
 OSGI_PTINY_JARS = \
 	$(OSGI_ACTOR_GUI_JARS) \
+	ptolemy/configs/configs.jar \
+	ptolemy/doc/docConfig.jar \
 	$(OSGI_ACTOR_LIB_GUI_JARS) \
 	$(OSGI_GUI_JARS) \
 	$(OSGI_PLOT_JARS) \
@@ -1270,10 +1258,14 @@ osgi_codegen_test:
 	com/microstar/xml/xml.jar \
 	ptolemy/actor/actor.jar \
 	ptolemy/actor/gui/gui.jar \
+	ptolemy/actor/lib/colt/colt.jar \
+	ptolemy/actor/lib/gui/gui.jar \
 	ptolemy/actor/lib/libKore.jar \
+	ptolemy/actor/lib/javasound/javasound.jar \
 	ptolemy/actor/lib/jni/jni.jar \
-	ptolemy/codegen/codegen.jar \
 	ptolemy/data/data.jar \
+	ptolemy/domains/ct/ct.jar \
+	ptolemy/domains/hdf/hdf.jar \
 	ptolemy/domains/fsm/fsm.jar \
 	ptolemy/domains/pn/pn.jar \
 	ptolemy/domains/sdf/sdf.jar \
@@ -1281,9 +1273,11 @@ osgi_codegen_test:
 	ptolemy/gui/gui.jar \
 	ptolemy/kernel/kernel.jar \
 	ptolemy/math/math.jar \
+	ptolemy/media/media.jar \
 	ptolemy/moml/moml.jar \
 	ptolemy/plot/plot.jar \
-	ptolemy/util/util.jar
+	ptolemy/util/util.jar \
+	ptolemy/codegen/codegen.jar \
 
 
 

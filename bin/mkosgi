@@ -170,9 +170,13 @@ EOFfeatureProject
 # before /usr/bin/sort
 SORT=/usr/bin/sort
 
+ERRFILE=/tmp/mkosgi.err
+rm -f $ERRFILE
 # Create a plugin for each jar file
 for file in $otherJars
 do
+    echo "#### Creating plug-in for $file"
+
     case $file in
 	lib*) echo "Skipping $file, we can't handle jar files from lib yet"
 	    continue;;
@@ -223,8 +227,8 @@ EOF1
     cat > "$pluginDirectory/build.properties" <<EOF3
 source.. = src/
 output.. = bin/
-bin.includes = META-INF/,\
-               .
+bin.includes = META-INF/,\\
+      .
 EOF3
 
     cat > "$pluginDirectory/.project" <<EOFproject
@@ -291,7 +295,12 @@ EOFproject
 	ptolemy.codegen)
 	    importPackage="$importPackage,
  com.microstar.xml,
+ ptolemy.actor.lib.colt,
+ ptolemy.actor.lib.gui,
+ ptolemy.actor.lib.javasound,
  ptolemy.actor.lib.jni,
+ ptolemy.domains.ct.kernel,
+ ptolemy.domains.hdf.kernel,
  ptolemy.graph,
  ptolemy.moml"
 	    ;;
@@ -299,6 +308,10 @@ EOFproject
 	    importPackage="$importPackage,
  ptolemy.graph,
  ptolemy.util"
+	    ;;
+	ptolemy.domains.ct.demo)
+	    importPackage="$importPackage,
+ ptolemy.gui"
 	    ;;
 	ptolemy.domains.ddf)
 	    importPackage="$importPackage,
@@ -324,6 +337,10 @@ EOFproject
 	    importPackage="$importPackage,
  com.microstar.xml,
  ptolemy.util"
+	    ;;
+	ptolemy.vergil)
+	    importPackage="$importPackage,
+ ptolemy.domains.ct.kernel"
 	    ;;
     esac
 
@@ -352,8 +369,7 @@ EOF4
 	ptolemy.actor.ptalon)
 	    echo "Bundle-ClassPath: antlr.jar" >> "$manifestFile"
 	    echo "jars.extra.classpath = antlr.jar" >> "$pluginDirectory/build.properties"
-            cp $PTII/ptolemy/actor/ptalon/antlr/antlr.jar $pluginDirectory
-            ;;
+            cp $PTII/ptolemy/actor/ptalon/antlr/antlr.jar $pluginDirectory            ;;
     esac
 
     # FIXME: MANIFEST.MF should include the reqirements:
@@ -371,9 +387,7 @@ EOF4
     # Solaris 8 /usr/ucb/ls -l does not
     #otherJarssizes="$otherJarssizes `/bin/ls -l $baseDirectory/$file | awk '{for (i=3;i<NF;i++) {if ($i ~ /^[0-9]*$/) {print $i; exit}}}'`"
 
-
     # Determine what packages are in the jar file
-    echo "$file"
     packages=`jar -tf $baseDirectory/$file |
 	grep -v '/$' | grep -v META | grep -v JNLP-INF |
 	grep -v '/[^.]*$' |
@@ -411,19 +425,30 @@ EOF4
     do
 	sourceDirectory=`echo $package | sed 's@\.@/@g'`
 	  
-	(cd $baseDirectory; tar -cf - $sourceDirectory/{*.c,*.gif,*.h,*.htm,*.html,*.in,*.java,*.jjt,*.jpg,*.pdf,*.txt,*.xml}) | (cd $pluginDirectory/src; tar -xpf -)
-	diff -r $baseDirectory/$sourceDirectory $pluginDirectory/src/$sourceDirectory | egrep -v ".class$|.jar$|: makefile$|: .svn"
+	# Hide tar's stderr because it contains messages about files
+	# that don't exist but are listed inside the curly braces.
+	(cd $baseDirectory; tar -cf - $sourceDirectory/{*.c,*.dtd,*.gif,*.h,*.htm,*.html,*.in,*.java,*.jj,*.jjt,*.jpg,*.pdf,*.ptln,*.txt,*.xml} 2>> $ERRFILE) | (cd $pluginDirectory/src; tar -xpf -) 
     done	
+    # Do a diff after all the packages have been created so that
+    # subpackages are present
+    #
+    for package in $packages
+    do
+        sourceDirectory=`echo $package | sed 's@\.@/@g'`
+        echo "#### Diffing package: $package"
+        echo "diff -r $baseDirectory/$sourceDirectory $pluginDirectory/src/$sourceDirectory"
+        diff -r $baseDirectory/$sourceDirectory $pluginDirectory/src/$sourceDirectory | egrep -v ".class$|.jar$|: makefile$|: .svn"
+    done
 done
-
 echo "</feature>" >> $featureFile 
 
-set -x
 
 # Now try to create Require-Bundle lines in MANIFEST.MF.
 # We loop through each package and look for imports
 for file in $otherJars
 do
+    echo "#### Updating Required-Bundle for $file"
+
     case $file in
 	lib*) echo "Skipping $file, we can't handle jar files from lib yet"
 	    continue;;
@@ -477,7 +502,7 @@ do
     fi	
 
     # Map the required packages to the bundles that provide that package
-    externalRequiredBundlesFile=/tmp/mkosgi.externalRequiredBundlesFile.$$
+    externalRequiredBundlesFile=/tmp/mkosgi.externalRequiredBundlesFile
     rm -f $externalRequiredBundlesFile
     for packageName in $externalRequiredPackages
     do
