@@ -135,9 +135,9 @@ OPTIONAL_FILES = \
 	gr \
 	ptinyos
 
-OTHER_JARS = ptinyDemos.jar
+OTHER_JARS = demo.jar
 
-PTINYDEMOJARS = \
+DEMOJARS = \
 	ct/demo/demo.jar \
 	ct/doc/doc.jar \
 	de/demo/demo.jar \
@@ -158,11 +158,11 @@ PTINYDEMOJARS = \
 	sr/doc/doc.jar
 
 	
-ptinyDemos.jar:
+demo.jar:
 	rm -rf $(PTJAR_TMPDIR) $@
 	mkdir $(PTJAR_TMPDIR)
 	mkdir -p $(PTJAR_TMPDIR)/$(ME)
-	for jar in $(PTINYDEMOJARS); do \
+	for jar in $(DEMOJARS); do \
 		echo "Unjarring $$jar"; \
 		(cd $(PTJAR_TMPDIR); "$(JAR)" $(JAR_FLAGS) -xvf ../$$jar); \
 	done
