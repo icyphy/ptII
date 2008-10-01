@@ -139,14 +139,23 @@ OTHER_JARS = ptinyDemos.jar
 
 PTINYDEMOJARS = \
 	ct/demo/demo.jar \
+	ct/doc/doc.jar \
 	de/demo/demo.jar \
+	de/doc/doc.jar \
 	ddf/demo/demo.jar \
+	ddf/doc/doc.jar \
 	fsm/demo/demo.jar \
+	fsm/doc/doc.jar \
 	hdf/demo/demo.jar \
+	hdf/doc/doc.jar \
 	pn/demo/demo.jar \
+	pn/doc/doc.jar \
 	rendezvous/demo/demo.jar \
+	rendezvous/doc/doc.jar \
 	sdf/demo/demo.jar \
-	sr/demo/demo.jar
+	sdf/doc/doc.jar \
+	sr/demo/demo.jar \
+	sr/doc/doc.jar
 
 	
 ptinyDemos.jar:
