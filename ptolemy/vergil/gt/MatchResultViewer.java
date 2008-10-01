@@ -785,6 +785,12 @@ public class MatchResultViewer extends GTFrame {
             currentModel.workspace().remove(currentModel);
             Tableau tableau = getFrameController().getConfiguration().openModel(
                     model);
+            ((Effigy) tableau.getContainer()).uri.setURI(null);
+            String name = model.getName();
+            if (name.equals("")) {
+                name = "Unnamed";
+            }
+            tableau.setTitle(name);
             Frame frame = tableau.getFrame();
             if (modified && (frame instanceof TableauFrame)) {
                 ((TableauFrame) tableau.getFrame()).setModified(true);
