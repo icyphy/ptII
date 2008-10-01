@@ -135,6 +135,35 @@ OPTIONAL_FILES = \
 	gr \
 	ptinyos
 
+OTHER_JARS = ptinyDemos.jar
+
+PTINYDEMOJARS = \
+	ct/demo/demo.jar \
+	de/demo/demo.jar \
+	ddf/demo/demo.jar \
+	fsm/demo/demo.jar \
+	hdf/demo/demo.jar \
+	pn/demo/demo.jar \
+	rendezvous/demo/demo.jar \
+	sdf/demo/demo.jar \
+	sr/demo/demo.jar
+
+	
+ptinyDemos.jar:
+	rm -rf $(PTJAR_TMPDIR) $@
+	mkdir $(PTJAR_TMPDIR)
+	mkdir -p $(PTJAR_TMPDIR)/$(ME)
+	for jar in $(PTINYDEMOJARS); do \
+		echo "Unjarring $$jar"; \
+		(cd $(PTJAR_TMPDIR); "$(JAR)" $(JAR_FLAGS) -xvf ../$$jar); \
+	done
+	rm -rf $(PTJAR_TMPDIR)/META-INF
+	@echo "Creating $@"
+	(cd $(PTJAR_TMPDIR); "$(JAR)" $(JAR_FLAGS) -cvf tmp.jar .)
+	mv $(PTJAR_TMPDIR)/tmp.jar $@
+	$(JAR_INDEX)
+	rm -rf $(PTJAR_TMPDIR)
+
 all: jclass
 install: jclass jars
 
