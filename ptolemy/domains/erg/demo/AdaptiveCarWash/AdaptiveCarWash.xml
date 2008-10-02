@@ -118,7 +118,7 @@ the number of waiting cars drops below 10.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 310.0]">
         </property>
     </property>
-    <property name="QueueSize" class="ptolemy.data.expr.Parameter" value="17">
+    <property name="QueueSize" class="ptolemy.data.expr.Parameter" value="16">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -206,7 +206,7 @@ ModelUpdate component and is not adaptive.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
                 </property>
             </property>
-            <property name="Queue" class="ptolemy.data.expr.Parameter" value="17">
+            <property name="Queue" class="ptolemy.data.expr.Parameter" value="16">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -261,7 +261,7 @@ but also by input signals.</text></svg></configure>
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 25.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 5.0]">
                 </property>
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={288, 268, 823, 514}, maximized=false}">
@@ -320,7 +320,7 @@ are reset at the start of each run.</text></svg></configure>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 30.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 25.0]">
                 </property>
             </entity>
             <entity name="Enter" class="ptolemy.domains.erg.kernel.Event">
@@ -356,7 +356,7 @@ are reset at the start of each run.</text></svg></configure>
             <entity name="ReadInput" class="ptolemy.domains.erg.kernel.Event">
                 <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Servers = serversInput;&#10;  Queue = queueInput">
                 </property>
-                <property name="fireOnInput" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="fireOnInput" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -385,6 +385,8 @@ are reset at the start of each run.</text></svg></configure>
                 <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="triggers" class="ptolemy.data.expr.StringParameter" value="serversInput, queueInput">
                 </property>
             </relation>
             <relation name="relation2" class="ptolemy.domains.erg.kernel.SchedulingRelation">
@@ -426,7 +428,7 @@ are reset at the start of each run.</text></svg></configure>
                 </property>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="5.0 + 20.0 * random()">
+                <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="10.0 + 20.0 * random()">
                 </property>
                 <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
                 </property>
@@ -551,7 +553,7 @@ are reset at the start of each run.</text></svg></configure>
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>TimedPlotter</title>
-<xRange min="0.0" max="1995.6430685674002"/>
+<xRange min="0.0" max="1999.2427402946"/>
 <yRange min="0.0" max="22.0"/>
 </plot>?>
         </configure>
@@ -576,7 +578,7 @@ are reset at the start of each run.</text></svg></configure>
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 335.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[54.96929943585218, 316.1141376482133]">
                 </property>
             </property>
             <property name="MeanServiceTime2" class="ptolemy.data.expr.Parameter" value="5.0">
@@ -595,13 +597,17 @@ are reset at the start of each run.</text></svg></configure>
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 335.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[54.96929943585218, 341.1141376482133]">
                 </property>
             </property>
+            <entity name="InitModelWithContainer" class="ptolemy.actor.gt.controller.InitModelWithContainer">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[94.96929943585218, 86.11413764821324]">
+                </property>
+            </entity>
             <entity name="SwitchToSlowMode" class="ptolemy.actor.gt.controller.Transform">
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[288.2958720214957, 90.50000000000003]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 190.0]">
                 </property>
                 <configure>
                     <entity name="Transformation" class="ptolemy.actor.gt.TransformationRule">
@@ -724,17 +730,17 @@ are reset at the start of each run.</text></svg></configure>
 </configure>
             </entity>
             <entity name="TooSlow?" class="ptolemy.actor.gt.controller.Test">
-                <property name="monitoredVariables" class="ptolemy.data.expr.StringParameter" value="QueueSize">
+                <property name="monitoredVariables" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[353.2958720214957, 180.49999999999994]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 130.0]">
                 </property>
             </entity>
             <entity name="SwitchToFastMode" class="ptolemy.actor.gt.controller.Transform">
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[293.2958720214957, 265.49999999999994]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[516.6953685930491, 189.31264432140904]">
                 </property>
                 <configure>
                     <entity name="Transformation" class="ptolemy.actor.gt.TransformationRule">
@@ -870,21 +876,21 @@ are reset at the start of each run.</text></svg></configure>
 </configure>
             </entity>
             <entity name="TooFast?" class="ptolemy.actor.gt.controller.Test">
-                <property name="fireOnInput" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="fireOnInput" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="monitoredVariables" class="ptolemy.data.expr.StringParameter" value="QueueSize">
+                <property name="monitoredVariables" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[218.2958720214957, 180.49999999999994]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 250.0]">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.3419731049864748">
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.5191095431990077">
                 </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.6686777080093692">
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.9770893164873724">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -904,9 +910,9 @@ are reset at the start of each run.</text></svg></configure>
             <relation name="relation_1_2" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.4355022545410215">
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.4020442305878052">
                 </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.9815167703345306">
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.5830074006765156">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -921,6 +927,8 @@ are reset at the start of each run.</text></svg></configure>
                 <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="triggers" class="ptolemy.data.expr.StringParameter" value="QueueSize">
                 </property>
             </relation>
             <relation name="relation_1_3" class="ptolemy.domains.erg.kernel.SchedulingRelation">
@@ -928,9 +936,9 @@ are reset at the start of each run.</text></svg></configure>
                 </property>
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="QueueSize &lt;= 20">
 <display name="condition"/>                </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.168140911060741">
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.2941233755156945">
                 </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.5268532048401764">
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-3.2090429098411235">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -946,15 +954,17 @@ are reset at the start of each run.</text></svg></configure>
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
+                <property name="triggers" class="ptolemy.data.expr.StringParameter" value="QueueSize">
+                </property>
             </relation>
             <relation name="relation_1_4" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="QueueSize &gt; 20">
 <display name="condition"/>                </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.3998632404985097">
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.40621532765411494">
                 </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.311167199582485">
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.4819436332282181">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -974,9 +984,9 @@ are reset at the start of each run.</text></svg></configure>
             <relation name="relation_1_5" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.4576165776351669">
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.37621666809894116">
                 </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.2523237487464316">
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.577971193371292">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -992,15 +1002,17 @@ are reset at the start of each run.</text></svg></configure>
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
+                <property name="triggers" class="ptolemy.data.expr.StringParameter" value="QueueSize">
+                </property>
             </relation>
             <relation name="relation_1_6" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="QueueSize &lt; 10">
 <display name="condition"/>                </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.427391889580212">
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.3928607339095531">
                 </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.0979401664350075">
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.6702674693593225">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -1022,9 +1034,9 @@ are reset at the start of each run.</text></svg></configure>
                 </property>
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="QueueSize &gt;= 10">
 <display name="condition"/>                </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.1697214027611724">
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.294889132204071">
                 </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.5207553638514826">
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.1367024182948121">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -1040,8 +1052,10 @@ are reset at the start of each run.</text></svg></configure>
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
+                <property name="triggers" class="ptolemy.data.expr.StringParameter" value="QueueSize">
+                </property>
             </relation>
-            <link port="Init.outgoingPort" relation="relation"/>
+            <link port="InitModelWithContainer.outgoingPort" relation="relation"/>
             <link port="SwitchToSlowMode.incomingPort" relation="relation"/>
             <link port="SwitchToSlowMode.incomingPort" relation="relation_1_6"/>
             <link port="SwitchToSlowMode.outgoingPort" relation="relation_1_2"/>

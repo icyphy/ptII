@@ -27,6 +27,9 @@
 */
 package ptolemy.actor.gt.controller;
 
+import javax.swing.SwingUtilities;
+
+import ptolemy.actor.Initializable;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.expr.Parameter;
@@ -49,7 +52,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class TableauParameter extends Parameter {
+public class TableauParameter extends Parameter implements Initializable {
 
     public TableauParameter(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -57,6 +60,12 @@ public class TableauParameter extends Parameter {
 
         setTypeEquals(new ObjectType(Tableau.class));
         setToken(new ObjectToken(null, Tableau.class));
+    }
+
+    public void addInitializable(Initializable initializable) {
+        throw new InternalErrorException("The addInitializable() method is " +
+                "not implemented in TableauParameter, and should not be " +
+                "invoked.");
     }
 
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
@@ -73,6 +82,41 @@ public class TableauParameter extends Parameter {
         return "";
     }
 
+    public void initialize() throws IllegalActionException {
+        final Tableau tableau = (Tableau) ((ObjectToken) getToken()).getValue();
+        if (tableau != null) {
+            setToken(new ObjectToken(null, Tableau.class));
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    tableau.close();
+                }
+            });
+        }
+    }
+
+    public void preinitialize() throws IllegalActionException {
+    }
+
+    public void removeInitializable(Initializable initializable) {
+    }
+
+    public void setContainer(NamedObj container)
+    throws IllegalActionException, NameDuplicationException {
+        NamedObj oldContainer = getContainer();
+        if (oldContainer instanceof Initializable) {
+            ((Initializable) oldContainer).removeInitializable(this);
+        }
+
+        super.setContainer(container);
+
+        if (container instanceof Initializable) {
+            ((Initializable) container).addInitializable(this);
+        }
+    }
+
     public void setExpression(String expression) {
+    }
+
+    public void wrapup() throws IllegalActionException {
     }
 }

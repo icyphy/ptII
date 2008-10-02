@@ -210,16 +210,6 @@ public class View extends TableauControllerEvent {
         return data;
     }
 
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-
-        Tableau tableau = _getTableau();
-        if (tableau != null) {
-            _setTableau(null);
-            _closeTableau(tableau);
-        }
-    }
-
     public Parameter reopenWindow;
 
     public Parameter screenLocation;

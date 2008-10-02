@@ -660,7 +660,7 @@
                 </property>
             </entity>
             <entity name="HandlePedRequest" class="ptolemy.domains.erg.kernel.Event">
-                <property name="fireOnInput" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="fireOnInput" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -668,7 +668,7 @@
                 </property>
             </entity>
             <entity name="HandleCarCount" class="ptolemy.domains.erg.kernel.Event">
-                <property name="fireOnInput" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="fireOnInput" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -706,7 +706,7 @@
                 </property>
             </entity>
             <entity name="HandlePedRequestO" class="ptolemy.domains.erg.kernel.Event">
-                <property name="fireOnInput" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="fireOnInput" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -793,32 +793,10 @@
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
-            <relation name="relation5" class="ptolemy.domains.erg.kernel.SchedulingRelation">
-                <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
-                </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="1.9906089284161932">
-                </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.8838824643332621">
-                </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="Infinity">
-                </property>
-                <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
-                </property>
-                <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-            </relation>
             <relation name="relation6" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="PedRequest_isPresent">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute">
 <display name="condition"/>                </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.2542376047448349">
                 </property>
@@ -860,6 +838,8 @@
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
+                <property name="triggers" class="ptolemy.data.expr.StringParameter" value="CarCount">
+                </property>
             </relation>
             <relation name="relation9" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
@@ -886,7 +866,7 @@
             <relation name="relation11" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="CarCount_isPresent &amp;&amp; CarCount == 1&#10;&amp;&amp; !CrossScheduled">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="CarCount == 1 &amp;&amp; !CrossScheduled">
 <display name="condition"/>                </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.45663632126415743">
                 </property>
@@ -932,7 +912,7 @@
             <relation name="relation13" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="CarCount_isPresent &amp;&amp; CarCount == 0&#10;&amp;&amp; CrossScheduled">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="CarCount == 0 &amp;&amp; CrossScheduled">
 <display name="condition"/>                </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.42266910111848">
                 </property>
@@ -1018,6 +998,8 @@
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
+                <property name="triggers" class="ptolemy.data.expr.StringParameter" value="CarCount">
+                </property>
             </relation>
             <relation name="relation16" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
@@ -1084,27 +1066,7 @@
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-            </relation>
-            <relation name="relation4" class="ptolemy.domains.erg.kernel.SchedulingRelation">
-                <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
-                </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.1844628293402678">
-                </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.22180513773459012">
-                </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="0.0">
-                </property>
-                <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
-                </property>
-                <property name="canceling" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="triggers" class="ptolemy.data.expr.StringParameter" value="PedRequest">
                 </property>
             </relation>
             <relation name="relation19" class="ptolemy.domains.erg.kernel.SchedulingRelation">
@@ -1132,7 +1094,7 @@
             <relation name="relation20" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="PedRequest_isPresent">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute">
 <display name="condition"/>                </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.49184436797710973">
                 </property>
@@ -1174,35 +1136,13 @@
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-            </relation>
-            <relation name="relation21" class="ptolemy.domains.erg.kernel.SchedulingRelation">
-                <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
-                </property>
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="!OrthogonalRequest_isPresent">
-<display name="condition"/>                </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.207367104709789">
-                </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.5116265215311877">
-                </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="Infinity">
-                </property>
-                <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
-                </property>
-                <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
+                <property name="triggers" class="ptolemy.data.expr.StringParameter" value="OrthogonalRequest">
                 </property>
             </relation>
             <relation name="relation24" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="OrthogonalRequest_isPresent">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute">
 <display name="condition"/>                </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.18088914189093358">
                 </property>
@@ -1320,7 +1260,7 @@
             <relation name="relation22" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="OrthogonalRequest_isPresent">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute">
 <display name="condition"/>                </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.4189377366532761">
                 </property>
@@ -1341,28 +1281,6 @@
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
-            <relation name="relation23" class="ptolemy.domains.erg.kernel.SchedulingRelation">
-                <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
-                </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.3102749196863026">
-                </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.574269008499404">
-                </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="0.0">
-                </property>
-                <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
-                </property>
-                <property name="canceling" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-            </relation>
             <link port="Red.incomingPort" relation="relation3"/>
             <link port="Red.incomingPort" relation="relation26"/>
             <link port="Red.outgoingPort" relation="relation"/>
@@ -1374,18 +1292,13 @@
             <link port="Green.outgoingPort" relation="relation8"/>
             <link port="Green.outgoingPort" relation="relation15"/>
             <link port="Green.outgoingPort" relation="relation18"/>
-            <link port="Green.outgoingPort" relation="relation23"/>
             <link port="Yellow.incomingPort" relation="relation6"/>
             <link port="Yellow.incomingPort" relation="relation19"/>
             <link port="Yellow.incomingPort" relation="relation27"/>
             <link port="Yellow.outgoingPort" relation="relation3"/>
             <link port="Yellow.outgoingPort" relation="relation9"/>
             <link port="Yellow.outgoingPort" relation="relation14"/>
-            <link port="Yellow.outgoingPort" relation="relation4"/>
             <link port="HandlePedRequest.incomingPort" relation="relation18"/>
-            <link port="HandlePedRequest.incomingPort" relation="relation4"/>
-            <link port="HandlePedRequest.incomingPort" relation="relation5"/>
-            <link port="HandlePedRequest.outgoingPort" relation="relation5"/>
             <link port="HandlePedRequest.outgoingPort" relation="relation6"/>
             <link port="HandlePedRequest.outgoingPort" relation="relation20"/>
             <link port="HandleCarCount.incomingPort" relation="relation8"/>
@@ -1407,10 +1320,7 @@
             <link port="GreenToYellow.incomingPort" relation="relation2"/>
             <link port="GreenToYellow.incomingPort" relation="relation20"/>
             <link port="GreenToYellow.outgoingPort" relation="relation19"/>
-            <link port="HandlePedRequestO.incomingPort" relation="relation21"/>
             <link port="HandlePedRequestO.incomingPort" relation="relation7"/>
-            <link port="HandlePedRequestO.incomingPort" relation="relation23"/>
-            <link port="HandlePedRequestO.outgoingPort" relation="relation21"/>
             <link port="HandlePedRequestO.outgoingPort" relation="relation24"/>
             <link port="HandlePedRequestO.outgoingPort" relation="relation22"/>
             <link port="Init.outgoingPort" relation="relation26"/>

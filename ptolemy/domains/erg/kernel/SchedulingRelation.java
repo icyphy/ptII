@@ -33,6 +33,8 @@ package ptolemy.domains.erg.kernel;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.LinkedList;
+import java.util.List;
 
 import ptolemy.actor.parameters.Priority;
 import ptolemy.data.ArrayToken;
@@ -41,15 +43,19 @@ import ptolemy.data.ScalarToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtArrayConstructNode;
 import ptolemy.data.expr.ASTPtRootNode;
+import ptolemy.data.expr.ModelScope;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.ParserScope;
 import ptolemy.data.expr.PtParser;
+import ptolemy.data.expr.StringParameter;
+import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.fsm.kernel.Transition;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
@@ -134,6 +140,11 @@ public class SchedulingRelation extends Transition {
         canceling.setExpression("false");
 
         priority = new Priority(this, "priority");
+
+        triggers = new StringParameter(this, "triggers");
+        Variable variable = new Variable(triggers, "_textHeightHint");
+        variable.setExpression("3");
+        variable.setPersistent(false);
     }
 
     /** React to a change in an attribute. If the changed attribute is
@@ -158,6 +169,8 @@ public class SchedulingRelation extends Transition {
             _parseArguments();
         } else if (attribute == delay) {
             _parseDelay();
+        } else if (attribute == triggers) {
+            getTriggers();
         }
 
         if (canceling != null && delay != null && isCanceling()
@@ -274,8 +287,61 @@ public class SchedulingRelation extends Transition {
                 buffer.append(argumentsExpression);
             }
         }
+        
+        String triggersExpression = triggers.getExpression();
+        if (!triggersExpression.trim().equals("")) {
+            if (buffer.length() > 0) {
+                buffer.append("\n");
+            }
+            buffer.append("triggers: " + triggersExpression);
+        }
 
         return buffer.toString();
+    }
+
+    /** Get the list of ports or variables referred to in the triggers
+     *  attributes. When a port receives a token or a variable's value is
+     *  changed, the event that this scheduling relation points to is triggered
+     *  (if that event is still in the event queue). Only ports belonging to the
+     *  container of this scheduling relation (which is an ERGController) is
+     *  searched for. Variables belonging to this scheduling relation, its
+     *  container, and containers of the container are searched for. Variable
+     *  names can contain dots.
+     *
+     *  @return A list of ports and variables.
+     *  @exception IllegalActionException If the value of the triggers parameter
+     *  cannot be obtained.
+     */
+    public List<NamedObj> getTriggers() throws IllegalActionException {
+        String[] names = triggers.stringValue().split(",");
+        List<NamedObj> list = null;
+        ERGController controller = (ERGController) getContainer();
+        for (String name : names) {
+            name = name.trim();
+            if (name.equals("")) {
+                continue;
+            }
+            NamedObj object = getAttribute(name, Variable.class);
+            if (object == null) {
+                object = controller.getAttribute(name, Variable.class);
+            }
+            if (object == null) {
+                object = controller.getPort(name);
+            }
+            if (object == null) {
+                object = ModelScope.getScopedVariable(null, this, name);
+            }
+            if (object == null) {
+                throw new IllegalActionException(this, "Unable to find " +
+                        "a port of a variable with name\"" + name + "\".");
+            } else {
+                if (list == null) {
+                    list = new LinkedList<NamedObj>();
+                }
+                list.add(object);
+            }
+        }
+        return list;
     }
 
     /** Return whether this scheduling relation is cancelling.
@@ -324,6 +390,10 @@ public class SchedulingRelation extends Transition {
 
     /** The priority of this scheduling relation. */
     public Priority priority;
+
+    /** A comma-separated list of port names and variable names to be
+     *  monitored. */
+    public StringParameter triggers;
 
     /** Return whether the delay is statically equal to 0.0.
      *

@@ -71,7 +71,6 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	'ERGController$$1.class' \
 	'ERGDirector$$1.class' \
 	'ERGDirector$$EventComparator.class' \
 	'ERGDirector$$TimedEvent.class' \

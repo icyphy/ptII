@@ -35,6 +35,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -53,6 +54,8 @@ import ptolemy.actor.util.Time;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.ParserScope;
+import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.domains.erg.kernel.Event.RefiringData;
@@ -61,13 +64,16 @@ import ptolemy.domains.fsm.kernel.RefinementActor;
 import ptolemy.domains.fsm.modal.ModalModel;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.ValueListener;
 import ptolemy.kernel.util.Workspace;
 
 /**
@@ -101,7 +107,8 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (tfeng)
  @see DEDirector
  */
-public class ERGDirector extends Director implements TimedDirector {
+public class ERGDirector extends Director implements TimedDirector,
+        ValueListener {
 
     /** Construct a director in the given container with the given name.
      *  The container argument must not be null, or a
@@ -160,23 +167,31 @@ public class ERGDirector extends Director implements TimedDirector {
     public TimedEvent cancel(Event event) throws IllegalActionException {
         TimedEvent timedEvent = findFirst(event, true);
         if (timedEvent != null) {
-            List<TimedEvent> events = _eventInstanceTable.get(timedEvent);
+            List<TimedEvent> events = _eventInstanceTable.remove(timedEvent);
             Object contents = timedEvent.contents;
             if (events == null) {
                 _eventQueue.remove(timedEvent);
-                _inputQueue.remove(timedEvent);
+                _refinementQueue.remove(timedEvent);
                 if (contents instanceof Actor) {
                     _scheduledRefinements.remove(contents);
                 }
             } else {
                 for (TimedEvent eventInstance : events) {
                     _eventQueue.remove(eventInstance);
-                    _inputQueue.remove(eventInstance);
+                    _refinementQueue.remove(eventInstance);
                     contents = eventInstance.contents;
                     if (contents instanceof Actor) {
                         _scheduledRefinements.remove(contents);
                     }
                 }
+                events.clear();
+            }
+            for (Set<TimedEvent> set : _eventsListeningToPorts.values()) {
+                set.remove(timedEvent);
+            }
+            for (Set<TimedEvent> set : _eventsListeningToVariables.values(
+                    )) {
+                set.remove(timedEvent);
             }
         }
         return timedEvent;
@@ -201,7 +216,11 @@ public class ERGDirector extends Director implements TimedDirector {
         newObject._eventInstanceList = null;
         newObject._eventInstanceTable = new HashMap<TimedEvent,
                 List<TimedEvent>>();
-        newObject._inputQueue = new PriorityQueue<TimedEvent>(5,
+        newObject._eventsListeningToPorts = new HashMap<Port,
+                Set<TimedEvent>>();
+        newObject._eventsListeningToVariables = new HashMap<Variable,
+                Set<TimedEvent>>();
+        newObject._refinementQueue = new PriorityQueue<TimedEvent>(5,
                 newObject._eventComparator);
         newObject._scheduledRefinements = new HashSet<TypedActor>();
         return newObject;
@@ -279,25 +298,34 @@ public class ERGDirector extends Director implements TimedDirector {
 
         PriorityQueue<TimedEvent> eventQueue = new PriorityQueue<TimedEvent>(
                 _eventQueue);
-        PriorityQueue<TimedEvent> inputQueue = new PriorityQueue<TimedEvent>(
-                _inputQueue);
+        PriorityQueue<TimedEvent> refinementQueue =
+            new PriorityQueue<TimedEvent>( _refinementQueue);
         Set<TimedEvent> firedEvents = new HashSet<TimedEvent>();
 
         if (hasInput) {
             // Fire the refinements of all input events.
-            Iterator<TimedEvent> iterator = inputQueue.iterator();
+            Iterator<TimedEvent> iterator = refinementQueue.iterator();
             while (iterator.hasNext() && !_stopRequested) {
                 TimedEvent timedEvent = iterator.next();
-                if (!(timedEvent.contents instanceof Event)) {
-                    firedEvents.add(timedEvent);
-                    _fire(timedEvent);
-                }
+                firedEvents.add(timedEvent);
+                _fire(timedEvent);
             }
 
-            // Fire scheduled input events.
-            iterator = inputQueue.iterator();
-            while (iterator.hasNext() && !_stopRequested) {
-                TimedEvent timedEvent = iterator.next();
+            Set<TimedEvent> timedEvents = new LinkedHashSet<TimedEvent>();
+            Iterator<Map.Entry<Port, Set<TimedEvent>>> entryIterator =
+                _eventsListeningToPorts.entrySet().iterator();
+            ParserScope scope = controller.getPortScope();
+            while (entryIterator.hasNext()) {
+                Map.Entry<Port, Set<TimedEvent>> entry = entryIterator.next();
+                Port port = entry.getKey();
+                BooleanToken token = (BooleanToken) scope.get(port.getName() +
+                        "_isPresent");
+                if (token != null && token.booleanValue()) {
+                    timedEvents.addAll(entry.getValue());
+                    entryIterator.remove();
+                }
+            }
+            for (TimedEvent timedEvent : timedEvents) {
                 if (timedEvent.contents instanceof Event) {
                     firedEvents.add(timedEvent);
                     _fire(timedEvent);
@@ -339,7 +367,7 @@ public class ERGDirector extends Director implements TimedDirector {
      *  permissible (e.g. the given time is in the past).
      */
     public void fireAt(Actor actor, Time time) throws IllegalActionException {
-        _fireAt(actor, time, null, null);
+        _fireAt(actor, time, null, null, null);
     }
 
     /** Request to process an event at the given absolute time. This method puts
@@ -349,12 +377,14 @@ public class ERGDirector extends Director implements TimedDirector {
      *  @param event The event scheduled to be processed.
      *  @param time The scheduled time.
      *  @param arguments The arguments to the event.
+     *  @param triggers A list of ports and variables that triggers the event
+     *   before its scheduled time is reached.
      *  @exception IllegalActionException If the operation is not
      *  permissible (e.g. the given time is in the past).
      */
-    public void fireAt(Event event, Time time, ArrayToken arguments)
-    throws IllegalActionException {
-        _fireAt(event, time, arguments, null);
+    public void fireAt(Event event, Time time, ArrayToken arguments,
+            List<NamedObj> triggers) throws IllegalActionException {
+        _fireAt(event, time, arguments, triggers, null);
     }
 
     /** Return the ERG controller has the same container as this director. The
@@ -524,7 +554,7 @@ public class ERGDirector extends Director implements TimedDirector {
     public boolean prefire() throws IllegalActionException {
         boolean result = super.prefire();
 
-        if (!_hasInput() || _inputQueue.isEmpty()) {
+        if (!_hasInput()) {
             if (!_eventQueue.isEmpty()) {
                 Time modelTime = getModelTime();
                 Time nextEventTime = (_eventQueue.peek()).timeStamp;
@@ -611,6 +641,36 @@ public class ERGDirector extends Director implements TimedDirector {
         super.stopFire();
     }
 
+    /** Monitor the change of a variable specified by the <code>settable</code>
+     *  argument if the execution has started, and invokes fireAt() to request
+     *  to fire all the events that are listening to that variable at the
+     *  current model time.
+     *
+     *  @param settable The variable that has been changed.
+     */
+    public void valueChanged(Settable settable) {
+        Variable variable = (Variable) settable;
+        Set<TimedEvent> eventList = _eventsListeningToVariables.remove(
+                variable);
+        if (eventList != null) {
+            variable.removeValueListener(this);
+            Time modelTime = getModelTime();
+            for (TimedEvent timedEvent : eventList) {
+                if (modelTime.compareTo(timedEvent.timeStamp) < 0) {
+                    Event event = (Event) timedEvent.contents;
+                    try {
+                        cancel(event);
+                        fireAt(event, modelTime, timedEvent.arguments, null);
+                    } catch (IllegalActionException e) {
+                        // This shouldn't happen because this event does not
+                        // have any refinement.
+                        throw new InternalErrorException(e);
+                    }
+                }
+            }
+        }
+    }
+
     /** Invoke the wrapup() method of the superclass, and clear the event queue.
      *
      *  @exception IllegalActionException If the wrapup() method of
@@ -618,10 +678,17 @@ public class ERGDirector extends Director implements TimedDirector {
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
+
+        for (Variable variable : _eventsListeningToVariables.keySet()) {
+            variable.removeValueListener(this);
+        }
+
         _eventQueue.clear();
-        _inputQueue.clear();
         _eventInstanceTable.clear();
         _eventInstanceList = null;
+        _eventsListeningToPorts.clear();
+        _eventsListeningToVariables.clear();
+        _refinementQueue.clear();
         _scheduledRefinements.clear();
     }
 
@@ -631,6 +698,9 @@ public class ERGDirector extends Director implements TimedDirector {
      */
     public Parameter LIFO;
 
+    //////////////////////////////////////////////////////////////////////////
+    //// TimedEvent
+
     /** Attribute specifying the name of the ERG controller in the
      *  container of this director. This director must have an ERG
      *  controller that has the same container as this director,
@@ -638,9 +708,6 @@ public class ERGDirector extends Director implements TimedDirector {
      *  methods of this director are called.
      */
     public StringAttribute controllerName;
-
-    //////////////////////////////////////////////////////////////////////////
-    //// TimedEvent
 
     /**
      The class to encapsulate information to be stored in an entry in the event
@@ -659,6 +726,8 @@ public class ERGDirector extends Director implements TimedDirector {
          *  @param time The model time at which the actor or event is scheduled.
          *  @param object The actor or event.
          *  @param arguments Arguments to the event.
+         *  @param data The refiring data for the next refire() invocation of
+         *   the event that causes this method to be called, or null if none.
          */
         public TimedEvent(Time time, Object object, ArrayToken arguments,
                 RefiringData data) {
@@ -705,9 +774,11 @@ public class ERGDirector extends Director implements TimedDirector {
      */
     protected void _initializeSchedule() throws IllegalActionException {
         _eventQueue.clear();
-        _inputQueue.clear();
         _eventInstanceTable.clear();
         _eventInstanceList = null;
+        _eventsListeningToPorts.clear();
+        _eventsListeningToVariables.clear();
+        _refinementQueue.clear();
         _scheduledRefinements.clear();
 
         ERGController controller = getController();
@@ -722,13 +793,13 @@ public class ERGDirector extends Director implements TimedDirector {
                 if (event.isInitialEvent()) {
                     TimedEvent newEvent = new TimedEvent(_currentTime, event,
                             null, null);
-                    _addEvent(newEvent, false);
+                    _addEvent(newEvent);
                 }
             }
         } else {
             TimedEvent newEvent = new TimedEvent(_currentTime, controller,
                     null, null);
-            _addEvent(newEvent, false);
+            _addEvent(newEvent);
             if (_isEmbedded()) {
                 _requestFiring();
             }
@@ -749,19 +820,18 @@ public class ERGDirector extends Director implements TimedDirector {
         return super._isTopLevel() && !_isInController();
     }
 
-    /** Add an event to the event queue in this director. If addToInputQueue is
-     *  true, add that event to the input queue as well.
+    /** Add an event to the event queue in this director. If the event contains
+     *  an actor as its contents, add the event to the refinement queue as well.
      *
      *  @param event The event.
-     *  @param addToInputQueue Whether the event should be added to the input
      *  queue as well.
      */
-    private void _addEvent(TimedEvent event, boolean addToInputQueue) {
+    private void _addEvent(TimedEvent event) {
         try {
             _eventComparator.setNewEvent(event);
             _eventQueue.add(event);
-            if (addToInputQueue) {
-                _inputQueue.add(event);
+            if (event.contents instanceof Actor) {
+                _refinementQueue.add(event);
             }
             List<TimedEvent> list = _eventInstanceTable.get(event);
             if (list == null) {
@@ -802,7 +872,7 @@ public class ERGDirector extends Director implements TimedDirector {
                 try {
                     _eventInstanceList.remove(timedEvent);
                     _eventQueue.remove(timedEvent);
-                    _inputQueue.remove(timedEvent);
+                    _refinementQueue.remove(timedEvent);
 
                     actor.fire();
                     boolean postfire = actor.postfire();
@@ -850,7 +920,14 @@ public class ERGDirector extends Director implements TimedDirector {
             try {
                 _eventInstanceList.remove(timedEvent);
                 _eventQueue.remove(timedEvent);
-                _inputQueue.remove(timedEvent);
+                _refinementQueue.remove(timedEvent);
+                for (Set<TimedEvent> set : _eventsListeningToPorts.values()) {
+                    set.remove(timedEvent);
+                }
+                for (Set<TimedEvent> set : _eventsListeningToVariables.values(
+                        )) {
+                    set.remove(timedEvent);
+                }
 
                 controller._setCurrentEvent(event);
                 RefiringData data;
@@ -861,7 +938,7 @@ public class ERGDirector extends Director implements TimedDirector {
                 }
                 if (data != null) {
                     _fireAt(event, getModelTime().add(data.getTimeAdvance()),
-                            timedEvent.arguments, data);
+                            timedEvent.arguments, null, data);
                 }
 
                 boolean scheduled = false;
@@ -906,11 +983,16 @@ public class ERGDirector extends Director implements TimedDirector {
      *  @param object The actor or the event.
      *  @param time The time.
      *  @param arguments Arguments to the event.
+     *  @param triggers A list of ports and variables that triggers the event
+     *   before its scheduled time is reached.
+     *  @param data The refiring data for the next refire() invocation of the
+     *   event that causes this method to be called, or null if none.
      *  @exception IllegalActionException If the actor or event is to be
      *   scheduled at a time in the past.
      */
     private void _fireAt(Object object, Time time, ArrayToken arguments,
-            RefiringData data) throws IllegalActionException {
+            List<NamedObj> triggers, RefiringData data)
+            throws IllegalActionException {
         if (time.compareTo(getModelTime()) < 0) {
             throw new IllegalActionException(this,
                     "Attempt to schedule an event in the past:"
@@ -919,21 +1001,38 @@ public class ERGDirector extends Director implements TimedDirector {
         }
 
         TimedEvent timedEvent = new TimedEvent(time, object, arguments, data);
+
         Time topTime = null;
         if (!_eventQueue.isEmpty()) {
             topTime = _eventQueue.peek().timeStamp;
         }
 
-        boolean addToInputQueue = false;
-        if (object instanceof Actor) {
-            addToInputQueue = true;
-        } else if (object instanceof Event) {
-            Event event = (Event) object;
-            if (event.fireOnInput()) {
-                addToInputQueue = true;
+        _addEvent(timedEvent);
+
+        if (triggers != null) {
+            for (NamedObj trigger : triggers) {
+                Set<TimedEvent> eventSet = null;
+                if (trigger instanceof Port) {
+                    Port port = (Port) trigger;
+                    eventSet = _eventsListeningToPorts.get(port);
+                    if (eventSet == null) {
+                        eventSet = new LinkedHashSet<TimedEvent>();
+                        _eventsListeningToPorts.put(port, eventSet);
+                    }
+                } else if (trigger instanceof Variable) {
+                    Variable variable = (Variable) trigger;
+                    eventSet = _eventsListeningToVariables.get(variable);
+                    if (eventSet == null) {
+                        eventSet = new LinkedHashSet<TimedEvent>();
+                        _eventsListeningToVariables.put(variable, eventSet);
+                        variable.addValueListener(this);
+                    }
+                }
+                if (eventSet != null) {
+                    eventSet.add(timedEvent);
+                }
             }
         }
-        _addEvent(timedEvent, addToInputQueue);
 
         if (_delegateFireAt && (topTime == null || topTime.compareTo(time)
                 > 0)) {
@@ -952,12 +1051,7 @@ public class ERGDirector extends Director implements TimedDirector {
             return ((ERGController) getContainer()).hasInput();
         } else {
             NamedObj container = getContainer();
-            List<?> inputPorts;
-            if (container instanceof ERGController) {
-                inputPorts = ((ERGController) container).inputPortList();
-            } else {
-                inputPorts = ((CompositeActor) getContainer()).inputPortList();
-            }
+            List<?> inputPorts = ((Actor) container).inputPortList();
             for (Object portObject : inputPorts) {
                 IOPort port = (IOPort) portObject;
                 for (int i = 0; i < port.getWidth(); i++) {
@@ -997,7 +1091,7 @@ public class ERGDirector extends Director implements TimedDirector {
                 CompositeActor composite = (CompositeActor) container;
                 composite.getExecutiveDirector().fireAt(composite, time);
             }
-        } else if (!_inputQueue.isEmpty()) {
+        } else if (!_refinementQueue.isEmpty()) {
             ERGController controller = (ERGController) container;
             controller.getExecutiveDirector().fireAt(controller,
                     Time.POSITIVE_INFINITY);
@@ -1037,19 +1131,20 @@ public class ERGDirector extends Director implements TimedDirector {
     private long _controllerVersion = -1;
 
     /** Whether fireAt() invocations should be delegated to the director at the
-    higher level. */
+        higher level. */
     private boolean _delegateFireAt = false;
 
     /** The comparator used to compare the time stamps of any two events. */
     private EventComparator _eventComparator = new EventComparator();
 
-    /** The list containing the event and refinements belonging to the current
-        instance of events. */
+    /** The list containing the events and refinements that belong to the
+        current instance of events. */
     private List<TimedEvent> _eventInstanceList;
 
-    /** A table that maps any refiring of an event or refinement of an event to
-    the list of refirings and refinements of the same event. The completion of
-    processing the event is the completion of all those tasks in the list. */
+    /** A table that maps any instance of an event's refiring or an event's
+        refinement to the list of instances of refirings and refinements of the
+        same event. The completion of processing that instance of event is the
+        completion of all those instances in the list that it is mapped to. */
     private Map<TimedEvent, List<TimedEvent>> _eventInstanceTable =
         new HashMap<TimedEvent, List<TimedEvent>>();
 
@@ -1057,12 +1152,22 @@ public class ERGDirector extends Director implements TimedDirector {
     private PriorityQueue<TimedEvent> _eventQueue =
         new PriorityQueue<TimedEvent>(10, _eventComparator);
 
-    /** The event queue that contains only events that can react to inputs. */
-    private PriorityQueue<TimedEvent> _inputQueue =
-        new PriorityQueue<TimedEvent>(5, _eventComparator);
+    /** A table that maps any port to the set of events that are listening to it
+        during an execution. */
+    private Map<Port, Set<TimedEvent>> _eventsListeningToPorts =
+        new HashMap<Port, Set<TimedEvent>>();
+
+    /** A table that maps any variable to the set of events that are listening
+        to it during an execution. */
+    private Map<Variable, Set<TimedEvent>> _eventsListeningToVariables =
+        new HashMap<Variable, Set<TimedEvent>>();
 
     /** The real time at which the execution started. */
     private long _realStartTime;
+
+    /** The event queue that contains only events that can react to inputs. */
+    private PriorityQueue<TimedEvent> _refinementQueue =
+        new PriorityQueue<TimedEvent>(5, _eventComparator);
 
     /** The refinements that have been scheduled. A refinement cannot be
         scheduled again before it has finished executing. */

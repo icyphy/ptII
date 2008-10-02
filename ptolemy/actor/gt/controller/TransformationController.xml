@@ -34,7 +34,7 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
         </property>
-        <property name="HostModel" class="ptolemy.actor.gt.controller.ModelParameter">
+        <property name="Model" class="ptolemy.actor.gt.controller.ModelParameter">
             <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
                 <property name="line" class="ptolemy.vergil.kernel.attributes.LineAttribute">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[1.0, -5.0]">
@@ -101,26 +101,7 @@
                     </property>
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 45.0]">
-            </property>
-        </property>
-        <property name="Matched" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 80.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 45.0]">
             </property>
         </property>
         <port name="modelInput" class="ptolemy.actor.gt.controller.ModelIOPort">
@@ -134,30 +115,30 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 200.0]">
             </property>
         </port>
-        <entity name="Init" class="ptolemy.actor.gt.controller.Init">
+        <entity name="InitModel" class="ptolemy.actor.gt.controller.InitModel">
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 40.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 25.0]">
             </property>
         </entity>
-        <entity name="Input" class="ptolemy.actor.gt.controller.Input">
+        <entity name="InputModel" class="ptolemy.actor.gt.controller.InputModel">
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 80.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 95.0]">
             </property>
         </entity>
-        <entity name="Output" class="ptolemy.actor.gt.controller.Output">
+        <entity name="OutputModel" class="ptolemy.actor.gt.controller.OutputModel">
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 355.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 365.0]">
             </property>
         </entity>
         <relation name="relation" class="ptolemy.domains.erg.kernel.SchedulingRelation">
             <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
             </property>
-            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.4945039664802866">
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.4752997116966139">
             </property>
-            <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.36344650349853985">
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.993406137127344">
             </property>
             <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -172,14 +153,16 @@
             <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
             </property>
             <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="triggers" class="ptolemy.data.expr.StringParameter" value="modelInput">
             </property>
         </relation>
         <relation name="relation2" class="ptolemy.domains.erg.kernel.SchedulingRelation">
             <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
             </property>
-            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.3018914197834963">
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.2244551237136343">
             </property>
-            <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.2230078974892575">
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.224186463096968">
             </property>
             <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -195,11 +178,13 @@
             </property>
             <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
             </property>
+            <property name="triggers" class="ptolemy.data.expr.StringParameter" value="modelInput">
+            </property>
         </relation>
-        <link port="Init.outgoingPort" relation="relation"/>
-        <link port="Input.incomingPort" relation="relation"/>
-        <link port="Input.incomingPort" relation="relation2"/>
-        <link port="Input.outgoingPort" relation="relation2"/>
+        <link port="InitModel.outgoingPort" relation="relation"/>
+        <link port="InputModel.incomingPort" relation="relation"/>
+        <link port="InputModel.incomingPort" relation="relation2"/>
+        <link port="InputModel.outgoingPort" relation="relation2"/>
     </entity>
     <relation name="modelInputRelation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">

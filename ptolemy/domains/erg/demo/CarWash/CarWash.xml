@@ -221,7 +221,7 @@ but also by input signals.</text></svg></configure>
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 25.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 5.0]">
                 </property>
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={288, 268, 823, 514}, maximized=false}">
@@ -280,7 +280,7 @@ are reset at the start of each run.</text></svg></configure>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 30.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 25.0]">
                 </property>
             </entity>
             <entity name="Enter" class="ptolemy.domains.erg.kernel.Event">
@@ -316,7 +316,7 @@ are reset at the start of each run.</text></svg></configure>
             <entity name="ReadInput" class="ptolemy.domains.erg.kernel.Event">
                 <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Servers = serversInput;&#10;  Queue = queueInput">
                 </property>
-                <property name="fireOnInput" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="fireOnInput" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -328,9 +328,9 @@ are reset at the start of each run.</text></svg></configure>
             <relation name="relation" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.5127250485416692">
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.42966549977841983">
                 </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.2898483205022245">
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.7024349768663374">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -345,6 +345,8 @@ are reset at the start of each run.</text></svg></configure>
                 <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="triggers" class="ptolemy.data.expr.StringParameter" value="serversInput, queueInput">
                 </property>
             </relation>
             <relation name="relation2" class="ptolemy.domains.erg.kernel.SchedulingRelation">

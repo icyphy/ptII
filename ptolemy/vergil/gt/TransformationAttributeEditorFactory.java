@@ -104,7 +104,7 @@ public class TransformationAttributeEditorFactory extends EditorFactory {
                         _attribute.getName());
                 ERGModalModel modelUpdater = _attribute.getModelUpdater();
                 ModelParameter modelAttribute = (ModelParameter) modelUpdater
-                        .getController().getAttribute("HostModel");
+                        .getController().getAttribute("Model");
                 modelAttribute.setModel(_model);
             }
         }

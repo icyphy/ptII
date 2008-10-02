@@ -8,23 +8,22 @@
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">    This model simulates the car and pedestrian traffic at a 4-way
 intersection. The car lights function according to the dynamically
-changed green, red and yellow durations, until a pedestrian
-arrives at any pedestrian light and presses the request button.
-The Berkeley policy is to serve the pedestrian immediately. The
-Manhattan policy, on the contrary, completely ignores pedestrian
-requests.
+changed green, red and yellow durations, until a pedestrian arrives
+at any pedestrian light and presses the request button. The Berkeley
+policy is to serve the pedestrian immediately. The Manhattan policy,
+on the contrary, completely ignores pedestrian requests.
     This model features heterogeneous multi-modeling. Models of
 computation, such as DE (discrete-event), ERG (event relationship
-graph), Wireless, SDF (synchronous dataflow) and FSM (finite
-state machine), are used at different levels of the model hierarchy
-for maximum design flexibility. Another highlight is the use of model
-transformation with ERG controllers. Specifically, PeriodController
-is a component that changes the car and pedestrian arrival rates
+graph), Wireless, SDF (synchronous dataflow) and FSM (finite state
+machine), are used at different levels of the model hierarchy for
+maximum design flexibility. Another highlight is the use of model
+transformation with ERG controllers. Specifically, PeriodController is
+a component that changes the car and pedestrian arrival rates
 dynamically according to the intersection specification.
-                        DurationController monitors the number of waiting
-                        cars and the number of waiting pedestrians, and
-                        increases or decreases the green durations if the
-                        two numbers become too far apart.</text></svg></configure>
+                              DurationController monitors the number of waiting
+                          cars and the number of waiting pedestrians, and
+                          increases or decreases the green durations if the
+                          two numbers become too far apart.</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -35,7 +34,7 @@ dynamically according to the intersection specification.
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 150.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 170.0]">
         </property>
     </property>
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
@@ -72,7 +71,7 @@ dynamically according to the intersection specification.
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 75.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 60.0]">
         </property>
     </property>
     <property name="AnimationDelay" class="ptolemy.data.expr.Parameter" value="false">
@@ -91,7 +90,7 @@ dynamically according to the intersection specification.
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[720.0, 75.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[720.0, 60.0]">
         </property>
     </property>
     <property name="RequestPolicyFile" class="ptolemy.data.expr.FileParameter" value="ManhattanPolicy.xml">
@@ -110,7 +109,7 @@ dynamically according to the intersection specification.
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 95.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 120.0]">
         </property>
     </property>
     <property name="NSRoad" class="ptolemy.data.expr.FileParameter" value="N1Controller.xml">
@@ -129,15 +128,15 @@ dynamically according to the intersection specification.
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 130.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 155.0]">
         </property>
     </property>
     <property name="Rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 30.0]">
         </property>
         <property name="width" class="ptolemy.data.expr.Parameter" value="415.0">
         </property>
-        <property name="height" class="ptolemy.data.expr.Parameter" value="101.0">
+        <property name="height" class="ptolemy.data.expr.Parameter" value="140.0">
         </property>
         <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
         </property>
@@ -147,7 +146,7 @@ dynamically according to the intersection specification.
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Parameters">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 50.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 35.0]">
         </property>
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
@@ -165,7 +164,7 @@ dynamically according to the intersection specification.
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 10.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 0.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -175,7 +174,7 @@ dynamically according to the intersection specification.
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="(Set this parameter to BerkeleyPolicy.xml for a different request policy.)">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 100.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 125.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -232,7 +231,7 @@ dynamically according to the intersection specification.
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 470.0]">
         </property>
-        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="put:TPM.vehicle.queue.length.maximum (Mon, Aug 18 2008 17:15:27.465 -0700) () (SOW TPM R9)">
+        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="put:TPM.vehicle.queue.length.maximum (Wed, Oct 01 2008 20:58:06.400 -0700) () (SOW TPM R9)">
         </property>
     </property>
     <property name="AvgCarQueueLength" class="ptolemy.data.expr.Parameter" value="(Intersection.AvgCarWaitingNS + Intersection.AvgCarWaitingEW) / 2">
@@ -253,10 +252,10 @@ dynamically according to the intersection specification.
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 490.0]">
         </property>
-        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="put:TPM.vehicle.queue.length.average (Mon, Aug 18 2008 17:15:27.465 -0700) (cars) (SOW TPM R8)">
+        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="put:TPM.vehicle.queue.length.average (Wed, Oct 01 2008 20:58:06.400 -0700) (cars) (SOW TPM R8)">
         </property>
     </property>
-    <property name="MaxCarWaitingTime" class="ptolemy.data.expr.Parameter" value="64.8032494924">
+    <property name="MaxCarWaitingTime" class="ptolemy.data.expr.Parameter" value="6.1832479851">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -274,10 +273,10 @@ dynamically according to the intersection specification.
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 510.0]">
         </property>
-        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="put:TPM.vehicle.wait.time.maximum (Mon, Aug 18 2008 17:15:27.465 -0700) (minutes) (SOW TPM R10)">
+        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="put:TPM.vehicle.wait.time.maximum (Wed, Oct 01 2008 20:58:06.400 -0700) (minutes) (SOW TPM R10)">
         </property>
     </property>
-    <property name="MaxPedWaitingTime" class="ptolemy.data.expr.Parameter" value="3.9733956753">
+    <property name="MaxPedWaitingTime" class="ptolemy.data.expr.Parameter" value="3.6979432016">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -295,7 +294,7 @@ dynamically according to the intersection specification.
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 530.0]">
         </property>
-        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="put:TPM.pedestrian.wait.time.maximum (Mon, Aug 18 2008 17:15:27.465 -0700) (minutes) (SOW TPM R11)">
+        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="put:TPM.pedestrian.wait.time.maximum (Wed, Oct 01 2008 20:58:06.400 -0700) (minutes) (SOW TPM R11)">
         </property>
     </property>
     <property name="annotation4" class="ptolemy.kernel.util.Attribute">
@@ -333,7 +332,49 @@ Edward A. Lee</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[695.0, 130.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[695.0, 155.0]">
+        </property>
+    </property>
+    <property name="carNSCrossTime" class="ptolemy.data.expr.Parameter" value="4.8438934802571172E-3">
+<display name="Car NS Cross Time"/>        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 80.0]">
+        </property>
+        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="get:Conversions.NS.Cross.Time.Minutes (Fri, Aug 22 2008 06:22:50.500 -0700) () ()">
+        </property>
+    </property>
+    <property name="carEWCrossTime" class="ptolemy.data.expr.Parameter" value="4.8438934802571172E-3">
+<display name="Car EW Cross Time"/>        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 100.0]">
+        </property>
+        <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="get:Conversions.EW.Cross.Time.Minutes (Fri, Aug 22 2008 06:22:50.500 -0700) () ()">
         </property>
     </property>
     <entity name="Intersection" class="ptolemy.actor.TypedCompositeActor">
@@ -415,7 +456,7 @@ Edward A. Lee</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 375.0]">
             </property>
         </property>
-        <property name="RedDurationNS" class="ptolemy.data.expr.Parameter" value="4.0">
+        <property name="RedDurationNS" class="ptolemy.data.expr.Parameter" value="2.3">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -434,7 +475,7 @@ Edward A. Lee</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 395.0]">
             </property>
         </property>
-        <property name="RedDurationEW" class="ptolemy.data.expr.Parameter" value="4.0">
+        <property name="RedDurationEW" class="ptolemy.data.expr.Parameter" value="1.7">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -453,7 +494,7 @@ Edward A. Lee</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 415.0]">
             </property>
         </property>
-        <property name="GreenDurationNS" class="ptolemy.data.expr.Parameter" value="3.8">
+        <property name="GreenDurationNS" class="ptolemy.data.expr.Parameter" value="1.5">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -472,7 +513,7 @@ Edward A. Lee</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 435.0]">
             </property>
         </property>
-        <property name="GreenDurationEW" class="ptolemy.data.expr.Parameter" value="3.8">
+        <property name="GreenDurationEW" class="ptolemy.data.expr.Parameter" value="2.1">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -529,7 +570,7 @@ Edward A. Lee</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 495.0]">
             </property>
         </property>
-        <property name="CarCrossTimeNS" class="ptolemy.data.expr.Parameter" value="0.01">
+        <property name="CarCrossTimeNS" class="ptolemy.data.expr.Parameter" value="carNSCrossTime">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -548,7 +589,7 @@ Edward A. Lee</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 515.0]">
             </property>
         </property>
-        <property name="CarCrossTimeEW" class="ptolemy.data.expr.Parameter" value="0.01">
+        <property name="CarCrossTimeEW" class="ptolemy.data.expr.Parameter" value="carEWCrossTime">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1771,7 +1812,7 @@ Edward A. Lee</text></svg></configure>
             <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="CarCountN" class="ptolemy.data.expr.Parameter" value="5181">
+        <property name="CarCountN" class="ptolemy.data.expr.Parameter" value="92">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1790,7 +1831,7 @@ Edward A. Lee</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 45.0]">
             </property>
         </property>
-        <property name="CarCountE" class="ptolemy.data.expr.Parameter" value="2083">
+        <property name="CarCountE" class="ptolemy.data.expr.Parameter" value="106">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1809,7 +1850,7 @@ Edward A. Lee</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 65.0]">
             </property>
         </property>
-        <property name="CarCountS" class="ptolemy.data.expr.Parameter" value="5027">
+        <property name="CarCountS" class="ptolemy.data.expr.Parameter" value="99">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1828,7 +1869,7 @@ Edward A. Lee</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 85.0]">
             </property>
         </property>
-        <property name="CarCountW" class="ptolemy.data.expr.Parameter" value="2045">
+        <property name="CarCountW" class="ptolemy.data.expr.Parameter" value="154">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1847,7 +1888,7 @@ Edward A. Lee</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 105.0]">
             </property>
         </property>
-        <property name="PedCountN" class="ptolemy.data.expr.Parameter" value="107">
+        <property name="PedCountN" class="ptolemy.data.expr.Parameter" value="25">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1866,7 +1907,7 @@ Edward A. Lee</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 125.0]">
             </property>
         </property>
-        <property name="PedCountE" class="ptolemy.data.expr.Parameter" value="237">
+        <property name="PedCountE" class="ptolemy.data.expr.Parameter" value="126">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1885,7 +1926,7 @@ Edward A. Lee</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 145.0]">
             </property>
         </property>
-        <property name="PedCountS" class="ptolemy.data.expr.Parameter" value="97">
+        <property name="PedCountS" class="ptolemy.data.expr.Parameter" value="28">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1904,7 +1945,7 @@ Edward A. Lee</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 165.0]">
             </property>
         </property>
-        <property name="PedCountW" class="ptolemy.data.expr.Parameter" value="238">
+        <property name="PedCountW" class="ptolemy.data.expr.Parameter" value="120">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1937,7 +1978,7 @@ Edward A. Lee</text></svg></configure>
             <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="MaxCarWaitingNS" class="ptolemy.data.expr.Parameter" value="5199">
+        <property name="MaxCarWaitingNS" class="ptolemy.data.expr.Parameter" value="336">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1956,7 +1997,7 @@ Edward A. Lee</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 55.0]">
             </property>
         </property>
-        <property name="MaxCarWaitingEW" class="ptolemy.data.expr.Parameter" value="2156">
+        <property name="MaxCarWaitingEW" class="ptolemy.data.expr.Parameter" value="329">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1975,7 +2016,7 @@ Edward A. Lee</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[940.0, 55.0]">
             </property>
         </property>
-        <property name="MaxPedWaitingNS" class="ptolemy.data.expr.Parameter" value="318">
+        <property name="MaxPedWaitingNS" class="ptolemy.data.expr.Parameter" value="229">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1994,7 +2035,7 @@ Edward A. Lee</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 75.0]">
             </property>
         </property>
-        <property name="MaxPedWaitingEW" class="ptolemy.data.expr.Parameter" value="238">
+        <property name="MaxPedWaitingEW" class="ptolemy.data.expr.Parameter" value="126">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -2012,10 +2053,10 @@ Edward A. Lee</text></svg></configure>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[940.0, 75.0]">
             </property>
-            <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="put:ptII.waiting.maxpednum_ew (Sat, Aug 16 2008 11:41:23.208 -0700) () ()">
+            <property name="naomi" class="ptolemy.apps.naomi.NaomiParameter" value="put:ptII.waiting.maxpednum_ew (Wed, Oct 01 2008 20:57:46.186 -0700) () ()">
             </property>
         </property>
-        <property name="AvgCarWaitingNS" class="ptolemy.data.expr.Parameter" value="2587.132873886008">
+        <property name="AvgCarWaitingNS" class="ptolemy.data.expr.Parameter" value="36.307150690237">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -2034,7 +2075,7 @@ Edward A. Lee</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 95.0]">
             </property>
         </property>
-        <property name="AvgCarWaitingEW" class="ptolemy.data.expr.Parameter" value="1147.40989504758">
+        <property name="AvgCarWaitingEW" class="ptolemy.data.expr.Parameter" value="25.6068049953837">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -2053,7 +2094,7 @@ Edward A. Lee</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 115.0]">
             </property>
         </property>
-        <property name="AvgPedWaitingNS" class="ptolemy.data.expr.Parameter" value="148.251166477074">
+        <property name="AvgPedWaitingNS" class="ptolemy.data.expr.Parameter" value="47.8542368833136">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -2072,7 +2113,7 @@ Edward A. Lee</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 135.0]">
             </property>
         </property>
-        <property name="AvgPedWaitingEW" class="ptolemy.data.expr.Parameter" value="107.9938522097188">
+        <property name="AvgPedWaitingEW" class="ptolemy.data.expr.Parameter" value="34.6392492003405">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -3924,7 +3965,7 @@ Edward A. Lee</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 50.0]">
         </property>
         <entity name="_Controller" class="ptolemy.domains.erg.kernel.ERGController">
-            <property name="Interval" class="ptolemy.data.expr.Parameter" value="10.0">
+            <property name="Interval" class="ptolemy.data.expr.Parameter" value="1.0">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -3940,7 +3981,7 @@ Edward A. Lee</text></svg></configure>
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 30.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 25.0]">
                 </property>
             </property>
             <property name="Threshold" class="ptolemy.data.expr.Parameter" value="100">
@@ -3959,10 +4000,10 @@ Edward A. Lee</text></svg></configure>
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 50.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 45.0]">
                 </property>
             </property>
-            <property name="IncreaseNS" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="IncreaseNS" class="ptolemy.data.expr.Parameter" value="false">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -3978,7 +4019,7 @@ Edward A. Lee</text></svg></configure>
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 30.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 65.0]">
                 </property>
             </property>
             <property name="DecreaseNS" class="ptolemy.data.expr.Parameter" value="false">
@@ -3997,10 +4038,10 @@ Edward A. Lee</text></svg></configure>
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 50.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 85.0]">
                 </property>
             </property>
-            <property name="IncreaseEW" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="IncreaseEW" class="ptolemy.data.expr.Parameter" value="false">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -4016,7 +4057,7 @@ Edward A. Lee</text></svg></configure>
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 30.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 25.0]">
                 </property>
             </property>
             <property name="DecreaseEW" class="ptolemy.data.expr.Parameter" value="false">
@@ -4035,10 +4076,10 @@ Edward A. Lee</text></svg></configure>
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 50.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 45.0]">
                 </property>
             </property>
-            <property name="Increment" class="ptolemy.data.expr.Parameter" value="0.2">
+            <property name="Increment" class="ptolemy.data.expr.Parameter" value="0.5">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -4054,25 +4095,29 @@ Edward A. Lee</text></svg></configure>
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 70.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 65.0]">
                 </property>
             </property>
+            <entity name="InitModelWithContainer" class="ptolemy.actor.gt.controller.InitModelWithContainer">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{95.0, 30.0}">
+                </property>
+            </entity>
             <entity name="Monitor" class="ptolemy.domains.erg.kernel.Event">
                 <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="&#10;IncreaseNS =&#10;    (Intersection.CarCountN - Intersection.PedCountN) +&#10;    (Intersection.CarCountS - Intersection.PedCountS) &gt;&#10;    Threshold;&#10;DecreaseNS =&#10;    (Intersection.CarCountN - Intersection.PedCountN) +&#10;    (Intersection.CarCountS - Intersection.PedCountS) &lt;&#10;    -Threshold;&#10;IncreaseEW =&#10;    (Intersection.CarCountE - Intersection.PedCountE) +&#10;    (Intersection.CarCountW - Intersection.PedCountW) &gt;&#10;    Threshold;&#10;DecreaseEW =&#10;    (Intersection.CarCountE - Intersection.PedCountE) +&#10;    (Intersection.CarCountW - Intersection.PedCountW) &lt;&#10;    -Threshold&#10;">
                 </property>
-                <property name="monitoredVariables" class="ptolemy.data.expr.StringParameter" value="Intersection.CarCountN, Intersection.CarCountE, Intersection.CarCountS, Intersection.CarCountW, Intersection.PedCountN, Intersection.PedCountE, Intersection.PedCountS, Intersection.PedCountW">
+                <property name="monitoredVariables" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 260.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 245.0]">
                 </property>
             </entity>
             <entity name="IncreaseNS" class="ptolemy.actor.gt.controller.Transform">
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 100.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 230.0]">
                 </property>
                 <configure>
                     <entity name="Transformation" class="ptolemy.actor.gt.TransformationRule">
@@ -4125,7 +4170,7 @@ Edward A. Lee</text></svg></configure>
             <entity name="DecreaseNS" class="ptolemy.actor.gt.controller.Transform">
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 170.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 270.0]">
                 </property>
                 <configure>
                     <entity name="Transformation" class="ptolemy.actor.gt.TransformationRule">
@@ -4178,7 +4223,7 @@ Edward A. Lee</text></svg></configure>
             <entity name="Reset" class="ptolemy.actor.gt.controller.Transform">
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 105.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 100.0]">
                 </property>
                 <configure>
                     <entity name="Transformation" class="ptolemy.actor.gt.TransformationRule">
@@ -4239,7 +4284,7 @@ Edward A. Lee</text></svg></configure>
             <entity name="IncreaseEW" class="ptolemy.actor.gt.controller.Transform">
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 250.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 315.0]">
                 </property>
                 <configure>
                     <entity name="Transformation" class="ptolemy.actor.gt.TransformationRule">
@@ -4292,7 +4337,7 @@ Edward A. Lee</text></svg></configure>
             <entity name="DecreaseEW" class="ptolemy.actor.gt.controller.Transform">
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 330.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 355.0]">
                 </property>
                 <configure>
                     <entity name="Transformation" class="ptolemy.actor.gt.TransformationRule">
@@ -4347,9 +4392,9 @@ Edward A. Lee</text></svg></configure>
                 </property>
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="IncreaseNS">
 <display name="condition"/>                </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.1714864199041437">
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.06952248301297055">
                 </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.8493198758194842">
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-3.066523453321931">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -4371,9 +4416,9 @@ Edward A. Lee</text></svg></configure>
                 </property>
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="DecreaseNS">
 <display name="condition"/>                </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.3380487404576573">
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.11854818969908229">
                 </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.8054588544638412">
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="3.1300994672934603">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -4393,9 +4438,9 @@ Edward A. Lee</text></svg></configure>
             <relation name="relation_1_8" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.3633449176618277">
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.4443294216507965">
                 </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.6078896272726781">
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.9161534821525863">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -4415,9 +4460,9 @@ Edward A. Lee</text></svg></configure>
             <relation name="relation" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.5191096741345474">
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.1845750013894759">
                 </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.9665156980344509">
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.04866633993310793">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -4433,13 +4478,15 @@ Edward A. Lee</text></svg></configure>
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
+                <property name="triggers" class="ptolemy.data.expr.StringParameter" value="&#10;Intersection.CarCountN,&#10;Intersection.CarCountE,&#10;Intersection.CarCountS,&#10;Intersection.CarCountW,&#10;Intersection.PedCountN,&#10;Intersection.PedCountE,&#10;Intersection.PedCountS,&#10;Intersection.PedCountW">
+                </property>
             </relation>
             <relation name="relation_1_2" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.8878323563306475">
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.00854159783117804">
                 </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.895487954808174">
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.9793766200653753">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -4459,9 +4506,9 @@ Edward A. Lee</text></svg></configure>
             <relation name="relation_1_7" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.4468765012647344">
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.13624397882532513">
                 </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.6420908587112293">
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.262566868561665">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -4483,9 +4530,9 @@ Edward A. Lee</text></svg></configure>
                 </property>
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="IncreaseEW">
 <display name="condition"/>                </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.42616030751007805">
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.1495087949878881">
                 </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.7449221088488511">
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="3.027816418368051">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -4507,9 +4554,9 @@ Edward A. Lee</text></svg></configure>
                 </property>
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="DecreaseEW">
 <display name="condition"/>                </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.44871334435155213">
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.2453752709423642">
                 </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.6680164136449174">
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.9912303981482613">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -4526,7 +4573,7 @@ Edward A. Lee</text></svg></configure>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
-            <link port="Init.outgoingPort" relation="relation_1_8"/>
+            <link port="InitModelWithContainer.outgoingPort" relation="relation_1_8"/>
             <link port="Monitor.incomingPort" relation="relation"/>
             <link port="Monitor.outgoingPort" relation="relation_1_3"/>
             <link port="Monitor.outgoingPort" relation="relation_1_5"/>
@@ -4550,7 +4597,7 @@ Edward A. Lee</text></svg></configure>
         <property name="FileUpdater" class="ptolemy.actor.gt.controller.FileUpdater" value="$NSRoad">
         </property>
         <entity name="_Controller" class="ptolemy.domains.erg.kernel.ERGController">
-            <entity name="Init" class="ptolemy.actor.gt.controller.InitContainingModel">
+            <entity name="InitModelWithContainer" class="ptolemy.actor.gt.controller.InitModelWithContainer">
                 <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="i = 0; j = 0">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 45.0]">
@@ -4564,7 +4611,7 @@ Edward A. Lee</text></svg></configure>
         <property name="FileUpdater" class="ptolemy.actor.gt.controller.FileUpdater" value="$EWRoad">
         </property>
         <entity name="_Controller" class="ptolemy.domains.erg.kernel.ERGController">
-            <entity name="Init" class="ptolemy.actor.gt.controller.InitContainingModel">
+            <entity name="InitModelWithContainer" class="ptolemy.actor.gt.controller.InitModelWithContainer">
                 <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="i = 0; j = 0">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 45.0]">

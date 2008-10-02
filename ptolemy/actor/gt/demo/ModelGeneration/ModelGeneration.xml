@@ -150,7 +150,7 @@
         </property>
     </entity>
     <entity name="ModelView" class="ptolemy.actor.gt.ModelView">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[576.5, 228.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 235.0]">
         </property>
     </entity>
     <entity name="ModelGenerator" class="ptolemy.actor.gt.ModelGenerator">
@@ -405,7 +405,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[366.5, 238.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{365.0, 235.0}">
         </property>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -431,7 +431,7 @@
         </port>
     </entity>
     <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[106.5, 238.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 235.0]">
         </property>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -449,7 +449,7 @@
     <relation name="relation21" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[146.5, 238.0]">
+        <vertex name="vertex1" value="[150.0, 235.0]">
         </vertex>
     </relation>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">

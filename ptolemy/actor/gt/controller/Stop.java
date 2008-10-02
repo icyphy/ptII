@@ -27,17 +27,17 @@
 */
 package ptolemy.actor.gt.controller;
 
-import ptolemy.data.ActorToken;
+import ptolemy.actor.Manager;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.expr.ParserScope;
+import ptolemy.domains.erg.kernel.ERGController;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 
 //////////////////////////////////////////////////////////////////////////
-//// Input
+//// Stop
 
 /**
 
@@ -48,43 +48,35 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class Input extends GTEvent {
+public class Stop extends GTEvent {
 
-    public Input(CompositeEntity container, String name)
+    /**
+     *  @param container
+     *  @param name
+     *  @throws IllegalActionException
+     *  @throws NameDuplicationException
+     */
+    public Stop(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        fireOnInput.setToken(BooleanToken.TRUE);
+        isFinalEvent.setToken(BooleanToken.TRUE);
+        isFinalEvent.setVisibility(Settable.NOT_EDITABLE);
+        isFinalEvent.setPersistent(false);
     }
 
-    public RefiringData fire(ArrayToken arguments) throws IllegalActionException {
-        RefiringData data = super.fire(arguments);
+    public RefiringData fire(ArrayToken arguments)
+    throws IllegalActionException {
+        ERGController controller = getController();
 
-        ParserScope scope = _getParserScope();
-        BooleanToken inputPortPresent = (BooleanToken) scope.get(
-                _INPUT_PORT_NAME + "_isPresent");
-        if (inputPortPresent != null && inputPortPresent.booleanValue()) {
-            ActorToken modelToken = (ActorToken) scope.get(_INPUT_PORT_NAME);
-            Entity entity = modelToken.getEntity();
-            if (!(entity instanceof CompositeEntity)) {
-                throw new IllegalActionException("Only instances of " +
-                        "CompositeEntity are accepted in the input " +
-                        "ActorTokens to the transformation controller.");
-            }
-            getModelParameter().setModel((CompositeEntity) entity);
+        Manager manager = controller.getManager();
+        if (manager != null) {
+            manager.finish();
+        } else {
+            throw new IllegalActionException(this,
+                    "Cannot stop without a Manager.");
         }
 
-        return data;
+        return null;
     }
-
-    public void scheduleEvents() throws IllegalActionException {
-        ParserScope scope = _getParserScope();
-        BooleanToken inputPortPresent = (BooleanToken) scope.get(
-                _INPUT_PORT_NAME + "_isPresent");
-        if (inputPortPresent != null && inputPortPresent.booleanValue()) {
-            super.scheduleEvents();
-        }
-    }
-
-    private static final String _INPUT_PORT_NAME = "modelInput";
 }

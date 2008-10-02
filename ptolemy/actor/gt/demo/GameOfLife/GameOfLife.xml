@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="GameOfLife" class="ptolemy.actor.gt.controller.ModelUpdater">
+<entity name="GameOfLife" class="ptolemy.actor.gt.controller.ComplexTransformation">
     <entity name="_Controller" class="ptolemy.domains.erg.kernel.ERGController">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={288, 223, 823, 604}, maximized=false}">
         </property>
@@ -27,7 +27,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 60.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 50.0]">
             </property>
         </property>
         <property name="Columns" class="ptolemy.data.expr.Parameter" value="5">
@@ -46,7 +46,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 80.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 70.0]">
             </property>
         </property>
         <property name="InitialOccupants" class="ptolemy.data.expr.Parameter" value="8">
@@ -65,7 +65,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 60.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 50.0]">
             </property>
         </property>
         <property name="SynchronizeToRealtime" class="ptolemy.domains.erg.lib.SynchronizeToRealtime" value="true">
@@ -82,7 +82,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 80.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 70.0]">
             </property>
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -92,7 +92,7 @@
             </property>
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Game of Life">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{240.0, 15.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 10.0]">
             </property>
             <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
@@ -121,10 +121,6 @@
             <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <entity name="Init" class="ptolemy.actor.gt.controller.InitContainingModel">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 35.0]">
-            </property>
-        </entity>
         <entity name="CreateMap" class="ptolemy.actor.gt.controller.GTEvent">
             <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="CreateMap">
             </property>
@@ -200,9 +196,9 @@
         <relation name="relation_1_2" class="ptolemy.domains.erg.kernel.SchedulingRelation">
             <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
             </property>
-            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.36092739298590687">
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.3552575878679318">
             </property>
-            <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.9835138236866753">
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.9595219993655121">
             </property>
             <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -288,11 +284,11 @@
         <relation name="relation_1_6" class="ptolemy.domains.erg.kernel.SchedulingRelation">
             <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
             </property>
-            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Matched">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Update.UpdateAllCells.matched">
 <display name="condition"/>            </property>
-            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6314857642921202">
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.737769387578511">
             </property>
-            <property name="gamma" class="ptolemy.data.expr.Parameter" value="-3.141152458442414">
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="-3.1311045214103768">
             </property>
             <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -309,7 +305,7 @@
             <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </relation>
-        <link port="Init.outgoingPort" relation="relation"/>
+        <link port="InitModel.outgoingPort" relation="relation"/>
         <link port="CreateMap.incomingPort" relation="relation"/>
         <link port="CreateMap.outgoingPort" relation="relation_1_2"/>
         <link port="View.incomingPort" relation="relation_1_6"/>
@@ -2760,7 +2756,7 @@
                 </entity>
 </configure>
         </entity>
-        <entity name="Update" class="ptolemy.actor.gt.controller.Transform">
+        <entity name="UpdateAllCells" class="ptolemy.actor.gt.controller.Transform">
             <property name="mode" class="ptolemy.actor.gt.TransformationMode" value="replace all">
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -2996,7 +2992,7 @@
         <relation name="relation_1__1_4" class="ptolemy.domains.erg.kernel.SchedulingRelation">
             <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
             </property>
-            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Matched">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Compute.matched">
 <display name="condition"/>            </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6108698956811778">
             </property>
@@ -3020,11 +3016,11 @@
         <relation name="relation_1__1_5" class="ptolemy.domains.erg.kernel.SchedulingRelation">
             <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
             </property>
-            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="!Matched">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="!Compute.matched">
 <display name="condition"/>            </property>
-            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.5123615102673302">
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.6223706245368047">
             </property>
-            <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.8784772520844009">
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.01005447600986292">
             </property>
             <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -3068,7 +3064,7 @@
         <link port="Compute.incomingPort" relation="relation_1_"/>
         <link port="Compute.incomingPort" relation="relation_1__1_4"/>
         <link port="Compute.outgoingPort" relation="relation_1__1_3"/>
-        <link port="Update.incomingPort" relation="relation_1__1_5"/>
+        <link port="UpdateAllCells.incomingPort" relation="relation_1__1_5"/>
         <link port="Test.incomingPort" relation="relation_1__1_3"/>
         <link port="Test.outgoingPort" relation="relation_1__1_4"/>
         <link port="Test.outgoingPort" relation="relation_1__1_5"/>

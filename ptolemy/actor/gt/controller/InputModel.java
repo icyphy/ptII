@@ -29,14 +29,15 @@ package ptolemy.actor.gt.controller;
 
 import ptolemy.data.ActorToken;
 import ptolemy.data.ArrayToken;
-import ptolemy.domains.erg.kernel.ERGController;
-import ptolemy.domains.fsm.modal.RefinementPort;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.ParserScope;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
-//// Output
+//// InputModel
 
 /**
 
@@ -47,9 +48,9 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class Output extends GTEvent {
+public class InputModel extends GTEvent {
 
-    public Output(CompositeEntity container, String name)
+    public InputModel(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
@@ -57,14 +58,31 @@ public class Output extends GTEvent {
     public RefiringData fire(ArrayToken arguments) throws IllegalActionException {
         RefiringData data = super.fire(arguments);
 
-        CompositeEntity entity = getModelParameter().getModel();
-        ERGController container = (ERGController) getContainer();
-        final String outputPort = "modelOutput";
-        RefinementPort destination = (RefinementPort) container.getPort(
-                outputPort);
-        destination.broadcastClear();
-        destination.broadcast(new ActorToken(entity));
+        ParserScope scope = _getParserScope();
+        BooleanToken inputPortPresent = (BooleanToken) scope.get(
+                _INPUT_PORT_NAME + "_isPresent");
+        if (inputPortPresent != null && inputPortPresent.booleanValue()) {
+            ActorToken modelToken = (ActorToken) scope.get(_INPUT_PORT_NAME);
+            Entity entity = modelToken.getEntity();
+            if (!(entity instanceof CompositeEntity)) {
+                throw new IllegalActionException("Only instances of " +
+                        "CompositeEntity are accepted in the input " +
+                        "ActorTokens to the transformation controller.");
+            }
+            getModelParameter().setModel((CompositeEntity) entity);
+        }
 
         return data;
     }
+
+    public void scheduleEvents() throws IllegalActionException {
+        ParserScope scope = _getParserScope();
+        BooleanToken inputPortPresent = (BooleanToken) scope.get(
+                _INPUT_PORT_NAME + "_isPresent");
+        if (inputPortPresent != null && inputPortPresent.booleanValue()) {
+            super.scheduleEvents();
+        }
+    }
+
+    private static final String _INPUT_PORT_NAME = "modelInput";
 }

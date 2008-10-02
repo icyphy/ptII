@@ -37,6 +37,8 @@ import ptolemy.actor.gt.TransformationMode;
 import ptolemy.actor.gt.TransformationRule;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -65,6 +67,10 @@ public class Transform extends GTEvent implements ConfigurableEntity {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
+        matched = new Parameter(this, "matched");
+        matched.setTypeEquals(BaseType.BOOLEAN);
+        matched.setToken(BooleanToken.TRUE);
+        
         _configurer = new EmbeddedConfigurer(_workspace);
         _configurer.setName("Configurer");
         _configurer.setConfiguredObject(this);
@@ -77,6 +83,8 @@ public class Transform extends GTEvent implements ConfigurableEntity {
 
         mode = new TransformationMode(this, "mode");
     }
+    
+    public Parameter matched;
 
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Transform newObject = (Transform) super.clone(workspace);
@@ -111,15 +119,16 @@ public class Transform extends GTEvent implements ConfigurableEntity {
         }
     }
 
-    public RefiringData fire(ArrayToken arguments) throws IllegalActionException {
+    public RefiringData fire(ArrayToken arguments)
+            throws IllegalActionException {
         RefiringData data = super.fire(arguments);
 
         CompositeEntity model = getModelParameter().getModel();
         model.setDeferringChangeRequests(false);
-        boolean matched = mode.transform(mode.getWorkingCopy(_transformation),
+        boolean isMatched = mode.transform(mode.getWorkingCopy(_transformation),
                 model);
         getModelParameter().setModel(model);
-        getMatchedParameter().setToken(BooleanToken.getInstance(matched));
+        matched.setToken(BooleanToken.getInstance(isMatched));
 
         return data;
     }

@@ -1,8 +1,8 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="ModelGeneration_DE2" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.0.beta">
+<entity name="ModelGeneration_DE" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, -160.0]">
@@ -120,7 +120,7 @@
         </property>
     </entity>
     <entity name="ModelView" class="ptolemy.actor.gt.ModelView">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 30.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 40.0]">
         </property>
     </entity>
     <entity name="ModelGenerator" class="ptolemy.actor.gt.ModelGenerator">
@@ -291,7 +291,7 @@
         </property>
     </entity>
     <entity name="CreateDisplay" class="ptolemy.actor.gt.TransformationRule">
-        <property name="mode" class="ptolemy.data.expr.StringParameter" value="full control">
+        <property name="mode" class="ptolemy.actor.gt.TransformationMode" value="full control">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[427.8567657470703, -149.66463470458984]">
         </property>
@@ -334,7 +334,7 @@
         </property>
     </entity>
     <entity name="CreateNode" class="ptolemy.actor.gt.TransformationRule">
-        <property name="mode" class="ptolemy.data.expr.StringParameter" value="full control">
+        <property name="mode" class="ptolemy.actor.gt.TransformationMode" value="full control">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[429.33164978027344, 86.75009155273438]">
         </property>
@@ -556,8 +556,8 @@
     </relation>
     <link port="SingleEvent.output" relation="relation12"/>
     <link port="ModelView.input" relation="relation11"/>
-    <link port="ModelGenerator.modelName" relation="relation"/>
     <link port="ModelGenerator.model" relation="relation18"/>
+    <link port="ModelGenerator.modelName" relation="relation"/>
     <link port="Const.output" relation="relation"/>
     <link port="Const.trigger" relation="relation12"/>
     <link port="BooleanSwitch.input" relation="relation4"/>

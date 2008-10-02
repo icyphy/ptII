@@ -73,6 +73,8 @@
     </entity>
     <entity name="SetTableau" class="ptolemy.actor.gt.controller.SetTableau">
     </entity>
+    <entity name="Stop" class="ptolemy.actor.gt.controller.Stop">
+    </entity>
     <entity name="Test" class="ptolemy.actor.gt.controller.Test">
     </entity>
     <entity name="Transform" class="ptolemy.actor.gt.controller.Transform">

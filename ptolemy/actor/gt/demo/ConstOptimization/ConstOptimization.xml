@@ -278,9 +278,9 @@
             <relation name="relation_1_2" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.44171659709359656">
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.40317277214055336">
                 </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.2321826806631517">
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.6578234828767375">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -322,7 +322,7 @@
             <relation name="relation_1_6" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Matched">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Transform.matched">
 <display name="condition"/>                </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.5819804962962184">
                 </property>
@@ -346,9 +346,9 @@
             <relation name="relation_1_4" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.7070314425706219">
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.4807820657056754">
                 </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.5171534014003634">
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.5139539015869775">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -368,7 +368,7 @@
             <relation name="relation_1_5" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="!Matched">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="!Transform.matched">
 <display name="condition"/>                </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>
@@ -389,8 +389,8 @@
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
-            <link port="Input.outgoingPort" relation="relation_1_2"/>
-            <link port="Output.incomingPort" relation="relation_1_4"/>
+            <link port="InputModel.outgoingPort" relation="relation_1_2"/>
+            <link port="OutputModel.incomingPort" relation="relation_1_4"/>
             <link port="Transform.incomingPort" relation="relation_1_2"/>
             <link port="Transform.incomingPort" relation="relation_1_6"/>
             <link port="Transform.outgoingPort" relation="relation_1_3"/>

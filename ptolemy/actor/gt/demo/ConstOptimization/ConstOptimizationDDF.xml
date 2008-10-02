@@ -82,7 +82,7 @@
         </property>
     </entity>
     <entity name="Stop" class="ptolemy.actor.lib.Stop">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 270.0]">
         </property>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -95,13 +95,13 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 270.0]">
         </property>
     </entity>
     <entity name="OptimizeOnce" class="ptolemy.actor.gt.TransformationRule">
         <property name="mode" class="ptolemy.actor.gt.TransformationMode" value="replace any">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 215.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 215.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={283, 240, 833, 570}, maximized=false}">
         </property>
@@ -314,7 +314,7 @@
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 215.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 215.0]">
         </property>
         <property name="_flipPortsVertical" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -333,7 +333,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 215.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -354,10 +354,6 @@
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-    </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -365,7 +361,7 @@
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[310.0, 265.0]">
+        <vertex name="vertex1" value="[385.0, 270.0]">
         </vertex>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
@@ -378,19 +374,23 @@
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
-    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-    </relation>
-    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-    </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <vertex name="vertex1" value="[185.0, 125.0]">
         </vertex>
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <link port="ModelGenerator.model" relation="relation2"/>
     <link port="ModelGenerator.moml" relation="relation"/>
@@ -407,14 +407,14 @@
     <link port="DDFBooleanSelect.trueInput" relation="relation2"/>
     <link port="DDFBooleanSelect.falseInput" relation="relation10"/>
     <link port="DDFBooleanSelect.control" relation="relation4"/>
-    <link port="DDFBooleanSelect.output" relation="relation7"/>
+    <link port="DDFBooleanSelect.output" relation="relation12"/>
     <link port="SampleDelay.input" relation="relation5"/>
     <link port="SampleDelay.output" relation="relation4"/>
     <link port="Const2.output" relation="relation5"/>
     <link port="BooleanSwitch.input" relation="relation8"/>
     <link port="BooleanSwitch.control" relation="relation11"/>
-    <link port="BooleanSwitch.trueOutput" relation="relation12"/>
+    <link port="BooleanSwitch.trueOutput" relation="relation9"/>
     <link port="BooleanSwitch.falseOutput" relation="relation6"/>
     <link port="Sleep.input" relation="relation12"/>
-    <link port="Sleep.output" relation="relation9"/>
+    <link port="Sleep.output" relation="relation7"/>
 </entity>

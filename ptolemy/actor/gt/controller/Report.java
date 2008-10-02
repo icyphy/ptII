@@ -200,16 +200,6 @@ public class Report extends TableauControllerEvent {
         return data;
     }
 
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-
-        Tableau tableau = _getTableau();
-        if (tableau != null) {
-            _setTableau(null);
-            _closeTableau(tableau);
-        }
-    }
-
     /** The horizontal size of the display, in columns. This contains
      *  an integer, and defaults to 40.
      */

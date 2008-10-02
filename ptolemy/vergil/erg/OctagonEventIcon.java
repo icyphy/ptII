@@ -45,12 +45,13 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.vergil.fsm.StateIcon;
+import ptolemy.vergil.icon.NameIcon;
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
+import diva.canvas.toolbox.BasicFigure;
 import diva.canvas.toolbox.LabelFigure;
-import diva.canvas.toolbox.RoundedRectangle;
 import diva.gui.toolbox.FigureIcon;
+import diva.util.java2d.Polygon2D;
 
 /**
 
@@ -60,12 +61,38 @@ import diva.gui.toolbox.FigureIcon;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class EventIcon extends StateIcon {
+public class OctagonEventIcon extends NameIcon {
 
-    public EventIcon(NamedObj container, String name)
+    public OctagonEventIcon(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         _yPadding = 8.0;
+    }
+
+    public Figure createBackgroundFigure() {
+        Point2D size = _getBackgroundSize();
+        double width = size.getX();
+        double height = size.getY();
+        double cornerWidth = Math.min(_cornerWidth,
+                Math.min(height, width) / 2.0);
+
+        Polygon2D polygon = _createOctagon(width, height, cornerWidth);
+        Figure figure = new BasicFigure(polygon, _getFill(), _getLineWidth());
+
+        if (_spacingValue > 0.0) {
+            CompositeFigure compositeFigure = new CompositeFigure(figure);
+            width += _spacingValue * 2.0;
+            height += _spacingValue * 2.0;
+            cornerWidth += _spacingValue * 1.8 / cornerWidth;
+            polygon = _createOctagon(width, height, cornerWidth);
+            Figure outerFigure = new BasicFigure(polygon, null,
+                    _getLineWidth());
+            outerFigure.translate(-_spacingValue, -_spacingValue);
+            compositeFigure.add(0, outerFigure);
+            figure = compositeFigure;
+        }
+
+        return figure;
     }
 
     public Figure createFigure() {
@@ -106,9 +133,11 @@ public class EventIcon extends StateIcon {
             return _iconCache;
         }
 
-        RoundedRectangle figure = new RoundedRectangle(0, 0, 20, 10,
-                Color.white, 1.0f, 5.0, 5.0);
-        figure.setFillPaint(_getFill());
+        double width = 30.0;
+        double height = 15.0;
+        double cornerWidth = 5.0;
+        Polygon2D polygon = _createOctagon(width, height, cornerWidth);
+        Figure figure = new BasicFigure(polygon, _getFill(), 1.0f);
         _iconCache = new FigureIcon(figure, 20, 15);
         return _iconCache;
     }
@@ -179,6 +208,8 @@ public class EventIcon extends StateIcon {
         return 1.0f;
     }
 
+    protected double _cornerWidth = 5.0;
+
     private void _addLabel(CompositeFigure figure, String text) {
         LabelFigure label = new LabelFigure(text, _ACTION_FONT, 1.0,
                 SwingConstants.CENTER);
@@ -186,35 +217,56 @@ public class EventIcon extends StateIcon {
         Figure background = figure.getBackgroundFigure();
         Rectangle2D backBounds = background.getBounds();
 
-        double width = backBounds.getWidth();
+        double width = backBounds.getWidth() - _spacingValue * 2.0;
         double textWidth = stringBounds.getWidth() + 12.0;
         double left = backBounds.getX();
         if (textWidth > width) {
             left += (width - textWidth) / 2.0;
             width = textWidth;
         }
-        double height = backBounds.getHeight() + stringBounds.getHeight();
+        double height = backBounds.getHeight() + stringBounds.getHeight()
+                - _spacingValue * 2.0;
 
         background.setParent(null);
-        RoundedRectangle border = new RoundedRectangle(left, 0.0, width,
-                height - 2.0 *_spacingValue, _getFill(), _getLineWidth(),
-                _roundingValue, _roundingValue);
-        if (_spacingValue == 0.0) {
-            background = border;
-        } else {
-            background = new CompositeFigure(new RoundedRectangle(
-                    left - _spacingValue, - _spacingValue,
-                    width + 2.0 * _spacingValue, height,
-                    null, _getLineWidth(), _roundingValue + _spacingValue,
-                    _roundingValue + _spacingValue));
-            ((CompositeFigure) background).add(border);
+
+        double cornerWidth = Math.min(_cornerWidth,
+                Math.min(height, width) / 2.0);
+        Polygon2D polygon = _createOctagon(width, height, cornerWidth);
+        background = new BasicFigure(polygon, _getFill(), _getLineWidth());
+
+        if (_spacingValue > 0.0) {
+            CompositeFigure compositeFigure = new CompositeFigure(background);
+            width += _spacingValue * 2.0;
+            height += _spacingValue * 2.0;
+            cornerWidth += _spacingValue * 1.8 / cornerWidth;
+            polygon = _createOctagon(width, height, cornerWidth);
+            Figure outerFigure = new BasicFigure(polygon, null,
+                    _getLineWidth());
+            outerFigure.translate(-_spacingValue, -_spacingValue);
+            compositeFigure.add(0, outerFigure);
+            background = compositeFigure;
         }
+        background.translate((backBounds.getWidth() - width) / 2 - 3.0 , 0.0);
         figure.setBackgroundFigure(background);
 
         label.translateTo(background.getBounds().getCenterX(),
                 backBounds.getMaxY() + stringBounds.getHeight() / 2.0 - 1.0 -
                 _spacingValue);
         figure.add(label);
+    }
+
+    private Polygon2D _createOctagon(double width, double height, double cornerWidth) {
+        Polygon2D polygon = new Polygon2D.Double();
+        polygon.moveTo(0.0, cornerWidth);
+        polygon.lineTo(cornerWidth, 0.0);
+        polygon.lineTo(width - cornerWidth, 0.0);
+        polygon.lineTo(width, cornerWidth);
+        polygon.lineTo(width, height - cornerWidth);
+        polygon.lineTo(width - cornerWidth, height);
+        polygon.lineTo(cornerWidth, height);
+        polygon.lineTo(0.0, height - cornerWidth);
+        polygon.closePath();
+        return polygon;
     }
 
     private static final Font _ACTION_FONT = new Font("SansSerif", Font.PLAIN,

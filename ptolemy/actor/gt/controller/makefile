@@ -55,18 +55,19 @@ JSRCS = \
 	Execute.java \
 	FileUpdater.java \
 	GTEvent.java \
-	Init.java \
-	InitContainingModel.java \
-	Input.java \
+	InitModel.java \
+	InitModelWithContainer.java \
+	InputModel.java \
 	ListDirectory.java \
 	Match.java \
 	ModelIOPort.java \
 	ModelParameter.java \
-	Output.java \
+	OutputModel.java \
 	ReadModel.java \
 	ReceiveInput.java \
 	Report.java \
 	SetTableau.java \
+	Stop.java \
 	TableauControllerEvent.java \
 	TableauParameter.java \
 	Test.java \
@@ -76,23 +77,25 @@ JSRCS = \
 	WriteModel.java
 
 OTHER_FILES_TO_BE_JARED = \
+	ComplexTransformation.xml \
 	EmbeddedTransformationController.xml \
 	EmbeddedTransformationControllerWithPorts.xml \
 	EventLibrary.xml \
 	ExecuteIcon.xml \
 	GTEventIcon.xml \
-	InitContainingModelIcon.xml \
-	InitIcon.xml \
-	InputIcon.xml \
+	InitModelIcon.xml \
+	InitModelWithContainerIcon.xml \
+	InputModelIcon.xml \
 	ListDirectoryIcon.xml \
 	MatchIcon.xml \
 	ModelUpdater.xml \
 	ModelUpdaterIcon.xml \
-	OutputIcon.xml \
+	OutputModelIcon.xml \
 	ReadModelIcon.xml \
 	ReceiveInputIcon.xml \
 	ReportIcon.xml \
 	SetTableauIcon.xml \
+	StopIcon.xml \
 	TestIcon.xml \
 	TransformIcon.xml \
 	TransformationController.xml \
@@ -125,6 +128,7 @@ OPTIONAL_FILES = \
 	'SetTableau$$TableauState$$3.class' \
 	'SetTableau$$TableauState.class' \
 	'TableauControllerEvent$$1.class' \
+	'TableauParameter$$1.class' \
 	'Transform$$EmbeddedConfigurer.class'
 
 JCLASS = $(JSRCS:%.java=%.class)

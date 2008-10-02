@@ -9,7 +9,7 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 50.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 40.0]">
         </property>
     </property>
     <property name="Pred" class="ptolemy.data.expr.Parameter" value="0">
@@ -28,7 +28,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 30.0]">
         </property>
     </property>
     <property name="Pgrn" class="ptolemy.data.expr.Parameter" value="1">
@@ -47,7 +47,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 60.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 50.0]">
         </property>
     </property>
     <property name="Cred" class="ptolemy.data.expr.Parameter" value="1">
@@ -66,7 +66,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 30.0]">
         </property>
     </property>
     <property name="Cyel" class="ptolemy.data.expr.Parameter" value="0">
@@ -85,7 +85,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 60.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 50.0]">
         </property>
     </property>
     <property name="Cgrn" class="ptolemy.data.expr.Parameter" value="0">
@@ -104,7 +104,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 80.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 70.0]">
         </property>
     </property>
     <property name="Ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
@@ -273,7 +273,7 @@ ERG modal model.</text></svg></configure>
         </property>
     </property>
     <entity name="TrafficLight" class="ptolemy.domains.erg.kernel.ERGModalModel">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[199.83323669433594, 145.00029754638672]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{199.83323669433594, 145.00029754638672}">
         </property>
         <port name="Cred" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="output"/>
@@ -317,13 +317,13 @@ ERG modal model.</text></svg></configure>
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The Init event is scheduled at 0.0 in global modal time. It schedules Normal to happen in
-the next firing (which further schedules more events in it). The Init event also registers
-ReactToError, which handles inputs from the Error input port. If an Error input is received,
-the first schedule of any event in Normal is cancelled, and the Error event (hierarchical
-also) happens. It schedules ReactToOK to handle inputs from the OK input port. If such
-an input is received, the Normal event is rescheduled. This means the initial event
-hierarchically contained in it will be fired again.</text></svg></configure>
+                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The Init event is scheduled at 0.0 in global modal time. It causes Normal to be scheduled by
+StartNormal. Normal has more events in it to simulate the normal functioning of the traffic
+light. StartNormal also schedules ReactToError to autonomously occur after an infinite
+amount of time, but a token arriving at the Error port triggers it ahead of the scheduled time
+(infinity). When fired, ReactToError cancels the Normal event and all events scheduled
+inside Normal. It then schedules StartError, which causes the traffic light to enter the Error
+state, and wait for the trigger at the OK port.</text></svg></configure>
                 </property>
                 <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                     <configure>
@@ -334,47 +334,47 @@ hierarchically contained in it will be fired again.</text></svg></configure>
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 255.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 260.0]">
                 </property>
             </property>
             <port name="Cred" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 165.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 55.0]">
                 </property>
             </port>
             <port name="Cgrn" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 205.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 95.0]">
                 </property>
             </port>
             <port name="Cyel" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 165.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 140.0]">
                 </property>
             </port>
             <port name="Pred" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 205.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 180.0]">
                 </property>
             </port>
             <port name="Pgrn" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 245.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 220.0]">
                 </property>
             </port>
             <port name="OK" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 80.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 120.0]">
                 </property>
             </port>
             <port name="Error" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 120.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 160.0]">
                 </property>
             </port>
             <entity name="Normal" class="ptolemy.domains.erg.kernel.Event">
@@ -386,7 +386,7 @@ hierarchically contained in it will be fired again.</text></svg></configure>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 30.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 25.0]">
                 </property>
             </entity>
             <entity name="Init" class="ptolemy.domains.erg.kernel.Event">
@@ -398,17 +398,17 @@ hierarchically contained in it will be fired again.</text></svg></configure>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 25.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 40.0]">
                 </property>
             </entity>
             <entity name="ReactToError" class="ptolemy.domains.erg.kernel.Event">
-                <property name="fireOnInput" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="fireOnInput" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 70.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 70.0]">
                 </property>
             </entity>
             <entity name="Error" class="ptolemy.domains.erg.kernel.Event">
@@ -418,17 +418,17 @@ hierarchically contained in it will be fired again.</text></svg></configure>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 155.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 160.0]">
                 </property>
             </entity>
             <entity name="ReactToOK" class="ptolemy.domains.erg.kernel.Event">
-                <property name="fireOnInput" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="fireOnInput" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 195.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 200.0]">
                 </property>
             </entity>
             <entity name="StartNormal" class="ptolemy.domains.erg.kernel.Event">
@@ -444,15 +444,15 @@ hierarchically contained in it will be fired again.</text></svg></configure>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 195.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{445.0, 200.0}">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.4364368243655127">
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.5879475026422237">
                 </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.5816469322284779">
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.3654637857129264">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -472,9 +472,9 @@ hierarchically contained in it will be fired again.</text></svg></configure>
             <relation name="relation2" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.314238373530688">
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.27939747011693905">
                 </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.02244903342185564">
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.016240215475114117">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -490,15 +490,17 @@ hierarchically contained in it will be fired again.</text></svg></configure>
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
+                <property name="triggers" class="ptolemy.data.expr.StringParameter" value="Error">
+                </property>
             </relation>
             <relation name="relation3" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Error_isPresent">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute">
 <display name="condition"/>                </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.2866825509650287">
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.29018853926887894">
                 </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.889106792939084">
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.7572363164083544">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -515,34 +517,10 @@ hierarchically contained in it will be fired again.</text></svg></configure>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </relation>
-            <relation name="relation4" class="ptolemy.domains.erg.kernel.SchedulingRelation">
-                <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
-                </property>
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="!Error_isPresent">
-<display name="condition"/>                </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.039213522151946">
-                </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.9024543141936952">
-                </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="Infinity">
-                </property>
-                <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
-                </property>
-                <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-            </relation>
             <relation name="relation5" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Error_isPresent">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute">
 <display name="condition"/>                </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.40598895381207295">
                 </property>
@@ -566,33 +544,9 @@ hierarchically contained in it will be fired again.</text></svg></configure>
             <relation name="relation7" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.32885643704904766">
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.3330154476250644">
                 </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-3.141035141814252">
-                </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="Infinity">
-                </property>
-                <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
-                </property>
-                <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-            </relation>
-            <relation name="relation6" class="ptolemy.domains.erg.kernel.SchedulingRelation">
-                <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
-                </property>
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="!OK_isPresent">
-<display name="condition"/>                </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.124801318126011">
-                </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.1958741986222416">
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="3.1242247830844017">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -607,12 +561,14 @@ hierarchically contained in it will be fired again.</text></svg></configure>
                 <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="triggers" class="ptolemy.data.expr.StringParameter" value="OK">
                 </property>
             </relation>
             <relation name="relation8" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="OK_isPresent">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute">
 <display name="condition"/>                </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.4091917939893899">
                 </property>
@@ -636,11 +592,11 @@ hierarchically contained in it will be fired again.</text></svg></configure>
             <relation name="relation9" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="OK_isPresent">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute">
 <display name="condition"/>                </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.31888930832218515">
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.2493937118391618">
                 </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.2207664901608017">
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.29589801341659305">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -660,9 +616,9 @@ hierarchically contained in it will be fired again.</text></svg></configure>
             <relation name="relation10" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.259752534603474">
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.28964919866252203">
                 </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.7571205414899239">
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.3698587748015182">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -682,9 +638,9 @@ hierarchically contained in it will be fired again.</text></svg></configure>
             <relation name="relation11" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.3541434244471535">
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.29289768637912067">
                 </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.5907054665299416">
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.825059610778247">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -705,15 +661,11 @@ hierarchically contained in it will be fired again.</text></svg></configure>
             <link port="Normal.incomingPort" relation="relation10"/>
             <link port="Init.outgoingPort" relation="relation"/>
             <link port="ReactToError.incomingPort" relation="relation2"/>
-            <link port="ReactToError.incomingPort" relation="relation4"/>
             <link port="ReactToError.outgoingPort" relation="relation3"/>
-            <link port="ReactToError.outgoingPort" relation="relation4"/>
             <link port="ReactToError.outgoingPort" relation="relation5"/>
             <link port="Error.incomingPort" relation="relation9"/>
             <link port="Error.incomingPort" relation="relation11"/>
             <link port="ReactToOK.incomingPort" relation="relation7"/>
-            <link port="ReactToOK.incomingPort" relation="relation6"/>
-            <link port="ReactToOK.outgoingPort" relation="relation6"/>
             <link port="ReactToOK.outgoingPort" relation="relation8"/>
             <link port="ReactToOK.outgoingPort" relation="relation9"/>
             <link port="StartNormal.incomingPort" relation="relation8"/>
@@ -1171,7 +1123,7 @@ event has a parameter named "param" with type int, which takes value 0 or 1.</te
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 215.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{405.0, 215.0}">
         </property>
     </entity>
     <entity name="SetVariable5" class="ptolemy.actor.lib.SetVariable">
@@ -1185,7 +1137,7 @@ event has a parameter named "param" with type int, which takes value 0 or 1.</te
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 245.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{320.0, 245.0}">
         </property>
     </entity>
     <entity name="SetVariable1" class="ptolemy.actor.lib.SetVariable">
@@ -1199,7 +1151,7 @@ event has a parameter named "param" with type int, which takes value 0 or 1.</te
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[444.83323669433594, 125.00029754638672]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{444.83323669433594, 125.00029754638672}">
         </property>
     </entity>
     <entity name="SetVariable3" class="ptolemy.actor.lib.SetVariable">
@@ -1213,7 +1165,7 @@ event has a parameter named "param" with type int, which takes value 0 or 1.</te
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{490.0, 185.0}">
         </property>
     </entity>
     <entity name="SetVariable2" class="ptolemy.actor.lib.SetVariable">
@@ -1227,11 +1179,11 @@ event has a parameter named "param" with type int, which takes value 0 or 1.</te
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{575.0, 155.0}">
         </property>
     </entity>
     <entity name="ErrorGenerator" class="ptolemy.domains.erg.kernel.ERGModalModel">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[69.83323669433594, 145.00029754638672]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{69.83323669433594, 145.00029754638672}">
         </property>
         <port name="OK" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="output"/>

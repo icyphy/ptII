@@ -34,7 +34,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
-//// InitContainingModel
+//// InitModelWithContainer
 
 /**
 
@@ -45,9 +45,9 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class InitContainingModel extends Init {
+public class InitModelWithContainer extends InitModel {
 
-    public InitContainingModel(CompositeEntity container, String name)
+    public InitModelWithContainer(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }

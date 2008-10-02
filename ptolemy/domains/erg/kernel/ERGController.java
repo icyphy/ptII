@@ -38,7 +38,6 @@ import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
-import ptolemy.actor.IOPort;
 import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.BreakCausalityInterface;
 import ptolemy.actor.util.CausalityInterface;
@@ -53,6 +52,7 @@ import ptolemy.domains.fsm.modal.ModalController;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -240,14 +240,23 @@ public class ERGController extends ModalController {
         Iterator<?> inPorts = ((ERGModalModel) getContainer()).inputPortList()
                 .iterator();
         while (inPorts.hasNext() && !_stopRequested) {
-            IOPort p = (IOPort) inPorts.next();
-            Token token =
-                (Token) _inputTokenMap.get(p.getName() + "_isPresent");
-            if (token != null && BooleanToken.TRUE.equals(token)) {
+            Port port = (Port) inPorts.next();
+            if (hasInput(port)) {
                 return true;
             }
         }
         return false;
+    }
+
+    /** Test whether new input tokens have been received at the given input
+     *  port.
+     *
+     *  @param port The input port.
+     *  @return true if new input tokens have been received.
+     */
+    public boolean hasInput(Port port) {
+        Token token = (Token) _inputTokenMap.get(port.getName() + "_isPresent");
+        return token != null && BooleanToken.TRUE.equals(token);
     }
 
     /** Initialize this controller by initializing the director that it
@@ -272,7 +281,7 @@ public class ERGController extends ModalController {
     /** Return the result of isStrict() from the director.
     *
     *  @return The result of isStrict() from the director.
-     * @exception IllegalActionException Thrown if causality interface 
+     * @exception IllegalActionException Thrown if causality interface
      *  cannot be computed.
     */
     public boolean isStrict() throws IllegalActionException {

@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<class name="ModelUpdater" extends="ptolemy.domains.erg.kernel.ERGModalModel">
+<class name="ComplexTransformation" extends="ptolemy.domains.erg.kernel.ERGModalModel">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
     <property name="_location" class="ptolemy.kernel.util.Location" value="{235, 135}">
@@ -98,10 +98,10 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 45.0]">
             </property>
         </property>
-        <entity name="InitModelWithContainer" class="ptolemy.actor.gt.controller.InitModelWithContainer">
+        <entity name="InitModel" class="ptolemy.actor.gt.controller.InitModel">
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 30.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 30.0]">
             </property>
         </entity>
     </entity>

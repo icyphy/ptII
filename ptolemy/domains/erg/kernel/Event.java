@@ -36,19 +36,14 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
-import ptolemy.actor.Executable;
-import ptolemy.actor.Initializable;
 import ptolemy.actor.TypedActor;
-import ptolemy.actor.util.Time;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Constants;
-import ptolemy.data.expr.ModelScope;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.ParserScope;
-import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
@@ -56,12 +51,10 @@ import ptolemy.domains.fsm.kernel.State;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
-import ptolemy.kernel.util.ValueListener;
 import ptolemy.kernel.util.Workspace;
 
 /**
@@ -110,7 +103,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class Event extends State implements Initializable, ValueListener {
+public class Event extends State {
 
     /** Construct an event with the given name contained by the specified
      *  composite entity. The container argument must not be null, or a
@@ -156,28 +149,6 @@ public class Event extends State implements Initializable, ValueListener {
         variable.setPersistent(false);
 
         parameters.setExpression("()");
-
-        fireOnInput = new Parameter(this, "fireOnInput");
-        fireOnInput.setToken(BooleanToken.FALSE);
-        fireOnInput.setTypeEquals(BaseType.BOOLEAN);
-
-        monitoredVariables = new StringParameter(this, "monitoredVariables");
-    }
-
-    /** Add the specified object to the list of objects whose
-     *  preinitialize(), intialize(), and wrapup()
-     *  methods should be invoked upon invocation of the corresponding
-     *  methods of this object.
-     *
-     *  @param initializable The object whose methods should be invoked.
-     *  @see #removeInitializable(Initializable)
-     *  @see ptolemy.actor.CompositeActor#addPiggyback(Executable)
-     */
-    public void addInitializable(Initializable initializable) {
-        if (_initializables == null) {
-            _initializables = new LinkedList<Initializable>();
-        }
-        _initializables.add(initializable);
     }
 
     /** React to a change in an attribute. If the changed attribute is
@@ -200,9 +171,7 @@ public class Event extends State implements Initializable, ValueListener {
             super.attributeChanged(attribute);
         }
 
-        if (attribute == monitoredVariables) {
-            _addValueListener();
-        } else if (attribute == parameters) {
+        if (attribute == parameters) {
             List<EventParameter> eventParameters = attributeList(
                     EventParameter.class);
             for (EventParameter parameter : eventParameters) {
@@ -271,7 +240,6 @@ public class Event extends State implements Initializable, ValueListener {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Event newObject = (Event) super.clone(workspace);
-        newObject._monitoredVariables = null;
         newObject._parserScope = null;
         newObject._parserScopeVersion = -1;
         return newObject;
@@ -316,42 +284,12 @@ public class Event extends State implements Initializable, ValueListener {
         return null;
     }
 
-    /** Return whether this event is an input event, which is processed when any
-     *  input is received by the containing ERG controller.
-     *
-     *  @return True if this event is an input event.
-     */
-    public boolean fireOnInput() {
-        try {
-            return ((BooleanToken) fireOnInput.getToken()).booleanValue();
-        } catch (IllegalActionException e) {
-            return false;
-        }
-    }
-
     /** Return the ERG controller that contains this event.
      *
      *  @return The ERG controller.
      */
     public ERGController getController() {
         return (ERGController) getContainer();
-    }
-
-    /** Begin execution of the actor and start to monitor the variables whose
-     *  values this event listens to. Also invoke the initialize methods of
-     *  objects that have been added using {@link
-     *  #addInitializable(Initializable)}.
-     *
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-    public void initialize() throws IllegalActionException {
-        _monitoring = true;
-        // Invoke initializable methods.
-        if (_initializables != null) {
-            for (Initializable initializable : _initializables) {
-                initializable.initialize();
-            }
-        }
     }
 
     /** Return whether this event is a final event, so that its execution causes
@@ -381,21 +319,6 @@ public class Event extends State implements Initializable, ValueListener {
         return ((BooleanToken) isInitialEvent.getToken()).booleanValue();
     }
 
-    /** Do nothing except invoke the preinitialize methods
-     *  of objects that have been added using {@link
-     *  #addInitializable(Initializable)}.
-     *  @exception IllegalActionException If one of the added objects
-     *   throws it.
-     */
-    public void preinitialize() throws IllegalActionException {
-        // Invoke initializable methods.
-        if (_initializables != null) {
-            for (Initializable initializable : _initializables) {
-                initializable.preinitialize();
-            }
-        }
-    }
-
     /** Continue the processing of this event with the given arguments from the
      *  previous fire() or refire(). The number of arguments
      *  provided must be equal to the number of formal parameters defined for
@@ -417,24 +340,6 @@ public class Event extends State implements Initializable, ValueListener {
     public RefiringData refire(ArrayToken arguments, RefiringData data)
             throws IllegalActionException {
         return null;
-    }
-
-    /** Remove the specified object from the list of objects whose
-     *  preinitialize(), intialize(), and wrapup()
-     *  methods should be invoked upon invocation of the corresponding
-     *  methods of this object. If the specified object is not
-     *  on the list, do nothing.
-     *  @param initializable The object whose methods should no longer be invoked.
-     *  @see #addInitializable(Initializable)
-     *  @see ptolemy.actor.CompositeActor#removePiggyback(Executable)
-     */
-    public void removeInitializable(Initializable initializable) {
-        if (_initializables != null) {
-            _initializables.remove(initializable);
-            if (_initializables.size() == 0) {
-                _initializables = null;
-            }
-        }
     }
 
     /** Schedule the next events by evaluating all scheduling relations from
@@ -483,43 +388,9 @@ public class Event extends State implements Initializable, ValueListener {
                 } else {
                     ArrayToken edgeArguments = schedule.getArguments(scope);
                     director.fireAt(nextEvent, director.getModelTime().add(
-                            delay), edgeArguments);
+                            delay), edgeArguments, schedule.getTriggers());
                 }
             }
-        }
-    }
-
-    /** Call the superclass to set the container (which should be an instance of
-     *  {@link ERGController}) of this event, and then register this event as a
-     *  value listener of all the variables listed in the
-     *  <code>monitoredVariables</code> parameter. This method also adds the
-     *  event to the container's initializable objects by calling its
-     *  {@link Initializable#addInitializable(Initializable)} method.
-     *
-     *  @param container The proposed container.
-     *  @exception IllegalActionException If the action would result in a
-     *   recursive containment structure, or if
-     *   this entity and container are not in the same workspace, or
-     *   if the protected method _checkContainer() throws it, or if
-     *   a contained Settable becomes invalid and the error handler
-     *   throws it.
-     *  @exception NameDuplicationException If the name of this entity
-     *   collides with a name already in the container.
-     */
-    public void setContainer(CompositeEntity container)
-    throws IllegalActionException, NameDuplicationException {
-        CompositeEntity oldContainer = (CompositeEntity) getContainer();
-        if (oldContainer instanceof Initializable) {
-            ((Initializable) oldContainer).removeInitializable(this);
-        }
-
-        super.setContainer(container);
-
-        if (container instanceof Initializable) {
-            ((Initializable) container).addInitializable(this);
-        }
-        if (container != null) {
-            _addValueListener();
         }
     }
 
@@ -528,56 +399,8 @@ public class Event extends State implements Initializable, ValueListener {
     public void stop() {
     }
 
-    /** Monitor the change of a variable specified by the <code>settable</code>
-     *  argument if the execution has started, and invokes fireAt() of the
-     *  director to request to fire this event at the current model time.
-     *
-     *  @param settable The variable that has been changed.
-     */
-    public void valueChanged(Settable settable) {
-        if (_monitoring) {
-            ERGDirector director =
-                (ERGDirector) ((ERGController) getContainer()).getDirector();
-            try {
-                ERGDirector.TimedEvent timedEvent = director.findFirst(this,
-                        false);
-                if (timedEvent != null) {
-                    // This event has been scheduled at least once.
-                    Time modelTime = director.getModelTime();
-                    if (modelTime.compareTo(timedEvent.timeStamp) < 0) {
-                        director.cancel(this);
-                        director.fireAt(this, modelTime, timedEvent.arguments);
-                    }
-                }
-            } catch (IllegalActionException e) {
-                // This shouldn't happen because this event does not have any
-                // refinement.
-                throw new InternalErrorException(e);
-            }
-        }
-    }
-
-    /** Stop monitoring variables. Also invoke the wrapup methods of
-     *  objects that have been added using {@link
-     *  #addInitializable(Initializable)}.
-     *
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-    public void wrapup() throws IllegalActionException {
-        // Invoke initializable methods.
-        if (_initializables != null) {
-            for (Initializable initializable : _initializables) {
-                initializable.wrapup();
-            }
-        }
-        _monitoring = false;
-    }
-
     /** The actions for this event. */
     public ActionsAttribute actions;
-
-    /** A Boolean value representing whether this event is an input event. */
-    public Parameter fireOnInput;
 
     /** A Boolean parameter to specify whether this event is a final event. */
     public Parameter isFinalEvent;
@@ -585,9 +408,6 @@ public class Event extends State implements Initializable, ValueListener {
     /** A Boolean parameter to specify whether this event is an initial
     event. */
     public Parameter isInitialEvent;
-
-    /** A comma-separated list of variable names to be monitored. */
-    public StringParameter monitoredVariables;
 
     /** A list of formal parameters. */
     public ParametersAttribute parameters;
@@ -702,45 +522,6 @@ public class Event extends State implements Initializable, ValueListener {
         return true;
     }
 
-    /** Remove this event from the value listener lists of the previously
-     *  monitored variables, and register in the value listener lists of the
-     *  newly monitored variables specified by the
-     *  <code>monitoredVariables</code> parameter.
-     *
-     *  @exception IllegalActionException If value of the
-     *  <code>monitoredVariables</code> parameter cannot be obtained, or it is
-     *  malformed.
-     */
-    private void _addValueListener() throws IllegalActionException {
-        if (_monitoredVariables == null) {
-            _monitoredVariables = new LinkedList<Variable>();
-        } else {
-            for (Variable variable : _monitoredVariables) {
-                variable.removeValueListener(this);
-            }
-            _monitoredVariables.clear();
-        }
-
-        if (monitoredVariables == null) {
-            return;
-        }
-        String[] names = monitoredVariables.stringValue().split(",");
-        for (String name : names) {
-            name = name.trim();
-            if (name.equals("")) {
-                continue;
-            }
-            Variable variable = ModelScope.getScopedVariable(null, this, name);
-            if (variable == null) {
-                throw new IllegalActionException(this, "Unable to find " +
-                        "variable with name\"" + name + "\".");
-            } else {
-                _monitoredVariables.add(variable);
-                variable.addValueListener(this);
-            }
-        }
-    }
-
     /** The scheduling relation comparator to be used when LIFO is set to false.
      */
     private static final PriorityComparator _FIFO_COMPARATOR =
@@ -750,18 +531,6 @@ public class Event extends State implements Initializable, ValueListener {
      */
     private static final PriorityComparator _LIFO_COMPARATOR =
         new PriorityComparator(true);
-
-    /** List of objects whose (pre)initialize() and wrapup() methods should be
-     *  slaved to these.
-     */
-    private transient List<Initializable> _initializables;
-
-    /** The variables that this event has been monitoring. */
-    private List<Variable> _monitoredVariables;
-
-    /** Whether this event is monitoring the change of values of the monitored
-    variables. */
-    private boolean _monitoring = false;
 
     /** The parser scope used to execute actions and evaluate arguments.
      */

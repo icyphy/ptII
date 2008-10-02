@@ -515,7 +515,7 @@
                     <relation name="relation_1_4" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                         <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                         </property>
-                        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Matched">
+                        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="LinkRelations.matched">
 <display name="condition"/>                        </property>
                         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                         </property>
@@ -536,7 +536,7 @@
                         <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
                     </relation>
-                    <link port="Init.outgoingPort" relation="relation"/>
+                    <link port="InitModelWithContainer.outgoingPort" relation="relation"/>
                     <link port="CreateActors.incomingPort" relation="relation"/>
                     <link port="CreateActors.outgoingPort" relation="relation_1_2"/>
                     <link port="LinkRelations.incomingPort" relation="relation_1_2"/>
@@ -656,7 +656,7 @@
                     <relation name="relation_1_3" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                         <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                         </property>
-                        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Matched">
+                        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="CleanUp.matched">
 <display name="condition"/>                        </property>
                         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                         </property>
@@ -677,7 +677,7 @@
                         <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
                     </relation>
-                    <link port="Init.outgoingPort" relation="relation"/>
+                    <link port="InitModelWithContainer.outgoingPort" relation="relation"/>
                     <link port="CleanUp.incomingPort" relation="relation"/>
                     <link port="CleanUp.incomingPort" relation="relation_1_3"/>
                     <link port="CleanUp.outgoingPort" relation="relation_1_2"/>
@@ -967,7 +967,7 @@
                     <relation name="relation3" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                         <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                         </property>
-                        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Matched">
+                        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="LinkRelations.matched">
 <display name="condition"/>                        </property>
                         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                         </property>
@@ -988,7 +988,7 @@
                         <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
                     </relation>
-                    <link port="Init.outgoingPort" relation="relation"/>
+                    <link port="InitModelWithContainer.outgoingPort" relation="relation"/>
                     <link port="CreateActors.incomingPort" relation="relation"/>
                     <link port="CreateActors.outgoingPort" relation="relation_1_2"/>
                     <link port="LinkRelations.incomingPort" relation="relation_1_2"/>

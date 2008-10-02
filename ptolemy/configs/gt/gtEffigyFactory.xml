@@ -7,7 +7,7 @@
     </entity>
   </entity>
   <entity name="Complex Transformation" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
-    <entity name="blank" class="ptolemy.actor.gt.controller.ModelUpdater">
+    <entity name="blank" class="ptolemy.actor.gt.controller.ComplexTransformation">
     </entity>
   </entity>
 </group>

@@ -157,7 +157,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 330.0]">
             </property>
         </property>
-        <entity name="Init" class="ptolemy.actor.gt.controller.InitContainingModel">
+        <entity name="InitModelWithContainer" class="ptolemy.actor.gt.controller.InitContainingModel">
             <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="i = 0; j = 0">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 45.0]">
@@ -487,8 +487,8 @@
             <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </relation>
-        <link port="Init.outgoingPort" relation="relation"/>
-        <link port="Init.outgoingPort" relation="relation_1_6"/>
+        <link port="InitModelWithContainer.outgoingPort" relation="relation"/>
+        <link port="InitModelWithContainer.outgoingPort" relation="relation_1_6"/>
         <link port="SetCarArrivals.incomingPort" relation="relation"/>
         <link port="SetCarArrivals.incomingPort" relation="relation_1_3"/>
         <link port="SetCarArrivals.outgoingPort" relation="relation_1_2"/>

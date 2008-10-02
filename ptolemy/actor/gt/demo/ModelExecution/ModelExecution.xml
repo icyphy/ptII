@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="ModelExecution" class="ptolemy.actor.gt.controller.ModelUpdater">
+<entity name="ModelExecution" class="ptolemy.actor.gt.controller.ComplexTransformation">
     <entity name="_Controller" class="ptolemy.domains.erg.kernel.ERGController">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={288, 268, 823, 514}, maximized=false}">
         </property>
@@ -78,8 +78,8 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 285.0]">
             </property>
         </property>
-        <entity name="Init" class="ptolemy.actor.gt.controller.InitContainingModel">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[96.1305120691809, 58.0103780190189]">
+        <entity name="InitModel" class="ptolemy.actor.gt.controller.InitModel">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 40.0]">
             </property>
         </entity>
         <entity name="Execute" class="ptolemy.actor.gt.controller.Execute">
@@ -329,7 +329,7 @@
             <property name="priority" class="ptolemy.actor.parameters.Priority" value="0">
             </property>
         </relation>
-        <link port="Init.outgoingPort" relation="relation_1_4"/>
+        <link port="InitModel.outgoingPort" relation="relation_1_4"/>
         <link port="Execute.incomingPort" relation="relation2"/>
         <link port="Execute.outgoingPort" relation="relation_1_2"/>
         <link port="SetConstValue.incomingPort" relation="relation"/>

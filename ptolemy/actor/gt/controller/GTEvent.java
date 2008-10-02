@@ -27,7 +27,6 @@
 */
 package ptolemy.actor.gt.controller;
 
-import ptolemy.data.expr.Parameter;
 import ptolemy.domains.erg.kernel.ERGController;
 import ptolemy.domains.erg.kernel.Event;
 import ptolemy.domains.fsm.modal.RefinementExtender;
@@ -61,31 +60,6 @@ public class GTEvent extends Event {
         _setRefinementExtender();
     }
 
-    public Parameter getMatchedParameter() throws IllegalActionException {
-        NamedObj container = getContainer();
-        if (!(container instanceof ERGController)) {
-            return null;
-        }
-
-        ERGController controller = (ERGController) container;
-        Parameter parameter = null;
-        while (parameter == null && controller != null) {
-            parameter = (Parameter) controller.getAttribute("Matched",
-                Parameter.class);
-            if (parameter == null) {
-                Event event = (Event) controller.getRefinedState();
-                if (event != null) {
-                    controller = (ERGController) event.getContainer();
-                }
-            }
-        }
-        if (parameter == null) {
-            throw new IllegalActionException("Unable to find the Matched " +
-                    "parameter in the ERG controller.");
-        }
-        return parameter;
-    }
-
     public ModelParameter getModelParameter() throws IllegalActionException {
         NamedObj container = getContainer();
         if (!(container instanceof ERGController)) {
@@ -95,8 +69,8 @@ public class GTEvent extends Event {
         ERGController controller = (ERGController) container;
         ModelParameter actorParameter = null;
         while (actorParameter == null && controller != null) {
-            actorParameter = (ModelParameter) controller.getAttribute(
-                    "HostModel", ModelParameter.class);
+            actorParameter = (ModelParameter) controller.getAttribute("Model",
+                    ModelParameter.class);
             if (actorParameter == null) {
                 Event event = (Event) controller.getRefinedState();
                 if (event != null) {
@@ -105,8 +79,8 @@ public class GTEvent extends Event {
             }
         }
         if (actorParameter == null) {
-            throw new IllegalActionException("Unable to find the HostModel " +
-                    "parameter in the ERG controller of type ActorParameter.");
+            throw new IllegalActionException("Unable to find the Model " +
+                    "parameter in the ERG controller of type ModelParameter.");
         }
         return actorParameter;
     }
