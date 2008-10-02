@@ -652,24 +652,18 @@
             <entity name="Yellow" class="ptolemy.domains.erg.kernel.Event">
                 <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Light = Y">
                 </property>
-                <property name="fireOnInput" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[132.00085299834814, 208.1906837698802]">
                 </property>
             </entity>
             <entity name="HandlePedRequest" class="ptolemy.domains.erg.kernel.Event">
-                <property name="fireOnInput" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 255.0]">
                 </property>
             </entity>
             <entity name="HandleCarCount" class="ptolemy.domains.erg.kernel.Event">
-                <property name="fireOnInput" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[430.019252090648, 449.8086568077505]">
@@ -706,8 +700,6 @@
                 </property>
             </entity>
             <entity name="HandlePedRequestO" class="ptolemy.domains.erg.kernel.Event">
-                <property name="fireOnInput" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[905.0, 115.0]">

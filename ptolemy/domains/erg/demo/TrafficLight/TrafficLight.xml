@@ -392,8 +392,6 @@ state, and wait for the trigger at the OK port.</text></svg></configure>
             <entity name="Init" class="ptolemy.domains.erg.kernel.Event">
                 <property name="isInitialEvent" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="fireOnInput" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
@@ -402,8 +400,6 @@ state, and wait for the trigger at the OK port.</text></svg></configure>
                 </property>
             </entity>
             <entity name="ReactToError" class="ptolemy.domains.erg.kernel.Event">
-                <property name="fireOnInput" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
@@ -422,8 +418,6 @@ state, and wait for the trigger at the OK port.</text></svg></configure>
                 </property>
             </entity>
             <entity name="ReactToOK" class="ptolemy.domains.erg.kernel.Event">
-                <property name="fireOnInput" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">

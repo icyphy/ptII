@@ -204,26 +204,6 @@ is stable statistically.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 310.0]">
                 </property>
             </property>
-            <property name="annotation" class="ptolemy.kernel.util.Attribute">
-                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
-                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The ReadInput event has fireOnInput=true, meaning
-that it can be triggered not only by being scheduled,
-but also by input signals.</text></svg></configure>
-                </property>
-                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-                </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 5.0]">
-                </property>
-            </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={288, 268, 823, 514}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
@@ -231,25 +211,6 @@ but also by input signals.</text></svg></configure>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
-            </property>
-            <property name="annotation2" class="ptolemy.kernel.util.Attribute">
-                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
-                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The values of these parameters
-are reset at the start of each run.</text></svg></configure>
-                </property>
-                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-                </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 320.0]">
-                </property>
             </property>
             <port name="serversInput" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
@@ -315,8 +276,6 @@ are reset at the start of each run.</text></svg></configure>
             </entity>
             <entity name="ReadInput" class="ptolemy.domains.erg.kernel.Event">
                 <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Servers = serversInput;&#10;  Queue = queueInput">
-                </property>
-                <property name="fireOnInput" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
