@@ -78,8 +78,8 @@ public abstract class PropertySolver extends Attribute {
         for (SharedParameter parameter : parameters) {
             parameters = parameter.sharedParameterSet();
         }
-        
-        
+
+
         _sharedUtilities = (SharedUtilities) ((ObjectToken) 
                 sharedUtilitiesWrapper.getToken()).getValue();
 
@@ -145,12 +145,12 @@ public abstract class PropertySolver extends Attribute {
         PropertySolver newObject = (PropertySolver) super.clone(workspace);
         return newObject;
     }
-    
+
     public void checkResolutionErrors() throws PropertyResolutionException {
-		for (Object propertyable : getAllPropertyables()) {
-			_recordUnacceptableSolution(
-				propertyable, getProperty(propertyable));
-		}
+        for (Object propertyable : getAllPropertyables()) {
+            _recordUnacceptableSolution(
+                    propertyable, getProperty(propertyable));
+        }
         checkErrors();
     }
 
@@ -477,7 +477,7 @@ public abstract class PropertySolver extends Attribute {
             //     Check whether we are expecting an exception,
             //     if in testing mode, then add a RegressionTestErrorException
             PropertySolver failedSolver = ex.getSolver();
-            
+
             // Remove '\r' characters to make Windows-Linux comparable strings.
             String trainedException = failedSolver.getTrainedException().replaceAll("\r", "");
             String exception = ex.getMessage().replaceAll("\r", "");
@@ -568,7 +568,7 @@ public abstract class PropertySolver extends Attribute {
 
     private void _recordUnacceptableSolution(
             Object propertyable, Property property) {
-        
+
         // Check for unacceptable solution.
         if ((property != null) && 
                 (!property.isAcceptableSolution())) {
@@ -665,17 +665,15 @@ public abstract class PropertySolver extends Attribute {
         // The first check is for singleton elements, and the equals()
         // comparison is necessary for "equivalent" elements, such as
         // those in the SetLattice usecase.
-        if (previousProperty != property && !previousProperty.equals(property)) {
-            if (previousProperty == null ||
-                    (previousProperty != null && !previousProperty.equals(property))) {
+        if (previousProperty == null ||
+                (previousProperty != null && !previousProperty.equals(property))) {
 
-                addErrors(_eol + "Property \"" + getUseCaseName() + 
-                        "\" resolution failed for " + namedObj.getFullName() + 
-                        "." + _eol + "    Trained value: \"" +
-                        previousProperty +
-                        "\"; Resolved value: \"" +
-                        property + "\".");
-            }
+            addErrors(_eol + "Property \"" + getUseCaseName() + 
+                    "\" resolution failed for " + namedObj.getFullName() + 
+                    "." + _eol + "    Trained value: \"" +
+                    previousProperty +
+                    "\"; Resolved value: \"" +
+                    property + "\".");
         }
     }
 
@@ -768,7 +766,7 @@ public abstract class PropertySolver extends Attribute {
             stats = _testPropertiesDirectory(directoryPath);
             _printGlobalStats(stats[0]);
             _printLocalStats(stats[1]);
-        
+
         } catch (Exception ex) {
             // Force the error to show up on console.
             // We may want to direct this an error file.
@@ -786,7 +784,7 @@ public abstract class PropertySolver extends Attribute {
         // Create the log directories.
         new File(_statsDirectory).mkdirs();
         new File(_exceptionLogsDirectory).mkdirs();
-        
+
         // See MoMLSimpleApplication for similar code
         MoMLParser parser = new MoMLParser();
         MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
@@ -796,7 +794,7 @@ public abstract class PropertySolver extends Attribute {
 
         HashMap<Object, Map> localStats = new LinkedHashMap<Object, Map>();
         HashMap globalStats = new LinkedHashMap();
-        
+
         Map[] summary = new Map[] { globalStats, localStats };
 
         File directory = new File(directoryPath);
@@ -811,27 +809,27 @@ public abstract class PropertySolver extends Attribute {
 
             } else if (_isTestableFile(file)) {
                 System.out.println("***isTestable: " + file.getAbsolutePath());
-                
+
                 // Redirect System.err to a byteArrayStream.
                 ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
                 PrintStream errorStream = new PrintStream(byteArrayStream);
                 System.setErr(errorStream);
-                
+
                 // FIXME: Implement option to redirect System.out to a file.
-//                String outputFilename = 
-//                    StringUtilities.getProperty("ptolemy.ptII.dir") 
-//                    + "/BOSCH_Logfiles/" + file.getName();
-//                
-//                outputFilename = outputFilename.replace(".xml", "_output.txt");
-//                File outputFile = new File(outputFilename);
-//                outputFile.createNewFile();
-//                
-//                FileOutputStream fos2 = new FileOutputStream(outputFilename);
-//                PrintStream ps2 = new PrintStream(fos2);
-//                System.setOut(ps2);
+                //                String outputFilename = 
+                //                    StringUtilities.getProperty("ptolemy.ptII.dir") 
+                //                    + "/BOSCH_Logfiles/" + file.getName();
+                //                
+                //                outputFilename = outputFilename.replace(".xml", "_output.txt");
+                //                File outputFile = new File(outputFilename);
+                //                outputFile.createNewFile();
+                //                
+                //                FileOutputStream fos2 = new FileOutputStream(outputFilename);
+                //                PrintStream ps2 = new PrintStream(fos2);
+                //                System.setOut(ps2);
 
                 boolean failed = false;
-                
+
                 String filePath = file.getAbsolutePath();
 
                 //==========================================================
@@ -841,13 +839,13 @@ public abstract class PropertySolver extends Attribute {
 
                 // Format the current time.
                 SimpleDateFormat formatter
-                    = new SimpleDateFormat ("yyyy.MM.dd G 'at' hh:mm:ss a zzz");
+                = new SimpleDateFormat ("yyyy.MM.dd G 'at' hh:mm:ss a zzz");
                 Date currentTime_1 = new Date(startTime);
                 String startTimeString = formatter.format(currentTime_1);
 
                 _addLocalStatsEntry(localStats, _createKey(filePath, null, null), "Start time ", startTimeString);
                 _addLocalStatsEntry(localStats, _createKey(filePath, null, null), "Memory usage before", Runtime.getRuntime().totalMemory());
-                
+
                 //==========================================================
 
                 try {
@@ -908,7 +906,7 @@ public abstract class PropertySolver extends Attribute {
                 _incrementStats(globalStats, "#Total tests", 1);
 
                 String errors = byteArrayStream.toString();
-                
+
                 if (!failed) {
                     // Should not succeed with errors.
                     assert errors.length() == 0;
@@ -954,7 +952,7 @@ public abstract class PropertySolver extends Attribute {
     private static void _addLocalStatsEntry(
             Map<Object, Map> stats, Object key, String entryHeader, Object entryValue) {
         _modelStatsHeaders.add(entryHeader);
-        
+
         Map entry;
         if (stats.containsKey(key)) {
             entry = stats.get(key);
@@ -967,13 +965,13 @@ public abstract class PropertySolver extends Attribute {
 
     private static Object _createKey(String filePath, PropertySolver solver, PropertySolver invokedSolver) {
         String key = filePath + _separator;
-        
+
         if (solver != null) {
             key += solver.getName();
         }
 
         key += _separator;
-        
+
         if (solver == null && invokedSolver == null) {
             // no solver is invoked.
         } else if (solver == invokedSolver || invokedSolver == null) {
@@ -999,16 +997,16 @@ public abstract class PropertySolver extends Attribute {
      */
     private static File _getExceptionLogFile(File modelFile, boolean failed) {
         int suffixId = 0;
-        
+
         File errorFile;
-        
+
         do {
             String exceptionLogFilename = _exceptionLogsDirectory + "/" +
             (failed ? "Failed_errors_" : "Passed_errors_") + modelFile.getName();
-            
+
             // Replace the extension.
             exceptionLogFilename = exceptionLogFilename.substring(0, exceptionLogFilename.length() - 4);
-            
+
             // Duplicate filenames (under different directories) are handled by
             // appending a serial suffix. We assume the file content would
             // specify the path to the model file.
@@ -1017,7 +1015,7 @@ public abstract class PropertySolver extends Attribute {
             } else {
                 errorFile = new File(exceptionLogFilename + suffixId + ".log");
             }
-            
+
             suffixId++;
         } while (errorFile.exists());
 
@@ -1032,14 +1030,14 @@ public abstract class PropertySolver extends Attribute {
 
     /** The file path for the overview report file. */ 
     private static String _statsFilename = _statsDirectory + "/propertyTestReports.tsv";
-    
+
     private static void _printLocalStats(Map<Object, Map> stats) throws IOException {
         BufferedWriter writer = new BufferedWriter(new FileWriter(new File(_statsFilename), true));
 
         // Give ordering to the header fields.
         List headers = new LinkedList(_modelStatsHeaders);
         headers.addAll(_solverStatsHeaders);
-        
+
         // Print the header row.
         writer.append("Filename" + _separator);
         writer.append("Solver" + _separator);
@@ -1048,7 +1046,7 @@ public abstract class PropertySolver extends Attribute {
             writer.append(_separator + header.toString());
         }
         writer.newLine();
-        
+
         // Iterate using triplet keys {testFile, solver, isInvoked}.
         for (Object key : stats.keySet()) {
             Map entry = stats.get(key);
@@ -1209,9 +1207,9 @@ public abstract class PropertySolver extends Attribute {
                 memEnd = Runtime.getRuntime().totalMemory();
                 if ((memEnd - memStart) != 0) {
                     // FIXME: throw some sort of memory leak exception?
-//                  System.out.println("Memory Usage Before PS: " + memStart);                    
-//                  System.out.println("Memory Usage After PS: " + memEnd);
-//                  System.out.println("Memory diff = : " + (memEnd - memStart));
+                    //                  System.out.println("Memory Usage Before PS: " + memStart);                    
+                    //                  System.out.println("Memory Usage After PS: " + memEnd);
+                    //                  System.out.println("Memory diff = : " + (memEnd - memStart));
                     //==========================================================
 
                 }
@@ -1231,13 +1229,13 @@ public abstract class PropertySolver extends Attribute {
     public boolean invokeSolver() {
         return invokeSolver(null);
     }
-    
+
     public boolean invokeSolver(ModelAnalyzer analyzer) {
         boolean success = false;
 
         try {
             success = resolveProperties(analyzer, true);	            
-            
+
             updateProperties();
 
             checkErrors();
@@ -1252,7 +1250,7 @@ public abstract class PropertySolver extends Attribute {
             resetAll();
             throw new InternalErrorException(e);
         } 
-        
+
         return success;
     }
 
@@ -1315,7 +1313,7 @@ public abstract class PropertySolver extends Attribute {
         }
         map.put(field, current.longValue() + increment.longValue());
     }
-    
+
     /**
      * @param path
      * @param parser
@@ -1597,7 +1595,7 @@ public abstract class PropertySolver extends Attribute {
         }
         return result;
     }
-    
+
     /**
      * The list of all solvers that shared the same utility object 
      * wrapped by the given SharedParameter (e.g. all solvers from
@@ -1617,7 +1615,7 @@ public abstract class PropertySolver extends Attribute {
         }
         return solvers;        
     }
-    
+
     protected static String _eol = StringUtilities.getProperty("line.separator");
 
     protected static String _separator = "\t";
