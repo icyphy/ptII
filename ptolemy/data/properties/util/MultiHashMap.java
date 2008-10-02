@@ -1,4 +1,4 @@
-/** A Map that maps multiple items to a key.
+/** A map that associates a key with multiple values.
 
  Copyright (c) 1997-2006 The Regents of the University of California.
  All rights reserved.
@@ -35,24 +35,24 @@ import java.util.HashMap;
 //// MultiHashMap
 
 /**
-MultiHashMap is the default implementation of the MultiMap interface. 
-A MultiMap is a Map with slightly different semantics. Putting a value
-into the map will add the value to a Collection at that key. Getting a
-value will return a Collection, holding all the values put to that key.
+MultiHashMap is an implementation of the MultiMap interface. It 
+associates a collection of objects to each key. Putting a new 
+object under a key adds to the associated collection. Likewise, 
+removing a object removes from the collection. It is possible
+that the given object to remove is not contained by the collection. 
+In which case, no changes is made and null is returned. The items 
+in each collection are ordered by insertion, and duplicates are
+stored in the collections.   
 
-This implementation uses an ArrayList as the collection. The internal
-storage list is made available without cloning via the get(Object)
-and entrySet() methods. The implementation returns null when there
-are no values mapped to a key.
+For example, given a key K and object O1, and O2: 
+    
+    MultiHashMap map = new MultiHashMap();
+    map.put(K, O1);
+    map.put(K, O1);
+    map.put(K, O2);
 
-For example: 
-
- MultiMap mhm = new MultiHashMap();
- mhm.put(key, "A");
- mhm.put(key, "B");
- mhm.put(key, "C");
- List list = (List) mhm.get(key);list will be a list 
- containing "A", "B", "C". 
+then, map.size(K) would return 3. Iterating through the map returns
+O1, O1, and O2 in order.
 
  @author Man-Kit Leung
  @version $Id$
@@ -67,15 +67,14 @@ public class MultiHashMap extends HashMap implements MultiMap {
     ////                         public methods                    ////
     
     /**
-     * Adds the value to the collection associated with the specified key.
-     * @param key The key to store against.
-     * @param value The value to add to the collection at the key. 
-     * @return The value added if the map changed and null if the map
-     *  did not change.
+     * Add the value to the collection associated with the specified key.
+     * @param key The specified key.
+     * @param value The specified value to add to the collection. 
+     * @return The value added.
      */
     public Object put(Object key, Object value) {
         ArrayList values = (ArrayList) get(key);
-        if (values == null) { 
+        if (values == null) {
             values = new ArrayList();
             super.put(key, values);
         }
@@ -84,30 +83,34 @@ public class MultiHashMap extends HashMap implements MultiMap {
     }
         
     /**
-     * Removes a specific value from map. The item is removed
-     * from the collection mapped to the specified key. Other 
-     * values attached to that key are unaffected. If the last
-     * value for a key is removed, null will be returned from
-     * a subsequant get(key). 
-     * @param key The key to remove from.
-     * @param item The value to remove.
-     * @return The value removed (which was passed in), null if
-     *  nothing removed.
+     * Remove a specified value from the map. The value is removed
+     * from the collection mapped to the specified key. If this is
+     * the last value removed from the given key, the specified key
+     * is also removed from the map. Subsequent call to get(key) will
+     * return null.
+     * @param key The specified key to remove the value from.
+     * @param value The specified value to remove.
+     * @return The value removed, or null if nothing is removed.
      */
-    public Object remove(Object key, Object item) {
+    public Object remove(Object key, Object value) {
         Collection values = (Collection) get(key);
 
         if (values == null) {
             return null;
         } else {
-            return values.remove(item);
+            Object object = values.remove(value);
+            if (values.size() == 0) {
+                remove(key);
+            }
+            return object;
         } 
     }
     
     /**
-     * Gets the size of the collection mapped to the specified key.
-     * @param key The key to get size for.
-     * @return The size of the collection at the key, zero if key not in map.
+     * Return the size of the collection mapped to the specified key.
+     * @param key The specified key.
+     * @return The size of the collection, or zero if key is 
+     *  not in the map.
      */
     public int size(Object key) {
         Collection values = (Collection) get(key);
@@ -120,10 +123,10 @@ public class MultiHashMap extends HashMap implements MultiMap {
     }
     
     /**
-     * Gets a collection containing all the values in the map. This
-     * returns a collection containing the combination of values from
-     * all keys. 
-     * @return A collection view of the values contained in this map.
+     * Return a view of the collection containing all values in the map. 
+     * This is a collection containing the union of each collection
+     * mapped to the keys.
+     * @return A view of all values contained in this map.
      */
     public Collection values() {
         Collection result = new ArrayList();

@@ -1,6 +1,6 @@
-/** A map that holds a collection of values against each key.
+/** A map interface that associates a key with multiple values.
 
- Copyright (c) 1997-2006 The Regents of the University of California.
+ Copyright (c) 1997-2008 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -32,21 +32,23 @@ import java.util.Map;
 //// MultiMap
 
 /**
-Defines a map that holds a collection of values against each key. 
+A map that associates a key with multiple values. 
 
-A MultiMap is a Map with slightly different semantics. Putting a
-value into the map will add the value to a Collection at that key.
-Getting a value will return a Collection, holding all the values
-put to that key.
+Similar to MultiSet, MultiMap is a generalization of a abstract
+data structure (Map). Like Map, MultiMap does not allow duplicate
+keys. It associates a collection of objects to each key. Putting
+a new object under a key adds to the associated collection. 
+Likewise, removing a object removes from the collection.
 
-For example: 
-
- MultiMap mhm = new MultiHashMap();
- mhm.put(key, "A");
- mhm.put(key, "B");
- mhm.put(key, "C");
- Collection coll = (Collection) mhm.get(key);coll will be a
- collection containing "A", "B", "C".
+Several things are open to the implementation classes. First is the
+ordering of the collection of all contained values. Second, ordering
+within the collection is also open to the implementation class. 
+Each collection may or may not contain duplicates. For example, a
+implementation class may use HashSets to represent the collections. This
+effectively eliminate all duplicates but gives no ordering guarantee. 
+Although it is rare, but one can also imagine having a hybrid
+implementation where each collection provide different guarantees 
+depending on the key that they map under.  
 
  @author Man-Kit Leung
  @version $Id$
@@ -61,12 +63,12 @@ public interface MultiMap extends Map {
     ////                         public methods                    ////
     
     /**
-     * Removes a specific value from map.
-     * @param key The key which the given item maps to.
-     * @param item The item to remove.
+     * Remove a specified value from the map.
+     * @param key The specified key.
+     * @param object The specified object to remove from the collection.
      * @return The removed item, or null if the item
-     *  didn't exist.
+     *  does not exist.
      */
-    public Object remove(Object key, Object item);
+    public Object remove(Object key, Object object);
     
 }
