@@ -46,7 +46,7 @@ import ptolemy.kernel.util.Workspace;
  In addition, broadcast the channel number of the maximum on
  the <i>channelNumber</i> output port.  Either output port may be
  left unconnected if you do not need its results. The output ports should not
- be multiports, but changing this would probably break too much existing models.
+ be multiports, but changing this would probably break too many existing models.
  This actor works with any scalar token. For ComplexToken, the output is
  the one with the maximum magnitude.
  The input port is a multiport.
