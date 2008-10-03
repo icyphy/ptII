@@ -45,8 +45,8 @@ import ptolemy.kernel.util.Workspace;
  least value to the <i>minimumValue</i> output.
  In addition, broadcast the channel number of the minimum on
  the <i>channelNumber</i> output port.  Either output port may be
- left unconnected if you do not need its results (this is why these
- are multiports).
+ left unconnected if you do not need its results. The output ports should not
+ be multiports, but changing this would probably break too much existing models.
  This actor works with any scalar token. For ComplexToken, the output
  is the one with the minimum magnitude.
  The input port is a multiport.
