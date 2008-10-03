@@ -59,20 +59,128 @@ if [ ! -d "$targetDirectory" ]; then
     exit 5
 fi
 
+
+# The directory where all the plugins reside
+pluginsDirectory=$targetDirectory/plugins
+if [ ! -d "$pluginsDirectory" ]; then
+    mkdir $pluginsDirectory
+fi	
+
+# Create the example
+exampleName=$featureName
+exampleDirectory=$pluginsDirectory/$exampleName
+echo "### Creating $exampleName"
+
+mkdir $exampleDirectory
+mkdir $exampleDirectory/src
+mkdir $exampleDirectory/bin
+
+    cat > "$exampleDirectory/.classpath" <<EOF1
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
+EOF1
+
+
+    cat > "$exampleDirectory/build.properties" <<EOF3
+source.. = src/
+output.. = bin/
+bin.includes = META-INF/,\\
+      .
+EOF3
+
+    cat > "$exampleDirectory/.project" <<EOFproject
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>$exampleName</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.jdt.core.javabuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.pde.ManifestBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.pde.SchemaBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>org.eclipse.pde.PluginNature</nature>
+		<nature>org.eclipse.jdt.core.javanature</nature>
+	</natures>
+</projectDescription>
+EOFproject
+
+mkdir "$exampleDirectory/META-INF"
+manifestFile=$exampleDirectory/META-INF/MANIFEST.MF
+
+cat > "$manifestFile" <<EOF4
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: $exampleName Plug-in
+Bundle-SymbolicName: $exampleName
+Bundle-Version: 8.0.0
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+EOF4
+
+    echo $otherJars | 
+    sed -e 's@^lib/.*.jar @@g' \
+	-e 's@/[^/]*\.jar@@g' \
+	-e 's@/@.@g' |
+    awk '{nf = split($0, f, " ")
+            for (i = 1; i <= nf; i++) { 
+                if (i == 1) {
+                    printedALine=1
+		    printf("Require-Bundle:");
+	        } else {
+	            printf(";bundle-version=\"8.0.0\",\n")
+                }
+                needVersion=1
+	        printf(" %s", $i)
+             }
+             if (nf == 1) {
+                 needVersion=0
+                 # If we have only one required bundle . . .
+                 printf(";bundle-version=\"8.0.0\"")
+              }
+
+   	   }
+        END {if (needVersion==1) {
+                 printf(";bundle-version=\"8.0.0\"")
+             }
+             if (printedALine==1) {
+                 printf("\n")
+             } 
+            }' - >> $manifestFile
+
 # Create the feature
 featuresDirectory=$targetDirectory/features
 if [ ! -d "$featuresDirectory" ]; then
     mkdir $featuresDirectory
 fi
 
-featureDirectory=$featuresDirectory/$featureName 
+featureNameFeature=${featureName}feature
+featureDirectory=$featuresDirectory/$featureNameFeature
+
 mkdir $featureDirectory
 featureFile=$featureDirectory/feature.xml
 
 cat > $featureFile <<EOF0
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="$featureName"
+      id="$featureNameFeature"
       label="Ptolemy II $feature"
       version="8.0.0">
 
@@ -136,7 +244,7 @@ javacTarget=1.5
 #The type of the top level element we are building,  generally "feature"
 topLevelElementType = feature
 #The id of the top level element we are building
-topLevelElementId = $featureName
+topLevelElementId = $featureNameFeature
 #dir and archive suffix of the generated archives
 buildLabel = archives
 buildId = 8.0.0
@@ -198,12 +306,6 @@ do
          unpack="false"/>
 EOF0b
 
-    # The directory where all the plugins reside
-    pluginsDirectory=$targetDirectory/plugins
-    if [ ! -d "$pluginsDirectory" ]; then
-	mkdir $pluginsDirectory
-    fi	
-
     # Directory where the plugin will reside
     pluginDirectory=$pluginsDirectory/$pluginName
 
@@ -227,7 +329,7 @@ EOF1
     cat > "$pluginDirectory/build.properties" <<EOF3
 source.. = src/
 output.. = bin/
-bin.includes = META-INF/,\\
+bin.includes = META-INF/,\
       .
 EOF3
 
@@ -357,17 +459,17 @@ EOF4
     # Copy necessary jar files
     case "$pluginName" in
 	ptolemy.actor.lib.colt)
-	    echo "Bundle-ClassPath: ptcolt.jar" >> "$manifestFile"
+	    #echo "Bundle-ClassPath: ptcolt.jar" >> "$manifestFile"
 	    echo "jars.extra.classpath = ptcolt.jar" >> "$pluginDirectory/build.properties"
             cp $PTII/lib/ptcolt.jar $pluginDirectory
             ;;
 	ptolemy.actor.lib.python)
-	    echo "Bundle-ClassPath: jython.jar" >> "$manifestFile"
+	    #echo "Bundle-ClassPath: jython.jar" >> "$manifestFile"
 	    echo "jars.extra.classpath = jython.jar" >> "$pluginDirectory/build.properties"
             cp $PTII/lib/jython.jar $pluginDirectory
             ;;
 	ptolemy.actor.ptalon)
-	    echo "Bundle-ClassPath: antlr.jar" >> "$manifestFile"
+	    #echo "Bundle-ClassPath: antlr.jar" >> "$manifestFile"
 	    echo "jars.extra.classpath = antlr.jar" >> "$pluginDirectory/build.properties"
             cp $PTII/ptolemy/actor/ptalon/antlr/antlr.jar $pluginDirectory            ;;
     esac
@@ -456,9 +558,6 @@ do
 
     # Name of the plugin
     pluginName=`dirname $file | sed 's@/@.@g'`
-
-    # The directory where all the plugins reside
-    pluginsDirectory=$targetDirectory/plugins
 
     # Directory where the plugin will reside
     pluginDirectory=$pluginsDirectory/$pluginName
@@ -566,6 +665,7 @@ do
             for (i = 1; i <= nf; i++) { 
                 if (i == 1) {
                     printedALine=1
+                    needVersion=1
 		    printf("Require-Bundle:");
 	        } else {
 	            printf(";bundle-version=\"8.0.0\",\n")
@@ -573,12 +673,16 @@ do
 	        printf(" %s", $i)
              }
              if (nf == 1) {
+                 needVersion=0
                  # If we have only one required bundle . . .
                  printf(";bundle-version=\"8.0.0\"")
               }
 
    	   }
-        END {if (printedALine==1) {
+        END {#if (needVersion==1) {
+             #    printf(";bundle-version=\"8.0.0\"")
+             #}
+             if (printedALine==1) {
                  printf("\n")
              } 
             }' - >> $manifestFile
