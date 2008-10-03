@@ -65,11 +65,10 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
 	'HierarchicalStateController$$AddRefinementAction$$1.class' \
-	'ModalTransitionController$$AddRefinementAction$$1.class' \
-	'HierarchicalStateController$$1.class' \
 	'HierarchicalStateController$$AddRefinementAction.class' \
+	'HierarchicalStateController$$LookInsideAction.class' \
 	'HierarchicalStateController$$RemoveRefinementAction.class' \
-	'ModalTransitionController$$1.class' \
+	'ModalTransitionController$$AddRefinementAction$$1.class' \
 	'ModalTransitionController$$AddRefinementAction.class' \
 	'ModalTransitionController$$RemoveRefinementAction.class'
 

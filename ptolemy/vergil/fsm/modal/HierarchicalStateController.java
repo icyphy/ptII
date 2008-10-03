@@ -27,13 +27,17 @@
  */
 package ptolemy.vergil.fsm.modal;
 
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
+
+import javax.swing.KeyStroke;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedActor;
@@ -62,6 +66,7 @@ import ptolemy.vergil.fsm.StateController;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import diva.graph.GraphController;
+import diva.gui.GUIUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// HierarchicalStateController
@@ -82,6 +87,7 @@ import diva.graph.GraphController;
  @Pt.AcceptedRating Red (johnr)
  */
 public class HierarchicalStateController extends StateController {
+
     /** Create a state controller associated with the specified graph
      *  controller.
      *  @param controller The associated graph controller.
@@ -99,24 +105,11 @@ public class HierarchicalStateController extends StateController {
         super(controller, access);
 
         _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                new AddRefinementAction()));
+                _addRefinementAction));
         _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                new RemoveRefinementAction()));
-    }
-
-    /** Return a map with the keys as the names of the refinement types, and the
-     *  values as the names of the classes that implement those refinement
-     *  types.
-     *  @return The map of supported refinement types.
-     */
-    protected Map getRefinementClasses() {
-        Map map = new TreeMap();
-        map.put("Default Refinement", "ptolemy.domains.fsm.modal.Refinement");
-        map.put("State Machine Refinement",
-                "ptolemy.domains.fsm.modal.ModalController");
-        map.put("Event Relation Graph Refinement",
-                "ptolemy.domains.erg.kernel.ERGController");
-        return map;
+                _removeRefinementAction));
+        _menuFactory.addMenuItemFactory(new MenuActionFactory(
+                _lookInsideAction));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -124,7 +117,8 @@ public class HierarchicalStateController extends StateController {
 
     /** An action to add a new refinement.
      */
-    private class AddRefinementAction extends FigureAction {
+    public class AddRefinementAction extends FigureAction {
+
         public AddRefinementAction() {
             super("Add Refinement");
         }
@@ -187,9 +181,14 @@ public class HierarchicalStateController extends StateController {
             // them to the list of choices.
             List<RefinementExtender> extenders = state.attributeList(
                     RefinementExtender.class);
+            String firstExtenderDescription = null;
             for (RefinementExtender extender : extenders) {
                 try {
-                    refinementClasses.put(extender.description.stringValue(),
+                    String description = extender.description.stringValue();
+                    if (firstExtenderDescription == null) {
+                        firstExtenderDescription = description;
+                    }
+                    refinementClasses.put(description,
                             extender.className.stringValue());
                 } catch (IllegalActionException e1) {
                     // Ignore.
@@ -200,6 +199,9 @@ public class HierarchicalStateController extends StateController {
                     .toArray(new String[refinementClasses.size()]);
             query.addChoice("Class", "Class", choiceNames, choiceNames[0],
                     true);
+            if (firstExtenderDescription != null) {
+                query.set("Class", firstExtenderDescription);
+            }
 
             // FIXME: Need a frame owner for first arg.
             // Perhaps calling getController(), which returns a GraphController
@@ -312,7 +314,7 @@ public class HierarchicalStateController extends StateController {
                                      (TypedIOPort)port);
                                      }
                                      */
-                                    
+
                                     // Copy the location to the new port if any.
                                     // (tfeng 08/29/08)
                                     if (container instanceof ModalModel) {
@@ -366,7 +368,7 @@ public class HierarchicalStateController extends StateController {
     }
 
     /** Action to remove refinements. */
-    private static class RemoveRefinementAction extends FigureAction {
+    public static class RemoveRefinementAction extends FigureAction {
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
 
@@ -536,6 +538,81 @@ public class HierarchicalStateController extends StateController {
             MoMLChangeRequest change = new MoMLChangeRequest(this, container,
                     moml);
             container.requestChange(change);
+        }
+    }
+
+    /** Return a map with the keys as the names of the refinement types, and the
+     *  values as the names of the classes that implement those refinement
+     *  types.
+     *  @return The map of supported refinement types.
+     */
+    protected Map getRefinementClasses() {
+        Map map = new TreeMap();
+        map.put("Default Refinement", "ptolemy.domains.fsm.modal.Refinement");
+        map.put("Event Relationship Graph Refinement",
+                "ptolemy.domains.erg.kernel.ERGController");
+        map.put("State Machine Refinement",
+                "ptolemy.domains.fsm.modal.ModalController");
+        return map;
+    }
+
+    // The AddRefinement action.
+    protected AddRefinementAction _addRefinementAction =
+        new AddRefinementAction();
+
+    /** The action that handles look inside.  This is accessed by
+     *  by ActorViewerController to create a hot key for the editor.
+     */
+    protected LookInsideAction _lookInsideAction = new LookInsideAction();
+
+    // The RemoveRefinement action.
+    protected RemoveRefinementAction _removeRefinementAction =
+        new RemoveRefinementAction();
+
+    /** An action to look inside a state at its refinement, if it has one.
+     *  NOTE: This requires that the configuration be non null, or it
+     *  will report an error with a fairly cryptic message.
+     */
+    private class LookInsideAction extends FigureAction {
+        public LookInsideAction() {
+            super("Look Inside");
+
+            // For some inexplicable reason, the I key doesn't work here.
+            // So we use L.
+            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                    KeyEvent.VK_L, Toolkit.getDefaultToolkit()
+                            .getMenuShortcutKeyMask()));
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            if (_configuration == null) {
+                MessageHandler
+                        .error("Cannot look inside without a configuration.");
+                return;
+            }
+
+            super.actionPerformed(e);
+
+            NamedObj target = getTarget();
+
+            // If the target is not an instance of State, do nothing.
+            if (target instanceof State) {
+                try {
+                    TypedActor[] refinements = ((State) target).getRefinement();
+
+                    if ((refinements != null) && (refinements.length > 0)) {
+                        for (int i = 0; i < refinements.length; i++) {
+                            // Open each refinement.
+                            _configuration.openInstance(
+                                    (NamedObj) refinements[i]);
+                        }
+                    } else {
+                        MessageHandler.error("State has no refinement.");
+                    }
+                } catch (Exception ex) {
+                    MessageHandler.error("Look inside failed: ", ex);
+                }
+            }
         }
     }
 }

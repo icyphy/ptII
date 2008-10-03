@@ -73,6 +73,13 @@ public class MenuActionFactory implements MenuItemFactory {
     }
 
     /** Add an action to the pre-existing group of actions.
+     *  @param action The action to add.
+     */
+    public void addAction(Action action) {
+        addAction(action, null);
+    }
+
+    /** Add an action to the pre-existing group of actions.
      *  If this was constructed with the single argument, then this
      *  converts the menu action into a submenu with the specified label.
      *  @param action The action to add.
@@ -93,7 +100,9 @@ public class MenuActionFactory implements MenuItemFactory {
             newActions[_actions.length] = action;
             _actions = newActions;
         }
-        _label = label;
+        if (label != null) {
+            _label = label;
+        }
     }
 
     /** Add a set of action to the pre-existing group of actions.

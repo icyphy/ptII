@@ -81,9 +81,17 @@ MISC_FILES =	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
+	'CaseGraphFrame$$1.class' \
 	'CaseGraphFrame$$AddCaseAction$$1.class' \
-	'CaseGraphFrame$$RemoveCaseAction$$1.class' \
+	'CaseGraphFrame$$AddCaseAction.class' \
 	'CaseGraphFrame$$CaseGraphController.class' \
+	'CaseGraphFrame$$RemoveCaseAction$$1.class' \
+	'CaseGraphFrame$$RemoveCaseAction.class' \
+	'CaseGraphTableau$$Factory.class' \
+	'FSMGraphController$$LinkCreator.class' \
+	'FSMGraphController$$NewStateAction.class' \
+	'FSMGraphFrame$$DebugMenuListener.class' \
+	'FSMGraphFrame$$FSMGraphPane.class' \
 	'FSMGraphFrame$$LayoutAction.class' \
 	'FSMGraphModel$$ArcModel$$1.class' \
 	'FSMGraphModel$$ArcModel$$2.class' \
@@ -91,36 +99,17 @@ OPTIONAL_FILES = \
 	'FSMGraphModel$$ArcModel$$4.class' \
 	'FSMGraphModel$$ArcModel$$5.class' \
 	'FSMGraphModel$$ArcModel$$6.class' \
-	'FSMGraphModel$$PortModel$$1.class' \
-	'FSMGraphModel$$StateModel$$1.class' \
-	'StateController$$StateRenderer$$1.class' \
-	'CaseGraphFrame$$1.class' \
-	'CaseGraphFrame$$2.class' \
-	'CaseGraphFrame$$3.class' \
-	'CaseGraphFrame$$AddCaseAction.class' \
-	'CaseGraphFrame$$RemoveCaseAction.class' \
-	'CaseGraphTableau$$Factory.class' \
-	'FSMGraphController$$1.class' \
-	'FSMGraphController$$LinkCreator.class' \
-	'FSMGraphController$$NewStateAction.class' \
-	'FSMGraphFrame$$DebugMenuListener.class' \
-	'FSMGraphFrame$$FSMGraphPane.class' \
-	'FSMGraphModel$$1.class' \
-	'FSMGraphModel$$2.class' \
-	'FSMGraphModel$$3.class' \
-	'FSMGraphModel$$4.class' \
-	'FSMGraphModel$$5.class' \
-	'FSMGraphModel$$6.class' \
-	'FSMGraphModel$$7.class' \
-	'FSMGraphModel$$8.class' \
 	'FSMGraphModel$$ArcModel.class' \
+	'FSMGraphModel$$PortModel$$1.class' \
 	'FSMGraphModel$$PortModel.class' \
+	'FSMGraphModel$$StateModel$$1.class' \
 	'FSMGraphModel$$StateModel.class' \
 	'FSMGraphTableau$$Factory.class' \
-	'StateController$$1.class' \
-	'StateController$$LookInsideAction.class' \
+	'StateController$$EditIconAction$$1.class' \
+	'StateController$$EditIconAction.class' \
+	'StateController$$RemoveIconAction.class' \
+	'StateController$$StateRenderer$$1.class' \
 	'StateController$$StateRenderer.class' \
-	'TransitionController$$1.class' \
 	'TransitionController$$LinkDropper.class' \
 	'TransitionController$$LinkRenderer.class' \
 	'TransitionController$$LinkTarget.class' \
