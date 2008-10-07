@@ -53,6 +53,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	RedoChangeRequest.java \
 	UndoAction.java \
+	UndoActionsList.java \
 	UndoChangeRequest.java \
 	UndoStackAttribute.java \
 

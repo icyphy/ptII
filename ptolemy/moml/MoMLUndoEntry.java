@@ -91,6 +91,11 @@ public class MoMLUndoEntry implements UndoAction, ChangeListener {
      *  @see ParserAttribute#getParser(NamedObj)
      */
     public void execute() throws Exception {
+        // If the MoML is empty, the parser will throw an exception.
+        if (_undoMoML == null || _undoMoML.trim().equals("")) {
+            // Nothing to do.
+            return;
+        }
         // Use a MoMLChangeRequest so that changes get propagated
         // as appropriate to models that defer to this.
         MoMLChangeRequest request = new MoMLChangeRequest(this, _context,

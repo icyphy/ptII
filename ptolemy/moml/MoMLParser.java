@@ -65,6 +65,8 @@ import ptolemy.kernel.InstantiableNamedObj;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.attributes.URIAttribute;
+import ptolemy.kernel.undo.UndoAction;
+import ptolemy.kernel.undo.UndoActionsList;
 import ptolemy.kernel.undo.UndoStackAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeListener;
@@ -573,9 +575,19 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 context = _toplevel;
             }
 
-            MoMLUndoEntry newEntry = new MoMLUndoEntry(context, undoMoML);
+            UndoAction newEntry = new MoMLUndoEntry(context, undoMoML);
             UndoStackAttribute undoInfo = UndoStackAttribute
                     .getUndoInfo(context);
+            
+            // If we have additional undo actions that have to execute
+            // in a different context, bundle those together with this one
+            // before pushing on the undo stack.
+            if (_undoForOverrides.size() > 0) {
+                newEntry = new UndoActionsList(newEntry);
+                for (UndoAction action : _undoForOverrides) {
+                    ((UndoActionsList) newEntry).add(action);
+                }
+            }
 
             // If we are in the middle of processing an undo, then this will
             // go onto the redo stack.
@@ -4100,7 +4112,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // (2) that if a failure to delete occurs at any point, then
         // the current undo only represents as far as the failure got.
         StringBuffer undoMoML = new StringBuffer();
-
+        
         // Propagate. The name might be absolute and have
         // nothing to do with the current context.  So
         // we look for its derived objects, not the context's derived objects.
@@ -4116,7 +4128,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
             // NOTE: Deletion needs to occur in the reverse order from
             // what appears in the derived list. So first we construct
-            // a reverse order list.
+            // a reverse order list. The reason for this is that subclasses
+            // appear before instances in the derived list, and we
+            // need to delete the instances before we delete the
+            // the subclasses.
             List reverse = new LinkedList();
 
             while (derivedObjects.hasNext()) {
@@ -4129,23 +4144,42 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 ComponentEntity derived = (ComponentEntity) derivedObjects
                         .next();
 
-                // Generate Undo commands. Note that despite the
-                // fact that the entity will get created by propagation
-                // on undo, we still have to record it in the undo record
-                // because it may have overridden parameter values (in
-                // a derived class).
-                // However, we have to be careful to not re-establish
+                // Generate Undo commands.
+                // Note that deleting an entity inside a class definition
+                // may generate deletions in derived classes or instances.
+                // The undo does not need to restore these (they are implied),
+                // but if the deleted entities have overridden parameters,
+                // then have to restore the overrides.  If the derived class
+                // or instance is inside a different top level model, then
+                // the MoML to do this cannot be in the same MoML with the
+                // main undo because its execution context needs to be
+                // different.  Hence, we collection additional MoMLUndoEntry
+                // instances to carry out these overrides.
+                // Note that we have to be careful to not re-establish
                 // links, as these will duplicate the original links
                 // (and, in fact, will throw an exception saying
                 // that establishing links between ports defined
-                // in the base class is not allowed).
+                // in the base class is not allowed). The following method
+                // takes care of that.
                 // Have to get this _before_ deleting.
                 String toUndo = _getUndoForDeleteEntity(derived);
+                NamedObj derivedToplevel = derived.toplevel();
+                
+                // Remove the derived object.
                 derived.setContainer(null);
 
-                // Put at the _start_ of the undo MoML, to ensure
-                // reverse order from the deletion.
-                undoMoML.insert(0, toUndo);
+                // If the top level for the derived object is the same
+                // as the top level for the object being deleted, then
+                // we can simply insert this into the undo MoML.
+                // Otherwise, it has to execute in a different context.
+                if (derivedToplevel == _current.toplevel()) {
+                    // Undo needs to occur in the opposite order because when
+                    // we redo we need to create subclasses before instances.
+                    undoMoML.insert(0, toUndo);
+                } else {
+                    MoMLUndoEntry entry = new MoMLUndoEntry(derivedToplevel, toUndo);
+                    _undoForOverrides.add(0,  entry);
+                }
             }
 
             // Have to get this _before_ deleting.
@@ -4229,7 +4263,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // which also has the side effect of triggering errors
         // before the deletion.
         // Note that deletion and undo need to occur in the opposite
-        // order.
+        // order.  This is because connections need to removed in the instances
+        // before the subclasses.
         try {
             Iterator derivedObjects = toDelete.getDerivedList().iterator();
 
@@ -4259,9 +4294,33 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 // that will propagate on undo are no longer
                 // present. So it seems to generate exactly
                 // the right undo to not end up with duplicate connections!
+                // Some care is needed, however.  If the implied port
+                // is inside a different top level model, then
+                // the MoML to do this cannot be in the same MoML with the
+                // main undo because its execution context needs to be
+                // different.  Hence, we collection additional MoMLUndoEntry
+                // instances to carry out these overrides.
+                // Have to get this before doing the deletion.
+                // FIXME: Actually, this does seem to generate duplicate connections!
+                // To replicate: In a new model, create an instance of Sinewave.
+                // Look inside and delete the output port. Then undo.
+                // This triggers an exception because it tries to recreate
+                // the link in the derived object.
                 String toUndo = _getUndoForDeletePort(derived);
+                NamedObj derivedToplevel = derived.toplevel();
+
                 derived.setContainer(null);
-                undoMoML.insert(0, toUndo);
+
+                // If the top level for the derived object is the same
+                // as the top level for the object being deleted, then
+                // we can simply insert this into the undo MoML.
+                // Otherwise, it has to execute in a different context.
+                if (derivedToplevel == _current.toplevel()) {
+                    undoMoML.insert(0, toUndo);
+                } else {
+                    MoMLUndoEntry entry = new MoMLUndoEntry(derivedToplevel, toUndo);
+                    _undoForOverrides.add(0, entry);
+                }
             }
 
             // Have to get this _before_ deleting.
@@ -4320,7 +4379,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // before the deletion.
         try {
             // NOTE: Deletion can occur in the the same order as
-            // what appears in the derived list.
+            // what appears in the derived list. This is because attributes
+            // cannot be classes, so there are no subclasses, and there are
+            // no connections to remove.
             Iterator derivedObjects = toDelete.getDerivedList().iterator();
 
             String toUndo = _getUndoForDeleteAttribute(toDelete);
@@ -4329,12 +4390,38 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             undoMoML.append(toUndo);
             while (derivedObjects.hasNext()) {
                 Attribute derived = (Attribute) derivedObjects.next();
-                // Note that we need to generate undo for the attributes
-                // because the attributes may be customized in the instances
-                // or derived classes.
+                
+                // Generate Undo commands.
+                // Note that deleting an attribute inside a class definition
+                // may generate deletions in derived classes or instances.
+                // The undo does not need to restore these (they are implied),
+                // but if the deleted attributes have overridden parameters,
+                // then we have to restore the overrides.  If the derived class
+                // or instance is inside a different top level model, then
+                // the MoML to do this cannot be in the same MoML with the
+                // main undo because its execution context needs to be
+                // different.  Hence, we collection additional MoMLUndoEntry
+                // instances to carry out these overrides.
+                // Have to get this _before_ deleting.
                 toUndo = _getUndoForDeleteAttribute(derived);
+                NamedObj derivedToplevel = derived.toplevel();
+                
+                // Remove the derived object.
                 derived.setContainer(null);
-                undoMoML.append(toUndo);
+
+                // If the top level for the derived object is the same
+                // as the top level for the object being deleted, then
+                // we can simply insert this into the undo MoML.
+                // Otherwise, it has to execute in a different context.
+                if (derivedToplevel == _current.toplevel()) {
+                    // Put at the _start_ of the undo MoML, to ensure
+                    // reverse order from the deletion.
+                    undoMoML.append(toUndo);
+                } else {
+                    MoMLUndoEntry entry = new MoMLUndoEntry(derivedToplevel, toUndo);
+                    _undoForOverrides.add(entry);
+                }
+
             }
         } finally {
             if (_undoEnabled) {
@@ -4394,7 +4481,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
             // NOTE: Deletion needs to occur in the reverse order from
             // what appears in the derived objects list. So first we construct
-            // a reverse order list.
+            // a reverse order list. This is because connections in
+            // instances need to be removed before connections
+            // in subclasses.
             List reverse = new LinkedList();
 
             while (derivedObjects.hasNext()) {
@@ -4407,18 +4496,40 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 ComponentRelation derived = (ComponentRelation) derivedObjects
                         .next();
 
-                // Since the Relation can't be a
-                // class itself (currently), it has derived objects
-                // only if its container has derived objects.
-                // Thus, we do not need to create undo MoML
-                // for the derived objects. The undo MoML for
-                // the principal relation will propagate when
-                // executed.
-                // FIXME: The above is not true, since a propagated
-                // relation may contain parameter values that are
-                // not in the original.  Need to carefully choose
-                // the level at which the exportMoML is done.
+                // Create the undo MoML.
+                // Note that this is necessary because the relations
+                // will have customized connections to the instances
+                // and may have parameters that are overridden.
+                // Put at the _start_ of the undo MoML, to ensure
+                // reverse order from the deletion.
+                // Some care is needed, however.  If the implied port
+                // is inside a different top level model, then
+                // the MoML to do this cannot be in the same MoML with the
+                // main undo because its execution context needs to be
+                // different.  Hence, we collection additional MoMLUndoEntry
+                // instances to carry out these overrides.
+                // Have to get this before doing the deletion.
+                // FIXME: Actually, this seems to generate duplicate connections!
+                // To replicate: In a new model, create an instance of Sinewave.
+                // Look inside and delete the output port. Then undo.
+                // This triggers an exception because it tries to recreate
+                // the link in the derived object.
+                // Have to get this _before_ deleting.
+                String toUndo = _getUndoForDeleteRelation(derived);
+                NamedObj derivedToplevel = derived.toplevel();
+
                 derived.setContainer(null);
+
+                // If the top level for the derived object is the same
+                // as the top level for the object being deleted, then
+                // we can simply insert this into the undo MoML.
+                // Otherwise, it has to execute in a different context.
+                if (derivedToplevel == _current.toplevel()) {
+                    undoMoML.insert(0, toUndo);
+                } else {
+                    MoMLUndoEntry entry = new MoMLUndoEntry(derivedToplevel, toUndo);
+                    _undoForOverrides.add(0, entry);
+                }
             }
 
             // Have to get this _before_ deleting.
@@ -4605,6 +4716,11 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
         // Finally move back to context if needed
         moml.append(UndoContext.moveContextEnd(_current, toDelete));
+        
+        // If there is no body, don't return the context either.
+        if (buffer.toString().trim().equals("")) {
+            return "";
+        }
 
         return moml.toString();
     }
@@ -4646,6 +4762,11 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         CompositeEntity container = (CompositeEntity) toDelete.getContainer();
 
         if (container instanceof HandlesInternalLinks) {
+            // If there is no body, don't return the context either.
+            if (buffer.toString().trim().equals("")) {
+                return "";
+            }
+            moml.append(UndoContext.moveContextEnd(_current, toDelete));
             return moml.toString();
         }
 
@@ -4675,11 +4796,18 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         }
         filter.add(toDelete);
 
+        String links = container.exportLinks(0, filter);
         // The parent container can do the filtering and generate the MoML.
-        moml.append(container.exportLinks(0, filter));
+        moml.append(links);
 
         // Finally move back to context if needed
         moml.append(UndoContext.moveContextEnd(_current, toDelete));
+        
+        // If there is no body, don't return the context either.
+        if (buffer.toString().trim().equals("")
+                && links.trim().equals("")) {
+            return "";
+        }
 
         return moml.toString();
     }
@@ -4704,12 +4832,17 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         if (!_current.deepContains(toDelete)) {
             depth = 0;
         }
+        // Keep track of whether any moml code is actually generated.
+        boolean bodyEmpty = true;
 
         // Add in the description.
         // Need to use the depth to determine how much MoML to export.
         StringWriter buffer = new StringWriter();
         toDelete.exportMoML(buffer, depth);
-        moml.append(buffer.toString());
+        if (!buffer.toString().trim().equals("")) {
+            moml.append(buffer.toString());
+            bodyEmpty = false;
+        }
 
         NamedObj container = toDelete.getContainer();
 
@@ -4728,8 +4861,12 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
         // Generate the undo MoML for the inside links, if there are any.
         if (container instanceof CompositeEntity) {
-            moml.append(((CompositeEntity) container)
-                    .exportLinks(depth, filter));
+            String links = ((CompositeEntity) container)
+                    .exportLinks(depth, filter);
+            if (!links.trim().equals("")) {
+                moml.append(links);
+                bodyEmpty = false;
+            }
         }
 
         // Move back to context if needed.
@@ -4749,10 +4886,18 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 if (depth == 0) {
                     depth = 1;
                 }
-                moml.append(((CompositeEntity) containerContainer).exportLinks(
-                        depth - 1, filter));
+                String links = ((CompositeEntity) containerContainer).exportLinks(
+                        depth - 1, filter);
+                if (!links.trim().equals("")) {
+                    moml.append(links);
+                    bodyEmpty = false;
+                }
                 moml.append(UndoContext.moveContextEnd(_current, container));
             }
+        }
+        // If there is no body, don't return MoML with just the context.
+        if (bodyEmpty) {
+            return "";
         }
 
         return moml.toString();
@@ -4791,6 +4936,11 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         CompositeEntity container = (CompositeEntity) toDelete.getContainer();
 
         if (container instanceof HandlesInternalLinks) {
+            // If there is no body, don't return the context either.
+            if (buffer.toString().trim().equals("")) {
+                return "";
+            }
+            moml.append(UndoContext.moveContextEnd(_current, toDelete));
             return moml.toString();
         }
 
@@ -4809,7 +4959,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // relations that are not derived.
             Iterator objects = toDelete.linkedObjectsList().iterator();
             while (objects.hasNext()) {
-                NamedObj portOrRelation = (Relation) objects.next();
+                NamedObj portOrRelation = (NamedObj) objects.next();
                 if (portOrRelation != null) {
                     if (portOrRelation.getDerivedLevel() == Integer.MAX_VALUE) {
                         filter.add(portOrRelation);
@@ -4821,7 +4971,13 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
         // The parent container can do the filtering and generate the
         // MoML.
-        moml.append(container.exportLinks(0, filter));
+        String links = container.exportLinks(0, filter);
+        moml.append(links);
+        if (buffer.toString().trim().equals("")
+                && links.trim().equals("")) {
+            // No body.
+            return "";
+        }
 
         // Move back to context if needed.
         moml.append(UndoContext.moveContextEnd(_current, toDelete));
@@ -6201,6 +6357,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         _undoContext = null;
         _undoContexts = new Stack();
         _undoEnabled = false;
+        _undoForOverrides.clear();
     }
 
     /** Given a name that is either absolute (with a leading period)
@@ -6316,9 +6473,12 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  @exception XmlException If the name refers to an entity in an
      *   innappropriate context or if the context is not an instance
      *   of CompositeEntity.
+     * @throws IllegalActionException If the name is ambiguous in that
+     *  more than one entity in workspace matches. This will only occur
+     *  if the name is absolute and is not inside the current model.
      */
     private ComponentEntity _searchForEntity(String name, NamedObj context)
-            throws XmlException {
+            throws XmlException, IllegalActionException {
         // If the name is absolute, we first have to find a
         // name from the imports that matches.
         if (name.startsWith(".")) {
@@ -6393,6 +6553,13 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         }
                     }
                 }
+            } else {
+                // Name of the top level doesn't match.
+                // NOTE: It is tempting to try to find the object within the workspace.
+                // However, the names of objects in the workspace are not unique,
+                // so if there is more than one with a matching name, which should be
+                // returned? Hence, we don't permit MoML to reach into another toplevel
+                // through the absolute naming mechanism.  Just return null.
             }
 
             return null;
@@ -6642,17 +6809,21 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
     // Holds information needed to generate undo MoML at this level
     private Stack _undoContexts = new Stack();
-
+    
     // The current undo context. This contains information about the
     // the current undo environment
     private UndoContext _undoContext = null;
 
     // Set this to true to get debugging information for undo.
-    private static boolean _undoDebug = false;
+    private static boolean _undoDebug = true;
 
     // Flag indicating if the MoML currently being parsed should be
     // undoable. Primarily for incremental parsing.
     private boolean _undoEnabled = false;
+
+    // Holds additional undo commands that have to execute in a
+    // different context.
+    private List<UndoAction> _undoForOverrides = new LinkedList<UndoAction>();
 
     // List of unrecognized elements.
     private List _unrecognized;
