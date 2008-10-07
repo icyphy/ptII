@@ -289,7 +289,7 @@ public class Plot extends PlotBox {
      *  on the screen.  Otherwise, it will be drawn the next time the plot
      *  is drawn on the screen.
      *  This method is based on a suggestion by
-     *  Michael Altmann <michael@email.labmed.umn.edu>.
+     *  Michael Altmann (michael@email.labmed.umn.edu).
      *  <p>
      *  In order to work well with swing and be thread safe, this method
      *  actually defers execution to the event dispatch thread, where
@@ -425,7 +425,9 @@ public class Plot extends PlotBox {
      *  connected, individual points can be not connected by giving the
      *  appropriate argument to addPoint().  Also, a different default
      *  can be set for each dataset, overriding this global default.
-     */
+     *  @return True if points will be connected by default
+     * @see #setConnected
+     */    
     public boolean getConnected() {
         return _connected;
     }
@@ -433,6 +435,8 @@ public class Plot extends PlotBox {
     /** Return whether a line will be drawn from any
      *  plotted point down to the x axis.
      *  A plot with such lines is also known as a stem plot.
+     *  @return True if this is an impulse plot
+     *  @see #setImpulses
      */
     public boolean getImpulses() {
         return _impulses;
@@ -451,6 +455,7 @@ public class Plot extends PlotBox {
     /** Get the marks style, which is one of
      *  "none", "points", "dots", or "various".
      *  @return A string specifying the style for points.
+     *  @see #setMarksStyle
      */
     public synchronized String getMarksStyle() {
         // NOTE: If the number of marks increases, we will need to do
@@ -472,6 +477,7 @@ public class Plot extends PlotBox {
 
     /** Return the maximum number of data sets.
      *  This method is deprecated, since there is no longer an upper bound.
+     *  @return The maximum number of data sets
      *  @deprecated
      */
     @Deprecated
@@ -608,7 +614,7 @@ public class Plot extends PlotBox {
 
     /** Turn bars on and set the width and offset.  Both are specified
      *  in units of the x axis.  The offset is the amount by which the
-     *  i < sup>th</sup> data set is shifted to the right, so that it
+     *  i <sup>th</sup> data set is shifted to the right, so that it
      *  peeks out from behind the earlier data sets.
      *  @param width The width of the bars.
      *  @param offset The offset per data set.
@@ -629,6 +635,7 @@ public class Plot extends PlotBox {
      *  can be set for each dataset, overriding this global default.
      *  @param on If true, draw lines between points.
      *  @see #setConnected(boolean, int)
+     *  @see #getConnected
      */
     public void setConnected(boolean on) {
         // Ensure replot of offscreen buffer.
@@ -647,6 +654,7 @@ public class Plot extends PlotBox {
      *  @param on If true, draw lines between points.
      *  @param dataset The dataset to which this should apply.
      *  @see #setConnected(boolean)
+     *  @see #getConnected
      */
     public synchronized void setConnected(boolean on, int dataset) {
         // Ensure replot of offscreen buffer.
@@ -662,6 +670,7 @@ public class Plot extends PlotBox {
      *  plotted point down to the x axis.  Otherwise, this feature is
      *  disabled.  A plot with such lines is also known as a stem plot.
      *  @param on If true, draw a stem plot.
+     *  @see #getImpulses
      */
     public synchronized void setImpulses(boolean on) {
         // Ensure replot of offscreen buffer.
@@ -686,7 +695,7 @@ public class Plot extends PlotBox {
         fmt.impulsesUseDefault = false;
     }
 
-    /** Set the style of the lines joining marks
+    /** Set the style of the lines joining marks.
      *  @param styleString A string specifying the color for points.
      *  The following styles are permitted: "solid", "dotted",
      *  "dashed", "dotdashed", "dotdotdashed".
@@ -778,6 +787,7 @@ public class Plot extends PlotBox {
      *  sets, then recycled.
      *  This method should be called only from the event dispatch thread.
      *  @param style A string specifying the style for points.
+     *  @see #getMarksStyle
      */
     public synchronized void setMarksStyle(String style) {
         // Ensure replot of offscreen buffer.
@@ -804,6 +814,7 @@ public class Plot extends PlotBox {
      *  sets, then recycled.
      *  @param style A string specifying the style for points.
      *  @param dataset The dataset to which this should apply.
+     *  @see #getMarksStyle
      */
     public synchronized void setMarksStyle(String style, int dataset) {
         // Ensure replot of offscreen buffer.
@@ -875,6 +886,7 @@ public class Plot extends PlotBox {
      *  greater than zero, then we turn off double buffering for this
      *  panel <i>and all of its parents</i>.  This actually happens
      *  on the next call to addPoint().
+     *  @param persistence Number of points to persist for. 
      */
     public void setPointsPersistence(int persistence) {
         // Ensure replot of offscreen buffer.
@@ -912,6 +924,7 @@ public class Plot extends PlotBox {
      *  greater than zero, then we turn off double buffering for this
      *  panel <i>and all of its parents</i>.  This actually happens
      *  on the next call to addPoint().
+     *  @param persistence Persistence in units of the horizontal axis.
      */
     public void setXPersistence(double persistence) {
         // Ensure replot of offscreen buffer.
@@ -2013,15 +2026,15 @@ public class Plot extends PlotBox {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** @serial The current dataset. */
+    /** The current dataset. */
     protected int _currentdataset = -1;
 
-    /** @serial An indicator of the marks style.  See _parseLine method for
+    /** An indicator of the marks style.  See _parseLine method for
      * interpretation.
      */
     protected int _marks;
     
-    /** @serial A vector of datasets. */
+    /** A vector of datasets. */
     protected ArrayList<ArrayList<PlotPoint>> _points = new ArrayList<ArrayList<PlotPoint>>();
 
     ///////////////////////////////////////////////////////////////////
