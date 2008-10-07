@@ -35,8 +35,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.Queue;
+import java.util.ListIterator; 
 import java.util.Set;
 
 import ptolemy.actor.Actor;
@@ -120,19 +119,13 @@ public class TDLModuleDirector extends ModalDirector {
      * action with a WCET > 0 was started, schedule a refiring and return.
      */
     public void fire() throws IllegalActionException {
-        System.out.println(this.getContainer().getName()
-                + " "
-                + getModelTime()
-                + " "
-                + ((Actor) getContainer()).getExecutiveDirector()
-                        .getModelTime());
         boolean iterate = true;
         Time modePeriod = getModePeriod(getController().currentState());
         Time scheduleTime = new Time(this, getModelTime().getLongValue()
                 % modePeriod.getLongValue());
         while (iterate) {
             iterate = false;
-            System.out.println(_nextEvents.size() + " "
+            System.out.println(_nextEventsTimeStamps.size() + " "
                     + _nodesDependentoOnPreviousActions.size());
             _currentWCET = 0;
 
@@ -176,8 +169,7 @@ public class TDLModuleDirector extends ModalDirector {
                         else {
                             targetState = ((Transition) obj).destinationState(); // choose transition in the graph
                             iterate = true;
-                        }
-                        _nextEvents.clear();
+                        } 
                         _nextEventsTimeStamps.clear();
                         _nodesDependentoOnPreviousActions.clear();
                         Node startNode = _graph.getNode(new TDLAction(new Time(
@@ -194,13 +186,12 @@ public class TDLModuleDirector extends ModalDirector {
                     }
                 }
                 if (doneAction) {
-                    if (_nextEvents.size() == 1
+                    if (_nextEventsTimeStamps.size() == 1
                             && _nodesDependentoOnPreviousActions.size() == 0) {
                         _fireAt(node, getModelTime());
                         scheduleEventsAfterAction(node);
                         iterate = true;
-                    }
-                    _nextEvents.remove(node);
+                    } 
                     _nextEventsTimeStamps.remove(node);
 
                     if (_nodesDependentoOnPreviousActions != null
@@ -226,7 +217,7 @@ public class TDLModuleDirector extends ModalDirector {
                             if (_nodesDependentoOnPreviousActions.get(n) == null
                                     || _nodesDependentoOnPreviousActions.get(n)
                                             .size() == 0) {
-                                if (!_nextEvents.contains(n))
+                                if (!_nextEventsTimeStamps.keySet().contains(n))
                                     _fireAt(n, getModelTime());
                                 scheduleEventsAfterAction(n);
                                 _previousAdditionalScheduleTime = new Time(
@@ -339,13 +330,12 @@ public class TDLModuleDirector extends ModalDirector {
         _graph.buildGraph(getController().currentState());
         _initializeOutputPorts();
         fireAt((TDLModule) getContainer(), getModelTime());
-        _nodesDependentoOnPreviousActions = new HashMap();
-        _nextEvents = new LinkedList();
+        _nodesDependentoOnPreviousActions = new HashMap(); 
         _nextEventsTimeStamps = new HashMap();
         //nextEvents.add(new TDLAction(0, TDLAction.AFTERMODESWITCH, getController().currentState()));
 
         Node startNode = _graph.getNode(new TDLAction(new Time(this, 0.0),
-                TDLAction.AFTERMODESWITCH, getController().getInitialState()));
+                TDLAction.AFTERMODESWITCH, getController().getInitialState())); 
         _nextEventsTimeStamps.put(startNode, new Time(this, 0.0));
         _fireAt(startNode, new Time(this, 0));
         scheduleEventsAfterAction(startNode);
@@ -446,7 +436,7 @@ public class TDLModuleDirector extends ModalDirector {
     public boolean prefire() throws IllegalActionException {
         // read inputs although they are not used to avoid piling up tokens
         //        
-        if (((Actor) getContainer().getContainer()).getDirector() instanceof DEDirector) {
+        
             for (Iterator it = ((TDLModule) getContainer()).inputPortList()
                     .iterator(); it.hasNext();) {
                 IOPort port = (IOPort) it.next();
@@ -489,8 +479,10 @@ public class TDLModuleDirector extends ModalDirector {
                 }
 
             }
-            return super.prefire();
-        }
+            
+            if (((Actor) getContainer().getContainer()).getDirector() instanceof DEDirector) {
+                return super.prefire();
+            }
 
         Time modePeriod = getModePeriod(getController().currentState());
         Time scheduleTime = new Time(this, getModelTime().getLongValue()
@@ -562,9 +554,7 @@ public class TDLModuleDirector extends ModalDirector {
      * Clear private variables and lists.
      */
     public void wrapup() throws IllegalActionException {
-        super.wrapup();
-        if (_nextEvents != null)
-            _nextEvents.clear();
+        super.wrapup(); 
         if (_nextEventsTimeStamps != null)
             _nextEventsTimeStamps.clear();
     }
@@ -612,9 +602,6 @@ public class TDLModuleDirector extends ModalDirector {
      */
     private void _fireAt(Node node, Time additionalTime)
             throws IllegalActionException {
-        if (_nextEvents == null) {
-            _nextEvents = new LinkedList();
-        }
         Time modePeriod = getModePeriod(getController().currentState());
         Time scheduleTime = new Time(this, getModelTime().getLongValue()
                 % modePeriod.getLongValue());
@@ -635,8 +622,7 @@ public class TDLModuleDirector extends ModalDirector {
             time = additionalTime;
         if (node != null) {
 
-            _nextEventsTimeStamps.put(node, time);
-            _nextEvents.add(node);
+            _nextEventsTimeStamps.put(node, time); 
 
         }
         System.out.println("fireAt " + time + " " + node);
@@ -676,7 +662,7 @@ public class TDLModuleDirector extends ModalDirector {
      */
     private List<Node> _getEventsToFire(Time scheduleTime, Time modePeriod) {
         List<Node> eventsToFire = new ArrayList();
-        for (Node node : _nextEvents) {
+        for (Node node : _nextEventsTimeStamps.keySet()) {  
             if (_nextEventsTimeStamps.get(node).equals(getModelTime()))
                 eventsToFire.add(node);
         }
@@ -838,7 +824,7 @@ public class TDLModuleDirector extends ModalDirector {
         RefinementPort rport = (RefinementPort) port;
         List l = rport.deepConnectedOutPortList();
         for (int i = 0; i < l.size(); i++) {
-            if (l.get(i) instanceof TypedIOPort)
+            if (l.get(i) instanceof TypedIOPort) 
                 super.transferOutputs((TypedIOPort) l.get(i));
         }
     }
@@ -986,9 +972,6 @@ public class TDLModuleDirector extends ModalDirector {
      * Current node in the TDL actions graph.
      */
     private TDLActionsGraph _graph;
-
-    /** Events that can be processed in the next iteration. */
-    private Queue<Node> _nextEvents;
 
     /**
      * Store time stamps from _fireAt() to detect missed executions

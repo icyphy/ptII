@@ -230,7 +230,9 @@ public class NonPreemptivePlatformExecutionStrategy extends
                     _displaySchedule(actorToFire, event.timeStamp
                             .getDoubleValue(),
                             ScheduleEventType.MISSEDEXECUTION);
-                    throw new IllegalActionException("missed execution!");
+                    throw new IllegalActionException("missed execution, " + event.contents + " wanted to " +
+                    		"be fired at " + event.timeStamp + " but it is already " + physicalTime
+                    		);
                 } else if (physicalTime.compareTo(event.timeStamp) < 0) {
                     index++;
                     continue;

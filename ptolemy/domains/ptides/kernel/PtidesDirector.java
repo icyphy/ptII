@@ -40,8 +40,7 @@ import java.util.Set;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.Receiver;
-import ptolemy.actor.TimedDirector;
+import ptolemy.actor.Receiver; 
 import ptolemy.actor.util.CausalityInterfaceForComposites;
 import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.RealDependency;
@@ -357,11 +356,14 @@ public class PtidesDirector extends TimedPNDirector {
             if (actor instanceof CompositeActor) {
                 CompositeActor compositeActor = (CompositeActor) actor;
                 // better checking for director that can handle events
-                if (!(compositeActor.getDirector() instanceof TimedDirector)) {
-                    throw new IllegalActionException(
-                            "Director of a CompositeActor in "
-                                    + "the Ptides domain must be a TimedDirector");
-                }
+                // the following check cannot be done - modal models for instance
+                // are not timed directors but the refinements have to be timed
+                // directors
+//                if (!(compositeActor.getDirector() instanceof TimedDirector)) {
+//                    throw new IllegalActionException(
+//                            "Director of a CompositeActor in "
+//                                    + "the Ptides domain must be a TimedDirector");
+//                }
                 if (compositeActor.getDirector() instanceof PtidesEmbeddedDirector) {
                     PtidesEmbeddedDirector director = (PtidesEmbeddedDirector) actor
                             .getDirector();
@@ -377,11 +379,12 @@ public class PtidesDirector extends TimedPNDirector {
                 }
                 List<Actor> containedActors = compositeActor.entityList();
                 table.put(actor, containedActors);
-            } else {
-                throw new IllegalActionException(
-                        "Only composite actors are allowed to "
-                                + "be used here");
-            }
+            } 
+//            else {
+//                throw new IllegalActionException(
+//                        "Only composite actors are allowed to "
+//                                + "be used here");
+//            }
         }
 
         if (_scheduleListeners != null) {

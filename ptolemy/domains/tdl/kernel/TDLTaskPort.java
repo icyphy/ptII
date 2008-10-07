@@ -176,7 +176,6 @@ public class TDLTaskPort extends TypedIOPort {
 	private void _init() throws IllegalActionException,
 			NameDuplicationException {
 		initialValue = new Parameter(this, "initialValue");
-		initialValue.setExpression("0");
 		initialValue.setVisibility(Settable.FULL);
 	}
 

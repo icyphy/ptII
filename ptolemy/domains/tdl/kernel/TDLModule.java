@@ -4,6 +4,9 @@ import java.lang.reflect.Constructor;
 import java.util.Iterator;
 
 import ptolemy.actor.Director;
+import ptolemy.actor.util.BooleanDependency;
+import ptolemy.actor.util.BreakCausalityInterface;
+import ptolemy.actor.util.CausalityInterface;
 /*
 @Copyright (c) 2008 The Regents of the University of California.
 All rights reserved.
@@ -205,6 +208,15 @@ public class TDLModule extends ModalModel {
 		}
 
 		return newModel;
+	}
+	
+	@Override
+	public CausalityInterface getCausalityInterface() {
+	    if (getDirector().defaultDependency() instanceof BooleanDependency) {
+	        return new BreakCausalityInterface(this, getDirector().defaultDependency());
+	    } else {
+	        return super.getCausalityInterface();
+	    }  
 	}
 
 	/**

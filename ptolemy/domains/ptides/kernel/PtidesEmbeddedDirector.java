@@ -379,7 +379,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
      *             Thrown if an execution was missed.
      */
     public void fire() throws IllegalActionException {
-        System.out.println("--- fired: " + _currentPhysicalTime);
+        System.out.println("--- fired: " + this.getContainer().getName() + " " + _currentPhysicalTime);
         List<TimedEvent> eventsToFire = null;
         TimedEvent event = null;
         boolean iterate = true;
@@ -417,7 +417,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
                         _currentModelTime = null;
                 }
             }
-
+                
             // get the next event
             eventsToFire = _getNextEventsToFire();
             Time nextRealTimeEventTime = _getNextRealTimeEventTime(
@@ -469,10 +469,15 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
                 if (_transferAllInputs()) {
                     continue;
                 }
-                ((Actor) getContainer()).getExecutiveDirector().fireAt(
+                Director executiveDirector = ((Actor) getContainer()).getExecutiveDirector();
+                executiveDirector.fireAt(
                         (Actor) this.getContainer(), nextRealTimeEventTime);
-                _currentPhysicalTime = ((Actor) getContainer())
-                        .getExecutiveDirector().getModelTime();
+                
+                while (executiveDirector != null && !(executiveDirector instanceof PtidesDirector))
+                    executiveDirector = ((Actor)executiveDirector.getContainer()).getExecutiveDirector();
+                if (executiveDirector == null)
+                    throw new IllegalActionException("This director can only be used as an embedded director.");
+                _currentPhysicalTime = executiveDirector.getModelTime();
                 iterate = false;
             }
         }
@@ -485,12 +490,23 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
      * @param actor
      *            The scheduled actor to fire.
      * @param time
-     *            The scheduled time to fire.
+     *            The scheduled time to fire. 
      * @exception IllegalActionException
      *                If event queue is not ready.
      */
-    public void fireAt(Actor actor, Time time) {
-        _enqueueEvent(actor, time);
+    public void fireAt(Actor actor, Time time) throws IllegalActionException {
+        if (((CompositeActor)getContainer()).entityList().contains(actor)) 
+            _enqueueEvent(actor, time);
+        else {
+            Actor containingActor = (Actor)actor.getContainer();
+            while (!((CompositeActor)getContainer()).entityList().contains(actor))
+                containingActor = (Actor) containingActor.getContainer();
+            _enqueueEvent(containingActor, time);
+        }
+        Director executiveDirector = ((Actor)actor.getContainer()).getExecutiveDirector();
+        
+        if (!(executiveDirector instanceof PtidesDirector))
+            executiveDirector.fireAt((Actor)actor.getContainer(), time);
     }
 
     /**
@@ -574,6 +590,39 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
         if (_finishingTimesOfActorsInExecution.get(actor) != null)
             _finishingTimesOfActorsInExecution.remove(actor);
         _finishingTimesOfActorsInExecution.put(actor, finishingTime);
+    }
+    
+    @Override
+    public boolean prefire() throws IllegalActionException {
+        Director executiveDirector = ((Actor) getContainer()).getExecutiveDirector();  
+        while (executiveDirector != null && !(executiveDirector instanceof PtidesDirector))
+            executiveDirector = ((Actor)executiveDirector.getContainer()).getExecutiveDirector(); 
+        _currentPhysicalTime = executiveDirector.getModelTime();
+        
+      executiveDirector = ((Actor) getContainer()).getExecutiveDirector();
+      if (!(executiveDirector instanceof PtidesDirector)) {
+        if (_eventsInExecution.size() > 0) {
+            TimedEvent eventInExecution = _eventsInExecution.getFirst();
+            Actor actorToFire = (Actor) eventInExecution.contents;
+            Time time = getFinishingTime(actorToFire);
+            if (time.equals(_currentPhysicalTime)) {
+                return true;
+            }
+        }
+        List eventsToFire = _getNextEventsToFire();
+        Time nextRealTimeEventTime = _getNextRealTimeEventTime(
+                eventsToFire, _eventsInExecution);
+        TimedEvent event = _executionStrategy.getNextEventToFire(_eventsInExecution,
+                eventsToFire, nextRealTimeEventTime, _currentPhysicalTime); 
+        // start firing an actor defined by the previously selected event
+        if (event != null) 
+            return true;
+        if (!nextRealTimeEventTime.equals(Time.POSITIVE_INFINITY))
+            executiveDirector.fireAt(
+                (Actor) this.getContainer(), nextRealTimeEventTime);
+        return false;
+        } else
+        return super.prefire();
     }
 
     /**
@@ -694,10 +743,17 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
 
                 for (int k = 0; k < receivers.length; k++) {
                     for (int l = 0; l < receivers[k].length; l++) {
-                        PtidesPlatformReceiver receiver = (PtidesPlatformReceiver) receivers[k][l];
-                        Event event = receiver.getEvent();
-                        Time time = event._timeStamp;
-                        Token t = event._token;
+                        Token t = null;
+                        Time time = null;
+                        if (receivers[k][l] instanceof PtidesPlatformReceiver) {
+                            PtidesPlatformReceiver receiver = (PtidesPlatformReceiver) receivers[k][l];
+                            Event event = receiver.getEvent();
+                            time = event._timeStamp;
+                            t = event._token;
+                        } else {
+                            time = getModelTime();
+                            t = receivers[k][l].get();
+                        }
                         if (time.compareTo(_currentPhysicalTime) < 0)
                             throw new IllegalActionException(
                                     "Network interface constraints violated at "
@@ -772,10 +828,11 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
                     Receiver[][] outReceivers = port.getRemoteReceivers();
                     for (int k = 0; k < outReceivers.length; k++) {
                         for (int l = 0; l < outReceivers[k].length; l++) {
-                            PtidesPlatformReceiver outReceiver = (PtidesPlatformReceiver) outReceivers[k][l];
-                            outReceiver.put(token,
-                                    ((Actor) port.getContainer()).getDirector()
-                                            .getModelTime());
+                            port.send(l, token);
+//                            PtidesPlatformReceiver outReceiver = (PtidesPlatformReceiver) outReceivers[k][l];
+//                            outReceiver.put(token,
+//                                    ((Actor) port.getContainer()).getDirector()
+//                                            .getModelTime());
                             displaySchedule((Actor) port.getContainer(),
                                     _currentPhysicalTime.getDoubleValue(),
                                     ScheduleEventType.TRANSFEROUTPUT);
