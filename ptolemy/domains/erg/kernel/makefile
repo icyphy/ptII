@@ -74,9 +74,7 @@ OPTIONAL_FILES = \
 	'ERGDirector$$1.class' \
 	'ERGDirector$$EventComparator.class' \
 	'ERGDirector$$TimedEvent.class' \
-	'Event$$1.class' \
 	'Event$$EventParameter.class' \
-	'Event$$PriorityComparator.class' \
 	'Event$$RefiringData.class' \
 	'SchedulingRelation$$1.class'
 
