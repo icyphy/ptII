@@ -48,6 +48,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
+import ptolemy.vergil.gt.TransformEventController.Factory;
 
 //////////////////////////////////////////////////////////////////////////
 //// Transform
@@ -67,10 +68,12 @@ public class Transform extends GTEvent implements ConfigurableEntity {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
+        controllerFactory = new Factory(this, "controllerFactory");
+
         matched = new Parameter(this, "matched");
         matched.setTypeEquals(BaseType.BOOLEAN);
         matched.setToken(BooleanToken.TRUE);
-        
+
         _configurer = new EmbeddedConfigurer(_workspace);
         _configurer.setName("Configurer");
         _configurer.setConfiguredObject(this);
@@ -83,7 +86,7 @@ public class Transform extends GTEvent implements ConfigurableEntity {
 
         mode = new TransformationMode(this, "mode");
     }
-    
+
     public Parameter matched;
 
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
@@ -222,4 +225,6 @@ public class Transform extends GTEvent implements ConfigurableEntity {
     private String _configureSource;
 
     private Configurer _configurer;
+
+    public Factory controllerFactory;
 }

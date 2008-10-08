@@ -107,6 +107,7 @@ OPTIONAL_FILES = \
 	'FSMGraphTableau$$Factory.class' \
 	'StateController$$EditIconAction$$1.class' \
 	'StateController$$EditIconAction.class' \
+	'StateController$$LookInsideAction.class' \
 	'StateController$$RemoveIconAction.class' \
 	'StateController$$StateRenderer$$1.class' \
 	'StateController$$StateRenderer.class' \

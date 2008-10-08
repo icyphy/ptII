@@ -27,13 +27,19 @@
  */
 package ptolemy.vergil.fsm;
 
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.KeyStroke;
+
+import ptolemy.actor.TypedActor;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.domains.fsm.kernel.State;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
@@ -49,6 +55,7 @@ import diva.canvas.Figure;
 import diva.graph.GraphController;
 import diva.graph.GraphModel;
 import diva.graph.NodeRenderer;
+import diva.gui.GUIUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// StateController
@@ -213,6 +220,56 @@ public class StateController extends AttributeController {
 
     /** The remove custom icon action. */
     protected RemoveIconAction _removeIconAction = new RemoveIconAction();
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    /** An action to look inside a state at its refinement, if it has one.
+     *  NOTE: This requires that the configuration be non null, or it
+     *  will report an error with a fairly cryptic message.
+     */
+    protected class LookInsideAction extends FigureAction {
+        public LookInsideAction() {
+            super("Look Inside");
+
+            // For some inexplicable reason, the I key doesn't work here.
+            // So we use L.
+            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                    KeyEvent.VK_L, Toolkit.getDefaultToolkit()
+                            .getMenuShortcutKeyMask()));
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            if (_configuration == null) {
+                MessageHandler
+                        .error("Cannot look inside without a configuration.");
+                return;
+            }
+
+            super.actionPerformed(e);
+
+            NamedObj target = getTarget();
+
+            // If the target is not an instance of State, do nothing.
+            if (target instanceof State) {
+                try {
+                    TypedActor[] refinements = ((State) target).getRefinement();
+
+                    if ((refinements != null) && (refinements.length > 0)) {
+                        for (int i = 0; i < refinements.length; i++) {
+                            // Open each refinement.
+                            _configuration.openInstance(
+                                    (NamedObj) refinements[i]);
+                        }
+                    } else {
+                        MessageHandler.error("State has no refinement.");
+                    }
+                } catch (Exception ex) {
+                    MessageHandler.error("Look inside failed: ", ex);
+                }
+            }
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

@@ -73,7 +73,8 @@ JSRCS = \
 	TransformationAttributeController.java \
 	TransformationAttributeEditorFactory.java \
 	TransformationAttributeIcon.java \
-	TransformationEditor.java
+	TransformationEditor.java \
+	TransformEventController.java
 
 EXTRA_SRCS =	$(JSRCS)
 

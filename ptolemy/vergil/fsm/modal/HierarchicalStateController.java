@@ -27,17 +27,13 @@
  */
 package ptolemy.vergil.fsm.modal;
 
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
-
-import javax.swing.KeyStroke;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedActor;
@@ -66,7 +62,6 @@ import ptolemy.vergil.fsm.StateController;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import diva.graph.GraphController;
-import diva.gui.GUIUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// HierarchicalStateController
@@ -568,51 +563,4 @@ public class HierarchicalStateController extends StateController {
     // The RemoveRefinement action.
     protected RemoveRefinementAction _removeRefinementAction =
         new RemoveRefinementAction();
-
-    /** An action to look inside a state at its refinement, if it has one.
-     *  NOTE: This requires that the configuration be non null, or it
-     *  will report an error with a fairly cryptic message.
-     */
-    private class LookInsideAction extends FigureAction {
-        public LookInsideAction() {
-            super("Look Inside");
-
-            // For some inexplicable reason, the I key doesn't work here.
-            // So we use L.
-            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                    KeyEvent.VK_L, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
-        }
-
-        public void actionPerformed(ActionEvent e) {
-            if (_configuration == null) {
-                MessageHandler
-                        .error("Cannot look inside without a configuration.");
-                return;
-            }
-
-            super.actionPerformed(e);
-
-            NamedObj target = getTarget();
-
-            // If the target is not an instance of State, do nothing.
-            if (target instanceof State) {
-                try {
-                    TypedActor[] refinements = ((State) target).getRefinement();
-
-                    if ((refinements != null) && (refinements.length > 0)) {
-                        for (int i = 0; i < refinements.length; i++) {
-                            // Open each refinement.
-                            _configuration.openInstance(
-                                    (NamedObj) refinements[i]);
-                        }
-                    } else {
-                        MessageHandler.error("State has no refinement.");
-                    }
-                } catch (Exception ex) {
-                    MessageHandler.error("Look inside failed: ", ex);
-                }
-            }
-        }
-    }
 }

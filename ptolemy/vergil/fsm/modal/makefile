@@ -66,7 +66,6 @@ OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
 	'HierarchicalStateController$$AddRefinementAction$$1.class' \
 	'HierarchicalStateController$$AddRefinementAction.class' \
-	'HierarchicalStateController$$LookInsideAction.class' \
 	'HierarchicalStateController$$RemoveRefinementAction.class' \
 	'ModalTransitionController$$AddRefinementAction$$1.class' \
 	'ModalTransitionController$$AddRefinementAction.class' \
