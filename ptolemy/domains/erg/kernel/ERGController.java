@@ -137,6 +137,8 @@ public class ERGController extends ModalController {
         ERGController controller = (ERGController) super.clone(workspace);
         controller._executiveDirector = null;
         controller._executiveDirectorVersion = -1;
+        controller.director = (ERGDirector) controller.getAttribute(
+                "_Director");
         return controller;
     }
 

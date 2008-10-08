@@ -210,7 +210,7 @@ public class ERGDirector extends Director implements TimedDirector,
         ERGDirector newObject = (ERGDirector) super.clone(workspace);
         newObject._controller = null;
         newObject._controllerVersion = -1;
-        newObject._eventComparator = new EventComparator();
+        newObject._eventComparator = newObject.new EventComparator();
         newObject._eventQueue = new PriorityQueue<TimedEvent>(10,
                 newObject._eventComparator);
         newObject._eventInstanceList = null;

@@ -371,8 +371,6 @@ public class Event extends State {
         List<SchedulingRelation> schedules = new LinkedList<SchedulingRelation>(
                 preemptiveTransitionList());
         schedules.addAll(nonpreemptiveTransitionList());
-        boolean lifo = ((BooleanToken) getController().LIFO.getToken())
-                .booleanValue();
         List<SchedulingRelation> sortedSchedules =
             new LinkedList<SchedulingRelation>();
         for (SchedulingRelation relation : schedules) {
@@ -387,8 +385,7 @@ public class Event extends State {
                     SchedulingRelation next = iterator.next();
                     int priority2 = ((IntToken) next.priority.getToken())
                             .intValue();
-                    if (!lifo && priority1 > priority2 ||
-                            lifo && priority1 >= priority2) {
+                    if (priority1 > priority2) {
                         iterator.previous();
                         iterator.add(relation);
                         break;
