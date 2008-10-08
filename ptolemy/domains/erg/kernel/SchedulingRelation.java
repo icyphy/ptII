@@ -39,10 +39,8 @@ import java.util.List;
 import ptolemy.actor.parameters.Priority;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.ScalarToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtArrayConstructNode;
-import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ModelScope;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.ParseTreeEvaluator;
@@ -52,12 +50,13 @@ import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.fsm.kernel.Transition;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
-import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
 /**
@@ -117,7 +116,7 @@ public class SchedulingRelation extends Transition {
         nondeterministic.setVisibility(Settable.NONE);
         refinementName.setVisibility(Settable.NONE);
 
-        delay = new StringAttribute(this, "delay") {
+        delay = new Parameter(this, "delay") {
             protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
                 String displayName = getDisplayName();
@@ -128,11 +127,20 @@ public class SchedulingRelation extends Transition {
                     setDisplayName(displayName);
                 }
             }
+
+            public ParserScope getParserScope() {
+                try {
+                    return _getSourceEventParserScope();
+                } catch (IllegalActionException e) {
+                    throw new InternalErrorException(e);
+                }
+            }
         };
         delay.setDisplayName("delay (\u03B4)");
+        delay.setTypeEquals(BaseType.DOUBLE);
         delay.setExpression("0.0");
 
-        arguments = new StringAttribute(this, "arguments");
+        arguments = new StringParameter(this, "arguments");
         arguments.setExpression("{}");
 
         canceling = new Parameter(this, "canceling");
@@ -167,15 +175,13 @@ public class SchedulingRelation extends Transition {
     throws IllegalActionException {
         if (attribute == arguments) {
             _parseArguments();
-        } else if (attribute == delay) {
-            _parseDelay();
         } else if (attribute == triggers) {
             getTriggers();
         }
 
         if (canceling != null && delay != null && isCanceling()
                 && getContainer() != null) {
-            if (!_isZeroDelay()) {
+            if (!_isZeroDelay(delay.getExpression())) {
                 throw new IllegalActionException("For a canceling edge, the "
                         + "delay must be const 0.0.");
             } else {
@@ -204,8 +210,6 @@ public class SchedulingRelation extends Transition {
             (SchedulingRelation) super.clone(workspace);
         relation._argumentsTree = null;
         relation._argumentsTreeVersion = -1;
-        relation._delayTree = null;
-        relation._delayTreeVersion = -1;
         relation._parseTreeEvaluator = new ParseTreeEvaluator();
         return relation;
     }
@@ -231,24 +235,16 @@ public class SchedulingRelation extends Transition {
         return (ArrayToken) token;
     }
 
-    /** Evaluate the delay parameter in the given parse scope and return its
-     *  value.
-     *
-     *  @param scope The parser scope in which the delay is evaluated.
-     *  @return The value of the model-time delay.
-     *  @exception IllegalActionException If the evaluation is unsuccessful.
-     */
-    public double getDelay(ParserScope scope) throws IllegalActionException {
-        if (_delayTreeVersion != _workspace.getVersion()) {
-            _parseDelay();
+    protected ParserScope _getSourceEventParserScope()
+            throws IllegalActionException {
+        List<Port> portList = linkedPortList();
+        for (Port port : portList) {
+            if (port.getName().equals("outgoingPort")) {
+                return ((Event) port.getContainer())._getParserScope();
+            }
         }
-        Token token = _parseTreeEvaluator.evaluateParseTree(_delayTree, scope);
-        if (token == null || !(token instanceof ScalarToken)) {
-            throw new IllegalActionException(this, "Unable to evaluate delay" +
-                    "expression \"" + delay.getExpression() + "\".");
-        }
-        double result = ((ScalarToken) token).doubleValue();
-        return result;
+        throw new IllegalActionException(this, "Unable to find source event " +
+                "for scheduling relation " + getName() + ".");
     }
 
     /** Return a string describing this scheduling relation. The string has up
@@ -264,7 +260,7 @@ public class SchedulingRelation extends Transition {
         StringBuffer buffer = new StringBuffer(super.getLabel());
 
         String delayExpression = delay.getExpression();
-        if ((delayExpression != null) && !_isZeroDelay()) {
+        if (delayExpression != null && !_isZeroDelay(delayExpression)) {
             if (buffer.length() > 0) {
                 buffer.append("\n");
             }
@@ -287,7 +283,16 @@ public class SchedulingRelation extends Transition {
                 buffer.append(argumentsExpression);
             }
         }
-        
+
+        String priorityExpression = priority.getExpression();
+        if (priorityExpression != null && !_isZeroDelay(priorityExpression)) {
+            if (buffer.length() > 0) {
+                buffer.append("\n");
+            }
+            buffer.append("priority: "); // Unicode for \delta
+            buffer.append(priorityExpression);
+        }
+
         String triggersExpression = triggers.getExpression();
         if (!triggersExpression.trim().equals("")) {
             if (buffer.length() > 0) {
@@ -376,7 +381,7 @@ public class SchedulingRelation extends Transition {
         ArrayToken, though this evaluation is performed only when this
         scheduling relation is to be considered by the starting event but not
         when this attribute is set by the designer. */
-    public StringAttribute arguments;
+    public StringParameter arguments;
 
     /** A Boolean-valued parameter that defines whether this scheduling relation
         is cancelling. */
@@ -386,7 +391,7 @@ public class SchedulingRelation extends Transition {
         ScalarToken, though this evaluation is performed only when this
         scheduling relation is to be considered by the starting event but not
         when this attribute is set by the designer. */
-    public StringAttribute delay;
+    public Parameter delay;
 
     /** The priority of this scheduling relation. */
     public Priority priority;
@@ -399,10 +404,10 @@ public class SchedulingRelation extends Transition {
      *
      *  @return True if the delay is statically equal to 0.0.
      */
-    private boolean _isZeroDelay() {
-        String expression = delay.getExpression().trim().toLowerCase();
+    private boolean _isZeroDelay(String expression) {
+        String trimmedExpression = expression.trim().toLowerCase();
         for (String zeroConst : _ZERO_CONSTS) {
-            if (expression.equals(zeroConst)) {
+            if (trimmedExpression.equals(zeroConst)) {
                 return true;
             }
         }
@@ -426,15 +431,6 @@ public class SchedulingRelation extends Transition {
         }
     }
 
-    /** Parse the delay.
-     *
-     *  @exception IllegalActionException If thrown when when parsing the delay.
-     */
-    private void _parseDelay() throws IllegalActionException {
-        _delayTree = new PtParser().generateParseTree(delay.getExpression());
-        _delayTreeVersion = _workspace.getVersion();
-    }
-
     /** An array of all recognizable constant values that equal to 0.0d. */
     private static final String[] _ZERO_CONSTS = new String[] {
         "0", "0.0", "0l", "0s", "0ub", "0.0d", "0.0f"
@@ -445,12 +441,6 @@ public class SchedulingRelation extends Transition {
 
     /** Version of _argumentsTree. */
     private long _argumentsTreeVersion = -1;
-
-    /** The parse tree of delay. */
-    private ASTPtRootNode _delayTree;
-
-    /** Version of _delayTree. */
-    private long _delayTreeVersion = -1;
 
     /** The evaluated to evaluate all parse trees. */
     private ParseTreeEvaluator _parseTreeEvaluator = new ParseTreeEvaluator();

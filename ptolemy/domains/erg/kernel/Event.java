@@ -39,6 +39,7 @@ import java.util.List;
 import ptolemy.actor.TypedActor;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Constants;
@@ -381,7 +382,7 @@ public class Event extends State {
         }
         for (SchedulingRelation schedule : schedules) {
             if (schedule.isEnabled(scope)) {
-                double delay = schedule.getDelay(scope);
+                double delay = ((DoubleToken) schedule.delay.getToken()).doubleValue();
                 Event nextEvent = (Event) schedule.destinationState();
                 if (schedule.isCanceling()) {
                     director.cancel(nextEvent);
