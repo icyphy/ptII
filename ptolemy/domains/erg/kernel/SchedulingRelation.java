@@ -175,7 +175,7 @@ public class SchedulingRelation extends Transition {
 
         if (canceling != null && delay != null && isCanceling()
                 && getContainer() != null) {
-            if (!_isZeroDelay()) {
+            if (!_isZero(delay.getExpression())) {
                 throw new IllegalActionException("For a canceling edge, the "
                         + "delay must be const 0.0.");
             } else {
@@ -264,7 +264,7 @@ public class SchedulingRelation extends Transition {
         StringBuffer buffer = new StringBuffer(super.getLabel());
 
         String delayExpression = delay.getExpression();
-        if ((delayExpression != null) && !_isZeroDelay()) {
+        if ((delayExpression != null) && !_isZero(delayExpression)) {
             if (buffer.length() > 0) {
                 buffer.append("\n");
             }
@@ -287,7 +287,16 @@ public class SchedulingRelation extends Transition {
                 buffer.append(argumentsExpression);
             }
         }
-        
+
+        String priorityExpression = priority.getExpression();
+        if ((priorityExpression != null) && !_isZero(priorityExpression)) {
+            if (buffer.length() > 0) {
+                buffer.append("\n");
+            }
+            buffer.append("priority: "); // Unicode for \delta
+            buffer.append(priorityExpression);
+        }
+
         String triggersExpression = triggers.getExpression();
         if (!triggersExpression.trim().equals("")) {
             if (buffer.length() > 0) {
@@ -395,14 +404,15 @@ public class SchedulingRelation extends Transition {
      *  monitored. */
     public StringParameter triggers;
 
-    /** Return whether the delay is statically equal to 0.0.
+    /** Return whether the given expression is statically equal to 0.0.
      *
-     *  @return True if the delay is statically equal to 0.0.
+     *  @expression The expression.
+     *  @return True if the expression is statically equal to 0.0.
      */
-    private boolean _isZeroDelay() {
-        String expression = delay.getExpression().trim().toLowerCase();
+    private boolean _isZero(String expression) {
+        String trimmedExpression = expression.trim().toLowerCase();
         for (String zeroConst : _ZERO_CONSTS) {
-            if (expression.equals(zeroConst)) {
+            if (trimmedExpression.equals(zeroConst)) {
                 return true;
             }
         }

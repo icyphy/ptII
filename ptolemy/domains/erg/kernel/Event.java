@@ -387,8 +387,8 @@ public class Event extends State {
                     SchedulingRelation next = iterator.next();
                     int priority2 = ((IntToken) next.priority.getToken())
                             .intValue();
-                    if (priority1 < priority2 ||
-                            lifo && priority1 == priority2) {
+                    if (!lifo && priority1 > priority2 ||
+                            lifo && priority1 >= priority2) {
                         iterator.previous();
                         iterator.add(relation);
                         break;
