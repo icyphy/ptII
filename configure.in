@@ -605,11 +605,10 @@ ECLIPSE_EXCLUDING_SRC=""
 
 case "`uname -s`" in
      Darwin) 
-         AC_MSG_WARN([Under Eclipse on Mac OS X, you must use Java 1.6
-    within Eclipse. Under Mac OS X, Java 1.5.0_13 will fail to run
-    within Eclipse, but _will_ work outside of Eclipse. Note that the
-    backtracking and other Eclipse code will _not_ work on the Mac.
-    For details, see http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Mac]) 
+         AC_MSG_WARN([Under Eclipse on Mac OS X, you must use Java 1.5
+    within Eclipse. Note that the backtracking and other Eclipse code will
+    _not_ work on the Mac. For details, see
+    http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Mac]) 
         if test -d ptolemy/apps/eclipse/awt/; then
 	    AC_MSG_WARN([Under Eclipse on Mac OS X, ptolemy/apps/eclipse/awt
     is not supported.])
