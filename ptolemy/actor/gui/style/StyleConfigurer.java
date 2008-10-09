@@ -96,7 +96,7 @@ public class StyleConfigurer extends Query implements QueryListener {
             // NOTE: These styles need to have a container so
             // that exportMoML() doesn't generate XML header information.
             Parameter container = new Parameter();
-            _parameterStyles = new ParameterEditorStyle[7];
+            _parameterStyles = new ParameterEditorStyle[8];
             _parameterStyles[0] = new LineStyle(container, "Line");
             _parameterStyles[1] = new CheckBoxStyle(container, "Check Box");
             _parameterStyles[2] = new ChoiceStyle(container, "Choice");
@@ -105,6 +105,7 @@ public class StyleConfigurer extends Query implements QueryListener {
             _parameterStyles[4] = new TextStyle(container, "Text");
             _parameterStyles[5] = new FileChooserStyle(container, "FileChooser");
             _parameterStyles[6] = new NotEditableLineStyle(container, "Fixed");
+            _parameterStyles[7] = new HiddenStyle(container, "Hidden");
         } catch (NameDuplicationException ex) {
             throw new InternalErrorException(ex.getMessage());
         }
