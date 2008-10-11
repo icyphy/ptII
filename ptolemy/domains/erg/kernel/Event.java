@@ -31,9 +31,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.erg.kernel;
 
-import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
 
 import ptolemy.actor.TypedActor;
 import ptolemy.data.ArrayToken;
@@ -360,57 +358,16 @@ public class Event extends State {
      *  specified by the scheduling relation's delay parameter.
      *
      *  @exception IllegalActionException If the scheduling relations cannot be
-     *  evaluated.
+     *   evaluated.
      */
     public void scheduleEvents() throws IllegalActionException {
-        ERGController controller = (ERGController) getContainer();
-        ERGDirector director = controller.director;
-
-        // Sort the scheduling relations according to their priorities and the
-        // LIFO setting.
-        List<SchedulingRelation> schedules = new LinkedList<SchedulingRelation>(
-                preemptiveTransitionList());
-        schedules.addAll(nonpreemptiveTransitionList());
-        List<SchedulingRelation> sortedSchedules =
-            new LinkedList<SchedulingRelation>();
-        for (SchedulingRelation relation : schedules) {
-            int priority1 = ((IntToken) relation.priority.getToken())
-                    .intValue();
-            // Performance could be improved if we use binary search here, but
-            // who cares if we have very few scheduling relations to sort.
-            ListIterator<SchedulingRelation> iterator =
-                sortedSchedules.listIterator();
-            while (true) {
-                if (iterator.hasNext()) {
-                    SchedulingRelation next = iterator.next();
-                    int priority2 = ((IntToken) next.priority.getToken())
-                            .intValue();
-                    if (priority1 > priority2) {
-                        iterator.previous();
-                        iterator.add(relation);
-                        break;
-                    }
-                } else {
-                    iterator.add(relation);
-                    break;
-                }
-            }
+        for (SchedulingRelation relation :
+                (List<SchedulingRelation>) preemptiveTransitionList()) {
+            _scheduleEvent(relation);
         }
-        
-        // Schedule the target events.
-        ParserScope scope = _getParserScope();
-        for (SchedulingRelation schedule : sortedSchedules) {
-            if (schedule.isEnabled(scope)) {
-                double delay = schedule.getDelay(scope);
-                Event nextEvent = (Event) schedule.destinationState();
-                if (schedule.isCanceling()) {
-                    director.cancel(nextEvent);
-                } else {
-                    ArrayToken edgeArguments = schedule.getArguments(scope);
-                    director.fireAt(nextEvent, director.getModelTime().add(
-                            delay), edgeArguments, schedule.getTriggers());
-                }
-            }
+        for (SchedulingRelation relation :
+                (List<SchedulingRelation>) nonpreemptiveTransitionList()) {
+            _scheduleEvent(relation);
         }
     }
 
@@ -431,9 +388,6 @@ public class Event extends State {
 
     /** A list of formal parameters. */
     public ParametersAttribute parameters;
-
-    //////////////////////////////////////////////////////////////////////////
-    //// RefiringData
 
     /**
      The parameter to store an argument passed on a scheduling relation to this
@@ -472,7 +426,7 @@ public class Event extends State {
     }
 
     //////////////////////////////////////////////////////////////////////////
-    //// EventParameter
+    //// RefiringData
 
     /**
      A data structure to store the model time advance for the refire() method to
@@ -506,6 +460,9 @@ public class Event extends State {
         private double _timeAdvance;
     }
 
+    //////////////////////////////////////////////////////////////////////////
+    //// EventParameter
+
     /** Return the parser scope used to evaluate the actions and values
      *  associated with scheduling relations. The parser scope can evaluate
      *  names in the parameter list of this event. The values for those names
@@ -524,6 +481,34 @@ public class Event extends State {
             _parserScopeVersion = _workspace.getVersion();
         }
         return _parserScope;
+    }
+
+    /** Schedule the event that is pointed to by the given relation, if the
+     *  guard returns true.
+     *
+     *  @param relation The scheduling relation.
+     *  @exception IllegalActionException If the scheduling relation cannot be
+     *   evaluated.
+     */
+    protected void _scheduleEvent(SchedulingRelation relation)
+            throws IllegalActionException {
+        ERGController controller = (ERGController) getContainer();
+        ERGDirector director = controller.director;
+        ParserScope scope = _getParserScope();
+        if (relation.isEnabled(scope)) {
+            double delay = relation.getDelay(scope);
+            Event nextEvent = (Event) relation.destinationState();
+            int priority = ((IntToken) relation.priority.getToken())
+                    .intValue();
+            if (relation.isCanceling()) {
+                director.cancel(nextEvent);
+            } else {
+                ArrayToken edgeArguments = relation.getArguments(scope);
+                director.fireAt(nextEvent, director.getModelTime().add(
+                        delay), edgeArguments, relation.getTriggers(),
+                        priority);
+            }
+        }
     }
 
     /** Schedule the given actor, which is a refinement of this event.

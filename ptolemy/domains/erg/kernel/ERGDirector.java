@@ -31,15 +31,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.erg.kernel;
 
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
-import java.util.PriorityQueue;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
@@ -68,7 +67,6 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
@@ -210,9 +208,7 @@ public class ERGDirector extends Director implements TimedDirector,
         ERGDirector newObject = (ERGDirector) super.clone(workspace);
         newObject._controller = null;
         newObject._controllerVersion = -1;
-        newObject._eventComparator = newObject.new EventComparator();
-        newObject._eventQueue = new PriorityQueue<TimedEvent>(10,
-                newObject._eventComparator);
+        newObject._eventQueue = new LinkedList<TimedEvent>();
         newObject._eventInstanceList = null;
         newObject._eventInstanceTable = new HashMap<TimedEvent,
                 List<TimedEvent>>();
@@ -220,8 +216,7 @@ public class ERGDirector extends Director implements TimedDirector,
                 Set<TimedEvent>>();
         newObject._eventsListeningToVariables = new HashMap<Variable,
                 Set<TimedEvent>>();
-        newObject._refinementQueue = new PriorityQueue<TimedEvent>(5,
-                newObject._eventComparator);
+        newObject._refinementQueue = new LinkedList<TimedEvent>();
         newObject._scheduledRefinements = new HashSet<TypedActor>();
         return newObject;
     }
@@ -296,10 +291,9 @@ public class ERGDirector extends Director implements TimedDirector,
         boolean synchronize = controller.synchronizeToRealtime();
         Time modelTime = getModelTime();
 
-        PriorityQueue<TimedEvent> eventQueue = new PriorityQueue<TimedEvent>(
-                _eventQueue);
-        PriorityQueue<TimedEvent> refinementQueue =
-            new PriorityQueue<TimedEvent>( _refinementQueue);
+        List<TimedEvent> eventQueue = new LinkedList<TimedEvent>(_eventQueue);
+        List<TimedEvent> refinementQueue = new LinkedList<TimedEvent>(
+                _refinementQueue);
         Set<TimedEvent> firedEvents = new HashSet<TimedEvent>();
 
         if (hasInput) {
@@ -335,7 +329,7 @@ public class ERGDirector extends Director implements TimedDirector,
 
         // Fire the next imminent event.
         if (!eventQueue.isEmpty() && !_stopRequested) {
-            TimedEvent timedEvent = eventQueue.peek();
+            TimedEvent timedEvent = eventQueue.get(0);
             Time nextEventTime = timedEvent.timeStamp;
             if (nextEventTime.compareTo(modelTime) <= 0
                     && !firedEvents.contains(timedEvent)) {
@@ -367,7 +361,7 @@ public class ERGDirector extends Director implements TimedDirector,
      *  permissible (e.g. the given time is in the past).
      */
     public void fireAt(Actor actor, Time time) throws IllegalActionException {
-        _fireAt(actor, time, null, null, null);
+        _fireAt(actor, time, null, null, null, 0);
     }
 
     /** Request to process an event at the given absolute time. This method puts
@@ -383,8 +377,9 @@ public class ERGDirector extends Director implements TimedDirector,
      *  permissible (e.g. the given time is in the past).
      */
     public void fireAt(Event event, Time time, ArrayToken arguments,
-            List<NamedObj> triggers) throws IllegalActionException {
-        _fireAt(event, time, arguments, triggers, null);
+            List<NamedObj> triggers, int priority)
+            throws IllegalActionException {
+        _fireAt(event, time, arguments, triggers, null, priority);
     }
 
     /** Return the ERG controller has the same container as this director. The
@@ -526,7 +521,7 @@ public class ERGDirector extends Director implements TimedDirector,
                 result = false;
             } else {
                 if (_isTopLevel()) {
-                    TimedEvent event = _eventQueue.peek();
+                    TimedEvent event = _eventQueue.get(0);
                     setModelTime(event.timeStamp);
                 }
                 if (_isEmbedded()) {
@@ -557,12 +552,12 @@ public class ERGDirector extends Director implements TimedDirector,
         if (!_hasInput()) {
             if (!_eventQueue.isEmpty()) {
                 Time modelTime = getModelTime();
-                Time nextEventTime = (_eventQueue.peek()).timeStamp;
+                Time nextEventTime = (_eventQueue.get(0)).timeStamp;
                 while (modelTime.compareTo(nextEventTime) > 0) {
-                    _eventQueue.poll();
+                    _eventQueue.remove(0);
 
                     if (!_eventQueue.isEmpty()) {
-                        TimedEvent event = _eventQueue.peek();
+                        TimedEvent event = _eventQueue.get(0);
                         nextEventTime = event.timeStamp;
                     } else {
                         nextEventTime = Time.POSITIVE_INFINITY;
@@ -660,7 +655,8 @@ public class ERGDirector extends Director implements TimedDirector,
                     Event event = (Event) timedEvent.contents;
                     try {
                         cancel(event);
-                        fireAt(event, modelTime, timedEvent.arguments, null);
+                        fireAt(event, modelTime, timedEvent.arguments, null,
+                                timedEvent.priority);
                     } catch (IllegalActionException e) {
                         // This shouldn't happen because this event does not
                         // have any refinement.
@@ -730,10 +726,11 @@ public class ERGDirector extends Director implements TimedDirector,
          *   the event that causes this method to be called, or null if none.
          */
         public TimedEvent(Time time, Object object, ArrayToken arguments,
-                RefiringData data) {
+                RefiringData data, int priority) {
             super(time, object);
             this.arguments = arguments;
             this.data = data;
+            this.priority = priority;
         }
 
         /** Display timeStamp and contents.
@@ -763,6 +760,10 @@ public class ERGDirector extends Director implements TimedDirector,
         /** The refiring data returned from the previous fire() or refire(), or
             null if the scheduled firing is the first one. */
         public RefiringData data;
+
+        /** The priority of the scheduled event. (0 is the default for most
+         *  events.) */
+        public int priority;
     }
 
     /** Initialize the schedule by putting the initial events in the event
@@ -792,13 +793,13 @@ public class ERGDirector extends Director implements TimedDirector,
                 Event event = (Event) entities.next();
                 if (event.isInitialEvent()) {
                     TimedEvent newEvent = new TimedEvent(_currentTime, event,
-                            null, null);
+                            null, null, 0);
                     _addEvent(newEvent);
                 }
             }
         } else {
             TimedEvent newEvent = new TimedEvent(_currentTime, controller,
-                    null, null);
+                    null, null, 0);
             _addEvent(newEvent);
             if (_isEmbedded()) {
                 _requestFiring();
@@ -820,31 +821,61 @@ public class ERGDirector extends Director implements TimedDirector,
         return super._isTopLevel() && !_isInController();
     }
 
+    /** Add an event to the given event queue that remains to be sorted after
+     *  the addition.
+     *
+     *  @param eventQueue The event queue.
+     *  @param event The event.
+     *  @exception IllegalActionException If the LIFO parameter of this director
+     *   cannot be retrieved.
+     */
+    private void _addEvent(List<TimedEvent> eventQueue, TimedEvent event)
+            throws IllegalActionException {
+        ListIterator<TimedEvent> iterator = eventQueue.listIterator();
+        Time time1 = event.timeStamp;
+        int priority1 = event.priority;
+        boolean lifo = ((BooleanToken) LIFO.getToken()).booleanValue();
+        while (true) {
+            if (iterator.hasNext()) {
+                TimedEvent next = iterator.next();
+                Time time2 = next.timeStamp;
+                int timeCompare = time1.compareTo(time2);
+                int priority2 = next.priority;
+                if (timeCompare < 0 || timeCompare == 0 && (
+                        priority1 < priority2 ||
+                        priority1 == priority2 && lifo)) {
+                    iterator.previous();
+                    iterator.add(event);
+                    break;
+                }
+            } else {
+                iterator.add(event);
+                break;
+            }
+        }
+    }
+
     /** Add an event to the event queue in this director. If the event contains
      *  an actor as its contents, add the event to the refinement queue as well.
      *
      *  @param event The event.
-     *  queue as well.
+     *  @exception IllegalActionException If the LIFO parameter of this director
+     *   cannot be retrieved.
      */
-    private void _addEvent(TimedEvent event) {
-        try {
-            _eventComparator.setNewEvent(event);
-            _eventQueue.add(event);
-            if (event.contents instanceof Actor) {
-                _refinementQueue.add(event);
-            }
-            List<TimedEvent> list = _eventInstanceTable.get(event);
-            if (list == null) {
-                list = _eventInstanceList;
-                if (list == null) {
-                    list = new LinkedList<TimedEvent>();
-                }
-                _eventInstanceTable.put(event, list);
-            }
-            list.add(event);
-        } finally {
-            _eventComparator.setNewEvent(null);
+    private void _addEvent(TimedEvent event) throws IllegalActionException {
+        _addEvent(_eventQueue, event);
+        if (event.contents instanceof Actor) {
+            _addEvent(_refinementQueue, event);
         }
+        List<TimedEvent> list = _eventInstanceTable.get(event);
+        if (list == null) {
+            list = _eventInstanceList;
+            if (list == null) {
+                list = new LinkedList<TimedEvent>();
+            }
+            _eventInstanceTable.put(event, list);
+        }
+        list.add(event);
     }
 
     /** Fire an entry in the event queue. If the entry contains information
@@ -938,7 +969,8 @@ public class ERGDirector extends Director implements TimedDirector,
                 }
                 if (data != null) {
                     _fireAt(event, getModelTime().add(data.getTimeAdvance()),
-                            timedEvent.arguments, null, data);
+                            timedEvent.arguments, null, data,
+                            timedEvent.priority);
                 }
 
                 boolean scheduled = false;
@@ -991,7 +1023,7 @@ public class ERGDirector extends Director implements TimedDirector,
      *   scheduled at a time in the past.
      */
     private void _fireAt(Object object, Time time, ArrayToken arguments,
-            List<NamedObj> triggers, RefiringData data)
+            List<NamedObj> triggers, RefiringData data, int priority)
             throws IllegalActionException {
         if (time.compareTo(getModelTime()) < 0) {
             throw new IllegalActionException(this,
@@ -1000,11 +1032,12 @@ public class ERGDirector extends Director implements TimedDirector,
                             + " while event time is " + time);
         }
 
-        TimedEvent timedEvent = new TimedEvent(time, object, arguments, data);
+        TimedEvent timedEvent = new TimedEvent(time, object, arguments, data,
+                priority);
 
         Time topTime = null;
         if (!_eventQueue.isEmpty()) {
-            topTime = _eventQueue.peek().timeStamp;
+            topTime = _eventQueue.get(0).timeStamp;
         }
 
         _addEvent(timedEvent);
@@ -1083,7 +1116,7 @@ public class ERGDirector extends Director implements TimedDirector,
     private void _requestFiring() throws IllegalActionException {
         NamedObj container = getContainer();
         if (!_eventQueue.isEmpty()) {
-            Time time = _eventQueue.peek().timeStamp;
+            Time time = _eventQueue.get(0).timeStamp;
             if (_isInController()) {
                 ERGController controller = (ERGController) container;
                 controller.getExecutiveDirector().fireAt(controller, time);
@@ -1134,9 +1167,6 @@ public class ERGDirector extends Director implements TimedDirector,
         higher level. */
     private boolean _delegateFireAt = false;
 
-    /** The comparator used to compare the time stamps of any two events. */
-    private EventComparator _eventComparator = new EventComparator();
-
     /** The list containing the events and refinements that belong to the
         current instance of events. */
     private List<TimedEvent> _eventInstanceList;
@@ -1149,8 +1179,7 @@ public class ERGDirector extends Director implements TimedDirector,
         new HashMap<TimedEvent, List<TimedEvent>>();
 
     /** The event queue. */
-    private PriorityQueue<TimedEvent> _eventQueue =
-        new PriorityQueue<TimedEvent>(10, _eventComparator);
+    private List<TimedEvent> _eventQueue = new LinkedList<TimedEvent>();
 
     /** A table that maps any port to the set of events that are listening to it
         during an execution. */
@@ -1166,87 +1195,9 @@ public class ERGDirector extends Director implements TimedDirector,
     private long _realStartTime;
 
     /** The event queue that contains only events that can react to inputs. */
-    private PriorityQueue<TimedEvent> _refinementQueue =
-        new PriorityQueue<TimedEvent>(5, _eventComparator);
+    private List<TimedEvent> _refinementQueue = new LinkedList<TimedEvent>();
 
     /** The refinements that have been scheduled. A refinement cannot be
         scheduled again before it has finished executing. */
     private Set<TypedActor> _scheduledRefinements = new HashSet<TypedActor>();
-
-    //////////////////////////////////////////////////////////////////////////
-    //// EventComparator
-
-    /**
-     A comparator that compares the time stamps of two timed events in the event
-     queue.
-
-     @author Thomas Huining Feng
-     @version $Id$
-     @since Ptolemy II 7.1
-     @Pt.ProposedRating Red (tfeng)
-     @Pt.AcceptedRating Red (tfeng)
-     */
-    private class EventComparator implements Comparator<TimedEvent> {
-
-        /** Compare the two timed events. If the first timed event has a time
-         *  stamp less than that of the second event, then a negative integer is
-         *  returned. If the first timed event has a time stamp greater than
-         *  that of the second event, then a positive integer is returned. If
-         *  they have exactly the same time stamp, then either a negative
-         *  integer or a positive integer is returned, depending on the LIFO
-         *  parameter of the director. If LIFO is set to true, then a negative
-         *  integer is returned in that case. Otherwise, a positive integer is
-         *  returned instead.
-         *
-         *  @param a The first timed event.
-         *  @param b The second timed event.
-         *  @return -1 or +1 depending on whether the time stamp of the first
-         *   timed event is less than, equal to, or greater than that of the
-         *   second.
-         */
-        public int compare(TimedEvent a, TimedEvent b) {
-            if (a == b) {
-                return 0;
-            }
-
-            int result = a.timeStamp.compareTo(b.timeStamp);
-            if (result == 0) {
-                if (_newEvent == null || a != _newEvent && b != _newEvent) {
-                    return 0;
-                } else {
-                    try {
-                        boolean isLIFO =
-                            ((BooleanToken) LIFO.getToken()).booleanValue();
-                        if (a == _newEvent) {
-                            return isLIFO ? -1 : 1;
-                        } else if (b == _newEvent) {
-                            return isLIFO ? 1 : -1;
-                        } else {
-                            // Shouldn't reach here.
-                            return 0;
-                        }
-                    } catch (IllegalActionException e) {
-                        throw new KernelRuntimeException(e, "Unable to " +
-                                "obtain value for the LIFO parameter.");
-                    }
-                }
-            } else {
-                return result;
-            }
-        }
-
-        /** Set the new event to be added to a queue that uses this comparator,
-         *  so that the return value of {@link #compare(TimedEvent, TimedEvent)}
-         *  depends on the LIFO setting.
-         *
-         *  @param newEvent The new event, or null if this comparator is not
-         *  being used for adding a new event.
-         */
-        public void setNewEvent(TimedEvent newEvent) {
-            _newEvent = newEvent;
-        }
-
-        /** The new event, or null. */
-        private TimedEvent _newEvent;
-    }
 }
