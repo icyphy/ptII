@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.codegen.c.targets.luminary;
+package ptolemy.codegen.c.targets.luminaryOpenRTOS;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 
