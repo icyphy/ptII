@@ -63,9 +63,9 @@ import ptolemy.util.StringUtilities;
  @Pt.AcceptedRating Yellow (zhouye)
 
  */
-public class Director implements ActorCodeGenerator {
+public class Director extends CodeGeneratorHelper {
     /** Construct the code generator helper associated with the given director.
-     *  Note before calling the generate*() methos, you must also call
+     *  Note before calling the generate*() methods, you must also call
      *  setCodeGenerator(CodeGenerator).
      *  @param director The associated director.
      */
@@ -453,7 +453,7 @@ public class Director implements ActorCodeGenerator {
 
 
     // See CodeGeneratorHelper._getReference(String, boolean)
-    public static List<Channel> getReferencedChannels(IOPort port, int channelNumber)
+    public static List<Channel> getReferenceChannels(IOPort port, int channelNumber)
     throws IllegalActionException {
 
         boolean forComposite = false;
@@ -727,5 +727,13 @@ public class Director implements ActorCodeGenerator {
      *  @see #_getIndentPrefix(int)
      */
     protected static final String _INDENT4 = _getIndentPrefix(4);
+
+    public String generateCodeForSend(IOPort port, int channel, String dataToken) throws IllegalActionException {
+        return "";
+    }
+
+    public String generateCodeForGet(IOPort port, int channel) throws IllegalActionException {
+        return "";
+    }
 
 }

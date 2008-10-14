@@ -415,7 +415,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
             if (manager == null) {
                 CompositeActor toplevel = (CompositeActor) ((NamedObj) container)
-                        .toplevel();
+                .toplevel();
                 manager = new Manager(toplevel.workspace(), "Manager");
                 toplevel.setManager(manager);
             }
@@ -471,13 +471,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         long startTime = (new Date()).getTime();
         long overallStartTime = startTime;
 
-        // Reset the indent to zero.
-        _indent = 0;
-
-        // Reset the code file name so that getCodeFileName()
-        // accurately reports whether code was generated.
-        _codeFileName = null;
-
+        reset();
+        
         _sanitizedModelName = CodeGeneratorHelper.generateName(_model);
 
         // Each time a .dll file is generated, we must use a different name
@@ -547,6 +542,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         // generate type resolution code has to be after
         // fire(), wrapup(), preinit(), init()...
         String typeResolutionCode = generateTypeConvertCode();
+        String globalCode = generateGlobalCode();
         
         // Include files depends the generated code, so it 
         // has to be generated after everything.
@@ -568,6 +564,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         code.append(sharedCode);
         code.append(variableDeclareCode);
         code.append(preinitializeCode);
+        code.append(globalCode);
 
         if (!inlineValue) {
             code.append(fireFunctionCode);
@@ -668,6 +665,29 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 "CodeGenerator: All phases above consumed: ");
 
         return _executeCommands();
+    }
+
+    public void reset() {
+        // Reset the indent to zero.
+        _indent = 0;
+
+        // Reset the code file name so that getCodeFileName()
+        // accurately reports whether code was generated.
+        _codeFileName = null;
+
+        _newTypesUsed.clear();
+        _tokenFuncUsed.clear();
+        _typeFuncUsed.clear();
+        _libraries.clear();
+        _includes.clear();
+    }
+
+    private String generateGlobalCode() throws IllegalActionException {
+        // Global code should be independent of other code.
+        StringBuffer code = new StringBuffer();
+        ActorCodeGenerator helper = _getHelper(getContainer());
+        code.append(helper.generateGlobalCode());
+        return code.toString();
     }
 
     /** Generate code for a model.
@@ -1492,6 +1512,14 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 className = object.getClass().getPackage().toString().substring(8) +
                 ".Mpi" + object.getClass().getSimpleName();
                  // i.e. PNDirector => MpiPNDirector
+            }
+        } else if (//getAttribute("openRtos") != null && 
+                target.getExpression().equals("luminary")) {
+
+            if (object instanceof PNDirector) {
+                className = object.getClass().getPackage().toString().substring(8) +
+                ".OpenRtos" + object.getClass().getSimpleName();
+                 // i.e. PNDirector => OpenRtosPNDirector
             }
         }
 

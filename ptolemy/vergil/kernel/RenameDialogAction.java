@@ -28,12 +28,17 @@
 package ptolemy.vergil.kernel;
 
 import java.awt.Frame;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+
+import javax.swing.KeyStroke;
 
 import ptolemy.actor.gui.RenameDialog;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.toolbox.FigureAction;
+import diva.gui.GUIUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// RenameDialogAction
@@ -55,6 +60,9 @@ public class RenameDialogAction extends FigureAction {
      */
     public RenameDialogAction(String name) {
         super(name);
+
+        putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                KeyEvent.VK_F2, 0));
     }
 
     ///////////////////////////////////////////////////////////////////

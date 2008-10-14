@@ -456,14 +456,15 @@ public class CodeStream {
      *  name cannot be found.
      */
     public String getCodeBlock(String name) throws IllegalActionException {
-        StringBuffer result = _declarations.getCode(new Signature(name, 0),
-                new LinkedList());
-
-        if (result == null) {
-            throw new IllegalActionException("Cannot find code block: \""
-                    + name + "\" in " + _filePath + ".");
-        }
-        return result.toString();
+//        StringBuffer result = _declarations.getCode(new Signature(name, 0),
+//                new LinkedList());
+//
+//        if (result == null) {
+//            throw new IllegalActionException("Cannot find code block: \""
+//                    + name + "\" in " + _filePath + ".");
+//        }
+//        return result.toString();
+        return getCodeBlock(name, new LinkedList());
     }
 
     /** Given a code block signature, return the corresponding code block
