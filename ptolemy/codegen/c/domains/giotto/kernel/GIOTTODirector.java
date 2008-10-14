@@ -27,7 +27,7 @@
  */
 package ptolemy.codegen.c.domains.giotto.kernel;
 
-import java.util.Iterator;
+import ptolemy.codegen.kernel.Director;
 
 // this is a copy of the SDF constructor renamed for giotto.. it may be inappropriate..
 //I'm not sure at the moment
@@ -36,14 +36,15 @@ import java.util.Iterator;
 //@since Ptolemy II 6.0
 //@Pt.ProposedRating Yellow (zgang)
 //@Pt.AcceptedRating Red (eal)
-*/
-public class GiottoDirector extends StaticSchedulingDirector {
+
+public class GIOTTODirector extends Director {
 
    /** Construct the code generator helper associated with the given
     *  GIOTTODirector.
     *  @param giottoDirector The associated
     *  ptolemy.domains.sdf.kernel.SDFDirector
-    */
-   public GiottoDirector(ptolemy.domains.giotto.kernel.GiottoDirector giottoDirector) {
-       super(giottoDirector);
+    */    
+   public GIOTTODirector(/*ptolemy.domains.giotto.kernel.GIOTTODirector giottoDirector*/) {
+       super(/*giottoDirector*/null);
    }
+}

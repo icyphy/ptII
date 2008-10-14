@@ -27,33 +27,10 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.codegen.c.domains.fsm.kernel;
+package ptolemy.codegen.c.domains.giotto.kernel;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-
-import ptolemy.actor.Actor;
-import ptolemy.actor.Director;
-import ptolemy.actor.IOPort;
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
-import ptolemy.codegen.kernel.ActorCodeGenerator;
-import ptolemy.codegen.kernel.CodeGeneratorHelper;
-import ptolemy.codegen.kernel.ComponentCodeGenerator;
-import ptolemy.codegen.kernel.ParseTreeCodeGenerator;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.ObjectToken;
-import ptolemy.data.Token;
-import ptolemy.data.expr.ASTPtRootNode;
-import ptolemy.data.expr.PtParser;
-import ptolemy.data.expr.Variable;
-import ptolemy.domains.fsm.kernel.AbstractActionsAttribute;
-import ptolemy.domains.fsm.kernel.State;
-import ptolemy.domains.fsm.kernel.Transition;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NamedObj;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// GIOTTOActor
@@ -71,6 +48,7 @@ public class GIOTTOActor extends CCodeGeneratorHelper {
     /** Construct the code generator helper associated with the given FSMActor.
      *  @param component The associated component.
      */
-    public GIOTTOActor(ptolemy.domains.giotto.kernel.GIOTTOActor component) {
+    public GIOTTOActor(ptolemy.codegen.c.domains.giotto.kernel.GIOTTOActor component) {
         super(component);
     }
+}
