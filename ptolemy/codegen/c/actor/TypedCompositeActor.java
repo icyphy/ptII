@@ -322,6 +322,14 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
 //        code.append(generateTypeConvertFireCode(true));
 //    }
 
+    public String generateGlobalCode() throws IllegalActionException {
+        CompositeActor compositeActor = (CompositeActor) getComponent();
+        ptolemy.actor.Director director = compositeActor.getDirector();
+        Director directorHelper = (Director) _getHelper(director);
+
+        return directorHelper.generateGlobalCode();
+    }
+    
     /** Generate The fire function code. This method is called when
      *  the firing code of each actor is not inlined. Each actor's
      *  firing code is in a function with the same name as that of the
@@ -528,7 +536,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      *   an actor throws it while generating header files for the actor.
      */
     public Set getHeaderFiles() throws IllegalActionException {
-        Set files = new HashSet();
+        Set files = new LinkedHashSet();
         files.addAll(super.getHeaderFiles());
 
         Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())

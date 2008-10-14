@@ -30,8 +30,10 @@ package ptolemy.codegen.c.actor;
 import java.util.List;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.lib.jni.EmbeddedCActor;
 import ptolemy.codegen.c.domains.pn.kernel.MpiPNDirector;
 import ptolemy.codegen.c.domains.pn.kernel.PNDirector;
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
@@ -53,8 +55,9 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
 
     }
 
-    private boolean isMpi() {
-        return (null != getCodeGenerator().getAttribute("mpi"));
+    private boolean isPthread() {
+        return (null == getCodeGenerator().getAttribute("mpi")) &&
+        !getCodeGenerator().target.getExpression().equals("luminary");
     }
 
     public String generateOffset(String offset, int channel, boolean isWrite, 
@@ -63,7 +66,7 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
 
         Receiver receiver = _getReceiver(offset, channel, port);
 
-        if (!isMpi() && receiver instanceof PNQueueReceiver) {
+        if (isPthread() && receiver instanceof PNQueueReceiver) {
             String result;
             if (offset.length() == 0 || offset.equals("0")) {
                 result = (isWrite) ? 
@@ -85,7 +88,7 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
 
     public String generatePreFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        if (isMpi()) {
+        if (isPthread()) {
             code.append("MPI_recv();" + _eol);
         }
         return code.toString();
@@ -94,7 +97,7 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
 
     public String generatePostFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        if (isMpi()) {
+        if (isPthread()) {
             code.append("MPI_send();" + _eol);
         }
         return code.toString();
@@ -162,10 +165,10 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
                 Receiver receiver = _getReceiver(
                         offsetObject.toString(), sinkChannelNumber, sinkPort);
 
-                if (isMpi() && MpiPNDirector.isMpiReceiveBuffer(sinkPort, sinkChannelNumber)) {
+                if (isPthread() && MpiPNDirector.isMpiReceiveBuffer(sinkPort, sinkChannelNumber)) {
                     code.append(_generateMPISendCode(j, rate, sinkPort, sinkChannelNumber, director));
 
-                } else if (!isMpi() && receiver instanceof PNQueueReceiver) {
+                } else if (isPthread() && receiver instanceof PNQueueReceiver) {
 
                     // PNReceiver.                    
                     code.append(_updatePNOffset(rate, sinkPort, sinkChannelNumber, director, true));
@@ -318,13 +321,13 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
         for (int i = 0; i < port.getWidth(); i++) {
             if (MpiPNDirector.isMpiReceiveBuffer(port, i)) {
                 // do nothing.
-            } else if (!isMpi() && receiver instanceof PNQueueReceiver) {
+            } else if (isPthread() && receiver instanceof PNQueueReceiver) {
 
                 // FIXME: this is kind of hacky.
                 //PNDirector pnDirector = (PNDirector)//directorHelper;         
                 _getHelper(((Actor) port.getContainer()).getExecutiveDirector());
 
-                List<Channel> channels = PNDirector.getReferencedChannels(port, i);
+                List<Channel> channels = PNDirector.getReferenceChannels(port, i);
 
                 for (Channel channel : channels) {
                     code += _updatePNOffset(rate, channel.port, 
@@ -541,8 +544,30 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
         }
     }
 
+    public ptolemy.actor.Director getDirector() {
+        ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
+        Actor actor = (Actor) port.getContainer();
+        
+        if (actor instanceof EmbeddedCActor.EmbeddedActor) {
+            // ignore the inner SDFDirector.
+            actor = (Actor) actor.getContainer();
+        }
+        Director director = null;
+        
+        // FIXME: why are we checking if this is a input port?
+        //if (port.isInput() && !port.isOutput() && (actor instanceof CompositeActor)) {
+        if (actor instanceof CompositeActor) {
+            director = actor.getExecutiveDirector();
+        } 
+        
+        if (director == null) {
+            director = actor.getDirector();
+        }
+        return director;
+    }
+
     public String initializeOffsets() throws IllegalActionException {
-        if (isMpi()) {
+        if (isPthread()) {
             return "";
         }
         
@@ -570,4 +595,26 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
         }
         return code.toString();
     }
+
+    public String generateCodeForSend(String channel, String dataToken) throws IllegalActionException {
+        ptolemy.codegen.kernel.Director directorHelper = _getDirectorHelper();
+        ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
+        int channelNumber = Integer.valueOf(channel);
+
+        return directorHelper.generateCodeForSend(port, channelNumber, dataToken);
+    }
+
+    public String generateCodeForGet(String channel) throws IllegalActionException {
+        ptolemy.codegen.kernel.Director directorHelper = _getDirectorHelper();
+        ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
+        int channelNumber = Integer.valueOf(channel);
+
+        return directorHelper.generateCodeForGet(port, channelNumber);
+    }
+
+    private ptolemy.codegen.kernel.Director _getDirectorHelper() throws IllegalActionException {
+        Director director = getDirector();
+        return (ptolemy.codegen.kernel.Director) _getHelper(director);
+    }
+
 }

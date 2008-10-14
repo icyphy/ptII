@@ -203,21 +203,21 @@ public class ArrowKeySensor extends TypedAtomicActor {
      *  same key (Though both may be false).  The most recent action
      *  (press or release) takes precedence.
      */
-    private boolean _upKeyPressed = false;
+    protected boolean _upKeyPressed = false;
 
-    private boolean _leftKeyPressed = false;
+    protected boolean _leftKeyPressed = false;
 
-    private boolean _rightKeyPressed = false;
+    protected boolean _rightKeyPressed = false;
 
-    private boolean _downKeyPressed = false;
+    protected boolean _downKeyPressed = false;
 
-    private boolean _upKeyReleased = false;
+    protected boolean _upKeyReleased = false;
 
-    private boolean _leftKeyReleased = false;
+    protected boolean _leftKeyReleased = false;
 
-    private boolean _rightKeyReleased = false;
+    protected boolean _rightKeyReleased = false;
 
-    private boolean _downKeyReleased = false;
+    protected boolean _downKeyReleased = false;
 
     ///////////////////////////////////////////////////////////////////
     ////                     private inner classes                 ////

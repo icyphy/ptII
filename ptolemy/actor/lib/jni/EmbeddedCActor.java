@@ -143,14 +143,13 @@ public class EmbeddedCActor extends CompiledCompositeActor {
             setEmbeddedActor();
 
             int i = 0;
-            Iterator ports = portList().iterator();
-            while (ports.hasNext()) {
-                TypedIOPort port = (TypedIOPort) ports.next();
+            for (TypedIOPort port : (List<TypedIOPort>) portList()) {
                 TypedIOPort newPort = (TypedIOPort) port.clone(workspace());
                 newPort.setContainer(_embeddedActor);
                 for (int channel = 0; channel < port.getWidth(); channel++) {
                     TypedIORelation relation = new TypedIORelation(this,
                             "relation" + i++);
+                    relation.setPersistent(false);
                     port.link(relation);
                     newPort.link(relation);
                 }
@@ -167,14 +166,9 @@ public class EmbeddedCActor extends CompiledCompositeActor {
      */
     public void wrapup() throws IllegalActionException {
         try {
-            Iterator ports = portList().iterator();
-            while (ports.hasNext()) {
-                TypedIOPort port = (TypedIOPort) ports.next();
-                List insideRelationList = port.insideRelationList();
-                Iterator insideRelationIterator = insideRelationList.iterator();
-                while (insideRelationIterator.hasNext()) {
-                    TypedIORelation relation = (TypedIORelation) insideRelationIterator
-                            .next();
+            for (TypedIOPort port : (List<TypedIOPort>) portList()) {
+                for (TypedIORelation relation : 
+                    (List<TypedIORelation>) port.insideRelationList()) {
                     relation.setContainer(null);
                 }
             }

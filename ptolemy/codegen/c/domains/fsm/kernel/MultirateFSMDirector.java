@@ -705,8 +705,7 @@ public class MultirateFSMDirector extends FSMDirector {
             // This overrides using initial state as the current state in
             // the initialize code of the controller.
             State destinationState = transition.destinationState();
-            controllerHelper._updateCurrentState(codeBuffer, destinationState,
-                    0);
+            controllerHelper._updateCurrentState(codeBuffer, destinationState);
 
             // Generate code for updating configuration number of this
             // FSMActor's container actor.

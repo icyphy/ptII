@@ -1,41 +1,41 @@
 /*** add_Array_Array() ***/
-inline Token add_Array_Array(Token a1, Token a2) {
+Token add_Array_Array(Token a1, Token a2) {
     return $Array_add(a1, a2);
 }
 /**/
 
 /*** add_Array_Double() ***/
-inline Token add_Array_Double(Token a1, double a2) {
+Token add_Array_Double(Token a1, double a2) {
     return $add_Double_Array(a2, a1);
 }
 /**/
 
 /*** add_Array_Int() ***/
-inline Token add_Int_Array(Token a1, int a2) {
+Token add_Int_Array(Token a1, int a2) {
     return $add_Array_Int(a2, a1);
 }
 /**/
 
 /*** add_Array_Long() ***/
-inline Token add_Long_Array(Token a1, long long a2) {
+Token add_Long_Array(Token a1, long long a2) {
     return $add_Array_Long(a2, a1);
 }
 /**/
 
 /*** add_Boolean_Boolean() ***/
-inline boolean add_Boolean_Boolean(boolean a1, boolean a2) {
+boolean add_Boolean_Boolean(boolean a1, boolean a2) {
     return a1 | a2;
 }
 /**/
 
 /*** add_Boolean_Int() ***/
-inline int add_Boolean_Int(boolean a1, int a2) {
+int add_Boolean_Int(boolean a1, int a2) {
     return $add_Int_Boolean(a2, a1);
 }
 /**/
 
 /*** add_Boolean_String() ***/
-inline char* add_Boolean_String(boolean a1, char* a2) {
+char* add_Boolean_String(boolean a1, char* a2) {
     return $add_String_Boolean(a2, a1);
 }
 /**/
@@ -53,19 +53,19 @@ Token add_Double_Array(double a1, Token a2) {
 /**/
 
 /*** add_Double_Double() ***/
-inline double add_Double_Double(double a1, double a2) {
+double add_Double_Double(double a1, double a2) {
     return a1 + a2;
 }
 /**/
 
 /*** add_Double_Int() ***/
-inline double add_Double_Int(double a1, int a2) {
+double add_Double_Int(double a1, int a2) {
     return a1 + a2;
 }
 /**/
 
 /*** add_Double_String() ***/
-inline char* add_Double_String(double a1, char* a2) {
+char* add_Double_String(double a1, char* a2) {
     return $add_String_Double(a2, a1);
 }
 /**/
@@ -96,7 +96,7 @@ int add_Int_Boolean(int a1, boolean a2) {
 /**/
 
 /*** add_Int_Int() ***/
-inline int add_Int_Int(int a1, int a2) {
+int add_Int_Int(int a1, int a2) {
     return a1 + a2;
 }
 /**/
@@ -129,7 +129,7 @@ Token add_Long_Array(long long a1, Token a2) {
 /**/
 
 /*** add_Long_Long() ***/
-inline long long add_Long_Long(long long a1, long long a2) {
+long long add_Long_Long(long long a1, long long a2) {
     return a1 + a2;
 }
 /**/
@@ -159,7 +159,7 @@ char* add_String_Double(char* a1, double a2) {
 /**/
 
 /*** add_String_Int() ***/
-inline char* add_String_Int(char* a1, int a2) {
+char* add_String_Int(char* a1, int a2) {
     return $add_Int_String(a2, a1);
 }
 /**/
@@ -174,19 +174,19 @@ char* add_String_String(char* a1, char* a2) {
 /**/
 
 /*** add_Token_Double() ***/
-inline Token add_Token_Double(Token a1, double a2) {
+Token add_Token_Double(Token a1, double a2) {
     return $add_Double_Token(a2, a1);
 }
 /**/
 
 /*** add_Token_Int() ***/
-inline int add_Token_Int(Token a1, int a2) {
+int add_Token_Int(Token a1, int a2) {
     return $add_Int_Token(a2, a1);
 }
 /**/
 
 /*** add_Token_Token() ***/
-inline Token add_Token_Token(Token a1, Token a2) {
+Token add_Token_Token(Token a1, Token a2) {
     return $tokenFunc(a1::add(a2));
 }
 /**/

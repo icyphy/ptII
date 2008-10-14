@@ -334,7 +334,7 @@ public class MpiPNDirector extends Director {
 
                 // Set offset objects.
                 for (int channel = 0; channel < port.getWidth(); channel++) {
-                    for (Channel sink : getReferencedChannels(port, channel)) {
+                    for (Channel sink : getReferenceChannels(port, channel)) {
                         IOPort sinkPort = sink.port;
                         CodeGeneratorHelper sinkHelper = 
                             (CodeGeneratorHelper) _getHelper(sinkPort.getContainer());
@@ -849,7 +849,7 @@ public class MpiPNDirector extends Director {
 
                 for (int i = 0; i < maxWidth; i++) {
 
-                    for (Channel channel : getReferencedChannels(outport, i)) {
+                    for (Channel channel : getReferenceChannels(outport, i)) {
                         IOPort port = channel.port;
                         int channelNumber = channel.channelNumber;
 

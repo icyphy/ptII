@@ -46,8 +46,8 @@ import ptolemy.kernel.util.Workspace;
  @see ParameterEditorStyle
  @see LineStyle
  @author Man-Kit Leung
- @version $Id: HiddenStyle.java 39094 2005-08-05 18:43:23Z eal $
- @since Ptolemy II 1.0
+ @version $Id: HiddenStyle.java 39094 2005-08-05 18:43:23Z mankit $
+ @since Ptolemy II 7.0
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
