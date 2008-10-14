@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2516025641026">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-99.7601351351352, 353.2635135135135}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-99.7601351351353, 353.2635135135135}">
     </property>
     <property name="PN Director" class="ptolemy.domains.pn.kernel.PNDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-260.0, 430.0]">
@@ -435,7 +435,7 @@
                 </property>
                 <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
                 </property>
-                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{353.3231534090909, 254.3420928030303}">
+                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{216.4377367424242, 226.342803030303}">
                 </property>
                 <port name="turn" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -453,7 +453,7 @@
                     </property>
                     <property name="specularColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
                     </property>
-                    <property name="texture" class="ptolemy.data.expr.FileParameter" value="irobot-create.jpg">
+                    <property name="texture" class="ptolemy.data.expr.FileParameter" value="irobotCreate.jpg">
                     </property>
                     <property name="allowRuntimeChanges" class="ptolemy.data.expr.Parameter" value="true">
                     </property>

@@ -38,13 +38,13 @@ import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class LuminaryTarget extends CCodeGeneratorHelper {
+public class LuminaryOpenRTOSTarget extends CCodeGeneratorHelper {
 
     /**
      * Construct a helper for the Luminary target.
      * @param actor The associated actor.
      */
-    public LuminaryTarget(ptolemy.actor.TypedCompositeActor actor) {
+    public LuminaryOpenRTOSTarget(ptolemy.actor.TypedCompositeActor actor) {
         super(actor);
     }
 }
