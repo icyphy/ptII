@@ -558,7 +558,7 @@ public class CCodeGenerator extends CodeGenerator {
         // Determine the total number of referenced types.
         HashSet types = new HashSet();
         if (functions.contains("equals") || functions.contains("isCloseTo")) {
-//            types.add("Boolean");
+            types.add("Boolean");
         }
 
         if (functions.contains("toString")) {
