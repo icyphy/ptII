@@ -50,8 +50,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	GiottoDirector.java \
-	GiottoActor.java
+	GiottoDirector.java 
 
 OTHER_FILES_TO_BE_JARED =
 
