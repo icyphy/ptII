@@ -1514,7 +1514,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                  // i.e. PNDirector => MpiPNDirector
             }
         } else if (//getAttribute("openRtos") != null && 
-                target.getExpression().equals("luminary")) {
+                target.getExpression().equals("luminaryOpenRTOS")) {
 
             if (object instanceof PNDirector) {
                 className = object.getClass().getPackage().toString().substring(8) +
