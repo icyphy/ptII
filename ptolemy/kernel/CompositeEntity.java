@@ -29,14 +29,19 @@ package ptolemy.kernel;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.Attribute;
@@ -1396,14 +1401,28 @@ public class CompositeEntity extends ComponentEntity {
             List atomicEntities = allAtomicEntityList();
             int entityCount = atomicEntities.size();
 
+	    Map<String,Integer> actorMap = new HashMap<String,Integer>();
+	    Integer one = new Integer(1);
+
             int attributeCount = 0, entityClassCount = 0;
             Iterator entities = atomicEntities.iterator();
             while (entities.hasNext()) {
                 ComponentEntity entity = (ComponentEntity) entities.next();
                 List attributeList = entity.attributeList();
                 attributeCount += attributeList.size();
+
+    	        Class entityClass = entity.getClass();
+
+		// Create a map with the count of actors
+		String entityClassName = entityClass.getName();
+		if (!actorMap.containsKey(entityClassName)) {
+		    actorMap.put(entityClassName, one);
+		} else {
+		    actorMap.put(entityClassName, Integer.valueOf(actorMap.get(entityClassName) + 1));
+		}
+
                 if (clazz != null) {
-                    if (clazz.isAssignableFrom(entity.getClass())) {
+                    if (clazz.isAssignableFrom(entityClass)) {
                         entityClassCount++;
                     } else {
                         // Search the attributes
@@ -1417,7 +1436,19 @@ public class CompositeEntity extends ComponentEntity {
                     }
                 }
             }
-            List relationList = relationList();
+
+	    ArrayList actorArrayList = new ArrayList(actorMap.entrySet());
+	    //Sort the values based on values first and then keys.
+	    Collections.sort(actorArrayList, new CountComparator());
+
+	    StringBuffer actorNames = new StringBuffer();
+	    Iterator actors = actorArrayList.iterator();
+	    while (actors.hasNext()) {
+		Map.Entry<String, Integer> actor =  (Map.Entry) actors.next();
+		actorNames.append(actor.getKey() + " " + actor.getValue() + "\n");
+	    }
+
+	    List relationList = relationList();
             int compositeEntityCount = 0, relationCount = relationList.size();
             if (clazz != null) {
                 // Search the relations
@@ -1430,12 +1461,23 @@ public class CompositeEntity extends ComponentEntity {
                 }
             }
 
+	    Map<Integer,Integer> compositeEntityDepthMap = new TreeMap<Integer,Integer>();
             entities = allCompositeEntityList().iterator();
 
             while (entities.hasNext()) {
                 Entity entity = (Entity) entities.next();
                 if (entity instanceof CompositeEntity) {
                     compositeEntityCount++;
+
+		    // Find the depth and add it to the list 
+		    Integer depth = Integer.valueOf(entity.depthInHierarchy());
+		    if (!compositeEntityDepthMap.containsKey(depth)) {
+			compositeEntityDepthMap.put(depth, one);
+		    } else {
+			compositeEntityDepthMap.put(depth,
+						 Integer.valueOf(compositeEntityDepthMap.get(depth) + 1));
+		    }
+
                     relationList = ((CompositeEntity) entity).relationList();
                     relationCount += relationList.size();
                     if (clazz != null) {
@@ -1455,6 +1497,12 @@ public class CompositeEntity extends ComponentEntity {
                 }
             }
 
+	    // Generate a string with the depths
+	    StringBuffer compositeEntityDepths = new StringBuffer();
+	    for (Map.Entry<Integer, Integer> depth : compositeEntityDepthMap.entrySet()) {
+		compositeEntityDepths.append("Depth: " + depth.getKey() + " # of Composites at that depth: " + depth.getValue() + "\n");
+	    }
+
             return "Size Statistics for "
                     + getFullName()
                     + "\nAtomicEntities: "
@@ -1466,7 +1514,11 @@ public class CompositeEntity extends ComponentEntity {
                     + "\nAttributes: "
                     + attributeCount
                     + (clazz == null ? "" : "\nEntities of type \""
-                            + clazz.getName() + "\": " + entityClassCount);
+                            + clazz.getName() + "\": " + entityClassCount)
+    		    + "\nAtomic Actor Names and Counts:\n" + actorNames
+		    + "\nComposite Entity Depths and Counts:\n"
+  		    + compositeEntityDepths;
+
         } finally {
             _workspace.doneReading();
         }
@@ -2004,6 +2056,7 @@ public class CompositeEntity extends ComponentEntity {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
+
     /** This class is an iterator over all the contained objects
      *  (all instances of NamedObj). In this class, the contained
      *  objects are attributes first, then ports, then entities,
@@ -2072,5 +2125,28 @@ public class CompositeEntity extends ComponentEntity {
         private Iterator _entityListIterator = null;
 
         private Iterator _relationListIterator = null;
+    }
+
+
+    /** A comparator for a <String><Integer> Map. */
+    private static class CountComparator implements Comparator {
+	public int compare(Object object1, Object object2){
+	    int result = 0;
+	    Map.Entry entry1 = (Map.Entry)object1 ;
+	    Map.Entry entry2 = (Map.Entry)object2 ;
+
+	    Integer value1 = (Integer)entry1.getValue();
+	    Integer value2 = (Integer)entry2.getValue();
+
+	    if ( value1.compareTo(value2) == 0) {
+		String className1=(String)entry1.getKey();
+		String className2=(String)entry2.getKey();
+		result = className1.compareTo(className2);
+	    } else {
+		result = value2.compareTo(value1 );
+	    }
+
+	    return result;
+	}
     }
 }
