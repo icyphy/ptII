@@ -165,7 +165,7 @@ public class FSMActor extends CCodeGeneratorHelper {
     }
 
     private Object _generateStateConstantLabel(State state) {
-        return generateName(state).toUpperCase();
+        return "STATE_" + generateName(state);
     }
 
     /** Generate code for making transition. It generates code for both choice
@@ -195,11 +195,9 @@ public class FSMActor extends CCodeGeneratorHelper {
         // i.e., the same order as in list returned by the method entityList().
         codeBuffer.append("switch ($actorSymbol(currentState)) {" + _eol);
 
-        int stateCount = 0;
         for (State state : (List<State>) fsmActor.entityList()) {
             // For each state...
-            codeBuffer.append("case " + stateCount + ":" + _eol);
-            stateCount++;
+            codeBuffer.append("case " + _generateStateConstantLabel(state) + ":" + _eol);
 
             // The transitions (all, preemptive or non-preemptive
             // depending on the instance of TransitionRetriever given)
