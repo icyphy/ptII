@@ -330,8 +330,8 @@ public abstract class PropertySolver extends Attribute {
     }
 
     public static void main(String[] args) throws Exception {
-        testProperties(args);
-        //testPropertiesAndGenerateReports(args[0]);
+        //testProperties(args);
+        testPropertiesAndGenerateReports(args[0]);
     }
 
     /** Parse a command-line argument. This method recognized -help
@@ -665,8 +665,8 @@ public abstract class PropertySolver extends Attribute {
         // The first check is for singleton elements, and the equals()
         // comparison is necessary for "equivalent" elements, such as
         // those in the SetLattice usecase.
-        if (previousProperty == null ||
-                (previousProperty != null && !previousProperty.equals(property))) {
+        if ((previousProperty == null && previousProperty != property) ||
+            (previousProperty != null && !previousProperty.equals(property))) {
 
             addErrors(_eol + "Property \"" + getUseCaseName() + 
                     "\" resolution failed for " + namedObj.getFullName() + 
@@ -1023,7 +1023,7 @@ public abstract class PropertySolver extends Attribute {
     }
 
     /** The directory path to store the test statistics reports. */
-    private static String _statsDirectory = StringUtilities.getProperty("ptolemy.ptII.dir") + "/BOSCH_Logfiles";
+    private static String _statsDirectory = StringUtilities.getProperty("ptolemy.ptII.dir") + "/propertiesLogfiles";
 
     /** The directory path to store the exception log files. */
     private static String _exceptionLogsDirectory = _statsDirectory + "/exceptionLogs";
