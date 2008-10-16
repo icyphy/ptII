@@ -252,7 +252,6 @@ PTINY_ONLY_JNLP_JARS = \
 	$(PTALON_JARS) \
 	ptolemy/data/type/demo/demo.jar \
 	ptolemy/data/unit/demo/demo.jar \
-	ptolemy/domains/ptinyDemos.jar \
 	ptolemy/moml/demo/demo.jar \
 	ptolemy/vergil/kernel/attributes/demo/demo.jar
 
