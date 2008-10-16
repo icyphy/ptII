@@ -209,16 +209,18 @@ HYBRID_SYSTEMS_ONLY_JNLP_JARS = \
 HYBRID_SYSTEMS_MAIN_JAR = \
 	ptolemy/actor/gui/jnlp/HyVisualApplication.jar
 
+HYBRID_SYSTEMS_DEMO_AND_DOC_JARS = \
+	ptolemy/domains/ct/demo/demo.jar \
+	ptolemy/domains/ct/doc/doc.jar \
+	ptolemy/domains/fsm/doc/doc.jar \
+	ptolemy/domains/sdf/demo/demo.jar \
+	ptolemy/domains/sdf/doc/doc.jar
+
 HYBRID_SYSTEMS_JNLP_JARS =	\
 	$(HYBRID_SYSTEMS_MAIN_JAR) \
 	$(HYBRID_SYSTEMS_ONLY_JNLP_JARS) \
 	doc/docConfig.jar \
 	lib/diva.jar \
-	ptolemy/domains/ct/demo/demo.jar \
-	ptolemy/domains/ct/doc/doc.jar \
-	ptolemy/domains/fsm/doc/doc.jar \
-	ptolemy/domains/sdf/demo/demo.jar \
-	ptolemy/domains/sdf/doc/doc.jar \
 	ptolemy/ptsupport.jar \
 	ptolemy/vergil/vergil.jar \
 	ptolemy/domains/gr/lib/quicktime/quicktime.jar \
@@ -245,7 +247,7 @@ PTINY_ONLY_JNLP_JARS = \
         ptolemy/actor/lib/python/demo/demo.jar \
         ptolemy/actor/lib/security/demo/demo.jar \
 	ptolemy/codegen/codegen.jar \
-	ptolemy/codegen/codegen/c/vergil/vergil.jar \
+	ptolemy/codegen/c/vergil/vergil.jar \
 	ptolemy/codegen/demo/demo.jar \
 	$(PTALON_JARS) \
 	ptolemy/data/type/demo/demo.jar \
@@ -451,13 +453,14 @@ ALL_NON_APPLICATION_JNLP_JARS = \
 	$(DOC_CODEDOC_JAR) \
 	$(FULL_ONLY_JNLP_JARS) \
 	$(HYBRID_SYSTEMS_ONLY_JNLP_JARS) \
+	$(HYBRID_SYSTEMS_DEMO_AND_DOC_JARS) \
 	$(VIPTOS_ONLY_JNLP_JARS) \
 	$(VISUAL_SENSE_ONLY_JNLP_JARS) \
 	$(PTINY_ONLY_JNLP_JARS) \
 	$(DSP_ONLY_JNLP_JARS) \
 	$(CODEGEN_DOMAIN_JARS) \
 	ptolemy/domains/ddf/ddf.jar \
-	ptolemy/plot/plotapplication.jar 
+	ptolemy/plot/plotapplication.jar
 
 # All the jar files, include the application jars
 ALL_JNLP_JARS = \
