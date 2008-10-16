@@ -1462,8 +1462,15 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     }
 
     /**
-     * Sometimes 
-     * @return
+     * Return the list of corresponding reference channel. This is 
+     * because a channel may map to multiple reference channels in the
+     * generated code. At the same time, multiple channels may map
+     * to the same reference channel (e.g. the input-output
+     * port pair of a connection).
+     * @param port The specified port.
+     * @param channelNumber The specified channel number.
+     * @param isWrite Whether this is a write or read access.
+     * @return The list of reference channel.
      */
     protected List<Channel> _getReferenceChannels(
             TypedIOPort port, int channelNumber, boolean isWrite) {        

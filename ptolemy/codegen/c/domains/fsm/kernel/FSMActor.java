@@ -548,7 +548,6 @@ public class FSMActor extends CCodeGeneratorHelper {
      *  @param codeBuffer The string buffer that the generated code is
      *  appended to.
      *  @param state The current state.
-     *  @param depth The depth in the hierarchy, to determine indenting.
      * @throws IllegalActionException Thrown if the corresponding code
      *  block cannot be fetched.
      */
