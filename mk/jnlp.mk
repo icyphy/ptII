@@ -372,7 +372,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/tm/demo/demo.jar \
 	ptolemy/domains/tm/doc/doc.jar \
 	ptolemy/vergil/erg/erg.jar \
-	ptolemy/vergil/fsm/fmv.jar \
+	ptolemy/vergil/fsm/fmv/fmv.jar \
 	ptolemy/vergil/gt/gt.jar \
 	ptolemy/vergil/tdl/tdl.jar \
 	$(PTDATABASE_JNLP_JARS) \
