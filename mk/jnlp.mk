@@ -1283,3 +1283,18 @@ osgi_codegen_test:
 
 
 
+osgi_demo_test:
+	rm -rf $(OSGI_TARGET_DIRECTORY)/*
+	$(MKOSGI) $(PTII) $(OSGI_TARGET_DIRECTORY) ptolemy.domains.demo \
+	com/microstar/xml/xml.jar \
+	ptolemy/actor/actor.jar \
+	ptolemy/actor/lib/colt/colt.jar \
+	ptolemy/actor/lib/libKore.jar \
+	ptolemy/data/data.jar \
+	ptolemy/graph/graph.jar \
+	ptolemy/kernel/kernel.jar \
+	ptolemy/math/math.jar \
+	ptolemy/moml/moml.jar \
+	ptolemy/util/util.jar \
+	ptolemy/domains/demo/demo.jar \
+	ptolemy/domains/domains.jar
