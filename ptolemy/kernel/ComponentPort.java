@@ -478,15 +478,15 @@ public class ComponentPort extends Port {
             ComponentEntity entity = (ComponentEntity) getContainer();
 
             if (entity == null) {
-                _isOpqaue = true;
+                _isOpaque = true;
             } else {
-                _isOpqaue = entity.isOpaque();
+                _isOpaque = entity.isOpaque();
             }
 
             _isOpaqueVersion = workspaceVersion;
         }
 
-        return _isOpqaue;
+        return _isOpaque;
     }
 
     /** Link this port with the specified relation.  The only constraints are
@@ -1142,8 +1142,8 @@ public class ComponentPort extends Port {
 
     private transient long _deepLinkedInPortsVersion = -1;
 
-    // A cache of the opqaueness of this port.
-    private transient boolean _isOpqaue;
+    // A cache of the opaqueness of this port.
+    private transient boolean _isOpaque;
 
     private transient long _isOpaqueVersion = -1;
 }
