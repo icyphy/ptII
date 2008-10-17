@@ -378,21 +378,21 @@ public class Attribute extends NamedObj {
                     "Cannot set container because workspaces are different.");
         }
         _checkContainer(container);
-        try {
+        if (deepContains(container)) {
+            throw new IllegalActionException(this, container,
+                    "Attempt to construct recursive containment "
+                            + "of attributes");
+        }
+
+        NamedObj previousContainer = getContainer();
+
+        if (previousContainer == container) {
+            return;
+        }
+        
+        try {          
             _workspace.getWriteAccess();
-
-            if (deepContains(container)) {
-                throw new IllegalActionException(this, container,
-                        "Attempt to construct recursive containment "
-                                + "of attributes");
-            }
-
-            NamedObj previousContainer = getContainer();
-
-            if (previousContainer == container) {
-                return;
-            }
-
+            
             // Do this first, because it may throw an exception.
             if (container != null) {
                 container._addAttribute(this);
