@@ -37,7 +37,6 @@ package ptolemy.actor;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.CausalityInterface;
@@ -182,7 +181,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
         // threads from each creating a new _actorFiringListeners list.
         synchronized (this) {
             if (_actorFiringListeners == null) {
-                _actorFiringListeners = new LinkedList();
+                _actorFiringListeners = new LinkedList<ActorFiringListener>();
             }
         }
 
@@ -223,7 +222,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
      */
     public void addPiggyback(Executable piggyback) {
         if (_piggybacks == null) {
-            _piggybacks = new LinkedList();
+            _piggybacks = new LinkedList<Executable>();
         }
         _piggybacks.add(piggyback);
     }
@@ -272,7 +271,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
         if (port instanceof ComponentPort) {
             // NOTE: deepInsidePortList() is not the right thing here
             // since it will return the same port if it is opaque.
-            Iterator insidePorts = ((ComponentPort) port).insidePortList()
+            Iterator<?> insidePorts = ((ComponentPort) port).insidePortList()
                     .iterator();
 
             try {
@@ -356,9 +355,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
             // First invoke piggybacked methods.
             if (_piggybacks != null) {
                 // Invoke the fire() method of each piggyback.
-                Iterator piggybacks = _piggybacks.iterator();
-                while (piggybacks.hasNext()) {
-                    Executable piggyback = (Executable) piggybacks.next();
+                for (Executable piggyback : _piggybacks) {
                     piggyback.fire();
                 }
             }
@@ -372,7 +369,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
             // first because in some domains (e.g. SDF)
             // the behavior of the schedule might depend on rate variables
             // set from ParameterPorts.
-            for (Iterator inputPorts = inputPortList().iterator(); inputPorts
+            for (Iterator<?> inputPorts = inputPortList().iterator(); inputPorts
                     .hasNext()
                     && !_stopRequested;) {
                 IOPort p = (IOPort) inputPorts.next();
@@ -386,7 +383,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
             // everything that is not a port parameter.
             // The director will also update the schedule in
             // the process, if necessary.
-            for (Iterator inputPorts = inputPortList().iterator(); inputPorts
+            for (Iterator<?> inputPorts = inputPortList().iterator(); inputPorts
                     .hasNext()
                     && !_stopRequested;) {
                 IOPort p = (IOPort) inputPorts.next();
@@ -407,7 +404,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
             }
 
             // Use the local director to transfer outputs.
-            Iterator outports = outputPortList().iterator();
+            Iterator<?> outports = outputPortList().iterator();
 
             while (outports.hasNext() && !_stopRequested) {
                 IOPort p = (IOPort) outports.next();
@@ -565,9 +562,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
             // Next invoke piggybacked methods.
             if (_piggybacks != null) {
                 // Invoke the initialize() method of each piggyback.
-                Iterator piggybacks = _piggybacks.iterator();
-                while (piggybacks.hasNext()) {
-                    Executable piggyback = (Executable) piggybacks.next();
+                for (Executable piggyback : _piggybacks) {
                     piggyback.initialize();
                 }
             }
@@ -578,10 +573,10 @@ public class CompositeActor extends CompositeEntity implements Actor,
             }
 
             // Clear all of the contained actor's input ports.
-            for (Iterator actors = deepEntityList().iterator(); actors
+            for (Iterator<?> actors = deepEntityList().iterator(); actors
                     .hasNext();) {
                 Entity actor = (Entity) actors.next();
-                Iterator ports = actor.portList().iterator();
+                Iterator<?> ports = actor.portList().iterator();
 
                 while (ports.hasNext()) {
                     IOPort port = (IOPort) ports.next();
@@ -609,7 +604,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
             }
 
             // Clear all of the output ports.
-            Iterator ports = portList().iterator();
+            Iterator<?> ports = portList().iterator();
 
             while (ports.hasNext()) {
                 IOPort port = (IOPort) ports.next();
@@ -651,8 +646,8 @@ public class CompositeActor extends CompositeEntity implements Actor,
 
             if (_inputPortsVersion != _workspace.getVersion()) {
                 // Update the cache.
-                List inputPorts = new LinkedList();
-                Iterator ports = portList().iterator();
+                List<IOPort> inputPorts = new LinkedList<IOPort>();
+                Iterator<?> ports = portList().iterator();
 
                 while (ports.hasNext()) {
                     IOPort p = (IOPort) ports.next();
@@ -686,9 +681,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
             // is not functional.
             if (_piggybacks != null) {
                 // Invoke the isFieFunctional() method of each piggyback.
-                Iterator piggybacks = _piggybacks.iterator();
-                while (piggybacks.hasNext()) {
-                    Executable piggyback = (Executable) piggybacks.next();
+                for (Executable piggyback : _piggybacks) {
                     if (!piggyback.isFireFunctional()) {
                         return false;
                     }
@@ -760,9 +753,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
         boolean stopIterating = false;
         if (_piggybacks != null) {
             // Invoke the iterate() method of each piggyback.
-            Iterator piggybacks = _piggybacks.iterator();
-            while (piggybacks.hasNext()) {
-                Executable piggyback = (Executable) piggybacks.next();
+            for (Executable piggyback : _piggybacks) {
                 int result = piggyback.iterate(count);
                 if (result == NOT_READY) {
                     return NOT_READY;
@@ -911,9 +902,9 @@ public class CompositeActor extends CompositeEntity implements Actor,
             _workspace.getReadAccess();
 
             if (_outputPortsVersion != _workspace.getVersion()) {
-                _cachedOutputPorts = new LinkedList();
+                _cachedOutputPorts = new LinkedList<IOPort>();
 
-                Iterator ports = portList().iterator();
+                Iterator<?> ports = portList().iterator();
 
                 while (ports.hasNext()) {
                     IOPort p = (IOPort) ports.next();
@@ -962,9 +953,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
             boolean result = true;
             if (_piggybacks != null) {
                 // Invoke the postfire() method of each piggyback.
-                Iterator piggybacks = _piggybacks.iterator();
-                while (piggybacks.hasNext()) {
-                    Executable piggyback = (Executable) piggybacks.next();
+                for (Executable piggyback : _piggybacks) {
                     result = result && piggyback.postfire();
                 }
             }
@@ -1011,9 +1000,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
             // there and return false.
             if (_piggybacks != null) {
                 // Invoke the prefire method of each piggyback.
-                Iterator piggybacks = _piggybacks.iterator();
-                while (piggybacks.hasNext()) {
-                    Executable piggyback = (Executable) piggybacks.next();
+                for (Executable piggyback : _piggybacks) {
                     if (!piggyback.prefire()) {
                         if (_debugging) {
                             _debug("CompositeActor: prefire returns false due to piggybacked object.");
@@ -1068,9 +1055,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
             // Next invoke piggybacked methods.
             if (_piggybacks != null) {
                 // Invoke the preinitialize() method of each piggyback.
-                Iterator piggybacks = _piggybacks.iterator();
-                while (piggybacks.hasNext()) {
-                    Executable piggyback = (Executable) piggybacks.next();
+                for (Executable piggyback : _piggybacks) {
                     piggyback.preinitialize();
                 }
             }
@@ -1132,7 +1117,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
         synchronized (_actorFiringListeners) {
             _actorFiringListeners.remove(listener);
 
-            if (_actorFiringListeners.size() == 0) {
+            if (_actorFiringListeners.isEmpty()) {
                 _notifyingActorFiring = false;
             }
 
@@ -1323,9 +1308,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
             // First invoke piggybacked methods.
             if (_piggybacks != null) {
                 // Invoke the stop method of each piggyback.
-                Iterator piggybacks = _piggybacks.iterator();
-                while (piggybacks.hasNext()) {
-                    Executable piggyback = (Executable) piggybacks.next();
+                for (Executable piggyback : _piggybacks) {
                     piggyback.stop();
                 }
             }
@@ -1363,9 +1346,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
             // First invoke piggybacked methods.
             if (_piggybacks != null) {
                 // Invoke the stopFire() method of each piggyback.
-                Iterator piggybacks = _piggybacks.iterator();
-                while (piggybacks.hasNext()) {
-                    Executable piggyback = (Executable) piggybacks.next();
+                for (Executable piggyback : _piggybacks) {
                     piggyback.stopFire();
                 }
             }
@@ -1396,9 +1377,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
         // First invoke piggybacked methods.
         if (_piggybacks != null) {
             // Invoke the terminate() method of each piggyback.
-            Iterator piggybacks = _piggybacks.iterator();
-            while (piggybacks.hasNext()) {
-                Executable piggyback = (Executable) piggybacks.next();
+            for (Executable piggyback : _piggybacks) {
                 piggyback.terminate();
             }
         }
@@ -1435,9 +1414,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
             // Next invoke piggybacked methods.
             if (_piggybacks != null) {
                 // Invoke the wrapup() method of each piggyback.
-                Iterator piggybacks = _piggybacks.iterator();
-                while (piggybacks.hasNext()) {
-                    Executable piggyback = (Executable) piggybacks.next();
+                for (Executable piggyback : _piggybacks) {
                     piggyback.wrapup();
                 }
             }
@@ -1469,10 +1446,8 @@ public class CompositeActor extends CompositeEntity implements Actor,
      */
     protected final void _actorFiring(FiringEvent event) {
         if (_notifyingActorFiring) {
-            Iterator listeners = _actorFiringListeners.iterator();
-
-            while (listeners.hasNext()) {
-                ((ActorFiringListener) listeners.next()).firingEvent(event);
+            for (ActorFiringListener listener : _actorFiringListeners) {
+                listener.firingEvent(event);
             }
         }
     }
@@ -1569,7 +1544,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *  @exception IllegalActionException If any port throws it.
      */
     protected void _createReceivers() throws IllegalActionException {
-        Iterator ports = portList().iterator();
+        Iterator<?> ports = portList().iterator();
 
         try {
             workspace().getWriteAccess();
@@ -1644,6 +1619,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
             }
         }
     }
+    
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
@@ -1652,7 +1628,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *  NOTE: Because of the way we synchronize on this object, it should
      *  never be reset to null after the first list is created.
      */
-    protected LinkedList _actorFiringListeners = null;
+    protected LinkedList<ActorFiringListener> _actorFiringListeners = null;
 
     /** The causality interface, if it has been created. */
     protected CausalityInterface _causalityInterface;
@@ -1683,17 +1659,17 @@ public class CompositeActor extends CompositeEntity implements Actor,
     // Cached lists of input and output ports.
     private transient long _inputPortsVersion = -1;
 
-    private transient List _cachedInputPorts;
+    private transient List<IOPort> _cachedInputPorts;
 
     private transient long _outputPortsVersion = -1;
 
-    private transient List _cachedOutputPorts;
+    private transient List<IOPort> _cachedOutputPorts;
     
     /** The director for which the causality interface was created. */
     private Director _causalityInterfaceDirector;
 
     /** List piggybacked objects. */
-    private transient List _piggybacks;
+    private transient List<Executable> _piggybacks;
 
     /** Record of the workspace version the last time receivers were created. */
     private long _receiversVersion = -1;
