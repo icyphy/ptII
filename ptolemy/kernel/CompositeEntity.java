@@ -181,7 +181,8 @@ public class CompositeEntity extends ComponentEntity {
         // deepEntityList() should be renamed to deepOpaqueEntityList()
         // allAtomicEntityList() to deepAtomicEntityList()
         // However, the change would require a fair amount of work.
-        LinkedList entities = (LinkedList) deepEntityList();
+        //LinkedList entities = (LinkedList) deepEntityList();
+        List entities = deepEntityList();
 
         for (int i = 0; i < entities.size(); i++) {
             Object entity = entities.get(i);
@@ -578,6 +579,25 @@ public class CompositeEntity extends ComponentEntity {
      */
     public Iterator containedObjectsIterator() {
         return new ContainedObjectsIterator();
+    }
+
+    /** List the opaque entities that are directly or indirectly
+     *  contained by this entity.  The list will be empty if there
+     *  are no such contained entities. This list does not include
+     *  class definitions nor anything contained by them.
+     *  This method is read-synchronized on the workspace.
+     *  @return A list of opaque ComponentEntity objects.
+     *  @see #classDefinitionList()
+     *  @see #allAtomicEntityList()
+     */
+    public List deepOpaqueEntityList() {
+        try {
+            _workspace.getReadAccess();
+
+            return _deepOpaqueEntityList();
+        } finally {
+            _workspace.doneReading();
+        }
     }
 
     /** List the opaque entities that are directly or indirectly
@@ -1681,6 +1701,42 @@ public class CompositeEntity extends ComponentEntity {
                 ((ComponentEntity) containedObject)._adjustDeferrals();
             }
         }
+    }
+
+    /** List the opaque entities that are directly or indirectly
+     *  contained by this entity.  The list will be empty if there
+     *  are no such contained entities. This list does not include
+     *  class definitions nor anything contained by them.
+     *  This method is <b>not</b> read-synchronized on the workspace,
+     *  its caller should be read-synchronized.
+     *  @return A list of opaque ComponentEntity objects.
+     *  @see #classDefinitionList()
+     *  @see #allAtomicEntityList()
+     *  @see #deepEntityList()
+     */
+    protected List _deepOpaqueEntityList() {
+
+	ArrayList result = new ArrayList();
+
+	// This might be called from within a superclass constructor,
+	// in which case there are no contained entities yet.
+	if (_containedEntities != null) {
+	    Iterator entities = _containedEntities.elementList().iterator();
+
+	    while (entities.hasNext()) {
+		ComponentEntity entity = (ComponentEntity) entities.next();
+
+		if (!entity.isClassDefinition()) {
+		    if (entity.isOpaque()) {
+			result.add(entity);
+		    } else {
+			result.addAll(((CompositeEntity) entity)
+				      ._deepOpaqueEntityList());
+		    }
+		}
+	    }
+	}
+	return result;
     }
 
     /** Return a description of the object.  The level of detail depends

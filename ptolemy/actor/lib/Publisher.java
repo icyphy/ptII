@@ -393,7 +393,7 @@ public class Publisher extends TypedAtomicActor {
             container = (CompositeEntity) container.getContainer();
         }
         if (container != null) {
-            Iterator actors = container.deepEntityList().iterator();
+            Iterator actors = container.deepOpaqueEntityList().iterator();
             while (actors.hasNext()) {
                 Object actor = actors.next();
                 if (actor instanceof Subscriber) {
@@ -427,7 +427,7 @@ public class Publisher extends TypedAtomicActor {
             container = (CompositeEntity) container.getContainer();
         }
         if (container != null) {
-            Iterator actors = container.deepEntityList().iterator();
+            Iterator actors = container.deepOpaqueEntityList().iterator();
             while (actors.hasNext()) {
                 Object actor = actors.next();
                 if (actor instanceof Publisher && actor != this) {
