@@ -227,7 +227,7 @@ public class Relation extends NamedObj {
             LinkedList result = new LinkedList();
             Enumeration links = _linkList.getContainers();
 
-            Set exceptRelations = new HashSet();
+            Set<Relation> exceptRelations = new HashSet<Relation>();
             exceptRelations.add(this);
 
             while (links.hasMoreElements()) {
@@ -265,7 +265,7 @@ public class Relation extends NamedObj {
             LinkedList result = new LinkedList();
             Enumeration links = _linkList.getContainers();
 
-            Set exceptRelations = new HashSet();
+            Set<Relation> exceptRelations = new HashSet<Relation>();
             exceptRelations.add(this);
 
             while (links.hasMoreElements()) {
