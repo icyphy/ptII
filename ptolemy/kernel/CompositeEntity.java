@@ -639,7 +639,42 @@ public class CompositeEntity extends ComponentEntity {
             _workspace.doneReading();
         }
     }
+    
+    /** Return a set with the relations that are directly or indirectly
+     *  contained by this entity.  The set will be empty if there
+     *  are no such contained relations.
+     *  This method is read-synchronized on the workspace.
+     *  @return A set of ComponentRelation objects.
+     */
+    public Set<ComponentRelation> deepRelationSet() {
+        try {
+            _workspace.getReadAccess();
 
+            Set<ComponentRelation> result = new HashSet<ComponentRelation>();
+            
+            _addAll(result, relationList());
+
+            // This might be called from within a superclass constructor,
+            // in which case there are no contained entities yet.
+            if (_containedEntities != null) {
+
+                for (Object entityObject : _containedEntities.elementList()) {
+                    ComponentEntity entity = (ComponentEntity) entityObject;
+                    if (!entity.isClassDefinition()) {
+                        if (!entity.isOpaque()) {
+                            _addAll(result, ((CompositeEntity) entity).deepRelationSet());
+                        }
+                    }
+                }
+            }
+
+            return result;
+        } finally {
+            _workspace.doneReading();
+        }
+    }
+
+    
     /** Enumerate the opaque entities that are directly or indirectly
      *  contained by this entity.  The enumeration will be empty if there
      *  are no such contained entities. The enumeration does not include
@@ -1994,10 +2029,22 @@ public class CompositeEntity extends ComponentEntity {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+    
+
+    /**
+     * Add all elements from the sourceList into the targetList.
+     */
+    @SuppressWarnings("unchecked")
+    private static <T> void _addAll(Set<T> result, Collection<?> sourceList) {        
+        for (Object object : sourceList) {            
+            result.add((T)object);            
+        }
+    }
+    
     private void _addIcon() {
         _attachText("_iconDescription", _defaultIcon);
     }
-
+      
     /** Remove all level-crossing links from relations contained by
      *  the specified entity to ports or relations outside this
      *  composite entity, and from ports contained by entities
