@@ -307,7 +307,7 @@ public class SubscriptionAggregator extends Subscriber {
             container = (CompositeEntity) container.getContainer();
         }
         if (container != null) {
-            Iterator actors = container.deepEntityList().iterator();
+            Iterator actors = container.deepOpaqueEntityList().iterator();
             while (actors.hasNext()) {
                 Object actor = actors.next();
                 if (actor instanceof Publisher) {
