@@ -492,6 +492,12 @@ public class ComponentEntity extends Entity {
                     "Cannot set container because workspaces are different.");
         }
 
+        CompositeEntity previousContainer = (CompositeEntity) getContainer();
+
+        if (previousContainer == container) {
+            return;
+        }
+        
         try {
             _workspace.getWriteAccess();
             _checkContainer(container);
@@ -499,11 +505,6 @@ public class ComponentEntity extends Entity {
             // NOTE: The following code is quite tricky.  It is very careful
             // to leave a consistent state even in the face of unexpected
             // exceptions.  Be very careful if modifying it.
-            CompositeEntity previousContainer = (CompositeEntity) getContainer();
-
-            if (previousContainer == container) {
-                return;
-            }
 
             // Do this first, because it may throw an exception, and we have
             // not yet changed any state.
