@@ -53,7 +53,8 @@ JSRCS = \
 	ArrayOfRecordsRecorder.java \
 	DatabaseManager.java \
 	DatabaseQuery.java \
-	DatabaseSelect.java
+	DatabaseSelect.java \
+	DatabaseSetTable.java
 
 OTHER_FILES_TO_BE_JARED = \
 	database.xml \
