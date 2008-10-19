@@ -52,7 +52,7 @@ import ptolemy.kernel.util.Workspace;
 
 
  @author Thomas Huining Feng
- @version $Id: ModelParameter.java 50553 2008-08-30 03:27:08Z tfeng $
+ @version $Id$
  @since Ptolemy II 7.1
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
