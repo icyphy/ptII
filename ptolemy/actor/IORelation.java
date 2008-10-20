@@ -40,7 +40,6 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
@@ -410,6 +409,7 @@ public class IORelation extends ComponentRelation {
      *  @deprecated Use linkedDestinationPortList() instead.
      *  @return An enumeration of IOPort objects.
      */
+    @SuppressWarnings("unchecked")
     public Enumeration linkedDestinationPorts() {
         return linkedDestinationPorts(null);
     }
@@ -426,6 +426,7 @@ public class IORelation extends ComponentRelation {
      *  @deprecated Use linkDestinationPortList(IOPort) instead.
      *  @return An enumeration of IOPort objects.
      */
+    @SuppressWarnings("unchecked")
     public Enumeration linkedDestinationPorts(IOPort except) {
         return Collections.enumeration(linkedDestinationPortList(except));
     }
@@ -498,6 +499,7 @@ public class IORelation extends ComponentRelation {
      *  @deprecated Use linkedSourcePortList() instead.
      *  @return An enumeration of IOPort objects.
      */
+    @SuppressWarnings("unchecked")
     public Enumeration linkedSourcePorts() {
         return Collections.enumeration(linkedSourcePortList());
     }
@@ -513,6 +515,7 @@ public class IORelation extends ComponentRelation {
      *  @deprecated Use linkedSourcePortList(IOPort) instead.
      *  @return An enumeration of IOPort objects.
      */
+    @SuppressWarnings("unchecked")
     public Enumeration linkedSourcePorts(IOPort except) {
         return Collections.enumeration(linkedSourcePortList(except));
     }   
