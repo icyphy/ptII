@@ -200,7 +200,7 @@ proc memStats {name data} {
 test PubSub-4.1 {create many} {
     set pubSubStats {}
     set levelxingStats {}
-    foreach n {10 20 50 100 200 300 400 500 600 700 800 900 1000 1500 2000} { 
+    foreach n {10 20 50 100 200 300 400 500 600 700 800 900 1000 1500 2000 3000 5000 6000 10000 15000 20000} { 
 	jdkCapture {
 	    set r [nPubSubs $n 0]
         } pubSubStat
@@ -216,6 +216,14 @@ test PubSub-4.1 {create many} {
 	    set r2 [nPubSubs $n 0 0]
         } levelxingStat
         lappend levelxingStats $levelxingStat
+
+	set toplevel [lindex $r 0]
+	set filename "levelxing$n.xml"
+	set fd [open $filename w]
+	puts $fd [$toplevel exportMoML]
+	close $fd 
+	puts "Created $filename"
+
 	if { [lindex $r 1] != [lindex $r2 1] } {
 	    error "Results $r and $r2 are not equal"
 	}
