@@ -228,22 +228,27 @@ public class Subscriber extends TypedAtomicActor {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        // If this was created by instantiating a container class,
+	// We have two cases:
+        // 1) _updateLinks is false.
+	// If this was created by instantiating a container class,
         // then the links would not have been updated when setContainer()
         // was called, so we must do it now.
-        if (!_updatedLinks) {
-            _updateLinks();
-        }
-        if (input.getWidth() == 0) {
-            // If we are converting back and forth from class to
-            // instance, then there is a chance that we have not
-            // called _updateLinks() recently.  See Publisher-1.6 in
-            // test/Publisher.tcl. A better fix clear _updateLinks
-            // when the relation was deleted by
-            // CompositeEntity.setClassDefinition().  Another idea is
-            // to compare the workspace version number against the
-            // version number when we set _updatedLinks.  However,
-            // this could result in poor performance.
+	//
+	// 2) input.getWidth() is 0
+
+	// If we are converting back and forth from class to instance,
+	// then there is a chance that we have not called
+	// _updateLinks() recently.  See Publisher-1.6 in
+	// test/Publisher.tcl. A better fix might be toclear
+	// _updateLinks when the relation to the input port was deleted by
+	// CompositeEntity.setClassDefinition().    This would probably
+	// require creating a custom port class that would notice the deletion
+	// Another idea is to
+	// compare the workspace version number against the version
+	// number when we set _updatedLinks.  However, this could
+	// result in poor performance.
+
+        if (!_updatedLinks || input.getWidth() == 0) {
             _updateLinks();
             if (input.getWidth() == 0) {
                 throw new IllegalActionException(this,
