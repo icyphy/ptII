@@ -171,23 +171,15 @@ proc timeStats {name data} {
     set r "<dataset name=\"$name\">"
     set op "m"
     foreach line $data {
+	set nActors [lindex $line 0]
 	if {[regexp finished $line]} {
-	    if {$sawFinished == 0} {
-		set nActors [lindex $line 0]
-   	    }
-	    set sawFinished 1
-  	} else {
-	    if {$sawFinished == 1} {
-	        set sawFinished 0
-	        set time [lindex $line [[expr {[llength $line] - 6}]]]
-		puts "time: $time, $0"
-            } else {
-                set nActors [lindex $line 0]
-	        set time [lindex $line 4]
-       	    }
-	    set r "$r\n<$op x=\"$nActors\" y=\"$time\"/>"
-	    set op "p"
+            set time [lindex $line [expr {[llength $line] - 7}]]
+	    puts "time: $time, $line"
+        } else {
+        set time [lindex $line 4]
         }
+        set r "$r\n<$op x=\"$nActors\" y=\"$time\"/>"
+	set op "p"
     }
     set r "$r\n</dataset>"
     return $r
@@ -198,28 +190,22 @@ proc memStats {name data} {
     set r "<dataset name=\"$name\">"
     set op "m"
     foreach line $data {
+	set nActors [lindex $line 0]
 	if {[regexp finished $line]} {
-	    if {$sawFinished == 0} {
-		set nActors [lindex $line 0]
-   	    }
-	    set sawFinished 1
-  	} else {
-	    if {$sawFinished == 1} {
-	        set sawFinished 0
-		set mem [lindex $line [expr {[llength $0] - 3}]]
-		set free [lindex $line [expr {[length $0] - 1}]]
-            } else {
-                set nActors [lindex $line 0]
-		set mem [lindex $line 7]
-		set free [lindex $line 9]
-       	    }
-	    set mem [string range $mem 0 [expr {[string length $mem] - 2 } ]]
-	    set free [string range $free 0 [expr {[string length $free] - 2 } ]]
-	    set used [expr {($mem - $free)/10.0}]
-	#puts "$mem $free $used: $line"
-	    set r "$r\n<$op x=\"$nActors\" y=\"$used\"/>"
-	    set op "p"
+	    set mem [lindex $line [expr {[llength $line] - 4}]]
+	    set free [lindex $line [expr {[llength $line] - 2}]]
+	    puts "$mem, $free, $line"
+        } else {
+            set nActors [lindex $line 0]
+	    set mem [lindex $line 7]
+	    set free [lindex $line 9]
         }
+        set mem [string range $mem 0 [expr {[string length $mem] - 2 } ]]
+        set free [string range $free 0 [expr {[string length $free] - 2 } ]]
+        set used [expr {($mem - $free)/10.0}]
+	#puts "$mem $free $used: $line"
+	set r "$r\n<$op x=\"$nActors\" y=\"$used\"/>"
+	set op "p"
     }
     set r "$r\n</dataset>"
     return $r
@@ -300,7 +286,7 @@ Manager.initialize() finished: 154826 ms. Memory: 3225216K Free: 283676K (9%)
 155225 ms. Memory: 3225216K Free: 283676K (9%)
 } }
 
-plotStats $pubSubStats $levelxingStats
+#plotStats $pubSubStats $levelxingStats
 
 
 test PubSub-4.1 {create many} {
