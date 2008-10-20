@@ -179,7 +179,8 @@ proc timeStats {name data} {
   	} else {
 	    if {$sawFinished == 1} {
 	        set sawFinished 0
-	        set time [lindex $line 0]
+	        set time [lindex $line [[expr {[llength $line] - 6}]]]
+		puts "time: $time, $0"
             } else {
                 set nActors [lindex $line 0]
 	        set time [lindex $line 4]
@@ -205,8 +206,8 @@ proc memStats {name data} {
   	} else {
 	    if {$sawFinished == 1} {
 	        set sawFinished 0
-		set mem [lindex $line 4]
-		set free [lindex $line 6]
+		set mem [lindex $line [expr {[llength $0] - 3}]]
+		set free [lindex $line [expr {[length $0] - 1}]]
             } else {
                 set nActors [lindex $line 0]
 		set mem [lindex $line 7]
@@ -224,10 +225,89 @@ proc memStats {name data} {
     return $r
 }
 
+proc plotStats {pubSubStats levelxingStats} {
+    set plot [open stats.xml w] 
+    puts $plot {<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<!-- Ptolemy plot, version 5.7.1.devel , PlotML format. -->
+<title>Number of actors vs time and memory</title>
+<xLabel>Number of actors</xLabel>
+<yLabel>Time in ms, Memory in 10k Bytes</yLabel>
+	<default marks="bigdots"/>}
+
+    puts $plot [timeStats {PubSub Time in ms.} $pubSubStats]
+    puts $plot [memStats {PubSub Memory in 10K bytes} $pubSubStats]
+
+    puts $plot [timeStats {Level Xing Time in ms.} $levelxingStats]
+    puts $plot [memStats {Level Xing Memory in 10K bytes} $levelxingStats]
+
+
+    puts $plot {</plot>}
+    close $plot
+
+    puts "PubSub results"
+    puts $pubSubStats
+    puts "Level Crossing results"
+    puts $levelxingStats
+}
+
+
+set pubSubStats {{45 pubs and subs 25 ms. Memory: 31360K Free: 16644K (53%)
+} {95 pubs and subs 51 ms. Memory: 56320K Free: 32022K (57%)
+} {245 pubs and subs 243 ms. Memory: 80640K Free: 66925K (83%)
+} {495 pubs and subs 208 ms. Memory: 112832K Free: 36921K (33%)
+} {995 pubs and subs 637 ms. Memory: 200896K Free: 163735K (82%)
+} {1495 pubs and subs 626 ms. Memory: 292480K Free: 64365K (22%)
+} {1995 pubs and subs 1196 ms. Memory: 409280K Free: 167431K (41%)
+} {2495 pubs and subs 2056 ms. Memory: 621120K Free: 212842K (34%)
+} {2995 pubs and subs 3083 ms. Memory: 849856K Free: 368024K (43%)
+} {3495 pubs and subs 4153 ms. Memory: 1210048K Free: 786758K (65%)
+} {3995 pubs and subs 4209 ms. Memory: 1447040K Free: 655967K (45%)
+} {4495 pubs and subs 7199 ms. Memory: 1435776K Free: 812667K (57%)
+} {4995 pubs and subs 8375 ms. Memory: 1727360K Free: 1012097K (59%)
+} {7495 pubs and subs 14838 ms. Memory: 1750528K Free: 301986K (17%)
+} {9995 pubs and subs 29479 ms. Memory: 1929216K Free: 558617K (29%)
+} {14995 pubs and subs preinitialize() finished: 60703 ms. Memory: 2206784K Free: 1057615K (48%)
+Manager.initialize() finished: 60744 ms. Memory: 2206784K Free: 1037009K (47%)
+60959 ms. Memory: 2206784K Free: 1037009K (47%)
+} {24995 pubs and subs preinitialize() finished: 154321 ms. Memory: 2925632K Free: 1195173K (41%)
+Manager.initialize() finished: 154390 ms. Memory: 2925632K Free: 1168804K (40%)
+154756 ms. Memory: 2925632K Free: 1168804K (40%)
+} }
+
+set levelxingStats {{45 pubs and subs 29 ms. Memory: 31360K Free: 2109K (7%)
+} {95 pubs and subs 92 ms. Memory: 56320K Free: 1886K (3%)
+} {245 pubs and subs 178 ms. Memory: 101440K Free: 70064K (69%)
+} {495 pubs and subs 207 ms. Memory: 136256K Free: 42760K (31%)
+} {995 pubs and subs 465 ms. Memory: 245184K Free: 185295K (76%)
+} {1495 pubs and subs 714 ms. Memory: 345984K Free: 142922K (41%)
+} {1995 pubs and subs 1043 ms. Memory: 490816K Free: 178930K (36%)
+} {2495 pubs and subs 1672 ms. Memory: 728896K Free: 212458K (29%)
+} {2995 pubs and subs 2343 ms. Memory: 979584K Free: 383797K (39%)
+} {3495 pubs and subs 3043 ms. Memory: 1300672K Free: 101315K (8%)
+} {3995 pubs and subs 4237 ms. Memory: 1378816K Free: 486045K (35%)
+} {4495 pubs and subs 7161 ms. Memory: 1629376K Free: 1097324K (67%)
+} {4995 pubs and subs 6171 ms. Memory: 1747840K Free: 227272K (13%)
+} {7495 pubs and subs 16861 ms. Memory: 1869696K Free: 781608K (42%)
+} {9995 pubs and subs 25499 ms. Memory: 2107648K Free: 962237K (46%)
+} {14995 pubs and subs preinitialize() finished: 60282 ms. Memory: 2436224K Free: 256640K (11%)
+Manager.initialize() finished: 60322 ms. Memory: 2436224K Free: 256640K (11%)
+60561 ms. Memory: 2436224K Free: 234842K (10%)
+} {24995 pubs and subs preinitialize() finished: 154758 ms. Memory: 3225216K Free: 283676K (9%)
+Manager.initialize() finished: 154826 ms. Memory: 3225216K Free: 283676K (9%)
+155225 ms. Memory: 3225216K Free: 283676K (9%)
+} }
+
+plotStats $pubSubStats $levelxingStats
+
+
 test PubSub-4.1 {create many} {
     set pubSubStats {}
     set levelxingStats {}
-    foreach n {10 20 50 100 200 300 400 500 600 700 800 900 1000 1500 2000 3000 5000} {
+    #foreach n {10 20 50 100 200 300 400 500 600 700 800 900 1000 1500 2000 3000 5000}
+    foreach n {10} {
 	jdkCapture {
 	    set r [nPubSubs $n 0]
         } pubSubStat
@@ -257,31 +337,7 @@ test PubSub-4.1 {create many} {
 	    error "Results $r and $r2 are not equal"
 	}
     }
+    #plotStats $pubSubStats $levelxingStats
 
-    set plot [open stats.xml w] 
-    puts $plot {<?xml version="1.0" standalone="yes"?>
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<!-- Ptolemy plot, version 5.7.1.devel , PlotML format. -->
-<title>Number of actors vs time and memory</title>
-<xLabel>Number of actors</xLabel>
-<yLabel>Time in ms, Memory in 10k Bytes</yLabel>
-	<default marks="bigdots"/>}
-
-    puts $plot [timeStats {PubSub Time in ms.} $pubSubStats]
-    puts $plot [memStats {PubSub Memory in 10K bytes} $pubSubStats]
-
-    puts $plot [timeStats {Level Xing Time in ms.} $levelxingStats]
-    puts $plot [memStats {Level Xing Memory in 10K bytes} $levelxingStats]
-
-
-    puts $plot {</plot>}
-    close $plot
-
-    puts "PubSub results"
-    puts $pubSubStats
-    puts "Level Crossing results"
-    puts $levelxingStats
 } {}
 
