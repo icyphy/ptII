@@ -90,6 +90,7 @@ JSRCS = \
 	QuasiTransparentDirector.java \
 	QueueReceiver.java \
 	Receiver.java \
+	RelationWidthInference.java \
 	StateReceiver.java \
 	StreamExecutionListener.java \
 	TimedActor.java \
@@ -107,7 +108,7 @@ JSRCS = \
 	TypedIORelation.java \
 	TypeEvent.java \
 	TypeListener.java \
-	TypeOpaqueCompositeActor.java
+	TypeOpaqueCompositeActor.java 	
 
 EXTRA_SRCS =	$(JSRCS)
 

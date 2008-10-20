@@ -302,7 +302,7 @@ public class TypedIOPort extends IOPort implements Typeable {
         }
 
         newObject._typeTerm = null;
-        newObject._typeListeners = new LinkedList();
+        newObject._typeListeners = new LinkedList<TypeListener>();
         newObject._constraints = new HashSet<Inequality>();
         return newObject;
     }
@@ -340,13 +340,14 @@ public class TypedIOPort extends IOPort implements Typeable {
 
             Type result = BaseType.UNKNOWN;
 
+            //TODO rodiers rewrite so it does not need the receivers
             if (isOpaque()) {
                 result = _resolvedType;
             } else if (isInput()) {
                 // is a transparent input port. Get all the ports connected
                 // on the inside through receivers.
                 Receiver[][] receivers = this.deepGetReceivers();
-                List portTypeList = new LinkedList();
+                List<Type> portTypeList = new LinkedList<Type>();
 
                 if (receivers != null) {
                     for (int i = 0; i < receivers.length; i++) {
@@ -366,8 +367,8 @@ public class TypedIOPort extends IOPort implements Typeable {
             } else if (isOutput()) {
                 // is a transparent output port. Get all the ports connected
                 // on the inside through deepInsidePortList().
-                Iterator ports = deepInsidePortList().iterator();
-                List portTypeList = new LinkedList();
+                Iterator<?> ports = deepInsidePortList().iterator();
+                List<Type> portTypeList = new LinkedList<Type>();
 
                 while (ports.hasNext()) {
                     TypedIOPort port = (TypedIOPort) ports.next();
@@ -838,7 +839,7 @@ public class TypedIOPort extends IOPort implements Typeable {
     private void _notifyTypeListener(Type oldType, Type newType) {
         if (_typeListeners.size() > 0) {
             TypeEvent event = new TypeEvent(this, oldType, newType);
-            Iterator listeners = _typeListeners.iterator();
+            Iterator<TypeListener> listeners = _typeListeners.iterator();
 
             while (listeners.hasNext()) {
                 ((TypeListener) listeners.next()).typeChanged(event);
@@ -855,7 +856,7 @@ public class TypedIOPort extends IOPort implements Typeable {
     private TypeTerm _typeTerm = null;
 
     // Listeners for type change.
-    private List _typeListeners = new LinkedList();
+    private List<TypeListener> _typeListeners = new LinkedList<TypeListener>();
 
     // type constraints
     private Set<Inequality> _constraints = new HashSet<Inequality>();

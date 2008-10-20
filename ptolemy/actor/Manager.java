@@ -129,14 +129,14 @@ import ptolemy.util.StringUtilities;
  workspace itself may change during preinitialize as domains add
  annotation to the model.
 
- @author Steve Neuendorffer, Lukito Muliadi, Edward A. Lee, Elaine Cheong
- // Contributors: Mudit Goel, John S. Davis II
+ @author Steve Neuendorffer, Lukito Muliadi, Edward A. Lee, Elaine Cheong, Contributor: Mudit Goel, John S. Davis II, Bert Rodiers
  @version $Id$
  @since Ptolemy II 0.2
  @Pt.ProposedRating Green (neuendor)
  @Pt.AcceptedRating Yellow (cxh)
  */
-public class Manager extends NamedObj implements Runnable {
+public class Manager extends NamedObj implements Runnable {    
+
     /** Construct a manager in the default workspace with an empty string
      *  as its name. The manager is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -184,6 +184,10 @@ public class Manager extends NamedObj implements Runnable {
      */
     public final static State IDLE = new State("idle");
 
+    /** Indicator that width inference is being done.
+     */
+    public final static State INFERING_WIDTHS = new State("infering widths");
+    
     /** Indicator that the execution is in the initialize phase.
      */
     public final static State INITIALIZING = new State("initializing");
@@ -208,7 +212,7 @@ public class Manager extends NamedObj implements Runnable {
     /** Indicator that type resolution is being done.
      */
     public final static State RESOLVING_TYPES = new State("resolving types");
-
+    
     /** Indicator that the execution is throwing a throwable.
      */
     public final static State THROWING_A_THROWABLE = new State(
@@ -244,7 +248,7 @@ public class Manager extends NamedObj implements Runnable {
      */
     public void addAnalysis(String name, Object analysis) {
         if (_nameToAnalysis == null) {
-            _nameToAnalysis = new HashMap();
+            _nameToAnalysis = new HashMap<String, Object>();
         }
 
         _nameToAnalysis.put(name, analysis);
@@ -260,14 +264,14 @@ public class Manager extends NamedObj implements Runnable {
         }
 
         if (_executionListeners == null) {
-            _executionListeners = new LinkedList();
+            _executionListeners = new LinkedList<WeakReference<ExecutionListener>>();
         }
 
         // Do not add the same listener twice, so if it is already in the list,
         // remove it. See NamedObj.addChangeListener(). -- tfeng
         removeExecutionListener(listener);
 
-        _executionListeners.add(new WeakReference(listener));
+        _executionListeners.add(new WeakReference<ExecutionListener>(listener));
     }
 
     /** Execute the model.  Begin with the initialization phase, followed
@@ -404,9 +408,9 @@ public class Manager extends NamedObj implements Runnable {
                 // Handle throwable with exception handlers,
                 // if there are any.
                 if (initialThrowable != null) {
-                    List exceptionHandlersList = _container
+                    List<?> exceptionHandlersList = _container
                             .entityList(ExceptionHandler.class);
-                    Iterator exceptionHandlers = exceptionHandlersList
+                    Iterator<?> exceptionHandlers = exceptionHandlersList
                             .iterator();
                     if (exceptionHandlersList.size() > 0) {
                         boolean exceptionHandled = false;
@@ -641,27 +645,26 @@ public class Manager extends NamedObj implements Runnable {
             _workspace.getReadAccess();
             executeChangeRequests();
 
+            // We should infer the widths before preinitializing the container, since the latter
+            // will create the receivers for which it needs the widths of the relations. 
+            _inferRelationWidths();
+            
             // Pre-initialize actors that have been added.
-            if (_actorsToInitialize.size() > 0) {
-                Iterator actors = _actorsToInitialize.iterator();
-
-                while (actors.hasNext()) {
-                    Actor actor = (Actor) actors.next();
-                    // Do not attempt to preinitialize transparent composite actors.
-                    // Note that the cast is safe, as everything in Ptolemy that
-                    // is an actor is also a ComponentEntity.
-                    if (((ComponentEntity) actor).isOpaque()) {
-                        actor.preinitialize();
-                    }
-
-                    // NOTE: To see why this is no longer needed, see the comment
-                    // above for the commented out call to validateSettables().
-                    /*
-                     if (actor instanceof NamedObj) {
-                     ((NamedObj) actor).validateSettables();
-                     }
-                     */
+            for (Actor actor : _actorsToInitialize) {
+                // Do not attempt to preinitialize transparent composite actors.
+                // Note that the cast is safe, as everything in Ptolemy that
+                // is an actor is also a ComponentEntity.
+                if (((ComponentEntity) actor).isOpaque()) {
+                    actor.preinitialize();
                 }
+
+                // NOTE: To see why this is no longer needed, see the comment
+                // above for the commented out call to validateSettables().
+                /*
+                 if (actor instanceof NamedObj) {
+                 ((NamedObj) actor).validateSettables();
+                 }
+                 */
             }
             if (System.currentTimeMillis() - startTime > 60000) {
                 System.out
@@ -677,16 +680,11 @@ public class Manager extends NamedObj implements Runnable {
             _iterationCount++;
             _setState(ITERATING);
             // Perform domain-specific initialization on the actor.
-            if (_actorsToInitialize.size() > 0) {
-                Iterator actors = _actorsToInitialize.iterator();
-
-                while (actors.hasNext()) {
-                    Actor actor = (Actor) actors.next();
-                    actor.getExecutiveDirector().initialize(actor);
-                }
-
-                _actorsToInitialize.clear();
+            for (Actor actor : _actorsToInitialize) {
+                actor.getExecutiveDirector().initialize(actor);
             }
+
+            _actorsToInitialize.clear();
 
             if (_container.prefire()) {
                 _container.fire();
@@ -744,12 +742,11 @@ public class Manager extends NamedObj implements Runnable {
                         System.err.println(errorMessage);
                         throwable.printStackTrace();
                     } else {
-                        ListIterator listeners = _executionListeners
+                        ListIterator<WeakReference<ExecutionListener>> listeners = _executionListeners
                                 .listIterator();
 
                         while (listeners.hasNext()) {
-                            WeakReference reference = (WeakReference) listeners
-                                    .next();
+                            WeakReference<ExecutionListener> reference = listeners.next();
                             ExecutionListener listener = (ExecutionListener) reference
                                     .get();
 
@@ -904,6 +901,10 @@ public class Manager extends NamedObj implements Runnable {
                 _nameToAnalysis = null;
             }
 
+            // We should infer the widths before preinitializing the container, since the latter
+            // will create the receivers for which it needs the widths of the relations. 
+            _inferRelationWidths();
+            
             // Initialize the topology.
             // NOTE: Some actors require that parameters be set prior
             // to preinitialize().  Hence, this occurs after the call
@@ -916,8 +917,8 @@ public class Manager extends NamedObj implements Runnable {
             // EAL 5/31/02.
             _container.preinitialize();
 
-            executeChangeRequests();
-
+            executeChangeRequests();                      
+            
             resolveTypes();
             _typesResolved = true;
         } finally {
@@ -930,6 +931,7 @@ public class Manager extends NamedObj implements Runnable {
             _workspace.doneReading();
         }
     }
+    
 
     /** Remove a listener from the list of listeners that are notified
      *  of execution events.  If the specified listener is not on the list,
@@ -942,11 +944,7 @@ public class Manager extends NamedObj implements Runnable {
             return;
         }
 
-        ListIterator listeners = _executionListeners.listIterator();
-
-        while (listeners.hasNext()) {
-            WeakReference reference = (WeakReference) listeners.next();
-
+        for (WeakReference<ExecutionListener> reference : _executionListeners) {
             if (reference.get() == listener) {
                 _executionListeners.remove(listener);
             }
@@ -984,10 +982,9 @@ public class Manager extends NamedObj implements Runnable {
         // OK, then we need to initialize this actor.  However, we
         // don't need to initialize any actors contained by this
         // actor.
-        List list = new LinkedList(_actorsToInitialize);
+        List<Actor> list = new LinkedList<Actor>(_actorsToInitialize);
 
-        for (Iterator actors = list.iterator(); actors.hasNext();) {
-            NamedObj otherActor = (NamedObj) actors.next();
+        for (Actor otherActor : list) {
             NamedObj otherActorContainer = otherActor.getContainer();
 
             while (otherActorContainer != null) {
@@ -1332,12 +1329,11 @@ public class Manager extends NamedObj implements Runnable {
         }
 
         if (_executionListeners != null) {
-            ListIterator listeners = _executionListeners.listIterator();
+            ListIterator<WeakReference<ExecutionListener>> listeners = _executionListeners.listIterator();
 
             while (listeners.hasNext()) {
-                WeakReference reference = (WeakReference) listeners.next();
-                ExecutionListener listener = (ExecutionListener) reference
-                        .get();
+                WeakReference<ExecutionListener> reference =  listeners.next();
+                ExecutionListener listener = reference.get();
 
                 if (listener != null) {
                     listener.executionFinished(this);
@@ -1356,12 +1352,11 @@ public class Manager extends NamedObj implements Runnable {
         }
 
         if (_executionListeners != null) {
-            ListIterator listeners = _executionListeners.listIterator();
+            ListIterator<WeakReference<ExecutionListener>> listeners = _executionListeners.listIterator();
 
             while (listeners.hasNext()) {
-                WeakReference reference = (WeakReference) listeners.next();
-                ExecutionListener listener = (ExecutionListener) reference
-                        .get();
+                WeakReference<ExecutionListener> reference = listeners.next();
+                ExecutionListener listener = reference.get();
 
                 if (listener != null) {
                     listener.managerStateChanged(this);
@@ -1383,17 +1378,41 @@ public class Manager extends NamedObj implements Runnable {
             notifyAll();
         }
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+    
+   /**
+    * Infer the width of the relations for which no width has been
+    * specified yet (width equals -1)
+    * @exception IllegalActionException If the widths of the relations at port are not consistent
+    *                  or if the width cannot be inferred for a relation.
+    */
+    private void _inferRelationWidths() throws IllegalActionException {
 
+        try {
+            _workspace.getReadAccess();
+            if (_inferredWidthVersion != _workspace.getVersion()) {
+                _setState(INFERING_WIDTHS);
+                RelationWidthInference.inferWidths(_container);
+                _inferredWidthVersion = _workspace.getVersion();
+            }
+        } finally {
+            _workspace.doneReading();
+        }
+        
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // A list of actors with pending initialization.
-    private List _actorsToInitialize = new LinkedList();
+    private List<Actor> _actorsToInitialize = new LinkedList<Actor>();
 
     // The top-level CompositeActor that contains this Manager
     private CompositeActor _container = null;
 
     // Listeners for execution events. This list has weak references.
-    private List _executionListeners;
+    private List<WeakReference<ExecutionListener>> _executionListeners;
 
     // Set to true if we should exit after wrapup().
     private boolean _exitAfterWrapup = false;
@@ -1401,11 +1420,14 @@ public class Manager extends NamedObj implements Runnable {
     // Flag indicating that finish() has been called.
     private boolean _finishRequested = false;
 
+    // The workspace version of the last width inference.
+    private long _inferredWidthVersion = -1;
+    
     // Count the number of iterations completed.
     private int _iterationCount;
 
     // The map that keeps track of analyses.
-    private HashMap _nameToAnalysis;
+    private HashMap<String, Object> _nameToAnalysis;
 
     // Flag indicating that pause() has been called.
     private boolean _pauseRequested = false;
