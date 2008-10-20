@@ -593,8 +593,9 @@ public class CompositeEntity extends ComponentEntity {
     public List deepOpaqueEntityList() {
         try {
             _workspace.getReadAccess();
-
-            return _deepOpaqueEntityList();
+	    List results = new ArrayList();
+	    _deepOpaqueEntityList(results);
+	    return results;
         } finally {
             _workspace.doneReading();
         }
@@ -1744,14 +1745,12 @@ public class CompositeEntity extends ComponentEntity {
      *  class definitions nor anything contained by them.
      *  This method is <b>not</b> read-synchronized on the workspace,
      *  its caller should be read-synchronized.
-     *  @return A list of opaque ComponentEntity objects.
+     *  @param result The list of opaque ComponentEntity objects.
      *  @see #classDefinitionList()
      *  @see #allAtomicEntityList()
      *  @see #deepEntityList()
      */
-    protected List _deepOpaqueEntityList() {
-
-	ArrayList result = new ArrayList();
+    protected void _deepOpaqueEntityList(List result) {
 
 	// This might be called from within a superclass constructor,
 	// in which case there are no contained entities yet.
@@ -1760,18 +1759,15 @@ public class CompositeEntity extends ComponentEntity {
 
 	    while (entities.hasNext()) {
 		ComponentEntity entity = (ComponentEntity) entities.next();
-
 		if (!entity.isClassDefinition()) {
 		    if (entity.isOpaque()) {
 			result.add(entity);
 		    } else {
-			result.addAll(((CompositeEntity) entity)
-				      ._deepOpaqueEntityList());
+			((CompositeEntity) entity)._deepOpaqueEntityList(result);
 		    }
 		}
 	    }
 	}
-	return result;
     }
 
     /** Return a description of the object.  The level of detail depends
