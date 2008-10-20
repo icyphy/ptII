@@ -167,31 +167,58 @@ test PubSub-3.1 {50 pubs and subs} {
 } {{0.0 1.98 3.96 5.94 7.92}}
 
 proc timeStats {name data} {
+    set sawFinished 0
     set r "<dataset name=\"$name\">"
     set op "m"
     foreach line $data {
-	set nActors [lindex $line 0]
-	set time [lindex $line 4]
-	set r "$r\n<$op x=\"$nActors\" y=\"$time\"/>"
-	set op "p"
+	if {[regexp finished $line]} {
+	    if {$sawFinished == 0} {
+		set nActors [lindex $line 0]
+   	    }
+	    set sawFinished 1
+  	} else {
+	    if {$sawFinished == 1} {
+	        set sawFinished 0
+	        set time [lindex $line 0]
+            } else {
+                set nActors [lindex $line 0]
+	        set time [lindex $line 4]
+       	    }
+	    set r "$r\n<$op x=\"$nActors\" y=\"$time\"/>"
+	    set op "p"
+        }
     }
     set r "$r\n</dataset>"
     return $r
 }
 
 proc memStats {name data} {
+    set sawFinished 0
     set r "<dataset name=\"$name\">"
     set op "m"
     foreach line $data {
-	set nActors [lindex $line 0]
-	set mem [lindex $line 7]
-	set mem [string range $mem 0 [expr {[string length $mem] - 2 } ]]
-	set free [lindex $line 9]
-	set free [string range $free 0 [expr {[string length $free] - 2 } ]]
-	set used [expr {($mem - $free)/10.0}]
+	if {[regexp finished $line]} {
+	    if {$sawFinished == 0} {
+		set nActors [lindex $line 0]
+   	    }
+	    set sawFinished 1
+  	} else {
+	    if {$sawFinished == 1} {
+	        set sawFinished 0
+		set mem [lindex $line 4]
+		set free [lindex $line 6]
+            } else {
+                set nActors [lindex $line 0]
+		set mem [lindex $line 7]
+		set free [lindex $line 9]
+       	    }
+	    set mem [string range $mem 0 [expr {[string length $mem] - 2 } ]]
+	    set free [string range $free 0 [expr {[string length $free] - 2 } ]]
+	    set used [expr {($mem - $free)/10.0}]
 	#puts "$mem $free $used: $line"
-	set r "$r\n<$op x=\"$nActors\" y=\"$used\"/>"
-	set op "p"
+	    set r "$r\n<$op x=\"$nActors\" y=\"$used\"/>"
+	    set op "p"
+        }
     }
     set r "$r\n</dataset>"
     return $r
@@ -200,10 +227,11 @@ proc memStats {name data} {
 test PubSub-4.1 {create many} {
     set pubSubStats {}
     set levelxingStats {}
-    foreach n {10 20 50 100 200 300 400 500 600 700 800 900 1000 1500 2000 3000 5000 6000 10000 15000 20000} { 
+    foreach n {10 20 50 100 200 300 400 500 600 700 800 900 1000 1500 2000 3000 5000} {
 	jdkCapture {
 	    set r [nPubSubs $n 0]
         } pubSubStat
+	puts "pubsub $pubSubStat"
         lappend pubSubStats $pubSubStat
 	set toplevel [lindex $r 0]
 	set filename "pubsub$n.xml"
@@ -215,6 +243,7 @@ test PubSub-4.1 {create many} {
 	jdkCapture {
 	    set r2 [nPubSubs $n 0 0]
         } levelxingStat
+	puts "levelxing $levelxingStat"
         lappend levelxingStats $levelxingStat
 
 	set toplevel [lindex $r 0]
