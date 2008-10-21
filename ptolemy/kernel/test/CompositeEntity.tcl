@@ -138,7 +138,13 @@ test CompositeEntity-3.1.1 {Test allCompositeEntityList} {
 AtomicEntities: 2
 CompositeEntities: 1
 Relations: 0
-Attributes: 2}}
+Attributes: 2
+Atomic Actor Names and Counts:
+ptolemy.kernel.ComponentEntity 2
+
+Composite Entity Depths and Counts:
+Depth: 1 # of Composites at that depth: 1
+}}
 
 ######################################################################
 ####
@@ -491,18 +497,34 @@ test CompositeEntity-11.1.1 {Test allCompositeEntities and statistics} {
     list [listToNames [$e0 allAtomicEntityList]] \
          [listToNames [$e0 allCompositeEntityList]] \
          [listToNames [$e0 deepEntityList]] \
+         [listToNames [$e0 deepOpaqueEntityList]] \
             [$e0 statistics [java::null]] \
             [$e0 statistics ptolemy.kernel.CompositeEntity]
-} {{E1 E2 E5 E6 E8 E9} {E3 E4 E7 E10} {E1 E2 E5 E6 E8 E9} {Size Statistics for .E0
-AtomicEntities: 6
-CompositeEntities: 4
-Relations: 12
-Attributes: 6} {Size Statistics for .E0
+} {{E1 E2 E5 E6 E8 E9} {E3 E4 E7 E10} {E1 E2 E5 E6 E8 E9} {E1 E2 E5 E6 E8 E9} {Size Statistics for .E0
 AtomicEntities: 6
 CompositeEntities: 4
 Relations: 12
 Attributes: 6
-Entities of type "ptolemy.kernel.CompositeEntity": 4}}
+Atomic Actor Names and Counts:
+ptolemy.kernel.ComponentEntity 6
+
+Composite Entity Depths and Counts:
+Depth: 1 # of Composites at that depth: 3
+Depth: 2 # of Composites at that depth: 1
+} {Size Statistics for .E0
+AtomicEntities: 6
+CompositeEntities: 4
+Relations: 12
+Attributes: 6
+Entities of type "ptolemy.kernel.CompositeEntity": 4
+Atomic Actor Names and Counts:
+ptolemy.kernel.ComponentEntity 6
+
+Composite Entity Depths and Counts:
+Depth: 1 # of Composites at that depth: 3
+Depth: 2 # of Composites at that depth: 1
+}}
+
 
 ######################################################################
 ####
@@ -1434,3 +1456,10 @@ test CompositeEntity-22.2.2 {setClassDefinition on the sample example} {
 	[diffText $description1 $description2] \
 	[diffText $description1 $description3]
 } {1 0 1 {} {}}
+
+test CompositeEntity-23.1 {compare deepEntityList and deepOpaqueEntityList} {
+    # Uses 22.2.1 above
+    list \
+	[listToNames [$e0 deepEntityList]] \
+	[listToNames [$e0 deepOpaqueEntityList]]
+} {{E1 E2 E5 E6 E8 E9} {E1 E2 E5 E6 E8 E9}}
