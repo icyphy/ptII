@@ -807,6 +807,15 @@ off automatic rebuild).
 
 <li> In Package Explorer, locate ptjacl.jar -&gt; tcl.lang -&gt;
 Shell.class -&gt;  Shell and highlight it.
+<blockquote>
+	For some reason Eclipse sometimes hides certain jar files.
+	In  this case you have to add new a Debug Configuration (in the
+	menu <i>Run -&gt; Debug Configurations...</i>) in Eclipse similar as
+	the decription in section <a href="#runningPtolemy">Running Ptolemy II</a>,
+	then  choose the ptII project as Project and use <i>tcl.lang.Shell</i>
+	as Main class. The remaining steps are described below.
+</blockquote>
+	
 
 <li> Go to Run -&gt; Debug...
 
@@ -816,7 +825,8 @@ Shell.class -&gt;  Shell and highlight it.
  <br>(E.g. SimpleDelay.tcl)
 
 <li> In VM arguments, put <CODE>-Dptolemy.ptII.dir=<I>your PtII directory</I></CODE>
- <br>(E.g. <CODE>-Dptolemy.ptII.dir=c:\hyzheng\ptII</CODE>)
+<br>(E.g. <CODE>-Dptolemy.ptII.dir=c:\hyzheng\ptII</CODE>).<br /> In case your directory path contains
+spaces, you need to use quotes. (E.g. <CODE>-Dptolemy.ptII.dir="c:\my workspace\ptII"</CODE>).
 
 
 <li> Select Local directory, browse to the directory containing the tcl 
