@@ -52,13 +52,14 @@ import ptolemy.kernel.util.NamedObj;
 ////OpenRtosPNDirector
 
 /**
- * Code generator helper associated with the PNDirector class. This helper
- * generates OpenRTOS specific code. This director starts a task for each actor.
- * Each task executes a given function which includes the actor initialization,
- * fire and wrapup code. The communication between tasks use the OpenRTOS
- * queues. These queues provide synchronized access methods. This director
- * helper generates a queue for each connection which is referenced by its
- * referable port channel. There is one referable port channel for each
+ * Code generator helper associated with the PNDirector class. This
+ * helper generates OpenRTOS specific code. This director starts a
+ * task for each actor.  Each task executes a given function which
+ * includes the actor initialization, fire and wrapup code. The
+ * communication between tasks use the OpenRTOS queues. These queues
+ * provide synchronized access methods. This director helper generates
+ * a queue for each connection which is referenced by its referable
+ * port channel. There is one referable port channel for each
  * connection.
  * 
  * @author Man-Kit Leung
@@ -70,7 +71,8 @@ import ptolemy.kernel.util.NamedObj;
 public class OpenRtosPNDirector extends Director {
 
 	/**
-	 * Construct the code generator helper associated with the given PNDirector.
+	 * Construct the code generator helper associated with the
+	 * given PNDirector.
 	 * 
 	 * @param pnDirector
 	 *            The associated ptolemy.domains.pn.kernel.PNDirector
@@ -79,19 +81,21 @@ public class OpenRtosPNDirector extends Director {
 		super(pnDirector);
 	}
 
-	// //////////////////////////////////////////////////////////////////////
+	// ////////////////////////////////////////////////////////////////////
 	// // public methods ////
 
 	/**
-	 * Generate code for getting data from the specified channel. This uses the
-	 * built-in queues provided by OpenRTOS to transport data between tasks. It
-	 * generates an invocation of the xQueueReceive() function which takes as
-	 * arguments a queue reference, variable pointer for holding the data, and a
-	 * maximum wait time. To fulfill the blocking communication semantics of PN,
-	 * a while loop is generated to ensure the receipt of data. A queue is
-	 * declared and created for each connection (input-output port pair).
-	 * $ref(port#channalNumber) is used as the data holder, and the wait time is
-	 * determined by _getMaxDelay(Channel).
+	 * Generate code for getting data from the specified
+	 * channel. This uses the built-in queues provided by OpenRTOS
+	 * to transport data between tasks. It generates an invocation
+	 * of the xQueueReceive() function which takes as arguments a
+	 * queue reference, variable pointer for holding the data, and
+	 * a maximum wait time. To fulfill the blocking communication
+	 * semantics of PN, a while loop is generated to ensure the
+	 * receipt of data. A queue is declared and created for each
+	 * connection (input-output port pair).
+	 * $ref(port#channalNumber) is used as the data holder, and
+	 * the wait time is determined by _getMaxDelay(Channel).
 	 * 
 	 * @param port
 	 *            The specified port.
@@ -99,8 +103,8 @@ public class OpenRtosPNDirector extends Director {
 	 *            The specified channel.
 	 * @return The code for getting data from specified channel.
 	 * @throws IllegalActionException
-	 *             If the specified port channel has more than one referable
-	 *             queues.
+	 *             If the specified port channel has more than one
+	 *              referable queues.
 	 * @exception IllegalActionException
 	 *                If the {@link #getReferenceChannels(IOPort, int),
 	 *                #processCode(String)} method throws the exceptions.
@@ -108,7 +112,8 @@ public class OpenRtosPNDirector extends Director {
 	public String generateCodeForGet(IOPort port, int channelNumber)
 			throws IllegalActionException {
 
-		List<Channel> channels = getReferenceChannels(port, channelNumber);
+		List<Channel> channels = getReferenceChannels(port,
+                        channelNumber);
 
 		if (channels.size() == 0) {
 			return "";
@@ -136,7 +141,8 @@ public class OpenRtosPNDirector extends Director {
 		String waitTime = _getMaxDelay(referenceChannel);
 
 		return actorHelper.processCode("while( pdTRUE != xQueueReceive("
-				+ queue + ", &" + dataVariable + ", " + waitTime + ") );");
+				+ queue + ", &" + dataVariable + ", "
+                        + waitTime + ") );");
 	}
 
 	/**
@@ -178,13 +184,15 @@ public class OpenRtosPNDirector extends Director {
 	}
 
 	/**
-	 * Generate the fire code. This generates a xTaskCreate() function call for
-	 * each actor. The xTaskCreate() function takes as parameters a task
-	 * function pointer, the task name, a stack size value, a pointer to the
-	 * task parameters, a value for task priority, and the task handle which
-	 * would be assigned upon the return of the function. The
-	 * vTaskStartScheduler() is generated after the xTaskCreate() calls. It
-	 * starts the task scheduler once every task is created.
+	 * Generate the fire code. This generates a xTaskCreate()
+	 * function call for each actor. The xTaskCreate() function
+	 * takes as parameters a task function pointer, the task name,
+	 * a stack size value, a pointer to the task parameters, a
+	 * value for task priority, and the task handle which would be
+	 * assigned upon the return of the function. The
+	 * vTaskStartScheduler() is generated after the xTaskCreate()
+	 * calls. It starts the task scheduler once every task is
+	 * created.
 	 * 
 	 * @return The generated fire code.
 	 * @exception IllegalActionException
@@ -217,33 +225,37 @@ public class OpenRtosPNDirector extends Director {
 	}
 
 	/**
-	 * Generate the fire function code. This generates the function code for
-	 * each task. It is a collection of global functions, one for each actor
-	 * that is visible to this director helper. Creating each new task requires
-	 * one of these function as parameter. It is the code that the task
-	 * executes. When the inline parameter is checked, the task function code is
-	 * generated in {@link #generatePreinitializeCode()} which is outside the
-	 * main function.
+	 * Generate the fire function code. This generates the
+	 * function code for each task. It is a collection of global
+	 * functions, one for each actor that is visible to this
+	 * director helper. Creating each new task requires one of
+	 * these function as parameter. It is the code that the task
+	 * executes. When the inline parameter is checked, the task
+	 * function code is generated in 
+         * {@link #generatePreinitializeCode()} which is outside the main
+	 * function.
 	 * 
 	 * @return The fire function code.
 	 * @exception IllegalActionException
-	 *                If there is an exception in generating the task function
-	 *                code.
+	 *                If there is an exception in generating the
+	 *                task function code.
 	 */
-	public String generateFireFunctionCode() throws IllegalActionException {
+	public String generateFireFunctionCode()
+                throws IllegalActionException {
 		StringBuffer code = new StringBuffer();
 		_generateTaskFunctionCode(code);
 		return code.toString();
 	}
 
 	/**
-	 * Return the buffer size to generate the variable for the specified port
-	 * channel. This number dictates the size of the array generated for
-	 * variable associated with the port channel. This returns 1, since queuing
-	 * is done using a separate structure.
+	 * Return the buffer size to generate the variable for the
+	 * specified port channel. This number dictates the size of
+	 * the array generated for variable associated with the port
+	 * channel. This returns 1, since queuing is done using a
+	 * separate structure.
 	 * 
-	 * @return The buffer size to generate the variable for the specified port
-	 *         channel. In this case, it's 1.
+	 * @return The buffer size to generate the variable for the specified
+         *         port channel. In this case, it's 1.
 	 * @exception IllegalActionException
 	 *                Not thrown in this class.
 	 */
@@ -253,10 +265,11 @@ public class OpenRtosPNDirector extends Director {
 	}
 
 	/**
-	 * Get the files needed by the code generated from this helper class. The
-	 * header files required are "FreeRTOS.h", "task.h", "queue.h",
-	 * "lcd_message.h", and "semphr.h". Because of dependencies between these
-	 * header files, they are included in the order specified.
+	 * Get the files needed by the code generated from this helper
+	 * class. The header files required are "FreeRTOS.h",
+	 * "task.h", "queue.h", "lcd_message.h", and
+	 * "semphr.h". Because of dependencies between these header
+	 * files, they are included in the order specified.
 	 * 
 	 * @return A set of strings that are header files needed by the code
 	 *         generated from this helper class.
@@ -274,8 +287,9 @@ public class OpenRtosPNDirector extends Director {
 	}
 
 	/**
-	 * Generate the initialize code. This generates the hardware initialization
-	 * code and creates the queues for all referable port channels.
+	 * Generate the initialize code. This generates the hardware
+	 * initialization code and creates the queues for all
+	 * referable port channels.
 	 * 
 	 * @return The generated initialize code.
 	 * @exception IllegalActionException
@@ -311,14 +325,15 @@ public class OpenRtosPNDirector extends Director {
 	}
 
 	/**
-	 * Generate the main loop code. If the inline parameter of the code
-	 * generator is checked, it generates the fire code; otherwise, it generates
-	 * the a call to the fire function generated by generateFireFunction().
+	 * Generate the main loop code. If the inline parameter of the
+	 * code generator is checked, it generates the fire code;
+	 * otherwise, it generates the a call to the fire function
+	 * generated by generateFireFunction().
 	 * 
 	 * @return The main loop code.
 	 * @exception IllegalActionException
-	 *                If looking up the inline parameter or generating the fire
-	 *                code throws it.
+	 *                If looking up the inline parameter or generating
+         *                the fire code throws it.
 	 */
 	public String generateMainLoop() throws IllegalActionException {
 		StringBuffer code = new StringBuffer();
@@ -341,10 +356,11 @@ public class OpenRtosPNDirector extends Director {
 	 * 
 	 * @return The generated preinitialize code.
 	 * @exception IllegalActionException
-	 *                If the helper associated with an actor throws it while
-	 *                generating preinitialize code for the actor.
+	 *                If the helper associated with an actor throws it
+	 *                while generating preinitialize code for the actor.
 	 */
-	public String generatePreinitializeCode() throws IllegalActionException {
+	public String generatePreinitializeCode()
+                throws IllegalActionException {
 		StringBuffer bufferCode = new StringBuffer();
 		StringBuffer code = new StringBuffer();
 
@@ -377,11 +393,12 @@ public class OpenRtosPNDirector extends Director {
 	/**
 	 * Generate code for transferring tokens into a composite.
 	 * 
-	 * FIXME: We haven't considered the case where this PNDirector is embedded
-	 * within another director. The only possible combination is PN inside PN.
-	 * In this case, we should generate one cross-level queue rather than two.
-	 * In any case, this method override the base class method and generate no
-	 * extra code.
+	 * FIXME: We haven't considered the case where this PNDirector
+	 * is embedded within another director. The only possible
+	 * combination is PN inside PN.  In this case, we should
+	 * generate one cross-level queue rather than two.  In any
+	 * case, this method override the base class method and
+	 * generate no extra code.
 	 * 
 	 * @param inputPort
 	 *            The port to transfer tokens.
@@ -398,11 +415,12 @@ public class OpenRtosPNDirector extends Director {
 	/**
 	 * Generate code for transferring tokens outside of a composite.
 	 * 
-	 * FIXME: We haven't considered the case where this PNDirector is embedded
-	 * within another director. The only possible combination is PN inside PN.
-	 * In this case, we should generate one cross-level queue rather than two.
-	 * In any case, this method override the base class method and generate no
-	 * extra code.
+	 * FIXME: We haven't considered the case where this PNDirector
+	 * is embedded within another director. The only possible
+	 * combination is PN inside PN.  In this case, we should
+	 * generate one cross-level queue rather than two.  In any
+	 * case, this method override the base class method and
+	 * generate no extra code.
 	 * 
 	 * @param port
 	 *            The specified port.
@@ -417,9 +435,10 @@ public class OpenRtosPNDirector extends Director {
 	}
 
 	/**
-	 * Generate variable initialization for the referenced parameters. This
-	 * overrides the super class method and returns an empty string. It avoids
-	 * generating any offset variables.
+	 * Generate variable initialization for the referenced
+	 * parameters. This overrides the super class method and
+	 * returns an empty string. It avoids generating any offset
+	 * variables.
 	 * 
 	 * @return code The empty string.
 	 * @exception IllegalActionException
@@ -434,11 +453,13 @@ public class OpenRtosPNDirector extends Director {
 	// // protected methods ////
 
 	/**
-	 * Create the offset variables for the given port. Since built-in queue
-	 * structure is used, it eliminates the need for offset variables. Instead,
-	 * this method generates the declaration of the queues if the specified port
-	 * has any referable port channels. There is one referable port channel for
-	 * each connection. All input port channels are considered referable.
+	 * Create the offset variables for the given port. Since
+	 * built-in queue structure is used, it eliminates the need
+	 * for offset variables. Instead, this method generates the
+	 * declaration of the queues if the specified port has any
+	 * referable port channels. There is one referable port
+	 * channel for each connection. All input port channels are
+	 * considered referable.
 	 * 
 	 * @param port
 	 *            The specified port.
@@ -482,8 +503,9 @@ public class OpenRtosPNDirector extends Director {
 	// // private methods ////
 
 	/**
-	 * Generate the reference of the queue generated for the specified port and
-	 * channel number. The specified port channel is assumed to be referable.
+	 * Generate the reference of the queue generated for the
+	 * specified port and channel number. The specified port
+	 * channel is assumed to be referable.
 	 * 
 	 * @param port
 	 *            The specified port.
@@ -491,24 +513,26 @@ public class OpenRtosPNDirector extends Director {
 	 *            The specified channel number.
 	 * @return The reference for the queue.
 	 */
-	private static String _generateQueueReference(IOPort port, int channelNumber) {
-		return CodeGeneratorHelper.generateName(port) + "_" + channelNumber
-				+ "_queue";
+	private static String _generateQueueReference(IOPort port,
+                int channelNumber) {
+		return CodeGeneratorHelper.generateName(port) + "_"
+                    + channelNumber + "_queue";
 	}
 
 	/**
-	 * Generate the task functions. A task function is generated for each actor
-	 * that is visible to this director helper. A task function consists of the
-	 * actor's initialize, fire and wrapup code. In particular, a loop is
-	 * generated to iterate the actor's fire code. If the actor has a firing
-	 * count limit, a finite for loop is generated. Otherwise, the fire code is
-	 * wrapped inside an infinite loop.
+	 * Generate the task functions. A task function is generated
+	 * for each actor that is visible to this director helper. A
+	 * task function consists of the actor's initialize, fire and
+	 * wrapup code. In particular, a loop is generated to iterate
+	 * the actor's fire code. If the actor has a firing count
+	 * limit, a finite for loop is generated. Otherwise, the fire
+	 * code is wrapped inside an infinite loop.
 	 * 
 	 * @param code
 	 *            The given code buffer.
 	 * @throws IllegalActionException
-	 *             If getting the helper or generating the actor initialize,
-	 *             fire, or wrapup code throws it.
+	 *             If getting the helper or generating the actor
+	 *             initialize, fire, or wrapup code throws it.
 	 */
 	private void _generateTaskFunctionCode(StringBuffer code)
 			throws IllegalActionException {
@@ -599,10 +623,11 @@ public class OpenRtosPNDirector extends Director {
 	}
 
 	/**
-	 * Return the maximum wait time for getting and sending data on the
-	 * specified port channel. The wait time specifies the duration the queue
-	 * access functions block before returning. In this case, it is set to the
-	 * maximum, portMAX_DELAY, which is a symbolic constant defined in the
+	 * Return the maximum wait time for getting and sending data
+	 * on the specified port channel. The wait time specifies the
+	 * duration the queue access functions block before
+	 * returning. In this case, it is set to the maximum,
+	 * portMAX_DELAY, which is a symbolic constant defined in the
 	 * OpenRTOS header file.
 	 * 
 	 * @param channel
@@ -614,9 +639,10 @@ public class OpenRtosPNDirector extends Director {
 	}
 
 	/**
-	 * Return the task priority associated with the specified actor. If the
-	 * actor has a parameter named "_priority", its expression is returned.
-	 * Otherwise, zero is the default priority value.
+	 * Return the task priority associated with the specified
+	 * actor. If the actor has a parameter named "_priority", its
+	 * expression is returned.  Otherwise, zero is the default
+	 * priority value.
 	 * 
 	 * @param actor
 	 *            The specified actor.
@@ -640,7 +666,8 @@ public class OpenRtosPNDirector extends Director {
 	 *            The specified port.
 	 * @param channelNumber
 	 *            The specified channel number.
-	 * @return The size of the queue to be generated for the given port channel.
+	 * @return The size of the queue to be generated for the given port
+                      channel.
 	 * @throws IllegalActionException
 	 */
 	private int _getQueueSize(IOPort port, int channelNumber)
@@ -653,9 +680,10 @@ public class OpenRtosPNDirector extends Director {
 	}
 
 	/**
-	 * Return the expression of the stack size value for the specified actor
-	 * task. If the specified actor has a parameter named "_stackSize", its
-	 * expression is return. Otherwise, 80 is default return value.
+	 * Return the expression of the stack size value for the
+	 * specified actor task. If the specified actor has a
+	 * parameter named "_stackSize", its expression is
+	 * return. Otherwise, 80 is default return value.
 	 * 
 	 * @param actor
 	 *            The specified actor.
@@ -675,7 +703,8 @@ public class OpenRtosPNDirector extends Director {
 	// // private variables ////
 
 	/**
-	 * The set of referable channels that are associated with a generated queue.
+	 * The set of referable channels that are associated with a
+	 * generated queue.
 	 */
 	private HashSet<Channel> _queues = new HashSet<Channel>();
 }
