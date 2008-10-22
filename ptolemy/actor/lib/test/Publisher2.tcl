@@ -90,6 +90,11 @@ test PubSub-1.0 {One pub, one sub} {
 } {{0.0 1.1 2.2 3.3 4.4}}
 
 proc nPubSubs {numberOfPubSubs {returnAll 1} {usePubSub 1}} {
+    set e0 [createPubSubModel $numberOfPubSubs $returnAll $usePubSub]
+    return [executeModel $numberOfPubSubs $e0 $returnAll]
+}
+
+proc createPubSubModel {numberOfPubSubs {returnAll 1} {usePubSub 1}} {
     set e0 [sdfModel 5]
     $e0 allowLevelCrossingConnect true
     set sdfDirector [java::cast ptolemy.domains.sdf.kernel.SDFDirector [$e0 getDirector]]
@@ -133,10 +138,10 @@ proc nPubSubs {numberOfPubSubs {returnAll 1} {usePubSub 1}} {
 	}
 
     }
-    set n [[$e0 deepEntityList] size]
+    return $e0
+}
 
-    puts -nonewline "$n pubs and subs "
-
+proc executeModel {numberOfPubSubs e0 returnAll} {
     [$e0 getManager] execute
     if {$returnAll == 1} {
 	set result {}
@@ -146,6 +151,7 @@ proc nPubSubs {numberOfPubSubs {returnAll 1} {usePubSub 1}} {
 	    lappend result [list [enumToTokenValues [$rec getRecord 0]]]
 	}
     } else {
+	set rec [java::cast ptolemy.actor.lib.Recorder [$e0 getEntity "rec_PS20_[expr {$numberOfPubSubs - 1}]"]]
 	set result [enumToTokenValues [$rec getRecord 0]]
     }
     return [list $e0 $result]
@@ -296,7 +302,8 @@ test PubSub-4.1 {create many} {
 	puts "\n======"
 	puts "Running model with $n pub/subs"
 	jdkCapture {
-	    set r [nPubSubs $n 0]
+	    set e0 [createPubSubModel $n 0 1]
+	    set r [executeModel $n $e0 0]
         } pubSubStat
 	puts "pubsub $pubSubStat"
         lappend pubSubStats $pubSubStat
@@ -309,7 +316,8 @@ test PubSub-4.1 {create many} {
 
 	puts "\nRunning model with $n level crossing links"
 	jdkCapture {
-	    set r2 [nPubSubs $n 0 0]
+	    set e0 [createPubSubModel $n 0 0]
+	    set r2 [executeModel $n $e0 0]
         } levelxingStat
 	puts "levelxing $levelxingStat"
         lappend levelxingStats $levelxingStat
