@@ -33,7 +33,7 @@
 
 ME =		ptolemy/codegen/c/domains/giotto
 
-DIRS =		kernel test
+DIRS =		kernel 
 
 # Root of the Java directory
 ROOT =		../../../../..
