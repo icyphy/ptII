@@ -39,7 +39,6 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.actor.util.ExplicitChangeContext;
-import ptolemy.codegen.kernel.CodeGeneratorHelper.Channel;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -556,15 +555,6 @@ public class Director extends CodeGeneratorHelper {
         }
 
         return set;
-    }
-
-    /**
-     * Generate the shared code. In this base class, return an empty set.
-     * @return An empty set in this base class.
-     * @exception IllegalActionException Not thrown in this base class.
-     */
-    public Set getSharedCode() throws IllegalActionException {
-        return new HashSet();
     }
 
     /** Set the code generator associated with this helper class.
