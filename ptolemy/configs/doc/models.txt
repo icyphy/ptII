@@ -70,6 +70,7 @@ $CLASSPATH/ptolemy/actor/ptalon/demo/SmallWorld/ParameterSweep-SmallWorld-sdf.xm
 $CLASSPATH/ptolemy/domains/ddf/demo/HanoiTower/HanoiTower.xml
 $CLASSPATH/ptolemy/domains/tm/demo/Controllers/Controllers.xml
 $CLASSPATH/ptolemy/domains/wireless/demo/TerrainModel/TerrainModel.xml
+$CLASSPATH/ptolemy/actor/gt/demo/ModelExecution/ModelExecution.xml
 $CLASSPATH/ptolemy/data/type/demo/Router/Router.xml
 $CLASSPATH/ptolemy/domains/giotto/demo/Hierarchy/Hierarchy.xml
 $CLASSPATH/ptolemy/domains/erg/demo/TrafficLight/TrafficLight.xml
@@ -133,6 +134,7 @@ $CLASSPATH/ptolemy/domains/ct/demo/BouncingBall/BouncingBall.xml
 $CLASSPATH/ptolemy/domains/giotto/demo/Multimode/Multimode.xml
 $CLASSPATH/ptolemy/domains/rendezvous/demo/WriteRegulator/WriteRegulator.xml
 $CLASSPATH/ptolemy/actor/gt/demo/BouncingBallX2/BouncingBallX2.xml
+$CLASSPATH/ptolemy/actor/gt/demo/MapReduce/MapReduceDDF.xml
 $CLASSPATH/ptolemy/domains/sdf/demo/SynthesizedVoice/SynthesizedVoice.xml
 $CLASSPATH/ptolemy/domains/ct/demo/Transmission/Transmission.xml
 $CLASSPATH/ptolemy/domains/ddf/demo/Factorial/Factorial.xml
