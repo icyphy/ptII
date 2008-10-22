@@ -41,7 +41,6 @@ import ptolemy.codegen.c.actor.sched.StaticSchedulingDirector;
 import ptolemy.codegen.c.kernel.CCodegenUtilities;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.CodeStream;
-import ptolemy.codegen.kernel.CodeGeneratorHelper.Channel;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Variable;

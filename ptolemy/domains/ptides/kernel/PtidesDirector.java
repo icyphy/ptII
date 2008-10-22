@@ -40,7 +40,7 @@ import java.util.Set;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.Receiver; 
+import ptolemy.actor.Receiver;
 import ptolemy.actor.util.CausalityInterfaceForComposites;
 import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.RealDependency;

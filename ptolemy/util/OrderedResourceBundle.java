@@ -43,8 +43,6 @@ import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import java.io.File;
-
 
 /**
  * A concrete subclass of <code>java.util.ResourceBundle</code> that manages

@@ -37,6 +37,7 @@ package ptolemy.actor;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.CausalityInterface;

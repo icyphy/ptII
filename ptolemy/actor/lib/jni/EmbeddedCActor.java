@@ -26,7 +26,6 @@
  */
 package ptolemy.actor.lib.jni;
 
-import java.util.Iterator;
 import java.util.List;
 
 import ptolemy.actor.TypedAtomicActor;

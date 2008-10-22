@@ -28,7 +28,6 @@
 package ptolemy.vergil.kernel;
 
 import java.awt.Frame;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 

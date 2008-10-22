@@ -27,7 +27,6 @@
  */
 package ptolemy.codegen.c.domains.giotto.kernel;
 
-import java.util.Iterator;
 import ptolemy.codegen.kernel.Director;
 
 // this is a copy of the SDF constructor renamed for giotto.. it may be inappropriate..

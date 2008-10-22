@@ -45,7 +45,6 @@ import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.CodeStream;
 import ptolemy.codegen.kernel.Director;
 import ptolemy.codegen.kernel.PortCodeGenerator;
-import ptolemy.codegen.kernel.CodeGeneratorHelper.Channel;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;

@@ -27,24 +27,7 @@
  */
 package ptolemy.actor.lib.gui;
 
-import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.Component;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.KeyStroke;
-
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.gui.Tableau;
 import ptolemy.data.IntToken;
-import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;

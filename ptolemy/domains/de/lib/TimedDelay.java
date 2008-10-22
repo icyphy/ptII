@@ -32,7 +32,7 @@ import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.BreakCausalityInterface;
 import ptolemy.actor.util.CalendarQueue;
 import ptolemy.actor.util.CausalityInterface;
-import ptolemy.actor.util.DefaultCausalityInterface; 
+import ptolemy.actor.util.DefaultCausalityInterface;
 import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.RealDependency;
 import ptolemy.actor.util.Time;

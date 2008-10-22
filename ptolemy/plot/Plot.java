@@ -53,6 +53,7 @@ import java.io.PrintWriter;
 import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
+
 import javax.swing.JComponent;
 
 import ptolemy.util.RunnableExceptionCatcher;

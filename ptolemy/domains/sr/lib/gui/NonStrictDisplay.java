@@ -30,8 +30,8 @@ package ptolemy.domains.sr.lib.gui;
 
 import javax.swing.text.BadLocationException;
 
-import ptolemy.data.StringToken;
 import ptolemy.actor.lib.gui.Display;
+import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
