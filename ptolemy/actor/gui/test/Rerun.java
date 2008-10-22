@@ -27,7 +27,7 @@
  */
 package ptolemy.actor.gui.test;
 
-import ptolemy.actor.gui.MoMLSimpleApplication;
+import ptolemy.moml.MoMLSimpleApplication;
 
 /////////////////////////////////////////////////////////////////////////
 //// Rerun
