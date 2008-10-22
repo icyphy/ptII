@@ -34,7 +34,7 @@ import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
  * 
  * @author Man-Kit Leung
  * @version $Id: LuminaryTarget.java 47617 2007-12-18 19:59:51Z cxh $
- * @since Ptolemy II 6.1
+ * @since Ptolemy II 7.0
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
@@ -42,9 +42,7 @@ public class LuminaryOpenRTOSTarget extends CCodeGeneratorHelper {
 
 	/**
 	 * Construct a helper for the Luminary target.
-	 * 
-	 * @param actor
-	 *            The associated actor.
+	 * @param actor The associated actor.
 	 */
 	public LuminaryOpenRTOSTarget(ptolemy.actor.TypedCompositeActor actor) {
 		super(actor);
