@@ -310,6 +310,7 @@ test Manager-10.0 {Test execution listener} {
     #9/02 - 'processing mutations' moved from line 4 to line 2
     list $stdoutResultsWithoutTime [[$manager getState] getDescription] 
 } {{preinitializing
+infering widths
 resolving types
 initializing
 executing number 1
@@ -354,6 +355,7 @@ test Manager-10.1 {Test execution listener with one arg} {
     #9/02 - 'processing mutations' moved from line 4 to line 2
     list $stdoutResultsWithoutStackTrace
 } {{preinitializing
+infering widths
 resolving types
 initializing
 executing number 1
