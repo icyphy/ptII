@@ -567,9 +567,9 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
     }
 
 
-    private boolean _isMpi() {
-        return getCodeGenerator().getAttribute("mpi") != null;
-    }
+//    private boolean _isMpi() {
+//        return getCodeGenerator().getAttribute("mpi") != null;
+//    }
 
 
     private boolean _isPthread() {
