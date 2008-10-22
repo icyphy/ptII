@@ -213,6 +213,7 @@ HYBRID_SYSTEMS_DEMO_AND_DOC_JARS = \
 	ptolemy/domains/ct/demo/demo.jar \
 	ptolemy/domains/ct/doc/doc.jar \
 	ptolemy/domains/fsm/doc/doc.jar \
+	ptolemy/domains/fsm/demo/demo.jar \
 	ptolemy/domains/sdf/demo/demo.jar \
 	ptolemy/domains/sdf/doc/doc.jar
 
