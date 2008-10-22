@@ -96,6 +96,7 @@ public class ModelExecutor extends TypedAtomicActor {
         if (actor instanceof ComponentEntity) {
             ComponentEntity entity = (ComponentEntity) GTTools.cleanupModel(
                     actor, workspace);
+            workspace.remove(actor);
             try {
                 Wrapper wrapper = new Wrapper(workspace);
                 entity.setContainer(wrapper);

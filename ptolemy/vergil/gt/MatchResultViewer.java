@@ -66,6 +66,7 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
@@ -541,7 +542,8 @@ public class MatchResultViewer extends GTFrame {
     throws CloneNotSupportedException, IllegalActionException,
     NameDuplicationException {
         UndoStackAttribute prevStack = UndoStackAttribute.getUndoInfo(from);
-        UndoStackAttribute stack = (UndoStackAttribute) prevStack.clone();
+        UndoStackAttribute stack = (UndoStackAttribute) prevStack.clone(
+                to.workspace());
         stack.setContainer(to);
     }
 
@@ -593,9 +595,11 @@ public class MatchResultViewer extends GTFrame {
     private void _finishTransform(CompositeEntity oldModel) {
         CompositeEntity currentModel = (CompositeEntity) getModel();
         CompositeEntity model;
+        Workspace workspace = currentModel.workspace();
         try {
-            model = (CompositeEntity) GTTools.cleanupModel(currentModel);
-            currentModel.workspace().remove(currentModel);
+            model = (CompositeEntity) GTTools.cleanupModel(currentModel,
+                    workspace);
+            workspace.remove(currentModel);
         } catch (IllegalActionException e) {
             throw new InternalErrorException(currentModel, e,
                     "Unable to clean up model.");
@@ -780,9 +784,10 @@ public class MatchResultViewer extends GTFrame {
 
         try {
             CompositeEntity currentModel = (CompositeEntity) getModel();
-            CompositeEntity model =
-                (CompositeEntity) GTTools.cleanupModel(currentModel);
-            currentModel.workspace().remove(currentModel);
+            Workspace workspace = currentModel.workspace();
+            CompositeEntity model = (CompositeEntity) GTTools.cleanupModel(
+                    currentModel, workspace);
+            workspace.remove(currentModel);
             Tableau tableau = getFrameController().getConfiguration().openModel(
                     model);
             ((Effigy) tableau.getContainer()).uri.setURI(null);
@@ -807,10 +812,8 @@ public class MatchResultViewer extends GTFrame {
         CompositeEntity currentModel = (CompositeEntity) getModel();
         CompositeEntity oldModel;
         try {
-            oldModel = (CompositeEntity) GTTools.cleanupModel(currentModel,
-                    currentModel.workspace());
-            currentModel.workspace().remove(currentModel);
-            _delegateUndoStack(getModel(), oldModel);
+            oldModel = (CompositeEntity) GTTools.cleanupModel(currentModel);
+            _delegateUndoStack(currentModel, oldModel);
 
             GraphTransformer.transform(_rule, _results.get(_currentPosition));
         } catch (Exception e) {
@@ -827,7 +830,6 @@ public class MatchResultViewer extends GTFrame {
         CompositeEntity oldModel;
         try {
             oldModel = (CompositeEntity) GTTools.cleanupModel(currentModel);
-            currentModel.workspace().remove(currentModel);
             _delegateUndoStack(getModel(), oldModel);
 
             GraphMatcher matcher = null;
@@ -1158,8 +1160,7 @@ public class MatchResultViewer extends GTFrame {
             CompositeEntity currentModel = (CompositeEntity) getModel();
             CompositeEntity oldModel = (CompositeEntity) GTTools.cleanupModel(
                     currentModel);
-            currentModel.workspace().remove(currentModel);
-            _delegateUndoStack(getModel(), oldModel);
+            _delegateUndoStack(currentModel, oldModel);
             ModelChangeRequest request = new ModelChangeRequest(viewer, viewer,
                     _model, new UndoChangeModelAction(oldModel,
                             _currentPosition));
