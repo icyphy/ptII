@@ -293,6 +293,8 @@ test PubSub-4.1 {create many} {
     set pubSubStats {}
     set levelxingStats {}
     foreach n {10 20 50 100 200 300 400 500 600 700 800 900 1000} {
+	puts "\n======"
+	puts "Running model with $n pub/subs"
 	jdkCapture {
 	    set r [nPubSubs $n 0]
         } pubSubStat
@@ -303,8 +305,9 @@ test PubSub-4.1 {create many} {
 	set fd [open $filename w]
 	puts $fd [$toplevel exportMoML]
 	close $fd 
-	puts "Created $filename"
+	puts "Wrote $filename"
 
+	puts "\nRunning model with $n level crossing links"
 	jdkCapture {
 	    set r2 [nPubSubs $n 0 0]
         } levelxingStat
