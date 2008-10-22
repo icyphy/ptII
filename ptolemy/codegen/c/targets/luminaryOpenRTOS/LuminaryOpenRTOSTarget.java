@@ -1,6 +1,6 @@
 /* Common code for the Luminary
 
- @Copyright (c) 2007 The Regents of the University of California.
+ @Copyright (c) 2008 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -30,21 +30,23 @@ package ptolemy.codegen.c.targets.luminaryOpenRTOS;
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 
 /**
- Common code for the Luminary.
-
- @author Christopher Brooks
- @version $Id: LuminaryTarget.java 47617 2007-12-18 19:59:51Z cxh $
- @since Ptolemy II 6.1
- @Pt.ProposedRating Red (cxh)
- @Pt.AcceptedRating Red (cxh)
+ * Common code for the Luminary.
+ * 
+ * @author Man-Kit Leung
+ * @version $Id: LuminaryTarget.java 47617 2007-12-18 19:59:51Z cxh $
+ * @since Ptolemy II 6.1
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
  */
 public class LuminaryOpenRTOSTarget extends CCodeGeneratorHelper {
 
-    /**
-     * Construct a helper for the Luminary target.
-     * @param actor The associated actor.
-     */
-    public LuminaryOpenRTOSTarget(ptolemy.actor.TypedCompositeActor actor) {
-        super(actor);
-    }
+	/**
+	 * Construct a helper for the Luminary target.
+	 * 
+	 * @param actor
+	 *            The associated actor.
+	 */
+	public LuminaryOpenRTOSTarget(ptolemy.actor.TypedCompositeActor actor) {
+		super(actor);
+	}
 }
