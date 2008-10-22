@@ -2869,13 +2869,13 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return portHelper.generateCodeForGet(channel);
     }
 
-    private List<String> processListOfCode(List<String> list) throws IllegalActionException {
-        ArrayList<String> newList = new ArrayList<String>();
-        for (String code : list) {
-            newList.add(processCode(code));
-        }
-        return newList;
-    }
+//    private List<String> processListOfCode(List<String> list) throws IllegalActionException {
+//        ArrayList<String> newList = new ArrayList<String>();
+//        for (String code : list) {
+//            newList.add(processCode(code));
+//        }
+//        return newList;
+//    }
 
     public static List<String> _parseList(String parameters) {
         List<String> result = new ArrayList<String>();
