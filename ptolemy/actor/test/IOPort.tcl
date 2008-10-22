@@ -169,8 +169,10 @@ test IOPort-5.1 {Test getWidth} {
     set e1 [java::new ptolemy.actor.AtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.IOPort $e1 P1 true false]
     set r1 [java::new ptolemy.actor.IORelation $e0 R1]
+    java::call ptolemy.actor.RelationWidthInference inferWidths $e0
     set temp [$p1 getWidth]
     $p1 liberalLink $r1
+    java::call ptolemy.actor.RelationWidthInference inferWidths $e0
     list $temp [$p1 getWidth]
 } {0 1}
 
@@ -185,6 +187,7 @@ test IOPort-5.2 {Test getWidth} {
     $p1 setMultiport true
     $p1 liberalLink $r1
     $p1 liberalLink $r2
+    java::call ptolemy.actor.RelationWidthInference inferWidths $e0
     $p1 getWidth
 } {2}
 
@@ -200,6 +203,7 @@ test IOPort-5.3 {Test getWidth} {
     $p1 setMultiport true
     $p1 liberalLink $r1
     $p1 liberalLink $r2
+    java::call ptolemy.actor.RelationWidthInference inferWidths $e0
     $p1 getWidth
 } {3}
 
@@ -223,10 +227,12 @@ test IOPort-5.4 {Test getWidth after unlinking} {
     # Call preinitialize on the director so that the receivers get created
     # added Neil Smyth. Need to call this as receivers are no longer 
     # created on the fly.
+    java::call ptolemy.actor.RelationWidthInference inferWidths $e0
     $director preinitialize
 
     $p1 getRemoteReceivers
     $p2 unlink $r1
+    java::call ptolemy.actor.RelationWidthInference inferWidths $e0    
     list [$p1 getWidth] [$p2 getWidth]
 } {1 0}
 
@@ -563,6 +569,7 @@ test IOPort-9.2 {Check unlink and send to dangling relation} {
     # send() method.
     $p1 {send int ptolemy.data.Token} 0 $token
     catch {$p2 get 0} msg
+    java::call ptolemy.actor.RelationWidthInference inferWidths $e0
     list [$p2 getWidth] $msg
 } {0 {ptolemy.kernel.util.IllegalActionException: Channel index 0 is out of range, because width is only 0.
   in .<Unnamed Object>.E2.P2}}
@@ -595,6 +602,7 @@ test IOPort-9.3 {Check unlink and get from unlinked port} {
     set token [java::new ptolemy.data.StringToken foo]
     catch {$p1 hasRoom 0} msg1
     catch {$p2 get 0} msg2
+    java::call ptolemy.actor.RelationWidthInference inferWidths $e0
     list [$p2 getWidth] $msg1 $msg2
 } {1 {ptolemy.kernel.util.IllegalActionException: hasRoom: channel index is out of range.
   in .<Unnamed Object>.E1.P1} {ptolemy.actor.NoTokenException: Attempt to get data from an empty mailbox.
@@ -964,7 +972,7 @@ test IOPort-11.1 {Check liberalLink on transparent multiport and inferred width}
     set e1 [java::new ptolemy.actor.AtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.IOPort $e1 P1 false true]
     $p1 setMultiport true
-    # outside entoty
+    # outside entity
     set e2 [java::new ptolemy.actor.AtomicActor $e0 E2]
     set p2 [java::new ptolemy.actor.IOPort $e2 P2 true false]
     $p2 setMultiport true
@@ -979,6 +987,7 @@ test IOPort-11.1 {Check liberalLink on transparent multiport and inferred width}
     $r2 setWidth 3
     $p0 link $r2
     $p2 link $r2
+    java::call ptolemy.actor.RelationWidthInference inferWidths $ex
     list [$p0 getWidth] [$p1 getWidth] [$p2 getWidth]
 } {0 1 3}
 
@@ -987,6 +996,7 @@ test IOPort-11.15 {Check inferred width} {
     set r3 [java::new ptolemy.actor.IORelation $ex R3]
     $r3 setWidth 3
     $p0 link $r3
+    java::call ptolemy.actor.RelationWidthInference inferWidths $ex
     set result [list [$p0 getWidth] [$p1 getWidth] [$p2 getWidth]]
     $r3 setWidth 4
     lappend result [$p0 getWidth] [$p1 getWidth] [$p2 getWidth]
@@ -1003,8 +1013,10 @@ test IOPort-11.2 {Check liberalLink: link a linked relation from inside } {
     set r1 [java::new ptolemy.actor.IORelation $e0 R1]
     $r1 setWidth 1
     $p0 link $r1
-    catch {$p0 link $r1} msg1
+    $p0 link $r1
+    catch {java::call ptolemy.actor.RelationWidthInference inferWidths $e0} msg1
     list $msg1
+
 } {{}}
 
 test IOPort-11.3 {Check liberalLink multi-*-relation from inside } {
@@ -1018,15 +1030,19 @@ test IOPort-11.3 {Check liberalLink multi-*-relation from inside } {
     $p0 link $r1
     set r2 [java::new ptolemy.actor.IORelation $e0 R2]
     $r2 setWidth 0
-    catch {$p0 link $r2} msg1
-    list $msg1
-} {{ptolemy.kernel.util.IllegalActionException: Attempt to link a second bus relation with unspecified width to the inside of a port.
-  in .<Unnamed Object>.P0 and .<Unnamed Object>.R2}}
+    $p0 link $r2
+    catch {java::call ptolemy.actor.RelationWidthInference inferWidths $e0} msg1    
+    set widthInferenceNotDeterministic "ptolemy.kernel.util.IllegalActionException: The width of relation * can not be uniquely inferred.
+Please make the width inference deterministic by explicitly specifying the width of this relation.
+  in *"        
+    string match $widthInferenceNotDeterministic $msg1
+} {1}
 
 test IOPort-11.4 {Check liberalLink multi-*-relation from outside } {
-    set e0 [java::new ptolemy.actor.CompositeActor]
-    $e0 setDirector $director
-    $e0 setManager $manager
+		set ex [java::new ptolemy.actor.CompositeActor]
+    $ex setDirector $director
+    $ex setManager $manager		
+    set e0 [java::new ptolemy.actor.CompositeActor $ex E0]
     set p0 [java::new ptolemy.actor.IOPort $e0 P0 false true]
     $p0 setMultiport true
     # inside relation, fixed width
@@ -1034,22 +1050,21 @@ test IOPort-11.4 {Check liberalLink multi-*-relation from outside } {
     $r1 setWidth 3
     $p0 link $r1
     # ourside relation, *
-    set r2 [java::new ptolemy.actor.IORelation]
-    $r2 setName R2
+    set r2 [java::new ptolemy.actor.IORelation $ex R2]
     $r2 setWidth 0
     $p0 link $r2
-    set r3 [java::new ptolemy.actor.IORelation]
-    $r3 setName R3
+    set r3 [java::new ptolemy.actor.IORelation $ex R3]
     $r3 setWidth 0
-    catch {$p0 link $r3} msg1
-    list $msg1
-} {{ptolemy.kernel.util.IllegalActionException: Attempt to link a second bus relation with unspecified width to the outside of a port.
-  in .<Unnamed Object>.P0 and .R3}}
+    $p0 link $r3
+    catch {java::call ptolemy.actor.RelationWidthInference inferWidths $ex} msg1
+    string match $widthInferenceNotDeterministic $msg1
+} {1}
 
 test IOPort-11.5 {Check liberalLink *-relation from both inside and outside } {
-    set e0 [java::new ptolemy.actor.CompositeActor]
-    $e0 setDirector $director
-    $e0 setManager $manager
+    set ex [java::new ptolemy.actor.CompositeActor]
+    $ex setDirector $director
+    $ex setManager $manager    
+    set e0 [java::new ptolemy.actor.CompositeActor $ex E0]
     set p0 [java::new ptolemy.actor.IOPort $e0 P0 false true]
     $p0 setMultiport true
     # inside relation, *
@@ -1057,10 +1072,10 @@ test IOPort-11.5 {Check liberalLink *-relation from both inside and outside } {
     $r1 setWidth 0
     $p0 link $r1
     # outside relation, *
-    set r2 [java::new ptolemy.actor.IORelation]
-    $r2 setName R2
+    set r2 [java::new ptolemy.actor.IORelation $ex R2]
     $r2 setWidth 2
-    catch {$p0 link $r2} msg1
+    $p0 link $r2
+    catch {java::call ptolemy.actor.RelationWidthInference inferWidths $ex} msg1
     list $msg1
 } {{}}
 
@@ -1079,9 +1094,10 @@ test IOPort-11.6 {Check cannot link a relation twice to a single port} {
   in .<Unnamed Object>.P0 and .<Unnamed Object>.R1}}
 
 test IOPort-11.7 {No two relations from both inside and outside can be a bus} {
-    set e0 [java::new ptolemy.actor.CompositeActor]
-    $e0 setDirector $director
-    $e0 setManager $manager
+    set ex [java::new ptolemy.actor.CompositeActor]
+    $ex setDirector $director
+    $ex setManager $manager    
+    set e0 [java::new ptolemy.actor.CompositeActor $ex E0]
     set p0 [java::new ptolemy.actor.IOPort $e0 P0 false true]
     $p0 setMultiport true
     # inside relation, *
@@ -1089,13 +1105,12 @@ test IOPort-11.7 {No two relations from both inside and outside can be a bus} {
     $r1 setWidth 0
     $p0 link $r1
     # outside relation, *
-    set r2 [java::new ptolemy.actor.IORelation]
-    $r2 setName R2
+    set r2 [java::new ptolemy.actor.IORelation $ex R2]
     $r2 setWidth 0
-    catch {$p0 link $r2} msg1
-    list $msg1
-} {{ptolemy.kernel.util.InvalidStateException: Width of outside relations cannot be determined.
-  in .<Unnamed Object>.P0}}
+    $p0 link $r2
+    catch {java::call ptolemy.actor.RelationWidthInference inferWidths $ex} msg1
+    string match $widthInferenceNotDeterministic $msg1
+} {1}
 
 ######################################################################
 ####
