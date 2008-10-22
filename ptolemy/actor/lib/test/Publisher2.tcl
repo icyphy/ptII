@@ -292,8 +292,7 @@ Manager.initialize() finished: 154826 ms. Memory: 3225216K Free: 283676K (9%)
 test PubSub-4.1 {create many} {
     set pubSubStats {}
     set levelxingStats {}
-    #foreach n {10 20 50 100 200 300 400 500 600 700 800 900 1000 1500 2000 3000 5000}
-    foreach n {10} {
+    foreach n {10 20 50 100 200 300 400 500 600 700 800 900 1000} {
 	jdkCapture {
 	    set r [nPubSubs $n 0]
         } pubSubStat
