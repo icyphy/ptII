@@ -162,7 +162,7 @@ public class RelationWidthInference {
                         "The width of relation " + relation.getFullName() +
                         " can not be uniquely inferred.\n"                        
                         + "Please make the width inference deterministic by"
-                        + " explictly specifying the width of this relation.");
+                        + " explicitly specifying the width of this relation.");
                 
             }
         } finally {

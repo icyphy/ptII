@@ -318,6 +318,12 @@ public class IORelation extends ComponentRelation {
                     container = toplevel.getContainer();                    
                 }                
                 try {
+                    //TODO rodiers test IORelation-9.1 in IORelation.tcl clones
+                    // a non-fixed width relation and the cloned one has no parent
+                    //  Is this normal?
+                    
+                    //  Either change test or code.
+                    
                     RelationWidthInference.inferWidths((CompositeActor) toplevel);
                 } catch (IllegalActionException e) {
                     // Width inference not possible. Use zero as width.

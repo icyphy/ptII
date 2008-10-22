@@ -612,6 +612,7 @@ public class IOPort extends ComponentPort {
      *  @deprecated Use deepConnectedInPortList() instead.
      *  @return An enumeration of input IOPort objects.
      */
+    @SuppressWarnings("unchecked")
     public Enumeration deepConnectedInPorts() {
         return Collections.enumeration(deepConnectedInPortList());
     }
@@ -659,6 +660,7 @@ public class IOPort extends ComponentPort {
      *  @deprecated Use deepConnectedInPortList() instead.
      *  @return An enumeration of output IOPort objects.
      */
+    @SuppressWarnings("unchecked")
     public Enumeration deepConnectedOutPorts() {
         return Collections.enumeration(deepConnectedOutPortList());
     }    
@@ -3800,7 +3802,7 @@ public class IOPort extends ComponentPort {
                                 + "to a single port.");
             }
 
-            if ((relation.getWidth() != 1) || !relation.isWidthFixed()) {
+            if (!relation.isWidthFixed() || relation.getWidth() != 1) {
                 // Relation is a bus.
                 if (!isMultiport()) {
                     throw new IllegalActionException(this, relation,
