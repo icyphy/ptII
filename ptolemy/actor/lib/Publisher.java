@@ -155,40 +155,8 @@ public class Publisher extends TypedAtomicActor {
                 String newValue = channel.stringValue();
                 if (!newValue.equals(_channel)) {
                     _channel = newValue;
-                    // If we are within a class definition, then we should
-                    // not create any links.  The links should only exist
-                    // within instances. Otherwise, we could end up creating
-                    // a link between a class definition and an instance.
-                    Nameable container = getContainer();
-                    if ((container instanceof TypedCompositeActor)) {
-                        // NOTE: There used to be some logic here to call
-                        // _updateLinks() only if the manager indicates we
-                        // are running, and otherwise to set _updatedLinks
-                        // to false. This is no longer necessary as
-                        // the attributeChanged() method is called at
-                        // appropriate times, and tests show it is called
-                        // exactly once per publisher. Moreover, it really
-                        // isn't correct to defer this, as _updateLinks()
-                        // handles connectivity information. If we want to,
-                        // for example, highlight dependents before a model
-                        // has been run, this has to be done here.
-                        // However, it could fail due to a transient error.
-                        // For example, suppose we create two publishers
-                        // that have the same channel name while editing a
-                        // model, e.g., by instantiating a class containing
-                        // a publisher twice. But during editing, we plan
-                        // to change the channel name before running the
-                        // model.  Thus, we should tolerate errors here
-                        // and continue until the error is caught in
-                        // preinitialize().
-                        try {
-                            _updateLinks();
-                        } catch (IllegalActionException ex) {
-                            _updatedLinks = false;
-                            if (_running) {
-                                throw ex;
-                            }
-                        }
+		    // We now call _updateLinks in preinitialize().
+		    // This change makes the open time roughly 40% faster.
                     }
                 }
             }
