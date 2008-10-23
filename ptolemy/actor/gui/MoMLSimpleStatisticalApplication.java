@@ -222,11 +222,11 @@ public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
                     // Assume this is a MoML file, and open it.
                     _parser.reset();
 
-                    // If the open time is more than 10 seconds, print it.
+                    // If the open time is more than 1 ms seconds, print it.
                     long startTime = System.currentTimeMillis();
                     _toplevel = (CompositeActor) _parser.parse(base, inURL);
                     long endTime = System.currentTimeMillis();
-                    if (endTime - startTime > 10000) {
+                    if (endTime - startTime > 1) {
                         System.out.println("Opened \"" + base + "\": "
                                 + Manager.timeAndMemory(startTime));
                     }
