@@ -921,6 +921,7 @@ public class Manager extends NamedObj implements Runnable {
             
             resolveTypes();
             _typesResolved = true;
+            _preinitializeVersion = _workspace.getVersion();
         } finally {
             // Clear the preinitialization analyses.
             if (_nameToAnalysis != null) {
@@ -932,6 +933,22 @@ public class Manager extends NamedObj implements Runnable {
         }
     }
     
+    /** If the workspace version has changed since the last invocation
+     *  of preinitializeAndResolveTypes(), then invoke it now and set
+     *  the state of the Manager to IDLE upon completion. This can be used
+     *  during editing a model to check types, to expand higher-order
+     *  components, or to establish connections between Publisher and
+     *  Subscriber actors.
+     */
+    public void preinitializeIfNecessary() throws KernelException {
+        try {
+            if (_preinitializeVersion != _workspace.getVersion()) {
+                preinitializeAndResolveTypes();
+            }
+        } finally {
+            _setState(IDLE);
+        }
+    }
 
     /** Remove a listener from the list of listeners that are notified
      *  of execution events.  If the specified listener is not on the list,
@@ -1431,6 +1448,9 @@ public class Manager extends NamedObj implements Runnable {
 
     // Flag indicating that pause() has been called.
     private boolean _pauseRequested = false;
+    
+    // Version at which preinitialize last successfully executed.
+    private long _preinitializeVersion = -1;
 
     // Flag for waiting on resume();
     private boolean _resumeNotifyWaiting = false;
