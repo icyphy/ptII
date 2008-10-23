@@ -126,7 +126,8 @@ test SubscriptionAggregator-3.0 {Debugging messages} {
 	        [$stream toString] "\n" output
     list $output \
 	[enumToTokenValues [$rec getRecord 0]]
-} {{Called preinitialize()
+} {{Connections changed on port: input
+Called preinitialize()
 Called stopFire()
 Added attribute firingsPerIteration to .top.subagg
 Called initialize()
