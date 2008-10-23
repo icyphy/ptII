@@ -342,6 +342,13 @@ public final class Workspace implements Nameable, Serializable {
      *  an exception is thrown. This is to ensure that the workspace is in a
      *  consistent state, otherwise write access may never again be
      *  granted in this workspace.
+     *  If while holding read access the thread attempts to get write access
+     *  and is blocked, then upon attempting to get write access, the read
+     *  lock is released, and it is not reacquired until the write access
+     *  is granted. Therefore, upon any call to any method that gets write
+     *  access within a block holding read access, the model structure can
+     *  change. You should not assume that the model is the same prior to
+     *  the call as after. 
      *  @exception InternalErrorException If the calling thread is interrupted
      *   while waiting to get read access.
      *  @see #doneReading()
