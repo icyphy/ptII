@@ -298,42 +298,43 @@ Manager.initialize() finished: 154826 ms. Memory: 3225216K Free: 283676K (9%)
 test PubSub-4.1 {create many} {
     set pubSubStats {}
     set levelxingStats {}
-    foreach n {10 20 50 100 200 300 400 500 600 700 800 900 1000} {
+    foreach n {10 20 50 100 200 300 400 500 600 700 800 900 1000 2000 5000 10000 20000} {
 	puts "\n======"
 	puts "Running model with $n pub/subs"
+	set filename "pubsub$n.xml"
 	jdkCapture {
 	    set e0 [createPubSubModel $n 0 1]
-	    set r [executeModel $n $e0 0]
+	    #set r [executeModel $n $e0 0]
         } pubSubStat
 	puts "pubsub $pubSubStat"
         lappend pubSubStats $pubSubStat
-	set toplevel [lindex $r 0]
-	set filename "pubsub$n.xml"
+
 	set fd [open $filename w]
-	puts $fd [$toplevel exportMoML]
+	puts $fd [$e0 exportMoML]
 	close $fd 
 	puts "Wrote $filename"
 
-	puts "\nRunning model with $n level crossing links"
-	jdkCapture {
-	    set e0 [createPubSubModel $n 0 0]
-	    set r2 [executeModel $n $e0 0]
-        } levelxingStat
-	puts "levelxing $levelxingStat"
-        lappend levelxingStats $levelxingStat
+# 	puts "\nRunning model with $n level crossing links"
+# 	puts "levelxing $levelxingStat"
+# 	jdkCapture {
+# 	    set e0 [createPubSubModel $n 0 0]
+# 	    exec java -classpath $PTII ptolemy.actor.gui.MoMLSimpleStatisticalApplication $filename
+# 	    #set r2 [executeModel $n $e0 0]
+#         } levelxingStat
+#         lappend levelxingStats $levelxingStat
 
-	set toplevel [lindex $r 0]
-	set filename "levelxing$n.xml"
-	set fd [open $filename w]
-	puts $fd [$toplevel exportMoML]
-	close $fd 
-	puts "Created $filename"
+# 	set filename "levelxing$n.xml"
+# 	set fd [open $filename w]
+# 	puts $fd [$e0 exportMoML]
+# 	close $fd 
+# 	puts "Created $filename"
 
-	if { [lindex $r 1] != [lindex $r2 1] } {
-	    error "Results $r and $r2 are not equal"
-	}
+	#if { [lindex $r 1] != [lindex $r2 1] } {
+	#    error "Results $r and $r2 are not equal"
+	#}
     }
     #plotStats $pubSubStats $levelxingStats
+    plotStats $pubSubStats $pubSubStats
 
 } {}
 
