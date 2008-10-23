@@ -1,0 +1,8 @@
+#!/bin/sh
+
+for model in $*
+do
+	base=`basename $model .xml`
+	echo $base
+	java -classpath $PTII ptolemy.actor.gui.MoMLSimpleStatisticalApplication $model 2>&1 > $base.out
+done
