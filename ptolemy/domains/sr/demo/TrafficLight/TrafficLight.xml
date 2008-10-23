@@ -4,7 +4,7 @@
 <entity name="TrafficLight" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 2, 1010, 744}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-5, 22, 1008, 737}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[795, 627]">
     </property>
@@ -300,13 +300,13 @@ implementations.</text></svg></configure>
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={52, 62, 823, 506}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={261, 131, 917, 637}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[704, 526]">
             </property>
-            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3914332478923">
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{124.9765625, 72.2793634588068}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{352.0, 263.0}">
             </property>
             <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
                 <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
@@ -366,11 +366,13 @@ implementations.</text></svg></configure>
             <entity name="normal" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="normal">
                 </property>
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 180.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 180.0]">
                 </property>
             </entity>
             <entity name="error" class="ptolemy.domains.fsm.kernel.State">
@@ -485,6 +487,8 @@ pedestrian lights.</text></svg></configure>
                 </property>
             </port>
             <entity name="Init" class="ptolemy.domains.fsm.kernel.State">
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 165.0]">
@@ -564,13 +568,13 @@ pedestrian lights.</text></svg></configure>
             <link port="YellowOff.outgoingPort" relation="relation3"/>
         </entity>
         <entity name="normal" class="ptolemy.domains.fsm.modal.Refinement">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={28, 78, 887, 564}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={28, 78, 1013, 741}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[800, 631]">
             </property>
-            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.4477793775612">
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-21.7148102815177, 15.044943390453}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{400.0, 315.5}">
             </property>
             <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 65.0]">
@@ -633,7 +637,7 @@ pedestrian lights.</text></svg></configure>
                 </property>
             </port>
             <entity name="CarLightNormal" class="ptolemy.domains.sr.demo.TrafficLight.CarLightNormal">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 195.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{130.0, 195.0}">
                 </property>
             </entity>
             <entity name="PedestrianLightNormal" class="ptolemy.domains.sr.demo.TrafficLight.PedestrianLightNormal">

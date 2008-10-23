@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="WirelessDeployment" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
     <property name="WirelessDirector" class="ptolemy.domains.wireless.kernel.WirelessDirector">
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={69, -1, 929, 607}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={183, 22, 927, 601}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[714, 491]">
     </property>
@@ -89,7 +89,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 35.0]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 155.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 155.0}">
         </property>
         <property name="Cred" class="ptolemy.data.expr.Parameter" value="1">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -196,7 +196,7 @@
                 </property>
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={192, 35, 815, 516}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={363, 118, 813, 510}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -378,7 +378,7 @@ implementations.</text></svg></configure>
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={163, 65, 815, 407}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 219, 813, 461}, maximized=false}">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 291]">
                 </property>
@@ -433,6 +433,8 @@ implementations.</text></svg></configure>
                 </port>
                 <entity name="normal" class="ptolemy.domains.fsm.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="normal">
+                    </property>
+                    <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
@@ -552,6 +554,8 @@ on the car control.</text></svg></configure>
                     </property>
                 </port>
                 <entity name="Init" class="ptolemy.domains.fsm.kernel.State">
+                    <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[188.98105151634218, 170.50000119209295]">
@@ -631,13 +635,13 @@ on the car control.</text></svg></configure>
                 <link port="YellowOff.outgoingPort" relation="relation3"/>
             </entity>
             <entity name="normal" class="ptolemy.domains.fsm.modal.Refinement">
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={123, 95, 815, 550}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={123, 95, 813, 544}, maximized=false}">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 434]">
                 </property>
                 <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
                 </property>
-                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-14.8673986486487, 6.7728040540541}">
+                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 217.0}">
                 </property>
                 <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[121.5, 60.0]">
@@ -1355,6 +1359,8 @@ implementations.</text></svg></configure>
                 <entity name="normal" class="ptolemy.domains.fsm.kernel.State">
                     <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="normal">
                     </property>
+                    <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
                     <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
@@ -1468,6 +1474,8 @@ on the pedestrian control.</text></svg></configure>
                     </property>
                 </port>
                 <entity name="Init" class="ptolemy.domains.fsm.kernel.State">
+                    <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[173.49269104003906, 165.2005119323731]">
