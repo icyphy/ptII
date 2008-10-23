@@ -157,7 +157,6 @@ public class Publisher extends TypedAtomicActor {
                     _channel = newValue;
 		    // We now call _updateLinks in preinitialize().
 		    // This change makes the open time roughly 40% faster.
-                    }
                 }
             }
         } else {
