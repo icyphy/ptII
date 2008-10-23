@@ -30,6 +30,7 @@ package ptolemy.gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyAdapter;
@@ -80,6 +81,7 @@ public class ShellTextArea extends JPanel {
 
         // FIXME: Large font for demo. Font needs to be configurable.
         // _jTextArea.setFont(new Font("DialogInput", 0, 24));
+        _jTextArea.setFont(new Font("Monospaced", 0, 14));
         JScrollPane jScrollPane = new JScrollPane(_jTextArea);
         add(jScrollPane);
 
