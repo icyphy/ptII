@@ -137,6 +137,9 @@ public class Subscriber extends TypedAtomicActor {
             String newValue = channel.stringValue();
             if (!newValue.equals(_channel)) {
                 _channel = newValue;
+                /* NOTE: We used to call _updateLinks(), as shown below,
+                 * but now we defer that to preinitialize().  This
+                 * improves the opening time of models considerably.
                 // If we are within a class definition, then we should
                 // not create any links.  The links should only exist
                 // within instances. Otherwise, we could end up creating
@@ -158,6 +161,7 @@ public class Subscriber extends TypedAtomicActor {
                         _updateLinks();
                     }
                 }
+                */
             }
         } else {
             super.attributeChanged(attribute);
