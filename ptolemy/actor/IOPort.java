@@ -3955,8 +3955,8 @@ public class IOPort extends ComponentPort {
         }
     }
 
-    // Invalidate schedule and type resolution of the director of the
-    // container, if there is one.
+    // Invalidate schedule and type resolution and width inference of the director
+    // of the container, if there is one.
     private void _invalidate() {
         Nameable container = getContainer();
 
@@ -3966,6 +3966,7 @@ public class IOPort extends ComponentPort {
             if (director != null) {
                 director.invalidateSchedule();
                 director.invalidateResolvedTypes();
+                director.notifyConnectivityChange();
             }
         }
     }

@@ -589,6 +589,24 @@ public class Director extends Attribute implements Executable {
     public boolean implementsStrictActorSemantics() {
         return false;
     }
+
+    /**
+     *  Infer the width of the relations for which no width has been
+     *  specified yet. 
+     *  The specified actor must be the top level container of the model.
+     *  @exception IllegalActionException If the widths of the relations at port are not consistent
+     *                  or if the width cannot be inferred for a relation.
+     */
+    public void inferWidths() throws IllegalActionException {
+        // TODO Auto-generated method stub        
+        Nameable container = getContainer();
+        if (container instanceof CompositeActor) {
+            Manager manager = ((CompositeActor) container).getManager();
+            if (manager != null) {
+                manager.inferWidths();
+            }
+        }
+    }    
     
     /** Initialize the model controlled by this director.  Set the
      *  current time to the start time or the current time of the
@@ -788,6 +806,23 @@ public class Director extends Attribute implements Executable {
         }
     }
 
+    /**
+     *  Return whether the current widths of the relation in the model
+     *  are no longer valid anymore and the widths need to be inferred again.
+     *  @return True when width inference needs to be executed again.
+     */    
+    public boolean needsWidthInference() {
+        boolean needsWidthInference = false;
+        Nameable container = getContainer();
+        if (container instanceof CompositeActor) {
+            Manager manager = ((CompositeActor) container).getManager();
+            if (manager != null) {
+                needsWidthInference = manager.needsWidthInference();
+            }
+        }
+        return needsWidthInference;
+    }    
+
     /** Return a new receiver of a type compatible with this director.
      *  In this base class, this returns an instance of Mailbox.
      *  @return A new Mailbox.
@@ -795,6 +830,20 @@ public class Director extends Attribute implements Executable {
     public Receiver newReceiver() {
         return new Mailbox();
     }
+    
+    /** Notify the manager that the connectivity in the model changed
+     *  (width of relation changed, relations added, linked to different ports, ...).
+     *  This will invalidate the current width inference.
+     */
+    public void notifyConnectivityChange() {
+        Nameable container = getContainer();
+        if (container instanceof CompositeActor) {
+            Manager manager = ((CompositeActor) container).getManager();
+            if (manager != null) {
+                manager.notifyConnectivityChange();
+            }
+        }        
+    }    
 
     /** Return true if the director wishes to be scheduled for another
      *  iteration.  This method is called by the container of
@@ -1502,4 +1551,5 @@ public class Director extends Attribute implements Executable {
 
     /** Time resolution cache, with a reasonable default value. */
     private double _timeResolution = 1E-10;
+
 }

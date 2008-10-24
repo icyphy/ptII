@@ -563,6 +563,17 @@ public class Manager extends NamedObj implements Runnable {
     public State getState() {
         return _state;
     }
+    
+    /**
+     *  Infer the width of the relations for which no width has been
+     *  specified yet. 
+     *  The specified actor must be the top level container of the model.
+     *  @exception IllegalActionException If the widths of the relations at port are not consistent
+     *                  or if the width cannot be inferred for a relation.
+     */
+    public void inferWidths() throws IllegalActionException {
+        _relationWidthInference.inferWidths();
+    }    
 
     /** Initialize the model.  This calls the preinitialize() method of
      *  the container, followed by the resolveTypes() and initialize() methods.
@@ -696,7 +707,25 @@ public class Manager extends NamedObj implements Runnable {
 
         return result;
     }
-
+    
+    /**
+     *  Return whether the current widths of the relation in the model
+     *  are no longer valid anymore and the widths need to be inferred again.
+     *  @return True when width inference needs to be executed again.
+     */
+    public boolean needsWidthInference() {
+        return _relationWidthInference.needsWidthInference();
+    }
+    
+    
+    /** Notify the manager that the connectivity in the model changed
+     *  (width of relation changed, relations added, linked to different ports, ...).
+     *  This will invalidate the current width inference.
+     */
+    public void notifyConnectivityChange() {
+        _relationWidthInference.notifyConnectivityChange();        
+    }
+    
     /** Notify all the execution listeners of an exception.
      *  If there are no listeners, then print the exception information
      *  to the standard error stream. This is intended to be used by threads
@@ -1333,6 +1362,7 @@ public class Manager extends NamedObj implements Runnable {
         if (compositeActor != null) {
             _workspace.remove(this);
         }
+        _relationWidthInference.setTopLevel(compositeActor);
 
         _container = compositeActor;
     }
@@ -1406,12 +1436,11 @@ public class Manager extends NamedObj implements Runnable {
     *                  or if the width cannot be inferred for a relation.
     */
     private void _inferRelationWidths() throws IllegalActionException {
-        if (_inferredWidthVersion != _workspace.getVersion()) {
+        if (_relationWidthInference.needsWidthInference()) {
             State previousState = _state;
             try {
                 _setState(INFERING_WIDTHS);
-                RelationWidthInference.inferWidths(_container);
-                _inferredWidthVersion = _workspace.getVersion();
+                _relationWidthInference.inferWidths();
             } finally {                
                 _setState(previousState);
             }
@@ -1434,9 +1463,6 @@ public class Manager extends NamedObj implements Runnable {
 
     // Flag indicating that finish() has been called.
     private boolean _finishRequested = false;
-
-    // The workspace version of the last width inference.
-    private long _inferredWidthVersion = -1;
     
     // Count the number of iterations completed.
     private int _iterationCount;
@@ -1450,6 +1476,10 @@ public class Manager extends NamedObj implements Runnable {
     // Version at which preinitialize last successfully executed.
     private long _preinitializeVersion = -1;
 
+
+    // A helper class that does the width inference.
+    private RelationWidthInference _relationWidthInference = new RelationWidthInference();
+    
     // Flag for waiting on resume();
     private boolean _resumeNotifyWaiting = false;
 
@@ -1462,6 +1492,7 @@ public class Manager extends NamedObj implements Runnable {
 
     // An indicator of whether type resolution needs to be done.
     private boolean _typesResolved = false;
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
@@ -1494,5 +1525,5 @@ public class Manager extends NamedObj implements Runnable {
         }
 
         private String _description;
-    }
+    }  
 }

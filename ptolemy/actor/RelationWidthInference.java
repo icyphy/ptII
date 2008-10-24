@@ -54,137 +54,167 @@ public class RelationWidthInference {
    ///////////////////////////////////////////////////////////////////
    ////                         public methods                    ////
 
+
     /**
      *  Infer the width of the relations for which no width has been
      *  specified yet. 
      *  The specified actor must be the top level container of the model.
-     *  @param topLevel The top level CompositeActor.
-     *  @exception IllegalArgumentException If the specified actor is not the
-     *   top level container. That is, its container is not null.
      *  @exception IllegalActionException If the widths of the relations at port are not consistent
      *                  or if the width cannot be inferred for a relation.
      */
-    static public void inferWidths(CompositeActor topLevel) throws IllegalActionException {
-                
-        if (topLevel.getContainer() != null) {
-            throw new IllegalArgumentException(
-                    "TypedCompositeActor.resolveTypes: The specified actor is "
-                            + "not the top level container.");
-        }
-        
-        // widthChanged will become true if the width of a relation has been changed. In this
-        // case we need to update the version of the workspace.        
-        Boolean widthChanged = new Boolean(false);
-        HashSet<IORelation> originalUnspecifiedSet = new HashSet<IORelation>();
-        
-        try {
-            topLevel.workspace().getWriteAccess();
-                
-            Set<ComponentRelation> relationList = topLevel.deepRelationSet();
-            Set<IORelation> workingSet = new HashSet<IORelation>();
-            HashSet<IORelation> unspecifiedSet = new HashSet<IORelation>();        
+    public void inferWidths() throws IllegalActionException {
+        if (_needsWidthInference) {                    
             
-            for (ComponentRelation componentRelation : relationList) {
-                if (componentRelation instanceof IORelation) {
-                    IORelation relation = (IORelation) componentRelation;                    
-                    if (relation.needsWidthInference()) {
-                        unspecifiedSet.add(relation);
-                    }
-                    if (relation.isWidthFixed()) {
-                        // We know the width of this relation.
-                        workingSet.add(relation);
-                    } else {
-                        // If connected to non-multiports => the relation should be 1                        
-                        for (Object object : relation.linkedObjectsList()) {
-                            if (object instanceof IOPort) {
-                                IOPort port = (IOPort) object;
-                                
-                                if (!port.isMultiport()) {
-                                    boolean relationWidthChanged = relation._setInferredWidth(1);
-                                        //FIXME: Can be zero in the case that this relation
-                                        //      has no other port connected to it
+            // widthChanged will become true if the width of a relation has been changed. In this
+            // case we need to update the version of the workspace.        
+            Boolean widthChanged = new Boolean(false);
+            HashSet<IORelation> originalUnspecifiedSet = new HashSet<IORelation>();
+            
+            try {
+                _topLevel.workspace().getWriteAccess();
+                    
+                Set<ComponentRelation> relationList = _topLevel.deepRelationSet();
+                Set<IORelation> workingSet = new HashSet<IORelation>();
+                HashSet<IORelation> unspecifiedSet = new HashSet<IORelation>();        
+                
+                for (ComponentRelation componentRelation : relationList) {
+                    if (componentRelation instanceof IORelation) {
+                        IORelation relation = (IORelation) componentRelation;                    
+                        if (relation.needsWidthInference()) {
+                            unspecifiedSet.add(relation);
+                        }
+                        if (relation.isWidthFixed()) {
+                            // We know the width of this relation.
+                            workingSet.add(relation);
+                        } else {
+                            // If connected to non-multiports => the relation should be 1                        
+                            for (Object object : relation.linkedObjectsList()) {
+                                if (object instanceof IOPort) {
+                                    IOPort port = (IOPort) object;
                                     
-                                    widthChanged = widthChanged || relationWidthChanged;    
-                                    workingSet.add(relation);
-                                    break; //Break the for loop.
-                                }                            
+                                    if (!port.isMultiport()) {
+                                        boolean relationWidthChanged = relation._setInferredWidth(1);
+                                            //FIXME: Can be zero in the case that this relation
+                                            //      has no other port connected to it
+                                        
+                                        widthChanged = widthChanged || relationWidthChanged;    
+                                        workingSet.add(relation);
+                                        break; //Break the for loop.
+                                    }                            
+                                }
                             }
                         }
                     }
                 }
-            }
-            
-            originalUnspecifiedSet = (HashSet<IORelation>) unspecifiedSet.clone(); 
-            
-            while (!workingSet.isEmpty() && !unspecifiedSet.isEmpty()) {
-                IORelation relation = workingSet.iterator().next();
-                workingSet.remove(relation);
-                unspecifiedSet.remove(relation);
-                assert  !relation.needsWidthInference(); 
-                int width = relation.getWidth();            
-                assert  width >= 0;
                 
-                //All relations in the same relation group need to have the same width
-                for (Object otherRelationObject : relation.relationGroupList()) {
-                    IORelation otherRelation = (IORelation) otherRelationObject;
-                    if (relation != otherRelation && otherRelation.needsWidthInference()) {
-                        boolean relationWidthChanged = relation._setInferredWidth(width);
-                        widthChanged = widthChanged || relationWidthChanged;
-                        unspecifiedSet.remove(otherRelation);
-                        // We don't need to add otherRelation to unspecifiedSet since
-                        // we will process all ports linked to the complete relationGroup
-                        // all at once.
-                    }
-                }
+                originalUnspecifiedSet = (HashSet<IORelation>) unspecifiedSet.clone(); 
                 
-                // Now we see whether we can determine the widths of relations directly connected
-                // at the multiports linked to this relation.
-                
-                // linkedPortList() can contain a port more than once. We only want
-                // them once. We will also only add multiports
-                HashSet<IOPort> multiports = new HashSet<IOPort>();
-                for (Object port : relation.linkedPortList()) {
-                    if (((IOPort) port).isMultiport()) {
-                        multiports.add((IOPort) port);
-                    }
-                }
-                for (IOPort port : multiports) {
-                    List<IORelation> updatedRelations = _relationsWithUpdatedWidthForMultiport(port, widthChanged);
-                    for (IORelation otherRelation : updatedRelations) {
-                        workingSet.add(otherRelation);
+                while (!workingSet.isEmpty() && !unspecifiedSet.isEmpty()) {
+                    IORelation relation = workingSet.iterator().next();
+                    workingSet.remove(relation);
+                    unspecifiedSet.remove(relation);
+                    assert  !relation.needsWidthInference(); 
+                    int width = relation.getWidth();            
+                    assert  width >= 0;
+                    
+                    //All relations in the same relation group need to have the same width
+                    for (Object otherRelationObject : relation.relationGroupList()) {
+                        IORelation otherRelation = (IORelation) otherRelationObject;
+                        if (relation != otherRelation && otherRelation.needsWidthInference()) {
+                            boolean relationWidthChanged = relation._setInferredWidth(width);
+                            widthChanged = widthChanged || relationWidthChanged;
+                            unspecifiedSet.remove(otherRelation);
+                            // We don't need to add otherRelation to unspecifiedSet since
+                            // we will process all ports linked to the complete relationGroup
+                            // all at once.
+                        }
                     }
                     
-                }                      
+                    // Now we see whether we can determine the widths of relations directly connected
+                    // at the multiports linked to this relation.
+                    
+                    // linkedPortList() can contain a port more than once. We only want
+                    // them once. We will also only add multiports
+                    HashSet<IOPort> multiports = new HashSet<IOPort>();
+                    for (Object port : relation.linkedPortList()) {
+                        if (((IOPort) port).isMultiport()) {
+                            multiports.add((IOPort) port);
+                        }
+                    }
+                    for (IOPort port : multiports) {
+                        List<IORelation> updatedRelations = _relationsWithUpdatedWidthForMultiport(port, widthChanged);
+                        for (IORelation otherRelation : updatedRelations) {
+                            workingSet.add(otherRelation);
+                        }
+                        
+                    }                      
+                }
+                if (!unspecifiedSet.isEmpty()) {
+                    IORelation relation = unspecifiedSet.iterator().next();
+                    throw new IllegalActionException(relation, 
+                            "The width of relation " + relation.getFullName() +
+                            " can not be uniquely inferred.\n"                        
+                            + "Please make the width inference deterministic by"
+                            + " explicitly specifying the width of this relation.");
+                    
+                }
+            } finally {
+    
+                if (widthChanged) {
+                    _topLevel.workspace().incrVersion();
+                        // We increment the version here explicitly and don't call
+                        // workpace.doneWriting() since we want to keep the lock until
+                        // the end of this function. 
+                    
+    
+                    // reset version for inferred widths. This is necessary since we
+                    // incremented the version of the workspace
+                    for (IORelation relation : originalUnspecifiedSet) {
+                        relation._revalidateWidth();
+                    }            
+                }
+                _topLevel.workspace().doneTemporaryWriting();
             }
-            if (!unspecifiedSet.isEmpty()) {
-                IORelation relation = unspecifiedSet.iterator().next();
-                throw new IllegalActionException(relation, 
-                        "The width of relation " + relation.getFullName() +
-                        " can not be uniquely inferred.\n"                        
-                        + "Please make the width inference deterministic by"
-                        + " explicitly specifying the width of this relation.");
-                
-            }
-        } finally {
-
-            if (widthChanged) {
-                topLevel.workspace().incrVersion();
-                    // We increment the version here explicitly and don't call
-                    // workpace.doneWriting() since we want to keep the lock until
-                    // the end of this function. 
-                
-
-                // reset version for inferred widths. This is necessary since we
-                // incremented the version of the workspace
-                for (IORelation relation : originalUnspecifiedSet) {
-                    relation._revalidateWidth();
-                }            
-            }
-            topLevel.workspace().doneTemporaryWriting();
+            _needsWidthInference = false;
         }
         
-    }
+        
+    }    
 
+    /**
+     *  Return whether the current widths of the relation in the model
+     *  are no longer valid anymore and the widths need to be inferred again.
+     *  @return True when width inference needs to be executed again.
+     */
+    public boolean needsWidthInference() {
+        return _needsWidthInference;        
+    }
+    
+    /**
+     *  Notify the width inference algorithm that the connectivity in the model changed
+     *  (width of relation changed, relations added, linked to different ports, ...).
+     *  This will invalidate the current width inference.
+     */
+    public void notifyConnectivityChange() {
+        _needsWidthInference = true;        
+    }    
+
+    /**
+     * Set the top level to the value given as argument.
+     * @param topLevel The top level CompositeActor.
+     * @exception IllegalArgumentException If the specified actor is not the
+     *   top level container. That is, its container is not null.
+     */
+     public void setTopLevel(CompositeActor compositeActor) {
+         if (compositeActor.getContainer() != null) {
+             throw new IllegalArgumentException(
+                     "TypedCompositeActor.resolveTypes: The specified actor is "
+                             + "not the top level container.");
+         }
+         
+         _topLevel = compositeActor;       
+     }
+     
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////   
 
@@ -263,5 +293,16 @@ public class RelationWidthInference {
         }
         return result;               
     }
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    
+    //True when width inference needs to happen again
+    private boolean _needsWidthInference = true;
+    
+    //The top level of the model.    
+    private CompositeActor _topLevel = null;
+
        
 }

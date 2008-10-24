@@ -49,7 +49,6 @@ import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -308,23 +307,23 @@ public class IORelation extends ComponentRelation {
         // needsWidthInference() returns true.
         if (_width == WIDTH_TO_INFER) {
             if (needsWidthInference()) {
-                // RelationWidthInference.inferWidths works with
-                // the toplevel container.                
-                // Get toplevel container.
-                NamedObj toplevel = this;
-                NamedObj container = this.getContainer();
-                while (container != null) {
-                    toplevel = container;
-                    container = toplevel.getContainer();                    
-                }                
+             
                 try {
                     //TODO rodiers test IORelation-9.1 in IORelation.tcl clones
                     // a non-fixed width relation and the cloned one has no parent
-                    //  Is this normal?
-                    
+                    //  Is this normal?                    
                     //  Either change test or code.
+                    Nameable container = getContainer();
+
+                    if (container instanceof CompositeActor) {
+                        Director director = ((CompositeActor) container).getDirector();
+
+                        if (director != null) {
+                            director.inferWidths();
+                        }
+                    }
+                    //TODO rodiers throw exception if no director
                     
-                    RelationWidthInference.inferWidths((CompositeActor) toplevel);
                 } catch (IllegalActionException e) {
                     // Width inference not possible. Use zero as width.
                     // The user still gets warned when he starts the model.
@@ -531,8 +530,21 @@ public class IORelation extends ComponentRelation {
      * @return True when width inference needs to be performed. 
      */
     public boolean needsWidthInference() {
-        
-        return (_width == WIDTH_TO_INFER && _inferredWidthVersion != _workspace.getVersion());                
+        // In case we width has been fixed or the version has not changed since the last width
+        // inference, we of course don't need to do width inference.
+        // In case the version changed it still might happen that we do not have to
+        // width inference, since the change might not be related to or has no influence
+        // on the width of relations. Hence we check with the director who is aware or changes
+        // related to the connectivity.        
+        boolean widthInferenceValid = _width != WIDTH_TO_INFER || _inferredWidthVersion == _workspace.getVersion();
+        if (!widthInferenceValid) {
+            Nameable container = getContainer();
+            if (container instanceof CompositeActor) {
+                Director director = ((CompositeActor) container).getDirector();
+                widthInferenceValid = !director.needsWidthInference();
+            }
+        }
+        return !widthInferenceValid;
     }    
 
     /** Specify the container, adding the relation to the list
@@ -907,6 +919,7 @@ public class IORelation extends ComponentRelation {
                 if (director != null) {
                     director.invalidateSchedule();
                     director.invalidateResolvedTypes();
+                    director.notifyConnectivityChange();
                 }
             }
         } finally {
