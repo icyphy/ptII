@@ -85,4 +85,63 @@ test LazyTypedCompositeActor-12.1 {deepConnectedIn(out)Ports} {
     $p5 setOutput false
 
     list [$e0 exportMoML]
-} {}
+} {{<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="E0" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
+    </property>
+    <property name="" class="ptolemy.actor.Director">
+        <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1E-10">
+        </property>
+    </property>
+    <entity name="E1" class="ptolemy.actor.TypedCompositeActor">
+        <port name="P1" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="E2" class="ptolemy.actor.LazyTypedCompositeActor">
+        <port name="P2" class="ptolemy.actor.TypedIOPort">
+        </port>
+        <port name="P4" class="ptolemy.actor.TypedIOPort">
+        </port>
+        <configure>
+            <group>
+        <entity name="E3" class="ptolemy.actor.LazyTypedCompositeActor">
+            <port name="P3" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <configure>
+                <group>
+                </group>
+            </configure>
+        </entity>
+        <relation name="R2" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <link port="P2" relation="R2"/>
+        <link port="P4" relation="R2"/>
+        <link port="E3.P3" relation="R2"/>
+            </group>
+        </configure>
+    </entity>
+    <entity name="E4" class="ptolemy.actor.TypedAtomicActor">
+        <port name="P5" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <relation name="R1" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="R3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="E1.P1" relation="R1"/>
+    <link port="E2.P2" relation="R1"/>
+    <link port="E2.P4" relation="R3"/>
+    <link port="E4.P5" relation="R3"/>
+</entity>
+}}
