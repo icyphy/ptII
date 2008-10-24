@@ -53,6 +53,7 @@ JSIMPLE_TESTS = \
 	BackwardCompatibility.tcl \
 	GRColorChanges.tcl \
 	ActorIndex.tcl \
+	LazyTypedCompositeActorChanges.tcl \
 	MultiportToSinglePort.tcl \
 	PropertyClassChanges.tcl \
 	RemoveGraphicalClasses.tcl

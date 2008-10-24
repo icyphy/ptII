@@ -57,6 +57,7 @@ JSRCS = \
 	HideAnnotationNames.java \
 	MultiportToSinglePort.java \
 	NamedObjClassesSeen.java \
+	LazyTypedCompositeActorChanges.java \
 	ParameterNameChanges.java \
 	PortClassChanges.java \
 	PortNameChanges.java \
