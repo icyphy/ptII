@@ -56,6 +56,13 @@ import ptolemy.moml.MoMLParser;
  @Pt.AcceptedRating Red (cxh)
  */
 public class ClassChanges implements MoMLFilter {
+    /** Clear the map of class renames and the set of class removals.
+     */
+    public static void clear() {
+        _classChanges = new HashMap();
+        _classesToRemove = new HashSet();
+    }
+
     /** If the attributeName is "class" and attributeValue names a
      *  class that needs to be renamed, then substitute in the new class
      *  name. If the attributeValue names a class that needs to be removed,
@@ -109,6 +116,36 @@ public class ClassChanges implements MoMLFilter {
     public void filterEndElement(NamedObj container, String elementName,
             StringBuffer currentCharData) throws Exception {
     }
+
+    /** Add a class to be filtered. Note that if you add a class with this
+     *  method, then you must remove it with {@link #remove(String)},
+     *  calling "new ClassChanges()" will not remove a class that was
+     *  added with this method.
+     *  @param oldName The old name of the class to be filtered.
+     *  @param newName The new name of the class to be filtered. If
+     *  the value is null, then the class in oldName will be removed.
+     *  @see #remove(String)
+     */
+    public void put(String oldName, String newName) {
+        if(newName == null) {
+            _classesToRemove.add(oldName);
+        } else {
+            _classChanges.put(oldName, newName);
+        }
+    }
+
+    /** Remove a class to be filtered.
+     *  @param className The name of the class to be filtered
+     *  out, for example "ptolemy.copernicus.kernel.GeneratorAttribute".
+     *  @see #put(String, String)
+     */ 
+    public void remove(String className) {
+        if(_classChanges.containsKey(className)) {
+            _classChanges.remove(className);
+        } else if(_classesToRemove.contains(className)) {
+            _classesToRemove.remove(className);
+        }
+    }   
 
     /** Return a string that describes what the filter does.
      *  @return the description of the filter that ends with a newline.
