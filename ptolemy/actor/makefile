@@ -83,6 +83,7 @@ JSRCS = \
 	IOPortEvent.java \
 	IOPortEventListener.java \
 	IORelation.java \
+	LazyTypedCompositeActor.java \
 	Mailbox.java \
 	Manager.java \
 	NoRoomException.java \

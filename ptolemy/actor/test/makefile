@@ -62,6 +62,7 @@ JSIMPLE_TESTS = \
 	Director.tcl \
 	FiringEvent.tcl \
 	GraphReader.tcl \
+	LazyTypedCompositeActor.tcl \
 	Manager.tcl \
 	NoRoomException.tcl \
 	NoTokenException.tcl \
