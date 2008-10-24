@@ -1408,10 +1408,13 @@ public class Manager extends NamedObj implements Runnable {
     private void _inferRelationWidths() throws IllegalActionException {
         if (_inferredWidthVersion != _workspace.getVersion()) {
             State previousState = _state;
-            _setState(INFERING_WIDTHS);
-            RelationWidthInference.inferWidths(_container);
-            _inferredWidthVersion = _workspace.getVersion();
-            _setState(previousState);
+            try {
+                _setState(INFERING_WIDTHS);
+                RelationWidthInference.inferWidths(_container);
+                _inferredWidthVersion = _workspace.getVersion();
+            } finally {                
+                _setState(previousState);
+            }
         }       
     }
     
