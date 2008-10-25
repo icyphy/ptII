@@ -1,0 +1,11 @@
+.\rvmdk\death.o: ..\Common\Minimal\death.c
+.\rvmdk\death.o: C:\workspace\Keil\ARM\RV31\INC\stdlib.h
+.\rvmdk\death.o: ..\..\Source\include\FreeRTOS.h
+.\rvmdk\death.o: C:\workspace\Keil\ARM\RV31\INC\stddef.h
+.\rvmdk\death.o: ..\..\Source\include\projdefs.h
+.\rvmdk\death.o: .\FreeRTOSConfig.h
+.\rvmdk\death.o: ..\..\Source\include\portable.h
+.\rvmdk\death.o: ..\..\Source\include\../../Source/portable/RVDS/ARM_CM3/portmacro.h
+.\rvmdk\death.o: ..\..\Source\include\task.h
+.\rvmdk\death.o: ..\..\Source\include\list.h
+.\rvmdk\death.o: ..\Common\include\death.h

@@ -1,0 +1,15 @@
+.\rvmdk\uip.o: ..\Common\ethernet\uIP\uip-1.0\uip\uip.c
+.\rvmdk\uip.o: ..\Common\ethernet\uIP\uip-1.0\uip\uip.h
+.\rvmdk\uip.o: ..\Common\ethernet\uIP\uip-1.0\uip\uipopt.h
+.\rvmdk\uip.o: .\webserver\uip-conf.h
+.\rvmdk\uip.o: C:\workspace\Keil\ARM\RV31\INC\stdint.h
+.\rvmdk\uip.o: .\webserver\webserver.h
+.\rvmdk\uip.o: .\webserver\httpd.h
+.\rvmdk\uip.o: ..\Common\ethernet\uIP\uip-1.0\uip\psock.h
+.\rvmdk\uip.o: ..\Common\ethernet\uIP\uip-1.0\uip\uipopt.h
+.\rvmdk\uip.o: ..\Common\ethernet\uIP\uip-1.0\uip\pt.h
+.\rvmdk\uip.o: ..\Common\ethernet\uIP\uip-1.0\uip\lc.h
+.\rvmdk\uip.o: ..\Common\ethernet\uIP\uip-1.0\uip\lc-switch.h
+.\rvmdk\uip.o: .\webserver\httpd-fs.h
+.\rvmdk\uip.o: ..\Common\ethernet\uIP\uip-1.0\uip\uip_arch.h
+.\rvmdk\uip.o: C:\workspace\Keil\ARM\RV31\INC\string.h

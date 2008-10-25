@@ -1,0 +1,10 @@
+.\rvmdk\rit128x96x4.o: rit128x96x4.c
+.\rvmdk\rit128x96x4.o: .\..\Common\drivers\LuminaryMicro\hw_ssi.h
+.\rvmdk\rit128x96x4.o: .\..\Common\drivers\LuminaryMicro\hw_memmap.h
+.\rvmdk\rit128x96x4.o: .\..\Common\drivers\LuminaryMicro\hw_sysctl.h
+.\rvmdk\rit128x96x4.o: .\..\Common\drivers\LuminaryMicro\hw_types.h
+.\rvmdk\rit128x96x4.o: .\..\Common\drivers\LuminaryMicro\debug.h
+.\rvmdk\rit128x96x4.o: .\..\Common\drivers\LuminaryMicro\gpio.h
+.\rvmdk\rit128x96x4.o: .\..\Common\drivers\LuminaryMicro\ssi.h
+.\rvmdk\rit128x96x4.o: .\..\Common\drivers\LuminaryMicro\sysctl.h
+.\rvmdk\rit128x96x4.o: .\..\Common\drivers\LuminaryMicro\rit128x96x4.h

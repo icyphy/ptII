@@ -1,0 +1,13 @@
+.\rvmdk\partest.o: ParTest\ParTest.c
+.\rvmdk\partest.o: ..\..\Source\include\FreeRTOS.h
+.\rvmdk\partest.o: C:\workspace\Keil\ARM\RV31\INC\stddef.h
+.\rvmdk\partest.o: ..\..\Source\include\projdefs.h
+.\rvmdk\partest.o: .\FreeRTOSConfig.h
+.\rvmdk\partest.o: ..\..\Source\include\portable.h
+.\rvmdk\partest.o: ..\..\Source\include\../../Source/portable/RVDS/ARM_CM3/portmacro.h
+.\rvmdk\partest.o: ..\..\Source\include\task.h
+.\rvmdk\partest.o: ..\..\Source\include\list.h
+.\rvmdk\partest.o: ..\Common\include\partest.h
+.\rvmdk\partest.o: .\..\Common\drivers\LuminaryMicro\hw_types.h
+.\rvmdk\partest.o: .\..\Common\drivers\LuminaryMicro\gpio.h
+.\rvmdk\partest.o: .\..\Common\drivers\LuminaryMicro\hw_memmap.h
