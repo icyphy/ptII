@@ -35,6 +35,8 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.JFrame;
 
@@ -177,6 +179,128 @@ public class DatabaseManager extends TypedAtomicActor {
         }
     }
     
+    /** Commit any previously uncommitted changes effected by the
+     *  {@link #execute(String, boolean)} method.
+     *  @throws IllegalActionException If the commit fails. 
+     */
+    public void commit() throws IllegalActionException {
+        Connection connection = getConnection();
+        try {
+            connection.commit();
+        } catch (SQLException e) {
+            throw new IllegalActionException(this, e, "Commit failed.");
+        }
+    }
+    
+    /** Execute the specified SQL statement and return the result as
+     *  a string.
+     *  Note that if there is no connection to the database, this
+     *  will open one. The caller is responsible for calling
+     *  closeConnection() after this.
+     *  @param sql The query.
+     *  @return The result as a string.
+     *  @throws IllegalActionException If the statement fails.
+     */
+    public String execute(String sql)
+            throws IllegalActionException {
+        return execute(sql, true);
+    }
+    
+    /** Execute the specified SQL statement and return the result as
+     *  a string.
+     *  Note that if there is no connection to the database, this
+     *  will open one. The caller is responsible for calling
+     *  closeConnection() after this.
+     *  @param sql The query.
+     *  @param commit If true, then commit the changes. If false,
+     *   then the caller is responsible for calling commit later.
+     *  @return The result as a string.
+     *  @throws IllegalActionException If the statement fails.
+     */
+    public String execute(String sql, boolean commit)
+            throws IllegalActionException {
+        PreparedStatement statement = null;
+        Connection connection = getConnection();
+        try {
+            // If there is no connection, return -1.
+            // This should only occur if the user cancels.
+            if (connection == null) {
+                return "No database connection.";
+            }
+            connection.setAutoCommit(false);  //use transaction!
+            statement = connection.prepareStatement(sql);
+            boolean result = statement.execute();
+            // Get all the results into a string.
+            // According to the docs, there are no more results when
+            // ((statement.getMoreResults() == false) && (statement.getUpdateCount() == -1))
+            StringBuffer resultString = new StringBuffer();
+            while(true) {
+                if (result) {
+                    ResultSet resultSet = statement.getResultSet();
+                    ResultSetMetaData metaData = resultSet.getMetaData();
+                    int columnCount = metaData.getColumnCount();
+                    List<String[]> rows = new LinkedList<String[]>();
+
+                    // First, put in the result table the column names
+                    String[] columnNames = new String[columnCount];
+                    int[] columnWidths = new int[columnCount];
+                    for (int c = 0; c < columnCount; c++) {
+                        String columnName = metaData.getColumnName(c+1);
+                        columnWidths[c] = columnName.length() + 1;
+                        columnNames[c] = columnName;
+                    }
+                    rows.add(columnNames);
+                    
+                    // Next add each of the rows.
+                    while (resultSet.next()) {
+                        String[] row = new String[columnCount];
+                        for (int c = 0; c < columnCount; c++) {
+                            String value = resultSet.getString(c+1);
+                            if (value == null) {
+                                value = "NULL";
+                            }
+                            row[c] = value;
+                            if (value.length() > columnWidths[c]) {
+                                columnWidths[c] = value.length();
+                            }
+                        }
+                        rows.add(row);
+                    }
+                    // Finally, pretty print the table.
+                    for (String[] row : rows) {
+                        for (int c = 0; c < columnCount; c++) {
+                            resultString.append(row[c]);
+                            for (int i = 0; i <= columnWidths[c] - row[c].length(); i++) {
+                                resultString.append(" ");
+                            }
+                        }
+                        resultString.append("\n");
+                    }
+                } else {
+                    int count = statement.getUpdateCount();
+                    if (count != -1) {
+                        resultString.append("Statement OK. " + count + " rows affected.");
+                        resultString.append("\n");
+                    } else {
+                        if (commit) {
+                            connection.commit();
+                        }
+                        return resultString.toString();
+                    }
+                }
+                result = statement.getMoreResults();
+            }
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                // Not much to do here.
+            }
+            // Send the error message to the output.
+            return("Error:\n" + e.getMessage());
+        }
+    }
+
     /** Execute the SQL query given in the specified string
      *  and return an array of record tokens containing the results.
      *  Note that if there is no connection to the database, this

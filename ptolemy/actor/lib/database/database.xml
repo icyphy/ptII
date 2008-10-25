@@ -12,7 +12,9 @@
       </entity>
       <entity name="DatabaseSelect" class="ptolemy.actor.lib.database.DatabaseSelect">
       </entity>
-      <entity name="DatabaseSetTable" class="ptolemy.actor.lib.database.DatabaseSetTable">
+      <entity name="DatabaseInsert" class="ptolemy.actor.lib.database.DatabaseInsert">
+      </entity>
+      <entity name="SQLStatement" class="ptolemy.actor.lib.database.SQLStatement">
       </entity>
       <entity name="ArrayOfRecordsRecorder" class="ptolemy.actor.lib.database.ArrayOfRecordsRecorder">
         <property name="_configurer" class="ptolemy.vergil.toolbox.ArrayOfRecordsConfigureFactory">
