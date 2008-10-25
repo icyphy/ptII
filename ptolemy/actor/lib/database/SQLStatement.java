@@ -1,4 +1,4 @@
-/* Issue an SQL statemet
+/* Issue an SQL statement.
 
  Copyright (c) 1998-2007 The Regents of the University of California.
  All rights reserved.
