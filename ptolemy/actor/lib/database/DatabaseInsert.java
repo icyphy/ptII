@@ -137,16 +137,16 @@ public class DatabaseInsert extends Sink {
                     columnNames.append(column);
                     values.append(row.get(column).toString());
                 }
+                String sql = prefix
+                        + columnNames.toString()
+                        + ") values ("
+                        + values.toString()
+                        + ")";
+                if (_debugging) {
+                    _debug("Issuing statement:\n" + sql);
+                }
+                database.execute(sql, false);
             }
-            String sql = prefix
-                    + columnNames.toString()
-                    + ") values ("
-                    + values.toString()
-                    + ")";
-            if (_debugging) {
-                _debug("Issuing statement:\n" + sql);
-            }
-            database.execute(sql, false);
         }
         _succeeded = true;
     }
