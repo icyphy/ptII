@@ -3,6 +3,7 @@ Table of Contents.
 1. Theme of project
 2. Infrastructure Setup
 3. Settings to erase or download to flash (from Keil uVision)
+4. Link to the google calendar
 
 Theme:
 * Learn FreeRTOS
@@ -43,5 +44,8 @@ We were not able to get it to run with the Luminary Eval Board option (without U
 ~Shanna.
 
 
+4.
+Private link.
+ http://www.google.com/calendar/ical/gvlc8vgn8hpeocj47t49ccnvas%40group.calendar.google.com/private-2d43960ca00d90e89c29484fe6c2fd7c/basic.ics
 
 
