@@ -1,10 +1,9 @@
-# Makefile for the database actor library.
+# Makefile for Ptolemy II Database Demos
 #
-# @Authors: Christopher Brooks (makefile only)
+# @Version: $Id: makefile 43472 2006-08-21 23:16:56Z cxh $
+# @Author: Christopher Hylands (makefile only)
 #
-# @Version: $Id$
-#
-# @Copyright (c) 2008 The Regents of the University of California.
+# @Copyright (c) 2002-2006 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,59 +28,44 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/database
+ME =		ptolemy/actor/lib/database/demo
 
-DIRS = demo
+# Keep these alphabetical please.
+DIRS = 		InteractiveQuery
 
-# Root of the Java directory
-ROOT =		../../../..
-
-# ORACLE_OJDBC_JAR is set to the absolute path to ojdbc6.jar by configure
-# MYSQL_JAR is set to the absolute path of the mysql jar file by configure 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(ORACLE_OJDBC_JAR)$(CLASSPATHSEPARATOR)$(MYSQL_JAR)
+# Root of Ptolemy II directory
+ROOT =		../../../../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	database
-PTCLASSJAR =	$(PTPACKAGE).jar
+PTPACKAGE = 	demo
+PTCLASSJAR =
 
-JSRCS = \
-	ArrayOfRecordsExporter.java \
-	ArrayOfRecordsRecorder.java \
-	DatabaseManager.java \
-	DatabaseQuery.java \
-	DatabaseSelect.java \
-	DatabaseSetTable.java
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	InteractiveQuery/InteractiveQuery.jar
 
-OTHER_FILES_TO_BE_JARED = \
-	database.xml \
-	DatabaseManagerIcon.xml \
-	mysql-copyright.htm \
-	ojdbc-copyright.htm
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
-# Don't include the ojdbc6.jar file in database.jar 
-#	ojdbc6.jar
-
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS =
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-# Don't include demo here, we don't want make sources to run make demo
-MISC_FILES = \
-	mysql-connector-java-5.1.6-bin.jar \
-	ojdbc6.jar
+MISC_FILES = 	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES = demo
-
-JCLASS = $(JSRCS:%.java=%.class)
+OPTIONAL_FILES =
 
 all: jclass
+	@echo "To run all the demos, run 'make demo'"
+
 install: jclass jars
+
+demo: subdemo
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
