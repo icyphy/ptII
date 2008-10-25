@@ -231,7 +231,6 @@ public class Subscriber extends TypedAtomicActor {
      *   publisher.
      */
     public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
 	// We have two cases:
         // 1) _updateLinks is false.
 	// If this was created by instantiating a container class,
@@ -259,6 +258,9 @@ public class Subscriber extends TypedAtomicActor {
                         "Subscriber has no matching Publisher.");
             }
         }
+	// Call super.preinitialize() after updating links so that
+	// we have connections made before possibly inferring widths.
+        super.preinitialize();
     }
 
     ///////////////////////////////////////////////////////////////////

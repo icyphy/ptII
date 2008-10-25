@@ -225,14 +225,17 @@ public class Publisher extends TypedAtomicActor {
      *   publishing on the same channel.
      */
     public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
-        _running = true;
         // If this was created by instantiating a container class,
         // then the links would not have been updated when setContainer()
         // was called, so we must do it now.
         if (!_updatedLinks) {
             _updateLinks();
         }
+	// Call super.preinitialize() after updating links so that
+	// we have connections made before possibly inferring widths.
+        super.preinitialize();
+        _running = true;
+
     }
 
     /** If the new container is null, delete the named channel.
