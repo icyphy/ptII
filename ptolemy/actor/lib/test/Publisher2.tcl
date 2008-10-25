@@ -245,96 +245,173 @@ proc plotStats {pubSubStats levelxingStats} {
     puts $levelxingStats
 }
 
-
-set pubSubStats {{45 pubs and subs 25 ms. Memory: 31360K Free: 16644K (53%)
-} {95 pubs and subs 51 ms. Memory: 56320K Free: 32022K (57%)
-} {245 pubs and subs 243 ms. Memory: 80640K Free: 66925K (83%)
-} {495 pubs and subs 208 ms. Memory: 112832K Free: 36921K (33%)
-} {995 pubs and subs 637 ms. Memory: 200896K Free: 163735K (82%)
-} {1495 pubs and subs 626 ms. Memory: 292480K Free: 64365K (22%)
-} {1995 pubs and subs 1196 ms. Memory: 409280K Free: 167431K (41%)
-} {2495 pubs and subs 2056 ms. Memory: 621120K Free: 212842K (34%)
-} {2995 pubs and subs 3083 ms. Memory: 849856K Free: 368024K (43%)
-} {3495 pubs and subs 4153 ms. Memory: 1210048K Free: 786758K (65%)
-} {3995 pubs and subs 4209 ms. Memory: 1447040K Free: 655967K (45%)
-} {4495 pubs and subs 7199 ms. Memory: 1435776K Free: 812667K (57%)
-} {4995 pubs and subs 8375 ms. Memory: 1727360K Free: 1012097K (59%)
-} {7495 pubs and subs 14838 ms. Memory: 1750528K Free: 301986K (17%)
-} {9995 pubs and subs 29479 ms. Memory: 1929216K Free: 558617K (29%)
-} {14995 pubs and subs preinitialize() finished: 60703 ms. Memory: 2206784K Free: 1057615K (48%)
-Manager.initialize() finished: 60744 ms. Memory: 2206784K Free: 1037009K (47%)
-60959 ms. Memory: 2206784K Free: 1037009K (47%)
-} {24995 pubs and subs preinitialize() finished: 154321 ms. Memory: 2925632K Free: 1195173K (41%)
-Manager.initialize() finished: 154390 ms. Memory: 2925632K Free: 1168804K (40%)
-154756 ms. Memory: 2925632K Free: 1168804K (40%)
-} }
-
-set levelxingStats {{45 pubs and subs 29 ms. Memory: 31360K Free: 2109K (7%)
-} {95 pubs and subs 92 ms. Memory: 56320K Free: 1886K (3%)
-} {245 pubs and subs 178 ms. Memory: 101440K Free: 70064K (69%)
-} {495 pubs and subs 207 ms. Memory: 136256K Free: 42760K (31%)
-} {995 pubs and subs 465 ms. Memory: 245184K Free: 185295K (76%)
-} {1495 pubs and subs 714 ms. Memory: 345984K Free: 142922K (41%)
-} {1995 pubs and subs 1043 ms. Memory: 490816K Free: 178930K (36%)
-} {2495 pubs and subs 1672 ms. Memory: 728896K Free: 212458K (29%)
-} {2995 pubs and subs 2343 ms. Memory: 979584K Free: 383797K (39%)
-} {3495 pubs and subs 3043 ms. Memory: 1300672K Free: 101315K (8%)
-} {3995 pubs and subs 4237 ms. Memory: 1378816K Free: 486045K (35%)
-} {4495 pubs and subs 7161 ms. Memory: 1629376K Free: 1097324K (67%)
-} {4995 pubs and subs 6171 ms. Memory: 1747840K Free: 227272K (13%)
-} {7495 pubs and subs 16861 ms. Memory: 1869696K Free: 781608K (42%)
-} {9995 pubs and subs 25499 ms. Memory: 2107648K Free: 962237K (46%)
-} {14995 pubs and subs preinitialize() finished: 60282 ms. Memory: 2436224K Free: 256640K (11%)
-Manager.initialize() finished: 60322 ms. Memory: 2436224K Free: 256640K (11%)
-60561 ms. Memory: 2436224K Free: 234842K (10%)
-} {24995 pubs and subs preinitialize() finished: 154758 ms. Memory: 3225216K Free: 283676K (9%)
-Manager.initialize() finished: 154826 ms. Memory: 3225216K Free: 283676K (9%)
-155225 ms. Memory: 3225216K Free: 283676K (9%)
-} }
-
-#plotStats $pubSubStats $levelxingStats
-
-
 test PubSub-4.1 {create many} {
     set pubSubStats {}
     set levelxingStats {}
-    foreach n {10 20 50 100 200 300 400 500 600 700 800 900 1000 2000 5000 10000 20000} {
+    #foreach n {10 20 50 100 200 300 400 500 600 700 800 900 1000 2000 5000 10000 20000}
+    foreach n {2} {
 	puts "\n======"
-	puts "Running model with $n pub/subs"
-	set filename "pubsub$n.xml"
-	jdkCapture {
-	    set e0 [createPubSubModel $n 0 1]
-	    #set r [executeModel $n $e0 0]
-        } pubSubStat
-	puts "pubsub $pubSubStat"
-        lappend pubSubStats $pubSubStat
 
+        set e0 [createPubSubModel $n 0 1]
+	set filename "pubsub$n.xml"
 	set fd [open $filename w]
 	puts $fd [$e0 exportMoML]
 	close $fd 
 	puts "Wrote $filename"
 
-# 	puts "\nRunning model with $n level crossing links"
-# 	puts "levelxing $levelxingStat"
-# 	jdkCapture {
-# 	    set e0 [createPubSubModel $n 0 0]
-# 	    exec java -classpath $PTII ptolemy.actor.gui.MoMLSimpleStatisticalApplication $filename
-# 	    #set r2 [executeModel $n $e0 0]
-#         } levelxingStat
-#         lappend levelxingStats $levelxingStat
+	puts "Running model with $n pub/subs"
+	jdkCapture {
+ 	    exec java -classpath $PTII ptolemy.actor.gui.MoMLSimpleStatisticalApplication $filename
+	    #set r [executeModel $n $e0 0]
+        } pubSubStat
+	puts "pubsub $pubSubStat"
+        lappend pubSubStats $pubSubStat
 
-# 	set filename "levelxing$n.xml"
-# 	set fd [open $filename w]
-# 	puts $fd [$e0 exportMoML]
-# 	close $fd 
-# 	puts "Created $filename"
+        set e0 [createPubSubModel $n 0 0]
+ 	set filename "levelxing$n.xml"
+ 	set fd [open $filename w]
+ 	puts $fd [$e0 exportMoML]
+ 	close $fd 
+ 	puts "Created $filename"
+
+ 	puts "\nRunning model with $n level crossing links"
+ 	puts "levelxing $levelxingStat"
+ 	jdkCapture {
+ 	    exec java -classpath $PTII ptolemy.actor.gui.MoMLSimpleStatisticalApplication $filename
+ 	    #set r2 [executeModel $n $e0 0]
+         } levelxingStat
+         lappend levelxingStats $levelxingStat
 
 	#if { [lindex $r 1] != [lindex $r2 1] } {
 	#    error "Results $r and $r2 are not equal"
 	#}
     }
-    #plotStats $pubSubStats $levelxingStats
-    plotStats $pubSubStats $pubSubStats
+    plotStats $pubSubStats $levelxingStats
 
 } {}
 
+
+
+proc createHierarchichalPubSubModel {container numberOfPubSubsPerLevel levelNumber {returnAll 1} {usePubSub 1}} {
+    global pubCount
+    if {$levelNumber == 1} {
+	for {set n 1} { $n <= $numberOfPubSubsPerLevel} {incr n} {
+            set en [java::new ptolemy.actor.TypedCompositeActor $container "en-$n"]
+	    $en allowLevelCrossingConnect true
+	    #set channel "PubSub_[expr {$levelNumber - 1}]_$n"
+	    #set channel2 "PubSub_${levelNumber}_$n"
+	    set channel "PubSub_[$en getFullName]_[expr {$levelNumber - 1}]_$n"
+	    set channel2 "PubSub_[$container getFullName]_${levelNumber}_$n"
+
+	    incr pubCount
+	    #set channel "PubSub_${pubCount}a"
+	    #set channel2 "PubSub_${pubCount}b"
+
+	    #set channel "PubSub_[expr {$levelNumber - 1}]_${n}_${pubCount}"
+	    #set channel2 "PubSub_${levelNumber}_${n}_${pubCount}"
+
+	    createPublisher $en $channel "pub_a_[expr {$levelNumber - 1}]_$n" [expr {($n + 0.0)/$numberOfPubSubsPerLevel + 1.0}]
+	    set subscriber [java::new ptolemy.actor.lib.Subscriber $container "sub_${levelNumber}_$n"]
+
+	    set channelParameter [getParameter $subscriber channel]
+	    $channelParameter setExpression $channel
+	    $subscriber attributeChanged $channelParameter
+
+	    set publisher [java::new ptolemy.actor.lib.Publisher $container "pub_b_${levelNumber}_$n"]
+
+	    set channelParameter [getParameter $publisher channel]
+	    $channelParameter setExpression $channel2
+	    $publisher attributeChanged $channelParameter
+
+	    $container connect \
+		[java::field $subscriber output] \
+		[java::field $publisher input]
+        } 
+    } else {
+	for {set n 1} { $n <= $numberOfPubSubsPerLevel} {incr n} {
+            set en [java::new ptolemy.actor.TypedCompositeActor $container "en-$n"]
+	    $en allowLevelCrossingConnect true
+
+	    #set channel "PubSub_${pubCount}_[expr {$levelNumber - 1}]_$n"
+	    #set channel2 "PubSub_${pubCount}_${levelNumber}_$n"
+
+	    incr pubCount
+	    #set channel "PubSub_${pubCount}a"
+	    #set channel2 "PubSub_${pubCount}b"
+	    #set channel "PubSub_[expr {$levelNumber - 1}]_${n}"
+	    #set channel2 "PubSub_${levelNumber}_${n}"
+	    set channel "PubSub_[$en getFullName]_[expr {$levelNumber - 1}]_$n"
+	    set channel2 "PubSub_[$container getFullName]_${levelNumber}_$n"
+
+  	    createHierarchichalPubSubModel $en $numberOfPubSubsPerLevel [expr {$levelNumber - 1}] $returnAll $usePubSub
+	    set subscriber [java::new ptolemy.actor.lib.Subscriber $container "sub_c_${levelNumber}_$n"]
+	    set channelParameter [getParameter $subscriber channel]
+	    $channelParameter setExpression $channel
+	    $subscriber attributeChanged $channelParameter
+
+	    set publisher [java::new ptolemy.actor.lib.Publisher $container "pub_c_${levelNumber}_$n"]
+	    set channelParameter [getParameter $publisher channel]
+	    $channelParameter setExpression $channel2
+	    $publisher attributeChanged $channelParameter
+
+	    $container connect \
+		[java::field $subscriber output] \
+		[java::field $publisher input]
+        } 
+    }
+}
+
+
+proc pubSubAggModel {numberOfSubsPerLevel levels} {
+    global pubCount 
+    set pubCount 0
+    set e0 [sdfModel 5]
+    $e0 allowLevelCrossingConnect true
+    set sdfDirector [java::cast ptolemy.domains.sdf.kernel.SDFDirector [$e0 getDirector]]
+    [java::field $sdfDirector allowDisconnectedGraphs] setExpression true
+    createHierarchichalPubSubModel $e0 $numberOfSubsPerLevel $levels
+
+    set subscriptionAggregator [java::new ptolemy.actor.lib.SubscriptionAggregator $e0 "subscriptionAggregator"]
+    set recorder [java::new ptolemy.actor.lib.Recorder $e0 "recorder"]
+
+    #set channel "PubSub_${levels}_\[0-9\]"
+    set channel "PubSub_[$e0 getFullName]_${levels}_\[0-9\]*"
+    #set channel2 "PubSub_[$ getFullName]_${levelNumber}_$n"
+
+    set channelParameter [getParameter $subscriptionAggregator channel]
+    $channelParameter setExpression $channel
+    $subscriptionAggregator attributeChanged $channelParameter
+
+    $e0 connect \
+	[java::field [java::cast ptolemy.actor.lib.Subscriber $subscriptionAggregator] output] \
+	[java::field [java::cast ptolemy.actor.lib.Sink $recorder] input]
+    set filename "pubSubAgg_${numberOfSubsPerLevel}_${levels}.xml"
+    set fd [open $filename w]
+    puts $fd [$e0 exportMoML]
+    close $fd
+    puts "Created $filename, containing [[$e0 deepOpaqueEntityList] size] actors"
+    
+    [$e0 getManager] execute
+
+    return [list [enumToTokenValues [$recorder getRecord 0]]]
+} 
+
+test PubSub-5.2.1 {Use Hierarchy} {
+    pubSubAggModel 2 1
+} {{0.0 3.5 7.0 10.5 14.0}}
+
+test PubSub-5.2.2 {Use Hierarchy} {
+    pubSubAggModel 2 2
+} {{0.0 3.5 7.0 10.5 14.0}}
+
+test PubSub-5.3.1 {Use Hierarchy} {
+    pubSubAggModel 3 1
+} {{0.0 5.0 10.0 15.0 20.0}}
+
+test PubSub-5.3.2 {Use Hierarchy} {
+    pubSubAggModel 3 2
+} {{0.0 5.0 10.0 15.0 20.0}}
+
+test PubSub-5.3.3 {Use Hierarchy} {
+    pubSubAggModel 3 3
+} {{0.0 5.0 10.0 15.0 20.0}}
