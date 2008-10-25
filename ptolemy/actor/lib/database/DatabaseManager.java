@@ -179,24 +179,6 @@ public class DatabaseManager extends TypedAtomicActor {
         }
     }
     
-    /** Commit or roll back any previously uncommitted changes effected by the
-     *  {@link #execute(String, boolean)} method.
-     *  @param commit True to commit, false to roll back.
-     *  @throws IllegalActionException If the commit fails. 
-     */
-    public void commit(boolean commit) throws IllegalActionException {
-        Connection connection = getConnection();
-        try {
-            if (commit) {
-                connection.commit();
-            } else {
-                connection.rollback();
-            }
-        } catch (SQLException e) {
-            throw new IllegalActionException(this, e, "Commit failed.");
-        }
-    }
-    
     /** Execute the specified SQL statement and return the result as
      *  a string.
      *  Note that if there is no connection to the database, this
@@ -207,22 +189,6 @@ public class DatabaseManager extends TypedAtomicActor {
      *  @throws IllegalActionException If the statement fails.
      */
     public String execute(String sql)
-            throws IllegalActionException {
-        return execute(sql, true);
-    }
-    
-    /** Execute the specified SQL statement and return the result as
-     *  a string.
-     *  Note that if there is no connection to the database, this
-     *  will open one. The caller is responsible for calling
-     *  closeConnection() after this.
-     *  @param sql The query.
-     *  @param commit If true, then commit the changes. If false,
-     *   then the caller is responsible for calling commit later.
-     *  @return The result as a string.
-     *  @throws IllegalActionException If the statement fails.
-     */
-    public String execute(String sql, boolean commit)
             throws IllegalActionException {
         PreparedStatement statement = null;
         Connection connection = getConnection();
@@ -287,9 +253,7 @@ public class DatabaseManager extends TypedAtomicActor {
                         resultString.append("Statement OK. " + count + " rows affected.");
                         resultString.append("\n");
                     } else {
-                        if (commit) {
-                            connection.commit();
-                        }
+                        connection.commit();
                         return resultString.toString();
                     }
                 }

@@ -115,7 +115,6 @@ public class DatabaseInsert extends Sink {
      *  @throws IllegalActionException If the database update fails.
      */
     public void fire() throws IllegalActionException {
-        _succeeded = false;
         super.fire();
 
         if (input.hasToken(0)) {
@@ -145,17 +144,19 @@ public class DatabaseInsert extends Sink {
                 if (_debugging) {
                     _debug("Issuing statement:\n" + sql);
                 }
-                database.execute(sql, false);
+                // It would be nice to have an option to not commit the
+                // transaction until wrapup, but, sadly, this doens't
+                // work, at least not with MySQL. So we have to
+                // commit each time.
+                database.execute(sql);
             }
         }
-        _succeeded = true;
     }
     
     /** Clear the specified table if the <i>clear</i> parameter is true.
      *  @throws IllegalActionException If the database query fails.
      */
     public void initialize() throws IllegalActionException {
-        _succeeded = false;
         super.initialize();
         if (((BooleanToken)clear.getToken()).booleanValue()) {
             String databaseName = databaseManager.stringValue();
@@ -164,30 +165,11 @@ public class DatabaseInsert extends Sink {
             if (_debugging) {
                 _debug("Issuing statement:\n" + query);
             }
-            // The second argument avoids committing.
-            database.execute(query, false);
-        }
-        // If we get here, no exception occurred.
-        _succeeded = true;
-    }
-    
-    /** If the inserts all succeeded, then commit the changes.
-     *  @exception IllegalActionException If the commit fails.
-     */
-    public void wrapup() throws IllegalActionException {
-        super.wrapup();
-        String databaseName = databaseManager.stringValue();
-        DatabaseManager database = DatabaseManager.findDatabaseManager(databaseName, this);
-        if (_succeeded) {
-            database.commit(true);
-        } else {
-            database.commit(false);
+            // It would be nice to have an option to not commit the
+            // transaction until wrapup, but, sadly, this doens't
+            // work, at least not with MySQL. So we have to
+            // commit each time.
+            database.execute(query);
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    /** Indicator of whether commit should occur in wrapup(). */
-    private boolean _succeeded = false;
 }
