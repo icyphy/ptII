@@ -123,10 +123,10 @@ public class DatabaseInsert extends Sink {
             DatabaseManager database = DatabaseManager.findDatabaseManager(databaseName, this);
 
             String prefix = "insert into " + table.stringValue() + " (";
-            StringBuffer columnNames = new StringBuffer();
-            StringBuffer values = new StringBuffer();
             ArrayToken inputArray = (ArrayToken)input.get(0);
             for (int i = 0; i < inputArray.length(); i++) {
+                StringBuffer columnNames = new StringBuffer();
+                StringBuffer values = new StringBuffer();
                 RecordToken row = (RecordToken)inputArray.getElement(i);
                 Set<String> columns = row.labelSet();
                 for (String column : columns) {
@@ -176,10 +176,12 @@ public class DatabaseInsert extends Sink {
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
+        String databaseName = databaseManager.stringValue();
+        DatabaseManager database = DatabaseManager.findDatabaseManager(databaseName, this);
         if (_succeeded) {
-            String databaseName = databaseManager.stringValue();
-            DatabaseManager database = DatabaseManager.findDatabaseManager(databaseName, this);
-            database.commit();
+            database.commit(true);
+        } else {
+            database.commit(false);
         }
     }
 

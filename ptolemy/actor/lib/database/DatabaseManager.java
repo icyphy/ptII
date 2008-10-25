@@ -179,14 +179,19 @@ public class DatabaseManager extends TypedAtomicActor {
         }
     }
     
-    /** Commit any previously uncommitted changes effected by the
+    /** Commit or roll back any previously uncommitted changes effected by the
      *  {@link #execute(String, boolean)} method.
+     *  @param commit True to commit, false to roll back.
      *  @throws IllegalActionException If the commit fails. 
      */
-    public void commit() throws IllegalActionException {
+    public void commit(boolean commit) throws IllegalActionException {
         Connection connection = getConnection();
         try {
-            connection.commit();
+            if (commit) {
+                connection.commit();
+            } else {
+                connection.rollback();
+            }
         } catch (SQLException e) {
             throw new IllegalActionException(this, e, "Commit failed.");
         }
