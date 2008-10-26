@@ -162,21 +162,25 @@ public abstract class RunnableGraphController extends WithIconGraphController
 
         if (newState != _previousState) {
             // Clear any error reporting highlights that may be present.
-            ChangeRequest request = new ChangeRequest(this,
-                    "Error Highlight Clearer") {
-                protected void _execute() throws Exception {
-                    for (Attribute highlight : _errorHighlights) {
-                        highlight.setContainer(null);
+            // Do this only if there are actually error highlights because
+            // it triggers a repaint.
+            if (_errorHighlights.size() > 0) {
+                ChangeRequest request = new ChangeRequest(this,
+                        "Error Highlight Clearer") {
+                    protected void _execute() throws Exception {
+                        for (Attribute highlight : _errorHighlights) {
+                            highlight.setContainer(null);
+                        }
                     }
-                }
-            };
-
-            // Mark the Error Highlight Clearer request as
-            // non-persistant so that we don't mark the model as being
-            // modified.  ptolemy/actor/lib/jni/test/Scale/Scale.xml
-            // required this change.
-            request.setPersistent(false);
-            manager.requestChange(request);
+                };
+    
+                // Mark the Error Highlight Clearer request as
+                // non-persistant so that we don't mark the model as being
+                // modified.  ptolemy/actor/lib/jni/test/Scale/Scale.xml
+                // required this change.
+                request.setPersistent(false);
+                manager.requestChange(request);
+            }
 
             getFrame().report(manager.getState().getDescription());
             _previousState = newState;

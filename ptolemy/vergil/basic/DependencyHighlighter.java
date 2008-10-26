@@ -33,16 +33,21 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.Manager;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.util.MessageHandler;
 import ptolemy.vergil.actor.ActorInstanceController;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.kernel.attributes.RectangleAttribute;
@@ -227,6 +232,30 @@ public class DependencyHighlighter extends NodeControllerFactory {
             super.actionPerformed(e);
 
             NamedObj actor = getTarget();
+            // If the model has not been preinitialized since the last
+            // change to its structure, that must be done now for the result
+            // to be accurate. This is because higher-order components
+            // and Publisher and Subscriber connections may not have yet
+            // been created.
+            NamedObj toplevel = actor.toplevel();
+            if (toplevel instanceof Actor) {
+                Manager manager = ((Actor)toplevel).getManager();
+                if (manager == null) {
+                    try {
+                        manager = new Manager(toplevel.workspace(), "manager");
+                        ((CompositeActor) toplevel).setManager(manager);
+                    } catch (IllegalActionException ex) {
+                        MessageHandler.error("Failed to create a Manager.", ex);
+                        return;
+                    }
+                }
+                try {
+                    manager.preinitializeIfNecessary();
+                } catch (KernelException e1) {
+                    MessageHandler.error("Preinitialize failed.", e1);
+                    return;
+                }
+            }
             StringBuffer moml = new StringBuffer("<group>");
             HashSet<NamedObj> visited = new HashSet<NamedObj>();
             _addHighlights(actor, moml, visited, _forward, _clear);

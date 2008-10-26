@@ -137,6 +137,9 @@ public class Subscriber extends TypedAtomicActor {
             String newValue = channel.stringValue();
             if (!newValue.equals(_channel)) {
                 _channel = newValue;
+                /* NOTE: We used to call _updateLinks(), as shown below,
+                 * but now we defer that to preinitialize().  This
+                 * improves the opening time of models considerably.
                 // If we are within a class definition, then we should
                 // not create any links.  The links should only exist
                 // within instances. Otherwise, we could end up creating
@@ -158,6 +161,7 @@ public class Subscriber extends TypedAtomicActor {
                         _updateLinks();
                     }
                 }
+                */
             }
         } else {
             super.attributeChanged(attribute);
@@ -227,7 +231,6 @@ public class Subscriber extends TypedAtomicActor {
      *   publisher.
      */
     public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
 	// We have two cases:
         // 1) _updateLinks is false.
 	// If this was created by instantiating a container class,
@@ -255,6 +258,9 @@ public class Subscriber extends TypedAtomicActor {
                         "Subscriber has no matching Publisher.");
             }
         }
+	// Call super.preinitialize() after updating links so that
+	// we have connections made before possibly inferring widths.
+        super.preinitialize();
     }
 
     ///////////////////////////////////////////////////////////////////
