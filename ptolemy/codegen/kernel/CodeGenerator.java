@@ -1525,8 +1525,16 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         String helperClassName = className.replaceFirst("ptolemy",
                 packageName);
+	ActorCodeGenerator castHelperObject = null;
         if (helperClassName.equals(className)) {
-            throw new IllegalActionException(
+	    // It could be that the className does not begin with
+	    // ptolemy, so try a simple substitution.
+	    try {
+		helperClassName = packageName + "." + className;
+		castHelperObject = _instantiateHelper(object,
+                      helperClassName);
+	    } catch (Exception ex) { 
+		throw new IllegalActionException(
                     "The component class name \""
                             + className
                             + "\" and the helper class name \""
@@ -1534,9 +1542,11 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                             + "\" are the same?  Perhaps the "
                             + "substitution of the value of the generatorPackage "
                             + "parameter \"" + packageName + "\" failed?");
-        }
-        ActorCodeGenerator castHelperObject = _instantiateHelper(object,
+	    }
+        } else {
+	    castHelperObject = _instantiateHelper(object,
                 helperClassName);
+	}
         _helperStore.put(object, castHelperObject);
         
         return castHelperObject;
