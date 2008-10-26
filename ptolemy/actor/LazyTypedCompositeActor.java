@@ -553,7 +553,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Conf
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    private _init() {
+    private void _init() {
         // By default, when exporting MoML, the class name is whatever
         // the Java class is, which in this case is TypedCompositeActor.
 	// However, the parent class, TypedCompositeActor sets the classname
