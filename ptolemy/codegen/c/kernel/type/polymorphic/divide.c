@@ -94,7 +94,7 @@ Token divide_Int_Array(int a1, Token a2) {
 /**/
 
 /*** divide_Int_Double() ***/
-inline int divide_Int_Int(int a1, double a2) {
+inline int divide_Int_Double(int a1, double a2) {
     return a1 / a2;
 }
 /**/
