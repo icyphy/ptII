@@ -11,7 +11,7 @@
  DaveTm { 0,0,0,0,0,0,0,0 }
 
 Target (FreeRTOS_Demo), 0x0004 // Tools: 'ARM-ADS'
-GRPOPT 1,(Demo_Source),0,0,0
+GRPOPT 1,(Demo_Source),1,0,0
 GRPOPT 2,(Libraries),0,0,0
 GRPOPT 3,(RTOS_Source),0,0,0
 GRPOPT 4,(uIP_Source),0,0,0
@@ -62,6 +62,7 @@ TARGOPT 1, (FreeRTOS_Demo)
   OPTBL 0,(Data Sheet)<DATASHTS\Luminary\LM3S6965.PDF>
   OPTDL (SARMCM3.DLL)()(DLM.DLL)(-pLM3S6965)(SARMCM3.DLL)()(TLM.DLL)(-pLM3S6965)
   OPTDBG 48126,1,()()()()()()()()()() (BIN\UL2CM3.DLL)()()()
+  OPTKEY 0,(UL2CM3)(-UV0606PAE -O142 -S0 -C0 -N00("ARM CoreSight JTAG-DP") -D00(3BA00477) -L00(4) -TO18 -TC10000000 -TP21 -TDS8007 -TDT0 -TDC1F -TIEFFFFFFFF -TIP8 -FO7 -FD20000000 -FC800 -FN1 -FF0LM3S_256 -FS00 -FL040000)
   OPTKEY 0,(DLGTARM)((1010=-1,-1,-1,-1,0)(1007=-1,-1,-1,-1,0)(1008=-1,-1,-1,-1,0)(1009=-1,-1,-1,-1,0)(107=-1,-1,-1,-1,0)(100=-1,-1,-1,-1,0)(101=-1,-1,-1,-1,0)(102=-1,-1,-1,-1,0)(161=-1,-1,-1,-1,0)(162=-1,-1,-1,-1,0)(150=-1,-1,-1,-1,0)(1012=-1,-1,-1,-1,0)(1014=-1,-1,-1,-1,0)(1016=-1,-1,-1,-1,0))
   OPTKEY 0,(ARMDBGFLAGS)()
   OPTKEY 0,(lmidk-agdi)(-B0 -O1792)

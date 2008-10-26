@@ -3,20 +3,12 @@
 <pre>
 <h1>µVision3 Build Log</h1>
 <h2>Project:</h2>
-C:\workspace\ptresearch\ptidesBareIron\FreeRTOS\Demo\CORTEX_LM3Sxxxx_IAR_Keil\RTOSDemo.uv2
+C:\workspace\PTII\ptolemy\apps\ptidesBareIron\FreeRTOS\Demo\CORTEX_LM3Sxxxx_IAR_Keil\RTOSDemo.uv2
 Project File Date:  10/25/2008
 
 <h2>Output:</h2>
-Load "C:\\workspace\\ptresearch\\ptidesBareIron\\FreeRTOS\\Demo\\CORTEX_LM3Sxxxx_IAR_Keil\\rvmdk\\RTOSDemo.AXF" 
-USB Communication Failure
-Load "C:\\workspace\\ptresearch\\ptidesBareIron\\FreeRTOS\\Demo\\CORTEX_LM3Sxxxx_IAR_Keil\\rvmdk\\RTOSDemo.AXF" 
-USB Communication Failure
-Load "C:\\workspace\\ptresearch\\ptidesBareIron\\FreeRTOS\\Demo\\CORTEX_LM3Sxxxx_IAR_Keil\\rvmdk\\RTOSDemo.AXF" 
-Load "C:\\workspace\\ptresearch\\ptidesBareIron\\FreeRTOS\\Demo\\CORTEX_LM3Sxxxx_IAR_Keil\\rvmdk\\RTOSDemo.AXF" 
 Full Chip Erase Done.
-Load "C:\\workspace\\ptresearch\\ptidesBareIron\\FreeRTOS\\Demo\\CORTEX_LM3Sxxxx_IAR_Keil\\rvmdk\\RTOSDemo.AXF" 
+Load "C:\\workspace\\PTII\\ptolemy\\apps\\ptidesBareIron\\FreeRTOS\\Demo\\CORTEX_LM3Sxxxx_IAR_Keil\\rvmdk\\RTOSDemo.AXF" 
 Erase Done.
 Programming Done.
 Verify OK.
-Full Chip Erase Done.
-Load "C:\\workspace\\ptresearch\\ptidesBareIron\\FreeRTOS\\Demo\\CORTEX_LM3Sxxxx_IAR_Keil\\rvmdk\\RTOSDemo.AXF" 
