@@ -1112,7 +1112,7 @@ public class IORelation extends ComponentRelation {
     /** Indicate whether the new or the old width inference algo should be used
      *  This is a packaged field. 
      */
-    static final boolean _USE_NEW_WIDTH_INFERENCE_ALGO = false;
+    static final boolean _USE_NEW_WIDTH_INFERENCE_ALGO = true;
     
 
     ///////////////////////////////////////////////////////////////////
