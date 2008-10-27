@@ -116,6 +116,8 @@
         <link port="AddSubtract2.output" relation="relation"/>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1.0">
+        </property>
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 145.0]">
         </property>
@@ -125,7 +127,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 135.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
