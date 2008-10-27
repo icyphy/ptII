@@ -28,6 +28,7 @@ COPYRIGHTENDKEY
 
 package ptolemy.actor;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -63,7 +64,8 @@ public class RelationWidthInference {
      *                  or if the width cannot be inferred for a relation.
      */
     public void inferWidths() throws IllegalActionException {
-        if (_needsWidthInference) {                    
+        if (_needsWidthInference) {
+            long startTime = (new Date()).getTime();
             
             // widthChanged will become true if the width of a relation has been changed. In this
             // case we need to update the version of the workspace.        
@@ -174,8 +176,12 @@ public class RelationWidthInference {
                     }            
                 }
                 _topLevel.workspace().doneTemporaryWriting();
+                System.out.println("Time to do width inference: " +                
+                        (System.currentTimeMillis() - startTime)
+                                + " ms.");
+                
             }
-            _needsWidthInference = false;
+            _needsWidthInference = false;            
         }
         
         
