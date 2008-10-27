@@ -40,6 +40,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
@@ -301,41 +302,50 @@ public class IORelation extends ComponentRelation {
      *  @see #setWidth(int)
      */
     public int getWidth() {
-        // If _width equals to the value of WIDTH_TO_INFER
-        // we might need to infer it. Since the width inference
-        // is cached we only need to infer it in case
-        // needsWidthInference() returns true.
-        if (_width == WIDTH_TO_INFER) {
-            if (needsWidthInference()) {
-             
-                try {
-                    //TODO rodiers test IORelation-9.1 in IORelation.tcl clones
-                    // a non-fixed width relation and the cloned one has no parent
-                    //  Is this normal?                    
-                    //  Either change test or code.
-                    Nameable container = getContainer();
-
-                    if (container instanceof CompositeActor) {
-                        Director director = ((CompositeActor) container).getDirector();
-
-                        if (director != null) {
-                            director.inferWidths();
+        if (_USE_NEW_WIDTH_INFERENCE_ALGO) {
+    
+            // If _width equals to the value of WIDTH_TO_INFER
+            // we might need to infer it. Since the width inference
+            // is cached we only need to infer it in case
+            // needsWidthInference() returns true.
+            if (_width == WIDTH_TO_INFER) {
+                if (needsWidthInference()) {
+                 
+                    try {
+                        //TODO rodiers test IORelation-9.1 in IORelation.tcl clones
+                        // a non-fixed width relation and the cloned one has no parent
+                        //  Is this normal?                    
+                        //  Either change test or code.
+                        Nameable container = getContainer();
+    
+                        if (container instanceof CompositeActor) {
+                            Director director = ((CompositeActor) container).getDirector();
+    
+                            if (director != null) {
+                                director.inferWidths();
+                            }
                         }
+                        //TODO rodiers throw exception if no director
+                        
+                    } catch (IllegalActionException e) {
+                        // Width inference not possible. Use zero as width.
+                        // The user still gets warned when he starts the model.
+                        // TODO rodiers: it might be better to propagate the exception
+                        // here. To be discussed.
+                        return 0;
                     }
-                    //TODO rodiers throw exception if no director
-                    
-                } catch (IllegalActionException e) {
-                    // Width inference not possible. Use zero as width.
-                    // The user still gets warned when he starts the model.
-                    // TODO rodiers: it might be better to propagate the exception
-                    // here. To be discussed.
-                    return 0;
+                    assert !needsWidthInference();
                 }
-                assert !needsWidthInference();
+                return _inferredWidth;
             }
-            return _inferredWidth;
-        }
-        return _width;
+            return _width;
+        } else
+        {
+            if (_width == 0) {
+                return _inferWidth();
+            }
+            return _width;                
+        }            
     }
 
     /** Return true if the relation has a definite width (i.e.,
@@ -828,6 +838,82 @@ public class IORelation extends ComponentRelation {
 
         return result;
     }
+    
+    /** Infer the width of the port from how it is connected.
+     *  Throw a runtime exception if this cannot be done (normally,
+     *  the methods that construct a topology ensure that it can be
+     *  be done).  The returned value is always at least one.
+     *  This method is not read-synchronized on the workspace, so the caller
+     *  should be.
+     *  @return The inferred width.
+     */
+    private int _inferWidth() {
+        //The old algorithm for widht inference
+        assert !_USE_NEW_WIDTH_INFERENCE_ALGO;
+        long version = _workspace.getVersion();
+
+        if (version != _inferredWidthVersion) {
+            _inferredWidth = 1;
+
+            Iterator ports = linkedPortList().iterator();
+
+            // Note that depending on the order of the ports get iterated,
+            // the inferred width may be different if different ports have
+            // different widths. This is nondeterministic.
+            // However, the model behavior is not affected by this because
+            // the relation with the smallest width along a path decides
+            // the number of signals that can be passed through.
+            while (ports.hasNext()) {
+                IOPort p = (IOPort) ports.next();
+
+                // Infer the width of this port from the linked connections.
+                // Note we assume that this method is only called upon a
+                // multiport.
+                // To guarantee this method successfully infer widths, we have
+                // to check and ensure that there is at most one input relation
+                // or one output relation whose width is not fixed (unknown).
+                // This requirement is conservative. For example, an output
+                // port may have two buses with their widths not fixed.
+                // Furthermore, if one of the buses is connected to an input
+                // port and its width can be determined from the internal
+                // connections associated with that input port, the width of
+                // the other bus can also be resolved. However, to support this,
+                // a fixed-point iteration has to be performed, but there is
+                // no guarantee of existence of a useful fixed-point whose
+                // widths are all non-zero. Therefore, we take the conservative
+                // approach.
+                // To infer the unknown width, we resolve the equation where
+                // the sum of the widths of input relations equals the sum of
+                // those of output relations.
+                int portInsideWidth = 0;
+                int portOutsideWidth = 0;
+                int difference = 0;
+
+                if (p.isInsideGroupLinked(this)) {
+                    // I am linked on the inside...
+                    portInsideWidth = p._getInsideWidth(this);
+                    portOutsideWidth = p._getOutsideWidth(null);
+
+                    // the same as portOutsideWidth = p.getWidth();
+                    difference = portOutsideWidth - portInsideWidth;
+                } else if (p.isLinked(this)) {
+                    // I am linked on the outside...
+                    portInsideWidth = p._getInsideWidth(null);
+                    portOutsideWidth = p._getOutsideWidth(this);
+                    difference = portInsideWidth - portOutsideWidth;
+                }
+
+                if (difference > _inferredWidth) {
+                    _inferredWidth = difference;
+                }
+            }
+
+            _inferredWidthVersion = version;
+        }
+
+        return _inferredWidth;
+    }
+
 
     /** Create an initialize the width parameter. */
     private void _init() {
@@ -862,70 +948,172 @@ public class IORelation extends ComponentRelation {
      *  @see #getWidth()
      */
     private void _setWidth(int width) throws IllegalActionException {
-        if (width == _width) {
-            // No change.
-            return;
-        }
-        try {
-            _workspace.getWriteAccess();
-            
-            // Check legitimacy of the change.
-            if (width < 0 && width != WIDTH_TO_INFER) {                                
-                throw new IllegalActionException(this,
-                        "" + width + " is not a valid width for this relation." );
+        if (_USE_NEW_WIDTH_INFERENCE_ALGO) {
+            if (width == _width) {
+                // No change.
+                return;
             }
-
-            // Check for non-multiports on a link: should either be 0, 1 or should be inferred.            
-             if (width != 1 && width != 0 && width != WIDTH_TO_INFER) {
-                 for (Object object : linkedPortList()) {
-                     IOPort p = (IOPort) object;
-                     if (!p.isMultiport()) {
-                         throw new IllegalActionException(this, p,
-                             "Cannot make bus because the "
-                             + "relation is linked to a non-multiport.");
+            try {
+                _workspace.getWriteAccess();
+                
+                // Check legitimacy of the change.
+                if (width < 0 && width != WIDTH_TO_INFER) {                                
+                    throw new IllegalActionException(this,
+                            "" + width + " is not a valid width for this relation." );
+                }
+    
+                // Check for non-multiports on a link: should either be 0, 1 or should be inferred.            
+                 if (width != 1 && width != 0 && width != WIDTH_TO_INFER) {
+                     for (Object object : linkedPortList()) {
+                         IOPort p = (IOPort) object;
+                         if (!p.isMultiport()) {
+                             throw new IllegalActionException(this, p,
+                                 "Cannot make bus because the "
+                                 + "relation is linked to a non-multiport.");
+                         }
                      }
                  }
-             }
-
-             _width = width;                         
-
-            // Set the width of all relations in the relation group.
-            Iterator<?> relations = relationGroupList().iterator();
-
-            while (!_suppressWidthPropagation && relations.hasNext()) {
-                IORelation relation = (IORelation) relations.next();
-
-                if (relation == this) {
-                    continue;
+    
+                 _width = width;                         
+    
+                // Set the width of all relations in the relation group.
+                Iterator<?> relations = relationGroupList().iterator();
+    
+                while (!_suppressWidthPropagation && relations.hasNext()) {
+                    IORelation relation = (IORelation) relations.next();
+    
+                    if (relation == this) {
+                        continue;
+                    }
+    
+                    // If the relation has a width parameter, set that
+                    // value. Otherwise, just set its width directly.
+                    // Have to disable back propagation.
+                    try {
+                        relation._suppressWidthPropagation = true;
+                        relation.width.setToken(new IntToken(width));
+                    } finally {
+                        relation._suppressWidthPropagation = false;
+                    }
                 }
-
-                // If the relation has a width parameter, set that
-                // value. Otherwise, just set its width directly.
-                // Have to disable back propagation.
-                try {
-                    relation._suppressWidthPropagation = true;
-                    relation.width.setToken(new IntToken(width));
-                } finally {
-                    relation._suppressWidthPropagation = false;
+    
+                // Invalidate schedule and type resolution.
+                Nameable container = getContainer();
+    
+                if (container instanceof CompositeActor) {
+                    Director director = ((CompositeActor) container).getDirector();
+    
+                    if (director != null) {
+                        director.invalidateSchedule();
+                        director.invalidateResolvedTypes();
+                        director.notifyConnectivityChange();
+                    }
                 }
+            } finally {
+                _workspace.doneWriting();
             }
-
-            // Invalidate schedule and type resolution.
-            Nameable container = getContainer();
-
-            if (container instanceof CompositeActor) {
-                Director director = ((CompositeActor) container).getDirector();
-
-                if (director != null) {
-                    director.invalidateSchedule();
-                    director.invalidateResolvedTypes();
-                    director.notifyConnectivityChange();
-                }
+        } else {
+            if (width == _width) {
+                // No change.
+                return;
             }
-        } finally {
-            _workspace.doneWriting();
+            try {
+                _workspace.getWriteAccess();
+
+                if (width <= 0) {
+                    // Check legitimacy of the change.
+                    try {
+                        _inferWidth();
+                    } catch (InvalidStateException ex) {
+                        throw new IllegalActionException(this, ex,
+                                "Cannot use unspecified width on this relation "
+                                        + "because of its links.");
+                    }
+                }
+
+                // Check for non-multiports on a link.
+                /* This is now allowed.
+                 if (width != 1) {
+                 Iterator ports = linkedPortList().iterator();
+
+                 while (ports.hasNext()) {
+                 IOPort p = (IOPort) ports.next();
+
+                 // Check for non-multiports.
+                 if (!p.isMultiport()) {
+                 throw new IllegalActionException(this, p,
+                 "Cannot make bus because the "
+                 + "relation is linked to a non-multiport.");
+                 }
+                 }
+                 }
+                 */
+                _width = width;
+
+                // Set the width of all relations in the relation group.
+                Iterator relations = relationGroupList().iterator();
+
+                while (!_suppressWidthPropagation && relations.hasNext()) {
+                    IORelation relation = (IORelation) relations.next();
+
+                    if (relation == this) {
+                        continue;
+                    }
+
+                    // If the relation has a width parameter, set that
+                    // value. Otherwise, just set its width directly.
+                    // Have to disable back propagation.
+                    try {
+                        relation._suppressWidthPropagation = true;
+                        relation.width.setToken(new IntToken(width));
+                    } finally {
+                        relation._suppressWidthPropagation = false;
+                    }
+                }
+
+                // Do this as a second pass so that it does not
+                // get executed if the change is aborted
+                // above by an exception.
+                // FIXME: Haven't completely dealt with this
+                // possibility since the above changes may have
+                // partially completed.
+                Iterator ports = linkedPortList().iterator();
+
+                while (ports.hasNext()) {
+                    IOPort p = (IOPort) ports.next();
+                    Entity portContainer = (Entity) p.getContainer();
+
+                    if (portContainer != null) {
+                        portContainer.connectionsChanged(p);
+                    }
+                }
+
+                // Invalidate schedule and type resolution.
+                Nameable container = getContainer();
+
+                if (container instanceof CompositeActor) {
+                    Director director = ((CompositeActor) container).getDirector();
+
+                    if (director != null) {
+                        director.invalidateSchedule();
+                        director.invalidateResolvedTypes();
+                    }
+                }
+            } finally {
+                _workspace.doneWriting();
+            }            
         }
     }      
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         packaged variables                 ////       
+           
+    
+    /** Indicate whether the new or the old width inference algo should be used
+     *  This is a packaged field. 
+     */
+    static final boolean _USE_NEW_WIDTH_INFERENCE_ALGO = false;
+    
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////       

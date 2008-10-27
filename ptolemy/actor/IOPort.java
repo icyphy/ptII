@@ -3202,7 +3202,7 @@ public class IOPort extends ComponentPort {
      *  remotely connected to this port (if any).
      */
     public static final int REMOTERECEIVERS = 2048;
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -3496,20 +3496,41 @@ public class IOPort extends ComponentPort {
      *  except for the specified port.
      */
     protected int _getInsideWidth(IORelation except) {
-        int result = 0;
-        Iterator<?> relations = insideRelationList().iterator();
-
-        while (relations.hasNext()) {
-            IORelation relation = (IORelation) relations.next();
-
-            if (relation != except) {
-                if (!relation.needsWidthInference()) {
-                    result += relation.getWidth();
-                }               
+        if (IORelation._USE_NEW_WIDTH_INFERENCE_ALGO) {
+            int result = 0;
+            Iterator<?> relations = insideRelationList().iterator();
+    
+            while (relations.hasNext()) {
+                IORelation relation = (IORelation) relations.next();
+    
+                if (relation != except) {
+                    if (!relation.needsWidthInference()) {
+                        result += relation.getWidth();
+                    }               
+                }
             }
-        }
+    
+            return result;
+        } else {
+            int result = 0;
+            Iterator relations = insideRelationList().iterator();
 
-        return result;
+            while (relations.hasNext()) {
+                IORelation relation = (IORelation) relations.next();
+
+                if (relation != except) {
+                    if (!relation.isWidthFixed()) {
+                        throw new InvalidStateException(this,
+                                "Width of inside relations cannot "
+                                        + "be determined.");
+                    }
+
+                    result += relation.getWidth();
+                }
+            }
+
+            return result;            
+        }
     }
 
     /** Return the sums of the widths of the relations linked on the
@@ -3530,20 +3551,41 @@ public class IOPort extends ComponentPort {
      *  except for the specified port.
      */
     protected int _getOutsideWidth(IORelation except) {
-        int result = 0;
-        Iterator<?> relations = linkedRelationList().iterator();
-
-        while (relations.hasNext()) {
-            IORelation relation = (IORelation) relations.next();
-
-            if (relation != except) {
-                if (!relation.needsWidthInference()) {
-                    result += relation.getWidth();
-                }                
+        if (IORelation._USE_NEW_WIDTH_INFERENCE_ALGO) {
+            int result = 0;
+            Iterator<?> relations = linkedRelationList().iterator();
+    
+            while (relations.hasNext()) {
+                IORelation relation = (IORelation) relations.next();
+    
+                if (relation != except) {
+                    if (!relation.needsWidthInference()) {
+                        result += relation.getWidth();
+                    }                
+                }
             }
-        }
+    
+            return result;
+        } else {
+            int result = 0;
+            Iterator relations = linkedRelationList().iterator();
 
-        return result;
+            while (relations.hasNext()) {
+                IORelation relation = (IORelation) relations.next();
+
+                if (relation != except) {
+                    if (!relation.isWidthFixed()) {
+                        throw new InvalidStateException(this,
+                                "Width of outside relations cannot "
+                                        + "be determined.");
+                    }
+
+                    result += relation.getWidth();
+                }
+            }
+
+            return result;            
+        }
     }
 
     /** If the port is an input, return receivers that handle incoming
@@ -3792,32 +3834,103 @@ public class IOPort extends ComponentPort {
      */
     private void _checkMultiportLink(IORelation relation)
             throws IllegalActionException {
-        
-        if (_isInsideLinkable(relation.getContainer())) {
-            // An inside link
-            // Check for existing inside links
-            if (!isMultiport() && (numInsideLinks() >= 1)) {
-                throw new IllegalActionException(this, relation,
-                        "Attempt to link more than one relation "
-                                + "to a single port.");
-            }
-
-            if (!relation.isWidthFixed() || relation.getWidth() != 1) {
-                // Relation is a bus.
-                if (!isMultiport()) {
+        if (IORelation._USE_NEW_WIDTH_INFERENCE_ALGO) {
+            if (_isInsideLinkable(relation.getContainer())) {
+                // An inside link
+                // Check for existing inside links
+                if (!isMultiport() && (numInsideLinks() >= 1)) {
                     throw new IllegalActionException(this, relation,
-                            "Attempt to link a bus relation "
+                            "Attempt to link more than one relation "
+                                    + "to a single port.");
+                }
+    
+                if (!relation.isWidthFixed() || relation.getWidth() != 1) {
+                    // Relation is a bus.
+                    if (!isMultiport()) {
+                        throw new IllegalActionException(this, relation,
+                                "Attempt to link a bus relation "
+                                        + "to a single port.");
+                    }
+                }
+            } else {
+                // An outside link
+                // Check for existing outside links
+                if (!isMultiport() && (numLinks() >= 1)) {
+                    throw new IllegalActionException(this, relation,
+                            "Attempt to link more than one relation "
                                     + "to a single port.");
                 }
             }
         } else {
-            // An outside link
-            // Check for existing outside links
-            if (!isMultiport() && (numLinks() >= 1)) {
-                throw new IllegalActionException(this, relation,
-                        "Attempt to link more than one relation "
-                                + "to a single port.");
-            }
+            if (_isInsideLinkable(relation.getContainer())) {
+                // An inside link
+                // Check for existing inside links
+                if (!isMultiport() && (numInsideLinks() >= 1)) {
+                    throw new IllegalActionException(this, relation,
+                            "Attempt to link more than one relation "
+                                    + "to a single port.");
+                }
+
+                if ((relation.getWidth() != 1) || !relation.isWidthFixed()) {
+                    // Relation is a bus.
+                    if (!isMultiport()) {
+                        throw new IllegalActionException(this, relation,
+                                "Attempt to link a bus relation "
+                                        + "to a single port.");
+                    }
+
+                    if (!relation.isWidthFixed()) {
+                        // Make sure there are no other busses already
+                        // connected with unspecified widths.
+                        try {
+                            _getInsideWidth(null);
+                        } catch (InvalidStateException ex) {
+                            throw new IllegalActionException(
+                                    this,
+                                    relation,
+                                    "Attempt to link a second bus relation "
+                                            + "with unspecified width to the inside "
+                                            + "of a port.");
+                        }
+                    }
+                }
+            } else {
+                // An outside link
+                // Check for existing outside links
+                if (!isMultiport() && (numLinks() >= 1)) {
+                    throw new IllegalActionException(this, relation,
+                            "Attempt to link more than one relation "
+                                    + "to a single port.");
+                }
+
+                if ((relation.getWidth() != 1) || !relation.isWidthFixed()) {
+                    // Relation is a bus.
+
+                    /* This is now allowed.
+                     if (!isMultiport()) {
+                     throw new IllegalActionException(this, relation,
+                     "Attempt to link a bus relation "
+                     + "to a single port.");
+                     }
+                     */
+                    Iterator relations = linkedRelationList().iterator();
+
+                    while (relations.hasNext()) {
+                        IORelation theRelation = (IORelation) relations.next();
+
+                        // A null link (supported since indexed links) might
+                        // yield a null relation here. EAL 7/19/00.
+                        if ((theRelation != null) && !theRelation.isWidthFixed()) {
+                            throw new IllegalActionException(
+                                    this,
+                                    relation,
+                                    "Attempt to link a second bus relation "
+                                            + "with unspecified width to the outside "
+                                            + "of a port.");
+                        }
+                    }
+                }
+            }            
         }
     }
 
@@ -3975,7 +4088,7 @@ public class IOPort extends ComponentPort {
     ////                         private variables                 ////
 
     /** To avoid creating this repeatedly, we use a single version. */
-    private static final Receiver[][] _EMPTY_RECEIVER_ARRAY = new Receiver[0][0];
+    private static final Receiver[][] _EMPTY_RECEIVER_ARRAY = new Receiver[0][0];    
 
     /** Indicate whether the port is an input, an output, or both.
      * The value may be overridden in transparent ports, in that if

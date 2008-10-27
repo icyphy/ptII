@@ -657,8 +657,10 @@ public class Manager extends NamedObj implements Runnable {
             executeChangeRequests();
 
             // We should infer the widths before preinitializing the container, since the latter
-            // will create the receivers for which it needs the widths of the relations. 
-            _inferRelationWidths();
+            // will create the receivers for which it needs the widths of the relations.
+            if (IORelation._USE_NEW_WIDTH_INFERENCE_ALGO) {
+                _inferRelationWidths();
+            }
             
             // Pre-initialize actors that have been added.
             for (Actor actor : _actorsToInitialize) {
@@ -931,8 +933,10 @@ public class Manager extends NamedObj implements Runnable {
             }
 
             // We should infer the widths before preinitializing the container, since the latter
-            // will create the receivers for which it needs the widths of the relations. 
-            _inferRelationWidths();
+            // will create the receivers for which it needs the widths of the relations.
+            if (IORelation._USE_NEW_WIDTH_INFERENCE_ALGO) {
+                _inferRelationWidths();
+            }
             
             // Initialize the topology.
             // NOTE: Some actors require that parameters be set prior
