@@ -57,7 +57,7 @@ public class UndoActionsList implements UndoAction {
     ////                         public methods                    ////
 
     /** Append a new entry to the list.
-     *  @param entry The entry to append.
+     *  @param action The entry to append.
      */
     public void add(UndoAction action) {
         _actionList.add(action);
