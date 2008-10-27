@@ -29,6 +29,7 @@
 package ptolemy.codegen.c.actor.lib;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * A helper class for ptolemy.actor.lib.StringConst.
@@ -46,5 +47,21 @@ public class StringConst extends CCodeGeneratorHelper {
      */
     public StringConst(ptolemy.actor.lib.StringConst actor) {
         super(actor);
+    }
+
+    /** Generate the initialize code. Declare the variable state.
+     *  @return The initialize code.
+     *  @exception IllegalActionException
+     */
+    public String generateInitializeCode() throws IllegalActionException {
+        super.generateInitializeCode();
+        ptolemy.actor.lib.StringConst actor = (ptolemy.actor.lib.StringConst) getComponent();
+	if (actor.output.getWidth() > 0 && actor.output.numberOfSinks() > 0) {
+	    // If the actor is in a Composite and the output is connected
+	    // to a port that is not connected, then don't generate code 
+	    // for the output.  See test/auto/StringConstComposite.xml
+	    _codeStream.appendCodeBlock("initMaybeBlock");
+	}
+        return processCode(_codeStream.toString());
     }
 }
