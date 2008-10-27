@@ -447,11 +447,11 @@ int ColtRandomSource_BinomialDistribution(int n, double p, int* current) {
 // This code is in the public domain
 
 static double ColtRandomSource_LogFactorial(double k) {
-#define       C0      9.18938533204672742e-01
-#define       C1      8.33333333333333333e-02
-#define       C3     -2.77777777777777778e-03
-#define       C5      7.93650793650793651e-04
-#define       C7     -5.95238095238095238e-04
+    double  C0 = 9.18938533204672742e-01;
+    double  C1 = 8.33333333333333333e-02;
+    double  C3 = -2.77777777777777778e-03;
+    double  C5 = 7.93650793650793651e-04;
+    double  C7 = -5.95238095238095238e-04;
 
     static double logfak[30L] = {
         0.00000000000000000,   0.00000000000000000,   0.69314718055994531,
