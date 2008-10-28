@@ -119,7 +119,13 @@ public class RelationWidthInference {
                 long afterinit = (new Date()).getTime();
                 
                 while (!workingSet2.isEmpty() && !unspecifiedSet.isEmpty()) {
-                    IORelation relation = workingSet2.pop();
+                    //IORelation relation = workingSet2.pop();
+                    // pop has been added to LinkedList in Java 1.6
+                    // (cfr. http://java.sun.com/javase/6/docs/api/java/util/LinkedList.html#pop() ).
+                    // Hence we use get an remove for the time being...
+                    
+                    IORelation relation = workingSet2.get(0);
+                    workingSet2.remove(0);
                     
                     unspecifiedSet.remove(relation);
                     assert  !relation.needsWidthInference(); 
