@@ -1933,7 +1933,20 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     public Object getWriteOffset(IOPort inputPort, int channelNumber)
     throws IllegalActionException {
         if (inputPort.getContainer() == _object) {
-            return ((Object[]) _writeOffsets.get(inputPort))[channelNumber];
+	    try {
+		return ((Object[]) _writeOffsets.get(inputPort))[channelNumber];
+	    } catch (Throwable throwable) {
+		throw new IllegalActionException(inputPort, throwable,
+						 "Failed to get write offset "
+						 + "for \"" + inputPort 
+						 + "\" and channel #" + 
+						 channelNumber
+						 + " write offsets "
+						 + "port: "
+						 + _writeOffsets.get(inputPort)
+						 );
+
+	    }
         } else {
             CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper(inputPort
                     .getContainer());
