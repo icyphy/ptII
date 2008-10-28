@@ -1,8 +1,6 @@
-/*thus far I am not sure if thiis works. I have not been able to get code to generate for this target from any of the 
- * existing examples. I also realized that many of the examples cannot generate code for iRobot*/ 
 /* Common code for the Luminary
 
- @Copyright (c) 2007 The Regents of the University of California.
+ @Copyright (c) 2008 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -32,13 +30,13 @@ package ptolemy.codegen.c.targets.luminary;
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 
 /**
- Common code for the Luminary.
-
- @author Shanna-Shaye Forbes
- @version $Id: ArduinoTarget.java 47617 2007-12-18 19:59:51Z cxh $
- @since Ptolemy II 6.1
- @Pt.ProposedRating Red (sssf)
- @Pt.AcceptedRating Red (sssf)
+ * Common code for the Luminary.
+ * 
+ * @author Man-Kit Leung
+ * @version $Id: LuminaryTarget.java 47617 2007-12-18 19:59:51Z cxh $
+ * @since Ptolemy II 7.0
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
  */
 public class LuminaryTarget extends CCodeGeneratorHelper {
 
