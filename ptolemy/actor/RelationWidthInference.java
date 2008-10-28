@@ -107,13 +107,20 @@ public class RelationWidthInference {
                             }
                         }
                     }
-                }
+                }               
                 
-                originalUnspecifiedSet = (HashSet<IORelation>) unspecifiedSet.clone(); 
+                originalUnspecifiedSet = (HashSet<IORelation>) unspecifiedSet.clone();
                 
-                while (!workingSet.isEmpty() && !unspecifiedSet.isEmpty()) {
-                    IORelation relation = workingSet.iterator().next();
-                    workingSet.remove(relation);
+                LinkedList<IORelation> workingSet2 = new LinkedList<IORelation>(workingSet);
+                
+                System.out.println("Width inference - initialization: " +                
+                        (System.currentTimeMillis() - startTime)
+                                + " ms.");
+                long afterinit = (new Date()).getTime();
+                
+                while (!workingSet2.isEmpty() && !unspecifiedSet.isEmpty()) {
+                    IORelation relation = workingSet2.get(0);
+                    workingSet2.remove(relation);
                     unspecifiedSet.remove(relation);
                     assert  !relation.needsWidthInference(); 
                     int width = relation.getWidth();            
@@ -146,11 +153,15 @@ public class RelationWidthInference {
                     for (IOPort port : multiports) {
                         List<IORelation> updatedRelations = _relationsWithUpdatedWidthForMultiport(port, widthChanged);
                         for (IORelation otherRelation : updatedRelations) {
-                            workingSet.add(otherRelation);
+                            workingSet2.add(otherRelation);
                         }
                         
                     }                      
                 }
+                System.out.println("Actual algorithm: " +                
+                        (System.currentTimeMillis() - afterinit)
+                                + " ms.");                                
+                
                 if (!unspecifiedSet.isEmpty()) {
                     IORelation relation = unspecifiedSet.iterator().next();
                     throw new IllegalActionException(relation, 
