@@ -98,7 +98,7 @@ public class ElementList extends LabeledList {
 
             removed = sameWeightList.remove(element);
 
-            if (sameWeightList.size() == 0) {
+            if (sameWeightList.isEmpty()) {
                 _weightMap.remove(weight);
             }
         } else {
@@ -152,7 +152,7 @@ public class ElementList extends LabeledList {
                 if (weightValueHasChanged) {
                     nextList.remove(element);
 
-                    if (nextList.size() == 0) {
+                    if (nextList.isEmpty()) {
                         _weightMap.remove(nextWeight);
                     }
 
@@ -206,7 +206,7 @@ public class ElementList extends LabeledList {
     public Element element(Object weight) {
         Collection elements = elements(weight);
 
-        if (elements.size() == 0) {
+        if (elements.isEmpty()) {
             throw new GraphWeightException(weight, null, _graph,
                     "Invalid weight argument, the number of elements for"
                             + " this weight is zero.");
