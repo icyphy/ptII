@@ -417,7 +417,7 @@ public class Publisher extends TypedAtomicActor {
                 }
             }
         }
-        return "channel" + suffix;
+       return "channel" + suffix;
     }
 
     ///////////////////////////////////////////////////////////////////
