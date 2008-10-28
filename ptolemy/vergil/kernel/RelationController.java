@@ -188,7 +188,8 @@ public class RelationController extends ParameterizedNodeController {
             CompositeFigure result = new CompositeFigure(figure);
 
             if (relation instanceof IORelation) {
-                if (((IORelation) relation).getWidth() > 1) {
+                IORelation ioRelation = (IORelation) relation;
+                if ( ioRelation.isWidthFixed() && ioRelation.getWidth() > 1) {
                     // Restore width and height to the default to get a reasonable slash.
                     width = 12.0;
                     height = 12.0;
