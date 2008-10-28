@@ -236,6 +236,7 @@ public class RelationWidthInference {
     static private Set<IORelation> _relationsWithUnspecifiedWidths(List<?> relationList) {
         Set<IORelation> result = new HashSet<IORelation>();
         for (Object relation : relationList) {
+            assert relation != null;
             if (((IORelation) relation).needsWidthInference()) {
                 result.add((IORelation) relation);                
             }
@@ -259,14 +260,12 @@ public class RelationWidthInference {
         
         Set<IORelation> insideUnspecifiedWidths = _relationsWithUnspecifiedWidths(port.insideRelationList());
         int insideUnspecifiedWidthsSize = insideUnspecifiedWidths.size(); 
-        if (insideUnspecifiedWidthsSize > 2) {
-            return result;
-        }
+
         Set<IORelation> outsideUnspecifiedWidths = _relationsWithUnspecifiedWidths(port.linkedRelationList());
                 //port.linkedRelationList() returns the outside relations
         
         int outsideUnspecifiedWidthsSize = outsideUnspecifiedWidths.size();
-        if (outsideUnspecifiedWidthsSize > 2 || (insideUnspecifiedWidthsSize > 0 && outsideUnspecifiedWidthsSize > 0)
+        if ((insideUnspecifiedWidthsSize > 0 && outsideUnspecifiedWidthsSize > 0)
                 || (insideUnspecifiedWidthsSize == 0 && outsideUnspecifiedWidthsSize == 0)) {
             return result;
         }
@@ -292,8 +291,17 @@ public class RelationWidthInference {
                     + unspecifiedWidths.iterator().next().getFullName()
                     + " would be negative.");            
         }
+
         int unspecifiedWidthsSize = unspecifiedWidths.size();
-        if (unspecifiedWidthsSize == 1 || unspecifiedWidthsSize == difference) {
+        
+        if (difference > 0 && difference < unspecifiedWidthsSize) {
+            throw new IllegalActionException(port, 
+                    "The inside and outside widths of port " + port.getFullName()
+                    + " are not consistent.\n Can't determine a unique width for relation"
+                    + unspecifiedWidths.iterator().next().getFullName());            
+        }         
+        
+        if (unspecifiedWidthsSize == 1 || unspecifiedWidthsSize == difference || difference == 0) {
             int width = difference / unspecifiedWidthsSize;
             for (IORelation relation : unspecifiedWidths) {
                 boolean relationWidthChanged = relation._setInferredWidth(width);

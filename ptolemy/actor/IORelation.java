@@ -548,10 +548,22 @@ public class IORelation extends ComponentRelation {
         // related to the connectivity.        
         boolean widthInferenceValid = _width != WIDTH_TO_INFER || _inferredWidthVersion == _workspace.getVersion();
         if (!widthInferenceValid) {
+            boolean directorPresent = false;
             Nameable container = getContainer();
             if (container instanceof CompositeActor) {
                 Director director = ((CompositeActor) container).getDirector();
-                widthInferenceValid = !director.needsWidthInference();
+                if (director != null) { 
+                    widthInferenceValid = !director.needsWidthInference();
+                    directorPresent = true;
+                }                
+            }
+            if (!directorPresent) {
+                // If we don't have a director we can't determine the inferred width.
+                // You could argue it is wrong to set the _inferredWidth = 0, however
+                // the user can't run the model anyway and hence needs to add a directory
+                // to ran it, at which time the width inference will be executed again.
+                _inferredWidth = 0;
+                widthInferenceValid = true;                
             }
         }
         return !widthInferenceValid;
