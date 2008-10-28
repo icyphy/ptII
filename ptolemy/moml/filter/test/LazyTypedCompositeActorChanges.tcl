@@ -85,6 +85,28 @@ test LazyTypedCompositeActorChanges-1.1 {Two levels of hierarchy} {
     set toplevel [$parser parse $hideMoml]
     set newMoML [$toplevel exportMoML]
     list $newMoML
-} {}
+} {{<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="LazyTypedCompositeActorChangesTest" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
+    </property>
+    <entity name="MyComposite" class="ptolemy.actor.LazyTypedCompositeActor">
+        <configure>
+            <group>
+                <property name="Foo" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <entity name="MyInnerComposite" class="ptolemy.actor.TypedCompositeActor">
+                    <property name="Bar" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <entity name="Const" class="ptolemy.actor.lib.Const">
+                    </entity>
+                </entity>
+            </group>
+        </configure>
+    </entity>
+</entity>
+}}
+
 
 
