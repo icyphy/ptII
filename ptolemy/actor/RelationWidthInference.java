@@ -119,8 +119,8 @@ public class RelationWidthInference {
                 long afterinit = (new Date()).getTime();
                 
                 while (!workingSet2.isEmpty() && !unspecifiedSet.isEmpty()) {
-                    IORelation relation = workingSet2.get(0);
-                    workingSet2.remove(relation);
+                    IORelation relation = workingSet2.pop();
+                    
                     unspecifiedSet.remove(relation);
                     assert  !relation.needsWidthInference(); 
                     int width = relation.getWidth();            
