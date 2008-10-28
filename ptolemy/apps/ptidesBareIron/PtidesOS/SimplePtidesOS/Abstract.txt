@@ -1,0 +1,16 @@
+The LCD_Blinky project is a simple program for the Luminary 
+'LM3S8962' microcontroller using 'Luminary LM3S8962 Evaluation 
+Board'.
+
+It blinks the Status LED and shows time and push button
+states on OLED display.
+
+Button Select can be used to hold time.
+
+Example demonstrates also Trace features:
+  I/O displayed in Logic Analyzer
+
+The Blinky program is available in different targets:
+  Simulator:      runs in µVision Simulator
+  LM3S8962 Flash: runs from Internal Flash located on chip
+                  (used for production or target debugging)

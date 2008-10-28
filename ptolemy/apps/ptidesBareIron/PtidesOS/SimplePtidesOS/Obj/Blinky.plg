@@ -1,0 +1,23 @@
+<html>
+<body>
+<pre>
+<h1>µVision3 Build Log</h1>
+<h2>Project:</h2>
+C:\workspace\ptresearch\ptidesBareIron\PtidesOS\SimplePtidesOS\SimplePtidesOS.uv2
+Project File Date:  10/28/2008
+
+<h2>Output:</h2>
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(223): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(270): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(665): warning:  #550-D: variable "model_delay3" was set but never used
+compiling rit128x96x4.c...
+linking...
+Program Size: Code=3640 RO-data=276 RW-data=64 ZI-data=512  
+".\Obj\Blinky.axf" - 0 Error(s), 8 Warning(s).
