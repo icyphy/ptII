@@ -340,24 +340,20 @@ public class TypedIOPort extends IOPort implements Typeable {
 
             Type result = BaseType.UNKNOWN;
 
-            //TODO rodiers rewrite so it does not need the receivers
             if (isOpaque()) {
                 result = _resolvedType;
             } else if (isInput()) {
                 // is a transparent input port. Get all the ports connected
-                // on the inside through receivers.
-                Receiver[][] receivers = this.deepGetReceivers();
+                // on the inside through deepInsidePortList().
+                Iterator<?> ports = deepInsidePortList().iterator();
                 List<Type> portTypeList = new LinkedList<Type>();
 
-                if (receivers != null) {
-                    for (int i = 0; i < receivers.length; i++) {
-                        if (receivers[i] != null) {
-                            for (int j = 0; j < receivers[i].length; j++) {
-                                TypedIOPort port = (TypedIOPort) receivers[i][j]
-                                        .getContainer();
-                                portTypeList.add(port.getType());
-                            }
-                        }
+                while (ports.hasNext()) {
+                    TypedIOPort port = (TypedIOPort) ports.next();
+
+                    // Rule out case where this port itself is listed...
+                    if ((port != this) && port.isInput()) {
+                        portTypeList.add(port.getType());
                     }
                 }
 
