@@ -36,6 +36,8 @@ import java.util.List;
 
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.ComponentRelation;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.Configurable;
 import ptolemy.kernel.util.IllegalActionException;
@@ -46,7 +48,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
+import ptolemy.moml.ParserAttribute;
 import ptolemy.util.MessageHandler;
+import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// LazyTypedCompositeActor
@@ -463,34 +467,42 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Conf
                 // removeAllEntities();
                 MoMLParser parser = new MoMLParser(workspace());
 
+		//NamedObj toplevel = toplevel();
+		//MoMLParser parser = ParserAttribute.getParser(toplevel);
                 parser.setContext(this);
+		
+		List savedFilters = parser.getMoMLFilters();
+		try {
+		    parser.setMoMLFilters(null);
+		    if ((_configureSource != null) && !_configureSource.equals("")) {
+			URL xmlFile = new URL(_base, _configureSource);
+			parser.parse(xmlFile, xmlFile);
+		    }
 
-                if ((_configureSource != null) && !_configureSource.equals("")) {
-                    URL xmlFile = new URL(_base, _configureSource);
-                    parser.parse(xmlFile, xmlFile);
-                }
+		    if ((_configureText != null) && !_configureText.equals("")) {
+			// NOTE: Regrettably, the XML parser we are using cannot
+			// deal with having a single processing instruction at the
+			// outer level.  Thus, we have to strip it.
+			String trimmed = _configureText.trim();
 
-                if ((_configureText != null) && !_configureText.equals("")) {
-                    // NOTE: Regrettably, the XML parser we are using cannot
-                    // deal with having a single processing instruction at the
-                    // outer level.  Thus, we have to strip it.
-                    String trimmed = _configureText.trim();
-
-                    if (trimmed.startsWith("<?") && trimmed.endsWith("?>")) {
-                        trimmed = trimmed.substring(2, trimmed.length() - 2)
+			if (trimmed.startsWith("<?") && trimmed.endsWith("?>")) {
+			    trimmed = trimmed.substring(2, trimmed.length() - 2)
                                 .trim();
 
-                        if (trimmed.startsWith("moml")) {
-                            trimmed = trimmed.substring(4).trim();
-                            parser.parse(_base, trimmed);
-                        }
+			    if (trimmed.startsWith("moml")) {
+				trimmed = trimmed.substring(4).trim();
+				parser.parse(_base, trimmed);
+			    }
 
-                        // If it's not a moml processing instruction, ignore.
-                    } else {
-                        // Data is not enclosed in a processing instruction.
-                        // Must have been given in a CDATA section.
-                        parser.parse(_base, _configureText);
-                    }
+			    // If it's not a moml processing instruction, ignore.
+			} else {
+			    // Data is not enclosed in a processing instruction.
+			    // Must have been given in a CDATA section.
+			    parser.parse(_base, _configureText);
+			}
+		    }
+		} finally {
+		    parser.setMoMLFilters(savedFilters);
                 }
             }
         } catch (Exception ex) {
@@ -525,11 +537,85 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Conf
      */
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
+
+	// Export top level attributes and ports
+
+	List _attributes = attributeList();
+	String _displayName = getDisplayName();
+
+	//FIXME: start of duplicated code from NamedObj
+        // If the display name has been set, then include a display element.
+        // Note that copying parameters that have _displayName set need
+        // to export _displayName.  
+        // See: http://bugzilla.ecoinformatics.org/show_bug.cgi?id=3361
+        if (_displayName != getName()) {
+            output.write("<display name=\"");
+            output.write(StringUtilities.escapeForXML(_displayName));
+            output.write("\"/>");
+        }
+
+        // Callers of this method should hold read access 
+        // so as to avoid ConcurrentModificationException.
+        if (_attributes != null) {
+            //Iterator attributes = _attributes.elementList().iterator();
+            Iterator attributes = _attributes.iterator();
+
+            while (attributes.hasNext()) {
+                Attribute attribute = (Attribute) attributes.next();
+                attribute.exportMoML(output, depth);
+            }
+        }
+	//FIXME: end of duplicated code from NamedObj
+
+	//FIXME: start of duplicated code from Entity
+        Iterator ports = portList().iterator();
+
+        while (ports.hasNext()) {
+            Port port = (Port) ports.next();
+            port.exportMoML(output, depth);
+        }
+	//FIXME: end of duplicated code from Entity
+
+
+	// Everything else is in a configure
+
         output.write(_getIndentPrefix(depth) + "<configure>\n");
         output.write(_getIndentPrefix(depth + 1) + "<group>\n");
-        super._exportMoMLContents(output, depth + 2);
+
+	//FIXME: start of duplicated code from CompositeEntity
+        Iterator classes = classDefinitionList().iterator();
+
+        while (classes.hasNext()) {
+            ComponentEntity entity = (ComponentEntity) classes.next();
+            entity.exportMoML(output, depth);
+        }
+
+        Iterator entities = entityList().iterator();
+
+        while (entities.hasNext()) {
+            ComponentEntity entity = (ComponentEntity) entities.next();
+            entity.exportMoML(output, depth);
+        }
+
+        Iterator relations = relationList().iterator();
+
+        while (relations.hasNext()) {
+            ComponentRelation relation = (ComponentRelation) relations.next();
+            relation.exportMoML(output, depth);
+        }
+
+        // NOTE: We used to write the links only if
+        // this object did not defer to another
+        // (getMoMLInfo().deferTo was null), and
+        // would instead record links in a MoMLAttribute.
+        // That mechanism was far too fragile.
+        // EAL 3/10/04
+        output.write(exportLinks(depth, null));
+	//FIXME: end of duplicated code from CompositeEntity
+
         output.write(_getIndentPrefix(depth + 1) + "</group>\n");
         output.write(_getIndentPrefix(depth) + "</configure>\n");
+
     }
 
     //     /** Propagate the value of this object to the
