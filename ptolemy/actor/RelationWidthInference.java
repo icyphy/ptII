@@ -85,10 +85,7 @@ public class RelationWidthInference {
                         if (relation.needsWidthInference()) {
                             unspecifiedSet.add(relation);
                         }
-                        if (relation.isWidthFixed()) {
-                            // We know the width of this relation.
-                            workingSet.add(relation);
-                        } else {
+                        if (!relation.isWidthFixed()) {
                             // If connected to non-multiports => the relation should be 1                        
                             for (Object object : relation.linkedObjectsList()) {
                                 if (object instanceof IOPort) {
@@ -102,7 +99,22 @@ public class RelationWidthInference {
                                         widthChanged = widthChanged || relationWidthChanged;    
                                         workingSet.add(relation);
                                         break; //Break the for loop.
-                                    }                            
+                                    } else {
+                                        //Add known outside relations
+                                        for (Object connectedRelationObject : port.linkedRelationList()) {
+                                            IORelation connectedRelation = (IORelation) connectedRelationObject;
+                                            if (connectedRelation != null && connectedRelation.isWidthFixed()) {
+                                                workingSet.add(connectedRelation);
+                                            }
+                                        }
+                                        //Add known inside relations
+                                        for (Object connectedRelationObject : port.insideRelationList()) {
+                                            IORelation connectedRelation = (IORelation) connectedRelationObject;
+                                            if (connectedRelation != null && connectedRelation.isWidthFixed()) {
+                                                workingSet.add(connectedRelation);
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
