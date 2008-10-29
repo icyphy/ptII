@@ -70,7 +70,7 @@ void actuator_fire(Actor* this_actuator, Event* thisEvent) {
 //        printf("the current time is:    %.9d.%9.9d %i \n", secs, nsecs, microstep);
 
 		setActuationInterrupt(stampedTag->timestamp);		
-	}
+	}											   
     else
     {
 //        printf("\nthe timing of the system was NOT MET!!!!! \n");

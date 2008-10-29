@@ -908,3 +908,107 @@ SimplePtidesOS.c(619): warning:  #550-D: variable "model_delay3" was set but nev
 linking...
 Program Size: Code=3152 RO-data=32 RW-data=64 ZI-data=512  
 ".\Obj\Blinky.axf" - 0 Error(s), 9 Warning(s).
+Build target 'Simulator'
+linking...
+Program Size: Code=3152 RO-data=32 RW-data=64 ZI-data=512  
+".\Obj\Blinky.axf" - 0 Error(s), 0 Warning(s).
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(213): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(427): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(631): warning:  #513-D: a value of type "void (*)(Actor *)" cannot be assigned to an entity of type "void (*)(Actor *, Event *)"
+SimplePtidesOS.c(619): warning:  #550-D: variable "model_delay3" was set but never used
+linking...
+Program Size: Code=3152 RO-data=32 RW-data=64 ZI-data=512  
+".\Obj\Blinky.axf" - 0 Error(s), 9 Warning(s).
+Build target 'Simulator'
+linking...
+Program Size: Code=3152 RO-data=32 RW-data=64 ZI-data=512  
+".\Obj\Blinky.axf" - 0 Error(s), 0 Warning(s).
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(213): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(427): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(631): warning:  #513-D: a value of type "void (*)(Actor *)" cannot be assigned to an entity of type "void (*)(Actor *, Event *)"
+SimplePtidesOS.c(619): warning:  #550-D: variable "model_delay3" was set but never used
+linking...
+Program Size: Code=3152 RO-data=32 RW-data=64 ZI-data=512  
+".\Obj\Blinky.axf" - 0 Error(s), 9 Warning(s).
+Build target 'Simulator'
+linking...
+Program Size: Code=3152 RO-data=32 RW-data=64 ZI-data=512  
+".\Obj\Blinky.axf" - 0 Error(s), 0 Warning(s).
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(213): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(427): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(631): warning:  #513-D: a value of type "void (*)(Actor *)" cannot be assigned to an entity of type "void (*)(Actor *, Event *)"
+SimplePtidesOS.c(619): warning:  #550-D: variable "model_delay3" was set but never used
+linking...
+Program Size: Code=3152 RO-data=32 RW-data=64 ZI-data=512  
+".\Obj\Blinky.axf" - 0 Error(s), 9 Warning(s).
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(213): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(427): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(631): warning:  #513-D: a value of type "void (*)(Actor *)" cannot be assigned to an entity of type "void (*)(Actor *, Event *)"
+SimplePtidesOS.c(619): warning:  #550-D: variable "model_delay3" was set but never used
+linking...
+Program Size: Code=3152 RO-data=32 RW-data=64 ZI-data=512  
+".\Obj\Blinky.axf" - 0 Error(s), 9 Warning(s).
+Build target 'Simulator'
+linking...
+Program Size: Code=3152 RO-data=32 RW-data=64 ZI-data=512  
+".\Obj\Blinky.axf" - 0 Error(s), 0 Warning(s).
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(213): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(427): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(631): warning:  #513-D: a value of type "void (*)(Actor *)" cannot be assigned to an entity of type "void (*)(Actor *, Event *)"
+SimplePtidesOS.c(619): warning:  #550-D: variable "model_delay3" was set but never used
+linking...
+Program Size: Code=3152 RO-data=32 RW-data=64 ZI-data=512  
+".\Obj\Blinky.axf" - 0 Error(s), 9 Warning(s).
+Build target 'Simulator'
+linking...
+Program Size: Code=3152 RO-data=32 RW-data=64 ZI-data=512  
+".\Obj\Blinky.axf" - 0 Error(s), 0 Warning(s).
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(213): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(427): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(631): warning:  #513-D: a value of type "void (*)(Actor *)" cannot be assigned to an entity of type "void (*)(Actor *, Event *)"
+SimplePtidesOS.c(619): warning:  #550-D: variable "model_delay3" was set but never used
+linking...
+Program Size: Code=3152 RO-data=32 RW-data=64 ZI-data=512  
+".\Obj\Blinky.axf" - 0 Error(s), 9 Warning(s).
