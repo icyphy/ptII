@@ -41,14 +41,19 @@ typedef struct{
     int microstep;
 } Tag;
 
-typedef struct act {
+typedef struct Actor Actor;
+typedef struct Event Event;
+
+struct Actor {
 
 	//FIXME: should have a linked list of next_actors...
-    struct act *nextActor1;
-    struct act *nextActor2;
+    struct Actor *nextActor1;
+    struct Actor *nextActor2;
 
-	//FIXME: type is used when fire_actors() is called, and which actor to fire needs to be decided
-    char type[3];
+	void (*fire_method)	(Actor*, Event*);
+
+	unsigned int sourceActor;
+	unsigned int multipleInputs;
 
     //actor methods
     //preinitialize();T_
@@ -58,9 +63,9 @@ typedef struct act {
     //fire();
     //postfire();
     //wrapup();
-} Actor;
+};
 
-typedef struct{
+struct Event {
     Value thisValue;
     Tag Tag;
 
@@ -68,7 +73,7 @@ typedef struct{
     //an event would only have 1 actorToFire
     Actor* actorToFire;
 
-} Event;
+};
 
 typedef struct el{
     Event thisEvent;

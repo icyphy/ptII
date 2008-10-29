@@ -9,7 +9,7 @@
 /******************************************************************************/
 
 #include <stdio.h>
-#include "Event.h"
+#include "structures.h"
 #include "functions.h"
 #include "actors.h"
 
@@ -69,22 +69,14 @@ void actuator_fire(Actor* this_actuator, Event* thisEvent) {
 //        printf("the timestamped tag is: %.9d.%9.9d %i \n", stampedTag->secs, stampedTag->nsecs, stampedTag->microstep);
 //        printf("the current time is:    %.9d.%9.9d %i \n", secs, nsecs, microstep);
 
-		setActuationInterrupt(stampedTag->timestamp);
-		//The current event is popped.
-		//Depending on if the actuator needs to produce an output or no, the 
-        //next event might be added or no.
-        //If the actuator need not produce an event here, then this execution
-        //path simply terminates.
-		event_remove();		
-
-		
+		setActuationInterrupt(stampedTag->timestamp);		
 	}
     else
     {
 //        printf("\nthe timing of the system was NOT MET!!!!! \n");
 //        printf("the timestamped tag is: %.9d.%9.9d %i \n", stampedTag->secs, stampedTag->nsecs, stampedTag->microstep);
 //        printf("the current time is:    %.9d.%9.9d %i \n", secs, nsecs, microstep);
-		event_remove();
+
 		// FIXME: do something!
     }
     return;
@@ -177,8 +169,6 @@ void computation_fire(Actor* this_computation, Event* thisEvent) {
     
     double thisDouble = thisEvent->thisValue.doubleValue;
 
-	event_remove();
-
     thisDouble++;
 
 	newEvent.thisValue.doubleValue = thisDouble;
@@ -261,17 +251,10 @@ void event_add(Event new_event)
  */
 void event_remove()
 {
-    printf("popping event from queue\n");
-    //SEMAPHORE
-
     if (EVENT_QUEUE_HEAD != NULL){
-        Event_Link *event_free = EVENT_QUEUE_HEAD;
         EVENT_QUEUE_HEAD = EVENT_QUEUE_HEAD -> next;
-        free(event_free);
     } 
     else printf("event queue is already empty\n");
-   
-    printf("event poped out of queue\n");
 }
 
 /** 
@@ -303,46 +286,13 @@ void fire_actor(Event* currentEvent)
 
     Actor* fire_this = currentEvent->actorToFire;
 	//FIXME: USE THIS INSTEAD!! char temp_type[3] = fire_this->type;
-	event_remove();
-
-        printf("now firing actor:\n%c%c%c\n", fire_this->type[0], fire_this->type[1], fire_this->type[2]);
-
-        if (fire_this->type[0] == 's' && fire_this->type[1] == 's')
-        {
-            die("sensor1 is always a receiver, not fired this way. it only get init once in main!!! \n");
-        }
-        else if (fire_this->type[0] == 'r' && fire_this->type[1] == 'c')
-        {
-            die("receiver1 should never be fired this way, it only get init once in main!!! \n");
-        }
-        else if (fire_this->type[0] == 'c' && fire_this->type[1] == 'k')
-        {
-            die("clocks should never be fired this way, it only get init once in main!!! \n");
-        }
-        else if (fire_this->type[0] == 'm' && fire_this->type[1] == 'd')
-        {
-            model_delay_fire(fire_this, currentEvent);
-        }
-        else if (fire_this->type[0] == 'm' && fire_this->type[1] == 'g')
-        {
-            merge_fire(fire_this, currentEvent);
-        }
-        else if (fire_this->type[0] == 'c' && fire_this->type[1] == 'p')
-        {
-            computation_fire(fire_this, currentEvent);   
-        }
-        else if (fire_this->type[0] == 'a' && fire_this->type[1] == 'c')
-        {
-            actuator_fire(fire_this, currentEvent);
-        }
-        else {
-            printf("I need to fire this but I don't know how!!!: %c%c%c\n", fire_this->type[0], fire_this->type[1], fire_this->type[2]);
-            die("");
-        }
-
-//        printf("done firing actors\n");
-
-        return;
+	if (fire_this->fire_method != NULL) {
+		(fire_this->fire_method)(fire_this, currentEvent);
+	} else {
+		die("no such method, cannot fire\n");
+	}
+	
+    return;
 }
 
 ///**fmod(x,y)
@@ -474,12 +424,14 @@ void processEvents()
                 // this process more events may
                 // be posted to the queue.
                 fire_actor(event);
+				free(event);
+
                 // Check which actor produced the
                 // event that we have processed
                 a = event->actorFrom;
                 // If the event just executed is
                 // produced by a source actor
-                if (a->type[0] == 'c' && a->type[1] == 'k') {
+                if (a->sourceActor != 0) {
                     // Decrement the buffer size
                     // by one.
 					if (a == SOURCE1) {
@@ -572,12 +524,14 @@ long safeToProcess(Event* thisEvent) {
 
     long safeTimestamp = thisEvent->Tag.timestamp;
 
-    if ((thisEvent->actorToFire->type[0] == 'm') && (thisEvent->actorToFire->type[1] == 'g') && (thisEvent->actorToFire->type[2] == '1'))
-	{
-		safeTimestamp -= MERGE_MODEL_TIME_ADJUSTMENT; 
-	} else if ((thisEvent->actorFrom->type[0] == 'c') && (thisEvent->actorFrom->type[1] == 'p') && (thisEvent->actorFrom->type[2] == '3'))
-    {        
-    	safeTimestamp -= COMPUTATION_MODEL_TIME_ADJUSTMENT;
+	if (thisEvent->actorToFire->multipleInputs != 0) {
+	    if (thisEvent->actorToFire->fire_method == merge_fire)
+		{
+			safeTimestamp -= MERGE_MODEL_TIME_ADJUSTMENT; 
+		} else if (thisEvent->actorToFire->fire_method == computation_fire)
+	    {        
+	    	safeTimestamp -= COMPUTATION_MODEL_TIME_ADJUSTMENT;
+		}
     } else {
 //        printf("always safe to execute, so set safeTag to 0\n");
         safeTimestamp = 0;
@@ -674,49 +628,23 @@ int main(int argc, char *argv[])
 
 	SOURCE1 = &clock1;
 
-    sensor1.type[0] = 's';
-    sensor1.type[1] = 's';
-    sensor1.type[2] = '1';
+	clock1.fire_method = clock_fire;
 
-	sensor2.type[0] = 's';
-    sensor2.type[1] = 's';
-    sensor2.type[2] = '2';
+	computation1.fire_method = computation_fire;
 
-    clock1.type[0] = 'c';
-    clock1.type[1] = 'k';
-    clock1.type[2] = '1';
+	computation2.fire_method = computation_fire;
 
-    computation1.type[0] = 'c';
-    computation1.type[1] = 'p';
-    computation1.type[2] = '1';
+	computation3.fire_method = computation_fire;
 
-    computation2.type[0] = 'c';
-    computation2.type[1] = 'p';
-    computation2.type[2] = '2';
+	model_delay1.fire_method = model_delay_fire;
 
-    computation3.type[0] = 'c';
-    computation3.type[1] = 'p';
-    computation3.type[2] = '3';
+	model_delay2.fire_method = model_delay_fire;
 
-    model_delay1.type[0] = 'm';
-    model_delay1.type[1] = 'd';
-    model_delay1.type[2] = '1';
+	model_delay3.fire_method = model_delay_fire;
 
-	model_delay2.type[0] = 'm';
-    model_delay2.type[1] = 'd';
-    model_delay2.type[2] = '2';
+	merge1.fire_method = merge_fire;
 
-	model_delay3.type[0] = 'm';
-    model_delay3.type[1] = 'd';
-    model_delay3.type[2] = '3';
-
-    merge1.type[0] = 'm';
-    merge1.type[1] = 'g';
-    merge1.type[2] = '1';
-
-    actuator1.type[0] = 'a';
-    actuator1.type[1] = 'c';
-    actuator1.type[2] = '1';
+	actuator1.fire_method = actuator_fire;
   
     //Dependencies between all the actors
 	//FIXME: HOW ARE PORTS NUMBERED??
