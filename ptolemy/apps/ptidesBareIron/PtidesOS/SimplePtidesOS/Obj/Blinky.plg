@@ -21,3 +21,890 @@ compiling rit128x96x4.c...
 linking...
 Program Size: Code=3640 RO-data=276 RW-data=64 ZI-data=512  
 ".\Obj\Blinky.axf" - 0 Error(s), 8 Warning(s).
+Clean started: Project: 'SimplePtidesOS'
+   deleting intermediate output files for target 'Simulator'
+   deleting intermediate output files for target 'LM3S8962 Flash'
+Build target 'Simulator'
+assembling Startup.s...
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(223): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(270): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(665): warning:  #550-D: variable "model_delay3" was set but never used
+compiling rit128x96x4.c...
+linking...
+Program Size: Code=3640 RO-data=276 RW-data=64 ZI-data=512  
+".\Obj\Blinky.axf" - 0 Error(s), 8 Warning(s).
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(213): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(255): warning:  #177-D: variable "event_free" was declared but never referenced
+SimplePtidesOS.c(460): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(650): warning:  #550-D: variable "model_delay3" was set but never used
+linking...
+Program Size: Code=3552 RO-data=276 RW-data=64 ZI-data=512  
+".\Obj\Blinky.axf" - 0 Error(s), 9 Warning(s).
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+Event.h(54): error:  #20: identifier "act" is undefined
+Event.h(54): error:  #20: identifier "evt" is undefined
+Event.h(54): error:  #168: a function type is not allowed here
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(213): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(459): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(649): warning:  #550-D: variable "model_delay3" was set but never used
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+Event.h(54): error:  #20: identifier "act" is undefined
+Event.h(54): error:  #20: identifier "evt" is undefined
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(213): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(459): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(649): warning:  #550-D: variable "model_delay3" was set but never used
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+Event.h(54): error:  #92: identifier-list parameters may only be used in a function definition
+Event.h(54): error:  #18: expected a ")"
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(213): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(459): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(649): warning:  #550-D: variable "model_delay3" was set but never used
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+Event.h(54): error:  #92: identifier-list parameters may only be used in a function definition
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(213): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(459): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(649): warning:  #550-D: variable "model_delay3" was set but never used
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(213): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(459): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(649): warning:  #550-D: variable "model_delay3" was set but never used
+linking...
+Program Size: Code=3548 RO-data=276 RW-data=64 ZI-data=512  
+".\Obj\Blinky.axf" - 0 Error(s), 8 Warning(s).
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+Event.h(54): error:  #92: identifier-list parameters may only be used in a function definition
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(213): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(459): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(649): warning:  #550-D: variable "model_delay3" was set but never used
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+Event.h(54): error:  #92: identifier-list parameters may only be used in a function definition
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(213): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(459): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(649): warning:  #550-D: variable "model_delay3" was set but never used
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+Event.h(54): error:  #20: identifier "evt" is undefined
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(213): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(459): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(649): warning:  #550-D: variable "model_delay3" was set but never used
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+Event.h(74): error:  #101: "evt" has already been declared in the current scope
+Event.h(82): error:  #256: invalid redeclaration of type name "Event" (declared at line 52)
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(213): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(459): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(649): warning:  #550-D: variable "model_delay3" was set but never used
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(104): error:  #136: struct "evt" has no field "actorToFire"
+SimplePtidesOS.c(105): error:  #136: struct "evt" has no field "actorFrom"
+SimplePtidesOS.c(112): error:  #136: struct "evt" has no field "actorToFire"
+SimplePtidesOS.c(144): error:  #136: struct "evt" has no field "actorToFire"
+SimplePtidesOS.c(145): error:  #136: struct "evt" has no field "actorFrom"
+SimplePtidesOS.c(154): error:  #136: struct "evt" has no field "actorToFire"
+SimplePtidesOS.c(175): error:  #136: struct "evt" has no field "actorToFire"
+SimplePtidesOS.c(176): error:  #136: struct "evt" has no field "actorFrom"
+SimplePtidesOS.c(183): error:  #136: struct "evt" has no field "actorToFire"
+SimplePtidesOS.c(213): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(270): error:  #136: struct "evt" has no field "actorToFire"
+SimplePtidesOS.c(287): error:  #136: struct "evt" has no field "actorToFire"
+SimplePtidesOS.c(366): error:  #136: struct "evt" has no field "actorToFire"
+SimplePtidesOS.c(367): error:  #136: struct "evt" has no field "actorFrom"
+SimplePtidesOS.c(372): error:  #136: struct "evt" has no field "actorToFire"
+SimplePtidesOS.c(424): error:  #136: struct "evt" has no field "actorToFire"
+SimplePtidesOS.c(425): error:  #136: struct "evt" has no field "actorFrom"
+SimplePtidesOS.c(430): error:  #136: struct "evt" has no field "actorToFire"
+SimplePtidesOS.c(459): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(463): error:  #136: struct "evt" has no field "actorFrom"
+SimplePtidesOS.c(531): error:  #136: struct "evt" has no field "actorToFire"
+SimplePtidesOS.c(532): error:  #136: struct "evt" has no field "actorFrom"
+SimplePtidesOS.c(541): error:  #136: struct "evt" has no field "actorToFire"
+SimplePtidesOS.c(559): error:  #136: struct "evt" has no field "actorToFire"
+SimplePtidesOS.c(559): error:  #136: struct "evt" has no field "actorToFire"
+SimplePtidesOS.c(559): error:  #136: struct "evt" has no field "actorToFire"
+SimplePtidesOS.c(562): error:  #136: struct "evt" has no field "actorFrom"
+SimplePtidesOS.c(562): error:  #136: struct "evt" has no field "actorFrom"
+SimplePtidesOS.c(562): error:  #136: struct "evt" has no field "actorFrom"
+SimplePtidesOS.c(649): warning:  #550-D: variable "model_delay3" was set but never used
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+Event.h(45): error:  #169: expected a declaration
+Event.h(55): error:  #20: identifier "evt" is undefined
+Event.h(67): error:  #101: "evt" has already been declared in the current scope
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(213): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(459): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(649): warning:  #550-D: variable "model_delay3" was set but never used
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+Event.h(75): error:  #70: incomplete type is not allowed
+Event.h(79): error:  #81: more than one storage class may not be specified
+Event.h(79): error:  #65: expected a ";"
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(34): error:  #757: variable "Event_Link" is not a type name
+SimplePtidesOS.c(211): error:  #20: identifier "compare_event" is undefined
+SimplePtidesOS.c(211): error:  #32: expression must have arithmetic type
+SimplePtidesOS.c(212): error:  #20: identifier "before_event" is undefined
+SimplePtidesOS.c(212): error:  #32: expression must have arithmetic type
+SimplePtidesOS.c(213): error:  #20: identifier "tmp" is undefined
+SimplePtidesOS.c(213): error:  #32: expression must have arithmetic type
+SimplePtidesOS.c(213): error:  #29: expected an expression
+SimplePtidesOS.c(213): error:  #32: expression must have arithmetic type
+SimplePtidesOS.c(213): error:  #65: expected a ";"
+SimplePtidesOS.c(255): error:  #132: expression must have pointer-to-struct-or-union type
+SimplePtidesOS.c(270): error:  #132: expression must have pointer-to-struct-or-union type
+SimplePtidesOS.c(274): error:  #132: expression must have pointer-to-struct-or-union type
+SimplePtidesOS.c(450): error:  #132: expression must have pointer-to-struct-or-union type
+SimplePtidesOS.c(459): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(649): warning:  #550-D: variable "model_delay3" was set but never used
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(213): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(459): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(649): warning:  #550-D: variable "model_delay3" was set but never used
+linking...
+Program Size: Code=3548 RO-data=276 RW-data=64 ZI-data=512  
+".\Obj\Blinky.axf" - 0 Error(s), 8 Warning(s).
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+Event.h(77): error:  #256: invalid redeclaration of type name "Actor" (declared at line 62)
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(104): error:  #136: struct "Actors" has no field "nextActor1"
+SimplePtidesOS.c(105): error:  #513: a value of type "Actor *" cannot be assigned to an entity of type "Actor *"
+SimplePtidesOS.c(110): error:  #136: struct "Actors" has no field "nextActor2"
+SimplePtidesOS.c(112): error:  #136: struct "Actors" has no field "nextActor2"
+SimplePtidesOS.c(144): error:  #136: struct "Actors" has no field "nextActor1"
+SimplePtidesOS.c(145): error:  #513: a value of type "Actor *" cannot be assigned to an entity of type "Actor *"
+SimplePtidesOS.c(151): error:  #136: struct "Actors" has no field "nextActor2"
+SimplePtidesOS.c(154): error:  #136: struct "Actors" has no field "nextActor2"
+SimplePtidesOS.c(175): error:  #136: struct "Actors" has no field "nextActor1"
+SimplePtidesOS.c(176): error:  #513: a value of type "Actor *" cannot be assigned to an entity of type "Actor *"
+SimplePtidesOS.c(180): error:  #136: struct "Actors" has no field "nextActor2"
+SimplePtidesOS.c(183): error:  #136: struct "Actors" has no field "nextActor2"
+SimplePtidesOS.c(213): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(287): error:  #144: a value of type "Actor *" cannot be used to initialize an entity of type "Actor *"
+SimplePtidesOS.c(290): error:  #136: struct "Actors" has no field "type"
+SimplePtidesOS.c(290): error:  #136: struct "Actors" has no field "type"
+SimplePtidesOS.c(290): error:  #136: struct "Actors" has no field "type"
+SimplePtidesOS.c(292): error:  #136: struct "Actors" has no field "type"
+SimplePtidesOS.c(292): error:  #136: struct "Actors" has no field "type"
+SimplePtidesOS.c(296): error:  #136: struct "Actors" has no field "type"
+SimplePtidesOS.c(296): error:  #136: struct "Actors" has no field "type"
+SimplePtidesOS.c(300): error:  #136: struct "Actors" has no field "type"
+SimplePtidesOS.c(300): error:  #136: struct "Actors" has no field "type"
+SimplePtidesOS.c(304): error:  #136: struct "Actors" has no field "type"
+SimplePtidesOS.c(304): error:  #136: struct "Actors" has no field "type"
+SimplePtidesOS.c(308): error:  #136: struct "Actors" has no field "type"
+SimplePtidesOS.c(308): error:  #136: struct "Actors" has no field "type"
+SimplePtidesOS.c(312): error:  #136: struct "Actors" has no field "type"
+SimplePtidesOS.c(312): error:  #136: struct "Actors" has no field "type"
+SimplePtidesOS.c(316): error:  #136: struct "Actors" has no field "type"
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+Event.h(78): error:  #256: invalid redeclaration of type name "Actor" (declared at line 63)
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(104): error:  #136: struct "Actors" has no field "nextActor1"
+SimplePtidesOS.c(105): error:  #513: a value of type "Actor *" cannot be assigned to an entity of type "Actor *"
+SimplePtidesOS.c(110): error:  #136: struct "Actors" has no field "nextActor2"
+SimplePtidesOS.c(112): error:  #136: struct "Actors" has no field "nextActor2"
+SimplePtidesOS.c(144): error:  #136: struct "Actors" has no field "nextActor1"
+SimplePtidesOS.c(145): error:  #513: a value of type "Actor *" cannot be assigned to an entity of type "Actor *"
+SimplePtidesOS.c(151): error:  #136: struct "Actors" has no field "nextActor2"
+SimplePtidesOS.c(154): error:  #136: struct "Actors" has no field "nextActor2"
+SimplePtidesOS.c(175): error:  #136: struct "Actors" has no field "nextActor1"
+SimplePtidesOS.c(176): error:  #513: a value of type "Actor *" cannot be assigned to an entity of type "Actor *"
+SimplePtidesOS.c(180): error:  #136: struct "Actors" has no field "nextActor2"
+SimplePtidesOS.c(183): error:  #136: struct "Actors" has no field "nextActor2"
+SimplePtidesOS.c(213): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(287): error:  #144: a value of type "Actor *" cannot be used to initialize an entity of type "Actor *"
+SimplePtidesOS.c(290): error:  #136: struct "Actors" has no field "type"
+SimplePtidesOS.c(290): error:  #136: struct "Actors" has no field "type"
+SimplePtidesOS.c(290): error:  #136: struct "Actors" has no field "type"
+SimplePtidesOS.c(292): error:  #136: struct "Actors" has no field "type"
+SimplePtidesOS.c(292): error:  #136: struct "Actors" has no field "type"
+SimplePtidesOS.c(296): error:  #136: struct "Actors" has no field "type"
+SimplePtidesOS.c(296): error:  #136: struct "Actors" has no field "type"
+SimplePtidesOS.c(300): error:  #136: struct "Actors" has no field "type"
+SimplePtidesOS.c(300): error:  #136: struct "Actors" has no field "type"
+SimplePtidesOS.c(304): error:  #136: struct "Actors" has no field "type"
+SimplePtidesOS.c(304): error:  #136: struct "Actors" has no field "type"
+SimplePtidesOS.c(308): error:  #136: struct "Actors" has no field "type"
+SimplePtidesOS.c(308): error:  #136: struct "Actors" has no field "type"
+SimplePtidesOS.c(312): error:  #136: struct "Actors" has no field "type"
+SimplePtidesOS.c(312): error:  #136: struct "Actors" has no field "type"
+SimplePtidesOS.c(316): error:  #136: struct "Actors" has no field "type"
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(213): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(459): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(649): warning:  #550-D: variable "model_delay3" was set but never used
+linking...
+Program Size: Code=3548 RO-data=276 RW-data=64 ZI-data=512  
+".\Obj\Blinky.axf" - 0 Error(s), 8 Warning(s).
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+Event.h(55): error:  #20: identifier "act" is undefined
+Event.h(55): error:  #20: identifier "evt" is undefined
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(213): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(459): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(649): warning:  #550-D: variable "model_delay3" was set but never used
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+Event.h(45): warning:  #375-D: declaration requires a typedef name
+Event.h(55): error:  #20: identifier "act" is undefined
+Event.h(55): error:  #20: identifier "evt" is undefined
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(213): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(459): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(649): warning:  #550-D: variable "model_delay3" was set but never used
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+Event.h(55): error:  #20: identifier "evt" is undefined
+Event.h(65): error:  #256: invalid redeclaration of type name "Actor" (declared at line 44)
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(213): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(459): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(649): warning:  #550-D: variable "model_delay3" was set but never used
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+Event.h(55): error:  #20: identifier "evt" is undefined
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(104): error:  #513: a value of type "struct act *" cannot be assigned to an entity of type "Actor *"
+SimplePtidesOS.c(112): error:  #513: a value of type "struct act *" cannot be assigned to an entity of type "Actor *"
+SimplePtidesOS.c(144): error:  #513: a value of type "struct act *" cannot be assigned to an entity of type "Actor *"
+SimplePtidesOS.c(154): error:  #513: a value of type "struct act *" cannot be assigned to an entity of type "Actor *"
+SimplePtidesOS.c(175): error:  #513: a value of type "struct act *" cannot be assigned to an entity of type "Actor *"
+SimplePtidesOS.c(183): error:  #513: a value of type "struct act *" cannot be assigned to an entity of type "Actor *"
+SimplePtidesOS.c(213): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(366): error:  #513: a value of type "struct act *" cannot be assigned to an entity of type "Actor *"
+SimplePtidesOS.c(372): error:  #513: a value of type "struct act *" cannot be assigned to an entity of type "Actor *"
+SimplePtidesOS.c(424): error:  #513: a value of type "struct act *" cannot be assigned to an entity of type "Actor *"
+SimplePtidesOS.c(430): error:  #513: a value of type "struct act *" cannot be assigned to an entity of type "Actor *"
+SimplePtidesOS.c(459): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(531): error:  #513: a value of type "struct act *" cannot be assigned to an entity of type "Actor *"
+SimplePtidesOS.c(541): error:  #513: a value of type "struct act *" cannot be assigned to an entity of type "Actor *"
+SimplePtidesOS.c(707): error:  #513: a value of type "Actor *" cannot be assigned to an entity of type "struct act *"
+SimplePtidesOS.c(709): error:  #513: a value of type "Actor *" cannot be assigned to an entity of type "struct act *"
+SimplePtidesOS.c(711): error:  #513: a value of type "Actor *" cannot be assigned to an entity of type "struct act *"
+SimplePtidesOS.c(714): error:  #513: a value of type "Actor *" cannot be assigned to an entity of type "struct act *"
+SimplePtidesOS.c(716): error:  #513: a value of type "Actor *" cannot be assigned to an entity of type "struct act *"
+SimplePtidesOS.c(718): error:  #513: a value of type "Actor *" cannot be assigned to an entity of type "struct act *"
+SimplePtidesOS.c(721): error:  #513: a value of type "Actor *" cannot be assigned to an entity of type "struct act *"
+SimplePtidesOS.c(723): error:  #513: a value of type "Actor *" cannot be assigned to an entity of type "struct act *"
+SimplePtidesOS.c(726): error:  #513: a value of type "Actor *" cannot be assigned to an entity of type "struct act *"
+SimplePtidesOS.c(649): warning:  #550-D: variable "model_delay3" was set but never used
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+Event.h(54): error:  #20: identifier "evt" is undefined
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(213): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(459): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(649): warning:  #550-D: variable "model_delay3" was set but never used
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+Event.h(55): error:  #20: identifier "evt" is undefined
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(213): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(459): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(649): warning:  #550-D: variable "model_delay3" was set but never used
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(213): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(459): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(649): warning:  #550-D: variable "model_delay3" was set but never used
+linking...
+Program Size: Code=3548 RO-data=276 RW-data=64 ZI-data=512  
+".\Obj\Blinky.axf" - 0 Error(s), 8 Warning(s).
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(213): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(459): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(649): warning:  #550-D: variable "model_delay3" was set but never used
+linking...
+Program Size: Code=3548 RO-data=276 RW-data=64 ZI-data=512  
+".\Obj\Blinky.axf" - 0 Error(s), 8 Warning(s).
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(213): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(459): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(669): error:  #165: too few arguments in function call
+SimplePtidesOS.c(669): error:  #513: a value of type "void" cannot be assigned to an entity of type "void (*)(Actor *, Event *)"
+SimplePtidesOS.c(649): warning:  #550-D: variable "model_delay3" was set but never used
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(213): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(459): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(669): warning:  #513-D: a value of type "void (*)(Actor *)" cannot be assigned to an entity of type "void (*)(Actor *, Event *)"
+SimplePtidesOS.c(649): warning:  #550-D: variable "model_delay3" was set but never used
+linking...
+Program Size: Code=3556 RO-data=276 RW-data=64 ZI-data=512  
+".\Obj\Blinky.axf" - 0 Error(s), 9 Warning(s).
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(213): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(459): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(669): warning:  #513-D: a value of type "void (*)(Actor *)" cannot be assigned to an entity of type "void (*)(Actor *, Event *)"
+SimplePtidesOS.c(649): warning:  #550-D: variable "model_delay3" was set but never used
+linking...
+Program Size: Code=3604 RO-data=276 RW-data=64 ZI-data=512  
+".\Obj\Blinky.axf" - 0 Error(s), 9 Warning(s).
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(213): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(290): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(290): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(290): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(292): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(292): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(296): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(296): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(300): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(300): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(304): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(304): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(308): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(308): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(312): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(312): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(316): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(316): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(321): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(321): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(321): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(459): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(466): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(466): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(559): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(559): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(559): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(562): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(562): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(562): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(661): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(662): error:  #136: struct "Actor" has no field "type"
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(213): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(289): error:  #154: expression must have struct or union type
+SimplePtidesOS.c(423): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(430): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(430): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(523): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(523): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(523): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(526): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(526): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(526): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(625): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(626): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(627): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(629): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(630): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(631): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(633): warning:  #513-D: a value of type "void (*)(Actor *)" cannot be assigned to an entity of type "void (*)(Actor *, Event *)"
+SimplePtidesOS.c(634): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(635): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(636): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(639): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(640): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(641): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(644): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(645): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(646): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(649): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(650): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(651): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(654): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(655): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(656): error:  #136: struct "Actor" has no field "type"
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(213): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(289): error:  #154: expression must have struct or union type
+SimplePtidesOS.c(423): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(430): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(430): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(523): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(523): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(523): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(526): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(526): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(526): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(625): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(626): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(627): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(629): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(630): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(631): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(633): warning:  #513-D: a value of type "void (*)(Actor *)" cannot be assigned to an entity of type "void (*)(Actor *, Event *)"
+SimplePtidesOS.c(634): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(635): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(636): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(639): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(640): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(641): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(644): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(645): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(646): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(649): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(650): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(651): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(654): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(655): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(656): error:  #136: struct "Actor" has no field "type"
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(213): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(289): error:  #144: a value of type "void (*)(Actor *, Event *)" cannot be used to initialize an entity of type "void *"
+SimplePtidesOS.c(423): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(430): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(430): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(523): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(523): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(523): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(526): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(526): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(526): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(625): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(626): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(627): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(629): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(630): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(631): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(633): warning:  #513-D: a value of type "void (*)(Actor *)" cannot be assigned to an entity of type "void (*)(Actor *, Event *)"
+SimplePtidesOS.c(634): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(635): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(636): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(639): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(640): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(641): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(644): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(645): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(646): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(649): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(650): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(651): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(654): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(655): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(656): error:  #136: struct "Actor" has no field "type"
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(213): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(289): error:  #20: identifier "func" is undefined
+SimplePtidesOS.c(423): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(430): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(430): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(523): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(523): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(523): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(526): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(526): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(526): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(625): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(626): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(627): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(629): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(630): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(631): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(633): warning:  #513-D: a value of type "void (*)(Actor *)" cannot be assigned to an entity of type "void (*)(Actor *, Event *)"
+SimplePtidesOS.c(634): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(635): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(636): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(639): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(640): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(641): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(644): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(645): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(646): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(649): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(650): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(651): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(654): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(655): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(656): error:  #136: struct "Actor" has no field "type"
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(213): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(289): error:  #20: identifier "func" is undefined
+SimplePtidesOS.c(423): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(430): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(430): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(523): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(523): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(523): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(526): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(526): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(526): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(625): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(626): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(627): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(629): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(630): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(631): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(633): warning:  #513-D: a value of type "void (*)(Actor *)" cannot be assigned to an entity of type "void (*)(Actor *, Event *)"
+SimplePtidesOS.c(634): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(635): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(636): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(639): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(640): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(641): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(644): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(645): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(646): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(649): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(650): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(651): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(654): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(655): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(656): error:  #136: struct "Actor" has no field "type"
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(213): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(289): error:  #20: identifier "func" is undefined
+SimplePtidesOS.c(423): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(430): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(430): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(523): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(523): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(523): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(526): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(526): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(526): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(625): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(626): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(627): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(629): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(630): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(631): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(633): warning:  #513-D: a value of type "void (*)(Actor *)" cannot be assigned to an entity of type "void (*)(Actor *, Event *)"
+SimplePtidesOS.c(634): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(635): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(636): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(639): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(640): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(641): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(644): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(645): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(646): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(649): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(650): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(651): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(654): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(655): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(656): error:  #136: struct "Actor" has no field "type"
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(213): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(423): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(430): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(430): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(523): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(523): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(523): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(526): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(526): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(526): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(625): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(626): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(627): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(629): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(630): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(631): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(633): warning:  #513-D: a value of type "void (*)(Actor *)" cannot be assigned to an entity of type "void (*)(Actor *, Event *)"
+SimplePtidesOS.c(634): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(635): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(636): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(639): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(640): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(641): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(644): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(645): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(646): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(649): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(650): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(651): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(654): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(655): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(656): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(659): error:  #136: struct "Actor" has no field "type"
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(213): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(427): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(434): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(434): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(527): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(527): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(527): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(530): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(530): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(530): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(629): warning:  #513-D: a value of type "void (*)(Actor *)" cannot be assigned to an entity of type "void (*)(Actor *, Event *)"
+SimplePtidesOS.c(617): warning:  #550-D: variable "model_delay3" was set but never used
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(213): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(427): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(531): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(531): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(531): error:  #136: struct "Actor" has no field "type"
+SimplePtidesOS.c(631): warning:  #513-D: a value of type "void (*)(Actor *)" cannot be assigned to an entity of type "void (*)(Actor *, Event *)"
+SimplePtidesOS.c(619): warning:  #550-D: variable "model_delay3" was set but never used
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(213): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(427): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(631): warning:  #513-D: a value of type "void (*)(Actor *)" cannot be assigned to an entity of type "void (*)(Actor *, Event *)"
+SimplePtidesOS.c(619): warning:  #550-D: variable "model_delay3" was set but never used
+linking...
+Program Size: Code=3152 RO-data=32 RW-data=64 ZI-data=512  
+".\Obj\Blinky.axf" - 0 Error(s), 9 Warning(s).
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+SimplePtidesOS.c(12): error:  #5: cannot open source input file "Event.h": No such file or directory
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(213): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(427): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(631): warning:  #513-D: a value of type "void (*)(Actor *)" cannot be assigned to an entity of type "void (*)(Actor *, Event *)"
+SimplePtidesOS.c(619): warning:  #550-D: variable "model_delay3" was set but never used
+linking...
+Program Size: Code=3152 RO-data=32 RW-data=64 ZI-data=512  
+".\Obj\Blinky.axf" - 0 Error(s), 9 Warning(s).
