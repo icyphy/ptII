@@ -414,6 +414,14 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // the names of ports to handle backward compatibility.
         if (_filterList != null) {
             // FIXME: There is a slight risk of xmlParser being null here.
+	    if (_xmlParser == null) {
+		throw new InternalErrorException("_xmlParser is null? This can occur "
+				       + " when parse(URL, String, Reader)"
+				       + " calls itself because that method"
+				       + " sets _xmlParser to null while exiting. "
+				       + "name: " + name
+				       + " value: " + value);
+	    }
             String currentElement = _xmlParser.getCurrentElement();
             Iterator filters = _filterList.iterator();
             String filteredValue = value;
@@ -3805,7 +3813,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         // ptolemy.actor.lib.comm.SerialComm: XmlException:
                         // Could not find 'ptolemy/actor/lib/comm/SerialComm.xml'..
                         // If we use toString(), we get:
-                        // Error encounted in:
+                        // Error encountered in:
                         // <entity name="SerialComm" class="ptolemy.actor.lib..
                         // -- ptolemy.actor.lib.comm.SerialComm:
                         // java.lang.NoClassDefFoundError: javax/comm/SerialPortEventListener
