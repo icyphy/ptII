@@ -33,7 +33,7 @@
 /******************************************************************************/
 
 
-void event_add(Event);
+void event_add(Event*);
 void event_remove();
 void fire_actor(Event*);
 long safeToProcess(Event*);

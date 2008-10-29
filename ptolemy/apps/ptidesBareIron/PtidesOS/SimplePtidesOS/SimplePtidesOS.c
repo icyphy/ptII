@@ -31,7 +31,7 @@ volatile unsigned char TraceB;  // Trace Buttons
 #define MAX_BUFFER_LIMIT 10
 #define CLOCK_PERIOD 100000
 
-Event_Link* EVENT_QUEUE_HEAD = NULL;
+Event* EVENT_QUEUE_HEAD = NULL;
 int CK1_BUF_SIZE = 0;
 long CK1_TIME = 0;
 
@@ -87,10 +87,11 @@ void actuator_fire(Actor* this_actuator, Event* thisEvent) {
  * function is called through an event, thus we use event_add() instead 
  * of event_insert() in this case.
  */
-void clock_fire(Actor* this_clock) {
+void clock_fire(Actor* this_clock, Event* thisEvent) {
 
 	long time = CK1_TIME;
-	Event new_event;
+	Event* newEvent = (Event*) malloc(sizeof(Event));
+	//Event* new_event2;
 		    
     time += CLOCK_PERIOD;
 
@@ -98,19 +99,20 @@ void clock_fire(Actor* this_clock) {
     //since the event queue is ordered by orderTag, we these events to 
 	//execute now.
 	//However realTag is the real timestamp to appear at the output.
-    new_event.thisValue.doubleValue = 0;
-    new_event.Tag.timestamp = time;
-    new_event.Tag.microstep = 0;   //FIXME
-    new_event.actorToFire = this_clock->nextActor1;
-    new_event.actorFrom = this_clock;
+    newEvent->thisValue.doubleValue = 0;
+    newEvent->Tag.timestamp = time;
+    newEvent->Tag.microstep = 0;   //FIXME
+    newEvent->actorToFire = this_clock->nextActor1;
+    newEvent->actorFrom = this_clock;
 
-    event_add(new_event);
+    event_add(newEvent);
 	CK1_BUF_SIZE++;
 
     if (this_clock->nextActor2 != NULL) {
-        Event new_event2 = new_event;
-        new_event2.actorToFire = this_clock->nextActor2;
-        event_add(new_event2);
+        Event* newEvent2 = (Event*) malloc(sizeof(Event));
+		*newEvent2 = *newEvent;
+        newEvent2->actorToFire = this_clock->nextActor2;
+        event_add(newEvent2);
     }
 
     //Do not need to call processEvents() in this case
@@ -130,7 +132,7 @@ void clock_init(Actor *this_clock)
 {
     long currentTime = getCurrentPhysicalTime();
 
-    Event new_event;
+    Event* newEvent = (Event*) malloc(sizeof(Event));
 
     //CLOCK_PERIOD specifies the period
     currentTime += CLOCK_PERIOD;   
@@ -138,21 +140,22 @@ void clock_init(Actor *this_clock)
     //notice orderTag and realTag are set to different things:
     //since the event queue is ordered by orderTag, we these events to execute NOW
     //however realTag is the real timestamp to appear at the output
-    new_event.Tag.timestamp = currentTime;
-    new_event.Tag.microstep = 0;   //FIXME
-    new_event.thisValue.doubleValue = 0;
-    new_event.actorToFire = this_clock->nextActor1;
-    new_event.actorFrom = this_clock;
+    newEvent->Tag.timestamp = currentTime;
+    newEvent->Tag.microstep = 0;   //FIXME
+    newEvent->thisValue.doubleValue = 0;
+    newEvent->actorToFire = this_clock->nextActor1;
+    newEvent->actorFrom = this_clock;
 
-    event_add(new_event);
+    event_add(newEvent);
 
 	CK1_TIME = currentTime;
 
     if (this_clock->nextActor2 != NULL)
     {
-        Event new_event2 = new_event;
-        new_event2.actorToFire = this_clock->nextActor2;
-        event_add(new_event2);
+        Event* newEvent2 = (Event*) malloc(sizeof(Event));
+		*newEvent2 = *newEvent;
+        newEvent2->actorToFire = this_clock->nextActor2;
+        event_add(newEvent2);
     }
 
     return;
@@ -165,22 +168,24 @@ void clock_init(Actor *this_clock)
  */
 void computation_fire(Actor* this_computation, Event* thisEvent) {
 
-	Event newEvent;
-    
-    double thisDouble = thisEvent->thisValue.doubleValue;
-
+	double thisDouble;
+	Event* newEvent = (Event*) malloc(sizeof(Event));;
+        
+	thisDouble = thisEvent->thisValue.doubleValue;
     thisDouble++;
 
-	newEvent.thisValue.doubleValue = thisDouble;
-    newEvent.actorToFire = this_computation->nextActor1;
-    newEvent.actorFrom = this_computation;
+	newEvent->thisValue.doubleValue = thisDouble;
+    newEvent->actorToFire = this_computation->nextActor1;
+    newEvent->actorFrom = this_computation;
 
     //arbitrarily delay either 1/4 of a sec or 1/2 of a sec or none.
+	event_add(newEvent);
 
     if (this_computation->nextActor2 != NULL)
     {
-        Event newEvent2 = newEvent;
-        newEvent2.actorToFire = this_computation->nextActor2;
+        Event* newEvent2 = (Event*) malloc(sizeof(Event));
+		*newEvent2= *newEvent;
+        newEvent2->actorToFire = this_computation->nextActor2;
         event_add(newEvent2);
     }
 }
@@ -202,24 +207,23 @@ void die(char *mess) {
  * Currently, we simply go through the queue one event at a time and check the tags.
  * FIXME: use either binary search or calendar to improve performance.
  */
-void event_add(Event new_event)
+void event_add(Event* newEvent)
 {
 
-    Tag stampedTag = new_event.Tag;
+    Tag stampedTag = newEvent->Tag;
 
     //add an event
-    Event_Link *compare_event = EVENT_QUEUE_HEAD;
-    Event_Link *before_event = EVENT_QUEUE_HEAD;
-	Event_Link *tmp = (Event_Link*) malloc(sizeof(Event_Link));
+    Event *compare_event = EVENT_QUEUE_HEAD;
+    Event *before_event = EVENT_QUEUE_HEAD;
     //move across the link until we find an event with larger tag, or stop at the end.
 
     while (1){
         if (compare_event == NULL)
             break;
-        else if (stampedTag.timestamp < compare_event->thisEvent.Tag.timestamp)
+        else if (stampedTag.timestamp < compare_event->Tag.timestamp)
                 break;
-        else if ((stampedTag.timestamp == compare_event->thisEvent.Tag.timestamp) && (
-			stampedTag.microstep < compare_event->thisEvent.Tag.microstep))
+        else if ((stampedTag.timestamp == compare_event->Tag.timestamp) && (
+			stampedTag.microstep < compare_event->Tag.microstep))
                 break;
         else {
             if (compare_event != before_event)
@@ -228,13 +232,12 @@ void event_add(Event new_event)
         }
     }
             
-    tmp->next = compare_event;
-    tmp->thisEvent = new_event;
+    newEvent->next = compare_event;
     if (compare_event == before_event){
-        EVENT_QUEUE_HEAD = tmp;
+        EVENT_QUEUE_HEAD = newEvent;
     }
     else if (compare_event != before_event){
-        before_event->next = tmp;
+        before_event->next = newEvent;
     }
     else {
 //        printf("something wrong with compare and before _event\n");
@@ -267,11 +270,11 @@ void execute_event(){
         die("EVENT_QUEUE_HEAD should never be NULL\n");
     }
     else {
-        if (EVENT_QUEUE_HEAD->thisEvent.actorToFire == NULL){
+        if (EVENT_QUEUE_HEAD->actorToFire == NULL){
             die("executing an event where the actors are NULL!!\n");
         }
         else {
-            fire_actor(&(EVENT_QUEUE_HEAD->thisEvent));
+            fire_actor(EVENT_QUEUE_HEAD);
         }
     }
 }
@@ -330,14 +333,18 @@ void merge_fire(Actor* this_merge, Event* thisEvent) {
 //    printf("THIS OUTPUT WAS FROM Actor: %c%c%c\n", 
 //		thisEvent->actorFrom->type[0], thisEvent->actorFrom->type[1], thisEvent->actorFrom->type[2]);
 
-	Event newEvent = *thisEvent;
-    newEvent.actorToFire = this_merge->nextActor1;
-    newEvent.actorFrom = this_merge;
+	Event* newEvent = (Event*)malloc(sizeof(Event));
+	*newEvent = *thisEvent;
+    newEvent->actorToFire = this_merge->nextActor1;
+    newEvent->actorFrom = this_merge;
+
+	event_add(newEvent);
 
     if (this_merge->nextActor2 != NULL)
     {
-        Event newEvent2 = newEvent;
-        newEvent2.actorToFire = this_merge->nextActor2;
+        Event* newEvent2 = (Event*)malloc(sizeof(Event));
+		*newEvent2 = *newEvent;
+        newEvent2->actorToFire = this_merge->nextActor2;
         event_add(newEvent2);
     }
 
@@ -384,21 +391,21 @@ void model_delay_fire(Actor* this_model_delay, Event* thisEvent) {
 	}
 */
 
-	Event new_event = *thisEvent;
+	Event* newEvent = (Event*)malloc(sizeof(Event));
 		
-	new_event.Tag.timestamp = thisEvent->Tag.timestamp + model_delay;
-    new_event.Tag.microstep = 0;   //FIXME
+	newEvent->Tag.timestamp = thisEvent->Tag.timestamp + model_delay;
+    newEvent->Tag.microstep = 0;   //FIXME
+    newEvent->actorToFire = this_model_delay->nextActor1;
+    newEvent->actorFrom = this_model_delay;
 
-    new_event.actorToFire = this_model_delay->nextActor1;
-    new_event.actorFrom = this_model_delay;
-
+	event_add(newEvent);
     if (this_model_delay->nextActor2 != NULL)
     {
-        Event new_event2 = new_event;
-        new_event2.actorToFire = this_model_delay->nextActor2;
-        event_add(new_event2);
+        Event* newEvent2 = (Event*)malloc(sizeof(Event));
+		*newEvent2 = *newEvent;
+        newEvent2->actorToFire = this_model_delay->nextActor2;
+        event_add(newEvent2);
     }
-    event_add(new_event);
 
     return;
 }
@@ -415,7 +422,7 @@ void processEvents()
         disableInterrupt();
         // If event queue is not empty.
         if (EVENT_QUEUE_HEAD != NULL) {
-            Event* event = &(EVENT_QUEUE_HEAD->thisEvent);
+            Event* event = EVENT_QUEUE_HEAD;
             long processTime = safeToProcess(event);
             if (getCurrentPhysicalTime() >= processTime) {
                 event_remove();
@@ -442,7 +449,9 @@ void processEvents()
                     // the source actor once to
                     // produce some events.
                     if (CK1_BUF_SIZE == 0) {
-                        clock_fire(SOURCE1);
+						//dummyEVent is never used.
+						Event* dummyEvent;
+                        clock_fire(SOURCE1, dummyEvent);
 						// firing of the actor should update the number of events in the buffer
                     }
                 }
@@ -473,7 +482,8 @@ void processEvents()
         // for (each source actors a) {
         if (stopSourceProcess == FALSE) {
 			if (CK1_BUF_SIZE < MAX_BUFFER_LIMIT) {
-            	clock_fire(SOURCE1);
+				Event* dummyEvent;
+            	clock_fire(SOURCE1, dummyEvent);
 			}
         }
     }
@@ -486,28 +496,29 @@ void processEvents()
  */
 void sensor_init(Actor* this_sensor)     //this listens for the next signal to sense again
 {
-
-    Event new_event;
+	long time;
+    Event* newEvent = (Event*)malloc(sizeof(Event));
     //get the current time
-    long time = getCurrentPhysicalTime();
+    time = getCurrentPhysicalTime();
 
     // Set a time trigger from now
 
-    new_event.Tag.timestamp = time;
-    new_event.Tag.microstep = 0;	//FIXEM
-    new_event.thisValue.doubleValue = time;
-    new_event.actorToFire = this_sensor->nextActor1;
-    new_event.actorFrom = this_sensor;
+    newEvent->Tag.timestamp = time;
+    newEvent->Tag.microstep = 0;	//FIXEM
+    newEvent->thisValue.doubleValue = time;
+    newEvent->actorToFire = this_sensor->nextActor1;
+    newEvent->actorFrom = this_sensor;
 
     //now put the created event into the queue
     //BUT HOW DO I TRACK THE START OF THE EVENT QUEUE??? --global variable
-    event_add(new_event);
+    event_add(newEvent);
 
     if (this_sensor->nextActor2 != NULL)
     {
-        Event new_event2 = new_event;
-        new_event2.actorToFire = this_sensor->nextActor2;
-        event_add(new_event2);
+        Event* newEvent2 = (Event*)malloc(sizeof(Event));
+		*newEvent2 = *newEvent;
+        newEvent2->actorToFire = this_sensor->nextActor2;
+        event_add(newEvent2);
     }
 
     return;

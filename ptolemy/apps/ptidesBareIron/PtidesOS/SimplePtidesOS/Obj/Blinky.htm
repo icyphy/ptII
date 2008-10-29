@@ -3,9 +3,9 @@
 <title>Static Call Graph - [.\Obj\Blinky.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Obj\Blinky.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, RVCT3.1 [Build 934]: Last Updated: Wed Oct 29 12:01:39 2008
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, RVCT3.1 [Build 934]: Last Updated: Wed Oct 29 12:44:00 2008
 <BR><P>
-<H3>Maximum Stack Usage =        392 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
+<H3>Maximum Stack Usage =        336 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
 main &rArr; processEvents &rArr; clock_fire &rArr; event_add &rArr; die &rArr; perror &rArr; fputs
 <P>
@@ -145,12 +145,10 @@ Global Symbols
 <LI><a href="#[b624c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;event_add
 </UL>
 
-<P><STRONG><a name="[b624c0]"></a>event_add</STRONG> (Thumb, 114 bytes, Stack size 40 bytes, simpleptidesos.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = event_add &rArr; die &rArr; perror &rArr; fputs
+<P><STRONG><a name="[b624c0]"></a>event_add</STRONG> (Thumb, 92 bytes, Stack size 24 bytes, simpleptidesos.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = event_add &rArr; die &rArr; perror &rArr; fputs
 </UL>
 <BR>[Calls]<UL><LI><a href="#[b62508]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;die
-<LI><a href="#[101af20]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4
-<LI><a href="#[10f3a80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;malloc
 </UL>
 <BR>[Called By]<UL><LI><a href="#[b620d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sensor_init
 <LI><a href="#[b62280]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;model_delay_fire
@@ -160,29 +158,32 @@ Global Symbols
 <LI><a href="#[b62478]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clock_fire
 </UL>
 
-<P><STRONG><a name="[b62478]"></a>clock_fire</STRONG> (Thumb, 100 bytes, Stack size 72 bytes, simpleptidesos.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 144<LI>Call Chain = clock_fire &rArr; event_add &rArr; die &rArr; perror &rArr; fputs
+<P><STRONG><a name="[b62478]"></a>clock_fire</STRONG> (Thumb, 98 bytes, Stack size 24 bytes, simpleptidesos.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = clock_fire &rArr; event_add &rArr; die &rArr; perror &rArr; fputs
 </UL>
 <BR>[Calls]<UL><LI><a href="#[b624c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;event_add
 <LI><a href="#[101af20]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4
+<LI><a href="#[10f3a80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;malloc
 </UL>
 <BR>[Called By]<UL><LI><a href="#[b62118]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;processEvents
 </UL>
 
-<P><STRONG><a name="[b62430]"></a>clock_init</STRONG> (Thumb, 96 bytes, Stack size 72 bytes, simpleptidesos.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 144<LI>Call Chain = clock_init &rArr; event_add &rArr; die &rArr; perror &rArr; fputs
+<P><STRONG><a name="[b62430]"></a>clock_init</STRONG> (Thumb, 92 bytes, Stack size 24 bytes, simpleptidesos.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = clock_init &rArr; event_add &rArr; die &rArr; perror &rArr; fputs
 </UL>
 <BR>[Calls]<UL><LI><a href="#[b624c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;event_add
 <LI><a href="#[b62598]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getCurrentPhysicalTime
 <LI><a href="#[101af20]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4
+<LI><a href="#[10f3a80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;malloc
 </UL>
 <BR>[Called By]<UL><LI><a href="#[b62088]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[b623e8]"></a>computation_fire</STRONG> (Thumb, 86 bytes, Stack size 80 bytes, simpleptidesos.o(.text), UNUSED)
+<P><STRONG><a name="[b623e8]"></a>computation_fire</STRONG> (Thumb, 98 bytes, Stack size 32 bytes, simpleptidesos.o(.text), UNUSED)
 <BR><BR>[Calls]<UL><LI><a href="#[b624c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;event_add
 <LI><a href="#[101af20]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4
 <LI><a href="#[10f36a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
+<LI><a href="#[10f3a80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;malloc
 </UL>
 
 <P><STRONG><a name="[b623a0]"></a>event_remove</STRONG> (Thumb, 28 bytes, Stack size 8 bytes, simpleptidesos.o(.text))
@@ -207,14 +208,16 @@ Global Symbols
 <LI><a href="#[b62508]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;die
 </UL>
 
-<P><STRONG><a name="[b622c8]"></a>merge_fire</STRONG> (Thumb, 64 bytes, Stack size 72 bytes, simpleptidesos.o(.text), UNUSED)
+<P><STRONG><a name="[b622c8]"></a>merge_fire</STRONG> (Thumb, 76 bytes, Stack size 24 bytes, simpleptidesos.o(.text), UNUSED)
 <BR><BR>[Calls]<UL><LI><a href="#[b624c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;event_add
 <LI><a href="#[101af20]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4
+<LI><a href="#[10f3a80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;malloc
 </UL>
 
-<P><STRONG><a name="[b62280]"></a>model_delay_fire</STRONG> (Thumb, 92 bytes, Stack size 72 bytes, simpleptidesos.o(.text), UNUSED)
+<P><STRONG><a name="[b62280]"></a>model_delay_fire</STRONG> (Thumb, 80 bytes, Stack size 24 bytes, simpleptidesos.o(.text), UNUSED)
 <BR><BR>[Calls]<UL><LI><a href="#[b624c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;event_add
 <LI><a href="#[101af20]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4
+<LI><a href="#[10f3a80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;malloc
 </UL>
 
 <P><STRONG><a name="[b62238]"></a>enableInterrupt</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, simpleptidesos.o(.text))
@@ -233,8 +236,8 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[b62118]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;processEvents
 </UL>
 
-<P><STRONG><a name="[b62118]"></a>processEvents</STRONG> (Thumb, 148 bytes, Stack size 16 bytes, simpleptidesos.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 160<LI>Call Chain = processEvents &rArr; clock_fire &rArr; event_add &rArr; die &rArr; perror &rArr; fputs
+<P><STRONG><a name="[b62118]"></a>processEvents</STRONG> (Thumb, 156 bytes, Stack size 24 bytes, simpleptidesos.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 104<LI>Call Chain = processEvents &rArr; clock_fire &rArr; event_add &rArr; die &rArr; perror &rArr; fputs
 </UL>
 <BR>[Calls]<UL><LI><a href="#[b62160]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;disableInterrupt
 <LI><a href="#[b621a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;safeToProcess
@@ -249,19 +252,20 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[b62088]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[b620d0]"></a>sensor_init</STRONG> (Thumb, 90 bytes, Stack size 72 bytes, simpleptidesos.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 144<LI>Call Chain = sensor_init &rArr; event_add &rArr; die &rArr; perror &rArr; fputs
+<P><STRONG><a name="[b620d0]"></a>sensor_init</STRONG> (Thumb, 86 bytes, Stack size 24 bytes, simpleptidesos.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = sensor_init &rArr; __aeabi_i2d &rArr; _double_epilogue &rArr; _double_round
 </UL>
 <BR>[Calls]<UL><LI><a href="#[b624c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;event_add
 <LI><a href="#[b62598]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getCurrentPhysicalTime
 <LI><a href="#[101af20]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4
 <LI><a href="#[10f3360]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2d
+<LI><a href="#[10f3a80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;malloc
 </UL>
 <BR>[Called By]<UL><LI><a href="#[b62088]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
 <P><STRONG><a name="[b62088]"></a>main</STRONG> (Thumb, 460 bytes, Stack size 232 bytes, simpleptidesos.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 392<LI>Call Chain = main &rArr; processEvents &rArr; clock_fire &rArr; event_add &rArr; die &rArr; perror &rArr; fputs
+<BR><BR>[Stack]<UL><LI>Max Depth = 336<LI>Call Chain = main &rArr; processEvents &rArr; clock_fire &rArr; event_add &rArr; die &rArr; perror &rArr; fputs
 </UL>
 <BR>[Calls]<UL><LI><a href="#[b620d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sensor_init
 <LI><a href="#[b62118]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;processEvents
@@ -291,7 +295,6 @@ Global Symbols
 <LI><a href="#[b623e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;computation_fire
 <LI><a href="#[b62430]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clock_init
 <LI><a href="#[b62478]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clock_fire
-<LI><a href="#[b624c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;event_add
 </UL>
 
 <P><STRONG><a name="[101aed8]"></a>__aeabi_memcpy8</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memcpya.o(.text), UNUSED)
@@ -411,7 +414,12 @@ Global Symbols
 <P><STRONG><a name="[10f3a80]"></a>malloc</STRONG> (Thumb, 88 bytes, Stack size 20 bytes, malloc.o(i.malloc))
 <BR><BR>[Stack]<UL><LI>Max Depth = 20<LI>Call Chain = malloc
 </UL>
-<BR>[Called By]<UL><LI><a href="#[b624c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;event_add
+<BR>[Called By]<UL><LI><a href="#[b620d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sensor_init
+<LI><a href="#[b62280]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;model_delay_fire
+<LI><a href="#[b622c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;merge_fire
+<LI><a href="#[b623e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;computation_fire
+<LI><a href="#[b62430]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clock_init
+<LI><a href="#[b62478]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clock_fire
 </UL>
 <P>
 <H3>

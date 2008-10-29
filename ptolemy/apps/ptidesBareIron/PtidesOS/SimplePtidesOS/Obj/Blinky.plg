@@ -1012,3 +1012,502 @@ SimplePtidesOS.c(619): warning:  #550-D: variable "model_delay3" was set but nev
 linking...
 Program Size: Code=3152 RO-data=32 RW-data=64 ZI-data=512  
 ".\Obj\Blinky.axf" - 0 Error(s), 9 Warning(s).
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(34): error:  #20: identifier "Event_Link" is undefined
+SimplePtidesOS.c(211): error:  #20: identifier "Event_Link" is undefined
+SimplePtidesOS.c(211): error:  #20: identifier "compare_event" is undefined
+SimplePtidesOS.c(212): error:  #20: identifier "before_event" is undefined
+SimplePtidesOS.c(213): error:  #20: identifier "tmp" is undefined
+SimplePtidesOS.c(213): error:  #29: expected an expression
+SimplePtidesOS.c(213): error:  #65: expected a ";"
+SimplePtidesOS.c(255): error:  #132: expression must have pointer-to-struct-or-union type
+SimplePtidesOS.c(270): error:  #132: expression must have pointer-to-struct-or-union type
+SimplePtidesOS.c(274): error:  #132: expression must have pointer-to-struct-or-union type
+SimplePtidesOS.c(418): error:  #132: expression must have pointer-to-struct-or-union type
+SimplePtidesOS.c(427): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(631): warning:  #513-D: a value of type "void (*)(Actor *)" cannot be assigned to an entity of type "void (*)(Actor *, Event *)"
+SimplePtidesOS.c(619): warning:  #550-D: variable "model_delay3" was set but never used
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(213): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(213): error:  #20: identifier "Event_Link" is undefined
+SimplePtidesOS.c(219): error:  #136: struct "Event" has no field "thisEvent"
+SimplePtidesOS.c(221): error:  #136: struct "Event" has no field "thisEvent"
+SimplePtidesOS.c(222): error:  #136: struct "Event" has no field "thisEvent"
+SimplePtidesOS.c(226): error:  #136: struct "Event" has no field "next"
+SimplePtidesOS.c(227): error:  #136: struct "Event" has no field "next"
+SimplePtidesOS.c(231): error:  #136: struct "Event" has no field "next"
+SimplePtidesOS.c(232): error:  #136: struct "Event" has no field "thisEvent"
+SimplePtidesOS.c(237): error:  #136: struct "Event" has no field "next"
+SimplePtidesOS.c(255): error:  #136: struct "Event" has no field "next"
+SimplePtidesOS.c(270): error:  #136: struct "Event" has no field "thisEvent"
+SimplePtidesOS.c(274): error:  #136: struct "Event" has no field "thisEvent"
+SimplePtidesOS.c(418): error:  #136: struct "Event" has no field "thisEvent"
+SimplePtidesOS.c(427): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(631): warning:  #513-D: a value of type "void (*)(Actor *)" cannot be assigned to an entity of type "void (*)(Actor *, Event *)"
+SimplePtidesOS.c(619): warning:  #550-D: variable "model_delay3" was set but never used
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(213): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(213): error:  #20: identifier "Event_Link" is undefined
+SimplePtidesOS.c(232): error:  #136: struct "Event" has no field "thisEvent"
+SimplePtidesOS.c(270): error:  #136: struct "Event" has no field "thisEvent"
+SimplePtidesOS.c(274): error:  #136: struct "Event" has no field "thisEvent"
+SimplePtidesOS.c(418): error:  #136: struct "Event" has no field "thisEvent"
+SimplePtidesOS.c(427): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(631): warning:  #513-D: a value of type "void (*)(Actor *)" cannot be assigned to an entity of type "void (*)(Actor *, Event *)"
+SimplePtidesOS.c(619): warning:  #550-D: variable "model_delay3" was set but never used
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(213): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(213): error:  #20: identifier "Event_Link" is undefined
+SimplePtidesOS.c(273): error:  #136: struct "Event" has no field "thisEvent"
+SimplePtidesOS.c(426): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(630): warning:  #513-D: a value of type "void (*)(Actor *)" cannot be assigned to an entity of type "void (*)(Actor *, Event *)"
+SimplePtidesOS.c(618): warning:  #550-D: variable "model_delay3" was set but never used
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(213): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(426): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(630): warning:  #513-D: a value of type "void (*)(Actor *)" cannot be assigned to an entity of type "void (*)(Actor *, Event *)"
+SimplePtidesOS.c(618): warning:  #550-D: variable "model_delay3" was set but never used
+linking...
+Program Size: Code=3140 RO-data=32 RW-data=64 ZI-data=512  
+".\Obj\Blinky.axf" - 0 Error(s), 9 Warning(s).
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(93): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(107): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(111): error:  #32: expression must have arithmetic type
+SimplePtidesOS.c(112): error:  #32: expression must have arithmetic type
+SimplePtidesOS.c(114): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(214): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(427): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(631): warning:  #513-D: a value of type "void (*)(Actor *)" cannot be assigned to an entity of type "void (*)(Actor *, Event *)"
+SimplePtidesOS.c(619): warning:  #550-D: variable "model_delay3" was set but never used
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(93): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(108): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(112): error:  #32: expression must have arithmetic type
+SimplePtidesOS.c(113): error:  #32: expression must have arithmetic type
+SimplePtidesOS.c(115): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(215): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(428): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(632): warning:  #513-D: a value of type "void (*)(Actor *)" cannot be assigned to an entity of type "void (*)(Actor *, Event *)"
+SimplePtidesOS.c(620): warning:  #550-D: variable "model_delay3" was set but never used
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(93): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(108): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(114): error:  #65: expected a ";"
+SimplePtidesOS.c(115): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(215): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(428): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(632): warning:  #513-D: a value of type "void (*)(Actor *)" cannot be assigned to an entity of type "void (*)(Actor *, Event *)"
+SimplePtidesOS.c(620): warning:  #550-D: variable "model_delay3" was set but never used
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(93): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(108): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(113): error:  #65: expected a ";"
+SimplePtidesOS.c(115): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(215): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(428): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(632): warning:  #513-D: a value of type "void (*)(Actor *)" cannot be assigned to an entity of type "void (*)(Actor *, Event *)"
+SimplePtidesOS.c(620): warning:  #550-D: variable "model_delay3" was set but never used
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(93): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(108): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(115): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(215): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(428): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(632): warning:  #513-D: a value of type "void (*)(Actor *)" cannot be assigned to an entity of type "void (*)(Actor *, Event *)"
+SimplePtidesOS.c(620): warning:  #550-D: variable "model_delay3" was set but never used
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(93): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(108): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(115): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(215): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(428): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(632): warning:  #513-D: a value of type "void (*)(Actor *)" cannot be assigned to an entity of type "void (*)(Actor *, Event *)"
+SimplePtidesOS.c(620): warning:  #550-D: variable "model_delay3" was set but never used
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(93): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(108): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(115): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(135): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(149): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(157): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(215): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(428): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(632): warning:  #513-D: a value of type "void (*)(Actor *)" cannot be assigned to an entity of type "void (*)(Actor *, Event *)"
+SimplePtidesOS.c(620): warning:  #550-D: variable "model_delay3" was set but never used
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(93): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(108): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(115): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(135): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(149): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(157): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(170): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(172): error:  #268: declaration may not appear after executable statement in block
+SimplePtidesOS.c(184): error:  #144: a value of type "Event *" cannot be used to initialize an entity of type "Event"
+SimplePtidesOS.c(185): error:  #44: expression must have pointer type
+SimplePtidesOS.c(215): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(428): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(632): warning:  #513-D: a value of type "void (*)(Actor *)" cannot be assigned to an entity of type "void (*)(Actor *, Event *)"
+SimplePtidesOS.c(620): warning:  #550-D: variable "model_delay3" was set but never used
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(93): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(108): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(115): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(135): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(149): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(157): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(170): error:  #29: expected an expression
+SimplePtidesOS.c(172): error:  #268: declaration may not appear after executable statement in block
+SimplePtidesOS.c(184): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(184): error:  #144: a value of type "Event *" cannot be used to initialize an entity of type "Event"
+SimplePtidesOS.c(185): error:  #44: expression must have pointer type
+SimplePtidesOS.c(215): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(428): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(632): warning:  #513-D: a value of type "void (*)(Actor *)" cannot be assigned to an entity of type "void (*)(Actor *, Event *)"
+SimplePtidesOS.c(620): warning:  #550-D: variable "model_delay3" was set but never used
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(93): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(108): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(115): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(135): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(149): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(157): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(170): error:  #29: expected an expression
+SimplePtidesOS.c(172): error:  #268: declaration may not appear after executable statement in block
+SimplePtidesOS.c(184): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(186): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(215): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(428): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(632): warning:  #513-D: a value of type "void (*)(Actor *)" cannot be assigned to an entity of type "void (*)(Actor *, Event *)"
+SimplePtidesOS.c(620): warning:  #550-D: variable "model_delay3" was set but never used
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(93): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(108): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(115): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(135): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(149): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(157): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(171): error:  #29: expected an expression
+SimplePtidesOS.c(184): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(186): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(215): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(428): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(632): warning:  #513-D: a value of type "void (*)(Actor *)" cannot be assigned to an entity of type "void (*)(Actor *, Event *)"
+SimplePtidesOS.c(620): warning:  #550-D: variable "model_delay3" was set but never used
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(93): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(108): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(115): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(135): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(149): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(157): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(171): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(186): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(215): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(428): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(632): warning:  #513-D: a value of type "void (*)(Actor *)" cannot be assigned to an entity of type "void (*)(Actor *, Event *)"
+SimplePtidesOS.c(620): warning:  #550-D: variable "model_delay3" was set but never used
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(93): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(108): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(115): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(135): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(149): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(157): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(171): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(181): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(187): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(216): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(429): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(633): warning:  #513-D: a value of type "void (*)(Actor *)" cannot be assigned to an entity of type "void (*)(Actor *, Event *)"
+SimplePtidesOS.c(621): warning:  #550-D: variable "model_delay3" was set but never used
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(93): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(108): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(115): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(135): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(149): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(157): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(171): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(181): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(187): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(216): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(429): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(447): error:  #165: too few arguments in function call
+SimplePtidesOS.c(478): error:  #165: too few arguments in function call
+SimplePtidesOS.c(621): warning:  #550-D: variable "model_delay3" was set but never used
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(93): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(108): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(115): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(135): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(149): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(157): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(171): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(181): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(187): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(216): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(429): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(624): warning:  #550-D: variable "model_delay3" was set but never used
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(93): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(108): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(115): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(135): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(149): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(157): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(171): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(181): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(187): error:  #167: argument of type "Event *" is incompatible with parameter of type "Event"
+SimplePtidesOS.c(208): error:  #147-D: declaration is incompatible with "void event_add(Event)" (declared at line 36 of "functions.h")
+SimplePtidesOS.c(211): error:  #154: expression must have struct or union type
+SimplePtidesOS.c(342): error:  #167: argument of type "Event" is incompatible with parameter of type "Event *"
+SimplePtidesOS.c(400): error:  #167: argument of type "Event" is incompatible with parameter of type "Event *"
+SimplePtidesOS.c(402): error:  #167: argument of type "Event" is incompatible with parameter of type "Event *"
+SimplePtidesOS.c(428): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(508): error:  #167: argument of type "Event" is incompatible with parameter of type "Event *"
+SimplePtidesOS.c(514): error:  #167: argument of type "Event" is incompatible with parameter of type "Event *"
+SimplePtidesOS.c(623): warning:  #550-D: variable "model_delay3" was set but never used
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(93): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(135): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(171): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(211): error:  #154: expression must have struct or union type
+SimplePtidesOS.c(342): error:  #167: argument of type "Event" is incompatible with parameter of type "Event *"
+SimplePtidesOS.c(400): error:  #167: argument of type "Event" is incompatible with parameter of type "Event *"
+SimplePtidesOS.c(402): error:  #167: argument of type "Event" is incompatible with parameter of type "Event *"
+SimplePtidesOS.c(428): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(508): error:  #167: argument of type "Event" is incompatible with parameter of type "Event *"
+SimplePtidesOS.c(514): error:  #167: argument of type "Event" is incompatible with parameter of type "Event *"
+SimplePtidesOS.c(623): warning:  #550-D: variable "model_delay3" was set but never used
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(93): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(135): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(171): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(334): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(403): error:  #167: argument of type "Event" is incompatible with parameter of type "Event *"
+SimplePtidesOS.c(405): error:  #167: argument of type "Event" is incompatible with parameter of type "Event *"
+SimplePtidesOS.c(431): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(511): error:  #167: argument of type "Event" is incompatible with parameter of type "Event *"
+SimplePtidesOS.c(517): error:  #167: argument of type "Event" is incompatible with parameter of type "Event *"
+SimplePtidesOS.c(626): warning:  #550-D: variable "model_delay3" was set but never used
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(93): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(113): error:  #20: identifier "new_event" is undefined
+SimplePtidesOS.c(135): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(172): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(336): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(394): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(404): error:  #144: a value of type "Event *" cannot be used to initialize an entity of type "Event"
+SimplePtidesOS.c(405): error:  #75: operand of "*" must be a pointer
+SimplePtidesOS.c(406): error:  #44: expression must have pointer type
+SimplePtidesOS.c(407): error:  #167: argument of type "Event" is incompatible with parameter of type "Event *"
+SimplePtidesOS.c(434): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(500): error:  #65: expected a ";"
+SimplePtidesOS.c(506): error:  #20: identifier "newEvent" is undefined
+SimplePtidesOS.c(518): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(630): warning:  #550-D: variable "model_delay3" was set but never used
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(93): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(135): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(172): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(336): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(394): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(434): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(500): error:  #65: expected a ";"
+SimplePtidesOS.c(506): error:  #20: identifier "newEvent" is undefined
+SimplePtidesOS.c(518): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(630): warning:  #550-D: variable "model_delay3" was set but never used
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(93): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(135): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(172): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(336): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(394): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(434): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(500): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(630): warning:  #550-D: variable "model_delay3" was set but never used
+linking...
+Program Size: Code=3140 RO-data=32 RW-data=64 ZI-data=512  
+".\Obj\Blinky.axf" - 0 Error(s), 13 Warning(s).

@@ -73,9 +73,7 @@ struct Event {
     //an event would only have 1 actorToFire
     Actor* actorToFire;
 
+	struct Event* next;
+
 };
 
-typedef struct el{
-    Event thisEvent;
-    struct el *next;
-} Event_Link;
