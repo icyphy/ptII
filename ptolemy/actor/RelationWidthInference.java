@@ -240,18 +240,18 @@ public class RelationWidthInference {
      * @exception IllegalArgumentException If the specified actor is not the
      *   top level container. That is, its container is not null.
      */
-     public void setTopLevel(CompositeActor compositeActor) {
+     public void setTopLevel(CompositeActor topLevel) {
          // Extra test for compositeActor != null since when the manager is changed
          // the old manager gets a null pointer as compositeActor.
          // Afterwards width inference should not be done anymore on this manager
          // (this will throw a null pointer exception since _topLevel will be set to null).
-         if (compositeActor != null && compositeActor.getContainer() != null) {
+         if (topLevel != null && topLevel.getContainer() != null) {
              throw new IllegalArgumentException(
                      "TypedCompositeActor.resolveTypes: The specified actor is "
                              + "not the top level container.");
          }
          
-         _topLevel = compositeActor;       
+         _topLevel = topLevel;       
      }
      
     ///////////////////////////////////////////////////////////////////
