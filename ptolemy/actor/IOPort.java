@@ -253,7 +253,7 @@ public class IOPort extends ComponentPort {
         }
         if (_hasPortEventListeners) {
             _notifyPortEventListeners(new IOPortEvent(this, IOPortEvent.SEND,
-						    IOPortEvent.ALLCHANNELS, true, token));
+                                                    IOPortEvent.ALLCHANNELS, true, token));
         }
 
         try {
@@ -319,8 +319,8 @@ public class IOPort extends ComponentPort {
         }
         if (_hasPortEventListeners) {
             _notifyPortEventListeners(new IOPortEvent(this, IOPortEvent.SEND,
-						    IOPortEvent.ALLCHANNELS, true,
-						    tokenArray, vectorLength));
+                                                    IOPortEvent.ALLCHANNELS, true,
+                                                    tokenArray, vectorLength));
         }
 
         try {
@@ -783,12 +783,12 @@ public class IOPort extends ComponentPort {
 
             if (token == null) {
                 token = localToken;
-		if (_hasPortEventListeners) {
-		    _notifyPortEventListeners(
-			new IOPortEvent(this, IOPortEvent.GET_END, 
-				      channelIndex, true, token));
-		}            
-	    }
+                if (_hasPortEventListeners) {
+                    _notifyPortEventListeners(
+                        new IOPortEvent(this, IOPortEvent.GET_END, 
+                                      channelIndex, true, token));
+                }            
+            }
         }
 
         if (token == null) {
@@ -865,11 +865,11 @@ public class IOPort extends ComponentPort {
                     + "to return.");
         }
 
-	if (_hasPortEventListeners) {
-	    _notifyPortEventListeners(
-	        new IOPortEvent(this, IOPortEvent.GET_END,
-			      channelIndex, true, retArray, vectorLength));
-	}            
+        if (_hasPortEventListeners) {
+            _notifyPortEventListeners(
+                new IOPortEvent(this, IOPortEvent.GET_END,
+                              channelIndex, true, retArray, vectorLength));
+        }            
 
         int index = 1;
 
@@ -1001,11 +1001,11 @@ public class IOPort extends ComponentPort {
 
             if (token == null) {
                 token = localToken;
-		if (_hasPortEventListeners) {
-		    _notifyPortEventListeners(
-	                new IOPortEvent(this, IOPortEvent.GET_END,
-				    channelIndex, true, token));
-		}
+                if (_hasPortEventListeners) {
+                    _notifyPortEventListeners(
+                        new IOPortEvent(this, IOPortEvent.GET_END,
+                                    channelIndex, true, token));
+                }
             }
         }
 
@@ -2407,7 +2407,7 @@ public class IOPort extends ComponentPort {
         }
         if (_hasPortEventListeners) {
             _notifyPortEventListeners(new IOPortEvent(this, IOPortEvent.SEND,
-						    channelIndex, true, token));
+                                                    channelIndex, true, token));
         }
 
         try {
@@ -2472,8 +2472,8 @@ public class IOPort extends ComponentPort {
         }
         if (_hasPortEventListeners) {
             _notifyPortEventListeners(new IOPortEvent(this, IOPortEvent.SEND,
-						    channelIndex, true, tokenArray,
-						    vectorLength));
+                                                    channelIndex, true, tokenArray,
+                                                    vectorLength));
         }
 
         try {
@@ -2614,7 +2614,7 @@ public class IOPort extends ComponentPort {
         }
         if (_hasPortEventListeners) {
             _notifyPortEventListeners(new IOPortEvent(this, IOPortEvent.SEND,
-						    channelIndex, true, token));
+                                                    channelIndex, true, token));
         }
 
         try {
@@ -3844,7 +3844,7 @@ public class IOPort extends ComponentPort {
                                     + "to a single port.");
                 }
     
-                if (!relation.isWidthFixed() || relation.getWidth() != 1) {
+                if (relation.isWidthFixed() && relation.getWidth() > 1) {
                     // Relation is a bus.
                     if (!isMultiport()) {
                         throw new IllegalActionException(this, relation,
