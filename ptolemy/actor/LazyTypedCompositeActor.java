@@ -465,12 +465,30 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Conf
 
                 // NOTE: This does not seem like the right thing to do!
                 // removeAllEntities();
+
+		// If we have a subclass that has LazyTypedCompositeActor
+		// in it, then things get trick.  See
+		// actor/lib/test/auto/LazySubClassModel.xml
+
+		// We were getting ConcurrentModifications because
+		// when we instantiate and call
+		// NamedObj._markContentsDerived() we end up
+		// eventuatlly calling populate(), which calls
+		// parse(URL, String, Reader) and adds a
+		// ParserAttribute, which results in a
+		// ConcurrentModificationException
+
                 MoMLParser parser = new MoMLParser(workspace());
 
+		// If we get the parser from ParserAttribute, then
+		// after we call parse(), MoMLParser._xmlParser gets
+		// set to null, which causes problems for the calling
+		// parse() method.
 		//NamedObj toplevel = toplevel();
 		//MoMLParser parser = ParserAttribute.getParser(toplevel);
+
                 parser.setContext(this);
-		
+
 		List savedFilters = parser.getMoMLFilters();
 		try {
 		    parser.setMoMLFilters(null);
