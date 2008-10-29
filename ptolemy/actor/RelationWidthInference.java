@@ -65,6 +65,7 @@ public class RelationWidthInference {
      */
     public void inferWidths() throws IllegalActionException {
         if (_needsWidthInference) {
+            final boolean logTimings = false;
             long startTime = (new Date()).getTime();
             
             // widthChanged will become true if the width of a relation has been changed. In this
@@ -124,10 +125,13 @@ public class RelationWidthInference {
                 originalUnspecifiedSet = (HashSet<IORelation>) unspecifiedSet.clone();
                 
                 LinkedList<IORelation> workingSet2 = new LinkedList<IORelation>(workingSet);
-                
-                System.out.println("Width inference - initialization: " +                
-                        (System.currentTimeMillis() - startTime)
-                                + " ms.");
+
+                if (logTimings) {
+                    System.out.println("Width inference - initialization: " +                
+                            (System.currentTimeMillis() - startTime)
+                                    + " ms.");
+                }
+                                
                 long afterinit = (new Date()).getTime();
                 
                 while (!workingSet2.isEmpty() && !unspecifiedSet.isEmpty()) {
@@ -176,9 +180,11 @@ public class RelationWidthInference {
                         
                     }                      
                 }
-                System.out.println("Actual algorithm: " +                
-                        (System.currentTimeMillis() - afterinit)
-                                + " ms.");                                
+                if (logTimings) {
+                    System.out.println("Actual algorithm: " +                
+                            (System.currentTimeMillis() - afterinit)
+                                    + " ms.");
+                }
                 
                 if (!unspecifiedSet.isEmpty()) {
                     IORelation relation = unspecifiedSet.iterator().next();
@@ -205,10 +211,11 @@ public class RelationWidthInference {
                     }            
                 }
                 _topLevel.workspace().doneTemporaryWriting();
-                System.out.println("Time to do width inference: " +                
-                        (System.currentTimeMillis() - startTime)
-                                + " ms.");
-                
+                if (logTimings) {
+                    System.out.println("Time to do width inference: " +                
+                            (System.currentTimeMillis() - startTime)
+                                    + " ms.");
+                }
             }
             _needsWidthInference = false;            
         }
