@@ -227,8 +227,10 @@ public class IORelation extends ComponentRelation {
      *  @param except The port to exclude, or null to not
      *   exclude any ports.
      *  @return The receivers associated with this relation.
+     * @throws IllegalActionException 
+     * @throws InvalidStateException 
      */
-    public Receiver[][] deepReceivers(IOPort except) {
+    public Receiver[][] deepReceivers(IOPort except) throws InvalidStateException, IllegalActionException {
         try {
             _workspace.getReadAccess();
 
@@ -299,9 +301,10 @@ public class IORelation extends ComponentRelation {
      *  of zero, then return one.
      *
      *  @return The width, which is at least zero.
+     * @throws IllegalActionException 
      *  @see #setWidth(int)
      */
-    public int getWidth() {
+    public int getWidth() throws IllegalActionException {
         if (_USE_NEW_WIDTH_INFERENCE_ALGO) {
     
             // If _width equals to the value of WIDTH_TO_INFER
@@ -310,30 +313,22 @@ public class IORelation extends ComponentRelation {
             // needsWidthInference() returns true.
             if (_width == WIDTH_TO_INFER) {
                 if (needsWidthInference()) {
-                 
-                    try {
-                        //TODO rodiers test IORelation-9.1 in IORelation.tcl clones
-                        // a non-fixed width relation and the cloned one has no parent
-                        //  Is this normal?                    
-                        //  Either change test or code.
-                        Nameable container = getContainer();
-    
-                        if (container instanceof CompositeActor) {
-                            Director director = ((CompositeActor) container).getDirector();
-    
-                            if (director != null) {
-                                director.inferWidths();
-                            }
+             
+                    //TODO rodiers test IORelation-9.1 in IORelation.tcl clones
+                    // a non-fixed width relation and the cloned one has no parent
+                    //  Is this normal?                    
+                    //  Either change test or code.
+                    Nameable container = getContainer();
+
+                    if (container instanceof CompositeActor) {
+                        Director director = ((CompositeActor) container).getDirector();
+
+                        if (director != null) {
+                            director.inferWidths();
                         }
-                        //TODO rodiers throw exception if no director
-                        
-                    } catch (IllegalActionException e) {
-                        // Width inference not possible. Use zero as width.
-                        // The user still gets warned when he starts the model.
-                        // TODO rodiers: it might be better to propagate the exception
-                        // here. To be discussed.
-                        return 0;
                     }
+                    //TODO rodiers throw exception if no director
+                    
                     assert !needsWidthInference();
                 }
                 return _inferredWidth;
@@ -728,8 +723,9 @@ public class IORelation extends ComponentRelation {
      *  @param indent The amount of indenting.
      *  @param bracket The number of surrounding brackets (0, 1, or 2).
      *  @return A description of the object.
+     * @throws IllegalActionException 
      */
-    protected String _description(int detail, int indent, int bracket) {
+    protected String _description(int detail, int indent, int bracket) throws IllegalActionException {
         try {
             _workspace.getReadAccess();
 
@@ -810,9 +806,10 @@ public class IORelation extends ComponentRelation {
      *  element of the second array is appended behind the elements of the
      *  first array. This method is solely for deepReceivers.
      *  The two input arrays must have the same number of rows.
+     * @throws IllegalActionException 
      */
     private Receiver[][] _cascade(Receiver[][] array1, Receiver[][] array2)
-            throws InvalidStateException {
+            throws InvalidStateException, IllegalActionException {
         if ((array1 == null) || (array1.length <= 0)) {
             return array2;
         }
@@ -858,8 +855,9 @@ public class IORelation extends ComponentRelation {
      *  This method is not read-synchronized on the workspace, so the caller
      *  should be.
      *  @return The inferred width.
+     * @throws IllegalActionException 
      */
-    private int _inferWidth() {
+    private int _inferWidth() throws IllegalActionException {
         //The old algorithm for widht inference
         assert !_USE_NEW_WIDTH_INFERENCE_ALGO;
         long version = _workspace.getVersion();

@@ -43,6 +43,7 @@ import javax.swing.JToolBar;
 
 import ptolemy.actor.gui.Configuration;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;

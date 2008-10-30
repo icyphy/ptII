@@ -48,6 +48,7 @@ import ptolemy.domains.fsm.kernel.State;
 import ptolemy.domains.fsm.kernel.Transition;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.StringUtilities;
@@ -88,9 +89,11 @@ public class FSMCreator implements AtomicActorCreator {
     /** Generate a new class with the given name that can take the
      *  place of the given actor.  Use the given options when
      *  necessary.  The given entity is assumed to be an expression actor.
+     * @throws IllegalActionException 
+     * @throws InvalidStateException 
      */
     public SootClass createAtomicActor(Entity actor, String newClassName,
-            ConstVariableModelAnalysis constAnalysis, Map options) {
+            ConstVariableModelAnalysis constAnalysis, Map options) throws InvalidStateException, IllegalActionException {
         FSMActor entity = (FSMActor) actor;
 
         SootClass entityClass = PtolemyUtilities.actorClass;

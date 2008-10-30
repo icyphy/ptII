@@ -179,20 +179,26 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
     // Empty all receivers of all input ports.
     // FIXME: Shouldn't this be guaranteed by the run() of the actor?
     private void _emptyPorts() {
-        Iterator ports = inputPortList().iterator();
+        Iterator<?> ports = inputPortList().iterator();
 
         while (ports.hasNext()) {
             IOPort port = (IOPort) ports.next();
 
-            for (int channel = 0; channel < port.getWidth(); channel++) {
-                try {
-                    while (port.hasToken(channel)) {
-                        port.get(channel);
+            try {
+                for (int channel = 0; channel < port.getWidth(); channel++) {
+                    try {
+                        while (port.hasToken(channel)) {
+                            port.get(channel);
+                        }
+                    } catch (IllegalActionException ex) {
+                        throw new InternalErrorException(this, ex,
+                                "Failed to empty ports?");
                     }
-                } catch (IllegalActionException ex) {
-                    throw new InternalErrorException(this, ex,
-                            "Failed to empty ports?");
                 }
+            } catch (IllegalActionException ex) {
+                throw new InternalErrorException(this, ex,
+                        "At this time IllegalActionExceptions are not allowed to happen.\n" +
+                        "Width inference should already have been done.");
             }
         }
     }

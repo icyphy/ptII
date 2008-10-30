@@ -37,6 +37,8 @@ import ptolemy.actor.util.ConstVariableModelAnalysis;
 import ptolemy.copernicus.kernel.EntitySootClass;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.StringUtilities;
 import soot.BooleanType;
@@ -73,9 +75,11 @@ public class ExpressionCreator implements AtomicActorCreator {
     /** Generate a new class with the given name that can take the
      *  place of the given actor.  Use the given options when
      *  necessary.  The given entity is assumed to be an expression actor.
+     * @throws IllegalActionException 
+     * @throws InvalidStateException 
      */
     public SootClass createAtomicActor(Entity actor, String newClassName,
-            ConstVariableModelAnalysis constAnalysis, Map options) {
+            ConstVariableModelAnalysis constAnalysis, Map options) throws InvalidStateException, IllegalActionException {
         Expression entity = (Expression) actor;
         SootClass entityClass = PtolemyUtilities.actorClass;
 

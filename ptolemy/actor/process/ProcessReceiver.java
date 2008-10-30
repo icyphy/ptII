@@ -29,6 +29,8 @@
 package ptolemy.actor.process;
 
 import ptolemy.actor.Receiver;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InvalidStateException;
 
 //////////////////////////////////////////////////////////////////////////
 //// ProcessReceiver
@@ -108,9 +110,10 @@ public interface ProcessReceiver extends Receiver {
      *  is not necessary.
      *  @return True if this receiver is contained on the inside of
      *   a boundary port; return false otherwise.
+     * @throws IllegalActionException 
      *  @see BoundaryDetector
      */
-    public boolean isConnectedToBoundary();
+    public boolean isConnectedToBoundary() throws IllegalActionException;
 
     /** Return true if this receiver is connected to the inside of a
      *  boundary port. A boundary port is an opaque port that is
@@ -123,9 +126,11 @@ public interface ProcessReceiver extends Receiver {
      *  is not necessary.
      *  @return True if this receiver is contained on the inside of
      *   a boundary port; return false otherwise.
+     * @throws IllegalActionException 
+     * @throws InvalidStateException 
      *  @see BoundaryDetector
      */
-    public boolean isConnectedToBoundaryInside();
+    public boolean isConnectedToBoundaryInside() throws InvalidStateException, IllegalActionException;
 
     /** Return true if this receiver is connected to the outside of a
      *  boundary port. A boundary port is an opaque port that is
@@ -138,17 +143,19 @@ public interface ProcessReceiver extends Receiver {
      *  is not necessary.
      *  @return True if this receiver is contained on the outside of
      *   a boundary port; return false otherwise.
+     * @throws IllegalActionException 
      *  @see BoundaryDetector
      */
-    public boolean isConnectedToBoundaryOutside();
+    public boolean isConnectedToBoundaryOutside() throws IllegalActionException;
 
     /** Return true if this receiver is a consumer receiver. A process
      *  receiver is a consumer receiver if it is connected to a
      *  boundary port.
      *  @return True if this is a consumer receiver; return
      *   false otherwise.
+     * @throws IllegalActionException 
      */
-    public boolean isConsumerReceiver();
+    public boolean isConsumerReceiver() throws IllegalActionException;
 
     /** Return true if this receiver is contained on the inside of a
      *  boundary port. A boundary port is an opaque port that is

@@ -39,6 +39,7 @@ import ptolemy.domains.csp.kernel.CSPActor;
 import ptolemy.domains.csp.kernel.ConditionalBranch;
 import ptolemy.domains.csp.kernel.ConditionalSend;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -205,10 +206,16 @@ public class CSPMultiSource extends CSPActor {
     public void wrapup() {
         System.out.println("Invoking wrapup of CSPMultiSource...\n");
 
-        for (int i = 0; i < output.getWidth(); i++) {
-            System.out.println("MultiSource: Branch " + i
-                    + " successfully  rendezvoused " + _branchCount[i]
-                    + " times.");
+        try {
+            for (int i = 0; i < output.getWidth(); i++) {
+                System.out.println("MultiSource: Branch " + i
+                        + " successfully  rendezvoused " + _branchCount[i]
+                        + " times.");
+            }
+        } catch (IllegalActionException ex) {
+            throw new InternalErrorException(this, ex,
+                    "At this time IllegalActionExceptions are not allowed to happen.\n" +
+                    "Width inference should already have been done.");
         }
     }
 

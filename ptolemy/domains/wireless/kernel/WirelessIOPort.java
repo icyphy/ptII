@@ -538,8 +538,9 @@ public class WirelessIOPort extends TypedIOPort {
      *  the width is always 1. Otherwise, it depends on the number of
      *  links to the port.
      *  @return The width of the port.
+     * @throws IllegalActionException 
      */
-    public int getWidth() {
+    public int getWidth() throws IllegalActionException {
         if (_outsideIsWireless()) {
             return 1;
         } else {
@@ -551,8 +552,9 @@ public class WirelessIOPort extends TypedIOPort {
      *  then the width is always 1. Otherwise, the width is determined by
      *  the number of links to the port.
      *  @return The inside width of this port.
+     * @throws IllegalActionException 
      */
-    public int getWidthInside() {
+    public int getWidthInside() throws IllegalActionException {
         if (_insideIsWireless()) {
             return 1;
         } else {

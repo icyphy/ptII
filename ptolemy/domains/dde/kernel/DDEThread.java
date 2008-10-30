@@ -99,13 +99,21 @@ public class DDEThread extends ProcessThread {
      */
     public synchronized void noticeOfTermination() {
         Actor actor = getActor();
-        Iterator outputPorts = actor.outputPortList().iterator();
+        Iterator<?> outputPorts = actor.outputPortList().iterator();
         double endTime = PrioritizedTimedQueue.INACTIVE;
 
         if (outputPorts != null) {
             while (outputPorts.hasNext()) {
                 IOPort port = (IOPort) outputPorts.next();
-                Receiver[][] receivers = port.getRemoteReceivers();
+                Receiver[][] receivers;
+                try {
+                    receivers = port.getRemoteReceivers();
+                } catch (IllegalActionException ex) {
+                    throw new InternalErrorException(ex);
+                    // At this time IllegalActionExceptions are not allowed to happen.
+                    // Width inference should already have been done.                           
+                }
+
 
                 if (receivers == null) {
                     break;
@@ -150,7 +158,7 @@ public class DDEThread extends ProcessThread {
     public void start() {
         Actor actor = getActor();
         DDEDirector director = (DDEDirector) actor.getDirector();
-        Hashtable table = director._getInitialTimeTable();
+        Hashtable<?, ?> table = director._getInitialTimeTable();
 
         if (table != null) {
             Double dTime = (Double) table.get(actor);

@@ -38,6 +38,8 @@ import ptolemy.actor.TypedIORelation;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;
 import soot.HasPhaseOptions;
@@ -154,13 +156,17 @@ public class InlinePortTransformer extends SceneTransformer implements
         _phaseName = phaseName;
         _debug = PhaseOptions.getBoolean(options, "debug");
 
-        _inlineAllPortCallsIn(ModelTransformer.getModelClass(), _model);
+        try {
+            _inlineAllPortCallsIn(ModelTransformer.getModelClass(), _model);
+        } catch (IllegalActionException ex) {
+            throw new InternalErrorException(ex);
+        }
     }
 
     // Inline methods in all classes, starting at the bottom of the
     // hierarchy.
     private void _inlineAllPortCallsIn(SootClass modelClass,
-            CompositeActor model) {
+            CompositeActor model) throws IllegalActionException {
         Director director = model.getDirector();
 
         // Loop over all the model instance classes.
@@ -192,7 +198,7 @@ public class InlinePortTransformer extends SceneTransformer implements
     // Inline inside port calls at for the given model, and
     // outside port calls for the entities of the given model.
     private void _inlinePortCalls(SootClass modelClass, CompositeActor model,
-            PortInliner inliner) {
+            PortInliner inliner) throws IllegalActionException {
         // Loop through all the methods and inline calls on ports.
         for (Iterator methods = modelClass.getMethods().iterator(); methods
                 .hasNext();) {
@@ -243,7 +249,7 @@ public class InlinePortTransformer extends SceneTransformer implements
 
     private boolean _inlineMethodCalls(SootClass entityClass,
             ComponentEntity entity, SootMethod method, JimpleBody body,
-            PortInliner inliner, boolean debug) {
+            PortInliner inliner, boolean debug) throws IllegalActionException {
         if (debug) {
             System.out.println("Inlining method calls in method " + method);
         }
@@ -561,7 +567,7 @@ public class InlinePortTransformer extends SceneTransformer implements
 
     private boolean _inlineInsideMethodCalls(SootClass modelClass,
             CompositeActor model, SootMethod method, JimpleBody body,
-            PortInliner inliner, boolean debug) {
+            PortInliner inliner, boolean debug) throws IllegalActionException {
         if (debug) {
             System.out.println("Inlining inside method calls in method "
                     + method);

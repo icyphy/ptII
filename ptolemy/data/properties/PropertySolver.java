@@ -146,7 +146,7 @@ public abstract class PropertySolver extends Attribute {
         return newObject;
     }
 
-    public void checkResolutionErrors() throws PropertyResolutionException {
+    public void checkResolutionErrors() throws IllegalActionException {
         for (Object propertyable : getAllPropertyables()) {
             _recordUnacceptableSolution(
                     propertyable, getProperty(propertyable));
@@ -1534,8 +1534,9 @@ public abstract class PropertySolver extends Attribute {
 
     /**
      * Record tracing statistics.
+     * @throws IllegalActionException 
      */
-    protected void _addStatistics() {
+    protected void _addStatistics() throws IllegalActionException {
         _stats.put("# of helpers", _helperStore.size());
         _stats.put("# of propertyables", getAllPropertyables().size());
         _stats.put("# of resolved properties", _resolvedProperties.size());
@@ -1586,8 +1587,9 @@ public abstract class PropertySolver extends Attribute {
     /**
      * Return the list of all propertyable objects.
      * @return The list of all propertyable objects.
+     * @throws IllegalActionException 
      */
-    public List getAllPropertyables() {
+    public List getAllPropertyables() throws IllegalActionException {
         List result = new LinkedList();
 
         for (PropertyHelper helper : getAllHelpers()) {

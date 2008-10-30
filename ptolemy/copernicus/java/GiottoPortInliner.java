@@ -43,6 +43,7 @@ import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.StringUtilities;
 import soot.ArrayType;
 import soot.Body;
@@ -132,8 +133,9 @@ public class GiottoPortInliner implements PortInliner {
      * provided for the use of the GiottoDirectorInliner, since that
      * inliner and this one are closely coordinated, unlike most other
      * domains.
+     * @throws IllegalActionException 
      */
-    public void createBuffers() {
+    public void createBuffers() throws IllegalActionException {
         // Some maps we use for storing the association between a port
         // and the fields that we are replacing it with.
         _portToTypeNameToBufferField = new HashMap();
@@ -145,9 +147,10 @@ public class GiottoPortInliner implements PortInliner {
     /** Replace the broadcast invocation in the given box
      *  at the given unit in the
      *  given body with a circular array reference.
+     * @throws IllegalActionException 
      */
     public void inlineBroadcast(JimpleBody body, Stmt stmt, InvokeExpr expr,
-            TypedIOPort port) {
+            TypedIOPort port) throws IllegalActionException {
         Local bufferLocal = Jimple.v().newLocal("buffer",
                 ArrayType.v(PtolemyUtilities.tokenType, 1));
         body.getLocals().add(bufferLocal);
@@ -612,7 +615,7 @@ public class GiottoPortInliner implements PortInliner {
 
     // Create the communication buffers for communication between
     // actors in the model.
-    private void _createBuffers() {
+    private void _createBuffers() throws IllegalActionException {
         // First create the circular buffers for communication.
         SootMethod clinitMethod;
         Body clinitBody;
@@ -666,7 +669,7 @@ public class GiottoPortInliner implements PortInliner {
     // Create references in the given class to the appropriate Giotto
     // communication buffers for each port in the given entity.
     // This includes both the communication buffers and index arrays.
-    private void _createBufferReferences(Entity entity, SootClass entityClass) {
+    private void _createBufferReferences(Entity entity, SootClass entityClass) throws IllegalActionException {
         // Loop over all the ports of the actor.
         for (Iterator ports = entity.portList().iterator(); ports.hasNext();) {
             TypedIOPort port = (TypedIOPort) ports.next();
@@ -708,7 +711,7 @@ public class GiottoPortInliner implements PortInliner {
     // class for the given port and the given type.
     private void _createPortBufferReference(SootClass entityClass,
             TypedIOPort port, ptolemy.data.type.Type type,
-            Map typeNameToBufferField) {
+            Map typeNameToBufferField) throws IllegalActionException {
         if (_debug) {
             System.out.println("creating  buffer reference for " + port
                     + " type = " + type);
@@ -765,7 +768,7 @@ public class GiottoPortInliner implements PortInliner {
     // Create references in the given class to the appropriate Giotto
     // communication buffers for each port in the given entity.
     // This includes both the communication buffers and index arrays.
-    private void _createInsideBufferReferences() {
+    private void _createInsideBufferReferences() throws IllegalActionException {
         if (_debug) {
             System.out.println("creating inside buffer references for "
                     + _model.getFullName());
@@ -812,7 +815,7 @@ public class GiottoPortInliner implements PortInliner {
     // class for the given port and the given type.
     private void _createPortInsideBufferReference(SootClass _modelClass,
             TypedIOPort port, ptolemy.data.type.Type type,
-            Map typeNameToBufferField) {
+            Map typeNameToBufferField) throws IllegalActionException {
         //  System.out.println("creating inside buffer reference for " + port + " type = " + type);
         RefType tokenType = PtolemyUtilities.getSootTypeForTokenType(type);
 

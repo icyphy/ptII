@@ -1471,9 +1471,10 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * @param channelNumber The specified channel number.
      * @param isWrite Whether this is a write or read access.
      * @return The list of reference channel.
+     * @throws IllegalActionException 
      */
     protected List<Channel> _getReferenceChannels(
-            TypedIOPort port, int channelNumber, boolean isWrite) {        
+            TypedIOPort port, int channelNumber, boolean isWrite) throws IllegalActionException {        
         if (isWrite) {
             return getSinkChannels(port, channelNumber);
 
@@ -1703,7 +1704,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return result.toString();
     }
 
-    public boolean checkLocal(boolean forComposite, IOPort port) {
+    public boolean checkLocal(boolean forComposite, IOPort port) throws IllegalActionException {
         return (port.isInput() && !forComposite && port.getWidth() > 0)
         || (port.isOutput() && forComposite);
     }
@@ -1768,8 +1769,9 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *  @param channelNumber The given channel number.
      *  @return The list of channel objects that are the sink channels
      *   of the given output channel.
+     * @throws IllegalActionException 
      */
-    public static List<Channel> getSinkChannels(IOPort port, int channelNumber) {
+    public static List<Channel> getSinkChannels(IOPort port, int channelNumber) throws IllegalActionException {
         List sinkChannels = new LinkedList();
         Receiver[][] remoteReceivers;
 

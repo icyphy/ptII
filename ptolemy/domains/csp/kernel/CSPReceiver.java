@@ -43,6 +43,7 @@ import ptolemy.actor.process.TerminateProcessException;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.InvalidStateException;
 
 //////////////////////////////////////////////////////////////////////////
 //// CSPReceiver
@@ -257,8 +258,9 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  of a boundary port, then return true; otherwise return false.
      *  @return True if this receiver is connected to the inside of a
      *   boundary port; return false otherwise.
+     * @throws IllegalActionException 
      */
-    public boolean isConnectedToBoundary() {
+    public boolean isConnectedToBoundary() throws IllegalActionException {
         return _boundaryDetector.isConnectedToBoundary();
     }
 
@@ -269,9 +271,11 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  return false.
      *  @return True if this receiver is connected to the inside of
      *   a boundary port; return false otherwise.
+     * @throws IllegalActionException 
+     * @throws InvalidStateException 
      *  @see ptolemy.actor.process.BoundaryDetector
      */
-    public boolean isConnectedToBoundaryInside() {
+    public boolean isConnectedToBoundaryInside() throws InvalidStateException, IllegalActionException {
         return _boundaryDetector.isConnectedToBoundaryInside();
     }
 
@@ -282,16 +286,18 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  return false.
      *  @return True if this receiver is connected to the outside of
      *   a boundary port; return false otherwise.
+     * @throws IllegalActionException 
      *  @see ptolemy.actor.process.BoundaryDetector
      */
-    public boolean isConnectedToBoundaryOutside() {
+    public boolean isConnectedToBoundaryOutside() throws IllegalActionException {
         return _boundaryDetector.isConnectedToBoundaryOutside();
     }
 
     /** This class serves as an example of a ConsumerReceiver and
      *  hence this method returns true.
+     * @throws IllegalActionException 
      */
-    public boolean isConsumerReceiver() {
+    public boolean isConsumerReceiver() throws IllegalActionException {
         if (isConnectedToBoundary()) {
             return true;
         }

@@ -14,6 +14,7 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.KernelException;
 
 public class PropertyTokenHelper extends PropertyHelper {
@@ -151,8 +152,9 @@ public class PropertyTokenHelper extends PropertyHelper {
      * the component. All ports and parameters are considered
      * property-able.
      * @return The list of property-able named object.
+     * @throws IllegalActionException 
      */
-    public List<Object> getPropertyables() {
+    public List<Object> getPropertyables() throws IllegalActionException {
         List<Object> list = new ArrayList<Object>();
         
         // Add all channels.
@@ -240,7 +242,7 @@ public class PropertyTokenHelper extends PropertyHelper {
         return result;
     }
 
-    protected List<Channel> _getInnerSinkChannelList(IOPort port) {
+    protected List<Channel> _getInnerSinkChannelList(IOPort port) throws InvalidStateException, IllegalActionException {
         List<Channel> result = new ArrayList<Channel>();
         
         Receiver[][] receivers = port.deepGetReceivers();

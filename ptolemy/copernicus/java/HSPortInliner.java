@@ -36,6 +36,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
+import ptolemy.kernel.util.IllegalActionException;
 import soot.Body;
 import soot.Local;
 import soot.Modifier;
@@ -103,8 +104,9 @@ public class HSPortInliner implements PortInliner {
     }
 
     /** Initialize the inliner.  Create one place buffers for each relation.
+     * @throws IllegalActionException 
      */
-    public void initialize() {
+    public void initialize() throws IllegalActionException {
         // Some maps we use for storing the association between a port
         // and the fields that we are replacing it with.
         //_portToTypeNameToBufferField = new HashMap();
@@ -116,9 +118,10 @@ public class HSPortInliner implements PortInliner {
     /** Replace the broadcast invocation in the given box
      *  at the given unit in the
      *  given body with a circular array reference.
+     * @throws IllegalActionException 
      */
     public void inlineBroadcast(JimpleBody body, Stmt stmt, InvokeExpr expr,
-            TypedIOPort port) {
+            TypedIOPort port) throws IllegalActionException {
         if (expr.getArgCount() != 1) {
             throw new RuntimeException("multirate not supported.");
         }
@@ -155,9 +158,10 @@ public class HSPortInliner implements PortInliner {
     /** Replace the get invocation in the given box
      *  at the given unit in the
      *  given body with a circular array reference.
+     * @throws IllegalActionException 
      */
     public void inlineGet(JimpleBody body, Stmt stmt, ValueBox box,
-            InvokeExpr expr, TypedIOPort port) {
+            InvokeExpr expr, TypedIOPort port) throws IllegalActionException {
         if (expr.getArgCount() != 1) {
             throw new RuntimeException("multirate not supported.");
         }
@@ -189,9 +193,10 @@ public class HSPortInliner implements PortInliner {
     /** Replace the getInside invocation in the given box
      *  at the given unit in the
      *  given body with a circular array reference.
+     * @throws IllegalActionException 
      */
     public void inlineGetInside(JimpleBody body, Stmt stmt, ValueBox box,
-            InvokeExpr expr, TypedIOPort port) {
+            InvokeExpr expr, TypedIOPort port) throws IllegalActionException {
         if (expr.getArgCount() != 1) {
             throw new RuntimeException("multirate not supported.");
         }
@@ -222,9 +227,10 @@ public class HSPortInliner implements PortInliner {
 
     /** Replace the send command at the given unit in the
      *  given body with a circular array reference.
+     * @throws IllegalActionException 
      */
     public void inlineSend(JimpleBody body, Stmt stmt, InvokeExpr expr,
-            TypedIOPort port) {
+            TypedIOPort port) throws IllegalActionException {
         if (expr.getArgCount() != 2) {
             throw new RuntimeException("multirate send not supported.");
         }
@@ -244,9 +250,10 @@ public class HSPortInliner implements PortInliner {
 
     /** Replace the send command at the given unit in the
      *  given body with a circular array reference.
+     * @throws IllegalActionException 
      */
     public void inlineSendInside(JimpleBody body, Stmt stmt, InvokeExpr expr,
-            TypedIOPort port) {
+            TypedIOPort port) throws IllegalActionException {
         if (expr.getArgCount() != 2) {
             throw new RuntimeException(
                     "multirate sendInside not supported on port "
@@ -268,7 +275,7 @@ public class HSPortInliner implements PortInliner {
 
     // Create the communication buffers for communication between
     // actors in the model.
-    private void _createBuffers() {
+    private void _createBuffers() throws IllegalActionException {
         // First create the circular buffers for communication.
         SootMethod clinitMethod;
         Body clinitBody;
@@ -398,10 +405,11 @@ public class HSPortInliner implements PortInliner {
      *  class.  The given local variable will refer to the buffer.  A
      *  value containing the size of the given buffer will be
      *  returned.
+     * @throws IllegalActionException 
      */
     private static SootField _getBufferField(SootClass modelClass,
             TypedIOPort port, ptolemy.data.type.Type type, Value channelValue,
-            boolean inside) {
+            boolean inside) throws IllegalActionException {
         // Now get the appropriate buffer
         if (Evaluator.isValueConstantValued(channelValue)) {
             // If we know the channel, then refer directly to the buffer in the

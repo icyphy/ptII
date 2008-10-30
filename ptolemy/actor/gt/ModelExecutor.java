@@ -373,7 +373,7 @@ public class ModelExecutor extends TypedAtomicActor {
             return executorPort.get(channelIndex, vectorLength);
         }
 
-        public int getWidth() {
+        public int getWidth() throws IllegalActionException {
             TypedIOPort executorPort = (TypedIOPort) ModelExecutor.this.getPort(
                     getName());
             return executorPort.getWidth();

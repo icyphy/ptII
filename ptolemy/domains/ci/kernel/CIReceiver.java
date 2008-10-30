@@ -37,6 +37,7 @@ import ptolemy.actor.NoRoomException;
 import ptolemy.actor.NoTokenException;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 
 //////////////////////////////////////////////////////////////////////////
 //// CIReceiver
@@ -160,13 +161,13 @@ public class CIReceiver extends AbstractReceiver {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    private void _initialize() {
+    private void _initialize() throws IllegalActionException {
         IOPort port = getContainer();
         _isPush = CIDirector._isPushPort(port);
         _actor = (Actor) port.getContainer();
         _isAsyncPullSink = !_isPush && CIDirector._isActive(_actor);
 
-        Iterator sourcePorts = port.sourcePortList().iterator();
+        Iterator<?> sourcePorts = port.sourcePortList().iterator();
 
         if (sourcePorts.hasNext()) {
             port = (IOPort) sourcePorts.next();
@@ -185,7 +186,13 @@ public class CIReceiver extends AbstractReceiver {
      */
     private void _notify() {
         if (!_initialized) {
-            _initialize();
+            try {
+                _initialize();
+            } catch (IllegalActionException ex) {
+                throw new InternalErrorException(ex);
+                    // At this time IllegalActionExceptions are not allowed to happen.
+                    // Width inference should already have been done.
+            }
         }
 
         if (_isPush) {
@@ -222,7 +229,7 @@ public class CIReceiver extends AbstractReceiver {
     private Actor _actor;
 
     // List for storing tokens.
-    private LinkedList _tokens = new LinkedList();
+    private LinkedList<Token> _tokens = new LinkedList<Token>();
 
     private boolean _initialized = false;
 

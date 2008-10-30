@@ -30,6 +30,8 @@ import java.util.Map;
 
 import ptolemy.actor.util.ConstVariableModelAnalysis;
 import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InvalidStateException;
 import soot.SootClass;
 
 //////////////////////////////////////////////////////////////////////////
@@ -52,7 +54,9 @@ public interface AtomicActorCreator {
      * @param constAnalysis a ConstVariableModelAnalysis object
      * @param options the options
      * @return a SootClass object
+     * @throws IllegalActionException 
+     * @throws InvalidStateException 
      */
     public SootClass createAtomicActor(Entity entity, String newClassName,
-            ConstVariableModelAnalysis constAnalysis, Map options);
+            ConstVariableModelAnalysis constAnalysis, Map options) throws InvalidStateException, IllegalActionException;
 }

@@ -100,8 +100,9 @@ public abstract class PropertyHelper {
     /**
      * Return a list of property-able object(s) for this helper.
      * @return a list of property-able objects.
+     * @throws IllegalActionException 
      */
-    public abstract List<Object> getPropertyables();
+    public abstract List<Object> getPropertyables() throws IllegalActionException;
 
     /**
      * Return the list of sub-helpers.
@@ -333,7 +334,7 @@ public abstract class PropertyHelper {
         return result;
     }
 
-    public List<Object> getPropertyables(Class filter) {
+    public List<Object> getPropertyables(Class filter) throws IllegalActionException {
         List<Object> list = new LinkedList<Object>();
 
         for (Object object : getPropertyables()) {

@@ -108,24 +108,24 @@ public class DDFSingleTokenCommutator extends SingleTokenCommutator {
         super.connectionsChanged(port);
 
         if (port == input) {
-            _rateArray = new ArrayToken[input.getWidth()];
-
-            IntToken[] rate = new IntToken[input.getWidth()];
-
-            for (int i = 0; i < input.getWidth(); i++) {
-                rate[i] = _zero;
-            }
-
             try {
+                _rateArray = new ArrayToken[input.getWidth()];
+    
+                IntToken[] rate = new IntToken[input.getWidth()];
+    
                 for (int i = 0; i < input.getWidth(); i++) {
-                    rate[i] = _one;
-                    _rateArray[i] = new ArrayToken(BaseType.INT, rate);
                     rate[i] = _zero;
                 }
+                
+                    for (int i = 0; i < input.getWidth(); i++) {
+                        rate[i] = _one;
+                        _rateArray[i] = new ArrayToken(BaseType.INT, rate);
+                        rate[i] = _zero;
+                    }
             } catch (IllegalActionException ex) {
-                // shouldn't happen
                 throw new InternalErrorException(this, ex,
-                        "It should not happen.");
+                        "At this time IllegalActionExceptions are not allowed to happen.\n" +
+                        "Width inference should already have been done.");
             }
         }
     }

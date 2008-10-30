@@ -274,6 +274,7 @@ public class Entity extends InstantiableNamedObj {
      *  is to do nothing, but derived classes may want to react to new
      *  connections.
      *  @param port The port to which connections have changed.
+
      */
     public void connectionsChanged(Port port) {
     }
@@ -558,8 +559,9 @@ public class Entity extends InstantiableNamedObj {
      *  @param indent The amount of indenting.
      *  @param bracket The number of surrounding brackets (0, 1, or 2).
      *  @return A description of the object.
+     * @throws IllegalActionException 
      */
-    protected String _description(int detail, int indent, int bracket) {
+    protected String _description(int detail, int indent, int bracket) throws IllegalActionException {
         try {
             _workspace.getReadAccess();
 

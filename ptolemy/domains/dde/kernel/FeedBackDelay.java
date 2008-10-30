@@ -236,8 +236,9 @@ public class FeedBackDelay extends DDEActor {
 
     /** Syntactic sugar for sending out tokens without
      *  depending on IOPort.send().
+     * @throws IllegalActionException 
      */
-    private void _sendOutToken(Token token, Time time) {
+    private void _sendOutToken(Token token, Time time) throws IllegalActionException {
         Receiver[][] receivers = output.getRemoteReceivers();
 
         for (int i = 0; i < receivers.length; i++) {

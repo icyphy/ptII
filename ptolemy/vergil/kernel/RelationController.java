@@ -41,6 +41,7 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.Vertex;
 import ptolemy.vergil.actor.ActorGraphModel;
@@ -189,22 +190,28 @@ public class RelationController extends ParameterizedNodeController {
 
             if (relation instanceof IORelation) {
                 IORelation ioRelation = (IORelation) relation;
-                if ( ioRelation.isWidthFixed() && ioRelation.getWidth() > 1) {
-                    // Restore width and height to the default to get a reasonable slash.
-                    width = 12.0;
-                    height = 12.0;
-
-                    Line2D.Double line = new Line2D.Double(-width / 2,
-                            height / 2, width / 2, -height / 2);
-                    Figure lineFigure = new BasicFigure(line, Color.black);
-                    result.add(lineFigure);
-
-                    LabelFigure label = new LabelFigure(""
-                            + ((IORelation) relation).getWidth(),
-                            _relationLabelFont, 0, SwingConstants.SOUTH_WEST);
-                    label.translateTo((width / 2) + 1.0, (-height / 2) - 1.0);
-                    result.add(label);
-                }
+                try {
+                    if ( ioRelation.isWidthFixed() && ioRelation.getWidth() > 1) {
+                        // Restore width and height to the default to get a reasonable slash.
+                        width = 12.0;
+                        height = 12.0;
+    
+                        Line2D.Double line = new Line2D.Double(-width / 2,
+                                height / 2, width / 2, -height / 2);
+                        Figure lineFigure = new BasicFigure(line, Color.black);
+                        result.add(lineFigure);
+    
+                        LabelFigure label = new LabelFigure(""
+                                + ((IORelation) relation).getWidth(),
+                                _relationLabelFont, 0, SwingConstants.SOUTH_WEST);
+                        label.translateTo((width / 2) + 1.0, (-height / 2) - 1.0);
+                        result.add(label);
+                    }
+                } catch (IllegalActionException ex) {
+                    throw new InternalErrorException(ex);
+                    // At this time IllegalActionExceptions are not allowed to happen.
+                    // No width inference should happen at this time                           
+                }                
             }
 
             return result;

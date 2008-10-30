@@ -43,6 +43,8 @@ import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.domains.sdf.kernel.SDFReceiver;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.util.StringUtilities;
 import soot.ArrayType;
 import soot.IntType;
@@ -116,8 +118,10 @@ public class SDFPortInliner implements PortInliner {
     }
 
     /** Initialize the inliner.  Create communication buffers and index arrays.
+     * @throws IllegalActionException 
+     * @throws InvalidStateException 
      */
-    public void initialize() {
+    public void initialize() throws InvalidStateException, IllegalActionException {
         // Some maps we use for storing the association between a port
         // and the fields that we are replacing it with.
         _portToTypeNameToBufferField = new HashMap();
@@ -131,9 +135,11 @@ public class SDFPortInliner implements PortInliner {
     /** Replace the broadcast invocation in the given box
      *  at the given unit in the
      *  given body with a circular array reference.
+     * @throws IllegalActionException 
+     * @throws InvalidStateException 
      */
     public void inlineBroadcast(JimpleBody body, Stmt stmt, InvokeExpr expr,
-            TypedIOPort port) {
+            TypedIOPort port) throws InvalidStateException, IllegalActionException {
         SootClass theClass = body.getMethod().getDeclaringClass();
 
         Local bufferLocal = Jimple.v().newLocal("buffer",
@@ -331,9 +337,11 @@ public class SDFPortInliner implements PortInliner {
     /** Replace the get invocation in the given box
      *  at the given unit in the
      *  given body with a circular array reference.
+     * @throws IllegalActionException 
+     * @throws InvalidStateException 
      */
     public void inlineGet(JimpleBody body, Stmt stmt, ValueBox box,
-            InvokeExpr expr, TypedIOPort port) {
+            InvokeExpr expr, TypedIOPort port) throws InvalidStateException, IllegalActionException {
         /*SootClass theClass =*/body.getMethod().getDeclaringClass();
 
         Local bufferLocal = Jimple.v().newLocal("buffer",
@@ -489,9 +497,11 @@ public class SDFPortInliner implements PortInliner {
     /** Replace the getInside invocation in the given box
      *  at the given unit in the
      *  given body with a circular array reference.
+     * @throws IllegalActionException 
+     * @throws InvalidStateException 
      */
     public void inlineGetInside(JimpleBody body, Stmt stmt, ValueBox box,
-            InvokeExpr expr, TypedIOPort port) {
+            InvokeExpr expr, TypedIOPort port) throws InvalidStateException, IllegalActionException {
         /*SootClass theClass =*/body.getMethod().getDeclaringClass();
         Local bufferLocal = Jimple.v().newLocal("buffer",
                 ArrayType.v(PtolemyUtilities.tokenType, 1));
@@ -645,9 +655,11 @@ public class SDFPortInliner implements PortInliner {
 
     /** Replace the send command at the given unit in the
      *  given body with a circular array reference.
+     * @throws IllegalActionException 
+     * @throws InvalidStateException 
      */
     public void inlineSend(JimpleBody body, Stmt stmt, InvokeExpr expr,
-            TypedIOPort port) {
+            TypedIOPort port) throws InvalidStateException, IllegalActionException {
         /*SootClass theClass =*/body.getMethod().getDeclaringClass();
 
         Local bufferLocal = Jimple.v().newLocal("buffer",
@@ -828,9 +840,11 @@ public class SDFPortInliner implements PortInliner {
 
     /** Replace the send command at the given unit in the
      *  given body with a circular array reference.
+     * @throws IllegalActionException 
+     * @throws InvalidStateException 
      */
     public void inlineSendInside(JimpleBody body, Stmt stmt, InvokeExpr expr,
-            TypedIOPort port) {
+            TypedIOPort port) throws InvalidStateException, IllegalActionException {
         /*SootClass theClass =*/body.getMethod().getDeclaringClass();
 
         Local bufferLocal = Jimple.v().newLocal("buffer",
@@ -1011,7 +1025,7 @@ public class SDFPortInliner implements PortInliner {
 
     // Create the communication buffers for communication between
     // actors in the model.
-    private void _createBuffers() {
+    private void _createBuffers() throws InvalidStateException, IllegalActionException {
         // First create the circular buffers for communication.
         // Loop over all the relations, creating buffers for each channel.
         for (Iterator relations = _model.relationList().iterator(); relations
@@ -1113,7 +1127,7 @@ public class SDFPortInliner implements PortInliner {
     // Create references in the given class to the appropriate SDF
     // communication buffers for each port in the given entity.
     // This includes both the communication buffers and index arrays.
-    private void _createBufferReferences(Entity entity, SootClass entityClass) {
+    private void _createBufferReferences(Entity entity, SootClass entityClass) throws IllegalActionException {
         // Loop over all the ports of the actor.
         for (Iterator ports = entity.portList().iterator(); ports.hasNext();) {
             TypedIOPort port = (TypedIOPort) ports.next();
@@ -1196,7 +1210,7 @@ public class SDFPortInliner implements PortInliner {
     // class for the given port and the given type.
     private void _createPortBufferReference(SootClass entityClass,
             TypedIOPort port, ptolemy.data.type.Type type,
-            Map typeNameToBufferField) {
+            Map typeNameToBufferField) throws IllegalActionException {
         //  System.out.println("creating  buffer reference for " + port + " type = " + type);
         RefType tokenType = PtolemyUtilities.getSootTypeForTokenType(type);
 
@@ -1347,7 +1361,7 @@ public class SDFPortInliner implements PortInliner {
     // Create references in the given class to the appropriate SDF
     // communication buffers for each port in the given entity.
     // This includes both the communication buffers and index arrays.
-    private void _createInsideBufferReferences() {
+    private void _createInsideBufferReferences() throws IllegalActionException {
         if (_debug) {
             System.out.println("creating inside buffer references for "
                     + _model.getFullName());
@@ -1440,7 +1454,7 @@ public class SDFPortInliner implements PortInliner {
     // class for the given port and the given type.
     private void _createPortInsideBufferReference(SootClass modelClass,
             TypedIOPort port, ptolemy.data.type.Type type,
-            Map typeNameToBufferField) {
+            Map typeNameToBufferField) throws IllegalActionException {
         //  System.out.println("creating inside buffer reference for " + port + " type = " + type);
         RefType tokenType = PtolemyUtilities.getSootTypeForTokenType(type);
 
@@ -1603,10 +1617,12 @@ public class SDFPortInliner implements PortInliner {
      *  class.  The given local variable will refer to the buffer.  A
      *  value containing the size of the given buffer will be
      *  returned.
+     * @throws IllegalActionException 
+     * @throws InvalidStateException 
      */
     private Value _getBufferAndSize(JimpleBody body, Stmt stmt,
             TypedIOPort port, ptolemy.data.type.Type type, Value channelValue,
-            Local bufferLocal, Map portToTypeNameToBufferField, boolean inside) {
+            Local bufferLocal, Map portToTypeNameToBufferField, boolean inside) throws InvalidStateException, IllegalActionException {
         SootClass theClass = body.getMethod().getDeclaringClass();
 
         Value bufferSizeValue = null;
@@ -1809,7 +1825,7 @@ public class SDFPortInliner implements PortInliner {
 
     // Return the maximum of all the buffer sizes of receivers
     // connected to the specified relation.
-    private static int _getBufferSize(TypedIORelation relation) {
+    private static int _getBufferSize(TypedIORelation relation) throws InvalidStateException, IllegalActionException {
         int bufferSize = 1;
         Receiver[][] receivers = relation.deepReceivers(null);
 

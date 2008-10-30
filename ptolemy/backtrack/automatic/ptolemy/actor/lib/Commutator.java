@@ -43,6 +43,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
@@ -162,7 +163,13 @@ public class Commutator extends Transformer implements SequenceActor, Rollbackab
     public void connectionsChanged(Port port) {
         super.connectionsChanged(port);
         if (port == input) {
-            output_tokenProductionRate.setExpression(input.getWidth() + " * blockSize");
+            try {
+                output_tokenProductionRate.setExpression(input.getWidth() + " * blockSize");
+            } catch (IllegalActionException ex) {
+                throw new InternalErrorException(this, ex,
+                        "At this time IllegalActionExceptions are not allowed to happen.\n" +
+                        "Width inference should already have been done.");
+            }
         }
     }
 

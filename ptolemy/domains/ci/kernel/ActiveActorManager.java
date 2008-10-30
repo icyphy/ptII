@@ -65,8 +65,9 @@ public class ActiveActorManager extends PtolemyThread {
     /** Construct an actor manager to iterate the actor.
      *  @param actor The actor that is managed.
      *  @param director The director of the actor.
+     * @throws IllegalActionException 
      */
-    public ActiveActorManager(Actor actor, CIDirector director) {
+    public ActiveActorManager(Actor actor, CIDirector director) throws IllegalActionException {
         super();
         _actor = actor;
         _director = director;
@@ -136,7 +137,7 @@ public class ActiveActorManager extends PtolemyThread {
     ////                         private methods                   ////
     // check actor connection, and set the _isPushSource flag and _period
     // value, which are used in the run() method.
-    private void _init() {
+    private void _init() throws IllegalActionException {
         boolean hasInput = false;
         boolean outputIsPush = false;
         Iterator inputPorts = _actor.inputPortList().iterator();

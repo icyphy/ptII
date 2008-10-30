@@ -510,7 +510,7 @@ public class MpiPNDirector extends Director {
 
 	}
 
-	public static boolean isLocalBuffer(IOPort port, int channel) {
+	public static boolean isLocalBuffer(IOPort port, int channel) throws IllegalActionException {
 		if (port.getWidth() <= 0) {
 			return true;
 		}

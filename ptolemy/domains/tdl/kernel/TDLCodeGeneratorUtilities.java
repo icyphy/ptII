@@ -189,8 +189,9 @@ public class TDLCodeGeneratorUtilities {
 	 * @param actor
 	 *            The actor to test.
 	 * @return True if the given actor has at least on connected input port.
+	 * @throws IllegalActionException 
 	 */
-	public static boolean needsInputDriver(Actor actor) {
+	public static boolean needsInputDriver(Actor actor) throws IllegalActionException {
 		boolean retVal = false;
 		Iterator inPorts = actor.inputPortList().iterator();
 

@@ -38,6 +38,7 @@ import ptolemy.actor.Receiver;
 import ptolemy.actor.util.Time;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
@@ -214,6 +215,7 @@ public class TimeKeeper {
      *  <P>
      *  This method is not synchronized so the calling method should be.
      *  @param receiver The receiver that is causing this method to be invoked.
+     * @throws IllegalActionException 
      */
     public void sendOutNullTokens(DDEReceiver receiver) {
         Iterator ports = _actor.outputPortList().iterator();
@@ -221,7 +223,14 @@ public class TimeKeeper {
 
         while (ports.hasNext()) {
             IOPort port = (IOPort) ports.next();
-            Receiver[][] receivers = port.getRemoteReceivers();
+            Receiver[][] receivers;
+            try {
+                receivers = port.getRemoteReceivers();
+            } catch (IllegalActionException ex) {
+                throw new InternalErrorException(ex);
+                    // At this time IllegalActionExceptions are not allowed to happen.
+                    // Width inference should already have been done.
+            }
 
             for (int i = 0; i < receivers.length; i++) {
                 for (int j = 0; j < receivers[i].length; j++) {

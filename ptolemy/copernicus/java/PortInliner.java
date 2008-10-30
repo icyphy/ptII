@@ -27,6 +27,7 @@
 package ptolemy.copernicus.java;
 
 import ptolemy.actor.TypedIOPort;
+import ptolemy.kernel.util.IllegalActionException;
 import soot.ValueBox;
 import soot.jimple.InvokeExpr;
 import soot.jimple.JimpleBody;
@@ -48,39 +49,45 @@ public interface PortInliner {
      * InlinePortTransformer prior to any of the other methods being
      * called.  It gives the Port inliner the opportunity to create
      * storage buffers that should only be created once.
+     * @throws IllegalActionException 
      */
-    public void initialize();
+    public void initialize() throws IllegalActionException;
 
     /** Replace the broadcast invocation in the given box
      *  at the given unit in the
      *  given body with a circular array reference.
+     * @throws IllegalActionException 
      */
     public void inlineBroadcast(JimpleBody body, Stmt stmt, InvokeExpr expr,
-            TypedIOPort port);
+            TypedIOPort port) throws IllegalActionException;
 
     /** Replace the get invocation in the given box
      *  at the given unit in the
      *  given body with a circular array reference.
+     * @throws IllegalActionException 
      */
     public void inlineGet(JimpleBody body, Stmt stmt, ValueBox box,
-            InvokeExpr expr, TypedIOPort port);
+            InvokeExpr expr, TypedIOPort port) throws IllegalActionException;
 
     /** Replace the getInside invocation in the given box
      *  at the given unit in the
      *  given body with a circular array reference.
+     * @throws IllegalActionException 
      */
     public void inlineGetInside(JimpleBody body, Stmt stmt, ValueBox box,
-            InvokeExpr expr, TypedIOPort port);
+            InvokeExpr expr, TypedIOPort port) throws IllegalActionException;
 
     /** Replace the send command at the given unit in the
      *  given body with a circular array reference.
+     * @throws IllegalActionException 
      */
     public void inlineSend(JimpleBody body, Stmt stmt, InvokeExpr expr,
-            TypedIOPort port);
+            TypedIOPort port) throws IllegalActionException;
 
     /** Replace the send command at the given unit in the
      *  given body with a circular array reference.
+     * @throws IllegalActionException 
      */
     public void inlineSendInside(JimpleBody body, Stmt stmt, InvokeExpr expr,
-            TypedIOPort port);
+            TypedIOPort port) throws IllegalActionException;
 }

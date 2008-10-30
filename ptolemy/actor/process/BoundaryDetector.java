@@ -34,6 +34,8 @@ import java.util.Iterator;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InvalidStateException;
 
 //////////////////////////////////////////////////////////////////////////
 //// BoundaryDetector
@@ -69,8 +71,9 @@ public class BoundaryDetector {
      *  This method is not synchronized so the caller should be.
      * @return True if the containing receiver is connected to
      *  boundary port; return false otherwise.
+     * @throws IllegalActionException 
      */
-    public boolean isConnectedToBoundary() {
+    public boolean isConnectedToBoundary() throws IllegalActionException {
         if (_connectedBoundaryCacheIsOn) {
             return _isConnectedBoundaryValue;
         } else {
@@ -145,8 +148,10 @@ public class BoundaryDetector {
      *  This method is not synchronized so the caller should be.
      * @return True if the containing receiver is connected to the
      *  inside of a boundary port; return false otherwise.
+     * @throws IllegalActionException 
+     * @throws InvalidStateException 
      */
-    public boolean isConnectedToBoundaryInside() {
+    public boolean isConnectedToBoundaryInside() throws InvalidStateException, IllegalActionException {
         if (_connectedInsideOfBoundaryCacheIsOn) {
             return _isConnectedInsideOfBoundaryValue;
         } else {
@@ -205,8 +210,9 @@ public class BoundaryDetector {
      *  This method is not synchronized so the caller should be.
      * @return True if the containing receiver is connected to the
      *  outside of a boundary port; return false otherwise.
+     * @throws IllegalActionException 
      */
-    public boolean isConnectedToBoundaryOutside() {
+    public boolean isConnectedToBoundaryOutside() throws IllegalActionException {
         if (_connectedOutsideOfBoundaryCacheIsOn) {
             return _isConnectedOutsideOfBoundaryValue;
         } else {

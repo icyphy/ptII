@@ -256,34 +256,36 @@ public class PropertyHighlighter extends NodeControllerFactory {
         
         // Get the PropertySolver.
         PropertySolver solver = (PropertySolver) getContainer();
-        List propertyables = solver.getAllPropertyables();
-        //solver.reset();
-        
-        for (Object propertyable : propertyables) {
-            if (propertyable instanceof NamedObj) {
-                NamedObj namedObj = (NamedObj) propertyable;
-
-                StringParameter showAttribute = 
-                    (StringParameter) namedObj.getAttribute("_showInfo");
-        
-                Attribute highlightAttribute = 
-                    namedObj.getAttribute("_highlightColor");
-                
-                try {
-                    if (highlightAttribute != null) {
-                        highlightAttribute.setContainer(null);
-                    }
+        try {        
+            List propertyables = solver.getAllPropertyables();
+            //solver.reset();
+            
+            for (Object propertyable : propertyables) {
+                if (propertyable instanceof NamedObj) {
+                    NamedObj namedObj = (NamedObj) propertyable;
+    
+                    StringParameter showAttribute = 
+                        (StringParameter) namedObj.getAttribute("_showInfo");
+            
+                    Attribute highlightAttribute = 
+                        namedObj.getAttribute("_highlightColor");
                     
-                    if (showAttribute != null) {
-                        showAttribute.setContainer(null);
-                    }
-                } catch (IllegalActionException e1) {
-                    assert false;
-                } catch (NameDuplicationException e1) {
-                    assert false;
+    
+                        if (highlightAttribute != null) {
+                            highlightAttribute.setContainer(null);
+                        }
+                        
+                        if (showAttribute != null) {
+                            showAttribute.setContainer(null);
+                        }
                 }
             }
+        } catch (IllegalActionException e1) {
+            assert false;
+        } catch (NameDuplicationException e1) {
+            assert false;
         }
+        
         
         // Repaint the GUI.
         getContainer().requestChange(new ChangeRequest(this,

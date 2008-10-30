@@ -71,7 +71,7 @@ public class PropertyTokenFSMHelper extends PropertyTokenCompositeHelper {
         super(solver, actor);
     }
 
-    public List<Object> getPropertyables() {
+    public List<Object> getPropertyables() throws IllegalActionException {
         List<Object> result = super.getPropertyables();
 
 //        if (!getSolver().isListening()) {

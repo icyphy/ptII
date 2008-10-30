@@ -39,6 +39,7 @@ import ptolemy.actor.Receiver;
 import ptolemy.actor.util.Time;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
@@ -473,8 +474,10 @@ public class CompositeProcessDirector extends ProcessDirector {
      *
      *  @return true If one or more contained actors are externally
      *   blocked; return false otherwise.
+     * @throws IllegalActionException 
+     * @throws InvalidStateException 
      */
-    protected boolean _areActorsExternallyBlocked() {
+    protected boolean _areActorsExternallyBlocked() throws InvalidStateException, IllegalActionException {
         Iterator blockedReceivers = _blockedReceivers.iterator();
 
         while (blockedReceivers.hasNext()) {

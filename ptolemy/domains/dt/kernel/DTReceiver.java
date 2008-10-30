@@ -181,8 +181,9 @@ public class DTReceiver extends SDFReceiver {
      *  receiver in their communications.  In DT, the source and
      *  destination ports are distinct for each receiver because
      *  "non-deterministic merge" type relations are not allowed.
+     * @throws IllegalActionException 
      */
-    public void determineEnds() {
+    public void determineEnds() throws IllegalActionException {
         _toPort = this.getContainer();
         _to = (Actor) _toPort.getContainer();
         _fromPort = null;

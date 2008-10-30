@@ -510,8 +510,9 @@ public class CIDirector extends Director {
      *  output.
      *  @param actor The actor to be tested whether it is active.
      *  @return True if the actor is active.
+     * @throws IllegalActionException 
      */
-    protected static boolean _isActive(Actor actor) {
+    protected static boolean _isActive(Actor actor) throws IllegalActionException {
         //TODO: check all inputs and outputs have the same setting.
         boolean inputIsPush = false;
         boolean hasInput = false;
@@ -662,7 +663,7 @@ public class CIDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     // Return true if the actor has both pull input and pull output.
-    private boolean _isPullThrough(Actor actor) {
+    private boolean _isPullThrough(Actor actor) throws IllegalActionException {
         boolean inputIsPush = false;
         boolean hasInput = false;
         boolean outputIsPush = false;

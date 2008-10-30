@@ -37,6 +37,7 @@ import ptolemy.domains.csp.kernel.CSPActor;
 import ptolemy.domains.csp.kernel.ConditionalBranch;
 import ptolemy.domains.csp.kernel.ConditionalReceive;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -172,10 +173,16 @@ public class CSPMultiSink extends CSPActor {
         System.out.println(Thread.currentThread().getName()
                 + ":Invoking wrapup of CSPMultiSink...\n");
 
-        for (int i = 0; i < input.getWidth(); i++) {
-            System.out.println("MultiSink: Branch " + i
-                    + " successfully  rendezvoused " + _branchCount[i]
-                    + " times.");
+        try {
+            for (int i = 0; i < input.getWidth(); i++) {
+                System.out.println("MultiSink: Branch " + i
+                        + " successfully  rendezvoused " + _branchCount[i]
+                        + " times.");
+            }
+        } catch (IllegalActionException ex) {
+            throw new InternalErrorException(this, ex,
+                    "At this time IllegalActionExceptions are not allowed to happen.\n" +
+                    "Width inference should already have been done.");
         }
     }
 

@@ -70,6 +70,7 @@ import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
@@ -1419,7 +1420,11 @@ public class ModelTransformer extends SceneTransformer implements
         // Create a class for the model
         String modelClassName = getModelClassName(_model, options);
 
-        _modelClass = _createCompositeActor(_model, modelClassName, options);
+        try {
+            _modelClass = _createCompositeActor(_model, modelClassName, options);
+        } catch (IllegalActionException ex) {
+            throw new InternalErrorException(ex);
+        }
         addActorForClass(_modelClass, _model);
     }
 
@@ -2013,7 +2018,7 @@ public class ModelTransformer extends SceneTransformer implements
 
     private static void _createActorsIn(CompositeActor model,
             HashMap objectNameToCreatorName, String phaseName,
-            ConstVariableModelAnalysis constAnalysis, Map options) {
+            ConstVariableModelAnalysis constAnalysis, Map options) throws InvalidStateException, IllegalActionException {
         // Create an instance class for every actor.
         for (Iterator i = model.deepEntityList().iterator(); i.hasNext();) {
             Entity entity = (Entity) i.next();
@@ -2101,7 +2106,7 @@ public class ModelTransformer extends SceneTransformer implements
     // Populate the given class with code to create the contents of
     // the given entity.
     private static EntitySootClass _createCompositeActor(CompositeActor entity,
-            String newClassName, Map options) {
+            String newClassName, Map options) throws InvalidStateException, IllegalActionException {
         SootClass entityClass = PtolemyUtilities.compositeActorClass;
 
         // create a class for the entity instance.

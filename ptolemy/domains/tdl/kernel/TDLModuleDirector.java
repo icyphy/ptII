@@ -65,6 +65,7 @@ import ptolemy.graph.Node;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -897,8 +898,10 @@ public class TDLModuleDirector extends ModalDirector {
      * 
      * @param portList
      *            Ports containing TDL receivers that should be updated.
+     * @throws IllegalActionException 
+     * @throws InvalidStateException 
      */
-    private void _updateReceivers(Collection portList) {
+    private void _updateReceivers(Collection portList) throws InvalidStateException, IllegalActionException {
         Iterator it = portList.iterator();
         while (it.hasNext()) {
             IOPort port = (IOPort) it.next();

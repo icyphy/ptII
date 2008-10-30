@@ -138,11 +138,18 @@ public class NondeterministicMerge extends TypedCompositeActor {
         super.connectionsChanged(port);
 
         if (port == input) {
-            List containedActors = entityList();
+            List<?> containedActors = entityList();
             int numberOfContainedActors = containedActors.size();
 
             // Create the contained actors to handle the inputs.
-            int inputWidth = input.getWidth();
+            int inputWidth;
+            try {
+                inputWidth = input.getWidth();
+            } catch (IllegalActionException ex) {
+                throw new InternalErrorException(this, ex,
+                        "At this time IllegalActionExceptions are not allowed to happen.\n" +
+                        "Width inference should already have been done.");
+            }
 
             for (int i = 0; i < inputWidth; i++) {
                 if (i < numberOfContainedActors) {
