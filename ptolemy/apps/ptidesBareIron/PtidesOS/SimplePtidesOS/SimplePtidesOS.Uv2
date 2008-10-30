@@ -11,13 +11,13 @@ Group (Documentation)
 Group (Util)
 
 File 1,2,<.\Startup.s><Startup.s>
-File 2,1,<.\Blinky.c><Blinky.c>
+File 2,1,<.\SimplePtidesOS.c><SimplePtidesOS.c>
 File 3,4,<C:\workspace\Keil\ARM\RV31\LIB\Luminary\DriverLib.lib><DriverLib.lib>
 File 3,1,<..\rit128x96x4.c><rit128x96x4.c>
 File 4,5,<Abstract.txt><Abstract.txt>
-File 5,5,<.\Event.h><Event.h>
 File 5,5,<.\functions.h><functions.h>
 File 5,5,<.\actors.h><actors.h>
+File 5,5,<.\structures.h><structures.h>
 
 
 Options 1,0,0  // Target 'Simulator'
