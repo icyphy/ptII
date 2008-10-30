@@ -92,16 +92,20 @@ test LazyTypedCompositeActorChanges-1.1 {Two levels of hierarchy} {
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
     <entity name="MyComposite" class="ptolemy.actor.LazyTypedCompositeActor">
+        <property name="Foo" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
         <configure>
             <group>
-                <property name="Foo" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
-                <entity name="MyInnerComposite" class="ptolemy.actor.TypedCompositeActor">
-                    <property name="Bar" class="ptolemy.data.expr.Parameter" value="0">
-                    </property>
-                    <entity name="Const" class="ptolemy.actor.lib.Const">
-                    </entity>
-                </entity>
+        <entity name="MyInnerComposite" class="ptolemy.actor.LazyTypedCompositeActor">
+            <property name="Bar" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <configure>
+                <group>
+            <entity name="Const" class="ptolemy.actor.lib.Const">
+            </entity>
+                </group>
+            </configure>
+        </entity>
             </group>
         </configure>
     </entity>
