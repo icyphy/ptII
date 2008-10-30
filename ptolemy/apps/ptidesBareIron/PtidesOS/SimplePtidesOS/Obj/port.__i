@@ -1,1 +1,0 @@
--c --device DLM -D__MICROLIB -g -O0 --apcs=interwork --diag_suppress 3419 -I "C:\workspace\Keil\ARM\INC\Luminary" -o ".\Obj\port.o" --depend ".\Obj\port.d" "Port.c"

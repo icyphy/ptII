@@ -1,4 +1,0 @@
-".\obj\startup.o" ".\obj\simpleptidesos.o" "..\..\..\..\Keil\ARM\RV31\LIB\Luminary\DriverLib.lib" ".\obj\rit128x96x4.o" --library_type=microlib --device DLM --strict --scatter ".\Obj\Blinky.sct" 
---autoat --summary_stderr --info summarysizes --map --xref --callgraph --symbols 
---info sizes --info totals --info unused --info veneers 
- --list ".\Lst\Blinky.map" -o ".\Obj\Blinky.axf"
