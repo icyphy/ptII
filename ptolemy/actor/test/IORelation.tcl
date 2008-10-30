@@ -676,10 +676,8 @@ test IORelation-9.3 {Test description} {
 test IORelation-10.1 {Test clone} {
     set w [java::new ptolemy.kernel.util.Workspace W]
     set r8 [java::cast ptolemy.actor.IORelation [$r1 clone $w]]
-       # TODO rodiers: clone of a non-fixed width relation has no parent.
-       # Is this normal? This causes a crash in IORelation.getWidth       
     $r8 description $configuration
-} {configuration {width 1}}
+} {configuration {width 0}}
 
 test IORelation-10.2 {Test clone} {
     set w [java::new ptolemy.kernel.util.Workspace W]

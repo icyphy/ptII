@@ -598,14 +598,19 @@ public class Director extends Attribute implements Executable {
      *                  or if the width cannot be inferred for a relation.
      */
     public void inferWidths() throws IllegalActionException {
-        // TODO Auto-generated method stub        
         Nameable container = getContainer();
+        boolean foundManager = false;
         if (container instanceof CompositeActor) {
             Manager manager = ((CompositeActor) container).getManager();
             if (manager != null) {
                 manager.inferWidths();
+                foundManager = true;
             }
         }
+        if (!foundManager) { 
+            throw new IllegalActionException(this, "Can't infer the widths" +
+            "of the relations since no manager present.");
+        }        
     }    
     
     /** Initialize the model controlled by this director.  Set the

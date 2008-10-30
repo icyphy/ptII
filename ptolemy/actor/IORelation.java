@@ -314,20 +314,21 @@ public class IORelation extends ComponentRelation {
             if (_width == WIDTH_TO_INFER) {
                 if (needsWidthInference()) {
              
-                    //TODO rodiers test IORelation-9.1 in IORelation.tcl clones
-                    // a non-fixed width relation and the cloned one has no parent
-                    //  Is this normal?                    
-                    //  Either change test or code.
                     Nameable container = getContainer();
 
+                    boolean foundDirector = false;
                     if (container instanceof CompositeActor) {
                         Director director = ((CompositeActor) container).getDirector();
 
                         if (director != null) {
                             director.inferWidths();
+                            foundDirector = true;
                         }
                     }
-                    //TODO rodiers throw exception if no director
+                    if (!foundDirector) { 
+                        throw new IllegalActionException(this, "Can't infer the widths" +
+                        "of the relations since no director present.");
+                    }
                     
                     assert !needsWidthInference();
                 }
@@ -972,6 +973,9 @@ public class IORelation extends ComponentRelation {
                             "" + width + " is not a valid width for this relation." );
                 }
     
+                /* rodiers: I'd rather keep the following exception since it makes the
+                 * model more consistent, but some tests seem to use this pattern.
+                 * 
                 // Check for non-multiports on a link: should either be 0, 1 or should be inferred.            
                  if (width != 1 && width != 0 && width != WIDTH_TO_INFER) {
                      for (Object object : linkedPortList()) {
@@ -983,6 +987,8 @@ public class IORelation extends ComponentRelation {
                          }
                      }
                  }
+                 */
+
     
                  _width = width;                         
     
