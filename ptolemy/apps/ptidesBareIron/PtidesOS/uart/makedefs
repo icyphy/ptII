@@ -1,0 +1,700 @@
+#******************************************************************************
+#
+# makedefs - Definitions common to all makefiles.
+#
+# Copyright (c) 2005-2007 Luminary Micro, Inc.  All rights reserved.
+# 
+# Software License Agreement
+# 
+# Luminary Micro, Inc. (LMI) is supplying this software for use solely and
+# exclusively on LMI's microcontroller products.
+# 
+# The software is owned by LMI and/or its suppliers, and is protected under
+# applicable copyright laws.  All rights are reserved.  You may not combine
+# this software with "viral" open-source software in order to form a larger
+# program.  Any use in violation of the foregoing restrictions may subject
+# the user to criminal sanctions under applicable laws, as well as to civil
+# liability for the breach of the terms and conditions of this license.
+# 
+# THIS SOFTWARE IS PROVIDED "AS IS".  NO WARRANTIES, WHETHER EXPRESS, IMPLIED
+# OR STATUTORY, INCLUDING, BUT NOT LIMITED TO, IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE APPLY TO THIS SOFTWARE.
+# LMI SHALL NOT, IN ANY CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL, OR
+# CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
+# 
+# This is part of revision 1900 of the Stellaris Peripheral Driver Library.
+#
+#******************************************************************************
+
+#******************************************************************************
+#
+# Get the operating system name.  If this is Cygwin, the .d files will be
+# munged to convert c: into /cygdrive/c so that "make" will be happy with the
+# auto-generated dependencies.
+#
+#******************************************************************************
+os:=${shell uname -s}
+
+#******************************************************************************
+#
+# The compiler to be used.
+#
+#******************************************************************************
+ifndef COMPILER
+#COMPILER=ewarm
+COMPILER=gcc
+#COMPILER=rvmdk
+#COMPILER=sourcerygxx
+endif
+
+#******************************************************************************
+#
+# The debugger to be used.
+#
+#******************************************************************************
+ifndef DEBUGGER
+ifeq (${COMPILER}, ewarm)
+DEBUGGER=cspy
+else
+ifeq (${COMPILER}, gcc)
+DEBUGGER=gdb
+else
+ifeq (${COMPILER}, rvmdk)
+DEBUGGER=uvision
+else
+ifeq (${COMPILER}, sourcerygxx)
+DEBUGGER=gdb
+else
+DEBUGGER=gdb
+endif
+endif
+endif
+endif
+endif
+
+#******************************************************************************
+#
+# Definitions for using IAR's Embedded Workbench.
+#
+#******************************************************************************
+ifeq (${COMPILER}, ewarm)
+
+#
+# The command for calling the compiler.
+#
+CC=iccarm
+
+#
+# The flags passed to the compiler.
+#
+CFLAGS=--cpu cortex-m3       \
+       --cpu_mode thumb      \
+       --dependencies=m .    \
+       --diag_suppress Pa050 \
+       -e                    \
+       --endian little       \
+       --silent              \
+       -DPART_${PART}
+
+#
+# The command for calling the assembler.
+#
+AS=aarm
+
+#
+# The flags passed to the assembler.
+#
+AFLAGS=--cpu cortex-m3 \
+       -S
+
+#
+# The command for calling the library archiver.
+#
+AR=xar
+
+#
+# The command for calling the linker.
+#
+LD=xlink
+
+#
+# The flags passed to the linker.
+#
+LDFLAGS=-S
+
+#
+# Get the location of the C library.
+#
+LIBC:=${shell sh -c "which ${CC} | sed -r 's/\/cygdrive\/([A-Za-z])/\1:/g'"}
+LIBC:=${shell dirname '${LIBC}'}
+LIBC:=${shell dirname '${LIBC}'}
+INC:=-I'${LIBC}/inc'
+LIBC:=${LIBC}/lib/dl7mptnnl8n.r79
+CFLAGS+=${INC}
+
+#
+# Tell the compiler to include debugging information if the DEBUG environment
+# variable is set.
+#
+ifdef DEBUG
+CFLAGS+=-r -D DEBUG
+endif
+
+#
+# Add the tool specific CFLAGS.
+#
+CFLAGS+=${CFLAGSewarm}
+
+#
+# Add the include file paths to CFLAGS.
+#
+CFLAGS+=${patsubst %,-I%,${subst :, ,${IPATH}}}
+
+#
+# The rule for building the object file from each C source file.
+#
+${COMPILER}/%.o: %.c
+	@if [ 'x${VERBOSE}' = x ];                            \
+	 then                                                 \
+	     echo "  CC    ${<}";                             \
+	 else                                                 \
+	     echo ${CC} ${CFLAGS} -D${COMPILER} -o ${@} ${<}; \
+	 fi
+	@${CC} ${CFLAGS} -D${COMPILER} -o ${@} ${<}
+	@sed -e "s,.*\.o:,${@}:,g" -e "s,\\\\,/,g" -e "s, ,\\\\ ,g" \
+	     -e "s,:\\\\ ,: ,g" ${notdir ${<:.c=.d}} > ${@:.o=.d}
+	@rm ${notdir ${<:.c=.d}}
+ifneq ($(findstring CYGWIN, ${os}), )
+	@perl -i.bak -p -e 's/ ([A-Za-z]):/ \/cygdrive\/\1/g' ${@:.o=.d}
+	@rm -f ${@:.o=.d.bak}
+endif
+
+#
+# The rule for building the object file from each assembly source file.
+#
+${COMPILER}/%.o: %.S
+	@if [ 'x${VERBOSE}' = x ];                            \
+	 then                                                 \
+	     echo "  AS    ${<}";                             \
+	 else                                                 \
+	     echo ${AS} ${AFLAGS} -D${COMPILER} -o ${@} ${<}; \
+	 fi
+	@${CC} ${CFLAGS} -D${COMPILER} --preprocess=n ${notdir ${<:.S=.i}} ${<}
+	@$(AS) ${AFLAGS} -o ${@} ${notdir ${<:.S=.i}}
+	@sed -e "s,.*\.r79:,${@}:,g" -e "s,\\\\,/,g" -e "s, ,\\\\ ,g" \
+	     -e "s,:\\\\ ,: ,g" ${notdir ${<:.S=.d}} > ${@:.o=.d}
+	@rm ${notdir ${<:.S=.d}} ${notdir ${<:.S=.i}}
+ifneq ($(findstring CYGWIN, ${os}), )
+	@perl -i.bak -p -e 's/ ([A-Za-z]):/ \/cygdrive\/\1/g' ${@:.o=.d}
+	@rm -f ${@:.o=.d.bak}
+endif
+
+#
+# The rule for creating an object library.
+#
+${COMPILER}/%.a:
+	@if [ 'x${VERBOSE}' = x ];     \
+	 then                          \
+	     echo "  AR    ${@}";      \
+	 else                          \
+	     echo ${AR} -o ${@} ${^};  \
+	 fi
+	@${AR} -o ${@} ${^}
+
+#
+# The rule for linking the application.
+#
+${COMPILER}/%.axf:
+	@if [ 'x${SCATTERewarm_${notdir ${@:.axf=}}}' = x ];                  \
+	 then                                                                 \
+	     ldname=${ROOT}/ewarm/standalone.xcl;                             \
+	 else                                                                 \
+	     ldname=${SCATTERewarm_${notdir ${@:.axf=}}};                     \
+	 fi;                                                                  \
+	 if [ 'x${VERBOSE}' = x ];                                            \
+	 then                                                                 \
+	     echo "  LD    ${@}";                                             \
+	 else                                                                 \
+	     echo ${LD} ${LFLAGS} -Felf -yas -l ${@:.axf=.map} -o ${@}        \
+	          -f $${ldname}                                               \
+	          -s ${ENTRY_${notdir ${@:.axf=}}} $(filter %.o %.a, ${^})    \
+	          '${LIBC}';                                                  \
+	 fi;                                                                  \
+	 ${LD} -Felf -yas -l ${@:.axf=.map} -o ${@}                           \
+	       -f $${ldname}                                                  \
+	       ${LDFLAGSewarm_${notdir ${@:.axf=}}}                           \
+	       ${LDFLAGS} -s ${ENTRY_${notdir ${@:.axf=}}}                    \
+	       $(filter %.o %.a, ${^})                                        \
+	       '${LIBC}' &&                                                   \
+	 ${LD} -FRAW-BINARY -o ${@:.axf=.bin}                                 \
+	       -f $${ldname}                                                  \
+	       ${LDFLAGSewarm_${notdir ${@:.axf=}}}                           \
+	       ${LDFLAGS} -s ${ENTRY_${notdir ${@:.axf=}}}                    \
+	       $(filter %.o %.a, ${^})                                        \
+	       '${LIBC}'
+endif
+
+#******************************************************************************
+#
+# Definitions for using GCC.
+#
+#******************************************************************************
+ifeq (${COMPILER}, gcc)
+
+#
+# Get the prefix for the tools to use.  Use arm-none-eabi if it exists,
+# otherwise fall back to arm-stellaris-eabi.
+#
+PREFIX=${shell type arm-stellaris-eabi-gcc > /dev/null 2>&1 && \
+         echo arm-stellaris-eabi || echo arm-none-eabi}
+
+#
+# The command for calling the compiler.
+#
+CC=${PREFIX}-gcc
+
+#
+# The flags passed to the assembler.
+#
+AFLAGS=-mthumb         \
+       -mcpu=cortex-m3 \
+       -MD
+
+#
+# The flags passed to the compiler.
+#
+CFLAGS=-mthumb         \
+       -mcpu=cortex-m3 \
+       -O2             \
+       -MD             \
+       -std=c99        \
+       -Wall           \
+       -pedantic       \
+       -DPART_${PART}  \
+       -c
+
+#
+# The command for calling the library archiver.
+#
+AR=${PREFIX}-ar
+
+#
+# The command for calling the linker.
+#
+LD=${PREFIX}-ld
+
+#
+# The flags passed to the linker.
+#
+LDFLAGS=--gc-sections
+
+#
+# Get the location of libgcc.a from the GCC front-end.
+#
+LIBGCC=${shell ${CC} ${CFLAGS} -print-libgcc-file-name}
+
+#
+# Get the location of libc.a from the GCC front-end.
+#
+LIBC=${shell ${CC} ${CFLAGS} -print-file-name=libc.a}
+
+#
+# The command for extracting images from the linked executables.
+#
+OBJCOPY=${PREFIX}-objcopy
+
+#
+# Tell the compiler to include debugging information if the DEBUG environment
+# variable is set.
+#
+ifdef DEBUG
+CFLAGS+=-g -D DEBUG
+endif
+
+#
+# Add the tool specific CFLAGS.
+#
+CFLAGS+=${CFLAGSgcc}
+
+#
+# Add the include file paths to AFLAGS and CFLAGS.
+#
+AFLAGS+=${patsubst %,-I%,${subst :, ,${IPATH}}}
+CFLAGS+=${patsubst %,-I%,${subst :, ,${IPATH}}}
+
+#
+# The rule for building the object file from each C source file.
+#
+${COMPILER}/%.o: %.c
+	@if [ 'x${VERBOSE}' = x ];                            \
+	 then                                                 \
+	     echo "  CC    ${<}";                             \
+	 else                                                 \
+	     echo ${CC} ${CFLAGS} -D${COMPILER} -o ${@} ${<}; \
+	 fi
+	@${CC} ${CFLAGS} -D${COMPILER} -o ${@} ${<}
+ifneq ($(findstring CYGWIN, ${os}), )
+	@perl -i.bak -p -e 's/ ([A-Za-z]):/ \/cygdrive\/\1/g' ${@:.o=.d}
+	@rm -f ${@:.o=.d.bak}
+endif
+
+#
+# The rule for building the object file from each assembly source file.
+#
+${COMPILER}/%.o: %.S
+	@if [ 'x${VERBOSE}' = x ];                               \
+	 then                                                    \
+	     echo "  AS    ${<}";                                \
+	 else                                                    \
+	     echo ${CC} ${AFLAGS} -D${COMPILER} -o ${@} -c ${<}; \
+	 fi
+	@${CC} ${AFLAGS} -D${COMPILER} -o ${@} -c ${<}
+ifneq ($(findstring CYGWIN, ${os}), )
+	@perl -i.bak -p -e 's/ ([A-Za-z]):/ \/cygdrive\/\1/g' ${@:.o=.d}
+	@rm -f ${@:.o=.d.bak}
+endif
+
+#
+# The rule for creating an object library.
+#
+${COMPILER}/%.a:
+	@if [ 'x${VERBOSE}' = x ];     \
+	 then                          \
+	     echo "  AR    ${@}";      \
+	 else                          \
+	     echo ${AR} -cr ${@} ${^}; \
+	 fi
+	@${AR} -cr ${@} ${^}
+
+#
+# The rule for linking the application.
+#
+${COMPILER}/%.axf:
+	@if [ 'x${SCATTERgcc_${notdir ${@:.axf=}}}' = x ];                    \
+	 then                                                                 \
+	     ldname=${ROOT}/gcc/standalone.ld;                                \
+	 else                                                                 \
+	     ldname=${SCATTERgcc_${notdir ${@:.axf=}}};                       \
+	 fi;                                                                  \
+	 if [ 'x${VERBOSE}' = x ];                                            \
+	 then                                                                 \
+	     echo "  LD    ${@} ${LNK_SCP}";                                  \
+	 else                                                                 \
+	     echo ${LD} -T $${ldname}                                         \
+	          --entry ${ENTRY_${notdir ${@:.axf=}}}                       \
+	          ${LDFLAGSgcc_${notdir ${@:.axf=}}}                          \
+	          ${LDFLAGS} -o ${@} $(filter %.o %.a, ${^})                  \
+	          '${LIBC}' '${LIBGCC}';                                      \
+	 fi;                                                                  \
+	${LD} -T $${ldname}                                                   \
+	      --entry ${ENTRY_${notdir ${@:.axf=}}}                           \
+	      ${LDFLAGSgcc_${notdir ${@:.axf=}}}                              \
+	      ${LDFLAGS} -o ${@} $(filter %.o %.a, ${^})                      \
+	      '${LIBC}' '${LIBGCC}'
+	@${OBJCOPY} -O binary ${@} ${@:.axf=.bin}
+endif
+
+#******************************************************************************
+#
+# Definitions for using Keil's RV-MDK.
+#
+#******************************************************************************
+ifeq (${COMPILER}, rvmdk)
+
+#
+# The command for calling the compiler.
+#
+CC=armcc
+
+#
+# The flags passed to the assembler.
+#
+AFLAGS=--device dlm
+
+#
+# The flags passed to the compiler.
+#
+CFLAGS=--device dlm   \
+       -O2            \
+       -Otime         \
+       -Ono_inline    \
+       -Oloopref      \
+       --enum_is_int  \
+       --md           \
+       -DPART_${PART} \
+       -c
+
+#
+# The command for calling the library archiver.
+#
+AR=armar
+
+#
+# The command for calling the linker.
+#
+LD=armlink
+
+#
+# The flags passed to the linker.
+#
+LDFLAGS=--device dlm
+
+#
+# Determine if the evaluation version of the tools are being used.
+#
+ifneq (${shell ${CC} 2>&1 | grep Evaluation}, )
+RVMDK_EVAL=true
+endif
+
+#
+# The command for extracting images from the linked executables.
+#
+FROMELF=fromelf
+
+#
+# Tell the compiler to include debugging information if the DEBUG environment
+# variable is set.
+#
+ifdef DEBUG
+CFLAGS+=-g -D DEBUG
+endif
+
+#
+# Add the tool specific CFLAGS.
+#
+CFLAGS+=${CFLAGSrvmdk}
+
+#
+# Add the include file paths to AFLAGS and CFLAGS.
+#
+AFLAGS+=${patsubst %,-I%,${subst :, ,${IPATH}}}
+CFLAGS+=${patsubst %,-I%,${subst :, ,${IPATH}}}
+
+#
+# The rule for building the object file from each C source file.
+#
+${COMPILER}/%.o: %.c
+	@if [ 'x${VERBOSE}' = x ];                            \
+	 then                                                 \
+	     echo "  CC    ${<}";                             \
+	 else                                                 \
+	     echo ${CC} ${CFLAGS} -D${COMPILER} -o ${@} ${<}; \
+	 fi
+	@${CC} ${CFLAGS} -D${COMPILER} -o ${@} ${<}
+	@sed -e 's,\\,/,g' -e 's,\([^:]\) ,\1\\ ,g' < ${notdir ${<:.c=.d}} \
+	     > ${COMPILER}/${notdir ${<:.c=.d}}
+	@rm -f ${notdir ${<:.c=.d}}
+ifneq ($(findstring CYGWIN, ${os}), )
+	@perl -i.bak -p -e 's/ ([A-Za-z]):/ \/cygdrive\/\1/g' ${@:.o=.d}
+	@rm -f ${@:.o=.d.bak}
+endif
+
+#
+# The rule for building the object file from each assembly source file.
+#
+${COMPILER}/%.o: %.S
+	@if [ 'x${VERBOSE}' = x ];                               \
+	 then                                                    \
+	     echo "  AS    ${<}";                                \
+	 else                                                    \
+	     echo ${CC} ${AFLAGS} -D${COMPILER} -o ${@} -c ${<}; \
+	 fi
+	@${CC} ${AFLAGS} -D${COMPILER} -E ${<} > ${@:.o=_.S}
+	@${CC} ${AFLAGS} -o ${@} -c ${@:.o=_.S}
+	@rm ${@:.o=_.S}
+	@${CC} ${AFLAGS} -D${COMPILER} --md -E ${<}
+	@sed -e 's,<stdout>,${@},g' -e 's,\\,/,g' ${notdir ${<:.S=.d}} > ${@:.o=.d}
+	@rm ${notdir ${<:.S=.d}}
+ifneq ($(findstring CYGWIN, ${os}), )
+	@perl -i.bak -p -e 's/ ([A-Za-z]):/ \/cygdrive\/\1/g' ${@:.o=.d}
+	@rm -f ${@:.o=.d.bak}
+endif
+
+#
+# The rule for creating an object library.
+#
+${COMPILER}/%.a:
+	@if [ 'x${VERBOSE}' = x ];     \
+	 then                          \
+	     echo "  AR    ${@}";      \
+	 else                          \
+	     echo ${AR} -cr ${@} ${^}; \
+	 fi
+	@${AR} -cr ${@} ${^}
+
+#
+# The rule for linking the application.
+#
+${COMPILER}/%.axf:
+	@ldf=(--first __Vectors);                                             \
+	 if [ 'x${ROBASE_${notdir ${@:.axf=}}}' = x ];                        \
+	 then                                                                 \
+	     if [ 'x${SCATTERrvmdk_${notdir ${@:.axf=}}}' = x ];              \
+	     then                                                             \
+	         ldf=($${ldf[@]} --ro-base 0x00000000);                       \
+	         ldf=($${ldf[@]} --rw-base 0x20000000);                       \
+	     else                                                             \
+	         ldf=(--scatter ${SCATTERrvmdk_${notdir ${@:.axf=}}});        \
+	     fi;                                                              \
+	 else                                                                 \
+	     ldf=($${ldf[@]} --ro-base ${ROBASE_${notdir ${@:.axf=}}});       \
+	     if [ -z ${shell echo ${ROBASE_${notdir ${@:.axf=}}} 2>&1 |       \
+	          grep -E "0x2[0-9]{7}"} ];                                   \
+	     then                                                             \
+	          ldf=($${ldf[@]} --rw-base 0x20000000);                      \
+	     fi;                                                              \
+	 fi;                                                                  \
+	 if [ 'x${VERBOSE}' = x ];                                            \
+	 then                                                                 \
+	     echo "  LD    ${@}";                                             \
+	 else                                                                 \
+	     echo ${LD} --entry Reset_Handler                                 \
+	          ${LDFLAGSrvmdk_${notdir ${@:.axf=}}}                        \
+	          ${LDFLAGS} $${ldf[@]} -o ${@} $(filter %.o %.a, ${^});      \
+	 fi;                                                                  \
+	${LD} --entry Reset_Handler                                           \
+	      ${LDFLAGSrvmdk_${notdir ${@:.axf=}}}                            \
+	      ${LDFLAGS} $${ldf[@]} -o ${@} $(filter %.o %.a, ${^})
+	@${FROMELF} --bin --output ${@:.axf=.bin} ${@}
+endif
+
+#******************************************************************************
+#
+# Definitions for using Sourcery G++.
+#
+#******************************************************************************
+ifeq (${COMPILER}, sourcerygxx)
+
+#
+# The command for calling the compiler.
+#
+CC=arm-stellaris-eabi-gcc
+
+#
+# The flags passed to the assembler.
+#
+AFLAGS=-mthumb         \
+       -mcpu=cortex-m3 \
+       -MD
+
+#
+# The flags passed to the compiler.
+#
+CFLAGS=-mthumb         \
+       -mcpu=cortex-m3 \
+       -O2             \
+       -MD             \
+       -std=c99        \
+       -Wall           \
+       -pedantic       \
+       -DPART_${PART}  \
+       -c
+
+#
+# The command for calling the library archiver.
+#
+AR=arm-stellaris-eabi-ar
+
+#
+# The command for calling the linker.
+#
+LD=arm-stellaris-eabi-gcc
+
+#
+# The flags passed to the linker.
+#
+LDFLAGS=-mthumb           \
+        -mcpu=cortex-m3   \
+        -Wl,--gc-sections
+
+#
+# The command for extracting images from the linked executables.
+#
+OBJCOPY=arm-stellaris-eabi-objcopy
+
+#
+# Tell the compiler to include debugging information if the DEBUG environment
+# variable is set.
+#
+ifdef DEBUG
+CFLAGS+=-g -D DEBUG
+endif
+
+#
+# Add the tool specific CFLAGS.
+#
+CFLAGS+=${CFLAGSsourcerygxx}
+
+#
+# Add the include file paths to AFLAGS and CFLAGS.
+#
+AFLAGS+=${patsubst %,-I%,${subst :, ,${IPATH}}}
+CFLAGS+=${patsubst %,-I%,${subst :, ,${IPATH}}}
+
+#
+# The rule for building the object file from each C source file.
+#
+${COMPILER}/%.o: %.c
+	@if [ 'x${VERBOSE}' = x ];                            \
+	 then                                                 \
+	     echo "  CC    ${<}";                             \
+	 else                                                 \
+	     echo ${CC} ${CFLAGS} -D${COMPILER} -o ${@} ${<}; \
+	 fi
+	@${CC} ${CFLAGS} -D${COMPILER} -o ${@} ${<}
+ifneq ($(findstring CYGWIN, ${os}), )
+	@perl -i.bak -p -e 's/ ([A-Za-z]):/ \/cygdrive\/\1/g' ${@:.o=.d}
+	@rm -f ${@:.o=.d.bak}
+endif
+
+#
+# The rule for building the object file from each assembly source file.
+#
+${COMPILER}/%.o: %.S
+	@if [ 'x${VERBOSE}' = x ];                               \
+	 then                                                    \
+	     echo "  AS    ${<}";                                \
+	 else                                                    \
+	     echo ${CC} ${AFLAGS} -D${COMPILER} -o ${@} -c ${<}; \
+	 fi
+	@${CC} ${AFLAGS} -D${COMPILER} -o ${@} -c ${<}
+ifneq ($(findstring CYGWIN, ${os}), )
+	@perl -i.bak -p -e 's/ ([A-Za-z]):/ \/cygdrive\/\1/g' ${@:.o=.d}
+	@rm -f ${@:.o=.d.bak}
+endif
+
+#
+# The rule for creating an object library.
+#
+${COMPILER}/%.a:
+	@if [ 'x${VERBOSE}' = x ];     \
+	 then                          \
+	     echo "  AR    ${@}";      \
+	 else                          \
+	     echo ${AR} -cr ${@} ${^}; \
+	 fi
+	@${AR} -cr ${@} ${^}
+
+#
+# The rule for linking the application.
+#
+${COMPILER}/%.axf:
+	@if [ 'x${ROBASE_${notdir ${@:.axf=}}}' = x ];                   \
+	 then                                                            \
+	     ldf=();                                                     \
+	 else                                                            \
+	     ldf=(-Ttext ${ROBASE_${notdir ${@:.axf=}}});                \
+	 fi;                                                             \
+	 if [ 'x${VERBOSE}' = x ];                                       \
+	 then                                                            \
+	     echo "  LD    ${@}";                                        \
+	 else                                                            \
+	     echo ${LD} -T ${SCATTERsourcerygxx_${notdir ${@:.axf=}}}    \
+	          ${LDFLAGSsourcerygxx_${notdir ${@:.axf=}}}             \
+	          ${LDFLAGS} $${ldf[@]} -o ${@} $(filter %.o %.a, ${^}); \
+	 fi;                                                             \
+	${LD} -T ${SCATTERsourcerygxx_${notdir ${@:.axf=}}}              \
+	      ${LDFLAGSsourcerygxx_${notdir ${@:.axf=}}}                 \
+	      ${LDFLAGS} $${ldf[@]} -o ${@} $(filter %.o %.a, ${^})
+	@${OBJCOPY} -O binary ${@} ${@:.axf=.bin}
+endif
