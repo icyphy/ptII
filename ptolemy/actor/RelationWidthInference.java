@@ -100,7 +100,7 @@ public class RelationWidthInference {
                                         widthChanged = widthChanged || relationWidthChanged;    
                                         workingSet.add(relation);
                                         break; //Break the for loop.
-                                    } else {
+                                    } else if (!port.isOpaque()){
                                         //Add known outside relations
                                         for (Object connectedRelationObject : port.linkedRelationList()) {
                                             IORelation connectedRelation = (IORelation) connectedRelationObject;
@@ -168,17 +168,14 @@ public class RelationWidthInference {
                     // them once. We will also only add multiports
                     HashSet<IOPort> multiports = new HashSet<IOPort>();
                     for (Object port : relation.linkedPortList()) {
-                        if (((IOPort) port).isMultiport()) {
+                        if (((IOPort) port).isMultiport() && !((IOPort) port).isOpaque()) {                            
                             multiports.add((IOPort) port);
                         }
                     }
                     for (IOPort port : multiports) {
                         List<IORelation> updatedRelations = _relationsWithUpdatedWidthForMultiport(port, widthChanged);
-                        for (IORelation otherRelation : updatedRelations) {
-                            workingSet2.add(otherRelation);
-                        }
-                        
-                    }                      
+                        workingSet2.addAll(updatedRelations);
+                    }
                 }
                 if (logTimings) {
                     System.out.println("Actual algorithm: " +                
