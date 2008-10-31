@@ -783,9 +783,7 @@ public class IORelation extends ComponentRelation {
             // Precondition: you should only infer the width in case it
             // is not set by the user.
         _inferredWidthVersion = _workspace.getVersion();
-        if (_inferredWidth != width) {
-            _inferredWidth = width;
-        }
+        _inferredWidth = width;
     }
     
     ///////////////////////////////////////////////////////////////////
