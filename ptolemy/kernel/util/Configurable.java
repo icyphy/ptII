@@ -55,9 +55,9 @@ import java.net.URL;
  provide enough information to reconstruct its current configuration.
  This mechanism is used when writing MoML from instantiated objects, although
  it could also be used to write a description of the object in other forms.
- In order for this to work properly calling the configure method on
- any object of the same type, given the data returned by the getSource and
- getText methods should result in an object that resemble the
+ In order for this to work properly calling the configure() method on
+ any object of the same type, given the data returned by the getConfigureSource() and
+ getConfigureText() methods should result in an object that resemble the
  first as closely as possible.
 
  @author Edward A. Lee, Steve Neuendorffer
