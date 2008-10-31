@@ -21,27 +21,11 @@
 #include "../../../src/uart.h"
 #include "../rit128x96x4.h"
 
-
-
-
-/*
-#include "../../../uart/hw_ints.h"
-#include "../../../uart/hw_memmap.h"
-#include "../../../uart/hw_types.h"
-#include "../../../src/debug.h"
-#include "../../../src/gpio.h"
-#include "../../../src/interrupt.h"
-#include "../../../src/sysctl.h"
-#include "../../../src/uart.h"
-#include "../rit128x96x4.h"
-*/
-
 #include "structures.h"
 #include "functions.h"
 #include "actors.h"
 
 #include "timer.h"
-
 //#include "clock-arch.h"
 
 /* Status LED and Push Buttons pin definitions */
@@ -463,59 +447,62 @@ void processEvents()
     //  To ensure this function is thread safe, we make sure only one processEvents() IS BEING EXECUTED AT A TIME
     //  WHILE ANOTHER SENSOR MIGHT TRIGGER ANOTHER processEvents()
     //  IF ANOTHER processEvents() is currently being executed, we don't really need to have another being executed at the same time...
-	Actor* a;
+	Actor* actor;
 
     while (1) {
         disableInterrupts();
         // If event queue is not empty.
         if (EVENT_QUEUE_HEAD != NULL) {
             Event* event = EVENT_QUEUE_HEAD;
-            long processTime = safeToProcess(event);
-            if (getCurrentPhysicalTime() >= processTime) {
-                removeEvent();
-                enableInterrupts();
-                // Execute the event. During
-                // this process more events may
-                // be posted to the queue.
-                fireActor(event);
-				free(event);
-
-                // Check which actor produced the
-                // event that we have processed
-                a = event->actorFrom;
-                // If the event just executed is
-                // produced by a source actor
-                if (a->sourceActor != 0) {
-                    // Decrement the buffer size
-                    // by one.
-					if (a == SOURCE1) {
-                    	CK1_BUF_SIZE--;
-					}
-                    // Make sure sourceBuffer is
-                    // non-empty. If it is, fire
-                    // the source actor once to
-                    // produce some events.
-                    if (CK1_BUF_SIZE == 0) {
-						//dummyEVent is never used.
-						Event* dummyEvent;
-                        fireClock(SOURCE1, dummyEvent);
-						// firing of the actor should update the number of events in the buffer
-                    }
-                }
-            }
-            else {
-                // There are no events safe to
-                // process, so setup sources
-                // to process.
-                STOP_SOURCE_PROCESS = FALSE;
-                // Set timed interrupt to run
-                // the event at the top of the
-                // event queue when physical time
-                // has passed for it to be
-                // safe to process
-                setTimedInterrupt(processTime);
-                enableInterrupts();
-            }
+            // Check which actor produced the event that we have processed
+			actor = event->actorFrom;
+			if (alreadyFiring(actor)) {
+				enableInterrupts();
+				break;
+			} else {
+	            long processTime = safeToProcess(event);
+	            if (getCurrentPhysicalTime() >= processTime) {
+	                removeEvent();
+	                enableInterrupts();
+	                // Execute the event. During
+	                // this process more events may
+	                // be posted to the queue.
+	                fireActor(event);
+					free(event);
+	                // If the event just executed is
+	                // produced by a source actor
+	                if (actor->sourceActor != 0) {
+	                    // Decrement the buffer size
+	                    // by one.
+						if (actor == SOURCE1) {
+	                    	CK1_BUF_SIZE--;
+						}
+	                    // Make sure sourceBuffer is
+	                    // non-empty. If it is, fire
+	                    // the source actor once to
+	                    // produce some events.
+	                    if (CK1_BUF_SIZE == 0) {
+							//dummyEVent is never used.
+							Event* dummyEvent;
+	                        fireClock(SOURCE1, dummyEvent);
+							// firing of the actor should update the number of events in the buffer
+	                    }
+	                }
+	            }
+	            else {
+	                // There are no events safe to
+	                // process, so setup sources
+	                // to process.
+	                STOP_SOURCE_PROCESS = FALSE;
+	                // Set timed interrupt to run
+	                // the event at the top of the
+	                // event queue when physical time
+	                // has passed for it to be
+	                // safe to process
+	                setTimedInterrupt(processTime);
+	                enableInterrupts();
+	            }
+			}
         } else {
             // There are no events safe to
             // process, so setup sources
@@ -622,7 +609,6 @@ UARTIntHandler(void)
 	Event* dummyEvent;
 	
 	disableInterrupts();
-    fireClock(SOURCE1, dummyEvent);
 
     //
     // Get the interrrupt status.
@@ -633,9 +619,9 @@ UARTIntHandler(void)
     //
     UARTIntClear(UART0_BASE, ulStatus);
 
-	clock_fire(SOURCE1, dummyEvent);
+	fireClock(SOURCE1, dummyEvent);
 
-	enableInterrupt();
+	enableInterrupts();
 	
 	processEvents();	
 
@@ -648,12 +634,14 @@ UARTIntHandler(void)
 
 //FIXME: which interrupt(s) should I disable/enable?
 void disableInterrupts() {
+	IntMasterDisable();
 	IntDisable(INT_UART0);
 	UARTIntDisable(UART0_BASE, UART_INT_RX | UART_INT_RT);
 	return;
 }
 
 void enableInterrupts() {
+	IntMasterEnable();
     IntEnable(INT_UART0);
     UARTIntEnable(UART0_BASE, UART_INT_RX | UART_INT_RT);
 	return;
