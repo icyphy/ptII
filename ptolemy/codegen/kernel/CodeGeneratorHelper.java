@@ -527,10 +527,8 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      */
     public String generateFireFunctionCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        // FIXME: This is C specific, it should be abstracted.
-        // We use (void) so as to avoid the avr-gcc 3.4.6 warning:
-        // "function declaration isn't a prototype"
-        code.append(_eol + "void " + generateName(getComponent()) + "(void) {"
+        code.append(_eol + "void " + generateName(getComponent())
+	        + _getFireFunctionArguments() + " {"
                 + _eol);
         code.append(generateFireCode());
         code.append(generateTypeConvertFireCode());
@@ -1443,6 +1441,14 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return null;
     }
 
+    /** Return the prototype for fire functions.
+     *  @return In this base class, return "()".
+     *  Derived classes, such as the C code generator helper
+     *  might return "(void)".
+     */ 
+    protected String _getFireFunctionArguments() {
+	return "()";
+    }
 
     /** Return the reference to the specified parameter or port of the
      *  associated actor. For a parameter, the returned string is in
