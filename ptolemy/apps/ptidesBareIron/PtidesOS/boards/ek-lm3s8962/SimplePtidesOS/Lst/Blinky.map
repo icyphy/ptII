@@ -12,11 +12,19 @@ Section Cross References
     simpleptidesos.o(.text) refers to memcpya.o(.text) for __aeabi_memcpy4
     simpleptidesos.o(.text) refers to dadd.o(.text) for __aeabi_dadd
     simpleptidesos.o(.text) refers to printf2.o(i.__0printf_2) for __1printf
+    simpleptidesos.o(.text) refers to interrupt.o(i.IntEnable) for IntEnable
+    simpleptidesos.o(.text) refers to interrupt.o(i.IntDisable) for IntDisable
     simpleptidesos.o(.text) refers to malloc.o(i.free) for free
     simpleptidesos.o(.text) refers to dflt.o(.text) for __aeabi_i2d
-    simpleptidesos.o(.text) refers to printf2.o(i.__0fprintf_2) for __1fprintf
+    simpleptidesos.o(.text) refers to sysctl.o(i.SysCtlPeripheralEnable) for SysCtlPeripheralEnable
+    simpleptidesos.o(.text) refers to interrupt.o(i.IntMasterEnable) for IntMasterEnable
+    simpleptidesos.o(.text) refers to gpio.o(i.GPIOPinTypeUART) for GPIOPinTypeUART
+    simpleptidesos.o(.text) refers to sysctl.o(i.SysCtlClockGet) for SysCtlClockGet
+    simpleptidesos.o(.text) refers to uart.o(i.UARTConfigSetExpClk) for UARTConfigSetExpClk
+    simpleptidesos.o(.text) refers to uart.o(i.UARTIntEnable) for UARTIntEnable
     simpleptidesos.o(.text) refers to simpleptidesos.o(.data) for EVENT_QUEUE_HEAD
     simpleptidesos.o(.text) refers to stderr.o(.data) for __stderr
+    simpleptidesos.o(.text) refers to printf2.o(i.__0fprintf_2) for __1fprintf
     simpleptidesos.o(.text) refers (Special) to stubs.o(c$$printf_stubs) for _printf_percent
     simpleptidesos.o(.data) refers (Special) to stubs.o(c$$printf_stubs) for _printf_percent
     rit128x96x4.o(.text) refers to gpio.o(i.GPIOPinWrite) for GPIOPinWrite
@@ -65,6 +73,15 @@ Section Cross References
     gpio.o(i.GPIOPinTypeUART) refers to gpio.o(i.GPIOPadConfigSet) for GPIOPadConfigSet
     gpio.o(i.GPIOPinTypeUSBDigital) refers to gpio.o(i.GPIODirModeSet) for GPIODirModeSet
     gpio.o(i.GPIOPinTypeUSBDigital) refers to gpio.o(i.GPIOPadConfigSet) for GPIOPadConfigSet
+    interrupt.o(i.IntMasterEnable) refers to cpu.o(.text) for CPUcpsie
+    interrupt.o(i.IntMasterDisable) refers to cpu.o(.text) for CPUcpsid
+    interrupt.o(i.IntRegister) refers to interrupt.o(vtable) for vtable
+    interrupt.o(i.IntUnregister) refers to interrupt.o(i.IntDefaultHandler) for IntDefaultHandler
+    interrupt.o(i.IntUnregister) refers to interrupt.o(vtable) for vtable
+    interrupt.o(i.IntPriorityGroupingSet) refers to interrupt.o(.constdata) for .constdata
+    interrupt.o(i.IntPriorityGroupingGet) refers to interrupt.o(.constdata) for .constdata
+    interrupt.o(i.IntPrioritySet) refers to interrupt.o(.constdata) for .constdata
+    interrupt.o(i.IntPriorityGet) refers to interrupt.o(.constdata) for .constdata
     ssi.o(i.SSIIntRegister) refers to interrupt.o(i.IntRegister) for IntRegister
     ssi.o(i.SSIIntRegister) refers to interrupt.o(i.IntEnable) for IntEnable
     ssi.o(i.SSIIntUnregister) refers to interrupt.o(i.IntDisable) for IntDisable
@@ -85,15 +102,10 @@ Section Cross References
     sysctl.o(i.SysCtlDeepSleep) refers to cpu.o(.text) for CPUwfi
     sysctl.o(i.SysCtlClockSet) refers to sysctl.o(.emb_text) for SysCtlDelay
     sysctl.o(i.SysCtlClockGet) refers to sysctl.o(.constdata) for .constdata
-    interrupt.o(i.IntMasterEnable) refers to cpu.o(.text) for CPUcpsie
-    interrupt.o(i.IntMasterDisable) refers to cpu.o(.text) for CPUcpsid
-    interrupt.o(i.IntRegister) refers to interrupt.o(vtable) for vtable
-    interrupt.o(i.IntUnregister) refers to interrupt.o(i.IntDefaultHandler) for IntDefaultHandler
-    interrupt.o(i.IntUnregister) refers to interrupt.o(vtable) for vtable
-    interrupt.o(i.IntPriorityGroupingSet) refers to interrupt.o(.constdata) for .constdata
-    interrupt.o(i.IntPriorityGroupingGet) refers to interrupt.o(.constdata) for .constdata
-    interrupt.o(i.IntPrioritySet) refers to interrupt.o(.constdata) for .constdata
-    interrupt.o(i.IntPriorityGet) refers to interrupt.o(.constdata) for .constdata
+    uart.o(i.UARTIntRegister) refers to interrupt.o(i.IntRegister) for IntRegister
+    uart.o(i.UARTIntRegister) refers to interrupt.o(i.IntEnable) for IntEnable
+    uart.o(i.UARTIntUnregister) refers to interrupt.o(i.IntDisable) for IntDisable
+    uart.o(i.UARTIntUnregister) refers to interrupt.o(i.IntUnregister) for IntUnregister
     entry.o($$startup$$) refers to init.o(.text) for __init
     entry.o($$startup$$) refers to startup.o(STACK) for __initial_sp
     entry.o(__vectab_stack_and_reset_area) refers to startup.o(STACK) for __initial_sp
@@ -329,11 +341,9 @@ Removing Unused input sections from the image.
     Removing rit128x96x4.o(.text), (924 bytes).
     Removing rit128x96x4.o(.data), (9 bytes).
     Removing rit128x96x4.o(.constdata), (571 bytes).
-    Removing gpio.o(i.GPIODirModeSet), (40 bytes).
     Removing gpio.o(i.GPIODirModeGet), (34 bytes).
     Removing gpio.o(i.GPIOIntTypeSet), (58 bytes).
     Removing gpio.o(i.GPIOIntTypeGet), (48 bytes).
-    Removing gpio.o(i.GPIOPadConfigSet), (176 bytes).
     Removing gpio.o(i.GPIOPadConfigGet), (140 bytes).
     Removing gpio.o(i.GPIOPinIntEnable), (12 bytes).
     Removing gpio.o(i.GPIOPinIntDisable), (14 bytes).
@@ -354,9 +364,18 @@ Removing Unused input sections from the image.
     Removing gpio.o(i.GPIOPinTypeQEI), (28 bytes).
     Removing gpio.o(i.GPIOPinTypeSSI), (28 bytes).
     Removing gpio.o(i.GPIOPinTypeTimer), (28 bytes).
-    Removing gpio.o(i.GPIOPinTypeUART), (28 bytes).
     Removing gpio.o(i.GPIOPinTypeUSBDigital), (28 bytes).
     Removing gpio.o(i.GPIOGetIntNumber), (164 bytes).
+    Removing interrupt.o(i.IntDefaultHandler), (2 bytes).
+    Removing interrupt.o(i.IntMasterDisable), (10 bytes).
+    Removing interrupt.o(i.IntRegister), (52 bytes).
+    Removing interrupt.o(i.IntUnregister), (20 bytes).
+    Removing interrupt.o(i.IntPriorityGroupingSet), (28 bytes).
+    Removing interrupt.o(i.IntPriorityGroupingGet), (36 bytes).
+    Removing interrupt.o(i.IntPrioritySet), (40 bytes).
+    Removing interrupt.o(i.IntPriorityGet), (28 bytes).
+    Removing interrupt.o(.constdata), (96 bytes).
+    Removing interrupt.o(vtable), (256 bytes).
     Removing ssi.o(i.SSIConfigSetExpClk), (74 bytes).
     Removing ssi.o(i.SSIEnable), (10 bytes).
     Removing ssi.o(i.SSIDisable), (10 bytes).
@@ -378,7 +397,6 @@ Removing Unused input sections from the image.
     Removing sysctl.o(i.SysCtlPinPresent), (16 bytes).
     Removing sysctl.o(i.SysCtlPeripheralPresent), (32 bytes).
     Removing sysctl.o(i.SysCtlPeripheralReset), (56 bytes).
-    Removing sysctl.o(i.SysCtlPeripheralEnable), (32 bytes).
     Removing sysctl.o(i.SysCtlPeripheralDisable), (32 bytes).
     Removing sysctl.o(i.SysCtlPeripheralSleepEnable), (32 bytes).
     Removing sysctl.o(i.SysCtlPeripheralSleepDisable), (32 bytes).
@@ -401,7 +419,6 @@ Removing Unused input sections from the image.
     Removing sysctl.o(i.SysCtlResetCauseClear), (16 bytes).
     Removing sysctl.o(i.SysCtlBrownOutConfigSet), (16 bytes).
     Removing sysctl.o(i.SysCtlClockSet), (288 bytes).
-    Removing sysctl.o(i.SysCtlClockGet), (320 bytes).
     Removing sysctl.o(i.SysCtlPWMClockSet), (20 bytes).
     Removing sysctl.o(i.SysCtlPWMClockGet), (24 bytes).
     Removing sysctl.o(i.SysCtlADCSpeedSet), (40 bytes).
@@ -414,23 +431,31 @@ Removing Unused input sections from the image.
     Removing sysctl.o(i.SysCtlGPIOAHBDisable), (20 bytes).
     Removing sysctl.o(i.SysCtlUSBPLLEnable), (16 bytes).
     Removing sysctl.o(i.SysCtlUSBPLLDisable), (16 bytes).
-    Removing sysctl.o(.constdata), (156 bytes).
-    Removing cpu.o(.text), (20 bytes).
-    Removing interrupt.o(i.IntDefaultHandler), (2 bytes).
-    Removing interrupt.o(i.IntMasterEnable), (10 bytes).
-    Removing interrupt.o(i.IntMasterDisable), (10 bytes).
-    Removing interrupt.o(i.IntRegister), (52 bytes).
-    Removing interrupt.o(i.IntUnregister), (20 bytes).
-    Removing interrupt.o(i.IntPriorityGroupingSet), (28 bytes).
-    Removing interrupt.o(i.IntPriorityGroupingGet), (36 bytes).
-    Removing interrupt.o(i.IntPrioritySet), (40 bytes).
-    Removing interrupt.o(i.IntPriorityGet), (28 bytes).
-    Removing interrupt.o(i.IntEnable), (104 bytes).
-    Removing interrupt.o(i.IntDisable), (104 bytes).
-    Removing interrupt.o(.constdata), (96 bytes).
-    Removing interrupt.o(vtable), (256 bytes).
+    Removing uart.o(i.UARTParityModeSet), (12 bytes).
+    Removing uart.o(i.UARTParityModeGet), (8 bytes).
+    Removing uart.o(i.UARTFIFOLevelSet), (6 bytes).
+    Removing uart.o(i.UARTFIFOLevelGet), (16 bytes).
+    Removing uart.o(i.UARTEnable), (20 bytes).
+    Removing uart.o(i.UARTDisable), (30 bytes).
+    Removing uart.o(i.UARTConfigGetExpClk), (32 bytes).
+    Removing uart.o(i.UARTEnableSIR), (18 bytes).
+    Removing uart.o(i.UARTDisableSIR), (10 bytes).
+    Removing uart.o(i.UARTCharsAvail), (10 bytes).
+    Removing uart.o(i.UARTSpaceAvail), (10 bytes).
+    Removing uart.o(i.UARTCharGetNonBlocking), (16 bytes).
+    Removing uart.o(i.UARTCharGet), (12 bytes).
+    Removing uart.o(i.UARTCharPutNonBlocking), (18 bytes).
+    Removing uart.o(i.UARTCharPut), (12 bytes).
+    Removing uart.o(i.UARTBreakCtl), (18 bytes).
+    Removing uart.o(i.UARTIntRegister), (46 bytes).
+    Removing uart.o(i.UARTIntUnregister), (46 bytes).
+    Removing uart.o(i.UARTIntDisable), (10 bytes).
+    Removing uart.o(i.UARTIntStatus), (10 bytes).
+    Removing uart.o(i.UARTIntClear), (4 bytes).
+    Removing uart.o(i.UARTDMAEnable), (8 bytes).
+    Removing uart.o(i.UARTDMADisable), (10 bytes).
 
-103 unused section(s) (total 5324 bytes) removed from the image.
+116 unused section(s) (total 4716 bytes) removed from the image.
 
 ================================================================================
 
@@ -441,8 +466,8 @@ Image Symbol Table
     Symbol Name                              Value     Ov Type        Size  Object(Section)
 
     RESET                                    0x00000000   Section       64  startup.o(RESET)
-    ../../microlib/division.c                0x00000000   Number         0  uldiv.o ABSOLUTE
     ../../microlib/division.c                0x00000000   Number         0  uidiv.o ABSOLUTE
+    ../../microlib/division.c                0x00000000   Number         0  uldiv.o ABSOLUTE
     ../../microlib/errno.c                   0x00000000   Number         0  errno.o ABSOLUTE
     ../../microlib/fpadd.c                   0x00000000   Number         0  dadd.o ABSOLUTE
     ../../microlib/fpdiv.c                   0x00000000   Number         0  ddiv.o ABSOLUTE
@@ -457,17 +482,17 @@ Image Symbol Table
     ../../microlib/longlong.c                0x00000000   Number         0  llshl.o ABSOLUTE
     ../../microlib/malloc/malloc.c           0x00000000   Number         0  malloc.o ABSOLUTE
     ../../microlib/malloc/mvars.c            0x00000000   Number         0  mvars.o ABSOLUTE
-    ../../microlib/printf/printf.c           0x00000000   Number         0  printf6.o ABSOLUTE
-    ../../microlib/printf/printf.c           0x00000000   Number         0  printf7.o ABSOLUTE
-    ../../microlib/printf/printf.c           0x00000000   Number         0  printf8.o ABSOLUTE
-    ../../microlib/printf/printf.c           0x00000000   Number         0  printfa.o ABSOLUTE
     ../../microlib/printf/printf.c           0x00000000   Number         0  printfb.o ABSOLUTE
     ../../microlib/printf/printf.c           0x00000000   Number         0  printf0.o ABSOLUTE
     ../../microlib/printf/printf.c           0x00000000   Number         0  printf1.o ABSOLUTE
     ../../microlib/printf/printf.c           0x00000000   Number         0  printf2.o ABSOLUTE
-    ../../microlib/printf/printf.c           0x00000000   Number         0  printf3.o ABSOLUTE
-    ../../microlib/printf/printf.c           0x00000000   Number         0  printf4.o ABSOLUTE
+    ../../microlib/printf/printf.c           0x00000000   Number         0  printfa.o ABSOLUTE
+    ../../microlib/printf/printf.c           0x00000000   Number         0  printf8.o ABSOLUTE
     ../../microlib/printf/printf.c           0x00000000   Number         0  printf5.o ABSOLUTE
+    ../../microlib/printf/printf.c           0x00000000   Number         0  printf4.o ABSOLUTE
+    ../../microlib/printf/printf.c           0x00000000   Number         0  printf3.o ABSOLUTE
+    ../../microlib/printf/printf.c           0x00000000   Number         0  printf6.o ABSOLUTE
+    ../../microlib/printf/printf.c           0x00000000   Number         0  printf7.o ABSOLUTE
     ../../microlib/printf/stubs.s            0x00000000   Number         0  stubs.o ABSOLUTE
     ../../microlib/stdio/fputc.c             0x00000000   Number         0  fputc.o ABSOLUTE
     ../../microlib/stdio/fputs.c             0x00000000   Number         0  fputs_e.o ABSOLUTE
@@ -478,8 +503,8 @@ Image Symbol Table
     ../../microlib/string/memcpy.c           0x00000000   Number         0  memcpyb.o ABSOLUTE
     ../../microlib/string/memcpy.c           0x00000000   Number         0  memcpya.o ABSOLUTE
     ../../microlib/string/strerror.c         0x00000000   Number         0  strerror.o ABSOLUTE
-    ../../microlib/stubs.s                   0x00000000   Number         0  iusesemip.o ABSOLUTE
     ../../microlib/stubs.s                   0x00000000   Number         0  iusefp.o ABSOLUTE
+    ../../microlib/stubs.s                   0x00000000   Number         0  iusesemip.o ABSOLUTE
     ..\rit128x96x4.c                         0x00000000   Number         0  rit128x96x4.o ABSOLUTE
     SimplePtidesOS.c                         0x00000000   Number         0  simpleptidesos.o ABSOLUTE
     Startup.s                                0x00000000   Number         0  startup.o ABSOLUTE
@@ -491,35 +516,54 @@ Image Symbol Table
     src\interrupt.c                          0x00000000   Number         0  interrupt.o ABSOLUTE
     src\ssi.c                                0x00000000   Number         0  ssi.o ABSOLUTE
     src\sysctl.c                             0x00000000   Number         0  sysctl.o ABSOLUTE
+    src\uart.c                               0x00000000   Number         0  uart.o ABSOLUTE
     $$startup$$                              0x00000040   Section       12  entry.o($$startup$$)
     .emb_text                                0x0000004c   Section        2  init.o(.emb_text)
     .text                                    0x00000050   Section       28  startup.o(.text)
-    .text                                    0x0000006c   Section     1500  simpleptidesos.o(.text)
-    .text                                    0x00000648   Section       64  perror.o(.text)
-    .text                                    0x00000688   Section       36  memcpya.o(.text)
-    .text                                    0x000006ac   Section      418  dadd.o(.text)
-    _double_addcore                          0x000006ad   Thumb Code   274  dadd.o(.text)
-    .text                                    0x0000084e   Section       36  dflt.o(.text)
-    .text                                    0x00000874   Section       44  init.o(.text)
-    .text                                    0x000008a0   Section       24  fputs.o(.text)
-    .text                                    0x000008b8   Section       16  fputc.o(.text)
-    .text                                    0x000008c8   Section       32  llshl.o(.text)
-    .text                                    0x000008e8   Section       30  llushr.o(.text)
-    .text                                    0x00000908   Section      152  strerror.o(.text)
-    .text                                    0x000009a0   Section      196  depilogue.o(.text)
-    .text                                    0x000009a0   Number         0  iusefp.o(.text)
-    .text                                    0x00000a64   Number         0  iusesemip.o(.text)
-    c$$printf_stubs                          0x00000a64   Number         0  stubs.o(c$$printf_stubs)
-    i.__0fprintf_2                           0x00000a64   Section       28  printf2.o(i.__0fprintf_2)
-    i.__0printf_2                            0x00000a80   Section       32  printf2.o(i.__0printf_2)
-    i.__aeabi_errno_addr                     0x00000aa0   Section        8  errno.o(i.__aeabi_errno_addr)
-    i.__scatterload_copy                     0x00000aa8   Section       14  handlers.o(i.__scatterload_copy)
-    i.__scatterload_null                     0x00000ab6   Section        2  handlers.o(i.__scatterload_null)
-    i.__scatterload_zeroinit                 0x00000ab8   Section       14  handlers.o(i.__scatterload_zeroinit)
-    i._printf_core                           0x00000ac6   Section      198  printf2.o(i._printf_core)
-    _printf_core                             0x00000ac7   Thumb Code   198  printf2.o(i._printf_core)
-    i.free                                   0x00000b8c   Section       80  malloc.o(i.free)
-    i.malloc                                 0x00000bdc   Section      104  malloc.o(i.malloc)
+    .text                                    0x0000006c   Section     1596  simpleptidesos.o(.text)
+    .text                                    0x000006a8   Section       20  cpu.o(.text)
+    .text                                    0x000006bc   Section       64  perror.o(.text)
+    .text                                    0x000006fc   Section       36  memcpya.o(.text)
+    .text                                    0x00000720   Section      418  dadd.o(.text)
+    _double_addcore                          0x00000721   Thumb Code   274  dadd.o(.text)
+    .text                                    0x000008c2   Section       36  dflt.o(.text)
+    .text                                    0x000008e8   Section       44  init.o(.text)
+    .text                                    0x00000914   Section       24  fputs.o(.text)
+    .text                                    0x0000092c   Section       16  fputc.o(.text)
+    .text                                    0x0000093c   Section       32  llshl.o(.text)
+    .text                                    0x0000095c   Section       30  llushr.o(.text)
+    .text                                    0x0000097c   Section      152  strerror.o(.text)
+    .text                                    0x00000a14   Section      196  depilogue.o(.text)
+    .text                                    0x00000a14   Number         0  iusefp.o(.text)
+    .text                                    0x00000ad8   Number         0  iusesemip.o(.text)
+    c$$printf_stubs                          0x00000ad8   Number         0  stubs.o(c$$printf_stubs)
+    i.GPIODirModeSet                         0x00000ad8   Section       40  gpio.o(i.GPIODirModeSet)
+    i.GPIOPadConfigSet                       0x00000b00   Section      176  gpio.o(i.GPIOPadConfigSet)
+    i.GPIOPinTypeUART                        0x00000bb0   Section       28  gpio.o(i.GPIOPinTypeUART)
+    i.IntDisable                             0x00000bcc   Section      104  interrupt.o(i.IntDisable)
+    i.IntEnable                              0x00000c34   Section      104  interrupt.o(i.IntEnable)
+    i.IntMasterEnable                        0x00000c9c   Section       10  interrupt.o(i.IntMasterEnable)
+    i.SysCtlClockGet                         0x00000ca8   Section      320  sysctl.o(i.SysCtlClockGet)
+    i.SysCtlPeripheralEnable                 0x00000de8   Section       32  sysctl.o(i.SysCtlPeripheralEnable)
+    i.UARTConfigSetExpClk                    0x00000e08   Section       84  uart.o(i.UARTConfigSetExpClk)
+    i.UARTIntEnable                          0x00000e5c   Section        8  uart.o(i.UARTIntEnable)
+    i.__0fprintf_2                           0x00000e64   Section       28  printf2.o(i.__0fprintf_2)
+    i.__0printf_2                            0x00000e80   Section       32  printf2.o(i.__0printf_2)
+    i.__aeabi_errno_addr                     0x00000ea0   Section        8  errno.o(i.__aeabi_errno_addr)
+    i.__scatterload_copy                     0x00000ea8   Section       14  handlers.o(i.__scatterload_copy)
+    i.__scatterload_null                     0x00000eb6   Section        2  handlers.o(i.__scatterload_null)
+    i.__scatterload_zeroinit                 0x00000eb8   Section       14  handlers.o(i.__scatterload_zeroinit)
+    i._printf_core                           0x00000ec6   Section      198  printf2.o(i._printf_core)
+    _printf_core                             0x00000ec7   Thumb Code   198  printf2.o(i._printf_core)
+    i.free                                   0x00000f8c   Section       80  malloc.o(i.free)
+    i.malloc                                 0x00000fdc   Section      104  malloc.o(i.malloc)
+    .constdata                               0x00001044   Section      156  sysctl.o(.constdata)
+    g_pulDCRegs                              0x00001044   Data          16  sysctl.o(.constdata)
+    g_pulSRCRRegs                            0x00001054   Data          12  sysctl.o(.constdata)
+    g_pulRCGCRegs                            0x00001060   Data          12  sysctl.o(.constdata)
+    g_pulSCGCRegs                            0x0000106c   Data          12  sysctl.o(.constdata)
+    g_pulDCGCRegs                            0x00001078   Data          12  sysctl.o(.constdata)
+    g_pulXtals                               0x00001084   Data          92  sysctl.o(.constdata)
     .data                                    0x20000000   Section       44  simpleptidesos.o(.data)
     .data                                    0x2000002c   Section        4  stderr.o(.data)
     .data                                    0x20000030   Section        4  stdout.o(.data)
@@ -562,64 +606,77 @@ Image Symbol Table
     execute_event                            0x0000024f   Thumb Code    42  simpleptidesos.o(.text)
     merge_fire                               0x00000279   Thumb Code    76  simpleptidesos.o(.text)
     model_delay_fire                         0x000002c5   Thumb Code    80  simpleptidesos.o(.text)
-    enableInterrupt                          0x00000315   Thumb Code     2  simpleptidesos.o(.text)
-    setTimedInterrupt                        0x00000317   Thumb Code     2  simpleptidesos.o(.text)
-    safeToProcess                            0x00000319   Thumb Code    54  simpleptidesos.o(.text)
-    disableInterrupt                         0x0000034f   Thumb Code     2  simpleptidesos.o(.text)
-    processEvents                            0x00000351   Thumb Code   156  simpleptidesos.o(.text)
-    sensor_init                              0x000003ed   Thumb Code    86  simpleptidesos.o(.text)
-    main                                     0x00000443   Thumb Code   460  simpleptidesos.o(.text)
-    perror                                   0x00000649   Thumb Code    50  perror.o(.text)
-    __aeabi_memcpy                           0x00000689   Thumb Code    36  memcpya.o(.text)
-    __aeabi_memcpy4                          0x00000689   Thumb Code     0  memcpya.o(.text)
-    __aeabi_memcpy8                          0x00000689   Thumb Code     0  memcpya.o(.text)
-    __aeabi_dadd                             0x000007bf   Thumb Code    48  dadd.o(.text)
-    __aeabi_dsub                             0x000007ef   Thumb Code    48  dadd.o(.text)
-    __aeabi_drsub                            0x0000081f   Thumb Code    48  dadd.o(.text)
-    __aeabi_i2d                              0x0000084f   Thumb Code    36  dflt.o(.text)
-    __init                                   0x00000875   Thumb Code    30  init.o(.text)
-    __scatterload_rt2                        0x00000875   Thumb Code     0  init.o(.text)
-    fputs                                    0x000008a1   Thumb Code    24  fputs.o(.text)
-    fputc                                    0x000008b9   Thumb Code    16  fputc.o(.text)
-    __aeabi_llsl                             0x000008c9   Thumb Code    32  llshl.o(.text)
-    _ll_shift_l                              0x000008c9   Thumb Code     0  llshl.o(.text)
-    __aeabi_llsr                             0x000008e9   Thumb Code    30  llushr.o(.text)
-    _ll_ushift_r                             0x000008e9   Thumb Code     0  llushr.o(.text)
-    strerror                                 0x00000909   Thumb Code    26  strerror.o(.text)
-    __I_use_fp                               0x000009a0   Number         0  iusefp.o(.text)
-    _double_round                            0x000009a1   Thumb Code    54  depilogue.o(.text)
-    _double_epilogue                         0x000009d7   Thumb Code   138  depilogue.o(.text)
-    __0fprintf_2                             0x00000a65   Thumb Code    22  printf2.o(i.__0fprintf_2)
-    __1fprintf                               0x00000a65   Thumb Code     0  printf2.o(i.__0fprintf_2)
-    __I_use_semihosting_fputc                0x00000a64   Number         0  iusesemip.o(.text)
-    _printf_charcount                        0x00000a64   Number         0  stubs.o(c$$printf_stubs)
-    _printf_fp_dec                           0x00000a64   Number         0  stubs.o(c$$printf_stubs)
-    _printf_fp_hex                           0x00000a64   Number         0  stubs.o(c$$printf_stubs)
-    _printf_int_dec                          0x00000a64   Number         0  stubs.o(c$$printf_stubs)
-    _printf_longlong_dec                     0x00000a64   Number         0  stubs.o(c$$printf_stubs)
-    _printf_longlong_hex                     0x00000a64   Number         0  stubs.o(c$$printf_stubs)
-    _printf_longlong_oct                     0x00000a64   Number         0  stubs.o(c$$printf_stubs)
-    _printf_mbtowc                           0x00000a64   Number         0  stubs.o(c$$printf_stubs)
-    _printf_percent                          0x00000a64   Number         0  stubs.o(c$$printf_stubs)
-    _printf_pre_padding                      0x00000a64   Number         0  stubs.o(c$$printf_stubs)
-    _printf_return_value                     0x00000a64   Number         0  stubs.o(c$$printf_stubs)
-    _printf_sizespec                         0x00000a64   Number         0  stubs.o(c$$printf_stubs)
-    _printf_str                              0x00000a64   Number         0  stubs.o(c$$printf_stubs)
-    _printf_truncate_signed                  0x00000a64   Number         0  stubs.o(c$$printf_stubs)
-    _printf_truncate_unsigned                0x00000a64   Number         0  stubs.o(c$$printf_stubs)
-    _printf_wc                               0x00000a64   Number         0  stubs.o(c$$printf_stubs)
-    _printf_wctomb                           0x00000a64   Number         0  stubs.o(c$$printf_stubs)
-    __0printf_2                              0x00000a81   Thumb Code    22  printf2.o(i.__0printf_2)
-    __1printf                                0x00000a81   Thumb Code     0  printf2.o(i.__0printf_2)
-    __aeabi_errno_addr                       0x00000aa1   Thumb Code     4  errno.o(i.__aeabi_errno_addr)
-    __rt_errno_addr                          0x00000aa1   Thumb Code     0  errno.o(i.__aeabi_errno_addr)
-    __scatterload_copy                       0x00000aa9   Thumb Code    14  handlers.o(i.__scatterload_copy)
-    __scatterload_null                       0x00000ab7   Thumb Code     2  handlers.o(i.__scatterload_null)
-    __scatterload_zeroinit                   0x00000ab9   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
-    free                                     0x00000b8d   Thumb Code    76  malloc.o(i.free)
-    malloc                                   0x00000bdd   Thumb Code    88  malloc.o(i.malloc)
-    Region$$Table$$Base                      0x00000c44   Number         0  anon$$obj.o(Region$$Table)
-    Region$$Table$$Limit                     0x00000c64   Number         0  anon$$obj.o(Region$$Table)
+    enableInterrupt                          0x00000315   Thumb Code    10  simpleptidesos.o(.text)
+    setTimedInterrupt                        0x0000031f   Thumb Code     2  simpleptidesos.o(.text)
+    safeToProcess                            0x00000321   Thumb Code    54  simpleptidesos.o(.text)
+    disableInterrupt                         0x00000357   Thumb Code    10  simpleptidesos.o(.text)
+    processEvents                            0x00000361   Thumb Code   156  simpleptidesos.o(.text)
+    sensor_init                              0x000003fd   Thumb Code    86  simpleptidesos.o(.text)
+    main                                     0x00000453   Thumb Code   536  simpleptidesos.o(.text)
+    CPUcpsid                                 0x000006a9   Thumb Code     0  cpu.o(.text)
+    CPUcpsie                                 0x000006b1   Thumb Code     0  cpu.o(.text)
+    CPUwfi                                   0x000006b9   Thumb Code     0  cpu.o(.text)
+    perror                                   0x000006bd   Thumb Code    50  perror.o(.text)
+    __aeabi_memcpy                           0x000006fd   Thumb Code    36  memcpya.o(.text)
+    __aeabi_memcpy4                          0x000006fd   Thumb Code     0  memcpya.o(.text)
+    __aeabi_memcpy8                          0x000006fd   Thumb Code     0  memcpya.o(.text)
+    __aeabi_dadd                             0x00000833   Thumb Code    48  dadd.o(.text)
+    __aeabi_dsub                             0x00000863   Thumb Code    48  dadd.o(.text)
+    __aeabi_drsub                            0x00000893   Thumb Code    48  dadd.o(.text)
+    __aeabi_i2d                              0x000008c3   Thumb Code    36  dflt.o(.text)
+    __init                                   0x000008e9   Thumb Code    30  init.o(.text)
+    __scatterload_rt2                        0x000008e9   Thumb Code     0  init.o(.text)
+    fputs                                    0x00000915   Thumb Code    24  fputs.o(.text)
+    fputc                                    0x0000092d   Thumb Code    16  fputc.o(.text)
+    __aeabi_llsl                             0x0000093d   Thumb Code    32  llshl.o(.text)
+    _ll_shift_l                              0x0000093d   Thumb Code     0  llshl.o(.text)
+    __aeabi_llsr                             0x0000095d   Thumb Code    30  llushr.o(.text)
+    _ll_ushift_r                             0x0000095d   Thumb Code     0  llushr.o(.text)
+    strerror                                 0x0000097d   Thumb Code    26  strerror.o(.text)
+    __I_use_fp                               0x00000a14   Number         0  iusefp.o(.text)
+    _double_round                            0x00000a15   Thumb Code    54  depilogue.o(.text)
+    _double_epilogue                         0x00000a4b   Thumb Code   138  depilogue.o(.text)
+    GPIODirModeSet                           0x00000ad9   Thumb Code    40  gpio.o(i.GPIODirModeSet)
+    __I_use_semihosting_fputc                0x00000ad8   Number         0  iusesemip.o(.text)
+    _printf_charcount                        0x00000ad8   Number         0  stubs.o(c$$printf_stubs)
+    _printf_fp_dec                           0x00000ad8   Number         0  stubs.o(c$$printf_stubs)
+    _printf_fp_hex                           0x00000ad8   Number         0  stubs.o(c$$printf_stubs)
+    _printf_int_dec                          0x00000ad8   Number         0  stubs.o(c$$printf_stubs)
+    _printf_longlong_dec                     0x00000ad8   Number         0  stubs.o(c$$printf_stubs)
+    _printf_longlong_hex                     0x00000ad8   Number         0  stubs.o(c$$printf_stubs)
+    _printf_longlong_oct                     0x00000ad8   Number         0  stubs.o(c$$printf_stubs)
+    _printf_mbtowc                           0x00000ad8   Number         0  stubs.o(c$$printf_stubs)
+    _printf_percent                          0x00000ad8   Number         0  stubs.o(c$$printf_stubs)
+    _printf_pre_padding                      0x00000ad8   Number         0  stubs.o(c$$printf_stubs)
+    _printf_return_value                     0x00000ad8   Number         0  stubs.o(c$$printf_stubs)
+    _printf_sizespec                         0x00000ad8   Number         0  stubs.o(c$$printf_stubs)
+    _printf_str                              0x00000ad8   Number         0  stubs.o(c$$printf_stubs)
+    _printf_truncate_signed                  0x00000ad8   Number         0  stubs.o(c$$printf_stubs)
+    _printf_truncate_unsigned                0x00000ad8   Number         0  stubs.o(c$$printf_stubs)
+    _printf_wc                               0x00000ad8   Number         0  stubs.o(c$$printf_stubs)
+    _printf_wctomb                           0x00000ad8   Number         0  stubs.o(c$$printf_stubs)
+    GPIOPadConfigSet                         0x00000b01   Thumb Code   176  gpio.o(i.GPIOPadConfigSet)
+    GPIOPinTypeUART                          0x00000bb1   Thumb Code    28  gpio.o(i.GPIOPinTypeUART)
+    IntDisable                               0x00000bcd   Thumb Code   104  interrupt.o(i.IntDisable)
+    IntEnable                                0x00000c35   Thumb Code   104  interrupt.o(i.IntEnable)
+    IntMasterEnable                          0x00000c9d   Thumb Code    10  interrupt.o(i.IntMasterEnable)
+    SysCtlClockGet                           0x00000ca9   Thumb Code   292  sysctl.o(i.SysCtlClockGet)
+    SysCtlPeripheralEnable                   0x00000de9   Thumb Code    26  sysctl.o(i.SysCtlPeripheralEnable)
+    UARTConfigSetExpClk                      0x00000e09   Thumb Code    84  uart.o(i.UARTConfigSetExpClk)
+    UARTIntEnable                            0x00000e5d   Thumb Code     8  uart.o(i.UARTIntEnable)
+    __0fprintf_2                             0x00000e65   Thumb Code    22  printf2.o(i.__0fprintf_2)
+    __1fprintf                               0x00000e65   Thumb Code     0  printf2.o(i.__0fprintf_2)
+    __0printf_2                              0x00000e81   Thumb Code    22  printf2.o(i.__0printf_2)
+    __1printf                                0x00000e81   Thumb Code     0  printf2.o(i.__0printf_2)
+    __aeabi_errno_addr                       0x00000ea1   Thumb Code     4  errno.o(i.__aeabi_errno_addr)
+    __rt_errno_addr                          0x00000ea1   Thumb Code     0  errno.o(i.__aeabi_errno_addr)
+    __scatterload_copy                       0x00000ea9   Thumb Code    14  handlers.o(i.__scatterload_copy)
+    __scatterload_null                       0x00000eb7   Thumb Code     2  handlers.o(i.__scatterload_null)
+    __scatterload_zeroinit                   0x00000eb9   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
+    free                                     0x00000f8d   Thumb Code    76  malloc.o(i.free)
+    malloc                                   0x00000fdd   Thumb Code    88  malloc.o(i.malloc)
+    Region$$Table$$Base                      0x000010e0   Number         0  anon$$obj.o(Region$$Table)
+    Region$$Table$$Limit                     0x00001100   Number         0  anon$$obj.o(Region$$Table)
     EVENT_QUEUE_HEAD                         0x20000000   Data           4  simpleptidesos.o(.data)
     CK1_BUF_SIZE                             0x20000004   Data           4  simpleptidesos.o(.data)
     CK1_TIME                                 0x20000008   Data           4  simpleptidesos.o(.data)
@@ -648,44 +705,57 @@ Memory Map of the image
 
   Image Entry point : 0x00000041
 
-  Load Region LR_IROM1 (Base: 0x00000000, Size: 0x00000ca4, Max: 0x00040000, ABSOLUTE)
+  Load Region LR_IROM1 (Base: 0x00000000, Size: 0x00001140, Max: 0x00040000, ABSOLUTE)
 
-    Execution Region ER_IROM1 (Base: 0x00000000, Size: 0x00000c64, Max: 0x00040000, ABSOLUTE)
+    Execution Region ER_IROM1 (Base: 0x00000000, Size: 0x00001100, Max: 0x00040000, ABSOLUTE)
 
     Base Addr    Size         Type   Attr      Idx    E Section Name        Object
 
     0x00000000   0x00000040   Code   RO            3    RESET               startup.o
-    0x00000040   0x0000000c   Code   RO          830  * $$startup$$         entry.o(mc_w.l)
-    0x0000004c   0x00000002   Code   RO         1046    .emb_text           init.o(mc_w.l)
+    0x00000040   0x0000000c   Code   RO         1039  * $$startup$$         entry.o(mc_w.l)
+    0x0000004c   0x00000002   Code   RO         1255    .emb_text           init.o(mc_w.l)
     0x0000004e   0x00000002   PAD
     0x00000050   0x0000001c   Code   RO            4    .text               startup.o
-    0x0000006c   0x000005dc   Code   RO           13    .text               simpleptidesos.o
-    0x00000648   0x00000040   Code   RO          835    .text               perror.o(mc_w.l)
-    0x00000688   0x00000024   Code   RO          838    .text               memcpya.o(mc_w.l)
-    0x000006ac   0x000001a2   Code   RO         1041    .text               dadd.o(mf_w.l)
-    0x0000084e   0x00000024   Code   RO         1043    .text               dflt.o(mf_w.l)
-    0x00000872   0x00000002   PAD
-    0x00000874   0x0000002c   Code   RO         1045    .text               init.o(mc_w.l)
-    0x000008a0   0x00000018   Code   RO         1049    .text               fputs.o(mc_w.l)
-    0x000008b8   0x00000010   Code   RO         1053    .text               fputc.o(mc_w.l)
-    0x000008c8   0x00000020   Code   RO         1060    .text               llshl.o(mc_w.l)
-    0x000008e8   0x0000001e   Code   RO         1062    .text               llushr.o(mc_w.l)
-    0x00000906   0x00000002   PAD
-    0x00000908   0x00000098   Code   RO         1064    .text               strerror.o(mc_w.l)
-    0x000009a0   0x00000000   Code   RO         1075    .text               iusefp.o(mc_w.l)
-    0x000009a0   0x000000c4   Code   RO         1076    .text               depilogue.o(mf_w.l)
-    0x00000a64   0x00000000   Code   RO         1086    .text               iusesemip.o(mc_w.l)
-    0x00000a64   0x00000000   Code   RO         1036    c$$printf_stubs     stubs.o(mc_w.l)
-    0x00000a64   0x0000001c   Code   RO          891    i.__0fprintf_2      printf2.o(mc_w.l)
-    0x00000a80   0x00000020   Code   RO          893    i.__0printf_2       printf2.o(mc_w.l)
-    0x00000aa0   0x00000008   Code   RO         1068    i.__aeabi_errno_addr  errno.o(mc_w.l)
-    0x00000aa8   0x0000000e   Code   RO         1088    i.__scatterload_copy  handlers.o(mc_w.l)
-    0x00000ab6   0x00000002   Code   RO         1090    i.__scatterload_null  handlers.o(mc_w.l)
-    0x00000ab8   0x0000000e   Code   RO         1089    i.__scatterload_zeroinit  handlers.o(mc_w.l)
-    0x00000ac6   0x000000c6   Code   RO          890    i._printf_core      printf2.o(mc_w.l)
-    0x00000b8c   0x00000050   Code   RO         1038    i.free              malloc.o(mc_w.l)
-    0x00000bdc   0x00000068   Code   RO         1037    i.malloc            malloc.o(mc_w.l)
-    0x00000c44   0x00000020   Data   RO         1087    Region$$Table       anon$$obj.o
+    0x0000006c   0x0000063c   Code   RO           13    .text               simpleptidesos.o
+    0x000006a8   0x00000014   Code   RO         1035    .text               cpu.o(DriverLib.lib)
+    0x000006bc   0x00000040   Code   RO         1044    .text               perror.o(mc_w.l)
+    0x000006fc   0x00000024   Code   RO         1047    .text               memcpya.o(mc_w.l)
+    0x00000720   0x000001a2   Code   RO         1250    .text               dadd.o(mf_w.l)
+    0x000008c2   0x00000024   Code   RO         1252    .text               dflt.o(mf_w.l)
+    0x000008e6   0x00000002   PAD
+    0x000008e8   0x0000002c   Code   RO         1254    .text               init.o(mc_w.l)
+    0x00000914   0x00000018   Code   RO         1258    .text               fputs.o(mc_w.l)
+    0x0000092c   0x00000010   Code   RO         1262    .text               fputc.o(mc_w.l)
+    0x0000093c   0x00000020   Code   RO         1269    .text               llshl.o(mc_w.l)
+    0x0000095c   0x0000001e   Code   RO         1271    .text               llushr.o(mc_w.l)
+    0x0000097a   0x00000002   PAD
+    0x0000097c   0x00000098   Code   RO         1273    .text               strerror.o(mc_w.l)
+    0x00000a14   0x00000000   Code   RO         1284    .text               iusefp.o(mc_w.l)
+    0x00000a14   0x000000c4   Code   RO         1285    .text               depilogue.o(mf_w.l)
+    0x00000ad8   0x00000000   Code   RO         1295    .text               iusesemip.o(mc_w.l)
+    0x00000ad8   0x00000000   Code   RO         1245    c$$printf_stubs     stubs.o(mc_w.l)
+    0x00000ad8   0x00000028   Code   RO          101    i.GPIODirModeSet    gpio.o(DriverLib.lib)
+    0x00000b00   0x000000b0   Code   RO          105    i.GPIOPadConfigSet  gpio.o(DriverLib.lib)
+    0x00000bb0   0x0000001c   Code   RO          126    i.GPIOPinTypeUART   gpio.o(DriverLib.lib)
+    0x00000bcc   0x00000068   Code   RO          336    i.IntDisable        interrupt.o(DriverLib.lib)
+    0x00000c34   0x00000068   Code   RO          335    i.IntEnable         interrupt.o(DriverLib.lib)
+    0x00000c9c   0x0000000a   Code   RO          327    i.IntMasterEnable   interrupt.o(DriverLib.lib)
+    0x00000ca6   0x00000002   PAD
+    0x00000ca8   0x00000140   Code   RO          570    i.SysCtlClockGet    sysctl.o(DriverLib.lib)
+    0x00000de8   0x00000020   Code   RO          547    i.SysCtlPeripheralEnable  sysctl.o(DriverLib.lib)
+    0x00000e08   0x00000054   Code   RO          853    i.UARTConfigSetExpClk  uart.o(DriverLib.lib)
+    0x00000e5c   0x00000008   Code   RO          866    i.UARTIntEnable     uart.o(DriverLib.lib)
+    0x00000e64   0x0000001c   Code   RO         1100    i.__0fprintf_2      printf2.o(mc_w.l)
+    0x00000e80   0x00000020   Code   RO         1102    i.__0printf_2       printf2.o(mc_w.l)
+    0x00000ea0   0x00000008   Code   RO         1277    i.__aeabi_errno_addr  errno.o(mc_w.l)
+    0x00000ea8   0x0000000e   Code   RO         1297    i.__scatterload_copy  handlers.o(mc_w.l)
+    0x00000eb6   0x00000002   Code   RO         1299    i.__scatterload_null  handlers.o(mc_w.l)
+    0x00000eb8   0x0000000e   Code   RO         1298    i.__scatterload_zeroinit  handlers.o(mc_w.l)
+    0x00000ec6   0x000000c6   Code   RO         1099    i._printf_core      printf2.o(mc_w.l)
+    0x00000f8c   0x00000050   Code   RO         1247    i.free              malloc.o(mc_w.l)
+    0x00000fdc   0x00000068   Code   RO         1246    i.malloc            malloc.o(mc_w.l)
+    0x00001044   0x0000009c   Data   RO          583    .constdata          sysctl.o(DriverLib.lib)
+    0x000010e0   0x00000020   Data   RO         1296    Region$$Table       anon$$obj.o
 
 
     Execution Region RW_IRAM1 (Base: 0x20000000, Size: 0x00000240, Max: 0x00010000, ABSOLUTE)
@@ -693,11 +763,11 @@ Memory Map of the image
     Base Addr    Size         Type   Attr      Idx    E Section Name        Object
 
     0x20000000   0x0000002c   Data   RW           14    .data               simpleptidesos.o
-    0x2000002c   0x00000004   Data   RW          837    .data               stderr.o(mc_w.l)
-    0x20000030   0x00000004   Data   RW         1055    .data               stdout.o(mc_w.l)
-    0x20000034   0x00000004   Data   RW         1066    .data               mvars.o(mc_w.l)
-    0x20000038   0x00000004   Data   RW         1067    .data               mvars.o(mc_w.l)
-    0x2000003c   0x00000004   Data   RW         1071    .data               errno.o(mc_w.l)
+    0x2000002c   0x00000004   Data   RW         1046    .data               stderr.o(mc_w.l)
+    0x20000030   0x00000004   Data   RW         1264    .data               stdout.o(mc_w.l)
+    0x20000034   0x00000004   Data   RW         1275    .data               mvars.o(mc_w.l)
+    0x20000038   0x00000004   Data   RW         1276    .data               mvars.o(mc_w.l)
+    0x2000003c   0x00000004   Data   RW         1280    .data               errno.o(mc_w.l)
     0x20000040   0x00000000   Zero   RW            2    HEAP                startup.o
     0x20000040   0x00000200   Zero   RW            1    STACK               startup.o
 
@@ -709,19 +779,19 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
 
-      1500        314          0         44          0       8536   simpleptidesos.o
-        92         70          0          0        512       2000   startup.o
+      1596        330          0         44          0       8968   simpleptidesos.o
+        92         70          0          0        512       2237   startup.o
 
     ------------------------------------------------------------------------
-      1592        384         32         44        512      10538   Object Totals
+      1688        400         32         44        512      11205   Object Totals
          0          0         32          0          0          0   (incl. Generated)
-         0          0          0          0          0          2   (incl. Padding)
+         0          0          0          0          0          0   (incl. Padding)
 
     ------------------------------------------------------------------------
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Library Member Name
 
-         0          0          0          0          0         18   cpu.o
+        20          0          0          0          0        198   cpu.o
        418          0          0          0          0          0   dadd.o
        196          4          0          0          0          0   depilogue.o
         36          0          0          0          0          0   dflt.o
@@ -729,8 +799,10 @@ Image component sizes
          8          4          0          4          0          0   errno.o
         16          0          0          0          0          0   fputc.o
         24          0          0          0          0          0   fputs.o
+       244          0          0          0          0       5364   gpio.o
         30          0          0          0          0          0   handlers.o
         46         14          0          0          0          0   init.o
+       218          0          0          0          0       1433   interrupt.o
          0          0          0          0          0          0   iusefp.o
          0          0          0          0          0          0   iusesemip.o
         32          0          0          0          0          0   llshl.o
@@ -744,21 +816,23 @@ Image component sizes
          0          0          0          4          0          0   stdout.o
        152        126          0          0          0          0   strerror.o
          0          0          0          0          0          0   stubs.o
+       352         34        156          0          0       2228   sysctl.o
+        92          0          0          0          0       1328   uart.o
 
     ------------------------------------------------------------------------
-      1548        202          0         20          0         18   Library Totals
-         6          0          0          0          0          0   (incl. Padding)
+      2476        236        156         20          0      10551   Library Totals
+         8          0          0          0          0          0   (incl. Padding)
 
     ------------------------------------------------------------------------
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Library Name
 
-         0          0          0          0          0         18   DriverLib.lib
+       926         34        156          0          0      10551   DriverLib.lib
        892        198          0         20          0          0   mc_w.l
        650          4          0          0          0          0   mf_w.l
 
     ------------------------------------------------------------------------
-      1548        202          0         20          0         18   Library Totals
+      2476        236        156         20          0      10551   Library Totals
 
     ------------------------------------------------------------------------
 
@@ -767,15 +841,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-      3140        586         32         64        512      10556   Grand Totals
-      3140        586         32         64        512      10556   ELF Image Totals
-      3140        586         32         64          0          0   ROM Totals
+      4164        636        188         64        512      21756   Grand Totals
+      4164        636        188         64        512      21756   ELF Image Totals
+      4164        636        188         64          0          0   ROM Totals
 
 ================================================================================
 
-    Total RO  Size (Code + RO Data)                 3172 (   3.10kB)
+    Total RO  Size (Code + RO Data)                 4352 (   4.25kB)
     Total RW  Size (RW Data + ZI Data)               576 (   0.56kB)
-    Total ROM Size (Code + RO Data + RW Data)       3236 (   3.16kB)
+    Total ROM Size (Code + RO Data + RW Data)       4416 (   4.31kB)
 
 ================================================================================
 

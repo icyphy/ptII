@@ -3,17 +3,17 @@
 ### Creating ADS-LD Command Line
 ### List of Objects: adding '".\obj\startup.o"'
 ### List of Objects: adding '".\obj\simpleptidesos.o"'
-### List of Objects: adding '"..\..\..\..\Keil\ARM\RV31\LIB\Luminary\DriverLib.lib"'
+### List of Objects: adding '"..\..\..\..\..\..\Keil\ARM\RV31\LIB\Luminary\DriverLib.lib"'
 ### List of Objects: adding '".\obj\rit128x96x4.o"'
 ### ADS-LD Command completed:
-".\obj\startup.o" ".\obj\simpleptidesos.o" "..\..\..\..\Keil\ARM\RV31\LIB\Luminary\DriverLib.lib" ".\obj\rit128x96x4.o" --library_type=microlib --device DLM --strict --scatter ".\Obj\Blinky.sct" 
+".\obj\startup.o" ".\obj\simpleptidesos.o" "..\..\..\..\..\..\Keil\ARM\RV31\LIB\Luminary\DriverLib.lib" ".\obj\rit128x96x4.o" --library_type=microlib --device DLM --strict --scatter ".\Obj\Blinky.sct" 
 --autoat --summary_stderr --info summarysizes --map --xref --callgraph --symbols 
 --info sizes --info totals --info unused --info veneers 
  --list ".\Lst\Blinky.map" -o ".\Obj\Blinky.axf"### Preparing Environment (PrepEnvAds)
 ### ADS-LD Output File: '.\Obj\Blinky.axf'
 ### ADS-LD Command File: '.\Obj\Blinky.lnp'
 ### Checking for dirty Components...
-### Creating CmdFile '.\Obj\Blinky.lnp', Handle=0x00000330
+### Creating CmdFile '.\Obj\Blinky.lnp', Handle=0x00000244
 ### Writing '.lnp' file
 ### ADS-LD Command file '.\Obj\Blinky.lnp' is ready.
 ### ADS-LD: About to start ADS-LD Thread.

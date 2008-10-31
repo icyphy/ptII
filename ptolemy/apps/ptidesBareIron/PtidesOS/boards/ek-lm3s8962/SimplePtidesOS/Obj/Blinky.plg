@@ -7,3 +7,84 @@ C:\workspace\ptresearch\ptidesBareIron\PtidesOS\boards\ek-lm3s8962\SimplePtidesO
 Project File Date:  10/29/2008
 
 <h2>Output:</h2>
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(104): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(146): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(183): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(347): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(405): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(445): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(511): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(641): warning:  #550-D: variable "model_delay3" was set but never used
+linking...
+Program Size: Code=3140 RO-data=32 RW-data=64 ZI-data=512  
+".\Obj\Blinky.axf" - 0 Error(s), 13 Warning(s).
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(104): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(146): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(183): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(347): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(405): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(445): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(511): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(643): error:  #268: declaration may not appear after executable statement in block
+SimplePtidesOS.c(644): error:  #268: declaration may not appear after executable statement in block
+SimplePtidesOS.c(645): error:  #268: declaration may not appear after executable statement in block
+SimplePtidesOS.c(646): error:  #268: declaration may not appear after executable statement in block
+SimplePtidesOS.c(647): error:  #268: declaration may not appear after executable statement in block
+SimplePtidesOS.c(648): error:  #268: declaration may not appear after executable statement in block
+SimplePtidesOS.c(649): error:  #268: declaration may not appear after executable statement in block
+SimplePtidesOS.c(650): error:  #268: declaration may not appear after executable statement in block
+SimplePtidesOS.c(651): error:  #268: declaration may not appear after executable statement in block
+SimplePtidesOS.c(652): error:  #268: declaration may not appear after executable statement in block
+SimplePtidesOS.c(653): error:  #268: declaration may not appear after executable statement in block
+SimplePtidesOS.c(652): warning:  #550-D: variable "model_delay3" was set but never used
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(104): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(146): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(183): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(347): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(405): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(445): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(511): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(641): warning:  #550-D: variable "model_delay3" was set but never used
+linking...
+Program Size: Code=3304 RO-data=32 RW-data=64 ZI-data=512  
+".\Obj\Blinky.axf" - 0 Error(s), 13 Warning(s).
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+functions.h(37): warning:  #1295-D: Deprecated declaration event_remove - give arg types
+functions.h(42): warning:  #1295-D: Deprecated declaration getCurrentPhysicalTime - give arg types
+functions.h(43): warning:  #1295-D: Deprecated declaration disableInterrupt - give arg types
+functions.h(44): warning:  #1295-D: Deprecated declaration enableInterrupt - give arg types
+functions.h(45): warning:  #1295-D: Deprecated declaration die - give arg types
+SimplePtidesOS.c(104): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(146): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(183): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(347): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(405): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(445): warning:  #223-D: function "free" declared implicitly
+SimplePtidesOS.c(511): warning:  #223-D: function "malloc" declared implicitly
+SimplePtidesOS.c(647): warning:  #550-D: variable "model_delay3" was set but never used
+linking...
+Program Size: Code=4164 RO-data=188 RW-data=64 ZI-data=512  
+".\Obj\Blinky.axf" - 0 Error(s), 13 Warning(s).

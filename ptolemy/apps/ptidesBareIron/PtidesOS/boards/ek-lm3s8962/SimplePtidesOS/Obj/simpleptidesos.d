@@ -1,5 +1,14 @@
 .\Obj\simpleptidesos.o: SimplePtidesOS.c
 .\Obj\simpleptidesos.o: C:\workspace\Keil\ARM\RV31\INC\stdio.h
+.\Obj\simpleptidesos.o: C:\workspace\Keil\ARM\INC\Luminary\../../../uart/hw_ints.h
+.\Obj\simpleptidesos.o: C:\workspace\Keil\ARM\INC\Luminary\../../../uart/hw_memmap.h
+.\Obj\simpleptidesos.o: C:\workspace\Keil\ARM\INC\Luminary\../../../uart/hw_types.h
+.\Obj\simpleptidesos.o: ../../../src/debug.h
+.\Obj\simpleptidesos.o: ../../../src/gpio.h
+.\Obj\simpleptidesos.o: ../../../src/interrupt.h
+.\Obj\simpleptidesos.o: ../../../src/sysctl.h
+.\Obj\simpleptidesos.o: ../../../src/uart.h
+.\Obj\simpleptidesos.o: ../rit128x96x4.h
 .\Obj\simpleptidesos.o: structures.h
 .\Obj\simpleptidesos.o: functions.h
 .\Obj\simpleptidesos.o: actors.h

@@ -9,6 +9,17 @@
 /******************************************************************************/
 
 #include <stdio.h>
+
+#include "../../../uart/hw_ints.h"
+#include "../../../uart/hw_memmap.h"
+#include "../../../uart/hw_types.h"
+#include "../../../src/debug.h"
+#include "../../../src/gpio.h"
+#include "../../../src/interrupt.h"
+#include "../../../src/sysctl.h"
+#include "../../../src/uart.h"
+#include "../rit128x96x4.h"
+
 #include "structures.h"
 #include "functions.h"
 #include "actors.h"
@@ -35,7 +46,7 @@ Event* EVENT_QUEUE_HEAD = NULL;
 int CK1_BUF_SIZE = 0;
 long CK1_TIME = 0;
 
-unsigned int stopSourceProcess;
+unsigned int STOP_SOURCE_PROCESS;
 
 long COMPUTATION_MODEL_TIME_ADJUSTMENT = 0;
 long MERGE_MODEL_TIME_ADJUSTMENT = 0;
@@ -460,7 +471,7 @@ void processEvents()
                 // There are no events safe to
                 // process, so setup sources
                 // to process.
-                stopSourceProcess = FALSE;
+                STOP_SOURCE_PROCESS = FALSE;
                 // Set timed interrupt to run
                 // the event at the top of the
                 // event queue when physical time
@@ -473,14 +484,14 @@ void processEvents()
             // There are no events safe to
             // process, so setup sources
             // to process.
-            stopSourceProcess = FALSE;
+            STOP_SOURCE_PROCESS = FALSE;
             enableInterrupt();
         }
         // If there is no event to process and we
         // have not reached the buffer limit, fire
         // the source actor.
         // for (each source actors a) {
-        if (stopSourceProcess == FALSE) {
+        if (STOP_SOURCE_PROCESS == FALSE) {
 			if (CK1_BUF_SIZE < MAX_BUFFER_LIMIT) {
 				Event* dummyEvent;
             	clock_fire(SOURCE1, dummyEvent);
@@ -563,11 +574,43 @@ long getCurrentPhysicalTime() {
 	return 0;
 }
 
+//*****************************************************************************
+//
+// The UART interrupt handler.
+//
+//*****************************************************************************
+void
+UARTIntHandler(void)
+{
+    unsigned long ulStatus;
+	
+	diableInterrupt();
+
+	Event* dummyEvent;
+    clock_fire(SOURCE1, dummyEvent);
+
+    //
+    // Get the interrrupt status.
+    //
+    ulStatus = UARTIntStatus(UART0_BASE, true);
+    //
+    // Clear the asserted interrupts.
+    //
+    UARTIntClear(UART0_BASE, ulStatus);
+
+	STOP_SOURCE_PROCESS = TRUE;
+}
+
+//FIXME: which interrupt(s) should I disable/enable?
 void disableInterrupt() {
+	IntDisable(INT_UART0);
+	UARTIntDisable(UART0_BASE, UART_INT_RX | UART_INT_RT);
 	return;
 }
 
 void enableInterrupt() {
+    IntEnable(INT_UART0);
+    UARTIntEnable(UART0_BASE, UART_INT_RX | UART_INT_RT);
 	return;
 } 
 
@@ -629,6 +672,35 @@ int main(int argc, char *argv[])
 	Actor model_delay2;
     Actor model_delay3;
     Actor actuator1;
+
+	/*************************************************************************/
+	// Utilities to setup interrupts
+    //
+    // Enable the peripherals used by this example.
+    //
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_UART0);
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
+	//
+    // Enable processor interrupts.
+    //
+    IntMasterEnable();	
+    //
+    // Set GPIO A0 and A1 as UART pins.
+    //
+    GPIOPinTypeUART(GPIO_PORTA_BASE, GPIO_PIN_0 | GPIO_PIN_1);
+	//
+    // Configure the UART for 115,200, 8-N-1 operation. 
+	// FIXME: don't know what this is for...
+    //
+    UARTConfigSetExpClk(UART0_BASE, SysCtlClockGet(), 115200,
+                        (UART_CONFIG_WLEN_8 | UART_CONFIG_STOP_ONE |
+                         UART_CONFIG_PAR_NONE));
+    //
+    // Enable the UART interrupt.
+    //
+    IntEnable(INT_UART0);
+    UARTIntEnable(UART0_BASE, UART_INT_RX | UART_INT_RT);
+	/*************************************************************************/
 
     if (argc != 5) {
         fprintf(stderr, "USAGE: %s <server_ip> <port1> <port2> <s or a>\n", argv[0]);
