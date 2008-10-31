@@ -60,6 +60,11 @@ public class LazyTypedCompositeActorChanges implements MoMLFilter {
      */
     public String filterAttributeValue(NamedObj container, String element,
             String attributeName, String attributeValue) {
+
+	// Useful for debugging:
+        //System.out.println("filterAttributeValue: " + container + "\t"
+        //       +  attributeName + "\t" + attributeValue);
+
         // This method gets called many times by the MoMLParser,
         // so we try to be smart about the number of comparisons
         // and we try to group comparisons together so that we
@@ -77,9 +82,7 @@ public class LazyTypedCompositeActorChanges implements MoMLFilter {
         // which will open up a large xml file and then close after 2 seconds.
         if (attributeName.equals("class")) {
             if (attributeValue.equals("ptolemy.actor.TypedCompositeActor")
-		&& (container !=null && container.toplevel() == container)) { 
-
-		System.out.println("replacing " + attributeName + " " + element);
+		&& (container !=null /* && container.toplevel() != container */)) { 
                 // We found a class with a class change.
                 MoMLParser.setModified(true);
                 return (String) "ptolemy.actor.LazyTypedCompositeActor";
