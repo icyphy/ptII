@@ -50,7 +50,7 @@ struct Actor {
     struct Actor *nextActor1;
     struct Actor *nextActor2;
 
-	void (*fire_method)	(Actor*, Event*);
+	void (*fireMethod)	(Actor*, Event*);
 
 	unsigned int sourceActor;
 	unsigned int multipleInputs;
@@ -73,7 +73,7 @@ struct Event {
     //an event would only have 1 actorToFire
     Actor* actorToFire;
 
-	struct Event* next;
+    struct Event* next;
 
 };
 

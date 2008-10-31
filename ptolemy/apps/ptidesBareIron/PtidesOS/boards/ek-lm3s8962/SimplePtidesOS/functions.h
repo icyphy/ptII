@@ -33,13 +33,13 @@
 /******************************************************************************/
 
 
-void event_add(Event*);
-void event_remove();
-void fire_actor(Event*);
+void addEvent(Event*);
+void removeEvent(void);
+void fireActor(Event*);
 long safeToProcess(Event*);
 void setActuationInterrupt(long);
 void setTimedInterrupt(long);
-long getCurrentPhysicalTime();
-void disableInterrupt();
-void enableInterrupt();
-void die(); 
+long getCurrentPhysicalTime(void);
+void disableInterrupts(void);
+void enableInterrupts(void);
+void die(char *mess); 

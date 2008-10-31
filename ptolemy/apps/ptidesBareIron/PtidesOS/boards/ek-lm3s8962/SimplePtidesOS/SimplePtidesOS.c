@@ -10,6 +10,20 @@
 
 #include <stdio.h>
 
+#include "../../../hw_ints.h"
+#include "../../../hw_memmap.h"
+#include "../../../hw_types.h"
+#include "../../../src/debug.h"
+#include "../../../src/gpio.h"
+#include "../../../src/interrupt.h"
+#include "../../../src/sysctl.h"
+#include "../../../src/uart.h"
+#include "../rit128x96x4.h"
+
+
+
+
+/*
 #include "../../../uart/hw_ints.h"
 #include "../../../uart/hw_memmap.h"
 #include "../../../uart/hw_types.h"
@@ -19,6 +33,7 @@
 #include "../../../src/sysctl.h"
 #include "../../../src/uart.h"
 #include "../rit128x96x4.h"
+*/
 
 #include "structures.h"
 #include "functions.h"
@@ -67,7 +82,7 @@ Actor* SOURCE2;
  * Since it's not a terminating actor, the event is not popped.
  *
  */
-void actuator_fire(Actor* this_actuator, Event* thisEvent) {
+void fireActuator(Actor* this_actuator, Event* thisEvent) {
 
 	long currentTime = getCurrentPhysicalTime();
     Tag *stampedTag = &(thisEvent->Tag);
@@ -95,10 +110,10 @@ void actuator_fire(Actor* this_actuator, Event* thisEvent) {
 
 /**
  * This function is basically the same as clock_init(), expect only this 
- * function is called through an event, thus we use event_add() instead 
+ * function is called through an event, thus we use addEvent() instead 
  * of event_insert() in this case.
  */
-void clock_fire(Actor* this_clock, Event* thisEvent) {
+void fireClock(Actor* this_clock, Event* thisEvent) {
 
 	long time = CK1_TIME;
 	Event* newEvent = (Event*) malloc(sizeof(Event));
@@ -116,18 +131,18 @@ void clock_fire(Actor* this_clock, Event* thisEvent) {
     newEvent->actorToFire = this_clock->nextActor1;
     newEvent->actorFrom = this_clock;
 
-    event_add(newEvent);
+    addEvent(newEvent);
 	CK1_BUF_SIZE++;
 
     if (this_clock->nextActor2 != NULL) {
         Event* newEvent2 = (Event*) malloc(sizeof(Event));
 		*newEvent2 = *newEvent;
         newEvent2->actorToFire = this_clock->nextActor2;
-        event_add(newEvent2);
+        addEvent(newEvent2);
     }
 
     //Do not need to call processEvents() in this case
-    //since processEvents() called clock_fire
+    //since processEvents() called fireClock
     return;
 }
 
@@ -139,11 +154,11 @@ void clock_fire(Actor* this_clock, Event* thisEvent) {
  * when the deadline of the last event that was produced has passed
  * CLOCK_EVENTS number of events are again produced by a event added into the event queue
  */
-void clock_init(Actor *this_clock)
+void initClock(Actor *this_clock)
 {
     long currentTime = getCurrentPhysicalTime();
 
-    Event* newEvent = (Event*) malloc(sizeof(Event));
+    Event* newEvent = (Event*) malloc(sizeof(Event));				/// I don't know if malloc is defined
 
     //CLOCK_PERIOD specifies the period
     currentTime += CLOCK_PERIOD;   
@@ -157,7 +172,7 @@ void clock_init(Actor *this_clock)
     newEvent->actorToFire = this_clock->nextActor1;
     newEvent->actorFrom = this_clock;
 
-    event_add(newEvent);
+    addEvent(newEvent);
 
 	CK1_TIME = currentTime;
 
@@ -166,7 +181,7 @@ void clock_init(Actor *this_clock)
         Event* newEvent2 = (Event*) malloc(sizeof(Event));
 		*newEvent2 = *newEvent;
         newEvent2->actorToFire = this_clock->nextActor2;
-        event_add(newEvent2);
+        addEvent(newEvent2);
     }
 
     return;
@@ -177,7 +192,7 @@ void clock_init(Actor *this_clock)
  * Computation method do not have any real functionality here, where we simply
  * set our event queue to fire the next actor.
  */
-void computation_fire(Actor* this_computation, Event* thisEvent) {
+void fireComputation(Actor* this_computation, Event* thisEvent) {
 
 	double thisDouble;
 	Event* newEvent = (Event*) malloc(sizeof(Event));;
@@ -190,14 +205,14 @@ void computation_fire(Actor* this_computation, Event* thisEvent) {
     newEvent->actorFrom = this_computation;
 
     //arbitrarily delay either 1/4 of a sec or 1/2 of a sec or none.
-	event_add(newEvent);
+	addEvent(newEvent);
 
     if (this_computation->nextActor2 != NULL)
     {
         Event* newEvent2 = (Event*) malloc(sizeof(Event));
 		*newEvent2= *newEvent;
         newEvent2->actorToFire = this_computation->nextActor2;
-        event_add(newEvent2);
+        addEvent(newEvent2);
     }
 }
 
@@ -210,7 +225,7 @@ void die(char *mess) {
 }
 
 /** 
- * The method event_add() is only used when an actor that's not the source 
+ * The method addEvent() is only used when an actor that's not the source 
  * within a platform.
  * In this case there's no need to lock the event queue since processEvents() 
  * only execute one event at a time.
@@ -218,7 +233,7 @@ void die(char *mess) {
  * Currently, we simply go through the queue one event at a time and check the tags.
  * FIXME: use either binary search or calendar to improve performance.
  */
-void event_add(Event* newEvent)
+void addEvent(Event* newEvent)
 {
 
     Tag stampedTag = newEvent->Tag;
@@ -258,12 +273,12 @@ void event_add(Event* newEvent)
 }
 
 /** 
- * event_remove() is called to pop the most recent event in the event queue.
+ * removeEvent() is called to pop the most recent event in the event queue.
  * it is not interlocked because it can only be called by sinks within a 
  * platform, which is the called by processEvents().
  * Here the first event on the event queue is popped.
  */
-void event_remove()
+void removeEvent()
 {
     if (EVENT_QUEUE_HEAD != NULL){
         EVENT_QUEUE_HEAD = EVENT_QUEUE_HEAD -> next;
@@ -275,7 +290,7 @@ void event_remove()
  * execute_event() checks if the event is valid. If it is, then fire actor
  * is called.
  */
-void execute_event(){
+void executeEvent(){
 
     if (EVENT_QUEUE_HEAD == NULL) {
         die("EVENT_QUEUE_HEAD should never be NULL\n");
@@ -285,7 +300,7 @@ void execute_event(){
             die("executing an event where the actors are NULL!!\n");
         }
         else {
-            fire_actor(EVENT_QUEUE_HEAD);
+            fireActor(EVENT_QUEUE_HEAD);
         }
     }
 }
@@ -295,13 +310,13 @@ void execute_event(){
  * if it is, static timing analysis is called, and returns
  * if it's not, firing method of the actor specified by the event is called
  */
-void fire_actor(Event* currentEvent)
+void fireActor(Event* currentEvent)
 {
 
     Actor* fire_this = currentEvent->actorToFire;
 	//FIXME: USE THIS INSTEAD!! char temp_type[3] = fire_this->type;
-	if (fire_this->fire_method != NULL) {
-		(fire_this->fire_method)(fire_this, currentEvent);
+	if (fire_this->fireMethod != NULL) {
+		(fire_this->fireMethod)(fire_this, currentEvent);
 	} else {
 		die("no such method, cannot fire\n");
 	}
@@ -336,7 +351,7 @@ void fire_actor(Event* currentEvent)
  * Only possibility to add event is when it has more than one output.
  * A merge actor may have more than one input.
  */
-void merge_fire(Actor* this_merge, Event* thisEvent) {
+void fireMerge(Actor* this_merge, Event* thisEvent) {
 
 //    printf("THIS IS THE FINAL OUTPUT OF THE MERGE Actor: \n");
 //    printf("MAKE SURE THE TagS OF THESE EVENTS ARE IN ORDER: the tag on the current value are: %.9d.%9.9d %i \n", 
@@ -349,14 +364,14 @@ void merge_fire(Actor* this_merge, Event* thisEvent) {
     newEvent->actorToFire = this_merge->nextActor1;
     newEvent->actorFrom = this_merge;
 
-	event_add(newEvent);
+	addEvent(newEvent);
 
     if (this_merge->nextActor2 != NULL)
     {
         Event* newEvent2 = (Event*)malloc(sizeof(Event));
 		*newEvent2 = *newEvent;
         newEvent2->actorToFire = this_merge->nextActor2;
-        event_add(newEvent2);
+        addEvent(newEvent2);
     }
 
     return;
@@ -369,12 +384,12 @@ void merge_fire(Actor* this_merge, Event* thisEvent) {
  * to maximum delay from the source of the event to the sink.
  * At the same time, the orderTag is increased by BOUNDED_DELAY, since
  * this is the delay between the sensor actor and the merge actor.
- * Since timestamps are modified in this process, event_pop() and event_add() 
+ * Since timestamps are modified in this process, event_pop() and addEvent() 
  * needs to be called.
  * Because model_delay is also a transmitter through the network, socket
  * programming is used.
  */
-void model_delay_fire(Actor* this_model_delay, Event* thisEvent) {
+void fireModelDelay(Actor* this_model_delay, Event* thisEvent) {
 
 	unsigned int model_delay = 0;
 /*
@@ -409,13 +424,13 @@ void model_delay_fire(Actor* this_model_delay, Event* thisEvent) {
     newEvent->actorToFire = this_model_delay->nextActor1;
     newEvent->actorFrom = this_model_delay;
 
-	event_add(newEvent);
+	addEvent(newEvent);
     if (this_model_delay->nextActor2 != NULL)
     {
         Event* newEvent2 = (Event*)malloc(sizeof(Event));
 		*newEvent2 = *newEvent;
         newEvent2->actorToFire = this_model_delay->nextActor2;
-        event_add(newEvent2);
+        addEvent(newEvent2);
     }
 
     return;
@@ -430,18 +445,18 @@ void processEvents()
 	Actor* a;
 
     while (1) {
-        disableInterrupt();
+        disableInterrupts();
         // If event queue is not empty.
         if (EVENT_QUEUE_HEAD != NULL) {
             Event* event = EVENT_QUEUE_HEAD;
             long processTime = safeToProcess(event);
             if (getCurrentPhysicalTime() >= processTime) {
-                event_remove();
-                enableInterrupt();
+                removeEvent();
+                enableInterrupts();
                 // Execute the event. During
                 // this process more events may
                 // be posted to the queue.
-                fire_actor(event);
+                fireActor(event);
 				free(event);
 
                 // Check which actor produced the
@@ -462,7 +477,7 @@ void processEvents()
                     if (CK1_BUF_SIZE == 0) {
 						//dummyEVent is never used.
 						Event* dummyEvent;
-                        clock_fire(SOURCE1, dummyEvent);
+                        fireClock(SOURCE1, dummyEvent);
 						// firing of the actor should update the number of events in the buffer
                     }
                 }
@@ -478,14 +493,14 @@ void processEvents()
                 // has passed for it to be
                 // safe to process
                 setTimedInterrupt(processTime);
-                enableInterrupt();
+                enableInterrupts();
             }
         } else {
             // There are no events safe to
             // process, so setup sources
             // to process.
             STOP_SOURCE_PROCESS = FALSE;
-            enableInterrupt();
+            enableInterrupts();
         }
         // If there is no event to process and we
         // have not reached the buffer limit, fire
@@ -494,7 +509,7 @@ void processEvents()
         if (STOP_SOURCE_PROCESS == FALSE) {
 			if (CK1_BUF_SIZE < MAX_BUFFER_LIMIT) {
 				Event* dummyEvent;
-            	clock_fire(SOURCE1, dummyEvent);
+            	fireClock(SOURCE1, dummyEvent);
 			}
         }
     }
@@ -505,7 +520,7 @@ void processEvents()
  * Initialize the sensor actor to setup receiving function through another 
  * thread, it then create a new event and calls processEvent()
  */
-void sensor_init(Actor* this_sensor)     //this listens for the next signal to sense again
+void initSensor(Actor* this_sensor)     //this listens for the next signal to sense again
 {
 	long time;
     Event* newEvent = (Event*)malloc(sizeof(Event));
@@ -522,14 +537,14 @@ void sensor_init(Actor* this_sensor)     //this listens for the next signal to s
 
     //now put the created event into the queue
     //BUT HOW DO I TRACK THE START OF THE EVENT QUEUE??? --global variable
-    event_add(newEvent);
+    addEvent(newEvent);
 
     if (this_sensor->nextActor2 != NULL)
     {
         Event* newEvent2 = (Event*)malloc(sizeof(Event));
 		*newEvent2 = *newEvent;
         newEvent2->actorToFire = this_sensor->nextActor2;
-        event_add(newEvent2);
+        addEvent(newEvent2);
     }
 
     return;
@@ -547,10 +562,10 @@ long safeToProcess(Event* thisEvent) {
     long safeTimestamp = thisEvent->Tag.timestamp;
 
 	if (thisEvent->actorToFire->multipleInputs != 0) {
-	    if (thisEvent->actorToFire->fire_method == merge_fire)
+	    if (thisEvent->actorToFire->fireMethod == fireMerge)
 		{
 			safeTimestamp -= MERGE_MODEL_TIME_ADJUSTMENT; 
-		} else if (thisEvent->actorToFire->fire_method == computation_fire)
+		} else if (thisEvent->actorToFire->fireMethod == fireComputation)
 	    {        
 	    	safeTimestamp -= COMPUTATION_MODEL_TIME_ADJUSTMENT;
 		}
@@ -583,11 +598,10 @@ void
 UARTIntHandler(void)
 {
     unsigned long ulStatus;
-	
-	diableInterrupt();
-
 	Event* dummyEvent;
-    clock_fire(SOURCE1, dummyEvent);
+	
+	disableInterrupts();
+    fireClock(SOURCE1, dummyEvent);
 
     //
     // Get the interrrupt status.
@@ -602,13 +616,13 @@ UARTIntHandler(void)
 }
 
 //FIXME: which interrupt(s) should I disable/enable?
-void disableInterrupt() {
+void disableInterrupts() {
 	IntDisable(INT_UART0);
 	UARTIntDisable(UART0_BASE, UART_INT_RX | UART_INT_RT);
 	return;
 }
 
-void enableInterrupt() {
+void enableInterrupts() {
     IntEnable(INT_UART0);
     UARTIntEnable(UART0_BASE, UART_INT_RX | UART_INT_RT);
 	return;
@@ -711,23 +725,23 @@ int main(int argc, char *argv[])
 
 	SOURCE1 = &clock1;
 
-	clock1.fire_method = clock_fire;
+	clock1.fireMethod = fireClock;
 
-	computation1.fire_method = computation_fire;
+	computation1.fireMethod = fireComputation;
 
-	computation2.fire_method = computation_fire;
+	computation2.fireMethod = fireComputation;
 
-	computation3.fire_method = computation_fire;
+	computation3.fireMethod = fireComputation;
 
-	model_delay1.fire_method = model_delay_fire;
+	model_delay1.fireMethod = fireModelDelay;
 
-	model_delay2.fire_method = model_delay_fire;
+	model_delay2.fireMethod = fireModelDelay;
 
-	model_delay3.fire_method = model_delay_fire;
+	model_delay3.fireMethod = fireModelDelay;
 
-	merge1.fire_method = merge_fire;
+	merge1.fireMethod = fireMerge;
 
-	actuator1.fire_method = actuator_fire;
+	actuator1.fireMethod = fireActuator;
   
     //Dependencies between all the actors
 	//FIXME: HOW ARE PORTS NUMBERED??
@@ -769,12 +783,12 @@ int main(int argc, char *argv[])
 
     if (*argv[4] == 's'){
         //sensor_init is used to startup the system by sending an event.
-        sensor_init(&sensor1);
+        initSensor(&sensor1);
     }
     else if (*argv[4] == 'a'){
         //sensor_run is used to listen for events that comes from the sensor platform.
-		clock_init(&clock1);
-        sensor_init(&sensor2);
+		initClock(&clock1);
+        initSensor(&sensor2);
     }
     else
         printf("didn't not specify if this is an actuator or sensor!!!\n");

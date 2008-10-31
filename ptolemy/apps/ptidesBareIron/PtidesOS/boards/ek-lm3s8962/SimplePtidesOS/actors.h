@@ -33,5 +33,5 @@
 /******************************************************************************/
 
 
-void merge_fire(Actor*, Event*);
-void model_delay_fire(Actor*, Event*);
+void fireMerge(Actor*, Event*);
+void fireModelDelay(Actor*, Event*);

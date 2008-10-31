@@ -35,7 +35,7 @@
 typedef struct{
 
     Actor* containingActor;
-	int portIndex;
+    int portIndex;
 
 } Port;
 
