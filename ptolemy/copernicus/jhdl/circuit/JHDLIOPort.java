@@ -213,7 +213,7 @@ public class JHDLIOPort extends IOPort implements Signal {
         ir.setJHDLWire(insideWire);
     }
 
-    protected String _description(int detail, int indent, int bracket) {
+    protected String _description(int detail, int indent, int bracket) throws IllegalActionException {
         return super._description(detail, indent, bracket) + " { portWidth="
         + _portWidth + (isInput() ? " input" : " output") + " }";
     }

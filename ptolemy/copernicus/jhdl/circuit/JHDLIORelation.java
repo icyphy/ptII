@@ -132,7 +132,7 @@ public class JHDLIORelation extends IORelation implements Signal {
         _wire = wire;
     }
 
-    protected String _description(int detail, int indent, int bracket) {
+    protected String _description(int detail, int indent, int bracket) throws IllegalActionException {
         return super._description(detail, indent, bracket)
         + " { relationWidth=" + _portWidth + "}";
     }

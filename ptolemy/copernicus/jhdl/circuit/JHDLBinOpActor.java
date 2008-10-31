@@ -159,7 +159,7 @@ public class JHDLBinOpActor extends JHDLAtomicActor {
         System.out.println("Building cell with wire " + binOpWire);
     }
 
-    protected String _description(int detail, int indent, int bracket) {
+    protected String _description(int detail, int indent, int bracket) throws IllegalActionException {
         return super._description(detail, indent, bracket) + " { OP="
         + _operation + "}";
     }

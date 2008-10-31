@@ -472,8 +472,10 @@ public class DistributedSDFDirector extends SDFDirector {
      *  (servicen, (IDj, ..., IDr))).
      *  This structure is sent over the network to the corresponding service.
      *  The types of the port are also set on the remote actor.
+     *  
+     *  @exception IllegalActionException If the remote receivers can't be created.
      */
-    private void connectActors() {
+    private void connectActors() throws IllegalActionException {
         if (VERBOSE) {
             System.out.println("Connecting Actors");
             System.out.println(">> Creating Ports Receivers Map: ");
