@@ -931,12 +931,6 @@ public class Manager extends NamedObj implements Runnable {
                 _nameToAnalysis.clear();
                 _nameToAnalysis = null;
             }
-
-            // We should infer the widths before preinitializing the container, since the latter
-            // will create the receivers for which it needs the widths of the relations.
-            if (IORelation._USE_NEW_WIDTH_INFERENCE_ALGO) {
-                _inferRelationWidths();
-            }
             
             // Initialize the topology.
             // NOTE: Some actors require that parameters be set prior
@@ -951,6 +945,11 @@ public class Manager extends NamedObj implements Runnable {
             _container.preinitialize();
 
             executeChangeRequests();                      
+
+            // Infer widths (if not already done)
+            if (IORelation._USE_NEW_WIDTH_INFERENCE_ALGO) {
+                _inferRelationWidths();
+            }
             
             resolveTypes();
             _typesResolved = true;

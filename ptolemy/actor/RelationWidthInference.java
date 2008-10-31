@@ -67,12 +67,7 @@ public class RelationWidthInference {
         if (_needsWidthInference) {
             final boolean logTimings = false;
             long startTime = (new Date()).getTime();
-            
-            // widthChanged will become true if the width of a relation has been changed. In this
-            // case we need to update the version of the workspace.        
-            Boolean widthChanged = new Boolean(false);
-            HashSet<IORelation> originalUnspecifiedSet = new HashSet<IORelation>();
-            
+                        
             try {
                 _topLevel.workspace().getWriteAccess();
                     
@@ -93,11 +88,10 @@ public class RelationWidthInference {
                                     IOPort port = (IOPort) object;
                                     
                                     if (!port.isMultiport()) {
-                                        boolean relationWidthChanged = relation._setInferredWidth(1);
+                                        relation._setInferredWidth(1);
                                             //FIXME: Can be zero in the case that this relation
                                             //      has no other port connected to it
                                         
-                                        widthChanged = widthChanged || relationWidthChanged;    
                                         workingSet.add(relation);
                                         break; //Break the for loop.
                                     } else if (!port.isOpaque()){
@@ -121,9 +115,7 @@ public class RelationWidthInference {
                         }
                     }
                 }               
-                
-                originalUnspecifiedSet = (HashSet<IORelation>) unspecifiedSet.clone();
-                
+
                 LinkedList<IORelation> workingSet2 = new LinkedList<IORelation>(workingSet);
 
                 if (logTimings) {
@@ -152,8 +144,7 @@ public class RelationWidthInference {
                     for (Object otherRelationObject : relation.relationGroupList()) {
                         IORelation otherRelation = (IORelation) otherRelationObject;
                         if (relation != otherRelation && otherRelation.needsWidthInference()) {
-                            boolean relationWidthChanged = relation._setInferredWidth(width);
-                            widthChanged = widthChanged || relationWidthChanged;
+                            relation._setInferredWidth(width);
                             unspecifiedSet.remove(otherRelation);
                             // We don't need to add otherRelation to unspecifiedSet since
                             // we will process all ports linked to the complete relationGroup
@@ -173,7 +164,7 @@ public class RelationWidthInference {
                         }
                     }
                     for (IOPort port : multiports) {
-                        List<IORelation> updatedRelations = _relationsWithUpdatedWidthForMultiport(port, widthChanged);
+                        List<IORelation> updatedRelations = _relationsWithUpdatedWidthForMultiport(port);
                         workingSet2.addAll(updatedRelations);
                     }
                 }
@@ -192,21 +183,7 @@ public class RelationWidthInference {
                             + " explicitly specifying the width of this relation.");
                     
                 }
-            } finally {
-    
-                if (widthChanged) {
-                    _topLevel.workspace().incrVersion();
-                        // We increment the version here explicitly and don't call
-                        // workpace.doneWriting() since we want to keep the lock until
-                        // the end of this function. 
-                    
-    
-                    // reset version for inferred widths. This is necessary since we
-                    // incremented the version of the workspace
-                    for (IORelation relation : originalUnspecifiedSet) {
-                        relation._revalidateWidth();
-                    }            
-                }
+            } finally {   
                 _topLevel.workspace().doneTemporaryWriting();
                 if (logTimings) {
                     System.out.println("Time to do width inference: " +                
@@ -214,11 +191,9 @@ public class RelationWidthInference {
                                     + " ms.");
                 }
             }
-            _needsWidthInference = false;            
+            _needsWidthInference = false;
         }
-        
-        
-    }    
+    }
 
     /**
      *  Return whether the current widths of the relation in the model
@@ -281,14 +256,12 @@ public class RelationWidthInference {
     /**
      * Infer the width for the relations connected to the port. If the width can be
      * inferred, update the width and return the relations for which the width has been
-     * updated. If for one relation the width has actually been changed, widthChanged will be set
-     * to true.
+     * updated.
      * @param  port The port for whose connected relations the width should be inferred.
-     * @param  widthChanged The parameter will be set to true if the width has been changed.
      * @return The relations for which the width has been updated. 
      * @exception IllegalActionException If the widths of the relations at port are not consistent.  
      */
-    static private List<IORelation> _relationsWithUpdatedWidthForMultiport(IOPort port, Boolean widthChanged) throws IllegalActionException {              
+    static private List<IORelation> _relationsWithUpdatedWidthForMultiport(IOPort port) throws IllegalActionException {              
         List<IORelation> result = new LinkedList<IORelation>();
         
         Set<IORelation> insideUnspecifiedWidths = _relationsWithUnspecifiedWidths(port.insideRelationList());
@@ -337,8 +310,7 @@ public class RelationWidthInference {
         if (unspecifiedWidthsSize == 1 || unspecifiedWidthsSize == difference || difference == 0) {
             int width = difference / unspecifiedWidthsSize;
             for (IORelation relation : unspecifiedWidths) {
-                boolean relationWidthChanged = relation._setInferredWidth(width);
-                widthChanged = widthChanged || relationWidthChanged;
+                relation._setInferredWidth(width);
                 result.add(relation);
             }
         }

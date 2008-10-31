@@ -550,6 +550,9 @@ public class IORelation extends ComponentRelation {
                 Director director = ((CompositeActor) container).getDirector();
                 if (director != null) { 
                     widthInferenceValid = !director.needsWidthInference();
+                    if (widthInferenceValid) {
+                        _inferredWidthVersion = _workspace.getVersion(); 
+                    }
                     directorPresent = true;
                 }                
             }
@@ -766,15 +769,6 @@ public class IORelation extends ComponentRelation {
     ///////////////////////////////////////////////////////////////////
     ////                         packaged methods                  ////
     
-    /**
-     * Revalidate the last inferred width. This method reuse the last inferred
-     * width as current width. This packaged method is only meant for the width inference
-     * algorithm. It should not be used in other circumstances.
-     */
-    void _revalidateWidth() {
-        _inferredWidthVersion = workspace().getVersion();        
-    }
-    
     /** Set the inferred width of this relation. The width is the number of
      *  channels that the relation represents.
      *  This method is not synchronized on the workspace.
@@ -783,22 +777,16 @@ public class IORelation extends ComponentRelation {
      *  Precondition: you should only infer the width in case it
             is not set by the user.
      *  @param width The inferred width of the relation.
-     *  @return True if the new inferred width differs from the previously
-     *  inferred width. If the width has never been inferred before false
-     *  will be returned 
      */    
-    boolean _setInferredWidth(int width) {
+    void _setInferredWidth(int width) {
         assert _width == WIDTH_TO_INFER;
             // Precondition: you should only infer the width in case it
             // is not set by the user.
         _inferredWidthVersion = _workspace.getVersion();
         if (_inferredWidth != width) {
-            _inferredWidth = width;            
-            return true;
-        } else {
-            return false;
-        }        
-    }    
+            _inferredWidth = width;
+        }
+    }
     
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -859,7 +847,7 @@ public class IORelation extends ComponentRelation {
      * @throws IllegalActionException 
      */
     private int _inferWidth() throws IllegalActionException {
-        //The old algorithm for widht inference
+        //The old algorithm for width inference
         assert !_USE_NEW_WIDTH_INFERENCE_ALGO;
         long version = _workspace.getVersion();
 
