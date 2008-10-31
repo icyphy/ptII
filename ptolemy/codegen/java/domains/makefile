@@ -1,9 +1,9 @@
-# Makefile for Ptolemy Classic style Codegen
+# Makefile for Ptolemy Classic style Java Codegen domains
 #
-# @Version: $Id$
+# @Version: $Id: makefile 50840 2008-10-18 04:32:44Z sssf $
 # @Author: Christopher Brooks
 #
-# @Copyright (c) 2005-2006 The Regents of the University of California
+# @Copyright (c) 2008 The Regents of the University of California
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,12 +31,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/codegen
+ME =		ptolemy/codegen/java/domains
 
-DIRS =		kernel c gui java chaco vhdl test demo
+DIRS =		sdf #fsm hdf pn sdf giotto
 
 # Root of the Java directory
-ROOT =		../..
+ROOT =		../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,7 +45,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	codegen
+PTPACKAGE = 	domains
 PTCLASSJAR =
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
@@ -53,28 +53,26 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
 PTCLASSALLJARS = \
-	c/c.jar \
-	demo/demo.jar \
-	gui/gui.jar \
-	kernel/kernel.jar \
-	chaco/chaco.jar
+	sdf/sdf.jar
 
-# The vhdl work is incomplete, so we don't include it in the jar
-#	vhdl/vhdl.jar
+OLD_PTCLASSALLJARS = \
+	fsm/fsm.jar \
+	hdf/hdf.jar \
+	pn/pn.jar \
+	giotto/giotto.jar \
+
 
 # Keep this list alphabetized.
 JSRCS =
 
-OTHER_FILES_TO_BE_JARED = \
-	README.html \
-	codegen.xml
+OTHER_FILES_TO_BE_JARED =
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES = kernel c gui chaco vhdl test
+MISC_FILES =	fsm hdf pn sdf giotto
 
 
 # make checkjunk will not report OPTIONAL_FILES as trash

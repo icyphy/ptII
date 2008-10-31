@@ -1,9 +1,10 @@
-# Makefile for Ptolemy Classic style Codegen
+# Makefile for the Ptolemy Classic style code generation 
 #
-# @Version: $Id$
-# @Author: Christopher Brooks
+# @Authors: Christopher Brooks (makefile only)
 #
-# @Copyright (c) 2005-2006 The Regents of the University of California
+# @Version: $Id: makefile 49683 2008-05-31 01:22:37Z cxh $
+#
+# @Copyright (c) 2008 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -12,31 +13,28 @@
 # above copyright notice and the following two paragraphs appear in all
 # copies of this software.
 #
-# IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA  OR RESEARCH IN MOTION
-# LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL,
-# OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS SOFTWARE AND
-# ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA OR
-# RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
+# IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+# FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+# ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+# THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
 # THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 # INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 # MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 # PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-# CALIFORNIA  AND RESEARCH IN MOTION LIMITED
-# HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+# CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-##########################################################################
 
-ME =		ptolemy/codegen
+ME =		ptolemy/codegen/java/kernel/type
 
-DIRS =		kernel c gui java chaco vhdl test demo
+DIRS =		polymorphic
 
 # Root of the Java directory
-ROOT =		../..
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,7 +43,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	codegen
+PTPACKAGE = 	type
 PTCLASSJAR =
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
@@ -53,41 +51,37 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
 PTCLASSALLJARS = \
-	c/c.jar \
-	demo/demo.jar \
-	gui/gui.jar \
-	kernel/kernel.jar \
-	chaco/chaco.jar
+	polymorphic/polymorphic.jar
 
-# The vhdl work is incomplete, so we don't include it in the jar
-#	vhdl/vhdl.jar
-
-# Keep this list alphabetized.
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	README.html \
-	codegen.xml
+	Array.j \
+	Boolean.j \
+	Complex.j \
+	Double.j \
+	Int.j \
+	Long.j \
+	Matrix.j \
+	Pointer.j \
+	String.j \
+	UnsignedByte.j
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES = kernel c gui chaco vhdl test
-
+MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
+# make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo \
-	doc
+	doc \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-
-install: all jars $(PTPACKAGE).jar $(PTPACKAGE_NATIVE_JAR)
+install: jclass jars
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

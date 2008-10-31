@@ -421,7 +421,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             }
 
             try {
+		System.out.println("CodeGenerator: about to preinitialize");
                 manager.preinitializeAndResolveTypes();
+		System.out.println("CodeGenerator: done preinitializing");
                 returnValue = _generateCode(code);
             } finally {
                 // We call wrapup here so that the state gets set to idle.
@@ -430,7 +432,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                     long startTime = (new Date()).getTime();
                     manager.wrapup();
                     _printTimeAndMemory(startTime,
-                            "StaticSchedulingCodeGenerator: "
+                            "CodeGenerator: "
                                     + "wrapup consumed: ");
                 } catch (RuntimeException ex) {
                     // The Exit actor causes Manager.wrapup() to throw this.
@@ -704,7 +706,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 System.err.println("Usage: java -classpath $PTII "
                         + "ptolemy.codegen.kernel.CodeGenerator model.xml "
                         + "[model.xml . . .]" + _eol
-                        + "  The arguments name MoML files containing models");
+                        + "  The arguments name MoML files containing models."
+			+ "  Use -help to get a full list of command line arguments.");
                 return -1;
             }
 
@@ -761,8 +764,11 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                         // fail because the results don't match.
                         parser.reset();
                         MoMLParser.purgeModelRecord(modelURL);
+			System.out.println("CodeGenerator: about to parse " + modelURL);
                         toplevel = (CompositeActor) parser
                                 .parse(null, modelURL);
+			System.out.println("CodeGenerator: done parsing " + modelURL);
+
                     } catch (Exception ex) {
                         throw new Exception("Failed to parse \"" + args[i]
                                 + "\"", ex);
@@ -772,22 +778,42 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                     List codeGenerators = toplevel
                             .attributeList(CodeGenerator.class);
 
-                    if (codeGenerators.size() == 0) {
-                        // Add a codeGenerator
-                        // FIXME: This introduces a dependency to codegen.c
-                        // We should fix this by having a way to choose languages.
-                        codeGenerator = new CCodeGenerator(toplevel,
-                                "CodeGenerator_AutoAdded");
-                    } else {
+		    // If the user called this with -generatorPackage ptolemy.codegen.java,
+		    // the process that argument.  This is a bit hacky, but works.
+		    String generatorPackageValue = "ptolemy.codegen.c";
+		    int parameterIndex = -1; 
+		    if ( (parameterIndex = _parameterNames.indexOf("generatorPackage")) != -1) {
+			generatorPackageValue = _parameterValues.get(parameterIndex);
+		    }
+		    Class generatorClass = _getCodeGeneratorClass(generatorPackageValue);
+
+
+                    if (codeGenerators.size() != 0) {
                         // Get the last CodeGenerator in the list, maybe
                         // it was added last?
                         for (Object object : (List<CodeGenerator>) codeGenerators) {
-                            if (object instanceof CCodeGenerator) {
-                                codeGenerator = (CCodeGenerator) object;
+                            //if (object instanceof CCodeGenerator) {
+			    if (generatorClass.isInstance(object)) {
+                                codeGenerator = (CodeGenerator) object;
                                 break;
                             }
                         }
                     }
+
+                    if (codeGenerators.size() == 0 || codeGenerator == null) {
+                        // Add a codeGenerator
+                        // FIXME: This introduces a dependency to codegen.c
+                        // We should fix this by having a way to choose languages.
+                        //codeGenerator = new CCodeGenerator(toplevel,
+                        //        "CodeGenerator_AutoAdded");
+			Constructor codeGeneratorConstructor =
+			    generatorClass.getConstructor(new Class[] {
+				    NamedObj.class, 
+				    String.class});
+                        codeGenerator = (CodeGenerator) codeGeneratorConstructor.newInstance(new Object [] {
+				toplevel,
+                                "CodeGenerator_AutoAdded"});
+		    }
 
                     codeGenerator._updateParameters(toplevel);
                     codeGenerator.generateJNI.setExpression("false");
@@ -1824,6 +1850,31 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         String helperClassName = packageName + ".targets." + targetValue + "."
                 + upcaseTarget + "Target";
         return _instantiateHelper(component, helperClassName);
+    }
+
+    /** Get the code generator associated with the generatePackage parameter.
+     *  @param generatorPackageValue  The value of the generatorPackage parameter.
+     *  @return The CodeGenerator class that corresponds with the generatorPackage parameter.
+     *  For example, if generatorPackage is "ptolemy.codegen.c", then the class
+     *  "ptolemy.codegen.c.kernel.CCodeGenerator" is searched for.
+     *  @exception IllegalActionException If the helper class cannot be found.
+     */
+    private static Class _getCodeGeneratorClass(String generatorPackageValue)
+	throws IllegalActionException {
+	String language = generatorPackageValue.substring(generatorPackageValue.lastIndexOf("."));
+	String capitalizedLanguage = language.substring(1,2).toUpperCase() + language.substring(2);
+	String codeGeneratorClassName = generatorPackageValue + ".kernel." + capitalizedLanguage
+	    + "CodeGenerator";
+	Class result = null;
+	try {
+	    result = Class.forName(codeGeneratorClassName);
+	} catch (Throwable throwable) {
+	    throw new IllegalActionException("Failed to find \"" + codeGeneratorClassName
+					     + "\", generatorPackage parameter was \""
+					     + generatorPackageValue + "\".");
+
+	}
+	return result;
     }
 
     /** Instantiate the given code generator helper.

@@ -1,6 +1,6 @@
-# Makefile for Ptolemy Classic style Codegen
+# Makefile for Ptolemy Classic style Codegen sdf lib
 #
-# @Version: $Id$
+# @Version: $Id: makefile 46200 2007-05-29 17:32:20Z cxh $
 # @Author: Christopher Brooks
 #
 # @Copyright (c) 2005-2006 The Regents of the University of California
@@ -31,12 +31,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/codegen
+ME =		ptolemy/codegen/java/domains/sdf/lib
 
-DIRS =		kernel c gui java chaco vhdl test demo
+DIRS =		test
 
 # Root of the Java directory
-ROOT =		../..
+ROOT =		../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,36 +45,60 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	codegen
-PTCLASSJAR =
+PTPACKAGE = 	lib
+PTCLASSJAR =	$(PTPACKAGE).jar
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-# Include the .class files from these jars in PTCLASSALLJAR
-# If you change this, change DIRS above
-PTCLASSALLJARS = \
-	c/c.jar \
-	demo/demo.jar \
-	gui/gui.jar \
-	kernel/kernel.jar \
-	chaco/chaco.jar
-
-# The vhdl work is incomplete, so we don't include it in the jar
-#	vhdl/vhdl.jar
+JSRCS = \
+	Repeat.java \
+	SampleDelay.java
 
 # Keep this list alphabetized.
-JSRCS =
+OLD_JSRCS = \
+	ArrayToSequence.java \
+	BitsToInt.java \
+	Chop.java \
+	CountTrues.java \
+	DotProduct.java \
+	DownSample.java \
+	FIR.java \
+	IntToBits.java \
+	LMSAdaptive.java \
+	RaisedCosine.java \
+	SequenceToArray.java \
+	UpSample.java \
+	VariableFIR.java \
+	VariableLattice.java \
+	VariableRecursiveLattice.java
 
 OTHER_FILES_TO_BE_JARED = \
-	README.html \
-	codegen.xml
+	Repeat.j \
+	SampleDelay.j
+
+
+OLD_OTHER_FILES_TO_BE_JARED = \
+	ArrayToSequence.c \
+	BitsToInt.c \
+	Chop.c \
+	CountTrues.c \
+	DotProduct.c \
+	DownSample.c \
+	FIR.c \
+	IntToBits.c \
+	LMSAdaptive.c \
+	RaisedCosine.c \
+	SequenceToArray.c \
+	UpSample.c \
+	VariableFIR.c \
+	VariableLattice.c \
+	VariableRecursiveLattice.c \
+	sdfentities.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES = kernel c gui chaco vhdl test
+MISC_FILES =	test
 
 
 # make checkjunk will not report OPTIONAL_FILES as trash

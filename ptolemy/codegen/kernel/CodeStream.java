@@ -126,6 +126,7 @@ public class CodeStream {
      */
     public CodeStream(String path, CodeGenerator generator) {
         _filePath = path;
+	_originalFilePath = path;
         _codeGenerator = generator;
     }
 
@@ -338,7 +339,8 @@ public class CodeStream {
             } else {
                 throw new IllegalActionException(_helper,
                         "Cannot find code block: \"" + signature + "\" in "
-                        + _filePath + ".");
+                        + _filePath + ", the initial path was "
+		        + _originalFilePath + ".");
             }
         }
 
@@ -585,6 +587,7 @@ public class CodeStream {
 
         // Set the new filePath.
         _filePath = filePath;
+	_originalFilePath = filePath;
 
         // We do not follow the lazy-eval semantics here because the
         // user explicitly specified parsing here.
@@ -766,7 +769,12 @@ public class CodeStream {
             for (Class helperClass = _helper.getClass(); helperClass != null; helperClass = helperClass
             .getSuperclass()) {
 
+		// We don't always update _originalFilePath here so
+		// that we can have a better error message.
                 _filePath = _getPath(helperClass);
+		if (_originalFilePath == null) {
+		    _originalFilePath = _filePath;
+		}
 
                 _constructCodeTableHelper(mayNotExist);
 
@@ -904,6 +912,14 @@ public class CodeStream {
         String extension = _helper._codeGenerator.generatorPackage
         .getExpression();
         extension = extension.substring(extension.lastIndexOf(".") + 1);
+	// See also codegen/kernel/Director.java
+	if (extension.equals("java")) {
+	    // Sigh.  The problem is that for Java codegen, if we
+	    // have an actor Foo, then Foo.java defines the Java
+	    // interface, so we can't have the stub code in
+	    // Foo.java.  So, we use the j extension.
+	    extension = "j";
+	}
         return "$CLASSPATH/" + helperClass.getName().replace('.', '/') + "."
         + extension;
     }
@@ -1656,6 +1672,9 @@ public class CodeStream {
      * The helper associated with this code stream.
      */
     private CodeGeneratorHelper _helper = null;
+
+    /** Original value of _filePath, used for error messages. */
+    private String _originalFilePath = null;
 
     /**
      * Index pointer that indicates the current location

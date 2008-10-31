@@ -1,9 +1,9 @@
-# Makefile for Ptolemy Classic style Codegen
+# Makefile for helper classes that match ptolemy.actor.lib.colt classes
 #
-# @Version: $Id$
+# @Version: $Id: makefile 47451 2007-12-06 17:07:47Z cxh $
 # @Author: Christopher Brooks
 #
-# @Copyright (c) 2005-2006 The Regents of the University of California
+# @Copyright (c) 2007 The Regents of the University of California
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,57 +31,48 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/codegen
+ME =		ptolemy/codegen/java/actor/lib/colt
 
-DIRS =		kernel c gui java chaco vhdl test demo
+DIRS =		test
 
 # Root of the Java directory
-ROOT =		../..
+ROOT =		../../../../../..
 
-CLASSPATH =	$(ROOT)
+# $PTII/configure sets PTCOLT_JARS to include $PTII/vendors/misc/colt/colt.jar
+# and $PTII/lib/ptcolt.jar
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTCOLT_JARS)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	codegen
-PTCLASSJAR =
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-# Include the .class files from these jars in PTCLASSALLJAR
-# If you change this, change DIRS above
-PTCLASSALLJARS = \
-	c/c.jar \
-	demo/demo.jar \
-	gui/gui.jar \
-	kernel/kernel.jar \
-	chaco/chaco.jar
-
-# The vhdl work is incomplete, so we don't include it in the jar
-#	vhdl/vhdl.jar
+PTPACKAGE = 	colt
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS =
+JSRCS = \
+	ColtBinomialSelector.java \
+	ColtBinomial.java \
+	ColtPoisson.java \
+	ColtRandomSource.java
 
 OTHER_FILES_TO_BE_JARED = \
-	README.html \
-	codegen.xml
+	ColtBinomial.j \
+	ColtBinomialSelector.j \
+	ColtPoisson.j \
+	ColtRandomSource.j
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES = kernel c gui chaco vhdl test
-
+MISC_FILES =	test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	demo \
-	doc
+OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 

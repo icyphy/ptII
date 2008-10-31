@@ -1,6 +1,6 @@
-# Makefile for Ptolemy Classic style Codegen
+# Makefile for helper classes that match ptolemy.actor.lib.conversions classes
 #
-# @Version: $Id$
+# @Version: $Id: makefile 49685 2008-05-31 01:27:39Z cxh $
 # @Author: Christopher Brooks
 #
 # @Copyright (c) 2005-2006 The Regents of the University of California
@@ -31,12 +31,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/codegen
+ME =		ptolemy/codegen/java/actor/lib/conversions
 
-DIRS =		kernel c gui java chaco vhdl test demo
+DIRS =		test
 
 # Root of the Java directory
-ROOT =		../..
+ROOT =		../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,43 +45,49 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	codegen
-PTCLASSJAR =
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-# Include the .class files from these jars in PTCLASSALLJAR
-# If you change this, change DIRS above
-PTCLASSALLJARS = \
-	c/c.jar \
-	demo/demo.jar \
-	gui/gui.jar \
-	kernel/kernel.jar \
-	chaco/chaco.jar
-
-# The vhdl work is incomplete, so we don't include it in the jar
-#	vhdl/vhdl.jar
+PTPACKAGE = 	conversions
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS =
+JSRCS = \
+	Round.java
+
+OLD_JSRCS = \
+	BooleanToAnything.java \
+	CartesianToComplex.java \
+	CartesianToPolar.java \
+	ComplexToCartesian.java \
+	PolarToCartesian.java \
+	StringToIntArray.java \
+	StringToUnsignedByteArray.java \
+	TokenToExpression.java
 
 OTHER_FILES_TO_BE_JARED = \
-	README.html \
-	codegen.xml
+	Round.j \
+	conversions.xml
+
+OLD_OTHER_FILES_TO_BE_JARED = \
+	BooleanToAnything.c \
+	CartesianToComplex.c \
+	CartesianToPolar.c \
+	ComplexToCartesian.c \
+	PolarToCartesian.c \
+	StringToIntArray.c \
+	StringToUnsignedByteArray.c \
+	TokenToExpression.c
+
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES = kernel c gui chaco vhdl test
+MISC_FILES =	test
 
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo \
-	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 

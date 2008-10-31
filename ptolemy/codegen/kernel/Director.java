@@ -575,10 +575,19 @@ public class Director extends CodeGeneratorHelper {
         String extension = "";
         if (packageName.indexOf('.') != -1) { 
             // Usually, Directors are in packages like
-            // ptolemy.codedgen.c.  Thus "c" is the file extension
+            // ptolemy.codegen.c.  Thus "c" is the file extension
             // for the helper.  This is a bit of a hack.
             extension = packageName.substring(0,
                     packageName.indexOf('.'));
+
+	    // See also codegen/kernel/CodeStream.java
+	    if (extension.equals("java")) {
+		// Sigh.  The problem is that for Java codegen, if we
+		// have an actor Foo, then Foo.java defines the Java
+		// interface, so we can't have the stub code in
+		// Foo.java.  So, we use the j extension.
+		extension = "j";
+	    }
         }
         _codeStream = new CodeStream(
                 "$CLASSPATH/" + path + "." + extension, _codeGenerator);
