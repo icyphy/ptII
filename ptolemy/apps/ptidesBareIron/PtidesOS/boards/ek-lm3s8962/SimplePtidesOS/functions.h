@@ -32,12 +32,15 @@
  */
 /******************************************************************************/
 
+unsigned int alreadyFiring(Actor*);
+void currentlyFiring(Actor*);
 
 void addEvent(Event*);
 void removeEvent(void);
 void fireActor(Event*);
 long safeToProcess(Event*);
 void setActuationInterrupt(long);
+void setFiringActor(Actor*);
 void setTimedInterrupt(long);
 long getCurrentPhysicalTime(void);
 void disableInterrupts(void);

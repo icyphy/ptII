@@ -55,6 +55,7 @@ struct Actor {
 	unsigned int sourceActor;
 	unsigned int multipleInputs;
 
+	unsigned int firing;
     //actor methods
     //preinitialize();T_
     //initialize()

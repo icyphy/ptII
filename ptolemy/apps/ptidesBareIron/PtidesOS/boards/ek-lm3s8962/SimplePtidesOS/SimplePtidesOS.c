@@ -9,6 +9,7 @@
 /******************************************************************************/
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "../../../hw_ints.h"
 #include "../../../hw_memmap.h"
@@ -38,6 +39,10 @@
 #include "structures.h"
 #include "functions.h"
 #include "actors.h"
+
+#include "timer.h"
+
+//#include "clock-arch.h"
 
 /* Status LED and Push Buttons pin definitions */
 #define LED             GPIO_PIN_0 /* PF0 */
@@ -109,6 +114,13 @@ void fireActuator(Actor* this_actuator, Event* thisEvent) {
 }
 
 /**
+ * This function should only be called when the interrupt has been disabled
+ */
+unsigned int alreadyFiring(Actor* actor) {
+	return actor->firing;
+}
+
+/**
  * This function is basically the same as clock_init(), expect only this 
  * function is called through an event, thus we use addEvent() instead 
  * of event_insert() in this case.
@@ -146,7 +158,8 @@ void fireClock(Actor* this_clock, Event* thisEvent) {
     return;
 }
 
-/** This is the initilization for the clock actor.
+/** 
+ * This is the initilization for the clock actor.
  * its functionality is to provide events with intervals specified by 
  * CLOCK_PERIOD_SECS/NSECS.
  * At one time, CLOCK_EVNTS number of events are produced at a time, and they 
@@ -185,6 +198,13 @@ void initClock(Actor *this_clock)
     }
 
     return;
+}
+
+/**
+ * Set the firing flag of the actor, indicate that the actor is currenting being fired.
+ */
+void currentlyFiring(Actor* actor) {
+	actor->firing = 1;
 }
 
 /** 
@@ -320,7 +340,8 @@ void fireActor(Event* currentEvent)
 	} else {
 		die("no such method, cannot fire\n");
 	}
-	
+	fire_this->firing = 0;
+
     return;
 }
 
@@ -612,6 +633,16 @@ UARTIntHandler(void)
     //
     UARTIntClear(UART0_BASE, ulStatus);
 
+	clock_fire(SOURCE1, dummyEvent);
+
+	enableInterrupt();
+	
+	processEvents();	
+
+	// If processEvents() is currently trying
+    // to fill the output buffer of source
+    // actors, go back to the start of
+    // while(TRUE) in processEvents().		
 	STOP_SOURCE_PROCESS = TRUE;
 }
 
