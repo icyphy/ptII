@@ -1,6 +1,6 @@
 Dependencies for Project 'SimplePtidesOS', Target 'Simulator': (DO NOT MODIFY !)
 F (.\Startup.s)(0x47602A6A)(--device DLM -g --16 --apcs=interwork --pd "__MICROLIB SETA 1" -I "C:\workspace\Keil\ARM\INC\Luminary" --list ".\Lst\Startup.lst" --xref -o ".\Obj\Startup.o")
-F (.\SimplePtidesOS.c)(0x490AA0C6)(-c --device DLM -D__MICROLIB -g -O0 --apcs=interwork --diag_suppress 3419 -I "C:\workspace\Keil\ARM\INC\Luminary" -o ".\Obj\simpleptidesos.o" --depend ".\Obj\simpleptidesos.d")
+F (.\SimplePtidesOS.c)(0x490B5C0F)(-c --device DLM -D__MICROLIB -g -O0 --apcs=interwork --diag_suppress 3419 -I "C:\workspace\Keil\ARM\INC\Luminary" -o ".\Obj\simpleptidesos.o" --depend ".\Obj\simpleptidesos.d")
 I (C:\workspace\Keil\ARM\RV31\INC\stdio.h)(0x480465EC)
 I (C:\workspace\Keil\ARM\RV31\INC\stdlib.h)(0x480465EC)
 I (../../../hw_ints.h)(0x4741F74A)

@@ -191,6 +191,13 @@ void currentlyFiring(Actor* actor) {
 	actor->firing = 1;
 }
 
+/**
+ * Set the firing flag of the actor, indicate that the actor is currenting being fired.
+ */
+void finishedFiring(Actor* actor) {
+	actor->firing = 0;
+}
+
 /** 
  * This is the fire method for computation.
  * Computation method do not have any real functionality here, where we simply
@@ -290,24 +297,24 @@ void removeEvent()
     else printf("event queue is already empty\n");
 }
 
-/** 
- * execute_event() checks if the event is valid. If it is, then fire actor
- * is called.
- */
-void executeEvent(){
-
-    if (EVENT_QUEUE_HEAD == NULL) {
-        die("EVENT_QUEUE_HEAD should never be NULL\n");
-    }
-    else {
-        if (EVENT_QUEUE_HEAD->actorToFire == NULL){
-            die("executing an event where the actors are NULL!!\n");
-        }
-        else {
-            fireActor(EVENT_QUEUE_HEAD);
-        }
-    }
-}
+///** 
+// * execute_event() checks if the event is valid. If it is, then fire actor
+// * is called.
+// */
+//void executeEvent(){
+//
+//    if (EVENT_QUEUE_HEAD == NULL) {
+//        die("EVENT_QUEUE_HEAD should never be NULL\n");
+//    }
+//    else {
+//        if (EVENT_QUEUE_HEAD->actorToFire == NULL){
+//            die("executing an event where the actors are NULL!!\n");
+//        }
+//        else {
+//            fireActor(EVENT_QUEUE_HEAD);
+//        }
+//    }
+//}
 
 /** 
  * fire_actor checks if static timing analysis is needed.
@@ -324,7 +331,8 @@ void fireActor(Event* currentEvent)
 	} else {
 		die("no such method, cannot fire\n");
 	}
-	fire_this->firing = 0;
+
+	finishedFiring(fire_this);	
 
     return;
 }
@@ -456,13 +464,17 @@ void processEvents()
             Event* event = EVENT_QUEUE_HEAD;
             // Check which actor produced the event that we have processed
 			actor = event->actorFrom;
+			// FIXME: since there is only one instance of processing events running, we don't need
+			// the check for alreadyFiring(), in other words, alreadyFiring should always be false.
 			if (alreadyFiring(actor)) {
-				enableInterrupts();
-				break;
+				//enableInterrupts();
+				//break;
+				die("alreadyFiring should always be false within processEvents()");
 			} else {
 	            long processTime = safeToProcess(event);
 	            if (getCurrentPhysicalTime() >= processTime) {
 	                removeEvent();
+					currentlyFiring(actor);
 	                enableInterrupts();
 	                // Execute the event. During
 	                // this process more events may
@@ -520,6 +532,103 @@ void processEvents()
             	fireClock(SOURCE1, dummyEvent);
 			}
         }
+    }
+}
+
+/**
+ * This function is almost the same as processEvents, only that this function is called within interrupt service
+ * routines. When an event is not safe to process, or alreadyingFiring() is true, we return from this function,
+ * instead of waiting for events to process. We also do not deal with source actors within this process
+ *
+ * Also, maybe we should have a seperate event queue for events generated here...? Depends on what we really want.
+ */
+processAvailableEvents()
+{
+
+    //  To ensure this function is thread safe, we make sure only one processEvents() IS BEING EXECUTED AT A TIME
+    //  WHILE ANOTHER SENSOR MIGHT TRIGGER ANOTHER processEvents()
+    //  IF ANOTHER processEvents() is currently being executed, we don't really need to have another being executed at the same time...
+	Actor* actor;
+
+    while (1) {
+        disableInterrupts();
+        // If event queue is not empty.
+        if (EVENT_QUEUE_HEAD != NULL) {
+            Event* event = EVENT_QUEUE_HEAD;
+            // Check which actor produced the event that we have processed
+			actor = event->actorFrom;
+			if (alreadyFiring(actor)) {
+				enableInterrupts();
+				break;
+			} else {
+	            long processTime = safeToProcess(event);
+	            if (getCurrentPhysicalTime() >= processTime) {
+	                removeEvent();
+					currentlyFiring(actor);
+	                enableInterrupts();
+	                // Execute the event. During
+	                // this process more events may
+	                // be posted to the queue.
+	                fireActor(event);
+					free(event);
+	                // If the event just executed is
+	                // produced by a source actor
+	                if (actor->sourceActor != 0) {
+	                    // Decrement the buffer size
+	                    // by one.
+						if (actor == SOURCE1) {
+	                    	CK1_BUF_SIZE--;
+						}
+	                    // Make sure sourceBuffer is
+	                    // non-empty. If it is, fire
+	                    // the source actor once to
+	                    // produce some events.
+	                    if (CK1_BUF_SIZE == 0) {
+							//dummyEVent is never used.
+							Event* dummyEvent;
+	                        fireClock(SOURCE1, dummyEvent);
+							// firing of the actor should update the number of events in the buffer
+	                    }
+	                }
+	            }
+	            else {
+					// leave it for processEvents() to figure out what to do with source processes.
+					enableInterrupts();
+					break;
+//	                // There are no events safe to
+//	                // process, so setup sources
+//	                // to process.
+//	                STOP_SOURCE_PROCESS = FALSE;
+//	                // Set timed interrupt to run
+//	                // the event at the top of the
+//	                // event queue when physical time
+//	                // has passed for it to be
+//	                // safe to process
+//	                setTimedInterrupt(processTime);
+//	                enableInterrupts();
+	            }
+			}
+        } else {
+			// leave it for processEvents() to figure out what to do with source processes.
+			enableInterrupts();
+			break;
+//            // There are no events safe to
+//            // process, so setup sources
+//            // to process.
+//            STOP_SOURCE_PROCESS = FALSE;
+//            enableInterrupts();
+        }
+		// leave it for processEvents() to figure out what to do with source processes.
+//        // If there is no event to process and we
+//        // have not reached the buffer limit, fire
+//        // the source actor.
+//        // for (each source actors a) {
+//        if (STOP_SOURCE_PROCESS == FALSE) {
+//			if (CK1_BUF_SIZE < MAX_BUFFER_LIMIT) {
+//				Event* dummyEvent;
+//            	fireClock(SOURCE1, dummyEvent);
+//			}
+//        }
     }
 } 
 
@@ -623,7 +732,7 @@ UARTIntHandler(void)
 
 	enableInterrupts();
 	
-	processEvents();	
+	processAvailableEvents();	
 
 	// If processEvents() is currently trying
     // to fill the output buffer of source
