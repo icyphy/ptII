@@ -84,7 +84,7 @@ public class JavaCodeGenerator extends CodeGenerator {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        generatorPackage.setExpression("ptolemy.codegen.c");
+        generatorPackage.setExpression("ptolemy.codegen.java");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -104,13 +104,13 @@ public class JavaCodeGenerator extends CodeGenerator {
 
         if (functions.length > 0 && types.length > 0) {
 
-            code.append("#define NUM_TYPE " + types.length + _eol);
-            code.append("#define NUM_FUNC " + functions.length + _eol);
-            code.append("Token (*functionTable[NUM_TYPE][NUM_FUNC])"
+            code.append("private final int NUM_TYPE = " + types.length + ";" + _eol);
+            code.append("private final int NUM_FUNC = " + functions.length + ";" + _eol);
+            code.append("//Token (*functionTable[NUM_TYPE][NUM_FUNC])"
                     + "(Token, ...)= {" + _eol);
 
             for (int i = 0; i < types.length; i++) {
-                code.append("\t{");
+                code.append("//\t{");
                 for (int j = 0; j < functions.length; j++) {
                     if (functions[j].equals("isCloseTo")
                             && (types[i].equals("Boolean") || types[i]
@@ -145,7 +145,7 @@ public class JavaCodeGenerator extends CodeGenerator {
                 code.append(_eol);
             }
 
-            code.append("};" + _eol);
+            code.append("//};" + _eol);
         }
         return code.toString();
     }
@@ -159,9 +159,7 @@ public class JavaCodeGenerator extends CodeGenerator {
         // If the container is in the top level, we are generating code
         // for the whole model.
         if (isTopLevel()) {
-            // We use (void) so as to avoid the avr-gcc 3.4.6 warning:
-            // "function declaration isn't a prototype
-            return _eol + _eol + "void initialize(void) {" + _eol;
+            return _eol + _eol + "void initialize() {" + _eol;
 
             // If the container is not in the top level, we are generating code
             // for the Java and C co-simulation.
@@ -219,7 +217,13 @@ public class JavaCodeGenerator extends CodeGenerator {
         // for the whole model.
         if (isTopLevel()) {
             mainEntryCode.append(_eol + _eol
-                    + "int main(int argc, char *argv[]) {" + _eol);
+                    + "public static void main(String [] args) throws Exception {" + _eol
+				 + _sanitizedModelName + " model = new "
+				 + _sanitizedModelName + "();" + _eol
+				 + "model.run();" + _eol
+				 + "}" + _eol
+				 + "public void run() throws Exception {" + _eol);
+				 
             String targetValue = target.getExpression();
             if (!targetValue.equals(_DEFAULT_TARGET)) {
                 mainEntryCode.append("//FIXME: JavaCodeGenerator hack" + _eol
@@ -251,7 +255,7 @@ public class JavaCodeGenerator extends CodeGenerator {
     public String generateMainExitCode() throws IllegalActionException {
 
         if (isTopLevel()) {
-            return _INDENT1 + "exit(0);" + _eol + "}" + _eol;
+            return _INDENT1 + "System.exit(0);" + _eol + "}" + _eol + "}" + _eol;
         } else {
             return _INDENT1 + "return tokensToAllOutputPorts;" + _eol + "}"
                     + _eol;
@@ -267,7 +271,7 @@ public class JavaCodeGenerator extends CodeGenerator {
         // If the container is in the top level, we are generating code
         // for the whole model.
         if (isTopLevel()) {
-            return _eol + _eol + "boolean postfire(void) {" + _eol;
+            return _eol + _eol + "boolean postfire() {" + _eol;
 
             // If the container is not in the top level, we are generating code
             // for the Java and C co-simulation.
@@ -292,7 +296,7 @@ public class JavaCodeGenerator extends CodeGenerator {
      */
     public String generatePostfireProcedureName() throws IllegalActionException {
 
-        return _INDENT1 + "postfire(void);" + _eol;
+        return _INDENT1 + "postfire();" + _eol;
     }
 
     /**
@@ -335,14 +339,14 @@ public class JavaCodeGenerator extends CodeGenerator {
 
         // Generate type map.
         StringBuffer typeMembers = new StringBuffer();
-        code.append("#define TYPE_Token -1 " + _eol);
+        code.append("private final short TYPE_Token = -1;" + _eol);
         for (int i = 0; i < typesArray.length; i++) {
-            // Open the .c file for each type.
+            // Open the .j file for each type.
             typeStreams[i] = new CodeStream(
                     "$CLASSPATH/ptolemy/codegen/java/kernel/type/" + typesArray[i]
                             + ".j", this);
 
-            code.append("#define TYPE_" + typesArray[i] + " " + i + _eol);
+            code.append("private final short TYPE_" + typesArray[i] + " = " + i + ";"+ _eol);
 
             // Dynamically generate all the types within the union.
             if (i > 0) {
@@ -360,15 +364,15 @@ public class JavaCodeGenerator extends CodeGenerator {
         boolean defineEmptyToken = false;
 
         // Generate function map.
-        for (int i = 0; i < functionsArray.length; i++) {
+//         for (int i = 0; i < functionsArray.length; i++) {
 
-            code.append("#define FUNC_" + functionsArray[i] + " " + i + _eol);
-            if (functionsArray[i].equals("delete")) {
-                defineEmptyToken = true;
-            }
-        }
+//             code.append("#define FUNC_" + functionsArray[i] + " " + i + _eol);
+//             if (functionsArray[i].equals("delete")) {
+//                 defineEmptyToken = true;
+//             }
+//         }
 
-        code.append("typedef struct token Token;" + _eol);
+        //code.append("typedef struct token Token;" + _eol);
 
         // Generate type and function definitions.
         for (int i = 0; i < typesArray.length; i++) {
@@ -387,8 +391,8 @@ public class JavaCodeGenerator extends CodeGenerator {
             sharedStream.appendCodeBlock("tokenDeclareBlock", args);
 
             if (defineEmptyToken) {
-                sharedStream.append("Token emptyToken; "
-                        + comment("Used by *_delete() and others.") + _eol);
+                //sharedStream.append("Token emptyToken; "
+                //        + comment("Used by *_delete() and others.") + _eol);
             }
         }
 
@@ -398,58 +402,58 @@ public class JavaCodeGenerator extends CodeGenerator {
         // Set to true if we need to scalarDelete() method.
         boolean defineScalarDeleteMethod = false;
 
-        // Append type-polymorphic functions included in the function table.
-        for (int i = 0; i < types.size(); i++) {
-            // The "funcDeclareBlock" contains all function declarations for
-            // the type.
-            for (int j = 0; j < functionsArray.length; j++) {
-                String typeFunctionName = typesArray[i] + "_"
-                        + functionsArray[j];
-                if (_unsupportedTypeFunctions.contains(typeFunctionName)) {
-                    defineUnsupportedTypeFunctionMethod = true;
-                }
-                if (_scalarDeleteTypes.contains(typesArray[i])
-                        && functionsArray[j].equals("delete")) {
-                    defineScalarDeleteMethod = true;
-                }
-                if (functionsArray[j].equals("isCloseTo")
-                        && (typesArray[i].equals("Boolean") || typesArray[i]
-                                .equals("String"))) {
-                    boolean foundEquals = false;
-                    for (int k = 0; k < functionsArray.length; k++) {
-                        if (functionsArray[k].equals("equals")) {
-                            foundEquals = true;
-                        }
-                    }
-                    if (!foundEquals) {
-                        // Boolean_isCloseTo and String_isCloseTo
-                        // use Boolean_equals and String_equals.
-                        args.clear();
-                        args.add(typesArray[i] + "_equals");
-                        sharedStream.appendCodeBlock("funcHeaderBlock", args);
-                    }
-                }
-                if (!_scalarDeleteTypes.contains(typesArray[i])
-                        || !functionsArray[j].equals("delete")) {
-                    // Skip Boolean_delete etc.
-                    args.clear();
-                    args.add(typeFunctionName);
-                    sharedStream.appendCodeBlock("funcHeaderBlock", args);
-                }
-            }
-        }
+//         // Append type-polymorphic functions included in the function table.
+//         for (int i = 0; i < types.size(); i++) {
+//             // The "funcDeclareBlock" contains all function declarations for
+//             // the type.
+//             for (int j = 0; j < functionsArray.length; j++) {
+//                 String typeFunctionName = typesArray[i] + "_"
+//                         + functionsArray[j];
+//                 if (_unsupportedTypeFunctions.contains(typeFunctionName)) {
+//                     defineUnsupportedTypeFunctionMethod = true;
+//                 }
+//                 if (_scalarDeleteTypes.contains(typesArray[i])
+//                         && functionsArray[j].equals("delete")) {
+//                     defineScalarDeleteMethod = true;
+//                 }
+//                 if (functionsArray[j].equals("isCloseTo")
+//                         && (typesArray[i].equals("Boolean") || typesArray[i]
+//                                 .equals("String"))) {
+//                     boolean foundEquals = false;
+//                     for (int k = 0; k < functionsArray.length; k++) {
+//                         if (functionsArray[k].equals("equals")) {
+//                             foundEquals = true;
+//                         }
+//                     }
+//                     if (!foundEquals) {
+//                         // Boolean_isCloseTo and String_isCloseTo
+//                         // use Boolean_equals and String_equals.
+//                         args.clear();
+//                         args.add(typesArray[i] + "_equals");
+//                         sharedStream.appendCodeBlock("funcHeaderBlock", args);
+//                     }
+//                 }
+//                 if (!_scalarDeleteTypes.contains(typesArray[i])
+//                         || !functionsArray[j].equals("delete")) {
+//                     // Skip Boolean_delete etc.
+//                     args.clear();
+//                     args.add(typeFunctionName);
+//                     sharedStream.appendCodeBlock("funcHeaderBlock", args);
+//                 }
+//             }
+//         }
 
-        if (defineUnsupportedTypeFunctionMethod) {
-            // Some type/function combos are not supported, so we
-            // save space by defining only one method.
-            sharedStream.appendCodeBlock("unsupportedTypeFunction");
-        }
+//         if (defineUnsupportedTypeFunctionMethod) {
+//             // Some type/function combos are not supported, so we
+//             // save space by defining only one method.
+//             sharedStream.appendCodeBlock("unsupportedTypeFunction");
+//         }
 
-        if (defineScalarDeleteMethod) {
-            // Types that share the scalarDelete() method, which does nothing.
-            // We use one method so as to reduce code size.
-            sharedStream.appendCodeBlock("scalarDeleteFunction");
-        }
+//         if (defineScalarDeleteMethod) {
+//             // Types that share the scalarDelete() method, which does nothing.
+//             // We use one method so as to reduce code size.
+//             sharedStream.appendCodeBlock("scalarDeleteFunction");
+//         }
 
         code.append(sharedStream.toString());
 
@@ -509,8 +513,8 @@ public class JavaCodeGenerator extends CodeGenerator {
                     // generated code because the function table makes
                     // reference to this label.
 
-                    typeStreams[i].append("#define " + typesArray[i] + "_"
-                            + functionsArray[j] + " MISSING " + _eol);
+//                     typeStreams[i].append("#define " + typesArray[i] + "_"
+//                             + functionsArray[j] + " MISSING " + _eol);
 
                     // It is ok because this polymorphic function may not be
                     // supported by all types.
@@ -644,7 +648,7 @@ public class JavaCodeGenerator extends CodeGenerator {
         // If the container is in the top level, we are generating code
         // for the whole model.
         if (isTopLevel()) {
-            return _eol + _eol + "void wrapup(void) {" + _eol;
+            return _eol + _eol + "void wrapup() {" + _eol;
 
             // If the container is not in the top level, we are generating code
             // for the Java and C co-simulation.
@@ -710,7 +714,7 @@ public class JavaCodeGenerator extends CodeGenerator {
                     }
                 }
 
-                bodies.append("void " + methodName + "(void) {" + _eol
+                bodies.append("void " + methodName + "() {" + _eol
                         + body.toString() + "}" + _eol);
                 masterBody.append(methodName + "();" + _eol);
             }
@@ -741,13 +745,13 @@ public class JavaCodeGenerator extends CodeGenerator {
      *   include directories.
      */
     protected void _addActorIncludeDirectories() throws IllegalActionException {
-        ActorCodeGenerator helper = _getHelper(getContainer());
+//         ActorCodeGenerator helper = _getHelper(getContainer());
 
-        Set actorIncludeDirectories = helper.getIncludeDirectories();
-        Iterator includeIterator = actorIncludeDirectories.iterator();
-        while (includeIterator.hasNext()) {
-            addInclude("-I\"" + ((String) includeIterator.next()) + "\"");
-        }
+//         Set actorIncludeDirectories = helper.getIncludeDirectories();
+//         Iterator includeIterator = actorIncludeDirectories.iterator();
+//         while (includeIterator.hasNext()) {
+//             addInclude("-I\"" + ((String) includeIterator.next()) + "\"");
+//         }
     }
 
     /** Add libraries specified by the actors in this model.
@@ -755,20 +759,20 @@ public class JavaCodeGenerator extends CodeGenerator {
      *   libraries.
      */
     protected void _addActorLibraries() throws IllegalActionException {
-        ActorCodeGenerator helper = _getHelper(getContainer());
+//         ActorCodeGenerator helper = _getHelper(getContainer());
 
-        Set actorLibraryDirectories = helper.getLibraryDirectories();
-        Iterator libraryDirectoryIterator = actorLibraryDirectories.iterator();
-        while (libraryDirectoryIterator.hasNext()) {
-            addLibrary("-L\"" + ((String) libraryDirectoryIterator.next())
-                    + "\"");
-        }
+//         Set actorLibraryDirectories = helper.getLibraryDirectories();
+//         Iterator libraryDirectoryIterator = actorLibraryDirectories.iterator();
+//         while (libraryDirectoryIterator.hasNext()) {
+//             addLibrary("-L\"" + ((String) libraryDirectoryIterator.next())
+//                     + "\"");
+//         }
 
-        Set actorLibraries = helper.getLibraries();
-        Iterator librariesIterator = actorLibraries.iterator();
-        while (librariesIterator.hasNext()) {
-            addLibrary("-l\"" + ((String) librariesIterator.next()) + "\"");
-        }
+//         Set actorLibraries = helper.getLibraries();
+//         Iterator librariesIterator = actorLibraries.iterator();
+//         while (librariesIterator.hasNext()) {
+//             addLibrary("-l\"" + ((String) librariesIterator.next()) + "\"");
+//         }
     }
 
     /** Analyze the model to find out what connections need to be type
@@ -927,34 +931,30 @@ public class JavaCodeGenerator extends CodeGenerator {
         ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
         Set includingFiles = compositeActorHelper.getHeaderFiles();
 
-        includingFiles.add("<stdlib.h>"); // Sun requires stdlib.h for malloc
+        //includingFiles.add("<stdlib.h>"); // Sun requires stdlib.h for malloc
 
-        if (isTopLevel()
-                && ((BooleanToken) measureTime.getToken()).booleanValue()) {
-            includingFiles.add("<sys/time.h>");
-        }
+        //if (isTopLevel()
+        //        && ((BooleanToken) measureTime.getToken()).booleanValue()) {
+        //    includingFiles.add("<sys/time.h>");
+        //}
 
-        if (!isTopLevel()) {
-            includingFiles.add("\"" + _sanitizedModelName + ".h\"");
+        //if (!isTopLevel()) {
+        //    includingFiles.add("\"" + _sanitizedModelName + ".h\"");
+        //
+        //    includingFiles.addAll(((JavaCodeGeneratorHelper)compositeActorHelper).getJVMHeaderFiles());
+        //}
 
-            includingFiles.addAll(((JavaCodeGeneratorHelper)compositeActorHelper).getJVMHeaderFiles());
-        }
-
-        includingFiles.add("<stdarg.h>");
-        includingFiles.add("<stdio.h>");
-        includingFiles.add("<string.h>");
+        //includingFiles.add("<stdarg.h>");
+        //includingFiles.add("<stdio.h>");
+        //includingFiles.add("<string.h>");
 
         for (String file : (Set<String>) includingFiles) {
-            // Not all embedded platforms have all .h files.
-            // For example, the AVR does not have time.h
-            // FIXME: Surely we can control whether the files are
-            // included more than once rather than relying on #ifndef!
-            code.append("#ifndef PT_NO_"
-                    + file.substring(1, file.length() - 3).replace('/', '_')
-                            .toUpperCase() + "_H" + _eol + "#include " + file
-                    + _eol + "#endif" + _eol);
+	    if (!file.equals("<math.h>")
+		&& !file.equals("<stdio.h>")) {
+		code.append("import " + file + _eol);
+	    }
         }
-
+	code.append("public class " + _sanitizedModelName + " {" + _eol);
         return code.toString();
     }
 
@@ -1087,9 +1087,9 @@ public class JavaCodeGenerator extends CodeGenerator {
             substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "");
             substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "");
             if (((BooleanToken) generateCpp.getToken()).booleanValue()) {
-                substituteMap.put("@PTCGCompiler@", "g++");
+                substituteMap.put("@PTJavaCompiler@", "g++");
             } else {
-                substituteMap.put("@PTCGCompiler@", "gcc");
+                substituteMap.put("@PTJavaCompiler@", "javac");
             }
 
             String osName = StringUtilities.getProperty("os.name");

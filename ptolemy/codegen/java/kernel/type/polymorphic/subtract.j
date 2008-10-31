@@ -102,7 +102,7 @@ int subtract_Int_Boolean(int a1, boolean a2) {
 /**/
 
 /*** subtract_Int_Int() ***/
-inline int subtract_Int_Int(int a1, int a2) {
+int subtract_Int_Int(int a1, int a2) {
     return a1 - a2;
 }
 /**/

@@ -322,7 +322,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 
         CompositeActor container = (CompositeActor) getComponent()
                 .getContainer();
-        ptolemy.codegen.java.actor.TypedCompositeActor compositeActorHelper = (ptolemy.codegen.java.actor.TypedCompositeActor) _getHelper(container);
+        ptolemy.codegen.c.actor.TypedCompositeActor compositeActorHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
 
         if (container instanceof CompiledCompositeActor
                 && ((BooleanToken) _codeGenerator.generateJNI.getToken())

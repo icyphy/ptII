@@ -479,6 +479,14 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
         return code.toString();
     }
 
+    /** Return the prototype for fire functions.
+     * @return The string"(void)" so as to avoid the avr-gcc 3.4.6
+     * warning: "function declaration isn't a prototype"
+     */ 
+    protected String _getFireFunctionArguments() {
+	return "(void)";
+    }
+
     protected String _replaceMacro(String macro, String parameter)
             throws IllegalActionException {
         String result = super._replaceMacro(macro, parameter);

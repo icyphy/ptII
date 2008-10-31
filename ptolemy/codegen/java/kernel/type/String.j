@@ -11,7 +11,7 @@ Token String_new(char* s);
 Token String_new(char* s) {
     Token result;
     result.type = TYPE_String;
-    result.payload.String = strdup(s);
+    result.payload.String = new String(s);
     return result;
 }
 /**/

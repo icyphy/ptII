@@ -90,7 +90,9 @@ inline double convert_Int_Double(int a) {
 /**/
 
 /*** convert_Int_Int() ***/
-#define convert_Int_Int(a) a
+int convert_Int_Int(int a) {
+    return a;
+}
 /**/
 
 /*** convert_Int_String() ***/

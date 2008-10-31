@@ -42,7 +42,9 @@ import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.ParseTreeCodeGenerator;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.Type;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.ExecuteCommands;
@@ -93,6 +95,11 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    public static String codeGenJavaType(Type type) {
+	String ptolemyType = CodeGeneratorHelper.codeGenType(type);
+	return ptolemyType.replace("Int", "Integer");
+    }
 
     /** Return a new parse tree code generator to use with expressions.
      *  @return the parse tree code generator to use with expressions.
@@ -364,6 +371,23 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
                     + generateName(inputPort));
 
             int bufferSize = getBufferSize(inputPort);
+
+            if (inputPort.isMultiport()) {
+                code.append("[]");
+                if (bufferSize > 1 || dynamicReferencesAllowed) {
+                    code.append("[]");
+                }
+		code.append(" = new " + targetType(inputPort.getType()));
+	    } else {
+                if (bufferSize > 1) {
+                    code.append("[]");
+		    code.append(" = new " + targetType(inputPort.getType()));
+                } else {
+		    code.append(" = ");
+                }
+	    }
+
+
             if (inputPort.isMultiport()) {
                 code.append("[" + inputPort.getWidth() + "]");
                 if (bufferSize > 1 || dynamicReferencesAllowed) {
@@ -372,9 +396,10 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
             } else {
                 if (bufferSize > 1) {
                     code.append("[" + bufferSize + "]");
-                }
-            }
-
+		} else {
+		    code.append("0");
+		}
+	    }
             code.append(";" + _eol);
         }
 
@@ -479,6 +504,42 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
         return code.toString();
     }
 
+    protected String _getReference(Attribute attribute, String[] channelAndOffset)
+    throws IllegalActionException {
+        StringBuffer result = new StringBuffer();
+        //FIXME: potential bug: if the attribute is not a parameter,
+        //it will be referenced but not declared.
+        if (attribute instanceof Parameter) {
+            _referencedParameters.add(attribute);
+        }
+
+        result.append(_codeGenerator.generateVariableName(attribute));
+
+        if (!channelAndOffset[0].equals("")) {
+            throw new IllegalActionException(getComponent(),
+            "a parameter cannot have channel number.");
+        }
+
+        if (!channelAndOffset[1].equals("")) {
+            Type elementType = ((ArrayType) ((Parameter) attribute)
+                    .getType()).getElementType();
+
+            //result.append("[" + channelAndOffset[1] + "]");
+            result.insert(0, "((" 
+			  + codeGenJavaType(elementType)
+			  + ")(Array_get(");
+            result.append(" ," + channelAndOffset[1] + ")");
+
+
+            if (isPrimitive(elementType)) {
+                result.append(".payload))."
+			      + codeGenType(elementType).toLowerCase()
+			      + "Value()");
+            }
+        }
+        return result.toString();
+    }
+
     protected String _replaceMacro(String macro, String parameter)
             throws IllegalActionException {
         String result = super._replaceMacro(macro, parameter);
@@ -498,7 +559,7 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
                         + " is not a port. $refinePrimitiveType macro takes in a port.");
             }
             if (isPrimitive(port.getType())) {
-                return ".payload." + codeGenType(port.getType());
+                return ".payload/*jcgh*/." + codeGenJavaType(port.getType());
             } else {
                 return "";
             }

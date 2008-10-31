@@ -1623,8 +1623,8 @@ ParseTreeCodeGenerator {
         Type elementType = ((ArrayType) type).getElementType();
 
         //_fireCode.append(".payload." + CodeGeneratorHelper.codeGenType(elementType));
-        _childCode = result + ".payload."
-        + CodeGeneratorHelper.codeGenType(elementType);
+        _childCode = result + ".payload/*jptcg*/."
+        + JavaCodeGeneratorHelper.codeGenJavaType(elementType);
     }
 
     /** Evaluate the child with the given index of the given node.

@@ -1,44 +1,52 @@
 /***declareBlock***/
-
+// java/kernel/type/Array.j
+private class array {
+    public int size;
+    public Token [] elements;	
+}
 // Definition of the array struct.
-struct array {
-    int size;                                   // size of the array.
-    Token* elements;                            // array of Token elements.
-    //char elementType;                          // type of the elements.
-};
-typedef struct array* ArrayToken;
+//struct array {
+//    int size;                                   // size of the array.
+//    Token* elements;                            // array of Token elements.
+//    //char elementType;                          // type of the elements.
+//};
+//typedef struct array* ArrayToken;
 /**/
 
 /***funcDeclareBlock***/
 
-Token Array_new(int size, int given, ...);
+//Token Array_new(int size, int given, ...);
 
 // Array_get: get an element of an array.
 Token Array_get(Token array, int i) {
-    return array.payload.Array->elements[i];
+    //return array.payload.Array->elements[i];
+    return ((array)(array.payload)).elements[i];
 }
 
 // Array_set: set an element of an array.
 void Array_set(Token array, int i, Token element) {
-        array.payload.Array->elements[i] = element;
+    //array.payload.Array->elements[i] = element;
+    ((array)(array.payload)).elements[i] = element;
 }
 
 // Array_resize: Change the size of an array,
 // preserving those elements that fit.
 void Array_resize(Token array, int size) {
-        array.payload.Array->size = size;
+        //array.payload.Array->size = size;
         // FIXME: Does realloc() initialize memory? If not, then we need to do that.
-        array.payload.Array->elements = (Token*) realloc(array.payload.Array->elements, size * sizeof(Token));
+        //array.payload.Array->elements = (Token*) realloc(array.payload.Array->elements, size * sizeof(Token));
 }
 
 // Array_insert: Append the specified element to the end of an array.
 void Array_insert(Token array, Token token) {
-    int oldSize = array.payload.Array->size++;
-    Array_resize(array, array.payload.Array->size);
-    array.payload.Array->elements[oldSize] = token;
+    //int oldSize = array.payload.Array->size++;
+    //Array_resize(array, array.payload.Array->size);
+    //array.payload.Array->elements[oldSize] = token;
 }
 
-#define Array_length(array) ((array).payload.Array->size)
+int Array_length(Token array) {
+    return ((array)(array.payload)).size;
+}
 
 /**/
 
@@ -51,45 +59,36 @@ void Array_insert(Token array, Token token) {
 // The rest of the arguments are the provided elements (there
 // should be "given" of them). The given elements
 // should be of type Token *.
-Token Array_new(int size, int given, ...) {
-    va_list argp;
+// The last element is the type, which is why this takes Object...
+// and not Token...
+Token Array_new(int size, int given, Object... elements) {
     int i;
-    Token result;
-    char elementType;
+    Token result = new Token();
+    Short elementType;
+
+    array array = new array();
+    array.size = size;
+    array.elements = new Token[size];
 
     result.type = TYPE_Array;
-    result.payload.Array = (ArrayToken) malloc(sizeof(struct array));
-    result.payload.Array->size = size;
+    result.payload = array;
 
-    // Only call calloc if size > 0.  Otherwise Electric Fence reports
-    // an error.
-    if (size > 0) {
-        // Allocate an new array of Tokens.
-        result.payload.Array->elements = (Token*) calloc(size, sizeof(Token));
+    if (size > 0 && given > 0) {
 
-        if (given > 0) {
-            va_start(argp, given);
-
-            for (i = 0; i < given; i++) {
-                result.payload.Array->elements[i] = va_arg(argp, Token);
-            }
-
-            // elementType is given as the last argument.
-            elementType = va_arg(argp, int);
-            //result.payload.Array->elementType = elementType;
-
-            if (elementType >= 0) {
-                // convert the elements if needed.
-                for (i = 0; i < given; i++) {
-                    if (Array_get(result, i).type != elementType) {
-                        Array_set(result, i, functionTable[(int)elementType][FUNC_convert](Array_get(result, i)));
-                    }
-                }
-            }
-
-            va_end(argp);
+        for (i = 0; i < given; i++) {
+            array.elements[i] = (Token)elements[i];
         }
-    }
+        // elementType is given as the last argument.
+        elementType = (Short) elements[i];
+
+        // convert the elements if needed.
+        for (i = 0; i < given; i++) {
+            if (Array_get(result, i).type != elementType) {
+                //Array_set(result, i, functionTable[(int)elementType][FUNC_convert](Array_get(result, i)));
+		System.out.println("Array_new: convert needs work");
+            }
+        }
+    } 
     return result;
 }
 /**/
@@ -98,21 +97,22 @@ Token Array_new(int size, int given, ...) {
 /***Array_delete***/
 
 // Array_delete: FIXME: What does this do?
-Token Array_delete(Token token, ...) {
+Token Array_delete(Token token, Object... elements) {
     int i;
-    Token element, emptyToken;
+    Token element;
 
     // Delete each elements.
-    for (i = 0; i < token.payload.Array->size; i++) {
+    for (i = 0; i < ((array)(token.payload)).size; i++) {
             element = Array_get(token, i);
-        functionTable[(int)element.type][FUNC_delete](element);
+		System.out.println("Array_delete: convert needs work");      
+        //functionTable[(int)element.type][FUNC_delete](element);
     }
-    free(token.payload.Array->elements);
-    free(token.payload.Array);
+    //free(token.payload.Array->elements);
+    //free(token.payload.Array);
     /* We need to return something here because all the methods are declared
      * as returning a Token so we can use them in a table of functions.
      */
-    return emptyToken;
+    return null;
 }
 /**/
 
@@ -120,12 +120,10 @@ Token Array_delete(Token token, ...) {
 /***Array_equals***/
 
 // Array_equals: Test an array for equality with a second array.
-Token Array_equals(Token thisToken, ...) {
+Token Array_equals(Token thisToken, Token... tokens) {
     int i;
-    va_list argp;
     Token otherToken;
-    va_start(argp, thisToken);
-    otherToken = va_arg(argp, Token);
+    otherToken = tokens[0];
 
     if (thisToken.payload.Array->size != otherToken.payload.Array->size) {
         return Boolean_new(false);
@@ -137,7 +135,6 @@ Token Array_equals(Token thisToken, ...) {
         }
     }
 
-    va_end(argp);
     return Boolean_new(true);
 }
 /**/
@@ -145,25 +142,23 @@ Token Array_equals(Token thisToken, ...) {
 /***Array_isCloseTo***/
 
 // Array_isCloseTo: Test an array to see whether it is close in value to another.
-Token Array_isCloseTo(Token thisToken, ...) {
+Token Array_isCloseTo(Token thisToken, Token... elements) {
     int i;
-    va_list argp;
     Token otherToken;
     Token tolerance;
-    va_start(argp, thisToken);
-    otherToken = va_arg(argp, Token);
-    tolerance = va_arg(argp, Token);
+    otherToken = elements[0];
+    tolerance = elements[1];
 
-    if (thisToken.payload.Array->size != otherToken.payload.Array->size) {
+    if (((array)thisToken.payload).size != ((array)otherToken.payload).size) {
         return Boolean_new(false);
     }
-    for (i = 0; i < thisToken.payload.Array->size; i++) {
-        if (!functionTable[(int)Array_get(thisToken, i).type][FUNC_isCloseTo](Array_get(thisToken, i), Array_get(otherToken, i), tolerance).payload.Boolean) {
+    for (i = 0; i < ((array)thisToken.payload).size; i++) {
+    	System.out.println("Array_isCloseTo: convert needs work");
+	//if (!functionTable[(int)Array_get(thisToken, i).type][FUNC_isCloseTo](Array_get(thisToken, i), Array_get(otherToken, i), tolerance).payload.Boolean) {
             return Boolean_new(false);
-        }
+        //}
     }
 
-    va_end(argp);
     return Boolean_new(true);
 }
 /**/
@@ -235,7 +230,7 @@ Token Array_add(Token thisToken, ...) {
     int resultSize;
 
     va_list argp;
-    Token result;
+    Token result = new Token();
     Token otherToken;
 
     va_start(argp, thisToken);
@@ -304,7 +299,6 @@ Token Array_subtract(Token thisToken, ...) {
         }
     }
 
-    va_end(argp);
     return result;
 }
 /**/
@@ -316,36 +310,35 @@ Token Array_subtract(Token thisToken, ...) {
 // Multiplication is element-wise.
 // Assume the given otherToken is array type.
 // Return a new Array token.
-Token Array_multiply(Token thisToken, ...) {
+Token Array_multiply(Token thisToken, Token... elements) {
     int i;
     int size1;
     int size2;
     int resultSize;
 
-    va_list argp;
     Token result;
     Token otherToken;
 
-    va_start(argp, thisToken);
-    otherToken = va_arg(argp, Token);
+    otherToken = elements[0];
 
-    size1 = thisToken.payload.Array->size;
-    size2 = otherToken.payload.Array->size;
+    size1 = ((array)(thisToken.payload)).size;
+    size2 = ((array)(otherToken.payload)).size;
     resultSize = (size1 > size2) ? size1 : size2;
 
     result = Array_new(resultSize, 0);
 
     for (i = 0; i < resultSize; i++) {
-        if (size1 == 1) {
-            result.payload.Array->elements[i] = functionTable[(int)Array_get(thisToken, 0).type][FUNC_multiply](Array_get(thisToken, 0), Array_get(otherToken, i));
-        } else if (size2 == 1) {
-            result.payload.Array->elements[i] = functionTable[(int)Array_get(otherToken, 0).type][FUNC_multiply](Array_get(thisToken, i), Array_get(otherToken, 0));
-        } else {
-            result.payload.Array->elements[i] = functionTable[(int)Array_get(thisToken, i).type][FUNC_multiply](Array_get(thisToken, i), Array_get(otherToken, i));
-        }
+    	System.out.println("Array_new: convert needs work");
+
+        //if (size1 == 1) {
+        //      result.payload.Array->elements[i] = functionTable[(int)Array_get(thisToken, 0).type][FUNC_multiply](Array_get(thisToken, 0), Array_get(otherToken, i));
+        //} else if (size2 == 1) {
+        //    result.payload.Array->elements[i] = functionTable[(int)Array_get(otherToken, 0).type][FUNC_multiply](Array_get(thisToken, i), Array_get(otherToken, 0));
+        //} else {
+        //    result.payload.Array->elements[i] = functionTable[(int)Array_get(thisToken, i).type][FUNC_multiply](Array_get(thisToken, i), Array_get(otherToken, i));
+        //}
     }
 
-    va_end(argp);
     return result;
 }
 /**/
@@ -502,29 +495,27 @@ Token arrayRepeat(int number, Token value) {
 // into the type specified by the second argument.
 // @param token The token to be converted.
 // @param targetType The type to convert the elements of the given token to.
-Token Array_convert(Token token, ...) {
+Token Array_convert(Token token, Short... targetTypes) {
     int i;
     Token result;
     Token element;
-    va_list argp;
-    char targetType;
+    Short targetType;
 
-    va_start(argp, token);
-    targetType = va_arg(argp, int);
+    targetType = targetTypes[0];
 
 
-    result = Array_new(token.payload.Array->size, 0);
+    result = Array_new(((array)token.payload).size, 0);
 
-    for (i = 0; i < token.payload.Array->size; i++) {
+    for (i = 0; i < ((array)token.payload).size; i++) {
         element = Array_get(token, i);
         if (targetType != element.type) {
-            result.payload.Array->elements[i] = functionTable[(int)targetType][FUNC_convert](element);
+            //result.payload.Array->elements[i] = functionTable[(int)targetType][FUNC_convert](element);
+	    System.out.println("Array_conver: convert needs work");
         } else {
-            result.payload.Array->elements[i] = element;
+            ((array)(result.payload)).elements[i] = element;
         }
     }
 
-    va_end(argp);
     return result;
 }
 /**/

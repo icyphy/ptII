@@ -1,17 +1,15 @@
 /***declareBlock***/
-typedef double DoubleToken;
 /**/
 
 /***funcDeclareBlock***/
-Token Double_new(double d);
 /**/
 
 /***Double_new***/
 // make a new integer token from the given value.
 Token Double_new(double d) {
-    Token result;
+    Token result = new Token();
     result.type = TYPE_Double;
-    result.payload.Double = d;
+    result.payload = Double.valueOf(d);
     return result;
 }
 /**/
@@ -40,22 +38,19 @@ Token Double_equals(Token thisToken, ...) {
 
 /***Double_isCloseTo***/
 $include(<math.h>)
-Token Double_isCloseTo(Token thisToken, ...) {
-    va_list argp;
+Token Double_isCloseTo(Token thisToken, Token... tokens) {
     Token otherToken;
     Token tolerance;
-    va_start(argp, thisToken);
-    otherToken = va_arg(argp, Token);
-    tolerance = va_arg(argp, Token);
+    otherToken = tokens[0];
+    tolerance = tokens[0];
 
-    va_end(argp);
-    return Boolean_new(fabs(thisToken.payload.Double - otherToken.payload.Double) < tolerance.payload.Double);
+    return Boolean_new(Math.abs((Double)thisToken.payload - (Double)otherToken.payload) < (Double)tolerance.payload);
 }
 /**/
 
 /***Double_print***/
 Token Double_print(Token thisToken, ...) {
-    printf("%g", thisToken.payload.Double);
+    System.out.printf("%g", thisToken.payload.Double);
 }
 /**/
 
@@ -81,16 +76,16 @@ Token Double_add(Token thisToken, ...) {
     	result = Double_new(thisToken.payload.Double + otherToken.payload.Double);
     	break;
     	
-#ifdef TYPE_Array
+//#ifdef TYPE_Array
     case TYPE_Array:
         result = $add_Double_Array(thisToken.payload.Double, otherToken);
         break;
-#endif
+//#endif
     
 	// FIXME: not finished
     default:
-        fprintf(stderr, "Double_multiply(): Multiply with an unsupported type. (%d)\n", otherToken.type);
-        exit(1);
+        System.err.printf("Double_multiply(): Multiply with an unsupported type. (%d)\n", otherToken.type);
+        System.exit(1);
     }
 
     va_end(argp);
@@ -114,16 +109,16 @@ Token Double_subtract(Token thisToken, ...) {
     	result = Double_new(thisToken.payload.Double - otherToken.payload.Double);
     	break;
     	
-#ifdef TYPE_Array
+//#ifdef TYPE_Array
     case TYPE_Array:
         result = $subtract_Double_Array(thisToken.payload.Double, otherToken);
         break;
-#endif
+//#endif
     
 	// FIXME: not finished
     default:
-        fprintf(stderr, "Double_multiply(): Multiply with an unsupported type. (%d)\n", otherToken.type);
-        exit(1);
+        System.err.printf("Double_multiply(): Multiply with an unsupported type. (%d)\n", otherToken.type);
+        System.exit(1);
     }
 
     va_end(argp);
@@ -132,39 +127,34 @@ Token Double_subtract(Token thisToken, ...) {
 /**/
 
 /***Double_multiply***/
-Token multiply_Double_Array(double a1, Token a2);
-
-Token Double_multiply(Token thisToken, ...) {
-    va_list argp;
-    Token result;
+Token Double_multiply(Token thisToken, Token... tokens) {
+    Token result = new Token();
     Token otherToken;
 
-    va_start(argp, thisToken);
-    otherToken = va_arg(argp, Token);
+    otherToken = tokens[0];
 
     switch (otherToken.type) {
     case TYPE_Double:
-        result = Double_new(thisToken.payload.Double * otherToken.payload.Double);
+        result = Double_new((Double)(thisToken.payload) * (Double)(otherToken.payload));
         break;
-#ifdef TYPE_Int
+//#ifdef TYPE_Int
     case TYPE_Int:
-        result = Double_new(thisToken.payload.Double * otherToken.payload.Int);
+        result = Double_new((Double)(thisToken.payload) * (Integer)otherToken.payload);
         break;
-#endif
+//#endif
 
-#ifdef TYPE_Array
+//#ifdef TYPE_Array
     case TYPE_Array:
-        result = $multiply_Double_Array(thisToken.payload.Double, otherToken);
+        result = $multiply_Double_Array((Double)thisToken.payload, otherToken);
         break;
-#endif
+//#endif
 
         // FIXME: not finished
     default:
-        fprintf(stderr, "Double_multiply(): Multiply with an unsupported type. (%d)\n", otherToken.type);
-        exit(1);
+        System.err.printf( "Double_multiply(): Multiply with an unsupported type. (%d)\n", otherToken.type);
+        System.exit(1);
     }
 
-    va_end(argp);
     return result;
 }
 /**/
@@ -213,29 +203,26 @@ Token Double_clone(Token thisToken, ...) {
 
 --------------------- static functions --------------------------
 /***Double_convert***/
-Token Double_convert(Token token, ...) {
+Token Double_convert(Token token, Token... elements) {
     switch (token.type) {
-#ifdef TYPE_String
-    case TYPE_String:
-        // FIXME: Is this safe?
-        token.type = TYPE_Double;
-        if (sscanf(token.payload.String, "%lg", &token.payload.Double) != 1) {
-            fprintf(stderr, "Double_convert(): failed to convert \"%s\" to a Double\n", token.payload.String);
-            exit(-1);
-        }
-        break;
-#endif
-#ifdef TYPE_Int
+//#ifdef TYPE_String
+//    case TYPE_String:
+//        // FIXME: Is this safe?
+//        token.type = TYPE_Double;
+//	token.payload = (Double)(token.payload).toString();
+//        break;
+//#endif
+//#ifdef TYPE_Int
     case TYPE_Int:
         token.type = TYPE_Double;
-        token.payload.Double = InttoDouble(token.payload.Int);
+        token.payload = InttoDouble((Integer)(token.payload));
         break;
-#endif
+//#endif
 
         // FIXME: not finished
     default:
-        fprintf(stderr, "Double_convert(): Conversion from an unsupported type. (%d)\n", token.type);
-        exit(-1);
+        System.err.printf("Double_convert(): Conversion from an unsupported type. (%d)\n", token.type);
+        System.exit(-1);
         break;
     }
     token.type = TYPE_Double;

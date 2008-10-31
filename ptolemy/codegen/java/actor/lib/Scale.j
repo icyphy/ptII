@@ -14,18 +14,20 @@ if ($ref(scaleOnLeft)) {
 /***sharedScaleOnLeftBlock***/
 Token Scale_scaleOnLeft(Token input, double factor) {
     int i;
-    Token result;
+    Token result = new Token();
 
     if (input.type == TYPE_Array) {
-            result = $new(Array(input.payload.Array->size, 0));
+            result = $new(Array(((array)(input.payload)).size, 0));
 
-        for (i = 0; i < input.payload.Array->size; i++) {
-            result.payload.Array->elements[i] = Scale_scaleOnLeft(Array_get(input, i), factor);
+        for (i = 0; i < ((array)(input.payload)).size; i++) {
+            ((array)(result.payload)).elements[i] = Scale_scaleOnLeft(Array_get(input, i), factor);
         }
 
         return result;
     } else {
-        return $tokenFunc($new(Double(factor))::multiply(input));
+        System.out.println("Scale_scaleOnLeft problem");
+        //return $tokenFunc($new(Double(factor))::multiply(input));
+	return result;
     }
 }
 /**/
@@ -33,18 +35,20 @@ Token Scale_scaleOnLeft(Token input, double factor) {
 /***sharedScaleOnRightBlock***/
 Token Scale_scaleOnRight(Token input, double factor) {
     int i;
-    Token result;
+    Token result = new Token();
 
     if (input.type == TYPE_Array) {
-            result = $new(Array(input.payload.Array->size, 0));
+            result = $new(Array(((array)(input.payload)).size, 0));
 
-        for (i = 0; i < input.payload.Array->size; i++) {
-            result.payload.Array->elements[i] = Scale_scaleOnRight(Array_get(input, i), factor);
+        for (i = 0; i < ((array)(input.payload)).size; i++) {
+            ((array)(result.payload)).elements[i] = Scale_scaleOnRight(Array_get(input, i), factor);
         }
 
         return result;
     } else {
-        return $tokenFunc(input::multiply($new(Double(factor))));
+        System.out.println("Scale_scaleOnLeft problem");
+	return result;
+	//return $tokenFunc(input::multiply($new(Double(factor))));
     }
 }
 /**/

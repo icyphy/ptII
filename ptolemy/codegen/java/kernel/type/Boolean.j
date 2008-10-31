@@ -1,17 +1,15 @@
 /***declareBlock***/
-typedef boolean BooleanToken;
 /**/
 
 /***funcDeclareBlock***/
-Token Boolean_new(boolean b);
 /**/
 
 /***Boolean_new***/
 // make a new integer token from the given value.
 Token Boolean_new(boolean b) {
-    Token result;
+    Token result = new Token();
     result.type = TYPE_Boolean;
-    result.payload.Boolean = b;
+    result.payload = Boolean.valueOf(b);
     return result;
 }
 /**/
@@ -21,16 +19,13 @@ Token Boolean_new(boolean b) {
 /**/
 
 /***Boolean_equals***/
-Token Boolean_equals(Token thisToken, ...) {
-    va_list argp;
+Token Boolean_equals(Token thisToken, Token... tokens) {
     Token otherToken;
-    va_start(argp, thisToken);
-    otherToken = va_arg(argp, Token);
+    otherToken = tokens[0];
 
-    va_end(argp);
     return Boolean_new(
-            ( thisToken.payload.Boolean && otherToken.payload.Boolean ) ||
-            ( !thisToken.payload.Boolean && !otherToken.payload.Boolean ));
+            ( (Boolean)thisToken.payload && (Boolean)otherToken.payload ) ||
+            ( !(Boolean)thisToken.payload && !(Boolean)otherToken.payload ));
 }
 /**/
 
@@ -102,11 +97,11 @@ Token Boolean_clone(Token thisToken, ...) {
 
 --------------------- static functions ------------------------------
 /***Boolean_convert***/
-Token Boolean_convert(Token token, ...) {
+Token Boolean_convert(Token token, Token... tokens) {
     switch (token.type) {
         // FIXME: not finished
     default:
-        fprintf(stderr, "Boolean_convert(): Conversion from an unsupported type. (%d)", token.type);
+        System.err.printf( "Boolean_convert(): Conversion from an unsupported type. (%d)", token.type);
         break;
     }
     token.type = TYPE_Boolean;

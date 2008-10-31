@@ -1,18 +1,16 @@
 /***declareBlock***/
-typedef int IntToken;
 /**/
 
 /***funcDeclareBlock***/
-Token Int_new(int i);
 /**/
 
 
 /***Int_new***/
 // make a new integer token from the given value.
 Token Int_new(int i) {
-    Token result;
+    Token result = new Token();
     result.type = TYPE_Int;
-    result.payload.Int = i;
+    result.payload = Integer.valueOf(i);
     return result;
 }
 /**/
@@ -25,21 +23,18 @@ Token Int_equals(Token thisToken, ...) {
     otherToken = va_arg(argp, Token);
 
     va_end(argp);
-    return Boolean_new(thisToken.payload.Int == otherToken.payload.Int);
+    return Boolean_new((Integer)(thisToken.payload) == (Integer)(otherToken.payload);
 }
 /**/
 
 /***Int_isCloseTo***/
-Token Int_isCloseTo(Token thisToken, ...) {
-    va_list argp;
+Token Int_isCloseTo(Token thisToken, Token... tokens) {
     Token otherToken;
     Token tolerance;
-    va_start(argp, thisToken);
-    otherToken = va_arg(argp, Token);
-    tolerance = va_arg(argp, Token);
+    otherToken = tokens[0];
+    tolerance = tokens[1];
 
-    va_end(argp);
-    return Boolean_new(fabs(thisToken.payload.Int - otherToken.payload.Int) < tolerance.payload.Double);
+    return Boolean_new(Math.abs((Integer)thisToken.payload - (Integer)otherToken.payload) < (Double)tolerance.payload);
 }
 /**/
 
@@ -82,32 +77,29 @@ Token Int_subtract(Token thisToken, ...) {
 /**/
 
 /***Int_multiply***/
-Token Int_multiply(Token thisToken, ...) {
-    va_list argp;
-    Token result;
+Token Int_multiply(Token thisToken, Token... tokens) {
+    Token result = new Token();
     Token otherToken;
 
-    va_start(argp, thisToken);
-    otherToken = va_arg(argp, Token);
+    otherToken = tokens[0];
 
     switch (otherToken.type) {
     case TYPE_Int:
-        result = Int_new(thisToken.payload.Int * otherToken.payload.Int);
+        result = Int_new((Integer)thisToken.payload * (Integer)otherToken.payload);
         break;
 
-#ifdef TYPE_Double
+//#ifdef TYPE_Double
     case TYPE_Double:
-        result = Double_new(thisToken.payload.Int * otherToken.payload.Double);
+        result = Double_new((Integer)thisToken.payload * (Double)otherToken.payload);
         break;
-#endif
+//#endif
 
         // FIXME: not finished
     default:
-        fprintf(stderr, "Int_multiply(): Multiply with an unsupported type. (%d)\n", otherToken.type);
-        exit(1);
+        System.err.printf( "Int_multiply(): Multiply with an unsupported type. (%d)\n", otherToken.type);
+        System.exit(1);
     }
 
-    va_end(argp);
     return result;
 }
 /**/
@@ -151,18 +143,18 @@ Token Int_clone(Token thisToken, ...) {
 ---------------- static functions -----------------------
 
 /***Int_convert***/
-Token Int_convert(Token token, ...) {
+Token Int_convert(Token token, Token... elements) {
     switch (token.type) {
 
-#ifdef TYPE_Double
+//#ifdef TYPE_Double
     case TYPE_Double:
-        token.payload.Int = DoubletoInt(token.payload.Double);
+        token.payload = DoubletoInt((Double)token.payload);
         break;
-#endif
+//#endif
 
         // FIXME: not finished
     default:
-        fprintf(stderr, "Int_convert(): Conversion from an unsupported type. (%d)\n", token.type);
+        System.err.printf("Int_convert(): Conversion from an unsupported type. (%d)\n", token.type);
         break;
     }
     token.type = TYPE_Int;

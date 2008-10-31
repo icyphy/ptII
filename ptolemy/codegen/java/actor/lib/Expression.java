@@ -191,20 +191,6 @@ public class Expression extends JavaCodeGeneratorHelper {
         return code.toString();
     }
 
-    /**
-     * Get the files needed by the code generated for the
-     * Expression actor.
-     * @return A set of strings that are names of the header files
-     *  needed by the code generated for the Expression actor.
-     * @exception IllegalActionException Not Thrown in this subclass.
-     */
-    public Set getHeaderFiles() throws IllegalActionException {
-        Set files = super.getHeaderFiles();
-        files.add("<math.h>");
-        files.add("<string.h>");
-        return files;
-    }
-
     /** The parse tree code generator. */
     protected JavaParseTreeCodeGenerator _cParseTreeCodeGenerator;
 
