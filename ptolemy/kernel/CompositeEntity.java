@@ -1211,7 +1211,57 @@ public class CompositeEntity extends ComponentEntity {
     public boolean isOpaque() {
         return false;
     }
+    
+    /** Lazy version of {@link #allAtomicEntityList()}.
+     *  In this base class, this is identical to allAtomicEntityList(),
+     *  but derived classes may omit from the returned list any
+     *  entities whose instantiation is deferred.
+     *  @return A list of ComponentEntity objects.
+     */
+    public List lazyAllAtomicEntityList() {
+        return allAtomicEntityList();
+    }
 
+    /** Lazy version of {@link #classDefinitionList()}.
+     *  In this base class, this is identical to classDefinitionList(),
+     *  but derived classes may omit from the returned list any class
+     *  definitions whose instantiation is deferred.
+     *  @return A list of ComponentEntity objects.
+     */
+    public List lazyClassDefinitionList() {
+        return classDefinitionList();
+    }
+    
+    /** Lazy version of {@link #deepEntityList()}.
+     *  In this base class, this is identical to deepEntityList(),
+     *  but derived classes may omit from the returned list any entities
+     *  whose instantiation is deferred.
+     *  @return A list of ComponentEntity objects.
+     */
+    public List lazyDeepEntityList() {
+        return deepEntityList();
+    }
+
+    /** Lazy version of {@link #entityList()}.
+     *  In this base class, this is identical to entityList(),
+     *  but derived classes may omit from the returned list any
+     *  entities whose instantiation is deferred.
+     *  @return A list of ComponentEntity objects.
+     */
+    public List lazyEntityList() {
+        return entityList();
+    }
+    
+    /** Lazy version of {@link #relationList()}.
+     *  In this base class, this is identical to relationList(),
+     *  but derived classes may omit from the returned list any
+     *  relations whose instantiation is deferred.
+     *  @return A list of Relation objects.
+     */
+    public List lazyRelationList() {
+        return relationList();
+    }
+    
     /** Create a new relation with the specified name, add it to the
      *  relation list, and return it. Derived classes can override
      *  this to create domain-specific subclasses of ComponentRelation.
@@ -1454,7 +1504,8 @@ public class CompositeEntity extends ComponentEntity {
                         "Failed to instantiate \"" + className + "\"");
             }
 
-            List atomicEntities = allAtomicEntityList();
+            // Use the lazy version to avoid triggering a populate of LazyTypedCompositeActor.
+            List atomicEntities = lazyAllAtomicEntityList();
             int entityCount = atomicEntities.size();
 
 	    Map<String,Integer> actorMap = new HashMap<String,Integer>();
@@ -1718,7 +1769,7 @@ public class CompositeEntity extends ComponentEntity {
     protected void _adjustDeferrals() throws IllegalActionException {
         super._adjustDeferrals();
 
-        Iterator containedClasses = classDefinitionList().iterator();
+        Iterator containedClasses = lazyClassDefinitionList().iterator();
 
         while (containedClasses.hasNext()) {
             NamedObj containedObject = (NamedObj) containedClasses.next();
@@ -1728,7 +1779,7 @@ public class CompositeEntity extends ComponentEntity {
             }
         }
 
-        Iterator containedEntities = entityList().iterator();
+        Iterator containedEntities = lazyEntityList().iterator();
 
         while (containedEntities.hasNext()) {
             NamedObj containedObject = (NamedObj) containedEntities.next();
@@ -2052,7 +2103,11 @@ public class CompositeEntity extends ComponentEntity {
      */
     private void _unlinkLevelCrossingLinksToOutside(CompositeEntity entity) {
         // Look for relations with level crossing links first.
-        Iterator relations = entity.relationList().iterator();
+        // Here we use the lazy version so as to not trigger evaluation
+        // of lazy contents. We assume that if and when those contents
+        // are evaluated, if there is a level-crossing list, it will
+        // trigger an error.
+        Iterator relations = entity.lazyRelationList().iterator();
         while (relations.hasNext()) {
             ComponentRelation relation = (ComponentRelation) relations.next();
             Iterator linkedObjects = relation.linkedObjectsList().iterator();
