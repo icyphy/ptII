@@ -32,23 +32,24 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URL;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.ComponentRelation;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.Configurable;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
-import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
-import ptolemy.moml.ParserAttribute;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
@@ -56,18 +57,34 @@ import ptolemy.util.StringUtilities;
 //// LazyTypedCompositeActor
 
 /**
- An aggregation of typed actors with lazy evaluation.
-
- The contents of this composite are typically specified via the configure()
- method, which is passed MoML code.  The MoML is evaluated
- lazily; i.e. it is not actually evaluated until there is a request
- for its contents, via a call to getEntity(), numEntities(),
- entityList(), or any related method. You can also force evaluation
- of the MoML by calling populate().  When you export MoML for this
- object, the MoML description of the contents is wrapped in a configure
- element. 
-
- The configure method can be given a URL or MoML text or both.
+ An aggregation of typed actors with lazy evaluation. The contents of
+ this actor can be created in the usual way via visual editor by dragging
+ in other actors and ports and connecting them. When it exports a MoML
+ description of itself, it describes its ports and parameters in the
+ usual way, but contained actors, relations, and their interconnections
+ are exported within &lt;configure&gt; &lt;/configure&gt; tags.
+ When reloading the MoML description, evaluation of the MoML
+ within the configure tags is deferred until there is an explicit
+ request for the contents. This behavior is useful for large
+ complicated models where the time it takes to instantiate the
+ entire model is large. It permits opening and browsing the model
+ without a long wait. However, the cost comes typically when
+ running the model. The instantiation time will be added to
+ the time it takes to preinitialize the model.
+<p>
+ The lazy contents of this composite are specified via the configure()
+ method, which is called by the MoML parser and passed MoML code.
+ The MoML is evaluated lazily; i.e. it is not actually evaluated
+ until there is a request for its contents, via a call to
+ getEntity(), numEntities(), entityList(), relationList(), 
+ or any related method. You can also force evaluation
+ of the MoML by calling populate(). Accessing the attributes
+ or ports of this composite does not trigger a populate() call,
+ so a visual editor can interact with the actor from the outside
+ in the usual way, enabling connections to its ports, editing
+ of its parameters, and rendering of its custom icon, if any.
+ <p>
+ The configure method can be passed a URL or MoML text or both.
  If it is given MoML text, that text will normally be wrapped in a
  processing instruction, as follows:
  <pre>
@@ -104,41 +121,14 @@ import ptolemy.util.StringUtilities;
  is created with the same (unevaluated) MoML text, rather than being
  populated with the contents specified by that text.  If the object
  is cloned after being populated, the clone will also be populated.
- <p>
- A third subtlety involves the doc element.  Unfortunately, MoML
- semantics define the doc element to replace any previously existing
- doc elements.  But to find out whether there is any previously
- existing doc element, the MoML parser calls getAttribute, which
- has the effect of populating the library.  Thus, doc elements
- should go inside the group, not outside.  For example, the
- following organization results in no deferred evaluation:
- <pre>
- &lt;entity name="director library" class="ptolemy.moml.LazyTypedCompositeActor"&gt;
- &lt;doc&gt;default director library&lt;/doc&gt;
- &lt;configure&gt;
- &lt;?moml
- &lt;group&gt;
- ...
- &lt;/group&gt;
- ?&gt;
- &lt;/configure&gt;
- &lt;/entity&gt;
- </pre>
- The following, by contrast, is OK:
- <pre>
- &lt;entity name="director library" class="ptolemy.moml.LazyTypedCompositeActor"&gt;
- &lt;configure&gt;
- &lt;?moml
- &lt;group&gt;
- &lt;doc&gt;default director library&lt;/doc&gt;
- ...
- &lt;/group&gt;
- ?&gt;
- &lt;/configure&gt;
- &lt;/entity&gt;
- </pre>
-
- @author Edward A. Lee
+ Cloning is used in actor-oriented classes to create subclasses
+ or instances of a class.  When a LazyTypedCompositeActor contained
+ by a subclass or an instance is populated, it delegates to the
+ instance in the class definition. When that instance is populated,
+ all of the derived instances in subclasses and instances of the
+ class will also be populated as a side effect.
+ 
+ @author Christopher Brooks and Edward A. Lee
  @version $Id: LazyTypedCompositeActor.java 47495 2007-12-06 21:57:21Z cxh $
  @since Ptolemy II 1.0
  @Pt.ProposedRating Red (eal)
@@ -154,7 +144,14 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Conf
      */
     public LazyTypedCompositeActor() {
         super();
-	_init(); 
+        // By default, when exporting MoML, the class name is whatever
+        // the Java class is, which in this case is LazyTypedCompositeActor.
+        // However, the parent class, TypedCompositeActor sets the classname
+        // to TypedCompositeActor so that the MoML
+        // that is exported does not depend on the presence of the
+        // derived class Java definition. Thus, we force the class name
+        // here to be LazyTypedCompositeActor.
+        setClassName("ptolemy.actor.LazyTypedCompositeActor");
     }
 
     /** Construct a library in the specified workspace with
@@ -166,7 +163,14 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Conf
      */
     public LazyTypedCompositeActor(Workspace workspace) {
         super(workspace);
-	_init();
+        // By default, when exporting MoML, the class name is whatever
+        // the Java class is, which in this case is LazyTypedCompositeActor.
+        // However, the parent class, TypedCompositeActor sets the classname
+        // to TypedCompositeActor so that the MoML
+        // that is exported does not depend on the presence of the
+        // derived class Java definition. Thus, we force the class name
+        // here to be LazyTypedCompositeActor.
+        setClassName("ptolemy.actor.LazyTypedCompositeActor");
     }
 
     /** Construct a library with the given container and name.
@@ -180,55 +184,19 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Conf
     public LazyTypedCompositeActor(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-
-	// Shouldn't use _init() here because this ctor throws the proper
-	// exceptions, whereas _init() rethrows them.
-
         // By default, when exporting MoML, the class name is whatever
-        // the Java class is, which in this case is TypedCompositeActor.
-	// However, the parent class, TypedCompositeActor sets the classname
-	// to TypedCompositeActor so that the MoML
+        // the Java class is, which in this case is LazyTypedCompositeActor.
+        // However, the parent class, TypedCompositeActor sets the classname
+        // to TypedCompositeActor so that the MoML
         // that is exported does not depend on the presence of the
         // derived class Java definition. Thus, we force the class name
         // here to be LazyTypedCompositeActor.
         setClassName("ptolemy.actor.LazyTypedCompositeActor");
-
-        // NOTE: Used to call uniqueName() here to choose the name for the
-        // marker.  This is a bad idea.  This calls getEntity(), which
-        // triggers populate() on the library, defeating deferred
-        // evaluation.
-        new Attribute(this, "_lazyCompositeMarker");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Return a list of the attributes contained by this object.
-     *  If there are no attributes, return an empty list.
-     *  This overrides the base class
-     *  to first populate the library, if necessary, by calling populate().
-     *  This method is read-synchronized on the workspace.
-     *  @return An unmodifiable list of instances of Attribute.
-     */
-    public List attributeList() {
-        populate();
-        return super.attributeList();
-    }
-
-    /** Return a list of the attributes contained by this object that
-     *  are instances of the specified class.  If there are no such
-     *  instances, then return an empty list.
-     *  This overrides the base class
-     *  to first populate the library, if necessary, by calling populate().
-     *  This method is read-synchronized on the workspace.
-     *  @param filter The class of attribute of interest.
-     *  @return A list of instances of specified class.
-     */
-    public List attributeList(Class filter) {
-        populate();
-        return super.attributeList(filter);
-    }
-
+    
     /** Clone the library into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there). If the library has not yet been
@@ -276,7 +244,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Conf
      *  The returned list is static in the sense
      *  that it is not affected by any subsequent additions or removals
      *  of entities.  This overrides the base class
-     *  to first populate the library, if necessary, by calling populate().
+     *  to first populate the actor, if necessary, by calling populate().
      *  Note that this may result in a runtime exception being thrown
      *  (if there is an error evaluating the MoML).
      *  This method is read-synchronized on the workspace.
@@ -316,7 +284,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Conf
     /** List the opaque entities that are directly or indirectly
      *  contained by this entity.  The list will be empty if there
      *  are no such contained entities.  This overrides the base class
-     *  to first populate the library, if necessary, by calling populate().
+     *  to first populate the actor, if necessary, by calling populate().
      *  Note that this may result in a runtime exception being thrown
      *  (if there is an error evaluating the MoML).
      *  This method is read-synchronized on the workspace.
@@ -326,42 +294,41 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Conf
         populate();
         return super.deepEntityList();
     }
+    
+    /** Return a set with the relations that are directly or indirectly
+     *  contained by this entity.  The set will be empty if there
+     *  are no such contained relations. This overrides the base class
+     *  to first populate the actor, if necessary, by calling populate().
+     *  Note that this may result in a runtime exception being thrown
+     *  (if there is an error evaluating the MoML).
+     *  This method is read-synchronized on the workspace.
+     *  @return A set of ComponentRelation objects.
+     */
+    public Set<ComponentRelation> deepRelationSet() {
+        populate();
+        return super.deepRelationSet();
+    }
 
     /** List the contained entities in the order they were added
      *  (using their setContainer() method).
      *  The returned list is static in the sense
      *  that it is not affected by any subsequent additions or removals
      *  of entities.  This overrides the base class
-     *  to first populate the library, if necessary, by calling populate().
+     *  to first populate the actor, if necessary, by calling populate().
      *  Note that this may result in a runtime exception being thrown
      *  (if there is an error evaluating the MoML).
      *  This method is read-synchronized on the workspace.
      *  @return An unmodifiable list of ComponentEntity objects.
      */
     public List entityList() {
-        populate();
         return super.entityList();
-    }
-
-    /** Get the attribute with the given name. The name may be compound,
-     *  with fields separated by periods, in which case the attribute
-     *  returned is contained by a (deeply) contained attribute.
-     *  This overrides the base class
-     *  to first populate the library, if necessary, by calling populate().
-     *  This method is read-synchronized on the workspace.
-     *  @param name The name of the desired attribute.
-     *  @return The requested attribute if it is found, null otherwise.
-     */
-    public Attribute getAttribute(String name) {
-        populate();
-        return super.getAttribute(name);
     }
 
     /** Get a contained entity by name. The name may be compound,
      *  with fields separated by periods, in which case the entity
      *  returned is contained by a (deeply) contained entity.
      *  This overrides the base class
-     *  to first populate the library, if necessary, by calling populate().
+     *  to first populate the actor, if necessary, by calling populate().
      *  Note that this may result in a runtime exception being thrown
      *  (if there is an error evaluating the MoML).
      *  This method is read-synchronized on the workspace.
@@ -382,11 +349,11 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Conf
     public String getConfigureSource() {
         return _configureSource;
     }
-
+    
     /** Return the text string that represents the current configuration of
-     *  this object.  Note that any configuration that was previously
-     *  specified using the source attribute need not be represented here
-     *  as well.
+     *  this object. This will include whatever classes, entities, and
+     *  relations have been previously instantiated. FIXME: Shouldn't this
+     *  also include connections???
      *  @return A configuration string, or null if no configuration
      *  has been used to configure this object, or null if no
      *  configuration string need be used to configure this object.
@@ -396,19 +363,21 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Conf
             StringWriter stringWriter = new StringWriter();
             stringWriter.write("<group>\n");
 
-            Iterator classes = classDefinitionList().iterator();
+            Iterator classes = lazyClassDefinitionList().iterator();
 
             while (classes.hasNext()) {
                 ComponentEntity entity = (ComponentEntity) classes.next();
                 entity.exportMoML(stringWriter, 1);
             }
 
-            Iterator entities = entityList().iterator();
+            Iterator entities = lazyEntityList().iterator();
 
             while (entities.hasNext()) {
                 ComponentEntity entity = (ComponentEntity) entities.next();
                 entity.exportMoML(stringWriter, 1);
             }
+            
+            // FIXME: Include relations and links!
 
             stringWriter.write("</group>");
             return stringWriter.toString();
@@ -416,9 +385,147 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Conf
             return "";
         }
     }
+    
+    /** Get a contained relation by name. The name may be compound,
+     *  with fields separated by periods, in which case the relation
+     *  returned is contained by a (deeply) contained entity.
+     *  This overrides the base class
+     *  to first populate the actor, if necessary, by calling populate().
+     *  Note that this may result in a runtime exception being thrown
+     *  (if there is an error evaluating the MoML).
+     *  This method is read-synchronized on the workspace.
+     *  @param name The name of the desired relation.
+     *  @return A relation with the specified name, or null if none exists.
+     */
+    public ComponentRelation getRelation(String name) {
+        populate();
+        return super.getRelation(name);
+    }
+    
+    /** Return a list that consists of all the atomic entities in a model
+     *  that have been already instantiated.
+     *  This method differs from {@link #deepEntityList()} in that
+     *  this method looks inside opaque entities, whereas deepEntityList()
+     *  does not. The returned list does not include any entities that
+     *  are class definitions.
+     *  @return a List of all atomic entities in the model.
+     */
+    public List lazyAllAtomicEntityList() {
+        // We don't use an Iterator here so that we can modify the list
+        // rather than having both an Iterator and a result list.
+        List entities = lazyDeepEntityList();
 
+        for (int i = 0; i < entities.size(); i++) {
+            Object entity = entities.get(i);
+
+            if (entity instanceof CompositeEntity) {
+                // Remove the composite actor and add its containees.
+                entities.remove(i);
+
+                // Note that removing an element from the list causes
+                // the indices of later elements to shift forward by 1.
+                // We reduce the index i by one to match the index in
+                // the list.
+                i--;
+                entities.addAll(((CompositeEntity) entity)
+                        .allAtomicEntityList());
+            }
+        }
+        return entities;
+    }
+
+    /** Lazy version of {@link #classDefinitionList()}.
+     *  In this base class, this is identical to classDefinitionList(),
+     *  but derived classes may omit from the returned list any class
+     *  definitions whose instantiation is deferred.
+     *  @return A list of ComponentEntity objects.
+     */
+    public List lazyClassDefinitionList() {
+        return super.classDefinitionList();
+    }
+
+    /** Return an iterator over contained object that currently exist,
+     *  omitting any objects that have not yet been instantiated because
+     *  they are "lazy". A lazy object is one that is instantiated when it
+     *  is needed, but not before. In this base class, this method returns
+     *  the same iterator returned by {@link #containedObjectsIterator()}.
+     *  If derived classes override it, they must guarantee that any omitted
+     *  objects are genuinely not needed in whatever uses this method.
+     *  @return An iterator over instances of NamedObj contained by this
+     *   object.
+     */
+    public Iterator lazyContainedObjectsIterator() {
+        return new ContainedObjectsIterator();
+    }
+
+    /** Lazy version of {@link #deepEntityList()}.
+     *  This method omits from the returned list any entities
+     *  whose instantiation is deferred.
+     *  @return A list of ComponentEntity objects.
+     */
+    public List lazyDeepEntityList() {
+        try {
+            _workspace.getReadAccess();
+            LinkedList result = new LinkedList();
+            List<ComponentEntity> entities = lazyEntityList();
+            for (ComponentEntity entity : entities) {
+                if (!entity.isClassDefinition()) {
+                    if (entity.isOpaque()) {
+                        result.add(entity);
+                    } else {
+                        result.addAll(((CompositeEntity) entity)
+                                .lazyDeepEntityList());
+                    }
+                }                
+            }
+            return result;
+        } finally {
+            _workspace.doneReading();
+        }
+    }
+    
+    /** Lazy version of {@link #entityList()}.
+     *  In this base class, this is identical to entityList(),
+     *  but derived classes may omit from the returned list any
+     *  entities whose instantiation is deferred.
+     *  @return A list of ComponentEntity objects.
+     */
+    public List lazyEntityList() {
+        return super.entityList();
+    }
+    
+    /** Lazy version of {@link #relationList()}.
+     *  In this base class, this is identical to relationList(),
+     *  but derived classes may omit from the returned list any
+     *  relations whose instantiation is deferred.
+     *  @return A list of ComponentEntity objects.
+     */
+    public List lazyRelationList() {
+        return super.relationList();
+    }
+
+    /** Create a new relation with the specified name, add it to the
+     *  relation list, and return it. Derived classes can override
+     *  this to create domain-specific subclasses of ComponentRelation.
+     *  This method is write-synchronized on the workspace and increments
+     *  its version number. This overrides the base class to force
+     *  evaluation of any deferred MoML. This is necessary so that
+     *  name collisions are detected deterministically and so that
+     *  order of relations does not change depending on whether
+     *  evaluation has occurred.
+     *  @param name The name of the new relation.
+     *  @return The new relation.
+     *  @exception IllegalActionException If name argument is null.
+     *  @exception NameDuplicationException If name collides with a name
+     *   already in the container.
+     */
+    public ComponentRelation newRelation(String name)
+            throws NameDuplicationException {
+        populate();
+        return super.newRelation(name);
+    }
     /** Return the number of contained entities. This overrides the base class
-     *  to first populate the library, if necessary, by calling populate().
+     *  to first populate the actor, if necessary, by calling populate().
      *  Note that this may result in a runtime exception being thrown
      *  (if there is an error evaluating the MoML).
      *  This method is read-synchronized on the workspace.
@@ -427,6 +534,19 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Conf
     public int numberOfEntities() {
         populate();
         return super.numberOfEntities();
+    }
+    
+    /** Return the number of contained relations.
+     *  This overrides the base class
+     *  to first populate the actor, if necessary, by calling populate().
+     *  Note that this may result in a runtime exception being thrown
+     *  (if there is an error evaluating the MoML).
+     *  This method is read-synchronized on the workspace.
+     *  @return The number of relations.
+     */
+    public int numberOfRelations() {
+        populate();
+        return super.numberOfRelations();
     }
 
     /** Populate the actor by reading the file specified by the
@@ -447,6 +567,25 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Conf
 
             // Avoid populating during cloning.
             if (_cloning) {
+                return;
+            }
+            
+            // Do not populate if this is a derived object.
+            // Instead, populate the object is this is derived
+            // from, which will have the side effect of populating
+            // this object.
+            if (getDerivedLevel() != Integer.MAX_VALUE) {
+                // Object is derived. Delegate to the most remote
+                // prototype.
+                List prototypes = getPrototypeList();
+                if (prototypes == null || prototypes.size() == 0) {
+                    throw new InternalErrorException(getFullName()
+                            + ": Object says it is derived but reports no prototypes!");
+                }
+                // The prototype must have the same class as this.
+                LazyTypedCompositeActor prototype = (LazyTypedCompositeActor)
+                        prototypes.get(prototypes.size() - 1);
+                prototype.populate();
                 return;
             }
 
@@ -541,9 +680,96 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Conf
         }
     }
 
+    /** List the relations contained by this entity.
+     *  The returned list is static in the sense
+     *  that it is not affected by any subsequent additions or removals
+     *  of relations. This overrides the base class
+     *  to first populate the actor, if necessary, by calling populate().
+     *  Note that this may result in a runtime exception being thrown
+     *  (if there is an error evaluating the MoML).
+     *  This method is read-synchronized on the workspace.
+     *  @return An unmodifiable list of ComponentRelation objects.
+     */
+    public List relationList() {
+        populate();
+        return super.relationList();
+    }
+
+    /** Return a name that is guaranteed to not be the name of
+     *  any contained attribute, port, class, entity, or relation.
+     *  In this implementation, the argument
+     *  is stripped of any numeric suffix, and then a numeric suffix
+     *  is appended and incremented until a name is found that does not
+     *  conflict with a contained attribute, port, class, entity, or relation.
+     *  If this composite entity or any composite entity that it contains
+     *  defers its MoML definition (i.e., it is an instance of a class or
+     *  a subclass), then the prefix gets appended with "_<i>n</i>_",
+     *  where <i>n</i> is the depth of this deferral. That is, if the object
+     *  deferred to also defers, then <i>n</i> is incremented.
+     *  <p>Note that this method should be called judiciously from when
+     *  the CompositeEntity is large.  The reason is that this method 
+     *  searches for matching attributes, ports, classes, entities
+     *  and relations, which can result in slow performance.
+     *  This overrides the base class
+     *  to first populate the actor, if necessary, by calling populate().
+     *  Note that this may result in a runtime exception being thrown
+     *  (if there is an error evaluating the MoML).
+     *  @param prefix A prefix for the name.
+     *  @return A unique name.
+     */
+    public String uniqueName(String prefix) {
+        populate();
+        return super.uniqueName(prefix);
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Add an entity or class definition to this container. This method
+     *  should not be used directly.  Call the setContainer() method of
+     *  the entity instead. This method does not set
+     *  the container of the entity to point to this composite entity.
+     *  It assumes that the entity is in the same workspace as this
+     *  container, but does not check.  The caller should check.
+     *  Derived classes may override this method to constrain the
+     *  the entity to a subclass of ComponentEntity.
+     *  This method is <i>not</i> synchronized on the workspace, so the
+     *  caller should be.  This overrides the base class
+     *  to first populate the actor, if necessary, by calling populate().
+     *  This ensures that the entity being added now appears in order
+     *  after the ones previously specified and lazily instantiated.
+     *  @param entity Entity to contain.
+     *  @exception IllegalActionException If the entity has no name, or the
+     *   action would result in a recursive containment structure.
+     *  @exception NameDuplicationException If the name collides with a name
+     *  already in the entity.
+     */
+    protected void _addEntity(ComponentEntity entity)
+            throws IllegalActionException, NameDuplicationException {
+        populate();
+        super._addEntity(entity);
+    }
+     
+    /** Add a relation to this container. This method should not be used
+     *  directly.  Call the setContainer() method of the relation instead.
+     *  This method does not set
+     *  the container of the relation to refer to this container.
+     *  This method is <i>not</i> synchronized on the workspace, so the
+     *  caller should be. This overrides the base class
+     *  to first populate the actor, if necessary, by calling populate().
+     *  This ensures that the relation being added now appears in order
+     *  after the ones previously specified and lazily instantiated.
+     *  @param relation Relation to contain.
+     *  @exception IllegalActionException If the relation has no name.
+     *  @exception NameDuplicationException If the name collides with a name
+     *   already on the contained relations list.
+     */
+    protected void _addRelation(ComponentRelation relation)
+            throws IllegalActionException, NameDuplicationException {
+        populate();
+        super._addRelation(relation);
+    }
+    
     /** Write a MoML description of the contents of this object, wrapped
      *  in a configure element.  This is done by first populating the model,
      *  and then exporting its contents into a configure element. This method
@@ -636,47 +862,38 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Conf
 
     }
 
-    //     /** Propagate the value of this object to the
-    //      *  specified object. The specified object is required
-    //      *  to be an instance of the same class as this one, or
-    //      *  a ClassCastException will be thrown.
-    //      *  @param destination Object to which to propagate the
-    //      *   value.
-    //      *  @exception IllegalActionException If the value cannot
-    //      *   be propagated.
-    //      */
-    //     protected void _propagateValue(NamedObj destination)
-    //             throws IllegalActionException {
-    //         try {
-    //             ((Configurable) destination).configure(_base, _configureSource,
-    //                     _configureText);
-    //         } catch (Exception ex) {
-    //             throw new IllegalActionException(this, ex, "Propagation failed.");
-    //         }
-    //     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-    private void _init() {
-        // By default, when exporting MoML, the class name is whatever
-        // the Java class is, which in this case is TypedCompositeActor.
-	// However, the parent class, TypedCompositeActor sets the classname
-	// to TypedCompositeActor so that the MoML
-        // that is exported does not depend on the presence of the
-        // derived class Java definition. Thus, we force the class name
-        // here to be LazyTypedCompositeActor.
-        setClassName("ptolemy.actor.LazyTypedCompositeActor");
-        try {
-            // NOTE: Used to call uniqueName() here to choose the name for the
-            // marker.  This is a bad idea.  This calls getEntity(), which
-            // triggers populate() on the library, defeating deferred
-            // evaluation.
-            new Attribute(this, "_lazyCompositeMarker");
-        } catch (KernelException ex) {
-            throw new InternalErrorException(null, ex, null);
-        }
+    /** Remove the specified entity. This method should not be used
+     *  directly.  Call the setContainer() method of the entity instead with
+     *  a null argument.
+     *  The entity is assumed to be contained by this composite (otherwise,
+     *  nothing happens). This does not alter the entity in any way.
+     *  This method is <i>not</i> synchronized on the workspace, so the
+     *  caller should be. This overrides the base class
+     *  to first populate the actor, if necessary, by calling populate().
+     *  This ensures that the entity being removed now actually exists.
+     *  @param entity The entity to remove.
+     */
+    protected void _removeEntity(ComponentEntity entity) {
+        populate();
+        super._removeEntity(entity);
     }
 
+    /** Remove the specified relation. This method should not be used
+     *  directly.  Call the setContainer() method of the relation instead with
+     *  a null argument.
+     *  The relation is assumed to be contained by this composite (otherwise,
+     *  nothing happens). This does not alter the relation in any way.
+     *  This method is <i>not</i> synchronized on the workspace, so the
+     *  caller should be. This overrides the base class
+     *  to first populate the actor, if necessary, by calling populate().
+     *  This ensures that the relation being removed now actually exists.
+     *  @param relation The relation to remove.
+     */
+    protected void _removeRelation(ComponentRelation relation) {
+        populate();
+        super._removeRelation(relation);
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -697,4 +914,78 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Conf
 
     /** Text specified to the configure() method. */
     private String _configureText;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    /** This class is an iterator over all the contained objects
+     *  (all instances of NamedObj) except those that have not yet
+     *  been instantiated because of laziness. In this class, the contained
+     *  objects are attributes first, then ports, then entities,
+     *  then relations.
+     */
+    protected class ContainedObjectsIterator extends
+            Entity.ContainedObjectsIterator {
+        /** Create an iterator over all the contained objects, which
+         *  for CompositeEntities are attributes, ports, classes
+         *  entities, and relations.
+         */
+        public ContainedObjectsIterator() {
+            super();
+            _classListIterator = lazyClassDefinitionList().iterator();
+            _entityListIterator = lazyEntityList().iterator();
+            _relationListIterator = lazyRelationList().iterator();
+        }
+
+        /** Return true if the iteration has more elements.
+         *  In this class, this returns true if there are more
+         *  attributes, ports, classes, entities, or relations.
+         *  @return True if there are more elements.
+         */
+        public boolean hasNext() {
+            if (super.hasNext()) {
+                return true;
+            }
+            if (_classListIterator.hasNext()) {
+                return true;
+            }
+            if (_entityListIterator.hasNext()) {
+                return true;
+            }
+            return _relationListIterator.hasNext();
+        }
+
+        /** Return the next element in the iteration.
+         *  In this base class, this is the next attribute or port.
+         *  @return The next attribute or port.
+         */
+        public Object next() {
+            if (super.hasNext()) {
+                return super.next();
+            }
+
+            if (_classListIterator.hasNext()) {
+                return _classListIterator.next();
+            }
+
+            if (_entityListIterator.hasNext()) {
+                return _entityListIterator.next();
+            }
+
+            return _relationListIterator.next();
+        }
+
+        /** The remove() method is not supported because is is not
+         *  supported in NamedObj.ContainedObjectsIterator.remove().
+         */
+        public void remove() {
+            super.remove();
+        }
+
+        private Iterator _classListIterator = null;
+
+        private Iterator _entityListIterator = null;
+
+        private Iterator _relationListIterator = null;
+    }
 }
