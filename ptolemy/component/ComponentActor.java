@@ -33,6 +33,7 @@ import ptolemy.actor.Director;
 import ptolemy.actor.Executable;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
+import ptolemy.actor.Manager;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
@@ -144,7 +145,7 @@ public class ComponentActor extends TypedCompositeActor implements Component {
         if (port instanceof ComponentPort) {
             // NOTE: deepInsidePortList() is not the right thing here
             // since it will return the same port if it is opaque.
-            Iterator insidePorts = ((ComponentPort) port).insidePortList()
+            Iterator<?> insidePorts = ((ComponentPort) port).insidePortList()
                     .iterator();
 
             try {
@@ -170,7 +171,13 @@ public class ComponentActor extends TypedCompositeActor implements Component {
             IOPort castPort = (IOPort) port;
 
             if (castPort.isOpaque()) {
-                if (castPort.isOutput() && (getDirector() != null)) {
+                Manager manager = getManager();
+
+                if (castPort.isOutput()
+                        && (getDirector() != null)
+                        && (manager != null)
+                        && (manager.getState() != Manager.IDLE)) {
+
                     // Note that even if castPort is opaque, we still have to
                     // check for director above.
                     try {
@@ -182,7 +189,10 @@ public class ComponentActor extends TypedCompositeActor implements Component {
                     }
                 }
 
-                if (castPort.isInput() && (getExecutiveDirector() != null)) {
+                if (castPort.isInput()
+                        && (getExecutiveDirector() != null)
+                        && (manager != null)
+                        && (manager.getState() != Manager.IDLE)) {
                     try {
                         castPort.createReceivers();
                     } catch (IllegalActionException ex) {
@@ -419,7 +429,7 @@ public class ComponentActor extends TypedCompositeActor implements Component {
                             Token[] tokens = new Token[1];
                             tokens[0] = t;
 
-                            Iterator ports = this.deepConnectedPortList()
+                            Iterator<?> ports = this.deepConnectedPortList()
                                     .iterator();
                             MethodCallPort port = (MethodCallPort) ports.next();
 
@@ -451,7 +461,7 @@ public class ComponentActor extends TypedCompositeActor implements Component {
                 int l = token.length();
 
                 //Assume only one port is connected to this.
-                Iterator ports = this.deepInsidePortList().iterator();
+                Iterator<?> ports = this.deepInsidePortList().iterator();
                 IOPort port = (IOPort) ports.next();
                 Receiver[][] receivers = port.getReceivers();
 
@@ -493,7 +503,7 @@ public class ComponentActor extends TypedCompositeActor implements Component {
             boolean output = isOutput();
 
             if (output) {
-                Iterator insideRelations = insideRelationList().iterator();
+                Iterator<?> insideRelations = insideRelationList().iterator();
 
                 if (insideRelations.hasNext()) {
                     _insideReceivers = new Receiver[1][1];
