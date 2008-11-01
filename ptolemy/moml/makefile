@@ -56,6 +56,7 @@ PTCLASSALLJARS = \
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS =	Documentation.java \
+	ConvertToLazy.java \
 	EntityLibrary.java \
 	ErrorHandler.java \
 	HandlesInternalLinks.java \
