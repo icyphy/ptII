@@ -121,9 +121,14 @@ test IORelation-3.4 {Test getWidth of a port} {
     set p1 [java::new ptolemy.actor.IOPort $e2 P1]
     $p1 link $r1    
     catch {$r1 setWidth 4} msg
-    list $msg    
-} {{ptolemy.kernel.util.IllegalActionException: Cannot make bus because the relation is linked to a non-multiport.
-  in .E1.R1 and .E1.E2.P1}}
+    list $msg
+} {{}}
+# rodiers: We link a fixed width relation with width to non-multiport.
+#I would make this an exception, however existing models are relying on this 
+#} {{ptolemy.kernel.util.IllegalActionException: Cannot make bus because the relation is linked to a non-multiport.
+#in .E1.R1 and .E1.E2.P1}}
+
+		
 
 test IORelation-3.4.1 {Test getWidth of a port} {
     set e1 [java::new ptolemy.actor.CompositeActor]
