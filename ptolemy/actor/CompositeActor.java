@@ -298,7 +298,12 @@ public class CompositeActor extends CompositeEntity implements Actor,
             IOPort castPort = (IOPort) port;
 
             if (castPort.isOpaque()) {
-                if (castPort.isOutput() && (getDirector() != null)) {
+                Manager manager = getManager();
+                
+                if (castPort.isOutput()
+                        && (getDirector() != null)
+                        && (manager != null)
+                        && (manager.getState() != Manager.IDLE)) {
                     // Note that even if castPort is opaque, we still have to
                     // check for director above.
                     try {
@@ -310,7 +315,10 @@ public class CompositeActor extends CompositeEntity implements Actor,
                     }
                 }
 
-                if (castPort.isInput() && (getExecutiveDirector() != null)) {
+                if (castPort.isInput()
+                        && (getExecutiveDirector() != null)
+                        && (manager != null)
+                        && (manager.getState() != Manager.IDLE)) {
                     try {
                         castPort.createReceivers();
                     } catch (IllegalActionException ex) {
