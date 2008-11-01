@@ -1411,6 +1411,20 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         return ((_isPersistent == null) || _isPersistent.booleanValue());
     }
 
+    /** Return an iterator over contained object that currently exist,
+     *  omitting any objects that have not yet been instantiated because
+     *  they are "lazy". A lazy object is one that is instantiated when it
+     *  is needed, but not before. In this base class, this method returns
+     *  the same iterator returned by {@link #containedObjectsIterator()}.
+     *  If derived classes override it, they must guarantee that any omitted
+     *  objects are genuinely not needed in whatever uses this method.
+     *  @return An iterator over instances of NamedObj contained by this
+     *   object.
+     */
+    public Iterator lazyContainedObjectsIterator() {
+        return containedObjectsIterator();
+    }
+
     /** React to a debug message by relaying it to any registered
      *  debug listeners.
      *  @param message The debug message.
@@ -2091,7 +2105,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             int breadth = ((Integer) _override.get(depth)).intValue();
             _override.set(depth, Integer.valueOf(breadth + 1));
         }
-        Iterator objects = containedObjectsIterator();
+        Iterator objects = lazyContainedObjectsIterator();
         while (objects.hasNext()) {
             NamedObj object = (NamedObj) objects.next();
             object._adjustOverride(depth + 1);
@@ -2509,7 +2523,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
     protected void _markContentsDerived(int depth) {
         depth = depth + 1;
 
-        Iterator objects = containedObjectsIterator();
+        Iterator objects = lazyContainedObjectsIterator();
 
         while (objects.hasNext()) {
             NamedObj containedObject = (NamedObj) objects.next();
