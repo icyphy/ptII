@@ -31,8 +31,6 @@ package ptolemy.moml;
 import java.io.File;
 import java.util.List;
 
-import ptolemy.actor.Manager;
-import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.ChangeListener;
@@ -143,11 +141,11 @@ public class ConvertToLazy implements ChangeListener {
     public void convert(TypedCompositeActor actor, int threshold) {
         List<ComponentEntity> entities = actor.entityList();
         for (ComponentEntity entity : entities) {
-            if (!entity.isAtomic() && entity instanceof TypedAtomicActor) {
+            if (entity instanceof TypedCompositeActor) {
                 // Do the conversion depth-first.
                 convert((TypedCompositeActor)entity, threshold);
                 if (count((TypedCompositeActor)entity) >= threshold) {
-                    entity.setClassName("ptolemy.actor.lib.LazyTypedCompositeActor");
+                    entity.setClassName("ptolemy.actor.LazyTypedCompositeActor");
                 }
             }
         }
@@ -186,30 +184,11 @@ public class ConvertToLazy implements ChangeListener {
                 new ConvertToLazy(args[0], 100);
                 return;
             }
-            int threshold = Integer.parseInt(args[0]);
-            new ConvertToLazy(args[1], threshold);
+            int threshold = Integer.parseInt(args[1]);
+            new ConvertToLazy(args[0], threshold);
         } catch (Throwable ex) {
             System.err.println("Command failed: " + ex);
             ex.printStackTrace();
         }
     }
-
-    /** Execute the same model again.
-     *  @exception Exception if there was a problem rerunning the model.
-     */
-    public void rerun() throws Exception {
-        _manager.execute();
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-    private Manager _manager = null;
-
-    // executionError() sets _sawThrowable to the exception.
-    private Throwable _sawThrowable = null;
-
-    // Wait until executionFinished() or executionError() is called.
-    // If true and _sawThrowable is null then executionFinished() was called.
-    // If true and _sawThrowable is non-null then executionError() was called.
-    private boolean _executionFinishedOrError = false;
 }
