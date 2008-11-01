@@ -3483,7 +3483,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  @param container The container for these settables.
      */
     private void _addParamsToParamsToParse(NamedObj object) {
-        Iterator objects = object.containedObjectsIterator();
+        Iterator objects = object.lazyContainedObjectsIterator();
 
         while (objects.hasNext()) {
             NamedObj containedObject = (NamedObj) objects.next();
@@ -5629,7 +5629,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // so that we can disable deletion and name changes.
         // While we are at it, we add any
         // deeply contained Settables to the _paramsToParse list.
-        Iterator objects = object.containedObjectsIterator();
+        Iterator objects = object.lazyContainedObjectsIterator();
 
         while (objects.hasNext()) {
             NamedObj containedObject = (NamedObj) objects.next();
@@ -5650,7 +5650,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  @param entity The instance to mark.
      */
     private void _markParametersToParse(NamedObj object) {
-        Iterator objects = object.containedObjectsIterator();
+        Iterator objects = object.lazyContainedObjectsIterator();
 
         while (objects.hasNext()) {
             NamedObj containedObject = (NamedObj) objects.next();
