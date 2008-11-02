@@ -27,7 +27,7 @@
 
  */
 
-package ptolemy.codegen.c.kernel.type.polymorphic;
+package ptolemy.codegen.java.kernel.type.polymorphic;
 
 import java.io.File;
 import java.io.FileWriter;
