@@ -465,6 +465,7 @@ nightly:
 	$(MAKE) JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true tests
 
 # Run all the tests
+
 tests:: makefile
 	@if [ "x$(DIRS)" != "x" ]; then \
 		set $(DIRS); \
@@ -589,9 +590,13 @@ all.itcl: makefile
 test_auto:
 	$(JTCLSH) $(ROOT)/util/testsuite/auto.tcl
 
-# Run codegen on all the xml files in the auto subdirectory.
+# Run C codegen on all the xml files in the auto subdirectory.
 test_codegen:
 	$(JTCLSH) $(ROOT)/util/testsuite/CGC.tcl
+
+# Run Java codegen on all the xml files in the auto subdirectory.
+test_java_codegen:
+	$(JTCLSH) $(ROOT)/util/testsuite/JavaGC.tcl
 
 test_properties:
 	$(JTCLSH) $(ROOT)/util/testsuite/properties.tcl
