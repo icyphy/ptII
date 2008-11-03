@@ -593,9 +593,9 @@ public class CompositeEntity extends ComponentEntity {
     public List deepOpaqueEntityList() {
         try {
             _workspace.getReadAccess();
-	    List results = new ArrayList();
-	    _deepOpaqueEntityList(results);
-	    return results;
+            List results = new ArrayList();
+            _deepOpaqueEntityList(results);
+            return results;
         } finally {
             _workspace.doneReading();
         }
@@ -662,7 +662,7 @@ public class CompositeEntity extends ComponentEntity {
                 for (Object entityObject : _containedEntities.elementList()) {
                     ComponentEntity entity = (ComponentEntity) entityObject;
                     if (!entity.isClassDefinition()) {
-                        if (!entity.isOpaque()) {
+                        if (entity instanceof CompositeEntity) {
                             _addAll(result, ((CompositeEntity) entity).deepRelationSet());
                         }
                     }
@@ -1508,8 +1508,8 @@ public class CompositeEntity extends ComponentEntity {
             List atomicEntities = lazyAllAtomicEntityList();
             int entityCount = atomicEntities.size();
 
-	    Map<String,Integer> actorMap = new HashMap<String,Integer>();
-	    Integer one = new Integer(1);
+            Map<String,Integer> actorMap = new HashMap<String,Integer>();
+            Integer one = new Integer(1);
 
             int attributeCount = 0, entityClassCount = 0;
             Iterator entities = atomicEntities.iterator();
@@ -1518,15 +1518,15 @@ public class CompositeEntity extends ComponentEntity {
                 List attributeList = entity.attributeList();
                 attributeCount += attributeList.size();
 
-    	        Class entityClass = entity.getClass();
+                Class entityClass = entity.getClass();
 
-		// Create a map with the count of actors
-		String entityClassName = entityClass.getName();
-		if (!actorMap.containsKey(entityClassName)) {
-		    actorMap.put(entityClassName, one);
-		} else {
-		    actorMap.put(entityClassName, Integer.valueOf(actorMap.get(entityClassName) + 1));
-		}
+                // Create a map with the count of actors
+                String entityClassName = entityClass.getName();
+                if (!actorMap.containsKey(entityClassName)) {
+                    actorMap.put(entityClassName, one);
+                } else {
+                    actorMap.put(entityClassName, Integer.valueOf(actorMap.get(entityClassName) + 1));
+                }
 
                 if (clazz != null) {
                     if (clazz.isAssignableFrom(entityClass)) {
@@ -1544,18 +1544,18 @@ public class CompositeEntity extends ComponentEntity {
                 }
             }
 
-	    ArrayList actorArrayList = new ArrayList(actorMap.entrySet());
-	    //Sort the values based on values first and then keys.
-	    Collections.sort(actorArrayList, new CountComparator());
+            ArrayList actorArrayList = new ArrayList(actorMap.entrySet());
+            //Sort the values based on values first and then keys.
+            Collections.sort(actorArrayList, new CountComparator());
 
-	    StringBuffer actorNames = new StringBuffer();
-	    Iterator actors = actorArrayList.iterator();
-	    while (actors.hasNext()) {
-		Map.Entry<String, Integer> actor =  (Map.Entry) actors.next();
-		actorNames.append(actor.getKey() + " " + actor.getValue() + "\n");
-	    }
+            StringBuffer actorNames = new StringBuffer();
+            Iterator actors = actorArrayList.iterator();
+            while (actors.hasNext()) {
+                Map.Entry<String, Integer> actor =  (Map.Entry) actors.next();
+                actorNames.append(actor.getKey() + " " + actor.getValue() + "\n");
+            }
 
-	    List relationList = relationList();
+            List relationList = relationList();
             int compositeEntityCount = 0, relationCount = relationList.size();
             if (clazz != null) {
                 // Search the relations
@@ -1568,7 +1568,7 @@ public class CompositeEntity extends ComponentEntity {
                 }
             }
 
-	    Map<Integer,Integer> compositeEntityDepthMap = new TreeMap<Integer,Integer>();
+            Map<Integer,Integer> compositeEntityDepthMap = new TreeMap<Integer,Integer>();
             entities = allCompositeEntityList().iterator();
 
             while (entities.hasNext()) {
@@ -1576,14 +1576,14 @@ public class CompositeEntity extends ComponentEntity {
                 if (entity instanceof CompositeEntity) {
                     compositeEntityCount++;
 
-		    // Find the depth and add it to the list 
-		    Integer depth = Integer.valueOf(entity.depthInHierarchy());
-		    if (!compositeEntityDepthMap.containsKey(depth)) {
-			compositeEntityDepthMap.put(depth, one);
-		    } else {
-			compositeEntityDepthMap.put(depth,
-						 Integer.valueOf(compositeEntityDepthMap.get(depth) + 1));
-		    }
+                    // Find the depth and add it to the list 
+                    Integer depth = Integer.valueOf(entity.depthInHierarchy());
+                    if (!compositeEntityDepthMap.containsKey(depth)) {
+                        compositeEntityDepthMap.put(depth, one);
+                    } else {
+                        compositeEntityDepthMap.put(depth,
+                                                 Integer.valueOf(compositeEntityDepthMap.get(depth) + 1));
+                    }
 
                     relationList = ((CompositeEntity) entity).relationList();
                     relationCount += relationList.size();
@@ -1604,11 +1604,11 @@ public class CompositeEntity extends ComponentEntity {
                 }
             }
 
-	    // Generate a string with the depths
-	    StringBuffer compositeEntityDepths = new StringBuffer();
-	    for (Map.Entry<Integer, Integer> depth : compositeEntityDepthMap.entrySet()) {
-		compositeEntityDepths.append("Depth: " + depth.getKey() + " # of Composites at that depth: " + depth.getValue() + "\n");
-	    }
+            // Generate a string with the depths
+            StringBuffer compositeEntityDepths = new StringBuffer();
+            for (Map.Entry<Integer, Integer> depth : compositeEntityDepthMap.entrySet()) {
+                compositeEntityDepths.append("Depth: " + depth.getKey() + " # of Composites at that depth: " + depth.getValue() + "\n");
+            }
 
             return "Size Statistics for "
                     + getFullName()
@@ -1622,9 +1622,9 @@ public class CompositeEntity extends ComponentEntity {
                     + attributeCount
                     + (clazz == null ? "" : "\nEntities of type \""
                             + clazz.getName() + "\": " + entityClassCount)
-    		    + "\nAtomic Actor Names and Counts:\n" + actorNames
-		    + "\nComposite Entity Depths and Counts:\n"
-  		    + compositeEntityDepths;
+                    + "\nAtomic Actor Names and Counts:\n" + actorNames
+                    + "\nComposite Entity Depths and Counts:\n"
+                    + compositeEntityDepths;
 
         } finally {
             _workspace.doneReading();
@@ -1803,22 +1803,22 @@ public class CompositeEntity extends ComponentEntity {
      */
     protected void _deepOpaqueEntityList(List result) {
 
-	// This might be called from within a superclass constructor,
-	// in which case there are no contained entities yet.
-	if (_containedEntities != null) {
-	    Iterator entities = _containedEntities.elementList().iterator();
+        // This might be called from within a superclass constructor,
+        // in which case there are no contained entities yet.
+        if (_containedEntities != null) {
+            Iterator entities = _containedEntities.elementList().iterator();
 
-	    while (entities.hasNext()) {
-		ComponentEntity entity = (ComponentEntity) entities.next();
-		if (!entity.isClassDefinition()) {
-		    if (entity.isOpaque()) {
-			result.add(entity);
-		    } else {
-			((CompositeEntity) entity)._deepOpaqueEntityList(result);
-		    }
-		}
-	    }
-	}
+            while (entities.hasNext()) {
+                ComponentEntity entity = (ComponentEntity) entities.next();
+                if (!entity.isClassDefinition()) {
+                    if (entity.isOpaque()) {
+                        result.add(entity);
+                    } else {
+                        ((CompositeEntity) entity)._deepOpaqueEntityList(result);
+                    }
+                }
+            }
+        }
     }
 
     /** Return a description of the object.  The level of detail depends
@@ -2285,23 +2285,23 @@ public class CompositeEntity extends ComponentEntity {
 
     /** A comparator for a <String><Integer> Map. */
     private static class CountComparator implements Comparator {
-	public int compare(Object object1, Object object2){
-	    int result = 0;
-	    Map.Entry entry1 = (Map.Entry)object1 ;
-	    Map.Entry entry2 = (Map.Entry)object2 ;
+        public int compare(Object object1, Object object2){
+            int result = 0;
+            Map.Entry entry1 = (Map.Entry)object1 ;
+            Map.Entry entry2 = (Map.Entry)object2 ;
 
-	    Integer value1 = (Integer)entry1.getValue();
-	    Integer value2 = (Integer)entry2.getValue();
+            Integer value1 = (Integer)entry1.getValue();
+            Integer value2 = (Integer)entry2.getValue();
 
-	    if ( value1.compareTo(value2) == 0) {
-		String className1=(String)entry1.getKey();
-		String className2=(String)entry2.getKey();
-		result = className1.compareTo(className2);
-	    } else {
-		result = value2.compareTo(value1 );
-	    }
+            if ( value1.compareTo(value2) == 0) {
+                String className1=(String)entry1.getKey();
+                String className2=(String)entry2.getKey();
+                result = className1.compareTo(className2);
+            } else {
+                result = value2.compareTo(value1 );
+            }
 
-	    return result;
-	}
+            return result;
+        }
     }
 }

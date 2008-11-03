@@ -330,6 +330,7 @@ public class IORelation extends ComponentRelation {
                         "of the relations since no director present.");
                     }
                     
+                    assert _inferredWidthVersion == _workspace.getVersion();
                     assert !needsWidthInference();
                 }
                 return _inferredWidth;
@@ -782,6 +783,7 @@ public class IORelation extends ComponentRelation {
         assert _width == WIDTH_TO_INFER;
             // Precondition: you should only infer the width in case it
             // is not set by the user.
+        assert width >= 0;
         _inferredWidthVersion = _workspace.getVersion();
         _inferredWidth = width;
     }

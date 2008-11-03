@@ -70,11 +70,11 @@ public class RelationWidthInference {
                         
             try {
                 _topLevel.workspace().getWriteAccess();
-                    
+
                 Set<ComponentRelation> relationList = _topLevel.deepRelationSet();
                 Set<IORelation> workingSet = new HashSet<IORelation>();
                 HashSet<IORelation> unspecifiedSet = new HashSet<IORelation>();        
-                
+                                
                 for (ComponentRelation componentRelation : relationList) {
                     if (componentRelation instanceof IORelation) {
                         IORelation relation = (IORelation) componentRelation;                    
@@ -94,7 +94,7 @@ public class RelationWidthInference {
                                         
                                         workingSet.add(relation);
                                         break; //Break the for loop.
-                                    } else if (!port.isOpaque()){
+                                    } else /*if (!port.isOpaque())*/{
                                         //Add known outside relations
                                         for (Object connectedRelationObject : port.linkedRelationList()) {
                                             IORelation connectedRelation = (IORelation) connectedRelationObject;
@@ -114,7 +114,7 @@ public class RelationWidthInference {
                             }
                         }
                     }
-                }               
+                }
 
                 LinkedList<IORelation> workingSet2 = new LinkedList<IORelation>(workingSet);
 
@@ -159,7 +159,7 @@ public class RelationWidthInference {
                     // them once. We will also only add multiports
                     HashSet<IOPort> multiports = new HashSet<IOPort>();
                     for (Object port : relation.linkedPortList()) {
-                        if (((IOPort) port).isMultiport() && !((IOPort) port).isOpaque()) {                            
+                        if (((IOPort) port).isMultiport()) {                            
                             multiports.add((IOPort) port);
                         }
                     }
@@ -309,6 +309,7 @@ public class RelationWidthInference {
         
         if (unspecifiedWidthsSize == 1 || unspecifiedWidthsSize == difference || difference == 0) {
             int width = difference / unspecifiedWidthsSize;
+            assert width >= 0;
             for (IORelation relation : unspecifiedWidths) {
                 relation._setInferredWidth(width);
                 result.add(relation);
