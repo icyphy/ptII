@@ -51,9 +51,12 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 JSRCS = \
 	ArrayOfRecordsExporter.java \
 	ArrayOfRecordsRecorder.java \
+	DatabaseInsert.java \
 	DatabaseManager.java \
 	DatabaseQuery.java \
-	DatabaseSelect.java
+	DatabaseSelect.java \
+	SQLStatement.java 
+
 
 OTHER_FILES_TO_BE_JARED = \
 	database.xml \
@@ -71,6 +74,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # Don't include demo here, we don't want make sources to run make demo
 MISC_FILES = \
 	mysql-connector-java-5.1.6-bin.jar \
+	ojdbc5.jar \
 	ojdbc6.jar
 
 # make checkjunk will not report OPTIONAL_FILES as trash
