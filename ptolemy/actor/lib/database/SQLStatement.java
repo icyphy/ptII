@@ -65,10 +65,10 @@ public class SQLStatement extends Source {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         
-        statement = new PortParameter(this, "query");
-        statement.setStringMode(true);
-        statement.setTypeEquals(BaseType.STRING);
-        statement.setExpression("describe *");
+        query = new PortParameter(this, "query");
+        query.setStringMode(true);
+        query.setTypeEquals(BaseType.STRING);
+        query.setExpression("describe *");
 
         databaseManager = new StringParameter(this, "databaseManager");
         databaseManager.setExpression("DatabaseManager");
@@ -85,10 +85,10 @@ public class SQLStatement extends Source {
      */
     public StringParameter databaseManager;
     
-    /** An SQL statement. This is a string that defaults to
+    /** An SQL query. This is a string that defaults to
      *  "describe *".
      */
-    public PortParameter statement;
+    public PortParameter query;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -99,12 +99,12 @@ public class SQLStatement extends Source {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        statement.update();
+        query.update();
 
         String databaseName = databaseManager.stringValue();
         DatabaseManager database = DatabaseManager.findDatabaseManager(databaseName, this);
         String result = database.execute(
-                ((StringToken)statement.getToken()).stringValue());
+                ((StringToken)query.getToken()).stringValue());
         if (result != null) {
             if(_debugging) {
                 _debug("Result of query:\n" + result);
