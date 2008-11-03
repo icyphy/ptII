@@ -98,7 +98,7 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
 
     public static String codeGenJavaType(Type type) {
 	String ptolemyType = CodeGeneratorHelper.codeGenType(type);
-	return ptolemyType.replace("Int", "Integer");
+	return ptolemyType.replace("Int", "Integer").replace("Array", "Token");
     }
 
     /** Return a new parse tree code generator to use with expressions.
@@ -525,17 +525,23 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
                     .getType()).getElementType();
 
             //result.append("[" + channelAndOffset[1] + "]");
-            result.insert(0, "((" 
+            result.insert(0, "(" 
 			  + codeGenJavaType(elementType)
 			  + ")(Array_get(");
+            if (isPrimitive(elementType)) {
+		result.insert(0, "("); 
+	    }
+
             result.append(" ," + channelAndOffset[1] + ")");
 
 
             if (isPrimitive(elementType)) {
-                result.append(".payload))."
+                result.append(".payload/*jcgh2*/))."
 			      + codeGenType(elementType).toLowerCase()
 			      + "Value()");
-            }
+	    } else {
+		result.append(")");
+	    }
         }
         return result.toString();
     }
@@ -563,8 +569,13 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
             } else {
                 return "";
             }
+        } else if (macro.equals("cgType")) {
+	    System.out.println("JCGH: " + macro);
+	    return result.replace("Int", "Integer");
+	}  else if (macro.equals("lcCgType")) {
+	    System.out.println("JCGH: " + macro);
+	    return _replaceMacro("cgType", parameter).toLowerCase();
         }
-        
         // We will assume that it is a call to a polymorphic
         // functions.
         //String[] call = macro.split("_");
