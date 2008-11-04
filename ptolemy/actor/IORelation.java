@@ -1001,6 +1001,28 @@ public class IORelation extends ComponentRelation {
                     }
                 }
     
+
+                // According to the comments this used to happen for this reason:
+                //      Do this as a second pass so that it does not
+                //      get executed if the change is aborted
+                //      above by an exception.
+                //      FIXME: Haven't completely dealt with this
+                //      possibility since the above changes may have
+                //      partially completed.
+                // With the new width inference algorithm the code below does not
+                // need to be executed for this reason. However some actors
+                // do some initialization in the connectionsChanged method that they
+                // don't do at other points of time.
+
+                for  (Object port : linkedPortList()) {
+                    IOPort p = (IOPort) port;
+                    Entity portContainer = (Entity) p.getContainer();
+
+                    if (portContainer != null) {
+                        portContainer.connectionsChanged(p);
+                    }
+                }
+                
                 // Invalidate schedule and type resolution.
                 Nameable container = getContainer();
     
