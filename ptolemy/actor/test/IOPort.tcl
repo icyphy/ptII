@@ -835,7 +835,7 @@ test IOPort-10.6 {Check description use the example (that used to be) in design 
     $p5 link $r3
     $p6 link $r3
     set r4 [java::new ptolemy.actor.IORelation $e0 R4]
-    $r4 setWidth 2
+    $r4 setWidth 4
     $p3 link $r4
     $p7 link $r4
     $p10 link $r4
@@ -870,14 +870,24 @@ test IOPort-10.6 {Check description use the example (that used to be) in design 
     }
     {
         {ptolemy.actor.Mailbox in ..E3.E4.P8}
+        {ptolemy.actor.Mailbox in ..E6.P7}
     }
     {
         {ptolemy.actor.Mailbox in ..E3.E5.P9}
         {ptolemy.actor.Mailbox in ..E3.E5.P9}
+        {ptolemy.actor.Mailbox in ..E6.P7}
+    }
+    {
     }
 }
 ptolemy.actor.IOPort {..E7.P10} receivers {
 } remotereceivers {
+    {
+        {ptolemy.actor.Mailbox in ..E6.P7}
+    }
+    {
+        {ptolemy.actor.Mailbox in ..E6.P7}
+    }
     {
         {ptolemy.actor.Mailbox in ..E6.P7}
     }
