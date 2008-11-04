@@ -266,6 +266,32 @@ public class Subscriber extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
 
+    /** Find the publisher, if there is one.
+     *  @return A publisher, or null if none is found.
+     */
+    private Publisher _findPublisher() {
+	// This method is protected so that users can subclass this class
+	// and create alternative ways of managing finding Publishers.
+
+        // Find the nearest opaque container above in the hierarchy.
+        CompositeEntity container = (CompositeEntity) getContainer();
+        while (container != null && !container.isOpaque()) {
+            container = (CompositeEntity) container.getContainer();
+        }
+        if (container != null) {
+            Iterator actors = container.deepOpaqueEntityList().iterator();
+            while (actors.hasNext()) {
+                Object actor = actors.next();
+                if (actor instanceof Publisher) {
+                    if (_channel.equals(((Publisher) actor)._channel)) {
+                        return (Publisher) actor;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
     /** Update the connection to the publisher, if there is one.
      *  Note that this method is computationally intensive for large
      *  models as it traverses the model by searching
@@ -318,32 +344,6 @@ public class Subscriber extends TypedAtomicActor {
 
     /** An indicator that _updateLinks has been called at least once. */
     protected boolean _updatedLinks = false;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /** Find the publisher, if there is one.
-     *  @return A publisher, or null if none is found.
-     */
-    private Publisher _findPublisher() {
-        // Find the nearest opaque container above in the hierarchy.
-        CompositeEntity container = (CompositeEntity) getContainer();
-        while (container != null && !container.isOpaque()) {
-            container = (CompositeEntity) container.getContainer();
-        }
-        if (container != null) {
-            Iterator actors = container.deepOpaqueEntityList().iterator();
-            while (actors.hasNext()) {
-                Object actor = actors.next();
-                if (actor instanceof Publisher) {
-                    if (_channel.equals(((Publisher) actor)._channel)) {
-                        return (Publisher) actor;
-                    }
-                }
-            }
-        }
-        return null;
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

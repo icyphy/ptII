@@ -246,6 +246,34 @@ public class SubscriptionAggregator extends Subscriber {
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
 
+    /** Find matching publishers, if there are any.
+     *  @return A list of publishers.
+     */
+    private List _findPublishers() {
+	// This method is protected so that users can subclass this class
+	// and create alternative ways of managing finding Publishers.
+
+        List result = new LinkedList();
+        // Find the nearest opaque container above in the hierarchy.
+        CompositeEntity container = (CompositeEntity) getContainer();
+        while (container != null && !container.isOpaque()) {
+            container = (CompositeEntity) container.getContainer();
+        }
+        if (container != null) {
+            Iterator actors = container.deepOpaqueEntityList().iterator();
+            while (actors.hasNext()) {
+                Object actor = actors.next();
+                if (actor instanceof Publisher) {
+                    if (channelMatches(((Publisher) actor)._channel)) {
+                        result.add(actor);
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+
     /** Update the connection to the publishers, if there are any.
      *  @exception IllegalActionException If creating the link
      *   triggers an exception.
@@ -291,33 +319,6 @@ public class SubscriptionAggregator extends Subscriber {
             director.invalidateResolvedTypes();
         }
         _updatedLinks = true;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /** Find matching publishers, if there are any.
-     *  @return A list of publishers.
-     */
-    private List _findPublishers() {
-        List result = new LinkedList();
-        // Find the nearest opaque container above in the hierarchy.
-        CompositeEntity container = (CompositeEntity) getContainer();
-        while (container != null && !container.isOpaque()) {
-            container = (CompositeEntity) container.getContainer();
-        }
-        if (container != null) {
-            Iterator actors = container.deepOpaqueEntityList().iterator();
-            while (actors.hasNext()) {
-                Object actor = actors.next();
-                if (actor instanceof Publisher) {
-                    if (channelMatches(((Publisher) actor)._channel)) {
-                        result.add(actor);
-                    }
-                }
-            }
-        }
-        return result;
     }
 
     ///////////////////////////////////////////////////////////////////

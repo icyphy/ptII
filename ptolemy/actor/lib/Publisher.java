@@ -274,6 +274,43 @@ public class Publisher extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                       protected method                    ////
 
+    /** Find subscribers.
+     *  @return A list of subscribers.
+     *  @exception IllegalActionException If there is already a publisher
+     *   using the same channel.
+     */
+    protected List _findSubscribers() throws IllegalActionException {
+	// This method is protected so that users can subclass this class
+	// and create alternative ways of managing finding Subscribers.
+        LinkedList result = new LinkedList();
+        // Find the nearest opaque container above in the hierarchy.
+        CompositeEntity container = (CompositeEntity) getContainer();
+        while (container != null && !container.isOpaque()) {
+            container = (CompositeEntity) container.getContainer();
+        }
+        if (container != null) {
+            Iterator actors = container.deepOpaqueEntityList().iterator();
+            while (actors.hasNext()) {
+                Object actor = actors.next();
+                if (actor instanceof Subscriber) {
+                    if (((Subscriber) actor).channelMatches(_channel)) {
+                        result.add(actor);
+                    }
+                } else if (actor instanceof Publisher && actor != this) {
+                    // Throw an exception if there is another publisher
+                    // trying to publish on the same channel.
+                    if (_channel.equals(((Publisher) actor)._channel)) {
+                        throw new IllegalActionException(this,
+                                "There is already a publisher using channel \""
+                                        + _channel + "\": "
+                                        + ((NamedObj) actor).getFullName());
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
     /** Update connections to subscribers.
      *  @exception IllegalActionException If there is already a publisher
      *   publishing on the same channel.
@@ -349,41 +386,6 @@ public class Publisher extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
-    /** Find subscribers.
-     *  @return A list of subscribers.
-     *  @exception IllegalActionException If there is already a publisher
-     *   using the same channel.
-     */
-    private List _findSubscribers() throws IllegalActionException {
-        LinkedList result = new LinkedList();
-        // Find the nearest opaque container above in the hierarchy.
-        CompositeEntity container = (CompositeEntity) getContainer();
-        while (container != null && !container.isOpaque()) {
-            container = (CompositeEntity) container.getContainer();
-        }
-        if (container != null) {
-            Iterator actors = container.deepOpaqueEntityList().iterator();
-            while (actors.hasNext()) {
-                Object actor = actors.next();
-                if (actor instanceof Subscriber) {
-                    if (((Subscriber) actor).channelMatches(_channel)) {
-                        result.add(actor);
-                    }
-                } else if (actor instanceof Publisher && actor != this) {
-                    // Throw an exception if there is another publisher
-                    // trying to publish on the same channel.
-                    if (_channel.equals(((Publisher) actor)._channel)) {
-                        throw new IllegalActionException(this,
-                                "There is already a publisher using channel \""
-                                        + _channel + "\": "
-                                        + ((NamedObj) actor).getFullName());
-                    }
-                }
-            }
-        }
-        return result;
-    }
 
     /** Return a channel name of the form "channelX", where X is an integer
      *  that ensures that this channel name is not already in use.
