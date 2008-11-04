@@ -290,6 +290,16 @@ public class RelationWidthInference {
             unspecifiedWidths = outsideUnspecifiedWidths;
             difference = insideWidth - outsideWidth;            
         }
+        
+        // For opaque ports we want not always want the same behavior.
+        // For example at an add-subtract actor we only have information
+        // about the outside, and hence we can't infer any widths at this port.
+        // In this case difference < 0.
+        // However in the case of a multimodel, you often have relations on the
+        // inside and width inference needs to happen. In this case difference >=0 
+        if (port.isOpaque() && difference < 0) {
+            return result; // No width inference possible and necessary at this port.            
+        }
         if (difference < 0) {
             throw new IllegalActionException(port, 
                     "The inside and outside widths of port " + port.getFullName()
