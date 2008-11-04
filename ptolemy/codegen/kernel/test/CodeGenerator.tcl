@@ -199,7 +199,7 @@ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-void top(void) {
+void top() {
 
 /* Fire Composite Actor: top */
 }
