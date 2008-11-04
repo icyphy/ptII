@@ -101,8 +101,6 @@ test LazyTypedCompositeActor-12.1 {deepConnectedIn(out)Ports} {
         </port>
     </entity>
     <entity name="E2" class="ptolemy.actor.LazyTypedCompositeActor">
-        <property name="_lazyCompositeMarker" class="ptolemy.kernel.util.Attribute">
-        </property>
         <port name="P2" class="ptolemy.actor.TypedIOPort">
         </port>
         <port name="P4" class="ptolemy.actor.TypedIOPort">
@@ -110,8 +108,6 @@ test LazyTypedCompositeActor-12.1 {deepConnectedIn(out)Ports} {
         <configure>
             <group>
         <entity name="E3" class="ptolemy.actor.LazyTypedCompositeActor">
-            <property name="_lazyCompositeMarker" class="ptolemy.kernel.util.Attribute">
-            </property>
             <port name="P3" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -149,4 +145,3 @@ test LazyTypedCompositeActor-12.1 {deepConnectedIn(out)Ports} {
     <link port="E4.P5" relation="R3"/>
 </entity>
 }}
-
