@@ -421,9 +421,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             }
 
             try {
-		System.out.println("CodeGenerator: about to preinitialize");
                 manager.preinitializeAndResolveTypes();
-		System.out.println("CodeGenerator: done preinitializing");
                 returnValue = _generateCode(code);
             } finally {
                 // We call wrapup here so that the state gets set to idle.
@@ -764,11 +762,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                         // fail because the results don't match.
                         parser.reset();
                         MoMLParser.purgeModelRecord(modelURL);
-			System.out.println("CodeGenerator: about to parse " + modelURL);
                         toplevel = (CompositeActor) parser
                                 .parse(null, modelURL);
-			System.out.println("CodeGenerator: done parsing " + modelURL);
-
                     } catch (Exception ex) {
                         throw new Exception("Failed to parse \"" + args[i]
                                 + "\"", ex);
