@@ -338,9 +338,9 @@ public class CodeStream {
                 return "";
             } else {
                 throw new IllegalActionException(_helper,
-                        "Cannot find code block: \"" + signature + "\" in "
-                        + _filePath + ", the initial path was "
-		        + _originalFilePath + ".");
+                        "Cannot find code block: \"" + signature + "\" in \""
+                        + _filePath + "\", the initial path was \""
+		        + _originalFilePath + "\".");
             }
         }
 
@@ -1455,7 +1455,7 @@ public class CodeStream {
                         throw new IllegalActionException(_helper,
                                 "Cannot find " + (isSuper ? "super" : "this")
                                 + " block for " + callSignature
-                                + " in " + codeObject[0]);
+                                + " in \"" + codeObject[0] + "\"");
                     }
                     result.append(callCodeBlock);
 

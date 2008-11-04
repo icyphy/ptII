@@ -81,7 +81,7 @@ test CodeStream-3.1 {appendCodeBlock} {
     $codeStream appendCodeBlock "foo" [java::new java.util.ArrayList] true 0
     catch {$codeStream appendCodeBlock "foo" [java::new java.util.ArrayList] false 0} errMsg
     list $errMsg
-} {{ptolemy.kernel.util.IllegalActionException: Cannot find code block: "foo()" in .
+} {{ptolemy.kernel.util.IllegalActionException: Cannot find code block: "foo()" in "", the initial path was "".
   in .<Unnamed Object>}}
 
 #####
@@ -120,7 +120,7 @@ test CodeStream-3.3 {appendCodeBlock: wrong number of args} {
     catch {$codeStream3_3 appendCodeBlock "initBlock" $args false 0} errMsg
     regsub {file:.*/testCodeBlock.c} $errMsg {file:<<path_substituted>>/testCodeBlock.c} results
     list $results	
-} {{ptolemy.kernel.util.IllegalActionException: Cannot find code block: "initBlock($, $)" in file:<<path_substituted>>/testCodeBlock.c.}}
+} {{ptolemy.kernel.util.IllegalActionException: Cannot find code block: "initBlock($, $)" in "file:<<path_substituted>>/testCodeBlock.c".}}
 
 #####
 test CodeStream-3.4 {appendCodeBlock: arg name does not start with $} {
@@ -143,7 +143,8 @@ test CodeStream-3.5 {appendCodeBlock initBlock} {
     catch {$codeStream3_5 appendCodeBlock "initBlock"} errMsg
     regsub {file:.*/testCodeBlock.c} $errMsg {file:<<path_substituted>>/testCodeBlock.c} results
     list $results
-} {{ptolemy.kernel.util.IllegalActionException: Cannot find code block: "initBlock()" in file:<<path_substituted>>/testCodeBlock.c.}}
+} {{ptolemy.kernel.util.IllegalActionException: Cannot find code block: "initBlock()" in "file:<<path_substituted>>/testCodeBlock.c".}}
+
 
 
 #####
