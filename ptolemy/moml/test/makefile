@@ -54,6 +54,7 @@ JSRCS = \
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
+	ConvertToLazy.tcl \
 	Documentation.tcl \
 	EntityLibrary.tcl \
 	ImportAttribute.tcl \
@@ -94,6 +95,7 @@ JGRAPHICAL_TESTS = \
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
 	ComplexCompositeCopyAndPasteTest.xml \
 	CompositeCopyAndPasteTest.xml \
+	ConvertToLazyTest.xml \
 	ConstClassDefinition.xml \
 	NoPackageActor.java.in \
 	NonexistantDirectorTest.xml \
