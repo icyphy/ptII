@@ -60,8 +60,8 @@ import ptolemy.domains.ptides.platform.NonPreemptivePlatformExecutionStrategy;
 import ptolemy.domains.ptides.platform.PlatformExecutionStrategy;
 import ptolemy.domains.ptides.platform.PreemptivePlatformExecutionStrategy;
 import ptolemy.domains.tdl.kernel.TDLModule;
-import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -596,33 +596,34 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
     public boolean prefire() throws IllegalActionException {
         Director executiveDirector = ((Actor) getContainer()).getExecutiveDirector();  
         while (executiveDirector != null && !(executiveDirector instanceof PtidesDirector))
-            executiveDirector = ((Actor)executiveDirector.getContainer()).getExecutiveDirector(); 
+                executiveDirector = ((Actor)executiveDirector.getContainer()).getExecutiveDirector(); 
         _currentPhysicalTime = executiveDirector.getModelTime();
-        
-      executiveDirector = ((Actor) getContainer()).getExecutiveDirector();
-      if (!(executiveDirector instanceof PtidesDirector)) {
-        if (_eventsInExecution.size() > 0) {
-            TimedEvent eventInExecution = _eventsInExecution.getFirst();
-            Actor actorToFire = (Actor) eventInExecution.contents;
-            Time time = getFinishingTime(actorToFire);
-            if (time.equals(_currentPhysicalTime)) {
-                return true;
+            
+        executiveDirector = ((Actor) getContainer()).getExecutiveDirector();
+        _transferAllInputs();
+        if (!(executiveDirector instanceof PtidesDirector)) {
+            if (_eventsInExecution.size() > 0) {
+                TimedEvent eventInExecution = _eventsInExecution.getFirst();
+                Actor actorToFire = (Actor) eventInExecution.contents;
+                Time time = getFinishingTime(actorToFire);
+                if (time.equals(_currentPhysicalTime)) {
+                    return true;
+                }
             }
-        }
-        List eventsToFire = _getNextEventsToFire();
-        Time nextRealTimeEventTime = _getNextRealTimeEventTime(
-                eventsToFire, _eventsInExecution);
-        TimedEvent event = _executionStrategy.getNextEventToFire(_eventsInExecution,
-                eventsToFire, nextRealTimeEventTime, _currentPhysicalTime); 
-        // start firing an actor defined by the previously selected event
-        if (event != null) 
-            return true;
-        if (!nextRealTimeEventTime.equals(Time.POSITIVE_INFINITY))
-            executiveDirector.fireAt(
-                (Actor) this.getContainer(), nextRealTimeEventTime);
-        return false;
+            List eventsToFire = _getNextEventsToFire();
+            Time nextRealTimeEventTime = _getNextRealTimeEventTime(
+                    eventsToFire, _eventsInExecution);
+            TimedEvent event = _executionStrategy.getNextEventToFire(_eventsInExecution,
+                    eventsToFire, nextRealTimeEventTime, _currentPhysicalTime); 
+            // start firing an actor defined by the previously selected event
+            if (event != null) 
+                return true;
+            if (!nextRealTimeEventTime.equals(Time.POSITIVE_INFINITY))
+                executiveDirector.fireAt(
+                    (Actor) this.getContainer(), nextRealTimeEventTime);
+            return false;
         } else
-        return super.prefire();
+            return super.prefire();
     }
 
     /**
@@ -751,7 +752,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
                             time = event._timeStamp;
                             t = event._token;
                         } else {
-                            time = getModelTime();
+                            time = ((Actor)((Actor)getContainer()).getContainer()).getDirector().getModelTime();
                             t = receivers[k][l].get();
                         }
                         if (time.compareTo(_currentPhysicalTime) < 0)
