@@ -503,9 +503,11 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         String composite = (getComponent() instanceof CompositeActor) ? "Composite Actor: "
                 : "";
 
+	// If the component name starts with a $, then convert "$" to "Dollar" and avoid problems
+	// with macro substitution.  See codegen/c/actor/lib/test/auto/RampDollarNames.xml. 
         _codeStream.append(_eol
                 + CodeStream.indent(_codeGenerator.comment("Fire " + composite
-                        + getComponent().getName())));
+							   + StringUtilities.sanitizeName(getComponent().getName()).replace("$", "Dollar"))));
 
         _codeStream.appendCodeBlock(_defaultBlocks[2], true); // fireBlock
 
