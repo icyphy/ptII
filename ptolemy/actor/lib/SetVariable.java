@@ -192,7 +192,7 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
 
         if (!variableNameValue.equals("")) {
             // Look for the variableName anywhere in the hierarchy
-            _attribute = ModelScope.getScopedVariable(null, container,
+            _attribute = ModelScope.getScopedAttribute(null, container,
                     variableNameValue);
 
             if (_attribute == null) {

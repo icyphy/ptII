@@ -134,6 +134,55 @@ public abstract class ModelScope implements ParserScope {
         return nameSet;
     }
 
+    /** Get the attribute with the given name in the scope of the given
+     *  container.  If the name contains the "::" scoping specifier,
+     *  then an attribute more deeply in the hierarchy is searched
+     *  for.  The scope of the object includes any container of the
+     *  given object, and any attribute contained in a scope extending
+     *  attribute inside any of those containers.
+     *  @param exclude An attribute to exclude from the search.
+     *  @param container The container to search upwards from.
+     *  @param name The attribute name to search for.
+     *  @return The attribute with the given name or null if the attribute
+     *  does not exist.
+     */
+    public static Attribute getScopedAttribute(Attribute exclude,
+            NamedObj container, String name) {
+        String insideName = name.replaceAll("::", ".");
+
+        while (container != null) {
+            Attribute result = _searchAttributeIn(exclude, container,
+                    insideName);
+
+            if (result != null) {
+                return result;
+            } else {
+                List attributes = (container).attributeList(
+                        ContainmentExtender.class);
+                Iterator attrIterator = attributes.iterator();
+                NamedObj extendedContainer = null;
+                while (extendedContainer == null
+                        && attrIterator.hasNext()) {
+                    ContainmentExtender extender = (ContainmentExtender)
+                            attrIterator.next();
+                    try {
+                        extendedContainer = extender.getExtendedContainer();
+                    } catch (IllegalActionException e) {
+                        // Ignore the exception, and try the next extender.
+                    }
+                }
+
+                if (extendedContainer == null) {
+                    container = container.getContainer();
+                } else {
+                    container = extendedContainer;
+                }
+            }
+        }
+
+        return null;
+    }
+
     /** Get the NamedObj with the given name in the scope of the given
      *  container.  If the name contains the "::" scoping specifier,
      *  then an attribute more deeply in the hierarchy is searched
@@ -192,7 +241,7 @@ public abstract class ModelScope implements ParserScope {
                             // Ignore the exception, and try the next extender.
                         }
                     }
-                    
+
                     if (extendedContainer == null) {
                         container = container.getContainer();
                     } else {
@@ -229,7 +278,7 @@ public abstract class ModelScope implements ParserScope {
         String insideName = name.replaceAll("::", ".");
 
         while (container != null) {
-            Variable result = _searchIn(exclude, container, insideName);
+            Variable result = _searchVariableIn(exclude, container, insideName);
 
             if (result != null) {
                 return result;
@@ -248,7 +297,7 @@ public abstract class ModelScope implements ParserScope {
                         // Ignore the exception, and try the next extender.
                     }
                 }
-                
+
                 if (extendedContainer == null) {
                     container = container.getContainer();
                 } else {
@@ -263,8 +312,34 @@ public abstract class ModelScope implements ParserScope {
     // Search in the container for an attribute with the given name.
     // Search recursively in any instance of ScopeExtender in the
     // container.
-    private static Variable _searchIn(Variable exclude, NamedObj container,
-            String name) {
+    private static Attribute _searchAttributeIn(Attribute exclude,
+            NamedObj container, String name) {
+        Attribute result = container.getAttribute(name);
+
+        if (result != null && result != exclude) {
+            return result;
+        } else {
+            Iterator extenders = container.attributeList(ScopeExtender.class)
+                    .iterator();
+
+            while (extenders.hasNext()) {
+                ScopeExtender extender = (ScopeExtender) extenders.next();
+                result = extender.getAttribute(name);
+
+                if (result != null && result != exclude) {
+                    return result;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    // Search in the container for a variable with the given name.
+    // Search recursively in any instance of ScopeExtender in the
+    // container.
+    private static Variable _searchVariableIn(Variable exclude,
+            NamedObj container, String name) {
         Attribute result = container.getAttribute(name);
 
         if ((result != null) && result instanceof Variable
@@ -282,10 +357,6 @@ public abstract class ModelScope implements ParserScope {
                         && (result != exclude)) {
                     return (Variable) result;
                 }
-
-                // Should not return null here. The next extender should be
-                // searched. (tfeng)
-                // return null;
             }
         }
 
