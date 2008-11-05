@@ -53,6 +53,7 @@ SHELL_FILES = \
 	.momllib-util \
 	.nc2moml-util \
 	.ncapp2moml-util \
+	convertToLazy \
 	copernicus \
 	copernicusjhdl \
 	decompile \
@@ -64,6 +65,7 @@ SHELL_FILES = \
 	moml \
 	obfuscate \
 	ptcg \
+	ptjg \
 	ptexecute \
 	ptjacl \
 	ptjaclapp \
