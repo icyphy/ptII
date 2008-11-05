@@ -153,7 +153,7 @@ public class ConvertToLazy implements ChangeListener {
     
     /** Count the number of contained entities that have not already been made
      *  lazy.
-     *  @param entity The entity to count.
+     *  @param actor The actor to count.
      *  @return The number of contained entities (deeply) that are not already
      *   lazy.
      */
