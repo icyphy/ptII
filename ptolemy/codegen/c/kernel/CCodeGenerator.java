@@ -1097,8 +1097,8 @@ public class CCodeGenerator extends CodeGenerator {
 		// Keep these alphabetical
                 if (osName.startsWith("Linux")) {
                     substituteMap.put("@PTJNI_GCC_SHARED_FLAG@", "-shared");
-		    # Need -fPIC for jni actors, see 
-                    # codegen/c/actor/lib/jni/test/auto/Scale.xml
+		    // Need -fPIC for jni actors, see 
+                    // codegen/c/actor/lib/jni/test/auto/Scale.xml
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_CFLAG@", "-fPIC");
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "lib");
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "so");
