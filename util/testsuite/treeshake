@@ -238,7 +238,7 @@ if [ $retval = 0 ]; then
     	    for jarFile in $classPathJarFiles
 	    do
 		# Exclude certain jar files:
-		echo $jarFile | egrep 'rt.jar$|jasminclasses.jar$|sootclasses.jar$' 
+		echo $jarFile | egrep 'Classes/classes.jar$|diva.jar$|jasminclasses.jar$|polyglotclasses-1.3.2.jar|$rt.jar$|sootclasses.jar$|' 
 		retval=$?
 	        if [ $retval != 1 ]; then
 		    echo "Skipping this jar file: $jarFile"
@@ -250,7 +250,14 @@ if [ $retval = 0 ]; then
 		    rm -rf $PTJAR_TMPDIR2
 		    mkdir $PTJAR_TMPDIR2
 
-		    cat $jarFile | (cd $PTJAR_TMPDIR2; "$JAR" -x)
+		    # Mac OS X fails with "cat: stdout: Broken pipe" on
+		    # ptII/lib/diva.jar, ptII/lib/polyglotclasses-1.3.2.jar
+		    # and
+		    # /System/Library/Frameworks/JavaVM.framework/Versions/1.5.0/Home/../Classes/classes.jar
+		    cat $jarFile | (cd $PTJAR_TMPDIR2; "$JAR" -xv)
+
+		    # This command might help avoid "cat: stdout: Broken pipe":
+		    #(cd $PTJAR_TMPDIR2; "$JAR" -xf $jarFile)
 
 		    echo "Possibly copying files from $jarFile"
 		
