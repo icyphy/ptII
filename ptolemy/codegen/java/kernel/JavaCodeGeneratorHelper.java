@@ -121,12 +121,12 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
     public String generateVariableDeclaration() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
+	String name = CodeGeneratorHelper.generateName(getComponent());
         // Generate variable declarations for referenced parameters.
         String referencedParameterDeclaration = _generateReferencedParameterDeclaration();
         if (referencedParameterDeclaration.length() > 1) {
             code.append(_eol
-                    + _codeGenerator.comment(getComponent().getName()
-                            + "'s referenced parameter declarations."));
+                    + _codeGenerator.comment(name + "'s referenced parameter declarations."));
             code.append(referencedParameterDeclaration);
         }
 
@@ -134,8 +134,7 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
         String inputVariableDeclaration = _generateInputVariableDeclaration();
         if (inputVariableDeclaration.length() > 1) {
             code.append(_eol
-                    + _codeGenerator.comment(getComponent().getName()
-                            + "'s input variable declarations."));
+                    + _codeGenerator.comment(name + "'s input variable declarations."));
             code.append(inputVariableDeclaration);
         }
 
@@ -143,8 +142,7 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
         String outputVariableDeclaration = _generateOutputVariableDeclaration();
         if (outputVariableDeclaration.length() > 1) {
             code.append(_eol
-                    + _codeGenerator.comment(getComponent().getName()
-                            + "'s output variable declarations."));
+                    + _codeGenerator.comment(name + "'s output variable declarations."));
             code.append(outputVariableDeclaration);
         }
 
@@ -152,8 +150,7 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
         String typeConvertVariableDeclaration = _generateTypeConvertVariableDeclaration();
         if (typeConvertVariableDeclaration.length() > 1) {
             code.append(_eol
-                    + _codeGenerator.comment(getComponent().getName()
-                            + "'s type convert variable declarations."));
+                    + _codeGenerator.comment(name + "'s type convert variable declarations."));
             code.append(typeConvertVariableDeclaration);
         }
 

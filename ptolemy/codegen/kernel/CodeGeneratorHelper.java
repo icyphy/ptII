@@ -507,7 +507,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 	// with macro substitution.  See codegen/c/actor/lib/test/auto/RampDollarNames.xml. 
         _codeStream.append(_eol
                 + CodeStream.indent(_codeGenerator.comment("Fire " + composite
-							   + StringUtilities.sanitizeName(getComponent().getName()).replace("$", "Dollar"))));
+							   + generateName(getComponent()))));
 
         _codeStream.appendCodeBlock(_defaultBlocks[2], true); // fireBlock
 
@@ -604,7 +604,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         if (name.startsWith("_")) {
             name = name.substring(1, name.length());
         }
-        return name;
+        return name.replaceAll("\\$", "Dollar");
     }
 
     /**

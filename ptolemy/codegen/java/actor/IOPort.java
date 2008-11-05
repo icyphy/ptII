@@ -202,7 +202,8 @@ public class IOPort extends JavaCodeGeneratorHelper implements PortCodeGenerator
 
         ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
         StringBuffer code = new StringBuffer();
-        code.append(getCodeGenerator().comment("\n....................Begin updateConnectedPortsOffset..." + port.getFullName()));
+        code.append(getCodeGenerator().comment(_eol + "....Begin updateConnectedPortsOffset...."
+					       + CodeGeneratorHelper.generateName(port)));
 
         if (rate == 0) {
             return "";
@@ -274,7 +275,8 @@ public class IOPort extends JavaCodeGeneratorHelper implements PortCodeGenerator
                 }
             }
         }
-        code.append(getCodeGenerator().comment("\n....................End updateConnectedPortsOffset..." + port.getFullName()));
+        code.append(getCodeGenerator().comment(_eol + "....End updateConnectedPortsOffset...."
+					       + CodeGeneratorHelper.generateName(port)));
         return code.toString();
     }
 
@@ -287,7 +289,8 @@ public class IOPort extends JavaCodeGeneratorHelper implements PortCodeGenerator
             (ptolemy.actor.IOPort) getComponent();
         Receiver receiver = _getReceiver(null, 0, port);
 
-        String code = getCodeGenerator().comment("\n....................Begin updateOffset..." + port.getFullName());
+        String code = getCodeGenerator().comment(_eol + "....Begin updateOffset...." 
+						 + CodeGeneratorHelper.generateName(port));
 
         //        int width = 0;
         //        if (port.isInput()) {
@@ -311,10 +314,12 @@ public class IOPort extends JavaCodeGeneratorHelper implements PortCodeGenerator
                     code += _updatePNOffset(rate, channel.port, 
                             channel.channelNumber, directorHelper, false);
                 }
-                code += getCodeGenerator().comment("\n....................End updateOffset (PN)..." + port.getFullName());
+                code += getCodeGenerator().comment(_eol + "....End updateOffset (PN)...."
+						   + CodeGeneratorHelper.generateName(port));
             } else {
                 code += _updateOffset(i, rate);
-                code += getCodeGenerator().comment("\n....................End updateOffset..." + port.getFullName());
+                code += getCodeGenerator().comment(_eol + "\n....End updateOffset...."
+						   + CodeGeneratorHelper.generateName(port));
             }
         }
         return code;
