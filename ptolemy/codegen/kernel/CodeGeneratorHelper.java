@@ -1764,7 +1764,9 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         Set sharedCode = new HashSet();
         _codeStream.clear();
         _codeStream.appendCodeBlocks(".*shared.*");
-        sharedCode.add(processCode(_codeStream.toString()));
+	if (!_codeStream.isEmpty()) {
+	    sharedCode.add(processCode(_codeStream.toString()));
+	}
         return sharedCode;
     }
 
