@@ -41,7 +41,7 @@ proc parseTreeTest {expression} {
     set ptParser [java::new ptolemy.data.expr.PtParser]
     set parseTree [$ptParser generateParseTree $expression]
     set parseTreeCodeGenerator \
-	[java::new ptolemy.codegen.c.kernel.JavaParseTreeCodeGenerator]
+	[java::new ptolemy.codegen.java.kernel.JavaParseTreeCodeGenerator]
     # We have to eval the parse tree first, though we ignore the value
     set token [$parseTreeCodeGenerator evaluateParseTree $parseTree]
     # return [list [$token toString] [$parseTreeCodeGenerator generateFireCode]]
@@ -80,7 +80,7 @@ test JavaParseTreeCodeGenerator-2.1 {Define a variable in a regular parse tree }
 proc parseTreeTraceTest {expression} {
     set ptParser [java::new ptolemy.data.expr.PtParser]
     set parseTreeCodeGenerator \
-    [java::new ptolemy.codegen.c.kernel.JavaParseTreeCodeGenerator]
+    [java::new ptolemy.codegen.java.kernel.JavaParseTreeCodeGenerator]
 
     set parseTree [$ptParser generateParseTree $expression ]
     set tree [$parseTreeCodeGenerator traceParseTreeEvaluation \
@@ -184,7 +184,7 @@ Node ptolemy.data.expr.ASTPtFunctionApplicationNode evaluated to {0, 2, 3}
 test JavaParseTreeCodeGenerator-16.3 {visitFunctionApplicationNode} {
     set ptParser [java::new ptolemy.data.expr.PtParser]
     set parseTreeCodeGenerator \
-	[java::new ptolemy.codegen.c.kernel.JavaParseTreeCodeGenerator]
+	[java::new ptolemy.codegen.java.kernel.JavaParseTreeCodeGenerator]
     
     set parseTree [$ptParser generateParseTree \
 		       {f = function(x:double) x*5.0}]
@@ -256,7 +256,7 @@ Node ptolemy.data.expr.ASTPtArrayConstructNode evaluated to {"this is\n a test",
 #    set scope [java::new ptolemy.data.expr.ExplicitScope $namedList]    
 #    #set evaluator [java::new ptolemy.data.expr.ParseTreeEvaluator]
 #    set evaluator \
-#  	[java::new ptolemy.codegen.c.kernel.JavaParseTreeCodeGenerator]
+#  	[java::new ptolemy.codegen.java.kernel.JavaParseTreeCodeGenerator]
 #
 #    #set res1  [ $evaluator evaluateParseTree $root1 $scope]
 #    set ptParser [java::new ptolemy.data.expr.PtParser]
