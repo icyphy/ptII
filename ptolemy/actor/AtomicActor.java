@@ -195,7 +195,7 @@ public class AtomicActor extends ComponentEntity implements Actor,
                     castPort.createReceivers();
                 } catch (IllegalActionException ex) {
                     // Should never happen.
-                    throw new InternalErrorException("cannot create receivers.");
+                    throw new InternalErrorException(this, ex, "Cannot create receivers.");
                 } finally {
                     workspace().doneWriting();
                 }
