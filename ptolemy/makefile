@@ -69,7 +69,6 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	ptolemy
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
 # Include these jars in PTAUXALLJAR
@@ -100,10 +99,10 @@ PTAUXALLJAR =	ptsupport.jar
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 		$(PTAUXALLJARS) \
-		domains/domains.jar
-
-#		copernicus/copernicus.jar
-
+		actor/gt/gt.jar \
+		data/properties/properties.jar \
+		domains/domains.jar \
+		copernicus/copernicus.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 

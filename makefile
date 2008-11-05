@@ -56,7 +56,6 @@ PTPACKAGE = 	ptII
 # ptolemy/configs/*, ptolemy/configs/doc and
 # ptolemy/kernel/attributes/VersionAttribute.java
 PTVERSION =	7.1.devel
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
 
@@ -83,12 +82,13 @@ PTCLASSALLJARS = \
 		ptolemy/domains/experimentalDomains.jar \
 		$(PTDEMODOCJARS) \
 		ptolemy/ptolemy.jar \
-		ptolemy/vergil/vergil.jar
+		ptolemy/vergil/vergil.jar \
+		ptolemy/vergil/gt/gt.jar
 
-PTCLASSALLJARS = \
-		$(PTDEMODOCJARS) \
-		ptolemy/ptolemy.jar \
-		ptolemy/vergil/vergil.jar
+#PTCLASSALLJARS = \
+#		$(PTDEMODOCJARS) \
+#		ptolemy/ptolemy.jar \
+#		ptolemy/vergil/vergil.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
