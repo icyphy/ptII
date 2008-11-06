@@ -76,18 +76,4 @@ public class Round extends JavaCodeGeneratorHelper {
         code.append(_generateBlockCode(codeBlockName));
         return code.toString();
     }
-
-    /**
-     * Get the files needed by the code generated for the
-     * Round actor.
-     * @return A set of strings that are names of the files
-     *  needed by the code generated for the Round actor.
-     * @exception IllegalActionException Not Thrown in this subclass.
-     */
-    public Set getHeaderFiles() throws IllegalActionException {
-        Set files = super.getHeaderFiles();
-        files.add("<limits.h>");
-        files.add("<math.h>");
-        return files;
-    }
 }
