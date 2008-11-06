@@ -5,17 +5,7 @@
 
 \begin{document}
 
-\title{}
-
-
-
-\documentclass{sig-alternate}
-\usepackage{graphicx}
-
-
-\begin{document}
-
-\title{}
+\title{Implementation and testing of PtidyRTOS: A bare-iron RTOS for the Ptides Model of Computation}
 
 
 
@@ -36,11 +26,20 @@ jiazou@eecs.berkeley.edu\\
 
 \section{Introduction}
 
+Talk about Ptides, the model of computation and what it does. As well as talk about how it communicates via platforms.
+
 \section{Background}
+
+Ptides want to avoid round robin scehedules by allowing things to be preempted. We don't want a single handler processing all events. It is the case that you may have an actor that takes a long time to process. If a sensor later receives data we want to be able to process signals that are time dependent.
+
+Should we just use the 1588 representation for timestamps?
+
 
 \section{Related Work}
 
 \section{Experimental Results}
+What does the traces you have look like? Make sure you discuss the fact that most traces are different and don't match well to the Ptides model of computation, but still talk about how you ported/forced the traces to work on the processor and discuss how it compares as a scheduler to a general RTOS.
+
 
 %\begin{figure}
 %\centering
