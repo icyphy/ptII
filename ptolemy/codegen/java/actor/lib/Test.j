@@ -51,7 +51,7 @@ $ref(correctValues, $actorSymbol(numberOfTokensSeen));
 
 if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
         && Math.abs($actorSymbol(inputToken)
-                - Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.$cgType(input))
+                - (($cgType(input))(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload)).$lcCgType(input)Value())
         > $ref(tolerance)) {
     System.out.printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %d. Should have been within %10.30g of: %d\n",
             $actorSymbol(numberOfTokensSeen),
