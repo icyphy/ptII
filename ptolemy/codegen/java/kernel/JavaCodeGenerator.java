@@ -826,12 +826,7 @@ public class JavaCodeGenerator extends CodeGenerator {
 
         if (isTopLevel()) {
             if (((BooleanToken) run.getToken()).booleanValue()) {
-                String command = codeDirectory.stringValue()
-                        + ((!codeDirectory.stringValue().endsWith("/") && !codeDirectory
-                                .stringValue().endsWith("\\")) ? "/" : "")
-                        + _sanitizedModelName;
-
-                commands.add("\"" + command.replace('\\', '/') + "\"");
+		commands.add("java -classpath . " + _sanitizedModelName);
             }
         }
 
@@ -965,10 +960,15 @@ public class JavaCodeGenerator extends CodeGenerator {
     protected String _printExecutionTime() {
         StringBuffer endCode = new StringBuffer();
         endCode.append(super._printExecutionTime());
-        endCode
-                .append("clock_gettime(CLOCK_REALTIME, &end);\n"
-                        + "dT = end.tv_sec - start.tv_sec + (end.tv_nsec - start.tv_nsec) * 1.0e-9;\n"
-                        + "printf(\"execution time: %g seconds\\n\", dT);\n\n");
+
+        endCode.append("Runtime runtime = Runtime.getRuntime();\n"
+		       + "long totalMemory = runtime.totalMemory() / 1024;\n"
+		       + "long freeMemory = runtime.freeMemory() / 1024;\n"
+		       + "System.out.println(System.currentTimeMillis() - startTime + \""
+		       + " ms. Memory: \" + totalMemory + \"K Free: \""
+		       + " + freeMemory + \"K (\" + "
+		       + "Math.round((((double) freeMemory) / ((double) totalMemory)) * 100.0)"
+		       + " + \"%\");\n");
         return endCode.toString();
     }
 
@@ -978,9 +978,7 @@ public class JavaCodeGenerator extends CodeGenerator {
      */
     protected String _recordStartTime() {
         StringBuffer startCode = new StringBuffer();
-        startCode.append(super._recordStartTime());
-        startCode.append("struct timespec start, end;\n" + "double dT = 0.0;\n"
-                + "clock_gettime(CLOCK_REALTIME, &start);\n\n");
+        startCode.append("long startTime = System.currentTimeMillis();");
         return startCode.toString();
     }
 
