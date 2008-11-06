@@ -48,7 +48,7 @@ for ($actorClass(j) = 0; $actorClass(j) < $val(blockSize); $actorClass(j)++) {
     free($actorSymbol(_forwardCache));
 
     $actorSymbol(_backward) = (double*) malloc(($actorClass(_valueLength) + 1) * sizeof(double));
-    $actorSymbol(_backwardCache) = (double*) malloc(($actorClass(_valueLength) + 1) * sizeof(double));
+    $actorSymbol(_backwardCache) = (double*) calloc($actorClass(_valueLength) + 1, sizeof(double));
     $actorSymbol(_forward) = (double*) malloc(($actorClass(_valueLength) + 1) * sizeof(double));
     $actorSymbol(_forwardCache) = (double*) malloc(($actorClass(_valueLength) + 1) * sizeof(double));
     $actorSymbol(_reflectionCoefs) = (double*) malloc(($actorClass(_valueLength)) * sizeof(double));
