@@ -255,7 +255,8 @@ public class Subscriber extends TypedAtomicActor {
             _updateLinks();
             if (input.getWidth() == 0) {
                 throw new IllegalActionException(this,
-                        "Subscriber has no matching Publisher.");
+                        "Subscriber has no matching Publisher, channel was \""
+						 + channel.getExpression() + "\".");
             }
         }
 	// Call super.preinitialize() after updating links so that

@@ -202,7 +202,9 @@ public class SubscriptionAggregator extends Subscriber {
         int width = input.getWidth();
         if (width == 0) {
             throw new IllegalActionException(this,
-                    "SubscriptionAggregator has no matching Publisher.");
+                    "SubscriptionAggregator has no matching Publisher, "
+					     + "channel was \""
+					     + channel.getExpression() + "\".");
         }
         Token result = null;
         for (int i = 0; i < width; i++) {
