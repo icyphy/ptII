@@ -535,6 +535,10 @@ public class CCodeGenerator extends CodeGenerator {
         return helper.processCode(code);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+
     /**
      * @return
      */

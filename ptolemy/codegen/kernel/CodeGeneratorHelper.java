@@ -239,7 +239,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * @exception IllegalActionException Thrown if the given ptolemy cannot
      *  be resolved.
      */
-    public static String codeGenType(Type ptType) {
+    public /*static*/ String codeGenType(Type ptType) {
         // FIXME: We may need to add more types.
         // FIXME: We have to create separate type for different matrix types.
         String result = ptType == BaseType.INT ? "Int"
@@ -1971,8 +1971,8 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * @param ptType The given ptolemy type.
      * @return true if the given type is primitive, otherwise false.
      */
-    public static boolean isPrimitive(Type ptType) {
-        return CodeGenerator._primitiveTypes.contains(codeGenType(ptType));
+    public /*static*/ boolean isPrimitive(Type ptType) {
+        return CodeGenerator.primitiveTypes.contains(codeGenType(ptType));
     }
 
     /**
@@ -1981,7 +1981,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * @return true if the given type is primitive, otherwise false.
      */
     public static boolean isPrimitive(String cgType) {
-        return CodeGenerator._primitiveTypes.contains(cgType);
+        return CodeGenerator.primitiveTypes.contains(cgType);
     }
 
     public static void main(String[] args) {
@@ -2060,8 +2060,8 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
             try {
                 result.append(_replaceMacro(macro, name));
-            } catch (IllegalActionException ex) {
-                throw new IllegalActionException(this, ex,
+            } catch (Throwable throwable) {
+                throw new IllegalActionException(this, throwable,
                         "Failed to replace the parameter \"" + name
                         + "\" in the macro \"" + macro + "\"");
             }
@@ -2389,7 +2389,6 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      */
     protected void _createInputBufferSizeAndOffsetMap()
     throws IllegalActionException {
-
         //We only care about input ports where data are actually stored
         //except when an output port is not connected to any input port.
         //In that case the variable corresponding to the unconnected output

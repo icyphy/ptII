@@ -30,6 +30,8 @@ package ptolemy.codegen.vhdl.kernel;
 import java.util.List;
 import java.util.Set;
 
+import ptolemy.actor.lib.jni.PointerToken;
+import ptolemy.codegen.kernel.CodeGenerator;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.ParseTreeCodeGenerator;
 import ptolemy.data.ArrayToken;
@@ -72,6 +74,7 @@ import ptolemy.data.expr.Token;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.FunctionType;
+import ptolemy.data.type.MatrixType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
 import ptolemy.kernel.util.IllegalActionException;
@@ -279,9 +282,9 @@ public class VHDLParseTreeCodeGenerator extends AbstractParseTreeVisitor
 
             Type valueType = tokens[i].getType();
 
-            if (CodeGeneratorHelper.isPrimitive(valueType)) {
+            if (_isPrimitive(valueType)) {
                 _fireCode.insert(nextIndex, "$new("
-                        + CodeGeneratorHelper.codeGenType(valueType) + "(");
+                        + _codeGenType(valueType) + "(");
                 _fireCode.append("))");
             }
 
@@ -296,11 +299,11 @@ public class VHDLParseTreeCodeGenerator extends AbstractParseTreeVisitor
         }
 
         // Insert the elementType of the array as the last argument.
-        if (CodeGeneratorHelper.codeGenType(elementType).equals("Token")) {
+        if (_codeGenType(elementType).equals("Token")) {
             _fireCode.append(", -1");
         } else {
             _fireCode.append(", TYPE_"
-                    + CodeGeneratorHelper.codeGenType(elementType));
+                    + _codeGenType(elementType));
         }
         _fireCode.append("))");
 
@@ -1568,6 +1571,56 @@ public class VHDLParseTreeCodeGenerator extends AbstractParseTreeVisitor
 
     /** The wrapup() method code. */
     protected StringBuffer _wrapupCode = new StringBuffer();
+
+
+    /**
+     * Get the corresponding type in code generation from the given Ptolemy
+     * type.
+     * @param ptType The given Ptolemy type.
+     * @return The code generation type.
+     * @exception IllegalActionException Thrown if the given ptolemy cannot
+     *  be resolved.
+     */
+    private /*static*/ String _codeGenType(Type ptType) {
+	// FIXME: this is duplicated code from CodeGeneratorHelper.codeGenType
+
+        // FIXME: We may need to add more types.
+        // FIXME: We have to create separate type for different matrix types.
+        String result = ptType == BaseType.INT ? "Int"
+                : ptType == BaseType.LONG ? "Long"
+                        : ptType == BaseType.STRING ? "String"
+                                : ptType == BaseType.DOUBLE ? "Double"
+                                        : ptType == BaseType.BOOLEAN ? "Boolean"
+                                                : ptType == BaseType.UNSIGNED_BYTE ? "UnsignedByte"
+                                                        : ptType == PointerToken.POINTER ? "Pointer"
+                                                                : null;
+
+        if (result == null) {
+            if (ptType instanceof ArrayType) {
+                //result = codeGenType(((ArrayType) ptType).getElementType()) + "Array";
+                result = "Array";
+            } else if (ptType instanceof MatrixType) {
+                //result = ptType.getClass().getSimpleName().replace("Type", "");
+                result = "Matrix";
+            }
+        }
+
+        //if (result.length() == 0) {
+        //    throw new IllegalActionException(
+        //            "Cannot resolved codegen type from Ptolemy type: " + ptType);
+        //}
+        return result;
+    }
+
+    /**
+     * Determine if the given type is primitive.
+     * @param ptType The given ptolemy type.
+     * @return true if the given type is primitive, otherwise false.
+     */
+    private boolean _isPrimitive(Type ptType) {
+	// FIXME: this is duplicated code from CodeGeneratorHelper.isPrimitive()
+        return CodeGenerator.primitiveTypes.contains(_codeGenType(ptType));
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

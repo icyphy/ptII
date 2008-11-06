@@ -288,6 +288,15 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  which means that the default target for the language is used.
      */
     public StringParameter target;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** A static list of the primitive types supported by the code generator. */
+    public static final List primitiveTypes = Arrays.asList(new String[] {
+            "Int", "Double", "String", "Long", "Boolean", "UnsignedByte",
+            "Pointer" });
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -1797,11 +1806,6 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
     /** The postfire code. */
     protected String _postfireCode = null;
-
-    /** A static list of the primitive types supported by the code generator. */
-    protected static final List _primitiveTypes = Arrays.asList(new String[] {
-            "Int", "Double", "String", "Long", "Boolean", "UnsignedByte",
-            "Pointer" });
 
     /** The sanitized model name. */
     protected String _sanitizedModelName;

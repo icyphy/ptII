@@ -32,6 +32,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import ptolemy.actor.lib.jni.PointerToken;
+import ptolemy.codegen.kernel.CodeGenerator;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.ParseTreeCodeGenerator;
 import ptolemy.data.ArrayToken;
@@ -288,10 +290,10 @@ ParseTreeCodeGenerator {
 
             Type valueType = ((ASTPtRootNode) node.jjtGetChild(i)).getType();
 
-            if (CodeGeneratorHelper.isPrimitive(valueType)) {
-                //_fireCode.insert(nextIndex, "$new(" + CodeGeneratorHelper.codeGenType(valueType) + "(");
+            if (_isPrimitive(valueType)) {
+                //_fireCode.insert(nextIndex, "$new(" + _codeGenType(valueType) + "(");
                 //_fireCode.append("))");
-                result += "$new(" + CodeGeneratorHelper.codeGenType(valueType)
+                result += "$new(" + _codeGenType(valueType)
                 + "(" + _childCode + "))";
             } else {
                 result += _childCode;
@@ -312,8 +314,8 @@ ParseTreeCodeGenerator {
             //_fireCode.append(", -1");
             result += ", -1";
         } else {
-            //_fireCode.append(", TYPE_" + CodeGeneratorHelper.codeGenType(elementType));
-            result += ", TYPE_" + CodeGeneratorHelper.codeGenType(elementType);
+            //_fireCode.append(", TYPE_" + _codeGenType(elementType));
+            result += ", TYPE_" + _codeGenType(elementType);
         }
 
         //_fireCode.append("))");
@@ -571,10 +573,10 @@ ParseTreeCodeGenerator {
     private String _specializeReturnValue(String function, Type returnType,
             String returnCode) {
         if (function.equals("$arraySum") 
-                && CodeGeneratorHelper.isPrimitive(returnType)) {
+                && _isPrimitive(returnType)) {
             
             returnCode += ".payload." + 
-            CodeGeneratorHelper.codeGenType(returnType);
+            _codeGenType(returnType);
         }
         return returnCode;
     }
@@ -583,9 +585,9 @@ ParseTreeCodeGenerator {
             int argumentIndex, Type argumentType, String argumentCode) {
 
         if (function.equals("$arrayRepeat") && argumentIndex == 1) {
-            if (CodeGeneratorHelper.isPrimitive(argumentType)) {
+            if (_isPrimitive(argumentType)) {
                 return "$new(" + 
-                CodeGeneratorHelper.codeGenType(argumentType)
+                _codeGenType(argumentType)
                 + "(" + argumentCode + "))";
             }
         }
@@ -921,11 +923,11 @@ ParseTreeCodeGenerator {
 
                     Type valueType = tokens[index].getType();
 
-                    if (CodeGeneratorHelper.isPrimitive(valueType)) {
-                        //_fireCode.insert(nextIndex, "$new(" + CodeGeneratorHelper.codeGenType(valueType) + "(");
+                    if (_isPrimitive(valueType)) {
+                        //_fireCode.insert(nextIndex, "$new(" + _codeGenType(valueType) + "(");
                         //_fireCode.append("))");
                         result += "$new("
-                            + CodeGeneratorHelper.codeGenType(valueType)
+                            + _codeGenType(valueType)
                             + "(" + _childCode + "))";
                     }
 
@@ -936,14 +938,14 @@ ParseTreeCodeGenerator {
                 }
             }
 
-            String codegenType = CodeGeneratorHelper.codeGenType(elementType);
+            String codegenType = _codeGenType(elementType);
 
             // Insert the elementType of the array as the last argument.
             if (CodeGeneratorHelper.targetType(elementType).equals("Token")) {
                 //_fireCode.append(", -1");
                 result += ", -1";
             } else {
-                //_fireCode.append(", TYPE_" + CodeGeneratorHelper.codeGenType(elementType));
+                //_fireCode.append(", TYPE_" + _codeGenType(elementType));
                 result += ", TYPE_" + codegenType;
             }
             //_fireCode.append(")))");
@@ -1168,8 +1170,8 @@ ParseTreeCodeGenerator {
 
             if (operator.kind == PtParserConstants.MULTIPLY) {
                 if (type != null) {
-                    result = "$multiply_" + CodeGeneratorHelper.codeGenType(resultType) 
-                    + "_" + CodeGeneratorHelper.codeGenType(type) + "(" + result 
+                    result = "$multiply_" + _codeGenType(resultType) 
+                    + "_" + _codeGenType(type) + "(" + result 
                     + ", " + _childCode + ")";
 
                     resultType = resultType.multiply(type);
@@ -1179,8 +1181,8 @@ ParseTreeCodeGenerator {
                 }
             } else if (operator.kind == PtParserConstants.DIVIDE) {
                 if (type != null) {
-                    result = "$divide_" + CodeGeneratorHelper.codeGenType(resultType)
-                    + "_" + CodeGeneratorHelper.codeGenType(type) + "(" + result 
+                    result = "$divide_" + _codeGenType(resultType)
+                    + "_" + _codeGenType(type) + "(" + result 
                     + ", " + _childCode + ")";
 
                     resultType = resultType.divide(type);
@@ -1448,16 +1450,15 @@ ParseTreeCodeGenerator {
 
         ptolemy.data.Token childToken = _evaluateChild(node, 0);
 
-        String childType = CodeGeneratorHelper
-        .codeGenType(((ASTPtRootNode) node.jjtGetChild(0)).getType());
+        String childType = _codeGenType(((ASTPtRootNode) node.jjtGetChild(0)).getType());
 
-        String nodeType = CodeGeneratorHelper.codeGenType(node.getType());
+        String nodeType = _codeGenType(node.getType());
 
         result += "$convert_" + childType + "_" + nodeType + "(" + _childCode
         + ")";
 
         for (int i = 1; i < numChildren; i++) {
-            childType = CodeGeneratorHelper.codeGenType(((ASTPtRootNode) node
+            childType = _codeGenType(((ASTPtRootNode) node
                     .jjtGetChild(i)).getType());
 
             Token operator = (Token) lexicalTokenList.get(i - 1);
@@ -1622,9 +1623,9 @@ ParseTreeCodeGenerator {
 
         Type elementType = ((ArrayType) type).getElementType();
 
-        //_fireCode.append(".payload." + CodeGeneratorHelper.codeGenType(elementType));
+        //_fireCode.append(".payload." + _codeGenType(elementType));
         _childCode = result + ".payload."
-        + CodeGeneratorHelper.codeGenType(elementType);
+        + _codeGenType(elementType);
     }
 
     /** Evaluate the child with the given index of the given node.
@@ -1757,6 +1758,55 @@ ParseTreeCodeGenerator {
 
     /** The wrapup() method code. */
     protected StringBuffer _wrapupCode = new StringBuffer();
+
+    /**
+     * Get the corresponding type in code generation from the given Ptolemy
+     * type.
+     * @param ptType The given Ptolemy type.
+     * @return The code generation type.
+     * @exception IllegalActionException Thrown if the given ptolemy cannot
+     *  be resolved.
+     */
+    private /*static*/ String _codeGenType(Type ptType) {
+	// FIXME: this is duplicated code from CodeGeneratorHelper.codeGenType
+
+        // FIXME: We may need to add more types.
+        // FIXME: We have to create separate type for different matrix types.
+        String result = ptType == BaseType.INT ? "Int"
+                : ptType == BaseType.LONG ? "Long"
+                        : ptType == BaseType.STRING ? "String"
+                                : ptType == BaseType.DOUBLE ? "Double"
+                                        : ptType == BaseType.BOOLEAN ? "Boolean"
+                                                : ptType == BaseType.UNSIGNED_BYTE ? "UnsignedByte"
+                                                        : ptType == PointerToken.POINTER ? "Pointer"
+                                                                : null;
+
+        if (result == null) {
+            if (ptType instanceof ArrayType) {
+                //result = codeGenType(((ArrayType) ptType).getElementType()) + "Array";
+                result = "Array";
+            } else if (ptType instanceof MatrixType) {
+                //result = ptType.getClass().getSimpleName().replace("Type", "");
+                result = "Matrix";
+            }
+        }
+
+        //if (result.length() == 0) {
+        //    throw new IllegalActionException(
+        //            "Cannot resolved codegen type from Ptolemy type: " + ptType);
+        //}
+        return result;
+    }
+
+    /**
+     * Determine if the given type is primitive.
+     * @param ptType The given ptolemy type.
+     * @return true if the given type is primitive, otherwise false.
+     */
+    private boolean _isPrimitive(Type ptType) {
+	// FIXME: this is duplicated code from CodeGeneratorHelper.isPrimitive()
+        return CodeGenerator.primitiveTypes.contains(_codeGenType(ptType));
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
