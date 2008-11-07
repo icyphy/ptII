@@ -1,7 +1,7 @@
 /* An application that executes non-graphical
  models specified on the command line.
 
- Copyright (c) 2001-2007 The Regents of the University of California.
+ Copyright (c) 2008 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -47,9 +47,13 @@ import ptolemy.moml.filter.RemoveGraphicalClasses;
  *  converted model's MoML is produced on standard out.
  *  To use this on the command line, invoke as follows:
  *  <pre>
- *     FIXME inputMoML.xml <numberOfEntities> > outputMoML.xml
+ *     $PTII/bin/convertToLazy inputMoML.xml <i>numberOfEntities<i> &gt; outputMoML.xml
  *  </pre>
- *  If the numberOfEntities argument is not supplied, then it
+ *  or
+ *  <pre>
+ *     java -classpath $PTII ptolemy.moml.ConvertToLazy inputMoML.xml <i>numberOfEntities<i> &gt; outputMoML.xml
+ *  </pre>
+ *  If the <i>numberOfEntities<i> argument is not supplied, then it
  *  defaults to 100.
  
  @author Edward A. Lee
@@ -72,28 +76,33 @@ public class ConvertToLazy implements ChangeListener {
     public ConvertToLazy(String xmlFileName, int threshold) throws Throwable {
         MoMLParser parser = new MoMLParser();
 
-        // The test suite calls UseLazyCompositeApplication multiple times,
-        // and the list of filters is static, so we reset it each time
-        // so as to avoid adding filters every time we run an auto test.
-        // We set the list of MoMLFilters to handle Backward Compatibility.
-        MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
+	// Save the current MoMLFilters before conversion so that if
+	// we call this class from within a larger application, we don't
+	// change the filters.
+	List oldFilters = MoMLParser.getMoMLFilters();
+	try {
+	    // The test suite calls UseLazyCompositeApplication multiple times,
+	    // and the list of filters is static, so we reset it each time
+	    // so as to avoid adding filters every time we run an auto test.
+	    // We set the list of MoMLFilters to handle Backward Compatibility.
+	    MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
 
-        // Filter out any graphical classes.
-        //MoMLParser.addMoMLFilter(new RemoveGraphicalClasses());
-
-        // If there is a MoML error, then throw the exception as opposed
-        // to skipping the error.  If we call StreamErrorHandler instead,
-        // then the nightly build may fail to report MoML parse errors
-        // as failed tests
-        //parser.setErrorHandler(new StreamErrorHandler());
-        // We use parse(URL, URL) here instead of parseFile(String)
-        // because parseFile() works best on relative pathnames and
-        // has problems finding resources like files specified in
-        // parameters if the xml file was specified as an absolute path.
-        TypedCompositeActor toplevel = (TypedCompositeActor) parser.parse(null, new File(
+	    // If there is a MoML error, then throw the exception as opposed
+	    // to skipping the error.  If we call StreamErrorHandler instead,
+	    // then the nightly build may fail to report MoML parse errors
+	    // as failed tests
+	    //parser.setErrorHandler(new StreamErrorHandler());
+	    // We use parse(URL, URL) here instead of parseFile(String)
+	    // because parseFile() works best on relative pathnames and
+	    // has problems finding resources like files specified in
+	    // parameters if the xml file was specified as an absolute path.
+	    TypedCompositeActor toplevel = (TypedCompositeActor) parser.parse(null, new File(
                 xmlFileName).toURI().toURL());
-        convert(toplevel, threshold);
-        System.out.println(toplevel.exportMoML());
+	    convert(toplevel, threshold);
+	    System.out.println(toplevel.exportMoML());
+	} finally {
+	    MoMLParser.setMoMLFilters(oldFilters);
+	}
     }
 
     ///////////////////////////////////////////////////////////////////
