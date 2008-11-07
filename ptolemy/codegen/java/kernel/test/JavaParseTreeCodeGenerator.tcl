@@ -50,11 +50,11 @@ proc parseTreeTest {expression} {
 
 test JavaParseTreeCodeGenerator-1.1 {Simple tests of ParseTreeCodeGenerator} {
     parseTreeTest {1+3}
-} {{($add_Int_Int($convert_Int_Int(1), 3))}}
+} {{($add_Integer_Integer($convert_Integer_Integer(1), 3))}}
 
 test JavaParseTreeCodeGenerator-1.2 {A more complex example} {
     parseTreeTest {((3+4)+(1|2)+232)}
-} {{($add_Int_Int($add_Int_Int($convert_Int_Int(($add_Int_Int($convert_Int_Int(3), 4))), (1|2)), 232))}}
+} {{($add_Integer_Integer($add_Integer_Integer($convert_Integer_Integer(($add_Integer_Integer($convert_Integer_Integer(3), 4))), (1|2)), 232))}}
 
 test JavaParseTreeCodeGenerator-2.1 {Define a variable in a regular parse tree } {
     # This test uses the regular (non codegen) parse tree
@@ -137,7 +137,7 @@ test JavaParseTreeCodeGenerator-13.1 {visitMethodCallNode} {
     Node ptolemy.data.expr.ASTPtLeafNode evaluated to 6
   Node ptolemy.data.expr.ASTPtMatrixConstructNode evaluated to [1, 2; 3, 4; 5, 6]
 Node ptolemy.data.expr.ASTPtMethodCallNode evaluated to [1, 2; 3, 4; 5, 6]
-} {($new(Matrix(3, 2, 6, $new(Int(1)), $new(Int(2)), $new(Int(3)), $new(Int(4)), $new(Int(5)), $new(Int(6)), TYPE_Int)))->getRowCount()}}
+} {($new(Matrix(3, 2, 6, $new(Integer(1)), $new(Integer(2)), $new(Integer(3)), $new(Integer(4)), $new(Integer(5)), $new(Integer(6)), TYPE_Integer)))->getRowCount()}}
 
 test JavaParseTreeCodeGenerator-14.1 {visitPowerNode} {
     parseTreeTraceTest {2^3}
@@ -178,7 +178,7 @@ test JavaParseTreeCodeGenerator-16.2 {visitFunctionApplicationNode} {
     Node ptolemy.data.expr.ASTPtLeafNode evaluated to 3
   Node ptolemy.data.expr.ASTPtArrayConstructNode evaluated to {0, 2, 3}
 Node ptolemy.data.expr.ASTPtFunctionApplicationNode evaluated to {0, 2, 3}
-} {map(, $new(Array(3, 3, $new(Int(0)), $new(Int(2)), $new(Int(3)), TYPE_Int)))}}
+} {map(, $new(Array(3, 3, $new(Integer(0)), $new(Integer(2)), $new(Integer(3)), TYPE_Integer)))}}
 
 
 test JavaParseTreeCodeGenerator-16.3 {visitFunctionApplicationNode} {

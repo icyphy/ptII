@@ -18,11 +18,11 @@ static Token $actorSymbol(toleranceToken);
 $actorSymbol(toleranceToken) = $new(Double($ref(tolerance)));
 /**/
 
-/***IntBlock($channel)***/
+/***IntegerBlock($channel)***/
 $actorSymbol(inputToken) = $ref(input#$channel);
 $actorSymbol(numberOfTokensSeen)++;
 
-/* $actorSymbol(), IntBlock($channel) which has only one channel */
+/* $actorSymbol(), IntegerBlock($channel) which has only one channel */
 if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
         && Math.abs($actorSymbol(inputToken)
                 - $ref(correctValues, $actorSymbol(numberOfTokensSeen)))
@@ -39,7 +39,7 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
 /**/
 
 
-/***IntBlockMultiChannel($channel)***/
+/***IntegerBlockMultiChannel($channel)***/
 $actorSymbol(inputToken) = $ref(input#$channel);
 if ($channel == 0) {
 	$actorSymbol(numberOfTokensSeen)++;
@@ -57,7 +57,7 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
             $actorSymbol(numberOfTokensSeen),
             $actorSymbol(inputToken),
             $ref(tolerance),
-            Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.Int);
+            Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.Integer);
     System.exit(-1);
 }
 /**/
@@ -182,15 +182,16 @@ $actorSymbol(numberOfTokensSeen)++;
 /* If the type of the input is an array, then cast the input to
  * the type of the elements of the elements of correctValues. */
 if (($type(input) != TYPE_Array
-            && !$tokenFunc($actorSymbol(inputToken)::equals($ref(correctValues, $actorSymbol(numberOfTokensSeen)))).payload.Boolean)
+            && equals_Token_Token($actorSymbol(inputToken), $actorSymbol(numberOfTokensSeen)))
         || ($type(input) == TYPE_Array
-                && !$tokenFunc($typeFunc(TYPE_Array::convert($actorSymbol(inputToken), Array_get(Array_get($ref(correctValues, $actorSymbol(numberOfTokensSeen)), 0), 0).type))::isCloseTo(Array_get($ref(correctValues, $actorSymbol(numberOfTokensSeen)), 0), $actorSymbol(toleranceToken))).payload.Boolean)) {
-
-    System.out.printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %s. Should have been within %10.30g of: %s.\n",
-            $actorSymbol(numberOfTokensSeen),
-            $tokenFunc($actorSymbol(inputToken)::toString()).payload.String,
-                                                $ref(tolerance),
-            $tokenFunc($ref(correctValues, $actorSymbol(numberOfTokensSeen))::toString()).payload.String);
+	    && !isCloseTo_Token_Token($actorSymbol(inputToken), Array_get($ref(correctValues), $actorSymbol(numberOfTokensSeen)), $actorSymbol(toleranceToken)))) {
+    System.out.print("\nTest $actorSymbol($channel) fails in iteration "
+    			     + $actorSymbol(numberOfTokensSeen)
+			     + ".\n Value was:"
+			     + $actorSymbol(inputToken)
+			     + "Should have been within %10.30g of: "
+			     + Array_get($ref(correctValues, $actorSymbol(numberOfTokensSeen))) 
+			     + ".\n");
     System.exit(-1);
 }
 /**/

@@ -27,6 +27,7 @@
  */
 package ptolemy.codegen.java.kernel;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -1773,7 +1774,10 @@ ParseTreeCodeGenerator {
         //}
 
 	// Java specific changes
-	return result.replace("Int", "Integer").replace("Array", "Token");
+	if (result != null) {
+	    return result.replace("Int", "Integer").replace("Array", "Token");
+	}
+	return result;
     }
 
     /**
@@ -1783,11 +1787,16 @@ ParseTreeCodeGenerator {
      */
     private boolean _isPrimitive(Type ptType) {
 	// FIXME: this is duplicated code from CodeGeneratorHelper.isPrimitive()
-        return CodeGenerator.primitiveTypes.contains(_codeGenType(ptType));
+        return _primitiveTypes.contains(_codeGenType(ptType));
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    /** A static list of the primitive types supported by the code generator. */
+    private static final List _primitiveTypes = Arrays.asList(new String[] {
+            "Integer", "Double", "String", "Long", "Boolean", "UnsignedByte",
+            "Pointer" });
 
     /** Temporary storage for the result of evaluating a child node.
      *  This is protected so that derived classes can access it.

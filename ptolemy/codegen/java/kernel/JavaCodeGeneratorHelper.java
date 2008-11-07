@@ -30,8 +30,10 @@ package ptolemy.codegen.java.kernel;
 import java.io.File;
 import java.io.FileFilter;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
@@ -96,8 +98,8 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    public String codeGenJavaType(Type type) {
-	String ptolemyType = codeGenType(type);
+    public String codeGenType(Type type) {
+	String ptolemyType = super.codeGenType(type);
 	return ptolemyType.replace("Int", "Integer").replace("Array", "Token");
     }
 
@@ -339,6 +341,24 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
         return files;
     }
 
+    /**
+     * Determine if the given type is primitive.
+     * @param ptType The given ptolemy type.
+     * @return true if the given type is primitive, otherwise false.
+     */
+    public boolean isPrimitive(Type ptType) {
+        return _primitiveTypes.contains(codeGenType(ptType));
+    }
+
+    /**
+     * Determine if the given type is primitive.
+     * @param cgType The given codegen type.
+     * @return true if the given type is primitive, otherwise false.
+     */
+    public boolean isPrimitive(String cgType) {
+        return _primitiveTypes.contains(cgType);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -523,7 +543,7 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
 
             //result.append("[" + channelAndOffset[1] + "]");
             result.insert(0, "(" 
-			  + codeGenJavaType(elementType)
+			  + codeGenType(elementType)
 			  + ")(Array_get(");
             if (isPrimitive(elementType)) {
 		result.insert(0, "("); 
@@ -533,8 +553,12 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
 
 
             if (isPrimitive(elementType)) {
+		String cgType = codeGenType(elementType).toLowerCase();
+	        if (cgType.equals("integer")) {
+		    cgType = "int";
+	        }
                 result.append(".payload/*jcgh2*/))."
-			      + codeGenType(elementType).toLowerCase()
+			      + cgType
 			      + "Value()");
 	    } else {
 		result.append(")");
@@ -562,17 +586,20 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
                         + " is not a port. $refinePrimitiveType macro takes in a port.");
             }
             if (isPrimitive(port.getType())) {
-                return ".payload/*jcgh*/." + codeGenJavaType(port.getType());
+                return ".payload/*jcgh*/." + codeGenType(port.getType());
             } else {
                 return "";
             }
         } else if (macro.equals("cgType")) {
-	    System.out.println("JCGH: " + macro);
 	    return result.replace("Int", "Integer");
 	}  else if (macro.equals("lcCgType")) {
-	    System.out.println("JCGH: " + macro);
-	    return _replaceMacro("cgType", parameter).toLowerCase();
+	    String cgType = _replaceMacro("cgType", parameter);
+	    if (cgType.equals("Integer")) {
+		return "int";
+	    }
+	    return cgType.toLowerCase();
         }
+
         // We will assume that it is a call to a polymorphic
         // functions.
         //String[] call = macro.split("_");
@@ -581,6 +608,16 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
 
         return result;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+
+    /** A list of the primitive types supported by the code generator.
+     */
+    protected List _primitiveTypes = Arrays.asList(new String[] {
+            "Integer", "Double", "String", "Long", "Boolean", "UnsignedByte",
+            "Pointer" });
 
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////

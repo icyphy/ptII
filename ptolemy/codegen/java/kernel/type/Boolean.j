@@ -41,17 +41,14 @@ Token Boolean_print(Token thisToken, ...) {
 /**/
 
 /***Boolean_toString***/
-Token Boolean_toString(Token thisToken, ...) {
+Token Boolean_toString(Token thisToken, Token... ignored) {
     return String_new(BooleantoString(thisToken.payload.Boolean));
 }
 /**/
 
 /***Boolean_add***/
-Token Boolean_add(Token thisToken, ...) {
-    va_list argp;
-    va_start(argp, thisToken);
-    Token otherToken = va_arg(argp, Token);
-    va_end(argp);
+Token Boolean_add(Token thisToken, Token... tokens) {
+    Token otherToken = tokens[0];
     return Boolean_new(thisToken.payload.Boolean || otherToken.payload.Boolean);
 }
 /**/

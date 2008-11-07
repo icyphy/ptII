@@ -31,6 +31,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -1971,8 +1972,8 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * @param ptType The given ptolemy type.
      * @return true if the given type is primitive, otherwise false.
      */
-    public /*static*/ boolean isPrimitive(Type ptType) {
-        return CodeGenerator.primitiveTypes.contains(codeGenType(ptType));
+    public boolean isPrimitive(Type ptType) {
+        return _primitiveTypes.contains(codeGenType(ptType));
     }
 
     /**
@@ -1980,8 +1981,8 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * @param cgType The given codegen type.
      * @return true if the given type is primitive, otherwise false.
      */
-    public static boolean isPrimitive(String cgType) {
-        return CodeGenerator.primitiveTypes.contains(cgType);
+    public boolean isPrimitive(String cgType) {
+        return _primitiveTypes.contains(cgType);
     }
 
     public static void main(String[] args) {
@@ -2837,6 +2838,18 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
+
+    /** A list of the primitive types supported by the code generator.
+     */
+    protected List _primitiveTypes = Arrays.asList(new String[] {
+            "Int", "Double", "String", "Long", "Boolean", "UnsignedByte",
+            "Pointer" });
+
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+ 
     private String _replaceSendMacro(String parameter) throws IllegalActionException {
         // e.g. $send(input, 0, token);
         List<String> parameters = _parseList(parameter);

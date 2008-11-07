@@ -5,18 +5,18 @@
 /**/
 
 
-/***Int_new***/
+/***Integer_new***/
 // make a new integer token from the given value.
-Token Int_new(int i) {
+Token Integer_new(int i) {
     Token result = new Token();
-    result.type = TYPE_Int;
+    result.type = TYPE_Integer;
     result.payload = Integer.valueOf(i);
     return result;
 }
 /**/
 
-/***Int_equals***/
-Token Int_equals(Token thisToken, ...) {
+/***Integer_equals***/
+Token Integer_equals(Token thisToken, ...) {
     va_list argp;
     Token otherToken;
     va_start(argp, thisToken);
@@ -27,8 +27,8 @@ Token Int_equals(Token thisToken, ...) {
 }
 /**/
 
-/***Int_isCloseTo***/
-Token Int_isCloseTo(Token thisToken, Token... tokens) {
+/***Integer_isCloseTo***/
+Token Integer_isCloseTo(Token thisToken, Token... tokens) {
     Token otherToken;
     Token tolerance;
     otherToken = tokens[0];
@@ -38,54 +38,54 @@ Token Int_isCloseTo(Token thisToken, Token... tokens) {
 }
 /**/
 
-/***Int_delete***/
-/* Instead of Int_delete(), we call scalarDelete(). */
+/***Integer_delete***/
+/* Instead of Integer_delete(), we call scalarDelete(). */
 /**/
 
-/***Int_print***/
-Token Int_print(Token thisToken, ...) {
+/***Integer_print***/
+Token Integer_print(Token thisToken, ...) {
     printf("%d", thisToken.payload.Int);
 }
 /**/
 
-/***Int_toString***/
-Token Int_toString(Token thisToken, ...) {
+/***Integer_toString***/
+Token Integer_toString(Token thisToken, ...) {
     return String_new(InttoString(thisToken.payload.Int));
 }
 /**/
 
-/***Int_add***/
-Token Int_add(Token thisToken, ...) {
+/***Integer_add***/
+Token Integer_add(Token thisToken, ...) {
     va_list argp;
     va_start(argp, thisToken);
     Token otherToken = va_arg(argp, Token);
 
     va_end(argp);
-    return Int_new(thisToken.payload.Int + otherToken.payload.Int);
+    return Integer_new(thisToken.payload.Int + otherToken.payload.Int);
 }
 /**/
 
-/***Int_subtract***/
-Token Int_subtract(Token thisToken, ...) {
+/***Integer_subtract***/
+Token Integer_subtract(Token thisToken, ...) {
     va_list argp;
     va_start(argp, thisToken);
     Token otherToken = va_arg(argp, Token);
 
     va_end(argp);
-    return Int_new(thisToken.payload.Int - otherToken.payload.Int);
+    return Integer_new(thisToken.payload.Int - otherToken.payload.Int);
 }
 /**/
 
-/***Int_multiply***/
-Token Int_multiply(Token thisToken, Token... tokens) {
+/***Integer_multiply***/
+Token Integer_multiply(Token thisToken, Token... tokens) {
     Token result = new Token();
     Token otherToken;
 
     otherToken = tokens[0];
 
     switch (otherToken.type) {
-    case TYPE_Int:
-        result = Int_new((Integer)thisToken.payload * (Integer)otherToken.payload);
+    case TYPE_Integer:
+        result = Integer_new((Integer)thisToken.payload * (Integer)otherToken.payload);
         break;
 
 //#ifdef TYPE_Double
@@ -96,7 +96,7 @@ Token Int_multiply(Token thisToken, Token... tokens) {
 
         // FIXME: not finished
     default:
-        System.err.printf( "Int_multiply(): Multiply with an unsupported type. (%d)\n", otherToken.type);
+        System.err.printf( "Integer_multiply(): Multiply with an unsupported type. (%d)\n", otherToken.type);
         System.exit(1);
     }
 
@@ -104,60 +104,60 @@ Token Int_multiply(Token thisToken, Token... tokens) {
 }
 /**/
 
-/***Int_divide***/
-Token Int_divide(Token thisToken, ...) {
+/***Integer_divide***/
+Token Integer_divide(Token thisToken, ...) {
     va_list argp;
     va_start(argp, thisToken);
     Token otherToken = va_arg(argp, Token);
 
     va_end(argp);
-    return Int_new(thisToken.payload.Int / otherToken.payload.Int);
+    return Integer_new(thisToken.payload.Int / otherToken.payload.Int);
 }
 /**/
 
-/***Int_negate***/
-Token Int_negate(Token thisToken, ...) {
+/***Integer_negate***/
+Token Integer_negate(Token thisToken, ...) {
     thisToken.payload.Int = -thisToken.payload.Int;
     return thisToken;
 }
 /**/
 
-/***Int_zero***/
-Token Int_zero(Token token, ...) {
-    return Int_new(0);
+/***Integer_zero***/
+Token Integer_zero(Token token, ...) {
+    return Integer_new(0);
 }
 /**/
 
-/***Int_one***/
-Token Int_one(Token token, ...) {
-    return Int_new(1);
+/***Integer_one***/
+Token Integer_one(Token token, ...) {
+    return Integer_new(1);
 }
 /**/
 
-/***Int_clone***/
-Token Int_clone(Token thisToken, ...) {
+/***Integer_clone***/
+Token Integer_clone(Token thisToken, ...) {
     return thisToken;
 }
 /**/
 
 ---------------- static functions -----------------------
 
-/***Int_convert***/
-Token Int_convert(Token token, Token... elements) {
+/***Integer_convert***/
+Token Integer_convert(Token token, Token... elements) {
     switch (token.type) {
 
 //#ifdef TYPE_Double
     case TYPE_Double:
-        token.payload = DoubletoInt((Double)token.payload);
+        token.payload = DoubletoInteger((Double)token.payload);
         break;
 //#endif
 
         // FIXME: not finished
     default:
-        System.err.printf("Int_convert(): Conversion from an unsupported type. (%d)\n", token.type);
+        System.err.printf("Integer_convert(): Conversion from an unsupported type. (%d)\n", token.type);
         break;
     }
-    token.type = TYPE_Int;
+    token.type = TYPE_Integer;
     return token;
 }
 /**/

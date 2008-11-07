@@ -123,8 +123,8 @@ Token Complex_multiply(Token thisToken, ...) {
         break;
 #endif
 
-#ifdef TYPE_Int
-    case TYPE_Int:
+#ifdef TYPE_Integer
+    case TYPE_Integer:
         result = Complex_new(r1 * otherToken.payload.Intl, i1 * otherToken.payload.Int);
         break;
 #endif
@@ -200,10 +200,10 @@ Token Complex_clone(Token thisToken, ...) {
 /***Complex_convert***/
 Token Complex_convert(Token token, ...) {
     switch (token.type) {
-#ifdef TYPE_Int
-    case TYPE_Int:
+#ifdef TYPE_Integer
+    case TYPE_Integer:
         token.type = TYPE_Complex;
-        //token.payload.Complex = InttoComplex(token.payload.Int);
+        //token.payload.Complex = IntegertoComplex(token.payload.Int);
         break;
 #endif
 

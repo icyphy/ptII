@@ -1,14 +1,12 @@
 /***declareBlock***/
-typedef char* StringToken;
 /**/
 
 /***funcDeclareBlock***/
-Token String_new(char* s);
 /**/
 
 /***String_new***/
 /* Make a new integer token from the given value. */
-Token String_new(char* s) {
+Token String_new(String s) {
     Token result;
     result.type = TYPE_String;
     result.payload.String = new String(s);
@@ -17,7 +15,7 @@ Token String_new(char* s) {
 /**/
 
 /***String_delete***/
-Token String_delete(Token token, ...) {
+Token String_delete(Token token, Token... ignored) {
     free(token.payload.String);
     /* We need to return something here because all the methods are declared
      * as returning a Token so we can use them in a table of functions.
@@ -27,7 +25,7 @@ Token String_delete(Token token, ...) {
 /**/
 
 /***String_equals***/
-Token String_equals(Token thisToken, ...) {
+Token String_equals(Token thisToken, Token... ignored) {
     va_list argp;
     Token otherToken;
     va_start(argp, thisToken);
@@ -45,32 +43,25 @@ Token String_equals(Token thisToken, ...) {
 
 /***String_print***/
 Token String_print(Token thisToken, ...) {
-    printf("\"%s\"", thisToken.payload.String);
+    System.out.printf("\"%s\"", thisToken.payload.String);
     return emptyToken;
 }
 /**/
 
 /***String_toString***/
-Token String_toString(Token thisToken, ...) {
+Token String_toString(Token thisToken, Token... ignored) {
     // Guarrantee to return a new string.
-    char* result = (char*) malloc(sizeof(char) * (3 + strlen(thisToken.payload.String)));
-    sprintf(result, "\"%s\"", thisToken.payload.String);
-    return String_new(result);
+    //char* result = (char*) malloc(sizeof(char) * (3 + strlen(thisToken.payload.String)));
+    //sprintf(result, "\"%s\"", thisToken.payload.String);
+    return String_new(thisToken.payload.String);
 }
 /**/
 
 /***String_add***/
-Token String_add(Token thisToken, ...) {
-    va_list argp;
-    va_start(argp, thisToken);
-    Token otherToken = va_arg(argp, Token);
+Token String_add(Token thisToken, Token... tokens) {
+    Token otherToken = tokens[0];
 
-    char* result = (char*) malloc(sizeof(char) * (1 + strlen(thisToken.payload.String) + strlen(otherToken.payload.String)));
-    strcpy(result, thisToken.payload.String);
-    strcat(result, otherToken.payload.String);
-
-    va_end(argp);
-    return String_new(result);
+    return thisToken + otherToken;
 }
 /**/
 
@@ -113,31 +104,31 @@ Token String_clone(Token thisToken, ...) {
 ------------------ static functions --------------------------------------
 
 /***String_convert***/
-Token String_convert(Token token, ...) {
-    char* stringPointer;
+Token String_convert(Token token, Token... ignored) {
+    String stringPointer;
 
     switch (token.type) {
-#ifdef TYPE_Boolean
+//#ifdef TYPE_Boolean
     case TYPE_Boolean:
         stringPointer = BooleantoString(token.payload.Boolean);
         break;
-#endif
+//#endif
 
-#ifdef TYPE_Int
-    case TYPE_Int:
-        stringPointer = InttoString(token.payload.Int);
+//#ifdef TYPE_Integer
+    case TYPE_Integer:
+        stringPointer = IntegertoString(token.payload.Int);
         break;
-#endif
+//#endif
 
-#ifdef TYPE_Double
+//#ifdef TYPE_Double
     case TYPE_Double:
         stringPointer = DoubletoString(token.payload.Double);
         break;
-#endif
+//#endif
 
     default:
         // FIXME: not finished
-        fprintf(stderr, "String_convert(): Conversion from an unsupported type. (%d)\n", token.type);
+        System.err.println("String_convert(): Conversion from an unsupported type. (%d)\n", token.type);
         break;
     }
     token.payload.String = stringPointer;

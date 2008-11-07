@@ -290,15 +290,6 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public StringParameter target;
     
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-
-    /** A static list of the primitive types supported by the code generator. */
-    public static final List primitiveTypes = Arrays.asList(new String[] {
-            "Int", "Double", "String", "Long", "Boolean", "UnsignedByte",
-            "Pointer" });
-
-
-    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Add an include command line argument the compile command.

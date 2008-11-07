@@ -43,9 +43,9 @@ char* add_Boolean_String(boolean a1, char* a2) {
 /*** add_Double_Array() ***/
 Token add_Double_Array(double a1, Token a2) {
     int i;
-    Token result = $new(Array(a2.payload.Array->size, 0));
+    Token result = $new(Array(((array)(a2.payload)).size, 0));
 
-    for (i = 0; i < a2.payload.Array->size; i++) {
+    for (i = 0; i < ((array)(a2.payload)).size; i++) {
         Array_set(result, i, $add_Double_Token(a1, Array_get(a2, i)));
     }
     return result;
@@ -187,7 +187,26 @@ int add_Token_Int(Token a1, int a2) {
 
 /*** add_Token_Token() ***/
 Token add_Token_Token(Token a1, Token a2) {
-    return $tokenFunc(a1::add(a2));
+    Token result = null;
+    switch (a1.type) {
+    case TYPE_Double:
+        switch (a2.type) {
+	    case TYPE_Double:
+	    	result = Double_new(thisToken.payload.Double + otherToken.payload.Double);
+		break;
+	    default:
+	        result = null;
+
+        };;
+    default:
+        result = null;
+    }
+
+    if (result == null) {
+        throw new InternalError("add_Token_Token_(): Add with an unsupported type. (%d or %d)\n", a1.type, a2);
+
+    }
+    return result;
 }
 /**/
 

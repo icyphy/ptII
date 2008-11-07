@@ -156,7 +156,7 @@ Token UnsignedByte_convert(Token token, ...) {
 
 #ifdef TYPE_Double
     case TYPE_Double:
-        token.payload.UnsignedByte = DoubletoInt(token.payload.Double);
+        token.payload.UnsignedByte = DoubletoIntegertoken.payload.Double);
         break;
 #endif
 

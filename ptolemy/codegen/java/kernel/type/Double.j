@@ -137,8 +137,8 @@ Token Double_multiply(Token thisToken, Token... tokens) {
     case TYPE_Double:
         result = Double_new((Double)(thisToken.payload) * (Double)(otherToken.payload));
         break;
-//#ifdef TYPE_Int
-    case TYPE_Int:
+//#ifdef TYPE_Integer
+    case TYPE_Integer:
         result = Double_new((Double)(thisToken.payload) * (Integer)otherToken.payload);
         break;
 //#endif
@@ -212,10 +212,10 @@ Token Double_convert(Token token, Token... elements) {
 //	token.payload = (Double)(token.payload).toString();
 //        break;
 //#endif
-//#ifdef TYPE_Int
-    case TYPE_Int:
+//#ifdef TYPE_Integer
+    case TYPE_Integer:
         token.type = TYPE_Double;
-        token.payload = InttoDouble((Integer)(token.payload));
+        token.payload = IntegertoDouble((Integer)(token.payload));
         break;
 //#endif
 

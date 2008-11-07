@@ -569,7 +569,7 @@ public class JavaCodeGenerator extends CodeGenerator {
             types.add("String");
         }
 
-        if (functions.contains("isCloseTo") && _newTypesUsed.contains("Int")
+        if (functions.contains("isCloseTo") && _newTypesUsed.contains("Integer")
                 && !_newTypesUsed.contains("Double")) {
             // FIXME: we should not need Double for Int_isCloseTo()
             types.add("Double");
@@ -796,7 +796,7 @@ public class JavaCodeGenerator extends CodeGenerator {
         _overloadedFunctions.parse(typeDir + "Array.j");
         _overloadedFunctions.parse(typeDir + "Boolean.j");
         _overloadedFunctions.parse(typeDir + "Double.j");
-        _overloadedFunctions.parse(typeDir + "Int.j");
+        _overloadedFunctions.parse(typeDir + "Integer.j");
         _overloadedFunctions.parse(typeDir + "Matrix.j");
         _overloadedFunctions.parse(typeDir + "String.j");
 
@@ -1292,7 +1292,7 @@ public class JavaCodeGenerator extends CodeGenerator {
         _scalarDeleteTypes = new HashSet();
         _scalarDeleteTypes.add("Boolean");
         _scalarDeleteTypes.add("Double");
-        _scalarDeleteTypes.add("Int");
+        _scalarDeleteTypes.add("Integer");
         _scalarDeleteTypes.add("Long");
     }
 }

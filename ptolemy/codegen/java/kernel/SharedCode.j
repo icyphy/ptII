@@ -27,36 +27,36 @@ Long StringtoLong(String string) {
      return Long.valueOf(string);
 }
 
-Integer DoubletoInt (Double d) {
+Integer DoubletoInteger(Double d) {
        return Integer.valueOf((int)Math.floor(d.doubleValue()));
 }
 
-Double InttoDouble (Integer i) {
+Double IntegertoDouble(Integer i) {
        return Double.valueOf(i.doubleValue());
 }
 
-Long InttoLong (int i) {
+Long IntegertoLong(int i) {
      return Long.valueOf(i);
 }
 
 
-String InttoString (int i) {
+String IntegertoString(int i) {
     return Integer.toString(i);
 }
 
-String LongtoString (long l) {
+String LongtoString(long l) {
     return Long.toString(l);
 }
 
-String DoubletoString (double d) {
+String DoubletoString(double d) {
     return Double.toString(d);
 }
 
-String BooleantoString (boolean b) {
+String BooleantoString(boolean b) {
     return Boolean.toString(b);
 }
 
-String UnsignedBytetoString (byte b) {
+String UnsignedBytetoString(byte b) {
     return Byte.toString(b);
 }
 

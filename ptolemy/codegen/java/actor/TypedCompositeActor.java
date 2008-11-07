@@ -224,7 +224,7 @@ public class TypedCompositeActor extends JavaCodeGeneratorHelper {
 //                        code.append("jint * "
 //                                + pointerToTokensFromOneChannel
 //                                + " = "
-//                                + JavaCodegenUtilities.jniGetArrayElements("Int",
+//                                + JavaCodegenUtilities.jniGetArrayElements("Integer",
 //                                        tokensFromOneChannel, targetCpp) + ";"
 //                                + _eol);
 //                    } else if (type == BaseType.DOUBLE) {
@@ -238,7 +238,7 @@ public class TypedCompositeActor extends JavaCodeGeneratorHelper {
 //                        code.append("jint * "
 //                                + pointerToTokensFromOneChannel
 //                                + " = "
-//                                + JavaCodegenUtilities.jniGetArrayElements("Int",
+//                                + JavaCodegenUtilities.jniGetArrayElements("Integer",
 //                                        tokensFromOneChannel, targetCpp) + ";"
 //                                + _eol);
 //                    } else if (type == BaseType.BOOLEAN) {
@@ -271,7 +271,7 @@ public class TypedCompositeActor extends JavaCodeGeneratorHelper {
 //
 //                    if (type == BaseType.INT) {
 //                        code.append(JavaCodegenUtilities.jniReleaseArrayElements(
-//                                "Int", tokensFromOneChannel,
+//                                "Integer", tokensFromOneChannel,
 //                                pointerToTokensFromOneChannel, targetCpp)
 //                                + ";" + _eol);
 //                    } else if (type == BaseType.DOUBLE) {
@@ -281,7 +281,7 @@ public class TypedCompositeActor extends JavaCodeGeneratorHelper {
 //                                + ";" + _eol);
 //                    } else if (type == PointerToken.POINTER) {
 //                        code.append(JavaCodegenUtilities.jniReleaseArrayElements(
-//                                "Int", tokensFromOneChannel,
+//                                "Integer", tokensFromOneChannel,
 //                                pointerToTokensFromOneChannel, targetCpp)
 //                                + ";" + _eol);
 //                    } else if (type == BaseType.BOOLEAN) {

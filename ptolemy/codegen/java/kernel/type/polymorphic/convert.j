@@ -6,8 +6,8 @@
 #define convert_Boolean_Boolean(a) a
 /**/
 
-/*** convert_Boolean_Int() ***/
-inline int convert_Boolean_Int(boolean a) {
+/*** convert_Boolean_Integer() ***/
+inline int convert_Boolean_Integer(boolean a) {
     return a ? 1 : 0;
 }
 /**/
@@ -39,8 +39,8 @@ inline double convert_Double_Double(double a) {
 }
 /**/
 
-/*** convert_Double_Int() ***/
-inline int convert_Double_Int(double a) {
+/*** convert_Double_Integer() ***/
+inline int convert_Double_Integer(double a) {
     return (int) a;
 }
 /**/
@@ -71,41 +71,41 @@ inline Token convert_Double_Token(double a) {
 }
 /**/
 
-/*** convert_Int_Array() ***/
-Token convert_Int_Array(int a) {
-    return $new(Array(1, 1, $new(Int(a))));
+/*** convert_Integer_Array() ***/
+Token convert_Integer_Array(int a) {
+    return $new(Array(1, 1, $new(Integer(a))));
 }
 /**/
 
-/*** convert_Int_Boolean() ***/
-inline boolean convert_Int_Boolean(int a) {
+/*** convert_Integer_Boolean() ***/
+inline boolean convert_Integer_Boolean(int a) {
     return (a != 0) ? true : false;
 }
 /**/
 
-/*** convert_Int_Double() ***/
-inline double convert_Int_Double(int a) {
+/*** convert_Integer_Double() ***/
+inline double convert_Integer_Double(int a) {
     return (double) a;
 }
 /**/
 
-/*** convert_Int_Int() ***/
-int convert_Int_Int(int a) {
+/*** convert_Integer_Integer() ***/
+int convert_Integer_Integer(int a) {
     return a;
 }
 /**/
 
-/*** convert_Int_String() ***/
-char* convert_Int_String(int a) {
+/*** convert_Integer_String() ***/
+char* convert_Integer_String(int a) {
     char* string = (char*) malloc(sizeof(char) * 12);
     sprintf((char*) string, "%d", a);
     return string;
 }
 /**/
 
-/*** convert_Int_Token() ***/
-inline Token convert_Int_Token(int a) {
-    return $new(Int(a));
+/*** convert_Integer_Token() ***/
+inline Token convert_Integer_Token(int a) {
+    return $new(Integer(a));
 }
 /**/
 
@@ -142,8 +142,8 @@ char* convert_String_Boolean(char* a) {
 #define convert_String_Double atof
 /**/
 
-/*** convert_String_Int() ***/
-#define convert_String_Int atoi
+/*** convert_String_Integer() ***/
+#define convert_String_Integer atoi
 /**/
 
 /*** convert_String_String() ***/

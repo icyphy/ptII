@@ -77,8 +77,8 @@ Token Long_multiply(Token thisToken, ...) {
     otherToken = va_arg(argp, Token);
 
     switch (otherToken.type) {
-#ifdef TYPE_Int
-    case TYPE_Int:
+#ifdef TYPE_Integer
+    case TYPE_Integer:
         result = Long_new(thisToken.payload.Long * otherToken.payload.Int);
         break;
 #endif

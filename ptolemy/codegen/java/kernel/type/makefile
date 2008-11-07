@@ -60,7 +60,7 @@ OTHER_FILES_TO_BE_JARED = \
 	Boolean.j \
 	Complex.j \
 	Double.j \
-	Int.j \
+	Integer.j \
 	Long.j \
 	Matrix.j \
 	Pointer.j \

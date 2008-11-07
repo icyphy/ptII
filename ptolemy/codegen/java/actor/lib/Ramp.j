@@ -19,9 +19,9 @@ $actorSymbol(state) = $val(($type)init);
 $actorSymbol(state) = strdup($val((String)init));
 /**/
 
-/***IntFireBlock***/
+/***IntegerFireBlock***/
 $ref(output) = $actorSymbol(state);
-$actorSymbol(state) += $ref((Int)step);
+$actorSymbol(state) += $ref((Integer)step);
 /**/
 
 /***DoubleFireBlock***/
@@ -43,5 +43,5 @@ strcat($actorSymbol(state),  $ref((String)step));
 
 /***TokenFireBlock***/
 $ref(output) = $actorSymbol(state);
-$actorSymbol(state) = $tokenFunc($ref(output)::add($ref((Token)step)));
+$actorSymbol(state) = add_Token_Token($ref(output), $ref(step));
 /**/

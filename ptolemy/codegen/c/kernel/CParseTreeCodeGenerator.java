@@ -27,6 +27,7 @@
  */
 package ptolemy.codegen.c.kernel;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -1805,11 +1806,16 @@ ParseTreeCodeGenerator {
      */
     private boolean _isPrimitive(Type ptType) {
 	// FIXME: this is duplicated code from CodeGeneratorHelper.isPrimitive()
-        return CodeGenerator.primitiveTypes.contains(_codeGenType(ptType));
+        return _primitiveTypes.contains(_codeGenType(ptType));
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    /** A static list of the primitive types supported by the code generator. */
+    private static final List _primitiveTypes = Arrays.asList(new String[] {
+            "Int", "Double", "String", "Long", "Boolean", "UnsignedByte",
+            "Pointer" });
 
     /** The scope for evaluation. */
     private ParserScope _scope = null;

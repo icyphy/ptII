@@ -179,7 +179,28 @@ inline boolean equals_Token_Int(Token a1, int a2) {
 
 /*** equals_Token_Token() ***/
 inline boolean equals_Token_Token(Token a1, Token a2) {
-    return $tokenFunc(a1::equals(a2));
+    boolean result = false;
+    if (a1 instanceof Number && a2 instanceof Number) {
+        result = (Number)(a1.payload).equals((Number)(a2.payload));
+    } else {
+        throw new InternalError("equals_Token_Token_(): equalswith an unsupported type. (%d or %d)\n", a1.type, a2.type);
+    }
+    return result;
+}
+/**/
+
+/*** isCloseTo_Token_Token() ***/
+inline boolean isCloseTo_Token_Token(Token thisToken, Token otherToken, Token tolerance) {
+    boolean result = false;
+    if (thisToken.payload instanceof Number 
+            && thisToken.payload instanceof Number
+            && tolerance.payload instanceof Number) {
+        result = 
+	Math.abs((Number)(thisToken.payload) - (Number)(otherToken.payload) < (Number)(tolerance.payload));
+    } else 
+        throw new InternalError("equals_Token_Token_(): iscloseTo with an unsupported type. (%d, %d or %d)\n", thisToken.type, otherToken.type, tolerance.type);
+    }
+    return result;
 }
 /**/
 

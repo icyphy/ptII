@@ -207,7 +207,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                         code.append("jint * "
                                 + pointerToTokensFromOneChannel
                                 + " = "
-                                + JavaCodegenUtilities.jniGetArrayElements("Int",
+                                + JavaCodegenUtilities.jniGetArrayElements("Integer",
                                         tokensFromOneChannel, targetCpp) + ";"
                                 + _eol);
                     } else if (type == BaseType.DOUBLE) {
@@ -221,7 +221,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                         code.append("jint * "
                                 + pointerToTokensFromOneChannel
                                 + " = "
-                                + JavaCodegenUtilities.jniGetArrayElements("Int",
+                                + JavaCodegenUtilities.jniGetArrayElements("Integer",
                                         tokensFromOneChannel, targetCpp) + ";"
                                 + _eol);
                     } else if (type == BaseType.BOOLEAN) {
@@ -253,7 +253,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 
                     if (type == BaseType.INT) {
                         code.append(JavaCodegenUtilities.jniReleaseArrayElements(
-                                "Int", tokensFromOneChannel,
+                                "Integer", tokensFromOneChannel,
                                 pointerToTokensFromOneChannel, targetCpp)
                                 + ";" + _eol);
                     } else if (type == BaseType.DOUBLE) {
@@ -263,7 +263,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                                 + ";" + _eol);
                     } else if (type == PointerToken.POINTER) {
                         code.append(JavaCodegenUtilities.jniReleaseArrayElements(
-                                "Int", tokensFromOneChannel,
+                                "Integer", tokensFromOneChannel,
                                 pointerToTokensFromOneChannel, targetCpp)
                                 + ";" + _eol);
                     } else if (type == BaseType.BOOLEAN) {
@@ -464,9 +464,9 @@ public class SDFDirector extends StaticSchedulingDirector {
                     code.append("jintArray "
                             + tokensToOneChannelArray
                             + " = "
-                            + JavaCodegenUtilities.jniNewArray("Int", String
+                            + JavaCodegenUtilities.jniNewArray("Integer", String
                                     .valueOf(rate), targetCpp) + ";" + _eol);
-                    code.append(JavaCodegenUtilities.jniSetArrayRegion("Int",
+                    code.append(JavaCodegenUtilities.jniSetArrayRegion("Integer",
                                     tokensToOneChannelArray, "0", String
                                             .valueOf(rate), tokensToOneChannel,
                                     targetCpp) + ";" + _eol);
@@ -486,9 +486,9 @@ public class SDFDirector extends StaticSchedulingDirector {
                     code.append("jintArray "
                             + tokensToOneChannelArray
                             + " = "
-                            + JavaCodegenUtilities.jniNewArray("Int", String
+                            + JavaCodegenUtilities.jniNewArray("Integer", String
                                     .valueOf(rate), targetCpp) + ";" + _eol);
-                    code.append(JavaCodegenUtilities.jniSetArrayRegion("Int",
+                    code.append(JavaCodegenUtilities.jniSetArrayRegion("Integer",
                                     tokensToOneChannelArray, "0", String
                                             .valueOf(rate), tokensToOneChannel,
                                     targetCpp) + ";" + _eol);

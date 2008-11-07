@@ -125,14 +125,15 @@ Token Array_equals(Token thisToken, Token... tokens) {
     Token otherToken;
     otherToken = tokens[0];
 
-    if (thisToken.payload.Array->size != otherToken.payload.Array->size) {
+    if ((array)(thisToken.payload).size != (array)(otherToken.payload).size) {
         return Boolean_new(false);
     }
-    for (i = 0; i < thisToken.payload.Array->size; i++) {
-        if (!functionTable[(int)Array_get(thisToken, i).type][FUNC_equals]
-                        (Array_get(thisToken, i), Array_get(otherToken, i)).payload.Boolean) {
+    for (i = 0; i < (array)(thisToken.payload).size; i++) {
+    	System.out.println("Array_equals: functionTable needs work");      
+        //if (!functionTable[(int)Array_get(thisToken, i).type][FUNC_equals]
+        //                (Array_get(thisToken, i), Array_get(otherToken, i)).payload.Boolean) {
             return Boolean_new(false);
-        }
+        //}
     }
 
     return Boolean_new(true);
@@ -149,10 +150,10 @@ Token Array_isCloseTo(Token thisToken, Token... elements) {
     otherToken = elements[0];
     tolerance = elements[1];
 
-    if (((array)thisToken.payload).size != ((array)otherToken.payload).size) {
+    if ( ((array)(thisToken.payload)).size != ((array)(otherToken.payload)).size) {
         return Boolean_new(false);
     }
-    for (i = 0; i < ((array)thisToken.payload).size; i++) {
+    for (i = 0; i < ((array)(thisToken.payload)).size; i++) {
     	System.out.println("Array_isCloseTo: convert needs work");
 	//if (!functionTable[(int)Array_get(thisToken, i).type][FUNC_isCloseTo](Array_get(thisToken, i), Array_get(otherToken, i), tolerance).payload.Boolean) {
             return Boolean_new(false);
@@ -168,18 +169,19 @@ Token Array_isCloseTo(Token thisToken, Token... elements) {
 // Array_print: Print the contents of an array to standard out.
 Token Array_print(Token thisToken, ...) {
     // Token string = Array_toString(thisToken);
-    // printf(string.payload.String);
+    // System.out.printf(string.payload.String);
     // free(string.payload.String);
 
     int i;
-    printf("{");
+    System.out.printf("{");
     for (i = 0; i < thisToken.payload.Array->size; i++) {
         if (i != 0) {
-            printf(", ");
+            System.out.printf(", ");
         }
-        functionTable[(int)thisToken.payload.Array->elements[i].type][FUNC_print](thisToken.payload.Array->elements[i]);
-    }
-    printf("}");
+        //functionTable[(int)thisToken.payload.Array->elements[i].type][FUNC_print](thisToken.payload.Array->elements[i]);
+	System.out.println("Array_print: functionTable needs work");
+   }
+    System.out.printf("}");
 }
 /**/
 
@@ -187,34 +189,17 @@ Token Array_print(Token thisToken, ...) {
 
 // Array_toString: Return a string token with a string representation
 // of the specified array.
-Token Array_toString(Token thisToken, ...) {
-    int i;
-    int currentSize, allocatedSize;
-    char* string;
-    Token elementString;
-
-    allocatedSize = 256;
-    string = (char*) malloc(allocatedSize);
-    string[0] = '{';
-    string[1] = '\0';
-    currentSize = 2;
-
-    for (i = 0; i < thisToken.payload.Array->size; i++) {
+Token Array_toString(Token thisToken, Token... ignored) {
+    StringBuffer result = new StringBuffer("{");
+    for (i = 0; i < ((array)(thisToken.payload)).size; i++) {
         if (i != 0) {
-            strcat(string, ", ");
+            result.append(", ");
         }
-        elementString = functionTable[(int)thisToken.payload.Array->elements[i].type][FUNC_toString](thisToken.payload.Array->elements[i]);
-        currentSize += strlen(elementString.payload.String);
-        if (currentSize > allocatedSize) {
-            allocatedSize *= 2;
-            string = (char*) realloc(string, allocatedSize);
-        }
+	result.append(((array)(thisToken.payload)).elements[i].toString());
 
-        strcat(string, elementString.payload.String);
-        free(elementString.payload.String);
     }
-    strcat(string, "}");
-    return String_new(string);
+    result.append("}");
+    return result.toString();
 }
 /**/
 
@@ -223,38 +208,36 @@ Token Array_toString(Token thisToken, ...) {
 // Array_add: Add an array to another array.
 // Assume the given otherToken is array type.
 // Return a new Array token.
-Token Array_add(Token thisToken, ...) {
+Token Array_add(Token thisToken, Token... tokens) {
     int i;
     int size1;
     int size2;
     int resultSize;
 
-    va_list argp;
     Token result = new Token();
     Token otherToken;
 
-    va_start(argp, thisToken);
-    otherToken = va_arg(argp, Token);
+    otherToken = tokens[0];
 
-    size1 = thisToken.payload.Array->size;
-    size2 = otherToken.payload.Array->size;
+    size1 = ((array)(thisToken.payload)).size;
+    size2 = ((array)(otherToken.payload)).size;
     resultSize = (size1 > size2) ? size1 : size2;
 
     result = Array_new(resultSize, 0);
 
     for (i = 0; i < resultSize; i++) {
         if (size1 == 1) {
-            Array_set(result, i, $tokenFunc(Array_get(thisToken, 0)::add(Array_get(otherToken, i))));
+            //Array_set(result, i, $tokenFunc(Array_get(thisToken, 0)::add(Array_get(otherToken, i))));
         } else if (size2 == 1) {
             //result.payload.Array->elements[i] = functionTable[(int)Array_get(otherToken, 0).type][FUNC_add](Array_get(thisToken, i), Array_get(otherToken, 0));
-            Array_set(result, i, $tokenFunc(Array_get(thisToken, i)::add(Array_get(otherToken, 0))));
-        } else {
+            //Array_set(result, i, $tokenFunc(Array_get(thisToken, i)::add(Array_get(otherToken, 0))));
+        } else 
+{
             //result.payload.Array->elements[i] = functionTable[(int)Array_get(thisToken, i).type][FUNC_add](Array_get(thisToken, i), Array_get(otherToken, i));
-            Array_set(result, i, $tokenFunc(Array_get(thisToken, i)::add(Array_get(otherToken, i))));
+            //Array_set(result, i, $tokenFunc(Array_get(thisToken, i)::add(Array_get(otherToken, i))));
         }
     }
 
-    va_end(argp);
     return result;
 }
 /**/
