@@ -877,8 +877,6 @@ test IOPort-10.6 {Check description use the example (that used to be) in design 
         {ptolemy.actor.Mailbox in ..E3.E5.P9}
         {ptolemy.actor.Mailbox in ..E6.P7}
     }
-    {
-    }
 }
 ptolemy.actor.IOPort {..E7.P10} receivers {
 } remotereceivers {
