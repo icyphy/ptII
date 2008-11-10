@@ -99,7 +99,7 @@ import ptolemy.util.MessageHandler;
  then the container of the container is checked until we reach the
  top level.</p>
 
- @author Edward A. Lee, Steve Neuendorffer, Contributor: Blanc
+ @author Edward A. Lee, Steve Neuendorffer, Contributor: Blanc, Bert Rodiers
  @see Publisher
  @see Subscriber
  @version $Id$
@@ -251,18 +251,20 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
                 if (_setFailed) {
                     return false;
                 }
-                ChangeRequest request = new ChangeRequest(this,
-                        "SetVariable change request") {
-                    protected void _execute() throws IllegalActionException {
-                        _setValue(value);
-                    }
-                };
-
-                // To prevent prompting for saving the model, mark this
-                // change as non-persistent.
-                request.setPersistent(false);
-                request.addChangeListener(this);
-                requestChange(request);
+                if (_updateNecessary(value)) {
+                    ChangeRequest request = new ChangeRequest(this,
+                            "SetVariable change request") {
+                        protected void _execute() throws IllegalActionException {
+                            _setValue(value);
+                        }
+                    };
+    
+                    // To prevent prompting for saving the model, mark this
+                    // change as non-persistent.
+                    request.setPersistent(false);
+                    request.addChangeListener(this);
+                    requestChange(request);
+                }
             } else {
                 _setValue(value);
             }
@@ -308,6 +310,28 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    /**Test based on the value of the new token whether 
+     * an update is necessary.
+     * This method is conversative in that sense that it might say
+     * that an update is necessary, while strictly it isn't. This for
+     * example when it is difficult to determine whether something will
+     * actually change (for example with expressions, where the expression
+     * might remain the same, but the actual values might have changed).
+     * @param newToken The new token. 
+     * @return True when an update needs to be done.
+     */    
+    private boolean _updateNecessary(Token newToken) throws IllegalActionException {
+        Attribute variable = getModifiedVariable();
+
+        if (variable instanceof Variable) {
+            Token oldToken = ((Variable) variable).getToken();
+            
+            return oldToken == null || !oldToken.equals(newToken);
+        }
+        return true;
+    }
+    
+    
     /** Set the value of the associated container's variable.
      *  @param value The new value.
      */
@@ -315,11 +339,15 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
         Attribute variable = getModifiedVariable();
 
         if (variable instanceof Variable) {
-            ((Variable) variable).setToken(value);
+            Token oldToken = ((Variable) variable).getToken();
+            
+            if (oldToken == null || !oldToken.equals(value)) {
+                ((Variable) variable).setToken(value);
 
-            // NOTE: If we don't call validate(), then the
-            // change will not propagate to dependents.
-            ((Variable) variable).validate();
+                // NOTE: If we don't call validate(), then the
+                // change will not propagate to dependents.
+                ((Variable) variable).validate();
+            }
         } else if (variable instanceof Settable) {
             ((Settable) variable).setExpression(value.toString());
 
