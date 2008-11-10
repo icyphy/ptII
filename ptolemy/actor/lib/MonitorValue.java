@@ -27,6 +27,7 @@
  */
 package ptolemy.actor.lib;
 
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -102,8 +103,12 @@ public class MonitorValue extends Sink {
      */
     public boolean postfire() throws IllegalActionException {
         if (input.hasToken(0)) {
-            value.setToken(input.get(0));
-            value.validate();
+            Token oldToken = value.getToken();
+            Token newToken = input.get(0);
+            if (oldToken == null || !oldToken.equals(newToken)) {
+                value.setToken(newToken);
+                value.validate();
+            }
         }
 
         return true;
