@@ -39,7 +39,8 @@ else
 	   echo "$0: warning: $1 does not exist" 1>&2
 	   exit 2
        fi	   
-       classPath="$classPath <cp>$1</cp>"
+       classPath="$classPath
+    <cp>$1</cp>"
        shift
    done
 fi
