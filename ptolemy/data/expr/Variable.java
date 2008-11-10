@@ -1077,6 +1077,9 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         if (_debugging) {
             _debug("setToken: " + token);
         }
+        if (_token != null && _token.equals(token) ) {
+            return; // Nothing changed
+        }
 
         _setTokenAndNotify(token);
 
