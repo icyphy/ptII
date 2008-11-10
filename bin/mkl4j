@@ -9,7 +9,7 @@ icon=$ROOT/doc/img/ptIIplanet.ico
 mainClass=ptolemy.vergil.VergilApplication
 fileVersion=6.0.0.1
 PTVERSION=6.0-devel
-
+classPath="<cp>$ROOT</cp>"
 if [ $# -gt 0 ]; then
    base=$1
    shift
@@ -30,9 +30,7 @@ if [ $# -gt 0 ]; then
    shift
 fi
 
-if [ $# -eq 0 ]; then
-   classPath="<cp>$ROOT</cp>"
-else
+if [ ! $# -eq 0 ]; then
    # Collect up remaining arguments as classpath
    while test $# -gt 0; do
        if [ ! -f $1 ]; then
