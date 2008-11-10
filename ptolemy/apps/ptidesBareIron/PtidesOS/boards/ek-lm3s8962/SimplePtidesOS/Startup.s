@@ -1,158 +1,258 @@
-;/*****************************************************************************/
-;/* STARTUP.S: Startup file for Cortex-M3                                     */
-;/*****************************************************************************/
-;/* <<< Use Configuration Wizard in Context Menu >>>                          */
-;/*****************************************************************************/
-;/* This file is part of the uVision/ARM development tools.                   */
-;/* Copyright (c) 2005-2007 Keil Software. All rights reserved.               */
-;/* This software may only be used under the terms of a valid, current,       */
-;/* end user licence from KEIL for a compatible version of KEIL software      */
-;/* development tools. Nothing else gives you the right to use this software. */
-;/*****************************************************************************/
+; <<< Use Configuration Wizard in Context Menu >>>
+;******************************************************************************
+;
+; startup_rvmdk.S - Startup code for use with Keil's uVision.
+;
+; Copyright (c) 2005-2007 Luminary Micro, Inc.  All rights reserved.
+; 
+; Software License Agreement
+; 
+; Luminary Micro, Inc. (LMI) is supplying this software for use solely and
+; exclusively on LMI's microcontroller products.
+; 
+; The software is owned by LMI and/or its suppliers, and is protected under
+; applicable copyright laws.  All rights are reserved.  You may not combine
+; this software with "viral" open-source software in order to form a larger
+; program.  Any use in violation of the foregoing restrictions may subject
+; the user to criminal sanctions under applicable laws, as well as to civil
+; liability for the breach of the terms and conditions of this license.
+; 
+; THIS SOFTWARE IS PROVIDED "AS IS".  NO WARRANTIES, WHETHER EXPRESS, IMPLIED
+; OR STATUTORY, INCLUDING, BUT NOT LIMITED TO, IMPLIED WARRANTIES OF
+; MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE APPLY TO THIS SOFTWARE.
+; LMI SHALL NOT, IN ANY CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL, OR
+; CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
+; 
+; This is part of revision 1900 of the Stellaris Peripheral Driver Library.
+;
+;******************************************************************************
 
+;******************************************************************************
+;
+; <o> Stack Size (in Bytes) <0x0-0xFFFFFFFF:8>
+;
+;******************************************************************************
+Stack   EQU     0x00000100
 
-;// <h> Stack Configuration
-;//   <o> Stack Size (in Bytes) <0x0-0xFFFFFFFF:8>
-;// </h>
+;******************************************************************************
+;
+; <o> Heap Size (in Bytes) <0x0-0xFFFFFFFF:8>
+;
+;******************************************************************************
+Heap    EQU     0x00000000
 
-Stack_Size      EQU     0x00000200
-
-                AREA    STACK, NOINIT, READWRITE, ALIGN=3
-Stack_Mem       SPACE   Stack_Size
+;******************************************************************************
+;
+; Allocate space for the stack.
+;
+;******************************************************************************
+        AREA    STACK, NOINIT, READWRITE, ALIGN=3
+StackMem
+        SPACE   Stack
 __initial_sp
 
-                EXPORT  Stack_Top
-Stack_Top       EQU     Stack_Mem + Stack_Size
-
-
-;// <h> Heap Configuration
-;//   <o>  Heap Size (in Bytes) <0x0-0xFFFFFFFF:8>
-;// </h>
-
-Heap_Size       EQU     0x00000000
-
-                AREA    HEAP, NOINIT, READWRITE, ALIGN=3
+;******************************************************************************
+;
+; Allocate space for the heap.
+;
+;******************************************************************************
+        AREA    HEAP, NOINIT, READWRITE, ALIGN=3
 __heap_base
-Heap_Mem        SPACE   Heap_Size
+HeapMem
+        SPACE   Heap
 __heap_limit
 
+;******************************************************************************
+;
+; Indicate that the code in this file preserves 8-byte alignment of the stack.
+;
+;******************************************************************************
+        PRESERVE8
 
-                PRESERVE8
-                THUMB
-                
+;******************************************************************************
+;
+; Place code into the reset code section.
+;
+;******************************************************************************
+        AREA    RESET, CODE, READONLY
+        THUMB
 
-; Area Definition and Entry Point
-;  Startup Code must be linked first at Address at which it expects to run.
-
-                AREA    RESET, CODE, READONLY
-                THUMB
-
-
-; Vector Table Mapped to Address 0 at Reset
-
-                AREA    RESET, DATA, READONLY
-                EXPORT  __Vectors 
-__Vectors       DCD     __initial_sp              ; Top of Stack
-                DCD     Reset_Handler             ; Reset Handler
-                DCD     NMI_Handler               ; NMI Handler
-                DCD     HardFault_Handler         ; Hard Fault Handler
-                DCD     MemManage_Handler         ; MPU Fault Handler
-                DCD     BusFault_Handler          ; Bus Fault Handler
-                DCD     UsageFault_Handler        ; Usage Fault Handler
-                DCD     0                         ; Reserved
-                DCD     0                         ; Reserved
-                DCD     0                         ; Reserved
-                DCD     0                         ; Reserved
-                DCD     SVC_Handler               ; SVCall Handler
-                DCD     DebugMon_Handler          ; Debug Monitor Handler
-                DCD     0                         ; Reserved
-                DCD     PendSV_Handler            ; PendSV Handler
-                DCD     SysTick_Handler           ; SysTick Handler
+;******************************************************************************
+;
+; External declaration for the interrupt handler used by the application.
+;
+;******************************************************************************
+        EXTERN  UARTIntHandler
+		EXTERN  Timer0IntHandler
+		EXTERN  Timer1IntHandler
+		EXTERN  SysTickHandler
+		EXTERN  IntGPIOa
+		EXTERN  IntGPIOb
+		EXTERN  IntGPIOc
 
 
-                AREA    |.text|, CODE, READONLY
 
+;******************************************************************************
+;
+; The vector table.
+;
+;******************************************************************************
+        EXPORT  __Vectors
+__Vectors
+        DCD     StackMem + Stack            ; Top of Stack
+        DCD     Reset_Handler               ; Reset Handler
+        DCD     NmiSR                       ; NMI Handler
+        DCD     FaultISR                    ; Hard Fault Handler
+        DCD     IntDefaultHandler           ; MPU Fault Handler
+        DCD     IntDefaultHandler           ; Bus Fault Handler
+        DCD     IntDefaultHandler           ; Usage Fault Handler
+        DCD     0                           ; Reserved
+        DCD     0                           ; Reserved
+        DCD     0                           ; Reserved
+        DCD     0                           ; Reserved
+        DCD     IntDefaultHandler           ; SVCall Handler
+        DCD     IntDefaultHandler           ; Debug Monitor Handler
+        DCD     0                           ; Reserved
+        DCD     IntDefaultHandler           ; PendSV Handler
+        DCD     SysTickHandler 	          ; SysTick Handler
+        DCD     IntGPIOa					; GPIO Port A
+        DCD     IntGPIOb                    ; GPIO Port B
+        DCD     IntGPIOc                    ; GPIO Port C
+        DCD     IntDefaultHandler           ; GPIO Port D
+        DCD     IntDefaultHandler           ; GPIO Port E
+        DCD     UARTIntHandler              ; UART0
+        DCD     IntDefaultHandler           ; UART1
+        DCD     IntDefaultHandler           ; SSI
+        DCD     IntDefaultHandler           ; I2C
+        DCD     IntDefaultHandler           ; PWM Fault
+        DCD     IntDefaultHandler           ; PWM Generator 0
+        DCD     IntDefaultHandler           ; PWM Generator 1
+        DCD     IntDefaultHandler           ; PWM Generator 2
+        DCD     IntDefaultHandler           ; Quadrature Encoder
+        DCD     IntDefaultHandler           ; ADC Sequence 0
+        DCD     IntDefaultHandler           ; ADC Sequence 1
+        DCD     IntDefaultHandler           ; ADC Sequence 2
+        DCD     IntDefaultHandler           ; ADC Sequence 3
+        DCD     IntDefaultHandler           ; Watchdog
+        DCD     Timer0IntHandler            ; Timer 0A
+        DCD     IntDefaultHandler           ; Timer 0B
+        DCD     Timer1IntHandler            ; Timer 1A
+        DCD     IntDefaultHandler           ; Timer 1B
+        DCD     IntDefaultHandler           ; Timer 2A
+        DCD     IntDefaultHandler           ; Timer 2B
+        DCD     IntDefaultHandler           ; Comp 0
+        DCD     IntDefaultHandler           ; Comp 1
+        DCD     IntDefaultHandler           ; Comp 2
+        DCD     IntDefaultHandler           ; System Control
+        DCD     IntDefaultHandler           ; Flash Control
+        DCD     IntDefaultHandler           ; GPIO Port F
+        DCD     IntDefaultHandler           ; GPIO Port G
+        DCD     IntDefaultHandler           ; GPIO Port H
+        DCD     IntDefaultHandler           ; UART2 Rx and Tx
+        DCD     IntDefaultHandler           ; SSI1 Rx and Tx
+        DCD     IntDefaultHandler           ; Timer 3 subtimer A
+        DCD     IntDefaultHandler           ; Timer 3 subtimer B
+        DCD     IntDefaultHandler           ; I2C1 Master and Slave
+        DCD     IntDefaultHandler           ; Quadrature Encoder 1
+        DCD     IntDefaultHandler           ; CAN0
+        DCD     IntDefaultHandler           ; CAN1
+        DCD     IntDefaultHandler           ; CAN2
+        DCD     IntDefaultHandler           ; Ethernet
+        DCD     IntDefaultHandler           ; Hibernate
 
-; Reset Handler
+;******************************************************************************
+;
+; This is the code that gets called when the processor first starts execution
+; following a reset event.
+;
+;******************************************************************************
+        EXPORT  Reset_Handler
+Reset_Handler
+        ;
+        ; Call the C library enty point that handles startup.  This will copy
+        ; the .data section initializers from flash to SRAM and zero fill the
+        ; .bss section.
+        ;
+        IMPORT  __main
+        B       __main
 
-Reset_Handler   PROC
-                EXPORT  Reset_Handler             [WEAK]
-                IMPORT  __main
-                LDR     R0, =__main
-                BX      R0
-                ENDP
+;******************************************************************************
+;
+; This is the code that gets called when the processor receives a NMI.  This
+; simply enters an infinite loop, preserving the system state for examination
+; by a debugger.
+;
+;******************************************************************************
+NmiSR
+        B       NmiSR
 
+;******************************************************************************
+;
+; This is the code that gets called when the processor receives a fault
+; interrupt.  This simply enters an infinite loop, preserving the system state
+; for examination by a debugger.
+;
+;******************************************************************************
+FaultISR
+        B       FaultISR
 
-; Dummy Exception Handlers (infinite loops which can be modified)                
+;******************************************************************************
+;
+; This is the code that gets called when the processor receives an unexpected
+; interrupt.  This simply enters an infinite loop, preserving the system state
+; for examination by a debugger.
+;
+;******************************************************************************
+IntDefaultHandler
+        B       IntDefaultHandler
 
-NMI_Handler     PROC
-                EXPORT  NMI_Handler               [WEAK]
-                B       .
-                ENDP
-HardFault_Handler\
-                PROC
-                EXPORT  HardFault_Handler         [WEAK]
-                B       .
-                ENDP
-MemManage_Handler\
-                PROC
-                EXPORT  MemManage_Handler         [WEAK]
-                B       .
-                ENDP
-BusFault_Handler\
-                PROC
-                EXPORT  BusFault_Handler          [WEAK]
-                B       .
-                ENDP
-UsageFault_Handler\
-                PROC
-                EXPORT  UsageFault_Handler        [WEAK]
-                B       .
-                ENDP
-SVC_Handler     PROC
-                EXPORT  SVC_Handler               [WEAK]
-                B       .
-                ENDP
-DebugMon_Handler\
-                PROC
-                EXPORT  DebugMon_Handler          [WEAK]
-                B       .
-                ENDP
-PendSV_Handler  PROC
-                EXPORT  PendSV_Handler            [WEAK]
-                B       .
-                ENDP
-SysTick_Handler PROC
-                EXPORT  SysTick_Handler           [WEAK]
-                B       .
-                ENDP
+;******************************************************************************
+;
+; Make sure the end of this section is aligned.
+;
+;******************************************************************************
+        ALIGN
 
+;******************************************************************************
+;
+; Some code in the normal code section for initializing the heap and stack.
+;
+;******************************************************************************
+        AREA    |.text|, CODE, READONLY
 
-                ALIGN
-
-
-; User Initial Stack & Heap
-
-                IF :DEF: __MICROLIB
-
-                EXPORT  __initial_sp
-                EXPORT  __heap_base
-                EXPORT  __heap_limit
-
-                ELSE
-
-                IMPORT  __use_two_region_memory
-                EXPORT  __user_initial_stackheap
+;******************************************************************************
+;
+; The function expected of the C library startup code for defining the stack
+; and heap memory locations.  For the C library version of the startup code,
+; provide this function so that the C library initialization code can find out
+; the location of the stack and heap.
+;
+;******************************************************************************
+    IF :DEF: __MICROLIB
+        EXPORT  __initial_sp
+        EXPORT  __heap_base
+        EXPORT  __heap_limit
+    ELSE
+        IMPORT  __use_two_region_memory
+        EXPORT  __user_initial_stackheap
 __user_initial_stackheap
+        LDR     R0, =HeapMem
+        LDR     R1, =(StackMem + Stack)
+        LDR     R2, =(HeapMem + Heap)
+        LDR     R3, =StackMem
+        BX      LR
+    ENDIF
 
-                LDR     R0, =  Heap_Mem
-                LDR     R1, =(Stack_Mem + Stack_Size)
-                LDR     R2, = (Heap_Mem +  Heap_Size)
-                LDR     R3, = Stack_Mem
-                BX      LR
-                ENDIF
+;******************************************************************************
+;
+; Make sure the end of this section is aligned.
+;
+;******************************************************************************
+        ALIGN
 
-                ALIGN
-
-
-                END
+;******************************************************************************
+;
+; Tell the assembler that we're done.
+;
+;******************************************************************************
+        END
