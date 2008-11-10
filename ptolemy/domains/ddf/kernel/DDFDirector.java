@@ -78,11 +78,8 @@ import ptolemy.kernel.util.Workspace;
  particular firing pattern forms a prefix of sequences of unconsumed
  tokens at input ports. The canonical actors in the DDF domain include
  Select and Switch, which consume or produce tokens on different channels
- based on the token received from the control port. (In practice, use
- DDFSelect and DDFBooleanSelect in the DDF-specific library instead of
- Select and BooleanSelect in the regular FlowControl library; however,
- Switch and BooleanSwitch in the regular FlowControl library can be
- used in DDF domain.)
+ based on the token received from the control port. You can also use
+ the two-channel versions BooleanSelect and BooleanSwitch.
  <p>
  The dynamic scheduler implemented in this director fires all enabled
  and non-deferrable actors once in a basic iteration. A deferrable
