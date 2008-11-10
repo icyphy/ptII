@@ -64,6 +64,7 @@ import ptolemy.kernel.util.Settable;
  @since Ptolemy II 4.1
  @Pt.ProposedRating Yellow (zgang)
  @Pt.AcceptedRating Yellow (cxh)
+ @deprecated Use OrderedMerge, which now supports DDF.
  */
 public class DDFOrderedMerge extends OrderedMerge {
     /** Construct an actor with the given container and name.
