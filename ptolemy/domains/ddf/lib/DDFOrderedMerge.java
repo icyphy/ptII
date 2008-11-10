@@ -1,6 +1,6 @@
 /* An actor that merges two monotonically increasing streams into one.
 
- Copyright (c) 1998-2005 The Regents of the University of California.
+ Copyright (c) 1998-2008 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -80,12 +80,12 @@ public class DDFOrderedMerge extends OrderedMerge {
         super(container, name);
 
         inputA_tokenConsumptionRate = new Parameter(inputA,
-                "tokenConsumptionRate");
+                "inputA_tokenConsumptionRate");
         inputA_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         inputA_tokenConsumptionRate.setTypeEquals(BaseType.INT);
 
         inputB_tokenConsumptionRate = new Parameter(inputB,
-                "tokenConsumptionRate");
+                "inputB_tokenConsumptionRate");
         inputB_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         inputB_tokenConsumptionRate.setTypeEquals(BaseType.INT);
     }
