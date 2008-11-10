@@ -45,4 +45,7 @@ void setTimedInterrupt(long);
 long getCurrentPhysicalTime(void);
 void disableInterrupts(void);
 void enableInterrupts(void);
-void die(char *mess); 
+void die(char *mess);
+void ptpd_systick_init(void); 
+void ptpd_init(void);
+void IEEE1588_init(void);
