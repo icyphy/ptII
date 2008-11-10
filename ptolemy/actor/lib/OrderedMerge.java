@@ -30,11 +30,14 @@ package ptolemy.actor.lib;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.ScalarToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
@@ -80,11 +83,28 @@ public class OrderedMerge extends TypedAtomicActor {
     public OrderedMerge(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
+        
+        eliminateDuplicates = new Parameter(this, "eliminateDuplicates");
+        eliminateDuplicates.setTypeEquals(BaseType.BOOLEAN);
+        eliminateDuplicates.setExpression("false");
 
         inputA = new TypedIOPort(this, "inputA", true, false);
         inputB = new TypedIOPort(this, "inputB", true, false);
         inputB.setTypeSameAs(inputA);
         inputA.setTypeAtMost(BaseType.SCALAR);
+        
+        // For the benefit of the DDF director, this actor sets
+        // consumption rate values.
+        inputA_tokenConsumptionRate = new Parameter(inputA,
+                "tokenConsumptionRate");
+        inputA_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
+        inputA_tokenConsumptionRate.setTypeEquals(BaseType.INT);
+
+        inputB_tokenConsumptionRate = new Parameter(inputB,
+                "tokenConsumptionRate");
+        inputB_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
+        inputB_tokenConsumptionRate.setTypeEquals(BaseType.INT);
+
 
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeSameAs(inputA);
@@ -104,14 +124,25 @@ public class OrderedMerge extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
+    
+    /** If true, eliminate duplicate tokens in the output stream.
+     *  This is a boolean that defaults to false.
+     */
+    public Parameter eliminateDuplicates;
 
     /** The first input port, which accepts any scalar token. */
     public TypedIOPort inputA;
+
+    /** The token consumption rate for <i>inputA</i>. */
+    public Parameter inputA_tokenConsumptionRate;
 
     /** The second input port, which accepts any scalar token with
      *  the same type as the first input port.
      */
     public TypedIOPort inputB;
+    
+    /** The token consumption rate for <i>inputB</i>. */
+    public Parameter inputB_tokenConsumptionRate;
 
     /** The output port, which has the same type as the input ports. */
     public TypedIOPort output;
@@ -158,49 +189,133 @@ public class OrderedMerge extends TypedAtomicActor {
                 _debug("Read input token from " + _nextPort.getName()
                         + " with value " + readToken);
             }
+            // The strategy here is to keep reading from the same
+            // port until its value is greater than or equal to the
+            // recorded token. When that occurs, output the recorded
+            // token, record the just-read input token, and start
+            // reading from the other input port.
 
             if (_recordedToken == null) {
-                // First firing.  Just record the token.
+                // First firing or after a duplicate.  Just record the token.
                 _tentativeRecordedToken = readToken;
                 _tentativeReadFromA = true;
-                _tentativeNextPort = inputB;
+                // Swap ports.
+                if (_nextPort == inputA) {
+                    _tentativeNextPort = inputB;
+                } else {
+                    _tentativeNextPort = inputA;                    
+                }
             } else {
-                if ((readToken.isLessThan(_recordedToken)).booleanValue()) {
-                    // Produce the smaller output.
-                    output.send(0, readToken);
-
-                    if (_debugging) {
-                        _debug("Sent output token with value " + readToken);
-                    }
-
-                    // Token was just read from _nextPort.
-                    if (_nextPort == inputA) {
-                        selectedA.send(0, BooleanToken.TRUE);
+                // Logic is different if we have to eliminate duplicates.
+                if (((BooleanToken)eliminateDuplicates.getToken()).booleanValue()) {
+                    // We are set to eliminate duplicates.
+                    if (readToken.equals(_recordedToken)) {
+                        // Input is a duplicate of the recorded token.
+                        // Produce the recorded token as output,
+                        // discard the input token and continue reading from the
+                        // same input port with no recorded token.
+                        output.send(0, _recordedToken);
+                        _tentativeLastProduced = _recordedToken;
+                        if (_debugging) {
+                            _debug("Sent output token with value " + _recordedToken
+                                    + "\nDiscarded duplicate input.");
+                        }
+                        _tentativeRecordedToken = null;
+                        if (_readFromA) {
+                            selectedA.send(0, BooleanToken.TRUE);
+                        } else {
+                            selectedA.send(0, BooleanToken.FALSE);
+                        }
+                        // Read from the same port again, so leave
+                        // _tentativeNextPort alone.                        
+                    } else if ((readToken.equals(_lastProduced))) {
+                        // Token is the same as last produced.
+                        // Do not send an output and leave everything the same
+                        // Except there is no longer a recorded token.
+                        if (_debugging) {
+                            _debug("Discarded duplicate input " + readToken);
+                        }
                     } else {
-                        selectedA.send(0, BooleanToken.FALSE);
+                        // Not a duplicate.
+                        if ((readToken.isLessThan(_recordedToken)).booleanValue()) {
+                            // Produce the smaller output.
+                            output.send(0, readToken);
+                            _tentativeLastProduced = readToken;
+        
+                            if (_debugging) {
+                                _debug("Sent output token with value " + readToken);
+                            }
+        
+                            // Token was just read from _nextPort.
+                            if (_nextPort == inputA) {
+                                selectedA.send(0, BooleanToken.TRUE);
+                            } else {
+                                selectedA.send(0, BooleanToken.FALSE);
+                            }
+                            // Read from the same port again next time.
+                        } else {
+                            // Produce the smaller output.
+                            output.send(0, _recordedToken);
+                            _tentativeLastProduced = _recordedToken;
+                            if (_debugging) {
+                                _debug("Sent output token with value " + _recordedToken);
+                            }
+                            if (_readFromA) {
+                                // Recorded token was read from A.
+                                selectedA.send(0, BooleanToken.TRUE);
+                            } else {
+                                selectedA.send(0, BooleanToken.FALSE);
+                            }
+        
+                            _tentativeRecordedToken = readToken;
+                            _tentativeReadFromA = (_nextPort == inputA);
+        
+                            // Swap ports.
+                            if (_nextPort == inputA) {
+                                _tentativeNextPort = inputB;
+                            } else {
+                                _tentativeNextPort = inputA;
+                            }
+                        }
                     }
                 } else {
-                    // Produce the smaller output.
-                    output.send(0, _recordedToken);
-
-                    if (_debugging) {
-                        _debug("Sent output token with value " + _recordedToken);
-                    }
-
-                    if (_readFromA) {
-                        selectedA.send(0, BooleanToken.TRUE);
+                    // Not eliminating duplicates.
+                    if ((readToken.isLessThan(_recordedToken)).booleanValue()) {
+                        // Produce the smaller output.
+                        output.send(0, readToken);
+    
+                        if (_debugging) {
+                            _debug("Sent output token with value " + readToken);
+                        }
+    
+                        // Token was just read from _nextPort.
+                        if (_nextPort == inputA) {
+                            selectedA.send(0, BooleanToken.TRUE);
+                        } else {
+                            selectedA.send(0, BooleanToken.FALSE);
+                        }
                     } else {
-                        selectedA.send(0, BooleanToken.FALSE);
-                    }
-
-                    _tentativeRecordedToken = readToken;
-                    _tentativeReadFromA = (_nextPort == inputA);
-
-                    // Swap ports.
-                    if (_nextPort == inputA) {
-                        _tentativeNextPort = inputB;
-                    } else {
-                        _tentativeNextPort = inputA;
+                        // Produce the smaller output.
+                        output.send(0, _recordedToken);
+                        if (_debugging) {
+                            _debug("Sent output token with value " + _recordedToken);
+                        }
+    
+                        if (_readFromA) {
+                            selectedA.send(0, BooleanToken.TRUE);
+                        } else {
+                            selectedA.send(0, BooleanToken.FALSE);
+                        }
+    
+                        _tentativeRecordedToken = readToken;
+                        _tentativeReadFromA = (_nextPort == inputA);
+    
+                        // Swap ports.
+                        if (_nextPort == inputA) {
+                            _tentativeNextPort = inputB;
+                        } else {
+                            _tentativeNextPort = inputA;
+                        }
                     }
                 }
             }
@@ -214,6 +329,10 @@ public class OrderedMerge extends TypedAtomicActor {
         super.initialize();
         _nextPort = inputA;
         _recordedToken = null;
+        _lastProduced = null;
+        _tentativeLastProduced = null;
+        inputA_tokenConsumptionRate.setToken(_one);
+        inputB_tokenConsumptionRate.setToken(_zero);
     }
 
     /** Commit the recorded token.
@@ -224,6 +343,16 @@ public class OrderedMerge extends TypedAtomicActor {
         _recordedToken = _tentativeRecordedToken;
         _readFromA = _tentativeReadFromA;
         _nextPort = _tentativeNextPort;
+        _lastProduced = _tentativeLastProduced;
+        
+        if (_nextPort == inputA) {
+            inputA_tokenConsumptionRate.setToken(_one);
+            inputB_tokenConsumptionRate.setToken(_zero);
+        } else {
+            inputA_tokenConsumptionRate.setToken(_zero);
+            inputB_tokenConsumptionRate.setToken(_one);
+        }
+
 
         if (_debugging) {
             _debug("Next port to read input from is " + _nextPort.getName());
@@ -248,15 +377,24 @@ public class OrderedMerge extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    /** The recorded token. */
-    private ScalarToken _recordedToken = null;
+    
+    /** The last produced token. Used to eliminate duplicates. */
+    private ScalarToken _lastProduced;
 
     /** The port from which to read next. */
     private TypedIOPort _nextPort = null;
 
+    /** A final static IntToken with value 1. */
+    private final static IntToken _one = new IntToken(1);
+
     /** Indicator of whether the _recordedToken was read from A. */
     private boolean _readFromA;
+
+    /** The recorded token. */
+    private ScalarToken _recordedToken = null;
+
+    /** The tentative last produced token. Used to eliminate duplicates. */
+    private ScalarToken _tentativeLastProduced;
 
     /** Tentative indicator of having read from A. */
     private boolean _tentativeReadFromA;
@@ -266,4 +404,7 @@ public class OrderedMerge extends TypedAtomicActor {
 
     /** The tentative port from which to read next. */
     private TypedIOPort _tentativeNextPort = null;
+    
+    /** A final static IntToken with value 0. */
+    private final static IntToken _zero = new IntToken(0);
 }
