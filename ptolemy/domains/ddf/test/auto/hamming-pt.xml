@@ -8,9 +8,9 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[724, 413]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0972481504817">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{362.0, 206.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{252.2774882569121, 104.6314153463299}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
@@ -73,9 +73,9 @@
         </property>
     </property>
     <property name="DDF Director" class="ptolemy.domains.ddf.kernel.DDFDirector">
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="50">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="100">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, -50.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{25, -50}">
         </property>
     </property>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
@@ -141,6 +141,12 @@
             </property>
         </port>
     </entity>
+    <entity name="Merge2" class="ptolemy.actor.lib.OrderedMerge">
+        <property name="eliminateDuplicates" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{235.0, 125.0}">
+        </property>
+    </entity>
     <entity name="Delay" class="ptolemy.domains.sdf.lib.SampleDelay">
         <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{1}">
         </property>
@@ -150,34 +156,32 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{325.0, 125.0}">
+        </property>
+    </entity>
+    <entity name="Merge" class="ptolemy.actor.lib.OrderedMerge">
+        <property name="eliminateDuplicates" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 90.0}">
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 2, 3, 4, 5, 6, 6, 8, 9, 10, 10, 12, 12}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 15, 16, 18, 20, 24, 25, 27, 30, 32, 36, 40, 45, 48}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 200.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{460.0, 210.0}">
         </property>
     </entity>
-    <entity name="DDFOrderedMerge" class="ptolemy.domains.ddf.lib.DDFOrderedMerge">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 60.0]">
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-    </entity>
-    <entity name="DDFOrderedMerge2" class="ptolemy.domains.ddf.lib.DDFOrderedMerge">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 125.0]">
-        </property>
-    </entity>
+    </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <vertex name="vertex1" value="[365.0, 200.0]">
         </vertex>
-    </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
@@ -195,19 +199,19 @@
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
-    <link port="Expression.output" relation="relation3"/>
+    <link port="Expression.output" relation="relation4"/>
     <link port="Expression.X" relation="relation6"/>
-    <link port="Expression2.output" relation="relation"/>
+    <link port="Expression2.output" relation="relation2"/>
     <link port="Expression2.X" relation="relation6"/>
-    <link port="Expression4.output" relation="relation7"/>
+    <link port="Expression4.output" relation="relation"/>
     <link port="Expression4.X" relation="relation6"/>
-    <link port="Delay.input" relation="relation4"/>
+    <link port="Merge2.inputA" relation="relation3"/>
+    <link port="Merge2.inputB" relation="relation4"/>
+    <link port="Merge2.output" relation="relation5"/>
+    <link port="Delay.input" relation="relation5"/>
     <link port="Delay.output" relation="relation6"/>
+    <link port="Merge.inputA" relation="relation"/>
+    <link port="Merge.inputB" relation="relation2"/>
+    <link port="Merge.output" relation="relation3"/>
     <link port="Test.input" relation="relation6"/>
-    <link port="DDFOrderedMerge.inputA" relation="relation7"/>
-    <link port="DDFOrderedMerge.inputB" relation="relation"/>
-    <link port="DDFOrderedMerge.output" relation="relation2"/>
-    <link port="DDFOrderedMerge2.inputA" relation="relation2"/>
-    <link port="DDFOrderedMerge2.inputB" relation="relation3"/>
-    <link port="DDFOrderedMerge2.output" relation="relation4"/>
 </entity>
