@@ -8,9 +8,16 @@
 <doc>Dynamic dataflow actors</doc>
 
 <entity name="ActorRecursion" class="ptolemy.domains.ddf.lib.ActorRecursion"/>
-<entity name="DDFBooleanSelect" class="ptolemy.domains.ddf.lib.DDFBooleanSelect"/>
-<entity name="DDFOrderedMerge" class="ptolemy.domains.ddf.lib.DDFOrderedMerge"/>
-<entity name="DDFSelect" class="ptolemy.domains.ddf.lib.DDFSelect"/>
+
+<!-- Use actor.lib.BooleanSelect instead of DDFBooleanSelect -->
+<!-- entity name="DDFBooleanSelect" class="ptolemy.domains.ddf.lib.DDFBooleanSelect"/-->
+
+<!-- Use actor.lib.OrderedMerge instead of DDFOrderedMerge -->
+<!-- entity name="DDFOrderedMerge" class="ptolemy.domains.ddf.lib.DDFOrderedMerge"/-->
+
+<!-- Use actor.lib.Select instead of DDFSelect -->
+<--entity name="DDFSelect" class="ptolemy.domains.ddf.lib.DDFSelect"/-->
+
 <entity name="DDFSingleTokenCommutator" class="ptolemy.domains.ddf.lib.DDFSingleTokenCommutator"/>
       </group>
     ?>
