@@ -36,7 +36,8 @@ typedef struct{
     double doubleValue;
 } Value;
 
-typedef struct{
+typedef struct
+{
     long timestamp;
     int microstep;
 } Tag;
@@ -44,11 +45,15 @@ typedef struct{
 typedef struct Actor Actor;
 typedef struct Event Event;
 
-struct Actor {
+struct Actor 
+{
 
 	//FIXME: should have a linked list of next_actors...
     struct Actor *nextActor1;
     struct Actor *nextActor2;
+	unsigned int inputPortCount;
+	unsigned int outputPortCount;
+	char type;
 
 	void (*fireMethod)	(Actor*, Event*);
 
@@ -56,6 +61,8 @@ struct Actor {
 	unsigned int multipleInputs;
 
 	unsigned int firing;
+
+	//does the actor also need to keep a local event queue?
     //actor methods
     //preinitialize();T_
     //initialize()
@@ -66,10 +73,11 @@ struct Actor {
     //wrapup();
 };
 
-struct Event {
+struct Event 
+{
     Value thisValue;
     Tag Tag;
-
+	char inUse;   // used b/c smallest size avaliable.. really stores -1, or index in eventMemory
     Actor* actorFrom;
     //an event would only have 1 actorToFire
     Actor* actorToFire;
@@ -77,4 +85,6 @@ struct Event {
     struct Event* next;
 
 };
+
+
 
