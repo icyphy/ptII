@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include<assert.h>
 
 #include "../../../hw_ints.h"
 #include "../../../hw_memmap.h"
@@ -20,12 +21,18 @@
 #include "../../../src/sysctl.h"
 #include "../../../src/uart.h"
 #include "../rit128x96x4.h"
+#include "../../../src/timer.h"
+#include "../../../src/systick.h"
+#include "../../../hw_nvic.h"
+
 
 #include "structures.h"
 #include "functions.h"
 #include "actors.h"
 
-#include "timer.h"
+
+
+//#include "timer.h"
 //#include "clock-arch.h"
 
 /* Status LED and Push Buttons pin definitions */
@@ -38,10 +45,13 @@
 #define BUTTON         (UP | DOWN | LEFT | RIGHT)
 
 /* Global variables */
-volatile unsigned char Tick;    // Tick Counter (0..99)
+volatile unsigned char Tick;    // Tick Counter (0..99)	  // what's the difference between a time counter and a tick counter?
 volatile unsigned long Time;    // Time Counter (10ms)
 volatile unsigned char Buttons; // Button States
 volatile unsigned char TraceB;  // Trace Buttons
+Event eventMemory[35];
+
+unsigned int locationCounter;
 
 #define MAX_BUFFER_LIMIT 10
 #define CLOCK_PERIOD 100000
@@ -61,7 +71,428 @@ long MERGE_MODEL_TIME_ADJUSTMENT = 0;
 Actor* SOURCE1;
 Actor* SOURCE2;
 
-/**
+
+//*****************************************************************************
+//
+// Flags that contain the current value of the interrupt indicator as displayed
+// on the OLED display.
+//
+//*****************************************************************************
+unsigned long g_ulFlags;
+
+//****************************************************************************
+//
+// Real-time and model-time variables
+//
+//unsigned long eightmicroseconds;	 // microseconds
+unsigned long seconds; // in seconds (currently set to be twice as fast as real-time)
+unsigned long systickseconds;
+unsigned long tenthofsecond;
+
+//*****************************************************************************
+//
+// The count of interrupts received.  This is incremented as each interrupt
+// handler runs, and its value saved into interrupt handler specific values to
+// determine the order in which the interrupt handlers were executed.
+//
+//*****************************************************************************
+volatile unsigned long g_ulIndex;
+
+//*****************************************************************************
+//
+// The value of g_ulIndex when the INT_GPIOA interrupt was processed.
+//
+//*****************************************************************************
+volatile unsigned long g_ulGPIOa;
+
+//*****************************************************************************
+//
+// The value of g_ulIndex when the INT_GPIOB interrupt was processed.
+//
+//*****************************************************************************
+volatile unsigned long g_ulGPIOb;
+
+//*****************************************************************************
+//
+// The value of g_ulIndex when the INT_GPIOC interrupt was processed.
+//
+//*****************************************************************************
+volatile unsigned long g_ulGPIOc;
+
+
+
+
+
+//*****************************************************************************
+//
+// The error routine that is called if the driver library encounters an error.
+//
+//*****************************************************************************
+#ifdef DEBUG
+void
+__error__(char *pcFilename, unsigned long ulLine)
+{
+}
+#endif
+
+
+ //implementation of itoa from (http://www.jb.man.ac.uk/~slowe/cpp/itoa.html)
+char* itoa(int val, int base){
+	
+	static char buf[32] = {0};
+	
+	int i = 30;
+	
+	for(; val && i ; --i, val /= base)
+	
+		buf[i] = "0123456789abcdef"[val % base];
+	
+	return &buf[i+1];
+	
+}
+
+
+ //*****************************************************************************
+//
+// Display the interrupt state on the LCD.  The currently active and pending
+// interrupts are displayed.
+//
+//*****************************************************************************
+// mthomas: added static
+static void DisplayIntStatus(void)
+{
+    unsigned long ulTemp;
+    char pcBuffer[4];
+
+    //
+    // Display the currently active interrupts.
+    //
+    ulTemp = HWREG(NVIC_ACTIVE0);
+    pcBuffer[0] = (ulTemp & 1) ? '1' : ' ';
+    pcBuffer[1] = (ulTemp & 2) ? '2' : ' ';
+    pcBuffer[2] = (ulTemp & 4) ? '3' : ' ';
+    pcBuffer[3] = '\0';
+	RIT128x96x4Clear();
+    RIT128x96x4StringDraw(pcBuffer, 12,16,15);
+	
+    //
+    // Display the currently pending interrupts.
+    //
+    ulTemp = HWREG(NVIC_PEND0);
+    pcBuffer[0] = (ulTemp & 1) ? '1' : ' ';
+    pcBuffer[1] = (ulTemp & 2) ? '2' : ' ';
+    pcBuffer[2] = (ulTemp & 4) ? '3' : ' ';
+    RIT128x96x4StringDraw(pcBuffer, 12,24,15);
+}
+
+
+//*****************************************************************************
+//
+// Delay for the specified number of seconds.  Depending upon the current
+// SysTick value, the delay will be between N-1 and N seconds (i.e. N-1 full
+// seconds are guaranteed, along with the remainder of the current second).
+//
+//*****************************************************************************
+// mthomas: added static 
+static void Delay(unsigned long ulSeconds)
+{
+    //
+    // Loop while there are more seconds to wait.
+    //
+    while(ulSeconds--)
+    {
+        //
+        // Wait until the SysTick value is less than 1000.
+        //
+        while(SysTickValueGet() > 1000)
+        {
+        }
+
+        //
+        // Wait until the SysTick value is greater than 1000.
+        //
+        while(SysTickValueGet() < 1000)
+        {
+        }
+    }
+}
+
+
+
+//*****************************************************************************
+//
+// The UART interrupt handler.
+//
+//*****************************************************************************
+/*void
+UARTIntHandler(void)
+{
+    unsigned long ulStatus;
+
+    //
+    // Get the interrrupt status.
+    //
+    ulStatus = UARTIntStatus(UART0_BASE, true);
+
+    //
+    // Clear the asserted interrupts.
+    //
+    UARTIntClear(UART0_BASE, ulStatus);
+
+    //
+    // Loop while there are characters in the receive FIFO.
+    //
+    while(UARTCharsAvail(UART0_BASE))
+    {
+        //
+        // Read the next character from the UART and write it back to the UART.
+        //
+        UARTCharPutNonBlocking(UART0_BASE, UARTCharGetNonBlocking(UART0_BASE));
+    }
+}*/
+
+//*****************************************************************************
+//
+// The interrupt handler for the SystemTick
+//
+//*****************************************************************************
+void SysTickHandler(void)
+{
+  //what should I do to clear the SysTick Interrupt?
+  //does it not need to be cleared?
+
+  //RIT128x96x4StringDraw("in systick handler",            12,  0, 15);
+  
+   systickseconds++;
+
+}
+
+//*****************************************************************************
+//
+// The interrupt handler for the first timer interrupt.
+//
+//*****************************************************************************
+// mthomas: attribute for stack-aligment (see README_mthomas.txt)
+//#ifdef __GNUC__
+//void Timer0IntHandler(void) __attribute__((__interrupt__));
+//#endif
+void Timer0IntHandler(void)
+{
+    //
+    // Clear the timer interrupt.
+    //
+    TimerIntClear(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
+//	RIT128x96x4Clear();
+
+    //
+    // Toggle the flag for the first timer.
+    //
+    HWREGBITW(&g_ulFlags, 0) ^= 1;
+
+    //
+    // Update the interrupt status on the display.
+    //
+    IntMasterDisable();
+	//eightmicroseconds++;
+  	if(tenthofsecond == 10)
+  	{
+   		seconds++;	/// if seconds are incremented here we'll have to limit the granularity
+   		tenthofsecond = 0;
+  	}
+
+/*	nanoseconds++;
+	if(nanoseconds == 100000000)
+	{
+	seconds ++;
+	nanoseconds = 0;
+	RIT128x96x4StringDraw("seconds ",        12, 36, 15);
+	RIT128x96x4StringDraw(itoa(seconds,10),  50, 36, 15);
+	}	*/
+    //RIT128x96x4StringDraw(HWREGBITW(&g_ulFlags, 0) ? "1" : "0",        12, 36, 15);
+	
+    IntMasterEnable();
+}
+
+//*****************************************************************************
+//
+// The interrupt handler for the second timer interrupt.
+//
+//*****************************************************************************
+// mthomas: attribute for stack-aligment (see README_mthomas.txt)
+//#ifdef __GNUC__
+//void Timer1IntHandler(void) __attribute__((__interrupt__));
+//#endif
+void Timer1IntHandler(void)
+{
+    //
+    // Clear the timer interrupt.
+    //
+    TimerIntClear(TIMER1_BASE, TIMER_TIMA_TIMEOUT);
+    // RIT128x96x4Clear();
+    //
+    // Toggle the flag for the second timer.
+    //
+    HWREGBITW(&g_ulFlags, 1) ^= 1;
+
+    //
+    // Update the interrupt status on the display.
+    //
+  //  IntMasterDisable();
+//	modeltime++;
+    //RIT128x96x4StringDraw(HWREGBITW(&g_ulFlags, 1) ? "1" : "0",        12, 48, 15);
+//	RIT128x96x4StringDraw("modeltime ",        12, 48, 15);
+//	RIT128x96x4StringDraw(itoa(modeltime,10),  50, 48, 15);
+    //IntMasterEnable();
+}
+
+
+//*****************************************************************************
+//
+// This is the handler for INT_GPIOA.  It simply saves the interrupt sequence
+// number.
+//
+//*****************************************************************************
+void IntGPIOa(void)
+{
+    //
+    // Set PB0 high to indicate entry to this interrupt handler.
+    //
+    GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_0, GPIO_PIN_0);
+
+    //
+    // Put the current interrupt state on the LCD.
+    //
+    DisplayIntStatus();
+
+    //
+    // Wait two seconds.
+    //
+    Delay(2);
+
+    //
+    // Save and increment the interrupt sequence number.
+    //
+    g_ulGPIOa = g_ulIndex++;
+
+    //
+    // Set PB0 low to indicate exit from this interrupt handler.
+    //
+    GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_0, 0);
+}
+
+//*****************************************************************************
+//
+// This is the handler for INT_GPIOB.  It triggers INT_GPIOA and saves the
+// interrupt sequence number.
+//
+//*****************************************************************************
+
+void IntGPIOb(void)
+{
+    //
+    // Set PB1 high to indicate entry to this interrupt handler.
+    //
+    GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_1, GPIO_PIN_1);
+
+    //
+    // Put the current interrupt state on the LCD.
+    //
+    DisplayIntStatus();
+
+    //
+    // Trigger the INT_GPIOA interrupt.
+    //
+    HWREG(NVIC_SW_TRIG) = INT_GPIOA - 16;
+
+    //
+    // Put the current interrupt state on the LCD.
+    //
+    DisplayIntStatus();
+
+    //
+    // Wait two seconds.
+    //
+    Delay(2);
+
+    //
+    // Save and increment the interrupt sequence number.
+    //
+    g_ulGPIOb = g_ulIndex++;
+
+    //
+    // Set PB1 low to indicate exit from this interrupt handler.
+    //
+    GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_1, 0);
+}
+
+//*****************************************************************************
+//
+// This is the handler for INT_GPIOC.  It triggers INT_GPIOB and saves the
+// interrupt sequence number.
+//
+//*****************************************************************************
+void IntGPIOc(void)
+{
+    //
+    // Set PB2 high to indicate entry to this interrupt handler.
+    //
+    GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_2, GPIO_PIN_2);
+
+    //
+    // Put the current interrupt state on the LCD.
+    //
+    DisplayIntStatus();
+
+    //
+    // Trigger the INT_GPIOB interrupt.
+    //
+    HWREG(NVIC_SW_TRIG) = INT_GPIOB - 16;
+
+    //
+    // Put the current interrupt state on the LCD.
+    //
+    DisplayIntStatus();
+
+    //
+    // Wait two seconds.
+    //
+    Delay(2);
+
+    //
+    // Save and increment the interrupt sequence number.
+    //
+    g_ulGPIOc = g_ulIndex++;
+
+    //
+    // Set PB2 low to indicate exit from this interrupt handler.
+    //
+    GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_2, 0);
+}
+
+
+
+
+
+//*****************************************************************************
+//
+// Send a string to the UART.
+//
+//*****************************************************************************
+void UARTSend(const unsigned char *pucBuffer, unsigned long ulCount)
+{
+    //
+    // Loop while there are more characters to send.
+    //
+    while(ulCount--)
+    {
+        //
+        // Write the next character to the UART.
+        //
+        UARTCharPutNonBlocking(UART0_BASE, *pucBuffer++);
+    }
+}
+
+ /**
  * This is the fire method for actuator
  * The actuator is used to check if the event received output has met the 
  * deadline by comparing the current time with the timestamp.
@@ -71,8 +502,8 @@ Actor* SOURCE2;
  * Since it's not a terminating actor, the event is not popped.
  *
  */
-void fireActuator(Actor* this_actuator, Event* thisEvent) {
-
+void fireActuator(Actor* this_actuator, Event* thisEvent) 
+{
 	long currentTime = getCurrentPhysicalTime();
     Tag *stampedTag = &(thisEvent->Tag);
 
@@ -155,7 +586,7 @@ void initClock(Actor *this_clock)
 {
     long currentTime = getCurrentPhysicalTime();
 
-    Event* newEvent = (Event*) malloc(sizeof(Event));				/// I don't know if malloc is defined
+    Event* myNewEvent = newEvent();				/// I don't know if malloc is defined
 
     //CLOCK_PERIOD specifies the period
     currentTime += CLOCK_PERIOD;   
@@ -163,39 +594,31 @@ void initClock(Actor *this_clock)
     //notice orderTag and realTag are set to different things:
     //since the event queue is ordered by orderTag, we these events to execute NOW
     //however realTag is the real timestamp to appear at the output
-    newEvent->Tag.timestamp = currentTime;
-    newEvent->Tag.microstep = 0;   //FIXME
-    newEvent->thisValue.doubleValue = 0;
-    newEvent->actorToFire = this_clock->nextActor1;
-    newEvent->actorFrom = this_clock;
+    myNewEvent->Tag.timestamp = currentTime;
+    myNewEvent->Tag.microstep = 0;   //FIXME
+    myNewEvent->thisValue.doubleValue = 0;
+    myNewEvent->actorToFire = this_clock->nextActor1;
+    myNewEvent->actorFrom = this_clock;
 
-    addEvent(newEvent);
+    addEvent(myNewEvent);
 
 	CK1_TIME = currentTime;
 
     if (this_clock->nextActor2 != NULL)
     {
-        Event* newEvent2 = (Event*) malloc(sizeof(Event));
-		*newEvent2 = *newEvent;
+        Event* newEvent2 = newEvent();
+		//*newEvent2 = *newEvent;    //Jia I'm  not sure what this line was attempting to do
         newEvent2->actorToFire = this_clock->nextActor2;
         addEvent(newEvent2);
     }
-
-    return;
 }
 
 /**
  * Set the firing flag of the actor, indicate that the actor is currenting being fired.
  */
-void currentlyFiring(Actor* actor) {
+void currentlyFiring(Actor* actor) 
+{
 	actor->firing = 1;
-}
-
-/**
- * Set the firing flag of the actor, indicate that the actor is currenting being fired.
- */
-void finishedFiring(Actor* actor) {
-	actor->firing = 0;
 }
 
 /** 
@@ -203,25 +626,26 @@ void finishedFiring(Actor* actor) {
  * Computation method do not have any real functionality here, where we simply
  * set our event queue to fire the next actor.
  */
-void fireComputation(Actor* this_computation, Event* thisEvent) {
+void fireComputation(Actor* this_computation, Event* thisEvent) 
+{
 
 	double thisDouble;
-	Event* newEvent = (Event*) malloc(sizeof(Event));;
+	Event* myNewEvent = newEvent();
         
 	thisDouble = thisEvent->thisValue.doubleValue;
     thisDouble++;
 
-	newEvent->thisValue.doubleValue = thisDouble;
-    newEvent->actorToFire = this_computation->nextActor1;
-    newEvent->actorFrom = this_computation;
+	myNewEvent->thisValue.doubleValue = thisDouble;
+    myNewEvent->actorToFire = this_computation->nextActor1;
+    myNewEvent->actorFrom = this_computation;
 
     //arbitrarily delay either 1/4 of a sec or 1/2 of a sec or none.
-	addEvent(newEvent);
+	addEvent(myNewEvent);
 
     if (this_computation->nextActor2 != NULL)
     {
         Event* newEvent2 = (Event*) malloc(sizeof(Event));
-		*newEvent2= *newEvent;
+		//*newEvent2= *newEvent;   //Jia I'm not sure what this line is supposed to do
         newEvent2->actorToFire = this_computation->nextActor2;
         addEvent(newEvent2);
     }
@@ -251,14 +675,15 @@ void addEvent(Event* newEvent)
 
     //add an event
     Event *compare_event = EVENT_QUEUE_HEAD;
-    Event *before_event = EVENT_QUEUE_HEAD;
+    Event *before_event  = EVENT_QUEUE_HEAD;
     //move across the link until we find an event with larger tag, or stop at the end.
 
-    while (1){
+    while (1)
+	{
         if (compare_event == NULL)
             break;
         else if (stampedTag.timestamp < compare_event->Tag.timestamp)
-                break;
+            break;
         else if ((stampedTag.timestamp == compare_event->Tag.timestamp) && (
 			stampedTag.microstep < compare_event->Tag.microstep))
                 break;
@@ -270,14 +695,16 @@ void addEvent(Event* newEvent)
     }
             
     newEvent->next = compare_event;
-    if (compare_event == before_event){
+    if (compare_event == before_event)
+	{
         EVENT_QUEUE_HEAD = newEvent;
     }
-    else if (compare_event != before_event){
+    else if (compare_event != before_event)
+	{
         before_event->next = newEvent;
     }
     else {
-//        printf("something wrong with compare and before _event\n");
+
         die("");
     }
 
@@ -291,30 +718,37 @@ void addEvent(Event* newEvent)
  */
 void removeEvent()
 {
-    if (EVENT_QUEUE_HEAD != NULL){
+    if (EVENT_QUEUE_HEAD != NULL)
+	{
+		//should I call freeEvent(EVENT_QUEUE_HEAD) here? I'm not sure.
+		freeEvent(EVENT_QUEUE_HEAD);
         EVENT_QUEUE_HEAD = EVENT_QUEUE_HEAD -> next;
     } 
     else printf("event queue is already empty\n");
 }
 
-///** 
-// * execute_event() checks if the event is valid. If it is, then fire actor
-// * is called.
-// */
-//void executeEvent(){
-//
-//    if (EVENT_QUEUE_HEAD == NULL) {
-//        die("EVENT_QUEUE_HEAD should never be NULL\n");
-//    }
-//    else {
-//        if (EVENT_QUEUE_HEAD->actorToFire == NULL){
-//            die("executing an event where the actors are NULL!!\n");
-//        }
-//        else {
-//            fireActor(EVENT_QUEUE_HEAD);
-//        }
-//    }
-//}
+/** 
+ * execute_event() checks if the event is valid. If it is, then fire actor
+ * is called.
+ */
+void executeEvent(){
+
+    if (EVENT_QUEUE_HEAD == NULL) 
+	{
+        die("EVENT_QUEUE_HEAD should never be NULL\n");
+    }
+    else 
+	{
+        if (EVENT_QUEUE_HEAD->actorToFire == NULL)
+		{
+            die("executing an event where the actors are NULL!!\n");
+        }
+        else 
+		{
+            fireActor(EVENT_QUEUE_HEAD);
+        }
+    }
+}
 
 /** 
  * fire_actor checks if static timing analysis is needed.
@@ -331,30 +765,10 @@ void fireActor(Event* currentEvent)
 	} else {
 		die("no such method, cannot fire\n");
 	}
-
-	finishedFiring(fire_this);	
+	fire_this->firing = 0;
 
     return;
 }
-
-///**fmod(x,y)
-// * Code referenced from: http://www.koders.com/c/fid5C58ABB379EC1695145D6C137E954EAB07297C5C.aspx
-// * changes were made to eliminate the need of floor function.
-// */
-//
-//double fmod(double x, double y){
-//    double f;
-//    unsigned int i;
-//    if (y == 0.0){
-//        die("dividing by 0.0");
-//    }
-//
-//    i = (unsigned int) (x/y);
-//    f = x - (double)(i)*y;
-//    if ((x < 0.0) != (y < 0.0))
-//        f = f - y;
-//    return f;
-//}
 
 /** 
  * This is the fire method for merge actor.
@@ -372,22 +786,20 @@ void fireMerge(Actor* this_merge, Event* thisEvent) {
 //    printf("THIS OUTPUT WAS FROM Actor: %c%c%c\n", 
 //		thisEvent->actorFrom->type[0], thisEvent->actorFrom->type[1], thisEvent->actorFrom->type[2]);
 
-	Event* newEvent = (Event*)malloc(sizeof(Event));
-	*newEvent = *thisEvent;
-    newEvent->actorToFire = this_merge->nextActor1;
-    newEvent->actorFrom = this_merge;
+	Event* myNewEvent = newEvent();
+	*myNewEvent = *thisEvent;	    // why is this assignment done?
+    myNewEvent->actorToFire = this_merge->nextActor1;
+    myNewEvent->actorFrom = this_merge;
 
-	addEvent(newEvent);
+	addEvent(myNewEvent);
 
     if (this_merge->nextActor2 != NULL)
     {
-        Event* newEvent2 = (Event*)malloc(sizeof(Event));
-		*newEvent2 = *newEvent;
+        Event* newEvent2 = newEvent();
+		//*newEvent2 = *newEvent;     //Jia, I'm not sure what this is supposed to do
         newEvent2->actorToFire = this_merge->nextActor2;
         addEvent(newEvent2);
     }
-
-    return;
 }
 
 /** 
@@ -430,51 +842,51 @@ void fireModelDelay(Actor* this_model_delay, Event* thisEvent) {
 	}
 */
 
-	Event* newEvent = (Event*)malloc(sizeof(Event));
+	Event* myNewEvent = newEvent();
 		
-	newEvent->Tag.timestamp = thisEvent->Tag.timestamp + model_delay;
-    newEvent->Tag.microstep = 0;   //FIXME
-    newEvent->actorToFire = this_model_delay->nextActor1;
-    newEvent->actorFrom = this_model_delay;
+	myNewEvent->Tag.timestamp = thisEvent->Tag.timestamp + model_delay;
+    myNewEvent->Tag.microstep = 0;   //FIXME
+    myNewEvent->actorToFire = this_model_delay->nextActor1;
+    myNewEvent->actorFrom = this_model_delay;
 
-	addEvent(newEvent);
+	addEvent(myNewEvent);
     if (this_model_delay->nextActor2 != NULL)
     {
-        Event* newEvent2 = (Event*)malloc(sizeof(Event));
-		*newEvent2 = *newEvent;
+        Event* newEvent2 = newEvent();
+		//*newEvent2 = *newEvent;    // Jia, I'm not sure what this is supposed to do
         newEvent2->actorToFire = this_model_delay->nextActor2;
         addEvent(newEvent2);
     }
-
-    return;
 }
 
 void processEvents()
 {
-
+   
     //  To ensure this function is thread safe, we make sure only one processEvents() IS BEING EXECUTED AT A TIME
     //  WHILE ANOTHER SENSOR MIGHT TRIGGER ANOTHER processEvents()
     //  IF ANOTHER processEvents() is currently being executed, we don't really need to have another being executed at the same time...
 	Actor* actor;
-
-    while (1) {
+	RIT128x96x4StringDraw("beginningPE", 12,72,15);
+    while (1) 
+	{
         disableInterrupts();
         // If event queue is not empty.
         if (EVENT_QUEUE_HEAD != NULL) {
             Event* event = EVENT_QUEUE_HEAD;
             // Check which actor produced the event that we have processed
 			actor = event->actorFrom;
-			// FIXME: since there is only one instance of processing events running, we don't need
-			// the check for alreadyFiring(), in other words, alreadyFiring should always be false.
-			if (alreadyFiring(actor)) {
-				//enableInterrupts();
-				//break;
-				die("alreadyFiring should always be false within processEvents()");
-			} else {
+			if (alreadyFiring(actor))
+			 {
+				enableInterrupts();
+				break;
+			} 
+			else 
+			{
 	            long processTime = safeToProcess(event);
-	            if (getCurrentPhysicalTime() >= processTime) {
+	            if (getCurrentPhysicalTime() >= processTime&&(1)) 
+				 // (1) should be replaced with a check to see if this is the highest priority event
+				 {
 	                removeEvent();
-					currentlyFiring(actor);
 	                enableInterrupts();
 	                // Execute the event. During
 	                // this process more events may
@@ -533,103 +945,6 @@ void processEvents()
 			}
         }
     }
-}
-
-/**
- * This function is almost the same as processEvents, only that this function is called within interrupt service
- * routines. When an event is not safe to process, or alreadyingFiring() is true, we return from this function,
- * instead of waiting for events to process. We also do not deal with source actors within this process
- *
- * Also, maybe we should have a seperate event queue for events generated here...? Depends on what we really want.
- */
-processAvailableEvents()
-{
-
-    //  To ensure this function is thread safe, we make sure only one processEvents() IS BEING EXECUTED AT A TIME
-    //  WHILE ANOTHER SENSOR MIGHT TRIGGER ANOTHER processEvents()
-    //  IF ANOTHER processEvents() is currently being executed, we don't really need to have another being executed at the same time...
-	Actor* actor;
-
-    while (1) {
-        disableInterrupts();
-        // If event queue is not empty.
-        if (EVENT_QUEUE_HEAD != NULL) {
-            Event* event = EVENT_QUEUE_HEAD;
-            // Check which actor produced the event that we have processed
-			actor = event->actorFrom;
-			if (alreadyFiring(actor)) {
-				enableInterrupts();
-				break;
-			} else {
-	            long processTime = safeToProcess(event);
-	            if (getCurrentPhysicalTime() >= processTime) {
-	                removeEvent();
-					currentlyFiring(actor);
-	                enableInterrupts();
-	                // Execute the event. During
-	                // this process more events may
-	                // be posted to the queue.
-	                fireActor(event);
-					free(event);
-	                // If the event just executed is
-	                // produced by a source actor
-	                if (actor->sourceActor != 0) {
-	                    // Decrement the buffer size
-	                    // by one.
-						if (actor == SOURCE1) {
-	                    	CK1_BUF_SIZE--;
-						}
-	                    // Make sure sourceBuffer is
-	                    // non-empty. If it is, fire
-	                    // the source actor once to
-	                    // produce some events.
-	                    if (CK1_BUF_SIZE == 0) {
-							//dummyEVent is never used.
-							Event* dummyEvent;
-	                        fireClock(SOURCE1, dummyEvent);
-							// firing of the actor should update the number of events in the buffer
-	                    }
-	                }
-	            }
-	            else {
-					// leave it for processEvents() to figure out what to do with source processes.
-					enableInterrupts();
-					break;
-//	                // There are no events safe to
-//	                // process, so setup sources
-//	                // to process.
-//	                STOP_SOURCE_PROCESS = FALSE;
-//	                // Set timed interrupt to run
-//	                // the event at the top of the
-//	                // event queue when physical time
-//	                // has passed for it to be
-//	                // safe to process
-//	                setTimedInterrupt(processTime);
-//	                enableInterrupts();
-	            }
-			}
-        } else {
-			// leave it for processEvents() to figure out what to do with source processes.
-			enableInterrupts();
-			break;
-//            // There are no events safe to
-//            // process, so setup sources
-//            // to process.
-//            STOP_SOURCE_PROCESS = FALSE;
-//            enableInterrupts();
-        }
-		// leave it for processEvents() to figure out what to do with source processes.
-//        // If there is no event to process and we
-//        // have not reached the buffer limit, fire
-//        // the source actor.
-//        // for (each source actors a) {
-//        if (STOP_SOURCE_PROCESS == FALSE) {
-//			if (CK1_BUF_SIZE < MAX_BUFFER_LIMIT) {
-//				Event* dummyEvent;
-//            	fireClock(SOURCE1, dummyEvent);
-//			}
-//        }
-    }
 } 
 
 /** 
@@ -640,32 +955,41 @@ processAvailableEvents()
 void initSensor(Actor* this_sensor)     //this listens for the next signal to sense again
 {
 	long time;
-    Event* newEvent = (Event*)malloc(sizeof(Event));
+    Event* myNewEvent;
+ //RIT128x96x4StringDraw("start",   12,72,15);
+
+
+	myNewEvent = newEvent();
+
+//RIT128x96x4StringDraw("begin",   40,72,15);
+
+
     //get the current time
     time = getCurrentPhysicalTime();
 
     // Set a time trigger from now
 
-    newEvent->Tag.timestamp = time;
-    newEvent->Tag.microstep = 0;	//FIXEM
-    newEvent->thisValue.doubleValue = time;
-    newEvent->actorToFire = this_sensor->nextActor1;
-    newEvent->actorFrom = this_sensor;
+    myNewEvent->Tag.timestamp = time;
+    myNewEvent->Tag.microstep = 0;	//FIXEM
+    myNewEvent->thisValue.doubleValue = time;
+    myNewEvent->actorToFire = this_sensor->nextActor1;
+    myNewEvent->actorFrom = this_sensor;
 
     //now put the created event into the queue
     //BUT HOW DO I TRACK THE START OF THE EVENT QUEUE??? --global variable
-    addEvent(newEvent);
+    addEvent(myNewEvent);
 
     if (this_sensor->nextActor2 != NULL)
     {
-        Event* newEvent2 = (Event*)malloc(sizeof(Event));
-		*newEvent2 = *newEvent;
+        Event* newEvent2 = newEvent();
+		//*newEvent2 = *newEvent;     //Jia, I'm nto wure what this is for
         newEvent2->actorToFire = this_sensor->nextActor2;
         addEvent(newEvent2);
     }
 
-    return;
-}
+//		RIT128x96x4StringDraw("end",   70,72,15);
+
+ }
 
 /** 
  * Static timing analysis is called to set the timestamp of the event by a 
@@ -674,19 +998,23 @@ void initSensor(Actor* this_sensor)     //this listens for the next signal to se
  * In this analysis, the clock event can be executed when real time exceeds
  * tau - model_delay3
  */
-long safeToProcess(Event* thisEvent) {
-
+long safeToProcess(Event* thisEvent) 
+{
     long safeTimestamp = thisEvent->Tag.timestamp;
 
-	if (thisEvent->actorToFire->multipleInputs != 0) {
+	if (thisEvent->actorToFire->multipleInputs != 0) 
+	{
 	    if (thisEvent->actorToFire->fireMethod == fireMerge)
 		{
 			safeTimestamp -= MERGE_MODEL_TIME_ADJUSTMENT; 
-		} else if (thisEvent->actorToFire->fireMethod == fireComputation)
+		} 
+		else if (thisEvent->actorToFire->fireMethod == fireComputation)
 	    {        
 	    	safeTimestamp -= COMPUTATION_MODEL_TIME_ADJUSTMENT;
 		}
-    } else {
+    }
+	 else 
+	 {
 //        printf("always safe to execute, so set safeTag to 0\n");
         safeTimestamp = 0;
     }
@@ -694,16 +1022,19 @@ long safeToProcess(Event* thisEvent) {
     return safeTimestamp;
 }
 
-void setActuationInterrupt(long actuationTime) {
+void setActuationInterrupt(long actuationTime) 
+{
 	return;
 }
 
-void setTimedInterrupt(long safeToProcessTime) {
+void setTimedInterrupt(long safeToProcessTime) 
+{
 	return;
 }
 
-long getCurrentPhysicalTime() {
-	return 0;
+long getCurrentPhysicalTime() 
+{
+	return seconds;
 }
 
 //*****************************************************************************
@@ -732,7 +1063,7 @@ UARTIntHandler(void)
 
 	enableInterrupts();
 	
-	processAvailableEvents();	
+	processEvents();	
 
 	// If processEvents() is currently trying
     // to fill the output buffer of source
@@ -757,49 +1088,49 @@ void enableInterrupts() {
 } 
 
 
-/**
- * A thread is setup to keep listening for timed interrupt.
- * This scheme makes sure that no interrupts are missed.
- * Asumming: if real time has passed the timed trigger, the timebomb would still explode.
- */
-/*
-void timed_interrupt_init(){
-    // Block until the next interrupt
-    unsigned int status;
-    printf("\nSTART LISTENING FOR INTERRUPTS.\n\n");
-    while (1) {
-        do {
-            //HOW DO I PASS THE fd TO THIS FUNCTION? --> by global variable
-            int num = read( fd, &status, sizeof(status));
-            if (num != sizeof( status))
-            {
-                fprintf(stderr, "Error reading status, %d\n", num);
-                die();
-            }
-        } while ((status & TIMEBOMB_0_FIRE) == 0); // Got it!
-        
-        printf("wake up man! I got an event to execute!!\n");
-        pthread_t  p_thread;
-        //Time has passed to allow safe execution of events on event queue.
-        int thr_id;
-        //FIXME FIXME FIXME: after a while I just can't create anymore threads???
-        thr_id = pthread_create(&p_thread, NULL, (void*)processEvents, (void*)NULL);
 
-    }
+Event * newEvent()
+{
+RIT128x96x4StringDraw("bne",12,12,15);
+//RIT128x96x4StringDraw(itoa(locationCounter,10), 30,12,15);
+printf("location counter is %d",locationCounter);
+	while(eventMemory[locationCounter].inUse != 36 )
+	{  
+	   ASSERT(locationCounter != 35)  // if you've run out of memory just stop
+	  printf("locationCounter %d",locationCounter);
+	   locationCounter++;
+	}
+	locationCounter%=35;  // make it circular
+//	RIT128x96x4StringDraw(itoa(locationCounter,10), 0,0,15);
+	return &eventMemory[locationCounter];
+	
 }
-*/
+
+void freeEvent(Event * thisEvent)
+{
+	eventMemory[thisEvent->inUse].inUse = 36;
+
+}
+void initializeMemory()
+{
+	int i;
+	locationCounter = 0;
+						  
+	for(i =0; i< 35; i++)
+	{
+	// event is "freed and can be returned by newEvent"
+			eventMemory[i].inUse = 36; 
+	}
+}
+
 /**
  * main() has the following functionalities:
  * declare all actors
  * setup dependencies between the actors
  * intialize actors
  */
-int main(int argc, char *argv[])
+int main(void)
 {
-
-//    GLOBAL_SERVER = argv[1];
-//    GLOBAL_PORT1 = argv[2];
-//    GLOBAL_PORT2 = argv[3];
 
     //**************************************************
     //Declare all actors
@@ -814,6 +1145,7 @@ int main(int argc, char *argv[])
 	Actor model_delay2;
     Actor model_delay3;
     Actor actuator1;
+	locationCounter=0;
 
 	/*************************************************************************/
 	// Utilities to setup interrupts
@@ -822,6 +1154,22 @@ int main(int argc, char *argv[])
     //
     SysCtlPeripheralEnable(SYSCTL_PERIPH_UART0);
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
+	SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER0);
+
+
+
+	//
+    // Set the clocking to run directly from the crystal.
+    //
+    SysCtlClockSet(SYSCTL_SYSDIV_1 | SYSCTL_USE_OSC | SYSCTL_OSC_MAIN |
+                   SYSCTL_XTAL_8MHZ);	   // 8MHZ is the fastest the clock can run.
+	 //
+    // Initialize the OLED display and write status.
+    //
+    RIT128x96x4Init(1000000);
+    RIT128x96x4StringDraw("PtidyRTOS",            36,  0, 15);
+
+
 	//
     // Enable processor interrupts.
     //
@@ -842,15 +1190,34 @@ int main(int argc, char *argv[])
     //
     IntEnable(INT_UART0);
     UARTIntEnable(UART0_BASE, UART_INT_RX | UART_INT_RT);
-	/*************************************************************************/
+	
+	//setup and enable the SysTickTimer. It will be used as a reference for delay loops in interrupt handlers. 
+	//The SysTick timer period will be set for one second
+	SysTickPeriodSet(SysCtlClockGet());  
+	SysTickEnable();
+	IntEnable(15);  //sys tick vector
+	//set timer0 as a periodic 32 bit timer
+	TimerConfigure(TIMER0_BASE, TIMER_CFG_32_BIT_PER);
+    // interrupt 10 times per second
+    TimerLoadSet(TIMER0_BASE, TIMER_A, SysCtlClockGet()/10);
 
-    if (argc != 5) {
-        fprintf(stderr, "USAGE: %s <server_ip> <port1> <port2> <s or a>\n", argv[0]);
-        //s stands for sensor side
-        //a stands for actuator side
-        die("");
-    }
+	//
+	//Setup the interrupts for the timer timeouts
+	//
+    IntEnable(INT_TIMER0A);
+	//IntEnable(INT_TIMER1A);
+	TimerIntEnable(TIMER0_BASE,TIMER_TIMA_TIMEOUT);
+	//TimerIntEnable(TIMER1_BASE,TIMER_TIMA_TIMEOUT);
 
+		 //
+    // Enable the timers.
+    //
+    TimerEnable(TIMER0_BASE, TIMER_A);
+    //TimerEnable(TIMER1_BASE, TIMER_A);
+
+	
+	initializeMemory();
+	
 	SOURCE1 = &clock1;
 
 	clock1.fireMethod = fireClock;
@@ -865,12 +1232,12 @@ int main(int argc, char *argv[])
 
 	model_delay2.fireMethod = fireModelDelay;
 
-	model_delay3.fireMethod = fireModelDelay;
+	model_delay3.fireMethod = fireModelDelay;	// should model delay be used in this example?
 
 	merge1.fireMethod = fireMerge;
 
 	actuator1.fireMethod = fireActuator;
-  
+   
     //Dependencies between all the actors
 	//FIXME: HOW ARE PORTS NUMBERED??
     sensor1.nextActor1 = &computation1;
@@ -897,104 +1264,22 @@ int main(int argc, char *argv[])
 
     actuator1.nextActor1 = NULL;
     actuator1.nextActor2 = NULL;
-    
-    //initialize all actors
-    //if a, it's an actuator
-    //if s, it's a sensor
-    //if neither, error
-/*    pthread_t  p_thread;
-    //Time has passed to allow safe execution of events on event queue.
-    int thr_id;
-    thr_id = pthread_create(&p_thread, NULL, (void*)timed_interrupt_init, (void*)NULL);
-*/
-    //initializeAllActors();
+	//printf("beforeinit/n");
+    RIT128x96x4StringDraw("beforeinit", 12,24,15);
 
-    if (*argv[4] == 's'){
-        //sensor_init is used to startup the system by sending an event.
-        initSensor(&sensor1);
-    }
-    else if (*argv[4] == 'a'){
-        //sensor_run is used to listen for events that comes from the sensor platform.
-		initClock(&clock1);
-        initSensor(&sensor2);
-    }
-    else
-        printf("didn't not specify if this is an actuator or sensor!!!\n");
+    initClock(&clock1);
+	RIT128x96x4StringDraw("afterinitClk", 12,36,15);
+	initSensor(&sensor2);
+	RIT128x96x4StringDraw("afterinitS2",   12,48,15);					  
+ 	//initSensor(&sensor1);
+	RIT128x96x4StringDraw("afterinitS1",   12,60,15);
+    RIT128x96x4StringDraw("bPE",      12,65,15);
+	//printf("afterinit/n");
+  // processEvents();
 
-    //go idle
-    processEvents();
-    
-//    close(fd);
-
-    return 0;
+   // RIT128x96x4StringDraw("afterprocessEvents", 12,48,15);
+	
+     
+	return 0;
 }
 
-//  /* Set the clocking to run from PLL at 50 MHz */
-//  SysCtlClockSet(SYSCTL_SYSDIV_4 | SYSCTL_USE_PLL | SYSCTL_OSC_MAIN | SYSCTL_XTAL_8MHZ);
-//
-//  /* Enable peripherals */
-//  SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOE);
-//  SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);
-//
-//  /* Configure Status LED as output */
-//  GPIOPadConfigSet(GPIO_PORTF_BASE, LED,    GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD);
-//  GPIODirModeSet  (GPIO_PORTF_BASE, LED,    GPIO_DIR_MODE_OUT);
-//
-//  /* Configure push buttons as inputs */
-//  GPIOPadConfigSet(GPIO_PORTE_BASE, BUTTON, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPU);
-//  GPIODirModeSet  (GPIO_PORTE_BASE, BUTTON, GPIO_DIR_MODE_IN);
-//  GPIOPadConfigSet(GPIO_PORTF_BASE, SELECT, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD_WPU);
-//  GPIODirModeSet  (GPIO_PORTF_BASE, SELECT, GPIO_DIR_MODE_IN);
-//
-//  /* Initialize LCD */
-//  RIT128x96x4Init(1000000);
-//  RIT128x96x4Clear();
-//
-//  /* Display initial message */
-//  sprintf(buf, "      Keil Demo      ");
-//  RIT128x96x4StringDraw(buf, 0,      6, 11);
-//  sprintf(buf, "     EK-LM3S8962     ");
-//  RIT128x96x4StringDraw(buf, 0, 10*1+6, 11);
-//  sprintf(buf, "   Blinky Example    ");
-//  RIT128x96x4StringDraw(buf, 0, 10*2+6, 11);
-//  sprintf(buf, "  Time =             ");
-//  RIT128x96x4StringDraw(buf, 0, 10*4+6, 11);
-//  sprintf(buf, "  Button Up:         ");
-//  RIT128x96x4StringDraw(buf, 0, 10*5+8, 11);
-//  sprintf(buf, "  Button Down:       ");
-//  RIT128x96x4StringDraw(buf, 0, 10*6+8, 11);
-//  sprintf(buf, "  Button Left:       ");
-//  RIT128x96x4StringDraw(buf, 0, 10*7+8, 11);
-//  sprintf(buf, "  Button Right:      ");
-//  RIT128x96x4StringDraw(buf, 0, 10*8+8, 11);
-//
-//  /* Setup and enable SysTick with interrupt (100Hz) */
-//  SysTickPeriodSet(SysCtlClockGet() / 100);
-//  SysTickEnable();
-//  SysTickIntEnable();
-//
-//  time    = ~Time;
-//  buttons = ~Buttons;
-//
-//  /* Endless Loop */
-//  while (1) {
-//    if (time != Time) {
-//      time = Time;
-//      sprintf(buf, "%1.2f s", (float)time / 100);
-//      RIT128x96x4StringDraw(buf,                          9*6, 10*4+6, 11);
-//    }
-//    b = Buttons;
-//    if ((buttons ^ b) & UP) {
-//      RIT128x96x4StringDraw((b & UP)    ? "Off" : "On ", 16*6, 10*5+8, 11);
-//    }
-//    if ((buttons ^ b) & DOWN) {
-//      RIT128x96x4StringDraw((b & DOWN)  ? "Off" : "On ", 16*6, 10*6+8, 11);
-//    }
-//    if ((buttons ^ b) & LEFT) {
-//      RIT128x96x4StringDraw((b & LEFT)  ? "Off" : "On ", 16*6, 10*7+8, 11);
-//    }
-//    if ((buttons ^ b) & RIGHT) {
-//      RIT128x96x4StringDraw((b & RIGHT) ? "Off" : "On ", 16*6, 10*8+8, 11);
-//    }
-//    buttons = b;
-//  }
