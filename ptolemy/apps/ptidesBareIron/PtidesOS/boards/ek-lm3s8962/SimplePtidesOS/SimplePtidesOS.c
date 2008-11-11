@@ -36,16 +36,17 @@
 #include "lwip/def.h"
 #include "lwip/sys.h"
 #include "ptpd.h"
+#include "random.h"
 
 //#include "timer.h"
 //#include "clock-arch.h"
 
 // FIXME: constants.h is from PTPd program, which is open source as long as we provide
 // the copywrite statement.
-#include "../../../third_party/ptpd-1rc1/src/dep-lmi/constants_dep.h"
-#include "../../../third_party/ptpd-1rc1/src/dep-lmi/datatypes_dep.h"
-#include "../../../third_party/ptpd-1rc1/src/constants.h"
-#include "../../../third_party/ptpd-1rc1/src/datatypes.h"
+#include "dep-lmi/constants_dep.h"
+#include "dep-lmi/datatypes_dep.h"
+#include "constants.h"
+#include "datatypes.h"
 
 /* Status LED and Push Buttons pin definitions */
 #define LED             GPIO_PIN_0 /* PF0 */
@@ -1539,7 +1540,7 @@ int main(void)
 	initializeSensor(&sensor1);
 	RIT128x96x4StringDraw("afterinitS1",   12,48,15);
 	RIT128x96x4StringDraw("!!!!!!!!!!!!!!!!!!!!",      12,72,15);					  
- 	initilizeSensor(&sensor2);
+ 	initializeSensor(&sensor2);
 	RIT128x96x4StringDraw("afterinitS2",   12,60,15);
       processEvents();
 

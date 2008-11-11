@@ -34,3 +34,4 @@
 .\Obj\simpleptidesos.o: ..\..\..\third_party\ptpd-1rc1\src\dep-lmi/datatypes_dep.h
 .\Obj\simpleptidesos.o: ..\..\..\third_party\ptpd-1rc1\src\datatypes.h
 .\Obj\simpleptidesos.o: ..\..\..\third_party\ptpd-1rc1\src\dep-lmi/ptpd_dep.h
+.\Obj\simpleptidesos.o: random.h
