@@ -1542,7 +1542,7 @@ int main(void)
 	RIT128x96x4StringDraw("!!!!!!!!!!!!!!!!!!!!",      12,72,15);					  
  	initializeSensor(&sensor2);
 	RIT128x96x4StringDraw("afterinitS2",   12,60,15);
-      processEvents();
+    processEvents();
 
 	return 0;
 }
