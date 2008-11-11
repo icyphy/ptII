@@ -25,7 +25,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
- @author Jia Zou
+ @author Jia Zou and Shanna-Shaye Forbes
  @Parts of this code that serves to interface the hardware is copied from
  previous written code samples by Slobodan Matic and Agilent
 
@@ -51,3 +51,4 @@ void ptpd_init(void);
 void IEEE1588Init(void);
 Event* newEvent(void);
 void freeEvent(Event*);
+void initializeMemory(void);
