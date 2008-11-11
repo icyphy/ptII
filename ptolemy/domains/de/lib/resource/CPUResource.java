@@ -152,6 +152,10 @@ public class CPUResource extends ResourceActor {
         } catch (IllegalActionException e) { 
             e.printStackTrace();
         }
+        
+        for (Actor task : _connectedTasks.keySet()) {
+            //output.send(_connectedTasks.get(task), 0.0)
+        }
     }
     
     /**
@@ -162,6 +166,9 @@ public class CPUResource extends ResourceActor {
         _tasksInExecution = new Stack();
         
     }
+    
+    /** Task trigger periods */
+    private Map<Actor, Time> _taskTriggerPeriods;
     
     /** Tasks in execution and their remaining execution time. */
     private Map<Actor, Time> _taskExecutionTimes;

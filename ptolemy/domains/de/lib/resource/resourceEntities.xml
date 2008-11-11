@@ -6,9 +6,8 @@
     <?moml
       <group>
 		<doc>Resource Actors</doc>
-		<property name="CPUActor" class="ptolemy.actor.resource.CPUResource"/>
-		<property name="Task" class="ptolemy.actor.resource.Task"/>
-		<property name="TaskTrigger" class="ptolemy.actor.resource.PeriodicTaskTrigger"/>
+		<property name="CPUActor" class="ptolemy.domains.de.lib.resource.CPUResource"/>
+		<property name="Task" class="ptolemy.domains.de.lib.resource.Task"/> 
       </group>
     ?>
   </configure>

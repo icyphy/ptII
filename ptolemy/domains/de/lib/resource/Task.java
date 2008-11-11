@@ -49,9 +49,7 @@ public class Task extends TypedAtomicActor implements Runnable {
     
     /** incoming port from resource actors */
     public IOPort resourceInPort;
-    
-    /** used to connect trigger actors - no events are sent on this port */
-    public IOPort trigger;
+
     
     public void fire() throws IllegalActionException { 
         if (_thread != null && _thread.isAlive()) { // resume 
@@ -159,8 +157,7 @@ public class Task extends TypedAtomicActor implements Runnable {
     
             resourceOutPort = new TypedIOPort(this, "triggerResource", true, false);
             resourceOutPort.setMultiport(true);
-            
-            trigger = new TypedIOPort(this, "connectTrigger", true, false);
+
         } catch (IllegalActionException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
