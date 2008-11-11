@@ -251,20 +251,29 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
                 if (_setFailed) {
                     return false;
                 }
-                if (_updateNecessary(value)) {
-                    ChangeRequest request = new ChangeRequest(this,
-                            "SetVariable change request") {
-                        protected void _execute() throws IllegalActionException {
-                            _setValue(value);
-                        }
-                    };
-    
-                    // To prevent prompting for saving the model, mark this
-                    // change as non-persistent.
-                    request.setPersistent(false);
-                    request.addChangeListener(this);
-                    requestChange(request);
-                }
+                // We can't filter change request here with an extra condition
+                // _updateNecessary(value) since it might be that there is
+                // more than one SetVariable setting the same variable with
+                // a different priority.
+                // Suppose you have variable a. a currently has value 1. a is set to 2
+                // by a lower priority SetVariable actor and to one by the higher one.
+                // With the test "if (_updateNecessary(value))", the value would not be
+                // set to 1 and hence the value would change this two instead of one.
+                // $PTII/ptolemy/actor/parameters/test/auto/Priority4.xml
+                // tests this behavior.
+                
+                ChangeRequest request = new ChangeRequest(this,
+                        "SetVariable change request") {
+                    protected void _execute() throws IllegalActionException {
+                        _setValue(value);
+                    }
+                };
+
+                // To prevent prompting for saving the model, mark this
+                // change as non-persistent.
+                request.setPersistent(false);
+                request.addChangeListener(this);
+                requestChange(request);
             } else {
                 _setValue(value);
             }
@@ -310,26 +319,26 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /**Test based on the value of the new token whether 
-     * an update is necessary.
-     * This method is conversative in that sense that it might say
-     * that an update is necessary, while strictly it isn't. This for
-     * example when it is difficult to determine whether something will
-     * actually change (for example with expressions, where the expression
-     * might remain the same, but the actual values might have changed).
-     * @param newToken The new token. 
-     * @return True when an update needs to be done.
-     */    
-    private boolean _updateNecessary(Token newToken) throws IllegalActionException {
-        Attribute variable = getModifiedVariable();
-
-        if (variable instanceof Variable) {
-            Token oldToken = ((Variable) variable).getToken();
-            
-            return oldToken == null || !oldToken.equals(newToken);
-        }
-        return true;
-    }
+//    /**Test based on the value of the new token whether 
+//     * an update is necessary.
+//     * This method is conversative in that sense that it might say
+//     * that an update is necessary, while strictly it isn't. This for
+//     * example when it is difficult to determine whether something will
+//     * actually change (for example with expressions, where the expression
+//     * might remain the same, but the actual values might have changed).
+//     * @param newToken The new token. 
+//     * @return True when an update needs to be done.
+//     */
+//    private boolean _updateNecessary(Token newToken) throws IllegalActionException {
+//        Attribute variable = getModifiedVariable();
+//
+//        if (variable instanceof Variable) {
+//            Token oldToken = ((Variable) variable).getToken();
+//            
+//            return oldToken == null || !oldToken.equals(newToken);
+//        }
+//        return true;
+//    }
     
     
     /** Set the value of the associated container's variable.
