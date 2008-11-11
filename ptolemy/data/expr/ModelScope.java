@@ -41,6 +41,7 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.LazyComposite;
 import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
@@ -186,7 +187,9 @@ public abstract class ModelScope implements ParserScope {
     /** Get the NamedObj with the given name in the scope of the given
      *  container.  If the name contains the "::" scoping specifier,
      *  then an attribute more deeply in the hierarchy is searched
-     *  for.
+     *  for. If the specified container is lazy (implements
+     *  LazyComposite), then references to its contained entities
+     *  or relations will not resolve, so such references are disallowed.
      *  @param container The container to search upwards from.
      *  @param name The object name to search for.
      *  @return The NamedObj with the given name or null if the NamedObj
@@ -212,15 +215,21 @@ public abstract class ModelScope implements ParserScope {
                         if (port != null) {
                             result = port;
                         } else if (container instanceof CompositeEntity) {
-                            ComponentEntity entity =
-                                ((CompositeEntity) container).getEntity(part);
-                            if (entity != null) {
-                                result = entity;
-                            } else {
-                                ComponentRelation relation = ((CompositeEntity)
-                                        container).getRelation(part);
-                                if (relation != null) {
-                                    result = relation;
+                            // NOTE: Lazy composites cannot have references to their
+                            // contained entities or relations. This would defeat the
+                            // lazy mechanism, forcing the actor to populate its
+                            // contents.
+                            if (!(container instanceof LazyComposite)) {
+                                ComponentEntity entity =
+                                    ((CompositeEntity) container).getEntity(part);
+                                if (entity != null) {
+                                    result = entity;
+                                } else {
+                                    ComponentRelation relation = ((CompositeEntity)
+                                            container).getRelation(part);
+                                    if (relation != null) {
+                                        result = relation;
+                                    }
                                 }
                             }
                         }
