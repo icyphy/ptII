@@ -142,23 +142,22 @@ Token Array_delete(Token token, Object... elements) {
 /***Array_equals***/
 
 // Array_equals: Test an array for equality with a second array.
-Token Array_equals(Token thisToken, Token... tokens) {
+boolean Array_equals(Token thisToken, Token... tokens) {
     int i;
-    Token otherToken;
-    otherToken = tokens[0];
+    Token otherToken = tokens[0];
 
-    if ((array)(thisToken.payload).size != (array)(otherToken.payload).size) {
-        return Boolean_new(false);
+    if (((array)(thisToken.payload)).size != ((array)(otherToken.payload)).size) {
+        return false;
     }
-    for (i = 0; i < (array)(thisToken.payload).size; i++) {
+    for (i = 0; i < ((array)(thisToken.payload)).size; i++) {
     	System.out.println("Array_equals: functionTable needs work");      
         //if (!functionTable[(int)Array_get(thisToken, i).type][FUNC_equals]
         //                (Array_get(thisToken, i), Array_get(otherToken, i)).payload.Boolean) {
-            return Boolean_new(false);
+            return false;
         //}
     }
 
-    return Boolean_new(true);
+    return true;
 }
 /**/
 

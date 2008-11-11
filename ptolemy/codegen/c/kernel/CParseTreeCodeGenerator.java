@@ -311,7 +311,7 @@ ParseTreeCodeGenerator {
         //}
 
         // Insert the elementType of the array as the last argument.
-        if (CodeGeneratorHelper.targetType(elementType).equals("Token")) {
+        if (_targetType(elementType).equals("Token")) {
             //_fireCode.append(", -1");
             result += ", -1";
         } else {
@@ -569,30 +569,6 @@ ParseTreeCodeGenerator {
                     _childCode);
         }
         _childCode = _specializeReturnValue(functionName, node.getType(), result + ")");
-    }
-
-    private String _specializeReturnValue(String function, Type returnType,
-            String returnCode) {
-        if (function.equals("$arraySum") 
-                && _isPrimitive(returnType)) {
-            
-            returnCode += ".payload." + 
-            _codeGenType(returnType);
-        }
-        return returnCode;
-    }
-
-    private String _specializeArgument(String function, 
-            int argumentIndex, Type argumentType, String argumentCode) {
-
-        if (function.equals("$arrayRepeat") && argumentIndex == 1) {
-            if (_isPrimitive(argumentType)) {
-                return "$new(" + 
-                _codeGenType(argumentType)
-                + "(" + argumentCode + "))";
-            }
-        }
-        return argumentCode;
     }
 
     /** Define a function, where the children specify the argument types
@@ -942,7 +918,7 @@ ParseTreeCodeGenerator {
             String codegenType = _codeGenType(elementType);
 
             // Insert the elementType of the array as the last argument.
-            if (CodeGeneratorHelper.targetType(elementType).equals("Token")) {
+            if (_targetType(elementType).equals("Token")) {
                 //_fireCode.append(", -1");
                 result += ", -1";
             } else {
@@ -1737,7 +1713,7 @@ ParseTreeCodeGenerator {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         protected variables               ////
 
     /** Temporary storage for the result of evaluating a child node.
      *  This is protected so that derived classes can access it.
@@ -1807,6 +1783,48 @@ ParseTreeCodeGenerator {
     private boolean _isPrimitive(Type ptType) {
 	// FIXME: this is duplicated code from CodeGeneratorHelper.isPrimitive()
         return _primitiveTypes.contains(_codeGenType(ptType));
+    }
+
+    /**
+     * Get the corresponding type in C from the given Ptolemy type.
+     * @param ptType The given Ptolemy type.
+     * @return The C data type.
+     */
+    private String _targetType(Type ptType) {
+	// FIXME: this is duplicated code from CodeGeneratorHelper.targetType()
+        // FIXME: we may need to add more primitive types.
+        return ptType == BaseType.INT ? "int"
+                : ptType == BaseType.STRING ? "char*"
+                        : ptType == BaseType.DOUBLE ? "double"
+                                : ptType == BaseType.BOOLEAN ? "boolean"
+                                        : ptType == BaseType.LONG ? "long"
+                                                : ptType == BaseType.UNSIGNED_BYTE ? "unsigned byte"
+                                                        : ptType == PointerToken.POINTER ? "void*"
+                                                                : "Token";
+    }
+
+    private String _specializeReturnValue(String function, Type returnType,
+            String returnCode) {
+        if (function.equals("$arraySum") 
+                && _isPrimitive(returnType)) {
+            
+            returnCode += ".payload." + 
+            _codeGenType(returnType);
+        }
+        return returnCode;
+    }
+
+    private String _specializeArgument(String function, 
+            int argumentIndex, Type argumentType, String argumentCode) {
+
+        if (function.equals("$arrayRepeat") && argumentIndex == 1) {
+            if (_isPrimitive(argumentType)) {
+                return "$new(" + 
+                _codeGenType(argumentType)
+                + "(" + argumentCode + "))";
+            }
+        }
+        return argumentCode;
     }
 
     ///////////////////////////////////////////////////////////////////

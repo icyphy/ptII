@@ -59,26 +59,6 @@ public class ColtBinomialSelector extends ColtRandomSource {
     ////                         public methods                    ////
 
     /**
-     * Generate shared code.
-     * Read from ColtBinomialSelector.c, replace macros with their values and
-     * return the processed code string.
-     * @return The processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public Set getSharedCode() throws IllegalActionException {
-        // LinkedHashSet gives order to the insertion. The order of code block
-        // is important here because binomialBlock uses code from the other
-        // shared code blocks.
-        Set sharedCode = new LinkedHashSet();
-        sharedCode.addAll(super.getSharedCode());
-
-        // binomialBlock is from the RandomSource parent class.
-        sharedCode.add(_generateBlockCode("binomialBlock"));
-        return sharedCode;
-    }
-
-    /**
      * Generate the preinitialize code. Declare temporary variables.
      * @return The preinitialize code.
      * @exception IllegalActionException If the code stream encounters an
@@ -112,7 +92,7 @@ public class ColtBinomialSelector extends ColtRandomSource {
      */
     public Set getHeaderFiles() throws IllegalActionException {
         Set files = super.getHeaderFiles();
-        files.add("<math.h>");
+        files.add("cern.jet.random.Binomial;");
         return files;
     }
 

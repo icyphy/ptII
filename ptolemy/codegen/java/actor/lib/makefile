@@ -77,6 +77,7 @@ JSRCS = \
 	CurrentTime.java \
 	Discard.java \
 	Distributor.java \
+	ElementsToArray.java \
 	Expression.java \
 	Limiter.java \
 	Minimum.java \
@@ -171,6 +172,7 @@ OTHER_FILES_TO_BE_JARED = \
 	CurrentTime.j \
 	Discard.j \
 	Distributor.j \
+	ElementsToArray.j \
 	Expression.j \
 	Limiter.j \
 	Minimum.j \

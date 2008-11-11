@@ -311,7 +311,7 @@ ParseTreeCodeGenerator {
         //}
 
         // Insert the elementType of the array as the last argument.
-        if (CodeGeneratorHelper.targetType(elementType).equals("Token")) {
+        if (_targetType(elementType).equals("Token")) {
             //_fireCode.append(", -1");
             result += ", TYPE_Token";
         } else {
@@ -756,7 +756,7 @@ ParseTreeCodeGenerator {
             } else if (_evaluatedChildToken instanceof LongToken) {
                 //_fireCode.append(((LongToken) _evaluatedChildToken).longValue() + "LL");
                 _childCode = ((LongToken) _evaluatedChildToken).longValue()
-                + "LL";
+                + "L";
             } else {
                 //_fireCode.append(_evaluatedChildToken.toString());
                 _childCode = _evaluatedChildToken.toString();
@@ -942,7 +942,7 @@ ParseTreeCodeGenerator {
             String codegenType = _codeGenType(elementType);
 
             // Insert the elementType of the array as the last argument.
-            if (CodeGeneratorHelper.targetType(elementType).equals("Token")) {
+            if (_targetType(elementType).equals("Token")) {
                 //_fireCode.append(", -1");
                 result += ", -1";
             } else {
@@ -1093,7 +1093,7 @@ ParseTreeCodeGenerator {
             //ptolemy.data.Token token = tokens[i];
             /*ptolemy.data.Token token =*/ _evaluateChild(node, i);
 
-            result = "pow(" + result + ", " + _childCode;
+            result = "Math.pow(" + result + ", " + _childCode;
 
             // Note that we check for ScalarTokens because anything
             // that has a meaningful intValue() method, such as
@@ -1788,6 +1788,24 @@ ParseTreeCodeGenerator {
     private boolean _isPrimitive(Type ptType) {
 	// FIXME: this is duplicated code from CodeGeneratorHelper.isPrimitive()
         return _primitiveTypes.contains(_codeGenType(ptType));
+    }
+
+    /**
+     * Get the corresponding type in Java from the given Ptolemy type.
+     * @param ptType The given Ptolemy type.
+     * @return The Java data type.
+     */
+    private String _targetType(Type ptType) {
+	// FIXME: this is duplicated code from CodeGeneratorHelper.targetType()
+        // FIXME: we may need to add more primitive types.
+        return ptType == BaseType.INT ? "int"
+                : ptType == BaseType.STRING ? "char*"
+                        : ptType == BaseType.DOUBLE ? "double"
+                                : ptType == BaseType.BOOLEAN ? "boolean"
+                                        : ptType == BaseType.LONG ? "long"
+                                                : ptType == BaseType.UNSIGNED_BYTE ? "unsigned byte"
+                                                        : ptType == PointerToken.POINTER ? "void*"
+                                                                : "Token";
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -182,15 +182,15 @@ $actorSymbol(numberOfTokensSeen)++;
 /* If the type of the input is an array, then cast the input to
  * the type of the elements of the elements of correctValues. */
 if (($type(input) != TYPE_Array
-            && equals_Token_Token($actorSymbol(inputToken), $actorSymbol(numberOfTokensSeen)))
-        || ($type(input) == TYPE_Array
+            && equals_Token_Token($actorSymbol(inputToken), Array_get($ref(correctValues), $actorSymbol(numberOfTokensSeen))))
+       || ($type(input) == TYPE_Array
 	    && !isCloseTo_Token_Token($actorSymbol(inputToken), Array_get($ref(correctValues), $actorSymbol(numberOfTokensSeen)), $actorSymbol(toleranceToken)))) {
     System.out.print("\nTest $actorSymbol($channel) fails in iteration "
     			     + $actorSymbol(numberOfTokensSeen)
 			     + ".\n Value was:"
 			     + $actorSymbol(inputToken)
-			     + "Should have been within %10.30g of: "
-			     + Array_get($ref(correctValues, $actorSymbol(numberOfTokensSeen))) 
+			     + "Should have been within " + $ref(tolerance) + " of: "
+			     + Array_get($ref(correctValues), $actorSymbol(numberOfTokensSeen))
 			     + ".\n");
     System.exit(-1);
 }

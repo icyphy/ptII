@@ -16,14 +16,11 @@ Token Integer_new(int i) {
 /**/
 
 /***Integer_equals***/
-Token Integer_equals(Token thisToken, ...) {
-    va_list argp;
+Token Integer_equals(Token thisToken, Token... tokens) {
     Token otherToken;
-    va_start(argp, thisToken);
-    otherToken = va_arg(argp, Token);
+    otherToken = tokens[0];
 
-    va_end(argp);
-    return Boolean_new((Integer)(thisToken.payload) == (Integer)(otherToken.payload);
+    return Boolean_new((Integer)(thisToken.payload) == (Integer)(otherToken.payload));
 }
 /**/
 

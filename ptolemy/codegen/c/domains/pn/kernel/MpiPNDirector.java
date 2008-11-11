@@ -1018,8 +1018,7 @@ public class MpiPNDirector extends Director {
 										+ "[" + rate + "];" + _eol);
 								code
 										.append("static "
-												+ CodeGeneratorHelper
-														.targetType(inputPort
+												+ targetType(inputPort
 																.getType())
 												+ " "
 												+ getBufferLabel(inputPort,

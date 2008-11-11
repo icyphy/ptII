@@ -88,6 +88,8 @@ public class Test extends JavaCodeGeneratorHelper {
                 inputType = codeGenType(actor.input.getType());
             } else {
                 inputType = "Token";
+  		getCodeGenerator().markFunctionCalled("equals_Token_Token", this);
+  		getCodeGenerator().markFunctionCalled("isCloseTo_Token_Token", this);
             }
             _codeStream.appendCodeBlock(inputType + "Block" + multiChannel,
                     args);

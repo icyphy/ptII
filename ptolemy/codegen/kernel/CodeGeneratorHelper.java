@@ -435,13 +435,13 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * @param ptType The given Ptolemy type.
      * @return The C data type.
      */
-    public static String targetType(Type ptType) {
+    public /*static*/ String targetType(Type ptType) {
         // FIXME: we may need to add more primitive types.
         return ptType == BaseType.INT ? "int"
                 : ptType == BaseType.STRING ? "char*"
                         : ptType == BaseType.DOUBLE ? "double"
                                 : ptType == BaseType.BOOLEAN ? "boolean"
-                                        : ptType == BaseType.LONG ? "long long"
+	                             : ptType == BaseType.LONG ? "long long "
                                                 : ptType == BaseType.UNSIGNED_BYTE ? "unsigned char"
                                                         : ptType == PointerToken.POINTER ? "void*"
                                                                 : "Token";

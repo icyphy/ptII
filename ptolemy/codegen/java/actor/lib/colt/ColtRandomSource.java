@@ -32,6 +32,7 @@ import java.util.Set;
 
 import ptolemy.codegen.java.kernel.JavaCodeGeneratorHelper;
 import ptolemy.data.LongToken;
+import ptolemy.data.StringToken;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -95,6 +96,23 @@ public abstract class ColtRandomSource extends JavaCodeGeneratorHelper {
             _codeStream.appendCodeBlock("setSeedBlock1", args);
         }
 
+
+	String generatorClassValue = ((StringToken) actor.generatorClass.getToken()).stringValue();
+	if ((generatorClassValue == null)
+	    || generatorClassValue.equals("DRand")) {
+	    _codeStream.appendCodeBlock("setRandomNumberGeneratorDRand");
+	} else if (generatorClassValue.equals("MersenneTwister (MT19937)")) {
+	    _codeStream.appendCodeBlock("setRandomNumberMersenneTwister");
+	} else if (generatorClassValue.equals("Ranecu")) {
+	    _codeStream.appendCodeBlock("setRandomNumberRanecu");
+	} else if (generatorClassValue.equals("Ranlux")) {
+	    _codeStream.appendCodeBlock("setRandomNumberRanlux");
+	} else if (generatorClassValue.equals("Ranmar")) {
+	    _codeStream.appendCodeBlock("setRandomNumberRanmar");
+	}
+
+
+
         return processCode(_codeStream.toString());
     }
 
@@ -105,8 +123,14 @@ public abstract class ColtRandomSource extends JavaCodeGeneratorHelper {
      */
     public Set getHeaderFiles() throws IllegalActionException {
         Set files = super.getHeaderFiles();
-        files.add("<stdlib.h>");
-        files.add("<time.h>");
+	files.add("cern.jet.random.engine.DRand;");
+	files.add("cern.jet.random.engine.MersenneTwister;");
+	files.add("edu.cornell.lassp.houle.RngPack.RandomElement;");
+	files.add("edu.cornell.lassp.houle.RngPack.Ranecu;");
+	files.add("edu.cornell.lassp.houle.RngPack.Ranlux;");
+	files.add("edu.cornell.lassp.houle.RngPack.Ranmar;");
+
+	_codeGenerator.addLibrary("$(PTII)/lib/ptcolt.jar");
         return files;
     }
 

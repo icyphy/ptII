@@ -19,20 +19,15 @@ Token Double_new(double d) {
 /**/
 
 /***Double_equals***/
-Token Double_equals(Token thisToken, ...) {
-    va_list argp;
+Token Double_equals(Token thisToken, Token... tokens) {
     Token otherToken;
-    va_start(argp, thisToken);
-    otherToken = va_arg(argp, Token);
+    otherToken = tokens[0];
 
     if (otherToken.type != TYPE_Double) {
         otherToken = Double_convert(otherToken);
     }
-
-    va_end(argp);
-
     // Give tolerance for testing.
-    return Boolean_new(1.0E-6 > thisToken.payload.Double - otherToken.payload.Double);
+    return Boolean_new(1.0E-6 > (Double)(thisToken.payload) - (Double)(otherToken.payload));
 }
 /**/
 

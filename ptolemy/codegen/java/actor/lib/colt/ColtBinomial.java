@@ -57,24 +57,20 @@ public class ColtBinomial extends ColtRandomSource {
         super(actor);
     }
 
-    /**
-     * Generate shared code.
-     * Read from ColtBinomial.c, replace macros with their values and
-     * return the processed code string.
-     * @return The processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
+    /** Generate the code for initializing the random number generator
+     *  with the seed, if it has been given.  A seed of zero is interpreted
+     *  to mean that no seed is specified.  In such cases, a seed based on
+     *  the current time and this instance of a ColtRandomSource is used to be
+     *  fairly sure that two identical sequences will not be returned.
+     *  @return The initialize code of this actor.
+     *  @exception IllegalActionException Not thrown in this class.
      */
-    public Set getSharedCode() throws IllegalActionException {
-        // LinkedHashSet gives order to the insertion. The order of code block
-        // is important here because binomialBlock uses code from the other
-        // shared code blocks.
-        Set sharedCode = new LinkedHashSet();
-        sharedCode.addAll(super.getSharedCode());
+    public String generateInitializeCode() throws IllegalActionException {
+        super.generateInitializeCode();
+        ptolemy.actor.lib.colt.ColtRandomSource actor = (ptolemy.actor.lib.colt.ColtRandomSource) getComponent();
+	_codeStream.appendCodeBlock("binomialInitBlock");
 
-        // binomialBlock is from the ColtRandomSource parent class.
-        sharedCode.add(_generateBlockCode("binomialBlock"));
-        return sharedCode;
+        return processCode(_codeStream.toString());
     }
 
     /**
@@ -86,7 +82,7 @@ public class ColtBinomial extends ColtRandomSource {
      */
     public Set getHeaderFiles() throws IllegalActionException {
         Set files = super.getHeaderFiles();
-        files.add("<math.h>");
+        files.add("cern.jet.random.Binomial;");
         return files;
     }
 

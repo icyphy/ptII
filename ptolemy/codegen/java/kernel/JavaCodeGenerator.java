@@ -599,8 +599,9 @@ public class JavaCodeGenerator extends CodeGenerator {
                 // SetVariable needs this to be a Variable, not a Parameter.
                 Variable variable = (Variable) modifiedVariables.next();
 
+                CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(this);
                 code.append("static "
-                        + CodeGeneratorHelper.targetType(variable.getType())
+                        + helper.targetType(variable.getType())
                         + " " + generateVariableName(variable) + ";" + _eol);
             }
         }
@@ -789,6 +790,7 @@ public class JavaCodeGenerator extends CodeGenerator {
         String functionDir = typeDir + "polymorphic/";
 
         _overloadedFunctions = new CodeStream(functionDir + "add.j", this);
+        _overloadedFunctions.parse(functionDir + "equals.j");
         _overloadedFunctions.parse(functionDir + "multiply.j");
         _overloadedFunctions.parse(functionDir + "divide.j");
         _overloadedFunctions.parse(functionDir + "subtract.j");
@@ -827,7 +829,7 @@ public class JavaCodeGenerator extends CodeGenerator {
 
         if (isTopLevel()) {
             if (((BooleanToken) run.getToken()).booleanValue()) {
-		commands.add("java -classpath . " + _sanitizedModelName);
+		commands.add("make -f " + _sanitizedModelName + ".mk run");
             }
         }
 
@@ -1118,10 +1120,12 @@ public class JavaCodeGenerator extends CodeGenerator {
             // the value of the generatorPackage.
             substituteMap = CodeGeneratorUtilities.newMap(this);
             substituteMap.put("@modelName@", _sanitizedModelName);
+            substituteMap.put("@CLASSPATHSEPARATOR@",
+			      StringUtilities.getProperty("path.separator"));
             substituteMap
                     .put("@PTCGIncludes@", _concatenateElements(_includes));
             substituteMap.put("@PTCGLibraries@",
-                    _concatenateElements(_libraries));
+                    _concatenateClasspath(_libraries));
 
             // Define substitutions to be used in the makefile
             substituteMap.put("@PTJNI_NO_CYGWIN@", "");
@@ -1249,6 +1253,27 @@ public class JavaCodeGenerator extends CodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+
+    /** Given a Collection of Strings, return a string where each element of the
+     *  Set is separated by $
+     *  @param set The Set of Strings.
+     *  @return A String that contains each element of the Set separated by
+     *  a space.
+     */
+    private static String _concatenateClasspath(Collection collection) {
+        StringBuffer buffer = new StringBuffer();
+        Iterator iterator = collection.iterator();
+        while (iterator.hasNext()) {
+            if (buffer.length() > 0) {
+                buffer.append("$(CLASSPATHSEPARATOR)");
+            }
+            buffer.append((String) iterator.next());
+        }
+	if (buffer.length() > 0) {
+	    buffer.append("$(CLASSPATHSEPARATOR)");
+	}
+        return buffer.toString();
+    }
 
     /** Given a Collection of Strings, return a string where each element of the
      *  Set is separated by a space.

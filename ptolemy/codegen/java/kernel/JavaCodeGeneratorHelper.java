@@ -38,6 +38,7 @@ import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.lib.jni.PointerToken;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.codegen.kernel.CodeGenerator;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
@@ -45,6 +46,7 @@ import ptolemy.codegen.kernel.ParseTreeCodeGenerator;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -357,6 +359,24 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
      */
     public boolean isPrimitive(String cgType) {
         return _primitiveTypes.contains(cgType);
+    }
+
+    /**
+     * Get the corresponding type in Java from the given Ptolemy type.
+     * @param ptType The given Ptolemy type.
+     * @return The Java data type.
+     */
+    public String targetType(Type ptType) {
+	// FIXME: this is duplicated code from CodeGeneratorHelper.targetType()
+        // FIXME: we may need to add more primitive types.
+        return ptType == BaseType.INT ? "int"
+                : ptType == BaseType.STRING ? "char*"
+                        : ptType == BaseType.DOUBLE ? "double"
+                                : ptType == BaseType.BOOLEAN ? "boolean"
+                                        : ptType == BaseType.LONG ? "long"
+                                                : ptType == BaseType.UNSIGNED_BYTE ? "unsigned byte"
+                                                        : ptType == PointerToken.POINTER ? "void*"
+                                                                : "Token";
     }
 
     ///////////////////////////////////////////////////////////////////
