@@ -25,20 +25,51 @@ jiazou@eecs.berkeley.edu\\
 \end{abstract}
 
 \section{Introduction}
+* State the subject of your document as clearly as possible
+* Define the problem you are addressing, your approach to the problem, and why this problem is important
+* State the purpose of your document
+* Define the scope of your document
+* Provide necessary and relevant background information.
 
+Why should you care to read this paper a.k.a. Please give me a good grade on the project.
+The objective of this work was to implement and evaluate a bare-iron Real-Time Operating System(RTOS) specific to the Ptides model of computation. The Ptides specific RTOS referred to as PtidyRTOS. A bare-iron scheduler means that there is no dependence on an existing real-time operating system and also no dependence on support for pthreads or another threading library specific to the embedded domain.
+In this work we present a lovely framework which can be used to move from code generation from the model level to code running on a 32 bit embedded platform. Currently we support this type of scheduling and present comparisons of the GM? traces ported to the Ptides framework on PtidyRTOS which communicates between platforms using 1588 protocols for communication. We compare our implementation to an implementation dependent on an exising RTOS known as FreeRTOS.
+
+
+Talk about how RTOSs normally function
 Talk about Ptides, the model of computation and what it does. As well as talk about how it communicates via platforms.
 
 \section{Background}
+Talk about 
 
 Ptides want to avoid round robin scehedules by allowing things to be preempted. We don't want a single handler processing all events. It is the case that you may have an actor that takes a long time to process. If a sensor later receives data we want to be able to process signals that are time dependent.
 
 Should we just use the 1588 representation for timestamps?
 
+\subsection{PTIDES Model of Computation}
+PTIDES is a \cite{ptidesTechReport} model of computation....
+
+\subsection{1588}
+\subsection{General Real-Time Operating Systems}
+
+
 
 \section{Related Work}
+A prior implementation of Ptides was done with adependence on pthreads for the P1000 boards.
+
+\subsection{Scheduling Mechanisms}
+\subsubsection{Round-Robin Scheduling}
+\subsubsection{Earliest Deadline First}
+
+
+others considered ... show results with different scheduling mechanisms.. one with first come first serve... another ewith earliest deadline first.. etc
+the repeat the same thing for the free rtos implementation...
+be sue to siscuss how each implementation faired on the different examples that have been ported to the Ptides model
 
 \section{Experimental Results}
 What does the traces you have look like? Make sure you discuss the fact that most traces are different and don't match well to the Ptides model of computation, but still talk about how you ported/forced the traces to work on the processor and discuss how it compares as a scheduler to a general RTOS.
+
+Show comparative graphs.. and discuss differences if possible.
 
 
 %\begin{figure}
