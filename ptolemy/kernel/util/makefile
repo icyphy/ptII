@@ -70,6 +70,7 @@ JSRCS = \
 	InvalidStateException.java \
 	KernelException.java \
 	KernelRuntimeException.java \
+	LazyComposite.java \
 	Locatable.java \
 	Location.java \
 	ModelErrorHandler.java \
