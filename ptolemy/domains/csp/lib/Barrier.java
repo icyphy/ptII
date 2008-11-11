@@ -123,7 +123,7 @@ public class Barrier extends TypedAtomicActor implements BranchActor {
             _branchController.removeDebugListener(this);
             _listeningToBranchController = false;
         }
-        if (input.getWidth() == 0) {
+        if (!input.isOutsideConnected()) {
             throw new IllegalActionException(this,
                     "Barrier requires at least one input.");
         }
@@ -165,7 +165,7 @@ public class Barrier extends TypedAtomicActor implements BranchActor {
             }
         }
 
-        if (output.getWidth() > 0) {
+        if (output.isOutsideConnected()) {
             branches = new ConditionalBranch[output.getWidth()];
             Token token = null;
             for (int i = 0; i < output.getWidth(); i++) {

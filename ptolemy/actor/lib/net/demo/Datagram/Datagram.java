@@ -121,7 +121,7 @@ public class Datagram extends TypedAtomicActor implements ClipboardOwner {
         }
 
         // Paste
-        if ((trigger.getWidth() > 0) && trigger.hasToken(0)) {
+        if ((trigger.isOutsideConnected()) && trigger.hasToken(0)) {
             trigger.get(0);
 
             Clipboard clipboard = Toolkit.getDefaultToolkit()
@@ -144,7 +144,7 @@ public class Datagram extends TypedAtomicActor implements ClipboardOwner {
         }
 
         // Copy
-        if ((input.getWidth() > 0) && input.hasToken(0)) {
+        if ((input.isOutsideConnected()) && input.hasToken(0)) {
             Clipboard clipboard = Toolkit.getDefaultToolkit()
                     .getSystemClipboard();
             String myString = ((StringToken) (input.get(0))).stringValue();

@@ -119,7 +119,7 @@ public class FileReader extends Source {
 
         // If the fileOrURL input port is connected and has data, then
         // get the file name from there.
-        if (fileOrURLPort.getWidth() > 0) {
+        if (fileOrURLPort.isOutsideConnected()) {
             if (fileOrURLPort.hasToken(0)) {
                 String name = ((StringToken) fileOrURLPort.get(0))
                         .stringValue();

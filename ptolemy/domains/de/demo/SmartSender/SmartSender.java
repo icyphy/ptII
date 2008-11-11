@@ -133,7 +133,7 @@ public class SmartSender extends TypedAtomicActor {
         Director director = getDirector();
         director.fireAt(this, director.getModelTime().add(firingPeriodValue));
 
-        if (output.getWidth() > 0) {
+        if (output.isOutsideConnected()) {
             output.send(0, new IntToken(_count++));
         } else {
             ChangeRequest request = new ChangeRequest(this,
@@ -152,7 +152,7 @@ public class SmartSender extends TypedAtomicActor {
 
                             if (port instanceof IOPort
                                     && ((IOPort) port).isInput()
-                                    && (((IOPort) port).getWidth() == 0)) {
+                                    && (!((IOPort) port).isOutsideConnected())) {
                                 container.connect(output, (IOPort) port);
                                 return;
                             }

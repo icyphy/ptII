@@ -1137,7 +1137,7 @@ public class SDFPortInliner implements PortInliner {
 
             //  System.out.println("port = " + port.getFullName() + " type = " + port.getType());
             // If the port is connected.
-            if (port.getWidth() > 0) {
+            if (port.isOutsideConnected()) {
                 // Create a field for the indexes into the buffer for that field.
                 SootField indexArrayField = new SootField("_index_"
                         + StringUtilities.sanitizeName(port.getName()),
@@ -1381,7 +1381,7 @@ public class SDFPortInliner implements PortInliner {
             }
 
             // If the port is connected.
-            if (port.getWidthInside() > 0) {
+            if (port.isInsideConnected()) {
                 // Create a field for the indexes into the buffer for that field.
                 SootField indexArrayField = new SootField("_indexInside_"
                         + StringUtilities.sanitizeName(port.getName()),

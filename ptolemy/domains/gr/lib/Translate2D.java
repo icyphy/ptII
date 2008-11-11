@@ -143,7 +143,7 @@ public class Translate2D extends GRTransform2D {
         boolean isAccumulating = _isAccumulating();
         Point2D origin = figure.getOrigin();
 
-        if (xTranslate.getWidth() != 0) {
+        if (xTranslate.isOutsideConnected()) {
             if (xTranslate.hasToken(0)) {
                 double in = ((DoubleToken) xTranslate.get(0)).doubleValue();
                 applyTransform = true;
@@ -156,7 +156,7 @@ public class Translate2D extends GRTransform2D {
             }
         }
 
-        if (yTranslate.getWidth() != 0) {
+        if (yTranslate.isOutsideConnected()) {
             if (yTranslate.hasToken(0)) {
                 double in = ((DoubleToken) yTranslate.get(0)).doubleValue();
                 applyTransform = true;

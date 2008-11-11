@@ -148,7 +148,7 @@ public class Led extends Box3D {
     public void fire() throws IllegalActionException {
         super.fire();
 
-        if (emissivity.getWidth() != 0) {
+        if (emissivity.isOutsideConnected()) {
             if (emissivity.hasToken(0)) {
                 double in = ((DoubleToken) emissivity.get(0)).doubleValue();
                 float inf = (float) in;

@@ -523,7 +523,7 @@ public class CIDirector extends Director {
         while (inputPorts.hasNext()) {
             IOPort port = (IOPort) inputPorts.next();
 
-            if (port.getWidth() > 0) {
+            if (port.isOutsideConnected()) {
                 hasInput = true;
                 inputIsPush |= _isPushPort(port);
             }
@@ -534,7 +534,7 @@ public class CIDirector extends Director {
         while (outputPorts.hasNext()) {
             IOPort port = (IOPort) outputPorts.next();
 
-            if (port.getWidth() > 0) {
+            if (port.isOutsideConnected()) {
                 hasOutput = true;
                 outputIsPush |= _isPushPort(port);
             }
@@ -672,7 +672,7 @@ public class CIDirector extends Director {
         while (inputPorts.hasNext()) {
             IOPort port = (IOPort) inputPorts.next();
 
-            if (port.getWidth() > 0) {
+            if (port.isOutsideConnected()) {
                 hasInput = true;
                 inputIsPush |= _isPushPort(port);
             }
@@ -683,7 +683,7 @@ public class CIDirector extends Director {
         while (outputPorts.hasNext()) {
             IOPort port = (IOPort) outputPorts.next();
 
-            if (port.getWidth() > 0) {
+            if (port.isOutsideConnected()) {
                 outputIsPush |= _isPushPort(port);
             }
         }

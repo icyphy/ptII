@@ -32,6 +32,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.actor.Director;
+import ptolemy.actor.IORelation;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
@@ -47,7 +48,6 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
@@ -76,7 +76,7 @@ import ptolemy.kernel.util.Workspace;
  Publisher-Subscriber pairs. That is, the type of the Subscriber
  output will match the type of the Publisher input.
 
- @author Edward A. Lee, Raymond A. Cardillo
+ @author Edward A. Lee, Raymond A. Cardillo, Contributor: Bert Rodiers
  @version $Id$
  @since Ptolemy II 5.2
  @Pt.ProposedRating Green (cxh)
@@ -189,16 +189,18 @@ public class Publisher extends TypedAtomicActor {
      */
     public void connectionsChanged(Port port) {
         super.connectionsChanged(port);
-        if (port == input) {
-            if (_relation != null && !_inConnectionsChanged) {
-                try {
-                    _inConnectionsChanged = true;
-                    int width = input.getWidth();
-                    _relation.setWidth(width);
-                } catch (IllegalActionException e) {
-                    throw new InternalErrorException(e);
-                } finally {
-                    _inConnectionsChanged = false;
+        if (!IORelation._USE_NEW_WIDTH_INFERENCE_ALGO) {
+            if (port == input) {
+                if (_relation != null && !_inConnectionsChanged) {
+                    try {
+                        _inConnectionsChanged = true;
+                        int width = input.getWidth();
+                        _relation.setWidth(width);
+                    } catch (IllegalActionException e) {
+                        throw new InternalErrorException(e);
+                    } finally {
+                        _inConnectionsChanged = false;
+                    }
                 }
             }
         }
@@ -342,16 +344,37 @@ public class Publisher extends TypedAtomicActor {
             // If the container is not a typed composite actor, then don't create
             // a relation. Probably the container is a library.
             try {
-                _relation = new TypedIORelation(
-                        (TypedCompositeActor) container, container
-                                .uniqueName("publisherRelation"));
+                // In case _USE_NEW_WIDTH_INFERENCE_ALGO == true
+                // we will use a special type of IORelation between
+                // publisher and subscriber that will get the width from the
+                // input port of the publisher. For this relation the width
+                // does not to be inferred.
+                if (IORelation._USE_NEW_WIDTH_INFERENCE_ALGO) {
+                    _relation = new TypedIORelation(
+                            (TypedCompositeActor) container, container
+                                    .uniqueName("publisherRelation"))
+                    {
+                        public int getWidth() throws IllegalActionException {
+                            return input.getWidth();
+                        }
+                        protected boolean _skipWidthInference() {
+                            return true;
+                        }
+                    };                    
+                } else {
+                    _relation = new TypedIORelation(
+                            (TypedCompositeActor) container, container
+                                    .uniqueName("publisherRelation"));
+                }
                 // Prevent the relation and its links from being exported.
                 _relation.setPersistent(false);
                 // Prevent the relation from showing up in vergil.
                 new Parameter(_relation, "_hide", BooleanToken.TRUE);
                 // Set the width of the relation to match the
                 // width of the input.
-                _relation.setWidth(input.getWidth());
+                if (!IORelation._USE_NEW_WIDTH_INFERENCE_ALGO) {
+                    _relation.setWidth(input.getWidth());
+                }
             } catch (NameDuplicationException e) {
                 throw new InternalErrorException(e);
             }

@@ -679,7 +679,7 @@ public class GiottoPortInliner implements PortInliner {
 
             //  System.out.println("port = " + port.getFullName() + " type = " + port.getType());
             // If the port is connected.
-            if (true) { //port.getWidth() > 0) {
+            if (true) { //port.isOutsideConnected()) {
 
                 // If the port is an input, then it references
                 // the buffer of its own type.  If the port

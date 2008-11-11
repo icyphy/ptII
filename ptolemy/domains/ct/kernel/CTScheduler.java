@@ -714,7 +714,7 @@ public class CTScheduler extends Scheduler {
             while (inputPorts.hasNext()) {
                 IOPort inputPort = (IOPort) inputPorts.next();
 
-                if (inputPort.getWidth() != 0) {
+                if (inputPort.isOutsideConnected()) {
                     CTReceiver.SignalType inputType = _signalTypeMap
                             .getType(inputPort);
 
@@ -743,7 +743,7 @@ public class CTScheduler extends Scheduler {
             while (outputPorts.hasNext()) {
                 IOPort outputPort = (IOPort) outputPorts.next();
 
-                if (outputPort.getWidth() != 0) {
+                if (outputPort.isOutsideConnected()) {
                     CTReceiver.SignalType outputType = _signalTypeMap
                             .getType(outputPort);
 

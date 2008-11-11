@@ -122,7 +122,7 @@ public class Sender extends X10Interface {
             IllegalActionException {
         boolean hasTrue = false;
 
-        if (port.getWidth() > 0) {
+        if (port.isOutsideConnected()) {
             for (int i = 0; i < port.getWidth(); i++) {
                 if (port.hasToken(i)) {
                     if (((BooleanToken) port.get(i)).booleanValue() == true) {

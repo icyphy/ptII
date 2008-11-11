@@ -164,7 +164,7 @@ public class MicaLeds extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         super.fire();
 
-        if ((ledRed.getWidth() > 0) && ledRed.hasToken(0)) {
+        if ((ledRed.isOutsideConnected()) && ledRed.hasToken(0)) {
             BooleanToken red = (BooleanToken) ledRed.get(0);
 
             if (red.booleanValue()) {
@@ -174,7 +174,7 @@ public class MicaLeds extends TypedAtomicActor {
             }
         }
 
-        if ((ledGreen.getWidth() > 0) && ledGreen.hasToken(0)) {
+        if ((ledGreen.isOutsideConnected()) && ledGreen.hasToken(0)) {
             BooleanToken green = (BooleanToken) ledGreen.get(0);
 
             if (green.booleanValue()) {
@@ -184,7 +184,7 @@ public class MicaLeds extends TypedAtomicActor {
             }
         }
 
-        if ((ledYellow.getWidth() > 0) && ledYellow.hasToken(0)) {
+        if ((ledYellow.isOutsideConnected()) && ledYellow.hasToken(0)) {
             BooleanToken yellow = (BooleanToken) ledYellow.get(0);
 
             if (yellow.booleanValue()) {

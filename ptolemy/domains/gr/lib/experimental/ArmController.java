@@ -80,7 +80,7 @@ public class ArmController extends TypedAtomicActor {
 
     public void fire() throws IllegalActionException {
         super.fire();
-        if (input.getWidth() != 0) {
+        if (input.isOutsideConnected()) {
             if (input.hasToken(0)) {
                 int value = ((IntToken) input.get(0)).intValue();
                 ProcessKey(value);

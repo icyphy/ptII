@@ -182,7 +182,7 @@ public class TransformationRule extends MultiCompositeActor implements
                 return;
             }
 
-            if (matchInput.getWidth() > 0 && matchInput.hasToken(0)
+            if (matchInput.isOutsideConnected() && matchInput.hasToken(0)
                     && _lastModel != null) {
                 ObjectToken token = (ObjectToken) matchInput.get(0);
                 MatchResult match = (MatchResult) token.getValue();
@@ -200,7 +200,7 @@ public class TransformationRule extends MultiCompositeActor implements
                 }
             }
 
-            if (trigger.getWidth() > 0 && trigger.hasToken(0)
+            if (trigger.isOutsideConnected() && trigger.hasToken(0)
                     && !_lastResults.isEmpty()) {
                 trigger.get(0);
                 _removeFirst = true;
@@ -246,9 +246,9 @@ public class TransformationRule extends MultiCompositeActor implements
                     || modeValue == TransformationMode.Mode.REPLACE_ALL) {
                 return modelInput.hasToken(0);
             } else {
-                return modelInput.hasToken(0) || matchInput.getWidth() > 0
+                return modelInput.hasToken(0) || matchInput.isOutsideConnected()
                                 && matchInput.hasToken(0) && _lastModel != null
-                        || trigger.getWidth() > 0 && trigger.hasToken(0)
+                        || trigger.isOutsideConnected() && trigger.hasToken(0)
                                 && !_lastResults.isEmpty();
             }
         } else {

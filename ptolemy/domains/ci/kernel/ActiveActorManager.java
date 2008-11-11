@@ -145,7 +145,7 @@ public class ActiveActorManager extends PtolemyThread {
         while (inputPorts.hasNext()) {
             IOPort port = (IOPort) inputPorts.next();
 
-            if (port.getWidth() > 0) {
+            if (port.isOutsideConnected()) {
                 hasInput = true;
             }
         }
@@ -155,7 +155,7 @@ public class ActiveActorManager extends PtolemyThread {
         while (outputPorts.hasNext()) {
             IOPort port = (IOPort) outputPorts.next();
 
-            if (port.getWidth() > 0) {
+            if (port.isOutsideConnected()) {
                 outputIsPush |= CIDirector._isPushPort(port);
             }
         }

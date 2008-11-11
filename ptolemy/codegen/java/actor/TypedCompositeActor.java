@@ -137,7 +137,7 @@ public class TypedCompositeActor extends JavaCodeGeneratorHelper {
         StringBuffer tempCode = new StringBuffer();
         while (inputPorts.hasNext()) {
             IOPort inputPort = (IOPort) inputPorts.next();
-            if (inputPort instanceof ParameterPort && inputPort.getWidth() > 0) {
+            if (inputPort instanceof ParameterPort && inputPort.isOutsideConnected()) {
 
                 PortParameter portParameter = ((ParameterPort) inputPort)
                         .getParameter();

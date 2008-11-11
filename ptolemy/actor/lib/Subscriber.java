@@ -31,7 +31,6 @@ import java.util.Iterator;
 
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
 import ptolemy.data.BooleanToken;
@@ -42,7 +41,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -251,9 +249,9 @@ public class Subscriber extends TypedAtomicActor {
 	// number when we set _updatedLinks.  However, this could
 	// result in poor performance.
 
-        if (!_updatedLinks || input.getWidth() == 0) {
+        if (!_updatedLinks || !input.isOutsideConnected()) {
             _updateLinks();
-            if (input.getWidth() == 0) {
+            if (!input.isOutsideConnected()) {
                 throw new IllegalActionException(this,
                         "Subscriber has no matching Publisher, channel was \""
 						 + channel.getExpression() + "\".");
@@ -280,7 +278,7 @@ public class Subscriber extends TypedAtomicActor {
             container = (CompositeEntity) container.getContainer();
         }
         if (container != null) {
-            Iterator actors = container.deepOpaqueEntityList().iterator();
+            Iterator<?> actors = container.deepOpaqueEntityList().iterator();
             while (actors.hasNext()) {
                 Object actor = actors.next();
                 if (actor instanceof Publisher) {

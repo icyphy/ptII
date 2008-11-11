@@ -212,7 +212,7 @@ public class Sampler extends DETransformer {
         super.prefire();
 
         // If the trigger input is not connected, never fire.
-        if (trigger.getWidth() > 0) {
+        if (trigger.isOutsideConnected()) {
             return (trigger.hasToken(0));
         } else {
             return false;

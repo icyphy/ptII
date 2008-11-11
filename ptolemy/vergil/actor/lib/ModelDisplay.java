@@ -164,7 +164,7 @@ public class ModelDisplay extends AbstractPlaceableActor implements
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        if (input.getWidth() > 0 && input.hasToken(0)) {
+        if (input.isOutsideConnected() && input.hasToken(0)) {
             String moml = ((StringToken) input.get(0)).stringValue();
             MoMLChangeRequest request = new MoMLChangeRequest(this, _entity,
                     moml);

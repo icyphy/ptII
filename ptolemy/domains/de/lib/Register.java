@@ -158,7 +158,7 @@ public class Register extends Sampler {
     public boolean prefire() throws IllegalActionException {
         boolean writeRequest = false;
 
-        if (input.getWidth() > 0) {
+        if (input.isOutsideConnected()) {
             writeRequest = input.hasToken(0);
         }
 

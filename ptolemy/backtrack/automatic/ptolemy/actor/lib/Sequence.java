@@ -178,7 +178,7 @@ public class Sequence extends TypedAtomicActor implements Rollbackable {
      */
     public void fire() throws IllegalActionException  {
         super.fire();
-        if ((enable.getWidth() == 0) || (enable.hasToken(0) && ((BooleanToken)enable.get(0)).booleanValue())) {
+        if ((!enable.isOutsideConnected()) || (enable.hasToken(0) && ((BooleanToken)enable.get(0)).booleanValue())) {
             ArrayToken valuesArray = (ArrayToken)values.getToken();
             if (_currentIndex < valuesArray.length()) {
                 output.send(0, valuesArray.getElement(_currentIndex));

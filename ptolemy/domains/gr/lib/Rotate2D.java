@@ -169,7 +169,7 @@ public class Rotate2D extends GRTransform2D {
 
         boolean needsTransform = false;
 
-        if ((theta.getWidth() != 0) && theta.hasToken(0)) {
+        if ((theta.isOutsideConnected()) && theta.hasToken(0)) {
             angle = ((DoubleToken) theta.get(0)).doubleValue();
             needsTransform = true;
 
@@ -178,12 +178,12 @@ public class Rotate2D extends GRTransform2D {
             }
         }
 
-        if ((anchorX.getWidth() != 0) && anchorX.hasToken(0)) {
+        if ((anchorX.isOutsideConnected()) && anchorX.hasToken(0)) {
             anchorXValue = ((DoubleToken) anchorX.get(0)).doubleValue();
             needsTransform = true;
         }
 
-        if ((anchorY.getWidth() != 0) && anchorY.hasToken(0)) {
+        if ((anchorY.isOutsideConnected()) && anchorY.hasToken(0)) {
             anchorYValue = -((DoubleToken) anchorY.get(0)).doubleValue();
             needsTransform = true;
         }

@@ -72,7 +72,7 @@ public class Accumulator extends CCodeGeneratorHelper {
         args.add(Integer.valueOf(0));
         String type = codeGenType(actor.output.getType());
 
-        if (actor.reset.getWidth() > 0) {
+        if (actor.reset.isOutsideConnected()) {
             _codeStream.appendCodeBlock("initReset");
             for (int i = 1; i < actor.reset.getWidth(); i++) {
                 args.set(0, Integer.valueOf(i));
@@ -130,7 +130,7 @@ public class Accumulator extends CCodeGeneratorHelper {
 
         ptolemy.actor.lib.Accumulator actor = (ptolemy.actor.lib.Accumulator) getComponent();
 
-        if (actor.reset.getWidth() > 0) {
+        if (actor.reset.isOutsideConnected()) {
             _codeStream.appendCodeBlock("preinitReset");
         }
 

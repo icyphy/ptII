@@ -457,6 +457,10 @@ public class Manager extends NamedObj implements Runnable {
                 }
             }
         }
+        /*
+        System.out.println("Manager.execute() finished: "
+                + timeAndMemory(startTime));
+        */
     }
 
     /** Cause the system to exit after wrapup().

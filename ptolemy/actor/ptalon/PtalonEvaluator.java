@@ -1428,7 +1428,7 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                             if (ioport.isMultiport()) {
                                 relation.setWidth(ioport.getWidth());
                                 newPort.setMultiport(true);
-                                if (ioport.getWidth() == 0) {
+                                if (!ioport.isOutsideConnected()) {
                                     ioport.link(relation);
                                     newPort.link(relation);
                                 } else {

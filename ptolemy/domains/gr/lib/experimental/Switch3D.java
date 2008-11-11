@@ -99,7 +99,7 @@ public class Switch3D extends GRTransform {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        if (select.getWidth() != 0) {
+        if (select.isOutsideConnected()) {
             if (select.hasToken(0)) {
                 int index = (int) ((DoubleToken) select.get(0)).doubleValue();
 

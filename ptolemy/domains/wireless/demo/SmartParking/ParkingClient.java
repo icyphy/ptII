@@ -89,7 +89,7 @@ public class ParkingClient extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         super.fire();
 
-        if (carArrival.getWidth() > 0) {
+        if (carArrival.isOutsideConnected()) {
             if (carArrival.hasToken(0)) {
                 carArrival.get(0);
 

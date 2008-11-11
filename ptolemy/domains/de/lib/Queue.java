@@ -290,11 +290,11 @@ public class Queue extends Transformer {
         boolean hasInput = false;
         boolean hasTrigger = false;
 
-        if (input.getWidth() > 0) {
+        if (input.isOutsideConnected()) {
             hasInput = (input.hasToken(0));
         }
 
-        if (trigger.getWidth() > 0) {
+        if (trigger.isOutsideConnected()) {
             hasTrigger = (trigger.hasToken(0));
         }
 

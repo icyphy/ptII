@@ -728,12 +728,12 @@ public class HybridModalDirector extends ModalDirector implements
     public boolean transferInputs(IOPort port) throws IllegalActionException {
         boolean result = false;
         // A special case: if the input port is not connected from outside,
-        // meaning the port.getWidth() == 0, then we send clear all the (input)
+        // meaning the !port.isConnected(), then we send clear all the (input)
         // ports awaiting inputs from this input port.
         // Also note that it is guaranteed that there exists only one relation
         // from the input port since only single port is supported for modal
         // model, we can call sendClearInside() with an argument 0.
-        if (port.getWidth() == 0) {
+        if (!port.isOutsideConnected()) {
             port.sendClearInside(0);
         }
         for (int i = 0; i < port.getWidth(); i++) {

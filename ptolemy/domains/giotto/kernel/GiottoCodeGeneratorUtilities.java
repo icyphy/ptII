@@ -190,7 +190,7 @@ public class GiottoCodeGeneratorUtilities {
         while (inPorts.hasNext() && !retVal) {
             TypedIOPort port = (TypedIOPort) inPorts.next();
 
-            if (port.getWidth() > 0) {
+            if (port.isOutsideConnected()) {
                 retVal = true;
             }
         }
@@ -221,7 +221,7 @@ public class GiottoCodeGeneratorUtilities {
             TypedIOPort port = (TypedIOPort) outPorts.next();
 
             // Ignore unconnected ports
-            if (port.getWidthInside() > 0) {
+            if (port.isInsideConnected()) {
                 // FIXME: Assuming ports are either
                 // input or output and not both.
                 // FIXME: May want the driver name
@@ -300,7 +300,7 @@ public class GiottoCodeGeneratorUtilities {
             TypedIOPort port = (TypedIOPort) inPorts.next();
 
             // Ignore unconnected ports
-            if (port.getWidth() > 0) {
+            if (port.isOutsideConnected()) {
                 if (first) {
                     first = false;
                 } else {
@@ -375,7 +375,7 @@ public class GiottoCodeGeneratorUtilities {
             TypedIOPort port = (TypedIOPort) outPorts.next();
 
             // Ignore unconnected ports
-            if (port.getWidth() > 0) {
+            if (port.isOutsideConnected()) {
                 String portTypeID = _getTypeString(port);
                 String portID = StringUtilities.sanitizeName(port.getName());
                 code.append("\ndriver " + portID + "_driver (");
@@ -483,7 +483,7 @@ public class GiottoCodeGeneratorUtilities {
             TypedIOPort port = (TypedIOPort) outPorts.next();
 
             // Ignore unconnected ports
-            if (port.getWidth() > 0) {
+            if (port.isOutsideConnected()) {
                 outputName = StringUtilities.sanitizeName(port.getName(model));
 
                 if (port.insidePortList().size() != 0) {
@@ -577,7 +577,7 @@ public class GiottoCodeGeneratorUtilities {
                 TypedIOPort port = (TypedIOPort) outPorts.next();
 
                 // Ignore unconnected ports
-                if (port.getWidth() > 0) {
+                if (port.isOutsideConnected()) {
                     String portID = StringUtilities.sanitizeName(port
                             .getName(model));
                     String portTypeID = _getTypeString(port);
@@ -611,7 +611,7 @@ public class GiottoCodeGeneratorUtilities {
             TypedIOPort port = (TypedIOPort) inPorts.next();
 
             // Ignore unconnected ports
-            if (port.getWidthInside() > 0) {
+            if (port.isInsideConnected()) {
                 // FIXME: Assuming ports are either
                 // input or output and not both.
                 // FIXME: May want the driver name
@@ -658,7 +658,7 @@ public class GiottoCodeGeneratorUtilities {
             TypedIOPort port = (TypedIOPort) inPorts.next();
 
             // Ignore unconnected ports
-            if (port.getWidth() > 0) {
+            if (port.isOutsideConnected()) {
                 if (first) {
                     first = false;
                 } else {
@@ -687,7 +687,7 @@ public class GiottoCodeGeneratorUtilities {
             TypedIOPort port = (TypedIOPort) outPorts.next();
 
             // Ignore unconnected ports
-            if (port.getWidth() > 0) {
+            if (port.isOutsideConnected()) {
                 if (first) {
                     first = false;
                 } else {

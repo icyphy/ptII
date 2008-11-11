@@ -198,7 +198,7 @@ public class TDLCodeGeneratorUtilities {
 		while (inPorts.hasNext() && !retVal) {
 			TypedIOPort port = (TypedIOPort) inPorts.next();
 
-			if (port.getWidth() > 0) {
+			if (port.isOutsideConnected()) {
 				retVal = true;
 			}
 		}
@@ -224,7 +224,7 @@ public class TDLCodeGeneratorUtilities {
 		while (outPorts.hasNext()) {
 			TypedIOPort port = (TypedIOPort) outPorts.next();
 
-			if (port.getWidthInside() > 0) {
+			if (port.isInsideConnected()) {
 				String portID = port.getName();
 				String portTypeID = _getTypeString(port);
 				String setterName = _getRefinementPortParameter(port, "setter");
@@ -399,7 +399,7 @@ public class TDLCodeGeneratorUtilities {
 			IOPort port = (IOPort) inPorts.next();
 
 			// Ignore unconnected ports
-			if (port.getWidthInside() > 0) {
+			if (port.isInsideConnected()) {
 				String portID = port.getName();
 				String portTypeID = _getTypeString(port);
 				checkTDLID(portID);

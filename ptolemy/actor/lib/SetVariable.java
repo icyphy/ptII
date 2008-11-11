@@ -268,7 +268,7 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
             } else {
                 _setValue(value);
             }
-            if (output.getWidth() > 0) {
+            if (output.isOutsideConnected()) {
                 output.send(0, value);
             }
         }

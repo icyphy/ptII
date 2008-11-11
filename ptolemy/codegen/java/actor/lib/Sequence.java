@@ -64,7 +64,7 @@ public class Sequence extends JavaCodeGeneratorHelper {
         super.generateFireCode();
         ptolemy.actor.lib.Sequence actor = (ptolemy.actor.lib.Sequence) getComponent();
 
-        if (actor.enable.getWidth() == 0) {
+        if (!actor.enable.isOutsideConnected()) {
             _codeStream.appendCodeBlock("codeBlock1");
         } else {
             _codeStream.appendCodeBlock("codeBlock2");

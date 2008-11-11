@@ -100,7 +100,7 @@ public class Barrier extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        if (input.getWidth() == 0) {
+        if (!input.isOutsideConnected()) {
             throw new IllegalActionException(this,
                     "Barrier requires at least one input.");
         }
@@ -118,7 +118,7 @@ public class Barrier extends TypedAtomicActor {
          if (_debugging) {
          _debug("Input yielded the tokens: " + tokens);
          }
-         if (output.getWidth() > 0) {
+         if (output.isOutsideConnected()) {
          if (_debugging) {
          _debug("Performing multiway rendezvous on the output channels.");
          }

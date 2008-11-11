@@ -344,7 +344,7 @@ public class MpiPNDirector extends Director {
 			while (ports.hasNext()) {
 				IOPort port = (IOPort) ports.next();
 
-				if (port.getWidth() > 0) {
+				if (port.isOutsideConnected()) {
 					bufferCode.append(_createDynamicOffsetVariables(port));
 				}
 
@@ -998,7 +998,7 @@ public class MpiPNDirector extends Director {
 				for (TypedIOPort inputPort : (List<TypedIOPort>) actor
 						.inputPortList()) {
 
-					if (inputPort.getWidth() > 0) {
+					if (inputPort.isOutsideConnected()) {
 						for (int channel = 0; channel < inputPort.getWidth(); channel++) {
 							boolean isReceive = isMpiReceiveBuffer(inputPort,
 									channel);
@@ -1161,7 +1161,7 @@ public class MpiPNDirector extends Director {
 				// is to insert output tokens.
 				for (TypedIOPort outputPort : (List<TypedIOPort>) actor
 						.outputPortList()) {
-					if (outputPort.getWidth() > 0) {
+					if (outputPort.isOutsideConnected()) {
 						for (int i = 0; i < outputPort.getWidth(); i++) {
 							int rate = DFUtilities.getRate(outputPort);
 

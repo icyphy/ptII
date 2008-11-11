@@ -764,7 +764,7 @@ public class ModelReference extends TypedAtomicActor implements
                 continue;
             }
 
-            if ((port.getWidth() > 0) && port.hasToken(0)) {
+            if ((port.isOutsideConnected()) && port.hasToken(0)) {
                 Token token = port.get(0);
 
                 if (_model != null) {
@@ -820,7 +820,7 @@ public class ModelReference extends TypedAtomicActor implements
             IOPort port = (IOPort) ports.next();
 
             // Only write if the port has a connected channel.
-            if (port.getWidth() > 0) {
+            if (port.isOutsideConnected()) {
                 Attribute attribute = _model.getAttribute(port.getName());
 
                 // Use the token directly rather than a string if possible.

@@ -1998,6 +1998,19 @@ public class IOPort extends ComponentPort {
 
         return _isInput;
     }
+    
+
+    /** Return whether the port has relations connected on the inside.
+     * @return True when a relation != null is connected on the inside.
+     */
+    public boolean isInsideConnected() {
+        for (Object relationObject : insideRelationList()) {
+            if (relationObject != null) {
+                return true;
+            }            
+        }
+        return false;        
+    }
 
     /** Return true if all channels of this port have known state; that is,
      *  the tokens on each channel are known, or each channel is known not to
@@ -2222,6 +2235,18 @@ public class IOPort extends ComponentPort {
         return _isOutput;
     }
 
+    /** Return whether the port has relations connected on the outside.
+     * @return True when a relation != null is connected on the outside.
+     */
+    public boolean isOutsideConnected() {
+        for (Object relationObject : linkedRelationList()) {
+            if (relationObject != null) {
+                return true;
+            }            
+        }
+        return false;        
+    }
+        
     /** Override the base class to invalidate the schedule and resolved
      *  types of the director of the container, if there is one, in addition
      *  to what the base class does.

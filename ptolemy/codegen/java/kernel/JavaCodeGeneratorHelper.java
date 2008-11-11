@@ -380,7 +380,7 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
         while (inputPorts.hasNext()) {
             TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
 
-            if (inputPort.getWidth() == 0) {
+            if (!inputPort.isOutsideConnected()) {
                 continue;
             }
 
@@ -440,7 +440,7 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
 
             // If either the output port is a dangling port or
             // the output port has inside receivers.
-            if (outputPort.getWidth() == 0 || outputPort.getWidthInside() != 0) {
+            if (!outputPort.isOutsideConnected() || outputPort.isInsideConnected()) {
                 code.append("static " + targetType(outputPort.getType()) + " "
                         + generateName(outputPort));
 

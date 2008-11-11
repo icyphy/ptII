@@ -1105,7 +1105,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         Iterator inputPorts = ((Actor) _object).inputPortList().iterator();
         while (inputPorts.hasNext()) {
             IOPort inputPort = (IOPort) inputPorts.next();
-            if (inputPort instanceof ParameterPort && inputPort.getWidth() > 0) {
+            if (inputPort instanceof ParameterPort && inputPort.isOutsideConnected()) {
                 set.add(((ParameterPort) inputPort).getParameter());
             }
         }
@@ -1714,7 +1714,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     }
 
     public boolean checkLocal(boolean forComposite, IOPort port) throws IllegalActionException {
-        return (port.isInput() && !forComposite && port.getWidth() > 0)
+        return (port.isInput() && !forComposite && port.isOutsideConnected())
         || (port.isOutput() && forComposite);
     }
 

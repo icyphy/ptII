@@ -252,7 +252,7 @@ public class FSMCreator implements AtomicActorCreator {
                 TypedIOPort port = (TypedIOPort) (inputPorts.next());
 
                 // FIXME: Handle multiports
-                if (port.getWidth() > 0) {
+                if (port.isOutsideConnected()) {
                     String name = port.getName(entity);
 
                     // Create an if statement.

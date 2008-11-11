@@ -106,7 +106,7 @@ public class ModelGenerator extends Source {
 
         try {
             Entity entity;
-            if (moml.getWidth() > 0 && moml.hasToken(0)) {
+            if (moml.isOutsideConnected() && moml.hasToken(0)) {
                 String momlString = ((StringToken) moml.get(0)).stringValue();
                 _parser.reset();
                 try {
@@ -153,9 +153,9 @@ public class ModelGenerator extends Source {
     public boolean prefire() throws IllegalActionException {
         ParameterPort modelNamePort = modelName.getPort();
         return super.prefire()
-                && (moml.getWidth() > 0 && moml.hasToken(0) ||
-                    modelNamePort.getWidth() > 0 && modelNamePort.hasToken(0) ||
-                    moml.getWidth() == 0 && modelNamePort.getWidth() == 0);
+                && (moml.isOutsideConnected() && moml.hasToken(0) ||
+                    modelNamePort.isOutsideConnected() && modelNamePort.hasToken(0) ||
+                    !moml.isOutsideConnected() && !modelNamePort.isOutsideConnected());
     }
 
     public PortParameter modelName;

@@ -390,7 +390,7 @@ public class PortParameter extends Parameter {
     public void update() throws IllegalActionException {
         ParameterPort port = _port;
 
-        if ((port != null) && (port.getWidth() > 0) && port.hasToken(0)) {
+        if ((port != null) && (port.isOutsideConnected()) && port.hasToken(0)) {
             Token token = port.get(0);
             setCurrentValue(token);
 

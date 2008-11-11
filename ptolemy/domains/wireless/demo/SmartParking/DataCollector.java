@@ -99,7 +99,7 @@ public class DataCollector extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         super.fire();
 
-        if (update.getWidth() > 0) {
+        if (update.isOutsideConnected()) {
             if (update.hasToken(0)) {
                 RecordToken updateMsg = (RecordToken) update.get(0);
                 _parkingManager.update(updateMsg);

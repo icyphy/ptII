@@ -135,7 +135,7 @@ public class Scale3D extends GRTransform {
         double zScale = 1.0;
 
         // read new inputs for offsets if there are any.
-        if (scaleInput.getWidth() != 0 && scaleInput.hasToken(0)) {
+        if (scaleInput.isOutsideConnected() && scaleInput.hasToken(0)) {
             double in = ((DoubleToken) scaleInput.get(0)).doubleValue();
             applyTransform = true;
             xScale = in * _getInitialScaleX();

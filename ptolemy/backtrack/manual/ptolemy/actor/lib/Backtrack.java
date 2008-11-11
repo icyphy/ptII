@@ -171,12 +171,12 @@ public class Backtrack extends TypedAtomicActor {
         super.fire();
 
         boolean checkpointTrigger = false;
-        if (_checkpoint.getWidth() > 0 && _checkpoint.hasToken(0)) {
+        if (_checkpoint.isOutsideConnected() && _checkpoint.hasToken(0)) {
             checkpointTrigger =
                 ((BooleanToken) _checkpoint.get(0)).booleanValue();
         }
 
-        if (_rollback.getWidth() > 0 && _rollback.hasToken(0)) {
+        if (_rollback.isOutsideConnected() && _rollback.hasToken(0)) {
             LongToken rollbackHandle = (LongToken) _rollback.get(0);
             _rollbackHandle = rollbackHandle.longValue();
         } else {

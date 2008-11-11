@@ -70,7 +70,7 @@ public class SubscriptionAggregator extends JavaCodeGeneratorHelper {
 
         ptolemy.actor.lib.SubscriptionAggregator actor = (ptolemy.actor.lib.SubscriptionAggregator) getComponent();
 
-        if (actor.input.getWidth() > 0) {
+        if (actor.input.isOutsideConnected()) {
             _codeStream.appendCodeBlock("fireBlock0", false);
             ArrayList args = new ArrayList();
             args.add(Integer.valueOf(0));

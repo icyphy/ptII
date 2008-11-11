@@ -125,7 +125,7 @@ public class TriggeredClock extends Clock {
     protected void _updateTentativeValues() throws IllegalActionException {
         // Check the start input, to see whether everything needs to
         // be reset.
-        if (start.getWidth() > 0) {
+        if (start.isOutsideConnected()) {
             if (start.hasToken(0)) {
                 if (_debugging) {
                     _debug("Received a start input.");
@@ -137,7 +137,7 @@ public class TriggeredClock extends Clock {
             }
         }
         // Check stop
-        if (stop.getWidth() > 0) {
+        if (stop.isOutsideConnected()) {
             if (stop.hasToken(0)) {
                 if (_debugging) {
                     _debug("Received a stop input.");

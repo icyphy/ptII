@@ -138,7 +138,7 @@ public class Stop extends Sink {
     public boolean postfire() throws IllegalActionException {
         boolean result = false;
 
-        if (input.getWidth() == 0) {
+        if (!input.isOutsideConnected()) {
             result = true;
         }
 

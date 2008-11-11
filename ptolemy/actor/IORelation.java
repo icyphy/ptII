@@ -767,9 +767,16 @@ public class IORelation extends ComponentRelation {
         }
     }
 
+    /**Determines whether width inference should be skipped or not.
+     * @return True when width inference needs to be skipped.
+     */
+    protected boolean _skipWidthInference() {
+        return false;
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         packaged methods                  ////
-    
+        
     /** Set the inferred width of this relation. The width is the number of
      *  channels that the relation represents.
      *  This method is not synchronized on the workspace.
@@ -787,6 +794,7 @@ public class IORelation extends ComponentRelation {
         _inferredWidthVersion = _workspace.getVersion();
         _inferredWidth = width;
     }
+    
     
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -1138,7 +1146,7 @@ public class IORelation extends ComponentRelation {
     /** Indicate whether the new or the old width inference algo should be used
      *  This is a packaged field. 
      */
-    static final boolean _USE_NEW_WIDTH_INFERENCE_ALGO = true;
+    public static final boolean _USE_NEW_WIDTH_INFERENCE_ALGO = true;
     
 
     ///////////////////////////////////////////////////////////////////

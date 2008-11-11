@@ -64,7 +64,7 @@ public class Average extends CCodeGeneratorHelper {
 
         ptolemy.actor.lib.Average actor = (ptolemy.actor.lib.Average) getComponent();
 
-        if (actor.reset.getWidth() > 0) {
+        if (actor.reset.isOutsideConnected()) {
             _codeStream.appendCodeBlock("resetBlock");
         }
         _codeStream.appendCodeBlock("outputBlock");

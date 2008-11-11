@@ -135,7 +135,7 @@ public class Rotate3D extends GRTransform {
     public void fire() throws IllegalActionException {
         super.fire();
 
-        if (angle.getWidth() != 0) {
+        if (angle.isOutsideConnected()) {
             if (angle.hasToken(0)) {
                 double in = ((DoubleToken) angle.get(0)).doubleValue();
                 double originalAngle = ((DoubleToken) initialAngle.getToken())

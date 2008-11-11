@@ -402,7 +402,7 @@ public class InlinePortTransformer extends SceneTransformer implements
 
                         String methodName = r.getMethod().getName();
 
-                        if ((port.getWidth() == 0)
+                        if ((!port.isOutsideConnected())
                                 && (methodName.equals("hasToken")
                                         || methodName.equals("hasRoom")
                                         || methodName.equals("get") || methodName
@@ -535,7 +535,7 @@ public class InlinePortTransformer extends SceneTransformer implements
                         } else if (r.getMethod().getName().equals("broadcast")) {
                             // Broadcasting on a port of zero width does
                             // nothing.
-                            if (port.getWidth() == 0) {
+                            if (!port.isOutsideConnected()) {
                                 if (debug) {
                                     System.out
                                             .println("removing width zero broadcast at"
@@ -723,7 +723,7 @@ public class InlinePortTransformer extends SceneTransformer implements
 
                         //String methodName = r.getMethod().getName();
 
-                        //   if (port.getWidth() == 0 &&
+                        //   if (!port.isConnected() &&
                         //                                     (methodName.equals("hasToken") ||
                         //                                             methodName.equals("hasRoom") ||
                         //                                             methodName.equals("get") ||

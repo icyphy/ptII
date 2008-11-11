@@ -433,7 +433,7 @@ public class NonStrictFSMDirector extends FSMDirector {
                 while (inputPorts.hasNext()) {
                     IOPort inputPort = (IOPort) inputPorts.next();
 
-                    if ((inputPort.getWidth() != 0)
+                    if ((inputPort.isOutsideConnected())
                             && (DFUtilities.getRate(inputPort) > 0)) {
                         Iterator inputPortsOutside = inputPort
                                 .deepConnectedInPortList().iterator();

@@ -130,7 +130,7 @@ public abstract class PtinyOSCompositeActor extends NCCompositeActor {
     public void fire() throws IllegalActionException {
         // Grab the packet before it gets thrown away, since it is not
         // connected to any actors on the inside.
-        if (packetIn.getWidth() > 0) {
+        if (packetIn.isOutsideConnected()) {
             if (packetIn.hasToken(0)) {
                 StringToken token = (StringToken) packetIn.get(0);
 

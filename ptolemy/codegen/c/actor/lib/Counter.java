@@ -67,8 +67,8 @@ public class Counter extends CCodeGeneratorHelper {
 
         ptolemy.actor.lib.Counter actor = (ptolemy.actor.lib.Counter) getComponent();
 
-        boolean doDecrement = actor.decrement.getWidth() > 0;
-        boolean doIncrement = actor.increment.getWidth() > 0;
+        boolean doDecrement = actor.decrement.isOutsideConnected();
+        boolean doIncrement = actor.increment.isOutsideConnected();
 
         if (doDecrement && !doIncrement) {
             _codeStream.appendCodeBlock("decrementBlock");

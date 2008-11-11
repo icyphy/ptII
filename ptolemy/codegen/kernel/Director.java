@@ -187,7 +187,7 @@ public class Director extends CodeGeneratorHelper {
             }
 
             for (IOPort port : (List<IOPort>) ((Entity) actor).portList()) {
-                if (port.getWidth() > 0) {
+                if (port.isOutsideConnected()) {
                     CodeGeneratorHelper portHelper = 
                         (CodeGeneratorHelper) _getHelper(port);
                     code.append(portHelper.generateInitializeCode());
@@ -474,7 +474,7 @@ public class Director extends CodeGeneratorHelper {
 
         List<Channel> result = new LinkedList<Channel>();
 
-        if ((port.isInput() && !forComposite && port.getWidth() > 0)
+        if ((port.isInput() && !forComposite && port.isOutsideConnected())
                 || (port.isOutput() && forComposite)) {
 
             result.add(new Channel(port, channelNumber));

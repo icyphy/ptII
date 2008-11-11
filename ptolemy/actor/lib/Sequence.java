@@ -164,7 +164,7 @@ public class Sequence extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        if ((enable.getWidth() == 0)
+        if ((!enable.isOutsideConnected())
                 || (enable.hasToken(0) && ((BooleanToken) enable.get(0))
                         .booleanValue())) {
             ArrayToken valuesArray = (ArrayToken) values.getToken();

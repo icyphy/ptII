@@ -134,11 +134,11 @@ public class LampController extends Sender {
         int brightLevel = -1;
         int dimLevel = -1;
 
-        if ((bright.getWidth() > 0) && bright.hasToken(0)) {
+        if ((bright.isOutsideConnected()) && bright.hasToken(0)) {
             brightLevel = ((IntToken) bright.get(0)).intValue();
         }
 
-        if ((dim.getWidth() > 0) && dim.hasToken(0)) {
+        if ((dim.isOutsideConnected()) && dim.hasToken(0)) {
             dimLevel = ((IntToken) dim.get(0)).intValue();
         }
 

@@ -510,7 +510,7 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
                 TypedIOPort port = (TypedIOPort) outPorts.next();
 
                 // Ignore unconnected ports
-                if (port.getWidth() > 0) {
+                if (port.isOutsideConnected()) {
                     String portID = StringUtilities.sanitizeName(port
                             .getName(model));
                     String portTypeID = _getTypeString(port);
@@ -842,7 +842,7 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
                 TypedIOPort port = (TypedIOPort) inPorts.next();
 
                 // Ignore unconnected ports
-                if (port.getWidth() > 0) {
+                if (port.isOutsideConnected()) {
                     if (first) {
                         first = false;
                     } else {
@@ -881,7 +881,7 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
                 TypedIOPort port = (TypedIOPort) outPorts.next();
 
                 // Ignore unconnected ports
-                if (port.getWidth() > 0) {
+                if (port.isOutsideConnected()) {
                     if (first) {
                         first = false;
                     } else {

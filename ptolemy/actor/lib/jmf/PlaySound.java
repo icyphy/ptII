@@ -181,7 +181,7 @@ public class PlaySound extends TypedAtomicActor implements ControllerListener {
         // Default if there is no input is to play the sound.
         boolean playSound = true;
 
-        if ((onOff.getWidth() > 0) && onOff.hasToken(0)) {
+        if ((onOff.isOutsideConnected()) && onOff.hasToken(0)) {
             playSound = ((BooleanToken) onOff.get(0)).booleanValue();
         }
 

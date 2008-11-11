@@ -348,7 +348,7 @@ public class Expression extends TypedAtomicActor {
                     IOPort port = (IOPort) (outputPorts.next());
 
                     // FIXME: Handle multiports
-                    if (port.getWidth() > 0) {
+                    if (port.isOutsideConnected()) {
                         port.send(0, matlabEngine.get(engine, port.getName(),
                                 _dataParameters));
                     }

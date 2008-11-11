@@ -793,7 +793,7 @@ public class PtinyOSDirector extends Director {
             CompositeActor model = (CompositeActor) getContainer();
             TypedIOPort port = (TypedIOPort) model.getPort(portName);
             if (port != null) {
-                if (port.getWidth() > 0) {
+                if (port.isOutsideConnected()) {
                     if (port.getType() == BaseType.BOOLEAN) {
                         port.send(0, new BooleanToken(expression));
                         return true;

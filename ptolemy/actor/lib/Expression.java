@@ -191,7 +191,7 @@ public class Expression extends TypedAtomicActor {
             IOPort port = (IOPort) (inputPorts.next());
 
             // FIXME: Handle multiports
-            if (port.getWidth() > 0) {
+            if (port.isOutsideConnected()) {
                 if (port.hasToken(0)) {
                     Token inputToken = port.get(0);
                     _tokenMap.put(port.getName(), inputToken);
@@ -287,7 +287,7 @@ public class Expression extends TypedAtomicActor {
             IOPort port = (IOPort) (inputPorts.next());
 
             // FIXME: Handle multiports
-            if (port.getWidth() > 0) {
+            if (port.isOutsideConnected()) {
                 if (!port.hasToken(0)) {
                     return false;
                 }

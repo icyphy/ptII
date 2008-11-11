@@ -140,7 +140,7 @@ public class Translate3D extends GRTransform {
         double zOffset = 0.0;
 
         // read new inputs for offsets if there are any.
-        if (xTranslate.getWidth() != 0) {
+        if (xTranslate.isOutsideConnected()) {
             if (xTranslate.hasToken(0)) {
                 double in = ((DoubleToken) xTranslate.get(0)).doubleValue();
                 applyTransform = true;
@@ -150,7 +150,7 @@ public class Translate3D extends GRTransform {
             }
         }
 
-        if (yTranslate.getWidth() != 0) {
+        if (yTranslate.isOutsideConnected()) {
             if (yTranslate.hasToken(0)) {
                 double in = ((DoubleToken) yTranslate.get(0)).doubleValue();
                 applyTransform = true;
@@ -160,7 +160,7 @@ public class Translate3D extends GRTransform {
             }
         }
 
-        if (zTranslate.getWidth() != 0) {
+        if (zTranslate.isOutsideConnected()) {
             if (zTranslate.hasToken(0)) {
                 double in = ((DoubleToken) zTranslate.get(0)).doubleValue();
                 applyTransform = true;

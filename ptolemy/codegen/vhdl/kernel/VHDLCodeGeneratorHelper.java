@@ -180,7 +180,7 @@ public class VHDLCodeGeneratorHelper extends CodeGeneratorHelper {
             // codegen/c/actor/lib/string/test/auto/StringCompare3.xml
             // tests this.
 
-            if ((port.isInput() && !forComposite && port.getWidth() > 0)
+            if ((port.isInput() && !forComposite && port.isOutsideConnected())
                     || (port.isOutput() && forComposite)) {
 
                 Channel sourceChannel = getSourceChannel(port, channelNumber);

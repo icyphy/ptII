@@ -209,7 +209,7 @@ public class ResourcePool extends TypedAtomicActor {
                     "ResourcePool actor can only be used with RendezvousDirector.");
         }
         _postfireReturns = true;
-        if (release.getWidth() > 0 && _readThread == null) {
+        if (release.isOutsideConnected() && _readThread == null) {
             _readThread = new Thread(getFullName() + "_readThread") {
                 public void run() {
                     try {
@@ -237,7 +237,7 @@ public class ResourcePool extends TypedAtomicActor {
             };
             director.addThread(_readThread);
             _readThread.start();
-        } else if (release.getWidth() == 0 && _readThread != null) {
+        } else if (!release.isOutsideConnected() && _readThread != null) {
             // A mutation has eliminated the sources.
             _readThread.interrupt();
         }

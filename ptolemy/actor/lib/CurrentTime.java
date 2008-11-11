@@ -82,7 +82,7 @@ public class CurrentTime extends TimedSource {
         // on the channel returns the time of the current sample.
         double currentTimeValue = Double.POSITIVE_INFINITY;
 
-        if (trigger.getWidth() > 0) {
+        if (trigger.isOutsideConnected()) {
             // Trigger port is connected.
             // If there is a token in a channel of the trigger port,
             // output the current time (that is associated with the token).

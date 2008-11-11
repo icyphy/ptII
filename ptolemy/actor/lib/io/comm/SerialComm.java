@@ -346,7 +346,7 @@ public class SerialComm extends TypedAtomicActor {
         synchronized (PortListener.class) {
             try {
                 // Produce output to the serial port first.
-                if ((dataToSend.getWidth() > 0) && dataToSend.hasToken(0)) {
+                if ((dataToSend.isOutsideConnected()) && dataToSend.hasToken(0)) {
                     ArrayToken dataArrayToken = (ArrayToken) dataToSend.get(0);
                     OutputStream out = _serialPort.getOutputStream();
                     int inputLength = dataArrayToken.length();

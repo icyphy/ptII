@@ -71,7 +71,7 @@ public class MultiplyDivide extends CCodeGeneratorHelper {
         String multiplyType = codeGenType(actor.multiply.getType());
         String divideType = codeGenType(actor.divide.getType());
 
-        boolean divideOnly = actor.multiply.getWidth() == 0;
+        boolean divideOnly = !actor.multiply.isOutsideConnected();
 
         ArrayList args = new ArrayList();
 
