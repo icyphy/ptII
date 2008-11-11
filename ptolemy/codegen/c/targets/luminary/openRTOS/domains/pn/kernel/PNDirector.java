@@ -259,12 +259,12 @@ public class PNDirector extends Director {
         args.add("");
         args.add("");
         args.add("");        
-        
+                
         // Initialize each queue variable.
         for (Channel buffer : _queues) {
             args.set(0, _generateQueueReference(buffer.port, buffer.channelNumber));
             args.set(1, _getQueueSize(buffer.port, buffer.channelNumber));
-            args.set(2, CodeGeneratorHelper.targetType(
+            args.set(2, targetType(
                     ((TypedIOPort) buffer.port).getType()));
             code.append(_codeStream.getCodeBlock("initBuffer", args));
         }
