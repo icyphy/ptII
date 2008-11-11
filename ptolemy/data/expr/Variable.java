@@ -1428,8 +1428,9 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             Iterator errorsIterator = errors.iterator();
             StringBuffer message = new StringBuffer();
 
+            Exception error = null;
             while (errorsIterator.hasNext()) {
-                Exception error = (Exception) errorsIterator.next();
+                error = (Exception) errorsIterator.next();
                 message.append(error.getMessage());
 
                 if (errorsIterator.hasNext()) {
@@ -1440,6 +1441,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             // NOTE: We could use exception chaining here to report
             // the cause, but this leads to very verbose error
             // error messages that are not very friendly.
+            // throw new IllegalActionException(this, error, message.toString());
             throw new IllegalActionException(message.toString());
         }
 
