@@ -849,8 +849,6 @@ test IOPort-10.6 {Check description use the example (that used to be) in design 
     set r7 [java::new ptolemy.actor.IORelation $e3 R7]
     $p6 link $r7
     $p9 link $r7
-    set r8 [java::new ptolemy.actor.IORelation $e0 R8]
-    $p3 link $r8
 
     # Call preinitialize on the director so that the receivers get created
     # added Neil Smyth. Need to call this as receivers are no longer 
