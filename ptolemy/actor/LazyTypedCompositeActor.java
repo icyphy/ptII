@@ -42,10 +42,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.Configurable;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
+import ptolemy.kernel.util.LazyComposite;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
@@ -127,6 +127,14 @@ import ptolemy.util.StringUtilities;
  instance in the class definition. When that instance is populated,
  all of the derived instances in subclasses and instances of the
  class will also be populated as a side effect.
+  <p>
+ A third subtlety is that parameters of this actor cannot refer to
+ contained entities or relations, nor to attributes contained by
+ those. This is a rather esoteric use of expressions, so
+ this limitation may not be onerous. You probably didn't know
+ you could do that anyway.  An attempt to make such references
+ will simply result in the expression failing to evaluate.
+
  
  @author Christopher Brooks and Edward A. Lee
  @version $Id: LazyTypedCompositeActor.java 47495 2007-12-06 21:57:21Z cxh $
@@ -136,7 +144,7 @@ import ptolemy.util.StringUtilities;
  */
 
 // FIXME: Have to do ports and relations.  Only done attributes and entities.
-public class LazyTypedCompositeActor extends TypedCompositeActor implements Configurable {
+public class LazyTypedCompositeActor extends TypedCompositeActor implements LazyComposite {
     /** Construct a library in the default workspace with no
      *  container and an empty string as its name. Add the library to the
      *  workspace directory.
@@ -663,7 +671,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Conf
                 }
             }
         } catch (Exception ex) {
-            MessageHandler.error("Failed to populate library.", ex);
+            MessageHandler.error("Failed to populate contents.", ex);
 
             // Oddly, under JDK1.3.1, we may see the line
             // "Exception occurred during event dispatching:"
@@ -674,7 +682,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Conf
             // Note that under JDK1.4, the stack trace is printed in
             // both cases.
             throw new InvalidStateException(this, ex,
-                    "Failed to populate Library");
+                    "Failed to populate contents");
         } finally {
             _populating = false;
         }
