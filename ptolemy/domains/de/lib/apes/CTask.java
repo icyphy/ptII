@@ -26,18 +26,18 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-public class Task extends TypedAtomicActor implements Runnable {
+public class CTask extends TypedAtomicActor implements Runnable {
 
-    public Task() {
+    public CTask() {
         _initialize();
     }
     
-    public Task(Workspace workspace) {
+    public CTask(Workspace workspace) {
         super(workspace);
         _initialize();
     }
 
-    public Task(CompositeEntity container, String name)
+    public CTask(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _initialize();
