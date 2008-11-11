@@ -598,7 +598,7 @@ public class CCodeGenerator extends CodeGenerator {
                 // SetVariable needs this to be a Variable, not a Parameter.
                 Variable variable = (Variable) modifiedVariables.next();
 
-                CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(this);
+                CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(variable.getContainer());
                 code.append("static "
                         + helper.targetType(variable.getType())
                         + " " + generateVariableName(variable) + ";" + _eol);
