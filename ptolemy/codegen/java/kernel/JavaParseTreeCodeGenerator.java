@@ -313,7 +313,7 @@ ParseTreeCodeGenerator {
         // Insert the elementType of the array as the last argument.
         if (CodeGeneratorHelper.targetType(elementType).equals("Token")) {
             //_fireCode.append(", -1");
-            result += ", -1";
+            result += ", TYPE_Token";
         } else {
             //_fireCode.append(", TYPE_" + _codeGenType(elementType));
             result += ", TYPE_" + _codeGenType(elementType);

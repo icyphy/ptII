@@ -205,28 +205,26 @@ Token Double_clone(Token thisToken, ...) {
 /***Double_convert***/
 Token Double_convert(Token token, Token... elements) {
     switch (token.type) {
-//#ifdef TYPE_String
-//    case TYPE_String:
-//        // FIXME: Is this safe?
-//        token.type = TYPE_Double;
-//	token.payload = (Double)(token.payload).toString();
-//        break;
-//#endif
-//#ifdef TYPE_Integer
+#ifdef TYPE_String
+    case TYPE_String:
+        // FIXME: Is this safe?
+        token.type = TYPE_Double;
+	token.payload = (Double)(token.payload).toString();
+	return token;
+        break;
+#endif
+#ifdef TYPE_Integer
     case TYPE_Integer:
         token.type = TYPE_Double;
         token.payload = IntegertoDouble((Integer)(token.payload));
+	return token;
         break;
-//#endif
+#endif
 
         // FIXME: not finished
     default:
-        System.err.printf("Double_convert(): Conversion from an unsupported type. (%d)\n", token.type);
-        System.exit(-1);
-        break;
+        throw new RuntimeException("Double_convert(): Conversion from an unsupported type.: " + token.type);
     }
-    token.type = TYPE_Double;
-    return token;
 }
 /**/
 

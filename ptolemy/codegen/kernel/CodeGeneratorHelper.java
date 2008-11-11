@@ -1257,10 +1257,10 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                 //    return "Array_new(1, 1, " + fireCode + ");";
                 //}
                 return _generateTypeConvertMethod(fireCode, castType,
-                        codeGenType(variable.getType()));
+						  codeGenType(variable.getType()));
 
             } else /* if (attribute instanceof Settable)*/{
-                return ((Settable) attribute).getExpression();
+		return ((Settable) attribute).getExpression();
             }
 
             // FIXME: Are there any other values that a
@@ -1296,7 +1296,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                     /////////////////////////////////////////////////////
 
                     return _generateTypeConvertMethod(elementCode,
-                            castType, codeGenType(element.getType()));
+						      castType, codeGenType(element.getType()));
                 }
 
                 throw new IllegalActionException(getComponent(), attributeName

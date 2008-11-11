@@ -1,13 +1,13 @@
 /*** ceilBlock ***/
-$ref(output) = Math.ceil($ref(input));
+$ref(output) = (int)Math.ceil($ref(input));
 /**/
 
 /*** floorBlock ***/
-$ref(output) = Math.floor($ref(input));
+$ref(output) = (int)Math.floor($ref(input));
 /**/
 
 /*** roundBlock ***/
-$ref(output) = Math.round($ref(input));
+$ref(output) = (int)Math.round($ref(input));
 /**/
 
 /*** truncateBlock ***/

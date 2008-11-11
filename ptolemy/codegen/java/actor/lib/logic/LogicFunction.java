@@ -73,28 +73,21 @@ public class LogicFunction extends JavaCodeGeneratorHelper {
         codeBuffer.append("((");
 
         for (int i = 0; i < actor.input.getWidth(); i++) {
-            if (function.equals("xor") || function.equals("xnor")) {
-                codeBuffer.append("($ref(input#" + i + ")? 1: 0)");
-            } else {
-                codeBuffer.append("$ref(input#" + i + ")");
-            }
+	    codeBuffer.append("$ref(input#" + i + ")");
 
             if (i < (actor.input.getWidth() - 1)) {
                 if (function.equals("and") || function.equals("nand")) {
-                    codeBuffer.append(" && ");
+                    codeBuffer.append(" & ");
                 } else if (function.equals("or") || function.equals("nor")) {
-                    codeBuffer.append(" || ");
+                    codeBuffer.append(" | ");
                 } else if (function.equals("xor") || function.equals("xnor")) {
-                    codeBuffer.append(" + ");
+                    codeBuffer.append(" ^ ");
                 }
             }
         }
 
         codeBuffer.append(")");
 
-        if (function.equals("xor") || function.equals("xnor")) {
-            codeBuffer.append("%2");
-        }
 
         codeBuffer.append(");" + _eol);
         return processCode(codeBuffer.toString());

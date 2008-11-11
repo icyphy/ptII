@@ -346,6 +346,7 @@ public class JavaCodeGenerator extends CodeGenerator {
                     "$CLASSPATH/ptolemy/codegen/java/kernel/type/" + typesArray[i]
                             + ".j", this);
 
+            code.append("#define PTCG_TYPE_" + typesArray[i] + " " + i + _eol);
             code.append("private final short TYPE_" + typesArray[i] + " = " + i + ";"+ _eol);
 
             // Dynamically generate all the types within the union.
@@ -864,6 +865,50 @@ public class JavaCodeGenerator extends CodeGenerator {
     protected StringBuffer _finalPassOverCode(StringBuffer code)
             throws IllegalActionException {
 
+	// Simple cpp like preprocessor
+	// #define foo
+	// #ifdef foo
+	// #endif
+	// Note that foo does not have a value.
+	// Nested ifdefs are not supported.
+
+        StringTokenizer tokenizer = new StringTokenizer(
+                code.toString(), _eol + "\n");
+
+	code = new StringBuffer();
+
+	boolean okToPrint = true;
+	HashSet defines = new HashSet<String>();
+        while (tokenizer.hasMoreTokens()) {
+            String line = tokenizer.nextToken();
+	    if (line.indexOf("#") == -1) {
+		if (!okToPrint) {
+		    line = comment(line);
+		} 
+		code.append(line + _eol);		
+	    } else {
+		line = line.trim();
+		int defineIndex = line.indexOf("#define");
+		if (defineIndex > -1) {
+		    defines.add(line.substring(defineIndex + 8));
+		}
+		int ifIndex = line.indexOf("#ifdef");
+		if (ifIndex > -1) {
+		    if (defines.contains(line.substring(ifIndex + 7))) {
+			okToPrint = true;
+		    } else {
+			okToPrint = false;
+		    }
+		} else {
+		    if (line.startsWith("#endif")) {
+			okToPrint = true;
+		    }
+		}
+		code.append("// " + line + _eol);
+	    }
+        }
+
+	// Run the pass over the code after pseudo preprocessing
         code = super._finalPassOverCode(code);
 
         if (((BooleanToken) sourceLineBinding.getToken()).booleanValue()) {
@@ -871,7 +916,7 @@ public class JavaCodeGenerator extends CodeGenerator {
             String filename = getOutputFilename();
             //filename = new java.io.File(filename).getAbsolutePath().replace('\\', '/');
 
-            StringTokenizer tokenizer = new StringTokenizer(code.toString(),
+            tokenizer = new StringTokenizer(code.toString(),
                     _eol);
 
             code = new StringBuffer();

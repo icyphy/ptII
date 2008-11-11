@@ -64,7 +64,7 @@ int Array_length(Token array) {
 Token Array_new(int size, int given, Object... elements) {
     int i;
     Token result = new Token();
-    Short elementType;
+    int elementType;
 
     array array = new array();
     array.size = size;
@@ -79,13 +79,35 @@ Token Array_new(int size, int given, Object... elements) {
             array.elements[i] = (Token)elements[i];
         }
         // elementType is given as the last argument.
-        elementType = (Short) elements[i];
+        elementType = (Short)elements[i];
 
-        // convert the elements if needed.
-        for (i = 0; i < given; i++) {
-            if (Array_get(result, i).type != elementType) {
+	if (elementType >=0) {
+           // convert the elements if needed.
+	   for (i = 0; i < given; i++) {
+              if (Array_get(result, i).type != elementType) {
                 //Array_set(result, i, functionTable[(int)elementType][FUNC_convert](Array_get(result, i)));
-		System.out.println("Array_new: convert needs work");
+		switch(elementType) {
+		    case TYPE_Array:
+		        System.out.println("Array_new on an array of arrays, possible problem");
+		        ;;
+		    case TYPE_Token:
+		        ;;
+#ifdef PTCG_TYPE_Double
+		    case TYPE_Double:
+		        Array_set(result, i, Double_convert(Array_get(result,i)));
+			;;
+#endif
+#ifdef PTCG_TYPE_Integer
+		    case TYPE_Integer:
+		        Array_set(result, i, Integer_convert(Array_get(result,i)));
+			;;
+#endif
+		    default:
+		        System.err.printf("Double_convert(): Conversion from an unsupported type. (%d)\n", elementType);
+			System.exit(-1);
+                        ;;
+                   }
+                }
             }
         }
     } 

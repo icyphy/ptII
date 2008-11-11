@@ -83,6 +83,7 @@ JSRCS = \
 	MovingAverage.java \
 	MultiplyDivide.java \
 	Publisher.java \
+	Pulse.java \
 	Ramp.java \
 	RandomSource.java \
 	Scale.java \
@@ -176,6 +177,7 @@ OTHER_FILES_TO_BE_JARED = \
 	MovingAverage.j \
 	MultiplyDivide.j \
 	Publisher.j \
+	Pulse.j \
 	Ramp.j \
 	RandomSource.j \
 	Scale.j \

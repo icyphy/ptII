@@ -146,11 +146,11 @@ Token Integer_clone(Token thisToken, ...) {
 Token Integer_convert(Token token, Token... elements) {
     switch (token.type) {
 
-//#ifdef TYPE_Double
+#ifdef TYPE_Double
     case TYPE_Double:
         token.payload = DoubletoInteger((Double)token.payload);
         break;
-//#endif
+#endif
 
         // FIXME: not finished
     default:

@@ -57,7 +57,7 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
             $actorSymbol(numberOfTokensSeen),
             $actorSymbol(inputToken),
             $ref(tolerance),
-            Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.Integer);
+            (Integer)(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload));
     System.exit(-1);
 }
 /**/
