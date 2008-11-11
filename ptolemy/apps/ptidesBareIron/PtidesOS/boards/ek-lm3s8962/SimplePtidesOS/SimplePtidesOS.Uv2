@@ -12,7 +12,38 @@ Group (Util)
 
 File 1,2,<.\Startup.s><Startup.s>
 File 2,1,<.\SimplePtidesOS.c><SimplePtidesOS.c>
-File 3,4,<C:\Keil\ARM\RV31\LIB\Luminary\DriverLib.lib><DriverLib.lib>
+File 2,1,<..\..\..\third_party\lwip-1.2.0\apps\httpd\httpd.c><httpd.c>
+File 2,1,<..\..\..\third_party\lwip-1.2.0\src\core\tcp.c><tcp.c>
+File 2,1,<..\..\..\third_party\lwip-1.2.0\src\core\udp.c><udp.c>
+File 2,1,<..\..\..\third_party\lwip-1.2.0\src\core\dhcp.c><dhcp.c>
+File 2,1,<..\..\..\third_party\lwip-1.2.0\src\core\inet.c><inet.c>
+File 2,1,<..\..\..\third_party\lwip-1.2.0\src\core\mem.c><mem.c>
+File 2,1,<..\..\..\third_party\lwip-1.2.0\src\core\memp.c><memp.c>
+File 2,1,<..\..\..\third_party\lwip-1.2.0\src\core\netif.c><netif.c>
+File 2,1,<..\..\..\third_party\lwip-1.2.0\src\core\pbuf.c><pbuf.c>
+File 2,1,<..\..\..\third_party\lwip-1.2.0\src\core\raw.c><raw.c>
+File 2,1,<..\..\..\third_party\lwip-1.2.0\src\core\stats.c><stats.c>
+File 2,1,<..\..\..\third_party\lwip-1.2.0\src\core\sys.c><sys.c>
+File 2,1,<..\..\..\third_party\lwip-1.2.0\src\core\tcp_in.c><tcp_in.c>
+File 2,1,<..\..\..\third_party\lwip-1.2.0\src\core\tcp_out.c><tcp_out.c>
+File 2,1,<..\..\..\third_party\lwip-1.2.0\src\core\ipv4\ip_frag.c><ip_frag.c>
+File 2,1,<..\..\..\third_party\lwip-1.2.0\src\core\ipv4\icmp.c><icmp.c>
+File 2,1,<..\..\..\third_party\lwip-1.2.0\src\core\ipv4\ip.c><ip.c>
+File 2,1,<..\..\..\third_party\lwip-1.2.0\src\core\ipv4\ip_addr.c><ip_addr.c>
+File 2,1,<..\..\..\third_party\lwip-1.2.0\src\netif\etharp.c><etharp.c>
+File 2,1,<..\..\..\third_party\lwip-1.2.0\port\luminaryif.c><luminaryif.c>
+File 2,1,<.\lmi_fs.c><lmi_fs.c>
+File 2,1,<.\enet_lwip.c><enet_lwip.c>
+File 2,1,<..\..\..\third_party\ptpd-1rc1\src\protocol.c><protocol.c>
+File 2,1,<..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_timer.c><ptpd_timer.c>
+File 2,1,<..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c><ptpd_msg.c>
+File 2,1,<..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_net.c><ptpd_net.c>
+File 2,1,<..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_servo.c><ptpd_servo.c>
+File 2,1,<..\..\..\third_party\ptpd-1rc1\src\arith.c><arith.c>
+File 2,1,<..\..\..\third_party\ptpd-1rc1\src\bmc.c><bmc.c>
+File 2,1,<.\random.c><random.c>
+File 2,1,<..\..\..\utils\ustdlib.c><ustdlib.c>
+File 3,4,<C:\workspace\Keil\ARM\RV31\LIB\Luminary\DriverLib.lib><DriverLib.lib>
 File 3,1,<..\rit128x96x4.c><rit128x96x4.c>
 File 4,5,<Abstract.txt><Abstract.txt>
 File 5,5,<.\functions.h><functions.h>
@@ -198,5 +229,61 @@ Options 2,0,0  // Target 'LM3S8962 Flash'
  FLASH2 (BIN\UL2CM3.DLL)
  FLASH3 ("" ())
  FLASH4 ()
+EndOpt
+
+Options 1,2,0  // Group 'Source Code'
+ PropFld { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+ IncBld=2
+ AlwaysBuild=2
+ GenAsm=2
+ AsmAsm=2
+ PublicsOnly=2
+ StopCode=11
+ CustArgs ()
+ LibMods ()
+ ADSCCFLG { 2,84,85,33,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+ ADSCMISC ()
+ ADSCDEFN ()
+ ADSCUDEF ()
+ ADSCINCD (-c --device DLM -D__MICROLIB -g -O0 --apcs=interwork -I-c --device DLM -D__MICROLIB -g -O2 --apcs=interwork -I. -I..\..\..\third_party\lwip-1.2.0\src\include -I..\..\..\third_party\lwip-1.2.0\src\include\ipv4 -I..\..\..\third_party\lwip-1.2.0\port -I..\..\..\third_party\lwip-1.2.0\apps\httpd -I..\..\..\third_party\ptpd-1rc1\src -I..\..\.. -I "C:\workspace\Keil\ARM\INC\Luminary")
+ ADSASFLG { 170,42,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+ ADSAMISC ()
+ ADSADEFN ()
+ ADSAUDEF ()
+ ADSAINCD ()
+EndOpt
+
+Options 1,2,2  // File 'SimplePtidesOS.c'
+ PropFld { 2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+ IncBld=2
+ AlwaysBuild=2
+ GenAsm=2
+ AsmAsm=2
+ PublicsOnly=2
+ StopCode=11
+ CustArgs ()
+ LibMods ()
+ ADSCCFLG { 2,84,85,33,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+ ADSCMISC ()
+ ADSCDEFN ()
+ ADSCUDEF ()
+ ADSCINCD (-c --device DLM -D__MICROLIB -g -O2 --apcs=interwork -I. -I..\..\..\third_party\lwip-1.2.0\src\include -I..\..\..\third_party\lwip-1.2.0\src\include\ipv4 -I..\..\..\third_party\lwip-1.2.0\port -I..\..\..\third_party\lwip-1.2.0\apps\httpd -I..\..\..\third_party\ptpd-1rc1\src -I..\..\.. -I "C:\workspace\Keil\ARM\INC\Luminary" -Drvmdk -DPART_LM3S8962 -o ".\rvmdk\SimplePtidesOS.o" --omf_browse ".\rvmdk\SimplePtidesOS.crf" --depend ".\rvmdk\SimplePtidesOS.d")
+EndOpt
+
+Options 1,2,3  // File 'httpd.c'
+ PropFld { 2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+ IncBld=2
+ AlwaysBuild=2
+ GenAsm=2
+ AsmAsm=2
+ PublicsOnly=2
+ StopCode=11
+ CustArgs ()
+ LibMods ()
+ ADSCCFLG { 2,84,85,33,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+ ADSCMISC ()
+ ADSCDEFN ()
+ ADSCUDEF ()
+ ADSCINCD (-c --device DLM -D__MICROLIB -g -O0 --apcs=interwork -I-c --device DLM -D__MICROLIB -g -O2 --apcs=interwork -I. -I..\..\..\third_party\lwip-1.2.0\src\include -I..\..\..\third_party\lwip-1.2.0\src\include\ipv4 -I..\..\..\third_party\lwip-1.2.0\port -I..\..\..\third_party\lwip-1.2.0\apps\httpd -I..\..\..\third_party\ptpd-1rc1\src -I..\..\.. -I "C:\workspace\Keil\ARM\INC\Luminary" -o ".\Obj\httpd.o" --depend ".\Obj\httpd.d")
 EndOpt
 
