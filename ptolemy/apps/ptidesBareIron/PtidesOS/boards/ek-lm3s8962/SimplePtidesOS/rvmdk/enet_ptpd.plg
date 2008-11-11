@@ -1,0 +1,20 @@
+<html>
+<body>
+<pre>
+<h1>µVision3 Build Log</h1>
+<h2>Project:</h2>
+E:\workspace\ptresearch\keil\DriverLib\boards\ek-lm3s8962\enet_ptpd\enet_ptpd.uv2
+Project File Date:  11/04/2008
+
+<h2>Output:</h2>
+Build target 'enet_ptpd'
+compiling enet_lwip.c...
+compiling enet_ptpd.c...
+enet_ptpd.c(422): warning:  #68-D: integer conversion resulted in a change of sign
+compiling protocol.c...
+..\..\..\third_party\ptpd-1rc1\src\protocol.c(386): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\protocol.c(814): warning:  #1293-D: assignment in condition
+linking...
+Program Size: Code=37102 RO-data=4346 RW-data=320 ZI-data=29704  
+User command #1: fromelf --bin --output .\rvmdk\enet_ptpd.bin .\rvmdk\enet_ptpd.axf
+".\rvmdk\enet_ptpd.axf" - 0 Error(s), 3 Warning(s).

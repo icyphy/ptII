@@ -1,0 +1,10 @@
+.\rvmdk\rit128x96x4.o: ..\rit128x96x4.c
+.\rvmdk\rit128x96x4.o: ..\../../hw_ssi.h
+.\rvmdk\rit128x96x4.o: ..\../../hw_memmap.h
+.\rvmdk\rit128x96x4.o: ..\../../hw_sysctl.h
+.\rvmdk\rit128x96x4.o: ..\../../hw_types.h
+.\rvmdk\rit128x96x4.o: ..\../../src/debug.h
+.\rvmdk\rit128x96x4.o: ..\../../src/gpio.h
+.\rvmdk\rit128x96x4.o: ..\../../src/ssi.h
+.\rvmdk\rit128x96x4.o: ..\../../src/sysctl.h
+.\rvmdk\rit128x96x4.o: ..\rit128x96x4.h

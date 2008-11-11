@@ -1,0 +1,17 @@
+.\Obj\ip_addr.o: ..\..\..\third_party\lwip-1.2.0\src\core\ipv4\ip_addr.c
+.\Obj\ip_addr.o: ..\..\..\third_party\lwip-1.2.0\src\include\ipv4\lwip/ip_addr.h
+.\Obj\ip_addr.o: ..\..\..\third_party\lwip-1.2.0\src\include\lwip/arch.h
+.\Obj\ip_addr.o: ..\..\..\third_party\lwip-1.2.0\port\arch/cc.h
+.\Obj\ip_addr.o: ..\..\..\third_party\lwip-1.2.0\port\arch/cpu.h
+.\Obj\ip_addr.o: ..\..\..\third_party\lwip-1.2.0\src\include\ipv4\lwip/inet.h
+.\Obj\ip_addr.o: ..\..\..\third_party\lwip-1.2.0\src\include\lwip/opt.h
+.\Obj\ip_addr.o: .\lwipopts.h
+.\Obj\ip_addr.o: ..\..\..\third_party\lwip-1.2.0\src\include\lwip/debug.h
+.\Obj\ip_addr.o: ..\..\..\third_party\lwip-1.2.0\src\include\lwip/pbuf.h
+.\Obj\ip_addr.o: ..\..\..\third_party\lwip-1.2.0\src\include\lwip/netif.h
+.\Obj\ip_addr.o: ..\..\..\third_party\lwip-1.2.0\src\include\lwip/err.h
+.\Obj\ip_addr.o: ..\..\..\third_party\lwip-1.2.0\src\include\lwip/dhcp.h
+.\Obj\ip_addr.o: ..\..\..\third_party\lwip-1.2.0\src\include\lwip/netif.h
+.\Obj\ip_addr.o: ..\..\..\third_party\lwip-1.2.0\src\include\lwip/udp.h
+.\Obj\ip_addr.o: ..\..\..\third_party\lwip-1.2.0\src\include\ipv4\lwip/ip.h
+.\Obj\ip_addr.o: ..\..\..\third_party\lwip-1.2.0\src\include\lwip/def.h

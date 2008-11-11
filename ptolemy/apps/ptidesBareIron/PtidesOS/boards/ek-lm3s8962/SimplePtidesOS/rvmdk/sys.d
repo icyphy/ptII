@@ -1,0 +1,9 @@
+.\rvmdk\sys.o: ..\..\..\third_party\lwip-1.2.0\src\core\sys.c
+.\rvmdk\sys.o: ..\..\..\third_party\lwip-1.2.0\src\include\lwip/sys.h
+.\rvmdk\sys.o: ..\..\..\third_party\lwip-1.2.0\port\arch/cc.h
+.\rvmdk\sys.o: ..\..\..\third_party\lwip-1.2.0\port\arch/cpu.h
+.\rvmdk\sys.o: ..\..\..\third_party\lwip-1.2.0\src\include\lwip/opt.h
+.\rvmdk\sys.o: .\lwipopts.h
+.\rvmdk\sys.o: ..\..\..\third_party\lwip-1.2.0\src\include\lwip/debug.h
+.\rvmdk\sys.o: ..\..\..\third_party\lwip-1.2.0\src\include\lwip/def.h
+.\rvmdk\sys.o: ..\..\..\third_party\lwip-1.2.0\src\include\lwip/memp.h

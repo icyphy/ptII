@@ -1,0 +1,13 @@
+.\Obj\mem.o: ..\..\..\third_party\lwip-1.2.0\src\core\mem.c
+.\Obj\mem.o: C:\workspace\Keil\ARM\RV31\INC\string.h
+.\Obj\mem.o: ..\..\..\third_party\lwip-1.2.0\src\include\lwip/arch.h
+.\Obj\mem.o: ..\..\..\third_party\lwip-1.2.0\port\arch/cc.h
+.\Obj\mem.o: ..\..\..\third_party\lwip-1.2.0\port\arch/cpu.h
+.\Obj\mem.o: ..\..\..\third_party\lwip-1.2.0\src\include\lwip/opt.h
+.\Obj\mem.o: .\lwipopts.h
+.\Obj\mem.o: ..\..\..\third_party\lwip-1.2.0\src\include\lwip/debug.h
+.\Obj\mem.o: ..\..\..\third_party\lwip-1.2.0\src\include\lwip/def.h
+.\Obj\mem.o: ..\..\..\third_party\lwip-1.2.0\src\include\lwip/mem.h
+.\Obj\mem.o: ..\..\..\third_party\lwip-1.2.0\src\include\lwip/sys.h
+.\Obj\mem.o: ..\..\..\third_party\lwip-1.2.0\src\include\lwip/stats.h
+.\Obj\mem.o: ..\..\..\third_party\lwip-1.2.0\src\include\lwip/memp.h

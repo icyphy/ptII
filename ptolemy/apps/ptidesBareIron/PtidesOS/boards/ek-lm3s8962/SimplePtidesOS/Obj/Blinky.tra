@@ -3,17 +3,48 @@
 ### Creating ADS-LD Command Line
 ### List of Objects: adding '".\obj\startup.o"'
 ### List of Objects: adding '".\obj\simpleptidesos.o"'
-### List of Objects: adding '"..\..\..\..\..\..\Keil\ARM\RV31\LIB\Luminary\DriverLib.lib"'
+### List of Objects: adding '".\obj\httpd.o"'
+### List of Objects: adding '".\obj\tcp.o"'
+### List of Objects: adding '".\obj\udp.o"'
+### List of Objects: adding '".\obj\dhcp.o"'
+### List of Objects: adding '".\obj\inet.o"'
+### List of Objects: adding '".\obj\mem.o"'
+### List of Objects: adding '".\obj\memp.o"'
+### List of Objects: adding '".\obj\netif.o"'
+### List of Objects: adding '".\obj\pbuf.o"'
+### List of Objects: adding '".\obj\raw.o"'
+### List of Objects: adding '".\obj\stats.o"'
+### List of Objects: adding '".\obj\sys.o"'
+### List of Objects: adding '".\obj\tcp_in.o"'
+### List of Objects: adding '".\obj\tcp_out.o"'
+### List of Objects: adding '".\obj\ip_frag.o"'
+### List of Objects: adding '".\obj\icmp.o"'
+### List of Objects: adding '".\obj\ip.o"'
+### List of Objects: adding '".\obj\ip_addr.o"'
+### List of Objects: adding '".\obj\etharp.o"'
+### List of Objects: adding '".\obj\luminaryif.o"'
+### List of Objects: adding '".\obj\lmi_fs.o"'
+### List of Objects: adding '".\obj\enet_lwip.o"'
+### List of Objects: adding '".\obj\protocol.o"'
+### List of Objects: adding '".\obj\ptpd_timer.o"'
+### List of Objects: adding '".\obj\ptpd_msg.o"'
+### List of Objects: adding '".\obj\ptpd_net.o"'
+### List of Objects: adding '".\obj\ptpd_servo.o"'
+### List of Objects: adding '".\obj\arith.o"'
+### List of Objects: adding '".\obj\bmc.o"'
+### List of Objects: adding '".\obj\random.o"'
+### List of Objects: adding '".\obj\ustdlib.o"'
+### List of Objects: adding '"C:\workspace\Keil\ARM\RV31\LIB\Luminary\DriverLib.lib"'
 ### List of Objects: adding '".\obj\rit128x96x4.o"'
 ### ADS-LD Command completed:
-".\obj\startup.o" ".\obj\simpleptidesos.o" "..\..\..\..\..\..\Keil\ARM\RV31\LIB\Luminary\DriverLib.lib" ".\obj\rit128x96x4.o" --library_type=microlib --device DLM --strict --scatter ".\Obj\Blinky.sct" 
+".\obj\startup.o" ".\obj\simpleptidesos.o" ".\obj\httpd.o" ".\obj\tcp.o" ".\obj\udp.o" ".\obj\dhcp.o" ".\obj\inet.o" ".\obj\mem.o" ".\obj\memp.o" ".\obj\netif.o" ".\obj\pbuf.o" ".\obj\raw.o" ".\obj\stats.o" ".\obj\sys.o" ".\obj\tcp_in.o" ".\obj\tcp_out.o" ".\obj\ip_frag.o" ".\obj\icmp.o" ".\obj\ip.o" ".\obj\ip_addr.o" ".\obj\etharp.o" ".\obj\luminaryif.o" ".\obj\lmi_fs.o" ".\obj\enet_lwip.o" ".\obj\protocol.o" ".\obj\ptpd_timer.o" ".\obj\ptpd_msg.o" ".\obj\ptpd_net.o" ".\obj\ptpd_servo.o" ".\obj\arith.o" ".\obj\bmc.o" ".\obj\random.o" ".\obj\ustdlib.o" "C:\workspace\Keil\ARM\RV31\LIB\Luminary\DriverLib.lib" ".\obj\rit128x96x4.o" --library_type=microlib --device DLM --strict --scatter ".\Obj\Blinky.sct" 
 --autoat --summary_stderr --info summarysizes --map --xref --callgraph --symbols 
 --info sizes --info totals --info unused --info veneers 
  --list ".\Lst\Blinky.map" -o ".\Obj\Blinky.axf"### Preparing Environment (PrepEnvAds)
 ### ADS-LD Output File: '.\Obj\Blinky.axf'
 ### ADS-LD Command File: '.\Obj\Blinky.lnp'
 ### Checking for dirty Components...
-### Creating CmdFile '.\Obj\Blinky.lnp', Handle=0x00000244
+### Creating CmdFile '.\Obj\Blinky.lnp', Handle=0x000005AC
 ### Writing '.lnp' file
 ### ADS-LD Command file '.\Obj\Blinky.lnp' is ready.
 ### ADS-LD: About to start ADS-LD Thread.

@@ -48,4 +48,6 @@ void enableInterrupts(void);
 void die(char *mess);
 void ptpd_systick_init(void); 
 void ptpd_init(void);
-void IEEE1588_init(void);
+void IEEE1588Init(void);
+Event* newEvent(void);
+void freeEvent(Event*);

@@ -1,0 +1,13 @@
+.\rvmdk\mem.o: ..\..\..\third_party\lwip-1.2.0\src\core\mem.c
+.\rvmdk\mem.o: C:\workspace\Keil\ARM\RV31\INC\string.h
+.\rvmdk\mem.o: ..\..\..\third_party\lwip-1.2.0\src\include\lwip/arch.h
+.\rvmdk\mem.o: ..\..\..\third_party\lwip-1.2.0\port\arch/cc.h
+.\rvmdk\mem.o: ..\..\..\third_party\lwip-1.2.0\port\arch/cpu.h
+.\rvmdk\mem.o: ..\..\..\third_party\lwip-1.2.0\src\include\lwip/opt.h
+.\rvmdk\mem.o: .\lwipopts.h
+.\rvmdk\mem.o: ..\..\..\third_party\lwip-1.2.0\src\include\lwip/debug.h
+.\rvmdk\mem.o: ..\..\..\third_party\lwip-1.2.0\src\include\lwip/def.h
+.\rvmdk\mem.o: ..\..\..\third_party\lwip-1.2.0\src\include\lwip/mem.h
+.\rvmdk\mem.o: ..\..\..\third_party\lwip-1.2.0\src\include\lwip/sys.h
+.\rvmdk\mem.o: ..\..\..\third_party\lwip-1.2.0\src\include\lwip/stats.h
+.\rvmdk\mem.o: ..\..\..\third_party\lwip-1.2.0\src\include\lwip/memp.h

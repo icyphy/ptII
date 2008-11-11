@@ -1,0 +1,15 @@
+.\rvmdk\lmi_fs.o: lmi_fs.c
+.\rvmdk\lmi_fs.o: C:\workspace\Keil\ARM\RV31\INC\string.h
+.\rvmdk\lmi_fs.o: ../../../hw_types.h
+.\rvmdk\lmi_fs.o: ..\..\..\third_party\lwip-1.2.0\src\include\lwip/opt.h
+.\rvmdk\lmi_fs.o: .\lwipopts.h
+.\rvmdk\lmi_fs.o: ..\..\..\third_party\lwip-1.2.0\src\include\lwip/debug.h
+.\rvmdk\lmi_fs.o: ..\..\..\third_party\lwip-1.2.0\port\arch/cc.h
+.\rvmdk\lmi_fs.o: ..\..\..\third_party\lwip-1.2.0\port\arch/cpu.h
+.\rvmdk\lmi_fs.o: ..\..\..\third_party\lwip-1.2.0\src\include\lwip/mem.h
+.\rvmdk\lmi_fs.o: ..\..\..\third_party\lwip-1.2.0\src\include\lwip/arch.h
+.\rvmdk\lmi_fs.o: ..\..\..\third_party\lwip-1.2.0\apps\httpd\fs.h
+.\rvmdk\lmi_fs.o: ..\..\..\third_party\lwip-1.2.0\apps\httpd\fsdata.h
+.\rvmdk\lmi_fs.o: ../../../utils/ustdlib.h
+.\rvmdk\lmi_fs.o: C:\workspace\Keil\ARM\RV31\INC\stdarg.h
+.\rvmdk\lmi_fs.o: lmi-fsdata.c
