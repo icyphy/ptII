@@ -435,7 +435,7 @@ void SysTickHandler(void)
 
   //RIT128x96x4StringDraw("in systick handler",            12,  0, 15);
   
-   systickseconds++;
+   seconds++;
 
 }
 
@@ -464,14 +464,14 @@ void Timer0IntHandler(void)
     //
     // Update the interrupt status on the display.
     //
-    IntMasterDisable();
+    /*IntMasterDisable();
 	//eightmicroseconds++;
   	if(tenthofsecond == 10)
   	{
    		seconds++;	/// if seconds are incremented here we'll have to limit the granularity
    		tenthofsecond = 0;
   	}
-
+	  */
 /*	nanoseconds++;
 	if(nanoseconds == 100000000)
 	{
@@ -482,7 +482,7 @@ void Timer0IntHandler(void)
 	}	*/
     //RIT128x96x4StringDraw(HWREGBITW(&g_ulFlags, 0) ? "1" : "0",        12, 36, 15);
 	
-    IntMasterEnable();
+    //IntMasterEnable();
 }
 
 //*****************************************************************************
@@ -861,8 +861,9 @@ void addEvent(Event* newEvent)
                 break;
         else {
             if (compare_event != before_event)
-                before_event = before_event->next;
-            compare_event = compare_event->next;
+		        before_event = before_event->next;
+			compare_event = compare_event->next;
+		
         }
     }
             
@@ -879,7 +880,7 @@ void addEvent(Event* newEvent)
 
         die("");
     }
-
+RIT128x96x4StringDraw("eaddE",   75,72,15);
 }
 
 /** 
@@ -1115,7 +1116,8 @@ void processEvents()
             	fireClock(SOURCE1, dummyEvent);
 			}
         }
-    }
+    RIT128x96x4StringDraw("bottomOfWhile", 12,72,15);
+	}
 }
  
 /**
@@ -1225,12 +1227,12 @@ void initializeSensor(Actor* this_sensor)     //this listens for the next signal
 {
 	long time;
     Event* myNewEvent;
- //RIT128x96x4StringDraw("start",   12,72,15);
+ RIT128x96x4StringDraw("start",   12,72,15);
 
 
 	myNewEvent = newEvent();
 
-//RIT128x96x4StringDraw("begin",   40,72,15);
+RIT128x96x4StringDraw("begin",   40,72,15);
 
 
     //get the current time
@@ -1243,20 +1245,20 @@ void initializeSensor(Actor* this_sensor)     //this listens for the next signal
     myNewEvent->thisValue.doubleValue = time;
     myNewEvent->actorToFire = this_sensor->nextActor1;
     myNewEvent->actorFrom = this_sensor;
-
+	RIT128x96x4StringDraw("**",   70,72,15);
     //now put the created event into the queue
     //BUT HOW DO I TRACK THE START OF THE EVENT QUEUE??? --global variable
-    addEvent(myNewEvent);
-
+   // addEvent(myNewEvent);
+	 RIT128x96x4StringDraw("??",   70,72,15);
     if (this_sensor->nextActor2 != NULL)
     {
         Event* newEvent2 = newEvent();
 		//*newEvent2 = *newEvent;     //Jia, I'm nto wure what this is for
         newEvent2->actorToFire = this_sensor->nextActor2;
-        addEvent(newEvent2);
+       addEvent(newEvent2);
     }
 
-//		RIT128x96x4StringDraw("end",   70,72,15);
+		RIT128x96x4StringDraw("end",   70,72,15);
 
  }
 
@@ -1302,8 +1304,8 @@ void setTimedInterrupt(long safeToProcessTime)
 }
 
 long getCurrentPhysicalTime() 
-{
-	return seconds;
+{  // returns seconds elapsed.. number of times the counter has rolled over.
+	return (seconds*8000000) + SysTickValueGet();
 }
 
 //*****************************************************************************
@@ -1362,11 +1364,11 @@ Event * newEvent(void)
 {
 RIT128x96x4StringDraw("bne",12,12,15);
 //RIT128x96x4StringDraw(itoa(locationCounter,10), 30,12,15);
-printf("location counter is %d",locationCounter);
+//printf("location counter is %d",locationCounter);
 	while(eventMemory[locationCounter].inUse != 36 )
 	{  
 	   ASSERT(locationCounter != 35)  // if you've run out of memory just stop
-	  printf("locationCounter %d",locationCounter);
+	//  printf("locationCounter %d",locationCounter);
 	   locationCounter++;
 	}
 	locationCounter%=35;  // make it circular
@@ -1529,22 +1531,18 @@ int main(void)
 
     actuator1.nextActor1 = NULL;
     actuator1.nextActor2 = NULL;
-	//printf("beforeinit/n");
+
     RIT128x96x4StringDraw("beforeinit", 12,24,15);
 
     initializeClock(&clock1);
-	RIT128x96x4StringDraw("afterinitClk", 12,36,15);
-	initializeSensor(&sensor2);
-	RIT128x96x4StringDraw("afterinitS2",   12,48,15);					  
- 	//initSensor(&sensor1);
-	RIT128x96x4StringDraw("afterinitS1",   12,60,15);
-    RIT128x96x4StringDraw("bPE",      12,65,15);
-	//printf("afterinit/n");
-  // processEvents();
+     RIT128x96x4StringDraw("afterinitClk", 12,36,15);
+	initializeSensor(&sensor1);
+	RIT128x96x4StringDraw("afterinitS1",   12,48,15);
+	RIT128x96x4StringDraw("!!!!!!!!!!!!!!!!!!!!",      12,72,15);					  
+ 	initilizeSensor(&sensor2);
+	RIT128x96x4StringDraw("afterinitS2",   12,60,15);
+      processEvents();
 
-   // RIT128x96x4StringDraw("afterprocessEvents", 12,48,15);
-	
-     
 	return 0;
 }
 
