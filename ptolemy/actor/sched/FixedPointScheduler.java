@@ -64,7 +64,7 @@ public class FixedPointScheduler extends Scheduler {
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    public FixedPointScheduler(FixedPointDirector container, String name)
+    public FixedPointScheduler(StaticSchedulingDirector container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
