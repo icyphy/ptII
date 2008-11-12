@@ -464,17 +464,20 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
                 code.append("static " + targetType(outputPort.getType()) + " "
                         + generateName(outputPort));
 
-                if (outputPort.isMultiport()) {
-                    code.append("[" + outputPort.getWidthInside() + "]");
-                }
+		// FIXME: Why is this different from the _generateInputVariableDeclaration?
+		// The code below produces Java that does not compile.  See
+		// ptolemy/codegen/java/actor/lib/colt/test/auto/ColtBinomialSelectorUnusedOutput.xml 
+                // if (outputPort.isMultiport()) {
+//                     code.append("[" + outputPort.getWidthInside() + "]");
+//                 }
 
-                int bufferSize = getBufferSize(outputPort);
+//                 int bufferSize = getBufferSize(outputPort);
 
-                if (bufferSize > 1) {
-                    code.append("[" + bufferSize + "]");
-                }
-                code.append(";" + _eol);
-            }
+//                 if (bufferSize > 1) {
+//                     code.append("[" + bufferSize + "]");
+//                 }
+                 code.append(";" + _eol);
+             }
         }
 
         return code.toString();

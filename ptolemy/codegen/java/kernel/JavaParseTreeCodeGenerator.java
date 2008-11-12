@@ -785,14 +785,19 @@ ParseTreeCodeGenerator {
             _evaluatedChildToken = value;
 
             String label = value.toString();
-
+	    System.out.println("JPTCG: label: " + label);
             if (label.startsWith("object(")) {
                 // If this is an ObjectToken, we only wants the label.
                 //_fireCode.append(label.substring(7, label.length() - 1));
                 _childCode = label.substring(7, label.length() - 1);
             } else {
-                //_fireCode.append(label);
-                _childCode = label;
+		// FIXME: handle the rest of the constants from data.expr.Constants
+		if (label.equals("Infinity")) {
+		    _childCode = "Double.POSITIVE_INFINITY";
+		} else {
+		    //_fireCode.append(label);
+		    _childCode = label;
+		}
             }
 
             return;
