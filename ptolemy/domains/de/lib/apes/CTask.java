@@ -45,10 +45,10 @@ public class CTask extends TypedAtomicActor implements Runnable {
     
     
     /** outgoing port to resource actors */
-    public IOPort resourceOutPort;
+    public IOPort toResourcePort;
     
     /** incoming port from resource actors */
-    public IOPort resourceInPort;
+    public IOPort fromResourcePort;
 
     
     public void fire() throws IllegalActionException { 
@@ -75,19 +75,24 @@ public class CTask extends TypedAtomicActor implements Runnable {
         }
         
         // parse resources
-        for (int channelId = 0; channelId < resourceInPort.getWidth(); channelId++) {
-            Receiver[] receivers = resourceInPort.getRemoteReceivers()[channelId];
-            if (receivers.length > 0) {
-                Receiver receiver = receivers[0];
-                
-                ArrayList channels = new ArrayList();
-                channels.add(channelId);
-                
-                _resources.put(((ResourceActor)receiver.getContainer().getContainer()), channels);
+        Collection<IOPort> sourcePorts = fromResourcePort.sourcePortList();
+        for (IOPort sourcePort : sourcePorts) {
+            Receiver[][] receivers = sourcePort.getRemoteReceivers();
+            for (int i = 0; i < receivers.length; i++ ) {
+                for (int j = 0; j < receivers[i].length; j++) {
+                    Receiver receiver = receivers[i][j];
+                    
+                    if (receiver.getContainer().getContainer().equals(this)) {
+                        ArrayList channels = new ArrayList();
+                        channels.add(i);
+                        
+                        _resources.put(((ResourceActor)sourcePort.getContainer()), channels);
+                    }
+                }
             }
         }
-        for (int channelId = 0; channelId < resourceOutPort.getWidth(); channelId++) {
-            Receiver[] receivers = resourceOutPort.getRemoteReceivers()[channelId];
+        for (int channelId = 0; channelId < toResourcePort.getWidth(); channelId++) {
+            Receiver[] receivers = toResourcePort.getRemoteReceivers()[channelId];
             if (receivers.length > 0) {
                 Receiver receiver = receivers[0];
                 
@@ -102,8 +107,8 @@ public class CTask extends TypedAtomicActor implements Runnable {
     public void run() { 
         while (true) { 
             try {  
-                for (int channelId = 0; channelId < resourceInPort.getWidth(); channelId++) {
-                    if (resourceInPort.hasToken(channelId)) { 
+                for (int channelId = 0; channelId < fromResourcePort.getWidth(); channelId++) {
+                    if (fromResourcePort.hasToken(channelId)) { 
                         
                         //callMethod();
                     }
@@ -133,7 +138,7 @@ public class CTask extends TypedAtomicActor implements Runnable {
         ResourceActor actor = _resources.keySet().iterator().next();
         int requestedResourceValue = 5;
         ResourceToken token = new ResourceToken(this, requestedResourceValue);
-        resourceOutPort.send(_resources.get(actor).get(1), token);
+        toResourcePort.send(_resources.get(actor).get(1), token);
         
     }
     
@@ -152,11 +157,11 @@ public class CTask extends TypedAtomicActor implements Runnable {
         _threadisactive = true;
         _thread.start();
         try {
-            resourceInPort = new TypedIOPort(this, "resourceTrigger", false, true);
-            resourceInPort.setMultiport(true);
+            fromResourcePort = new TypedIOPort(this, "fromResourcePort", true, false);
+            fromResourcePort.setMultiport(true);
     
-            resourceOutPort = new TypedIOPort(this, "triggerResource", true, false);
-            resourceOutPort.setMultiport(true);
+            toResourcePort = new TypedIOPort(this, "toResourcePort", false, true);
+            toResourcePort.setMultiport(true);
 
         } catch (IllegalActionException e) {
             // TODO Auto-generated catch block

@@ -10,6 +10,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -108,8 +109,10 @@ public abstract class ResourceActor extends TypedAtomicActor {
         try {
             input = new TypedIOPort(this, "input", true, false);
             input.setMultiport(true); 
+            input.setTypeEquals(BaseType.GENERAL);
             output = new TypedIOPort(this, "output", false, true);
             output.setMultiport(true);
+            output.setTypeEquals(BaseType.GENERAL);
         } catch (IllegalActionException ex) {
             ex.printStackTrace();
         } catch (NameDuplicationException ex) {

@@ -31,14 +31,14 @@ import ptolemy.kernel.util.Workspace;
  * @author Patricia Derler
  *
  */
-public class CPUResource extends ResourceActor {
+public class CPUScheduler extends ResourceActor {
 
     /** Construct an actor in the default workspace with an empty string
      *  as its name.  The object is added to the workspace directory.
      *  Increment the version number of the workspace.
      * @throws IllegalActionException 
      */
-    public CPUResource() {
+    public CPUScheduler() {
         super(); 
         _initialize();
     }
@@ -50,7 +50,7 @@ public class CPUResource extends ResourceActor {
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the entity.
      */
-    public CPUResource(Workspace workspace) {
+    public CPUScheduler(Workspace workspace) {
         super(workspace); 
         _initialize();
     }
@@ -67,7 +67,7 @@ public class CPUResource extends ResourceActor {
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public CPUResource(CompositeEntity container, String name)
+    public CPUScheduler(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name); 
         _initialize();
