@@ -209,13 +209,7 @@ public class FIR extends SDFTransformer {
 
             _reinitializeNeeded = true;
         } else if (attribute == taps) {
-            ArrayToken tapsToken = (ArrayToken) (taps.getToken());
-            _taps = tapsToken.arrayValue();
-
-            // Get a token representing zero in the appropriate type.
-            _zero = _taps[0].zero();
-
-            _reinitializeNeeded = true;
+            _initializeTaps();
         } else {
             super.attributeChanged(attribute);
         }
@@ -341,9 +335,24 @@ public class FIR extends SDFTransformer {
         _data = null;
         _reinitializeNeeded = true;
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    /** Initialize the taps.
+     *  @exception IllegalActionException If we can't get the token from
+     *  the parameter tabs.
+     *  
+     */
+    protected void _initializeTaps() throws IllegalActionException {
+        ArrayToken tapsToken = (ArrayToken) (taps.getToken());
+        _taps = tapsToken.arrayValue();
+
+        // Get a token representing zero in the appropriate type.
+        _zero = _taps[0].zero();
+
+        _reinitializeNeeded = true;
+    }    
 
     /** Initialize the type constraints for this actor. */
     protected void _initTypeConstraints() {

@@ -251,11 +251,13 @@ public class LMSAdaptive extends FIR {
         }
     }
 
-    /** Override the base class to initialize the taps to the initial values.
+    /** Override the base class to re initialize the taps
      *  @exception IllegalActionException If the superclass throws it.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        taps.setToken(initialTaps.getToken());
+        // Explicit call of _initializeTabs necessary, since this actor changes
+        // _taps while running.
+        _initializeTaps();        
     }
 }
