@@ -97,6 +97,39 @@ import java.util.List;
  an item to the workspace directory.  The methods for accessing
  the directory are all synchronized, so there is no risk of any
  thread reading an inconsistent state.
+ <p>
+ A major subtlety in using this class concerns acquiring a write
+ lock while holding a read lock. If a thread holds a read lock
+ and calls getWriteAccess(), if any other thread holds a read lock,
+ then the call to getWriteAccess() will block the calling thread
+ until those other read accesses are released. However, while
+ the thread is blocked, it yields its read permissions. This
+ prevents a deadlock from occurring, but it means that the
+ another thread may acquire write permission while the thread
+ is stalled and modify the model.  Specifically, the pattern
+ is:
+ <pre>
+     try {
+        _workspace.getReadAccess();
+        ... do things ...
+        try {
+           _workspace.getWriteAccess();
+           ... at this point, the structure of a model may have changed! ...
+           ... make my own changes knowing that the structure may have changed...
+        } finally {
+           _workspace.doneWriting();
+        }
+        ... continue doing things, knowing the model may have changed...
+     } finally {
+        _workspace.doneReading();
+     }
+  </pre>
+  Unfortunately, a user may acquire a read access and invoke a method
+  that, unknown to the user, acquires write access. For this reason, it
+  is very important to document methods that acquire write access, and
+  to avoid invoking them within blocks that hold read access. Note that
+  there is no difficulty acquiring read access from within a block
+  holding write access.
 
  @author Edward A. Lee, Mudit Goel, Lukito Muliadi, Xiaojun Liu
  @version $Id$
@@ -477,6 +510,7 @@ public final class Workspace implements Nameable, Serializable {
         // Go into an infinite 'while (true)' loop and check if this thread
         // can get a write access. If yes, then return, if not then perform
         // a wait() on the workspace.
+        int depth = 0;
         try {
             while (true) {
                 if (_writer == null) {
@@ -491,7 +525,8 @@ public final class Workspace implements Nameable, Serializable {
                         return;
                     }
                 }
-
+                // Use the version of wait() that releases read accesses while waiting.
+                depth = _releaseAllReadPermissions();
                 wait();
             }
         } catch (InterruptedException ex) {
@@ -500,6 +535,7 @@ public final class Workspace implements Nameable, Serializable {
                     + "write access: " + ex.getMessage());
         } finally {
             _waitingWriteRequests--;
+            _reacquireReadPermissions(depth);
 
             if ((_waitingWriteRequests == 0) && (_writer == null)) {
                 // Notify waiting readers.
@@ -594,6 +630,8 @@ public final class Workspace implements Nameable, Serializable {
 
         try {
             synchronized (obj) {
+                // FIXME: If obj != this, then the various calls to notifyAll()
+                // will not get to it!
                 obj.wait();
             }
         } finally {
@@ -756,10 +794,11 @@ public final class Workspace implements Nameable, Serializable {
         }
     }
 
-    // Return the AccessRecord object for the current thread.
-    // If the flag createNew is true and the current thread does not
-    // have an access record, then create a new one and return it.
-    // Set _lastReaderRecord to be the record returned.
+    /** Return the AccessRecord object for the specified thread.
+     *  If the flag createNew is true and the current thread does not
+     *  have an access record, then create a new one and return it.
+     *  Set _lastReaderRecord to be the record returned.
+     */
     private final AccessRecord _getAccessRecord(Thread current,
             boolean createNew) {
         //System.out.println("-- look up access record for "
