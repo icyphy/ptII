@@ -60,6 +60,8 @@ A prior implementation of Ptides was done with adependence on pthreads for the P
 \subsection{Scheduling Mechanisms}
 \subsubsection{Round-Robin Scheduling}
 \subsubsection{Earliest Deadline First}
+Instead of using one queue and sorting first based on deadline and then on timestamp, we opted to keep two seperate queues which each hold pointers to events. One queue holds events sorted in timestamp order and the other stores events in earliest deadline first order. We opted to keep the queue with the timestamp ordering to enable us to determine when an event is safe to process. We can know that if it is at the head of the timestamp order queue then it had the smallest timestamp and not other event will have an earlier timestamp.
+to enable the 
 
 
 others considered ... show results with different scheduling mechanisms.. one with first come first serve... another ewith earliest deadline first.. etc
