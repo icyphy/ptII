@@ -7,3 +7,26 @@ E:\workspace\eclipse\workspace\ptidesBareIron\PtidesOS\boards\ek-lm3s8962\Simple
 Project File Date:  11/11/2008
 
 <h2>Output:</h2>
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+SimplePtidesOS.c(1385): warning:  #550-D: variable "model_delay3" was set but never used
+SimplePtidesOS.c(1590): warning:  #223-D: function "FlashUserGet" declared implicitly
+SimplePtidesOS.c(1796): warning:  #68-D: integer conversion resulted in a change of sign
+SimplePtidesOS.c(1798): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(1802): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(1803): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(1804): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(1805): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(1815): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(1816): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(1819): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2144): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2199): warning:  #1-D: last line of file ends without a newline
+SimplePtidesOS.c(2190): warning:  #177-D: variable "g_pucBuf" was declared but never referenced
+SimplePtidesOS.c(1050): warning: C3017W: dummyEvent may be used before being set
+SimplePtidesOS.c(1083): warning: C3017W: dummyEvent may be used before being set
+SimplePtidesOS.c(1142): warning: C3017W: dummyEvent may be used before being set
+SimplePtidesOS.c(1288): warning: C3017W: dummyEvent may be used before being set
+linking...
+Program Size: Code=39892 RO-data=4376 RW-data=360 ZI-data=29040  
+".\Obj\Blinky.axf" - 0 Error(s), 18 Warning(s).
