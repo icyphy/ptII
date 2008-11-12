@@ -2876,8 +2876,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             "a channelNumber, port, and data (e.g. $send(0, output, 45).");
         }
 
-        ptolemy.codegen.c.actor.IOPort portHelper = 
-            (ptolemy.codegen.c.actor.IOPort) _getHelper(port);
+        PortCodeGenerator portHelper = (PortCodeGenerator) _getHelper(port);
 
         return portHelper.generateCodeForSend(channel, dataToken);
     }
@@ -2900,8 +2899,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             "a channelNumber, and a port (e.g. $get(0, output).");
         }
 
-        ptolemy.codegen.c.actor.IOPort portHelper = 
-            (ptolemy.codegen.c.actor.IOPort) _getHelper(port);
+        PortCodeGenerator portHelper = (PortCodeGenerator) _getHelper(port);
 
         return portHelper.generateCodeForGet(channel);
     }

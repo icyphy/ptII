@@ -796,10 +796,6 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
                     if (codeGenerators.size() == 0 || codeGenerator == null) {
                         // Add a codeGenerator
-                        // FIXME: This introduces a dependency to codegen.c
-                        // We should fix this by having a way to choose languages.
-                        //codeGenerator = new CCodeGenerator(toplevel,
-                        //        "CodeGenerator_AutoAdded");
 			Constructor codeGeneratorConstructor =
 			    generatorClass.getConstructor(new Class[] {
 				    NamedObj.class, 

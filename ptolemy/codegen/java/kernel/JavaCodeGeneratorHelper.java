@@ -102,6 +102,9 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
 
     public String codeGenType(Type type) {
 	String ptolemyType = super.codeGenType(type);
+	if (ptolemyType == null) {
+	    return null;
+	}
 	return ptolemyType.replace("Int", "Integer").replace("Array", "Token");
     }
 

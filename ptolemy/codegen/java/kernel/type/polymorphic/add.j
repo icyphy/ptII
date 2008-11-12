@@ -10,9 +10,9 @@ Token add_Array_Double(Token a1, double a2) {
 }
 /**/
 
-/*** add_Array_Int() ***/
-Token add_Int_Array(Token a1, int a2) {
-    return $add_Array_Int(a2, a1);
+/*** add_Array_Integer() ***/
+Token add_Integer_Array(Token a1, int a2) {
+    return $add_Array_Integer(a2, a1);
 }
 /**/
 
@@ -28,9 +28,9 @@ boolean add_Boolean_Boolean(boolean a1, boolean a2) {
 }
 /**/
 
-/*** add_Boolean_Int() ***/
-int add_Boolean_Int(boolean a1, int a2) {
-    return $add_Int_Boolean(a2, a1);
+/*** add_Boolean_Integer() ***/
+int add_Boolean_Integer(boolean a1, int a2) {
+    return $add_Integer_Boolean(a2, a1);
 }
 /**/
 
@@ -58,8 +58,8 @@ double add_Double_Double(double a1, double a2) {
 }
 /**/
 
-/*** add_Double_Int() ***/
-double add_Double_Int(double a1, int a2) {
+/*** add_Double_Integer() ***/
+double add_Double_Integer(double a1, int a2) {
     return a1 + a2;
 }
 /**/
@@ -77,42 +77,42 @@ Token add_Double_Token(double a1, Token a2) {
 }
 /**/
 
-/*** add_Int_Array() ***/
-Token add_Int_Array(int a1, Token a2) {
+/*** add_Integer_Array() ***/
+Token add_Integer_Array(int a1, Token a2) {
     int i;
     Token result = $new(Array(a2.payload.Array->size, 0));
 
     for (i = 0; i < a2.payload.Array->size; i++) {
-        Array_set(result, i, $add_Int_Token(a1, Array_get(a2, i)));
+        Array_set(result, i, $add_Integer_Token(a1, Array_get(a2, i)));
     }
     return result;
 }
 /**/
 
-/*** add_Int_Boolean() ***/
-int add_Int_Boolean(int a1, boolean a2) {
+/*** add_Integer_Boolean() ***/
+int add_Integer_Boolean(int a1, boolean a2) {
     return a1 + (a2 ? 1 : 0);
 }
 /**/
 
-/*** add_Int_Int() ***/
-int add_Int_Int(int a1, int a2) {
+/*** add_Integer_Integer() ***/
+int add_Integer_Integer(int a1, int a2) {
     return a1 + a2;
 }
 /**/
 
-/*** add_Int_String() ***/
-char* add_Int_String(int a1, char* a2) {
+/*** add_Integer_String() ***/
+char* add_Integer_String(int a1, char* a2) {
     char* string = (char*) malloc(sizeof(char) * (12 + strlen(a2)));
     sprintf((char*) string, "%d%s", a1, a2);
     return string;
 }
 /**/
 
-/*** add_Int_Token() ***/
-int add_Int_Token(int a1, Token a2) {
-    Token token = $new(Int, a1);
-    return $typeFunc(TYPE_Int::add(token, a2));
+/*** add_Integer_Token() ***/
+int add_Integer_Token(int a1, Token a2) {
+    Token token = $new(Integer, a1);
+    return $typeFunc(TYPE_Integer::add(token, a2));
 }
 /**/
 
@@ -158,9 +158,9 @@ char* add_String_Double(char* a1, double a2) {
 }
 /**/
 
-/*** add_String_Int() ***/
-char* add_String_Int(char* a1, int a2) {
-    return $add_Int_String(a2, a1);
+/*** add_String_Integer() ***/
+char* add_String_Integer(char* a1, int a2) {
+    return $add_Integer_String(a2, a1);
 }
 /**/
 
@@ -179,9 +179,9 @@ Token add_Token_Double(Token a1, double a2) {
 }
 /**/
 
-/*** add_Token_Int() ***/
-int add_Token_Int(Token a1, int a2) {
-    return $add_Int_Token(a2, a1);
+/*** add_Token_Integer() ***/
+int add_Token_Integer(Token a1, int a2) {
+    return $add_Integer_Token(a2, a1);
 }
 /**/
 
