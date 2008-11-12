@@ -32,8 +32,6 @@ import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.lib.jni.PointerToken;
-import ptolemy.codegen.kernel.CodeGenerator;
-import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.ParseTreeCodeGenerator;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BitwiseOperationToken;

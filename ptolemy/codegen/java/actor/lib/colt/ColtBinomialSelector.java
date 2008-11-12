@@ -29,7 +29,6 @@
 package ptolemy.codegen.java.actor.lib.colt;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 import ptolemy.kernel.util.IllegalActionException;

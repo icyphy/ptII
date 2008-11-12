@@ -85,11 +85,11 @@ Token Integer_multiply(Token thisToken, Token... tokens) {
         result = Integer_new((Integer)thisToken.payload * (Integer)otherToken.payload);
         break;
 
-//#ifdef TYPE_Double
+#ifdef TYPE_Double
     case TYPE_Double:
         result = Double_new((Integer)thisToken.payload * (Double)otherToken.payload);
         break;
-//#endif
+#endif
 
         // FIXME: not finished
     default:

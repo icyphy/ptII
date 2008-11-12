@@ -591,45 +591,46 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
     }
 
     protected String _replaceMacro(String macro, String parameter)
-            throws IllegalActionException {
-        String result = super._replaceMacro(macro, parameter);
+    throws IllegalActionException {
+    	String result = super._replaceMacro(macro, parameter);
 
-        if (result != null) {
-            return result;
-        }
+    	if (result != null) {
+    		if (macro.equals("cgType")) {
+    			return result.replace("Int", "Integer");
+    		}
+    		return result;
+    	}
 
-        if (macro.equals("include")) {
-            _includeFiles.add(parameter);
-            return "";
-        } else if (macro.equals("refinePrimitiveType")) {
-            TypedIOPort port = getPort(parameter);
+    	if (macro.equals("include")) {
+    		_includeFiles.add(parameter);
+    		return "";
+    	} else if (macro.equals("refinePrimitiveType")) {
+    		TypedIOPort port = getPort(parameter);
 
-            if (port == null) {
-                throw new IllegalActionException(parameter
-                        + " is not a port. $refinePrimitiveType macro takes in a port.");
-            }
-            if (isPrimitive(port.getType())) {
-                return ".payload/*jcgh*/." + codeGenType(port.getType());
-            } else {
-                return "";
-            }
-        } else if (macro.equals("cgType")) {
-	    return result.replace("Int", "Integer");
-	}  else if (macro.equals("lcCgType")) {
-	    String cgType = _replaceMacro("cgType", parameter);
-	    if (cgType.equals("Integer")) {
-		return "int";
-	    }
-	    return cgType.toLowerCase();
-        }
+    		if (port == null) {
+    			throw new IllegalActionException(parameter
+    					+ " is not a port. $refinePrimitiveType macro takes in a port.");
+    		}
+    		if (isPrimitive(port.getType())) {
+    			return ".payload/*jcgh*/." + codeGenType(port.getType());
+    		} else {
+    			return "";
+    		}
+    	}  else if (macro.equals("lcCgType")) {
+    		String cgType = _replaceMacro("cgType", parameter);
+    		if (cgType.equals("Integer")) {
+    			return "int";
+    		}
+    		return cgType.toLowerCase();
+    	}
 
-        // We will assume that it is a call to a polymorphic
-        // functions.
-        //String[] call = macro.split("_");
-        getCodeGenerator().markFunctionCalled(macro, this);
-        result = macro + "(" + parameter + ")";
+    	// We will assume that it is a call to a polymorphic
+    	// functions.
+    	//String[] call = macro.split("_");
+    	getCodeGenerator().markFunctionCalled(macro, this);
+    	result = macro + "(" + parameter + ")";
 
-        return result;
+    	return result;
     }
 
     ///////////////////////////////////////////////////////////////////

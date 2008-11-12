@@ -398,10 +398,10 @@ public class JavaCodeGenerator extends CodeGenerator {
         }
 
         // Set to true if we need the unsupportedFunction() method.
-        boolean defineUnsupportedTypeFunctionMethod = false;
+        //boolean defineUnsupportedTypeFunctionMethod = false;
 
         // Set to true if we need to scalarDelete() method.
-        boolean defineScalarDeleteMethod = false;
+        //boolean defineScalarDeleteMethod = false;
 
 //         // Append type-polymorphic functions included in the function table.
 //         for (int i = 0; i < types.size(); i++) {
@@ -885,9 +885,11 @@ public class JavaCodeGenerator extends CodeGenerator {
             String line = tokenizer.nextToken();
 	    if (line.indexOf("#") == -1) {
 		if (!okToPrint) {
-		    line = comment(line);
-		} 
-		code.append(line + _eol);		
+		    code.append("//" + line + _eol);
+		} else {
+		    // Use // style comments in case there is a /* .. */ comment.
+		    code.append(line + _eol);		
+		}
 	    } else {
 		line = line.trim();
 		int defineIndex = line.indexOf("#define");

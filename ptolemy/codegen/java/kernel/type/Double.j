@@ -71,11 +71,11 @@ Token Double_add(Token thisToken, ...) {
     	result = Double_new(thisToken.payload.Double + otherToken.payload.Double);
     	break;
     	
-//#ifdef TYPE_Array
+#ifdef TYPE_Array
     case TYPE_Array:
         result = $add_Double_Array(thisToken.payload.Double, otherToken);
         break;
-//#endif
+#endif
     
 	// FIXME: not finished
     default:
@@ -104,11 +104,11 @@ Token Double_subtract(Token thisToken, ...) {
     	result = Double_new(thisToken.payload.Double - otherToken.payload.Double);
     	break;
     	
-//#ifdef TYPE_Array
+#ifdef TYPE_Array
     case TYPE_Array:
         result = $subtract_Double_Array(thisToken.payload.Double, otherToken);
         break;
-//#endif
+#endif
     
 	// FIXME: not finished
     default:
@@ -132,17 +132,17 @@ Token Double_multiply(Token thisToken, Token... tokens) {
     case TYPE_Double:
         result = Double_new((Double)(thisToken.payload) * (Double)(otherToken.payload));
         break;
-//#ifdef TYPE_Integer
+#ifdef TYPE_Integer
     case TYPE_Integer:
         result = Double_new((Double)(thisToken.payload) * (Integer)otherToken.payload);
         break;
-//#endif
+#endif
 
-//#ifdef TYPE_Array
+#ifdef TYPE_Array
     case TYPE_Array:
         result = $multiply_Double_Array((Double)thisToken.payload, otherToken);
         break;
-//#endif
+#endif
 
         // FIXME: not finished
     default:

@@ -28,8 +28,6 @@
  */
 package ptolemy.codegen.java.actor.lib.conversions;
 
-import java.util.Set;
-
 import ptolemy.codegen.java.kernel.JavaCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 

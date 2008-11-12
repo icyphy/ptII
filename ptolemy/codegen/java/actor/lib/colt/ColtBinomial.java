@@ -28,7 +28,6 @@
  */
 package ptolemy.codegen.java.actor.lib.colt;
 
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 import ptolemy.kernel.util.IllegalActionException;
@@ -67,8 +66,7 @@ public class ColtBinomial extends ColtRandomSource {
      */
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
-        ptolemy.actor.lib.colt.ColtRandomSource actor = (ptolemy.actor.lib.colt.ColtRandomSource) getComponent();
-	_codeStream.appendCodeBlock("binomialInitBlock");
+	    _codeStream.appendCodeBlock("binomialInitBlock");
 
         return processCode(_codeStream.toString());
     }
