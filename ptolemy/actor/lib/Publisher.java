@@ -64,11 +64,11 @@ import ptolemy.kernel.util.Workspace;
  <p>
  It is an error to have two instances of Publisher using the same
  channel under the control of the same director. When you create a
- new Publisher, by default, it assigns a channel name that is unique.
- You can re-use channel names within opaque composite actors.
+ new Publisher, by default, it has no channel name. You have to
+ specify a channel name to use it.
  <p>
  This actor actually has a hidden output port that is connected
- to all subcribers via hidden "liberal links" (links that are
+ to all subscribers via hidden "liberal links" (links that are
  allowed to cross levels of the hierarchy).  Consequently,
  any data dependencies that the director might assume on a regular
  "wired" connection will also be assumed across Publisher-Subscriber
@@ -97,7 +97,6 @@ public class Publisher extends TypedAtomicActor {
         super(container, name);
 
         channel = new StringParameter(this, "channel");
-        channel.setExpression(_uniqueChannelName());
 
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
@@ -115,9 +114,9 @@ public class Publisher extends TypedAtomicActor {
 
     /** The name of the channel.  Subscribers that reference this same
      *  channel will receive any transmissions to this port.
-     *  This is a string that defaults to "channelX", where X is an
-     *  integer that ensures that this channel name does not collide
-     *  with a channel name already in use by another publisher.
+     *  This is a string that defaults to empty, indicating that
+     *  no channel is specified. A channel must be set before
+     *  the actor executes or an exception will occur.
      */
     public StringParameter channel;
 
@@ -224,9 +223,14 @@ public class Publisher extends TypedAtomicActor {
     /** Override the base class to ensure that links to subscribers
      *  have been updated.
      *  @exception IllegalActionException If there is already a publisher
-     *   publishing on the same channel.
+     *   publishing on the same channel, or if the channel name has not
+     *   been specified.
      */
     public void preinitialize() throws IllegalActionException {
+        if (_channel == null || _channel.trim().equals("")) {
+            throw new IllegalActionException(this,
+                    "No channel name has been specified.");
+        }
         // If this was created by instantiating a container class,
         // then the links would not have been updated when setContainer()
         // was called, so we must do it now.
@@ -236,8 +240,6 @@ public class Publisher extends TypedAtomicActor {
 	// Call super.preinitialize() after updating links so that
 	// we have connections made before possibly inferring widths.
         super.preinitialize();
-        _running = true;
-
     }
 
     /** If the new container is null, delete the named channel.
@@ -259,18 +261,7 @@ public class Publisher extends TypedAtomicActor {
             }
             _relation = null;
         }
-
         super.setContainer(container);
-    }
-
-    /** Override the base class to ensure to record that the actor
-     *  is no longer running.
-     *  @exception IllegalActionException If there is already a publisher
-     *   publishing on the same channel.
-     */
-    public void wrapup() throws IllegalActionException {
-        super.wrapup();
-        _running = false;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -279,7 +270,7 @@ public class Publisher extends TypedAtomicActor {
     /** Find subscribers.
      *  @return A list of subscribers.
      *  @exception IllegalActionException If there is already a publisher
-     *   using the same channel.
+     *   using the same channel, or if the channel name has not been set.
      */
     protected List _findSubscribers() throws IllegalActionException {
 	// This method is protected so that users can subclass this class
@@ -291,6 +282,10 @@ public class Publisher extends TypedAtomicActor {
             container = (CompositeEntity) container.getContainer();
         }
         if (container != null) {
+            if (_channel == null || _channel.trim().equals("")) {
+                throw new IllegalActionException(this,
+                        "No channel name has been specified.");
+            }
             Iterator actors = container.deepOpaqueEntityList().iterator();
             while (actors.hasNext()) {
                 Object actor = actors.next();
@@ -450,7 +445,4 @@ public class Publisher extends TypedAtomicActor {
 
     /** An indicator that connectionsChanged() has been called. */
     private boolean _inConnectionsChanged = false;
-
-    /** Indicator that preinitialize has been called and not wrapup. */
-    private boolean _running;
 }
