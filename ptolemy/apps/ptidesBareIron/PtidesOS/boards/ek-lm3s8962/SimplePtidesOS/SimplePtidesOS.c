@@ -63,13 +63,21 @@ volatile unsigned long Time;    // Time Counter (10ms)
 volatile unsigned char Buttons; // Button States
 volatile unsigned char TraceB;  // Trace Buttons
 Event eventMemory[35];
+int locationCounter;  // used by queueMemory access.. do not delete
 
-unsigned int locationCounter;
+
+//variables for debugging purposes
+char str[20];  // used for inttoascii conversion with sprintf
+unsigned int fireActorCount;
+unsigned int addeventcount;
+unsigned int clockfirecount;
+//end variables for debuggign purposes
 
 #define MAX_BUFFER_LIMIT 10
 #define CLOCK_PERIOD 100000
 
 Event* EVENT_QUEUE_HEAD = NULL;
+Event* DEADLINE_QUEUE_HEAD = NULL;
 int CK1_BUF_SIZE = 0;
 long CK1_TIME = 0;
 
@@ -262,8 +270,7 @@ void adjust_rx_timestamp(TimeInternal *psRxTime, unsigned long ulRxTime,
 //
 //unsigned long eightmicroseconds;	 // microseconds
 unsigned long seconds; // in seconds (currently set to be twice as fast as real-time)
-unsigned long systickseconds;
-unsigned long tenthofsecond;
+
 
 //*****************************************************************************
 //
@@ -317,23 +324,6 @@ __error__(char *pcFilename, unsigned long ulLine)
 {
 }
 #endif
-
-
- //implementation of itoa from (http://www.jb.man.ac.uk/~slowe/cpp/itoa.html)
-char* itoa(int val, int base){
-	
-	static char buf[32] = {0};
-	
-	int i = 30;
-	
-	for(; val && i ; --i, val /= base)
-	
-		buf[i] = "0123456789abcdef"[val % base];
-	
-	return &buf[i+1];
-	
-}
-
 
  //*****************************************************************************
 //
@@ -400,6 +390,39 @@ static void Delay(unsigned long ulSeconds)
     }
 }
 
+
+
+//*****************************************************************************
+//
+// The UART interrupt handler.
+//
+//*****************************************************************************
+/*void
+UARTIntHandler(void)
+{
+    unsigned long ulStatus;
+
+    //
+    // Get the interrrupt status.
+    //
+    ulStatus = UARTIntStatus(UART0_BASE, true);
+
+    //
+    // Clear the asserted interrupts.
+    //
+    UARTIntClear(UART0_BASE, ulStatus);
+
+    //
+    // Loop while there are characters in the receive FIFO.
+    //
+    while(UARTCharsAvail(UART0_BASE))
+    {
+        //
+        // Read the next character from the UART and write it back to the UART.
+        //
+        UARTCharPutNonBlocking(UART0_BASE, UARTCharGetNonBlocking(UART0_BASE));
+    }
+}*/
 
 //*****************************************************************************
 //
@@ -496,128 +519,131 @@ void Timer1IntHandler(void)
 }
 
 
-////*****************************************************************************
-////
-//// This is the handler for INT_GPIOA.  It simply saves the interrupt sequence
-//// number.
-////
-////*****************************************************************************
-//void IntGPIOa(void)
-//{
-//    //
-//    // Set PB0 high to indicate entry to this interrupt handler.
-//    //
-//    GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_0, GPIO_PIN_0);
+//*****************************************************************************
 //
-//    //
-//    // Put the current interrupt state on the LCD.
-//    //
-//    DisplayIntStatus();
+// This is the handler for INT_GPIOA.  It simply saves the interrupt sequence
+// number.
 //
-//    //
-//    // Wait two seconds.
-//    //
-//    Delay(2);
+//*****************************************************************************
+void IntGPIOa(void)
+{
+    //
+    // Set PB0 high to indicate entry to this interrupt handler.
+    //
+    GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_0, GPIO_PIN_0);
+
+    //
+    // Put the current interrupt state on the LCD.
+    //
+    DisplayIntStatus();
+
+    //
+    // Wait two seconds.
+    //
+    Delay(2);
+
+    //
+    // Save and increment the interrupt sequence number.
+    //
+    g_ulGPIOa = g_ulIndex++;
+
+    //
+    // Set PB0 low to indicate exit from this interrupt handler.
+    //
+    GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_0, 0);
+}
+
+//*****************************************************************************
 //
-//    //
-//    // Save and increment the interrupt sequence number.
-//    //
-//    g_ulGPIOa = g_ulIndex++;
+// This is the handler for INT_GPIOB.  It triggers INT_GPIOA and saves the
+// interrupt sequence number.
 //
-//    //
-//    // Set PB0 low to indicate exit from this interrupt handler.
-//    //
-//    GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_0, 0);
-//}
+//*****************************************************************************
+
+void IntGPIOb(void)
+{
+    //
+    // Set PB1 high to indicate entry to this interrupt handler.
+    //
+    GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_1, GPIO_PIN_1);
+
+    //
+    // Put the current interrupt state on the LCD.
+    //
+    DisplayIntStatus();
+
+    //
+    // Trigger the INT_GPIOA interrupt.
+    //
+    HWREG(NVIC_SW_TRIG) = INT_GPIOA - 16;
+
+    //
+    // Put the current interrupt state on the LCD.
+    //
+    DisplayIntStatus();
+
+    //
+    // Wait two seconds.
+    //
+    Delay(2);
+
+    //
+    // Save and increment the interrupt sequence number.
+    //
+    g_ulGPIOb = g_ulIndex++;
+
+    //
+    // Set PB1 low to indicate exit from this interrupt handler.
+    //
+    GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_1, 0);
+}
+
+//*****************************************************************************
 //
-////*****************************************************************************
-////
-//// This is the handler for INT_GPIOB.  It triggers INT_GPIOA and saves the
-//// interrupt sequence number.
-////
-////*****************************************************************************
+// This is the handler for INT_GPIOC.  It triggers INT_GPIOB and saves the
+// interrupt sequence number.
 //
-//void IntGPIOb(void)
-//{
-//    //
-//    // Set PB1 high to indicate entry to this interrupt handler.
-//    //
-//    GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_1, GPIO_PIN_1);
-//
-//    //
-//    // Put the current interrupt state on the LCD.
-//    //
-//    DisplayIntStatus();
-//
-//    //
-//    // Trigger the INT_GPIOA interrupt.
-//    //
-//    HWREG(NVIC_SW_TRIG) = INT_GPIOA - 16;
-//
-//    //
-//    // Put the current interrupt state on the LCD.
-//    //
-//    DisplayIntStatus();
-//
-//    //
-//    // Wait two seconds.
-//    //
-//    Delay(2);
-//
-//    //
-//    // Save and increment the interrupt sequence number.
-//    //
-//    g_ulGPIOb = g_ulIndex++;
-//
-//    //
-//    // Set PB1 low to indicate exit from this interrupt handler.
-//    //
-//    GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_1, 0);
-//}
-//
-////*****************************************************************************
-////
-//// This is the handler for INT_GPIOC.  It triggers INT_GPIOB and saves the
-//// interrupt sequence number.
-////
-////*****************************************************************************
-//void IntGPIOc(void)
-//{
-//    //
-//    // Set PB2 high to indicate entry to this interrupt handler.
-//    //
-//    GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_2, GPIO_PIN_2);
-//
-//    //
-//    // Put the current interrupt state on the LCD.
-//    //
-//    DisplayIntStatus();
-//
-//    //
-//    // Trigger the INT_GPIOB interrupt.
-//    //
-//    HWREG(NVIC_SW_TRIG) = INT_GPIOB - 16;
-//
-//    //
-//    // Put the current interrupt state on the LCD.
-//    //
-//    DisplayIntStatus();
-//
-//    //
-//    // Wait two seconds.
-//    //
-//    Delay(2);
-//
-//    //
-//    // Save and increment the interrupt sequence number.
-//    //
-//    g_ulGPIOc = g_ulIndex++;
-//
-//    //
-//    // Set PB2 low to indicate exit from this interrupt handler.
-//    //
-//    GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_2, 0);
-//}
+//*****************************************************************************
+void IntGPIOc(void)
+{
+    //
+    // Set PB2 high to indicate entry to this interrupt handler.
+    //
+    GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_2, GPIO_PIN_2);
+
+    //
+    // Put the current interrupt state on the LCD.
+    //
+    DisplayIntStatus();
+
+    //
+    // Trigger the INT_GPIOB interrupt.
+    //
+    HWREG(NVIC_SW_TRIG) = INT_GPIOB - 16;
+
+    //
+    // Put the current interrupt state on the LCD.
+    //
+    DisplayIntStatus();
+
+    //
+    // Wait two seconds.
+    //
+    Delay(2);
+
+    //
+    // Save and increment the interrupt sequence number.
+    //
+    g_ulGPIOc = g_ulIndex++;
+
+    //
+    // Set PB2 low to indicate exit from this interrupt handler.
+    //
+    GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_2, 0);
+}
+
+
+
 
 
 //*****************************************************************************
@@ -672,7 +698,9 @@ void fireActuator(Actor* this_actuator, Event* thisEvent)
 
 		// FIXME: do something!
     }
-    return;
+  
+	RIT128x96x4StringDraw("actuatorfired", 12,60,15);	   
+
 }
 
 /**
@@ -690,7 +718,7 @@ unsigned int alreadyFiring(Actor* actor) {
 void fireClock(Actor* this_clock, Event* thisEvent) {
 
 	long time = CK1_TIME;
-	Event* newEvent = (Event*) malloc(sizeof(Event));
+	Event* myNewEvent = newEvent();
 	//Event* new_event2;
 		    
     time += CLOCK_PERIOD;
@@ -699,24 +727,27 @@ void fireClock(Actor* this_clock, Event* thisEvent) {
     //since the event queue is ordered by orderTag, we these events to 
 	//execute now.
 	//However realTag is the real timestamp to appear at the output.
-    newEvent->thisValue.doubleValue = 0;
-    newEvent->Tag.timestamp = time;
-    newEvent->Tag.microstep = 0;   //FIXME
-    newEvent->actorToFire = this_clock->nextActor1;
-    newEvent->actorFrom = this_clock;
+    myNewEvent->thisValue.doubleValue = 0;
+    myNewEvent->Tag.timestamp = time;
+    myNewEvent->Tag.microstep = 0;   //FIXME
+    myNewEvent->actorToFire = this_clock->nextActor1;
+    myNewEvent->actorFrom = this_clock;
+	myNewEvent->name =2;
 
-    addEvent(newEvent);
+    addEvent(myNewEvent);
 	CK1_BUF_SIZE++;
 
     if (this_clock->nextActor2 != NULL) {
-        Event* newEvent2 = (Event*) malloc(sizeof(Event));
-		*newEvent2 = *newEvent;
+        Event* newEvent2 = newEvent();
+		*newEvent2 = *myNewEvent;
         newEvent2->actorToFire = this_clock->nextActor2;
         addEvent(newEvent2);
     }
 
-    //Do not need to call processEvents() in this case
-    //since processEvents() called fireClock
+	clockfirecount++;
+	RIT128x96x4StringDraw("clockfired", 12,12,15);
+	sprintf(str,"%d",clockfirecount);
+	RIT128x96x4StringDraw(str, 100,12,15);
     return;
 }
 
@@ -733,7 +764,7 @@ void initializeClock(Actor *this_clock)
 {
     long currentTime = getCurrentPhysicalTime();
 
-    Event* myNewEvent = newEvent();				/// I don't know if malloc is defined
+    Event* myNewEvent = newEvent();				
 
     //CLOCK_PERIOD specifies the period
     currentTime += CLOCK_PERIOD;   
@@ -744,20 +775,22 @@ void initializeClock(Actor *this_clock)
     myNewEvent->Tag.timestamp = currentTime;
     myNewEvent->Tag.microstep = 0;   //FIXME
     myNewEvent->thisValue.doubleValue = 0;
-    myNewEvent->actorToFire = this_clock->nextActor1;
+    myNewEvent->actorToFire = this_clock;//this_clock->nextActor1;
     myNewEvent->actorFrom = this_clock;
+	myNewEvent->name = 1;
 
     addEvent(myNewEvent);
 
 	CK1_TIME = currentTime;
-
+	/*
     if (this_clock->nextActor2 != NULL)
     {
         Event* newEvent2 = newEvent();
-		//*newEvent2 = *newEvent;    //Jia I'm  not sure what this line was attempting to do
+		*newEvent2 = *myNewEvent;    
         newEvent2->actorToFire = this_clock->nextActor2;
         addEvent(newEvent2);
-    }
+    } */
+	RIT128x96x4StringDraw("initclock", 12,12,15);
 }
 
 /**
@@ -778,6 +811,17 @@ void fireComputation(Actor* this_computation, Event* thisEvent)
 
 	double thisDouble;
 	Event* myNewEvent = newEvent();
+	int computation_delay=10000;
+	// I'm not sure if this is the correct think to do but I noticed that 
+	// the timestamp wasn't set for the new event that was created
+
+	myNewEvent->Tag.timestamp = thisEvent->Tag.timestamp + computation_delay;
+    myNewEvent->Tag.microstep = 0;   //FIXME
+    //myNewEvent->actorToFire = this_computation->nextActor1;
+    //myNewEvent->actorFrom = this_computation;
+
+	// this may need to be added to the sectoin that adds newEvent2
+	//end code I added in hopes that this will work
         
 	thisDouble = thisEvent->thisValue.doubleValue;
     thisDouble++;
@@ -791,11 +835,15 @@ void fireComputation(Actor* this_computation, Event* thisEvent)
 
     if (this_computation->nextActor2 != NULL)
     {
-        Event* newEvent2 = (Event*) malloc(sizeof(Event));
-		//*newEvent2= *newEvent;   //Jia I'm not sure what this line is supposed to do
+        Event* newEvent2 = newEvent();
+		*newEvent2= *myNewEvent;  
         newEvent2->actorToFire = this_computation->nextActor2;
         addEvent(newEvent2);
     }
+
+    RIT128x96x4StringDraw("computationFired",12,  24, 15);
+//	printf("computation fired\n");
+  return;
 }
 
 /**
@@ -817,14 +865,14 @@ void die(char *mess) {
  */
 void addEvent(Event* newEvent)
 {
-
+	
     Tag stampedTag = newEvent->Tag;
 
     //add an event
     Event *compare_event = EVENT_QUEUE_HEAD;
     Event *before_event  = EVENT_QUEUE_HEAD;
     //move across the link until we find an event with larger tag, or stop at the end.
-
+	addeventcount++;
     while (1)
 	{
         if (compare_event == NULL)
@@ -855,7 +903,10 @@ void addEvent(Event* newEvent)
 
         die("");
     }
-RIT128x96x4StringDraw("eaddE",   75,72,15);
+	RIT128x96x4StringDraw("addedEvent",   12,90,15);
+	sprintf(str,"%d",addeventcount);
+	RIT128x96x4StringDraw(str,   90,90,15);
+
 }
 
 /** 
@@ -871,6 +922,7 @@ void removeEvent()
 		//should I call freeEvent(EVENT_QUEUE_HEAD) here? I'm not sure.
 		freeEvent(EVENT_QUEUE_HEAD);
         EVENT_QUEUE_HEAD = EVENT_QUEUE_HEAD -> next;
+		//printf("Just removed an event\n");
     } 
     else printf("event queue is already empty\n");
 }
@@ -883,16 +935,19 @@ void executeEvent(){
 
     if (EVENT_QUEUE_HEAD == NULL) 
 	{
+	//	printf("attempting to execute an event but the event queue is empty. I'm going to call die now\n");
         die("EVENT_QUEUE_HEAD should never be NULL\n");
     }
     else 
 	{
         if (EVENT_QUEUE_HEAD->actorToFire == NULL)
 		{
+	//		printf("can't execute b/c actor to fire is null. I'm going to call die now \n");
             die("executing an event where the actors are NULL!!\n");
         }
         else 
 		{
+	//		printf("about to call fireActor on the event at the beginning of the event queue \n");
             fireActor(EVENT_QUEUE_HEAD);
         }
     }
@@ -905,17 +960,28 @@ void executeEvent(){
  */
 void fireActor(Event* currentEvent)
 {
-
+	
     Actor* fire_this = currentEvent->actorToFire;
+	//printf("inside fireActor\n");
 	//FIXME: USE THIS INSTEAD!! char temp_type[3] = fire_this->type;
-	if (fire_this->fireMethod != NULL) {
+	if (fire_this->fireMethod != NULL) 
+	{
+	//	printf("about to call the fire method of the fireActor \n");
+		RIT128x96x4StringDraw("abouttofire...", 12, 72, 15);
 		(fire_this->fireMethod)(fire_this, currentEvent);
+		RIT128x96x4StringDraw("justFired", 12, 72, 15);
 	} else {
+		//printf("actor I'm supposed to fire is null. calling die now. bye \n");
+		RIT128x96x4StringDraw("nullfiremethod", 12, 72, 15);
 		die("no such method, cannot fire\n");
 	}
 	fire_this->firing = 0;
-
-    return;
+	//printf("done firing the actor\n");
+    RIT128x96x4StringDraw("endFireActor", 12, 72, 15);
+	fireActorCount++;
+	sprintf(str,"%d",fireActorCount);
+	RIT128x96x4StringDraw(str, 85, 72, 15);
+    
 }
 
 /** 
@@ -926,28 +992,37 @@ void fireActor(Event* currentEvent)
  * Only possibility to add event is when it has more than one output.
  * A merge actor may have more than one input.
  */
-void fireMerge(Actor* this_merge, Event* thisEvent) {
+void fireMerge(Actor* this_merge, Event* thisEvent) 
+{
 
 //    printf("THIS IS THE FINAL OUTPUT OF THE MERGE Actor: \n");
 //    printf("MAKE SURE THE TagS OF THESE EVENTS ARE IN ORDER: the tag on the current value are: %.9d.%9.9d %i \n", 
 //		thisEvent->realTag.secs, thisEvent->Tag.nsecs, thisEvent->Tag.microstep);
 //    printf("THIS OUTPUT WAS FROM Actor: %c%c%c\n", 
 //		thisEvent->actorFrom->type[0], thisEvent->actorFrom->type[1], thisEvent->actorFrom->type[2]);
-
+	
 	Event* myNewEvent = newEvent();
-	*myNewEvent = *thisEvent;	    // why is this assignment done?
+	//printf("inside fireMerge \n");
+	*myNewEvent = *thisEvent;	    
     myNewEvent->actorToFire = this_merge->nextActor1;
     myNewEvent->actorFrom = this_merge;
+
 
 	addEvent(myNewEvent);
 
     if (this_merge->nextActor2 != NULL)
     {
         Event* newEvent2 = newEvent();
-		//*newEvent2 = *newEvent;     //Jia, I'm not sure what this is supposed to do
+		*newEvent2 = *myNewEvent;     
         newEvent2->actorToFire = this_merge->nextActor2;
         addEvent(newEvent2);
     }
+
+
+	RIT128x96x4StringDraw("mergeFired", 12,48,15);	   
+	//printf("mergeFired \n");
+	return;
+
 }
 
 /** 
@@ -965,6 +1040,8 @@ void fireMerge(Actor* this_merge, Event* thisEvent) {
 void fireModelDelay(Actor* this_model_delay, Event* thisEvent) {
 
 	unsigned int model_delay = 0;
+	
+
 /*
 	if (this_model_delay ->type[2] == '1') {
 		model_delay_secs = MODEL_DELAY1_SECS;
@@ -991,6 +1068,8 @@ void fireModelDelay(Actor* this_model_delay, Event* thisEvent) {
 */
 
 	Event* myNewEvent = newEvent();
+//	printf("inside fireModelDelay \n");
+//RIT128x96x4StringDraw("insidemodelDelayFired", 12,36,15);
 		
 	myNewEvent->Tag.timestamp = thisEvent->Tag.timestamp + model_delay;
     myNewEvent->Tag.microstep = 0;   //FIXME
@@ -1001,19 +1080,14 @@ void fireModelDelay(Actor* this_model_delay, Event* thisEvent) {
     if (this_model_delay->nextActor2 != NULL)
     {
         Event* newEvent2 = newEvent();
-		//*newEvent2 = *newEvent;    // Jia, I'm not sure what this is supposed to do
+		*newEvent2 = *myNewEvent;   
         newEvent2->actorToFire = this_model_delay->nextActor2;
         addEvent(newEvent2);
     }
-}
 
-/** determines whether the event to fire this current actor is of higher priority than
- * whatever even that's currently being executed.
- * FIXME: other than making sure this actor is not currently firing, we also need to make
- * sure the event to fire is not of higher priority.
- */
-unsigned int higherPriority(Actor* actor) {
-	return alreadyFiring(actor);
+	RIT128x96x4StringDraw("modelDelayFired", 12,36,15);
+//	printf("modelDelayFired");
+	 return;
 }
 
 void processEvents()
@@ -1023,57 +1097,70 @@ void processEvents()
     //  WHILE ANOTHER SENSOR MIGHT TRIGGER ANOTHER processEvents()
     //  IF ANOTHER processEvents() is currently being executed, we don't really need to have another being executed at the same time...
 	Actor* actor;
-	RIT128x96x4StringDraw("beginningPE", 12,72,15);
+	int whilecount = 0;
+	//RIT128x96x4StringDraw("beginningPE", 12,48,15);
+    //printf("at beginning of Process Events");
     while (1) 
 	{
+		whilecount++;
+		sprintf(str,"%d",whilecount);
+    	RIT128x96x4StringDraw("topOfWhile", 12,80,15);
+		RIT128x96x4StringDraw(str, 90,80,15);
         disableInterrupts();
         // If event queue is not empty.
-        if (EVENT_QUEUE_HEAD != NULL) {
-            Event* event = EVENT_QUEUE_HEAD;
-            // Check which actor produced the event that we have processed
-			actor = event->actorFrom;
-			// FIXME: since there is only one instance of processing events running, we don't need
-			// the check for alreadyFiring(), in other words, alreadyFiring should always be false.
-			if (higherPriority(actor) == 1) {
-				//enableInterrupts();
-				//break;
-				die("this is the base processEvents routine, should not have another event of higher priority.");
-			} else {
-	            long processTime = safeToProcess(event);
-	            if (getCurrentPhysicalTime() >= processTime) {
-	                removeEvent();
-					currentlyFiring(actor);
-	                enableInterrupts();
-	                // Execute the event. During
-	                // this process more events may
-	                // be posted to the queue.
-	                fireActor(event);
-					free(event);
-	                // If the event just executed is
-	                // produced by a source actor
-	                if (actor->sourceActor != 0) {
+        		if (EVENT_QUEUE_HEAD != NULL) 
+				 {
+           			Event* event = EVENT_QUEUE_HEAD;
+
+	                actor = event->actorFrom;
+			        // FIXME: since there is only one instance of processing events running, we don't need
+			        // the check for alreadyFiring(), in other words, alreadyFiring should always be false.
+			        if (alreadyFiring(actor)) 
+			        {
+				    // not sure what should be in here
+				    enableInterrupts();
+				    RIT128x96x4StringDraw("alreadyfiring", 0,0,15);
+					die("alreadyFiring should always be false within processEvents()");
+					break;
+					}
+				   else
+				   {
+				 	 long processTime = safeToProcess(event);
+	            	 if (getCurrentPhysicalTime() >= processTime) 
+					 {       
+	               	  removeEvent();
+	               	  enableInterrupts();
+	                  fireActor(event);
+		      		  freeEvent(event);
+	                  // If the event just executed is
+	                  // produced by a source actor
+	                 /* if (actor->sourceActor != 0) 
+					  {
 	                    // Decrement the buffer size
 	                    // by one.
-						if (actor == SOURCE1) {
+						if (actor == SOURCE1) 
+						{
 	                    	CK1_BUF_SIZE--;
 						}
 	                    // Make sure sourceBuffer is
 	                    // non-empty. If it is, fire
 	                    // the source actor once to
 	                    // produce some events.
-	                    if (CK1_BUF_SIZE == 0) {
+	                    if (CK1_BUF_SIZE == 0) 
+						{
 							//dummyEVent is never used.
 							Event* dummyEvent;
 	                        fireClock(SOURCE1, dummyEvent);
 							// firing of the actor should update the number of events in the buffer
 	                    }
-	                }
-	            }
-	            else {
+	                  }*/
+					 }//end if currentPhysicalTime >= processTime
+					 else 
+			    	{
 	                // There are no events safe to
 	                // process, so setup sources
 	                // to process.
-	                STOP_SOURCE_PROCESS = FALSE;
+	                //STOP_SOURCE_PROCESS = FALSE;
 	                // Set timed interrupt to run
 	                // the event at the top of the
 	                // event queue when physical time
@@ -1081,27 +1168,41 @@ void processEvents()
 	                // safe to process
 	                setTimedInterrupt(processTime);
 	                enableInterrupts();
-	            }
-			}
-        } else {
-            // There are no events safe to
-            // process, so setup sources
-            // to process.
-            STOP_SOURCE_PROCESS = FALSE;
-            enableInterrupts();
-        }
-        // If there is no event to process and we
+	            	}// end !(curentPhysicalTime >= processTime)
+
+					}//end else notalreadyfiring
+				 }//end EVENT_QUEUE_HEAD != NULL
+				 else 
+				 {
+           		   // There are no events safe to
+            	   // process, so setup sources
+            	   // to process.
+            	   //STOP_SOURCE_PROCESS = FALSE;
+            	   enableInterrupts();
+        		}
+	           
+			
+		// If there is no event to process and we
         // have not reached the buffer limit, fire
         // the source actor.
         // for (each source actors a) {
-        if (STOP_SOURCE_PROCESS == FALSE) {
-			if (CK1_BUF_SIZE < MAX_BUFFER_LIMIT) {
-				Event* dummyEvent;
-            	fireClock(SOURCE1, dummyEvent);
+        if (STOP_SOURCE_PROCESS == FALSE) 
+        {
+			if (CK1_BUF_SIZE < MAX_BUFFER_LIMIT) 
+             {
+		     	Event* dummyEvent;
+            	//fireClock(SOURCE1, dummyEvent);   
 			}
         }
-    RIT128x96x4StringDraw("bottomOfWhile", 12,72,15);
-	}
+
+      
+	  }//end while(1)
+//		whilecount++;
+//		sprintf(str,"%d",whilecount);
+//    RIT128x96x4StringDraw("bottomOfWhile", 12,80,15);
+//	RIT128x96x4StringDraw(str, 90,80,15);
+   //printf("at bottom of while loop in process Events");
+
 }
  
 /**
@@ -1112,27 +1213,34 @@ void processEvents()
  * Also, maybe we should have a seperate event queue for events generated here...? Depends on what we really want.
  */
 processAvailableEvents()
-{
+{  // should this be given a parameter for the event that was just created in the ISR that calls this function?
+   // I am possibly wrong... but I thought the reason for having this was to check to see if its safe to process the event just generated
 
     //  To ensure this function is thread safe, we make sure only one processEvents() IS BEING EXECUTED AT A TIME
     //  WHILE ANOTHER SENSOR MIGHT TRIGGER ANOTHER processEvents()
     //  IF ANOTHER processEvents() is currently being executed, we don't really need to have another being executed at the same time...
 	Actor* actor;
-
-    while (1) {
+	//printf("inside processAvalaibleEvents\n");
+    while (1) 
+	{
         disableInterrupts();
         // If event queue is not empty.
-        if (EVENT_QUEUE_HEAD != NULL) {
+        if (EVENT_QUEUE_HEAD != NULL) 
+		{
             Event* event = EVENT_QUEUE_HEAD;
             // Check which actor produced the event that we have processed			
 			actor = event->actorFrom;
 			// FIXME: ALSO check if an event is of higher priority here.
-			if (higherPriority(actor) == 1) {
+			if (alreadyFiring(actor))//||highestPriority())
+			{
 				enableInterrupts();
 				break;
-			} else {
+			} 
+			else 
+			{
 	            long processTime = safeToProcess(event);
-	            if (getCurrentPhysicalTime() >= processTime) {
+	            if (getCurrentPhysicalTime() >= processTime) 
+				{
 	                removeEvent();
 					currentlyFiring(actor);
 	                enableInterrupts();
@@ -1140,7 +1248,7 @@ processAvailableEvents()
 	                // this process more events may
 	                // be posted to the queue.
 	                fireActor(event);
-					free(event);
+					freeEvent(event);
 	                // If the event just executed is
 	                // produced by a source actor
 	                if (actor->sourceActor != 0) {
@@ -1207,18 +1315,11 @@ processAvailableEvents()
  * Initialize the sensor actor to setup receiving function through another 
  * thread, it then create a new event and calls processEvent()
  */
-void fireSensor(Actor* this_sensor)     //this listens for the next signal to sense again
+void initializeSensor(Actor* this_sensor)     //this listens for the next signal to sense again
 {
 	long time;
     Event* myNewEvent;
- RIT128x96x4StringDraw("start",   12,72,15);
-
-
-	myNewEvent = newEvent();
-
-RIT128x96x4StringDraw("begin",   40,72,15);
-
-
+ 	myNewEvent = newEvent();
     //get the current time
     time = getCurrentPhysicalTime();
 
@@ -1227,22 +1328,20 @@ RIT128x96x4StringDraw("begin",   40,72,15);
     myNewEvent->Tag.timestamp = time;
     myNewEvent->Tag.microstep = 0;	//FIXEM
     myNewEvent->thisValue.doubleValue = time;
-    myNewEvent->actorToFire = this_sensor->nextActor1;
+    myNewEvent->actorToFire = this_sensor;//this_sensor->nextActor1;
     myNewEvent->actorFrom = this_sensor;
-	RIT128x96x4StringDraw("**",   70,72,15);
+	
     //now put the created event into the queue
     //BUT HOW DO I TRACK THE START OF THE EVENT QUEUE??? --global variable
-   // addEvent(myNewEvent);
-	 RIT128x96x4StringDraw("??",   70,72,15);
-    if (this_sensor->nextActor2 != NULL)
+    addEvent(myNewEvent);
+    /*if (this_sensor->nextActor2 != NULL)
     {
         Event* newEvent2 = newEvent();
-		//*newEvent2 = *newEvent;     //Jia, I'm nto wure what this is for
+		*newEvent2 = *myNewEvent;     
         newEvent2->actorToFire = this_sensor->nextActor2;
        addEvent(newEvent2);
-    }
-
-		RIT128x96x4StringDraw("end",   70,72,15);
+    } */
+		RIT128x96x4StringDraw("initsensor", 12,12,15);
 
  }
 
@@ -1279,21 +1378,24 @@ long safeToProcess(Event* thisEvent)
 
 void setActuationInterrupt(long actuationTime) 
 {
+	//printf("I should set an actuation interrupt here \n");
 	return;
 }
 
 void setTimedInterrupt(long safeToProcessTime) 
 {
+// should I just set the timer interrupt here and go to sleep until I get sensor input or the time had come for the timer to happen?
+	//printf("I should set a timer interrupt here \n");
 	return;
 }
 
-long getCurrentPhysicalTime() 
+long long getCurrentPhysicalTime() 
 {  // returns seconds elapsed.. number of times the counter has rolled over.
-	return (seconds*8000000) + SysTickValueGet();
+	return (seconds*8000000) + (8000000-SysTickValueGet());
 }
 
 //*****************************************************************************
-// FIXME: I need to decide what the UARET is really for, or maybe I should just get rid of it?
+//
 // The UART interrupt handler.
 //
 //*****************************************************************************
@@ -1346,7 +1448,7 @@ void enableInterrupts() {
 
 Event * newEvent(void)
 {
-RIT128x96x4StringDraw("bne",12,12,15);
+//RIT128x96x4StringDraw("bne",75,12,15);
 //RIT128x96x4StringDraw(itoa(locationCounter,10), 30,12,15);
 //printf("location counter is %d",locationCounter);
 	while(eventMemory[locationCounter].inUse != 36 )
@@ -1357,6 +1459,7 @@ RIT128x96x4StringDraw("bne",12,12,15);
 	}
 	locationCounter%=35;  // make it circular
 //	RIT128x96x4StringDraw(itoa(locationCounter,10), 0,0,15);
+//printf("about to return an event that can be reused from queueMemory");
 	return &eventMemory[locationCounter];
 	
 }
@@ -1364,6 +1467,7 @@ RIT128x96x4StringDraw("bne",12,12,15);
 void freeEvent(Event * thisEvent)
 {
 	eventMemory[thisEvent->inUse].inUse = 36;
+//	printf("just set an event to not in use in queueMemory");
 
 }
 void initializeMemory()
@@ -1386,8 +1490,7 @@ void initializeMemory()
  */
 int main(void)
 {
-
-    //**************************************************
+  	//**************************************************
     //Declare all actors
     Actor sensor1;
 	Actor sensor2;
@@ -1400,8 +1503,10 @@ int main(void)
 	Actor model_delay2;
     Actor model_delay3;
     Actor actuator1;
-	locationCounter=0;
 
+	fireActorCount = 0;
+	addeventcount = 0;	
+	clockfirecount = 0;
 	/*************************************************************************/
 	// Utilities to setup interrupts
     //
@@ -1420,7 +1525,8 @@ int main(void)
     // Initialize the OLED display and write status.
     //
     RIT128x96x4Init(1000000);
-    RIT128x96x4StringDraw("PtidyRTOS",            36,  0, 15);
+    RIT128x96x4StringDraw("PtidyRTOSv0.1",            36,  0, 15);
+  //  printf("PtidyRTOSv0.1\n");	
 
 	//
     // Enable processor interrupts.
@@ -1465,28 +1571,25 @@ int main(void)
     //
     TimerEnable(TIMER0_BASE, TIMER_A);
     //TimerEnable(TIMER1_BASE, TIMER_A);
-	IEEE1588Init();
-
-	interruptInit();
-	
+//	RIT128x96x4StringDraw("beforeinit", 12,24,15);
+	//IEEE1588Init();     //when this is uncommented I don't see the ouptut below..
+	//RIT128x96x4StringDraw("AIEEEinit", 36,24,15);	   
 	initializeMemory();
 	
 	SOURCE1 = &clock1;
-	SENSOR1 = &sensor1;
-	SENSOR2 = &sensor2;
 
 	clock1.fireMethod = fireClock;
 
 	computation1.fireMethod = fireComputation;
 
 	computation2.fireMethod = fireComputation;
-
+	 
 	computation3.fireMethod = fireComputation;
-
+	
 	model_delay1.fireMethod = fireModelDelay;
 
 	model_delay2.fireMethod = fireModelDelay;
-
+   
 	model_delay3.fireMethod = fireModelDelay;	// should model delay be used in this example?
 
 	merge1.fireMethod = fireMerge;
@@ -1511,8 +1614,10 @@ int main(void)
     
     clock1.nextActor1 = &computation3;
     clock1.nextActor2 = NULL;
-    computation3.nextActor1 = &merge1;
+    computation3.nextActor1 = &model_delay3;
     computation3.nextActor2 = NULL;
+	model_delay3.nextActor1 = &merge1;
+	model_delay3.nextActor2 = NULL;
     
     merge1.nextActor1 = &actuator1;
     merge1.nextActor2 = NULL;
@@ -1520,17 +1625,18 @@ int main(void)
     actuator1.nextActor1 = NULL;
     actuator1.nextActor2 = NULL;
 
-    RIT128x96x4StringDraw("beforeinit", 12,24,15);
+    
 
     initializeClock(&clock1);
-     RIT128x96x4StringDraw("afterinitClk", 12,36,15);
-	//fireSensor(&sensor1);
-	RIT128x96x4StringDraw("afterinitS1",   12,48,15);
-	RIT128x96x4StringDraw("!!!!!!!!!!!!!!!!!!!!",      12,72,15);					  
- 	//fireSensor(&sensor2);
-	RIT128x96x4StringDraw("afterinitS2",   12,60,15);
+   // RIT128x96x4StringDraw("afterinitClk", 12,36,15);
+	//initializeSensor(&sensor1);
+	//RIT128x96x4StringDraw("afterinitS1",   12,48,15);
+	//RIT128x96x4StringDraw("!!!!!!!!!!!!!!!!!!!!",      12,72,15);					  
+ 	//initializeSensor(&sensor2);
+	//RIT128x96x4StringDraw("afterinitS2",   12,60,15);
+	//RIT128x96x4StringDraw("beforePE",   12,36,15);	
     processEvents();
-
+	 
 	return 0;
 }
 
@@ -2217,334 +2323,3 @@ const char *g_ppcMonth[12] =
     "Jan", "Feb", "Mar", "Apr", "May", "Jun",
     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
 };
-
-void interruptInit(void) {
-	//
-    // Enable the interrupts.
-    //
-    IntEnable(INT_GPIOA);
-    IntEnable(INT_GPIOB);
-    IntEnable(INT_GPIOC); 	
-	IntEnable(INT_GPIOD); 	
-	IntEnable(INT_GPIOE); 	
-	IntEnable(INT_GPIOF); 	
-	IntEnable(INT_GPIOG);
-	
-	//
-    // Set the interrupt priorities so they are all equal.
-    // Even though they are set to different values, there is actually a strict
-	// priority among them. B > C > D > ... > G, where B > C means B is of higher
-	// priority.
-	// A, which is in charge of triggering and allocating to different interrupts
-	// has the highest priority among them all, but the timer  should still have higher
-	// priority than A, though the timer interrupt should trigger A.
-	// Here, only the first 3 bits of the priority is looked at, i.e., 0x20 = 0010 0000 = 001
-	// 0x40 = 0100 0000 = 010.
-    IntPrioritySet(INT_GPIOA, 0x20);
-    IntPrioritySet(INT_GPIOB, 0x40);
-    IntPrioritySet(INT_GPIOC, 0x40);
-	IntPrioritySet(INT_GPIOD, 0x40);
-	IntPrioritySet(INT_GPIOE, 0x40);
-	IntPrioritySet(INT_GPIOF, 0x40);
-	IntPrioritySet(INT_GPIOG, 0x40);
-
- 
-}
-
-//*****************************************************************************
-//
-// This is the handler for INT_GPIOB. 
-// IntGPIOa would trigger this.
-//
-//*****************************************************************************
-void
-IntGPIOg(void)
-{
-
-    // Not necessarily needed.
-    // Set PD2 high to indicate entry to this interrupt handler.
-    //
-    GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_2, GPIO_PIN_2);
-
-    // Not necessarily needed.
-    // Put the current interrupt state on the OLED.
-    //
-    DisplayIntStatus();
-
-	// fire the event sent by GPIOa.
-    (*IntFuncPtr[1])(IntActorArg[1]);
-	 
-    //
-    // Trigger the INT_GPIOB interrupt.
-    //
-    HWREG(NVIC_SW_TRIG) = DynamicInterrupts[InterruptPriorityLevel] - 16;
-	InterruptPriorityLevel++;
-
-    //
-    // Put the current interrupt state on the OLED.
-    //
-    DisplayIntStatus();
-
-    // Not necessary
-    // Set PD2 low to indicate exit from this interrupt handler.
-    //
-    GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_2, 0);
-
-	InterruptPriorityLevel--;
-}
-
-//*****************************************************************************
-//
-// This is the handler for INT_GPIOB. 
-// IntGPIOa would trigger this.
-//
-//*****************************************************************************
-void
-IntGPIOf(void)
-{
-
-    // Not necessarily needed.
-    // Set PD2 high to indicate entry to this interrupt handler.
-    //
-    GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_2, GPIO_PIN_2);
-
-    // Not necessarily needed.
-    // Put the current interrupt state on the OLED.
-    //
-    DisplayIntStatus();
-
-	// fire the event sent by GPIOa.
-    (*IntFuncPtr[2])(IntActorArg[2]);
-	 
-    //
-    // Trigger the INT_GPIOB interrupt.
-    //
-    HWREG(NVIC_SW_TRIG) = DynamicInterrupts[InterruptPriorityLevel] - 16;
-	InterruptPriorityLevel++;
-
-    //
-    // Put the current interrupt state on the OLED.
-    //
-    DisplayIntStatus();
-
-    // Not necessary
-    // Set PD2 low to indicate exit from this interrupt handler.
-    //
-    GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_2, 0);
-
-	InterruptPriorityLevel--;
-}
-
-//*****************************************************************************
-//
-// This is the handler for INT_GPIOB. 
-// IntGPIOa would trigger this.
-//
-//*****************************************************************************
-void
-IntGPIOe(void)
-{
-
-    // Not necessarily needed.
-    // Set PD2 high to indicate entry to this interrupt handler.
-    //
-    GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_2, GPIO_PIN_2);
-
-    // Not necessarily needed.
-    // Put the current interrupt state on the OLED.
-    //
-    DisplayIntStatus();
-
-	// fire the event sent by GPIOa.
-    (*IntFuncPtr[3])(IntActorArg[3]);
-	 
-    //
-    // Trigger the INT_GPIOB interrupt.
-    //
-    HWREG(NVIC_SW_TRIG) = DynamicInterrupts[InterruptPriorityLevel] - 16;
-	InterruptPriorityLevel++;
-
-    //
-    // Put the current interrupt state on the OLED.
-    //
-    DisplayIntStatus();
-
-    // Not necessary
-    // Set PD2 low to indicate exit from this interrupt handler.
-    //
-    GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_2, 0);
-
-	InterruptPriorityLevel--;
-}
-
-//*****************************************************************************
-//
-// This is the handler for INT_GPIOB. 
-// IntGPIOa would trigger this.
-//
-//*****************************************************************************
-void
-IntGPIOd(void)
-{
-
-    // Not necessarily needed.
-    // Set PD2 high to indicate entry to this interrupt handler.
-    //
-    GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_2, GPIO_PIN_2);
-
-    // Not necessarily needed.
-    // Put the current interrupt state on the OLED.
-    //
-    DisplayIntStatus();
-
-	// fire the event sent by GPIOa.
-    (*IntFuncPtr[4])(IntActorArg[4]);
-	 
-    //
-    // Trigger the INT_GPIOB interrupt.
-    //
-    HWREG(NVIC_SW_TRIG) = DynamicInterrupts[InterruptPriorityLevel] - 16;
-	InterruptPriorityLevel++;
-
-    //
-    // Put the current interrupt state on the OLED.
-    //
-    DisplayIntStatus();
-
-    // Not necessary
-    // Set PD2 low to indicate exit from this interrupt handler.
-    //
-    GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_2, 0);
-
-	InterruptPriorityLevel--;
-}
-
-//*****************************************************************************
-//
-// This is the handler for INT_GPIOB. 
-// IntGPIOa would trigger this.
-//
-//*****************************************************************************
-void
-IntGPIOc(void)
-{
-
-    // Not necessarily needed.
-    // Set PD2 high to indicate entry to this interrupt handler.
-    //
-    GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_2, GPIO_PIN_2);
-
-    // Not necessarily needed.
-    // Put the current interrupt state on the OLED.
-    //
-    DisplayIntStatus();
-
-	// fire the event sent by GPIOa.
-    (*IntFuncPtr[5])(IntActorArg[5]);
-	 
-    //
-    // Trigger the INT_GPIOB interrupt.
-    //
-    HWREG(NVIC_SW_TRIG) = DynamicInterrupts[InterruptPriorityLevel] - 16;
-	InterruptPriorityLevel++;
-
-    //
-    // Put the current interrupt state on the OLED.
-    //
-    DisplayIntStatus();
-
-    // Not necessary
-    // Set PD2 low to indicate exit from this interrupt handler.
-    //
-    GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_2, 0);
-
-	InterruptPriorityLevel--;
-}
-
-//*****************************************************************************
-//
-// This is the handler for INT_GPIOB. 
-// IntGPIOa would trigger this.
-//
-//*****************************************************************************
-void
-IntGPIOb(void)
-{
-
-    // Not necessarily needed.
-    // Set PD2 high to indicate entry to this interrupt handler.
-    //
-    GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_2, GPIO_PIN_2);
-
-    // Not necessarily needed.
-    // Put the current interrupt state on the OLED.
-    //
-    DisplayIntStatus();
-
-	// fire the event sent by GPIOa.
-    (*IntFuncPtr[6])(IntActorArg[6]);
-	 
-    //
-    // Trigger the INT_GPIOB interrupt.
-    //
-    HWREG(NVIC_SW_TRIG) = DynamicInterrupts[InterruptPriorityLevel] - 16;
-	InterruptPriorityLevel++;
-
-    //
-    // Put the current interrupt state on the OLED.
-    //
-    DisplayIntStatus();
-
-    // Not necessary
-    // Set PD2 low to indicate exit from this interrupt handler.
-    //
-    GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_2, 0);
-
-	InterruptPriorityLevel--;
-}
-
-//*****************************************************************************
-//
-// This is the handler for INT_GPIOA. 
-// Whenver a sensor senses data and triggers interrupt, GPIOA is called.
-// It triggers INT_GPIO{B..G} and keeps track how many interrupts it has allocated.
-//
-//*****************************************************************************
-void
-IntGPIOa(void)
-{
-	// We disable interrupt here to make sure only this current triggered ISR
-	// updates InterruptPriorityLevel, though this may not be necessary.
-	disableInterrupts();
-    // Not necessarily needed.
-    // Set PD2 high to indicate entry to this interrupt handler.
-    //
-    GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_2, GPIO_PIN_2);
-
-    // Not necessarily needed.
-    // Put the current interrupt state on the OLED.
-    //
-    DisplayIntStatus();
-
-	// set the correct function pointer
-	IntFuncPtr[InterruptPriorityLevel] = &fireSensor;
-	// FIXME: HOW DO I ACTUALLY TELL WHERE THIS INTERRUPT CAME FROM?
-	IntActorArg[InterruptPriorityLevel] = SENSOR1;
-	 
-    //
-    // Trigger the INT_GPIOB interrupt.
-    //
-    HWREG(NVIC_SW_TRIG) = DynamicInterrupts[InterruptPriorityLevel] - 16;
-	InterruptPriorityLevel++;
-
-    //
-    // Put the current interrupt state on the OLED.
-    //
-    DisplayIntStatus();
-
-    // Not necessary
-    // Set PD2 low to indicate exit from this interrupt handler.
-    //
-    GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_2, 0);
-	enableInterrupts();
-}
