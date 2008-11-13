@@ -52,3 +52,4 @@ void IEEE1588Init(void);
 Event* newEvent(void);
 void freeEvent(Event*);
 void initializeMemory(void);
+void interruptInit(void);

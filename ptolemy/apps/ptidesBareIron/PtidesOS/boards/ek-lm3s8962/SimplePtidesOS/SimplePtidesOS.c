@@ -83,7 +83,17 @@ long MERGE_MODEL_TIME_ADJUSTMENT = 0;
 
 Actor* SOURCE1;
 Actor* SOURCE2;
+Actor* SENSOR1;
+Actor* SENSOR2;
 
+static const int MAX_INTERRUPT_PRIOIRITY_LEVEL = 6;
+
+int InterruptPriorityLevel = 0;
+static unsigned int DynamicInterrupts[MAX_INTERRUPT_PRIOIRITY_LEVEL] = {INT_GPIOG, INT_GPIOF, INT_GPIOE, INT_GPIOD, INT_GPIOC, INT_GPIOB};
+
+typedef void (*ptr2Function)(Actor*);
+ptr2Function IntFuncPtr[MAX_INTERRUPT_PRIOIRITY_LEVEL] = {NULL};
+Actor* IntActorArg[6] = {NULL};
 
 //*****************************************************************************
 //
@@ -486,131 +496,128 @@ void Timer1IntHandler(void)
 }
 
 
-//*****************************************************************************
+////*****************************************************************************
+////
+//// This is the handler for INT_GPIOA.  It simply saves the interrupt sequence
+//// number.
+////
+////*****************************************************************************
+//void IntGPIOa(void)
+//{
+//    //
+//    // Set PB0 high to indicate entry to this interrupt handler.
+//    //
+//    GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_0, GPIO_PIN_0);
 //
-// This is the handler for INT_GPIOA.  It simply saves the interrupt sequence
-// number.
+//    //
+//    // Put the current interrupt state on the LCD.
+//    //
+//    DisplayIntStatus();
 //
-//*****************************************************************************
-void IntGPIOa(void)
-{
-    //
-    // Set PB0 high to indicate entry to this interrupt handler.
-    //
-    GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_0, GPIO_PIN_0);
-
-    //
-    // Put the current interrupt state on the LCD.
-    //
-    DisplayIntStatus();
-
-    //
-    // Wait two seconds.
-    //
-    Delay(2);
-
-    //
-    // Save and increment the interrupt sequence number.
-    //
-    g_ulGPIOa = g_ulIndex++;
-
-    //
-    // Set PB0 low to indicate exit from this interrupt handler.
-    //
-    GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_0, 0);
-}
-
-//*****************************************************************************
+//    //
+//    // Wait two seconds.
+//    //
+//    Delay(2);
 //
-// This is the handler for INT_GPIOB.  It triggers INT_GPIOA and saves the
-// interrupt sequence number.
+//    //
+//    // Save and increment the interrupt sequence number.
+//    //
+//    g_ulGPIOa = g_ulIndex++;
 //
-//*****************************************************************************
-
-void IntGPIOb(void)
-{
-    //
-    // Set PB1 high to indicate entry to this interrupt handler.
-    //
-    GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_1, GPIO_PIN_1);
-
-    //
-    // Put the current interrupt state on the LCD.
-    //
-    DisplayIntStatus();
-
-    //
-    // Trigger the INT_GPIOA interrupt.
-    //
-    HWREG(NVIC_SW_TRIG) = INT_GPIOA - 16;
-
-    //
-    // Put the current interrupt state on the LCD.
-    //
-    DisplayIntStatus();
-
-    //
-    // Wait two seconds.
-    //
-    Delay(2);
-
-    //
-    // Save and increment the interrupt sequence number.
-    //
-    g_ulGPIOb = g_ulIndex++;
-
-    //
-    // Set PB1 low to indicate exit from this interrupt handler.
-    //
-    GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_1, 0);
-}
-
-//*****************************************************************************
+//    //
+//    // Set PB0 low to indicate exit from this interrupt handler.
+//    //
+//    GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_0, 0);
+//}
 //
-// This is the handler for INT_GPIOC.  It triggers INT_GPIOB and saves the
-// interrupt sequence number.
+////*****************************************************************************
+////
+//// This is the handler for INT_GPIOB.  It triggers INT_GPIOA and saves the
+//// interrupt sequence number.
+////
+////*****************************************************************************
 //
-//*****************************************************************************
-void IntGPIOc(void)
-{
-    //
-    // Set PB2 high to indicate entry to this interrupt handler.
-    //
-    GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_2, GPIO_PIN_2);
-
-    //
-    // Put the current interrupt state on the LCD.
-    //
-    DisplayIntStatus();
-
-    //
-    // Trigger the INT_GPIOB interrupt.
-    //
-    HWREG(NVIC_SW_TRIG) = INT_GPIOB - 16;
-
-    //
-    // Put the current interrupt state on the LCD.
-    //
-    DisplayIntStatus();
-
-    //
-    // Wait two seconds.
-    //
-    Delay(2);
-
-    //
-    // Save and increment the interrupt sequence number.
-    //
-    g_ulGPIOc = g_ulIndex++;
-
-    //
-    // Set PB2 low to indicate exit from this interrupt handler.
-    //
-    GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_2, 0);
-}
-
-
-
+//void IntGPIOb(void)
+//{
+//    //
+//    // Set PB1 high to indicate entry to this interrupt handler.
+//    //
+//    GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_1, GPIO_PIN_1);
+//
+//    //
+//    // Put the current interrupt state on the LCD.
+//    //
+//    DisplayIntStatus();
+//
+//    //
+//    // Trigger the INT_GPIOA interrupt.
+//    //
+//    HWREG(NVIC_SW_TRIG) = INT_GPIOA - 16;
+//
+//    //
+//    // Put the current interrupt state on the LCD.
+//    //
+//    DisplayIntStatus();
+//
+//    //
+//    // Wait two seconds.
+//    //
+//    Delay(2);
+//
+//    //
+//    // Save and increment the interrupt sequence number.
+//    //
+//    g_ulGPIOb = g_ulIndex++;
+//
+//    //
+//    // Set PB1 low to indicate exit from this interrupt handler.
+//    //
+//    GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_1, 0);
+//}
+//
+////*****************************************************************************
+////
+//// This is the handler for INT_GPIOC.  It triggers INT_GPIOB and saves the
+//// interrupt sequence number.
+////
+////*****************************************************************************
+//void IntGPIOc(void)
+//{
+//    //
+//    // Set PB2 high to indicate entry to this interrupt handler.
+//    //
+//    GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_2, GPIO_PIN_2);
+//
+//    //
+//    // Put the current interrupt state on the LCD.
+//    //
+//    DisplayIntStatus();
+//
+//    //
+//    // Trigger the INT_GPIOB interrupt.
+//    //
+//    HWREG(NVIC_SW_TRIG) = INT_GPIOB - 16;
+//
+//    //
+//    // Put the current interrupt state on the LCD.
+//    //
+//    DisplayIntStatus();
+//
+//    //
+//    // Wait two seconds.
+//    //
+//    Delay(2);
+//
+//    //
+//    // Save and increment the interrupt sequence number.
+//    //
+//    g_ulGPIOc = g_ulIndex++;
+//
+//    //
+//    // Set PB2 low to indicate exit from this interrupt handler.
+//    //
+//    GPIOPinWrite(GPIO_PORTD_BASE, GPIO_PIN_2, 0);
+//}
 
 
 //*****************************************************************************
@@ -1000,6 +1007,15 @@ void fireModelDelay(Actor* this_model_delay, Event* thisEvent) {
     }
 }
 
+/** determines whether the event to fire this current actor is of higher priority than
+ * whatever even that's currently being executed.
+ * FIXME: other than making sure this actor is not currently firing, we also need to make
+ * sure the event to fire is not of higher priority.
+ */
+unsigned int higherPriority(Actor* actor) {
+	return alreadyFiring(actor);
+}
+
 void processEvents()
 {
    
@@ -1018,10 +1034,10 @@ void processEvents()
 			actor = event->actorFrom;
 			// FIXME: since there is only one instance of processing events running, we don't need
 			// the check for alreadyFiring(), in other words, alreadyFiring should always be false.
-			if (alreadyFiring(actor)) {
+			if (higherPriority(actor) == 1) {
 				//enableInterrupts();
 				//break;
-				die("alreadyFiring should always be false within processEvents()");
+				die("this is the base processEvents routine, should not have another event of higher priority.");
 			} else {
 	            long processTime = safeToProcess(event);
 	            if (getCurrentPhysicalTime() >= processTime) {
@@ -1111,7 +1127,7 @@ processAvailableEvents()
             // Check which actor produced the event that we have processed			
 			actor = event->actorFrom;
 			// FIXME: ALSO check if an event is of higher priority here.
-			if (alreadyFiring(actor)) {
+			if (higherPriority(actor) == 1) {
 				enableInterrupts();
 				break;
 			} else {
@@ -1191,7 +1207,7 @@ processAvailableEvents()
  * Initialize the sensor actor to setup receiving function through another 
  * thread, it then create a new event and calls processEvent()
  */
-void initializeSensor(Actor* this_sensor)     //this listens for the next signal to sense again
+void fireSensor(Actor* this_sensor)     //this listens for the next signal to sense again
 {
 	long time;
     Event* myNewEvent;
@@ -1277,7 +1293,7 @@ long getCurrentPhysicalTime()
 }
 
 //*****************************************************************************
-//
+// FIXME: I need to decide what the UARET is really for, or maybe I should just get rid of it?
 // The UART interrupt handler.
 //
 //*****************************************************************************
@@ -1450,10 +1466,14 @@ int main(void)
     TimerEnable(TIMER0_BASE, TIMER_A);
     //TimerEnable(TIMER1_BASE, TIMER_A);
 	IEEE1588Init();
+
+	interruptInit();
 	
 	initializeMemory();
 	
 	SOURCE1 = &clock1;
+	SENSOR1 = &sensor1;
+	SENSOR2 = &sensor2;
 
 	clock1.fireMethod = fireClock;
 
@@ -1504,10 +1524,10 @@ int main(void)
 
     initializeClock(&clock1);
      RIT128x96x4StringDraw("afterinitClk", 12,36,15);
-	initializeSensor(&sensor1);
+	//fireSensor(&sensor1);
 	RIT128x96x4StringDraw("afterinitS1",   12,48,15);
 	RIT128x96x4StringDraw("!!!!!!!!!!!!!!!!!!!!",      12,72,15);					  
- 	initializeSensor(&sensor2);
+ 	//fireSensor(&sensor2);
 	RIT128x96x4StringDraw("afterinitS2",   12,60,15);
     processEvents();
 
@@ -2197,3 +2217,334 @@ const char *g_ppcMonth[12] =
     "Jan", "Feb", "Mar", "Apr", "May", "Jun",
     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
 };
+
+void interruptInit(void) {
+	//
+    // Enable the interrupts.
+    //
+    IntEnable(INT_GPIOA);
+    IntEnable(INT_GPIOB);
+    IntEnable(INT_GPIOC); 	
+	IntEnable(INT_GPIOD); 	
+	IntEnable(INT_GPIOE); 	
+	IntEnable(INT_GPIOF); 	
+	IntEnable(INT_GPIOG);
+	
+	//
+    // Set the interrupt priorities so they are all equal.
+    // Even though they are set to different values, there is actually a strict
+	// priority among them. B > C > D > ... > G, where B > C means B is of higher
+	// priority.
+	// A, which is in charge of triggering and allocating to different interrupts
+	// has the highest priority among them all, but the timer  should still have higher
+	// priority than A, though the timer interrupt should trigger A.
+	// Here, only the first 3 bits of the priority is looked at, i.e., 0x20 = 0010 0000 = 001
+	// 0x40 = 0100 0000 = 010.
+    IntPrioritySet(INT_GPIOA, 0x20);
+    IntPrioritySet(INT_GPIOB, 0x40);
+    IntPrioritySet(INT_GPIOC, 0x40);
+	IntPrioritySet(INT_GPIOD, 0x40);
+	IntPrioritySet(INT_GPIOE, 0x40);
+	IntPrioritySet(INT_GPIOF, 0x40);
+	IntPrioritySet(INT_GPIOG, 0x40);
+
+ 
+}
+
+//*****************************************************************************
+//
+// This is the handler for INT_GPIOB. 
+// IntGPIOa would trigger this.
+//
+//*****************************************************************************
+void
+IntGPIOg(void)
+{
+
+    // Not necessarily needed.
+    // Set PD2 high to indicate entry to this interrupt handler.
+    //
+    GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_2, GPIO_PIN_2);
+
+    // Not necessarily needed.
+    // Put the current interrupt state on the OLED.
+    //
+    DisplayIntStatus();
+
+	// fire the event sent by GPIOa.
+    (*IntFuncPtr[1])(IntActorArg[1]);
+	 
+    //
+    // Trigger the INT_GPIOB interrupt.
+    //
+    HWREG(NVIC_SW_TRIG) = DynamicInterrupts[InterruptPriorityLevel] - 16;
+	InterruptPriorityLevel++;
+
+    //
+    // Put the current interrupt state on the OLED.
+    //
+    DisplayIntStatus();
+
+    // Not necessary
+    // Set PD2 low to indicate exit from this interrupt handler.
+    //
+    GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_2, 0);
+
+	InterruptPriorityLevel--;
+}
+
+//*****************************************************************************
+//
+// This is the handler for INT_GPIOB. 
+// IntGPIOa would trigger this.
+//
+//*****************************************************************************
+void
+IntGPIOf(void)
+{
+
+    // Not necessarily needed.
+    // Set PD2 high to indicate entry to this interrupt handler.
+    //
+    GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_2, GPIO_PIN_2);
+
+    // Not necessarily needed.
+    // Put the current interrupt state on the OLED.
+    //
+    DisplayIntStatus();
+
+	// fire the event sent by GPIOa.
+    (*IntFuncPtr[2])(IntActorArg[2]);
+	 
+    //
+    // Trigger the INT_GPIOB interrupt.
+    //
+    HWREG(NVIC_SW_TRIG) = DynamicInterrupts[InterruptPriorityLevel] - 16;
+	InterruptPriorityLevel++;
+
+    //
+    // Put the current interrupt state on the OLED.
+    //
+    DisplayIntStatus();
+
+    // Not necessary
+    // Set PD2 low to indicate exit from this interrupt handler.
+    //
+    GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_2, 0);
+
+	InterruptPriorityLevel--;
+}
+
+//*****************************************************************************
+//
+// This is the handler for INT_GPIOB. 
+// IntGPIOa would trigger this.
+//
+//*****************************************************************************
+void
+IntGPIOe(void)
+{
+
+    // Not necessarily needed.
+    // Set PD2 high to indicate entry to this interrupt handler.
+    //
+    GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_2, GPIO_PIN_2);
+
+    // Not necessarily needed.
+    // Put the current interrupt state on the OLED.
+    //
+    DisplayIntStatus();
+
+	// fire the event sent by GPIOa.
+    (*IntFuncPtr[3])(IntActorArg[3]);
+	 
+    //
+    // Trigger the INT_GPIOB interrupt.
+    //
+    HWREG(NVIC_SW_TRIG) = DynamicInterrupts[InterruptPriorityLevel] - 16;
+	InterruptPriorityLevel++;
+
+    //
+    // Put the current interrupt state on the OLED.
+    //
+    DisplayIntStatus();
+
+    // Not necessary
+    // Set PD2 low to indicate exit from this interrupt handler.
+    //
+    GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_2, 0);
+
+	InterruptPriorityLevel--;
+}
+
+//*****************************************************************************
+//
+// This is the handler for INT_GPIOB. 
+// IntGPIOa would trigger this.
+//
+//*****************************************************************************
+void
+IntGPIOd(void)
+{
+
+    // Not necessarily needed.
+    // Set PD2 high to indicate entry to this interrupt handler.
+    //
+    GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_2, GPIO_PIN_2);
+
+    // Not necessarily needed.
+    // Put the current interrupt state on the OLED.
+    //
+    DisplayIntStatus();
+
+	// fire the event sent by GPIOa.
+    (*IntFuncPtr[4])(IntActorArg[4]);
+	 
+    //
+    // Trigger the INT_GPIOB interrupt.
+    //
+    HWREG(NVIC_SW_TRIG) = DynamicInterrupts[InterruptPriorityLevel] - 16;
+	InterruptPriorityLevel++;
+
+    //
+    // Put the current interrupt state on the OLED.
+    //
+    DisplayIntStatus();
+
+    // Not necessary
+    // Set PD2 low to indicate exit from this interrupt handler.
+    //
+    GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_2, 0);
+
+	InterruptPriorityLevel--;
+}
+
+//*****************************************************************************
+//
+// This is the handler for INT_GPIOB. 
+// IntGPIOa would trigger this.
+//
+//*****************************************************************************
+void
+IntGPIOc(void)
+{
+
+    // Not necessarily needed.
+    // Set PD2 high to indicate entry to this interrupt handler.
+    //
+    GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_2, GPIO_PIN_2);
+
+    // Not necessarily needed.
+    // Put the current interrupt state on the OLED.
+    //
+    DisplayIntStatus();
+
+	// fire the event sent by GPIOa.
+    (*IntFuncPtr[5])(IntActorArg[5]);
+	 
+    //
+    // Trigger the INT_GPIOB interrupt.
+    //
+    HWREG(NVIC_SW_TRIG) = DynamicInterrupts[InterruptPriorityLevel] - 16;
+	InterruptPriorityLevel++;
+
+    //
+    // Put the current interrupt state on the OLED.
+    //
+    DisplayIntStatus();
+
+    // Not necessary
+    // Set PD2 low to indicate exit from this interrupt handler.
+    //
+    GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_2, 0);
+
+	InterruptPriorityLevel--;
+}
+
+//*****************************************************************************
+//
+// This is the handler for INT_GPIOB. 
+// IntGPIOa would trigger this.
+//
+//*****************************************************************************
+void
+IntGPIOb(void)
+{
+
+    // Not necessarily needed.
+    // Set PD2 high to indicate entry to this interrupt handler.
+    //
+    GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_2, GPIO_PIN_2);
+
+    // Not necessarily needed.
+    // Put the current interrupt state on the OLED.
+    //
+    DisplayIntStatus();
+
+	// fire the event sent by GPIOa.
+    (*IntFuncPtr[6])(IntActorArg[6]);
+	 
+    //
+    // Trigger the INT_GPIOB interrupt.
+    //
+    HWREG(NVIC_SW_TRIG) = DynamicInterrupts[InterruptPriorityLevel] - 16;
+	InterruptPriorityLevel++;
+
+    //
+    // Put the current interrupt state on the OLED.
+    //
+    DisplayIntStatus();
+
+    // Not necessary
+    // Set PD2 low to indicate exit from this interrupt handler.
+    //
+    GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_2, 0);
+
+	InterruptPriorityLevel--;
+}
+
+//*****************************************************************************
+//
+// This is the handler for INT_GPIOA. 
+// Whenver a sensor senses data and triggers interrupt, GPIOA is called.
+// It triggers INT_GPIO{B..G} and keeps track how many interrupts it has allocated.
+//
+//*****************************************************************************
+void
+IntGPIOa(void)
+{
+	// We disable interrupt here to make sure only this current triggered ISR
+	// updates InterruptPriorityLevel, though this may not be necessary.
+	disableInterrupts();
+    // Not necessarily needed.
+    // Set PD2 high to indicate entry to this interrupt handler.
+    //
+    GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_2, GPIO_PIN_2);
+
+    // Not necessarily needed.
+    // Put the current interrupt state on the OLED.
+    //
+    DisplayIntStatus();
+
+	// set the correct function pointer
+	IntFuncPtr[InterruptPriorityLevel] = &fireSensor;
+	// FIXME: HOW DO I ACTUALLY TELL WHERE THIS INTERRUPT CAME FROM?
+	IntActorArg[InterruptPriorityLevel] = SENSOR1;
+	 
+    //
+    // Trigger the INT_GPIOB interrupt.
+    //
+    HWREG(NVIC_SW_TRIG) = DynamicInterrupts[InterruptPriorityLevel] - 16;
+	InterruptPriorityLevel++;
+
+    //
+    // Put the current interrupt state on the OLED.
+    //
+    DisplayIntStatus();
+
+    // Not necessary
+    // Set PD2 low to indicate exit from this interrupt handler.
+    //
+    GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_2, 0);
+	enableInterrupts();
+}

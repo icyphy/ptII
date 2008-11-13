@@ -89,8 +89,10 @@ __heap_limit
 		EXTERN  IntGPIOa
 		EXTERN  IntGPIOb
 		EXTERN  IntGPIOc
-
-
+		EXTERN  IntGPIOd
+		EXTERN  IntGPIOe
+		EXTERN  IntGPIOf
+		EXTERN  IntGPIOg
 
 ;******************************************************************************
 ;
