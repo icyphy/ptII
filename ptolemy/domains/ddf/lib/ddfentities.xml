@@ -16,7 +16,7 @@
 <!-- entity name="DDFOrderedMerge" class="ptolemy.domains.ddf.lib.DDFOrderedMerge"/-->
 
 <!-- Use actor.lib.Select instead of DDFSelect -->
-<--entity name="DDFSelect" class="ptolemy.domains.ddf.lib.DDFSelect"/-->
+<!--entity name="DDFSelect" class="ptolemy.domains.ddf.lib.DDFSelect"/-->
 
 <entity name="DDFSingleTokenCommutator" class="ptolemy.domains.ddf.lib.DDFSingleTokenCommutator"/>
       </group>
