@@ -297,7 +297,6 @@ public class TableauFrame extends Top {
 	            + "_alternateTopPackClass attribute: " + e.getMessage()
 		    + "\nPlease check your configuration and try again.  Using the default "
                     + "Top pack().");
-                  super.pack();
             }
         } else {
             super.pack(); 
