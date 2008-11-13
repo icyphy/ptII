@@ -1,14 +1,20 @@
 package ptolemy.domains.de.lib.apes;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Stack;
 
 import ptolemy.actor.Actor; 
 import ptolemy.actor.util.Time;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.ResourceToken;
-import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.Parameter; 
+import ptolemy.domains.de.lib.apes.TaskExecutionListener.ScheduleEventType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -73,6 +79,11 @@ public class CPUScheduler extends ResourceActor {
         _initialize();
     }
     
+    
+    public enum TaskState {
+        running, suspended, terminated
+    }
+    
     /**
      * Returns the priority of the actor. The priority is an int value. The
      * default return value is 0.
@@ -100,6 +111,57 @@ public class CPUScheduler extends ResourceActor {
         }
     }
     
+    
+    public Time getTaskTriggerPeriod(Actor actor) throws IllegalActionException {
+        try {
+            Parameter parameter = (Parameter) ((NamedObj) actor)
+                    .getAttribute("triggerPeriod");
+
+            if (parameter != null) {
+                DoubleToken token = (DoubleToken) parameter.getToken();
+
+                return new Time(getDirector(), token.doubleValue());
+            } else {
+                return new Time(getDirector(), 1.0);
+            }
+        } catch (ClassCastException ex) {
+            return new Time(getDirector(), 1.0);
+        } catch (IllegalActionException ex) {
+            return new Time(getDirector(), 1.0);
+        }
+    }
+    
+    public Time getTaskTriggerOffset(Actor actor) throws IllegalActionException {
+        try {
+            Parameter parameter = (Parameter) ((NamedObj) actor)
+                    .getAttribute("triggerOffset");
+
+            if (parameter != null) {
+                DoubleToken token = (DoubleToken) parameter.getToken();
+
+                return new Time(getDirector(), token.doubleValue());
+            } else {
+                return new Time(getDirector(), 0.0);
+            }
+        } catch (ClassCastException ex) {
+            return new Time(getDirector(), 0.0);
+        } catch (IllegalActionException ex) {
+            return new Time(getDirector(), 0.0);
+        }
+    }
+    
+    protected final void _sendTaskExecutionEvent(Actor actor, double time,
+            ScheduleEventType eventType) {
+        if (_executionListeners != null) {
+            Iterator listeners = _executionListeners.iterator();
+
+            while (listeners.hasNext()) {
+                ((TaskExecutionListener) listeners.next()).event(actor, time,
+                        eventType);
+            }
+        }
+    }
+    
     /**
      * Schedule actors. 
      */
@@ -114,33 +176,67 @@ public class CPUScheduler extends ResourceActor {
                         .subtract(_previousModelTime));
                 if (remainingTime.equals(new Time(getDirector(), 0.0))) {
                     _tasksInExecution.pop();
-                    output.send(((Integer)_connectedTasks.get(taskInExecution)).intValue(), null);
-                    if (_tasksInExecution.size() > 0)
-                        taskInExecution = _tasksInExecution.pop();
+                    _sendTaskExecutionEvent(taskInExecution, getDirector().getModelTime().getDoubleValue(), ScheduleEventType.STOP);
+                    output.send(((Integer)_connectedTasks.get(taskInExecution)).intValue(), new BooleanToken(true)); 
                 } else {
                     _taskExecutionTimes.put(taskInExecution, remainingTime);
                 }
             }
         }
         
-        // schedule new tasks
+        // schedule tasks that request refiring
         for (int channelId = 0; channelId < input.getWidth(); channelId++) {
-            ResourceToken token = (ResourceToken) input.get(channelId);
-            Actor actorToSchedule = token.actorToSchedule;
-            Time executionTime = (Time)token.requestedValue;
-            if (taskInExecution == null ||
-                    getPriority(actorToSchedule) > getPriority(taskInExecution)) {
-                _tasksInExecution.push(actorToSchedule);
-                _taskExecutionTimes.put(actorToSchedule, executionTime);
-            } else {
-                for (int i = 1; i < _tasksInExecution.size(); i++) {
-                    Actor actor = _tasksInExecution.get(i);
-                    if (getPriority(actor) < getPriority(actorToSchedule)) {
-                        _tasksInExecution.insertElementAt(actorToSchedule, i);
-                        break;
-                    }
-                }                    
+            if (input.hasToken(channelId)) {
+                ResourceToken token = (ResourceToken) input.get(channelId);
+                Actor actorToSchedule = token.actorToSchedule;
+                Time executionTime = (Time)token.requestedValue;
+                scheduleTask(taskInExecution, actorToSchedule, executionTime);
             }
+        }
+        
+        // schedule tasks according to their triggers
+        // TODO: test if task is in execution
+        for (Actor task : _connectedTasks.keySet()) {
+            Time triggerPeriod = _taskTriggerPeriods.get(task); 
+            Time nextTriggerTime = _nextTaskTriggerTime.get(task);
+            Time currentTime = getDirector().getModelTime();
+            
+            if (currentTime.equals(nextTriggerTime)) {
+                Time nextTime = nextTriggerTime.add(triggerPeriod);
+                _nextTaskTriggerTime.put(task, nextTime);
+                getDirector().fireAt(this, nextTime);
+                taskInExecution = null;
+                if (_tasksInExecution != null && _tasksInExecution.size() > 0)
+                    taskInExecution = _tasksInExecution.peek();
+                scheduleTask(taskInExecution, task, new Time(getDirector(), 0.0));
+            }
+        }
+        
+        // next task in list can be started?
+        Actor task = _tasksInExecution.peek();
+        Time remainingTime = _taskExecutionTimes.get(task);
+        if (remainingTime.equals(new Time(getDirector(), 0.0))) {
+            _tasksInExecution.pop();
+            _sendTaskExecutionEvent(task, getDirector().getModelTime().getDoubleValue(), ScheduleEventType.START);
+            output.send(_connectedTasks.get(task).intValue(), new BooleanToken(true)); 
+        } 
+        
+    }
+
+    private void scheduleTask(Actor taskInExecution, Actor actorToSchedule,
+            Time executionTime) {
+        if (taskInExecution == null ||
+                getPriority(actorToSchedule) > getPriority(taskInExecution)) {
+            _tasksInExecution.push(actorToSchedule);
+            _taskExecutionTimes.put(actorToSchedule, executionTime);
+        } else {
+            for (int i = 1; i < _tasksInExecution.size(); i++) {
+                Actor actor = _tasksInExecution.get(i);
+                if (getPriority(actor) < getPriority(actorToSchedule)) {
+                    _tasksInExecution.insertElementAt(actorToSchedule, i);
+                    break;
+                }
+            }                    
         }
     }
     
@@ -154,8 +250,21 @@ public class CPUScheduler extends ResourceActor {
         }
         
         for (Actor task : _connectedTasks.keySet()) {
-            //output.send(_connectedTasks.get(task), 0.0)
+            Time triggerPeriod = getTaskTriggerPeriod(task); 
+            Time triggerOffset = getTaskTriggerOffset(task);
+            
+            _taskTriggerPeriods.put(task, triggerPeriod); 
+            _nextTaskTriggerTime.put(task, triggerOffset);
+            getDirector().fireAt(this, triggerOffset);
+            
         }
+         
+    }
+    
+    // TODO initialize private variables - maps and lists
+    public Object clone() throws CloneNotSupportedException {
+        // TODO Auto-generated method stub
+        return super.clone();
     }
     
     /**
@@ -164,11 +273,16 @@ public class CPUScheduler extends ResourceActor {
     private void _initialize() {
         _taskExecutionTimes = new HashMap();
         _tasksInExecution = new Stack();
-        
+        _taskStates = new HashMap();
+        _taskTriggerPeriods = new HashMap();
+        _nextTaskTriggerTime = new HashMap();
     }
     
     /** Task trigger periods */
-    private Map<Actor, Time> _taskTriggerPeriods;
+    private Map<Actor, Time> _taskTriggerPeriods; 
+    
+    /** next task trigger time */
+    private Map<Actor, Time> _nextTaskTriggerTime;
     
     /** Tasks in execution and their remaining execution time. */
     private Map<Actor, Time> _taskExecutionTimes;
@@ -178,5 +292,17 @@ public class CPUScheduler extends ResourceActor {
     
     /** Model time at the previous firing. */
     private Time _previousModelTime;
+    
+    /** List of all tasks and their current state */
+    private Map<Actor, TaskState> _taskStates;
+    
+    private Collection<TaskExecutionListener> _executionListeners;
+
+    public void registerExecutionListener(
+            TaskExecutionListener taskExecutionListener) {
+        if (_executionListeners == null)
+            _executionListeners = new ArrayList();
+        _executionListeners.add(taskExecutionListener);
+    }
     
 }
