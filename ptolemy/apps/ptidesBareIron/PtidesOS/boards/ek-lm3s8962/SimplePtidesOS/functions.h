@@ -40,7 +40,7 @@ void disableInterrupts(void);
 void enableInterrupts(void);
 void fireActor(Event*);
 void freeEvent(Event*);
-long getCurrentPhysicalTime(void);
+long long getCurrentPhysicalTime(void);
 void IEEE1588Init(void);
 void initializeMemory(void);
 void interruptInit(void);
