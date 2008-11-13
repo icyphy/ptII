@@ -32,24 +32,23 @@
  */
 /******************************************************************************/
 
+void addEvent(Event*);
 unsigned int alreadyFiring(Actor*);
 void currentlyFiring(Actor*);
-
-void addEvent(Event*);
-void removeEvent(void);
+void die(char *mess);
+void disableInterrupts(void);
+void enableInterrupts(void);
 void fireActor(Event*);
+void freeEvent(Event*);
+long getCurrentPhysicalTime(void);
+void IEEE1588Init(void);
+void initializeMemory(void);
+void interruptInit(void);
+Event* newEvent(void);
+void ptpd_systick_init(void); 
+void ptpd_init(void);
+void removeEvent(void);
 long safeToProcess(Event*);
 void setActuationInterrupt(long);
 void setFiringActor(Actor*);
 void setTimedInterrupt(long);
-long getCurrentPhysicalTime(void);
-void disableInterrupts(void);
-void enableInterrupts(void);
-void die(char *mess);
-void ptpd_systick_init(void); 
-void ptpd_init(void);
-void IEEE1588Init(void);
-Event* newEvent(void);
-void freeEvent(Event*);
-void initializeMemory(void);
-void interruptInit(void);
