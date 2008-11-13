@@ -60,10 +60,15 @@ A prior implementation of Ptides was done with adependence on pthreads for the P
 \subsection{Scheduling Mechanisms}
 \subsubsection{Round-Robin Scheduling}
 \subsubsection{Earliest Deadline First}
+Accorring to Wikipedia "`EDF is a dynamic scheduling mechanism used in RTOSs, and is an optimal scheduling algorithm on preemptive uinprocessors."'
+
 Instead of using one queue and sorting first based on deadline and then on timestamp, we opted to keep two seperate queues which each hold pointers to events. One queue holds events sorted in timestamp order and the other stores events in earliest deadline first order. We opted to keep the queue with the timestamp ordering to enable us to determine when an event is safe to process. We can know that if it is at the head of the timestamp order queue then it had the smallest timestamp and not other event will have an earlier timestamp.
 
 Also tied sensors in the model to the outside world with input capture interrupts that create an even when data has been received either from another platform or from the user/outside world a.k.a. a button push.
 to enable the 
+
+How do we deal with schedulability analysis and why don't we have to deal with priority inversion?
+Random thoughts: To port the traces I got from Marco, one option is to simply give tasks with higher priorites an earlier deadline so they'll be picked first in EDF scheduling.
 
 
 others considered ... show results with different scheduling mechanisms.. one with first come first serve... another ewith earliest deadline first.. etc
