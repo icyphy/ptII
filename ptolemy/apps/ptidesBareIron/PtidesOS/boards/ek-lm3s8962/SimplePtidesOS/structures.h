@@ -38,7 +38,7 @@ typedef struct{
 
 typedef struct
 {
-    long timestamp;
+    long long timestamp;
     int microstep;
 } Tag;
 

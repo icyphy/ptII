@@ -1,4 +1,0 @@
-".\obj\startup.o" ".\obj\simpleptidesos.o" ".\obj\httpd.o" ".\obj\tcp.o" ".\obj\udp.o" ".\obj\dhcp.o" ".\obj\inet.o" ".\obj\mem.o" ".\obj\memp.o" ".\obj\netif.o" ".\obj\pbuf.o" ".\obj\raw.o" ".\obj\stats.o" ".\obj\sys.o" ".\obj\tcp_in.o" ".\obj\tcp_out.o" ".\obj\ip_frag.o" ".\obj\icmp.o" ".\obj\ip.o" ".\obj\ip_addr.o" ".\obj\etharp.o" ".\obj\luminaryif.o" ".\obj\lmi_fs.o" ".\obj\enet_lwip.o" ".\obj\protocol.o" ".\obj\ptpd_timer.o" ".\obj\ptpd_msg.o" ".\obj\ptpd_net.o" ".\obj\ptpd_servo.o" ".\obj\arith.o" ".\obj\bmc.o" ".\obj\random.o" ".\obj\ustdlib.o" "C:\workspace\Keil\ARM\RV31\LIB\Luminary\DriverLib.lib" ".\obj\rit128x96x4.o" --library_type=microlib --device DLM --strict --scatter ".\Obj\Blinky.sct" 
---autoat --summary_stderr --info summarysizes --map --xref --callgraph --symbols 
---info sizes --info totals --info unused --info veneers 
- --list ".\Lst\Blinky.map" -o ".\Obj\Blinky.axf"

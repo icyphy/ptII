@@ -116,12 +116,12 @@ __Vectors
         DCD     IntDefaultHandler           ; Debug Monitor Handler
         DCD     0                           ; Reserved
         DCD     IntDefaultHandler           ; PendSV Handler
-        DCD     SysTickHandler 	          ; SysTick Handler
+        DCD     SysTickHandler 	            ; SysTick Handler
         DCD     IntGPIOa					; GPIO Port A
         DCD     IntGPIOb                    ; GPIO Port B
         DCD     IntGPIOc                    ; GPIO Port C
-        DCD     IntDefaultHandler           ; GPIO Port D
-        DCD     IntDefaultHandler           ; GPIO Port E
+        DCD     IntGPIOd		            ; GPIO Port D
+        DCD     IntGPIOe		            ; GPIO Port E
         DCD     UARTIntHandler              ; UART0
         DCD     IntDefaultHandler           ; UART1
         DCD     IntDefaultHandler           ; SSI
@@ -147,8 +147,8 @@ __Vectors
         DCD     IntDefaultHandler           ; Comp 2
         DCD     IntDefaultHandler           ; System Control
         DCD     IntDefaultHandler           ; Flash Control
-        DCD     IntDefaultHandler           ; GPIO Port F
-        DCD     IntDefaultHandler           ; GPIO Port G
+        DCD     IntGPIOf		            ; GPIO Port F
+        DCD     IntGPIOg		            ; GPIO Port G
         DCD     IntDefaultHandler           ; GPIO Port H
         DCD     IntDefaultHandler           ; UART2 Rx and Tx
         DCD     IntDefaultHandler           ; SSI1 Rx and Tx
