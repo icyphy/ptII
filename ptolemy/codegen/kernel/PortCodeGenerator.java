@@ -41,7 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
 public interface PortCodeGenerator extends ComponentCodeGenerator {
     /**Generate the expression that represents the offset in the generated
      * code.
-     * @param offsetThe specified offset from the user.
+     * @param offset The specified offset from the user.
      * @param channel The referenced port channel.
      * @param isWrite Whether to generate the write or read offset.
      * @return The expression that represents the offset in the generated code.
