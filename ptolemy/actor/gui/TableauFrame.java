@@ -58,6 +58,7 @@ import ptolemy.kernel.util.Instantiable;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
@@ -250,6 +251,50 @@ public class TableauFrame extends Top {
      */
     public void setTableau(Tableau tableau) {
         _tableau = tableau;
+    }
+    
+    /**
+     * Overrides top.pack if _alternateTopPackClass is set in in the config.
+     * if not, Top.pack() is called from this method.
+     */
+    public void pack() {
+        super.pack();
+        Configuration configuration = getConfiguration();
+        StringAttribute alternateTopPackClassAttribute = (StringAttribute) 
+            configuration.getAttribute("_alternateTopPackClass");
+
+        // If the _alternateTopPackClass attribute is present,
+        // then we use the specified class to pack the gui
+        // if it is not set, just use Top.pack().
+
+        if (alternateTopPackClassAttribute != null) {
+            // Get the class that will build the library from the plugins
+            try {
+              String topPackClassName = alternateTopPackClassAttribute.getExpression();
+              System.out.println("using alternateTopPack: " + topPackClassName);
+              Class topPackClass = Class.forName(topPackClassName);
+              topPack = (TopPack) topPackClass.newInstance();
+              //do the alternate pack
+              topPack.pack(this, packCalled);
+              packCalled = true;
+            } catch(Exception e) {
+                  System.out.println("Could not get the _alternateTopPackClass. " +
+                    "Please check your config and try again.  Loading default " +
+                    "Top pack.");
+                  super.pack();
+            }
+        } else {
+          super.pack(); 
+        }
+    }
+    
+    /**
+     * a getter method to get the alternateTopPack.  returns null if there isn't
+     * one.
+     */
+    public TopPack getAlternateTopPack()
+    {
+      return topPack;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1092,6 +1137,12 @@ public class TableauFrame extends Top {
 
     /** Associated placeable. */
     private Placeable _placeable;
+    
+    //set to true when the pack method is called
+    private boolean packCalled = false;
+    
+    //set in pack() if an alternate topPack is used.
+    private TopPack topPack = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
