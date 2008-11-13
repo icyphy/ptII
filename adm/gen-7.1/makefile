@@ -408,6 +408,8 @@ PTII_SRC_TO_BE_REMOVED = \
 		META-INF \
 		bin/ptcg.bat \
 		bin/comm.policy \
+		bin/convertToLazy \
+		bin/convertToLazy.bat \
 		bin/copernicus.bat \
 		bin/copernicusjhdl.bat \
 		bin/decompile.bat \
@@ -422,6 +424,8 @@ PTII_SRC_TO_BE_REMOVED = \
 		bin/ptexecute.bat \
 		bin/ptjacl.bat \
 		bin/ptjaclapp.bat \
+		bin/ptjg \
+		bin/ptjg.bat \
 		bin/ptolemy.bat \
 		bin/ptinvoke \
 		bin/ptplot.bat \
