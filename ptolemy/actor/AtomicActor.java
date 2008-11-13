@@ -197,7 +197,9 @@ public class AtomicActor extends ComponentEntity implements Actor,
                     // Should never happen.
                     throw new InternalErrorException(this, ex, "Cannot create receivers.");
                 } finally {
-                    workspace().doneWriting();
+                    // Note that this does not increment the workspace version.
+                    // We have not changed the structure of the model.
+                    _workspace.doneTemporaryWriting();
                 }
             }
         }
