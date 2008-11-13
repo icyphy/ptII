@@ -69,8 +69,15 @@ int locationCounter;  // used by queueMemory access.. do not delete
 //variables for debugging purposes
 char str[20];  // used for inttoascii conversion with sprintf
 unsigned int fireActorCount;
+unsigned int fireActuatorCount;
+unsigned int fireMergedCount;
+unsigned int fireModelDelayCount;
+unsigned int fireComputationCount;
+unsigned int fireSensorCount;
 unsigned int addeventcount;
 unsigned int clockfirecount;
+unsigned int removecount;
+unsigned int sensorCount;
 //end variables for debuggign purposes
 
 #define MAX_BUFFER_LIMIT 10
@@ -679,7 +686,7 @@ void fireActuator(Actor* this_actuator, Event* thisEvent)
 {
 	long currentTime = getCurrentPhysicalTime();
     Tag *stampedTag = &(thisEvent->Tag);
-
+	 fireActuatorCount++;
     // Compare time with taged time, if not safe to actuate, then add events
     // and wait until time to actuate. If safe to actuate, actuate now.
 	if (stampedTag->timestamp > currentTime)
@@ -698,8 +705,10 @@ void fireActuator(Actor* this_actuator, Event* thisEvent)
 
 		// FIXME: do something!
     }
-  
-	RIT128x96x4StringDraw("actuatorfired", 12,60,15);	   
+  	this_actuator->firing = 0;
+	RIT128x96x4StringDraw("actuatorfired", 12,60,15);
+	sprintf(str,"%d",fireActuatorCount);
+	RIT128x96x4StringDraw(str, 90,60,15);	   
 
 }
 
@@ -719,8 +728,7 @@ void fireClock(Actor* this_clock, Event* thisEvent) {
 
 	long time = CK1_TIME;
 	Event* myNewEvent = newEvent();
-	//Event* new_event2;
-		    
+	//Event* new_event2;	    
     time += CLOCK_PERIOD;
 
     //Notice orderTag and realTag are set to different things:
@@ -743,7 +751,7 @@ void fireClock(Actor* this_clock, Event* thisEvent) {
         newEvent2->actorToFire = this_clock->nextActor2;
         addEvent(newEvent2);
     }
-
+	this_clock->firing=0;
 	clockfirecount++;
 	RIT128x96x4StringDraw("clockfired", 12,12,15);
 	sprintf(str,"%d",clockfirecount);
@@ -775,7 +783,7 @@ void initializeClock(Actor *this_clock)
     myNewEvent->Tag.timestamp = currentTime;
     myNewEvent->Tag.microstep = 0;   //FIXME
     myNewEvent->thisValue.doubleValue = 0;
-    myNewEvent->actorToFire = this_clock;//this_clock->nextActor1;
+    myNewEvent->actorToFire = this_clock;//->nextActor1;
     myNewEvent->actorFrom = this_clock;
 	myNewEvent->name = 1;
 
@@ -811,9 +819,11 @@ void fireComputation(Actor* this_computation, Event* thisEvent)
 
 	double thisDouble;
 	Event* myNewEvent = newEvent();
-	int computation_delay=10000;
+	int computation_delay = 10000;
+	fireComputationCount++;
 	// I'm not sure if this is the correct think to do but I noticed that 
 	// the timestamp wasn't set for the new event that was created
+	//RIT128x96x4StringDraw("begincomputationFire",12,  24, 15);
 
 	myNewEvent->Tag.timestamp = thisEvent->Tag.timestamp + computation_delay;
     myNewEvent->Tag.microstep = 0;   //FIXME
@@ -829,10 +839,10 @@ void fireComputation(Actor* this_computation, Event* thisEvent)
 	myNewEvent->thisValue.doubleValue = thisDouble;
     myNewEvent->actorToFire = this_computation->nextActor1;
     myNewEvent->actorFrom = this_computation;
-
+	//RIT128x96x4StringDraw("1begincomputationFire",12,  24, 15);
     //arbitrarily delay either 1/4 of a sec or 1/2 of a sec or none.
 	addEvent(myNewEvent);
-
+	//	RIT128x96x4StringDraw("2begincomputationFire",12,  24, 15);
     if (this_computation->nextActor2 != NULL)
     {
         Event* newEvent2 = newEvent();
@@ -840,8 +850,10 @@ void fireComputation(Actor* this_computation, Event* thisEvent)
         newEvent2->actorToFire = this_computation->nextActor2;
         addEvent(newEvent2);
     }
-
-    RIT128x96x4StringDraw("computationFired",12,  24, 15);
+	this_computation->firing =0 ;
+    RIT128x96x4StringDraw("computationFired      ",0,  24, 15);
+	sprintf(str,"%d",fireComputationCount);
+	RIT128x96x4StringDraw(str, 90,24,15);
 //	printf("computation fired\n");
   return;
 }
@@ -876,21 +888,38 @@ void addEvent(Event* newEvent)
     while (1)
 	{
         if (compare_event == NULL)
+		{
+			RIT128x96x4StringDraw("ce==null",   12,90,15);
             break;
+		}
         else if (stampedTag.timestamp < compare_event->Tag.timestamp)
+		{
+		    RIT128x96x4StringDraw("opt2",   12,90,15);
             break;
-        else if ((stampedTag.timestamp == compare_event->Tag.timestamp) && (
-			stampedTag.microstep < compare_event->Tag.microstep))
-                break;
+		}
+        else if ((stampedTag.timestamp == compare_event->Tag.timestamp) && 
+		((stampedTag.microstep < compare_event->Tag.microstep)||(stampedTag.microstep == compare_event->Tag.microstep)))
+			{
+			RIT128x96x4StringDraw("opt3",   12,90,15);
+            break;
+			}
         else {
             if (compare_event != before_event)
-		        before_event = before_event->next;
+		        {
+				RIT128x96x4StringDraw("inifaddedEvent",   10,90,15);
+				before_event = before_event->next;
+				
+				}
+			RIT128x96x4StringDraw("lastelseaddedEvent",   12,90,15);
+			
 			compare_event = compare_event->next;
-		
+			RIT128x96x4StringDraw("22lastelseaddedEvent",   12,90,15);
+		//	break;
         }
     }
             
     newEvent->next = compare_event;
+	RIT128x96x4StringDraw("check1addedEvent",   12,90,15);
     if (compare_event == before_event)
 	{
         EVENT_QUEUE_HEAD = newEvent;
@@ -900,10 +929,10 @@ void addEvent(Event* newEvent)
         before_event->next = newEvent;
     }
     else {
-
+		RIT128x96x4StringDraw("diedinaddedEvent",   12,90,15);
         die("");
     }
-	RIT128x96x4StringDraw("addedEvent",   12,90,15);
+	RIT128x96x4StringDraw("addedEvent          ",   12,90,15);
 	sprintf(str,"%d",addeventcount);
 	RIT128x96x4StringDraw(str,   90,90,15);
 
@@ -918,13 +947,22 @@ void addEvent(Event* newEvent)
 void removeEvent()
 {
     if (EVENT_QUEUE_HEAD != NULL)
-	{
+	{	removecount++;
 		//should I call freeEvent(EVENT_QUEUE_HEAD) here? I'm not sure.
 		freeEvent(EVENT_QUEUE_HEAD);
         EVENT_QUEUE_HEAD = EVENT_QUEUE_HEAD -> next;
+		if(removecount==addeventcount)
+		{
+		 EVENT_QUEUE_HEAD = NULL;
+		}
 		//printf("Just removed an event\n");
+		RIT128x96x4StringDraw("remEventCount",0,0,15);
+		sprintf(str,"%d",removecount);
+		RIT128x96x4StringDraw(str,   35,0,15);
     } 
     else printf("event queue is already empty\n");
+
+	
 }
 
 /** 
@@ -967,9 +1005,9 @@ void fireActor(Event* currentEvent)
 	if (fire_this->fireMethod != NULL) 
 	{
 	//	printf("about to call the fire method of the fireActor \n");
-		RIT128x96x4StringDraw("abouttofire...", 12, 72, 15);
+	//	RIT128x96x4StringDraw("abouttofire...", 12, 72, 15);
 		(fire_this->fireMethod)(fire_this, currentEvent);
-		RIT128x96x4StringDraw("justFired", 12, 72, 15);
+	//	RIT128x96x4StringDraw("justFired", 12, 72, 15);
 	} else {
 		//printf("actor I'm supposed to fire is null. calling die now. bye \n");
 		RIT128x96x4StringDraw("nullfiremethod", 12, 72, 15);
@@ -1017,9 +1055,11 @@ void fireMerge(Actor* this_merge, Event* thisEvent)
         newEvent2->actorToFire = this_merge->nextActor2;
         addEvent(newEvent2);
     }
-
-
+	this_merge->firing = 0;
+	fireMergedCount++;
 	RIT128x96x4StringDraw("mergeFired", 12,48,15);	   
+	sprintf(str,"%d",fireMergedCount);
+	RIT128x96x4StringDraw(str, 90,48,15);
 	//printf("mergeFired \n");
 	return;
 
@@ -1070,7 +1110,7 @@ void fireModelDelay(Actor* this_model_delay, Event* thisEvent) {
 	Event* myNewEvent = newEvent();
 //	printf("inside fireModelDelay \n");
 //RIT128x96x4StringDraw("insidemodelDelayFired", 12,36,15);
-		
+	fireModelDelayCount++;	
 	myNewEvent->Tag.timestamp = thisEvent->Tag.timestamp + model_delay;
     myNewEvent->Tag.microstep = 0;   //FIXME
     myNewEvent->actorToFire = this_model_delay->nextActor1;
@@ -1084,8 +1124,10 @@ void fireModelDelay(Actor* this_model_delay, Event* thisEvent) {
         newEvent2->actorToFire = this_model_delay->nextActor2;
         addEvent(newEvent2);
     }
-
+	this_model_delay->firing=0;
 	RIT128x96x4StringDraw("modelDelayFired", 12,36,15);
+	sprintf(str,"%d",fireModelDelayCount);
+	RIT128x96x4StringDraw(str, 90,36,15);
 //	printf("modelDelayFired");
 	 return;
 }
@@ -1122,7 +1164,7 @@ void processEvents()
 				    RIT128x96x4StringDraw("alreadyfiring", 0,0,15);
 					die("alreadyFiring should always be false within processEvents()");
 					break;
-					}
+					} 
 				   else
 				   {
 				 	 long processTime = safeToProcess(event);
@@ -1194,7 +1236,8 @@ void processEvents()
             	//fireClock(SOURCE1, dummyEvent);   
 			}
         }
-
+	   if(EVENT_QUEUE_HEAD == NULL)
+	   break;
       
 	  }//end while(1)
 //		whilecount++;
@@ -1320,6 +1363,7 @@ void initializeSensor(Actor* this_sensor)     //this listens for the next signal
 	long time;
     Event* myNewEvent;
  	myNewEvent = newEvent();
+	sensorCount++;
     //get the current time
     time = getCurrentPhysicalTime();
 
@@ -1327,21 +1371,24 @@ void initializeSensor(Actor* this_sensor)     //this listens for the next signal
 
     myNewEvent->Tag.timestamp = time;
     myNewEvent->Tag.microstep = 0;	//FIXEM
-    myNewEvent->thisValue.doubleValue = time;
-    myNewEvent->actorToFire = this_sensor;//this_sensor->nextActor1;
+    myNewEvent->thisValue.doubleValue = 10*sensorCount;//time;
+    myNewEvent->actorToFire = this_sensor->nextActor1;
     myNewEvent->actorFrom = this_sensor;
+	
 	
     //now put the created event into the queue
     //BUT HOW DO I TRACK THE START OF THE EVENT QUEUE??? --global variable
     addEvent(myNewEvent);
-    /*if (this_sensor->nextActor2 != NULL)
+    if (this_sensor->nextActor2 != NULL)
     {
         Event* newEvent2 = newEvent();
 		*newEvent2 = *myNewEvent;     
         newEvent2->actorToFire = this_sensor->nextActor2;
        addEvent(newEvent2);
-    } */
+    } 
 		RIT128x96x4StringDraw("initsensor", 12,12,15);
+		sprintf(str,"%d",sensorCount);
+		RIT128x96x4StringDraw(str, 90,12,15);
 
  }
 
@@ -1455,11 +1502,12 @@ Event * newEvent(void)
 	{  
 	   ASSERT(locationCounter != 35)  // if you've run out of memory just stop
 	//  printf("locationCounter %d",locationCounter);
-	   locationCounter++;
+	   locationCounter=locationCounter+1;
 	}
 	locationCounter%=35;  // make it circular
 //	RIT128x96x4StringDraw(itoa(locationCounter,10), 0,0,15);
 //printf("about to return an event that can be reused from queueMemory");
+    eventMemory[locationCounter].inUse=locationCounter;
 	return &eventMemory[locationCounter];
 	
 }
@@ -1507,6 +1555,20 @@ int main(void)
 	fireActorCount = 0;
 	addeventcount = 0;	
 	clockfirecount = 0;
+	removecount = 0;
+
+
+
+fireActuatorCount = 0;
+fireMergedCount = 0;
+fireModelDelayCount = 0;
+fireSensorCount = 0;
+sensorCount = 0;
+fireComputationCount = 0;
+
+
+
+
 	/*************************************************************************/
 	// Utilities to setup interrupts
     //
@@ -1575,27 +1637,28 @@ int main(void)
 	//IEEE1588Init();     //when this is uncommented I don't see the ouptut below..
 	//RIT128x96x4StringDraw("AIEEEinit", 36,24,15);	   
 	initializeMemory();
-	
+	EVENT_QUEUE_HEAD=NULL;
 	SOURCE1 = &clock1;
 
 	clock1.fireMethod = fireClock;
 
 	computation1.fireMethod = fireComputation;
+	computation1.firing =0;
 
 	computation2.fireMethod = fireComputation;
-	 
+	 computation2.firing = 0;
 	computation3.fireMethod = fireComputation;
-	
+	computation3.firing = 0;
 	model_delay1.fireMethod = fireModelDelay;
-
+	model_delay1.firing=0;
 	model_delay2.fireMethod = fireModelDelay;
-   
+   	model_delay1.firing=0;
 	model_delay3.fireMethod = fireModelDelay;	// should model delay be used in this example?
-
+	model_delay3.firing=0;
 	merge1.fireMethod = fireMerge;
-
+	merge1.firing=0;
 	actuator1.fireMethod = fireActuator;
-   
+   	actuator1.firing=0;
     //Dependencies between all the actors
 	//FIXME: HOW ARE PORTS NUMBERED??
     sensor1.nextActor1 = &computation1;
@@ -1629,10 +1692,10 @@ int main(void)
 
     initializeClock(&clock1);
    // RIT128x96x4StringDraw("afterinitClk", 12,36,15);
-	//initializeSensor(&sensor1);
+	initializeSensor(&sensor1);
 	//RIT128x96x4StringDraw("afterinitS1",   12,48,15);
 	//RIT128x96x4StringDraw("!!!!!!!!!!!!!!!!!!!!",      12,72,15);					  
- 	//initializeSensor(&sensor2);
+ 	initializeSensor(&sensor2);
 	//RIT128x96x4StringDraw("afterinitS2",   12,60,15);
 	//RIT128x96x4StringDraw("beforePE",   12,36,15);	
     processEvents();
