@@ -317,7 +317,6 @@ public abstract class Top extends JFrame {
      *  performed in that thread.
      */
     public void pack() {
-      System.out.println("packing....");
         Runnable doPack = new Runnable() {
             public void run() {
                 // NOTE: This always runs in the swing thread,
