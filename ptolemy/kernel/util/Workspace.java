@@ -499,8 +499,6 @@ public final class Workspace implements Nameable, Serializable {
             record = _getAccessRecord(current, true);
         }
 
-        _waitingWriteRequests++;
-
         // Probably need to wait for write access.
         // First increment this to make the record not empty, so as to
         // prevent the record from being deleted from the _readerRecords
@@ -510,36 +508,62 @@ public final class Workspace implements Nameable, Serializable {
         // Go into an infinite 'while (true)' loop and check if this thread
         // can get a write access. If yes, then return, if not then perform
         // a wait() on the workspace.
-        int depth = 0;
-        try {
-            while (true) {
-                if (_writer == null) {
-                    // There are no writers. Are there any readers?
-                    if ((_numReaders == 0)
-                            || ((_numReaders == 1) && (record.readDepth > 0))) {
-                        // No readers
-                        // or the only reader is the current thread
-                        _writer = current;
-                        _writeDepth = 1;
-                        record.failedWriteAttempts--;
-                        return;
-                    }
+        while (true) {
+            if (_writer == null) {
+                // There are no writers. Are there any readers?
+                if ((_numReaders == 0)
+                        || ((_numReaders == 1) && (record.readDepth > 0))) {
+                    // No readers
+                    // or the only reader is the current thread
+                    _writer = current;
+                    _writeDepth = 1;
+                    record.failedWriteAttempts--;
+                    return;
                 }
-                // Use the version of wait() that releases read accesses while waiting.
-                depth = _releaseAllReadPermissions();
-                wait();
             }
-        } catch (InterruptedException ex) {
-            throw new InternalErrorException(current.getName()
-                    + " - thread interrupted while waiting to get "
-                    + "write access: " + ex.getMessage());
-        } finally {
-            _waitingWriteRequests--;
-            _reacquireReadPermissions(depth);
-
-            if ((_waitingWriteRequests == 0) && (_writer == null)) {
-                // Notify waiting readers.
-                notifyAll();
+            int depth = 0;
+            try {
+                // If there is already another waiting write request, then
+                // we have to release any read permissions that we hold or a
+                // deadlock could occur. There is no need to release those
+                // read permissions if this is the only pending write
+                // request. If another write request shows up during the
+                // wait(), then in effect this first arrived write request
+                // will have priority because it holds a read permission.
+                // If the other thread also holds a read permission, it
+                // will have to release it upon issuing the write request.
+                // Thus, the subtlety described in the class comment
+                // will only occur if the second thread to attempt a
+                // write access has the problematic
+                // pattern of acquiring write requests inside of read
+                // permission blocks. This doesn't eliminate the problems
+                // associated with this subtlety, it just makes it
+                // somewhat less likely that they will occur.
+                if (_waitingWriteRequests > 0) {
+                    // Bert Rodier suggests that we should throw an
+                    // exception in this circumstance instead of just
+                    // releasing read requests.  This would have the
+                    // advantage that the problematic cases cited in
+                    // class comment may be identified (but only if
+                    // the exception is actually thrown, which depends
+                    // on an accident of thread scheduling). I would
+                    // prefer to use static analysis to identify cases
+                    // where write permissions are accessed within
+                    // read permission blocks, and analyze those
+                    // cases for correct usage. EAL 11/12/08.
+                    depth = _releaseAllReadPermissions();
+                }
+                _waitingWriteRequests++;
+                wait();
+            } catch (InterruptedException ex) {
+                throw new InternalErrorException(current.getName()
+                        + " - thread interrupted while waiting to get "
+                        + "write access: " + ex.getMessage());
+            } finally {
+                _waitingWriteRequests--;
+                if (depth > 0) {
+                    _reacquireReadPermissions(depth);
+                }
             }
         }
     }
