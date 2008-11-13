@@ -145,6 +145,16 @@ public class TableauFrame extends Top {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Get the alternative pack() interface for the ptolemy.gui.Top JFrame
+     * @return the alternative pack() interface if one was set by the 
+     * _alternateTopPackClass in the Configuration.  If one there is no TopPack,
+     * then return null.
+     * @see #pack()
+     */
+    public TopPack getAlternateTopPack() {
+      return _topPack;
+    }
+
     /** Get the configuration at the top level of the hierarchy.
      *  @return The configuration controlling this frame, or null
      *   if there isn't one.
@@ -254,8 +264,12 @@ public class TableauFrame extends Top {
     }
     
     /**
-     * Overrides top.pack if _alternateTopPackClass is set in in the config.
-     * if not, Top.pack() is called from this method.
+     * Optionally invoke an alternative pack() method.  If the
+     * _alternateTopPackClass attribute in the Configuration is set to
+     * the name of a class that implements the TopPack interface, then
+     * {@link ptolemy.actor.gui.TopPack#pack(Top, boolean)} is called.
+     * If the _alternateTopPackClass attribute is not set or set
+     * improperly, then Top.pack() is called from this method.
      */
     public void pack() {
         super.pack();
@@ -269,34 +283,27 @@ public class TableauFrame extends Top {
 
         if (alternateTopPackClassAttribute != null) {
             // Get the class that will build the library from the plugins
+	    String topPackClassName = "";
             try {
-              String topPackClassName = alternateTopPackClassAttribute.getExpression();
-              System.out.println("using alternateTopPack: " + topPackClassName);
-              Class topPackClass = Class.forName(topPackClassName);
-              topPack = (TopPack) topPackClass.newInstance();
-              //do the alternate pack
-              topPack.pack(this, packCalled);
-              packCalled = true;
+                topPackClassName = alternateTopPackClassAttribute.getExpression();
+                Class topPackClass = Class.forName(topPackClassName);
+                _topPack = (TopPack) topPackClass.newInstance();
+                // Do the alternate pack
+                _topPack.pack(this, _packCalled);
+                _packCalled = true;
             } catch(Exception e) {
-                  System.out.println("Could not get the _alternateTopPackClass. " +
-                    "Please check your config and try again.  Loading default " +
-                    "Top pack.");
+                  System.out.println("Could not get the alternate top pack class \""
+                    + topPackClassName + "\" named in the configuration by the "
+	            + "_alternateTopPackClass attribute: " + e.getMessage()
+		    + "\nPlease check your configuration and try again.  Using the default "
+                    + "Top pack().");
                   super.pack();
             }
         } else {
-          super.pack(); 
+            super.pack(); 
         }
     }
     
-    /**
-     * a getter method to get the alternateTopPack.  returns null if there isn't
-     * one.
-     */
-    public TopPack getAlternateTopPack()
-    {
-      return topPack;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
@@ -1138,11 +1145,11 @@ public class TableauFrame extends Top {
     /** Associated placeable. */
     private Placeable _placeable;
     
-    //set to true when the pack method is called
-    private boolean packCalled = false;
+    /** Set to true when the pack() method is called.  Used by TopPack.pack(). */
+    private boolean _packCalled = false;
     
-    //set in pack() if an alternate topPack is used.
-    private TopPack topPack = null;
+    /** Set in pack() if an alternate topPack is used. */
+    private TopPack _topPack = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
