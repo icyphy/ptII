@@ -41,6 +41,7 @@ void enableInterrupts(void);
 void fireActor(Event*);
 void freeEvent(Event*);
 long long getCurrentPhysicalTime(void);
+unsigned int higherPriority(Actor*);
 void IEEE1588Init(void);
 void initializeMemory(void);
 void interruptInit(void);
