@@ -1,6 +1,6 @@
 /* Top-level window for Ptolemy models with a menubar and status bar.
 
- Copyright (c) 1998-2008 The Regents of the University of California.
+ Copyright (c) 2008 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -33,24 +33,31 @@ import ptolemy.gui.Top;
 //// TopPack
 
 /**
- This interface allows for alternate pack() methods to be called from 
+ An interface that allows alternate pack() methods to be called from 
  TableauFrame which allows for functionality such as alternate menu systems 
  in Vergil.  
 
  @author Chad Berkley
  @version $Id: TableauFrame.java 49900 2008-06-20 17:37:40Z cxh $
- @since Ptolemy II 1.0
+ @since Ptolemy II 7.2
+ @Pt.AcceptedRating Red (berkley)
  @Pt.ProposedRating Red (berkley)
  */
 public interface TopPack {
 
   /**
-   * method to implement to override pack
+   * Pack the Top JFrame.
+   * This method overrides the regular pack() call.
+   * @param top The Top to pack.
+   * @param alreadyCalled  True if pack has already been called.
    */
-  public void pack(Top t, boolean alreadyCalled);
+  public void pack(Top top, boolean alreadyCalled);
 
   /** 
-   * allows the overrider to pass an object back to the calling object
+   * Get an object. 
+   * This method allows the overrider to pass an object back to the calling object.
+   * @param identifier The object to get.
+   * @return The object found.
    */
   public Object getObject(Object identifier);
 }
