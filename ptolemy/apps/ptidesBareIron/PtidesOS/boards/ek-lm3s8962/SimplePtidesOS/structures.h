@@ -53,9 +53,10 @@ struct Actor
     struct Actor *nextActor2;
 	unsigned int inputPortCount;
 	unsigned int outputPortCount;
+	unsigned int WCET;
 	char type;
 
-	void (*fireMethod)	(Actor*, Event*);
+	void (*fireMethod)	(Actor*, Event*);							   
 
 	unsigned int sourceActor;
 	unsigned int multipleInputs;
@@ -78,6 +79,7 @@ struct Event
     Value thisValue;
     Tag Tag;
 	char inUse;   // used b/c smallest size avaliable.. really stores -1, or index in eventMemory
+	int name;
     Actor* actorFrom;
     //an event would only have 1 actorToFire
     Actor* actorToFire;
