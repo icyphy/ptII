@@ -132,6 +132,8 @@ Actor* IntActorArg[6] = {NULL};
 // time has exceeded safe to process time.
 int timerInterruptTimes = 0;
 
+unsigned int TimerInterrupt = FALSE;
+
 // FIXME: ask shanna how often does timer0 roll over.
 static const int TIMER_ROLLOVER_CYCLES = 1000;
 //long long lastTimerInterruptTime = 0;
@@ -439,6 +441,21 @@ static void Delay(unsigned long ulSeconds)
 }
 
 
+
+// This handler is called when GPIOa realizes we need to trigger timerHandler.
+void timerHandler(Actor * dummyActor) {
+	
+    //IntMasterEnable();
+	// FIXME: is this needed here?
+	// If we set sources as the lowest priorities, then we'll always be able to process within this
+	// interrupt service routine, so this wouldn't be needed... correct?
+	STOP_SOURCE_PROCESS = TRUE;
+
+	// the interrupt handler will call processAvailableEvents();
+	// processAvailableEvents();
+	return;
+}
+
 //*****************************************************************************
 //
 // The interrupt handler for the SystemTick
@@ -460,6 +477,7 @@ void SysTickHandler(void)
 // The interrupt handler for the first timer interrupt.
 // Time0 counts down until we are safe to process.
 // FIXME: make sure only one timer0 runs at a time.
+// FIXME: need to set timer0 to be higher priority than GPIOa
 //
 //*****************************************************************************
 // mthomas: attribute for stack-aligment (see README_mthomas.txt)
@@ -478,6 +496,13 @@ void Timer0IntHandler(void)
 		return;
 	}
 
+	// set GPIOA interrupt
+    // Trigger the INT_GPIOA interrupt.
+    //
+    HWREG(NVIC_SW_TRIG) = INT_GPIOA - 16;
+	// set TIMER_HANDLER so we know to timerHandler should be triggered by GPIOa.
+	TimerInterrupt = TRUE;
+
 	//
 	//Setup the interrupts for the timer timeouts
 	//
@@ -490,34 +515,6 @@ void Timer0IntHandler(void)
     // Disable the timers.
     //
 
-    //
-    // Update the interrupt status on the display.
-    //
-    /*IntMasterDisable();
-	//eightmicroseconds++;
-  	if(tenthofsecond == 10)
-  	{
-   		seconds++;	/// if seconds are incremented here we'll have to limit the granularity
-   		tenthofsecond = 0;
-  	}
-	  */
-/*	nanoseconds++;
-	if(nanoseconds == 100000000)
-	{
-	seconds ++;
-	nanoseconds = 0;
-	RIT128x96x4StringDraw("seconds ",        12, 36, 15);
-	RIT128x96x4StringDraw(itoa(seconds,10),  50, 36, 15);
-	}	*/
-    //RIT128x96x4StringDraw(HWREGBITW(&g_ulFlags, 0) ? "1" : "0",        12, 36, 15);
-	
-    //IntMasterEnable();
-	// FIXME: is this needed here?
-	// If we set sources as the lowest priorities, then we'll always be able to process within this
-	// interrupt service routine, so this wouldn't be needed... correct?
-	STOP_SOURCE_PROCESS = TRUE;
-	processAvailableEvents();
-	return;
 }
 
 //*****************************************************************************
@@ -2474,16 +2471,17 @@ void IntGPIOg(void)
     //
     DisplayIntStatus();
 
+	disableInterrupts();
 	// fire the event sent by GPIOa.
     (*IntFuncPtr[1])(IntActorArg[1]);
-	 
-    //
-    // Trigger the INT_GPIOB interrupt.
-    //
-    HWREG(NVIC_SW_TRIG) = DynamicInterrupts[InterruptPriorityLevel] - 16;
-	InterruptPriorityLevel++;
 
-    //
+	enableInterrupts();
+
+	STOP_SOURCE_PROCESS = TRUE;
+
+	// then do processAvailableEvents();	 				 	
+	processAvailableEvents();
+
     // Put the current interrupt state on the OLED.
     //
     DisplayIntStatus();
@@ -2515,16 +2513,17 @@ void IntGPIOf(void)
     //
     DisplayIntStatus();
 
+	disableInterrupts();
 	// fire the event sent by GPIOa.
-    (*IntFuncPtr[2])(IntActorArg[2]);
-	 
-    //
-    // Trigger the INT_GPIOB interrupt.
-    //
-    HWREG(NVIC_SW_TRIG) = DynamicInterrupts[InterruptPriorityLevel] - 16;
-	InterruptPriorityLevel++;
+    (*IntFuncPtr[1])(IntActorArg[1]);
 
-    //
+	enableInterrupts();
+
+	STOP_SOURCE_PROCESS = TRUE;
+
+	// then do processAvailableEvents();	 				 	
+	processAvailableEvents();
+
     // Put the current interrupt state on the OLED.
     //
     DisplayIntStatus();
@@ -2556,16 +2555,17 @@ void IntGPIOe(void)
     //
     DisplayIntStatus();
 
+	disableInterrupts();
 	// fire the event sent by GPIOa.
-    (*IntFuncPtr[3])(IntActorArg[3]);
-	 
-    //
-    // Trigger the INT_GPIOB interrupt.
-    //
-    HWREG(NVIC_SW_TRIG) = DynamicInterrupts[InterruptPriorityLevel] - 16;
-	InterruptPriorityLevel++;
+    (*IntFuncPtr[1])(IntActorArg[1]);
 
-    //
+	enableInterrupts();
+
+	STOP_SOURCE_PROCESS = TRUE;
+
+	// then do processAvailableEvents();	 				 	
+	processAvailableEvents();
+
     // Put the current interrupt state on the OLED.
     //
     DisplayIntStatus();
@@ -2597,16 +2597,17 @@ void IntGPIOd(void)
     //
     DisplayIntStatus();
 
+	disableInterrupts();
 	// fire the event sent by GPIOa.
-    (*IntFuncPtr[4])(IntActorArg[4]);
-	 
-    //
-    // Trigger the INT_GPIOB interrupt.
-    //
-    HWREG(NVIC_SW_TRIG) = DynamicInterrupts[InterruptPriorityLevel] - 16;
-	InterruptPriorityLevel++;
+    (*IntFuncPtr[1])(IntActorArg[1]);
 
-    //
+	enableInterrupts();
+
+	STOP_SOURCE_PROCESS = TRUE;
+
+	// then do processAvailableEvents();	 				 	
+	processAvailableEvents();
+
     // Put the current interrupt state on the OLED.
     //
     DisplayIntStatus();
@@ -2638,16 +2639,17 @@ void IntGPIOc(void)
     //
     DisplayIntStatus();
 
+	disableInterrupts();
 	// fire the event sent by GPIOa.
-    (*IntFuncPtr[5])(IntActorArg[5]);
-	 
-    //
-    // Trigger the INT_GPIOB interrupt.
-    //
-    HWREG(NVIC_SW_TRIG) = DynamicInterrupts[InterruptPriorityLevel] - 16;
-	InterruptPriorityLevel++;
+    (*IntFuncPtr[1])(IntActorArg[1]);
 
-    //
+	enableInterrupts();
+
+	STOP_SOURCE_PROCESS = TRUE;
+
+	// then do processAvailableEvents();	 				 	
+	processAvailableEvents();
+
     // Put the current interrupt state on the OLED.
     //
     DisplayIntStatus();
@@ -2679,16 +2681,17 @@ void IntGPIOb(void)
     //
     DisplayIntStatus();
 
+	disableInterrupts();
 	// fire the event sent by GPIOa.
-    (*IntFuncPtr[6])(IntActorArg[6]);
-	 
-    //
-    // Trigger the INT_GPIOB interrupt.
-    //
-    HWREG(NVIC_SW_TRIG) = DynamicInterrupts[InterruptPriorityLevel] - 16;
-	InterruptPriorityLevel++;
+    (*IntFuncPtr[1])(IntActorArg[1]);
 
-    //
+	enableInterrupts();
+
+	STOP_SOURCE_PROCESS = TRUE;
+
+	// then do processAvailableEvents();	 				 	
+	processAvailableEvents();
+
     // Put the current interrupt state on the OLED.
     //
     DisplayIntStatus();
@@ -2723,13 +2726,17 @@ void IntGPIOa(void)
     //
     DisplayIntStatus();
 
-	// set the correct function pointer
-	IntFuncPtr[InterruptPriorityLevel] = &fireSensor;
+	// set the correct function pointer	
 	// FIXME: HOW DO I ACTUALLY TELL WHERE THIS INTERRUPT CAME FROM?
-	IntActorArg[InterruptPriorityLevel] = SENSOR1;
+	if (TimerInterrupt == TRUE) {
+		IntFuncPtr[InterruptPriorityLevel] = &timerHandler;
+		IntActorArg[InterruptPriorityLevel] = NULL;
+	} else {
+		IntActorArg[InterruptPriorityLevel] = SENSOR1;
+	}
 	 
     //
-    // Trigger the INT_GPIOB interrupt.
+    // Trigger an interrupt of lower priority interrupt.
     //
     HWREG(NVIC_SW_TRIG) = DynamicInterrupts[InterruptPriorityLevel] - 16;
 	InterruptPriorityLevel++;

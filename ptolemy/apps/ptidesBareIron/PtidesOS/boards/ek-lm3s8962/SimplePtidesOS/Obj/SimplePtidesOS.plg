@@ -1342,3 +1342,277 @@ compiling rit128x96x4.c...
 linking...
 Program Size: Code=41536 RO-data=4468 RW-data=424 ZI-data=29664  
 ".\Obj\SimplePtidesOS.axf" - 0 Error(s), 57 Warning(s).
+Build target 'Simulator'
+assembling Startup.s...
+compiling SimplePtidesOS.c...
+SimplePtidesOS.c(1264): warning:  #177-D: variable "dummyEvent" was declared but never referenced
+SimplePtidesOS.c(1823): warning:  #223-D: function "FlashUserGet" declared implicitly
+SimplePtidesOS.c(2027): warning:  #68-D: integer conversion resulted in a change of sign
+SimplePtidesOS.c(2029): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2033): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2034): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2035): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2036): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2046): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2047): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2050): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2370): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2683): warning:  #175-D: subscript out of range
+SimplePtidesOS.c(2683): warning:  #175-D: subscript out of range
+SimplePtidesOS.c(2747): warning:  #1-D: last line of file ends without a newline
+SimplePtidesOS.c(418): warning:  #177-D: function "Delay" was declared but never referenced
+SimplePtidesOS.c(2414): warning:  #177-D: variable "g_pucBuf" was declared but never referenced
+SimplePtidesOS.c(1336): warning: C3017W: dummyEvent may be used before being set
+SimplePtidesOS.c(1520): warning: C3017W: dummyEvent may be used before being set
+compiling httpd.c...
+compiling tcp.c...
+compiling udp.c...
+..\..\..\third_party\lwip-1.2.0\src\core\udp.c(67): warning:  #550-D: variable "pcb_cache" was set but never used
+compiling dhcp.c...
+compiling inet.c...
+compiling mem.c...
+..\..\..\third_party\lwip-1.2.0\src\core\mem.c(89): warning:  #550-D: variable "mem_sem" was set but never used
+compiling memp.c...
+compiling netif.c...
+compiling pbuf.c...
+compiling raw.c...
+compiling stats.c...
+compiling sys.c...
+compiling tcp_in.c...
+..\..\..\third_party\lwip-1.2.0\src\core\tcp_in.c(300): warning:  #236-D: controlling expression is constant
+compiling tcp_out.c...
+compiling ip_frag.c...
+compiling icmp.c...
+..\..\..\third_party\lwip-1.2.0\src\core\ipv4\icmp.c(50): warning:  #550-D: variable "code" was set but never used
+compiling ip.c...
+compiling ip_addr.c...
+compiling etharp.c...
+compiling luminaryif.c...
+compiling lmi_fs.c...
+compiling enet_lwip.c...
+compiling protocol.c...
+..\..\..\third_party\ptpd-1rc1\src\protocol.c(386): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\protocol.c(814): warning:  #1293-D: assignment in condition
+compiling ptpd_timer.c...
+compiling ptpd_msg.c...
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(72): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(74): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(100): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(173): warning:  #111-D: statement is unreachable
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(226): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(233): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(234): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(265): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(266): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(267): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(268): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(269): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(291): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(292): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(294): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(297): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(304): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(305): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(318): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(332): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(333): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(491): warning:  #61-D: integer operation result is out of range
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(521): warning:  #61-D: integer operation result is out of range
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(560): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(564): warning:  #188-D: enumerated type mixed with another type
+compiling ptpd_net.c...
+compiling ptpd_servo.c...
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_servo.c(15): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_servo.c(16): warning:  #188-D: enumerated type mixed with another type
+compiling arith.c...
+..\..\..\third_party\ptpd-1rc1\src\arith.c(64): warning:  #188-D: enumerated type mixed with another type
+compiling bmc.c...
+..\..\..\third_party\ptpd-1rc1\src\bmc.c(85): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\bmc.c(86): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\bmc.c(100): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\bmc.c(101): warning:  #188-D: enumerated type mixed with another type
+compiling random.c...
+compiling ustdlib.c...
+compiling rit128x96x4.c...
+linking...
+Program Size: Code=41536 RO-data=4468 RW-data=424 ZI-data=29664  
+".\Obj\SimplePtidesOS.axf" - 0 Error(s), 57 Warning(s).
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+SimplePtidesOS.c(1254): warning:  #177-D: variable "dummyEvent" was declared but never referenced
+SimplePtidesOS.c(1813): warning:  #223-D: function "FlashUserGet" declared implicitly
+SimplePtidesOS.c(2017): warning:  #68-D: integer conversion resulted in a change of sign
+SimplePtidesOS.c(2019): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2023): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2024): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2025): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2026): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2036): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2037): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2040): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2360): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2673): warning:  #175-D: subscript out of range
+SimplePtidesOS.c(2673): warning:  #175-D: subscript out of range
+SimplePtidesOS.c(2737): warning:  #1-D: last line of file ends without a newline
+SimplePtidesOS.c(418): warning:  #177-D: function "Delay" was declared but never referenced
+SimplePtidesOS.c(2404): warning:  #177-D: variable "g_pucBuf" was declared but never referenced
+SimplePtidesOS.c(1326): warning: C3017W: dummyEvent may be used before being set
+SimplePtidesOS.c(1510): warning: C3017W: dummyEvent may be used before being set
+linking...
+Program Size: Code=41544 RO-data=4468 RW-data=424 ZI-data=29664  
+".\Obj\SimplePtidesOS.axf" - 0 Error(s), 19 Warning(s).
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+SimplePtidesOS.c(1261): warning:  #177-D: variable "dummyEvent" was declared but never referenced
+SimplePtidesOS.c(1820): warning:  #223-D: function "FlashUserGet" declared implicitly
+SimplePtidesOS.c(2024): warning:  #68-D: integer conversion resulted in a change of sign
+SimplePtidesOS.c(2026): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2030): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2031): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2032): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2033): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2043): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2044): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2047): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2367): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2732): warning:  #187-D: use of "=" where "==" may have been intended
+SimplePtidesOS.c(2733): error:  #513: a value of type "void (*)(void)" cannot be assigned to an entity of type "Actor *"
+SimplePtidesOS.c(2754): warning:  #1-D: last line of file ends without a newline
+SimplePtidesOS.c(420): warning:  #177-D: function "Delay" was declared but never referenced
+SimplePtidesOS.c(2411): warning:  #177-D: variable "g_pucBuf" was declared but never referenced
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+SimplePtidesOS.c(1261): warning:  #177-D: variable "dummyEvent" was declared but never referenced
+SimplePtidesOS.c(1820): warning:  #223-D: function "FlashUserGet" declared implicitly
+SimplePtidesOS.c(2024): warning:  #68-D: integer conversion resulted in a change of sign
+SimplePtidesOS.c(2026): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2030): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2031): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2032): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2033): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2043): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2044): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2047): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2367): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2732): warning:  #187-D: use of "=" where "==" may have been intended
+SimplePtidesOS.c(2733): error:  #513: a value of type "void (*)(Actor *)" cannot be assigned to an entity of type "Actor *"
+SimplePtidesOS.c(2754): warning:  #1-D: last line of file ends without a newline
+SimplePtidesOS.c(420): warning:  #177-D: function "Delay" was declared but never referenced
+SimplePtidesOS.c(2411): warning:  #177-D: variable "g_pucBuf" was declared but never referenced
+Target not created
+Build target 'Simulator'
+compiling SimplePtidesOS.c...
+SimplePtidesOS.c(1261): warning:  #177-D: variable "dummyEvent" was declared but never referenced
+SimplePtidesOS.c(1820): warning:  #223-D: function "FlashUserGet" declared implicitly
+SimplePtidesOS.c(2024): warning:  #68-D: integer conversion resulted in a change of sign
+SimplePtidesOS.c(2026): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2030): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2031): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2032): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2033): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2043): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2044): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2047): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2367): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2754): warning:  #1-D: last line of file ends without a newline
+SimplePtidesOS.c(420): warning:  #177-D: function "Delay" was declared but never referenced
+SimplePtidesOS.c(2411): warning:  #177-D: variable "g_pucBuf" was declared but never referenced
+SimplePtidesOS.c(1333): warning: C3017W: dummyEvent may be used before being set
+SimplePtidesOS.c(1517): warning: C3017W: dummyEvent may be used before being set
+linking...
+Program Size: Code=41552 RO-data=4468 RW-data=432 ZI-data=29664  
+".\Obj\SimplePtidesOS.axf" - 0 Error(s), 17 Warning(s).
+Build target 'Simulator'
+assembling Startup.s...
+compiling SimplePtidesOS.c...
+SimplePtidesOS.c(1261): warning:  #177-D: variable "dummyEvent" was declared but never referenced
+SimplePtidesOS.c(1820): warning:  #223-D: function "FlashUserGet" declared implicitly
+SimplePtidesOS.c(2024): warning:  #68-D: integer conversion resulted in a change of sign
+SimplePtidesOS.c(2026): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2030): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2031): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2032): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2033): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2043): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2044): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2047): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2367): warning:  #188-D: enumerated type mixed with another type
+SimplePtidesOS.c(2754): warning:  #1-D: last line of file ends without a newline
+SimplePtidesOS.c(420): warning:  #177-D: function "Delay" was declared but never referenced
+SimplePtidesOS.c(2411): warning:  #177-D: variable "g_pucBuf" was declared but never referenced
+SimplePtidesOS.c(1333): warning: C3017W: dummyEvent may be used before being set
+SimplePtidesOS.c(1517): warning: C3017W: dummyEvent may be used before being set
+compiling httpd.c...
+compiling tcp.c...
+compiling udp.c...
+..\..\..\third_party\lwip-1.2.0\src\core\udp.c(67): warning:  #550-D: variable "pcb_cache" was set but never used
+compiling dhcp.c...
+compiling inet.c...
+compiling mem.c...
+..\..\..\third_party\lwip-1.2.0\src\core\mem.c(89): warning:  #550-D: variable "mem_sem" was set but never used
+compiling memp.c...
+compiling netif.c...
+compiling pbuf.c...
+compiling raw.c...
+compiling stats.c...
+compiling sys.c...
+compiling tcp_in.c...
+..\..\..\third_party\lwip-1.2.0\src\core\tcp_in.c(300): warning:  #236-D: controlling expression is constant
+compiling tcp_out.c...
+compiling ip_frag.c...
+compiling icmp.c...
+..\..\..\third_party\lwip-1.2.0\src\core\ipv4\icmp.c(50): warning:  #550-D: variable "code" was set but never used
+compiling ip.c...
+compiling ip_addr.c...
+compiling etharp.c...
+compiling luminaryif.c...
+compiling lmi_fs.c...
+compiling enet_lwip.c...
+compiling protocol.c...
+..\..\..\third_party\ptpd-1rc1\src\protocol.c(386): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\protocol.c(814): warning:  #1293-D: assignment in condition
+compiling ptpd_timer.c...
+compiling ptpd_msg.c...
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(72): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(74): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(100): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(173): warning:  #111-D: statement is unreachable
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(226): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(233): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(234): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(265): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(266): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(267): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(268): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(269): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(291): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(292): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(294): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(297): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(304): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(305): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(318): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(332): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(333): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(491): warning:  #61-D: integer operation result is out of range
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(521): warning:  #61-D: integer operation result is out of range
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(560): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_msg.c(564): warning:  #188-D: enumerated type mixed with another type
+compiling ptpd_net.c...
+compiling ptpd_servo.c...
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_servo.c(15): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\dep-lmi\ptpd_servo.c(16): warning:  #188-D: enumerated type mixed with another type
+compiling arith.c...
+..\..\..\third_party\ptpd-1rc1\src\arith.c(64): warning:  #188-D: enumerated type mixed with another type
+compiling bmc.c...
+..\..\..\third_party\ptpd-1rc1\src\bmc.c(85): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\bmc.c(86): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\bmc.c(100): warning:  #188-D: enumerated type mixed with another type
+..\..\..\third_party\ptpd-1rc1\src\bmc.c(101): warning:  #188-D: enumerated type mixed with another type
+compiling random.c...
+compiling ustdlib.c...
+compiling rit128x96x4.c...
+linking...
+Program Size: Code=41552 RO-data=4468 RW-data=432 ZI-data=29664  
+".\Obj\SimplePtidesOS.axf" - 0 Error(s), 55 Warning(s).
