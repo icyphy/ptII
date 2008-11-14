@@ -194,6 +194,13 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
             super.attributeChanged(attribute);
         }
     }
+    
+    //TODO rodiers
+    public void createReceivers() throws IllegalActionException {
+        // TODO Auto-generated method stub
+        
+    }
+    
 
     /** Do nothing.
      */

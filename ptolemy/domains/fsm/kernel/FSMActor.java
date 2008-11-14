@@ -214,6 +214,18 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
+    //TODO rodiers
+    public void createReceivers() throws IllegalActionException {
+        // TODO Auto-generated method stub
+        if (_receiversVersion != workspace().getVersion()) {
+            _createReceivers();
+            _receiversVersion = workspace().getVersion();
+        } else {
+            _resetReceivers();
+        }        
+    }
+    
+    
     /** Attribute specifying the names of the final states of this
      *  actor. This attribute is kept for backward compatibility only,
      *  and is set to expert visibility. To set the final states,
@@ -936,12 +948,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
         _stopRequested = false;
         _reachedFinalState = false;
-        if (_receiversVersion != workspace().getVersion()) {
-            _createReceivers();
-            _receiversVersion = workspace().getVersion();
-        } else {
-            _resetReceivers();
-        }
+
         _newIteration = true;
         _tokenListArrays = new Hashtable();
 

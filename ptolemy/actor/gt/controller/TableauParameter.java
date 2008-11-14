@@ -68,6 +68,12 @@ public class TableauParameter extends Parameter implements Initializable {
                 "invoked.");
     }
 
+    //TODO rodiers
+    public void createReceivers() throws IllegalActionException {
+        // TODO Auto-generated method stub
+        
+    }
+    
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         TableauParameter newObject = (TableauParameter) super.clone(workspace);
         try {
@@ -119,4 +125,5 @@ public class TableauParameter extends Parameter implements Initializable {
 
     public void wrapup() throws IllegalActionException {
     }
+
 }

@@ -336,6 +336,17 @@ public class CompositeActor extends CompositeEntity implements Actor,
             }
         }
     }
+    
+    //TODO rodiers
+    public void createReceivers() throws IllegalActionException {
+        // As an optimization, avoid creating receivers if
+        // the workspace version has not changed.
+        if (workspace().getVersion() != _receiversVersion) {
+            _createReceivers();
+        }
+        getDirector().createReceivers();
+    }
+    
 
     /** If this actor is opaque, transfer any data from the input ports
      *  of this composite to the ports connected on the inside, and then
@@ -1067,12 +1078,6 @@ public class CompositeActor extends CompositeEntity implements Actor,
                 for (Executable piggyback : _piggybacks) {
                     piggyback.preinitialize();
                 }
-            }
-
-            // As an optimization, avoid creating receivers if
-            // the workspace version has not changed.
-            if (workspace().getVersion() != _receiversVersion) {
-                _createReceivers();
             }
 
             if (!isOpaque()) {

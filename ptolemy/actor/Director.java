@@ -249,6 +249,50 @@ public class Director extends Attribute implements Executable {
         super.attributeChanged(attribute);
     }
 
+
+
+    //TODO rodiers
+    public void createReceivers() throws IllegalActionException {
+        if (_debugging) {
+            _debug(getFullName(), "Creating receivers ...");
+        }
+
+        // preinitialize all the contained actors.
+        Nameable container = getContainer();
+        if (container instanceof CompositeActor) {
+            Iterator actors = ((CompositeActor) container).deepEntityList()
+                    .iterator();
+            while (actors.hasNext()) {
+                Actor actor = (Actor) actors.next();
+                if (_debugging) {
+                    _debug("Invoking createReceivers(): ", ((NamedObj) actor)
+                            .getFullName());
+                }
+                actor.createReceivers();
+            }
+        }
+        if (_debugging) {
+            _debug(getFullName(), "Finished createReceivers().");
+        }
+    }
+    
+
+    //TODO rodiers
+    public void createSchedule() throws IllegalActionException {
+        Nameable container = getContainer();
+        if (container instanceof CompositeActor) {
+            for (Object actor : ((CompositeActor) container).deepEntityList()) {
+                if (actor instanceof CompositeActor) {
+                    Director director = ((Actor) actor).getDirector();
+                    if (director != null && director != this) {
+                        director.createSchedule();
+                    }
+                }
+            }
+        }
+    }    
+
+    
     /** Return a default dependency to use between input input
      *  ports and output ports.
      *  Director subclasses may override this if

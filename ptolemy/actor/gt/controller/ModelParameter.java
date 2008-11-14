@@ -81,6 +81,12 @@ public class ModelParameter extends Parameter implements Initializable {
         return newObject;
     }
 
+    //TODO rodiers
+    public void createReceivers() throws IllegalActionException {
+        // TODO Auto-generated method stub
+        
+    }
+    
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
         if (_isMoMLSuppressed(depth)) {

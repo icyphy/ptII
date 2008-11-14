@@ -513,7 +513,8 @@ public class SDFDirector extends StaticSchedulingDirector {
         return true;
     }
 
-    /** Preinitialize the actors associated with this director and
+    /** TODO rodiers
+     * Preinitialize the actors associated with this director and
      *  compute the schedule.  The schedule is computed during
      *  preinitialization so that hierarchical opaque composite actors
      *  can be scheduled properly, since the act of computing the
@@ -524,8 +525,9 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  @exception IllegalActionException If the preinitialize() method of
      *  one of the associated actors throws it.
      */
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
+    //TODO rodiers
+        public void createSchedule() throws IllegalActionException {
+            super.createSchedule();
 
         BaseSDFScheduler scheduler = (BaseSDFScheduler) getScheduler();
 

@@ -118,6 +118,12 @@ public class Dataflow extends AbstractDDI {
 
     protected Action _lastFiredAction;
 
+    //TODO rodiers
+    public void createReceivers() throws IllegalActionException {
+        // TODO Auto-generated method stub
+        
+    }
+    
     public boolean isLegalActor() {
         return PriorityUtil.isValidPriorityOrder(_actor);
     }

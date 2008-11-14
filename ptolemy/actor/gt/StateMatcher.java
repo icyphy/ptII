@@ -119,6 +119,12 @@ ValueListener {
         return newObject;
     }
 
+    //TODO rodiers
+    public void createReceivers() throws IllegalActionException {
+        // TODO Auto-generated method stub
+        
+    }
+    
     public void fire() throws IllegalActionException {
     }
 

@@ -180,6 +180,12 @@ public class SharedParameter extends Parameter implements Initializable {
         _initializables.add(initializable);
     }
 
+    //TODO rodiers
+    public void createReceivers() throws IllegalActionException {
+        // TODO Auto-generated method stub
+        
+    }
+
     /** Override the base class to register the object, since setName()
      *  will not be called.
      *  @param workspace The workspace for the new object.

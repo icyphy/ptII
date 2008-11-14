@@ -58,6 +58,9 @@ public interface Initializable {
      */
     public void addInitializable(Initializable initializable);
 
+    //TODO rodiers
+    public void createReceivers() throws IllegalActionException;
+    
     /** Begin execution of the actor.  This is invoked exactly once
      *  after the preinitialization phase.  Since type resolution is done
      *  in the preinitialization phase, along with topology changes that

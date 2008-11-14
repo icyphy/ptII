@@ -189,7 +189,8 @@ public class AtomicActor extends ComponentEntity implements Actor,
             if (castPort.isInput() 
                     && (getDirector() != null) 
                     && (manager != null)
-                    && (manager.getState() != Manager.IDLE)) {
+                    && (manager.getState() != Manager.IDLE)
+                    && (manager.getState() != Manager.PREINITIALIZING)) {
                 try {
                     workspace().getWriteAccess();
                     castPort.createReceivers();
@@ -205,6 +206,19 @@ public class AtomicActor extends ComponentEntity implements Actor,
         }
     }
 
+    //TODO rodiers
+    public void createReceivers() throws IllegalActionException {
+        // TODO Auto-generated method stub
+        // As an optimization, avoid creating receivers if
+        // the workspace version has not changed.
+        if (workspace().getVersion() != _receiversVersion) {
+            // NOTE:  Receivers are also getting created
+            // in connectionChanged().  Perhaps this is here to ensure
+            // that the receivers are reset?
+            _createReceivers();
+        }
+    }
+    
     /** Do nothing.  Derived classes override this method to define their
      *  primary run-time action.
      *
@@ -584,15 +598,6 @@ public class AtomicActor extends ComponentEntity implements Actor,
             for (Initializable initializable : _initializables) {
                 initializable.preinitialize();
             }
-        }
-
-        // As an optimization, avoid creating receivers if
-        // the workspace version has not changed.
-        if (workspace().getVersion() != _receiversVersion) {
-            // NOTE:  Receivers are also getting created
-            // in connectionChanged().  Perhaps this is here to ensure
-            // that the receivers are reset?
-            _createReceivers();
         }
     }
 
