@@ -8,7 +8,8 @@
 		<doc>Resource Actors</doc>
 		<property name="CPUScheduler" class="ptolemy.domains.de.lib.apes.CPUScheduler"/>
 		<property name="Task" class="ptolemy.domains.de.lib.apes.CTask"/>
-		<property name="TaskExecutionMonitor" class="ptolemy.domains.de.lib.apes.TaskExecutionMonitor"/> 
+		<property name="TaskExecutionMonitor" class="ptolemy.domains.de.lib.apes.TaskExecutionMonitor"/>
+		<property name="InterruptServiceRoutine" class="ptolemy.domains.de.lib.apes.InterruptServiceRoutine"/> 
       </group>
     ?>
   </configure>

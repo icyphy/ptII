@@ -195,21 +195,6 @@ public class CPUScheduler extends ResourceActor {
            }
        }
 
-       // schedule tasks according to their triggers
-       // TODO: test if task is in execution
-       for (Actor task : _connectedTasks.keySet()) {
-           Time triggerPeriod = _taskTriggerPeriods.get(task); 
-           Time nextTriggerTime = _nextTaskTriggerTime.get(task);
-           Time currentTime = getDirector().getModelTime();
-
-           if (currentTime.equals(nextTriggerTime)) {
-               Time nextTime = nextTriggerTime.add(triggerPeriod);
-               _nextTaskTriggerTime.put(task, nextTime);
-               getDirector().fireAt(this, nextTime);
-               scheduleTask(task, new Time(getDirector(), 0.0));
-           }
-       }
-
        // next task in list can be started?
        Actor task = _tasksInExecution.peek();
        Time remainingTime = _taskExecutionTimes.get(task);
@@ -223,7 +208,10 @@ public class CPUScheduler extends ResourceActor {
 
    private void scheduleTask( Actor actorToSchedule,
            Time executionTime) {
-       Actor taskInExecution = _tasksInExecution.peek();
+       Actor taskInExecution = null; 
+       if (_tasksInExecution.size() > 0) 
+           taskInExecution = _tasksInExecution.peek();
+           
        if (taskInExecution == null ||
                getPriority(actorToSchedule) > getPriority(taskInExecution)) {
            _tasksInExecution.push(actorToSchedule);
@@ -248,16 +236,7 @@ public class CPUScheduler extends ResourceActor {
            e.printStackTrace();
        }
 
-       for (Actor task : _connectedTasks.keySet()) {
-           Time triggerPeriod = getTaskTriggerPeriod(task); 
-           Time triggerOffset = getTaskTriggerOffset(task);
-
-           _taskTriggerPeriods.put(task, triggerPeriod); 
-           _nextTaskTriggerTime.put(task, triggerOffset);
-           getDirector().fireAt(this, triggerOffset);
-
-       }
-
+       
    }
 
    // TODO initialize private variables - maps and lists
@@ -272,16 +251,9 @@ public class CPUScheduler extends ResourceActor {
    private void _initialize() {
        _taskExecutionTimes = new HashMap<Actor, Time>();
        _tasksInExecution = new Stack<Actor>();
-       _taskStates = new HashMap<Actor, TaskState>();
-       _taskTriggerPeriods = new HashMap<Actor, Time>();
-       _nextTaskTriggerTime = new HashMap<Actor, Time>();
+       _taskStates = new HashMap<Actor, TaskState>(); 
    }
 
-   /** Task trigger periods */
-   private Map<Actor, Time> _taskTriggerPeriods; 
-
-   /** next task trigger time */
-   private Map<Actor, Time> _nextTaskTriggerTime;
 
    /** Tasks in execution and their remaining execution time. */
    private Map<Actor, Time> _taskExecutionTimes;

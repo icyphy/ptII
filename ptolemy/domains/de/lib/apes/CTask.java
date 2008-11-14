@@ -49,8 +49,11 @@ public class CTask extends TypedAtomicActor implements Runnable {
 
    /** incoming port from resource actors */
    public IOPort fromResourcePort;
+   
+   public IOPort triggerConnector;
 
    public void fire() throws IllegalActionException {
+       System.out.println(this.getName());
        if (_thread != null && _thread.isAlive()) { // resume
            for( int i=0; i < fromResourcePort.getWidth(); i++) {
                if ( fromResourcePort.hasToken(i) ) {
@@ -109,6 +112,12 @@ public class CTask extends TypedAtomicActor implements Runnable {
            e.printStackTrace();
        }
    }
+   
+   
+   @Override
+    public boolean prefire() throws IllegalActionException {
+        return true;
+    }
 
    public void run() {
        while (true) {
@@ -138,6 +147,7 @@ public class CTask extends TypedAtomicActor implements Runnable {
            toResourcePort = new TypedIOPort(this, "toResourcePort", false,
                    true);
            toResourcePort.setMultiport(true);
+           triggerConnector = new TypedIOPort(this, "triggerConnector", false, true);
 
        } catch (IllegalActionException e) {
            // TODO Auto-generated catch block
