@@ -44,7 +44,7 @@
 ### ADS-LD Output File: '.\Obj\SimplePtidesOS.axf'
 ### ADS-LD Command File: '.\Obj\SimplePtidesOS.lnp'
 ### Checking for dirty Components...
-### Creating CmdFile '.\Obj\SimplePtidesOS.lnp', Handle=0x000000F4
+### Creating CmdFile '.\Obj\SimplePtidesOS.lnp', Handle=0x00000418
 ### Writing '.lnp' file
 ### ADS-LD Command file '.\Obj\SimplePtidesOS.lnp' is ready.
 ### ADS-LD: About to start ADS-LD Thread.

@@ -990,27 +990,6 @@ void removeEvent()
  * execute_event() checks if the event is valid. If it is, then fire actor
  * is called.
  */
-void executeEvent(){
-
-    if (EVENT_QUEUE_HEAD == NULL) 
-	{
-	//	printf("attempting to execute an event but the event queue is empty. I'm going to call die now\n");
-        die("EVENT_QUEUE_HEAD should never be NULL\n");
-    }
-    else 
-	{
-        if (EVENT_QUEUE_HEAD->actorToFire == NULL)
-		{
-	//		printf("can't execute b/c actor to fire is null. I'm going to call die now \n");
-            die("executing an event where the actors are NULL!!\n");
-        }
-        else 
-		{
-	//		printf("about to call fireActor on the event at the beginning of the event queue \n");
-            fireActor(EVENT_QUEUE_HEAD);
-        }
-    }
-}
 
 /** 
  * fire_actor checks if static timing analysis is needed.
@@ -1157,7 +1136,7 @@ void fireModelDelay(Actor* this_model_delay, Event* thisEvent) {
  * sure the event to fire is not of higher priority.
  */
 unsigned int higherPriority(Actor* actor) {
-	return alreadyFiring(actor);
+	return alreadyFiring(actor)? FALSE : TRUE;
 }
 
 void processEvents()
@@ -1282,88 +1261,92 @@ void processEvents()
  * Also, maybe we should have a seperate event queue for events generated here...? Depends on what we really want.
  */
 void processAvailableEvents(void)
-{  // should this be given a parameter for the event that was just created in the ISR that calls this function?
+{  
+// should this be given a parameter for the event that was just created in the ISR that calls this function?
    // I am possibly wrong... but I thought the reason for having this was to check to see if its safe to process the event just generated
 
     //  To ensure this function is thread safe, we make sure only one processEvents() IS BEING EXECUTED AT A TIME
     //  WHILE ANOTHER SENSOR MIGHT TRIGGER ANOTHER processEvents()
     //  IF ANOTHER processEvents() is currently being executed, we don't really need to have another being executed at the same time...
 	Actor* actor;
-    while (1) 
-	{
-        disableInterrupts();
+	Event* event;
+//    while (1) 
+//	{
         // If event queue is not empty.
-        if (EVENT_QUEUE_HEAD != NULL) 
+    while (EVENT_QUEUE_HEAD != NULL) 
+	{
+		disableInterrupts();
+		event = EVENT_QUEUE_HEAD;
+        // Check which actor produced the event that we have processed			
+		actor = event->actorFrom;
+		// FIXME: ALSO check if an event is of higher priority here.
+		if (higherPriority(actor) == FALSE) {
+			enableInterrupts();
+			break;
+		} 
+		else 
 		{
-            Event* event = EVENT_QUEUE_HEAD;
-            // Check which actor produced the event that we have processed			
-			actor = event->actorFrom;
-			// FIXME: ALSO check if an event is of higher priority here.
-			if (higherPriority(actor) == 1) {
-				enableInterrupts();
-				break;
-			} 
-			else 
+            long processTime = safeToProcess(event);
+            if (getCurrentPhysicalTime() >= processTime) 
 			{
-	            long processTime = safeToProcess(event);
-	            if (getCurrentPhysicalTime() >= processTime) 
-				{
-	                removeEvent();
-					currentlyFiring(actor);
-	                enableInterrupts();
-	                // Execute the event. During
-	                // this process more events may
-	                // be posted to the queue.
-	                fireActor(event);
-					freeEvent(event);
-	                // If the event just executed is
-	                // produced by a source actor
-	                if (actor->sourceActor != 0) {
-	                    // Decrement the buffer size
-	                    // by one.
-						if (actor == SOURCE1) {
-	                    	CK1_BUF_SIZE--;
-						}
-	                    // Make sure sourceBuffer is
-	                    // non-empty. If it is, fire
-	                    // the source actor once to
-	                    // produce some events.
-	                    if (CK1_BUF_SIZE == 0) {
-							//dummyEVent is never used.
-							Event* dummyEvent;
-	                        fireClock(SOURCE1, dummyEvent);
-							// firing of the actor should update the number of events in the buffer
-	                    }
-	                }
-	            }
-	            else {
-					// leave it for processEvents() to figure out what to do with source processes.
-					enableInterrupts();
-					break;
+                removeEvent();
+				currentlyFiring(actor);
+                enableInterrupts();
+                // Execute the event. During
+                // this process more events may
+                // be posted to the queue.
+                fireActor(event);
+				freeEvent(event);
+                // If the event just executed is
+                // produced by a source actor
+                if (actor->sourceActor != 0) {
+                    // Decrement the buffer size
+                    // by one.
+					if (actor == SOURCE1) {
+                    	CK1_BUF_SIZE--;
+					}
+                    // Make sure sourceBuffer is
+                    // non-empty. If it is, fire
+                    // the source actor once to
+                    // produce some events.
+                    if (CK1_BUF_SIZE == 0) {
+						//dummyEVent is never used.
+						Event* dummyEvent;
+                        fireClock(SOURCE1, dummyEvent);
+						// firing of the actor should update the number of events in the buffer
+                    }
+                }
+            }
+            else {
+//					// leave it for processEvents() to figure out what to do with source processes.
+//					enableInterrupts();
+//					break;
 //	                // There are no events safe to
 //	                // process, so setup sources
 //	                // to process.
 //	                STOP_SOURCE_PROCESS = FALSE;
-//	                // Set timed interrupt to run
-//	                // the event at the top of the
-//	                // event queue when physical time
-//	                // has passed for it to be
-//	                // safe to process
-//	                setTimedInterrupt(processTime);
-//	                enableInterrupts();
-	            }
-			}
-        } else {
-			// leave it for processEvents() to figure out what to do with source processes.
-			enableInterrupts();
-			break;
+                // Set timed interrupt to run
+                // the event at the top of the
+                // event queue when physical time
+                // has passed for it to be
+                // safe to process
+                setTimedInterrupt(processTime);
+                enableInterrupts();
+				break;
+            }
+		}
+
+    } 
+	// leave it for processEvents() to figure out what to do with source processes.
+	//enableInterrupts();
+	return;
 //            // There are no events safe to
 //            // process, so setup sources
 //            // to process.
 //            STOP_SOURCE_PROCESS = FALSE;
 //            enableInterrupts();
-        }
-		// leave it for processEvents() to figure out what to do with source processes.
+
+// leave it for processEvents() to figure out what to do with source processes.
 //        // If there is no event to process and we
 //        // have not reached the buffer limit, fire
 //        // the source actor.
@@ -1374,7 +1357,7 @@ void processAvailableEvents(void)
 //            	fireClock(SOURCE1, dummyEvent);
 //			}
 //        }
-    }
+//    }
 } 
 
 /** 
@@ -2472,8 +2455,8 @@ void IntGPIOg(void)
     DisplayIntStatus();
 
 	disableInterrupts();
-	// fire the event sent by GPIOa.
-    (*IntFuncPtr[1])(IntActorArg[1]);
+	// fire the actor sent by GPIOa.
+    (*IntFuncPtr[0])(IntActorArg[0]);
 
 	enableInterrupts();
 
@@ -2499,7 +2482,7 @@ void IntGPIOg(void)
 // This is the handler for INT_GPIOB. 
 // IntGPIOa would trigger this.
 //
-//*****************************************************************************
+//*****************************************************************************												 	
 void IntGPIOf(void)
 {
 
@@ -2557,7 +2540,7 @@ void IntGPIOe(void)
 
 	disableInterrupts();
 	// fire the event sent by GPIOa.
-    (*IntFuncPtr[1])(IntActorArg[1]);
+    (*IntFuncPtr[2])(IntActorArg[2]);
 
 	enableInterrupts();
 
@@ -2599,7 +2582,7 @@ void IntGPIOd(void)
 
 	disableInterrupts();
 	// fire the event sent by GPIOa.
-    (*IntFuncPtr[1])(IntActorArg[1]);
+    (*IntFuncPtr[3])(IntActorArg[3]);
 
 	enableInterrupts();
 
@@ -2641,7 +2624,7 @@ void IntGPIOc(void)
 
 	disableInterrupts();
 	// fire the event sent by GPIOa.
-    (*IntFuncPtr[1])(IntActorArg[1]);
+    (*IntFuncPtr[4])(IntActorArg[4]);
 
 	enableInterrupts();
 
@@ -2683,7 +2666,7 @@ void IntGPIOb(void)
 
 	disableInterrupts();
 	// fire the event sent by GPIOa.
-    (*IntFuncPtr[1])(IntActorArg[1]);
+    (*IntFuncPtr[5])(IntActorArg[5]);
 
 	enableInterrupts();
 
@@ -2732,6 +2715,7 @@ void IntGPIOa(void)
 		IntFuncPtr[InterruptPriorityLevel] = &timerHandler;
 		IntActorArg[InterruptPriorityLevel] = NULL;
 	} else {
+		IntFuncPtr[InterruptPriorityLevel] = &fireSensor;
 		IntActorArg[InterruptPriorityLevel] = SENSOR1;
 	}
 	 
