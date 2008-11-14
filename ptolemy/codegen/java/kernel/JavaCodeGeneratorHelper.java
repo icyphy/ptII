@@ -392,8 +392,6 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
      */
     protected String _generateInputVariableDeclaration()
             throws IllegalActionException {
-        boolean dynamicReferencesAllowed = ((BooleanToken) _codeGenerator.allowDynamicMultiportReference
-                .getToken()).booleanValue();
 
         StringBuffer code = new StringBuffer();
 
@@ -407,40 +405,7 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
                 continue;
             }
 
-            code.append("static " + targetType(inputPort.getType()) + " "
-                    + generateName(inputPort));
-
-            int bufferSize = getBufferSize(inputPort);
-
-            if (inputPort.isMultiport()) {
-                code.append("[]");
-                if (bufferSize > 1 || dynamicReferencesAllowed) {
-                    code.append("[]");
-                }
-		code.append(" = new " + targetType(inputPort.getType()));
-	    } else {
-                if (bufferSize > 1) {
-                    code.append("[]");
-		    code.append(" = new " + targetType(inputPort.getType()));
-                } else {
-		    code.append(" = ");
-                }
-	    }
-
-
-            if (inputPort.isMultiport()) {
-                code.append("[" + inputPort.getWidth() + "]");
-                if (bufferSize > 1 || dynamicReferencesAllowed) {
-                    code.append("[" + bufferSize + "]");
-                }
-            } else {
-                if (bufferSize > 1) {
-                    code.append("[" + bufferSize + "]");
-		} else {
-		    code.append("0");
-		}
-	    }
-            code.append(";" + _eol);
+	    _portVariableDeclaration(code, inputPort);
         }
 
         return code.toString();
@@ -464,22 +429,7 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
             // If either the output port is a dangling port or
             // the output port has inside receivers.
             if (!outputPort.isOutsideConnected() || outputPort.isInsideConnected()) {
-                code.append("static " + targetType(outputPort.getType()) + " "
-                        + generateName(outputPort));
-
-		// FIXME: Why is this different from the _generateInputVariableDeclaration?
-		// The code below produces Java that does not compile.  See
-		// ptolemy/codegen/java/actor/lib/colt/test/auto/ColtBinomialSelectorUnusedOutput.xml 
-                // if (outputPort.isMultiport()) {
-//                     code.append("[" + outputPort.getWidthInside() + "]");
-//                 }
-
-//                 int bufferSize = getBufferSize(outputPort);
-
-//                 if (bufferSize > 1) {
-//                     code.append("[" + bufferSize + "]");
-//                 }
-                 code.append(";" + _eol);
+		_portVariableDeclaration(code, outputPort);
              }
         }
 
@@ -645,6 +595,50 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
     protected List _primitiveTypes = Arrays.asList(new String[] {
             "Integer", "Double", "String", "Long", "Boolean", "UnsignedByte",
             "Pointer" });
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                  ////
+
+    private void _portVariableDeclaration(StringBuffer code, TypedIOPort port) 
+	throws IllegalActionException {
+
+	code.append("static " + targetType(port.getType()) + " "
+                    + generateName(port));
+
+	int bufferSize = getBufferSize(port);
+
+        boolean dynamicReferencesAllowed = ((BooleanToken) _codeGenerator.allowDynamicMultiportReference
+                .getToken()).booleanValue();
+
+	if (port.isMultiport()) {
+	    code.append("[]");
+	    if (bufferSize > 1 || dynamicReferencesAllowed) {
+		code.append("[]");
+	    }
+	    code.append(" = new " + targetType(port.getType()));
+	} else {
+	    if (bufferSize > 1) {
+		code.append("[]");
+		code.append(" = new " + targetType(port.getType()));
+	    } else {
+		//code.append(" = ");
+	    }
+	}
+
+	if (port.isMultiport()) {
+	    code.append("[" + port.getWidth() + "]");
+	    if (bufferSize > 1 || dynamicReferencesAllowed) {
+		code.append("[" + bufferSize + "]");
+	    }
+	} else {
+	    if (bufferSize > 1) {
+		code.append("[" + bufferSize + "]");
+	    } else {
+		//code.append("0");
+	    }
+	}
+	code.append(";" + _eol);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
