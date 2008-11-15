@@ -2207,38 +2207,6 @@ Edward A. Lee</text></svg></configure>
                 <property name="meanTime" class="ptolemy.data.expr.Parameter" value="0.0125">
                 </property>
             </entity>
-            <entity name="Const" class="ptolemy.actor.lib.Const">
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-                    </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
-                    </property>
-                </property>
-            </entity>
-            <entity name="Exp2" class="ptolemy.actor.lib.Expression">
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                    </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                    </property>
-                </property>
-            </entity>
-            <entity name="Exp1" class="ptolemy.actor.lib.Expression">
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                    </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                    </property>
-                </property>
-            </entity>
-            <entity name="Exp3" class="ptolemy.actor.lib.Expression">
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                    </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                    </property>
-                </property>
-            </entity>
         </entity>
         <entity name="PedControlChannelN" class="ptolemy.domains.wireless.lib.LimitedRangeChannel">
             <property name="defaultProperties" class="ptolemy.data.expr.Parameter" value="{range = 1000}">
@@ -2339,38 +2307,6 @@ Edward A. Lee</text></svg></configure>
                 <property name="meanTime" class="ptolemy.data.expr.Parameter" value="0.0166666666667">
                 </property>
             </entity>
-            <entity name="Const" class="ptolemy.actor.lib.Const">
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-                    </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
-                    </property>
-                </property>
-            </entity>
-            <entity name="Exp2" class="ptolemy.actor.lib.Expression">
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                    </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                    </property>
-                </property>
-            </entity>
-            <entity name="Exp1" class="ptolemy.actor.lib.Expression">
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                    </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                    </property>
-                </property>
-            </entity>
-            <entity name="Exp3" class="ptolemy.actor.lib.Expression">
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                    </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                    </property>
-                </property>
-            </entity>
         </entity>
         <entity name="CarLightS" class="CarLight">
             <property name="MeanCarArrival" class="ptolemy.data.expr.Parameter" value="MeanCarArrivalNS">
@@ -2443,38 +2379,6 @@ Edward A. Lee</text></svg></configure>
             </property>
             <entity name="PedArrival" class="ptolemy.actor.lib.PoissonClock">
                 <property name="meanTime" class="ptolemy.data.expr.Parameter" value="0.0125">
-                </property>
-            </entity>
-            <entity name="Const" class="ptolemy.actor.lib.Const">
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-                    </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
-                    </property>
-                </property>
-            </entity>
-            <entity name="Exp2" class="ptolemy.actor.lib.Expression">
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                    </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                    </property>
-                </property>
-            </entity>
-            <entity name="Exp1" class="ptolemy.actor.lib.Expression">
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                    </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                    </property>
-                </property>
-            </entity>
-            <entity name="Exp3" class="ptolemy.actor.lib.Expression">
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                    </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                    </property>
                 </property>
             </entity>
         </entity>
@@ -2563,38 +2467,6 @@ Edward A. Lee</text></svg></configure>
             </property>
             <entity name="PedArrival" class="ptolemy.actor.lib.PoissonClock">
                 <property name="meanTime" class="ptolemy.data.expr.Parameter" value="0.0166666666667">
-                </property>
-            </entity>
-            <entity name="Const" class="ptolemy.actor.lib.Const">
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-                    </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
-                    </property>
-                </property>
-            </entity>
-            <entity name="Exp2" class="ptolemy.actor.lib.Expression">
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                    </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                    </property>
-                </property>
-            </entity>
-            <entity name="Exp1" class="ptolemy.actor.lib.Expression">
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                    </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                    </property>
-                </property>
-            </entity>
-            <entity name="Exp3" class="ptolemy.actor.lib.Expression">
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                    </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                    </property>
                 </property>
             </entity>
         </entity>
