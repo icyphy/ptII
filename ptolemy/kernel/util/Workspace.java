@@ -654,8 +654,6 @@ public final class Workspace implements Nameable, Serializable {
 
         try {
             synchronized (obj) {
-                // FIXME: If obj != this, then the various calls to notifyAll()
-                // will not get to it!
                 obj.wait();
             }
         } finally {
@@ -928,7 +926,8 @@ public final class Workspace implements Nameable, Serializable {
         }
     }
 
-    /** Frees the thread of all the readAccesses on the workspace. The method
+    /** Frees the thread of all the readAccesses on the workspace
+     *  held by the current thread. The method
      *  _reacquireAllReadAccesses should be called after this method is
      *  called.
      *  @return The number of readAccess that the thread possessed on the
