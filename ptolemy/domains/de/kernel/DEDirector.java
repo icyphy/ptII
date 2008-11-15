@@ -721,9 +721,10 @@ public class DEDirector extends Director implements TimedDirector {
      *  the first valid fire time.
      *  @param actor The scheduled actor to fire.
      *  @param time The scheduled time to fire.
+     *  @return The time at which the firing will occur.
      *  @exception IllegalActionException If event queue is not ready.
      */
-    public void fireAtFirstValidTimeAfter(Actor actor, Time time) throws IllegalActionException {
+    public Time fireAtFirstValidTimeAfter(Actor actor, Time time) throws IllegalActionException {
         // This has to be synchronized at this level to make sure
         // that time does not advance between getModelTime() and
         // the enqueueing of the event.
@@ -732,6 +733,7 @@ public class DEDirector extends Director implements TimedDirector {
                 time = getModelTime();
             }
             fireAt(actor, time);
+            return time;
         }
     }    
 
