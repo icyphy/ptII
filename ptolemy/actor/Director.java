@@ -403,6 +403,25 @@ public class Director extends Attribute implements Executable {
             container.getExecutiveDirector().fireAtCurrentTime(container);
         }
     }
+    
+    /** Schedule an actor to be fired at the specified time or the current
+     *  time, whichever is greater. The implementation in this base class
+     *  is not thread safe, but some derived classes make it so (such as
+     *  the DEDirector). Specifically, this base class does not ensure that
+     *  current time does not change between when it checks current time
+     *  and when it calls fireAt().
+     *  @param actor The scheduled actor to fire.
+     *  @param time The scheduled time to fire.
+     *  @return The time at which the firing will occur.
+     *  @exception IllegalActionException If event queue is not ready.
+     */
+    public Time fireAtFirstValidTimeAfter(Actor actor, Time time) throws IllegalActionException {
+        if (time.compareTo(getModelTime()) < 0) {
+            time = getModelTime();
+        }
+        fireAt(actor, time);
+        return time;
+    }
 
     /** Return the current time value of the model being executed by this
      *  director. This time can be set with the setCurrentTime method.
