@@ -69,7 +69,8 @@ JSRCS = \
 	RealTimeComposite.java \
 	Refinement.java \
 	RefinementPort.java \
-	RunCompositeActor.java
+	RunCompositeActor.java \
+	ThreadedComposite.java
 
 OTHER_FILES_TO_BE_JARED = \
 	CaseIcon.xml \

@@ -1,0 +1,1056 @@
+/* An actor that executes a contained actor in separate thread.
+
+ Copyright (c) 2007 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+
+ */
+package ptolemy.actor.lib.hoc;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+import java.util.Set;
+import java.util.concurrent.LinkedBlockingQueue;
+
+import ptolemy.actor.Actor;
+import ptolemy.actor.Director;
+import ptolemy.actor.Executable;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.NoTokenException;
+import ptolemy.actor.QueueReceiver;
+import ptolemy.actor.Receiver;
+import ptolemy.actor.util.BreakCausalityInterface;
+import ptolemy.actor.util.CausalityInterface;
+import ptolemy.actor.util.Time;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Workspace;
+import ptolemy.util.MessageHandler;
+
+
+//////////////////////////////////////////////////////////////////////////
+//// ThreadedComposite
+
+/**
+ A container for another actor that executes that other actor
+ in a separate thread called the <i>inside thread</i>.
+ This actor starts that thread in its initialize()
+ method, which is invoked by its executive director (the director
+ in charge of firing this actor). The thread that invokes the
+ action methods of this actor
+ (initialize(), prefire(), fire(), postfire(), and wrapup())
+ is called the <i>director thread</i>.
+ <p>
+ This actor automatically creates input and output ports to
+ match those of the inside actor. Input events provided at those
+ input ports are provided as input events to the contained actor.
+ Outputs provided by the contained actor become output events
+ of this actor. The time stamp of the input events is provided
+ by the container of this actor. The time stamp of the output events
+ depends on the <i>delay</i> parameter, as explained below.
+ <p>
+ The inside thread blocks waiting for inputs or pure events.
+ Inputs are provided to that thread when the fire() method of
+ this actor is invoked by the director thread.
+ Pure events are provided after fireAt(),
+ fireAtCurrentTime(), or fireAtFirstValidTimeAfter() are called
+ by either the inside thread or the director thread.
+ When the time of those firing requests becomes current time,
+ the container will (presumably) fire this actor, and
+ this actor will provide a pure event to the inside thread,
+ causing it to fire the contained actor.
+ <p>
+ If the <i>synchronizeToRealTime</i> parameter is true, then
+ when the inside thread encounters an input or pure event
+ with time stamp <i>t</i>, it stalls until real time matches
+ or exceeds <i>t</i> (measured in seconds since the start of
+ execution of the inside thread). FIXME: check
+ <p>
+ When the wrapup() method of this actor is called, the inside thread is
+ provided with signal to terminate rather than to process additional
+ inputs. The inside thread will also exit if stop() is called on this
+ actor; however, in this case, which iterations are completed
+ is nondeterminate (there may be inputs left unprocessed).
+ <p>
+ The parameters of this actor include all the parameters of the
+ contained actor, and setting those parameters automatically
+ sets the parameters of the contained actor.
+ <p>
+ In addition to the parameters of the contained actor, this actor
+ has a <i>delay</i> parameter. This parameter is a double that
+ be any nonnegative value or the special value <i>UNDEFINED</i>.
+ If it is given a nonnegative value, then the value specifies
+ the model-time delay between input events and the output
+ events that result from reacting to those input events.
+ That is, if this actor is given an input event with time
+ stamp <i>t</i>, then if the contained actor produces any output
+ events in reaction to that event, those output events will be
+ produced by this actor with time stamp <i>t</i> + <i>delay</i>.
+ <p>
+ If <i>delay</i> has value <i>UNDEFINED</i> (the default), then
+ outputs are produced at the current model time of the executive
+ director when the inside thread happens to produce those events.
+ This is accomplished by the inside thread calling
+ fireAtFirstValidTimeAfter() of the enclosing director, and
+ then producing the outputs when the requested firing occurs
+ in the director thread.
+ <p>
+ The most common use of this actor is in the DE domain.
+ Regardless of the value of <i>delay</i>, this actor is treated
+ by DE as introducing a delay, much like the TimedDelay actor.
+ In fact, if <i>delay</i> is 0.0, there will be a one tick delay
+ in superdense time, just as with the TimedDelay actor.
+ <p>
+ <b>Discussion:</b>
+ <p>
+ There are several useful things you can do with this model.
+ We describe some use cases here:
+ FIXME: Check these and provide demos.
+ <p>
+ <i>Background execution.</i> When <i>delay</i> is greater than
+ or equal to 0.0,
+ then when this actor is fired in response to input events
+ with time stamp <i>t</i>, the actual
+ processing of those events occurs later in a separate thread. The
+ director thread is not blocked, and can continue to process events
+ with time stamps less than or equal to <i>t</i> + <i>delay</i>.
+ The director thread is blocked from processing events with larger
+ time stamps than that because this actor uses fireAt() to
+ request a firing at time  <i>t</i> + <i>delay</i>, and when that
+ firing occurs, it blocks the director thread until the reaction
+ is complete.
+ <p>
+ <i>Parallel firing.</i> Note that if <i>delay</i> is set to 0.0,
+ it may seem that there is no point in using this actor, since
+ model time will not be allowed to increase past <i>t</i> until
+ the contained actor has reacted to events with time stamp <i>t</i>.
+ However, there is actually exploitable concurrency if there
+ are other actors in the model that also have pending input
+ events with time stamp <i>t</i>. Those event can be processed
+ concurrently with this actor reacting to its input event.
+ A typical use case will broadcast an event to several instances
+ of ThreadedComposite, in which case each of those several
+ inside threads can execute concurrently in reaction to those
+ input events.
+ <p>
+ <i>Real-time source.</i> If the contained actor (and hence this
+ actor) has no inputs and <i>synchronizeToRealTime</i> is true, then
+ the contained actor must call fireAt() or one of its variants so that
+ the inside thread will be provided with pure events.
+ The behavior depends on which variant of the fireAt() methods is used
+ by the inside actor.  There are three cases:
+ FIXME: Described these. In particular, delay needs to specify the
+ minimum increment between these or fireAt() could result in an
+ exception.  Do we want a parameter to relax that?
+ <p>
+ FIXME: If there is a PortParameter, the parameter gets updated when the
+ fire() method of this composite is invoked, which creates a nondeterminate
+ interaction with the deferred execution. See CompositeActor.fire().
+
+ @author Edward A. Lee
+ @version $Id: ThreadedComposite.java 47513 2007-12-07 06:32:21Z cxh $
+ @since Ptolemy II 7.2
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (eal)
+ */
+public class ThreadedComposite extends MirrorComposite {
+    /** Create an actor with a name and a container.
+     *  The container argument must not be null, or a
+     *  NullPointerException will be thrown.  This actor will use the
+     *  workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty string.
+     *  Increment the version of the workspace.
+     *  @param container The container actor.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the container is incompatible
+     *   with this actor.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an actor already in the container.
+     */
+    public ThreadedComposite(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name);
+        setClassName("ptolemy.domains.de.lib.ThreadedComposite");
+        new ThreadedDirector(this, "ThreadedDirector");
+
+        // Hidden parameter defining "UNDEFINED".
+        Parameter UNDEFINED = new Parameter(this, "UNDEFINED");
+        UNDEFINED.setVisibility(Settable.EXPERT);
+        UNDEFINED.setPersistent(false);
+        UNDEFINED.setExpression("-1.0");
+
+        delay = new Parameter(this, "delay");
+        delay.setTypeEquals(BaseType.DOUBLE);
+        delay.setExpression("UNDEFINED");
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         parameters                        ////
+
+    /** The model-time delay between the input events and the
+     *  output events. This is a double that defaults to <i>UNDEFINED</i>,
+     *  but can also be assigned any nonnegative number.
+     *  FIXME: Perhaps UNDEFINED is not the best default?
+     *  FIXME: UNDEFINED is not yet implemented.
+     */
+    public Parameter delay;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** React to a change in an attribute.  This method is called by
+     *  a contained attribute when its value changes.  In this base class,
+     *  the method does nothing.  In derived classes, this method may
+     *  throw an exception, indicating that the new attribute value
+     *  is invalid.  It is up to the caller to restore the attribute
+     *  to a valid value if an exception is thrown.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the change is not acceptable
+     *   to this container (not thrown in this base class).
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == delay) {
+            _delayValue = ((DoubleToken) delay.getToken()).doubleValue();
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
+    
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class has
+     *   has an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ThreadedComposite newObject = (ThreadedComposite) super.clone(workspace);
+        newObject._causalityInterface = null;
+        newObject._realStartTime = 0L;
+        return newObject;
+    }
+
+    /** Invoke iterations on the contained actor of the
+     *  container of this director repeatedly until either it runs out
+     *  of input data or prefire() returns false. If postfire() of any
+     *  actor returns false, then return false. Otherwise, return true.
+     *  @return True to allow the thread to continue executing.
+     *  @exception IllegalActionException If any called method of
+     *   of the contained actor throws it, or if the contained
+     *   actor is not opaque.
+     */
+    public boolean fireContainedActors() throws IllegalActionException {
+        // Don't call "super.fire();" here, this actor contains its
+        // own director.
+        Iterator actors = entityList().iterator();
+        boolean postfireReturns = true;
+
+        while (actors.hasNext() && !_stopRequested) {
+            Actor actor = (Actor) actors.next();
+
+            if (!((ComponentEntity) actor).isOpaque()) {
+                throw new IllegalActionException(this,
+                        "Inside actor is not opaque "
+                                + "(perhaps it needs a director).");
+            }
+
+            int result = Executable.COMPLETED;
+
+            while (result != Executable.NOT_READY) {
+                if (_debugging) {
+                    _debug("Iterating actor: " + actor.getFullName());
+                }
+                if (_debugging) {
+                    _debug("---- Iterating actor in associated thread: "
+                            + actor.getFullName());
+                }
+                result = actor.iterate(1);
+
+                // Should return if there are no more input data,
+                // irrespective of return value of prefire() of
+                // the actor, which is not reliable.
+                boolean outOfData = true;
+                Iterator inPorts = actor.inputPortList().iterator();
+
+                while (inPorts.hasNext()) {
+                    IOPort port = (IOPort) inPorts.next();
+
+                    for (int i = 0; i < port.getWidth(); i++) {
+                        if (port.hasToken(i)) {
+                            outOfData = false;
+                            break;
+                        }
+                    }
+                }
+
+                if (outOfData) {
+                    break;
+                }
+
+                if (result == Executable.STOP_ITERATING) {
+                    if (_debugging) {
+                        _debug("---- Actor requests halt: "
+                                + actor.getFullName());
+                    }
+                    postfireReturns = false;
+                    break;
+                }
+            }
+        }
+        return postfireReturns;
+    }
+    
+    /** Override the base class to return a causality interface that
+     *  indicates that the output does not depend (immediately) on
+     *  the input. This method assumes that the director deals with BooleanDependencies
+     *  and returns an instance of BreakCausalityInterface.
+     *  @return A representation of the dependencies between input ports
+     *   and output ports.
+     * @exception IllegalActionException Thrown if the director is not a timed director or
+     * the type of dependency that is required cannot be resolved.
+     */
+    public CausalityInterface getCausalityInterface() { 
+        if (_causalityInterface == null) {
+            _causalityInterface = new BreakCausalityInterface(
+                    this, getExecutiveDirector().defaultDependency());
+        }
+        return _causalityInterface;
+    }
+
+    /** Postfire the contained actors and return the and of what they returns.
+     *  @return True to allow the thread to continue executing.
+     *  @exception IllegalActionException If any called method of
+     *   of the contained actor throws it, or if the contained
+     *   actor is not opaque.
+     */
+    public boolean postfireContainedActors() throws IllegalActionException {
+        Iterator actors = entityList().iterator();
+        boolean postfireReturns = true;
+        while (actors.hasNext() && !_stopRequested) {
+            Actor actor = (Actor) actors.next();
+
+            int result = Executable.COMPLETED;
+
+            while (result != Executable.NOT_READY) {
+                if (_debugging) {
+                    _debug("Iterating actor: " + actor.getFullName());
+                }
+                if (_debugging) {
+                    _debug("---- Iterating actor in associated thread: "
+                            + actor.getFullName());
+                }
+                result = actor.iterate(1);
+
+                // Should return if there are no more input data,
+                // irrespective of return value of prefire() of
+                // the actor, which is not reliable.
+                boolean outOfData = true;
+                Iterator inPorts = actor.inputPortList().iterator();
+
+                while (inPorts.hasNext()) {
+                    IOPort port = (IOPort) inPorts.next();
+
+                    for (int i = 0; i < port.getWidth(); i++) {
+                        if (port.hasToken(i)) {
+                            outOfData = false;
+                            break;
+                        }
+                    }
+                }
+
+                if (outOfData) {
+                    break;
+                }
+
+                if (result == Executable.STOP_ITERATING) {
+                    if (_debugging) {
+                        _debug("---- Actor requests halt: "
+                                + actor.getFullName());
+                    }
+                    postfireReturns = false;
+                    break;
+                }
+            }
+        }
+        return postfireReturns;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** The cached value of the <i>delay</i> parameter. */
+    private double _delayValue = 0.0;
+
+    /** The real time at which the model begins executing, in milliseconds. */
+    private long _realStartTime = 0;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    ///////////////////////////////////////////////////////////////////
+    //// TokenFrame
+
+    /** Bundle data associated with ports and a time stamp.
+     *  There are three types of frames:
+     *  EVENT is a (possibly empty) bundle of data and a time
+     *  stamp that is either provided to the inside thread from
+     *  the inputs of a ThreadedComposite or provided by the
+     *  inside thread to form the outputs of a ThreadedComposite.
+     *  POSTFIRE is a frame indicating that the inside actor
+     *  can be postfired. No tokens are provided (they are assumed
+     *  to have been consumed in the firing). STOP is a frame
+     *  provided to the inside thread to indicate that it should
+     *  stop executing.
+     */
+    protected static class TokenFrame {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+        public TokenFrame(Time theTime, List<QueuedToken> theTokens, FrameType theType) {
+            tokens = theTokens;
+            time = theTime;
+            type = theType;
+        }
+        public final Time time;
+        public final List<QueuedToken> tokens;
+        public final FrameType type;
+
+        public static FrameType EVENT = new FrameType();
+        public static FrameType POSTFIRE = new FrameType();
+        public static FrameType STOP = new FrameType();
+
+        private static class FrameType {
+            private FrameType() {};
+        }        
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    //// QueuedToken
+
+    /** Bundle of a token and the input port and channel
+     *  at which it arrived.
+     */
+    private static class QueuedToken {
+
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
+        public QueuedToken(IOPort thePort, int theChannel, Token theToken) {
+            token = theToken;
+            channel = theChannel;
+            port = thePort;
+        }
+
+        public final int channel;
+
+        public final Token token;
+
+        public final IOPort port;
+
+        public String toString() {
+            return "token " + token + " for port " + port.getFullName() + "("
+                    + channel + ")";
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    //// ThreadedDirector
+
+    /** A specialized director that fires a contained actor
+     *  in a separate thread. The prefire() method returns true
+     *  if the inside thread is alive. The fire() method posts
+     *  input events, if any, for the current firing on a queue for
+     *  the inside thread to consume. If the firing is in response
+     *  to a prior refiring request by this director, then the fire()
+     *  method will also wait for the inside thread to complete
+     *  its firing, and will then produce outputs from that firing.
+     *  The postfire() method posts
+     *  a request to postfire the contained actor and also requests
+     *  a refiring of this director at the current time plus the delay
+     *  value (unless the delay value is UNDEFINED). The wrapup() method
+     *  requests termination of the inside thread. If postfire()
+     *  of the contained actor returns false, then postfire() of this director
+     *  will return false, requesting a halt to execution of the model.
+     */
+    private class ThreadedDirector extends Director {
+        /** Create a new instance of the director for ThreadedComposite.
+         *  @param container The container for the director.
+         *  @param name The name of the director.
+         *  @exception IllegalActionException Not thrown in this base class.
+         *  @exception NameDuplicationException Not thrown in this base class.
+         */
+        public ThreadedDirector(CompositeEntity container, String name)
+                throws IllegalActionException, NameDuplicationException {
+            super(container, name);
+            setPersistent(false);
+        }
+        
+        /** Clone the director into the specified workspace.
+         *  @param workspace The workspace for the new object.
+         *  @return A new director.
+         *  @exception CloneNotSupportedException If a derived class has
+         *   has an attribute that cannot be cloned.
+         */
+        public Object clone(Workspace workspace) throws CloneNotSupportedException {
+            ThreadedDirector newObject = (ThreadedDirector) super.clone(workspace);
+            newObject._inputTokens = null;
+            newObject._thread = null;
+            newObject._outputTimes = new LinkedList<Time>();
+            newObject._fireAtTimes = Collections.synchronizedSet(new HashSet<Time>());
+            newObject._inputFrames = new LinkedBlockingQueue<TokenFrame>();
+            newObject._outputFrames = Collections
+                    .synchronizedList(new LinkedList<TokenFrame>());
+            return newObject;
+        }
+
+        /** Produce outputs (if appropriate).
+         *  @exception IllegalActionException If production of an output
+         *   fails (e.g. type error), or if this thread is interrupted
+         *   while we are waiting for output to produce.
+         */
+        public synchronized void fire() throws IllegalActionException {
+            // NOTE: This method is synchronized to ensure that when
+            // delay is UNDEFINED and the inside thread calls
+            // fireAtFirstTimeAfter(), that the firing does not
+            // occur before _outputFrames and _outputTimes have
+            // been updated.
+            Time environmentTime = ThreadedComposite.this
+                    .getExecutiveDirector().getModelTime();
+            
+            if (ThreadedComposite.this._debugging) {
+                ThreadedComposite.this._debug("Firing at time " + environmentTime);
+            }
+            
+            // If there is an output to be produced at this
+            // time, produce it.
+            Time nextOutputTime = _outputTimes.peek();
+            if (environmentTime.equals(nextOutputTime)) {
+                // There is an output to be produced.
+                // First, remove that time from the pending outputs queue.
+                nextOutputTime = _outputTimes.poll();
+                // First, wait (if necessary) for output
+                // to be produced.
+                while (_outputFrames.isEmpty()) {
+                    if (ThreadedComposite.this._debugging) {
+                        ThreadedComposite.this._debug("Waiting for outputs from inside thread.");
+                    }
+                    try {
+                        // FIXME: Should this use _workspace.wait(this) so that
+                        // it releases any read locks that might be held?
+                        wait();
+                    } catch (InterruptedException ex) {
+                        throw new IllegalActionException(this,
+                                "Interrupted while waiting for output to produce");
+                    }
+                }
+                // There is now an output frame to be produced.
+                if (ThreadedComposite.this._debugging) {
+                    ThreadedComposite.this._debug("Sending outputs from inside thread.");
+                }
+                // We already know that the environment time matches
+                // the expected output time, so we can ignore the time
+                // stamp of the output frame.
+                TokenFrame frame = _outputFrames.get(0);
+                // Produce the outputs on the frame.
+                for (QueuedToken token : frame.tokens) {
+                    if (token.channel < token.port.getWidth()) {
+                        token.port.send(token.channel, token.token);
+                    }
+                }
+            }
+        }
+
+        /** Delegate by calling fireAt() on the director of the container's
+         *  container, and make a local record that a refiring request has
+         *  been made for the specified time.
+         *  @param actor The actor requesting firing.
+         *  @param time The time at which to fire.
+         */
+        public void fireAt(Actor actor, Time time)
+                throws IllegalActionException {
+            Director director = ThreadedComposite.this.getExecutiveDirector();
+            if (director != null) {
+                if (ThreadedComposite.this._debugging) {
+                    ThreadedComposite.this._debug(
+                            "Request refiring at time "
+                            + time + " for actor: " + actor.getFullName());
+                }
+                try {
+                    director.fireAt(ThreadedComposite.this, time);
+                } catch (IllegalActionException ex) {
+                    throw new IllegalActionException(this, ex,
+                            "Actor "
+                            + actor.getFullName()
+                            + " requests refiring at time "
+                            + time
+                            + ", which fails.\n"
+                            + "Perhaps the delay parameter is too large?\n"
+                            + "Try setting it to 0.");
+                }
+            }
+            if (actor != ThreadedComposite.this) {
+                // The fireAt() request is coming from the inside, so
+                // when the firing occurs, we want to post an input
+                // frame (even if there are no input events) for
+                // the associated thread.
+                _fireAtTimes.add(time);
+            }
+        }
+
+        /** Delegate by calling fireAt() on the director of the container's
+         *  container, and make a local record that a refiring request has
+         *  been made for the specified time.
+         *  @param actor The actor requesting firing.
+         */
+        public void fireAtCurrentTime(Actor actor)
+                throws IllegalActionException {
+            Director director = ThreadedComposite.this.getExecutiveDirector();
+            if (director != null) {
+                if (ThreadedComposite.this._debugging) {
+                    ThreadedComposite.this._debug(
+                            "Request refiring at current time "
+                            + " for actor: " + actor.getFullName());
+                }
+                director.fireAtCurrentTime(ThreadedComposite.this);
+            }
+            if (actor != ThreadedComposite.this) {
+                // The fireAt() request is coming from the inside, so
+                // when the firing occurs, we want to post an input
+                // frame (even if there are no input events) for
+                // the associated thread.
+                _fireAtTimes.add(director.getModelTime());
+            }
+        }
+        
+        // FIXME: Need to implement fireAtFirstAvailableTime() (or whatever it is called... See DEDirector).
+
+        /** Return the current time, which is the most recent input frame processed
+         *  (or being processed) by the inside thread.
+         *  @return The current time.
+         */
+        public Time getModelTime() {
+            return _currentTime;
+        }
+
+        /** Start the inside thread.
+         *  @exception IllegalActionException If the initialize() method of
+         *   one of the inside actors throws it.
+         */
+        public void initialize() throws IllegalActionException {
+            // The following must be done before the initialize() methods
+            // of the actors is called because those methods may call fireAt().
+            _fireAtTimes.clear();
+
+            // The superclass will initialize all the actors.
+            super.initialize();
+            
+            // Set a flag indicating that the first firing should
+            // initialize the _realStartTime variable. This is done
+            // in the first firing to be as late as possible, so
+            // that startup transients are minimized.
+            // FIXME: This will impede synchronization with other
+            // actors, since there won't be a common time base.
+            _realStartTime = -1L;
+
+            _inputFrames.clear();
+            _outputFrames.clear();
+            
+            // Create and start the inside thread.
+            _thread = new CompositeThread();
+            _thread.setPriority(Thread.MAX_PRIORITY);
+            _thread.start();
+        }
+
+        /** Return a new instance of QueueReceiver.
+         *  @return A new instance of QueueReceiver.
+         *  @see QueueReceiver
+         */
+        public Receiver newReceiver() {
+            return new QueueReceiver();
+        }
+
+        /** Return true if the inside thread is alive.
+         *  @return True if the inside thread is still alive.
+         */
+        public boolean prefire() throws IllegalActionException {
+            // Do not call super.prefire()!
+            // Superclass sets current time of this
+            // director to that of the container.
+            // The notion of current time presented to the
+            // inside actors (which may be currently executing
+            // in another thread) must match that of the frame
+            // that the inside thread is processing.
+
+            // Have to create a new list because the previous list may
+            // not have been consumed yet.
+            _inputTokens = new LinkedList<QueuedToken>();
+            
+            boolean result = _thread.isAlive();
+            
+            if (ThreadedComposite.this._debugging) {
+                ThreadedComposite.this._debug("Prefire returns " + result);
+            }
+            return result;
+        }
+
+        /** Consume inputs (if any) and post a frame on the queue
+         *  for the inside thread to consume. A frame will be posted
+         *  even if there are no inputs if a refiring request has
+         *  been made for the current time.
+         *  @return True if the associated thread is still alive.
+         */
+        public boolean postfire() throws IllegalActionException {
+            
+            Time environmentTime = ThreadedComposite.this
+                    .getExecutiveDirector().getModelTime();
+            
+            if (ThreadedComposite.this._debugging) {
+                ThreadedComposite.this._debug("Postfiring at time " + environmentTime);
+            }
+
+            // If there are inputs to be consumed, or if a refiring
+            // request has been made for this time, then create an
+            // input frame for the inside thread.
+            // We can safely remove the refire request since we
+            // are now responding to it. Note that semantically,
+            // multiple refire requests for the same time are only
+            // required to trigger a single refiring, so this is true
+            // even if there were multiple refire requests.
+            boolean refireRequested = _fireAtTimes.remove(environmentTime);
+
+            // Put a frame on the _inputFrames for the inside thread
+            // if either a refire was requested or if there are inputs.
+            if (refireRequested || !_inputTokens.isEmpty()) {
+                if (ThreadedComposite.this._debugging) {
+                    ThreadedComposite.this._debug(
+                            "Queueing input tokens for the associated thread: "
+                            + _inputTokens.toString()
+                            + " to be processed at time "
+                            + environmentTime);
+                }
+                _inputFrames.add(new TokenFrame(
+                        environmentTime,
+                        _inputTokens,
+                        TokenFrame.EVENT));
+                if (_delayValue >= 0.0) {
+                    // Delay value is not UNDEFINED. Schedule a firing
+                    // at current time plus the delay.
+                    Time responseTime = environmentTime.add(_delayValue);
+                    fireAt(ThreadedComposite.this, responseTime);
+
+                    // Queue an indicator to produce outputs in response to that firing..
+                    _outputTimes.add(responseTime);
+                }
+            }
+            return _thread.isAlive();
+        }
+
+        /** Override the base class to post a "stop frame" on the queue
+         *  for the inside thread to stop.
+         */
+        public void stop() {
+            Time environmentTime = ThreadedComposite.this
+                    .getExecutiveDirector().getModelTime();
+            if (ThreadedComposite.this._debugging) {
+                ThreadedComposite.this._debug(
+                        "Queueing a stop-frame token for the associated thread with time: "
+                        + environmentTime);
+            }
+            _inputFrames.add(new TokenFrame(environmentTime, null, TokenFrame.STOP));
+        }
+
+        /** Record data from the specified input port
+         *  for transfer to the queue used to communicate these data to the
+         *  inside thread. This is called in the fire() method of
+         *  the enclosing composite actor after the prefire() method
+         *  of this director has been called and before its fire() method
+         *  is called.
+         *  @exception IllegalActionException If reading the inputs fails.
+         *  @param port The port to transfer tokens from.
+         *  @return True if at least one data token is transferred.
+         */
+        public boolean transferInputs(IOPort port)
+                throws IllegalActionException {
+            boolean result = false;
+            for (int i = 0; i < port.getWidth(); i++) {
+                try {
+                    if (port.isKnown(i)) {
+                        if (port.hasToken(i)) {
+                            Token token = port.get(i);
+                            _inputTokens.add(new QueuedToken(port, i, token));
+                            if (ThreadedComposite.this._debugging) {
+                                ThreadedComposite.this._debug(getName(),
+                                        "transferring input from "
+                                                + port.getName());
+                            }
+                            result = true;
+                        }
+                    }
+                } catch (NoTokenException ex) {
+                    // this shouldn't happen.
+                    throw new InternalErrorException(this, ex, null);
+                }
+            }
+            return result;
+        }
+
+        /** Override the base class to do nothing since the fire() method of this
+         *  director directly handles producing the outputs. In particular, we
+         *  don't want to read from the inside of the output ports because the
+         *  inside thread may be concurrently writing to them for the next
+         *  iteration.
+         *  @exception IllegalActionException If writing the outputs fails.
+         *  @param port The port to transfer tokens from.
+         *  @return False, indicating that no data token is produced now.
+         */
+        public boolean transferOutputs(IOPort port)
+                throws IllegalActionException {
+            return false;
+        }
+
+        /** Override the base class to wait until the associated thread
+         *  terminates and then call super.wrapup().
+         *  @exception IllegalActionException If the wrapup() method of
+         *   one of the associated actors throws it.
+         */
+        public void wrapup() throws IllegalActionException {
+            // First, post a "stop frame" in case one has not been posted.
+            // In the case of a finite run, one will likely have not been posted.
+            Time environmentTime = ThreadedComposite.this
+                    .getExecutiveDirector().getModelTime();
+            if (ThreadedComposite.this._debugging) {
+                ThreadedComposite.this
+                        ._debug("Queueing a stop-frame token for the associated thread with time: "
+                                + environmentTime);
+            }
+            // A "stop frame" has a null token list.
+            _inputFrames.add(new TokenFrame(environmentTime, null, TokenFrame.STOP));
+            if (_thread != null && _thread.isAlive()) {
+                try {
+                    if (ThreadedComposite.this._debugging) {
+                        ThreadedComposite.this
+                                ._debug("Waiting for associated thread to stop.");
+                    }
+                    _thread.join();
+                    if (ThreadedComposite.this._debugging) {
+                        ThreadedComposite.this
+                                ._debug("Associated thread has stopped.");
+                    }
+                } catch (InterruptedException e) {
+                    // Ignore.
+                }
+            }
+            super.wrapup();
+        }
+
+        //////////////////////////////////////////////////////////////
+        ////                   private variables                  ////
+
+        /** Queue of unprocessed input events. This is a blocking
+         *  queue, which blocks the calling thread if the queue is empty.
+         *  This is accessed by both the director thread and the inside
+         *  thread, so it has to be thread safe.
+         */
+        private LinkedBlockingQueue<TokenFrame> _inputFrames = new LinkedBlockingQueue<TokenFrame>();
+
+        /** List of input events in the current iteration.
+         *  This is accessed only in the director thread so it need
+         *  not be thread safe.
+         */
+        private List<QueuedToken> _inputTokens;
+
+        /** Queue of unprocessed output events.
+         *  This queue is accessed from multiple threads, so it must be
+         *  thread safe.
+         */
+        private List<TokenFrame> _outputFrames = Collections
+                .synchronizedList(new LinkedList<TokenFrame>());
+
+        /** Record of the time stamps at which
+         *  to produce outputs. These are enqueued and dequeued
+         *  in time stamp order.
+         *  This is accessed only in the director thread so it need
+         *  not be thread safe.
+         */
+        private Queue<Time> _outputTimes = new LinkedList<Time>();
+        
+        /** Record of the times which refire requests have been made
+         *  and not yet processed by any of the fireAt() methods.
+         *  This set is accessed from both the director
+         *  thread and the inside thread so it has to
+         *  be thread safe.
+         */
+        private Set<Time> _fireAtTimes = Collections.synchronizedSet(new HashSet<Time>());
+
+        /** The thread that executes the contained actors. */
+        private Thread _thread;
+
+        //////////////////////////////////////////////////////////////
+        ////                   inner inner classes                ////
+
+        ///////////////////////////////////////////////////////////////////
+        //// CompositeThread
+
+        /** The thread that executes the contained actor.
+         */
+        private class CompositeThread extends Thread {
+            public CompositeThread() {
+                super("CompositeThread_" + ThreadedComposite.this.getFullName());
+            }
+
+            public void run() {
+                while (!_stopRequested) {
+                    try {
+                        if (ThreadedComposite.this._debugging) {
+                            ThreadedComposite.this
+                                    ._debug("---- Waiting for inputs in the associated thread.");
+                        }
+                        // The following method blocks this thread if the queue is empty.
+                        TokenFrame frame = _inputFrames.take();
+                        
+                        // Check for a "stop frame" and exit the thread.
+                        if (frame.type == TokenFrame.STOP) {
+                            if (ThreadedComposite.this._debugging) {
+                                ThreadedComposite.this
+                                        ._debug("---- Read a stop frame in associated thread.");
+                            }
+                            break;
+                        }
+                        if (ThreadedComposite.this._debugging) {
+                            ThreadedComposite.this
+                                    ._debug("---- Reading input tokens in associated thread with time "
+                                            + frame.time
+                                            + " and value "
+                                            + frame.tokens);
+                        }
+                        // Current time of the director should match the frame time.
+                        // This is the view of time that should be presented to any inside actors.
+                        _currentTime = frame.time;
+
+                        // If this is the first firing, record the start time.
+                        // FIXME: Should do this only if synchronizeToRealTime is true.
+                        // FIXME: Actually, this real-time behavior should probably be
+                        // on the inside thread.
+                        /*
+                        if (_realStartTime < 0L) {
+                            _realStartTime = System.currentTimeMillis();
+                        }
+                        if (_delayValue == 0.0) {
+                            // Delay is zero, so wait until current time matches
+                            // model time, and then treat this as an ordinary composite actor.
+                            long realTimeMillis = System.currentTimeMillis()
+                                    - _realStartTime;
+                            long modelTimeMillis = Math.round(environmentTime
+                                    .getDoubleValue() * 1000.0);
+                            if (realTimeMillis < modelTimeMillis) {
+                                try {
+                                    Thread.sleep(modelTimeMillis - realTimeMillis);
+                                } catch (InterruptedException e) {
+                                    // Ignore and continue.
+                                }
+                            }
+                            // FIXME: This isn't quite right, since this will postfire()
+                            // contained actors.
+                            super.fire();
+                        */
+
+                        // Note that there may not be any tokens here, since there
+                        // may not be any inputs (the firing is in response to
+                        // a pure event). We still want to fire the
+                        // enclosed model at the specified time because the firing
+                        // is due to the model itself having previously called
+                        // fireAt().
+                        for (QueuedToken token : frame.tokens) {
+                            if (token.channel < token.port.getWidthInside()) {
+                                token.port.sendInside(token.channel,
+                                        token.token);
+                            }
+                        }
+                        // Fire the contained actors.
+                        boolean postfireReturnsTrue = fireContainedActors();
+                        
+                        // If outputs are produced by the firing, then
+                        // we need to record those in an output frame.
+                        List<QueuedToken> outputTokens = new LinkedList<QueuedToken>();
+                        Iterator ports = outputPortList().iterator();
+                        while (ports.hasNext()) {
+                            IOPort port = (IOPort) ports.next();
+                            for (int i = 0; i < port.getWidth(); i++) {
+                                if (port.isKnownInside(i)
+                                        && port.hasTokenInside(i)) {
+                                    Token token = port.getInside(i);
+                                    QueuedToken tokenBundle = new QueuedToken(port, i, token);
+                                    outputTokens.add(tokenBundle);
+                                }
+                            }
+                        }
+                        Time responseTime = _currentTime.add(_delayValue);
+                        
+                        // If delay is UNDEFINED, then we have to now request a
+                        // refiring at the first opportunity. This needs to be
+                        // synchronized on the enclosing director because
+                        // when delay is UNDEFINED and this inside thread calls
+                        // fireAtFirstTimeAfter(), we have to be sure
+                        // that the firing does not
+                        // occur before _outputFrames and _outputTimes have
+                        // been updated.
+                        synchronized (ThreadedDirector.this) {
+                            if (_delayValue < 0.0) {
+                                responseTime = ThreadedDirector.this.fireAtFirstValidTimeAfter(
+                                        ThreadedComposite.this, _currentTime);
+    
+                                // Queue an indicator to produce outputs in response to that firing..
+                                _outputTimes.add(responseTime);
+                            }
+    
+                            TokenFrame outputFrame = new TokenFrame(
+                                    responseTime, outputTokens, TokenFrame.EVENT);
+                            _outputFrames.add(outputFrame);
+                        }
+
+                        if (!postfireReturnsTrue) {
+                            // postfire() of the contained actors returns false.
+                            break;
+                        }
+                    } catch (InterruptedException e) {
+                        // Exit the thread.
+                        break;
+                    } catch (IllegalActionException ex) {
+                        MessageHandler.error("Error in inside thread of actor " + ThreadedComposite.this.getFullName(), ex);
+                    }
+                }
+            }
+        }
+    }
+}

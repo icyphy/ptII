@@ -117,6 +117,9 @@
       </entity>
 
       <entity name="RunCompositeActor" class="ptolemy.actor.lib.hoc.RunCompositeActor"/>
+      
+      <entity name="ThreadedComposite" class="ptolemy.actor.lib.hoc.ThreadedComposite">
+</entity>
             
       <entity name="VisualModelReference" class="ptolemy.vergil.actor.lib.VisualModelReference"/>
       
