@@ -15,7 +15,7 @@ private class array {
 
 /***funcDeclareBlock***/
 
-//Token Array_new(int size, int given, ...);
+//Token Array_new(int size, int given, Token... tokens);
 
 // Array_get: get an element of an array.
 Token Array_get(Token array, int i) {
@@ -188,7 +188,7 @@ Token Array_isCloseTo(Token thisToken, Token... elements) {
 /***Array_print***/
 
 // Array_print: Print the contents of an array to standard out.
-Token Array_print(Token thisToken, ...) {
+Token Array_print(Token thisToken, Token... tokens) {
     // Token string = Array_toString(thisToken);
     // System.out.printf(string.payload.String);
     // free(string.payload.String);
@@ -212,15 +212,23 @@ Token Array_print(Token thisToken, ...) {
 // of the specified array.
 Token Array_toString(Token thisToken, Token... ignored) {
     StringBuffer result = new StringBuffer("{");
-    for (i = 0; i < ((array)(thisToken.payload)).size; i++) {
+    for (int i = 0; i < ((array)(thisToken.payload)).size; i++) {
         if (i != 0) {
             result.append(", ");
         }
-	result.append(((array)(thisToken.payload)).elements[i].toString());
-
+	// Arrays elements could have different types?
+        short elementType = ((array)(thisToken.payload)).elements[i].type;
+	switch(elementType) {
+	    case TYPE_Array:
+  	        result.append(Array_toString(((array)(thisToken.payload)).elements[i]).payload);
+		break;		
+  	    default: 
+                result.append(((array)(thisToken.payload)).elements[i].payload.toString());
+		break;		
+        } 
     }
     result.append("}");
-    return result.toString();
+    return String_new(result.toString());
 }
 /**/
 
@@ -272,7 +280,7 @@ Token Array_add(Token thisToken, Token... tokens) {
 // FIXME: Arrays can have scalars subtracted!
 // This will cause a nasty seg fault.
 // Return a new Array token.
-Token Array_subtract(Token thisToken, ...) {
+Token Array_subtract(Token thisToken, Token... tokens) {
     int i;
     int size1;
     int size2;
@@ -353,7 +361,7 @@ Token Array_multiply(Token thisToken, Token... elements) {
 // by the elements of the second array.
 // Assume the given otherToken is array type.
 // Return a new Array token.
-Token Array_divide(Token thisToken, ...) {
+Token Array_divide(Token thisToken, Token... tokens) {
     int i;
     int size1;
     int size2;
@@ -391,7 +399,7 @@ Token Array_divide(Token thisToken, ...) {
 
 // Array_negate: Negate each element of an array.
 // Return a new Array token.
-Token Array_negate(Token thisToken, ...) {
+Token Array_negate(Token thisToken, Token... tokens) {
     int i;
     Token result;
 
@@ -408,7 +416,7 @@ Token Array_negate(Token thisToken, ...) {
 
 // Array_zero: Return an array like the specified
 // array but with zeros of the same type.
-Token Array_zero(Token token, ...) {
+Token Array_zero(Token token, Token... tokens) {
     Token result;
     Token element;
     int i;
@@ -427,7 +435,7 @@ Token Array_zero(Token token, ...) {
 
 // Array_one: Return an array like the specified
 // array but with ones of the same type.
-Token Array_one(Token token, ...) {
+Token Array_one(Token token, Token... tokens) {
     Token result;
     Token element;
     int i;
@@ -446,7 +454,7 @@ Token Array_one(Token token, ...) {
 
 // Array_clone: Return a new array just like the
 // specified array.
-Token Array_clone(Token token, ...) {
+Token Array_clone(Token token, Token... tokens) {
     Token result;
     Token element;
     int i;

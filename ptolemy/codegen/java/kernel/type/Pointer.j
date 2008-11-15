@@ -18,14 +18,14 @@ Token Pointer_new(void *i) {
 /**/
 
 /***Pointer_delete***/
-Token Pointer_delete(Token thisToken, ...) {
+Token Pointer_delete(Token thisToken, Token... tokens) {
     free(thisToken.payload.Pointer);
     return emptyToken;
 }
 /**/
 
 /***Pointer_equals***/
-Token Pointer_equals(Token thisToken, ...) {
+Token Pointer_equals(Token thisToken, Token... tokens) {
     va_list argp;
     Token otherToken;
     va_start(argp, thisToken);
@@ -43,20 +43,20 @@ Token Pointer_equals(Token thisToken, ...) {
 /**/
 
 /***Pointer_isCloseTo***/
-Token Pointer_isCloseTo(Token thisToken, ...) {
+Token Pointer_isCloseTo(Token thisToken, Token... tokens) {
     /** Pointers are never close to each other. */
     return Boolean_new(false);
 }
 /**/
 
 /***Pointer_print***/
-Token Pointer_print(Token thisToken, ...) {
+Token Pointer_print(Token thisToken, Token... tokens) {
     printf("Pointer at %o", (int) thisToken.payload.Pointer);
 }
 /**/
 
 /***Pointer_toString***/
-Token Pointer_toString(Token thisToken, ...) {
+Token Pointer_toString(Token thisToken, Token... tokens) {
     char* string = (char*) malloc(sizeof(char) * 32);
     sprintf(string, "Object at %.22o", (int) thisToken.payload.Pointer);
 
@@ -93,7 +93,7 @@ Token Pointer_toString(Token thisToken, ...) {
 /**/
 
 /***Pointer_clone***/
-Token Pointer_clone(Token thisToken, ...) {
+Token Pointer_clone(Token thisToken, Token... tokens) {
     return Pointer_new(thisToken.payload.Pointer);
 }
 /**/
@@ -101,7 +101,7 @@ Token Pointer_clone(Token thisToken, ...) {
 ---------------- static functions -----------------------
 
 /***Pointer_convert***/
-Token Pointer_convert(Token token, ...) {
+Token Pointer_convert(Token token, Token... tokens) {
     switch (token.type) {
 
 #ifdef TYPE_Object

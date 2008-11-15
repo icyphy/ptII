@@ -40,36 +40,28 @@ Token Integer_isCloseTo(Token thisToken, Token... tokens) {
 /**/
 
 /***Integer_print***/
-Token Integer_print(Token thisToken, ...) {
-    printf("%d", thisToken.payload.Int);
+Token Integer_print(Token thisToken, Token... tokens) {
+    System.out.println((Integer)thisToken.payload);
 }
 /**/
 
 /***Integer_toString***/
-Token Integer_toString(Token thisToken, ...) {
-    return String_new(InttoString(thisToken.payload.Int));
+Token Integer_toString(Token thisToken, Token... tokens) {
+    return String_new(((Integer)thisToken.payload).toString());
 }
 /**/
 
 /***Integer_add***/
-Token Integer_add(Token thisToken, ...) {
-    va_list argp;
-    va_start(argp, thisToken);
-    Token otherToken = va_arg(argp, Token);
-
-    va_end(argp);
-    return Integer_new(thisToken.payload.Int + otherToken.payload.Int);
+Token Integer_add(Token thisToken, Token... tokens) {
+    Token otherToken = tokens[0];
+    return Integer_new((Integer)(thisToken.payload) + (Integer)(otherToken.payload));
 }
 /**/
 
 /***Integer_subtract***/
-Token Integer_subtract(Token thisToken, ...) {
-    va_list argp;
-    va_start(argp, thisToken);
-    Token otherToken = va_arg(argp, Token);
-
-    va_end(argp);
-    return Integer_new(thisToken.payload.Int - otherToken.payload.Int);
+Token Integer_subtract(Token thisToken, Token... tokens) {
+    Token otherToken = tokens[0];
+    return Integer_new((Integer)(thisToken.payload) - (Integer)(otherToken.payload));
 }
 /**/
 
@@ -82,19 +74,18 @@ Token Integer_multiply(Token thisToken, Token... tokens) {
 
     switch (otherToken.type) {
     case TYPE_Integer:
-        result = Integer_new((Integer)thisToken.payload * (Integer)otherToken.payload);
+        result = Integer_new((Integer)(thisToken.payload) * (Integer)(otherToken.payload));
         break;
 
-#ifdef TYPE_Double
+#ifdef PTCG_TYPE_Double
     case TYPE_Double:
-        result = Double_new((Integer)thisToken.payload * (Double)otherToken.payload);
+        result = Double_new((Integer)(thisToken.payload) * (Double)(otherToken.payload));
         break;
 #endif
 
         // FIXME: not finished
     default:
-        System.err.printf( "Integer_multiply(): Multiply with an unsupported type. (%d)\n", otherToken.type);
-        System.exit(1);
+        throw new RuntimeException("Integer_multiply(): Multiply with an unsupported type.: " + otherToken.type);
     }
 
     return result;
@@ -102,37 +93,32 @@ Token Integer_multiply(Token thisToken, Token... tokens) {
 /**/
 
 /***Integer_divide***/
-Token Integer_divide(Token thisToken, ...) {
-    va_list argp;
-    va_start(argp, thisToken);
-    Token otherToken = va_arg(argp, Token);
-
-    va_end(argp);
-    return Integer_new(thisToken.payload.Int / otherToken.payload.Int);
+Token Integer_divide(Token thisToken, Token... tokens) {
+    Token otherToken = tokens[0];
+    return Integer_new((Integer)(thisToken.payload) / (Integer)(otherToken.payload));
 }
 /**/
 
 /***Integer_negate***/
-Token Integer_negate(Token thisToken, ...) {
-    thisToken.payload.Int = -thisToken.payload.Int;
-    return thisToken;
+Token Integer_negate(Token thisToken, Token... tokens) {
+    return Integer_new(-(Integer)(thisToken.payload);
 }
 /**/
 
 /***Integer_zero***/
-Token Integer_zero(Token token, ...) {
+Token Integer_zero(Token token, Token... tokens) {
     return Integer_new(0);
 }
 /**/
 
 /***Integer_one***/
-Token Integer_one(Token token, ...) {
+Token Integer_one(Token token, Token... tokens) {
     return Integer_new(1);
 }
 /**/
 
 /***Integer_clone***/
-Token Integer_clone(Token thisToken, ...) {
+Token Integer_clone(Token thisToken, Token... tokens) {
     return thisToken;
 }
 /**/
@@ -141,21 +127,21 @@ Token Integer_clone(Token thisToken, ...) {
 
 /***Integer_convert***/
 Token Integer_convert(Token token, Token... elements) {
+    token.type = TYPE_Integer;
     switch (token.type) {
 
-#ifdef TYPE_Double
+#ifdef PTCG_TYPE_Double
     case TYPE_Double:
         token.payload = DoubletoInteger((Double)token.payload);
-        break;
+        return token;
+
 #endif
 
         // FIXME: not finished
     default:
-        System.err.printf("Integer_convert(): Conversion from an unsupported type. (%d)\n", token.type);
-        break;
+        throw new RuntimeException("Integer_convert(): Conversion from an unsupported type: "
+	 + token.type);
     }
-    token.type = TYPE_Integer;
-    return token;
 }
 /**/
 

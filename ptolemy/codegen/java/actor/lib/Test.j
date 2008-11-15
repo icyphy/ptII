@@ -146,8 +146,8 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
 $actorSymbol(inputToken) = $ref(input#$channel);
 $actorSymbol(numberOfTokensSeen)++;
 if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
-        && (strcmp($ref(correctValues, $actorSymbol(numberOfTokensSeen)),
-                    $actorSymbol(inputToken)) != 0) ) {
+        && !$ref(correctValues, $actorSymbol(numberOfTokensSeen))
+	            .equals($actorSymbol(inputToken))) ) {
     System.out.printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was a String: \"%s\". Should have been a String: \"%s\"\n",
             $actorSymbol(numberOfTokensSeen),
             $actorSymbol(inputToken),
@@ -165,14 +165,15 @@ if ($channel == 0) {
 $actorSymbol(correctValuesThisFiring_$channel) =
 $ref(correctValues, $actorSymbol(numberOfTokensSeen));
 if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
-        && (strcmp((char *)$actorSymbol(inputToken),
-                    Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.String)
-                != 0)) {
-    System.out.printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was a String: \"%s\". Should have been a String: \"%s\"\n",
-            $actorSymbol(numberOfTokensSeen),
-            $actorSymbol(inputToken),
-            Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.String);
-    System.exit(-1);
+        && !$actorSymbol(inputToken).equals(
+                    (String)(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload))) {
+    throw new RuntimeException("Test $actorSymbol($channel) fails in iteration "
+            + $actorSymbol(numberOfTokensSeen)
+	    + ".\n Value was a String: \""
+	    + $actorSymbol(inputToken)
+	    + "\". Should have been a String: \""
+	    + (String)(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload)
+	    + "\"");
 }
 /**/
 
@@ -206,11 +207,13 @@ $actorSymbol(correctValuesThisFiring_$channel) =
 Array_get($ref(correctValues), $actorSymbol(numberOfTokensSeen));
 if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
         && !$tokenFunc($actorSymbol(inputToken)::equals(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel))).payload.Boolean) {
-    System.out.printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was a String: \"%s\". Should have been a String: \"%s\"\n",
-            $actorSymbol(numberOfTokensSeen),
-            $tokenFunc($actorSymbol(inputToken)::toString()).payload.String,
-            $tokenFunc(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel)::toString()).payload.String);
-    System.exit(-1);
+    throw new RuntimeException("Test $actorSymbol($channel) fails in iteration "
+            + $actorSymbol(numberOfTokensSeen)
+	    + ".\n Value was a String: \""
+	    + $actorSymbol(inputToken)
+	    + "\". Should have been a String: \""
+	    + (String)(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload)
+	    + "\"");
 }
 /**/
 

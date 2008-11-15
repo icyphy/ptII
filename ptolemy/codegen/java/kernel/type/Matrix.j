@@ -13,7 +13,7 @@ typedef struct matrix* MatrixToken;
 
 
 /***funcDeclareBlock***/
-Token Matrix_new(int row, int column, int given, ...);
+Token Matrix_new(int row, int column, int given, Token... tokens);
 Token Matrix_get(Token token, int row, int column) {
     return token.payload.Matrix->elements[column * token.payload.Matrix->row + row];
 }
@@ -25,7 +25,7 @@ void Matrix_set(Token matrix, int row, int column, Token element) {
 
 
 /***Matrix_delete***/
-Token Matrix_delete(Token token, ...) {
+Token Matrix_delete(Token token, Token... tokens) {
     int i, j;
         Token element, emptyToken;
 
@@ -44,7 +44,7 @@ Token Matrix_delete(Token token, ...) {
 /**/
 
 /***Matrix_convert***/
-Token Matrix_convert(Token token, ...) {
+Token Matrix_convert(Token token, Token... tokens) {
     /* token.payload.Matrix = (MatrixToken) malloc(sizeof(struct matrix));
        token.payload.Matrix->row = 1;
        token.payload.Matrix->column = 1;
@@ -61,9 +61,9 @@ Token Matrix_convert(Token token, ...) {
 /***Matrix_new***/
 // make a new matrix from the given values
 // assume that number of the rest of the arguments == length,
-// and they are in the form of (element, element, ...).
+// and they are in the form of (element, element, Token... tokens).
 // The rest of the arguments should be of type Token *.
-Token Matrix_new(int row, int column, int given, ...) {
+Token Matrix_new(int row, int column, int given, Token... tokens) {
     va_list argp;
     int i;
     Token result;
@@ -107,7 +107,7 @@ Token Matrix_new(int row, int column, int given, ...) {
 /**/
 
 /***Matrix_equals***/
-Token Matrix_equals(Token thisToken, ...) {
+Token Matrix_equals(Token thisToken, Token... tokens) {
     int i, j;
     va_list argp;
     Token otherToken;
@@ -132,7 +132,7 @@ Token Matrix_equals(Token thisToken, ...) {
 
 
 /***Matrix_isCloseTo***/
-Token Matrix_isCloseTo(Token thisToken, ...) {
+Token Matrix_isCloseTo(Token thisToken, Token... tokens) {
     int i, j;
     va_list argp;
     Token otherToken;
@@ -158,7 +158,7 @@ Token Matrix_isCloseTo(Token thisToken, ...) {
 /**/
 
 /***Matrix_print***/
-Token Matrix_print(Token thisToken, ...) {
+Token Matrix_print(Token thisToken, Token... tokens) {
     // Token string = Matrix_toString(thisToken);
     // printf(string.payload.String);
     // free(string.payload.String);
@@ -182,7 +182,7 @@ Token Matrix_print(Token thisToken, ...) {
 
 
 /***Matrix_toString***/
-Token Matrix_toString(Token thisToken, ...) {
+Token Matrix_toString(Token thisToken, Token... tokens) {
     int i, j;
     int currentSize, allocatedSize;
     char* string;
@@ -222,7 +222,7 @@ Token Matrix_toString(Token thisToken, ...) {
 /***Matrix_add***/
 // Assume the given otherToken is array type.
 // Return a new Array token.
-Token Matrix_add(Token thisToken, ...) {
+Token Matrix_add(Token thisToken, Token... tokens) {
     int i, j;
     va_list argp;
     Token result;
@@ -248,7 +248,7 @@ Token Matrix_add(Token thisToken, ...) {
 /***Matrix_subtract***/
 // Assume the given otherToken is array type.
 // Return a new Array token.
-Token Matrix_subtract(Token thisToken, ...) {
+Token Matrix_subtract(Token thisToken, Token... tokens) {
     int i, j;
     va_list argp;
     Token result;
@@ -276,7 +276,7 @@ Token Matrix_subtract(Token thisToken, ...) {
 /***Matrix_multiply***/
 // Assume the given otherToken is array type.
 // Return a new Array token.
-Token Matrix_multiply(Token thisToken, ...) {
+Token Matrix_multiply(Token thisToken, Token... tokens) {
     int i, j;
     va_list argp;
     Token result;
@@ -333,7 +333,7 @@ Token Matrix_multiply(Token thisToken, ...) {
 /***Matrix_divide***/
 // Assume the given otherToken is array type.
 // Return a new Array token.
-Token Matrix_divide(Token thisToken, ...) {
+Token Matrix_divide(Token thisToken, Token... tokens) {
     int i, j, index;
     va_list argp;
     Token result;
@@ -378,7 +378,7 @@ Token Matrix_divide(Token thisToken, ...) {
 /**/
 
 /***Matrix_toExpression***/
-Token Matrix_toExpression(Token thisToken, ...) {
+Token Matrix_toExpression(Token thisToken, Token... tokens) {
     return Matrix_toString(thisToken);
 }
 /**/

@@ -24,13 +24,13 @@ Token Complex_new(double real, double imag) {
 
 
 /***Complex_delete***/
-Token Complex_delete(Token token, ...) {
+Token Complex_delete(Token token, Token... tokens) {
     free(token.payload.Complex);
 }
 /**/
 
 /***Complex_equals***/
-Token Complex_equals(Token thisToken, ...) {
+Token Complex_equals(Token thisToken, Token... tokens) {
     va_list argp;
     Token otherToken;
     va_start(argp, thisToken);
@@ -50,13 +50,13 @@ Token Complex_equals(Token thisToken, ...) {
 /**/
 
 /***Complex_print***/
-Token Complex_print(Token thisToken, ...) {
+Token Complex_print(Token thisToken, Token... tokens) {
     printf("%g + %gi", thisToken.payload.Complex->real, thisToken.payload.Complex->imag);
 }
 /**/
 
 /***Complex_toString***/
-Token Complex_toString(Token thisToken, ...) {
+Token Complex_toString(Token thisToken, Token... tokens) {
     char* string = (char*) malloc(sizeof(char) * 32);
     sprintf(string, "%.14g + %.14gi", thisToken.payload.Complex->real, thisToken.payload.Complex->imag);
 
@@ -65,7 +65,7 @@ Token Complex_toString(Token thisToken, ...) {
 /**/
 
 /***Complex_add***/
-Token Complex_add(Token thisToken, ...) {
+Token Complex_add(Token thisToken, Token... tokens) {
     va_list argp;
     Token otherToken;
     va_start(argp, thisToken);
@@ -80,7 +80,7 @@ Token Complex_add(Token thisToken, ...) {
 /**/
 
 /***Complex_subtract***/
-Token Complex_subtract(Token thisToken, ...) {
+Token Complex_subtract(Token thisToken, Token... tokens) {
     va_list argp;
     Token otherToken;
 
@@ -96,7 +96,7 @@ Token Complex_subtract(Token thisToken, ...) {
 /**/
 
 /***Complex_multiply***/
-Token Complex_multiply(Token thisToken, ...) {
+Token Complex_multiply(Token thisToken, Token... tokens) {
     va_list argp;
     Token result;
     Token otherToken;
@@ -142,7 +142,7 @@ Token Complex_multiply(Token thisToken, ...) {
 /**/
 
 /***Complex_divide***/
-Token Complex_divide(Token thisToken, ...) {
+Token Complex_divide(Token thisToken, Token... tokens) {
     va_list argp;
     Token otherToken;
     Token result;
@@ -167,7 +167,7 @@ Token Complex_divide(Token thisToken, ...) {
 /**/
 
 /***Complex_negate***/
-Token Complex_negate(Token thisToken, ...) {
+Token Complex_negate(Token thisToken, Token... tokens) {
     thisToken.payload.Complex->real = -thisToken.payload.Complex->real;
     thisToken.payload.Complex->imag = -thisToken.payload.Complex->imag;
     return thisToken;
@@ -175,20 +175,20 @@ Token Complex_negate(Token thisToken, ...) {
 /**/
 
 /***Complex_zero***/
-Token Complex_zero(Token token, ...) {
+Token Complex_zero(Token token, Token... tokens) {
     return Complex_new(0.0, 0.0);
 }
 /**/
 
 /***Complex_one***/
-Token Complex_one(Token token, ...) {
+Token Complex_one(Token token, Token... tokens) {
     return Complex_new(1.0, 0.0);
 }
 /**/
 
 
 /***Complex_clone***/
-Token Complex_clone(Token thisToken, ...) {
+Token Complex_clone(Token thisToken, Token... tokens) {
     return Complex_new(thisToken.payload.Complex->real, thisToken.payload.Complex->imag);
 }
 /**/
@@ -198,7 +198,7 @@ Token Complex_clone(Token thisToken, ...) {
 
 --------------------- static functions --------------------------
 /***Complex_convert***/
-Token Complex_convert(Token token, ...) {
+Token Complex_convert(Token token, Token... tokens) {
     switch (token.type) {
 #ifdef TYPE_Integer
     case TYPE_Integer:

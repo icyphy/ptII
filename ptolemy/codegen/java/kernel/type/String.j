@@ -7,16 +7,16 @@
 /***String_new***/
 /* Make a new integer token from the given value. */
 Token String_new(String s) {
-    Token result;
+    Token result = new Token();;
     result.type = TYPE_String;
-    result.payload.String = new String(s);
+    result.payload = new String(s);
     return result;
 }
 /**/
 
 /***String_delete***/
 Token String_delete(Token token, Token... ignored) {
-    free(token.payload.String);
+    //free(token.payload.String);
     /* We need to return something here because all the methods are declared
      * as returning a Token so we can use them in a table of functions.
      */
@@ -25,14 +25,9 @@ Token String_delete(Token token, Token... ignored) {
 /**/
 
 /***String_equals***/
-Token String_equals(Token thisToken, Token... ignored) {
-    va_list argp;
-    Token otherToken;
-    va_start(argp, thisToken);
-    otherToken = va_arg(argp, Token);
-
-    va_end(argp);
-    return Boolean_new(!strcmp(thisToken.payload.String, otherToken.payload.String));
+Token String_equals(Token thisToken, Token... tokens) {
+    Token otherToken = tokens[0];
+    return Boolean_new(((String)(thisToken.payload)).equals((String)(otherToken.payload)));
 }
 /**/
 
@@ -42,18 +37,15 @@ Token String_equals(Token thisToken, Token... ignored) {
 /**/
 
 /***String_print***/
-Token String_print(Token thisToken, ...) {
-    System.out.printf("\"%s\"", thisToken.payload.String);
+Token String_print(Token thisToken, Token... tokens) {
+    System.out.println((String)(thisToken.payload));
     return emptyToken;
 }
 /**/
 
 /***String_toString***/
 Token String_toString(Token thisToken, Token... ignored) {
-    // Guarrantee to return a new string.
-    //char* result = (char*) malloc(sizeof(char) * (3 + strlen(thisToken.payload.String)));
-    //sprintf(result, "\"%s\"", thisToken.payload.String);
-    return String_new(thisToken.payload.String);
+    return String_new((String)(thisToken.payload));
 }
 /**/
 
@@ -77,14 +69,14 @@ Token String_add(Token thisToken, Token... tokens) {
 /** String_divide is not supported. */
 /**/
 
-/***String_negate***/
-Token String_negate(Token thisToken, ...) {
+/***String_neg1ate***/
+Token String_negate(Token thisToken, Token... tokens) {
     return emptyToken;
 }
 /**/
 
 /***String_zero***/
-Token String_zero(Token token, ...) {
+Token String_zero(Token token, Token... tokens) {
     return String_new("");
 }
 /**/
@@ -94,8 +86,8 @@ Token String_zero(Token token, ...) {
 /**/
 
 /***String_clone***/
-Token String_clone(Token thisToken, ...) {
-    return String_new(thisToken.payload.String);
+Token String_clone(Token thisToken, Token... tokens) {
+    return String_new((String)(thisToken.payload));
 }
 /**/
 
@@ -105,35 +97,30 @@ Token String_clone(Token thisToken, ...) {
 
 /***String_convert***/
 Token String_convert(Token token, Token... ignored) {
-    String stringPointer;
-
-    switch (token.type) {
-//#ifdef TYPE_Boolean
-    case TYPE_Boolean:
-        stringPointer = BooleantoString(token.payload.Boolean);
-        break;
-//#endif
-
-//#ifdef TYPE_Integer
-    case TYPE_Integer:
-        stringPointer = IntegertoString(token.payload.Int);
-        break;
-//#endif
-
-//#ifdef TYPE_Double
-    case TYPE_Double:
-        stringPointer = DoubletoString(token.payload.Double);
-        break;
-//#endif
-
-    default:
-        // FIXME: not finished
-        System.err.println("String_convert(): Conversion from an unsupported type. (%d)\n", token.type);
-        break;
-    }
-    token.payload.String = stringPointer;
     token.type = TYPE_String;
-    return token;
+    switch (token.type) {
+#ifdef PTCG_TYPE_Boolean
+    case TYPE_Boolean:
+        token.payload = BooleantoString((Boolean)(token.payload));
+        return token;
+#endif
+
+#ifdef PTCG_TYPE_Integer
+    case TYPE_Integer:
+        token.payload = IntegertoString((Integer(token.payload));
+        return token;
+#endif
+
+#ifdef PTCG_TYPE_Double
+    case TYPE_Double:
+        token.payload = DoubletoString((Double)(token.payload));
+        return token;
+#endif
+    default:
+        throw new RuntimeException("String_convert(): Conversion from an unsupported type: "
+	 + token.type);
+    }
+
 }
 /**/
 

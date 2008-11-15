@@ -364,14 +364,12 @@ public class JavaCodeGenerator extends CodeGenerator {
         // True if we have a delete function that needs to return a Token
         boolean defineEmptyToken = false;
 
-        // Generate function map.
-//         for (int i = 0; i < functionsArray.length; i++) {
-
-//             code.append("#define FUNC_" + functionsArray[i] + " " + i + _eol);
-//             if (functionsArray[i].equals("delete")) {
-//                 defineEmptyToken = true;
-//             }
-//         }
+        for (int i = 0; i < functionsArray.length; i++) {
+             code.append("#define FUNC_" + functionsArray[i] + " " + i + _eol);
+             if (functionsArray[i].equals("delete")) {
+                 defineEmptyToken = true;
+             }
+        }
 
         //code.append("typedef struct token Token;" + _eol);
 
@@ -392,8 +390,8 @@ public class JavaCodeGenerator extends CodeGenerator {
             sharedStream.appendCodeBlock("tokenDeclareBlock", args);
 
             if (defineEmptyToken) {
-                //sharedStream.append("Token emptyToken; "
-                //        + comment("Used by *_delete() and others.") + _eol);
+                sharedStream.append("Token emptyToken; "
+                        + comment("Used by *_delete() and others.") + _eol);
             }
         }
 

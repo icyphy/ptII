@@ -373,11 +373,11 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
 	// FIXME: this is duplicated code from CodeGeneratorHelper.targetType()
         // FIXME: we may need to add more primitive types.
         return ptType == BaseType.INT ? "int"
-                : ptType == BaseType.STRING ? "char*"
+                : ptType == BaseType.STRING ? "String"
                         : ptType == BaseType.DOUBLE ? "double"
                                 : ptType == BaseType.BOOLEAN ? "boolean"
                                         : ptType == BaseType.LONG ? "long"
-                                                : ptType == BaseType.UNSIGNED_BYTE ? "unsigned byte"
+                                                : ptType == BaseType.UNSIGNED_BYTE ? "byte"
                                                         : ptType == PointerToken.POINTER ? "void*"
                                                                 : "Token";
     }

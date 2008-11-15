@@ -50,7 +50,8 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	Round.java
+	Round.java \
+	TokenToExpression.java
 
 OLD_JSRCS = \
 	BooleanToAnything.java \
@@ -59,11 +60,11 @@ OLD_JSRCS = \
 	ComplexToCartesian.java \
 	PolarToCartesian.java \
 	StringToIntArray.java \
-	StringToUnsignedByteArray.java \
-	TokenToExpression.java
+	StringToUnsignedByteArray.java
 
 OTHER_FILES_TO_BE_JARED = \
 	Round.j \
+	TokenToExpression.c \
 	conversions.xml
 
 OLD_OTHER_FILES_TO_BE_JARED = \
@@ -73,9 +74,7 @@ OLD_OTHER_FILES_TO_BE_JARED = \
 	ComplexToCartesian.c \
 	PolarToCartesian.c \
 	StringToIntArray.c \
-	StringToUnsignedByteArray.c \
-	TokenToExpression.c
-
+	StringToUnsignedByteArray.c
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
