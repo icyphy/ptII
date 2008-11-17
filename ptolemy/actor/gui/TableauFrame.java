@@ -274,32 +274,41 @@ public class TableauFrame extends Top {
     public void pack() {
         super.pack();
         Configuration configuration = getConfiguration();
-        StringAttribute alternateTopPackClassAttribute = (StringAttribute) 
-            configuration.getAttribute("_alternateTopPackClass");
+        // Check to see if we have a configuration because
+        // if we do "Listen to Actor", then getConfiguration()
+        // is returning null?
+        if (configuration != null) {
+            StringAttribute alternateTopPackClassAttribute = (StringAttribute) configuration
+                    .getAttribute("_alternateTopPackClass");
 
-        // If the _alternateTopPackClass attribute is present,
-        // then we use the specified class to pack the gui
-        // if it is not set, just use Top.pack().
+            // If the _alternateTopPackClass attribute is present,
+            // then we use the specified class to pack the gui
+            // if it is not set, just use Top.pack().
 
-        if (alternateTopPackClassAttribute != null) {
-            // Get the class that will build the library from the plugins
-	    String topPackClassName = "";
-            try {
-                topPackClassName = alternateTopPackClassAttribute.getExpression();
-                Class topPackClass = Class.forName(topPackClassName);
-                _topPack = (TopPack) topPackClass.newInstance();
-                // Do the alternate pack
-                _topPack.pack(this, _packCalled);
-                _packCalled = true;
-            } catch(Exception e) {
-                  System.out.println("Could not get the alternate top pack class \""
-                    + topPackClassName + "\" named in the configuration by the "
-	            + "_alternateTopPackClass attribute: " + e.getMessage()
-		    + "\nPlease check your configuration and try again.  Using the default "
-                    + "Top pack().");
+            if (alternateTopPackClassAttribute != null) {
+                // Get the class that will build the library from the plugins
+                String topPackClassName = "";
+                try {
+                    topPackClassName = alternateTopPackClassAttribute
+                            .getExpression();
+                    Class topPackClass = Class.forName(topPackClassName);
+                    _topPack = (TopPack) topPackClass.newInstance();
+                    // Do the alternate pack
+                    _topPack.pack(this, _packCalled);
+                    _packCalled = true;
+                } catch (Exception e) {
+                    System.out
+                            .println("Could not get the alternate top pack class \""
+                                    + topPackClassName
+                                    + "\" named in the configuration by the "
+                                    + "_alternateTopPackClass attribute: "
+                                    + e.getMessage()
+                                    + "\nPlease check your configuration and try again.  Using the default "
+                                    + "Top pack().");
+                }
+            } else {
+                super.pack();
             }
-        } else {
-            super.pack(); 
         }
     }
     
