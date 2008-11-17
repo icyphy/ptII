@@ -173,6 +173,71 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
     }
 
 
+    /** Return the translated token instance function invocation string.
+     *  @param functionString The string within the $tokenFunc() macro.
+     *  @param isStatic True if the method is static.
+     *  @return The translated type function invocation string.
+     *  @exception IllegalActionException The given function string is
+     *   not well-formed.
+     */
+    public String getFunctionInvocation(String functionString, boolean isStatic)
+    throws IllegalActionException {
+	// Record the referenced type function in the infoTable.
+	super.getFunctionInvocation(functionString, isStatic); 
+
+	// FIXME: lots of duplicated code from superclass here.
+        functionString = processCode(functionString);
+
+        // i.e. "$tokenFunc(token::add(arg1, arg2, ...))"
+        // this transforms to ==>
+        // "functionTable[token.type][FUNC_add] (token, arg1, arg2, ...)"
+        // FIXME: we need to do some more smart parsing to find the following
+        // indexes.
+        int commaIndex = functionString.indexOf("::");
+        int openFuncParenIndex = functionString.indexOf('(', commaIndex);
+        int closeFuncParenIndex = functionString.lastIndexOf(')');
+
+        // Syntax checking.
+        if ((commaIndex == -1) || (openFuncParenIndex == -1)
+                || (closeFuncParenIndex != (functionString.length() - 1))) {
+            throw new IllegalActionException(
+                    "Bad Syntax with the $tokenFunc / $typeFunc macro. "
+                    + "[i.e. -- $tokenFunc(typeOrToken::func(arg1, ...))].  "
+                    + "String was:\n:" + functionString);
+        }
+
+        String typeOrToken = functionString.substring(0, commaIndex).trim();
+        String functionName = functionString.substring(commaIndex + 2,
+                openFuncParenIndex).trim();
+
+        String argumentList = functionString.substring(openFuncParenIndex + 1)
+        .trim();
+
+        if (isStatic) {
+
+            if (argumentList.length() == 0) {
+                throw new IllegalActionException(
+                "Static type function requires at least one argument(s).");
+            }
+
+            //return "functionTable[(int)" + typeOrToken + "][FUNC_"
+            //+ functionName + "](" + argumentList;
+
+            return functionName + "_Token_Token(" + typeOrToken + ", " +argumentList;
+
+        } else {
+
+            // if it is more than just a closing paren
+            if (argumentList.length() > 1) {
+                argumentList = ", " + argumentList;
+            }
+
+            //return "functionTable[(int)" + typeOrToken + ".type][FUNC_"
+            //+ functionName + "](" + typeOrToken + argumentList;
+            return functionName + "_Token_Token(" + typeOrToken + argumentList;
+        }
+    }
+
     /** Get the files needed by the code generated from this helper class.
      *  This base class returns an empty set.
      *  @return A set of strings that are header files needed by the code

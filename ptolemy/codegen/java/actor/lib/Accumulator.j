@@ -11,7 +11,7 @@ $actorSymbol(sum) = $val(($cgType(output)) init);
 /**/
 
 /***StringInitSum***/
-$actorSymbol(sum) = strdup($val(($cgType(output)) init));
+$actorSymbol(sum) = $val(($cgType(output)) init);
 /**/
 
 /***IntFireBlock($channel) ***/
@@ -27,8 +27,7 @@ $actorSymbol(sum) |= $ref(($cgType(output)) input#$channel);
 /**/
 
 /***StringFireBlock($channel)***/
-$actorSymbol(sum) = (char*) realloc($actorSymbol(sum), sizeof(char) * (strlen($actorSymbol(sum)) + strlen($ref(($cgType(output)) input#$channel)) + 1) );
-strcat($actorSymbol(sum),  $ref(($cgType(output)) input#$channel));
+$actorSymbol(sum) += $actorSymbol(sum);
 /**/
 
 /***TokenFireBlock($channel)***/

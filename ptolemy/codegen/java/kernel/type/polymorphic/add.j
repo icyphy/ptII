@@ -79,10 +79,8 @@ Token add_Double_Token(double a1, Token a2) {
 
 /*** add_Integer_Array() ***/
 Token add_Integer_Array(int a1, Token a2) {
-    int i;
-    Token result = $new(Array(a2.payload.Array->size, 0));
-
-    for (i = 0; i < a2.payload.Array->size; i++) {
+    Token result = $new(Array(((array)(a2.payload)).size, 0));
+    for (int i = 0; i < ((array)(a2.payload)).size; i++) {
         Array_set(result, i, $add_Integer_Token(a1, Array_get(a2, i)));
     }
     return result;
@@ -118,10 +116,8 @@ int add_Integer_Token(int a1, Token a2) {
 
 /*** add_Long_Array() ***/
 Token add_Long_Array(long long a1, Token a2) {
-    int i;
-    Token result = $new(Array(a2.payload.Array->size, 0));
-
-    for (i = 0; i < a2.payload.Array->size; i++) {
+    Token result = $new(Array(((array)(a2.payload)).size, 0));
+    for (int i = 0; i < ((array)(a2.payload)).size; i++) {
         Array_set(result, i, $add_Long_Token(a1, Array_get(a2, i)));
     }
     return result;
@@ -192,7 +188,7 @@ Token add_Token_Token(Token a1, Token a2) {
     case TYPE_Double:
         switch (a2.type) {
 	    case TYPE_Double:
-	    	result = Double_new(thisToken.payload.Double + otherToken.payload.Double);
+	    	result = Double_new((Double)a1.payload + (Double)a2.payload);
 		break;
 	    default:
 	        result = null;
@@ -203,7 +199,8 @@ Token add_Token_Token(Token a1, Token a2) {
     }
 
     if (result == null) {
-        throw new InternalError("add_Token_Token_(): Add with an unsupported type. (%d or %d)\n", a1.type, a2);
+        throw new InternalError("add_Token_Token_(): Add with an unsupported type. "
+	    + a1.type + " or " + a2.type);
 
     }
     return result;

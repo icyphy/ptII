@@ -53,7 +53,8 @@ Token String_toString(Token thisToken, Token... ignored) {
 Token String_add(Token thisToken, Token... tokens) {
     Token otherToken = tokens[0];
 
-    return thisToken + otherToken;
+    return String_new((String)(String_convert(thisToken).payload)
+    	   + (String)(String_convert(otherToken).payload));
 }
 /**/
 
@@ -116,6 +117,9 @@ Token String_convert(Token token, Token... ignored) {
         token.payload = DoubletoString((Double)(token.payload));
         return token;
 #endif
+    case TYPE_String:
+        return token;
+	break;
     default:
         throw new RuntimeException("String_convert(): Conversion from an unsupported type: "
 	 + token.type);

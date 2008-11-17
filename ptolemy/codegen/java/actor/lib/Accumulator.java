@@ -136,17 +136,4 @@ public class Accumulator extends JavaCodeGeneratorHelper {
 
         return processCode(_codeStream.toString());
     }
-
-    /**
-     * Get the files needed by the code generated for the
-     * Accumulator actor.
-     * @return A set of Strings that are names of the header files
-     *  needed by the code generated for the StringCompare actor.
-     * @exception IllegalActionException Not Thrown in this subclass.
-     */
-    public Set getHeaderFiles() throws IllegalActionException {
-        Set files = super.getHeaderFiles();
-        files.add("<string.h>");
-        return files;
-    }
 }

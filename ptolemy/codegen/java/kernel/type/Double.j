@@ -56,7 +56,6 @@ Token Double_toString(Token thisToken, Token... tokens) {
 /**/
 
 /***Double_add***/
-Token add_Double_Array(double a1, Token a2);
 Token Double_add(Token thisToken, Token... tokens) {
     Token result;
     Token otherToken = tokens[0];
@@ -94,7 +93,7 @@ Token Double_subtract(Token thisToken, Token... tokens) {
     	
 #ifdef PTCG_TYPE_Array
     case TYPE_Array:
-        result = $subtract_Double_Array((Double)thisToken.payload.Double, otherToken);
+        result = $subtract_Double_Array((Double)thisToken.payload, otherToken);
         break;
 #endif
     
