@@ -30,6 +30,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
+#include <math.h>
 
 #include "../../../hw_ints.h"
 #include "../../../hw_memmap.h"
@@ -100,6 +101,7 @@ unsigned int sensorCount;
 
 #define MAX_BUFFER_LIMIT 10
 #define CLOCK_PERIOD 100000
+#define MAX_DEADLINE_VAL 88888888888888
 
 Event* EVENT_QUEUE_HEAD = NULL;
 Event* DEADLINE_QUEUE_HEAD = NULL;
@@ -358,24 +360,7 @@ void __error__(char *pcFilename, unsigned long ulLine)
 }
 #endif
 
-
- //implementation of itoa from (http://www.jb.man.ac.uk/~slowe/cpp/itoa.html)
-char* itoa(int val, int base){
-	
-	static char buf[32] = {0};
-	
-	int i = 30;
-	
-	for(; val && i ; --i, val /= base)
-	
-		buf[i] = "0123456789abcdef"[val % base];
-	
-	return &buf[i+1];
-	
-}
-
-
- //*****************************************************************************
+//*****************************************************************************
 //
 // Display the interrupt state on the LCD.  The currently active and pending
 // interrupts are displayed.
@@ -900,6 +885,7 @@ void addEvent(Event* newEvent)
 {
 	
     Tag stampedTag = newEvent->Tag;
+	int deadline = newEvent->actorFrom->deadline;
 
     //add an event
     Event *compare_event = EVENT_QUEUE_HEAD;
@@ -953,6 +939,54 @@ void addEvent(Event* newEvent)
 		RIT128x96x4StringDraw("diedinaddedEvent",   12,90,15);
         die("");
     }
+
+// now add event to the deadline queue
+compare_event = DEADLINE_QUEUE_HEAD;
+before_event  = DEADLINE_QUEUE_HEAD;
+
+
+   while (1)
+	{
+        if (compare_event == NULL)
+		{
+			RIT128x96x4StringDraw("ce==null",   12,90,15);
+            break;
+		}
+        else if ((deadline < compare_event->fromActor->deadline)||(deadline < compare_event->fromActor->deadline))
+		{
+		    RIT128x96x4StringDraw("opt2",   12,90,15);
+            break;
+		}
+      else {
+            if (compare_event != before_event)
+		        {
+				RIT128x96x4StringDraw("inifaddedEvent",   10,90,15);
+				before_event = before_event->next;
+				
+				}
+			RIT128x96x4StringDraw("lastelseaddedEvent",   12,90,15);
+			
+			compare_event = compare_event->next;
+			RIT128x96x4StringDraw("22lastelseaddedEvent",   12,90,15);
+		//	break;
+        }
+    }
+            
+    newEvent->next = compare_event;
+	RIT128x96x4StringDraw("check1addedEvent",   12,90,15);
+    if (compare_event == before_event)
+	{
+        DEADLINE_QUEUE_HEAD = newEvent;
+    }
+    else if (compare_event != before_event)
+	{
+        before_event->next = newEvent;
+    }
+    else {
+		RIT128x96x4StringDraw("diedinaddedEvent",   12,90,15);
+        die("");
+    }
+
 	RIT128x96x4StringDraw("addedEvent          ",   12,90,15);
 	sprintf(str,"%d",addeventcount);
 	RIT128x96x4StringDraw(str,   90,90,15);
@@ -965,7 +999,7 @@ void addEvent(Event* newEvent)
  * platform, which is the called by processEvents().
  * Here the first event on the event queue is popped.
  */
-void removeEvent()
+void removeEvent()   // may need to be modified since there is a deadline queue... not sure how yet
 {
     if (EVENT_QUEUE_HEAD != NULL)
 	{	removecount++;
@@ -1151,7 +1185,7 @@ void processEvents()
     //printf("at beginning of Process Events");
     while (1) 
 	{
-				whilecount++;
+		whilecount++;
 		sprintf(str,"%d",whilecount);
     	RIT128x96x4StringDraw("topOfWhile", 12,80,15);
 		RIT128x96x4StringDraw(str, 90,80,15);
@@ -1580,7 +1614,7 @@ void initializeMemory()
  * setup dependencies between the actors
  * intialize actors
  */
-int main(void)
+ int main(void)
 {
 
     //**************************************************
@@ -1596,7 +1630,78 @@ int main(void)
 	Actor model_delay2;
     Actor model_delay3;
     Actor actuator1;
-	locationCounter=0;
+
+	//to test deadline calculation example
+	Actor sensor0;
+	Actor computation0;
+	Actor delay1;
+	Actor delay2;
+	Actor actuator01;
+	Actor actuator02;
+
+
+
+
+
+	locationCounter = 0;
+	//****************************************************
+	//set actor types
+	sensor1.type = 's';
+	sensor2.type = 's';
+    clock1.type = 'k';
+	computation1.type = 'c';
+	computation2.type = 'c';
+	computation3.type = 'c';
+    merge1.type = 'm';
+    model_delay1.type = 'd';
+	model_delay2.type = 'd';
+    model_delay3.type = 'd';
+    actuator1.type = 'a';
+	// set model delay
+    sensor1.model_delay = 0;;
+	sensor2.model_delay = 0;
+    clock1.model_delay = 0;;
+	computation1.model_delay = 0;
+	computation2.model_delay = 0;
+	computation3.model_delay = 0;
+    merge1.model_delay = 0;
+    model_delay1.model_delay = 1;
+	model_delay2.model_delay = 2;
+	model_delay3.model_delay = 3;
+    actuator1.model_delay = 0;
+
+
+	// this example was constructed to help with the deadline calculation
+
+	sensor0.type ='s';
+	sensor0.model_delay = 0;
+	computation0.type = 'c';
+	computation0.model_delay = 0;
+	delay1.type = 'd';
+	delay1.model_delay = 5;
+	delay2.type = 'd';
+	delay2.model_delay = 3;
+	actuator01.type = 'a';
+	actuator01.model_delay = 0;
+	actuator02.type = 'a';
+	actuator02.model_delay = 0;
+
+
+	// set the fire methods here
+    // as well as firing value
+
+	sensor0.nextActor1 = &computation0;
+	sensor0.nextActor2 = NULL;
+	computation0.nextActor1 = &delay1;
+	computation0.nextActor2 = &delay2;
+	delay1.nextActor1 = &actuator01;
+	delay1.nextActor2 = NULL;
+	delay2.nextActor1 = &actuator02;
+	delay2.nextActor2 = NULL;
+
+	
+
+
 
 	/*************************************************************************/
 	// Utilities to setup interrupts
@@ -1623,7 +1728,7 @@ int main(void)
     RIT128x96x4Init(1000000);
     RIT128x96x4StringDraw("PtidyRTOSv0.1",            36,  0, 15);
   //  printf("PtidyRTOSv0.1\n");	
-
+	/*
 	//
     // Enable processor interrupts.
     //
@@ -1664,22 +1769,22 @@ int main(void)
 	clock1.fireMethod = fireClock;
 
 	computation1.fireMethod = fireComputation;
-	computation1.firing =0;
+	computation1.firing = 0;
 
 	computation2.fireMethod = fireComputation;
 	 computation2.firing = 0;
 	computation3.fireMethod = fireComputation;
 	computation3.firing = 0;
 	model_delay1.fireMethod = fireModelDelay;
-	model_delay1.firing=0;
+	model_delay1.firing = 0;
 	model_delay2.fireMethod = fireModelDelay;
-   	model_delay1.firing=0;
+   	model_delay1.firing = 0;
 	model_delay3.fireMethod = fireModelDelay;	// should model delay be used in this example?
-	model_delay3.firing=0;
+	model_delay3.firing = 0;
 	merge1.fireMethod = fireMerge;
-	merge1.firing=0;
+	merge1.firing = 0;
 	actuator1.fireMethod = fireActuator;
-   	actuator1.firing=0;  
+   	actuator1.firing = 0;  
     //Dependencies between all the actors
 	//FIXME: HOW ARE PORTS NUMBERED??
     sensor1.nextActor1 = &computation1;
@@ -1711,15 +1816,18 @@ int main(void)
 
     
 
-    initializeClock(&clock1);
-   // RIT128x96x4StringDraw("afterinitClk", 12,36,15);
-	fireSensor(&sensor1);
+    initializeClock(&clock1); */
+
+	deadline(&sensor0);
+    // RIT128x96x4StringDraw("afterinitClk", 12,36,15);
+	//fireSensor(&sensor1);
 	//RIT128x96x4StringDraw("afterinitS1",   12,48,15);
 	//RIT128x96x4StringDraw("!!!!!!!!!!!!!!!!!!!!",      12,72,15);					  
- 	fireSensor(&sensor2);
+ 	//fireSensor(&sensor2);
 	//RIT128x96x4StringDraw("afterinitS2",   12,60,15);
 	//RIT128x96x4StringDraw("beforePE",   12,36,15);	
-    processEvents();
+    //processEvents();
+	while(1);
 	 
 	return 0;
 }
@@ -2735,4 +2843,31 @@ void IntGPIOa(void)
     //
     GPIOPinWrite(GPIO_PORTB_BASE, GPIO_PIN_2, 0);
 	enableInterrupts();
+}
+//calculates the deadline for an actor
+//should generally only be called initially on a sensor
+//sets the deadline of the actor along the way...
+//traverses to actuator and then backs up to assign deadlines
+long deadline(Actor *this_actor)
+{
+	if(this_actor == NULL)
+		return MAX_DEADLINE_VAL;
+	if(this_actor->type == 'a')
+	{
+		this_actor->deadline = 0;
+		return 0;
+	}
+	this_actor->deadline = this_actor->model_delay+ min(deadline(this_actor->nextActor1),deadline(this_actor->nextActor2));
+	return this_actor->deadline;
+
+}
+
+//returns the minimum of val1 and val2
+long min(long val1, long val2)
+{
+	if(val1 < val2)
+		return val1;
+
+	return val2;
+
 }

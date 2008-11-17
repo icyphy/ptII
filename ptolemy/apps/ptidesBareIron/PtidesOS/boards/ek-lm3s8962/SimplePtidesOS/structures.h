@@ -51,10 +51,13 @@ struct Actor
 	//FIXME: should have a linked list of next_actors...
     struct Actor *nextActor1;
     struct Actor *nextActor2;
-	unsigned int inputPortCount;
-	unsigned int outputPortCount;
-	unsigned int WCET;
-	char type;
+    struct Actor *fromActor;  // this will help to calculate the deadline	
+    unsigned int inputPortCount;
+    unsigned int outputPortCount;
+    unsigned int WCET;
+	unsigned int model_delay; // set to zero unless it is a model delay actor
+	unsigned int deadline;
+    char type;   // 'a','c','s','d','m','k'. Actuator,computation,sensor,modeldelay,merge,clock
 
 	void (*fireMethod)	(Actor*, Event*);							   
 
@@ -63,7 +66,6 @@ struct Actor
 
 	unsigned int firing;
 
-	//does the actor also need to keep a local event queue?
     //actor methods
     //preinitialize();T_
     //initialize()
