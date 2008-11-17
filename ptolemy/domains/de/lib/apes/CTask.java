@@ -1,6 +1,7 @@
 
 package ptolemy.domains.de.lib.apes;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -22,6 +23,7 @@ import ptolemy.actor.util.Dependency;
 import ptolemy.actor.util.RealDependency;
 import ptolemy.actor.util.Time;
 import ptolemy.data.ResourceToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -52,6 +54,8 @@ public class CTask extends TypedAtomicActor implements Runnable {
    
    public IOPort triggerConnector;
 
+   public Parameter methodName;
+   
    public void fire() throws IllegalActionException {
        System.out.println(this.getName());
        if (_thread != null && _thread.isAlive()) { // resume
@@ -98,7 +102,7 @@ public class CTask extends TypedAtomicActor implements Runnable {
    public void accessPointCallback() throws NoRoomException,
            IllegalActionException {
        // TODO type of access point: requested resource + value for resource
-
+       System.out.println("accessPointCallback");
        ResourceActor actor = _resources.keySet().iterator().next();
        int requestedResourceValue = 5;
        
@@ -113,6 +117,10 @@ public class CTask extends TypedAtomicActor implements Runnable {
        }
    }
    
+   static { 
+       System.loadLibrary("ccode"); 
+   }
+   
    
    @Override
     public boolean prefire() throws IllegalActionException {
@@ -123,12 +131,16 @@ public class CTask extends TypedAtomicActor implements Runnable {
        while (true) {
            try {
                workspace().wait(this);
-//               _taskCFunction();
+               _callCMethod();
            } catch (Exception ex) {
                ex.printStackTrace();
                break;
            }
        }
+   }
+
+   protected void _callCMethod() {
+       
    }
 
    public void wrapup() throws IllegalActionException {
@@ -163,8 +175,7 @@ public class CTask extends TypedAtomicActor implements Runnable {
 
    private Thread _thread;
 
-//   private native void _taskCFunction();
-
+   
    private Map<ResourceActor, Integer> _resources;
 
 }

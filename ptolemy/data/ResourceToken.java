@@ -2,6 +2,7 @@ package ptolemy.data;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.util.Time;
+import ptolemy.data.type.Type;
 
 /**
  * Token sent to a ResourceActor containing the Task to be scheduled and the execution 
@@ -19,5 +20,11 @@ public class ResourceToken extends Token {
     
     public Actor actorToSchedule;
     public Object requestedValue;
+    
+    @Override
+    public Type getType() {
+        // TODO Auto-generated method stub
+        return super.getType();
+    }
     
 }
