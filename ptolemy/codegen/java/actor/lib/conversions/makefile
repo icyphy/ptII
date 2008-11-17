@@ -64,7 +64,7 @@ OLD_JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	Round.j \
-	TokenToExpression.c \
+	TokenToExpression.j \
 	conversions.xml
 
 OLD_OTHER_FILES_TO_BE_JARED = \
