@@ -952,7 +952,7 @@ before_event  = DEADLINE_QUEUE_HEAD;
 			RIT128x96x4StringDraw("ce==null",   12,90,15);
             break;
 		}
-        else if ((deadline < compare_event->fromActor->deadline)||(deadline < compare_event->fromActor->deadline))
+        else if ((deadline < compare_event->actorFrom->deadline)||(deadline < compare_event->actorFrom->deadline))
 		{
 		    RIT128x96x4StringDraw("opt2",   12,90,15);
             break;
