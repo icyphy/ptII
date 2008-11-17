@@ -364,6 +364,8 @@ public class Director extends Attribute implements Executable {
         // Note that, alternatively, this method could have been abstract.
         // But we didn't do that, because otherwise we wouldn't be able
         // to run Tcl Blend test script on this class.
+        throw new InternalErrorException(this, null,
+                "The fireAt method is not implemented for this director.");
     }
 
     /** Request a firing of the given actor as soon as possible.  If
