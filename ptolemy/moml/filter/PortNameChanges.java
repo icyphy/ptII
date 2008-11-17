@@ -196,7 +196,8 @@ public class PortNameChanges implements MoMLFilter {
         return attributeValue;
     }
 
-    /** In this class, do nothing.
+    /** Clear recorded state for this element so that it does not
+     *  interfere with the next element.
      *  @param container The object created by this element.
      *  @param elementName The element name.
      *  @param currentCharData The character data, which appears
@@ -205,6 +206,12 @@ public class PortNameChanges implements MoMLFilter {
      */
     public void filterEndElement(NamedObj container, String elementName,
             StringBuffer currentCharData) throws Exception {
+        if (elementName.equals("entity") || elementName.equals("class")) {
+            _currentActorFullName = null;
+            _currentlyProcessingActorWithPortNameChanges = false;
+            _doneProcessingActorWithPortNameChanges = false;
+            _lastNameSeen = null;
+        }
     }
 
     /** Add a class to be filtered and the old and new port names.
