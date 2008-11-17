@@ -104,7 +104,7 @@ public class CTask extends TypedAtomicActor implements Runnable {
        // TODO type of access point: requested resource + value for resource
        System.out.println("accessPointCallback");
        ResourceActor actor = _resources.keySet().iterator().next();
-       int requestedResourceValue = 5;
+       Time requestedResourceValue = new Time(getDirector(), 0.2);
        
        ResourceToken token = new ResourceToken(this, requestedResourceValue);
        toResourcePort.send(_resources.get(actor).intValue(), token);

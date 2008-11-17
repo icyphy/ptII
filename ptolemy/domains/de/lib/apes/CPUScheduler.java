@@ -196,14 +196,15 @@ public class CPUScheduler extends ResourceActor {
        }
 
        // next task in list can be started?
-       Actor task = _tasksInExecution.peek();
-       Time remainingTime = _taskExecutionTimes.get(task);
-       if (remainingTime.equals(new Time(getDirector(), 0.0))) {
-           _tasksInExecution.pop();
-           _sendTaskExecutionEvent(task, getDirector().getModelTime().getDoubleValue(), ScheduleEventType.START);
-           output.send(_connectedTasks.get(task).intValue(), new BooleanToken(true)); 
-       } 
-
+       if (_tasksInExecution.size() > 0) {
+           Actor task = _tasksInExecution.peek(); 
+           Time remainingTime = _taskExecutionTimes.get(task);
+           if (remainingTime.equals(new Time(getDirector(), 0.0))) {
+               _tasksInExecution.pop();
+               _sendTaskExecutionEvent(task, getDirector().getModelTime().getDoubleValue(), ScheduleEventType.START);
+               output.send(_connectedTasks.get(task).intValue(), new BooleanToken(true)); 
+           } 
+       }
    }
 
    private void scheduleTask( Actor actorToSchedule,
