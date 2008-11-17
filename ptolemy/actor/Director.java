@@ -351,8 +351,9 @@ public class Director extends Attribute implements Executable {
      *  asynchronous threads should used the fireAtCurrentTime()
      *  method to schedule firings.
      *
-     *  This method does nothing in this base class. Derived classes
-     *  should override this method.  <p> Note that this method is not
+     *  This method unconditionally throws an exception in this base class.
+     *  Derived classes should override this method. 
+     *  <p> Note that this method is not
      *  made abstract to facilitate the use of the test suite.
      *  @param actor The actor scheduled to be fired.
      *  @param time The scheduled time.
@@ -360,12 +361,16 @@ public class Director extends Attribute implements Executable {
      *    permissible (e.g. the given time is in the past).
      */
     public void fireAt(Actor actor, Time time) throws IllegalActionException {
-        // do nothing in this base class.
+        // All derived classes of Director for which the fireAt() method is
+        // useful, should implement this method themselves. We throw an
+        // exception if the base class implementation of fireAt is called.
         // Note that, alternatively, this method could have been abstract.
         // But we didn't do that, because otherwise we wouldn't be able
         // to run Tcl Blend test script on this class.
+        
         throw new InternalErrorException(this, null,
-                "The fireAt method is not implemented for this director.");
+                "The actor " +  actor.getFullName() + " is incompatible " +
+                		"with the chosen director.");
     }
 
     /** Request a firing of the given actor as soon as possible.  If
