@@ -35,3 +35,4 @@
 
 void fireMerge(Actor*, Event*);
 void fireModelDelay(Actor*, Event*);
+void fireSensor(Actor*);

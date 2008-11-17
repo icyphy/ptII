@@ -77,12 +77,12 @@ Options 1,0,0  // Target 'Simulator'
  OrgReg (ÿLuminary\)
  TgStat=16
  OutDir (.\Obj\)
- OutName (Blinky)
+ OutName (SimplePtidesOS)
  GenApp=1
  GenLib=0
  GenHex=0
  Debug=1
- Browse=0
+ Browse=1
  LstDir (.\Lst\)
  HexSel=1
  MG32K=0
@@ -127,7 +127,7 @@ Options 1,0,0  // Target 'Simulator'
  ADSLDFG { 17,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
  ADSLDTA (0x00000000)
  ADSLDDA (0x20000000)
- ADSLDSC ()
+ ADSLDSC (.\Obj\SimplePtidesOS.sct)
  ADSLDIB ()
  ADSLDIC ()
  ADSLDMC ()

@@ -7,73 +7,54 @@ Section Cross References
     startup.o(RESET) refers to startup.o(STACK) for StackMem
     startup.o(RESET) refers to simpleptidesos.o(.text) for SysTickHandler
     startup.o(RESET) refers to entry.o($$startup$$) for __main
-    simpleptidesos.o(.text) refers to rit128x96x4.o(.text) for RIT128x96x4Clear
-    simpleptidesos.o(.text) refers to timer.o(i.TimerIntClear) for TimerIntClear
-    simpleptidesos.o(.text) refers to timer.o(i.TimerDisable) for TimerDisable
-    simpleptidesos.o(.text) refers to interrupt.o(i.IntDisable) for IntDisable
-    simpleptidesos.o(.text) refers to timer.o(i.TimerIntDisable) for TimerIntDisable
-    simpleptidesos.o(.text) refers to systick.o(i.SysTickValueGet) for SysTickValueGet
-    simpleptidesos.o(.text) refers to printf1.o(i.__0sprintf_1) for __1sprintf
     simpleptidesos.o(.text) refers to perror.o(.text) for perror
+    simpleptidesos.o(.text) refers to rit128x96x4.o(.text) for RIT128x96x4StringDraw
+    simpleptidesos.o(.text) refers to printf1.o(i.__0sprintf_1) for __1sprintf
+    simpleptidesos.o(.text) refers to interrupt.o(i.IntMasterDisable) for IntMasterDisable
+    simpleptidesos.o(.text) refers to interrupt.o(i.IntMasterEnable) for IntMasterEnable
+    simpleptidesos.o(.text) refers to systick.o(i.SysTickValueGet) for SysTickValueGet
     simpleptidesos.o(.text) refers to memcpya.o(.text) for __aeabi_memcpy4
     simpleptidesos.o(.text) refers to dadd.o(.text) for __aeabi_dadd
-    simpleptidesos.o(.text) refers to simpleptidesos.o(.bss) for .bss
     simpleptidesos.o(.text) refers to simpleptidesos.o(.data) for .data
-    simpleptidesos.o(.text) refers to printf1.o(i.__0printf_1) for __1printf
-    simpleptidesos.o(.text) refers to interrupt.o(i.IntMasterEnable) for IntMasterEnable
+    simpleptidesos.o(.text) refers to simpleptidesos.o(.bss) for .bss
+    simpleptidesos.o(.text) refers to dfltu.o(.text) for __aeabi_ui2d
+    simpleptidesos.o(.text) refers to random.o(.text) for RandomAddEntropy
+    simpleptidesos.o(.text) refers to interrupt.o(i.IntEnable) for IntEnable
+    simpleptidesos.o(.text) refers to interrupt.o(i.IntPrioritySet) for IntPrioritySet
     simpleptidesos.o(.text) refers to timer.o(i.TimerValueGet) for TimerValueGet
     simpleptidesos.o(.text) refers to timer.o(i.TimerConfigure) for TimerConfigure
     simpleptidesos.o(.text) refers to ldiv.o(.text) for __aeabi_ldivmod
     simpleptidesos.o(.text) refers to timer.o(i.TimerLoadSet) for TimerLoadSet
-    simpleptidesos.o(.text) refers to interrupt.o(i.IntEnable) for IntEnable
     simpleptidesos.o(.text) refers to timer.o(i.TimerIntEnable) for TimerIntEnable
+    simpleptidesos.o(.text) refers to timer.o(i.TimerDisable) for TimerDisable
     simpleptidesos.o(.text) refers to timer.o(i.TimerEnable) for TimerEnable
-    simpleptidesos.o(.text) refers to interrupt.o(i.IntMasterDisable) for IntMasterDisable
-    simpleptidesos.o(.text) refers to dfltu.o(.text) for __aeabi_ui2d
-    simpleptidesos.o(.text) refers to simpleptidesos.o(.constdata) for .constdata
+    simpleptidesos.o(.text) refers to printf1.o(i.__0printf_1) for __1printf
+    simpleptidesos.o(.text) refers to gpio.o(i.GPIOPinWrite) for GPIOPinWrite
+    simpleptidesos.o(.text) refers to timer.o(i.TimerIntClear) for TimerIntClear
+    simpleptidesos.o(.text) refers to interrupt.o(i.IntDisable) for IntDisable
+    simpleptidesos.o(.text) refers to timer.o(i.TimerIntDisable) for TimerIntDisable
     simpleptidesos.o(.text) refers to uart.o(i.UARTIntStatus) for UARTIntStatus
     simpleptidesos.o(.text) refers to uart.o(i.UARTIntClear) for UARTIntClear
+    simpleptidesos.o(.text) refers to simpleptidesos.o(.constdata) for .constdata
     simpleptidesos.o(.text) refers to sysctl.o(i.SysCtlPeripheralEnable) for SysCtlPeripheralEnable
     simpleptidesos.o(.text) refers to sysctl.o(i.SysCtlClockSet) for SysCtlClockSet
-    simpleptidesos.o(.text) refers to gpio.o(i.GPIOPinTypeUART) for GPIOPinTypeUART
-    simpleptidesos.o(.text) refers to sysctl.o(i.SysCtlClockGet) for SysCtlClockGet
-    simpleptidesos.o(.text) refers to uart.o(i.UARTConfigSetExpClk) for UARTConfigSetExpClk
-    simpleptidesos.o(.text) refers to uart.o(i.UARTIntEnable) for UARTIntEnable
-    simpleptidesos.o(.text) refers to systick.o(i.SysTickPeriodSet) for SysTickPeriodSet
-    simpleptidesos.o(.text) refers to systick.o(i.SysTickEnable) for SysTickEnable
-    simpleptidesos.o(.text) refers to systick.o(i.SysTickPeriodGet) for SysTickPeriodGet
-    simpleptidesos.o(.text) refers to systick.o(i.SysTickIntEnable) for SysTickIntEnable
-    simpleptidesos.o(.text) refers to sysctl.o(i.SysCtlPeripheralReset) for SysCtlPeripheralReset
-    simpleptidesos.o(.text) refers to interrupt.o(i.IntPrioritySet) for IntPrioritySet
-    simpleptidesos.o(.text) refers to gpio.o(i.GPIODirModeSet) for GPIODirModeSet
-    simpleptidesos.o(.text) refers to gpio.o(i.GPIOPadConfigSet) for GPIOPadConfigSet
-    simpleptidesos.o(.text) refers to timer.o(i.TimerPrescaleSet) for TimerPrescaleSet
-    simpleptidesos.o(.text) refers to timer.o(i.TimerControlEvent) for TimerControlEvent
-    simpleptidesos.o(.text) refers to flash.o(i.FlashUserGet) for FlashUserGet
-    simpleptidesos.o(.text) refers to ethernet.o(i.EthernetMACAddrSet) for EthernetMACAddrSet
-    simpleptidesos.o(.text) refers to enet_lwip.o(.text) for lwip_init
-    simpleptidesos.o(.text) refers to httpd.o(.text) for httpd_init
     simpleptidesos.o(.text) refers to luminaryif.o(.text) for sys_arch_protect
-    simpleptidesos.o(.text) refers to memseta.o(.text) for __aeabi_memclr4
-    simpleptidesos.o(.text) refers to ethernet.o(i.EthernetMACAddrGet) for EthernetMACAddrGet
-    simpleptidesos.o(.text) refers to ethernet.o(i.EthernetConfigGet) for EthernetConfigGet
-    simpleptidesos.o(.text) refers to ethernet.o(i.EthernetConfigSet) for EthernetConfigSet
-    simpleptidesos.o(.text) refers to protocol.o(.text) for protocol_first
-    simpleptidesos.o(.text) refers to gpio.o(i.GPIOPinWrite) for GPIOPinWrite
+    simpleptidesos.o(.text) refers to phpd.o(.text) for adjust_rx_timestamp
+    simpleptidesos.o(.text) refers to systick.o(i.SysTickPeriodSet) for SysTickPeriodSet
     simpleptidesos.o(.text) refers to ptpd_timer.o(.text) for timerTick
+    simpleptidesos.o(.text) refers to enet_lwip.o(.text) for lwip_tick
     simpleptidesos.o(.text) refers to ethernet.o(i.EthernetIntEnable) for EthernetIntEnable
-    simpleptidesos.o(.text) refers to random.o(.text) for RandomAddEntropy
     simpleptidesos.o(.text) refers (Special) to stubs.o(c$$printf_stubs) for _printf_int_dec
     simpleptidesos.o(.data) refers (Special) to stubs.o(c$$printf_stubs) for _printf_int_dec
     simpleptidesos.o(.constdata) refers (Special) to stubs.o(c$$printf_stubs) for _printf_int_dec
     simpleptidesos.o(.bss) refers (Special) to stubs.o(c$$printf_stubs) for _printf_int_dec
-    simpleptidesos.o(.data) refers (Special) to stubs.o(c$$printf_stubs) for _printf_int_dec
     simpleptidesos.o(.data) refers to simpleptidesos.o(.conststring) for .conststring
     simpleptidesos.o(.data) refers (Special) to stubs.o(c$$printf_stubs) for _printf_int_dec
     simpleptidesos.o(.conststring) refers (Special) to stubs.o(c$$printf_stubs) for _printf_int_dec
     simpleptidesos.o(.data) refers to simpleptidesos.o(.conststring) for .conststring
     simpleptidesos.o(.data) refers (Special) to stubs.o(c$$printf_stubs) for _printf_int_dec
     simpleptidesos.o(.conststring) refers (Special) to stubs.o(c$$printf_stubs) for _printf_int_dec
+    simpleptidesos.o(.data) refers (Special) to stubs.o(c$$printf_stubs) for _printf_int_dec
     simpleptidesos.o(.data) refers (Special) to stubs.o(c$$printf_stubs) for _printf_int_dec
     simpleptidesos.o(.data) refers (Special) to stubs.o(c$$printf_stubs) for _printf_int_dec
     simpleptidesos.o(.data) refers (Special) to stubs.o(c$$printf_stubs) for _printf_int_dec
@@ -281,8 +262,9 @@ Section Cross References
     ptpd_net.o(.text) refers to udp.o(.text) for udp_new
     ptpd_net.o(.text) refers to inet.o(.text) for inet_aton
     ptpd_net.o(.text) refers to ip_addr.o(.constdata) for ip_addr_any
-    ptpd_servo.o(.text) refers to simpleptidesos.o(.text) for adjFreq
+    ptpd_servo.o(.text) refers to phpd.o(.text) for adjFreq
     ptpd_servo.o(.text) refers to arith.o(.text) for subTime
+    ptpd_servo.o(.text) refers to simpleptidesos.o(.text) for getTime
     ptpd_servo.o(.text) refers to ptpd_servo.o(.data) for .data
     bmc.o(.text) refers to memcpya.o(.text) for __aeabi_memcpy
     bmc.o(.text) refers to memcmp.o(.text) for memcmp
@@ -291,6 +273,37 @@ Section Cross References
     ustdlib.o(.text) refers to strncpy.o(.text) for strncpy
     ustdlib.o(.text) refers to ustdlib.o(.constdata) for .constdata
     ustdlib.o(.constdata) refers to ustdlib.o(.conststring) for .conststring
+    phpd.o(.text) refers to sysctl.o(i.SysCtlClockGet) for SysCtlClockGet
+    phpd.o(.text) refers to systick.o(i.SysTickPeriodSet) for SysTickPeriodSet
+    phpd.o(.text) refers to systick.o(i.SysTickPeriodGet) for SysTickPeriodGet
+    phpd.o(.text) refers to systick.o(i.SysTickEnable) for SysTickEnable
+    phpd.o(.text) refers to systick.o(i.SysTickIntEnable) for SysTickIntEnable
+    phpd.o(.text) refers to sysctl.o(i.SysCtlPeripheralEnable) for SysCtlPeripheralEnable
+    phpd.o(.text) refers to sysctl.o(i.SysCtlPeripheralReset) for SysCtlPeripheralReset
+    phpd.o(.text) refers to interrupt.o(i.IntPrioritySet) for IntPrioritySet
+    phpd.o(.text) refers to gpio.o(i.GPIODirModeSet) for GPIODirModeSet
+    phpd.o(.text) refers to gpio.o(i.GPIOPadConfigSet) for GPIOPadConfigSet
+    phpd.o(.text) refers to timer.o(i.TimerConfigure) for TimerConfigure
+    phpd.o(.text) refers to timer.o(i.TimerPrescaleSet) for TimerPrescaleSet
+    phpd.o(.text) refers to timer.o(i.TimerLoadSet) for TimerLoadSet
+    phpd.o(.text) refers to timer.o(i.TimerControlEvent) for TimerControlEvent
+    phpd.o(.text) refers to timer.o(i.TimerEnable) for TimerEnable
+    phpd.o(.text) refers to interrupt.o(i.IntMasterEnable) for IntMasterEnable
+    phpd.o(.text) refers to flash.o(i.FlashUserGet) for FlashUserGet
+    phpd.o(.text) refers to rit128x96x4.o(.text) for RIT128x96x4StringDraw
+    phpd.o(.text) refers to simpleptidesos.o(.text) for die
+    phpd.o(.text) refers to ethernet.o(i.EthernetMACAddrSet) for EthernetMACAddrSet
+    phpd.o(.text) refers to enet_lwip.o(.text) for lwip_init
+    phpd.o(.text) refers to httpd.o(.text) for httpd_init
+    phpd.o(.text) refers to memseta.o(.text) for __aeabi_memclr4
+    phpd.o(.text) refers to memcpya.o(.text) for __aeabi_memcpy
+    phpd.o(.text) refers to ethernet.o(i.EthernetMACAddrGet) for EthernetMACAddrGet
+    phpd.o(.text) refers to ethernet.o(i.EthernetConfigGet) for EthernetConfigGet
+    phpd.o(.text) refers to ethernet.o(i.EthernetConfigSet) for EthernetConfigSet
+    phpd.o(.text) refers to protocol.o(.text) for protocol_first
+    phpd.o(.text) refers to phpd.o(.data) for .data
+    phpd.o(.text) refers to simpleptidesos.o(.data) for g_ulFlags
+    phpd.o(.text) refers to phpd.o(.bss) for .bss
     rit128x96x4.o(.text) refers to gpio.o(i.GPIOPinWrite) for GPIOPinWrite
     rit128x96x4.o(.text) refers to ssi.o(i.SSIDataPut) for SSIDataPut
     rit128x96x4.o(.text) refers to ssi.o(i.SSIDataGet) for SSIDataGet
@@ -623,11 +636,11 @@ Removing Unused input sections from the image.
 
     Removing startup.o(HEAP), (0 bytes).
     Removing startup.o(.text), (0 bytes).
-    Removing simpleptidesos.o(.data), (4 bytes).
     Removing simpleptidesos.o(.data), (1 bytes).
     Removing simpleptidesos.o(.data), (4 bytes).
     Removing simpleptidesos.o(.data), (1 bytes).
     Removing simpleptidesos.o(.data), (1 bytes).
+    Removing simpleptidesos.o(.data), (4 bytes).
     Removing simpleptidesos.o(.data), (4 bytes).
     Removing simpleptidesos.o(.data), (4 bytes).
     Removing simpleptidesos.o(.data), (4 bytes).
@@ -685,6 +698,7 @@ Removing Unused input sections from the image.
     Removing gpio.o(i.GPIOPinTypePWM), (28 bytes).
     Removing gpio.o(i.GPIOPinTypeQEI), (28 bytes).
     Removing gpio.o(i.GPIOPinTypeTimer), (28 bytes).
+    Removing gpio.o(i.GPIOPinTypeUART), (28 bytes).
     Removing gpio.o(i.GPIOPinTypeUSBDigital), (28 bytes).
     Removing gpio.o(i.GPIOGetIntNumber), (164 bytes).
     Removing interrupt.o(i.IntDefaultHandler), (2 bytes).
@@ -763,6 +777,7 @@ Removing Unused input sections from the image.
     Removing uart.o(i.UARTFIFOLevelGet), (16 bytes).
     Removing uart.o(i.UARTEnable), (20 bytes).
     Removing uart.o(i.UARTDisable), (30 bytes).
+    Removing uart.o(i.UARTConfigSetExpClk), (84 bytes).
     Removing uart.o(i.UARTConfigGetExpClk), (32 bytes).
     Removing uart.o(i.UARTEnableSIR), (18 bytes).
     Removing uart.o(i.UARTDisableSIR), (10 bytes).
@@ -775,11 +790,12 @@ Removing Unused input sections from the image.
     Removing uart.o(i.UARTBreakCtl), (18 bytes).
     Removing uart.o(i.UARTIntRegister), (46 bytes).
     Removing uart.o(i.UARTIntUnregister), (46 bytes).
+    Removing uart.o(i.UARTIntEnable), (8 bytes).
     Removing uart.o(i.UARTIntDisable), (10 bytes).
     Removing uart.o(i.UARTDMAEnable), (8 bytes).
     Removing uart.o(i.UARTDMADisable), (10 bytes).
 
-157 unused section(s) (total 12784 bytes) removed from the image.
+160 unused section(s) (total 12904 bytes) removed from the image.
 
 ================================================================================
 
@@ -792,8 +808,8 @@ Image Symbol Table
     RESET                                    0x00000000   Section      252  startup.o(RESET)
     ../../../cmprslib/zerorunl.c             0x00000000   Number         0  __dczerorl.o ABSOLUTE
     ../../microlib/division.c                0x00000000   Number         0  uldiv.o ABSOLUTE
-    ../../microlib/division.c                0x00000000   Number         0  uidiv.o ABSOLUTE
     ../../microlib/division.c                0x00000000   Number         0  ldiv.o ABSOLUTE
+    ../../microlib/division.c                0x00000000   Number         0  uidiv.o ABSOLUTE
     ../../microlib/errno.c                   0x00000000   Number         0  errno.o ABSOLUTE
     ../../microlib/fpadd.c                   0x00000000   Number         0  dadd.o ABSOLUTE
     ../../microlib/fpdiv.c                   0x00000000   Number         0  ddiv.o ABSOLUTE
@@ -806,24 +822,24 @@ Image Symbol Table
     ../../microlib/init/init.c               0x00000000   Number         0  init.o ABSOLUTE
     ../../microlib/longlong.c                0x00000000   Number         0  llshl.o ABSOLUTE
     ../../microlib/longlong.c                0x00000000   Number         0  llushr.o ABSOLUTE
-    ../../microlib/printf/printf.c           0x00000000   Number         0  printf7.o ABSOLUTE
-    ../../microlib/printf/printf.c           0x00000000   Number         0  printf6.o ABSOLUTE
     ../../microlib/printf/printf.c           0x00000000   Number         0  printf5.o ABSOLUTE
     ../../microlib/printf/printf.c           0x00000000   Number         0  printf4.o ABSOLUTE
-    ../../microlib/printf/printf.c           0x00000000   Number         0  printf8.o ABSOLUTE
-    ../../microlib/printf/printf.c           0x00000000   Number         0  printfb.o ABSOLUTE
     ../../microlib/printf/printf.c           0x00000000   Number         0  printf3.o ABSOLUTE
     ../../microlib/printf/printf.c           0x00000000   Number         0  printf2.o ABSOLUTE
     ../../microlib/printf/printf.c           0x00000000   Number         0  printf1.o ABSOLUTE
-    ../../microlib/printf/printf.c           0x00000000   Number         0  printfa.o ABSOLUTE
     ../../microlib/printf/printf.c           0x00000000   Number         0  printf0.o ABSOLUTE
+    ../../microlib/printf/printf.c           0x00000000   Number         0  printf7.o ABSOLUTE
+    ../../microlib/printf/printf.c           0x00000000   Number         0  printfb.o ABSOLUTE
+    ../../microlib/printf/printf.c           0x00000000   Number         0  printfa.o ABSOLUTE
+    ../../microlib/printf/printf.c           0x00000000   Number         0  printf8.o ABSOLUTE
+    ../../microlib/printf/printf.c           0x00000000   Number         0  printf6.o ABSOLUTE
     ../../microlib/printf/stubs.s            0x00000000   Number         0  stubs.o ABSOLUTE
     ../../microlib/stdio/fputc.c             0x00000000   Number         0  fputc.o ABSOLUTE
-    ../../microlib/stdio/fputs.c             0x00000000   Number         0  fputs_e.o ABSOLUTE
     ../../microlib/stdio/fputs.c             0x00000000   Number         0  fputs.o ABSOLUTE
+    ../../microlib/stdio/fputs.c             0x00000000   Number         0  fputs_e.o ABSOLUTE
     ../../microlib/stdio/perror.c            0x00000000   Number         0  perror.o ABSOLUTE
-    ../../microlib/stdio/streams.c           0x00000000   Number         0  stdout.o ABSOLUTE
     ../../microlib/stdio/streams.c           0x00000000   Number         0  stderr.o ABSOLUTE
+    ../../microlib/stdio/streams.c           0x00000000   Number         0  stdout.o ABSOLUTE
     ../../microlib/string/memcmp.c           0x00000000   Number         0  memcmp.o ABSOLUTE
     ../../microlib/string/memcpy.c           0x00000000   Number         0  memcpyb.o ABSOLUTE
     ../../microlib/string/memcpy.c           0x00000000   Number         0  memcpya.o ABSOLUTE
@@ -871,6 +887,7 @@ Image Symbol Table
     dc.s                                     0x00000000   Number         0  dc.o ABSOLUTE
     enet_lwip.c                              0x00000000   Number         0  enet_lwip.o ABSOLUTE
     lmi_fs.c                                 0x00000000   Number         0  lmi_fs.o ABSOLUTE
+    phpd.c                                   0x00000000   Number         0  phpd.o ABSOLUTE
     random.c                                 0x00000000   Number         0  random.o ABSOLUTE
     src\\sysctl.c                            0x00000000   Number         0  sysctl.o ABSOLUTE
     src\cpu.S                                0x00000000   Number         0  cpu.o ABSOLUTE
@@ -889,227 +906,225 @@ Image Symbol Table
     $$startup$$                              0x000000fc   Section       12  entry.o($$startup$$)
     .emb_text                                0x00000108   Section        6  sysctl.o(.emb_text)
     .emb_text                                0x00000110   Section        2  init.o(.emb_text)
-    .text                                    0x00000114   Section     4844  simpleptidesos.o(.text)
-    DisplayIntStatus                         0x0000013b   Thumb Code   122  simpleptidesos.o(.text)
-    .text                                    0x00001400   Section      644  httpd.o(.text)
-    conn_err                                 0x00001401   Thumb Code    32  httpd.o(.text)
-    close_conn                               0x00001421   Thumb Code    56  httpd.o(.text)
-    send_data                                0x00001459   Thumb Code   152  httpd.o(.text)
-    http_poll                                0x000014f1   Thumb Code    42  httpd.o(.text)
-    http_sent                                0x0000151b   Thumb Code    20  httpd.o(.text)
-    http_recv                                0x0000152f   Thumb Code   184  httpd.o(.text)
-    http_accept                              0x000015e7   Thumb Code    80  httpd.o(.text)
-    .text                                    0x00001684   Section     1912  tcp.o(.text)
-    tcp_new_port                             0x00001a95   Thumb Code    92  tcp.o(.text)
-    tcp_accept_null                          0x00001b65   Thumb Code     6  tcp.o(.text)
-    tcp_recv_null                            0x00001ccd   Thumb Code    26  tcp.o(.text)
-    .text                                    0x00001dfc   Section      972  udp.o(.text)
-    .text                                    0x000021c8   Section     3216  dhcp.o(.text)
-    dhcp_check                               0x000021c9   Thumb Code    36  dhcp.o(.text)
-    dhcp_option_trailer                      0x000021ed   Thumb Code    44  dhcp.o(.text)
-    dhcp_option_long                         0x00002219   Thumb Code    66  dhcp.o(.text)
-    dhcp_option_short                        0x0000225b   Thumb Code    34  dhcp.o(.text)
-    dhcp_create_request                      0x0000227d   Thumb Code   204  dhcp.o(.text)
-    dhcp_select                              0x00002349   Thumb Code   250  dhcp.o(.text)
-    dhcp_get_option_ptr                      0x00002443   Thumb Code   128  dhcp.o(.text)
-    dhcp_rebind                              0x00002563   Thumb Code   162  dhcp.o(.text)
-    dhcp_bind                                0x0000265d   Thumb Code   200  dhcp.o(.text)
-    dhcp_handle_ack                          0x00002725   Thumb Code   220  dhcp.o(.text)
-    dhcp_free_reply                          0x00002801   Thumb Code    32  dhcp.o(.text)
-    dhcp_recv                                0x00002821   Thumb Code   256  dhcp.o(.text)
-    dhcp_discover                            0x00002921   Thumb Code   224  dhcp.o(.text)
-    dhcp_decline                             0x00002c37   Thumb Code   156  dhcp.o(.text)
-    dhcp_set_state                           0x00002ceb   Thumb Code    14  dhcp.o(.text)
-    dhcp_delete_request                      0x00002cf9   Thumb Code    18  dhcp.o(.text)
-    dhcp_option_byte                         0x00002d0b   Thumb Code    16  dhcp.o(.text)
-    dhcp_option                              0x00002d1b   Thumb Code    32  dhcp.o(.text)
-    dhcp_get_option_long                     0x00002d3b   Thumb Code    22  dhcp.o(.text)
-    dhcp_unfold_reply                        0x00002d51   Thumb Code   140  dhcp.o(.text)
-    dhcp_timeout                             0x00002ddd   Thumb Code   114  dhcp.o(.text)
-    .text                                    0x00002e58   Section      668  inet.o(.text)
-    lwip_standard_chksum                     0x00002e5d   Thumb Code    58  inet.o(.text)
-    .text                                    0x000030f4   Section      520  mem.o(.text)
-    plug_holes                               0x000030f5   Thumb Code    78  mem.o(.text)
-    .text                                    0x000032fc   Section      244  memp.o(.text)
-    .text                                    0x000033f0   Section      376  netif.o(.text)
-    .text                                    0x00003568   Section     1008  pbuf.o(.text)
-    pbuf_pool_alloc                          0x000035ad   Thumb Code    48  pbuf.o(.text)
-    .text                                    0x00003958   Section      336  raw.o(.text)
-    .text                                    0x00003aa8   Section       16  stats.o(.text)
-    .text                                    0x00003ab8   Section     3364  tcp_in.o(.text)
-    tcp_receive                              0x00003ab9   Thumb Code  1430  tcp_in.o(.text)
-    tcp_parseopt                             0x0000404f   Thumb Code   118  tcp_in.o(.text)
-    tcp_process                              0x000040c5   Thumb Code   794  tcp_in.o(.text)
-    tcp_listen_input                         0x000043df   Thumb Code   212  tcp_in.o(.text)
-    .text                                    0x000047dc   Section     1848  tcp_out.o(.text)
-    tcp_output_segment                       0x00004abb   Thumb Code   174  tcp_out.o(.text)
-    .text                                    0x00004f14   Section      416  icmp.o(.text)
-    .text                                    0x000050b4   Section      760  ip.o(.text)
-    .text                                    0x000053ac   Section       48  ip_addr.o(.text)
-    .text                                    0x000053dc   Section     1604  etharp.o(.text)
-    find_entry                               0x0000545b   Thumb Code   242  etharp.o(.text)
-    update_arp_entry                         0x0000554d   Thumb Code   194  etharp.o(.text)
-    .text                                    0x00005a20   Section      896  luminaryif.o(.text)
-    enqueue_frame                            0x00005d49   Thumb Code    72  luminaryif.o(.text)
-    .text                                    0x00005da0   Section      412  lmi_fs.o(.text)
-    .text                                    0x00005f3c   Section      844  enet_lwip.o(.text)
-    lwip_display_address                     0x00005f95   Thumb Code    52  enet_lwip.o(.text)
-    .text                                    0x00006288   Section     2748  protocol.o(.text)
-    .text                                    0x00006d44   Section      172  ptpd_timer.o(.text)
-    .text                                    0x00006df0   Section     3804  ptpd_msg.o(.text)
-    .text                                    0x00007ccc   Section     1028  ptpd_net.o(.text)
-    eventRecv                                0x00007cf5   Thumb Code     8  ptpd_net.o(.text)
-    generalRecv                              0x00007cfd   Thumb Code     8  ptpd_net.o(.text)
-    netQInit                                 0x0000800b   Thumb Code    10  ptpd_net.o(.text)
-    netQPut                                  0x00008015   Thumb Code    44  ptpd_net.o(.text)
-    netQCheck                                0x00008041   Thumb Code    10  ptpd_net.o(.text)
-    .text                                    0x000080d0   Section      540  ptpd_servo.o(.text)
-    .text                                    0x000082ec   Section      296  arith.o(.text)
-    .text                                    0x00008414   Section     1368  bmc.o(.text)
-    .text                                    0x0000896c   Section      424  random.o(.text)
-    .text                                    0x00008b14   Section      896  ustdlib.o(.text)
-    .text                                    0x00008e94   Section      924  rit128x96x4.o(.text)
-    RITWriteCommand                          0x00008e95   Thumb Code    54  rit128x96x4.o(.text)
-    RITWriteData                             0x00008ecb   Thumb Code    54  rit128x96x4.o(.text)
-    .text                                    0x00009230   Section       20  cpu.o(.text)
-    .text                                    0x00009244   Section       64  perror.o(.text)
-    .text                                    0x00009284   Section      100  ldiv.o(.text)
-    .text                                    0x000092e8   Section       36  memcpya.o(.text)
-    .text                                    0x0000930c   Section       38  memseta.o(.text)
-    .text                                    0x00009332   Section       44  strstr.o(.text)
-    .text                                    0x0000935e   Section       24  strncpy.o(.text)
-    .text                                    0x00009376   Section       18  strchr.o(.text)
-    .text                                    0x00009388   Section       16  strlen.o(.text)
-    .text                                    0x00009398   Section       26  memcmp.o(.text)
-    .text                                    0x000093b2   Section       30  strncmp.o(.text)
-    .text                                    0x000093d0   Section      418  dadd.o(.text)
-    _double_addcore                          0x000093d1   Thumb Code   274  dadd.o(.text)
-    .text                                    0x00009572   Section       26  dfltu.o(.text)
-    .text                                    0x0000958c   Section       44  init.o(.text)
-    .text                                    0x000095b8   Section       24  fputs.o(.text)
-    .text                                    0x000095d0   Section       16  fputc.o(.text)
-    .text                                    0x000095e0   Section       38  uidiv.o(.text)
-    .text                                    0x00009606   Section       84  uldiv.o(.text)
-    .text                                    0x0000965a   Section       32  llshl.o(.text)
-    .text                                    0x0000967a   Section       30  llushr.o(.text)
-    .text                                    0x00009698   Section      152  strerror.o(.text)
-    .text                                    0x00009730   Section      196  depilogue.o(.text)
-    .text                                    0x00009730   Number         0  iusefp.o(.text)
-    .text                                    0x000097f4   Number         0  iusesemip.o(.text)
-    .text                                    0x000097f4   Section       58  __dczerorl.o(.text)
-    c$$printf_stubs                          0x00009830   Number         0  stubs.o(c$$printf_stubs)
-    i.EthernetConfigGet                      0x00009830   Section       20  ethernet.o(i.EthernetConfigGet)
-    i.EthernetConfigSet                      0x00009844   Section       42  ethernet.o(i.EthernetConfigSet)
-    i.EthernetEnable                         0x0000986e   Section       34  ethernet.o(i.EthernetEnable)
-    i.EthernetInitExpClk                     0x00009890   Section       16  ethernet.o(i.EthernetInitExpClk)
-    i.EthernetIntClear                       0x000098a0   Section        4  ethernet.o(i.EthernetIntClear)
-    i.EthernetIntDisable                     0x000098a4   Section       10  ethernet.o(i.EthernetIntDisable)
-    i.EthernetIntEnable                      0x000098ae   Section        8  ethernet.o(i.EthernetIntEnable)
-    i.EthernetIntStatus                      0x000098b6   Section       14  ethernet.o(i.EthernetIntStatus)
-    i.EthernetMACAddrGet                     0x000098c4   Section       50  ethernet.o(i.EthernetMACAddrGet)
-    i.EthernetMACAddrSet                     0x000098f6   Section       54  ethernet.o(i.EthernetMACAddrSet)
-    i.EthernetPacketAvail                    0x0000992c   Section       12  ethernet.o(i.EthernetPacketAvail)
-    i.EthernetSpaceAvail                     0x00009938   Section       10  ethernet.o(i.EthernetSpaceAvail)
-    i.FlashUserGet                           0x00009944   Section       56  flash.o(i.FlashUserGet)
-    i.GPIODirModeSet                         0x0000997c   Section       40  gpio.o(i.GPIODirModeSet)
-    i.GPIOPadConfigSet                       0x000099a4   Section      176  gpio.o(i.GPIOPadConfigSet)
-    i.GPIOPinTypeGPIOOutput                  0x00009a54   Section       28  gpio.o(i.GPIOPinTypeGPIOOutput)
-    i.GPIOPinTypeSSI                         0x00009a70   Section       28  gpio.o(i.GPIOPinTypeSSI)
-    i.GPIOPinTypeUART                        0x00009a8c   Section       28  gpio.o(i.GPIOPinTypeUART)
-    i.GPIOPinWrite                           0x00009aa8   Section        6  gpio.o(i.GPIOPinWrite)
-    i.IntDisable                             0x00009aae   Section      104  interrupt.o(i.IntDisable)
-    i.IntEnable                              0x00009b16   Section      104  interrupt.o(i.IntEnable)
-    i.IntMasterDisable                       0x00009b7e   Section       10  interrupt.o(i.IntMasterDisable)
-    i.IntMasterEnable                        0x00009b88   Section       10  interrupt.o(i.IntMasterEnable)
-    i.IntPrioritySet                         0x00009b94   Section       40  interrupt.o(i.IntPrioritySet)
-    i.SSIConfigSetExpClk                     0x00009bbc   Section       74  ssi.o(i.SSIConfigSetExpClk)
-    i.SSIDataGet                             0x00009c06   Section       14  ssi.o(i.SSIDataGet)
-    i.SSIDataGetNonBlocking                  0x00009c14   Section       18  ssi.o(i.SSIDataGetNonBlocking)
-    i.SSIDataPut                             0x00009c26   Section       12  ssi.o(i.SSIDataPut)
-    i.SSIDisable                             0x00009c32   Section       10  ssi.o(i.SSIDisable)
-    i.SSIEnable                              0x00009c3c   Section       10  ssi.o(i.SSIEnable)
-    i.SysCtlClockGet                         0x00009c48   Section      320  sysctl.o(i.SysCtlClockGet)
-    i.SysCtlClockSet                         0x00009d88   Section      288  sysctl.o(i.SysCtlClockSet)
-    i.SysCtlPeripheralEnable                 0x00009ea8   Section       32  sysctl.o(i.SysCtlPeripheralEnable)
-    i.SysCtlPeripheralReset                  0x00009ec8   Section       56  sysctl.o(i.SysCtlPeripheralReset)
-    i.SysTickEnable                          0x00009f00   Section       14  systick.o(i.SysTickEnable)
-    i.SysTickIntEnable                       0x00009f0e   Section       14  systick.o(i.SysTickIntEnable)
-    i.SysTickPeriodGet                       0x00009f1c   Section       10  systick.o(i.SysTickPeriodGet)
-    i.SysTickPeriodSet                       0x00009f26   Section       10  systick.o(i.SysTickPeriodSet)
-    i.SysTickValueGet                        0x00009f30   Section        8  systick.o(i.SysTickValueGet)
-    i.TimerConfigure                         0x00009f38   Section       28  timer.o(i.TimerConfigure)
-    i.TimerControlEvent                      0x00009f54   Section       24  timer.o(i.TimerControlEvent)
-    i.TimerDisable                           0x00009f6c   Section       16  timer.o(i.TimerDisable)
-    i.TimerEnable                            0x00009f7c   Section       14  timer.o(i.TimerEnable)
-    i.TimerIntClear                          0x00009f8a   Section        4  timer.o(i.TimerIntClear)
-    i.TimerIntDisable                        0x00009f8e   Section       10  timer.o(i.TimerIntDisable)
-    i.TimerIntEnable                         0x00009f98   Section        8  timer.o(i.TimerIntEnable)
-    i.TimerLoadSet                           0x00009fa0   Section       18  timer.o(i.TimerLoadSet)
-    i.TimerPrescaleSet                       0x00009fb2   Section       18  timer.o(i.TimerPrescaleSet)
-    i.TimerValueGet                          0x00009fc4   Section       10  timer.o(i.TimerValueGet)
-    i.UARTConfigSetExpClk                    0x00009fce   Section       84  uart.o(i.UARTConfigSetExpClk)
-    i.UARTIntClear                           0x0000a022   Section        4  uart.o(i.UARTIntClear)
-    i.UARTIntEnable                          0x0000a026   Section        8  uart.o(i.UARTIntEnable)
-    i.UARTIntStatus                          0x0000a02e   Section       10  uart.o(i.UARTIntStatus)
-    i.__0printf_1                            0x0000a038   Section       32  printf1.o(i.__0printf_1)
-    i.__0sprintf_1                           0x0000a058   Section       40  printf1.o(i.__0sprintf_1)
-    i.__aeabi_errno_addr                     0x0000a080   Section        8  errno.o(i.__aeabi_errno_addr)
-    i.__scatterload_copy                     0x0000a088   Section       14  handlers.o(i.__scatterload_copy)
-    i.__scatterload_null                     0x0000a096   Section        2  handlers.o(i.__scatterload_null)
-    i.__scatterload_zeroinit                 0x0000a098   Section       14  handlers.o(i.__scatterload_zeroinit)
-    i._printf_core                           0x0000a0a8   Section      332  printf1.o(i._printf_core)
-    _printf_core                             0x0000a0a9   Thumb Code   326  printf1.o(i._printf_core)
-    i._sputc                                 0x0000a1f4   Section       10  printf1.o(i._sputc)
-    _sputc                                   0x0000a1f5   Thumb Code    10  printf1.o(i._sputc)
-    .constdata                               0x0000a200   Section       90  simpleptidesos.o(.constdata)
-    .constdata                               0x0000a25a   Section       13  tcp.o(.constdata)
-    .constdata                               0x0000a268   Section       44  memp.o(.constdata)
-    memp_sizes                               0x0000a268   Data          22  memp.o(.constdata)
-    memp_num                                 0x0000a27e   Data          22  memp.o(.constdata)
-    .constdata                               0x0000a294   Section        4  ip_addr.o(.constdata)
-    .constdata                               0x0000a298   Section        4  ip_addr.o(.constdata)
-    .constdata                               0x0000a29c   Section        6  etharp.o(.constdata)
-    ethbroadcast                             0x0000a29c   Data           6  etharp.o(.constdata)
-    .constdata                               0x0000a2a4   Section       16  lmi_fs.o(.constdata)
-    .constdata                               0x0000a2b4   Section      327  lmi_fs.o(.constdata)
-    data_404_html                            0x0000a2b4   Data         327  lmi_fs.o(.constdata)
-    .constdata                               0x0000a3fb   Section     1284  lmi_fs.o(.constdata)
-    data_index_html                          0x0000a3fb   Data        1284  lmi_fs.o(.constdata)
-    .constdata                               0x0000a8ff   Section     1103  lmi_fs.o(.constdata)
-    data_ptpclock_shtml                      0x0000a8ff   Data        1103  lmi_fs.o(.constdata)
-    .constdata                               0x0000ad4e   Section      544  lmi_fs.o(.constdata)
-    data_styles_css                          0x0000ad4e   Data         544  lmi_fs.o(.constdata)
-    .constdata                               0x0000af70   Section       16  lmi_fs.o(.constdata)
-    .constdata                               0x0000af80   Section       16  lmi_fs.o(.constdata)
-    .constdata                               0x0000af90   Section       16  lmi_fs.o(.constdata)
-    .constdata                               0x0000afa0   Section       28  ustdlib.o(.constdata)
-    g_pcHex                                  0x0000afa0   Data           4  ustdlib.o(.constdata)
-    g_psDaysToMonth                          0x0000afa4   Data          24  ustdlib.o(.constdata)
-    .constdata                               0x0000afbc   Section      571  rit128x96x4.o(.constdata)
-    g_pucRIT128x96x4VerticalInc              0x0000afbc   Data           2  rit128x96x4.o(.constdata)
-    g_pucRIT128x96x4HorizontalInc            0x0000afbe   Data           2  rit128x96x4.o(.constdata)
-    g_pucFont                                0x0000afc0   Data         480  rit128x96x4.o(.constdata)
-    g_pucRIT128x96x4Init                     0x0000b1a0   Data          79  rit128x96x4.o(.constdata)
-    pucCommand1@RIT128x96x4Clear_0           0x0000b1ef   Data           3  rit128x96x4.o(.constdata)
-    pucCommand2@RIT128x96x4Clear_1           0x0000b1f2   Data           3  rit128x96x4.o(.constdata)
-    pucCommand1@RIT128x96x4DisplayOff_0      0x0000b1f5   Data           2  rit128x96x4.o(.constdata)
-    .constdata                               0x0000b1f8   Section       96  interrupt.o(.constdata)
-    g_pulPriority                            0x0000b1f8   Data          32  interrupt.o(.constdata)
-    g_pulRegs                                0x0000b218   Data          64  interrupt.o(.constdata)
-    .constdata                               0x0000b258   Section      156  sysctl.o(.constdata)
-    g_pulDCRegs                              0x0000b258   Data          16  sysctl.o(.constdata)
-    g_pulSRCRRegs                            0x0000b268   Data          12  sysctl.o(.constdata)
-    g_pulRCGCRegs                            0x0000b274   Data          12  sysctl.o(.constdata)
-    g_pulSCGCRegs                            0x0000b280   Data          12  sysctl.o(.constdata)
-    g_pulDCGCRegs                            0x0000b28c   Data          12  sysctl.o(.constdata)
-    g_pulXtals                               0x0000b298   Data          92  sysctl.o(.constdata)
-    .conststring                             0x0000b2f4   Section       28  simpleptidesos.o(.conststring)
-    .conststring                             0x0000b310   Section       48  simpleptidesos.o(.conststring)
-    .conststring                             0x0000b340   Section       17  ustdlib.o(.conststring)
+    .text                                    0x00000114   Section     4152  simpleptidesos.o(.text)
+    DisplayIntStatus                         0x000002ad   Thumb Code   122  simpleptidesos.o(.text)
+    .text                                    0x0000114c   Section      644  httpd.o(.text)
+    conn_err                                 0x0000114d   Thumb Code    32  httpd.o(.text)
+    close_conn                               0x0000116d   Thumb Code    56  httpd.o(.text)
+    send_data                                0x000011a5   Thumb Code   152  httpd.o(.text)
+    http_poll                                0x0000123d   Thumb Code    42  httpd.o(.text)
+    http_sent                                0x00001267   Thumb Code    20  httpd.o(.text)
+    http_recv                                0x0000127b   Thumb Code   184  httpd.o(.text)
+    http_accept                              0x00001333   Thumb Code    80  httpd.o(.text)
+    .text                                    0x000013d0   Section     1912  tcp.o(.text)
+    tcp_new_port                             0x000017e1   Thumb Code    92  tcp.o(.text)
+    tcp_accept_null                          0x000018b1   Thumb Code     6  tcp.o(.text)
+    tcp_recv_null                            0x00001a19   Thumb Code    26  tcp.o(.text)
+    .text                                    0x00001b48   Section      972  udp.o(.text)
+    .text                                    0x00001f14   Section     3216  dhcp.o(.text)
+    dhcp_check                               0x00001f15   Thumb Code    36  dhcp.o(.text)
+    dhcp_option_trailer                      0x00001f39   Thumb Code    44  dhcp.o(.text)
+    dhcp_option_long                         0x00001f65   Thumb Code    66  dhcp.o(.text)
+    dhcp_option_short                        0x00001fa7   Thumb Code    34  dhcp.o(.text)
+    dhcp_create_request                      0x00001fc9   Thumb Code   204  dhcp.o(.text)
+    dhcp_select                              0x00002095   Thumb Code   250  dhcp.o(.text)
+    dhcp_get_option_ptr                      0x0000218f   Thumb Code   128  dhcp.o(.text)
+    dhcp_rebind                              0x000022af   Thumb Code   162  dhcp.o(.text)
+    dhcp_bind                                0x000023a9   Thumb Code   200  dhcp.o(.text)
+    dhcp_handle_ack                          0x00002471   Thumb Code   220  dhcp.o(.text)
+    dhcp_free_reply                          0x0000254d   Thumb Code    32  dhcp.o(.text)
+    dhcp_recv                                0x0000256d   Thumb Code   256  dhcp.o(.text)
+    dhcp_discover                            0x0000266d   Thumb Code   224  dhcp.o(.text)
+    dhcp_decline                             0x00002983   Thumb Code   156  dhcp.o(.text)
+    dhcp_set_state                           0x00002a37   Thumb Code    14  dhcp.o(.text)
+    dhcp_delete_request                      0x00002a45   Thumb Code    18  dhcp.o(.text)
+    dhcp_option_byte                         0x00002a57   Thumb Code    16  dhcp.o(.text)
+    dhcp_option                              0x00002a67   Thumb Code    32  dhcp.o(.text)
+    dhcp_get_option_long                     0x00002a87   Thumb Code    22  dhcp.o(.text)
+    dhcp_unfold_reply                        0x00002a9d   Thumb Code   140  dhcp.o(.text)
+    dhcp_timeout                             0x00002b29   Thumb Code   114  dhcp.o(.text)
+    .text                                    0x00002ba4   Section      668  inet.o(.text)
+    lwip_standard_chksum                     0x00002ba9   Thumb Code    58  inet.o(.text)
+    .text                                    0x00002e40   Section      520  mem.o(.text)
+    plug_holes                               0x00002e41   Thumb Code    78  mem.o(.text)
+    .text                                    0x00003048   Section      244  memp.o(.text)
+    .text                                    0x0000313c   Section      376  netif.o(.text)
+    .text                                    0x000032b4   Section     1008  pbuf.o(.text)
+    pbuf_pool_alloc                          0x000032f9   Thumb Code    48  pbuf.o(.text)
+    .text                                    0x000036a4   Section      336  raw.o(.text)
+    .text                                    0x000037f4   Section       16  stats.o(.text)
+    .text                                    0x00003804   Section     3364  tcp_in.o(.text)
+    tcp_receive                              0x00003805   Thumb Code  1430  tcp_in.o(.text)
+    tcp_parseopt                             0x00003d9b   Thumb Code   118  tcp_in.o(.text)
+    tcp_process                              0x00003e11   Thumb Code   794  tcp_in.o(.text)
+    tcp_listen_input                         0x0000412b   Thumb Code   212  tcp_in.o(.text)
+    .text                                    0x00004528   Section     1848  tcp_out.o(.text)
+    tcp_output_segment                       0x00004807   Thumb Code   174  tcp_out.o(.text)
+    .text                                    0x00004c60   Section      416  icmp.o(.text)
+    .text                                    0x00004e00   Section      760  ip.o(.text)
+    .text                                    0x000050f8   Section       48  ip_addr.o(.text)
+    .text                                    0x00005128   Section     1604  etharp.o(.text)
+    find_entry                               0x000051a7   Thumb Code   242  etharp.o(.text)
+    update_arp_entry                         0x00005299   Thumb Code   194  etharp.o(.text)
+    .text                                    0x0000576c   Section      896  luminaryif.o(.text)
+    enqueue_frame                            0x00005a95   Thumb Code    72  luminaryif.o(.text)
+    .text                                    0x00005aec   Section      412  lmi_fs.o(.text)
+    .text                                    0x00005c88   Section      844  enet_lwip.o(.text)
+    lwip_display_address                     0x00005ce1   Thumb Code    52  enet_lwip.o(.text)
+    .text                                    0x00005fd4   Section     2748  protocol.o(.text)
+    .text                                    0x00006a90   Section      172  ptpd_timer.o(.text)
+    .text                                    0x00006b3c   Section     3804  ptpd_msg.o(.text)
+    .text                                    0x00007a18   Section     1028  ptpd_net.o(.text)
+    eventRecv                                0x00007a41   Thumb Code     8  ptpd_net.o(.text)
+    generalRecv                              0x00007a49   Thumb Code     8  ptpd_net.o(.text)
+    netQInit                                 0x00007d57   Thumb Code    10  ptpd_net.o(.text)
+    netQPut                                  0x00007d61   Thumb Code    44  ptpd_net.o(.text)
+    netQCheck                                0x00007d8d   Thumb Code    10  ptpd_net.o(.text)
+    .text                                    0x00007e1c   Section      540  ptpd_servo.o(.text)
+    .text                                    0x00008038   Section      296  arith.o(.text)
+    .text                                    0x00008160   Section     1368  bmc.o(.text)
+    .text                                    0x000086b8   Section      424  random.o(.text)
+    .text                                    0x00008860   Section      896  ustdlib.o(.text)
+    .text                                    0x00008be0   Section      748  phpd.o(.text)
+    .text                                    0x00008ecc   Section      924  rit128x96x4.o(.text)
+    RITWriteCommand                          0x00008ecd   Thumb Code    54  rit128x96x4.o(.text)
+    RITWriteData                             0x00008f03   Thumb Code    54  rit128x96x4.o(.text)
+    .text                                    0x00009268   Section       20  cpu.o(.text)
+    .text                                    0x0000927c   Section       64  perror.o(.text)
+    .text                                    0x000092bc   Section      100  ldiv.o(.text)
+    .text                                    0x00009320   Section       36  memcpya.o(.text)
+    .text                                    0x00009344   Section       38  memseta.o(.text)
+    .text                                    0x0000936a   Section       44  strstr.o(.text)
+    .text                                    0x00009396   Section       24  strncpy.o(.text)
+    .text                                    0x000093ae   Section       18  strchr.o(.text)
+    .text                                    0x000093c0   Section       16  strlen.o(.text)
+    .text                                    0x000093d0   Section       26  memcmp.o(.text)
+    .text                                    0x000093ea   Section       30  strncmp.o(.text)
+    .text                                    0x00009408   Section      418  dadd.o(.text)
+    _double_addcore                          0x00009409   Thumb Code   274  dadd.o(.text)
+    .text                                    0x000095aa   Section       26  dfltu.o(.text)
+    .text                                    0x000095c4   Section       44  init.o(.text)
+    .text                                    0x000095f0   Section       24  fputs.o(.text)
+    .text                                    0x00009608   Section       16  fputc.o(.text)
+    .text                                    0x00009618   Section       38  uidiv.o(.text)
+    .text                                    0x0000963e   Section       84  uldiv.o(.text)
+    .text                                    0x00009692   Section       32  llshl.o(.text)
+    .text                                    0x000096b2   Section       30  llushr.o(.text)
+    .text                                    0x000096d0   Section      152  strerror.o(.text)
+    .text                                    0x00009768   Number         0  iusefp.o(.text)
+    .text                                    0x00009768   Section      196  depilogue.o(.text)
+    .text                                    0x0000982c   Section       58  __dczerorl.o(.text)
+    .text                                    0x0000982c   Number         0  iusesemip.o(.text)
+    c$$printf_stubs                          0x00009868   Number         0  stubs.o(c$$printf_stubs)
+    i.EthernetConfigGet                      0x00009868   Section       20  ethernet.o(i.EthernetConfigGet)
+    i.EthernetConfigSet                      0x0000987c   Section       42  ethernet.o(i.EthernetConfigSet)
+    i.EthernetEnable                         0x000098a6   Section       34  ethernet.o(i.EthernetEnable)
+    i.EthernetInitExpClk                     0x000098c8   Section       16  ethernet.o(i.EthernetInitExpClk)
+    i.EthernetIntClear                       0x000098d8   Section        4  ethernet.o(i.EthernetIntClear)
+    i.EthernetIntDisable                     0x000098dc   Section       10  ethernet.o(i.EthernetIntDisable)
+    i.EthernetIntEnable                      0x000098e6   Section        8  ethernet.o(i.EthernetIntEnable)
+    i.EthernetIntStatus                      0x000098ee   Section       14  ethernet.o(i.EthernetIntStatus)
+    i.EthernetMACAddrGet                     0x000098fc   Section       50  ethernet.o(i.EthernetMACAddrGet)
+    i.EthernetMACAddrSet                     0x0000992e   Section       54  ethernet.o(i.EthernetMACAddrSet)
+    i.EthernetPacketAvail                    0x00009964   Section       12  ethernet.o(i.EthernetPacketAvail)
+    i.EthernetSpaceAvail                     0x00009970   Section       10  ethernet.o(i.EthernetSpaceAvail)
+    i.FlashUserGet                           0x0000997c   Section       56  flash.o(i.FlashUserGet)
+    i.GPIODirModeSet                         0x000099b4   Section       40  gpio.o(i.GPIODirModeSet)
+    i.GPIOPadConfigSet                       0x000099dc   Section      176  gpio.o(i.GPIOPadConfigSet)
+    i.GPIOPinTypeGPIOOutput                  0x00009a8c   Section       28  gpio.o(i.GPIOPinTypeGPIOOutput)
+    i.GPIOPinTypeSSI                         0x00009aa8   Section       28  gpio.o(i.GPIOPinTypeSSI)
+    i.GPIOPinWrite                           0x00009ac4   Section        6  gpio.o(i.GPIOPinWrite)
+    i.IntDisable                             0x00009aca   Section      104  interrupt.o(i.IntDisable)
+    i.IntEnable                              0x00009b32   Section      104  interrupt.o(i.IntEnable)
+    i.IntMasterDisable                       0x00009b9a   Section       10  interrupt.o(i.IntMasterDisable)
+    i.IntMasterEnable                        0x00009ba4   Section       10  interrupt.o(i.IntMasterEnable)
+    i.IntPrioritySet                         0x00009bb0   Section       40  interrupt.o(i.IntPrioritySet)
+    i.SSIConfigSetExpClk                     0x00009bd8   Section       74  ssi.o(i.SSIConfigSetExpClk)
+    i.SSIDataGet                             0x00009c22   Section       14  ssi.o(i.SSIDataGet)
+    i.SSIDataGetNonBlocking                  0x00009c30   Section       18  ssi.o(i.SSIDataGetNonBlocking)
+    i.SSIDataPut                             0x00009c42   Section       12  ssi.o(i.SSIDataPut)
+    i.SSIDisable                             0x00009c4e   Section       10  ssi.o(i.SSIDisable)
+    i.SSIEnable                              0x00009c58   Section       10  ssi.o(i.SSIEnable)
+    i.SysCtlClockGet                         0x00009c64   Section      320  sysctl.o(i.SysCtlClockGet)
+    i.SysCtlClockSet                         0x00009da4   Section      288  sysctl.o(i.SysCtlClockSet)
+    i.SysCtlPeripheralEnable                 0x00009ec4   Section       32  sysctl.o(i.SysCtlPeripheralEnable)
+    i.SysCtlPeripheralReset                  0x00009ee4   Section       56  sysctl.o(i.SysCtlPeripheralReset)
+    i.SysTickEnable                          0x00009f1c   Section       14  systick.o(i.SysTickEnable)
+    i.SysTickIntEnable                       0x00009f2a   Section       14  systick.o(i.SysTickIntEnable)
+    i.SysTickPeriodGet                       0x00009f38   Section       10  systick.o(i.SysTickPeriodGet)
+    i.SysTickPeriodSet                       0x00009f42   Section       10  systick.o(i.SysTickPeriodSet)
+    i.SysTickValueGet                        0x00009f4c   Section        8  systick.o(i.SysTickValueGet)
+    i.TimerConfigure                         0x00009f54   Section       28  timer.o(i.TimerConfigure)
+    i.TimerControlEvent                      0x00009f70   Section       24  timer.o(i.TimerControlEvent)
+    i.TimerDisable                           0x00009f88   Section       16  timer.o(i.TimerDisable)
+    i.TimerEnable                            0x00009f98   Section       14  timer.o(i.TimerEnable)
+    i.TimerIntClear                          0x00009fa6   Section        4  timer.o(i.TimerIntClear)
+    i.TimerIntDisable                        0x00009faa   Section       10  timer.o(i.TimerIntDisable)
+    i.TimerIntEnable                         0x00009fb4   Section        8  timer.o(i.TimerIntEnable)
+    i.TimerLoadSet                           0x00009fbc   Section       18  timer.o(i.TimerLoadSet)
+    i.TimerPrescaleSet                       0x00009fce   Section       18  timer.o(i.TimerPrescaleSet)
+    i.TimerValueGet                          0x00009fe0   Section       10  timer.o(i.TimerValueGet)
+    i.UARTIntClear                           0x00009fea   Section        4  uart.o(i.UARTIntClear)
+    i.UARTIntStatus                          0x00009fee   Section       10  uart.o(i.UARTIntStatus)
+    i.__0printf_1                            0x00009ff8   Section       32  printf1.o(i.__0printf_1)
+    i.__0sprintf_1                           0x0000a018   Section       40  printf1.o(i.__0sprintf_1)
+    i.__aeabi_errno_addr                     0x0000a040   Section        8  errno.o(i.__aeabi_errno_addr)
+    i.__scatterload_copy                     0x0000a048   Section       14  handlers.o(i.__scatterload_copy)
+    i.__scatterload_null                     0x0000a056   Section        2  handlers.o(i.__scatterload_null)
+    i.__scatterload_zeroinit                 0x0000a058   Section       14  handlers.o(i.__scatterload_zeroinit)
+    i._printf_core                           0x0000a068   Section      332  printf1.o(i._printf_core)
+    _printf_core                             0x0000a069   Thumb Code   326  printf1.o(i._printf_core)
+    i._sputc                                 0x0000a1b4   Section       10  printf1.o(i._sputc)
+    _sputc                                   0x0000a1b5   Thumb Code    10  printf1.o(i._sputc)
+    .constdata                               0x0000a1c0   Section       90  simpleptidesos.o(.constdata)
+    .constdata                               0x0000a21a   Section       13  tcp.o(.constdata)
+    .constdata                               0x0000a228   Section       44  memp.o(.constdata)
+    memp_sizes                               0x0000a228   Data          22  memp.o(.constdata)
+    memp_num                                 0x0000a23e   Data          22  memp.o(.constdata)
+    .constdata                               0x0000a254   Section        4  ip_addr.o(.constdata)
+    .constdata                               0x0000a258   Section        4  ip_addr.o(.constdata)
+    .constdata                               0x0000a25c   Section        6  etharp.o(.constdata)
+    ethbroadcast                             0x0000a25c   Data           6  etharp.o(.constdata)
+    .constdata                               0x0000a264   Section       16  lmi_fs.o(.constdata)
+    .constdata                               0x0000a274   Section      327  lmi_fs.o(.constdata)
+    data_404_html                            0x0000a274   Data         327  lmi_fs.o(.constdata)
+    .constdata                               0x0000a3bb   Section     1284  lmi_fs.o(.constdata)
+    data_index_html                          0x0000a3bb   Data        1284  lmi_fs.o(.constdata)
+    .constdata                               0x0000a8bf   Section     1103  lmi_fs.o(.constdata)
+    data_ptpclock_shtml                      0x0000a8bf   Data        1103  lmi_fs.o(.constdata)
+    .constdata                               0x0000ad0e   Section      544  lmi_fs.o(.constdata)
+    data_styles_css                          0x0000ad0e   Data         544  lmi_fs.o(.constdata)
+    .constdata                               0x0000af30   Section       16  lmi_fs.o(.constdata)
+    .constdata                               0x0000af40   Section       16  lmi_fs.o(.constdata)
+    .constdata                               0x0000af50   Section       16  lmi_fs.o(.constdata)
+    .constdata                               0x0000af60   Section       28  ustdlib.o(.constdata)
+    g_pcHex                                  0x0000af60   Data           4  ustdlib.o(.constdata)
+    g_psDaysToMonth                          0x0000af64   Data          24  ustdlib.o(.constdata)
+    .constdata                               0x0000af7c   Section      571  rit128x96x4.o(.constdata)
+    g_pucRIT128x96x4VerticalInc              0x0000af7c   Data           2  rit128x96x4.o(.constdata)
+    g_pucRIT128x96x4HorizontalInc            0x0000af7e   Data           2  rit128x96x4.o(.constdata)
+    g_pucFont                                0x0000af80   Data         480  rit128x96x4.o(.constdata)
+    g_pucRIT128x96x4Init                     0x0000b160   Data          79  rit128x96x4.o(.constdata)
+    pucCommand1@RIT128x96x4Clear_0           0x0000b1af   Data           3  rit128x96x4.o(.constdata)
+    pucCommand2@RIT128x96x4Clear_1           0x0000b1b2   Data           3  rit128x96x4.o(.constdata)
+    pucCommand1@RIT128x96x4DisplayOff_0      0x0000b1b5   Data           2  rit128x96x4.o(.constdata)
+    .constdata                               0x0000b1b8   Section       96  interrupt.o(.constdata)
+    g_pulPriority                            0x0000b1b8   Data          32  interrupt.o(.constdata)
+    g_pulRegs                                0x0000b1d8   Data          64  interrupt.o(.constdata)
+    .constdata                               0x0000b218   Section      156  sysctl.o(.constdata)
+    g_pulDCRegs                              0x0000b218   Data          16  sysctl.o(.constdata)
+    g_pulSRCRRegs                            0x0000b228   Data          12  sysctl.o(.constdata)
+    g_pulRCGCRegs                            0x0000b234   Data          12  sysctl.o(.constdata)
+    g_pulSCGCRegs                            0x0000b240   Data          12  sysctl.o(.constdata)
+    g_pulDCGCRegs                            0x0000b24c   Data          12  sysctl.o(.constdata)
+    g_pulXtals                               0x0000b258   Data          92  sysctl.o(.constdata)
+    .conststring                             0x0000b2b4   Section       28  simpleptidesos.o(.conststring)
+    .conststring                             0x0000b2d0   Section       48  simpleptidesos.o(.conststring)
+    .conststring                             0x0000b300   Section       17  ustdlib.o(.conststring)
     .data                                    0x20000000   Section      160  simpleptidesos.o(.data)
-    g_ulNewSystemTickReload                  0x20000014   Data           4  simpleptidesos.o(.data)
-    g_ulSystemTickHigh                       0x20000018   Data           4  simpleptidesos.o(.data)
-    g_ulSystemTickReload                     0x2000001c   Data           4  simpleptidesos.o(.data)
+    g_ulNewSystemTickReload                  0x20000018   Data           4  simpleptidesos.o(.data)
+    g_ulSystemTickHigh                       0x2000001c   Data           4  simpleptidesos.o(.data)
+    g_ulSystemTickReload                     0x20000020   Data           4  simpleptidesos.o(.data)
     DynamicInterrupts                        0x20000088   Data          24  simpleptidesos.o(.data)
     .data                                    0x200000a0   Section       28  simpleptidesos.o(.data)
     .data                                    0x200000bc   Section       48  simpleptidesos.o(.data)
@@ -1160,42 +1175,46 @@ Image Symbol Table
     .data                                    0x20000190   Section        8  random.o(.data)
     g_ulRandomIndex                          0x20000190   Data           4  random.o(.data)
     g_ulRandomSeed                           0x20000194   Data           4  random.o(.data)
-    .data                                    0x20000198   Section        9  rit128x96x4.o(.data)
-    g_bSSIEnabled                            0x20000198   Data           1  rit128x96x4.o(.data)
-    g_pucBuffer                              0x20000199   Data           8  rit128x96x4.o(.data)
-    .data                                    0x200001a4   Section        4  stdout.o(.data)
-    .data                                    0x200001a8   Section        4  stderr.o(.data)
-    .data                                    0x200001ac   Section        4  errno.o(.data)
-    _errno                                   0x200001ac   Data           4  errno.o(.data)
-    .bss                                     0x200001b0   Section     3612  simpleptidesos.o(.bss)
-    buf@itoa_0                               0x200001e0   Data          32  simpleptidesos.o(.bss)
-    g_sPTPClock                              0x200008a4   Data        1168  simpleptidesos.o(.bss)
-    g_psForeignMasterRec                     0x20000d34   Data         560  simpleptidesos.o(.bss)
-    g_sRtOpts                                0x20000f64   Data         104  simpleptidesos.o(.bss)
-    .bss                                     0x20000fcc   Section     9000  httpd.o(.bss)
-    buf@send_data_0                          0x20000fcc   Data        9000  httpd.o(.bss)
-    .bss                                     0x200032f4   Section       16  inet.o(.bss)
-    str@inet_ntoa_0                          0x200032f4   Data          16  inet.o(.bss)
-    .bss                                     0x20003304   Section     4104  mem.o(.bss)
-    ram_heap                                 0x20003304   Data        4104  mem.o(.bss)
-    .bss                                     0x2000430c   Section     3063  memp.o(.bss)
-    memp_tab                                 0x2000430c   Data          44  memp.o(.bss)
-    memp_memory                              0x20004338   Data        3019  memp.o(.bss)
-    .bss                                     0x20004f03   Section     8963  pbuf.o(.bss)
-    pbuf_pool_memory                         0x20004f03   Data        8963  pbuf.o(.bss)
-    .bss                                     0x20007206   Section      276  stats.o(.bss)
-    .bss                                     0x2000731c   Section       20  tcp_in.o(.bss)
-    inseg                                    0x2000731c   Data          20  tcp_in.o(.bss)
-    .bss                                     0x20007330   Section      200  etharp.o(.bss)
-    arp_table                                0x20007330   Data         200  etharp.o(.bss)
-    .bss                                     0x200073f8   Section       36  luminaryif.o(.bss)
-    g_pEthernetQueue                         0x200073f8   Data          36  luminaryif.o(.bss)
-    .bss                                     0x2000741c   Section       52  enet_lwip.o(.bss)
-    g_sEMAC_if                               0x2000741c   Data          52  enet_lwip.o(.bss)
-    .bss                                     0x20007450   Section       64  random.o(.bss)
-    g_pulRandomEntropy                       0x20007450   Data          64  random.o(.bss)
-    STACK                                    0x20007490   Section      256  startup.o(STACK)
-    StackMem                                 0x20007490   Data           0  startup.o(STACK)
+    .data                                    0x20000198   Section       12  phpd.o(.data)
+    g_ulSystemTickHigh                       0x20000198   Data           4  phpd.o(.data)
+    g_ulNewSystemTickReload                  0x2000019c   Data           4  phpd.o(.data)
+    g_ulSystemTickReload                     0x200001a0   Data           4  phpd.o(.data)
+    .data                                    0x200001a4   Section        9  rit128x96x4.o(.data)
+    g_bSSIEnabled                            0x200001a4   Data           1  rit128x96x4.o(.data)
+    g_pucBuffer                              0x200001a5   Data           8  rit128x96x4.o(.data)
+    .data                                    0x200001b0   Section        4  stdout.o(.data)
+    .data                                    0x200001b4   Section        4  stderr.o(.data)
+    .data                                    0x200001b8   Section        4  errno.o(.data)
+    _errno                                   0x200001b8   Data           4  errno.o(.data)
+    .bss                                     0x200001c0   Section     1748  simpleptidesos.o(.bss)
+    .bss                                     0x20000894   Section     9000  httpd.o(.bss)
+    buf@send_data_0                          0x20000894   Data        9000  httpd.o(.bss)
+    .bss                                     0x20002bbc   Section       16  inet.o(.bss)
+    str@inet_ntoa_0                          0x20002bbc   Data          16  inet.o(.bss)
+    .bss                                     0x20002bcc   Section     4104  mem.o(.bss)
+    ram_heap                                 0x20002bcc   Data        4104  mem.o(.bss)
+    .bss                                     0x20003bd4   Section     3063  memp.o(.bss)
+    memp_tab                                 0x20003bd4   Data          44  memp.o(.bss)
+    memp_memory                              0x20003c00   Data        3019  memp.o(.bss)
+    .bss                                     0x200047cb   Section     8963  pbuf.o(.bss)
+    pbuf_pool_memory                         0x200047cb   Data        8963  pbuf.o(.bss)
+    .bss                                     0x20006ace   Section      276  stats.o(.bss)
+    .bss                                     0x20006be4   Section       20  tcp_in.o(.bss)
+    inseg                                    0x20006be4   Data          20  tcp_in.o(.bss)
+    .bss                                     0x20006bf8   Section      200  etharp.o(.bss)
+    arp_table                                0x20006bf8   Data         200  etharp.o(.bss)
+    .bss                                     0x20006cc0   Section       36  luminaryif.o(.bss)
+    g_pEthernetQueue                         0x20006cc0   Data          36  luminaryif.o(.bss)
+    .bss                                     0x20006ce4   Section       52  enet_lwip.o(.bss)
+    g_sEMAC_if                               0x20006ce4   Data          52  enet_lwip.o(.bss)
+    .bss                                     0x20006d18   Section       64  random.o(.bss)
+    g_pulRandomEntropy                       0x20006d18   Data          64  random.o(.bss)
+    .bss                                     0x20006d58   Section     1832  phpd.o(.bss)
+    g_sPTPClock                              0x20006d58   Data        1168  phpd.o(.bss)
+    g_psForeignMasterRec                     0x200071e8   Data         560  phpd.o(.bss)
+    g_sRtOpts                                0x20007418   Data         104  phpd.o(.bss)
+    STACK                                    0x20007480   Section      256  startup.o(STACK)
+    StackMem                                 0x20007480   Data           0  startup.o(STACK)
 
     Global Symbols
 
@@ -1208,433 +1227,431 @@ Image Symbol Table
     __main                                   0x000000fd   Thumb Code     8  entry.o($$startup$$)
     SysCtlDelay                              0x00000109   Thumb Code     6  sysctl.o(.emb_text)
     __call_main                              0x00000111   Thumb Code     2  init.o(.emb_text)
-    itoa                                     0x00000115   Thumb Code    38  simpleptidesos.o(.text)
-    timerHandler                             0x000001b5   Thumb Code     8  simpleptidesos.o(.text)
-    SysTickHandler                           0x000001bd   Thumb Code    10  simpleptidesos.o(.text)
-    Timer0IntHandler                         0x000001c7   Thumb Code    80  simpleptidesos.o(.text)
-    Timer1IntHandler                         0x00000217   Thumb Code    44  simpleptidesos.o(.text)
-    setActuationInterrupt                    0x00000243   Thumb Code     2  simpleptidesos.o(.text)
-    getCurrentPhysicalTime                   0x00000245   Thumb Code    24  simpleptidesos.o(.text)
-    fireActuator                             0x0000025d   Thumb Code    80  simpleptidesos.o(.text)
-    alreadyFiring                            0x000002ad   Thumb Code     4  simpleptidesos.o(.text)
-    die                                      0x000002b1   Thumb Code     4  simpleptidesos.o(.text)
-    addEvent                                 0x000002b5   Thumb Code   208  simpleptidesos.o(.text)
-    newEvent                                 0x00000385   Thumb Code    64  simpleptidesos.o(.text)
-    fireClock                                0x000003c5   Thumb Code   138  simpleptidesos.o(.text)
-    initializeClock                          0x0000044f   Thumb Code    76  simpleptidesos.o(.text)
-    currentlyFiring                          0x0000049b   Thumb Code     6  simpleptidesos.o(.text)
-    fireComputation                          0x000004a1   Thumb Code   424  simpleptidesos.o(.text)
-    freeEvent                                0x00000649   Thumb Code    18  simpleptidesos.o(.text)
-    removeEvent                              0x0000065b   Thumb Code    86  simpleptidesos.o(.text)
-    fireActor                                0x000006b1   Thumb Code    84  simpleptidesos.o(.text)
-    fireMerge                                0x00000705   Thumb Code   112  simpleptidesos.o(.text)
-    fireModelDelay                           0x00000775   Thumb Code   128  simpleptidesos.o(.text)
-    higherPriority                           0x000007f5   Thumb Code    12  simpleptidesos.o(.text)
-    enableInterrupts                         0x00000801   Thumb Code     4  simpleptidesos.o(.text)
-    setTimedInterrupt                        0x00000805   Thumb Code   162  simpleptidesos.o(.text)
-    safeToProcess                            0x000008a7   Thumb Code    56  simpleptidesos.o(.text)
-    disableInterrupts                        0x000008df   Thumb Code     4  simpleptidesos.o(.text)
-    processEvents                            0x000008e3   Thumb Code   160  simpleptidesos.o(.text)
-    processAvailableEvents                   0x00000983   Thumb Code   124  simpleptidesos.o(.text)
-    fireSensor                               0x000009ff   Thumb Code   302  simpleptidesos.o(.text)
-    UARTIntHandler                           0x00000b2d   Thumb Code    48  simpleptidesos.o(.text)
-    initializeMemory                         0x00000b5d   Thumb Code    28  simpleptidesos.o(.text)
-    main                                     0x00000b79   Thumb Code   316  simpleptidesos.o(.text)
-    timerInit                                0x00000cb5   Thumb Code     2  simpleptidesos.o(.text)
-    ptpd_systick_init                        0x00000cb7   Thumb Code    40  simpleptidesos.o(.text)
-    IEEE1588Init                             0x00000cdf   Thumb Code   268  simpleptidesos.o(.text)
-    setTime                                  0x00000deb   Thumb Code    26  simpleptidesos.o(.text)
-    getTime                                  0x00000e05   Thumb Code     4  simpleptidesos.o(.text)
-    adjust_rx_timestamp                      0x00000e09   Thumb Code    44  simpleptidesos.o(.text)
-    getRxTime                                0x00000e35   Thumb Code    74  simpleptidesos.o(.text)
-    ptpd_init                                0x00000e7f   Thumb Code   376  simpleptidesos.o(.text)
-    ptpd_tick                                0x00000ff7   Thumb Code    10  simpleptidesos.o(.text)
-    SysTickIntHandler                        0x00001001   Thumb Code   250  simpleptidesos.o(.text)
-    adjFreq                                  0x000010fb   Thumb Code    56  simpleptidesos.o(.text)
-    getRand                                  0x00001133   Thumb Code    20  simpleptidesos.o(.text)
-    displayStats                             0x00001147   Thumb Code     2  simpleptidesos.o(.text)
-    interruptInit                            0x00001149   Thumb Code   104  simpleptidesos.o(.text)
-    IntGPIOg                                 0x000011b1   Thumb Code    72  simpleptidesos.o(.text)
-    IntGPIOf                                 0x000011f9   Thumb Code    72  simpleptidesos.o(.text)
-    IntGPIOe                                 0x00001241   Thumb Code    72  simpleptidesos.o(.text)
-    IntGPIOd                                 0x00001289   Thumb Code    72  simpleptidesos.o(.text)
-    IntGPIOc                                 0x000012d1   Thumb Code    72  simpleptidesos.o(.text)
-    IntGPIOb                                 0x00001319   Thumb Code    72  simpleptidesos.o(.text)
-    IntGPIOa                                 0x00001361   Thumb Code   152  simpleptidesos.o(.text)
-    httpd_init                               0x00001637   Thumb Code    34  httpd.o(.text)
-    tcp_init                                 0x00001685   Thumb Code    20  tcp.o(.text)
-    tcp_seg_free                             0x00001699   Thumb Code    32  tcp.o(.text)
-    tcp_segs_free                            0x000016b9   Thumb Code    26  tcp.o(.text)
-    tcp_pcb_purge                            0x000016d3   Thumb Code    46  tcp.o(.text)
-    tcp_pcb_remove                           0x00001701   Thumb Code    90  tcp.o(.text)
-    tcp_abort                                0x0000175b   Thumb Code   142  tcp.o(.text)
-    tcp_slowtmr                              0x000017e9   Thumb Code   482  tcp.o(.text)
-    tcp_fasttmr                              0x000019cb   Thumb Code    44  tcp.o(.text)
-    tcp_tmr                                  0x000019f7   Thumb Code    28  tcp.o(.text)
-    tcp_close                                0x00001a13   Thumb Code   130  tcp.o(.text)
-    tcp_bind                                 0x00001af1   Thumb Code   116  tcp.o(.text)
-    tcp_listen                               0x00001b6b   Thumb Code    92  tcp.o(.text)
-    tcp_recved                               0x00001bc7   Thumb Code    70  tcp.o(.text)
-    tcp_next_iss                             0x00001c0d   Thumb Code    12  tcp.o(.text)
-    tcp_connect                              0x00001c19   Thumb Code   142  tcp.o(.text)
-    tcp_setprio                              0x00001ca7   Thumb Code     4  tcp.o(.text)
-    tcp_seg_copy                             0x00001cab   Thumb Code    34  tcp.o(.text)
-    tcp_alloc                                0x00001ce7   Thumb Code   230  tcp.o(.text)
-    tcp_new                                  0x00001dcd   Thumb Code     4  tcp.o(.text)
-    tcp_arg                                  0x00001dd1   Thumb Code     4  tcp.o(.text)
-    tcp_recv                                 0x00001dd5   Thumb Code     6  tcp.o(.text)
-    tcp_sent                                 0x00001ddb   Thumb Code     4  tcp.o(.text)
-    tcp_err                                  0x00001ddf   Thumb Code     6  tcp.o(.text)
-    tcp_accept                               0x00001de5   Thumb Code     4  tcp.o(.text)
-    tcp_poll                                 0x00001de9   Thumb Code     8  tcp.o(.text)
-    udp_init                                 0x00001dfd   Thumb Code    10  udp.o(.text)
-    udp_input                                0x00001e07   Thumb Code   398  udp.o(.text)
-    udp_bind                                 0x00001f95   Thumb Code    86  udp.o(.text)
-    udp_send                                 0x00001feb   Thumb Code   272  udp.o(.text)
-    udp_sendto                               0x000020fb   Thumb Code    26  udp.o(.text)
-    udp_connect                              0x00002115   Thumb Code    72  udp.o(.text)
-    udp_disconnect                           0x0000215d   Thumb Code    20  udp.o(.text)
-    udp_recv                                 0x00002171   Thumb Code     6  udp.o(.text)
-    udp_remove                               0x00002177   Thumb Code    40  udp.o(.text)
-    udp_new                                  0x0000219f   Thumb Code    28  udp.o(.text)
-    dhcp_renew                               0x000024c3   Thumb Code   160  dhcp.o(.text)
-    dhcp_coarse_tmr                          0x00002605   Thumb Code    88  dhcp.o(.text)
-    dhcp_release                             0x00002a01   Thumb Code   190  dhcp.o(.text)
-    dhcp_fine_tmr                            0x00002abf   Thumb Code    46  dhcp.o(.text)
-    dhcp_stop                                0x00002aed   Thumb Code    64  dhcp.o(.text)
-    dhcp_start                               0x00002b2d   Thumb Code    94  dhcp.o(.text)
-    dhcp_inform                              0x00002b8b   Thumb Code   172  dhcp.o(.text)
-    dhcp_arp_reply                           0x00002cd3   Thumb Code    24  dhcp.o(.text)
-    htons                                    0x00002e59   Thumb Code     4  inet.o(.text)
-    inet_chksum_pseudo                       0x00002e97   Thumb Code   138  inet.o(.text)
-    inet_chksum                              0x00002f21   Thumb Code    24  inet.o(.text)
-    inet_chksum_pbuf                         0x00002f39   Thumb Code    70  inet.o(.text)
-    htonl                                    0x00002f7f   Thumb Code     4  inet.o(.text)
-    inet_aton                                0x00002f83   Thumb Code   252  inet.o(.text)
-    inet_addr                                0x0000307f   Thumb Code    20  inet.o(.text)
-    inet_ntoa                                0x00003093   Thumb Code    86  inet.o(.text)
-    ntohs                                    0x000030e9   Thumb Code     4  inet.o(.text)
-    ntohl                                    0x000030ed   Thumb Code     4  inet.o(.text)
-    mem_init                                 0x00003143   Thumb Code    54  mem.o(.text)
-    mem_free                                 0x00003179   Thumb Code    66  mem.o(.text)
-    mem_realloc                              0x000031bb   Thumb Code   128  mem.o(.text)
-    mem_malloc                               0x0000323b   Thumb Code   180  mem.o(.text)
-    memp_init                                0x000032fd   Thumb Code   100  memp.o(.text)
-    memp_malloc                              0x00003361   Thumb Code    78  memp.o(.text)
-    memp_free                                0x000033af   Thumb Code    52  memp.o(.text)
-    netif_set_gw                             0x000033f1   Thumb Code     8  netif.o(.text)
-    netif_set_netmask                        0x000033f9   Thumb Code     8  netif.o(.text)
-    netif_set_ipaddr                         0x00003401   Thumb Code    86  netif.o(.text)
-    netif_set_addr                           0x00003457   Thumb Code    30  netif.o(.text)
-    netif_add                                0x00003475   Thumb Code    72  netif.o(.text)
-    netif_remove                             0x000034bd   Thumb Code    52  netif.o(.text)
-    netif_find                               0x000034f1   Thumb Code    56  netif.o(.text)
-    netif_set_default                        0x00003529   Thumb Code     6  netif.o(.text)
-    netif_set_up                             0x0000352f   Thumb Code    12  netif.o(.text)
-    netif_is_up                              0x0000353b   Thumb Code    10  netif.o(.text)
-    netif_set_down                           0x00003545   Thumb Code    12  netif.o(.text)
-    netif_init                               0x00003551   Thumb Code    10  netif.o(.text)
-    pbuf_init                                0x00003569   Thumb Code    68  pbuf.o(.text)
-    pbuf_free                                0x000035dd   Thumb Code   122  pbuf.o(.text)
-    pbuf_alloc                               0x00003657   Thumb Code   292  pbuf.o(.text)
-    pbuf_realloc                             0x0000377b   Thumb Code    80  pbuf.o(.text)
-    pbuf_header                              0x000037cb   Thumb Code    78  pbuf.o(.text)
-    pbuf_clen                                0x00003819   Thumb Code    18  pbuf.o(.text)
-    pbuf_ref                                 0x0000382b   Thumb Code    26  pbuf.o(.text)
-    pbuf_cat                                 0x00003845   Thumb Code    40  pbuf.o(.text)
-    pbuf_chain                               0x0000386d   Thumb Code    16  pbuf.o(.text)
-    pbuf_queue                               0x0000387d   Thumb Code    30  pbuf.o(.text)
-    pbuf_dequeue                             0x0000389b   Thumb Code    22  pbuf.o(.text)
-    pbuf_take                                0x000038b1   Thumb Code   114  pbuf.o(.text)
-    pbuf_dechain                             0x00003923   Thumb Code    54  pbuf.o(.text)
-    raw_init                                 0x00003959   Thumb Code     8  raw.o(.text)
-    raw_input                                0x00003961   Thumb Code    74  raw.o(.text)
-    raw_bind                                 0x000039ab   Thumb Code    10  raw.o(.text)
-    raw_connect                              0x000039b5   Thumb Code    10  raw.o(.text)
-    raw_recv                                 0x000039bf   Thumb Code     6  raw.o(.text)
-    raw_sendto                               0x000039c5   Thumb Code   138  raw.o(.text)
-    raw_send                                 0x00003a4f   Thumb Code     4  raw.o(.text)
-    raw_remove                               0x00003a53   Thumb Code    40  raw.o(.text)
-    raw_new                                  0x00003a7b   Thumb Code    40  raw.o(.text)
-    stats_init                               0x00003aa9   Thumb Code    10  stats.o(.text)
-    tcp_input                                0x000044b3   Thumb Code   810  tcp_in.o(.text)
-    tcp_enqueue                              0x000047dd   Thumb Code   652  tcp_out.o(.text)
-    tcp_send_ctrl                            0x00004a69   Thumb Code    26  tcp_out.o(.text)
-    tcp_write                                0x00004a83   Thumb Code    56  tcp_out.o(.text)
-    tcp_output                               0x00004b69   Thumb Code   480  tcp_out.o(.text)
-    tcp_rst                                  0x00004d49   Thumb Code   186  tcp_out.o(.text)
-    tcp_rexmit_rto                           0x00004e03   Thumb Code    64  tcp_out.o(.text)
-    tcp_rexmit                               0x00004e43   Thumb Code    56  tcp_out.o(.text)
-    tcp_keepalive                            0x00004e7b   Thumb Code   150  tcp_out.o(.text)
-    icmp_input                               0x00004f15   Thumb Code   280  icmp.o(.text)
-    icmp_dest_unreach                        0x0000502d   Thumb Code   130  icmp.o(.text)
-    ip_init                                  0x000050b5   Thumb Code     2  ip.o(.text)
-    ip_route                                 0x000050b7   Thumb Code    34  ip.o(.text)
-    ip_input                                 0x000050d9   Thumb Code   434  ip.o(.text)
-    ip_output_if                             0x0000528b   Thumb Code   210  ip.o(.text)
-    ip_output                                0x0000535d   Thumb Code    62  ip.o(.text)
-    ip_addr_isbroadcast                      0x000053ad   Thumb Code    48  ip_addr.o(.text)
-    etharp_init                              0x000053dd   Thumb Code    36  etharp.o(.text)
-    etharp_tmr                               0x00005401   Thumb Code    90  etharp.o(.text)
-    etharp_find_addr                         0x0000560f   Thumb Code    70  etharp.o(.text)
-    etharp_ip_input                          0x00005655   Thumb Code    34  etharp.o(.text)
-    etharp_arp_input                         0x00005677   Thumb Code   262  etharp.o(.text)
-    etharp_request                           0x0000577d   Thumb Code   210  etharp.o(.text)
-    etharp_query                             0x0000584f   Thumb Code   228  etharp.o(.text)
-    etharp_output                            0x00005933   Thumb Code   224  etharp.o(.text)
-    low_level_init                           0x00005a21   Thumb Code    80  luminaryif.o(.text)
-    low_level_output                         0x00005a71   Thumb Code    96  luminaryif.o(.text)
-    low_level_input                          0x00005ad1   Thumb Code   226  luminaryif.o(.text)
-    ethernetif_output                        0x00005bb3   Thumb Code    10  luminaryif.o(.text)
-    ethernetif_input                         0x00005bbd   Thumb Code   112  luminaryif.o(.text)
-    sys_arch_unprotect                       0x00005c2d   Thumb Code    10  luminaryif.o(.text)
-    sys_arch_protect                         0x00005c37   Thumb Code     4  luminaryif.o(.text)
-    ethernetif_enqueue                       0x00005c3b   Thumb Code    46  luminaryif.o(.text)
-    ethernetif_dequeue                       0x00005c69   Thumb Code   134  luminaryif.o(.text)
-    arp_timer                                0x00005cef   Thumb Code     4  luminaryif.o(.text)
-    ethernetif_init                          0x00005cf3   Thumb Code    86  luminaryif.o(.text)
-    fs_init                                  0x00005da1   Thumb Code     2  lmi_fs.o(.text)
-    fs_tick                                  0x00005da3   Thumb Code     2  lmi_fs.o(.text)
-    fs_open                                  0x00005da5   Thumb Code    98  lmi_fs.o(.text)
-    fs_close                                 0x00005e07   Thumb Code    22  lmi_fs.o(.text)
-    fs_read                                  0x00005e1d   Thumb Code   188  lmi_fs.o(.text)
-    EthernetIntHandler                       0x00005f3d   Thumb Code    88  enet_lwip.o(.text)
-    lwip_init                                0x00005fc9   Thumb Code   132  enet_lwip.o(.text)
-    lwip_tick                                0x0000604d   Thumb Code   416  enet_lwip.o(.text)
-    toState                                  0x00006289   Thumb Code   320  protocol.o(.text)
-    doInit                                   0x000063c9   Thumb Code    92  protocol.o(.text)
-    issueManagement                          0x00006425   Thumb Code    64  protocol.o(.text)
-    handleManagement                         0x00006465   Thumb Code   166  protocol.o(.text)
-    handleDelayResp                          0x0000650b   Thumb Code   202  protocol.o(.text)
-    issueDelayResp                           0x000065d5   Thumb Code    70  protocol.o(.text)
-    handleDelayReq                           0x0000661b   Thumb Code   146  protocol.o(.text)
-    handleFollowUp                           0x000066ad   Thumb Code   166  protocol.o(.text)
-    issueFollowup                            0x00006753   Thumb Code    68  protocol.o(.text)
-    addForeign                               0x00006797   Thumb Code   256  protocol.o(.text)
-    issueDelayReq                            0x00006897   Thumb Code    86  protocol.o(.text)
-    handleSync                               0x000068ed   Thumb Code   408  protocol.o(.text)
-    handle                                   0x00006a85   Thumb Code   316  protocol.o(.text)
-    issueSync                                0x00006bc1   Thumb Code    80  protocol.o(.text)
-    doState                                  0x00006c11   Thumb Code   210  protocol.o(.text)
-    protocol_first                           0x00006ce3   Thumb Code    42  protocol.o(.text)
-    protocol_loop                            0x00006d0d   Thumb Code    12  protocol.o(.text)
-    protocol                                 0x00006d19   Thumb Code    44  protocol.o(.text)
-    initTimer                                0x00006d45   Thumb Code     8  ptpd_timer.o(.text)
-    timerTick                                0x00006d4d   Thumb Code    10  ptpd_timer.o(.text)
-    timerUpdate                              0x00006d57   Thumb Code    66  ptpd_timer.o(.text)
-    timerStop                                0x00006d99   Thumb Code    16  ptpd_timer.o(.text)
-    timerStart                               0x00006da9   Thumb Code    26  ptpd_timer.o(.text)
-    timerExpired                             0x00006dc3   Thumb Code    40  ptpd_timer.o(.text)
-    msgPeek                                  0x00006df1   Thumb Code     4  ptpd_msg.o(.text)
-    msgUnpackHeader                          0x00006df5   Thumb Code    80  ptpd_msg.o(.text)
-    msgUnpackSync                            0x00006e45   Thumb Code   266  ptpd_msg.o(.text)
-    msgUnpackDelayReq                        0x00006f4f   Thumb Code     2  ptpd_msg.o(.text)
-    msgUnpackFollowUp                        0x00006f51   Thumb Code    44  ptpd_msg.o(.text)
-    msgUnpackDelayResp                       0x00006f7d   Thumb Code    76  ptpd_msg.o(.text)
-    msgUnpackManagement                      0x00006fc9   Thumb Code    88  ptpd_msg.o(.text)
-    msgUnloadManagement                      0x00007021   Thumb Code   272  ptpd_msg.o(.text)
-    msgUnpackManagementPayload               0x00007131   Thumb Code   660  ptpd_msg.o(.text)
-    msgPackHeader                            0x000073c5   Thumb Code    94  ptpd_msg.o(.text)
-    msgPackSync                              0x00007423   Thumb Code   364  ptpd_msg.o(.text)
-    msgPackDelayReq                          0x0000758f   Thumb Code   362  ptpd_msg.o(.text)
-    msgPackFollowUp                          0x000076f9   Thumb Code    84  ptpd_msg.o(.text)
-    msgPackDelayResp                         0x0000774d   Thumb Code   112  ptpd_msg.o(.text)
-    msgPackManagement                        0x000077bd   Thumb Code   116  ptpd_msg.o(.text)
-    msgPackManagementResponse                0x00007831   Thumb Code  1122  ptpd_msg.o(.text)
-    netQGet                                  0x00007ccd   Thumb Code    40  ptpd_net.o(.text)
-    lookupSubdomainAddress                   0x00007d05   Thumb Code   116  ptpd_net.o(.text)
-    netInit                                  0x00007d79   Thumb Code   276  ptpd_net.o(.text)
-    netShutdown                              0x00007e8d   Thumb Code    62  ptpd_net.o(.text)
-    netSelect                                0x00007ecb   Thumb Code    30  ptpd_net.o(.text)
-    netRecvEvent                             0x00007ee9   Thumb Code    80  ptpd_net.o(.text)
-    netRecvGeneral                           0x00007f39   Thumb Code    66  ptpd_net.o(.text)
-    netSendEvent                             0x00007f7b   Thumb Code    72  ptpd_net.o(.text)
-    netSendGeneral                           0x00007fc3   Thumb Code    72  ptpd_net.o(.text)
-    initClock                                0x000080d1   Thumb Code    80  ptpd_servo.o(.text)
-    updateDelay                              0x00008121   Thumb Code   170  ptpd_servo.o(.text)
-    updateOffset                             0x000081cb   Thumb Code    70  ptpd_servo.o(.text)
-    updateClock                              0x00008211   Thumb Code   212  ptpd_servo.o(.text)
-    crc_algorithm                            0x000082ed   Thumb Code    54  arith.o(.text)
-    sum                                      0x00008323   Thumb Code    24  arith.o(.text)
-    fromInternalTime                         0x0000833b   Thumb Code    48  arith.o(.text)
-    toInternalTime                           0x0000836b   Thumb Code    52  arith.o(.text)
-    normalizeTime                            0x0000839f   Thumb Code    62  arith.o(.text)
-    addTime                                  0x000083dd   Thumb Code    22  arith.o(.text)
-    subTime                                  0x000083f3   Thumb Code    22  arith.o(.text)
-    initData                                 0x00008415   Thumb Code   134  bmc.o(.text)
-    m1                                       0x0000849b   Thumb Code   132  bmc.o(.text)
-    s1                                       0x0000851f   Thumb Code   160  bmc.o(.text)
-    copyD0                                   0x000085bf   Thumb Code   108  bmc.o(.text)
-    getIdentifierOrder                       0x0000862b   Thumb Code    98  bmc.o(.text)
-    bmcDataSetComparison                     0x0000868d   Thumb Code   450  bmc.o(.text)
-    bmcStateDecision                         0x0000884f   Thumb Code   116  bmc.o(.text)
-    bmc                                      0x000088c3   Thumb Code   120  bmc.o(.text)
-    RandomAddEntropy                         0x0000896d   Thumb Code    18  random.o(.text)
-    RandomSeed                               0x0000897f   Thumb Code   358  random.o(.text)
-    RandomNumber                             0x00008ae5   Thumb Code    16  random.o(.text)
-    uvsnprintf                               0x00008b15   Thumb Code   532  ustdlib.o(.text)
-    usprintf                                 0x00008d29   Thumb Code    22  ustdlib.o(.text)
-    usnprintf                                0x00008d3f   Thumb Code    14  ustdlib.o(.text)
-    ulocaltime                               0x00008d4d   Thumb Code   154  ustdlib.o(.text)
-    ustrtoul                                 0x00008de7   Thumb Code   156  ustdlib.o(.text)
-    RIT128x96x4Clear                         0x00008f01   Thumb Code    70  rit128x96x4.o(.text)
-    RIT128x96x4StringDraw                    0x00008f47   Thumb Code   268  rit128x96x4.o(.text)
-    RIT128x96x4ImageDraw                     0x00009053   Thumb Code   114  rit128x96x4.o(.text)
-    RIT128x96x4Enable                        0x000090c5   Thumb Code    86  rit128x96x4.o(.text)
-    RIT128x96x4Disable                       0x0000911b   Thumb Code    66  rit128x96x4.o(.text)
-    RIT128x96x4Init                          0x0000915d   Thumb Code   132  rit128x96x4.o(.text)
-    RIT128x96x4DisplayOn                     0x000091e1   Thumb Code    42  rit128x96x4.o(.text)
-    RIT128x96x4DisplayOff                    0x0000920b   Thumb Code    14  rit128x96x4.o(.text)
-    CPUcpsid                                 0x00009231   Thumb Code     0  cpu.o(.text)
-    CPUcpsie                                 0x00009239   Thumb Code     0  cpu.o(.text)
-    CPUwfi                                   0x00009241   Thumb Code     0  cpu.o(.text)
-    perror                                   0x00009245   Thumb Code    50  perror.o(.text)
-    __aeabi_ldivmod                          0x00009285   Thumb Code   100  ldiv.o(.text)
-    __aeabi_memcpy                           0x000092e9   Thumb Code    36  memcpya.o(.text)
-    __aeabi_memcpy4                          0x000092e9   Thumb Code     0  memcpya.o(.text)
-    __aeabi_memcpy8                          0x000092e9   Thumb Code     0  memcpya.o(.text)
-    __aeabi_memset                           0x0000930d   Thumb Code    14  memseta.o(.text)
-    __aeabi_memset4                          0x0000930d   Thumb Code     0  memseta.o(.text)
-    __aeabi_memset8                          0x0000930d   Thumb Code     0  memseta.o(.text)
-    __aeabi_memclr                           0x0000931b   Thumb Code     4  memseta.o(.text)
-    __aeabi_memclr4                          0x0000931b   Thumb Code     0  memseta.o(.text)
-    __aeabi_memclr8                          0x0000931b   Thumb Code     0  memseta.o(.text)
-    _memset_wrapper                          0x0000931f   Thumb Code    20  memseta.o(.text)
-    strstr                                   0x00009333   Thumb Code    44  strstr.o(.text)
-    strncpy                                  0x0000935f   Thumb Code    24  strncpy.o(.text)
-    strchr                                   0x00009377   Thumb Code    18  strchr.o(.text)
-    strlen                                   0x00009389   Thumb Code    16  strlen.o(.text)
-    memcmp                                   0x00009399   Thumb Code    26  memcmp.o(.text)
-    strncmp                                  0x000093b3   Thumb Code    30  strncmp.o(.text)
-    __aeabi_dadd                             0x000094e3   Thumb Code    48  dadd.o(.text)
-    __aeabi_dsub                             0x00009513   Thumb Code    48  dadd.o(.text)
-    __aeabi_drsub                            0x00009543   Thumb Code    48  dadd.o(.text)
-    __aeabi_ui2d                             0x00009573   Thumb Code    26  dfltu.o(.text)
-    __init                                   0x0000958d   Thumb Code    30  init.o(.text)
-    __scatterload_rt2                        0x0000958d   Thumb Code     0  init.o(.text)
-    fputs                                    0x000095b9   Thumb Code    24  fputs.o(.text)
-    fputc                                    0x000095d1   Thumb Code    16  fputc.o(.text)
-    __aeabi_uidiv                            0x000095e1   Thumb Code     0  uidiv.o(.text)
-    __aeabi_uidivmod                         0x000095e1   Thumb Code    38  uidiv.o(.text)
-    __aeabi_uldivmod                         0x00009607   Thumb Code    84  uldiv.o(.text)
-    __aeabi_llsl                             0x0000965b   Thumb Code    32  llshl.o(.text)
-    _ll_shift_l                              0x0000965b   Thumb Code     0  llshl.o(.text)
-    __aeabi_llsr                             0x0000967b   Thumb Code    30  llushr.o(.text)
-    _ll_ushift_r                             0x0000967b   Thumb Code     0  llushr.o(.text)
-    strerror                                 0x00009699   Thumb Code    26  strerror.o(.text)
-    __I_use_fp                               0x00009730   Number         0  iusefp.o(.text)
-    _double_round                            0x00009731   Thumb Code    54  depilogue.o(.text)
-    _double_epilogue                         0x00009767   Thumb Code   138  depilogue.o(.text)
-    __I_use_semihosting_fputc                0x000097f4   Number         0  iusesemip.o(.text)
-    __decompress                             0x000097f5   Thumb Code     0  __dczerorl.o(.text)
-    __decompress0                            0x000097f5   Thumb Code    58  __dczerorl.o(.text)
-    EthernetConfigGet                        0x00009831   Thumb Code    20  ethernet.o(i.EthernetConfigGet)
-    _printf_charcount                        0x00009830   Number         0  stubs.o(c$$printf_stubs)
-    _printf_fp_dec                           0x00009830   Number         0  stubs.o(c$$printf_stubs)
-    _printf_fp_hex                           0x00009830   Number         0  stubs.o(c$$printf_stubs)
-    _printf_int_dec                          0x00009830   Number         0  stubs.o(c$$printf_stubs)
-    _printf_longlong_dec                     0x00009830   Number         0  stubs.o(c$$printf_stubs)
-    _printf_longlong_hex                     0x00009830   Number         0  stubs.o(c$$printf_stubs)
-    _printf_longlong_oct                     0x00009830   Number         0  stubs.o(c$$printf_stubs)
-    _printf_mbtowc                           0x00009830   Number         0  stubs.o(c$$printf_stubs)
-    _printf_percent                          0x00009830   Number         0  stubs.o(c$$printf_stubs)
-    _printf_pre_padding                      0x00009830   Number         0  stubs.o(c$$printf_stubs)
-    _printf_return_value                     0x00009830   Number         0  stubs.o(c$$printf_stubs)
-    _printf_sizespec                         0x00009830   Number         0  stubs.o(c$$printf_stubs)
-    _printf_str                              0x00009830   Number         0  stubs.o(c$$printf_stubs)
-    _printf_truncate_signed                  0x00009830   Number         0  stubs.o(c$$printf_stubs)
-    _printf_truncate_unsigned                0x00009830   Number         0  stubs.o(c$$printf_stubs)
-    _printf_wc                               0x00009830   Number         0  stubs.o(c$$printf_stubs)
-    _printf_wctomb                           0x00009830   Number         0  stubs.o(c$$printf_stubs)
-    EthernetConfigSet                        0x00009845   Thumb Code    42  ethernet.o(i.EthernetConfigSet)
-    EthernetEnable                           0x0000986f   Thumb Code    34  ethernet.o(i.EthernetEnable)
-    EthernetInitExpClk                       0x00009891   Thumb Code    12  ethernet.o(i.EthernetInitExpClk)
-    EthernetIntClear                         0x000098a1   Thumb Code     4  ethernet.o(i.EthernetIntClear)
-    EthernetIntDisable                       0x000098a5   Thumb Code    10  ethernet.o(i.EthernetIntDisable)
-    EthernetIntEnable                        0x000098af   Thumb Code     8  ethernet.o(i.EthernetIntEnable)
-    EthernetIntStatus                        0x000098b7   Thumb Code    14  ethernet.o(i.EthernetIntStatus)
-    EthernetMACAddrGet                       0x000098c5   Thumb Code    50  ethernet.o(i.EthernetMACAddrGet)
-    EthernetMACAddrSet                       0x000098f7   Thumb Code    54  ethernet.o(i.EthernetMACAddrSet)
-    EthernetPacketAvail                      0x0000992d   Thumb Code    12  ethernet.o(i.EthernetPacketAvail)
-    EthernetSpaceAvail                       0x00009939   Thumb Code    10  ethernet.o(i.EthernetSpaceAvail)
-    FlashUserGet                             0x00009945   Thumb Code    48  flash.o(i.FlashUserGet)
-    GPIODirModeSet                           0x0000997d   Thumb Code    40  gpio.o(i.GPIODirModeSet)
-    GPIOPadConfigSet                         0x000099a5   Thumb Code   176  gpio.o(i.GPIOPadConfigSet)
-    GPIOPinTypeGPIOOutput                    0x00009a55   Thumb Code    28  gpio.o(i.GPIOPinTypeGPIOOutput)
-    GPIOPinTypeSSI                           0x00009a71   Thumb Code    28  gpio.o(i.GPIOPinTypeSSI)
-    GPIOPinTypeUART                          0x00009a8d   Thumb Code    28  gpio.o(i.GPIOPinTypeUART)
-    GPIOPinWrite                             0x00009aa9   Thumb Code     6  gpio.o(i.GPIOPinWrite)
-    IntDisable                               0x00009aaf   Thumb Code   104  interrupt.o(i.IntDisable)
-    IntEnable                                0x00009b17   Thumb Code   104  interrupt.o(i.IntEnable)
-    IntMasterDisable                         0x00009b7f   Thumb Code    10  interrupt.o(i.IntMasterDisable)
-    IntMasterEnable                          0x00009b89   Thumb Code    10  interrupt.o(i.IntMasterEnable)
-    IntPrioritySet                           0x00009b95   Thumb Code    36  interrupt.o(i.IntPrioritySet)
-    SSIConfigSetExpClk                       0x00009bbd   Thumb Code    74  ssi.o(i.SSIConfigSetExpClk)
-    SSIDataGet                               0x00009c07   Thumb Code    14  ssi.o(i.SSIDataGet)
-    SSIDataGetNonBlocking                    0x00009c15   Thumb Code    18  ssi.o(i.SSIDataGetNonBlocking)
-    SSIDataPut                               0x00009c27   Thumb Code    12  ssi.o(i.SSIDataPut)
-    SSIDisable                               0x00009c33   Thumb Code    10  ssi.o(i.SSIDisable)
-    SSIEnable                                0x00009c3d   Thumb Code    10  ssi.o(i.SSIEnable)
-    SysCtlClockGet                           0x00009c49   Thumb Code   292  sysctl.o(i.SysCtlClockGet)
-    SysCtlClockSet                           0x00009d89   Thumb Code   262  sysctl.o(i.SysCtlClockSet)
-    SysCtlPeripheralEnable                   0x00009ea9   Thumb Code    26  sysctl.o(i.SysCtlPeripheralEnable)
-    SysCtlPeripheralReset                    0x00009ec9   Thumb Code    50  sysctl.o(i.SysCtlPeripheralReset)
-    SysTickEnable                            0x00009f01   Thumb Code    14  systick.o(i.SysTickEnable)
-    SysTickIntEnable                         0x00009f0f   Thumb Code    14  systick.o(i.SysTickIntEnable)
-    SysTickPeriodGet                         0x00009f1d   Thumb Code    10  systick.o(i.SysTickPeriodGet)
-    SysTickPeriodSet                         0x00009f27   Thumb Code    10  systick.o(i.SysTickPeriodSet)
-    SysTickValueGet                          0x00009f31   Thumb Code     8  systick.o(i.SysTickValueGet)
-    TimerConfigure                           0x00009f39   Thumb Code    28  timer.o(i.TimerConfigure)
-    TimerControlEvent                        0x00009f55   Thumb Code    24  timer.o(i.TimerControlEvent)
-    TimerDisable                             0x00009f6d   Thumb Code    16  timer.o(i.TimerDisable)
-    TimerEnable                              0x00009f7d   Thumb Code    14  timer.o(i.TimerEnable)
-    TimerIntClear                            0x00009f8b   Thumb Code     4  timer.o(i.TimerIntClear)
-    TimerIntDisable                          0x00009f8f   Thumb Code    10  timer.o(i.TimerIntDisable)
-    TimerIntEnable                           0x00009f99   Thumb Code     8  timer.o(i.TimerIntEnable)
-    TimerLoadSet                             0x00009fa1   Thumb Code    18  timer.o(i.TimerLoadSet)
-    TimerPrescaleSet                         0x00009fb3   Thumb Code    18  timer.o(i.TimerPrescaleSet)
-    TimerValueGet                            0x00009fc5   Thumb Code    10  timer.o(i.TimerValueGet)
-    UARTConfigSetExpClk                      0x00009fcf   Thumb Code    84  uart.o(i.UARTConfigSetExpClk)
-    UARTIntClear                             0x0000a023   Thumb Code     4  uart.o(i.UARTIntClear)
-    UARTIntEnable                            0x0000a027   Thumb Code     8  uart.o(i.UARTIntEnable)
-    UARTIntStatus                            0x0000a02f   Thumb Code    10  uart.o(i.UARTIntStatus)
-    __0printf_1                              0x0000a039   Thumb Code    22  printf1.o(i.__0printf_1)
-    __1printf                                0x0000a039   Thumb Code     0  printf1.o(i.__0printf_1)
-    __0sprintf_1                             0x0000a059   Thumb Code    34  printf1.o(i.__0sprintf_1)
-    __1sprintf                               0x0000a059   Thumb Code     0  printf1.o(i.__0sprintf_1)
-    __aeabi_errno_addr                       0x0000a081   Thumb Code     4  errno.o(i.__aeabi_errno_addr)
-    __rt_errno_addr                          0x0000a081   Thumb Code     0  errno.o(i.__aeabi_errno_addr)
-    __scatterload_copy                       0x0000a089   Thumb Code    14  handlers.o(i.__scatterload_copy)
-    __scatterload_null                       0x0000a097   Thumb Code     2  handlers.o(i.__scatterload_null)
-    __scatterload_zeroinit                   0x0000a099   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
-    tcp_backoff                              0x0000a25a   Data          13  tcp.o(.constdata)
-    ip_addr_any                              0x0000a294   Data           4  ip_addr.o(.constdata)
-    ip_addr_broadcast                        0x0000a298   Data           4  ip_addr.o(.constdata)
-    file_styles_css                          0x0000a2a4   Data          16  lmi_fs.o(.constdata)
-    file_404_html                            0x0000af70   Data          16  lmi_fs.o(.constdata)
-    file_index_html                          0x0000af80   Data          16  lmi_fs.o(.constdata)
-    file_ptpclock_shtml                      0x0000af90   Data          16  lmi_fs.o(.constdata)
-    Region$$Table$$Base                      0x0000b354   Number         0  anon$$obj.o(Region$$Table)
-    Region$$Table$$Limit                     0x0000b374   Number         0  anon$$obj.o(Region$$Table)
+    die                                      0x00000115   Thumb Code     4  simpleptidesos.o(.text)
+    addEvent                                 0x00000119   Thumb Code   334  simpleptidesos.o(.text)
+    alreadyFiring                            0x00000267   Thumb Code     4  simpleptidesos.o(.text)
+    currentlyFiring                          0x0000026b   Thumb Code     6  simpleptidesos.o(.text)
+    min                                      0x00000271   Thumb Code     8  simpleptidesos.o(.text)
+    deadline                                 0x00000279   Thumb Code    52  simpleptidesos.o(.text)
+    disableInterrupts                        0x00000327   Thumb Code     4  simpleptidesos.o(.text)
+    enableInterrupts                         0x0000032b   Thumb Code     4  simpleptidesos.o(.text)
+    fireActor                                0x0000032f   Thumb Code    82  simpleptidesos.o(.text)
+    setActuationInterrupt                    0x00000381   Thumb Code     2  simpleptidesos.o(.text)
+    getCurrentPhysicalTime                   0x00000383   Thumb Code    24  simpleptidesos.o(.text)
+    fireActuator                             0x0000039b   Thumb Code    80  simpleptidesos.o(.text)
+    newEvent                                 0x000003eb   Thumb Code    62  simpleptidesos.o(.text)
+    fireClock                                0x00000429   Thumb Code   138  simpleptidesos.o(.text)
+    fireComputation                          0x000004b3   Thumb Code   442  simpleptidesos.o(.text)
+    fireMerge                                0x0000066d   Thumb Code   112  simpleptidesos.o(.text)
+    fireModelDelay                           0x000006dd   Thumb Code   128  simpleptidesos.o(.text)
+    fireSensor                               0x0000075d   Thumb Code   128  simpleptidesos.o(.text)
+    freeEvent                                0x000007dd   Thumb Code    18  simpleptidesos.o(.text)
+    getRand                                  0x000007ef   Thumb Code    20  simpleptidesos.o(.text)
+    higherPriority                           0x00000803   Thumb Code    12  simpleptidesos.o(.text)
+    initializeClock                          0x0000080f   Thumb Code    78  simpleptidesos.o(.text)
+    initializeMemory                         0x0000085d   Thumb Code    28  simpleptidesos.o(.text)
+    interruptInit                            0x00000879   Thumb Code   104  simpleptidesos.o(.text)
+    setTimedInterrupt                        0x000008e1   Thumb Code   162  simpleptidesos.o(.text)
+    removeEvent                              0x00000983   Thumb Code    86  simpleptidesos.o(.text)
+    safeToProcess                            0x000009d9   Thumb Code    56  simpleptidesos.o(.text)
+    processAvailableEvents                   0x00000a11   Thumb Code   244  simpleptidesos.o(.text)
+    IntGPIOg                                 0x00000b05   Thumb Code    70  simpleptidesos.o(.text)
+    IntGPIOf                                 0x00000b4b   Thumb Code    70  simpleptidesos.o(.text)
+    IntGPIOe                                 0x00000b91   Thumb Code    70  simpleptidesos.o(.text)
+    IntGPIOd                                 0x00000bd7   Thumb Code    70  simpleptidesos.o(.text)
+    IntGPIOc                                 0x00000c1d   Thumb Code    70  simpleptidesos.o(.text)
+    IntGPIOb                                 0x00000c63   Thumb Code    70  simpleptidesos.o(.text)
+    timerHandler                             0x00000ca9   Thumb Code     8  simpleptidesos.o(.text)
+    IntGPIOa                                 0x00000cb1   Thumb Code   108  simpleptidesos.o(.text)
+    processEvents                            0x00000d1d   Thumb Code   160  simpleptidesos.o(.text)
+    SysTickHandler                           0x00000dbd   Thumb Code    10  simpleptidesos.o(.text)
+    Timer0IntHandler                         0x00000dc7   Thumb Code    80  simpleptidesos.o(.text)
+    Timer1IntHandler                         0x00000e17   Thumb Code    44  simpleptidesos.o(.text)
+    timerInit                                0x00000e43   Thumb Code     2  simpleptidesos.o(.text)
+    UARTIntHandler                           0x00000e45   Thumb Code    48  simpleptidesos.o(.text)
+    main                                     0x00000e75   Thumb Code   306  simpleptidesos.o(.text)
+    setTime                                  0x00000fa7   Thumb Code    26  simpleptidesos.o(.text)
+    getTime                                  0x00000fc1   Thumb Code     4  simpleptidesos.o(.text)
+    getRxTime                                0x00000fc5   Thumb Code    76  simpleptidesos.o(.text)
+    SysTickIntHandler                        0x00001011   Thumb Code   254  simpleptidesos.o(.text)
+    displayStats                             0x0000110f   Thumb Code     2  simpleptidesos.o(.text)
+    httpd_init                               0x00001383   Thumb Code    34  httpd.o(.text)
+    tcp_init                                 0x000013d1   Thumb Code    20  tcp.o(.text)
+    tcp_seg_free                             0x000013e5   Thumb Code    32  tcp.o(.text)
+    tcp_segs_free                            0x00001405   Thumb Code    26  tcp.o(.text)
+    tcp_pcb_purge                            0x0000141f   Thumb Code    46  tcp.o(.text)
+    tcp_pcb_remove                           0x0000144d   Thumb Code    90  tcp.o(.text)
+    tcp_abort                                0x000014a7   Thumb Code   142  tcp.o(.text)
+    tcp_slowtmr                              0x00001535   Thumb Code   482  tcp.o(.text)
+    tcp_fasttmr                              0x00001717   Thumb Code    44  tcp.o(.text)
+    tcp_tmr                                  0x00001743   Thumb Code    28  tcp.o(.text)
+    tcp_close                                0x0000175f   Thumb Code   130  tcp.o(.text)
+    tcp_bind                                 0x0000183d   Thumb Code   116  tcp.o(.text)
+    tcp_listen                               0x000018b7   Thumb Code    92  tcp.o(.text)
+    tcp_recved                               0x00001913   Thumb Code    70  tcp.o(.text)
+    tcp_next_iss                             0x00001959   Thumb Code    12  tcp.o(.text)
+    tcp_connect                              0x00001965   Thumb Code   142  tcp.o(.text)
+    tcp_setprio                              0x000019f3   Thumb Code     4  tcp.o(.text)
+    tcp_seg_copy                             0x000019f7   Thumb Code    34  tcp.o(.text)
+    tcp_alloc                                0x00001a33   Thumb Code   230  tcp.o(.text)
+    tcp_new                                  0x00001b19   Thumb Code     4  tcp.o(.text)
+    tcp_arg                                  0x00001b1d   Thumb Code     4  tcp.o(.text)
+    tcp_recv                                 0x00001b21   Thumb Code     6  tcp.o(.text)
+    tcp_sent                                 0x00001b27   Thumb Code     4  tcp.o(.text)
+    tcp_err                                  0x00001b2b   Thumb Code     6  tcp.o(.text)
+    tcp_accept                               0x00001b31   Thumb Code     4  tcp.o(.text)
+    tcp_poll                                 0x00001b35   Thumb Code     8  tcp.o(.text)
+    udp_init                                 0x00001b49   Thumb Code    10  udp.o(.text)
+    udp_input                                0x00001b53   Thumb Code   398  udp.o(.text)
+    udp_bind                                 0x00001ce1   Thumb Code    86  udp.o(.text)
+    udp_send                                 0x00001d37   Thumb Code   272  udp.o(.text)
+    udp_sendto                               0x00001e47   Thumb Code    26  udp.o(.text)
+    udp_connect                              0x00001e61   Thumb Code    72  udp.o(.text)
+    udp_disconnect                           0x00001ea9   Thumb Code    20  udp.o(.text)
+    udp_recv                                 0x00001ebd   Thumb Code     6  udp.o(.text)
+    udp_remove                               0x00001ec3   Thumb Code    40  udp.o(.text)
+    udp_new                                  0x00001eeb   Thumb Code    28  udp.o(.text)
+    dhcp_renew                               0x0000220f   Thumb Code   160  dhcp.o(.text)
+    dhcp_coarse_tmr                          0x00002351   Thumb Code    88  dhcp.o(.text)
+    dhcp_release                             0x0000274d   Thumb Code   190  dhcp.o(.text)
+    dhcp_fine_tmr                            0x0000280b   Thumb Code    46  dhcp.o(.text)
+    dhcp_stop                                0x00002839   Thumb Code    64  dhcp.o(.text)
+    dhcp_start                               0x00002879   Thumb Code    94  dhcp.o(.text)
+    dhcp_inform                              0x000028d7   Thumb Code   172  dhcp.o(.text)
+    dhcp_arp_reply                           0x00002a1f   Thumb Code    24  dhcp.o(.text)
+    htons                                    0x00002ba5   Thumb Code     4  inet.o(.text)
+    inet_chksum_pseudo                       0x00002be3   Thumb Code   138  inet.o(.text)
+    inet_chksum                              0x00002c6d   Thumb Code    24  inet.o(.text)
+    inet_chksum_pbuf                         0x00002c85   Thumb Code    70  inet.o(.text)
+    htonl                                    0x00002ccb   Thumb Code     4  inet.o(.text)
+    inet_aton                                0x00002ccf   Thumb Code   252  inet.o(.text)
+    inet_addr                                0x00002dcb   Thumb Code    20  inet.o(.text)
+    inet_ntoa                                0x00002ddf   Thumb Code    86  inet.o(.text)
+    ntohs                                    0x00002e35   Thumb Code     4  inet.o(.text)
+    ntohl                                    0x00002e39   Thumb Code     4  inet.o(.text)
+    mem_init                                 0x00002e8f   Thumb Code    54  mem.o(.text)
+    mem_free                                 0x00002ec5   Thumb Code    66  mem.o(.text)
+    mem_realloc                              0x00002f07   Thumb Code   128  mem.o(.text)
+    mem_malloc                               0x00002f87   Thumb Code   180  mem.o(.text)
+    memp_init                                0x00003049   Thumb Code   100  memp.o(.text)
+    memp_malloc                              0x000030ad   Thumb Code    78  memp.o(.text)
+    memp_free                                0x000030fb   Thumb Code    52  memp.o(.text)
+    netif_set_gw                             0x0000313d   Thumb Code     8  netif.o(.text)
+    netif_set_netmask                        0x00003145   Thumb Code     8  netif.o(.text)
+    netif_set_ipaddr                         0x0000314d   Thumb Code    86  netif.o(.text)
+    netif_set_addr                           0x000031a3   Thumb Code    30  netif.o(.text)
+    netif_add                                0x000031c1   Thumb Code    72  netif.o(.text)
+    netif_remove                             0x00003209   Thumb Code    52  netif.o(.text)
+    netif_find                               0x0000323d   Thumb Code    56  netif.o(.text)
+    netif_set_default                        0x00003275   Thumb Code     6  netif.o(.text)
+    netif_set_up                             0x0000327b   Thumb Code    12  netif.o(.text)
+    netif_is_up                              0x00003287   Thumb Code    10  netif.o(.text)
+    netif_set_down                           0x00003291   Thumb Code    12  netif.o(.text)
+    netif_init                               0x0000329d   Thumb Code    10  netif.o(.text)
+    pbuf_init                                0x000032b5   Thumb Code    68  pbuf.o(.text)
+    pbuf_free                                0x00003329   Thumb Code   122  pbuf.o(.text)
+    pbuf_alloc                               0x000033a3   Thumb Code   292  pbuf.o(.text)
+    pbuf_realloc                             0x000034c7   Thumb Code    80  pbuf.o(.text)
+    pbuf_header                              0x00003517   Thumb Code    78  pbuf.o(.text)
+    pbuf_clen                                0x00003565   Thumb Code    18  pbuf.o(.text)
+    pbuf_ref                                 0x00003577   Thumb Code    26  pbuf.o(.text)
+    pbuf_cat                                 0x00003591   Thumb Code    40  pbuf.o(.text)
+    pbuf_chain                               0x000035b9   Thumb Code    16  pbuf.o(.text)
+    pbuf_queue                               0x000035c9   Thumb Code    30  pbuf.o(.text)
+    pbuf_dequeue                             0x000035e7   Thumb Code    22  pbuf.o(.text)
+    pbuf_take                                0x000035fd   Thumb Code   114  pbuf.o(.text)
+    pbuf_dechain                             0x0000366f   Thumb Code    54  pbuf.o(.text)
+    raw_init                                 0x000036a5   Thumb Code     8  raw.o(.text)
+    raw_input                                0x000036ad   Thumb Code    74  raw.o(.text)
+    raw_bind                                 0x000036f7   Thumb Code    10  raw.o(.text)
+    raw_connect                              0x00003701   Thumb Code    10  raw.o(.text)
+    raw_recv                                 0x0000370b   Thumb Code     6  raw.o(.text)
+    raw_sendto                               0x00003711   Thumb Code   138  raw.o(.text)
+    raw_send                                 0x0000379b   Thumb Code     4  raw.o(.text)
+    raw_remove                               0x0000379f   Thumb Code    40  raw.o(.text)
+    raw_new                                  0x000037c7   Thumb Code    40  raw.o(.text)
+    stats_init                               0x000037f5   Thumb Code    10  stats.o(.text)
+    tcp_input                                0x000041ff   Thumb Code   810  tcp_in.o(.text)
+    tcp_enqueue                              0x00004529   Thumb Code   652  tcp_out.o(.text)
+    tcp_send_ctrl                            0x000047b5   Thumb Code    26  tcp_out.o(.text)
+    tcp_write                                0x000047cf   Thumb Code    56  tcp_out.o(.text)
+    tcp_output                               0x000048b5   Thumb Code   480  tcp_out.o(.text)
+    tcp_rst                                  0x00004a95   Thumb Code   186  tcp_out.o(.text)
+    tcp_rexmit_rto                           0x00004b4f   Thumb Code    64  tcp_out.o(.text)
+    tcp_rexmit                               0x00004b8f   Thumb Code    56  tcp_out.o(.text)
+    tcp_keepalive                            0x00004bc7   Thumb Code   150  tcp_out.o(.text)
+    icmp_input                               0x00004c61   Thumb Code   280  icmp.o(.text)
+    icmp_dest_unreach                        0x00004d79   Thumb Code   130  icmp.o(.text)
+    ip_init                                  0x00004e01   Thumb Code     2  ip.o(.text)
+    ip_route                                 0x00004e03   Thumb Code    34  ip.o(.text)
+    ip_input                                 0x00004e25   Thumb Code   434  ip.o(.text)
+    ip_output_if                             0x00004fd7   Thumb Code   210  ip.o(.text)
+    ip_output                                0x000050a9   Thumb Code    62  ip.o(.text)
+    ip_addr_isbroadcast                      0x000050f9   Thumb Code    48  ip_addr.o(.text)
+    etharp_init                              0x00005129   Thumb Code    36  etharp.o(.text)
+    etharp_tmr                               0x0000514d   Thumb Code    90  etharp.o(.text)
+    etharp_find_addr                         0x0000535b   Thumb Code    70  etharp.o(.text)
+    etharp_ip_input                          0x000053a1   Thumb Code    34  etharp.o(.text)
+    etharp_arp_input                         0x000053c3   Thumb Code   262  etharp.o(.text)
+    etharp_request                           0x000054c9   Thumb Code   210  etharp.o(.text)
+    etharp_query                             0x0000559b   Thumb Code   228  etharp.o(.text)
+    etharp_output                            0x0000567f   Thumb Code   224  etharp.o(.text)
+    low_level_init                           0x0000576d   Thumb Code    80  luminaryif.o(.text)
+    low_level_output                         0x000057bd   Thumb Code    96  luminaryif.o(.text)
+    low_level_input                          0x0000581d   Thumb Code   226  luminaryif.o(.text)
+    ethernetif_output                        0x000058ff   Thumb Code    10  luminaryif.o(.text)
+    ethernetif_input                         0x00005909   Thumb Code   112  luminaryif.o(.text)
+    sys_arch_unprotect                       0x00005979   Thumb Code    10  luminaryif.o(.text)
+    sys_arch_protect                         0x00005983   Thumb Code     4  luminaryif.o(.text)
+    ethernetif_enqueue                       0x00005987   Thumb Code    46  luminaryif.o(.text)
+    ethernetif_dequeue                       0x000059b5   Thumb Code   134  luminaryif.o(.text)
+    arp_timer                                0x00005a3b   Thumb Code     4  luminaryif.o(.text)
+    ethernetif_init                          0x00005a3f   Thumb Code    86  luminaryif.o(.text)
+    fs_init                                  0x00005aed   Thumb Code     2  lmi_fs.o(.text)
+    fs_tick                                  0x00005aef   Thumb Code     2  lmi_fs.o(.text)
+    fs_open                                  0x00005af1   Thumb Code    98  lmi_fs.o(.text)
+    fs_close                                 0x00005b53   Thumb Code    22  lmi_fs.o(.text)
+    fs_read                                  0x00005b69   Thumb Code   188  lmi_fs.o(.text)
+    EthernetIntHandler                       0x00005c89   Thumb Code    88  enet_lwip.o(.text)
+    lwip_init                                0x00005d15   Thumb Code   132  enet_lwip.o(.text)
+    lwip_tick                                0x00005d99   Thumb Code   416  enet_lwip.o(.text)
+    toState                                  0x00005fd5   Thumb Code   320  protocol.o(.text)
+    doInit                                   0x00006115   Thumb Code    92  protocol.o(.text)
+    issueManagement                          0x00006171   Thumb Code    64  protocol.o(.text)
+    handleManagement                         0x000061b1   Thumb Code   166  protocol.o(.text)
+    handleDelayResp                          0x00006257   Thumb Code   202  protocol.o(.text)
+    issueDelayResp                           0x00006321   Thumb Code    70  protocol.o(.text)
+    handleDelayReq                           0x00006367   Thumb Code   146  protocol.o(.text)
+    handleFollowUp                           0x000063f9   Thumb Code   166  protocol.o(.text)
+    issueFollowup                            0x0000649f   Thumb Code    68  protocol.o(.text)
+    addForeign                               0x000064e3   Thumb Code   256  protocol.o(.text)
+    issueDelayReq                            0x000065e3   Thumb Code    86  protocol.o(.text)
+    handleSync                               0x00006639   Thumb Code   408  protocol.o(.text)
+    handle                                   0x000067d1   Thumb Code   316  protocol.o(.text)
+    issueSync                                0x0000690d   Thumb Code    80  protocol.o(.text)
+    doState                                  0x0000695d   Thumb Code   210  protocol.o(.text)
+    protocol_first                           0x00006a2f   Thumb Code    42  protocol.o(.text)
+    protocol_loop                            0x00006a59   Thumb Code    12  protocol.o(.text)
+    protocol                                 0x00006a65   Thumb Code    44  protocol.o(.text)
+    initTimer                                0x00006a91   Thumb Code     8  ptpd_timer.o(.text)
+    timerTick                                0x00006a99   Thumb Code    10  ptpd_timer.o(.text)
+    timerUpdate                              0x00006aa3   Thumb Code    66  ptpd_timer.o(.text)
+    timerStop                                0x00006ae5   Thumb Code    16  ptpd_timer.o(.text)
+    timerStart                               0x00006af5   Thumb Code    26  ptpd_timer.o(.text)
+    timerExpired                             0x00006b0f   Thumb Code    40  ptpd_timer.o(.text)
+    msgPeek                                  0x00006b3d   Thumb Code     4  ptpd_msg.o(.text)
+    msgUnpackHeader                          0x00006b41   Thumb Code    80  ptpd_msg.o(.text)
+    msgUnpackSync                            0x00006b91   Thumb Code   266  ptpd_msg.o(.text)
+    msgUnpackDelayReq                        0x00006c9b   Thumb Code     2  ptpd_msg.o(.text)
+    msgUnpackFollowUp                        0x00006c9d   Thumb Code    44  ptpd_msg.o(.text)
+    msgUnpackDelayResp                       0x00006cc9   Thumb Code    76  ptpd_msg.o(.text)
+    msgUnpackManagement                      0x00006d15   Thumb Code    88  ptpd_msg.o(.text)
+    msgUnloadManagement                      0x00006d6d   Thumb Code   272  ptpd_msg.o(.text)
+    msgUnpackManagementPayload               0x00006e7d   Thumb Code   660  ptpd_msg.o(.text)
+    msgPackHeader                            0x00007111   Thumb Code    94  ptpd_msg.o(.text)
+    msgPackSync                              0x0000716f   Thumb Code   364  ptpd_msg.o(.text)
+    msgPackDelayReq                          0x000072db   Thumb Code   362  ptpd_msg.o(.text)
+    msgPackFollowUp                          0x00007445   Thumb Code    84  ptpd_msg.o(.text)
+    msgPackDelayResp                         0x00007499   Thumb Code   112  ptpd_msg.o(.text)
+    msgPackManagement                        0x00007509   Thumb Code   116  ptpd_msg.o(.text)
+    msgPackManagementResponse                0x0000757d   Thumb Code  1122  ptpd_msg.o(.text)
+    netQGet                                  0x00007a19   Thumb Code    40  ptpd_net.o(.text)
+    lookupSubdomainAddress                   0x00007a51   Thumb Code   116  ptpd_net.o(.text)
+    netInit                                  0x00007ac5   Thumb Code   276  ptpd_net.o(.text)
+    netShutdown                              0x00007bd9   Thumb Code    62  ptpd_net.o(.text)
+    netSelect                                0x00007c17   Thumb Code    30  ptpd_net.o(.text)
+    netRecvEvent                             0x00007c35   Thumb Code    80  ptpd_net.o(.text)
+    netRecvGeneral                           0x00007c85   Thumb Code    66  ptpd_net.o(.text)
+    netSendEvent                             0x00007cc7   Thumb Code    72  ptpd_net.o(.text)
+    netSendGeneral                           0x00007d0f   Thumb Code    72  ptpd_net.o(.text)
+    initClock                                0x00007e1d   Thumb Code    80  ptpd_servo.o(.text)
+    updateDelay                              0x00007e6d   Thumb Code   170  ptpd_servo.o(.text)
+    updateOffset                             0x00007f17   Thumb Code    70  ptpd_servo.o(.text)
+    updateClock                              0x00007f5d   Thumb Code   212  ptpd_servo.o(.text)
+    crc_algorithm                            0x00008039   Thumb Code    54  arith.o(.text)
+    sum                                      0x0000806f   Thumb Code    24  arith.o(.text)
+    fromInternalTime                         0x00008087   Thumb Code    48  arith.o(.text)
+    toInternalTime                           0x000080b7   Thumb Code    52  arith.o(.text)
+    normalizeTime                            0x000080eb   Thumb Code    62  arith.o(.text)
+    addTime                                  0x00008129   Thumb Code    22  arith.o(.text)
+    subTime                                  0x0000813f   Thumb Code    22  arith.o(.text)
+    initData                                 0x00008161   Thumb Code   134  bmc.o(.text)
+    m1                                       0x000081e7   Thumb Code   132  bmc.o(.text)
+    s1                                       0x0000826b   Thumb Code   160  bmc.o(.text)
+    copyD0                                   0x0000830b   Thumb Code   108  bmc.o(.text)
+    getIdentifierOrder                       0x00008377   Thumb Code    98  bmc.o(.text)
+    bmcDataSetComparison                     0x000083d9   Thumb Code   450  bmc.o(.text)
+    bmcStateDecision                         0x0000859b   Thumb Code   116  bmc.o(.text)
+    bmc                                      0x0000860f   Thumb Code   120  bmc.o(.text)
+    RandomAddEntropy                         0x000086b9   Thumb Code    18  random.o(.text)
+    RandomSeed                               0x000086cb   Thumb Code   358  random.o(.text)
+    RandomNumber                             0x00008831   Thumb Code    16  random.o(.text)
+    uvsnprintf                               0x00008861   Thumb Code   532  ustdlib.o(.text)
+    usprintf                                 0x00008a75   Thumb Code    22  ustdlib.o(.text)
+    usnprintf                                0x00008a8b   Thumb Code    14  ustdlib.o(.text)
+    ulocaltime                               0x00008a99   Thumb Code   154  ustdlib.o(.text)
+    ustrtoul                                 0x00008b33   Thumb Code   156  ustdlib.o(.text)
+    adjust_rx_timestamp                      0x00008be1   Thumb Code    44  phpd.o(.text)
+    adjFreq                                  0x00008c0d   Thumb Code    54  phpd.o(.text)
+    ptpd_systick_init                        0x00008c43   Thumb Code    40  phpd.o(.text)
+    IEEE1588Init                             0x00008c6b   Thumb Code   258  phpd.o(.text)
+    ptpd_init                                0x00008d6d   Thumb Code   214  phpd.o(.text)
+    ptpd_tick                                0x00008e43   Thumb Code     8  phpd.o(.text)
+    RIT128x96x4Clear                         0x00008f39   Thumb Code    70  rit128x96x4.o(.text)
+    RIT128x96x4StringDraw                    0x00008f7f   Thumb Code   268  rit128x96x4.o(.text)
+    RIT128x96x4ImageDraw                     0x0000908b   Thumb Code   114  rit128x96x4.o(.text)
+    RIT128x96x4Enable                        0x000090fd   Thumb Code    86  rit128x96x4.o(.text)
+    RIT128x96x4Disable                       0x00009153   Thumb Code    66  rit128x96x4.o(.text)
+    RIT128x96x4Init                          0x00009195   Thumb Code   132  rit128x96x4.o(.text)
+    RIT128x96x4DisplayOn                     0x00009219   Thumb Code    42  rit128x96x4.o(.text)
+    RIT128x96x4DisplayOff                    0x00009243   Thumb Code    14  rit128x96x4.o(.text)
+    CPUcpsid                                 0x00009269   Thumb Code     0  cpu.o(.text)
+    CPUcpsie                                 0x00009271   Thumb Code     0  cpu.o(.text)
+    CPUwfi                                   0x00009279   Thumb Code     0  cpu.o(.text)
+    perror                                   0x0000927d   Thumb Code    50  perror.o(.text)
+    __aeabi_ldivmod                          0x000092bd   Thumb Code   100  ldiv.o(.text)
+    __aeabi_memcpy                           0x00009321   Thumb Code    36  memcpya.o(.text)
+    __aeabi_memcpy4                          0x00009321   Thumb Code     0  memcpya.o(.text)
+    __aeabi_memcpy8                          0x00009321   Thumb Code     0  memcpya.o(.text)
+    __aeabi_memset                           0x00009345   Thumb Code    14  memseta.o(.text)
+    __aeabi_memset4                          0x00009345   Thumb Code     0  memseta.o(.text)
+    __aeabi_memset8                          0x00009345   Thumb Code     0  memseta.o(.text)
+    __aeabi_memclr                           0x00009353   Thumb Code     4  memseta.o(.text)
+    __aeabi_memclr4                          0x00009353   Thumb Code     0  memseta.o(.text)
+    __aeabi_memclr8                          0x00009353   Thumb Code     0  memseta.o(.text)
+    _memset_wrapper                          0x00009357   Thumb Code    20  memseta.o(.text)
+    strstr                                   0x0000936b   Thumb Code    44  strstr.o(.text)
+    strncpy                                  0x00009397   Thumb Code    24  strncpy.o(.text)
+    strchr                                   0x000093af   Thumb Code    18  strchr.o(.text)
+    strlen                                   0x000093c1   Thumb Code    16  strlen.o(.text)
+    memcmp                                   0x000093d1   Thumb Code    26  memcmp.o(.text)
+    strncmp                                  0x000093eb   Thumb Code    30  strncmp.o(.text)
+    __aeabi_dadd                             0x0000951b   Thumb Code    48  dadd.o(.text)
+    __aeabi_dsub                             0x0000954b   Thumb Code    48  dadd.o(.text)
+    __aeabi_drsub                            0x0000957b   Thumb Code    48  dadd.o(.text)
+    __aeabi_ui2d                             0x000095ab   Thumb Code    26  dfltu.o(.text)
+    __init                                   0x000095c5   Thumb Code    30  init.o(.text)
+    __scatterload_rt2                        0x000095c5   Thumb Code     0  init.o(.text)
+    fputs                                    0x000095f1   Thumb Code    24  fputs.o(.text)
+    fputc                                    0x00009609   Thumb Code    16  fputc.o(.text)
+    __aeabi_uidiv                            0x00009619   Thumb Code     0  uidiv.o(.text)
+    __aeabi_uidivmod                         0x00009619   Thumb Code    38  uidiv.o(.text)
+    __aeabi_uldivmod                         0x0000963f   Thumb Code    84  uldiv.o(.text)
+    __aeabi_llsl                             0x00009693   Thumb Code    32  llshl.o(.text)
+    _ll_shift_l                              0x00009693   Thumb Code     0  llshl.o(.text)
+    __aeabi_llsr                             0x000096b3   Thumb Code    30  llushr.o(.text)
+    _ll_ushift_r                             0x000096b3   Thumb Code     0  llushr.o(.text)
+    strerror                                 0x000096d1   Thumb Code    26  strerror.o(.text)
+    __I_use_fp                               0x00009768   Number         0  iusefp.o(.text)
+    _double_round                            0x00009769   Thumb Code    54  depilogue.o(.text)
+    _double_epilogue                         0x0000979f   Thumb Code   138  depilogue.o(.text)
+    __I_use_semihosting_fputc                0x0000982c   Number         0  iusesemip.o(.text)
+    __decompress                             0x0000982d   Thumb Code     0  __dczerorl.o(.text)
+    __decompress0                            0x0000982d   Thumb Code    58  __dczerorl.o(.text)
+    EthernetConfigGet                        0x00009869   Thumb Code    20  ethernet.o(i.EthernetConfigGet)
+    _printf_charcount                        0x00009868   Number         0  stubs.o(c$$printf_stubs)
+    _printf_fp_dec                           0x00009868   Number         0  stubs.o(c$$printf_stubs)
+    _printf_fp_hex                           0x00009868   Number         0  stubs.o(c$$printf_stubs)
+    _printf_int_dec                          0x00009868   Number         0  stubs.o(c$$printf_stubs)
+    _printf_longlong_dec                     0x00009868   Number         0  stubs.o(c$$printf_stubs)
+    _printf_longlong_hex                     0x00009868   Number         0  stubs.o(c$$printf_stubs)
+    _printf_longlong_oct                     0x00009868   Number         0  stubs.o(c$$printf_stubs)
+    _printf_mbtowc                           0x00009868   Number         0  stubs.o(c$$printf_stubs)
+    _printf_percent                          0x00009868   Number         0  stubs.o(c$$printf_stubs)
+    _printf_pre_padding                      0x00009868   Number         0  stubs.o(c$$printf_stubs)
+    _printf_return_value                     0x00009868   Number         0  stubs.o(c$$printf_stubs)
+    _printf_sizespec                         0x00009868   Number         0  stubs.o(c$$printf_stubs)
+    _printf_str                              0x00009868   Number         0  stubs.o(c$$printf_stubs)
+    _printf_truncate_signed                  0x00009868   Number         0  stubs.o(c$$printf_stubs)
+    _printf_truncate_unsigned                0x00009868   Number         0  stubs.o(c$$printf_stubs)
+    _printf_wc                               0x00009868   Number         0  stubs.o(c$$printf_stubs)
+    _printf_wctomb                           0x00009868   Number         0  stubs.o(c$$printf_stubs)
+    EthernetConfigSet                        0x0000987d   Thumb Code    42  ethernet.o(i.EthernetConfigSet)
+    EthernetEnable                           0x000098a7   Thumb Code    34  ethernet.o(i.EthernetEnable)
+    EthernetInitExpClk                       0x000098c9   Thumb Code    12  ethernet.o(i.EthernetInitExpClk)
+    EthernetIntClear                         0x000098d9   Thumb Code     4  ethernet.o(i.EthernetIntClear)
+    EthernetIntDisable                       0x000098dd   Thumb Code    10  ethernet.o(i.EthernetIntDisable)
+    EthernetIntEnable                        0x000098e7   Thumb Code     8  ethernet.o(i.EthernetIntEnable)
+    EthernetIntStatus                        0x000098ef   Thumb Code    14  ethernet.o(i.EthernetIntStatus)
+    EthernetMACAddrGet                       0x000098fd   Thumb Code    50  ethernet.o(i.EthernetMACAddrGet)
+    EthernetMACAddrSet                       0x0000992f   Thumb Code    54  ethernet.o(i.EthernetMACAddrSet)
+    EthernetPacketAvail                      0x00009965   Thumb Code    12  ethernet.o(i.EthernetPacketAvail)
+    EthernetSpaceAvail                       0x00009971   Thumb Code    10  ethernet.o(i.EthernetSpaceAvail)
+    FlashUserGet                             0x0000997d   Thumb Code    48  flash.o(i.FlashUserGet)
+    GPIODirModeSet                           0x000099b5   Thumb Code    40  gpio.o(i.GPIODirModeSet)
+    GPIOPadConfigSet                         0x000099dd   Thumb Code   176  gpio.o(i.GPIOPadConfigSet)
+    GPIOPinTypeGPIOOutput                    0x00009a8d   Thumb Code    28  gpio.o(i.GPIOPinTypeGPIOOutput)
+    GPIOPinTypeSSI                           0x00009aa9   Thumb Code    28  gpio.o(i.GPIOPinTypeSSI)
+    GPIOPinWrite                             0x00009ac5   Thumb Code     6  gpio.o(i.GPIOPinWrite)
+    IntDisable                               0x00009acb   Thumb Code   104  interrupt.o(i.IntDisable)
+    IntEnable                                0x00009b33   Thumb Code   104  interrupt.o(i.IntEnable)
+    IntMasterDisable                         0x00009b9b   Thumb Code    10  interrupt.o(i.IntMasterDisable)
+    IntMasterEnable                          0x00009ba5   Thumb Code    10  interrupt.o(i.IntMasterEnable)
+    IntPrioritySet                           0x00009bb1   Thumb Code    36  interrupt.o(i.IntPrioritySet)
+    SSIConfigSetExpClk                       0x00009bd9   Thumb Code    74  ssi.o(i.SSIConfigSetExpClk)
+    SSIDataGet                               0x00009c23   Thumb Code    14  ssi.o(i.SSIDataGet)
+    SSIDataGetNonBlocking                    0x00009c31   Thumb Code    18  ssi.o(i.SSIDataGetNonBlocking)
+    SSIDataPut                               0x00009c43   Thumb Code    12  ssi.o(i.SSIDataPut)
+    SSIDisable                               0x00009c4f   Thumb Code    10  ssi.o(i.SSIDisable)
+    SSIEnable                                0x00009c59   Thumb Code    10  ssi.o(i.SSIEnable)
+    SysCtlClockGet                           0x00009c65   Thumb Code   292  sysctl.o(i.SysCtlClockGet)
+    SysCtlClockSet                           0x00009da5   Thumb Code   262  sysctl.o(i.SysCtlClockSet)
+    SysCtlPeripheralEnable                   0x00009ec5   Thumb Code    26  sysctl.o(i.SysCtlPeripheralEnable)
+    SysCtlPeripheralReset                    0x00009ee5   Thumb Code    50  sysctl.o(i.SysCtlPeripheralReset)
+    SysTickEnable                            0x00009f1d   Thumb Code    14  systick.o(i.SysTickEnable)
+    SysTickIntEnable                         0x00009f2b   Thumb Code    14  systick.o(i.SysTickIntEnable)
+    SysTickPeriodGet                         0x00009f39   Thumb Code    10  systick.o(i.SysTickPeriodGet)
+    SysTickPeriodSet                         0x00009f43   Thumb Code    10  systick.o(i.SysTickPeriodSet)
+    SysTickValueGet                          0x00009f4d   Thumb Code     8  systick.o(i.SysTickValueGet)
+    TimerConfigure                           0x00009f55   Thumb Code    28  timer.o(i.TimerConfigure)
+    TimerControlEvent                        0x00009f71   Thumb Code    24  timer.o(i.TimerControlEvent)
+    TimerDisable                             0x00009f89   Thumb Code    16  timer.o(i.TimerDisable)
+    TimerEnable                              0x00009f99   Thumb Code    14  timer.o(i.TimerEnable)
+    TimerIntClear                            0x00009fa7   Thumb Code     4  timer.o(i.TimerIntClear)
+    TimerIntDisable                          0x00009fab   Thumb Code    10  timer.o(i.TimerIntDisable)
+    TimerIntEnable                           0x00009fb5   Thumb Code     8  timer.o(i.TimerIntEnable)
+    TimerLoadSet                             0x00009fbd   Thumb Code    18  timer.o(i.TimerLoadSet)
+    TimerPrescaleSet                         0x00009fcf   Thumb Code    18  timer.o(i.TimerPrescaleSet)
+    TimerValueGet                            0x00009fe1   Thumb Code    10  timer.o(i.TimerValueGet)
+    UARTIntClear                             0x00009feb   Thumb Code     4  uart.o(i.UARTIntClear)
+    UARTIntStatus                            0x00009fef   Thumb Code    10  uart.o(i.UARTIntStatus)
+    __0printf_1                              0x00009ff9   Thumb Code    22  printf1.o(i.__0printf_1)
+    __1printf                                0x00009ff9   Thumb Code     0  printf1.o(i.__0printf_1)
+    __0sprintf_1                             0x0000a019   Thumb Code    34  printf1.o(i.__0sprintf_1)
+    __1sprintf                               0x0000a019   Thumb Code     0  printf1.o(i.__0sprintf_1)
+    __aeabi_errno_addr                       0x0000a041   Thumb Code     4  errno.o(i.__aeabi_errno_addr)
+    __rt_errno_addr                          0x0000a041   Thumb Code     0  errno.o(i.__aeabi_errno_addr)
+    __scatterload_copy                       0x0000a049   Thumb Code    14  handlers.o(i.__scatterload_copy)
+    __scatterload_null                       0x0000a057   Thumb Code     2  handlers.o(i.__scatterload_null)
+    __scatterload_zeroinit                   0x0000a059   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
+    tcp_backoff                              0x0000a21a   Data          13  tcp.o(.constdata)
+    ip_addr_any                              0x0000a254   Data           4  ip_addr.o(.constdata)
+    ip_addr_broadcast                        0x0000a258   Data           4  ip_addr.o(.constdata)
+    file_styles_css                          0x0000a264   Data          16  lmi_fs.o(.constdata)
+    file_404_html                            0x0000af30   Data          16  lmi_fs.o(.constdata)
+    file_index_html                          0x0000af40   Data          16  lmi_fs.o(.constdata)
+    file_ptpclock_shtml                      0x0000af50   Data          16  lmi_fs.o(.constdata)
+    Region$$Table$$Base                      0x0000b314   Number         0  anon$$obj.o(Region$$Table)
+    Region$$Table$$Limit                     0x0000b334   Number         0  anon$$obj.o(Region$$Table)
     EVENT_QUEUE_HEAD                         0x20000000   Data           4  simpleptidesos.o(.data)
-    CK1_BUF_SIZE                             0x20000004   Data           4  simpleptidesos.o(.data)
-    InterruptPriorityLevel                   0x20000008   Data           4  simpleptidesos.o(.data)
-    timerInterruptTimes                      0x2000000c   Data           4  simpleptidesos.o(.data)
-    TimerInterrupt                           0x20000010   Data           4  simpleptidesos.o(.data)
-    locationCounter                          0x20000020   Data           4  simpleptidesos.o(.data)
-    fireActorCount                           0x20000024   Data           4  simpleptidesos.o(.data)
-    fireActuatorCount                        0x20000028   Data           4  simpleptidesos.o(.data)
-    fireMergedCount                          0x2000002c   Data           4  simpleptidesos.o(.data)
-    fireModelDelayCount                      0x20000030   Data           4  simpleptidesos.o(.data)
-    fireComputationCount                     0x20000034   Data           4  simpleptidesos.o(.data)
-    addeventcount                            0x20000038   Data           4  simpleptidesos.o(.data)
-    clockfirecount                           0x2000003c   Data           4  simpleptidesos.o(.data)
-    removecount                              0x20000040   Data           4  simpleptidesos.o(.data)
-    sensorCount                              0x20000044   Data           4  simpleptidesos.o(.data)
-    STOP_SOURCE_PROCESS                      0x20000048   Data           4  simpleptidesos.o(.data)
-    SOURCE1                                  0x2000004c   Data           4  simpleptidesos.o(.data)
-    SENSOR1                                  0x20000050   Data           4  simpleptidesos.o(.data)
-    SENSOR2                                  0x20000054   Data           4  simpleptidesos.o(.data)
+    DEADLINE_QUEUE_HEAD                      0x20000004   Data           4  simpleptidesos.o(.data)
+    CK1_BUF_SIZE                             0x20000008   Data           4  simpleptidesos.o(.data)
+    InterruptPriorityLevel                   0x2000000c   Data           4  simpleptidesos.o(.data)
+    timerInterruptTimes                      0x20000010   Data           4  simpleptidesos.o(.data)
+    TimerInterrupt                           0x20000014   Data           4  simpleptidesos.o(.data)
+    locationCounter                          0x20000024   Data           4  simpleptidesos.o(.data)
+    fireActorCount                           0x20000028   Data           4  simpleptidesos.o(.data)
+    fireActuatorCount                        0x2000002c   Data           4  simpleptidesos.o(.data)
+    fireMergedCount                          0x20000030   Data           4  simpleptidesos.o(.data)
+    fireModelDelayCount                      0x20000034   Data           4  simpleptidesos.o(.data)
+    fireComputationCount                     0x20000038   Data           4  simpleptidesos.o(.data)
+    addeventcount                            0x2000003c   Data           4  simpleptidesos.o(.data)
+    clockfirecount                           0x20000040   Data           4  simpleptidesos.o(.data)
+    removecount                              0x20000044   Data           4  simpleptidesos.o(.data)
+    sensorCount                              0x20000048   Data           4  simpleptidesos.o(.data)
+    STOP_SOURCE_PROCESS                      0x2000004c   Data           4  simpleptidesos.o(.data)
+    SOURCE1                                  0x20000050   Data           4  simpleptidesos.o(.data)
+    SENSOR1                                  0x20000054   Data           4  simpleptidesos.o(.data)
     g_ulSystemTimeSeconds                    0x20000058   Data           4  simpleptidesos.o(.data)
     g_ulSystemTimeNanoSeconds                0x2000005c   Data           4  simpleptidesos.o(.data)
     g_ulSystemTimeTicks                      0x20000060   Data           4  simpleptidesos.o(.data)
@@ -1660,14 +1677,14 @@ Image Symbol Table
     g_ulDHCPCoarseTimer                      0x20000178   Data           4  enet_lwip.o(.data)
     g_ulDHCPFineTimer                        0x2000017c   Data           4  enet_lwip.o(.data)
     g_ulDHCPTimeoutTimer                     0x20000180   Data           4  enet_lwip.o(.data)
-    __stdout                                 0x200001a4   Data           4  stdout.o(.data)
-    __stderr                                 0x200001a8   Data           4  stderr.o(.data)
-    IntFuncPtr                               0x200001b0   Data          24  simpleptidesos.o(.bss)
-    IntActorArg                              0x200001c8   Data          24  simpleptidesos.o(.bss)
-    eventMemory                              0x20000200   Data        1680  simpleptidesos.o(.bss)
-    str                                      0x20000890   Data          20  simpleptidesos.o(.bss)
-    lwip_stats                               0x20007206   Data         276  stats.o(.bss)
-    __initial_sp                             0x20007590   Number         0  startup.o(STACK)
+    __stdout                                 0x200001b0   Data           4  stdout.o(.data)
+    __stderr                                 0x200001b4   Data           4  stderr.o(.data)
+    IntFuncPtr                               0x200001c0   Data          24  simpleptidesos.o(.bss)
+    IntActorArg                              0x200001d8   Data          24  simpleptidesos.o(.bss)
+    eventMemory                              0x200001f0   Data        1680  simpleptidesos.o(.bss)
+    str                                      0x20000880   Data          20  simpleptidesos.o(.bss)
+    lwip_stats                               0x20006ace   Data         276  stats.o(.bss)
+    __initial_sp                             0x20007580   Number         0  startup.o(STACK)
 
 
 ================================================================================
@@ -1676,213 +1693,214 @@ Memory Map of the image
 
   Image Entry point : 0x000000fd
 
-  Load Region LR_IROM1 (Base: 0x00000000, Size: 0x0000b524, Max: 0x00040000, ABSOLUTE, COMPRESSED[0x0000b3c8])
+  Load Region LR_IROM1 (Base: 0x00000000, Size: 0x0000b4f0, Max: 0x00040000, ABSOLUTE, COMPRESSED[0x0000b388])
 
-    Execution Region ER_IROM1 (Base: 0x00000000, Size: 0x0000b374, Max: 0x00040000, ABSOLUTE)
+    Execution Region ER_IROM1 (Base: 0x00000000, Size: 0x0000b334, Max: 0x00040000, ABSOLUTE)
 
     Base Addr    Size         Type   Attr      Idx    E Section Name        Object
 
     0x00000000   0x000000fc   Code   RO            3    RESET               startup.o
-    0x000000fc   0x0000000c   Code   RO         2286  * $$startup$$         entry.o(mc_w.l)
-    0x00000108   0x00000006   Code   RO         1544    .emb_text           sysctl.o(DriverLib.lib)
+    0x000000fc   0x0000000c   Code   RO         2307  * $$startup$$         entry.o(mc_w.l)
+    0x00000108   0x00000006   Code   RO         1565    .emb_text           sysctl.o(DriverLib.lib)
     0x0000010e   0x00000002   PAD
-    0x00000110   0x00000002   Code   RO         2513    .emb_text           init.o(mc_w.l)
+    0x00000110   0x00000002   Code   RO         2534    .emb_text           init.o(mc_w.l)
     0x00000112   0x00000002   PAD
-    0x00000114   0x000012ec   Code   RO           12    .text               simpleptidesos.o
-    0x00001400   0x00000284   Code   RO          142    .text               httpd.o
-    0x00001684   0x00000778   Code   RO          215    .text               tcp.o
-    0x00001dfc   0x000003cc   Code   RO          236    .text               udp.o
-    0x000021c8   0x00000c90   Code   RO          262    .text               dhcp.o
-    0x00002e58   0x0000029c   Code   RO          278    .text               inet.o
-    0x000030f4   0x00000208   Code   RO          295    .text               mem.o
-    0x000032fc   0x000000f4   Code   RO          309    .text               memp.o
-    0x000033f0   0x00000178   Code   RO          335    .text               netif.o
-    0x00003568   0x000003f0   Code   RO          351    .text               pbuf.o
-    0x00003958   0x00000150   Code   RO          365    .text               raw.o
-    0x00003aa8   0x00000010   Code   RO          378    .text               stats.o
-    0x00003ab8   0x00000d24   Code   RO          400    .text               tcp_in.o
-    0x000047dc   0x00000738   Code   RO          418    .text               tcp_out.o
-    0x00004f14   0x000001a0   Code   RO          448    .text               icmp.o
-    0x000050b4   0x000002f8   Code   RO          460    .text               ip.o
-    0x000053ac   0x00000030   Code   RO          473    .text               ip_addr.o
-    0x000053dc   0x00000644   Code   RO          507    .text               etharp.o
-    0x00005a20   0x00000380   Code   RO          521    .text               luminaryif.o
-    0x00005da0   0x0000019c   Code   RO          559    .text               lmi_fs.o
-    0x00005f3c   0x0000034c   Code   RO          592    .text               enet_lwip.o
-    0x00006288   0x00000abc   Code   RO          622    .text               protocol.o
-    0x00006d44   0x000000ac   Code   RO          634    .text               ptpd_timer.o
-    0x00006df0   0x00000edc   Code   RO          665    .text               ptpd_msg.o
-    0x00007ccc   0x00000404   Code   RO          677    .text               ptpd_net.o
-    0x000080d0   0x0000021c   Code   RO          689    .text               ptpd_servo.o
-    0x000082ec   0x00000128   Code   RO          702    .text               arith.o
-    0x00008414   0x00000558   Code   RO          714    .text               bmc.o
-    0x0000896c   0x000001a8   Code   RO          726    .text               random.o
-    0x00008b14   0x00000380   Code   RO          740    .text               ustdlib.o
-    0x00008e94   0x0000039c   Code   RO          760    .text               rit128x96x4.o
-    0x00009230   0x00000014   Code   RO         2282    .text               cpu.o(DriverLib.lib)
-    0x00009244   0x00000040   Code   RO         2291    .text               perror.o(mc_w.l)
-    0x00009284   0x00000064   Code   RO         2293    .text               ldiv.o(mc_w.l)
-    0x000092e8   0x00000024   Code   RO         2295    .text               memcpya.o(mc_w.l)
-    0x0000930c   0x00000026   Code   RO         2297    .text               memseta.o(mc_w.l)
-    0x00009332   0x0000002c   Code   RO         2299    .text               strstr.o(mc_w.l)
-    0x0000935e   0x00000018   Code   RO         2301    .text               strncpy.o(mc_w.l)
-    0x00009376   0x00000012   Code   RO         2303    .text               strchr.o(mc_w.l)
-    0x00009388   0x00000010   Code   RO         2305    .text               strlen.o(mc_w.l)
-    0x00009398   0x0000001a   Code   RO         2307    .text               memcmp.o(mc_w.l)
-    0x000093b2   0x0000001e   Code   RO         2309    .text               strncmp.o(mc_w.l)
-    0x000093d0   0x000001a2   Code   RO         2508    .text               dadd.o(mf_w.l)
-    0x00009572   0x0000001a   Code   RO         2510    .text               dfltu.o(mf_w.l)
-    0x0000958c   0x0000002c   Code   RO         2512    .text               init.o(mc_w.l)
-    0x000095b8   0x00000018   Code   RO         2516    .text               fputs.o(mc_w.l)
-    0x000095d0   0x00000010   Code   RO         2520    .text               fputc.o(mc_w.l)
-    0x000095e0   0x00000026   Code   RO         2524    .text               uidiv.o(mc_w.l)
-    0x00009606   0x00000054   Code   RO         2526    .text               uldiv.o(mc_w.l)
-    0x0000965a   0x00000020   Code   RO         2528    .text               llshl.o(mc_w.l)
-    0x0000967a   0x0000001e   Code   RO         2530    .text               llushr.o(mc_w.l)
-    0x00009698   0x00000098   Code   RO         2532    .text               strerror.o(mc_w.l)
-    0x00009730   0x00000000   Code   RO         2541    .text               iusefp.o(mc_w.l)
-    0x00009730   0x000000c4   Code   RO         2542    .text               depilogue.o(mf_w.l)
-    0x000097f4   0x00000000   Code   RO         2552    .text               iusesemip.o(mc_w.l)
-    0x000097f4   0x0000003a   Code   RO         2560    .text               __dczerorl.o(mc_w.l)
-    0x0000982e   0x00000002   PAD
-    0x00009830   0x00000000   Code   RO         2507    c$$printf_stubs     stubs.o(mc_w.l)
-    0x00009830   0x00000014   Code   RO          803    i.EthernetConfigGet  ethernet.o(DriverLib.lib)
-    0x00009844   0x0000002a   Code   RO          802    i.EthernetConfigSet  ethernet.o(DriverLib.lib)
-    0x0000986e   0x00000022   Code   RO          806    i.EthernetEnable    ethernet.o(DriverLib.lib)
-    0x00009890   0x00000010   Code   RO          801    i.EthernetInitExpClk  ethernet.o(DriverLib.lib)
-    0x000098a0   0x00000004   Code   RO          819    i.EthernetIntClear  ethernet.o(DriverLib.lib)
-    0x000098a4   0x0000000a   Code   RO          817    i.EthernetIntDisable  ethernet.o(DriverLib.lib)
-    0x000098ae   0x00000008   Code   RO          816    i.EthernetIntEnable  ethernet.o(DriverLib.lib)
-    0x000098b6   0x0000000e   Code   RO          818    i.EthernetIntStatus  ethernet.o(DriverLib.lib)
-    0x000098c4   0x00000032   Code   RO          805    i.EthernetMACAddrGet  ethernet.o(DriverLib.lib)
-    0x000098f6   0x00000036   Code   RO          804    i.EthernetMACAddrSet  ethernet.o(DriverLib.lib)
-    0x0000992c   0x0000000c   Code   RO          808    i.EthernetPacketAvail  ethernet.o(DriverLib.lib)
-    0x00009938   0x0000000a   Code   RO          809    i.EthernetSpaceAvail  ethernet.o(DriverLib.lib)
-    0x00009942   0x00000002   PAD
-    0x00009944   0x00000038   Code   RO         1000    i.FlashUserGet      flash.o(DriverLib.lib)
-    0x0000997c   0x00000028   Code   RO         1123    i.GPIODirModeSet    gpio.o(DriverLib.lib)
-    0x000099a4   0x000000b0   Code   RO         1127    i.GPIOPadConfigSet  gpio.o(DriverLib.lib)
-    0x00009a54   0x0000001c   Code   RO         1141    i.GPIOPinTypeGPIOOutput  gpio.o(DriverLib.lib)
-    0x00009a70   0x0000001c   Code   RO         1146    i.GPIOPinTypeSSI    gpio.o(DriverLib.lib)
-    0x00009a8c   0x0000001c   Code   RO         1148    i.GPIOPinTypeUART   gpio.o(DriverLib.lib)
-    0x00009aa8   0x00000006   Code   RO         1136    i.GPIOPinWrite      gpio.o(DriverLib.lib)
-    0x00009aae   0x00000068   Code   RO         1342    i.IntDisable        interrupt.o(DriverLib.lib)
-    0x00009b16   0x00000068   Code   RO         1341    i.IntEnable         interrupt.o(DriverLib.lib)
-    0x00009b7e   0x0000000a   Code   RO         1334    i.IntMasterDisable  interrupt.o(DriverLib.lib)
-    0x00009b88   0x0000000a   Code   RO         1333    i.IntMasterEnable   interrupt.o(DriverLib.lib)
-    0x00009b92   0x00000002   PAD
-    0x00009b94   0x00000028   Code   RO         1339    i.IntPrioritySet    interrupt.o(DriverLib.lib)
-    0x00009bbc   0x0000004a   Code   RO         1427    i.SSIConfigSetExpClk  ssi.o(DriverLib.lib)
-    0x00009c06   0x0000000e   Code   RO         1438    i.SSIDataGet        ssi.o(DriverLib.lib)
-    0x00009c14   0x00000012   Code   RO         1439    i.SSIDataGetNonBlocking  ssi.o(DriverLib.lib)
-    0x00009c26   0x0000000c   Code   RO         1436    i.SSIDataPut        ssi.o(DriverLib.lib)
-    0x00009c32   0x0000000a   Code   RO         1429    i.SSIDisable        ssi.o(DriverLib.lib)
-    0x00009c3c   0x0000000a   Code   RO         1428    i.SSIEnable         ssi.o(DriverLib.lib)
-    0x00009c46   0x00000002   PAD
-    0x00009c48   0x00000140   Code   RO         1573    i.SysCtlClockGet    sysctl.o(DriverLib.lib)
-    0x00009d88   0x00000120   Code   RO         1572    i.SysCtlClockSet    sysctl.o(DriverLib.lib)
-    0x00009ea8   0x00000020   Code   RO         1550    i.SysCtlPeripheralEnable  sysctl.o(DriverLib.lib)
-    0x00009ec8   0x00000038   Code   RO         1549    i.SysCtlPeripheralReset  sysctl.o(DriverLib.lib)
-    0x00009f00   0x0000000e   Code   RO         1847    i.SysTickEnable     systick.o(DriverLib.lib)
-    0x00009f0e   0x0000000e   Code   RO         1851    i.SysTickIntEnable  systick.o(DriverLib.lib)
-    0x00009f1c   0x0000000a   Code   RO         1854    i.SysTickPeriodGet  systick.o(DriverLib.lib)
-    0x00009f26   0x0000000a   Code   RO         1853    i.SysTickPeriodSet  systick.o(DriverLib.lib)
-    0x00009f30   0x00000008   Code   RO         1855    i.SysTickValueGet   systick.o(DriverLib.lib)
-    0x00009f38   0x0000001c   Code   RO         1921    i.TimerConfigure    timer.o(DriverLib.lib)
-    0x00009f54   0x00000018   Code   RO         1924    i.TimerControlEvent  timer.o(DriverLib.lib)
-    0x00009f6c   0x00000010   Code   RO         1920    i.TimerDisable      timer.o(DriverLib.lib)
-    0x00009f7c   0x0000000e   Code   RO         1919    i.TimerEnable       timer.o(DriverLib.lib)
-    0x00009f8a   0x00000004   Code   RO         1940    i.TimerIntClear     timer.o(DriverLib.lib)
-    0x00009f8e   0x0000000a   Code   RO         1938    i.TimerIntDisable   timer.o(DriverLib.lib)
-    0x00009f98   0x00000008   Code   RO         1937    i.TimerIntEnable    timer.o(DriverLib.lib)
-    0x00009fa0   0x00000012   Code   RO         1930    i.TimerLoadSet      timer.o(DriverLib.lib)
-    0x00009fb2   0x00000012   Code   RO         1928    i.TimerPrescaleSet  timer.o(DriverLib.lib)
-    0x00009fc4   0x0000000a   Code   RO         1932    i.TimerValueGet     timer.o(DriverLib.lib)
-    0x00009fce   0x00000054   Code   RO         2100    i.UARTConfigSetExpClk  uart.o(DriverLib.lib)
-    0x0000a022   0x00000004   Code   RO         2116    i.UARTIntClear      uart.o(DriverLib.lib)
-    0x0000a026   0x00000008   Code   RO         2113    i.UARTIntEnable     uart.o(DriverLib.lib)
-    0x0000a02e   0x0000000a   Code   RO         2115    i.UARTIntStatus     uart.o(DriverLib.lib)
-    0x0000a038   0x00000020   Code   RO         2348    i.__0printf_1       printf1.o(mc_w.l)
-    0x0000a058   0x00000028   Code   RO         2350    i.__0sprintf_1      printf1.o(mc_w.l)
-    0x0000a080   0x00000008   Code   RO         2534    i.__aeabi_errno_addr  errno.o(mc_w.l)
-    0x0000a088   0x0000000e   Code   RO         2554    i.__scatterload_copy  handlers.o(mc_w.l)
-    0x0000a096   0x00000002   Code   RO         2556    i.__scatterload_null  handlers.o(mc_w.l)
-    0x0000a098   0x0000000e   Code   RO         2555    i.__scatterload_zeroinit  handlers.o(mc_w.l)
-    0x0000a0a6   0x00000002   PAD
-    0x0000a0a8   0x0000014c   Code   RO         2345    i._printf_core      printf1.o(mc_w.l)
-    0x0000a1f4   0x0000000a   Code   RO         2352    i._sputc            printf1.o(mc_w.l)
-    0x0000a1fe   0x00000002   PAD
-    0x0000a200   0x0000005a   Data   RO           14    .constdata          simpleptidesos.o
-    0x0000a25a   0x0000000d   Data   RO          217    .constdata          tcp.o
-    0x0000a267   0x00000001   PAD
-    0x0000a268   0x0000002c   Data   RO          310    .constdata          memp.o
-    0x0000a294   0x00000004   Data   RO          474    .constdata          ip_addr.o
-    0x0000a298   0x00000004   Data   RO          475    .constdata          ip_addr.o
-    0x0000a29c   0x00000006   Data   RO          508    .constdata          etharp.o
-    0x0000a2a2   0x00000002   PAD
-    0x0000a2a4   0x00000010   Data   RO          560    .constdata          lmi_fs.o
-    0x0000a2b4   0x00000147   Data   RO          561    .constdata          lmi_fs.o
-    0x0000a3fb   0x00000504   Data   RO          562    .constdata          lmi_fs.o
-    0x0000a8ff   0x0000044f   Data   RO          563    .constdata          lmi_fs.o
-    0x0000ad4e   0x00000220   Data   RO          564    .constdata          lmi_fs.o
-    0x0000af6e   0x00000002   PAD
-    0x0000af70   0x00000010   Data   RO          565    .constdata          lmi_fs.o
-    0x0000af80   0x00000010   Data   RO          566    .constdata          lmi_fs.o
-    0x0000af90   0x00000010   Data   RO          567    .constdata          lmi_fs.o
-    0x0000afa0   0x0000001c   Data   RO          741    .constdata          ustdlib.o
-    0x0000afbc   0x0000023b   Data   RO          762    .constdata          rit128x96x4.o
-    0x0000b1f7   0x00000001   PAD
-    0x0000b1f8   0x00000060   Data   RO         1343    .constdata          interrupt.o(DriverLib.lib)
-    0x0000b258   0x0000009c   Data   RO         1586    .constdata          sysctl.o(DriverLib.lib)
-    0x0000b2f4   0x0000001c   Data   RO           18    .conststring        simpleptidesos.o
-    0x0000b310   0x00000030   Data   RO           20    .conststring        simpleptidesos.o
-    0x0000b340   0x00000011   Data   RO          742    .conststring        ustdlib.o
-    0x0000b351   0x00000003   PAD
-    0x0000b354   0x00000020   Data   RO         2553    Region$$Table       anon$$obj.o
+    0x00000114   0x00001038   Code   RO           12    .text               simpleptidesos.o
+    0x0000114c   0x00000284   Code   RO          149    .text               httpd.o
+    0x000013d0   0x00000778   Code   RO          222    .text               tcp.o
+    0x00001b48   0x000003cc   Code   RO          243    .text               udp.o
+    0x00001f14   0x00000c90   Code   RO          269    .text               dhcp.o
+    0x00002ba4   0x0000029c   Code   RO          285    .text               inet.o
+    0x00002e40   0x00000208   Code   RO          302    .text               mem.o
+    0x00003048   0x000000f4   Code   RO          316    .text               memp.o
+    0x0000313c   0x00000178   Code   RO          342    .text               netif.o
+    0x000032b4   0x000003f0   Code   RO          358    .text               pbuf.o
+    0x000036a4   0x00000150   Code   RO          372    .text               raw.o
+    0x000037f4   0x00000010   Code   RO          385    .text               stats.o
+    0x00003804   0x00000d24   Code   RO          407    .text               tcp_in.o
+    0x00004528   0x00000738   Code   RO          425    .text               tcp_out.o
+    0x00004c60   0x000001a0   Code   RO          455    .text               icmp.o
+    0x00004e00   0x000002f8   Code   RO          467    .text               ip.o
+    0x000050f8   0x00000030   Code   RO          480    .text               ip_addr.o
+    0x00005128   0x00000644   Code   RO          514    .text               etharp.o
+    0x0000576c   0x00000380   Code   RO          528    .text               luminaryif.o
+    0x00005aec   0x0000019c   Code   RO          566    .text               lmi_fs.o
+    0x00005c88   0x0000034c   Code   RO          599    .text               enet_lwip.o
+    0x00005fd4   0x00000abc   Code   RO          629    .text               protocol.o
+    0x00006a90   0x000000ac   Code   RO          641    .text               ptpd_timer.o
+    0x00006b3c   0x00000edc   Code   RO          672    .text               ptpd_msg.o
+    0x00007a18   0x00000404   Code   RO          684    .text               ptpd_net.o
+    0x00007e1c   0x0000021c   Code   RO          696    .text               ptpd_servo.o
+    0x00008038   0x00000128   Code   RO          709    .text               arith.o
+    0x00008160   0x00000558   Code   RO          721    .text               bmc.o
+    0x000086b8   0x000001a8   Code   RO          733    .text               random.o
+    0x00008860   0x00000380   Code   RO          747    .text               ustdlib.o
+    0x00008be0   0x000002ec   Code   RO          767    .text               phpd.o
+    0x00008ecc   0x0000039c   Code   RO          781    .text               rit128x96x4.o
+    0x00009268   0x00000014   Code   RO         2303    .text               cpu.o(DriverLib.lib)
+    0x0000927c   0x00000040   Code   RO         2312    .text               perror.o(mc_w.l)
+    0x000092bc   0x00000064   Code   RO         2314    .text               ldiv.o(mc_w.l)
+    0x00009320   0x00000024   Code   RO         2316    .text               memcpya.o(mc_w.l)
+    0x00009344   0x00000026   Code   RO         2318    .text               memseta.o(mc_w.l)
+    0x0000936a   0x0000002c   Code   RO         2320    .text               strstr.o(mc_w.l)
+    0x00009396   0x00000018   Code   RO         2322    .text               strncpy.o(mc_w.l)
+    0x000093ae   0x00000012   Code   RO         2324    .text               strchr.o(mc_w.l)
+    0x000093c0   0x00000010   Code   RO         2326    .text               strlen.o(mc_w.l)
+    0x000093d0   0x0000001a   Code   RO         2328    .text               memcmp.o(mc_w.l)
+    0x000093ea   0x0000001e   Code   RO         2330    .text               strncmp.o(mc_w.l)
+    0x00009408   0x000001a2   Code   RO         2529    .text               dadd.o(mf_w.l)
+    0x000095aa   0x0000001a   Code   RO         2531    .text               dfltu.o(mf_w.l)
+    0x000095c4   0x0000002c   Code   RO         2533    .text               init.o(mc_w.l)
+    0x000095f0   0x00000018   Code   RO         2537    .text               fputs.o(mc_w.l)
+    0x00009608   0x00000010   Code   RO         2541    .text               fputc.o(mc_w.l)
+    0x00009618   0x00000026   Code   RO         2545    .text               uidiv.o(mc_w.l)
+    0x0000963e   0x00000054   Code   RO         2547    .text               uldiv.o(mc_w.l)
+    0x00009692   0x00000020   Code   RO         2549    .text               llshl.o(mc_w.l)
+    0x000096b2   0x0000001e   Code   RO         2551    .text               llushr.o(mc_w.l)
+    0x000096d0   0x00000098   Code   RO         2553    .text               strerror.o(mc_w.l)
+    0x00009768   0x00000000   Code   RO         2562    .text               iusefp.o(mc_w.l)
+    0x00009768   0x000000c4   Code   RO         2563    .text               depilogue.o(mf_w.l)
+    0x0000982c   0x00000000   Code   RO         2573    .text               iusesemip.o(mc_w.l)
+    0x0000982c   0x0000003a   Code   RO         2581    .text               __dczerorl.o(mc_w.l)
+    0x00009866   0x00000002   PAD
+    0x00009868   0x00000000   Code   RO         2528    c$$printf_stubs     stubs.o(mc_w.l)
+    0x00009868   0x00000014   Code   RO          824    i.EthernetConfigGet  ethernet.o(DriverLib.lib)
+    0x0000987c   0x0000002a   Code   RO          823    i.EthernetConfigSet  ethernet.o(DriverLib.lib)
+    0x000098a6   0x00000022   Code   RO          827    i.EthernetEnable    ethernet.o(DriverLib.lib)
+    0x000098c8   0x00000010   Code   RO          822    i.EthernetInitExpClk  ethernet.o(DriverLib.lib)
+    0x000098d8   0x00000004   Code   RO          840    i.EthernetIntClear  ethernet.o(DriverLib.lib)
+    0x000098dc   0x0000000a   Code   RO          838    i.EthernetIntDisable  ethernet.o(DriverLib.lib)
+    0x000098e6   0x00000008   Code   RO          837    i.EthernetIntEnable  ethernet.o(DriverLib.lib)
+    0x000098ee   0x0000000e   Code   RO          839    i.EthernetIntStatus  ethernet.o(DriverLib.lib)
+    0x000098fc   0x00000032   Code   RO          826    i.EthernetMACAddrGet  ethernet.o(DriverLib.lib)
+    0x0000992e   0x00000036   Code   RO          825    i.EthernetMACAddrSet  ethernet.o(DriverLib.lib)
+    0x00009964   0x0000000c   Code   RO          829    i.EthernetPacketAvail  ethernet.o(DriverLib.lib)
+    0x00009970   0x0000000a   Code   RO          830    i.EthernetSpaceAvail  ethernet.o(DriverLib.lib)
+    0x0000997a   0x00000002   PAD
+    0x0000997c   0x00000038   Code   RO         1021    i.FlashUserGet      flash.o(DriverLib.lib)
+    0x000099b4   0x00000028   Code   RO         1144    i.GPIODirModeSet    gpio.o(DriverLib.lib)
+    0x000099dc   0x000000b0   Code   RO         1148    i.GPIOPadConfigSet  gpio.o(DriverLib.lib)
+    0x00009a8c   0x0000001c   Code   RO         1162    i.GPIOPinTypeGPIOOutput  gpio.o(DriverLib.lib)
+    0x00009aa8   0x0000001c   Code   RO         1167    i.GPIOPinTypeSSI    gpio.o(DriverLib.lib)
+    0x00009ac4   0x00000006   Code   RO         1157    i.GPIOPinWrite      gpio.o(DriverLib.lib)
+    0x00009aca   0x00000068   Code   RO         1363    i.IntDisable        interrupt.o(DriverLib.lib)
+    0x00009b32   0x00000068   Code   RO         1362    i.IntEnable         interrupt.o(DriverLib.lib)
+    0x00009b9a   0x0000000a   Code   RO         1355    i.IntMasterDisable  interrupt.o(DriverLib.lib)
+    0x00009ba4   0x0000000a   Code   RO         1354    i.IntMasterEnable   interrupt.o(DriverLib.lib)
+    0x00009bae   0x00000002   PAD
+    0x00009bb0   0x00000028   Code   RO         1360    i.IntPrioritySet    interrupt.o(DriverLib.lib)
+    0x00009bd8   0x0000004a   Code   RO         1448    i.SSIConfigSetExpClk  ssi.o(DriverLib.lib)
+    0x00009c22   0x0000000e   Code   RO         1459    i.SSIDataGet        ssi.o(DriverLib.lib)
+    0x00009c30   0x00000012   Code   RO         1460    i.SSIDataGetNonBlocking  ssi.o(DriverLib.lib)
+    0x00009c42   0x0000000c   Code   RO         1457    i.SSIDataPut        ssi.o(DriverLib.lib)
+    0x00009c4e   0x0000000a   Code   RO         1450    i.SSIDisable        ssi.o(DriverLib.lib)
+    0x00009c58   0x0000000a   Code   RO         1449    i.SSIEnable         ssi.o(DriverLib.lib)
+    0x00009c62   0x00000002   PAD
+    0x00009c64   0x00000140   Code   RO         1594    i.SysCtlClockGet    sysctl.o(DriverLib.lib)
+    0x00009da4   0x00000120   Code   RO         1593    i.SysCtlClockSet    sysctl.o(DriverLib.lib)
+    0x00009ec4   0x00000020   Code   RO         1571    i.SysCtlPeripheralEnable  sysctl.o(DriverLib.lib)
+    0x00009ee4   0x00000038   Code   RO         1570    i.SysCtlPeripheralReset  sysctl.o(DriverLib.lib)
+    0x00009f1c   0x0000000e   Code   RO         1868    i.SysTickEnable     systick.o(DriverLib.lib)
+    0x00009f2a   0x0000000e   Code   RO         1872    i.SysTickIntEnable  systick.o(DriverLib.lib)
+    0x00009f38   0x0000000a   Code   RO         1875    i.SysTickPeriodGet  systick.o(DriverLib.lib)
+    0x00009f42   0x0000000a   Code   RO         1874    i.SysTickPeriodSet  systick.o(DriverLib.lib)
+    0x00009f4c   0x00000008   Code   RO         1876    i.SysTickValueGet   systick.o(DriverLib.lib)
+    0x00009f54   0x0000001c   Code   RO         1942    i.TimerConfigure    timer.o(DriverLib.lib)
+    0x00009f70   0x00000018   Code   RO         1945    i.TimerControlEvent  timer.o(DriverLib.lib)
+    0x00009f88   0x00000010   Code   RO         1941    i.TimerDisable      timer.o(DriverLib.lib)
+    0x00009f98   0x0000000e   Code   RO         1940    i.TimerEnable       timer.o(DriverLib.lib)
+    0x00009fa6   0x00000004   Code   RO         1961    i.TimerIntClear     timer.o(DriverLib.lib)
+    0x00009faa   0x0000000a   Code   RO         1959    i.TimerIntDisable   timer.o(DriverLib.lib)
+    0x00009fb4   0x00000008   Code   RO         1958    i.TimerIntEnable    timer.o(DriverLib.lib)
+    0x00009fbc   0x00000012   Code   RO         1951    i.TimerLoadSet      timer.o(DriverLib.lib)
+    0x00009fce   0x00000012   Code   RO         1949    i.TimerPrescaleSet  timer.o(DriverLib.lib)
+    0x00009fe0   0x0000000a   Code   RO         1953    i.TimerValueGet     timer.o(DriverLib.lib)
+    0x00009fea   0x00000004   Code   RO         2137    i.UARTIntClear      uart.o(DriverLib.lib)
+    0x00009fee   0x0000000a   Code   RO         2136    i.UARTIntStatus     uart.o(DriverLib.lib)
+    0x00009ff8   0x00000020   Code   RO         2369    i.__0printf_1       printf1.o(mc_w.l)
+    0x0000a018   0x00000028   Code   RO         2371    i.__0sprintf_1      printf1.o(mc_w.l)
+    0x0000a040   0x00000008   Code   RO         2555    i.__aeabi_errno_addr  errno.o(mc_w.l)
+    0x0000a048   0x0000000e   Code   RO         2575    i.__scatterload_copy  handlers.o(mc_w.l)
+    0x0000a056   0x00000002   Code   RO         2577    i.__scatterload_null  handlers.o(mc_w.l)
+    0x0000a058   0x0000000e   Code   RO         2576    i.__scatterload_zeroinit  handlers.o(mc_w.l)
+    0x0000a066   0x00000002   PAD
+    0x0000a068   0x0000014c   Code   RO         2366    i._printf_core      printf1.o(mc_w.l)
+    0x0000a1b4   0x0000000a   Code   RO         2373    i._sputc            printf1.o(mc_w.l)
+    0x0000a1be   0x00000002   PAD
+    0x0000a1c0   0x0000005a   Data   RO           14    .constdata          simpleptidesos.o
+    0x0000a21a   0x0000000d   Data   RO          224    .constdata          tcp.o
+    0x0000a227   0x00000001   PAD
+    0x0000a228   0x0000002c   Data   RO          317    .constdata          memp.o
+    0x0000a254   0x00000004   Data   RO          481    .constdata          ip_addr.o
+    0x0000a258   0x00000004   Data   RO          482    .constdata          ip_addr.o
+    0x0000a25c   0x00000006   Data   RO          515    .constdata          etharp.o
+    0x0000a262   0x00000002   PAD
+    0x0000a264   0x00000010   Data   RO          567    .constdata          lmi_fs.o
+    0x0000a274   0x00000147   Data   RO          568    .constdata          lmi_fs.o
+    0x0000a3bb   0x00000504   Data   RO          569    .constdata          lmi_fs.o
+    0x0000a8bf   0x0000044f   Data   RO          570    .constdata          lmi_fs.o
+    0x0000ad0e   0x00000220   Data   RO          571    .constdata          lmi_fs.o
+    0x0000af2e   0x00000002   PAD
+    0x0000af30   0x00000010   Data   RO          572    .constdata          lmi_fs.o
+    0x0000af40   0x00000010   Data   RO          573    .constdata          lmi_fs.o
+    0x0000af50   0x00000010   Data   RO          574    .constdata          lmi_fs.o
+    0x0000af60   0x0000001c   Data   RO          748    .constdata          ustdlib.o
+    0x0000af7c   0x0000023b   Data   RO          783    .constdata          rit128x96x4.o
+    0x0000b1b7   0x00000001   PAD
+    0x0000b1b8   0x00000060   Data   RO         1364    .constdata          interrupt.o(DriverLib.lib)
+    0x0000b218   0x0000009c   Data   RO         1607    .constdata          sysctl.o(DriverLib.lib)
+    0x0000b2b4   0x0000001c   Data   RO           17    .conststring        simpleptidesos.o
+    0x0000b2d0   0x00000030   Data   RO           19    .conststring        simpleptidesos.o
+    0x0000b300   0x00000011   Data   RO          749    .conststring        ustdlib.o
+    0x0000b311   0x00000003   PAD
+    0x0000b314   0x00000020   Data   RO         2574    Region$$Table       anon$$obj.o
 
 
-    Execution Region RW_IRAM1 (Base: 0x20000000, Size: 0x00007590, Max: 0x00010000, ABSOLUTE, COMPRESSED[0x00000054])
+    Execution Region RW_IRAM1 (Base: 0x20000000, Size: 0x00007580, Max: 0x00010000, ABSOLUTE, COMPRESSED[0x00000054])
 
     Base Addr    Size         Type   Attr      Idx    E Section Name        Object
 
     0x20000000   0x000000a0   Data   RW           13    .data               simpleptidesos.o
-    0x200000a0   0x0000001c   Data   RW           17    .data               simpleptidesos.o
-    0x200000bc   0x00000030   Data   RW           19    .data               simpleptidesos.o
-    0x200000ec   0x00000004   Data   RW          143    .data               httpd.o
-    0x200000f0   0x0000001c   Data   RW          216    .data               tcp.o
-    0x2000010c   0x00000008   Data   RW          237    .data               udp.o
-    0x20000114   0x00000004   Data   RW          263    .data               dhcp.o
-    0x20000118   0x00000010   Data   RW          296    .data               mem.o
-    0x20000128   0x0000000c   Data   RW          336    .data               netif.o
-    0x20000134   0x00000004   Data   RW          352    .data               pbuf.o
-    0x20000138   0x00000004   Data   RW          366    .data               raw.o
-    0x2000013c   0x0000001c   Data   RW          401    .data               tcp_in.o
-    0x20000158   0x00000002   Data   RW          461    .data               ip.o
+    0x200000a0   0x0000001c   Data   RW           16    .data               simpleptidesos.o
+    0x200000bc   0x00000030   Data   RW           18    .data               simpleptidesos.o
+    0x200000ec   0x00000004   Data   RW          150    .data               httpd.o
+    0x200000f0   0x0000001c   Data   RW          223    .data               tcp.o
+    0x2000010c   0x00000008   Data   RW          244    .data               udp.o
+    0x20000114   0x00000004   Data   RW          270    .data               dhcp.o
+    0x20000118   0x00000010   Data   RW          303    .data               mem.o
+    0x20000128   0x0000000c   Data   RW          343    .data               netif.o
+    0x20000134   0x00000004   Data   RW          359    .data               pbuf.o
+    0x20000138   0x00000004   Data   RW          373    .data               raw.o
+    0x2000013c   0x0000001c   Data   RW          408    .data               tcp_in.o
+    0x20000158   0x00000002   Data   RW          468    .data               ip.o
     0x2000015a   0x00000002   PAD
-    0x2000015c   0x0000000c   Data   RW          522    .data               luminaryif.o
-    0x20000168   0x00000020   Data   RW          593    .data               enet_lwip.o
-    0x20000188   0x00000004   Data   RW          635    .data               ptpd_timer.o
-    0x2000018c   0x00000004   Data   RW          690    .data               ptpd_servo.o
-    0x20000190   0x00000008   Data   RW          727    .data               random.o
-    0x20000198   0x00000009   Data   RW          761    .data               rit128x96x4.o
-    0x200001a1   0x00000003   PAD
-    0x200001a4   0x00000004   Data   RW         2522    .data               stdout.o(mc_w.l)
-    0x200001a8   0x00000004   Data   RW         2523    .data               stderr.o(mc_w.l)
-    0x200001ac   0x00000004   Data   RW         2537    .data               errno.o(mc_w.l)
-    0x200001b0   0x00000e1c   Zero   RW           15    .bss                simpleptidesos.o
-    0x20000fcc   0x00002328   Zero   RW          144    .bss                httpd.o
-    0x200032f4   0x00000010   Zero   RW          279    .bss                inet.o
-    0x20003304   0x00001008   Zero   RW          297    .bss                mem.o
-    0x2000430c   0x00000bf7   Zero   RW          311    .bss                memp.o
-    0x20004f03   0x00002303   Zero   RW          353    .bss                pbuf.o
-    0x20007206   0x00000114   Zero   RW          379    .bss                stats.o
-    0x2000731a   0x00000002   PAD
-    0x2000731c   0x00000014   Zero   RW          402    .bss                tcp_in.o
-    0x20007330   0x000000c8   Zero   RW          509    .bss                etharp.o
-    0x200073f8   0x00000024   Zero   RW          523    .bss                luminaryif.o
-    0x2000741c   0x00000034   Zero   RW          594    .bss                enet_lwip.o
-    0x20007450   0x00000040   Zero   RW          728    .bss                random.o
-    0x20007490   0x00000100   Zero   RW            1    STACK               startup.o
+    0x2000015c   0x0000000c   Data   RW          529    .data               luminaryif.o
+    0x20000168   0x00000020   Data   RW          600    .data               enet_lwip.o
+    0x20000188   0x00000004   Data   RW          642    .data               ptpd_timer.o
+    0x2000018c   0x00000004   Data   RW          697    .data               ptpd_servo.o
+    0x20000190   0x00000008   Data   RW          734    .data               random.o
+    0x20000198   0x0000000c   Data   RW          768    .data               phpd.o
+    0x200001a4   0x00000009   Data   RW          782    .data               rit128x96x4.o
+    0x200001ad   0x00000003   PAD
+    0x200001b0   0x00000004   Data   RW         2543    .data               stdout.o(mc_w.l)
+    0x200001b4   0x00000004   Data   RW         2544    .data               stderr.o(mc_w.l)
+    0x200001b8   0x00000004   Data   RW         2558    .data               errno.o(mc_w.l)
+    0x200001bc   0x00000004   PAD
+    0x200001c0   0x000006d4   Zero   RW           15    .bss                simpleptidesos.o
+    0x20000894   0x00002328   Zero   RW          151    .bss                httpd.o
+    0x20002bbc   0x00000010   Zero   RW          286    .bss                inet.o
+    0x20002bcc   0x00001008   Zero   RW          304    .bss                mem.o
+    0x20003bd4   0x00000bf7   Zero   RW          318    .bss                memp.o
+    0x200047cb   0x00002303   Zero   RW          360    .bss                pbuf.o
+    0x20006ace   0x00000114   Zero   RW          386    .bss                stats.o
+    0x20006be2   0x00000002   PAD
+    0x20006be4   0x00000014   Zero   RW          409    .bss                tcp_in.o
+    0x20006bf8   0x000000c8   Zero   RW          516    .bss                etharp.o
+    0x20006cc0   0x00000024   Zero   RW          530    .bss                luminaryif.o
+    0x20006ce4   0x00000034   Zero   RW          601    .bss                enet_lwip.o
+    0x20006d18   0x00000040   Zero   RW          735    .bss                random.o
+    0x20006d58   0x00000728   Zero   RW          769    .bss                phpd.o
+    0x20007480   0x00000100   Zero   RW            1    STACK               startup.o
 
 
 ================================================================================
@@ -1908,6 +1926,7 @@ Image component sizes
        244         14         44          0       3063       2778   memp.o
        376         14          0         12          0       4733   netif.o
       1008         12          0          4       8963       5420   pbuf.o
+       748        130          0         12       1832       2913   phpd.o
       2748         36          0          0          0       7852   protocol.o
       3804         84          0          0          0       6833   ptpd_msg.o
       1028        134          0          0          0       5423   ptpd_net.o
@@ -1916,7 +1935,7 @@ Image component sizes
        424         32          0          8         64       1855   random.o
        336          6          0          4          0       3142   raw.o
        924         24        571          9          0       5930   rit128x96x4.o
-      4844        656        166        236       3612      41706   simpleptidesos.o
+      4152        526        166        236       1748      40232   simpleptidesos.o
        252        242          0          0        256        240   startup.o
         16          6          0          0        276       1824   stats.o
       1912         32         13         28          0      14030   tcp.o
@@ -1926,9 +1945,9 @@ Image component sizes
        896         18         45          0          0       3920   ustdlib.o
 
     ------------------------------------------------------------------------
-     37400       1914       4216        420      29664     231031   Object Totals
+     37456       1914       4216        432      29632     232468   Object Totals
          0          0         32          0          0          0   (incl. Generated)
-         0          0          9          5          2          3   (incl. Padding)
+         0          0          9          5          2          1   (incl. Padding)
 
     ------------------------------------------------------------------------
 
@@ -1945,7 +1964,7 @@ Image component sizes
         56          8          0          0          0        520   flash.o
         16          0          0          0          0          0   fputc.o
         24          0          0          0          0          0   fputs.o
-       306          0          0          0          0       3375   gpio.o
+       278          0          0          0          0       2890   gpio.o
         30          0          0          0          0          0   handlers.o
         46         14          0          0          0          0   init.o
        268          4         96          0          0       2917   interrupt.o
@@ -1972,24 +1991,24 @@ Image component sizes
        702         66        156          0          0       3763   sysctl.o
         56          0          0          0          0       1806   systick.o
        150          0          0          0          0       4330   timer.o
-       106          0          0          0          0       2178   uart.o
+        14          0          0          0          0        850   uart.o
         38          0          0          0          0          0   uidiv.o
         84          0          0          0          0          0   uldiv.o
 
     ------------------------------------------------------------------------
-      4072        270        252         12          0      30825   Library Totals
-        16          0          0          0          0          0   (incl. Padding)
+      3952        270        252         12          4      29012   Library Totals
+        16          0          0          0          4          0   (incl. Padding)
 
     ------------------------------------------------------------------------
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Library Name
 
-      2076         82        252          0          0      30825   DriverLib.lib
+      1956         82        252          0          0      29012   DriverLib.lib
       1340        184          0         12          0          0   mc_w.l
        640          4          0          0          0          0   mf_w.l
 
     ------------------------------------------------------------------------
-      4072        270        252         12          0      30825   Library Totals
+      3952        270        252         12          4      29012   Library Totals
 
     ------------------------------------------------------------------------
 
@@ -1998,15 +2017,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-     41472       2184       4468        432      29664     261856   Grand Totals
-     41472       2184       4468         84      29664     261856   ELF Image Totals (compressed)
-     41472       2184       4468         84          0          0   ROM Totals
+     41408       2184       4468        444      29636     261480   Grand Totals
+     41408       2184       4468         84      29636     261480   ELF Image Totals (compressed)
+     41408       2184       4468         84          0          0   ROM Totals
 
 ================================================================================
 
-    Total RO  Size (Code + RO Data)                45940 (  44.86kB)
-    Total RW  Size (RW Data + ZI Data)             30096 (  29.39kB)
-    Total ROM Size (Code + RO Data + RW Data)      46024 (  44.95kB)
+    Total RO  Size (Code + RO Data)                45876 (  44.80kB)
+    Total RW  Size (RW Data + ZI Data)             30080 (  29.38kB)
+    Total ROM Size (Code + RO Data + RW Data)      45960 (  44.88kB)
 
 ================================================================================
 

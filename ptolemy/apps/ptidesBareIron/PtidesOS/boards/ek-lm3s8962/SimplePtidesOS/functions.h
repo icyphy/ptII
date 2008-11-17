@@ -58,3 +58,4 @@ void setTimedInterrupt(long long);
 void timerInit(void);
 long deadline(Actor *this_actor);
 long min(long val1, long val2);
+void timerHandler(Actor*);

@@ -3,6 +3,7 @@
 .\Obj\simpleptidesos.o: C:\workspace\Keil\ARM\RV31\INC\stdlib.h
 .\Obj\simpleptidesos.o: C:\workspace\Keil\ARM\RV31\INC\assert.h
 .\Obj\simpleptidesos.o: C:\workspace\Keil\ARM\RV31\INC\string.h
+.\Obj\simpleptidesos.o: C:\workspace\Keil\ARM\RV31\INC\math.h
 .\Obj\simpleptidesos.o: ../../../hw_ints.h
 .\Obj\simpleptidesos.o: ../../../hw_memmap.h
 .\Obj\simpleptidesos.o: ../../../hw_types.h
@@ -35,3 +36,4 @@
 .\Obj\simpleptidesos.o: ..\..\..\third_party\ptpd-1rc1\src\datatypes.h
 .\Obj\simpleptidesos.o: ..\..\..\third_party\ptpd-1rc1\src\dep-lmi/ptpd_dep.h
 .\Obj\simpleptidesos.o: random.h
+.\Obj\simpleptidesos.o: statics.h
