@@ -82,7 +82,7 @@ test FSMDirector-2.1 {test setting controller} {
 #
 test FSMDirector-3.1 {test getNextIterationTime} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
-    set dir [java::new ptolemy.actor.Director $e0 dir]
+    set dir [java::new ptolemy.domains.de.kernel.DEDirector $e0 dir]
     set e1 [java::new ptolemy.actor.TypedCompositeActor $e0 e1]
     set fsmDir [java::new ptolemy.domains.fsm.kernel.FSMDirector $e1 fsmDir]
     set fsm [java::new ptolemy.domains.fsm.kernel.FSMActor $e1 fsm]
@@ -91,7 +91,7 @@ test FSMDirector-3.1 {test getNextIterationTime} {
     [java::field $fsm initialStateName] setExpression s0
     [java::field $s0 refinementName] setExpression e2
     set e2 [java::new ptolemy.actor.TypedCompositeActor $e1 e2]
-    set dir1 [java::new ptolemy.actor.Director $e2 dir1]
+    set dir1 [java::new ptolemy.domains.de.kernel.DEDirector $e2 dir1]
     $dir preinitialize
     $dir initialize
     set time [java::new ptolemy.actor.util.Time $dir]
@@ -101,7 +101,7 @@ test FSMDirector-3.1 {test getNextIterationTime} {
     $e0 setDirector [java::null]
     set re1 [$fsmDir getNextIterationTime]
     list $re0 $re1
-} {0.0 2.0}
+} {Infinity 2.0}
 
 ######################################################################
 ####
@@ -253,7 +253,7 @@ test FSMDirector-5.1 {test fireAt} {
 #
 test FSMDirector-6.1 {test transferInputs} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
-    set d0 [java::new ptolemy.actor.Director $e0 d0]
+    set d0 [java::new ptolemy.domains.de.kernel.DEDirector $e0 d0]
     set e1 [java::new ptolemy.actor.TypedCompositeActor $e0 e1]
     set dir [java::new ptolemy.domains.fsm.kernel.FSMDirector $e1 dir]
     set e2 [java::new ptolemy.actor.TypedAtomicActor $e1 e2]
