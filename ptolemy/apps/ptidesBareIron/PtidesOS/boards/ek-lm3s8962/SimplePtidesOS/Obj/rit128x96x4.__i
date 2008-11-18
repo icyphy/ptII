@@ -1,1 +1,0 @@
--c --device DLM -D__MICROLIB -g -O0 --apcs=interwork --diag_suppress 3419 -I "C:\workspace\Keil\ARM\INC\Luminary" -o ".\Obj\rit128x96x4.o" --omf_browse ".\Obj\rit128x96x4.crf" --depend ".\Obj\rit128x96x4.d" "..\rit128x96x4.c"

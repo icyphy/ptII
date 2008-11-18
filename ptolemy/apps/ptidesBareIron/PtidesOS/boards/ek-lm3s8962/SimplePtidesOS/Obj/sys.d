@@ -1,9 +1,0 @@
-.\Obj\sys.o: ..\..\..\third_party\lwip-1.2.0\src\core\sys.c
-.\Obj\sys.o: ..\..\..\third_party\lwip-1.2.0\src\include\lwip/sys.h
-.\Obj\sys.o: ..\..\..\third_party\lwip-1.2.0\port\arch/cc.h
-.\Obj\sys.o: ..\..\..\third_party\lwip-1.2.0\port\arch/cpu.h
-.\Obj\sys.o: ..\..\..\third_party\lwip-1.2.0\src\include\lwip/opt.h
-.\Obj\sys.o: .\lwipopts.h
-.\Obj\sys.o: ..\..\..\third_party\lwip-1.2.0\src\include\lwip/debug.h
-.\Obj\sys.o: ..\..\..\third_party\lwip-1.2.0\src\include\lwip/def.h
-.\Obj\sys.o: ..\..\..\third_party\lwip-1.2.0\src\include\lwip/memp.h
