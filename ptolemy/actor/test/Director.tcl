@@ -55,9 +55,9 @@ test Director-2.1 {Constructor tests} {
     $e0 setName E0
     set d3 [java::new ptolemy.actor.Director $e0 D3]
 
-    # These methods could be abstract, but are not for testing purposes
-    # so we call them here
-    $d1 fireAtCurrentTime $e0
+    # This method should be abstract. The current implementation
+    # of fireAt throws an exception
+    #$d1 fireAtCurrentTime $e0
 
     list [$d1 getFullName] [$d2 getFullName] [$d3 getFullName]
 } {.D1 .D2 .E0.D3}
