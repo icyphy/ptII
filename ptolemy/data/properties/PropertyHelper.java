@@ -67,18 +67,20 @@ constraint is relevant to a property-able object. For example,
 the PropertyHelper associated with an actor may have each of its 
 IOPort as property-able. 
 
-A property-able object is an object that can be annotated with 
+<p>A property-able object is an object that can be annotated with 
 a Property object. Users can define different Property class as 
 part of their use-case definition. 
 
-Every PropertyHelper is associated a property solver. PropertyHelpers
-support hierarchical structuring. They may have downward links to 
-sub-helpers. This is helpful to construct PropertyHelper for hierarchical
-component in the model. For example, a PropertyHelper for the CompositeActor 
-have all the contained actors' helpers as its sub-helpers. 
+<p>Every PropertyHelper is associated a property
+solver. PropertyHelpers support hierarchical structuring. They may
+have downward links to sub-helpers. This is helpful to construct
+PropertyHelper for hierarchical component in the model. For example, a
+PropertyHelper for the CompositeActor have all the contained actors'
+helpers as its sub-helpers.
 
-A PropertyHelper supports manual annotation. Users can define their own
-annotation evaluator to evaluate property expressions and/or constraints.
+<p>A PropertyHelper supports manual annotation. Users can define their
+own annotation evaluator to evaluate property expressions and/or
+constraints.
 
 @author Man-Kit Leung
 @version $Id$
@@ -88,10 +90,10 @@ annotation evaluator to evaluate property expressions and/or constraints.
 */
 public abstract class PropertyHelper {
 
-    // /////////////////////////////////////////////////////////////////
-    // // public methods ////
+    ///////////////////////////////////////////////////////////////////
+    ////                 public methods                            ////
 
-    /*
+    /**
      * Return the associated component object.
      * 
      * @return The associated component.
@@ -100,7 +102,7 @@ public abstract class PropertyHelper {
         return _component;
     }
 
-    /*
+    /**
      * Return the container entity for the specified ASTPtRootNode.
      * 
      * @param node The specified ASTPtRootNode.
@@ -117,10 +119,11 @@ public abstract class PropertyHelper {
         return (Entity) container;
     }
 
-    /*
-     * Return the name of the PropertyHelper. In this base class, return the
-     * concatenation of the prefix "Helper_" and the string representation of
-     * the component object. This method does not guarantee uniqueness.
+    /**
+     * Return the name of the PropertyHelper. In this base class,
+     * return the concatenation of the prefix "Helper_" and the string
+     * representation of the component object. This method does not
+     * guarantee uniqueness.
      * 
      * @return The name of the PropertyHelper.
      */
@@ -128,25 +131,25 @@ public abstract class PropertyHelper {
         return "Helper_" + _component.toString();
     }
 
-    /*
+    /**
      * Return a list of property-able objects.
      * 
      * @return a list of property-able objects.
      * 
-     * @throws IllegalActionException Thrown if the subclass throws it.
+     * @exception IllegalActionException Thrown if the subclass throws it.
      */
     public abstract List<Object> getPropertyables()
             throws IllegalActionException;
 
-    /*
-     * Return a list of property-able objects that are of the specified Class.
+    /**
+     * Return a list of property-able objects that are of the
+     * specified Class.
      * 
      * @param filter The specified Class to filter the return list.
-     * 
-     * @return A list of property-able objects that are of the specified Class.
-     * 
-     * @throws IllegalActionException Thrown if {@link #getPropertyables()}
-     * throws it.
+     * @return A list of property-able objects that are of the specified
+     * Class.
+     * @exception IllegalActionException Thrown if 
+     * {@link #getPropertyables()} throws it.
      */
     public List<Object> getPropertyables(Class filter)
             throws IllegalActionException {
@@ -169,14 +172,14 @@ public abstract class PropertyHelper {
         return _solver;
     }
 
-    /*
-     * Reset and initialize the PropertyHelper. This clears and any cached
-     * states and the resolved properties of the property-able objects. This
-     * call is recursive, so every sub-helper will be reset and initialized
-     * after the call.
+    /**
+     * Reset and initialize the PropertyHelper. This clears any
+     * cached states and the resolved properties of the property-able
+     * objects. This call is recursive, so every sub-helper will be
+     * reset and initialized after the call.
      * 
-     * @throws IllegalActionException Thrown if {@link #getPropertyables()}
-     * throws it.
+     * @exception IllegalActionException Thrown if
+     * {@link #getPropertyables()} throws it.
      */
     public void reinitialize() throws IllegalActionException {
         boolean record = _solver.isResolve() || _solver._isInvoked;
@@ -239,7 +242,7 @@ public abstract class PropertyHelper {
         }
     }
 
-    /*
+    /**
      * Associate this PropertyHelper with the specified component.
      * 
      * @param component The specified component.
@@ -248,7 +251,7 @@ public abstract class PropertyHelper {
         this._component = _component;
     }
 
-    /*
+    /**
      * Set the property of specified object equal to the specified property.
      * 
      * @param object The specified object.
@@ -260,7 +263,7 @@ public abstract class PropertyHelper {
         _solver.markAsNonSettable(object);
     }
 
-    /*
+    /**
      * Return the string representation of the PropertyHelper.
      * 
      * @return The string representation of the PropertyHelper.
@@ -269,18 +272,18 @@ public abstract class PropertyHelper {
         return getName() + " " + super.toString();
     }
 
-    // ///////////////////////////////////////////////////////////////////
-    // // public inner classes ////
+    /////////////////////////////////////////////////////////////////////
+    ////          public inner classes                               ////
 
-    /*
-     * A class that defines a channel object. A channel object is specified by
-     * its port and its channel index in that port.
+    /**
+     * A class that defines a channel object. A channel object is
+     * specified by its port and its channel index in that port.
      */
     public static class Channel {
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
 
-        /*
+        /**
          * Construct a Channel with the specified port and channel number.
          * 
          * @param portObject The specified port.
@@ -292,14 +295,14 @@ public abstract class PropertyHelper {
             channelNumber = channel;
         }
 
-        /*
+        /**
          * Return true if this channel is the same as the specified object;
          * otherwise, false.
          * 
          * @param object The specified object.
          * 
-         * @return True if this channel is the same reference as the specified
-         * object, otherwise false;
+         * @return True if this channel is the same reference as the
+         * specified object, otherwise false;
          */
         public boolean equals(Object object) {
             return object instanceof Channel
@@ -307,7 +310,7 @@ public abstract class PropertyHelper {
                     && channelNumber == ((Channel) object).channelNumber;
         }
 
-        /*
+        /**
          * Return the hash code for this channel.
          * 
          * @return Hash code for this channel.
@@ -318,7 +321,7 @@ public abstract class PropertyHelper {
             return port.hashCode() + channelNumber;
         }
 
-        /*
+        /**
          * Return the string representation of the channel.
          * 
          * @return The string representation of the channel.
@@ -327,21 +330,21 @@ public abstract class PropertyHelper {
             return port.getName() + "_" + channelNumber;
         }
 
-        /*
+        /**
          * The port of the channel.
          */
         public IOPort port;
 
-        /*
+        /**
          * The channel number of the channel.
          */
         public int channelNumber;
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // protected methods ////
+    ///////////////////////////////////////////////////////////////////
+    ////               protected methods                           ////
 
-    /*
+    /**
      * Create an new ParseTreeAnnotationEvaluator that is tailored for the
      * use-case.
      * 
@@ -349,7 +352,7 @@ public abstract class PropertyHelper {
      */
     protected abstract ParseTreeAnnotationEvaluator _annotationEvaluator();
 
-    /*
+    /**
      * Return the ParseTreeAnnotationEvaluator. This will creates a new
      * ParseTreeAnnotationEvaluator if it does not already exists.
      * 
@@ -362,10 +365,10 @@ public abstract class PropertyHelper {
         return _annotationEvaluator;
     }
 
-    /*
+    /**
      * Return the list of PropertyHelpers for ASTPtRootNodes. These
-     * ASTPtRootNodes are nodes of the parse tree constructed from parsing the
-     * expression of every property-able Attribute.
+     * ASTPtRootNodes are nodes of the parse tree constructed from
+     * parsing the expression of every property-able Attribute.
      * 
      * @return The list of PropertyHelpers for ASTPtRootNodes.
      */
@@ -389,7 +392,7 @@ public abstract class PropertyHelper {
         return astHelpers;
     }
 
-    /*
+    /**
      * Return the list of parse trees for all property-able Attributes.
      * 
      * @return The list of ASTPtRootNodes.
@@ -419,7 +422,7 @@ public abstract class PropertyHelper {
         return result;
     }
 
-    /*
+    /**
      * Return the list of property-able Attributes.
      * 
      * @return The list of property-able Attributes.
@@ -487,9 +490,10 @@ public abstract class PropertyHelper {
         return result;
     }
 
-    /*
-     * Return the list of receiving (down-stream) ports that are connected to
-     * the specified port. This treats every port as an opaque port.
+    /**
+     * Return the list of receiving (down-stream) ports that are
+     * connected to the specified port. This treats every port as an
+     * opaque port.
      * 
      * @param port The specified port.
      * 
@@ -512,9 +516,10 @@ public abstract class PropertyHelper {
         return result;
     }
 
-    /*
-     * Return the list of sending (up-stream) ports that are connected to the
-     * specified port. This treats every port as an opaque port.
+    /**
+     * Return the list of sending (up-stream) ports that are connected
+     * to the specified port. This treats every port as an opaque
+     * port.
      * 
      * @param port The specified port.
      * 
@@ -537,32 +542,32 @@ public abstract class PropertyHelper {
         return result;
     }
 
-    /*
+    /**
      * Return the list of sub-helpers.
      * 
      * @return The list of sub-helpers.
      * 
-     * @throws IllegalActionException Thrown if the sub-class throws it.
+     * @exception IllegalActionException Thrown if the sub-class throws it.
      */
     protected abstract List<PropertyHelper> _getSubHelpers()
             throws IllegalActionException;
 
-    /*
+    /**
      * Return the ASTPtRootNode for the specified Attribute.
      * 
      * @param attribute The specified attribute.
      * 
      * @return The ASTPtRootNode for the specified Attribute.
      * 
-     * @throws IllegalActionException Thrown if
-     * PropertySolver.getParseTree(Attribute) throws it.
+     * @exception IllegalActionException Thrown if
+     * {#link ptolemy.data.properties.PropertySolver#getParseTree(Attribute)} throws it.
      */
     protected ASTPtRootNode getParseTree(Attribute attribute)
             throws IllegalActionException {
         return _solver.getParseTree(attribute);
     }
 
-    /*
+    /**
      * Record the association between the specified ASTPtRootNode and the
      * specified Attribute.
      * 
@@ -574,25 +579,24 @@ public abstract class PropertyHelper {
         _solver.getSharedUtilities().putAttribute(node, attribute);
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // protected variables ////
+    ///////////////////////////////////////////////////////////////////
+    ////       protected variables                                 ////
 
-    /* The annotation evaluator. */
+    /** The annotation evaluator. */
     protected ParseTreeAnnotationEvaluator _annotationEvaluator;
 
-    /* The associated property solver. */
+    /** The associated property solver. */
     protected PropertySolver _solver;
 
-    // /////////////////////////////////////////////////////////////////
-    // // private methods ////
+    ///////////////////////////////////////////////////////////////////
+    ////       private methods                                     ////
 
     /*
      * Evaluate the expression of the specified AnnotationAttribute.
      * 
      * @param annotation The specified AnnotationAttribute.
-     * 
-     * @throws IllegalActionException Thrown there is an error parsing or
-     * evaluating the annotation.
+     * @exception IllegalActionException Thrown there is an error
+     * parsing or evaluating the annotation.
      */
     private void _evaluateAnnotation(AnnotationAttribute annotation)
             throws IllegalActionException {
