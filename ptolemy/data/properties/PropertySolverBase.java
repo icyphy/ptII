@@ -50,7 +50,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 
-
 //////////////////////////////////////////////////////////////////////////
 ////PropertySolverBase
 
@@ -90,86 +89,95 @@ into a constraint solver.
 */
 public abstract class PropertySolverBase extends Attribute {
 
-    /**
-     * Construct a PropertySolverBase with the specified container
-     * and name. If this is the first PropertySolver created in the
-     * model, the shared utility object will also be created.
+    /*
+     * Construct a PropertySolverBase with the specified container and name. If
+     * this is the first PropertySolver created in the model, the shared utility
+     * object will also be created.
+     * 
      * @param container The specified container.
+     * 
      * @param name The specified name.
-     * @exception IllegalActionException If the PropertySolverBase is 
-     * not of an acceptable attribute for the container.
-     * @exception NameDuplicationException If the name coincides with
-     * an attribute already in the container.
+     * 
+     * @exception IllegalActionException If the PropertySolverBase is not of an
+     * acceptable attribute for the container.
+     * 
+     * @exception NameDuplicationException If the name coincides with an
+     * attribute already in the container.
      */
-    public PropertySolverBase(NamedObj container, String name) 
-    throws IllegalActionException, NameDuplicationException {
+    public PropertySolverBase(NamedObj container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        sharedUtilitiesWrapper = new SharedParameter(
-                this, "sharedUtilitiesWrapper", PropertySolver.class);
+        sharedUtilitiesWrapper = new SharedParameter(this,
+                "sharedUtilitiesWrapper", PropertySolver.class);
         sharedUtilitiesWrapper.setPersistent(false);
         sharedUtilitiesWrapper.setVisibility(Settable.NONE);
 
         // **We can only create a new shared utilities object
         // only once per model.
         if (sharedUtilitiesWrapper.getExpression().length() == 0) {
-            sharedUtilitiesWrapper.setToken(new ObjectToken(new SharedUtilities()));
+            sharedUtilitiesWrapper.setToken(new ObjectToken(
+                    new SharedUtilities()));
         }
 
-        Collection<SharedParameter> parameters = sharedUtilitiesWrapper.sharedParameterSet();
+        Collection<SharedParameter> parameters = sharedUtilitiesWrapper
+                .sharedParameterSet();
         for (SharedParameter parameter : parameters) {
             parameters = parameter.sharedParameterSet();
         }
 
-
-        _sharedUtilities = (SharedUtilities) ((ObjectToken) 
-                sharedUtilitiesWrapper.getToken()).getValue();
+        _sharedUtilities = (SharedUtilities) ((ObjectToken) sharedUtilitiesWrapper
+                .getToken()).getValue();
 
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
+    // /////////////////////////////////////////////////////////////////
+    // // ports and parameters ////
 
-    /**
+    /*
      * The shared parameter that links together every solver in the same model.
      */
     public SharedParameter sharedUtilitiesWrapper;
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-    
-    /**
-     * Add the given unique solver (user-case) identifier to the 
-     * dependency list. A dependent solver is one whose analysis 
-     * result is required for this solver's resolution. The dependent
-     * solvers are run in order before invoking this solver.
+
+    // /////////////////////////////////////////////////////////////////
+    // // public methods ////
+
+    /*
+     * Add the given unique solver (user-case) identifier to the dependency
+     * list. A dependent solver is one whose analysis result is required for
+     * this solver's resolution. The dependent solvers are run in order before
+     * invoking this solver.
+     * 
      * @param userCaseName The specified user case name.
      */
     public void addDependentUseCase(String userCaseName) {
         _dependentUseCases.add(userCaseName);
     }
 
-    /**
-     * Clear the resolved property for the specified object.
-     * The object is assumed to be property-able; otherwise, 
-     * nothing happens.
+    /*
+     * Clear the resolved property for the specified object. The object is
+     * assumed to be property-able; otherwise, nothing happens.
+     * 
      * @param object The specified object.
      */
     public void clearResolvedProperty(Object object) {
         _resolvedProperties.remove(object);
     }
 
-    /**
-     * Find a solver that is associated with the specified label. A solver
-     * can be identified by the use-case name, class name, or its name 
-     * in the model. There can be more than one solvers with the label. 
-     * This method returns whichever it finds first.
-     * @param identifier The specified label. 
+    /*
+     * Find a solver that is associated with the specified label. A solver can
+     * be identified by the use-case name, class name, or its name in the model.
+     * There can be more than one solvers with the label. This method returns
+     * whichever it finds first.
+     * 
+     * @param identifier The specified label.
+     * 
      * @return The property solver associated with the specified label.
-     * @throws IllegalActionException Thrown if no matched solver
-     *  is found.
+     * 
+     * @throws IllegalActionException Thrown if no matched solver is found.
      */
-    public PropertySolver findSolver(String identifier) throws PropertyResolutionException {
+    public PropertySolver findSolver(String identifier)
+            throws PropertyResolutionException {
 
         for (PropertySolver solver : getAllSolvers(sharedUtilitiesWrapper)) {
             if (solver.getUseCaseName().equals(identifier)) {
@@ -183,12 +191,13 @@ public abstract class PropertySolverBase extends Attribute {
             }
         }
 
-        throw new PropertyResolutionException(this,
-                "Cannot find \"" + identifier + "\" solver.");
-    }  
-    
-    /**
+        throw new PropertyResolutionException(this, "Cannot find \""
+                + identifier + "\" solver.");
+    }
+
+    /*
      * Return the list of all PropertyHelpers associated with this solver.
+     * 
      * @return The list of PropertyHelpers.
      */
     public List<PropertyHelper> getAllHelpers() {
@@ -212,12 +221,14 @@ public abstract class PropertySolverBase extends Attribute {
         return result;
     }
 
-    /**
-     * Return the list of all property-able objects obtained from
-     * every PropertyHelper.
+    /*
+     * Return the list of all property-able objects obtained from every
+     * PropertyHelper.
+     * 
      * @return The list of all property-able objects.
-     * @throws IllegalActionException Thrown if 
-     * {@link #getAllPropertyables()} throws it.
+     * 
+     * @throws IllegalActionException Thrown if {@link #getAllPropertyables()}
+     * throws it.
      */
     public List getAllPropertyables() throws IllegalActionException {
         List result = new LinkedList();
@@ -228,39 +239,45 @@ public abstract class PropertySolverBase extends Attribute {
         return result;
     }
 
-
-    /**
-     * The list of all solvers that are in the same model.
-     * They are linked by the specified SharedParameter.
-     * @param sharedParameter The specified SharedParameter links together
-     * the solvers.
+    /*
+     * The list of all solvers that are in the same model. They are linked by
+     * the specified SharedParameter.
+     * 
+     * @param sharedParameter The specified SharedParameter links together the
+     * solvers.
+     * 
      * @return A list of PropertySolvers.
      */
-    public static List<PropertySolver> getAllSolvers(SharedParameter sharedParameter) {
-        List<NamedObj> parameters = new ArrayList<NamedObj>(sharedParameter.sharedParameterSet());
-        List<PropertySolver>  solvers= new LinkedList<PropertySolver>();
+    public static List<PropertySolver> getAllSolvers(
+            SharedParameter sharedParameter) {
+        List<NamedObj> parameters = new ArrayList<NamedObj>(sharedParameter
+                .sharedParameterSet());
+        List<PropertySolver> solvers = new LinkedList<PropertySolver>();
         for (NamedObj parameter : parameters) {
             Object container = parameter.getContainer();
             if (container instanceof PropertySolver) {
                 solvers.add((PropertySolver) container);
             }
         }
-        return solvers;        
+        return solvers;
     }
 
-    /**
-     * Get the attribute that corresponds to the specified ASTPtRootNode.
-     * This assumes that the correspondence is recorded previously
-     * through calling PropertyHelper.putAttribute(ASTPtRootNode, Attribute).
+    /*
+     * Get the attribute that corresponds to the specified ASTPtRootNode. This
+     * assumes that the correspondence is recorded previously through calling
+     * PropertyHelper.putAttribute(ASTPtRootNode, Attribute).
+     * 
      * @param node The specified ASTPtRootNode.
+     * 
      * @return The attribute associated with the specified ASTPtRootNode.
-     * @throws AssertionError Thrown if the specified node does not have
-     * a corresponding attribute.
+     * 
+     * @throws AssertionError Thrown if the specified node does not have a
+     * corresponding attribute.
      */
     public Attribute getAttribute(ASTPtRootNode node) {
         Node root = node;
-        Map<ASTPtRootNode, Attribute> attributes = 
-            getSharedUtilities().getAttributes();
+        Map<ASTPtRootNode, Attribute> attributes = getSharedUtilities()
+                .getAttributes();
 
         while (root.jjtGetParent() != null) {
             if (attributes.containsKey(root)) {
@@ -270,44 +287,49 @@ public abstract class PropertySolverBase extends Attribute {
         }
 
         if (!attributes.containsKey(root)) {
-            throw new AssertionError(node.toString() +
-                    " does not have a corresponding attribute.");
+            throw new AssertionError(node.toString()
+                    + " does not have a corresponding attribute.");
         }
 
         return attributes.get(root);
     }
 
-
-    /**
-     * Return the list of dependent solvers. The list contains the
-     * unique name of the solvers.
+    /*
+     * Return the list of dependent solvers. The list contains the unique name
+     * of the solvers.
+     * 
      * @return The list of dependent solvers.
      */
     public List<String> getDependentSolvers() {
         return _dependentUseCases;
     }
-    
-    /**
-     * Return the extended use-case name. The extended use-case name
-     * is an unique label for a use-case.
+
+    /*
+     * Return the extended use-case name. The extended use-case name is an
+     * unique label for a use-case.
+     * 
      * @return the extended use-case name.
      */
     public abstract String getExtendedUseCaseName();
 
-    /**
-     * Return the property helper for the specified component. 
+    /*
+     * Return the property helper for the specified component.
+     * 
      * @param component The specified component.
+     * 
      * @return The property helper for the component.
-     * @throws IllegalActionException Thrown if the helper cannot
-     *  be found or instantiated.
+     * 
+     * @throws IllegalActionException Thrown if the helper cannot be found or
+     * instantiated.
      */
-    public PropertyHelper getHelper(Object object) 
-    throws IllegalActionException {
-        return (PropertyHelper) _getHelper(object);
+    public PropertyHelper getHelper(Object object)
+            throws IllegalActionException {
+        return _getHelper(object);
     }
 
-    /**
+    /*
      * Return the expression parser.
+     * 
      * @return The expression parser.
      */
     public static PtParser getParser() {
@@ -315,18 +337,21 @@ public abstract class PropertySolverBase extends Attribute {
             _parser = new PtParser();
         }
         return _parser;
-    }    
-    
-    /**
+    }
+
+    /*
      * Return the root ASTPtRootNode associated with the specified attribute.
+     * 
      * @param attribute The specified attribute.
+     * 
      * @return The root ASTPtRootNode associated with the specified attribute.
+     * 
      * @throws IllegalActionException
      */
-    public ASTPtRootNode getParseTree(Attribute attribute) 
-    throws IllegalActionException {
-        Map<Attribute, ASTPtRootNode> parseTrees = 
-            getSharedUtilities().getParseTrees();
+    public ASTPtRootNode getParseTree(Attribute attribute)
+            throws IllegalActionException {
+        Map<Attribute, ASTPtRootNode> parseTrees = getSharedUtilities()
+                .getParseTrees();
 
         if (!parseTrees.containsKey(attribute)) {
 
@@ -337,10 +362,10 @@ public abstract class PropertySolverBase extends Attribute {
             }
 
             ASTPtRootNode parseTree;
-            //          if ((attribute instanceof StringAttribute) || 
-            //          ((attribute instanceof Variable 
-            //          && ((Variable) attribute).isStringMode()))) {
-            if ((attribute instanceof Variable) 
+            // if ((attribute instanceof StringAttribute) ||
+            // ((attribute instanceof Variable
+            // && ((Variable) attribute).isStringMode()))) {
+            if ((attribute instanceof Variable)
                     && ((Variable) attribute).isStringMode()) {
 
                 parseTree = getParser().generateStringParseTree(expression);
@@ -355,34 +380,40 @@ public abstract class PropertySolverBase extends Attribute {
         return parseTrees.get(attribute);
     }
 
-    /**
-     * Return the property value associated with the specified object.  
+    /*
+     * Return the property value associated with the specified object.
+     * 
      * @param object The specified object.
-     * @return The property of the specified object. 
+     * 
+     * @return The property of the specified object.
      */
     public Property getProperty(Object object) {
         return getResolvedProperty(object);
     }
 
-    /**
-     * Return the resolved property for the specified object. This
-     * forces resolution to happen if the object's property is not
-     * present.
+    /*
+     * Return the resolved property for the specified object. This forces
+     * resolution to happen if the object's property is not present.
+     * 
      * @param object The specified object
+     * 
      * @return The resolved property for the specified object.
      */
     public Property getResolvedProperty(Object object) {
         return getResolvedProperty(object, true);
     }
 
-    /**
-     * Return the resolved property for the specified object. 
+    /*
+     * Return the resolved property for the specified object.
+     * 
      * @param object The specified object
+     * 
      * @param resolve
+     * 
      * @return The resolved property for the specified object.
      */
     public Property getResolvedProperty(Object object, boolean resolve) {
-        Property property = (Property) _resolvedProperties.get(object);
+        Property property = _resolvedProperties.get(object);
 
         // See if it is already resolved.
         if (property != null) {
@@ -391,106 +422,112 @@ public abstract class PropertySolverBase extends Attribute {
 
         // Get from the PropertyAttribute in the model.
         if (object instanceof NamedObj) {
-            PropertyAttribute attribute = 
-                (PropertyAttribute) ((NamedObj) object)
-                .getAttribute(getExtendedUseCaseName());
+            PropertyAttribute attribute = (PropertyAttribute) ((NamedObj) object)
+                    .getAttribute(getExtendedUseCaseName());
 
             if ((attribute != null) && (attribute.getProperty() != null)) {
                 return attribute.getProperty();
-            }            
+            }
         }
 
         // Try resolve the property.
         try {
-            if (resolve && !getSharedUtilities
-                    ().getRanSolvers().contains(this)) {
+            if (resolve && !getSharedUtilities().getRanSolvers().contains(this)) {
                 resolveProperties();
             }
         } catch (KernelException ex) {
-            throw new InternalErrorException(
-                    KernelException.stackTraceToString(ex));
+            throw new InternalErrorException(KernelException
+                    .stackTraceToString(ex));
         }
 
-        return (Property) _resolvedProperties.get(object);
+        return _resolvedProperties.get(object);
     }
 
-    /**
-     * Return the shared utility object. 
-     * @return The shared utility object. 
+    /*
+     * Return the shared utility object.
+     * 
+     * @return The shared utility object.
      */
     public SharedUtilities getSharedUtilities() {
-        return _sharedUtilities; 
+        return _sharedUtilities;
     }
 
-    /**
-     * Return the use-case name. The use-case name is not guaranteed
-     * to be unique.
+    /*
+     * Return the use-case name. The use-case name is not guaranteed to be
+     * unique.
+     * 
      * @return The use-case name.
      */
     public abstract String getUseCaseName();
 
-    /**
-     * Mark the property of the specified object as non-settable. 
-     * The specified object has a fixed assigned property.
+    /*
+     * Mark the property of the specified object as non-settable. The specified
+     * object has a fixed assigned property.
+     * 
      * @param object The specified object.
      */
     public void markAsNonSettable(Object object) {
         _nonSettables.add(object);
     }
 
-    /**
+    /*
      * Reset the solver.
      */
     public void reset() {
         _resolvedProperties = new HashMap<Object, Property>();
         _nonSettables = new HashSet<Object>();
-        _helperStore = new HashMap<Object, PropertyHelper>();    
+        _helperStore = new HashMap<Object, PropertyHelper>();
     }
 
-    /**
-     * Reset every solver in the model. 
+    /*
+     * Reset every solver in the model.
      */
-    public void resetAll() {     
+    public void resetAll() {
         _parser = null;
         for (PropertySolver solver : getAllSolvers(sharedUtilitiesWrapper)) {
             solver.reset();
         }
-        getSharedUtilities().resetAll();        
+        getSharedUtilities().resetAll();
     }
 
-    /**
+    /*
      * Perform property resolution.
+     * 
      * @throws KernelException Thrown if sub-class throws it.
      */
     public abstract void resolveProperties() throws KernelException;
 
-    /**
+    /*
      * Set the resolved property of the specified object.
+     * 
      * @param object The specified object.
+     * 
      * @param property The specified property.
      */
     public void setResolvedProperty(Object object, Property property) {
         _resolvedProperties.put(object, property);
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
+    // /////////////////////////////////////////////////////////////////
+    // // protected methods ////
 
-    /**
-     * Return the PropertyHelper for the specified component. 
+    /*
+     * Return the PropertyHelper for the specified component.
+     * 
      * @param component The specified component.
+     * 
      * @return The PropertyHelper.
-     * @throws IllegalActionException Thrown if the PropertyHelper cannot
-     * be instantiated.
+     * 
+     * @throws IllegalActionException Thrown if the PropertyHelper cannot be
+     * instantiated.
      */
-    protected PropertyHelper _getHelper(Object component) 
-    throws IllegalActionException {
+    protected PropertyHelper _getHelper(Object component)
+            throws IllegalActionException {
         if (_helperStore.containsKey(component)) {
-            return (PropertyHelper) _helperStore.get(component);
+            return _helperStore.get(component);
         }
 
-        if ((component instanceof IOPort) || 
-                (component instanceof Attribute)) {
+        if ((component instanceof IOPort) || (component instanceof Attribute)) {
             return _getHelper(((NamedObj) component).getContainer());
         }
 
@@ -504,13 +541,13 @@ public abstract class PropertySolverBase extends Attribute {
 
                 // FIXME: Is this the right error message?
                 if (!componentClass.getName().contains("ptolemy")) {
-                    throw new IllegalActionException("There is no " +
-                    		"property helper for " + component.getClass());
+                    throw new IllegalActionException("There is no "
+                            + "property helper for " + component.getClass());
                 }
 
                 helperClass = Class.forName((componentClass.getName()
-                        .replaceFirst("ptolemy", packageName))
-                        .replaceFirst(".configuredSolvers.", "."));
+                        .replaceFirst("ptolemy", packageName)).replaceFirst(
+                        ".configuredSolvers.", "."));
 
             } catch (ClassNotFoundException e) {
                 // If helper class cannot be found, search the helper class
@@ -523,90 +560,89 @@ public abstract class PropertySolverBase extends Attribute {
         Class solverClass = getClass();
         while (constructor == null && solverClass != null) {
             try {
-                constructor = helperClass.getConstructor(
-                        new Class[] { solverClass, componentClass });                
+                constructor = helperClass.getConstructor(new Class[] {
+                        solverClass, componentClass });
 
-            } catch (NoSuchMethodException ex) {            
+            } catch (NoSuchMethodException ex) {
                 solverClass = solverClass.getSuperclass();
             }
         }
 
         if (constructor == null) {
             throw new IllegalActionException(
-                    "Cannot find constructor method in " 
-                    + helperClass.getName());
+                    "Cannot find constructor method in "
+                            + helperClass.getName());
         }
 
         Object helperObject = null;
 
         try {
-            helperObject = constructor.newInstance(new Object[] { 
-                    this, component });
+            helperObject = constructor.newInstance(new Object[] { this,
+                    component });
 
         } catch (Exception ex) {
             throw new IllegalActionException(null, ex,
-            "Failed to create the helper class for property constraints.");
+                    "Failed to create the helper class for property constraints.");
         }
 
         if (!(helperObject instanceof PropertyHelper)) {
             throw new IllegalActionException(
-                    "Cannot resolve property for this component: "
-                    + component + ". Its helper class does not"
-                    + " implement PropertyHelper.");
-        }        
-        _helperStore.put(component, (PropertyHelper)helperObject);
+                    "Cannot resolve property for this component: " + component
+                            + ". Its helper class does not"
+                            + " implement PropertyHelper.");
+        }
+        _helperStore.put(component, (PropertyHelper) helperObject);
 
         return (PropertyHelper) helperObject;
     }
 
-    /**
+    /*
      * Return the package name that contains the class of this solver.
-     * @return The package name. 
+     * 
+     * @return The package name.
      */
     protected String _getPackageName() {
         return getClass().getPackage().getName() + "." + getUseCaseName();
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
+    // /////////////////////////////////////////////////////////////////
+    // // protected variables ////
 
-    /**
+    /*
      * The list that keeps track of the dependencies on other use-cases.
-     * Circular dependencies are not allowed but it is up to the user
-     * to enforce this requirement. This means that there should not
-     * be a case where two solvers' use-cases exist in each other's 
-     * dependency list. 
+     * Circular dependencies are not allowed but it is up to the user to enforce
+     * this requirement. This means that there should not be a case where two
+     * solvers' use-cases exist in each other's dependency list.
      */
     protected List<String> _dependentUseCases = new LinkedList<String>();
 
-    /** The HashMap that caches components and their PropertyHelper objects.
+    /*
+     * The HashMap that caches components and their PropertyHelper objects.
      */
-    protected HashMap<Object, PropertyHelper> _helperStore = 
-        new HashMap<Object, PropertyHelper>();
+    protected HashMap<Object, PropertyHelper> _helperStore = new HashMap<Object, PropertyHelper>();
 
-    /**
-     * The set of property-able objects that have non-settable property.
-     * A non-settable property results from setting an object with 
-     * a fixed property through PropertyHelper.setEquals().
+    /*
+     * The set of property-able objects that have non-settable property. A
+     * non-settable property results from setting an object with a fixed
+     * property through PropertyHelper.setEquals().
      */
     protected HashSet<Object> _nonSettables = new HashSet<Object>();
 
-    /** 
-     * The HashMap that caches property-able objects and their
-     * Property values. Each mapping is a pair of Object and Property. 
+    /*
+     * The HashMap that caches property-able objects and their Property values.
+     * Each mapping is a pair of Object and Property.
      */
-    protected HashMap<Object, Property> _resolvedProperties = 
-        new HashMap<Object, Property>();
-    
-    /**
+    protected HashMap<Object, Property> _resolvedProperties = new HashMap<Object, Property>();
+
+    /*
      * The shared utility object.
      */
     protected SharedUtilities _sharedUtilities;
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
 
-    /**
+    // /////////////////////////////////////////////////////////////////
+    // // private variables ////
+
+    /*
      * The expression parser.
      */
     private static PtParser _parser;

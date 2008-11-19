@@ -88,20 +88,23 @@ annotation evaluator to evaluate property expressions and/or constraints.
 */
 public abstract class PropertyHelper {
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    // /////////////////////////////////////////////////////////////////
+    // // public methods ////
 
-    /**
+    /*
      * Return the associated component object.
+     * 
      * @return The associated component.
      */
     public Object getComponent() {
         return _component;
     }
 
-    /**
+    /*
      * Return the container entity for the specified ASTPtRootNode.
+     * 
      * @param node The specified ASTPtRootNode.
+     * 
      * @return The container entity for the specified ASTPtRootNode.
      */
     public Entity getContainerEntity(ASTPtRootNode node) {
@@ -114,36 +117,39 @@ public abstract class PropertyHelper {
         return (Entity) container;
     }
 
-    /**
-     * Return the name of the PropertyHelper. In this base class,
-     * return the concatenation of the prefix "Helper_" and the 
-     * string representation of the component object. This method
-     * does not guarantee uniqueness.
+    /*
+     * Return the name of the PropertyHelper. In this base class, return the
+     * concatenation of the prefix "Helper_" and the string representation of
+     * the component object. This method does not guarantee uniqueness.
+     * 
      * @return The name of the PropertyHelper.
      */
     public String getName() {
         return "Helper_" + _component.toString();
     }
 
-    /**
+    /*
      * Return a list of property-able objects.
+     * 
      * @return a list of property-able objects.
+     * 
      * @throws IllegalActionException Thrown if the subclass throws it.
      */
-    public abstract List<Object> getPropertyables() 
-    throws IllegalActionException;
+    public abstract List<Object> getPropertyables()
+            throws IllegalActionException;
 
-    /**
-     * Return a list of property-able objects that are of
-     * the specified Class.
+    /*
+     * Return a list of property-able objects that are of the specified Class.
+     * 
      * @param filter The specified Class to filter the return list.
-     * @return A list of property-able objects that are of
-     * the specified Class.
+     * 
+     * @return A list of property-able objects that are of the specified Class.
+     * 
      * @throws IllegalActionException Thrown if {@link #getPropertyables()}
      * throws it.
      */
-    public List<Object> getPropertyables(Class filter) 
-    throws IllegalActionException {
+    public List<Object> getPropertyables(Class filter)
+            throws IllegalActionException {
         List<Object> list = new LinkedList<Object>();
 
         for (Object object : getPropertyables()) {
@@ -154,26 +160,27 @@ public abstract class PropertyHelper {
         return list;
     }
 
-    /**
+    /*
      * Return The PropertySolver that uses this helper.
+     * 
      * @return The PropertySolver that uses this helper.
      */
     public PropertySolver getSolver() {
         return _solver;
     }
 
-    /**
-     * Reset and initialize the PropertyHelper.
-     * This clears and any cached states and the resolved properties of 
-     * the property-able objects. This call is recursive, so every
-     * sub-helper will be reset and initialized after the call. 
+    /*
+     * Reset and initialize the PropertyHelper. This clears and any cached
+     * states and the resolved properties of the property-able objects. This
+     * call is recursive, so every sub-helper will be reset and initialized
+     * after the call.
+     * 
      * @throws IllegalActionException Thrown if {@link #getPropertyables()}
      * throws it.
      */
     public void reinitialize() throws IllegalActionException {
         boolean record = _solver.isResolve() || _solver._isInvoked;
         boolean clearShowInfo = _solver.isResolve();
-
 
         if (_solver.isManualAnnotate()) {
             for (AnnotationAttribute annotation : _getAnnotationAttributes()) {
@@ -185,9 +192,9 @@ public abstract class PropertyHelper {
 
             // Remove all PropertyAttributes.
             if (propertyable instanceof NamedObj) {
-                NamedObj namedObj = (NamedObj) propertyable; 
-                PropertyAttribute attribute = (PropertyAttribute) 
-                namedObj.getAttribute(_solver.getExtendedUseCaseName());
+                NamedObj namedObj = (NamedObj) propertyable;
+                PropertyAttribute attribute = (PropertyAttribute) namedObj
+                        .getAttribute(_solver.getExtendedUseCaseName());
 
                 if (attribute != null) {
                     // Clear the property under two cases:
@@ -195,8 +202,8 @@ public abstract class PropertyHelper {
                     // 2. The solver is invoked under testing mode.
                     if (record) {
 
-                        _solver.recordPreviousProperty(
-                                propertyable, attribute.getProperty());
+                        _solver.recordPreviousProperty(propertyable, attribute
+                                .getProperty());
 
                         // Remove the property attribute.
                         try {
@@ -217,81 +224,92 @@ public abstract class PropertyHelper {
                 if (clearShowInfo) {
                     // Clear the expression of the _showInfo attribute.
                     // It will be updated later.
-                    StringParameter showAttribute = 
-                        (StringParameter) namedObj.getAttribute("_showInfo");            
-                    if (showAttribute != null) {                
+                    StringParameter showAttribute = (StringParameter) namedObj
+                            .getAttribute("_showInfo");
+                    if (showAttribute != null) {
                         showAttribute.setExpression("");
                     }
-                }         
-            }            
-        }        
+                }
+            }
+        }
 
         // The recursive case.
         for (PropertyHelper helper : _getSubHelpers()) {
             helper.reinitialize();
         }
     }
-    
-    /**
+
+    /*
      * Associate this PropertyHelper with the specified component.
+     * 
      * @param component The specified component.
      */
     public void setComponent(Object _component) {
         this._component = _component;
     }
 
-    /**
+    /*
      * Set the property of specified object equal to the specified property.
+     * 
      * @param object The specified object.
+     * 
      * @param property The specified property.
      */
     public void setEquals(Object object, Property property) {
         _solver.setResolvedProperty(object, property);
-        _solver.markAsNonSettable(object);        
+        _solver.markAsNonSettable(object);
     }
 
-    /**
+    /*
      * Return the string representation of the PropertyHelper.
+     * 
      * @return The string representation of the PropertyHelper.
      */
     public String toString() {
         return getName() + " " + super.toString();
-    }    
+    }
 
-    /////////////////////////////////////////////////////////////////////
-    ////                      public inner classes                   ////
-    
-    /** A class that defines a channel object. A channel object is
-     *  specified by its port and its channel index in that port.
+    // ///////////////////////////////////////////////////////////////////
+    // // public inner classes ////
+
+    /*
+     * A class that defines a channel object. A channel object is specified by
+     * its port and its channel index in that port.
      */
     public static class Channel {
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
-    
-        /** Construct a Channel with the specified port and channel number.
+
+        /*
+         * Construct a Channel with the specified port and channel number.
+         * 
          * @param portObject The specified port.
+         * 
          * @param channel The specified channel number.
          */
         public Channel(IOPort portObject, int channel) {
             port = portObject;
             channelNumber = channel;
         }
-    
-        /**
-         * Return true if this channel is the same as the specified 
-         * object; otherwise, false.
+
+        /*
+         * Return true if this channel is the same as the specified object;
+         * otherwise, false.
+         * 
          * @param object The specified object.
-         * @return True if this channel is the same reference as the 
-         * specified object, otherwise false;
+         * 
+         * @return True if this channel is the same reference as the specified
+         * object, otherwise false;
          */
         public boolean equals(Object object) {
             return object instanceof Channel
-            && port.equals(((Channel) object).port)
-            && channelNumber == ((Channel) object).channelNumber;
+                    && port.equals(((Channel) object).port)
+                    && channelNumber == ((Channel) object).channelNumber;
         }
-    
-        /**
-         * Return the hash code for this channel. 
+
+        /*
+         * Return the hash code for this channel.
+         * 
          * @return Hash code for this channel.
          */
         public int hashCode() {
@@ -299,37 +317,42 @@ public abstract class PropertyHelper {
             // the equality of channels.
             return port.hashCode() + channelNumber;
         }
-    
-        /**
+
+        /*
          * Return the string representation of the channel.
+         * 
          * @return The string representation of the channel.
          */
         public String toString() {
             return port.getName() + "_" + channelNumber;
         }
-    
-        /** The port of the channel.
+
+        /*
+         * The port of the channel.
          */
         public IOPort port;
-    
-        /** The channel number of the channel.
+
+        /*
+         * The channel number of the channel.
          */
         public int channelNumber;
     }
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
 
-    /** 
-     * Create an new ParseTreeAnnotationEvaluator that is tailored 
-     * for the use-case. 
+    // /////////////////////////////////////////////////////////////////
+    // // protected methods ////
+
+    /*
+     * Create an new ParseTreeAnnotationEvaluator that is tailored for the
+     * use-case.
+     * 
      * @return A new ParseTreeAnnotationEvaluator.
      */
     protected abstract ParseTreeAnnotationEvaluator _annotationEvaluator();
 
-    /**
+    /*
      * Return the ParseTreeAnnotationEvaluator. This will creates a new
      * ParseTreeAnnotationEvaluator if it does not already exists.
+     * 
      * @return The ParseTreeAnnotationEvaluator.
      */
     protected final ParseTreeAnnotationEvaluator _getAnnotationEvaluator() {
@@ -339,21 +362,22 @@ public abstract class PropertyHelper {
         return _annotationEvaluator;
     }
 
-    /**
-     * Return the list of PropertyHelpers for ASTPtRootNodes. These 
-     * ASTPtRootNodes are nodes of the parse tree constructed from
-     * parsing the expression of every property-able Attribute.
+    /*
+     * Return the list of PropertyHelpers for ASTPtRootNodes. These
+     * ASTPtRootNodes are nodes of the parse tree constructed from parsing the
+     * expression of every property-able Attribute.
+     * 
      * @return The list of PropertyHelpers for ASTPtRootNodes.
      */
     protected List<PropertyHelper> _getASTNodeHelpers() {
         List<PropertyHelper> astHelpers = new ArrayList<PropertyHelper>();
-        ParseTreeASTNodeHelperCollector collector = 
-            new ParseTreeASTNodeHelperCollector();
+        ParseTreeASTNodeHelperCollector collector = new ParseTreeASTNodeHelperCollector();
 
         for (ASTPtRootNode root : _getAttributeParseTrees()) {
             if (root != null) {
                 try {
-                    List<PropertyHelper> helpers = collector.collectHelpers(root, getSolver());
+                    List<PropertyHelper> helpers = collector.collectHelpers(
+                            root, getSolver());
                     astHelpers.addAll(helpers);
                 } catch (IllegalActionException ex) {
                     // This means the expression is not parse-able.
@@ -365,9 +389,9 @@ public abstract class PropertyHelper {
         return astHelpers;
     }
 
-    
-    /**
-     * Return the list of parse trees for all property-able Attributes. 
+    /*
+     * Return the list of parse trees for all property-able Attributes.
+     * 
      * @return The list of ASTPtRootNodes.
      */
     protected List<ASTPtRootNode> _getAttributeParseTrees() {
@@ -384,179 +408,207 @@ public abstract class PropertyHelper {
                 ASTPtRootNode pt = getParseTree(attribute);
                 if (pt != null) {
                     result.add(pt);
-                }                
+                }
             } catch (IllegalActionException ex) {
                 // This means the expression is not parse-able.
                 // FIXME: So, we will discard it for now.
-                //System.out.println(KernelException.stackTraceToString(ex));
+                // System.out.println(KernelException.stackTraceToString(ex));
                 throw new AssertionError(ex);
             }
         }
         return result;
     }
 
-    /**
+    /*
      * Return the list of property-able Attributes.
+     * 
      * @return The list of property-able Attributes.
      */
     protected List<Attribute> _getPropertyableAttributes() {
         List<Attribute> result = new LinkedList<Attribute>();
-        Iterator attributes = 
-            ((Entity) getComponent()).attributeList().iterator();
+        Iterator attributes = ((Entity) getComponent()).attributeList()
+                .iterator();
 
         while (attributes.hasNext()) {
-            Attribute attribute = (Attribute)attributes.next();
+            Attribute attribute = (Attribute) attributes.next();
 
             // only consider StringAttributes, ignore all subclasses
-            if (attribute.getClass().equals(ptolemy.kernel.util.StringAttribute.class))  {
-                if ((((StringAttribute)attribute).getName().equalsIgnoreCase("guardTransition")) ||
-                        ((((StringAttribute)attribute).getContainer() instanceof Expression)) && 
-                        ((StringAttribute)attribute).getName().equalsIgnoreCase("expression")) {
+            if (attribute.getClass().equals(
+                    ptolemy.kernel.util.StringAttribute.class)) {
+                if ((((StringAttribute) attribute).getName()
+                        .equalsIgnoreCase("guardTransition"))
+                        || ((((StringAttribute) attribute).getContainer() instanceof Expression))
+                        && ((StringAttribute) attribute).getName()
+                                .equalsIgnoreCase("expression")) {
 
-                    result.add((Attribute) attribute);
-                }             
+                    result.add(attribute);
+                }
             } else if (attribute instanceof Variable) {
                 if (((Variable) attribute).getVisibility() == Settable.FULL) {
 
-                    // filter Parameters with certain names; ignore all subclasses
+                    // filter Parameters with certain names; ignore all
+                    // subclasses
                     if (attribute instanceof PortParameter) {
-                        result.add((Attribute) attribute);
-                    } else if ((attribute.getClass().equals(ptolemy.data.expr.Parameter.class)) ||
-                            (attribute.getClass().equals(ptolemy.data.expr.StringParameter.class))) {
+                        result.add(attribute);
+                    } else if ((attribute.getClass()
+                            .equals(ptolemy.data.expr.Parameter.class))
+                            || (attribute.getClass()
+                                    .equals(ptolemy.data.expr.StringParameter.class))) {
 
-//                      FIXME: implement filter interface, so that helper classes can specify which attributes
-//                      need to be filtered (either by name or by class)
-//                      Currently all filtered attributes need to be specified here                        
-                        if (((Parameter)attribute).getName().equals("firingCountLimit") ||
-                                ((Parameter)attribute).getName().equals("NONE") ||
-                                ((Parameter)attribute).getName().equals("_hideName") ||
-                                ((Parameter)attribute).getName().equals("_showName") ||
-                                ((Parameter)attribute).getName().equals("conservativeAnalysis") ||
-                                ((Parameter)attribute).getName().equals("directorClass") ||
-                                ((Parameter)attribute).getName().equals("displayWidth")) {
+                        // FIXME: implement filter interface, so that helper
+                        // classes can specify which attributes
+                        // need to be filtered (either by name or by class)
+                        // Currently all filtered attributes need to be
+                        // specified here
+                        if (((Parameter) attribute).getName().equals(
+                                "firingCountLimit")
+                                || ((Parameter) attribute).getName().equals(
+                                        "NONE")
+                                || ((Parameter) attribute).getName().equals(
+                                        "_hideName")
+                                || ((Parameter) attribute).getName().equals(
+                                        "_showName")
+                                || ((Parameter) attribute).getName().equals(
+                                        "conservativeAnalysis")
+                                || ((Parameter) attribute).getName().equals(
+                                        "directorClass")
+                                || ((Parameter) attribute).getName().equals(
+                                        "displayWidth")) {
 
                             // do nothing, ignore the parameter
                         } else {
-                            result.add((Attribute) attribute);
+                            result.add(attribute);
                         }
                     }
                 }
             }
-        }        
+        }
 
         return result;
-    }    
+    }
 
-    /**
-     * Return the list of receiving (down-stream) ports that are connected
-     * to the specified port. This treats every port as an opaque port.
+    /*
+     * Return the list of receiving (down-stream) ports that are connected to
+     * the specified port. This treats every port as an opaque port.
+     * 
      * @param port The specified port.
+     * 
      * @return The list of receiving ports.
      */
     protected static List<Port> _getSinkPortList(IOPort port) {
         List<Port> result = new ArrayList<Port>();
-    
+
         for (IOPort connectedPort : (List<IOPort>) port.connectedPortList()) {
             boolean isInput = connectedPort.isInput();
-            boolean isCompositeOutput = 
-                (connectedPort.getContainer() instanceof CompositeEntity)
-                && !isInput &&            
-                port.depthInHierarchy() > connectedPort.depthInHierarchy();            
-    
-                if (isInput || isCompositeOutput) {
-                    result.add(connectedPort);
-                }
+            boolean isCompositeOutput = (connectedPort.getContainer() instanceof CompositeEntity)
+                    && !isInput
+                    && port.depthInHierarchy() > connectedPort
+                            .depthInHierarchy();
+
+            if (isInput || isCompositeOutput) {
+                result.add(connectedPort);
+            }
         }
         return result;
     }
 
-    /**
-     * Return the list of sending (up-stream) ports that are connected
-     * to the specified port. This treats every port as an opaque port.
+    /*
+     * Return the list of sending (up-stream) ports that are connected to the
+     * specified port. This treats every port as an opaque port.
+     * 
      * @param port The specified port.
+     * 
      * @return The list of sending ports.
      */
     protected static List<Port> _getSourcePortList(IOPort port) {
         List<Port> result = new ArrayList<Port>();
-    
+
         for (IOPort connectedPort : (List<IOPort>) port.connectedPortList()) {
             boolean isInput = connectedPort.isInput();
-            boolean isCompositeInput = 
-                (connectedPort.getContainer() instanceof CompositeEntity)
-                && isInput &&
-                port.depthInHierarchy() > connectedPort.depthInHierarchy();            
-    
-                if (!isInput || isCompositeInput) {
-                    result.add(connectedPort);
-                }
+            boolean isCompositeInput = (connectedPort.getContainer() instanceof CompositeEntity)
+                    && isInput
+                    && port.depthInHierarchy() > connectedPort
+                            .depthInHierarchy();
+
+            if (!isInput || isCompositeInput) {
+                result.add(connectedPort);
+            }
         }
         return result;
     }
 
-    /**
+    /*
      * Return the list of sub-helpers.
+     * 
      * @return The list of sub-helpers.
+     * 
      * @throws IllegalActionException Thrown if the sub-class throws it.
      */
-    protected abstract List<PropertyHelper> _getSubHelpers() 
-    throws IllegalActionException;
+    protected abstract List<PropertyHelper> _getSubHelpers()
+            throws IllegalActionException;
 
-    /**
+    /*
      * Return the ASTPtRootNode for the specified Attribute.
+     * 
      * @param attribute The specified attribute.
+     * 
      * @return The ASTPtRootNode for the specified Attribute.
-     * @throws IllegalActionException Thrown if 
+     * 
+     * @throws IllegalActionException Thrown if
      * PropertySolver.getParseTree(Attribute) throws it.
      */
-    protected ASTPtRootNode getParseTree(Attribute attribute) 
-    throws IllegalActionException {
+    protected ASTPtRootNode getParseTree(Attribute attribute)
+            throws IllegalActionException {
         return _solver.getParseTree(attribute);
     }
 
-    /**
+    /*
      * Record the association between the specified ASTPtRootNode and the
      * specified Attribute.
+     * 
      * @param node The specified ASTPtRootNode.
+     * 
      * @param attribute The specified Attribute.
      */
     protected void putAttribute(ASTPtRootNode node, Attribute attribute) {
         _solver.getSharedUtilities().putAttribute(node, attribute);
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
+    // /////////////////////////////////////////////////////////////////
+    // // protected variables ////
 
-    /** The annotation evaluator. */
+    /* The annotation evaluator. */
     protected ParseTreeAnnotationEvaluator _annotationEvaluator;
 
-    /** The associated property solver. */
+    /* The associated property solver. */
     protected PropertySolver _solver;
-      
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
 
-    /**
-     * Evaluate the expression of the specified AnnotationAttribute. 
+    // /////////////////////////////////////////////////////////////////
+    // // private methods ////
+
+    /*
+     * Evaluate the expression of the specified AnnotationAttribute.
+     * 
      * @param annotation The specified AnnotationAttribute.
-     * @throws IllegalActionException Thrown there is an error 
-     * parsing or evaluating the annotation.
+     * 
+     * @throws IllegalActionException Thrown there is an error parsing or
+     * evaluating the annotation.
      */
     private void _evaluateAnnotation(AnnotationAttribute annotation)
-    throws IllegalActionException {
+            throws IllegalActionException {
         Map map;
         try {
-            ASTPtRootNode parseTree = PropertySolver.getParser()
-            .generateParseTree(annotation.getExpression());
+            ASTPtRootNode parseTree = PropertySolverBase.getParser()
+                    .generateParseTree(annotation.getExpression());
 
             map = new HashMap();
             map.put(parseTree, parseTree);
         } catch (IllegalActionException ex) {
-            map = PropertySolver.getParser()
-            .generateAssignmentMap(annotation.getExpression());
+            map = PropertySolverBase.getParser().generateAssignmentMap(
+                    annotation.getExpression());
 
         }
-        
+
         // Evaluate each assignment constraints.
         for (Object assignment : map.values()) {
             ASTPtRootNode parseTree = (ASTPtRootNode) assignment;
@@ -564,22 +616,24 @@ public abstract class PropertyHelper {
         }
     }
 
-    /**
-     * Return the list of AnnotationAttributes specific to this use-case. 
+    /*
+     * Return the list of AnnotationAttributes specific to this use-case.
+     * 
      * @return The list of AnnotationAttributes.
-     * @exception IllegalActionException Thrown if there is a problem
-     *  obtaining the use-case identifier for an annotation attribute.
+     * 
+     * @exception IllegalActionException Thrown if there is a problem obtaining
+     * the use-case identifier for an annotation attribute.
      */
-    private List<AnnotationAttribute> _getAnnotationAttributes() 
-    throws IllegalActionException {
+    private List<AnnotationAttribute> _getAnnotationAttributes()
+            throws IllegalActionException {
         List result = new LinkedList();
         if (_component instanceof NamedObj) {
 
             for (Object attribute : ((NamedObj) _component).attributeList()) {
 
                 if (AnnotationAttribute.class.isInstance(attribute)) {
-                    String usecase = ((AnnotationAttribute) 
-                            attribute).getUseCaseIdentifier();
+                    String usecase = ((AnnotationAttribute) attribute)
+                            .getUseCaseIdentifier();
 
                     if (_solver.isIdentifiable(usecase)) {
                         result.add(attribute);
@@ -590,10 +644,10 @@ public abstract class PropertyHelper {
         return result;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    // /////////////////////////////////////////////////////////////////
+    // // private variables ////
 
-    /** The associated component. */
+    /* The associated component. */
     private Object _component;
 
 }
