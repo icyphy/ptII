@@ -368,9 +368,14 @@ public class Director extends Attribute implements Executable {
         // But we didn't do that, because otherwise we wouldn't be able
         // to run Tcl Blend test script on this class.
         
+        // FIXME rodiers: Temporarily removed the exception. I launched a
+        //    discussion on ptdevel and depending on the outcome I'll fix
+        //    the code appropriately. 
+        /*
         throw new InternalErrorException(this, null,
                 "The actor " +  actor.getFullName() + " is incompatible " +
                 		"with the chosen director.");
+        */
     }
 
     /** Request a firing of the given actor as soon as possible.  If
