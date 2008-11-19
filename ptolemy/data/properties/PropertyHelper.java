@@ -1,3 +1,30 @@
+/*  The base abstract class for a property helper.
+
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
+
 package ptolemy.data.properties;
 
 import java.util.ArrayList;
@@ -24,8 +51,59 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 
+//////////////////////////////////////////////////////////////////////////
+////PropertyHelper
+
+/**
+ * define property 
+ * define component
+ * 
+The base abstract class for a property helper. 
+A PropertyHelper defines constraints for a component in the model. 
+The model component can be an object of any Ptolemy class 
+(e.g. ASTPtRootNode, Sink, Entity, and FSMActor). A model component,
+in turn, may have one or multiple property-able objects. Each 
+constraint is relevant to a property-able object. For example, 
+the PropertyHelper associated with an actor may have each of its 
+IOPort as property-able. 
+
+A property-able object is an object that can be annotated with 
+a Property object. Users can define different Property class as 
+part of their use-case definition. 
+
+Every PropertyHelper is associated a property solver. PropertyHelpers
+support hierarchical structuring. They may have downward links to 
+sub-helpers. This is helpful to construct PropertyHelper for hierarchical
+component in the model. For example, a PropertyHelper for the CompositeActor 
+have all the contained actors' helpers as its sub-helpers. 
+
+A PropertyHelper supports manual annotation. Users can define their own
+annotation evaluator to evaluate property expressions and/or constraints.
+
+@author Man-Kit Leung
+@version $Id$
+@since Ptolemy II 7.0
+@Pt.ProposedRating Red (mankit)
+@Pt.AcceptedRating Red (mankit)
+*/
 public abstract class PropertyHelper {
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /**
+     * Return the associated component object.
+     * @return The associated component.
+     */
+    public Object getComponent() {
+        return _component;
+    }
+
+    /**
+     * Return the container entity for the specified ASTPtRootNode.
+     * @param node The specified ASTPtRootNode.
+     * @return The container entity for the specified ASTPtRootNode.
+     */
     public Entity getContainerEntity(ASTPtRootNode node) {
         Attribute attribute = _solver.getAttribute(node);
         NamedObj container = attribute.getContainer();
@@ -36,135 +114,61 @@ public abstract class PropertyHelper {
         return (Entity) container;
     }
 
+    /**
+     * Return the name of the PropertyHelper. In this base class,
+     * return the concatenation of the prefix "Helper_" and the 
+     * string representation of the component object. This method
+     * does not guarantee uniqueness.
+     * @return The name of the PropertyHelper.
+     */
     public String getName() {
         return "Helper_" + _component.toString();
     }
 
-    public String toString() {
-        return getName() + " " + super.toString();
-    }
-
     /**
-     * Return the root ast node for the given attribute.
-     * @param attribute The given attribute.
-     * @return The root ast node for the given attribute.
-     * @throws IllegalActionException Thrown if 
-     * PropertySolver.getParseTree(Attribute) throws it.
+     * Return a list of property-able objects.
+     * @return a list of property-able objects.
+     * @throws IllegalActionException Thrown if the subclass throws it.
      */
-    protected ASTPtRootNode getParseTree(Attribute attribute) 
+    public abstract List<Object> getPropertyables() 
+    throws IllegalActionException;
+
+    /**
+     * Return a list of property-able objects that are of
+     * the specified Class.
+     * @param filter The specified Class to filter the return list.
+     * @return A list of property-able objects that are of
+     * the specified Class.
+     * @throws IllegalActionException Thrown if {@link #getPropertyables()}
+     * throws it.
+     */
+    public List<Object> getPropertyables(Class filter) 
     throws IllegalActionException {
-        return _solver.getParseTree(attribute);
+        List<Object> list = new LinkedList<Object>();
+
+        for (Object object : getPropertyables()) {
+            if (filter.isInstance(object)) {
+                list.add(object);
+            }
+        }
+        return list;
     }
 
     /**
-     * Return the associated property solver
-     * @return The property solver associated with this helper.
+     * Return The PropertySolver that uses this helper.
+     * @return The PropertySolver that uses this helper.
      */
     public PropertySolver getSolver() {
         return _solver;
     }
 
-
     /**
-     * Record the association between the given ast node and the
-     * given attribute.
-     * @param node The given ast node.
-     * @param attribute The given attribute.
-     */
-    protected void putAttribute(ASTPtRootNode node, Attribute attribute) {
-        _solver.getSharedUtilities().putAttribute(node, attribute);
-    }
-
-
-    public static void resetAll() {
-    }
-
-    protected ParseTreeAnnotationEvaluator _annotationEvaluator;
-
-    /** The associated component of this helper. */
-    private Object _component;
-
-    /** The associated property lattice. */
-    protected PropertySolver _solver;
-
-    /** Create an new use-case specific annotation evaluator */
-    protected abstract ParseTreeAnnotationEvaluator _annotationEvaluator();    
-
-    protected final ParseTreeAnnotationEvaluator _getAnnotationEvaluator() {
-        if (_annotationEvaluator == null) {
-            _annotationEvaluator = _annotationEvaluator();
-        }
-        return _annotationEvaluator;
-    }
-
-    /**
-     * Return a list of property-able object(s) for this helper.
-     * @return a list of property-able objects.
-     * @throws IllegalActionException 
-     */
-    public abstract List<Object> getPropertyables() throws IllegalActionException;
-
-    /**
-     * Return the list of sub-helpers.
-     * @return The list of sub-helpers.
-     * @throws IllegalActionException
-     */
-    protected abstract List<PropertyHelper> _getSubHelpers() throws IllegalActionException;
-
-    
-    protected static List<Port> _getSinkPortList(IOPort port) {
-        List<Port> result = new ArrayList<Port>();
-
-        for (IOPort connectedPort : (List<IOPort>) port.connectedPortList()) {
-            boolean isInput = connectedPort.isInput();
-            boolean isCompositeOutput = 
-                (connectedPort.getContainer() instanceof CompositeEntity)
-                && !isInput &&            
-                port.depthInHierarchy() > connectedPort.depthInHierarchy();            
-
-                if (isInput || isCompositeOutput) {
-                    result.add(connectedPort);
-                }
-        }
-        return result;
-    }
-
-    protected static List<Port> _getSourcePortList(IOPort port) {
-        List<Port> result = new ArrayList<Port>();
-
-        for (IOPort connectedPort : (List<IOPort>) port.connectedPortList()) {
-            boolean isInput = connectedPort.isInput();
-            boolean isCompositeInput = 
-                (connectedPort.getContainer() instanceof CompositeEntity)
-                && isInput &&
-                port.depthInHierarchy() > connectedPort.depthInHierarchy();            
-
-                if (!isInput || isCompositeInput) {
-                    result.add(connectedPort);
-                }
-        }
-        return result;
-    }    
-
-    /**
-     * Create a constraint that set the given object to be equal
-     * to the given property. Mark the property of the given object
-     * to be non-settable. 
-     * @param object The given object.
-     * @param property The given property.
-     */
-    public void setEquals(Object object, Property property) {
-        _solver.setDeclaredProperty(object, property);
-        _solver.setResolvedProperty(object, property);
-        _solver.addNonSettable(object);        
-    }
-
-    /**
-     * Reinitialize the helper before each round of property resolution.
-     * It resets the resolved property of all propertyable objects. This
-     * method is called in the beginning of the
-     * PropertyConstraintSolver.resolveProperties() method.
-     * @throws IllegalActionException Thrown if 
+     * Reset and initialize the PropertyHelper.
+     * This clears and any cached states and the resolved properties of 
+     * the property-able objects. This call is recursive, so every
+     * sub-helper will be reset and initialized after the call. 
+     * @throws IllegalActionException Thrown if {@link #getPropertyables()}
+     * throws it.
      */
     public void reinitialize() throws IllegalActionException {
         boolean record = _solver.isResolve() || _solver._isInvoked;
@@ -176,7 +180,6 @@ public abstract class PropertyHelper {
                 _evaluateAnnotation(annotation);
             }
         }
-
 
         for (Object propertyable : getPropertyables()) {
 
@@ -228,63 +231,173 @@ public abstract class PropertyHelper {
             helper.reinitialize();
         }
     }
-
+    
     /**
-     * 
-     * @param annotation
-     * @throws IllegalActionException
+     * Associate this PropertyHelper with the specified component.
+     * @param component The specified component.
      */
-    private void _evaluateAnnotation(AnnotationAttribute annotation)
-    throws IllegalActionException {
-        Map map;
-        try {
-            ASTPtRootNode parseTree = PropertySolver.getParser()
-            .generateParseTree(annotation.getExpression());
-
-            map = new HashMap();
-            map.put(parseTree, parseTree);
-        } catch (IllegalActionException ex) {
-            map = PropertySolver.getParser()
-            .generateAssignmentMap(annotation.getExpression());
-
-        }
-        
-        // Evaluate each assignment constraints.
-        for (Object assignment : map.values()) {
-            ASTPtRootNode parseTree = (ASTPtRootNode) assignment;
-            _getAnnotationEvaluator().evaluate(parseTree, this);
-        }
+    public void setComponent(Object _component) {
+        this._component = _component;
     }
 
     /**
-     * Return the list of annotation attributes relevant to this use-case. 
-     * @return The list of annotation attributes.
-     * @exception IllegalActionException Thrown if there is a problem
-     *  obtaining the use-case identifier for an annotation attribute.
+     * Set the property of specified object equal to the specified property.
+     * @param object The specified object.
+     * @param property The specified property.
      */
-    private List<AnnotationAttribute> _getAnnotationAttributes() 
-    throws IllegalActionException {
-        List result = new LinkedList();
-        if (_component instanceof NamedObj) {
+    public void setEquals(Object object, Property property) {
+        _solver.setResolvedProperty(object, property);
+        _solver.markAsNonSettable(object);        
+    }
 
-            for (Object attribute : ((NamedObj) _component).attributeList()) {
+    /**
+     * Return the string representation of the PropertyHelper.
+     * @return The string representation of the PropertyHelper.
+     */
+    public String toString() {
+        return getName() + " " + super.toString();
+    }    
 
-                if (AnnotationAttribute.class.isInstance(attribute)) {
-                    String usecase = ((AnnotationAttribute) 
-                            attribute).getUseCaseIdentifier();
+    /////////////////////////////////////////////////////////////////////
+    ////                      public inner classes                   ////
+    
+    /** A class that defines a channel object. A channel object is
+     *  specified by its port and its channel index in that port.
+     */
+    public static class Channel {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+    
+        /** Construct a Channel with the specified port and channel number.
+         * @param portObject The specified port.
+         * @param channel The specified channel number.
+         */
+        public Channel(IOPort portObject, int channel) {
+            port = portObject;
+            channelNumber = channel;
+        }
+    
+        /**
+         * Return true if this channel is the same as the specified 
+         * object; otherwise, false.
+         * @param object The specified object.
+         * @return True if this channel is the same reference as the 
+         * specified object, otherwise false;
+         */
+        public boolean equals(Object object) {
+            return object instanceof Channel
+            && port.equals(((Channel) object).port)
+            && channelNumber == ((Channel) object).channelNumber;
+        }
+    
+        /**
+         * Return the hash code for this channel. 
+         * @return Hash code for this channel.
+         */
+        public int hashCode() {
+            // Implementing this method is required for comparing
+            // the equality of channels.
+            return port.hashCode() + channelNumber;
+        }
+    
+        /**
+         * Return the string representation of the channel.
+         * @return The string representation of the channel.
+         */
+        public String toString() {
+            return port.getName() + "_" + channelNumber;
+        }
+    
+        /** The port of the channel.
+         */
+        public IOPort port;
+    
+        /** The channel number of the channel.
+         */
+        public int channelNumber;
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
-                    if (_solver.isIdentifiable(usecase)) {
-                        result.add(attribute);
-                    }
+    /** 
+     * Create an new ParseTreeAnnotationEvaluator that is tailored 
+     * for the use-case. 
+     * @return A new ParseTreeAnnotationEvaluator.
+     */
+    protected abstract ParseTreeAnnotationEvaluator _annotationEvaluator();
+
+    /**
+     * Return the ParseTreeAnnotationEvaluator. This will creates a new
+     * ParseTreeAnnotationEvaluator if it does not already exists.
+     * @return The ParseTreeAnnotationEvaluator.
+     */
+    protected final ParseTreeAnnotationEvaluator _getAnnotationEvaluator() {
+        if (_annotationEvaluator == null) {
+            _annotationEvaluator = _annotationEvaluator();
+        }
+        return _annotationEvaluator;
+    }
+
+    /**
+     * Return the list of PropertyHelpers for ASTPtRootNodes. These 
+     * ASTPtRootNodes are nodes of the parse tree constructed from
+     * parsing the expression of every property-able Attribute.
+     * @return The list of PropertyHelpers for ASTPtRootNodes.
+     */
+    protected List<PropertyHelper> _getASTNodeHelpers() {
+        List<PropertyHelper> astHelpers = new ArrayList<PropertyHelper>();
+        ParseTreeASTNodeHelperCollector collector = 
+            new ParseTreeASTNodeHelperCollector();
+
+        for (ASTPtRootNode root : _getAttributeParseTrees()) {
+            if (root != null) {
+                try {
+                    List<PropertyHelper> helpers = collector.collectHelpers(root, getSolver());
+                    astHelpers.addAll(helpers);
+                } catch (IllegalActionException ex) {
+                    // This means the expression is not parse-able.
+                    // FIXME: So, we will discard it for now.
+                    throw new AssertionError(ex);
                 }
+            }
+        }
+        return astHelpers;
+    }
+
+    
+    /**
+     * Return the list of parse trees for all property-able Attributes. 
+     * @return The list of ASTPtRootNodes.
+     */
+    protected List<ASTPtRootNode> _getAttributeParseTrees() {
+        List<ASTPtRootNode> result = new ArrayList<ASTPtRootNode>();
+
+        Iterator attributes = null;
+
+        attributes = _getPropertyableAttributes().iterator();
+
+        while (attributes.hasNext()) {
+            Attribute attribute = (Attribute) attributes.next();
+
+            try {
+                ASTPtRootNode pt = getParseTree(attribute);
+                if (pt != null) {
+                    result.add(pt);
+                }                
+            } catch (IllegalActionException ex) {
+                // This means the expression is not parse-able.
+                // FIXME: So, we will discard it for now.
+                //System.out.println(KernelException.stackTraceToString(ex));
+                throw new AssertionError(ex);
             }
         }
         return result;
     }
 
     /**
-     * Get the list of propertyable attributes for this helper.
-     * @return The list of propertyable attributes.
+     * Return the list of property-able Attributes.
+     * @return The list of property-able Attributes.
      */
     protected List<Attribute> _getPropertyableAttributes() {
         List<Attribute> result = new LinkedList<Attribute>();
@@ -332,138 +445,155 @@ public abstract class PropertyHelper {
         }        
 
         return result;
-    }
-
-    public List<Object> getPropertyables(Class filter) throws IllegalActionException {
-        List<Object> list = new LinkedList<Object>();
-
-        for (Object object : getPropertyables()) {
-            if (filter.isInstance(object)) {
-                list.add(object);
-            }
-        }
-        return list;
-    }
+    }    
 
     /**
-     * @param _component the _component to set
+     * Return the list of receiving (down-stream) ports that are connected
+     * to the specified port. This treats every port as an opaque port.
+     * @param port The specified port.
+     * @return The list of receiving ports.
      */
-    public void setComponent(Object _component) {
-        this._component = _component;
-    }
-
-    /**
-     * @return the _component
-     */
-    public Object getComponent() {
-        return _component;
-    }
-
-    protected List<PropertyHelper> _getASTNodeHelpers() {
-        List<PropertyHelper> astHelpers = new ArrayList<PropertyHelper>();
-        ParseTreeASTNodeHelperCollector collector = 
-            new ParseTreeASTNodeHelperCollector();
-
-        for (ASTPtRootNode root : _getAttributeParseTrees()) {
-            if (root != null) {
-                try {
-                    List<PropertyHelper> helpers = collector.collectHelpers(root, getSolver());
-                    astHelpers.addAll(helpers);
-                } catch (IllegalActionException ex) {
-                    // This means the expression is not parse-able.
-                    // FIXME: So, we will discard it for now.
-                    throw new AssertionError(ex);
+    protected static List<Port> _getSinkPortList(IOPort port) {
+        List<Port> result = new ArrayList<Port>();
+    
+        for (IOPort connectedPort : (List<IOPort>) port.connectedPortList()) {
+            boolean isInput = connectedPort.isInput();
+            boolean isCompositeOutput = 
+                (connectedPort.getContainer() instanceof CompositeEntity)
+                && !isInput &&            
+                port.depthInHierarchy() > connectedPort.depthInHierarchy();            
+    
+                if (isInput || isCompositeOutput) {
+                    result.add(connectedPort);
                 }
-            }
         }
-        return astHelpers;
+        return result;
     }
 
     /**
-     * Return the list of parse trees for all settable Attributes
-     * of the component. 
-     * @return The list of ASTPtRootNodes.
+     * Return the list of sending (up-stream) ports that are connected
+     * to the specified port. This treats every port as an opaque port.
+     * @param port The specified port.
+     * @return The list of sending ports.
      */
-    protected List<ASTPtRootNode> _getAttributeParseTrees() {
-        List<ASTPtRootNode> result = new ArrayList<ASTPtRootNode>();
+    protected static List<Port> _getSourcePortList(IOPort port) {
+        List<Port> result = new ArrayList<Port>();
+    
+        for (IOPort connectedPort : (List<IOPort>) port.connectedPortList()) {
+            boolean isInput = connectedPort.isInput();
+            boolean isCompositeInput = 
+                (connectedPort.getContainer() instanceof CompositeEntity)
+                && isInput &&
+                port.depthInHierarchy() > connectedPort.depthInHierarchy();            
+    
+                if (!isInput || isCompositeInput) {
+                    result.add(connectedPort);
+                }
+        }
+        return result;
+    }
 
-        Iterator attributes = null;
+    /**
+     * Return the list of sub-helpers.
+     * @return The list of sub-helpers.
+     * @throws IllegalActionException Thrown if the sub-class throws it.
+     */
+    protected abstract List<PropertyHelper> _getSubHelpers() 
+    throws IllegalActionException;
 
-        attributes = _getPropertyableAttributes().iterator();
+    /**
+     * Return the ASTPtRootNode for the specified Attribute.
+     * @param attribute The specified attribute.
+     * @return The ASTPtRootNode for the specified Attribute.
+     * @throws IllegalActionException Thrown if 
+     * PropertySolver.getParseTree(Attribute) throws it.
+     */
+    protected ASTPtRootNode getParseTree(Attribute attribute) 
+    throws IllegalActionException {
+        return _solver.getParseTree(attribute);
+    }
 
-        while (attributes.hasNext()) {
-            Attribute attribute = (Attribute) attributes.next();
+    /**
+     * Record the association between the specified ASTPtRootNode and the
+     * specified Attribute.
+     * @param node The specified ASTPtRootNode.
+     * @param attribute The specified Attribute.
+     */
+    protected void putAttribute(ASTPtRootNode node, Attribute attribute) {
+        _solver.getSharedUtilities().putAttribute(node, attribute);
+    }
 
-            try {
-                ASTPtRootNode pt = getParseTree(attribute);
-                if (pt != null) {
-                    result.add(pt);
-                }                
-            } catch (IllegalActionException ex) {
-                // This means the expression is not parse-able.
-                // FIXME: So, we will discard it for now.
-                //System.out.println(KernelException.stackTraceToString(ex));
-                throw new AssertionError(ex);
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** The annotation evaluator. */
+    protected ParseTreeAnnotationEvaluator _annotationEvaluator;
+
+    /** The associated property solver. */
+    protected PropertySolver _solver;
+      
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /**
+     * Evaluate the expression of the specified AnnotationAttribute. 
+     * @param annotation The specified AnnotationAttribute.
+     * @throws IllegalActionException Thrown there is an error 
+     * parsing or evaluating the annotation.
+     */
+    private void _evaluateAnnotation(AnnotationAttribute annotation)
+    throws IllegalActionException {
+        Map map;
+        try {
+            ASTPtRootNode parseTree = PropertySolver.getParser()
+            .generateParseTree(annotation.getExpression());
+
+            map = new HashMap();
+            map.put(parseTree, parseTree);
+        } catch (IllegalActionException ex) {
+            map = PropertySolver.getParser()
+            .generateAssignmentMap(annotation.getExpression());
+
+        }
+        
+        // Evaluate each assignment constraints.
+        for (Object assignment : map.values()) {
+            ASTPtRootNode parseTree = (ASTPtRootNode) assignment;
+            _getAnnotationEvaluator().evaluate(parseTree, this);
+        }
+    }
+
+    /**
+     * Return the list of AnnotationAttributes specific to this use-case. 
+     * @return The list of AnnotationAttributes.
+     * @exception IllegalActionException Thrown if there is a problem
+     *  obtaining the use-case identifier for an annotation attribute.
+     */
+    private List<AnnotationAttribute> _getAnnotationAttributes() 
+    throws IllegalActionException {
+        List result = new LinkedList();
+        if (_component instanceof NamedObj) {
+
+            for (Object attribute : ((NamedObj) _component).attributeList()) {
+
+                if (AnnotationAttribute.class.isInstance(attribute)) {
+                    String usecase = ((AnnotationAttribute) 
+                            attribute).getUseCaseIdentifier();
+
+                    if (_solver.isIdentifiable(usecase)) {
+                        result.add(attribute);
+                    }
+                }
             }
         }
         return result;
     }
 
-    /////////////////////////////////////////////////////////////////////
-    ////                      public inner classes                   ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
-    /** A class that defines a channel object. A channel object is
-     *  specified by its port and its channel index in that port.
-     */
-    public static class Channel {
-        // FindBugs suggests making this class static so as to decrease
-        // the size of instances and avoid dangling references.
-
-        /** Construct the channel with the given port and channel number.
-         * @param portObject The given port.
-         * @param channel The channel number of this object in the given port.
-         */
-        public Channel(IOPort portObject, int channel) {
-            port = portObject;
-            channelNumber = channel;
-        }
-
-        /**
-         * Whether this channel is the same as the given object.
-         * @param object The given object.
-         * @return True if this channel is the same reference as the given
-         *  object, otherwise false;
-         */
-        public boolean equals(Object object) {
-            return object instanceof Channel
-            && port.equals(((Channel) object).port)
-            && channelNumber == ((Channel) object).channelNumber;
-        }
-
-        /**
-         * Return the string representation of this channel.
-         * @return The string representation of this channel.
-         */
-        public String toString() {
-            return port.getName() + "_" + channelNumber;
-        }
-
-        /**
-         * Return the hash code for this channel. Implementing this method
-         * is required for comparing the equality of channels.
-         * @return Hash code for this channel.
-         */
-        public int hashCode() {
-            return port.hashCode() + channelNumber;
-        }
-
-        /** The port that contains this channel.
-         */
-        public IOPort port;
-
-        /** The channel number of this channel.
-         */
-        public int channelNumber;
-    }
+    /** The associated component. */
+    private Object _component;
 
 }
