@@ -1802,20 +1802,13 @@ public class CompositeEntity extends ComponentEntity {
      *  @see #deepEntityList()
      */
     protected void _deepOpaqueEntityList(List result) {
-
-        // This might be called from within a superclass constructor,
-        // in which case there are no contained entities yet.
-        if (_containedEntities != null) {
-            Iterator entities = _containedEntities.elementList().iterator();
-
-            while (entities.hasNext()) {
-                ComponentEntity entity = (ComponentEntity) entities.next();
-                if (!entity.isClassDefinition()) {
-                    if (entity.isOpaque()) {
-                        result.add(entity);
-                    } else {
-                        ((CompositeEntity) entity)._deepOpaqueEntityList(result);
-                    }
+        List<ComponentEntity> containedEntities = entityList();
+        for (ComponentEntity entity : containedEntities) {
+            if (!entity.isClassDefinition()) {
+                if (entity.isOpaque()) {
+                    result.add(entity);
+                } else {
+                    ((CompositeEntity) entity)._deepOpaqueEntityList(result);
                 }
             }
         }
