@@ -153,11 +153,24 @@ public class ConvertToLazy implements ChangeListener {
             if (entity instanceof TypedCompositeActor) {
                 // Do the conversion depth-first.
                 convert((TypedCompositeActor)entity, threshold);
-                if (count((TypedCompositeActor)entity) >= threshold) {
+                if (entity.getClassName().equals("ptolemy.actor.TypedCompositeActor")
+                        && count((TypedCompositeActor)entity) >= threshold) {
                     entity.setClassName("ptolemy.actor.LazyTypedCompositeActor");
                 }
             }
         }
+        List<ComponentEntity> classDefinitions = actor.classDefinitionList();
+        for (ComponentEntity classDefinition : classDefinitions) {
+            if (classDefinition instanceof TypedCompositeActor) {
+                // Do the conversion depth-first.
+                convert((TypedCompositeActor)classDefinition, threshold);
+                if (classDefinition.getClassName().equals("ptolemy.actor.TypedCompositeActor")
+                        && count((TypedCompositeActor)classDefinition) >= threshold) {
+                    classDefinition.setClassName("ptolemy.actor.LazyTypedCompositeActor");
+                }
+            }
+        }
+
     }
     
     /** Count the number of contained entities that have not already been made
@@ -190,7 +203,7 @@ public class ConvertToLazy implements ChangeListener {
                 return;
             }
             if (args.length == 1) {
-                new ConvertToLazy(args[0], 100);
+                new ConvertToLazy(args[0], 10);
                 return;
             }
             int threshold = Integer.parseInt(args[1]);
