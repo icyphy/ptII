@@ -32,30 +32,17 @@ import ptolemy.kernel.util.Nameable;
 
 public class PropertyResolutionException extends IllegalActionException {
 
-    public PropertyResolutionException(PropertySolver solver, String detail) {
-        this(solver, null, null, detail);
-    }
-
-    public PropertyResolutionException(PropertySolver solver, 
+    public PropertyResolutionException(PropertySolverBase solver, 
     		Nameable nameable, String detail) {
         this(solver, nameable, null, detail);
     }
 
-    public PropertyResolutionException(PropertySolver solver, Throwable cause) {
-        this(solver, null, cause, "");
-    }
-
-    public PropertyResolutionException(PropertySolver solver, 
+    public PropertyResolutionException(PropertySolverBase solver, 
     		Nameable nameable, Throwable cause) {
         this(solver, nameable, cause, "");
     }
 
-    public PropertyResolutionException(PropertySolver solver, 
-    		Throwable cause, String detail) {
-        this(solver, null, cause, detail);
-    }
-
-    public PropertyResolutionException(PropertySolver solver, 
+    public PropertyResolutionException(PropertySolverBase solver, 
     		Nameable nameable, Throwable cause, String detail) {
         super(solver, nameable, cause, detail);
 
@@ -63,10 +50,23 @@ public class PropertyResolutionException extends IllegalActionException {
         
         _solver = solver;
     }
+
+    public PropertyResolutionException(PropertySolverBase solver, String detail) {
+        this(solver, null, null, detail);
+    }
+
+    public PropertyResolutionException(PropertySolverBase solver, Throwable cause) {
+        this(solver, null, cause, "");
+    }
+
+    public PropertyResolutionException(PropertySolverBase solver, 
+    		Throwable cause, String detail) {
+        this(solver, null, cause, detail);
+    }
     
-    public PropertySolver getSolver() {
+    public PropertySolverBase getSolver() {
     	return _solver;
     }
     
-    private PropertySolver _solver;
+    private PropertySolverBase _solver;
 }

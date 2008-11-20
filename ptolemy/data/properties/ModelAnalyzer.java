@@ -110,22 +110,6 @@ public class ModelAnalyzer extends Transformer {
         output.setTypeEquals(ActorToken.TYPE);        
     }
 
-    private void _addChoices() throws IllegalActionException {
-        _createSolvers("ptolemy.data.properties.configuredSolvers");
-        
-        if (_solvers.size() > 0) {
-            property.setExpression(_solvers.get(0).getSimpleName());
-        }
-        
-        for (Class solver : _solvers) {
-            property.addChoice(solver.getSimpleName());
-        }
-
-        property.addChoice("Clear All");
-        
-        PropertySolver._addActions(action);
-    }
-
     /** React to a change in an attribute. 
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the change is not acceptable
@@ -136,7 +120,7 @@ public class ModelAnalyzer extends Transformer {
         
         super.attributeChanged(attribute);
     }
-    
+
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ModelAnalyzer actor = (ModelAnalyzer) super.clone(workspace);
         try {
@@ -148,7 +132,7 @@ public class ModelAnalyzer extends Transformer {
         }
         return actor;
     }
-
+    
     public void fire() throws IllegalActionException {
         String errorString = "";
         
@@ -241,52 +225,23 @@ public class ModelAnalyzer extends Transformer {
         output.send(0, new ActorToken(entity));
     }
 
-    
-    private PropertySolver _instantiateSolver(CompositeEntity entity, String className) {
-
-        for (Class solver : _solvers) {
-            if (className.equals(
-                    solver.getSimpleName())) {
-                try {
-                    Constructor constructor = 
-                        solver.getConstructor(NamedObj.class, String.class);
-                    
-                    PropertySolver solverObject = (PropertySolver) constructor
-                    .newInstance(entity, "ModelAnalyzer_" + solver.getSimpleName());
-                    
-                    new Location(solverObject, "_location");
-                    
-                    return solverObject;
-                    
-                } catch (Exception ex) {
-                    assert false;
-                }
-                break;
-            }
+    private void _addChoices() throws IllegalActionException {
+        _createSolvers("ptolemy.data.properties.configuredSolvers");
+        
+        if (_solvers.size() > 0) {
+            property.setExpression(_solvers.get(0).getSimpleName());
         }
-        return null;
+        
+        for (Class solver : _solvers) {
+            property.addChoice(solver.getSimpleName());
+        }
+
+        property.addChoice("Clear All");
+        
+        PropertySolver._addActions(action);
     }
 
-//    /**
-//     * @param chosenSolver
-//     * @throws IllegalActionException
-//     */
-//    private void _displayProperties(PropertySolver chosenSolver) 
-//    throws IllegalActionException {
-//        
-//        chosenSolver.clearDisplay();
-//        
-//        Token oldValue = chosenSolver._highlighter.showText.getToken();            
-//        chosenSolver._highlighter.showText.setToken(showProperty.getToken());
-//        chosenSolver.showProperties();
-//        chosenSolver._highlighter.showText.setToken(oldValue);
-//
-//        oldValue = chosenSolver._highlighter.highlight.getToken();            
-//        chosenSolver._highlighter.highlight.setToken(highlight.getToken());
-//        chosenSolver.highlightProperties();
-//        chosenSolver._highlighter.highlight.setToken(oldValue);
-//    }
-
+    
     private List<Class> _createSolvers(String path)
             throws IllegalActionException {
         List<Class> solvers = new LinkedList<Class>();
@@ -326,6 +281,26 @@ public class ModelAnalyzer extends Transformer {
         return solvers;
     }
 
+//    /**
+//     * @param chosenSolver
+//     * @throws IllegalActionException
+//     */
+//    private void _displayProperties(PropertySolver chosenSolver) 
+//    throws IllegalActionException {
+//        
+//        chosenSolver.clearDisplay();
+//        
+//        Token oldValue = chosenSolver._highlighter.showText.getToken();            
+//        chosenSolver._highlighter.showText.setToken(showProperty.getToken());
+//        chosenSolver.showProperties();
+//        chosenSolver._highlighter.showText.setToken(oldValue);
+//
+//        oldValue = chosenSolver._highlighter.highlight.getToken();            
+//        chosenSolver._highlighter.highlight.setToken(highlight.getToken());
+//        chosenSolver.highlightProperties();
+//        chosenSolver._highlighter.highlight.setToken(oldValue);
+//    }
+
     private URI _getModelURI(String modelName) throws URISyntaxException {
         URI uri = URIAttribute.getModelURI(this);
         String path = uri.getPath();
@@ -338,13 +313,36 @@ public class ModelAnalyzer extends Transformer {
         return new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(),
                 uri.getPort(), path, uri.getQuery(), uri.getFragment());
     }
+
+    private PropertySolver _instantiateSolver(CompositeEntity entity, String className) {
+
+        for (Class solver : _solvers) {
+            if (className.equals(
+                    solver.getSimpleName())) {
+                try {
+                    Constructor constructor = 
+                        solver.getConstructor(NamedObj.class, String.class);
+                    
+                    PropertySolver solverObject = (PropertySolver) constructor
+                    .newInstance(entity, "ModelAnalyzer_" + solver.getSimpleName());
+                    
+                    new Location(solverObject, "_location");
+                    
+                    return solverObject;
+                    
+                } catch (Exception ex) {
+                    assert false;
+                }
+                break;
+            }
+        }
+        return null;
+    }
     
 
     public Parameter action;
     
-    /** Whether to display the annotated property or not.
-     */
-    public Parameter showProperty;
+    public TypedIOPort errorMessage;
 
     public Parameter highlight;
 
@@ -358,7 +356,9 @@ public class ModelAnalyzer extends Transformer {
      */
     public Parameter property;
     
-    public TypedIOPort errorMessage;
+    /** Whether to display the annotated property or not.
+     */
+    public Parameter showProperty;
     
     private List<Class> _solvers = new LinkedList<Class>();
     

@@ -26,16 +26,54 @@ public class SharedUtilities {
     }
 
     /**
-     * Clear the states of this shared object. The states include
-     * all previously recorded information.
+     * Record the given error message.
+     * @param error The error message to record.
      */
-    public void resetAll() {
-        _ranSolvers = new HashSet<PropertySolver>();
-        _parseTrees = new HashMap<Attribute, ASTPtRootNode>();
-        _attributes = new HashMap<ASTPtRootNode, Attribute>();
-        _errors = new ArrayList<String>();
+    public void addErrors(String error) {
+        _errors.add(error);
+    }
 
-        PropertyHelper.resetAll();
+    /**
+     * Mard the given property solver as already activated.
+     * @param solver The given solver.
+     */
+    public void addRanSolvers(PropertySolver solver) {
+        _ranSolvers.add(solver);
+    }
+
+    /**
+     * Return the map that maps root ast node (keys) to the 
+     * corresponding attribute (values).
+     * @return The mappings for root ast nodes to attributes.
+     */
+    public  Map<ASTPtRootNode, Attribute> getAttributes() {
+        return _attributes;
+    }
+
+    /**
+     * Return the list of error strings.
+     * @return The list of error strings.
+     */
+    public List<String> getErrors() {
+        Collections.sort(_errors);
+        return _errors;
+    }
+
+    /**
+     * Return the map that maps attributes (keys) to their root ast 
+     * nodes (values).
+     * @return The mappings for attributes to their root ast nodes.
+     */
+    public Map<Attribute, ASTPtRootNode> getParseTrees() {
+        return _parseTrees;
+    }
+
+    /**
+     * Return the set of solvers that were marked activated.
+     * @return The set of solvers that were activated previously.
+     */
+    public Set<PropertySolver> getRanSolvers() {
+        return _ranSolvers;
     }
 
     /**
@@ -49,12 +87,25 @@ public class SharedUtilities {
     }
 
     /**
-     * Return the map that maps attributes (keys) to their root ast 
-     * nodes (values).
-     * @return The mappings for attributes to their root ast nodes.
+     * Clear and return the previously recorded errors.
+     * @return The previously recorded errors.
      */
-    public Map<Attribute, ASTPtRootNode> getParseTrees() {
-        return _parseTrees;
+    public List removeErrors() {
+        List result = new ArrayList(_errors);
+        _errors.clear();
+        return result;
+    }
+
+    /**
+     * Clear the states of this shared object. The states include
+     * all previously recorded information.
+     */
+    public void resetAll() {
+        _ranSolvers = new HashSet<PropertySolver>();
+        _parseTrees = new HashMap<Attribute, ASTPtRootNode>();
+        _attributes = new HashMap<ASTPtRootNode, Attribute>();
+        _errors = new ArrayList<String>();
+
     }
 
     /**
@@ -76,15 +127,6 @@ public class SharedUtilities {
     }
 
     /**
-     * Return the map that maps root ast node (keys) to the 
-     * corresponding attribute (values).
-     * @return The mappings for root ast nodes to attributes.
-     */
-    public  Map<ASTPtRootNode, Attribute> getAttributes() {
-        return _attributes;
-    }
-
-    /**
      * The set of solvers that have already been invoked.
      */
     private HashSet<PropertySolver> _ranSolvers = new HashSet<PropertySolver>();
@@ -98,49 +140,6 @@ public class SharedUtilities {
     private ArrayList<String> _errors = new ArrayList<String>();
 
     protected PropertySolver _previousInvokedSolver = null;
-
-    /**
-     * Return the set of solvers that were marked activated.
-     * @return The set of solvers that were activated previously.
-     */
-    public Set<PropertySolver> getRanSolvers() {
-        return _ranSolvers;
-    }
-
-    /**
-     * Mard the given property solver as already activated.
-     * @param solver The given solver.
-     */
-    public void addRanSolvers(PropertySolver solver) {
-        _ranSolvers.add(solver);
-    }
-
-    /**
-     * Record the given error message.
-     * @param error The error message to record.
-     */
-    public void addErrors(String error) {
-        _errors.add(error);
-    }
-
-    /**
-     * Return the list of error strings.
-     * @return The list of error strings.
-     */
-    public List<String> getErrors() {
-        Collections.sort(_errors);
-        return _errors;
-    }
-
-    /**
-     * Clear and return the previously recorded errors.
-     * @return The previously recorded errors.
-     */
-    public List removeErrors() {
-        List result = new ArrayList(_errors);
-        _errors.clear();
-        return result;
-    }
     
     public int id;
     public static int count = 0;

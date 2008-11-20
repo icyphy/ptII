@@ -37,28 +37,6 @@ public class PropertyRemover extends Attribute {
                 sharedUtilitiesWrapper.getToken()).getValue();
     }        
 
-    public SharedParameter sharedUtilitiesWrapper;
-
-    protected SharedUtilities _sharedUtilities;
-
-    public void removeProperties(PropertyHelper helper) throws IllegalActionException {
-        Iterator propertyables = 
-            helper.getPropertyables(NamedObj.class).iterator();
-   
-        while (propertyables.hasNext()) {
-            NamedObj propertyable = (NamedObj) propertyables.next();
-            _removePropertyAttributes(propertyable);
-        }
-        
-        // Recursive case.
-        Iterator subHelpers = helper._getSubHelpers().iterator();
-        
-        while (subHelpers.hasNext()) {
-            PropertyHelper subHelper = (PropertyHelper) subHelpers.next();
-            removeProperties(subHelper);
-        }
-    }
-    
     public void removeProperties(CompositeEntity component) throws IllegalActionException {
 
         Iterator solvers = PropertySolver.getAllSolvers(sharedUtilitiesWrapper).iterator();
@@ -85,6 +63,24 @@ public class PropertyRemover extends Attribute {
         requestChange(new ChangeRequest(this, "Repaint the GUI.") {
                 protected void _execute() throws Exception {}
         });        
+    }
+
+    public void removeProperties(PropertyHelper helper) throws IllegalActionException {
+        Iterator propertyables = 
+            helper.getPropertyables(NamedObj.class).iterator();
+   
+        while (propertyables.hasNext()) {
+            NamedObj propertyable = (NamedObj) propertyables.next();
+            _removePropertyAttributes(propertyable);
+        }
+        
+        // Recursive case.
+        Iterator subHelpers = helper._getSubHelpers().iterator();
+        
+        while (subHelpers.hasNext()) {
+            PropertyHelper subHelper = (PropertyHelper) subHelpers.next();
+            removeProperties(subHelper);
+        }
     }
 
     private void _removePropertyAttributes(NamedObj namedObj) throws IllegalActionException {
@@ -128,4 +124,8 @@ public class PropertyRemover extends Attribute {
             //namedObj.requestChange(new MoMLChangeRequest(this, namedObj, moml));
         }
     }
+    
+    public SharedParameter sharedUtilitiesWrapper;
+
+    protected SharedUtilities _sharedUtilities;
 }

@@ -2,13 +2,9 @@ package ptolemy.data.properties;
 
 public class PropertyableObject implements Propertyable {
 
-    protected Object _object;
-    private Property _property;
-
     public PropertyableObject(Object object) {
         _object = object;
     }
-
     public void clearHighlight() {
         // Do nothing.
         
@@ -41,5 +37,9 @@ public class PropertyableObject implements Propertyable {
     public void updateProperty(String useCase, Property property) {
         // Do nothing.
     }
+
+    protected Object _object;
+
+    private Property _property;
     
 }

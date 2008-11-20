@@ -241,16 +241,16 @@ public class PropertyTermManager implements PropertyTermFactory {
                         "The property is not settable.");
             }
 
-            Property declaredProperty = _solver.getDeclaredProperty(_object); 
-            if (declaredProperty != null &&
-                    !declaredProperty.isSubstitutionInstance((Property) property)) {
-                throw new IllegalActionException("Property conflict on object "
-                        + _object.toString() + ".\n"
-                        + "Declared property is "
-                        + declaredProperty.toString() + ".\n"
-                        + "The connection or property constraints, however, "
-                        + "require property " + property.toString());
-            }
+//            Property declaredProperty = _solver.getDeclaredProperty(_object); 
+//            if (declaredProperty != null &&
+//                    !declaredProperty.isSubstitutionInstance((Property) property)) {
+//                throw new IllegalActionException("Property conflict on object "
+//                        + _object.toString() + ".\n"
+//                        + "Declared property is "
+//                        + declaredProperty.toString() + ".\n"
+//                        + "The connection or property constraints, however, "
+//                        + "require property " + property.toString());
+//            }
             
             _solver.setResolvedProperty(_object, (Property) property);
         }

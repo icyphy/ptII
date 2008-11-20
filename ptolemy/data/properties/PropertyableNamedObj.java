@@ -13,14 +13,10 @@ public class PropertyableNamedObj extends PropertyableObject {
         super(object);
     }
 
-    private NamedObj _namedObj() {
-        return (NamedObj) _object;
-    }
-    
     public void clearHighlight() {
         _removeAttribute("_highlightColor");
     }
-
+    
     public void clearProperty(String useCase) {
         _removeAttribute(useCase);
     }
@@ -87,6 +83,10 @@ public class PropertyableNamedObj extends PropertyableObject {
             }
         }
         attribute.setProperty(property);
+    }
+
+    private NamedObj _namedObj() {
+        return (NamedObj) _object;
     }
 
 

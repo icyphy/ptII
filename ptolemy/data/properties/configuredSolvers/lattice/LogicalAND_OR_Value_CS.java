@@ -43,8 +43,8 @@ public class LogicalAND_OR_Value_CS extends PropertyConstraintSolver {
         ColorAttribute highlightFalseColor = new ColorAttribute(_highlighter, "falseHighlightColor");
         highlightFalseColor.setExpression("{0.0,0.2,1.0,1.0}");
         
-        addDependentSolver("FirstValuePTS");
-        addDependentSolver("LogicalOR_Backward_CS");
+        addDependentUseCase("FirstValuePTS");
+        addDependentUseCase("LogicalOR_Backward_CS");
     }        
 
 }

@@ -61,15 +61,8 @@ public class PropertyAttribute extends AbstractSettableAttribute {
        return (_property == null) ? "" : _property.toString();
     }
 
-    /** Set the expression. This method takes the descriptive form and
-     * determines the internal form (by parsing the descriptive form) and stores
-     * it.
-     * @param expression A String that is the descriptive form of either a Unit
-     * or a UnitEquation.
-     * @see ptolemy.kernel.util.Settable#setExpression(java.lang.String)
-     */
-    public void setExpression(String expression) throws IllegalActionException {
-        super.setExpression(expression);
+    public Property getProperty() {
+        return _property;
     }
     
     public Visibility getVisibility() {
@@ -81,20 +74,27 @@ public class PropertyAttribute extends AbstractSettableAttribute {
         return;
     }
 
+    /** Set the expression. This method takes the descriptive form and
+     * determines the internal form (by parsing the descriptive form) and stores
+     * it.
+     * @param expression A String that is the descriptive form of either a Unit
+     * or a UnitEquation.
+     * @see ptolemy.kernel.util.Settable#setExpression(java.lang.String)
+     */
+    public void setExpression(String expression) throws IllegalActionException {
+        super.setExpression(expression);
+    }
+
+    public void setProperty(Property property) {
+        _property = property; 
+    }
     public void setVisibility(Visibility visibility) {
         _visibility = visibility;
    }
-
+    
     public Collection validate() throws IllegalActionException {
         // not relevant
         return null;
-    }
-    public Property getProperty() {
-        return _property;
-    }
-    
-    public void setProperty(Property property) {
-        _property = property; 
     }
 //    private Visibility _visibility = Settable.NONE;
     private Visibility _visibility = Settable.FULL;
