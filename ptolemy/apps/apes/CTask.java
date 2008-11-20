@@ -1,7 +1,6 @@
 
 package ptolemy.apps.apes;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -26,6 +25,7 @@ import ptolemy.data.ResourceToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
@@ -57,21 +57,51 @@ public class CTask extends TypedAtomicActor implements Runnable {
    public Parameter methodName;
    
    public void fire() throws IllegalActionException {
-       System.out.println(this.getName());
+
+       System.out.println("Time: " + getDirector().getModelTime().toString() + "; Task fired: " + this.getName());
+
        if (_thread != null && _thread.isAlive()) { // resume
            for( int i=0; i < fromResourcePort.getWidth(); i++) {
                if ( fromResourcePort.hasToken(i) ) {
                    fromResourcePort.get(i);
                }
            }
-           synchronized(this) { // TODO why?
-               this.notifyAll();
+           if(_in_execution){
+               while (_in_execution){
+                   try {
+                       synchronized(_monitor) { 
+                           _monitor.wait();
+                       }
+                   } catch (InterruptedException e) {
+                       // TODO Auto-generated catch block
+                       e.printStackTrace();
+                   }     
+               }
+           }
+           else {
+               _in_execution = true;
+               synchronized(_monitor) { 
+                   _monitor.notifyAll(); //resume execution of the callback and hence of the C task
+               }
            }
        }
    }
 
+   public boolean postfire() throws IllegalActionException {
+       if (_in_execution) {
+           System.out.println("Time: " + getDirector().getModelTime().toString() + "; " + this.getName() + " requests refiring at " + getDirector().getModelTime().add(_min_delay).toString());
+           getDirector().fireAt(this, getDirector().getModelTime().add(_min_delay));
+       }
+       return true;
+   }
+
+   
+   
    public void initialize() throws IllegalActionException {
        super.initialize();
+       _min_delay = new Time(getDirector(), 0.0); // _min_delay will be set by the callback
+       _in_execution = false;
+       
        if (!(super.getDirector() instanceof TimedDirector)) {
            throw new IllegalActionException(this,
                    "Enclosing director must be a TimedDirector.");
@@ -99,28 +129,42 @@ public class CTask extends TypedAtomicActor implements Runnable {
 
    // public abstract void callCmethod();
 
-   public void accessPointCallback() throws NoRoomException,
+   @SuppressWarnings("deprecation")
+public void accessPointCallback(double extime, String syscall) throws NoRoomException,
            IllegalActionException {
        // TODO type of access point: requested resource + value for resource
-       System.out.println("accessPointCallback");
+       System.out.println("Time: " + getDirector().getModelTime().toString() + "; callback of task: " + this.getName());
        ResourceActor actor = _resources.keySet().iterator().next();
-       Time requestedResourceValue = new Time(getDirector(), 0.2);
+       Time requestedResourceValue = new Time(getDirector(), extime);
        
        ResourceToken token = new ResourceToken(this, requestedResourceValue);
-       toResourcePort.send(_resources.get(actor).intValue(), token);
-       try {
-           workspace().wait(this);
-           //TODO iterate through resources 
-       } catch (InterruptedException e) {
-           // TODO Auto-generated catch block
-           e.printStackTrace();
+       
+       toResourcePort.send(_resources.get(actor).intValue(), token); // send the output
+ 
+       _in_execution = false;
+ 
+       synchronized(_monitor){  // wake up the DEDirector thread
+           _monitor.notifyAll();
        }
-   }
+       
+       while (!_in_execution){
+           synchronized(_monitor){
+               try {
+               _monitor.wait(); // _in_execution must be set to true in fire, before the awakening; 
+               } catch (InterruptedException e) {
+                   // TODO Auto-generated catch block
+                   e.printStackTrace();
+                   _thread.stop();
+               }
+           }
+       }
+       
+   } //return to the C part
    
-   static { 
-       System.loadLibrary("ccode"); 
-   }
-   
+//   static { 
+//       System.loadLibrary("ccode"); 
+//   }
+//   
    
    @Override
     public boolean prefire() throws IllegalActionException {
@@ -129,13 +173,19 @@ public class CTask extends TypedAtomicActor implements Runnable {
 
    public void run() {
        while (true) {
-           try {
-               workspace().wait(this);
-               _callCMethod();
-           } catch (Exception ex) {
-               ex.printStackTrace();
-               break;
+           while (!_in_execution){
+               synchronized(_monitor){
+                   try {
+                       _monitor.wait();
+                   } catch (Exception ex) {
+                       ex.printStackTrace();
+                       break;
+                   }
+               }
            }
+           _callCMethod();
+           _in_execution = false;
+           System.out.println(this.getName() + ": Execution finished!");
        }
    }
 
@@ -143,12 +193,14 @@ public class CTask extends TypedAtomicActor implements Runnable {
        
    }
 
+  
    public void wrapup() throws IllegalActionException {
+       _thread.interrupt();
        _thread = null;
    }
 
    private void _initialize() {
-       _resources = new HashMap();
+       _resources = new HashMap<ResourceActor, Integer>();
        _thread = new Thread(this);
        _thread.start();
        try {
@@ -174,7 +226,12 @@ public class CTask extends TypedAtomicActor implements Runnable {
    private CausalityInterface _causalityInterface;
 
    private Thread _thread;
+   
+   private static Object _monitor = new Object();
 
+   private Time _min_delay; // minimum time delay
+   
+   private boolean _in_execution;
    
    private Map<ResourceActor, Integer> _resources;
 

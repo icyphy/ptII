@@ -59,7 +59,7 @@ public class InterruptServiceRoutine extends TypedAtomicActor {
     @Override
     public void fire() throws IllegalActionException {
         input.get(0);
-        System.out.println(this.getName());
+        System.out.println("Time: " + getDirector().getModelTime().toString() + "; Task: " + this.getName());
         output.send(0, new ResourceToken(_task, new Time(getDirector(), 0.0)));
     }
     

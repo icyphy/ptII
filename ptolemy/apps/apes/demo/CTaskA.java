@@ -26,13 +26,26 @@ public class CTaskA extends CTask {
     
     @Override
     protected void _callCMethod() {
-        CMethod();
+        //       CMethod();
+        try {
+            synchronized(this){
+            this.wait(100L);
+            }
+            accessPointCallback(3.0,"");
+//            synchronized(this){
+//                wait(100);            
+//            }
+//            accessPointCallback(-1.0,"");            
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
-    
+
     @Override
-    public void accessPointCallback() throws NoRoomException,
-            IllegalActionException {
+    public void accessPointCallback(double extime, String syscall) throws NoRoomException,
+    IllegalActionException {
         // TODO Auto-generated method stub
-        super.accessPointCallback();
+        super.accessPointCallback(extime, syscall);
     }
 }

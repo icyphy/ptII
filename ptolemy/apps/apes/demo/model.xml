@@ -5,10 +5,12 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="16">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={143, 117, 848, 644}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={143, 117, 850, 652}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[635, 534]">
     </property>
@@ -29,6 +31,8 @@
     <entity name="ISR_A" class="ptolemy.apps.apes.InterruptServiceRoutine">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 470.0]">
         </property>
+        <property name="priority" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
         <port name="taskConnector" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -37,6 +41,8 @@
     </entity>
     <entity name="ISR_B" class="ptolemy.apps.apes.InterruptServiceRoutine">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 465.0]">
+        </property>
+        <property name="priority" class="ptolemy.data.expr.Parameter" value="10">
         </property>
         <port name="taskConnector" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -47,6 +53,8 @@
     <entity name="ISR_C" class="ptolemy.apps.apes.InterruptServiceRoutine">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 465.0]">
         </property>
+        <property name="priority" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
         <port name="taskConnector" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -54,23 +62,27 @@
         </port>
     </entity>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="16.0">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 8.0}">
+        </property>
         <doc>Create periodic timed events.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 460.0]">
         </property>
     </entity>
     <entity name="Clock2" class="ptolemy.actor.lib.Clock">
-        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="4.0">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="16.0">
         </property>
-        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{1.0, 3.0}">
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{1.0, 9.0}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 455.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 455.0]">
         </property>
     </entity>
     <entity name="Clock3" class="ptolemy.actor.lib.Clock">
-        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="6.0">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="8.0">
         </property>
-        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{2.0, 5.0}">
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{2.0,6.0}">
         </property>
         <doc>Create periodic timed events.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 455.0]">
@@ -78,6 +90,10 @@
     </entity>
     <entity name="CTaskA" class="ptolemy.apps.apes.demo.CTaskA">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 400.0]">
+        </property>
+        <property name="priority" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
         </property>
         <port name="triggerConnector" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -88,6 +104,8 @@
     <entity name="CTaskB" class="ptolemy.apps.apes.demo.CTaskB">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 350.0]">
         </property>
+        <property name="priority" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
         <port name="triggerConnector" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -96,6 +114,8 @@
     </entity>
     <entity name="CTaskC" class="ptolemy.apps.apes.demo.CTaskC">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 295.0]">
+        </property>
+        <property name="priority" class="ptolemy.data.expr.Parameter" value="3">
         </property>
         <port name="triggerConnector" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>

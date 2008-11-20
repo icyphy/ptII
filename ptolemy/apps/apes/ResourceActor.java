@@ -1,12 +1,9 @@
 package ptolemy.apps.apes;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.AtomicActor;
-import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
@@ -105,7 +102,7 @@ public abstract class ResourceActor extends TypedAtomicActor {
      * Initialize ports.
      */
     private void _initialize() {
-        _connectedTasks = new HashMap();
+        _connectedTasks = new HashMap<Actor, Integer>();
         try {
             input = new TypedIOPort(this, "input", true, false);
             input.setMultiport(true); 

@@ -113,43 +113,43 @@ public class CPUScheduler extends ResourceActor {
    }
 
 
-   public Time getTaskTriggerPeriod(Actor actor) throws IllegalActionException {
-       try {
-           Parameter parameter = (Parameter) ((NamedObj) actor)
-                   .getAttribute("triggerPeriod");
-
-           if (parameter != null) {
-               DoubleToken token = (DoubleToken) parameter.getToken();
-
-               return new Time(getDirector(), token.doubleValue());
-           } else {
-               return new Time(getDirector(), 1.0);
-           }
-       } catch (ClassCastException ex) {
-           return new Time(getDirector(), 1.0);
-       } catch (IllegalActionException ex) {
-           return new Time(getDirector(), 1.0);
-       }
-   }
-
-   public Time getTaskTriggerOffset(Actor actor) throws IllegalActionException {
-       try {
-           Parameter parameter = (Parameter) ((NamedObj) actor)
-                   .getAttribute("triggerOffset");
-
-           if (parameter != null) {
-               DoubleToken token = (DoubleToken) parameter.getToken();
-
-               return new Time(getDirector(), token.doubleValue());
-           } else {
-               return new Time(getDirector(), 0.0);
-           }
-       } catch (ClassCastException ex) {
-           return new Time(getDirector(), 0.0);
-       } catch (IllegalActionException ex) {
-           return new Time(getDirector(), 0.0);
-       }
-   }
+//   public Time getTaskTriggerPeriod(Actor actor) throws IllegalActionException {
+//       try {
+//           Parameter parameter = (Parameter) ((NamedObj) actor)
+//                   .getAttribute("triggerPeriod");
+//
+//           if (parameter != null) {
+//               DoubleToken token = (DoubleToken) parameter.getToken();
+//
+//               return new Time(getDirector(), token.doubleValue());
+//           } else {
+//               return new Time(getDirector(), 1.0);
+//           }
+//       } catch (ClassCastException ex) {
+//           return new Time(getDirector(), 1.0);
+//       } catch (IllegalActionException ex) {
+//           return new Time(getDirector(), 1.0);
+//       }
+//   }
+//
+//   public Time getTaskTriggerOffset(Actor actor) throws IllegalActionException {
+//       try {
+//           Parameter parameter = (Parameter) ((NamedObj) actor)
+//                   .getAttribute("triggerOffset");
+//
+//           if (parameter != null) {
+//               DoubleToken token = (DoubleToken) parameter.getToken();
+//
+//               return new Time(getDirector(), token.doubleValue());
+//           } else {
+//               return new Time(getDirector(), 0.0);
+//           }
+//       } catch (ClassCastException ex) {
+//           return new Time(getDirector(), 0.0);
+//       } catch (IllegalActionException ex) {
+//           return new Time(getDirector(), 0.0);
+//       }
+//   }
 
    protected final void _sendTaskExecutionEvent(Actor actor, double time,
            ScheduleEventType eventType) {
@@ -167,8 +167,10 @@ public class CPUScheduler extends ResourceActor {
     * Schedule actors. 
     */
    public void fire() throws IllegalActionException {
+       
        Actor taskInExecution = null;
        // decrease remaining time of task currently in execution
+       System.out.println("Time " + getDirector().getModelTime().toString() + ": " + this.getName() + " fired.");
        if (_tasksInExecution.size() > 0) {
            taskInExecution = _tasksInExecution.peek();
            if (getDirector().getModelTime().compareTo(_previousModelTime) > 0) {
@@ -178,7 +180,8 @@ public class CPUScheduler extends ResourceActor {
                if (remainingTime.equals(new Time(getDirector(), 0.0))) {
                    _tasksInExecution.pop();
                    _sendTaskExecutionEvent(taskInExecution, getDirector().getModelTime().getDoubleValue(), ScheduleEventType.STOP);
-                   output.send(((Integer)_connectedTasks.get(taskInExecution)).intValue(), new BooleanToken(true)); 
+                   output.send(((Integer)_connectedTasks.get(taskInExecution)).intValue(), new BooleanToken(true));
+                   System.out.println(this.getName() +": " + taskInExecution.getName() + " got its requested CPU quota." );
                } else {
                    _taskExecutionTimes.put(taskInExecution, remainingTime);
                }
@@ -191,7 +194,10 @@ public class CPUScheduler extends ResourceActor {
                ResourceToken token = (ResourceToken) input.get(channelId);
                Actor actorToSchedule = token.actorToSchedule;
                Time executionTime = (Time)token.requestedValue;
-               scheduleTask(actorToSchedule, executionTime);
+               if(executionTime.compareTo(new Time(getDirector(), 0.0)) >= 0) {
+                   System.out.println(this.getName() + " scheduling task " + actorToSchedule.getName() + " with remaining execution time " + executionTime);
+                   scheduleTask(actorToSchedule, executionTime);
+               }
            }
        }
 
@@ -204,7 +210,12 @@ public class CPUScheduler extends ResourceActor {
                _sendTaskExecutionEvent(task, getDirector().getModelTime().getDoubleValue(), ScheduleEventType.START);
                output.send(_connectedTasks.get(task).intValue(), new BooleanToken(true)); 
            } 
+           else {
+               System.out.println(this.getName() + " request refiring after remaining time " + remainingTime.toString());
+               getDirector().fireAt(this, remainingTime.add(getDirector().getModelTime()));
+           }
        }
+       _previousModelTime = getDirector().getModelTime();
    }
 
    private void scheduleTask( Actor actorToSchedule,
@@ -273,7 +284,7 @@ public class CPUScheduler extends ResourceActor {
    public void registerExecutionListener(
            TaskExecutionListener taskExecutionListener) {
        if (_executionListeners == null)
-           _executionListeners = new ArrayList();
+           _executionListeners = new ArrayList<TaskExecutionListener>();
        _executionListeners.add(taskExecutionListener);
    }
 
