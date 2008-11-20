@@ -66,6 +66,7 @@ public class RelationWidthInference {
     public void inferWidths() throws IllegalActionException {
         if (_needsWidthInference) {
             final boolean logTimings = false;
+            final boolean checkConsistency = true;
             long startTime = (new Date()).getTime();
                         
             try {
@@ -73,7 +74,9 @@ public class RelationWidthInference {
 
                 Set<ComponentRelation> relationList = _topLevel.deepRelationSet();
                 Set<IORelation> workingSet = new HashSet<IORelation>();
-                HashSet<IORelation> unspecifiedSet = new HashSet<IORelation>();        
+                HashSet<IORelation> unspecifiedSet = new HashSet<IORelation>();
+                HashSet<IOPort> portsToCheckConsistency = new HashSet<IOPort>();
+                HashSet<IOPort> portsThatCanBeIngnoredForConsistencyCheck = new HashSet<IOPort>();
                                 
                 for (ComponentRelation componentRelation : relationList) {
                     if (componentRelation instanceof IORelation) {
@@ -167,7 +170,14 @@ public class RelationWidthInference {
                     }
                     for (IOPort port : multiports) {
                         List<IORelation> updatedRelations = _relationsWithUpdatedWidthForMultiport(port);
-                        _checkConsistencyForOtherPorts(updatedRelations, port);
+                        if (checkConsistency && !updatedRelations.isEmpty()) {
+                            // If we have updated relations for this port, it means that it is consistent
+                            // and hence we don't need to check consistency anymore.
+                            portsThatCanBeIngnoredForConsistencyCheck.add(port);
+                            for(IORelation updatedRelation : updatedRelations) {
+                                portsToCheckConsistency.addAll(updatedRelation.linkedPortList(port));             
+                            }
+                        }
                         workingSet2.addAll(updatedRelations);
                     }
                 }
@@ -186,6 +196,14 @@ public class RelationWidthInference {
                             + " explicitly specifying the width of this relation.");
                     
                 }
+                
+                //Consistency check
+                if (checkConsistency) {
+                    portsToCheckConsistency.removeAll(portsThatCanBeIngnoredForConsistencyCheck);
+                    for (IOPort port : portsToCheckConsistency) {
+                        _checkConsistency(port);
+                    }
+                }   
             } finally {   
                 _topLevel.workspace().doneTemporaryWriting();
                 if (logTimings) {
@@ -261,27 +279,6 @@ public class RelationWidthInference {
                      "The inside and outside widths of port " + port.getFullName()
                      + " are not consistent.\nCan't determine a uniquely defined width for"
                      + " the connected relations.");
-         }
-     }
-
-     /**
-      * Check whether the widths at the ports linked to this relations are consistent.
-      * Consistent means that the input and output width is either zero or that the input
-      * width is equal to the output width. The port except is not checked.
-      * @param relations The relations whose linked ports will be checked.
-      * @param except The port that is not checked.
-      * @exception IllegalActionException If the widths of the relations at port
-      *                 are not consistent.
-      */
-     @SuppressWarnings("unchecked")
-    static private void _checkConsistencyForOtherPorts(List<IORelation> relations,
-             IOPort except) throws IllegalActionException {
-         Set<IOPort> allPorts = new HashSet<IOPort>();
-         for(IORelation relation : relations) {
-             allPorts.addAll(relation.linkedPortList(except));             
-         }
-         for (IOPort port : allPorts) {
-             _checkConsistency(port);
          }
      }
 
