@@ -142,7 +142,7 @@ public class RelationWidthInference {
                     int width = relation.getWidth();            
                     assert  width >= 0;
                     
-                    //All relations in the same relation group need to have the same width
+                    // All relations in the same relation group need to have the same width
                     for (Object otherRelationObject : relation.relationGroupList()) {
                         IORelation otherRelation = (IORelation) otherRelationObject;
                         if (relation != otherRelation && otherRelation.needsWidthInference()) {
@@ -167,6 +167,7 @@ public class RelationWidthInference {
                     }
                     for (IOPort port : multiports) {
                         List<IORelation> updatedRelations = _relationsWithUpdatedWidthForMultiport(port);
+                        _checkConsistencyForOtherPorts(updatedRelations, port);
                         workingSet2.addAll(updatedRelations);
                     }
                 }
@@ -196,6 +197,8 @@ public class RelationWidthInference {
             _needsWidthInference = false;
         }
     }
+
+ 
 
     /**
      *  Return whether the current widths of the relation in the model
@@ -238,6 +241,50 @@ public class RelationWidthInference {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////   
 
+     /**
+      * Check whether the widths at a port are consistent. Consistent means that
+      * the input and output width is either zero or that the input width is equal
+      * to the output width. 
+      * @param  port The port which will be checked.
+      * @exception IllegalActionException If the widths of the relations at port
+      *                 are not consistent.
+      */
+     static private void _checkConsistency(IOPort port) throws IllegalActionException {
+         // We check whether the inside and outside widths are consistent. In case
+         // widths are inferred they should be inferred uniquely. We don't want to have
+         // different results depending on where we start in the graph.
+         int insideWidth = port._getInsideWidth(null);
+         int outsideWidth = port._getOutsideWidth(null);
+         
+         if (insideWidth != 0 && outsideWidth != 0 && insideWidth != outsideWidth) {
+             throw new IllegalActionException(port, 
+                     "The inside and outside widths of port " + port.getFullName()
+                     + " are not consistent.\nCan't determine a uniquely defined width for"
+                     + " the connected relations.");
+         }
+     }
+
+     /**
+      * Check whether the widths at the ports linked to this relations are consistent.
+      * Consistent means that the input and output width is either zero or that the input
+      * width is equal to the output width. The port except is not checked.
+      * @param relations The relations whose linked ports will be checked.
+      * @param except The port that is not checked.
+      * @exception IllegalActionException If the widths of the relations at port
+      *                 are not consistent.
+      */
+     @SuppressWarnings("unchecked")
+    static private void _checkConsistencyForOtherPorts(List<IORelation> relations,
+             IOPort except) throws IllegalActionException {
+         Set<IOPort> allPorts = new HashSet<IOPort>();
+         for(IORelation relation : relations) {
+             allPorts.addAll(relation.linkedPortList(except));             
+         }
+         for (IOPort port : allPorts) {
+             _checkConsistency(port);
+         }
+     }
+
     /**
      * Filter the relations for which the width still has to be inferred.
      * @param  relationList The relations that need to be filtered.
@@ -264,7 +311,7 @@ public class RelationWidthInference {
      * @exception IllegalActionException If the widths of the relations at port are not consistent.  
      */
     static private List<IORelation> _relationsWithUpdatedWidthForMultiport(IOPort port) throws IllegalActionException {              
-        List<IORelation> result = new LinkedList<IORelation>();
+        List<IORelation> result = new LinkedList<IORelation>();        
         
         Set<IORelation> insideUnspecifiedWidths = _relationsWithUnspecifiedWidths(port.insideRelationList());
         int insideUnspecifiedWidthsSize = insideUnspecifiedWidths.size(); 
@@ -273,7 +320,8 @@ public class RelationWidthInference {
                 //port.linkedRelationList() returns the outside relations
         
         int outsideUnspecifiedWidthsSize = outsideUnspecifiedWidths.size();
-        if ((insideUnspecifiedWidthsSize > 0 && outsideUnspecifiedWidthsSize > 0)
+        
+        if ((insideUnspecifiedWidthsSize > 0 && outsideUnspecifiedWidthsSize > 0) 
                 || (insideUnspecifiedWidthsSize == 0 && outsideUnspecifiedWidthsSize == 0)) {
             return result;
         }
@@ -300,6 +348,7 @@ public class RelationWidthInference {
         // However in the case of a multimodel, you often have relations on the
         // inside and width inference needs to happen. In this case difference >=0 
         if (port.isOpaque() && difference < 0) {
+            assert insideWidth == 0;
             return result; // No width inference possible and necessary at this port.            
         }
         if (difference < 0) {
@@ -315,7 +364,7 @@ public class RelationWidthInference {
         if (difference > 0 && difference < unspecifiedWidthsSize) {
             throw new IllegalActionException(port, 
                     "The inside and outside widths of port " + port.getFullName()
-                    + " are not consistent.\n Can't determine a unique width for relation"
+                    + " are not consistent.\n Can't determine a uniquely defined width for relation"
                     + unspecifiedWidths.iterator().next().getFullName());            
         }         
         

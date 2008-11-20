@@ -425,15 +425,13 @@ test IORelation-3.19 {Resolve width through three levels} {
     $r0 setWidth 5
     $r2 setWidth 3
     $r1 setWidth 0
-#note: we don't constrain that the sum of input widths equals the sum of the
-#output widths because we allow dangling ports.
-#TODO: actually the outcome is not really deterministic from the user point of view
-#		it would be better not to support this case and flag it as a problem           
-    $manager inferWidths
-    string match "5 ? 3 5 ? 3" "[$p0 getWidth] [$p1 getWidth] [$p2 getWidth]\
-         [$r0 getWidth] [$r1 getWidth] [$r2 getWidth]"
-} {1} 
-
+ #the outcome is not deterministic from the user point of view
+    catch {$manager inferWidths} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: The inside and outside widths of port .E_1.E0.E1.P1 are not consistent.
+Can't determine a uniquely defined width for the connected relations.
+  in .E_1.E0.E1.P1}}
+    
 test IORelation-3.20 {Resolve width through three levels} {
 	# use the above settings
     $r1 setWidth 2
