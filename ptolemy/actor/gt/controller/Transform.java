@@ -87,8 +87,6 @@ public class Transform extends GTEvent implements ConfigurableEntity {
         mode = new TransformationMode(this, "mode");
     }
 
-    public Parameter matched;
-
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Transform newObject = (Transform) super.clone(workspace);
         try {
@@ -136,13 +134,13 @@ public class Transform extends GTEvent implements ConfigurableEntity {
         return data;
     }
 
-   public String getConfigureSource() {
-    return _configureSource;
-}
-
-    public String getConfigureText() {
-        return null;
+    public String getConfigureSource() {
+        return _configureSource;
     }
+
+   public String getConfigureText() {
+    return null;
+}
 
     public Configurer getConfigurer() {
         return _configurer;
@@ -151,6 +149,10 @@ public class Transform extends GTEvent implements ConfigurableEntity {
     public TypedActor[] getRefinement() {
         return new TypedActor[] {_transformation};
     }
+
+    public Factory controllerFactory;
+
+    public Parameter matched;
 
     public TransformationMode mode;
 
@@ -193,23 +195,9 @@ public class Transform extends GTEvent implements ConfigurableEntity {
         output.write("</configure>\n");
     }
 
-    /** Schedule the given actor, which is a refinement of this event, unless
-        *  the refinement is a transformation rule (which is executed in the action
-        *  instead).
-        *
-        *  @param refinement The refinement to be scheduled to fire.
-        *  @return true if the refinement is scheduled; false otherwise.
-        *  @throws IllegalActionException If thrown when trying to initialize the
-        *  schedule of an ERGController refinement.
-        */
-       protected boolean _scheduleRefinement(TypedActor refinement)
-               throws IllegalActionException {
-           if (refinement == _transformation) {
-               return false;
-           } else {
-               return super._scheduleRefinement(refinement);
-           }
-       }
+    protected boolean _isActiveRefinement(TypedActor refinement) {
+        return refinement != _transformation;
+    }
 
     protected TransformationRule _transformation;
 
@@ -225,6 +213,4 @@ public class Transform extends GTEvent implements ConfigurableEntity {
     private String _configureSource;
 
     private Configurer _configurer;
-
-    public Factory controllerFactory;
 }
