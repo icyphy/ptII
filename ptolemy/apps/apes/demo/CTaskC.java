@@ -27,10 +27,10 @@ public class CTaskC extends CTask {
     protected void _callCMethod() {
  //       CMethod();
         try {
-            synchronized(this){
-                this.wait(100L);
-            }
-            accessPointCallback(1.0,"");
+ //           synchronized(this){
+ //               this.wait(100L);
+ //           }
+            accessPointCallback(1.0,-1.0,"");
 //            synchronized(this){
 //                this.wait(100);
 //            }
@@ -42,9 +42,9 @@ public class CTaskC extends CTask {
     }
     
     @Override
-    public void accessPointCallback(double extime, String syscall) throws NoRoomException,
+    public void accessPointCallback(double extime, double minNextTime, String syscall) throws NoRoomException,
             IllegalActionException {
         // TODO Auto-generated method stub
-        super.accessPointCallback(extime, syscall);
+        super.accessPointCallback(extime, minNextTime, syscall);
     }
 }

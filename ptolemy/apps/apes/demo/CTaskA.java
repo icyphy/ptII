@@ -27,25 +27,33 @@ public class CTaskA extends CTask {
     @Override
     protected void _callCMethod() {
         //       CMethod();
-        try {
-            synchronized(this){
-            this.wait(100L);
+        long period;
+        System.out.println("Entering CMethod of " + this.getName());
+        period = System.currentTimeMillis();
+                for (int i=0;i<Integer.MAX_VALUE/8;i++){
+                    double a = Math.PI*Math.PI;
+                }
+        period = System.currentTimeMillis() - period;
+        System.out.println("duration of CMethod of " + this.getName() + ": " + Long.toString(period));            
+            try {
+                accessPointCallback(3.0,-1.0,"");
+            } catch (NoRoomException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IllegalActionException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
             }
-            accessPointCallback(3.0,"");
 //            synchronized(this){
 //                wait(100);            
 //            }
 //            accessPointCallback(-1.0,"");            
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
     }
 
     @Override
-    public void accessPointCallback(double extime, String syscall) throws NoRoomException,
+    public void accessPointCallback(double extime, double minNextTime, String syscall) throws NoRoomException,
     IllegalActionException {
         // TODO Auto-generated method stub
-        super.accessPointCallback(extime, syscall);
+        super.accessPointCallback(extime, minNextTime, syscall);
     }
 }
