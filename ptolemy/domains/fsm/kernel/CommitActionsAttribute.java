@@ -34,6 +34,7 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.UnknownResultException;
 import ptolemy.data.expr.Variable;
+import ptolemy.domains.fsm.modal.ModalController;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
@@ -330,7 +331,18 @@ public class CommitActionsAttribute extends AbstractActionsAttribute implements
                     if (attribute != null) {
                         return attribute;
                     }
-                    container = container.getContainer();
+                    NamedObj containerContainer = container.getContainer();
+                    if (container instanceof ModalController) {
+                        State state = ((ModalController) container)
+                                .getRefinedState();
+                        if (state == null) {
+                            container = containerContainer;
+                        } else {
+                            container = state.getContainer();
+                        }
+                    } else {
+                        container = containerContainer;
+                    }
                 }
 
                 throw new IllegalActionException(fsm, this,
