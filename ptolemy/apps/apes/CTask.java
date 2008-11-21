@@ -56,7 +56,7 @@ public class CTask extends TypedAtomicActor implements Runnable {
 
    public Parameter methodName;
    
-   public void fire() throws IllegalActionException {
+   public synchronized void fire() throws IllegalActionException {
 
        System.out.println("Time: " + getDirector().getModelTime().toString() + "; Task fired: " + this.getName());
 
@@ -66,32 +66,45 @@ public class CTask extends TypedAtomicActor implements Runnable {
                    fromResourcePort.get(i);
                }
            }
-           if(_in_execution){
-               while (_in_execution){
-                   try {
-                       synchronized(_monitor) { 
-                           _monitor.wait();
-                       }
-                   } catch (InterruptedException e) {
-                       // TODO Auto-generated catch block
-                       e.printStackTrace();
-                   }     
-               }
+           _in_execution = true;
+           this.notifyAll();
+           while(_in_execution){
+               try {
+                this.wait();
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
            }
-           else {
-               _in_execution = true;
-               synchronized(_monitor) { 
-                   _monitor.notifyAll(); //resume execution of the callback and hence of the C task
-               }
-           }
+//           if(_in_execution){
+//               while (_in_execution){
+//                   try {
+// //                      synchronized(_monitor) { 
+//                           this.wait();
+// //                      }
+//                   } catch (InterruptedException e) {
+//                       // TODO Auto-generated catch block
+//                       e.printStackTrace();
+//                   }     
+//               }
+//           }
+//           else {
+//               _in_execution = true;
+//               System.out.println("Time: " + getDirector().getModelTime().toString() + "; " + this.getName() + " requests refiring at " + getDirector().getModelTime().add(_min_delay).toString());
+//               getDirector().fireAt(this, getDirector().getModelTime().add(_min_delay));
+//               
+// //              synchronized(_monitor) { 
+//                   this.notifyAll(); //resume execution of the callback and hence of the C task
+// //              }
+//           }
        }
    }
 
    public boolean postfire() throws IllegalActionException {
-       if (_in_execution) {
-           System.out.println("Time: " + getDirector().getModelTime().toString() + "; " + this.getName() + " requests refiring at " + getDirector().getModelTime().add(_min_delay).toString());
-           getDirector().fireAt(this, getDirector().getModelTime().add(_min_delay));
-       }
+//       if (_in_execution) {
+//           System.out.println("Time: " + getDirector().getModelTime().toString() + "; " + this.getName() + " requests refiring at " + getDirector().getModelTime().add(_min_delay).toString());
+//           getDirector().fireAt(this, getDirector().getModelTime().add(_min_delay));
+//       }
        return true;
    }
 
@@ -99,7 +112,7 @@ public class CTask extends TypedAtomicActor implements Runnable {
    
    public void initialize() throws IllegalActionException {
        super.initialize();
-       _min_delay = new Time(getDirector(), 0.0); // _min_delay will be set by the callback
+       _initial_min_delay = new Time(getDirector(), 0.0); // _min_delay will be set by the callback
        _in_execution = false;
        
        if (!(super.getDirector() instanceof TimedDirector)) {
@@ -130,7 +143,7 @@ public class CTask extends TypedAtomicActor implements Runnable {
    // public abstract void callCmethod();
 
    @SuppressWarnings("deprecation")
-public void accessPointCallback(double extime, String syscall) throws NoRoomException,
+public synchronized void accessPointCallback(double extime, double minNextTime, String syscall) throws NoRoomException,
            IllegalActionException {
        // TODO type of access point: requested resource + value for resource
        System.out.println("Time: " + getDirector().getModelTime().toString() + "; callback of task: " + this.getName());
@@ -140,23 +153,23 @@ public void accessPointCallback(double extime, String syscall) throws NoRoomExce
        ResourceToken token = new ResourceToken(this, requestedResourceValue);
        
        toResourcePort.send(_resources.get(actor).intValue(), token); // send the output
+       _min_delay = new Time(getDirector(), minNextTime);
  
        _in_execution = false;
- 
-       synchronized(_monitor){  // wake up the DEDirector thread
-           _monitor.notifyAll();
-       }
+ //      synchronized(_monitor){  
+        this.notifyAll();               // wake up the DEDirector thread
+ //      }
        
        while (!_in_execution){
-           synchronized(_monitor){
+//           synchronized(_monitor){
                try {
-               _monitor.wait(); // _in_execution must be set to true in fire, before the awakening; 
+               this.wait(); // _in_execution must be set to true in fire, before the awakening; 
                } catch (InterruptedException e) {
                    // TODO Auto-generated catch block
                    e.printStackTrace();
                    _thread.stop();
                }
-           }
+//           }
        }
        
    } //return to the C part
@@ -171,20 +184,23 @@ public void accessPointCallback(double extime, String syscall) throws NoRoomExce
         return true;
     }
 
-   public void run() {
+   public synchronized void run() {
        while (true) {
+           _min_delay = _initial_min_delay;
            while (!_in_execution){
-               synchronized(_monitor){
+//               synchronized(_monitor){
                    try {
-                       _monitor.wait();
+                       this.wait();
                    } catch (Exception ex) {
                        ex.printStackTrace();
                        break;
                    }
-               }
+ //              }
            }
            _callCMethod();
            _in_execution = false;
+           this.notifyAll(); //wake up the DE thread
+           
            System.out.println(this.getName() + ": Execution finished!");
        }
    }
@@ -229,7 +245,7 @@ public void accessPointCallback(double extime, String syscall) throws NoRoomExce
    
    private static Object _monitor = new Object();
 
-   private Time _min_delay; // minimum time delay
+   private Time _min_delay, _initial_min_delay; // minimum time delays
    
    private boolean _in_execution;
    

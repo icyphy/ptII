@@ -180,6 +180,11 @@ public class CPUScheduler extends ResourceActor {
                if (remainingTime.equals(new Time(getDirector(), 0.0))) {
                    _tasksInExecution.pop();
                    _sendTaskExecutionEvent(taskInExecution, getDirector().getModelTime().getDoubleValue(), ScheduleEventType.STOP);
+                   if (_tasksInExecution.size() > 0) {
+                       Actor secondTask = _tasksInExecution.peek();
+                       _sendTaskExecutionEvent(secondTask, getDirector().getModelTime().getDoubleValue(), ScheduleEventType.START);
+                   }
+
                    output.send(((Integer)_connectedTasks.get(taskInExecution)).intValue(), new BooleanToken(true));
                    System.out.println(this.getName() +": " + taskInExecution.getName() + " got its requested CPU quota." );
                } else {
@@ -208,6 +213,10 @@ public class CPUScheduler extends ResourceActor {
            if (remainingTime.equals(new Time(getDirector(), 0.0))) {
                _tasksInExecution.pop();
                _sendTaskExecutionEvent(task, getDirector().getModelTime().getDoubleValue(), ScheduleEventType.START);
+               if (_tasksInExecution.size() > 0){
+                   Actor secondTask = _tasksInExecution.peek();
+                   _sendTaskExecutionEvent(secondTask, getDirector().getModelTime().getDoubleValue(), ScheduleEventType.STOP);
+               }
                output.send(_connectedTasks.get(task).intValue(), new BooleanToken(true)); 
            } 
            else {
@@ -227,6 +236,7 @@ public class CPUScheduler extends ResourceActor {
        if (taskInExecution == null ||
                getPriority(actorToSchedule) > getPriority(taskInExecution)) {
            _tasksInExecution.push(actorToSchedule);
+           
        } else {
            for (int i = 1; i < _tasksInExecution.size(); i++) {  //TODO: more efficient implementation
                Actor actor = _tasksInExecution.get(i);
