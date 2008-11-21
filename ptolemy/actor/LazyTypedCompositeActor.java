@@ -317,6 +317,20 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
         return super.deepRelationSet();
     }
 
+    /** List the opaque entities that are directly or indirectly
+     *  contained by this entity.  The list will be empty if there
+     *  are no such contained entities. This list does not include
+     *  class definitions nor anything contained by them.
+     *  This method is read-synchronized on the workspace.
+     *  @return A list of opaque ComponentEntity objects.
+     *  @see #classDefinitionList()
+     *  @see #allAtomicEntityList()
+     */
+    public List deepOpaqueEntityList() {
+        populate();
+        return super.deepOpaqueEntityList();
+    }
+    
     /** List the contained entities in the order they were added
      *  (using their setContainer() method).
      *  The returned list is static in the sense
