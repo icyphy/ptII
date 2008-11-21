@@ -483,6 +483,19 @@ public class Event extends State {
         return _parserScope;
     }
 
+    /** Return whether the refinement is active. In this base class, any
+     *  refinement is active, so true is returned all the time. Subclasses may
+     *  override this method to ignore the automatic firing of some refinements.
+     *
+     *  @param refinement The refinement to be tested.
+     *  @return True if the refinement is active; false otherwise.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    protected boolean _isActiveRefinement(TypedActor refinement)
+            throws IllegalActionException {
+        return true;
+    }
+
     /** Schedule the event that is pointed to by the given relation, if the
      *  guard returns true.
      *
@@ -509,22 +522,6 @@ public class Event extends State {
                         priority);
             }
         }
-    }
-
-    /** Schedule the given actor, which is a refinement of this event.
-     *
-     *  @param refinement The refinement to be scheduled to fire.
-     *  @return true if the refinement is scheduled; false otherwise.
-     *  @throws IllegalActionException If thrown when trying to initialize the
-     *  schedule of an ERGController refinement.
-     */
-    protected boolean _scheduleRefinement(TypedActor refinement)
-            throws IllegalActionException {
-        ERGController controller = (ERGController) getContainer();
-        ERGDirector director = controller.director;
-        refinement.initialize();
-        director.fireAt(refinement, director.getModelTime());
-        return true;
     }
 
     /** The parser scope used to execute actions and evaluate arguments.

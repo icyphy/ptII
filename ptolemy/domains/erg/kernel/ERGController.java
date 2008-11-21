@@ -263,7 +263,8 @@ public class ERGController extends ModalController {
     }
 
     /** Initialize this controller by initializing the director that it
-     *  contains, which sets the initial events.
+     *  contains, which sets the initial events, and initializing all the
+     *  refinements.
      *
      *  @exception IllegalActionException If the director or initialize() of the
      *  superclass throws it.
@@ -271,6 +272,17 @@ public class ERGController extends ModalController {
     public void initialize() throws IllegalActionException {
         director.initialize();
         super.initialize();
+
+        Iterator<?> entities = deepEntityList().iterator();
+        while (entities.hasNext()) {
+            Event event = (Event) entities.next();
+            TypedActor[] refinements = event.getRefinement();
+            if (refinements != null) {
+                for (TypedActor refinement : refinements) {
+                    refinement.initialize();
+                }
+            }
+        }
     }
 
     /** Return the result of isFireFunctional() from the director.
@@ -355,24 +367,14 @@ public class ERGController extends ModalController {
     }
 
     /** Preinitialize the controller by invoking preinitialize() of the
-     *  director.
+     *  director and that of the refinements.
      *
-     *  @exception IllegalActionException If preinitialize() of the director
-     *   throws it.
+     *  @exception IllegalActionException If preinitialize() of the director or
+     *   refinements throws it.
      */
     public void preinitialize() throws IllegalActionException {
         director.preinitialize();
         super.preinitialize();
-        Iterator<?> entities = deepEntityList().iterator();
-        while (entities.hasNext()) {
-            Event event = (Event) entities.next();
-            TypedActor[] refinements = event.getRefinement();
-            if (refinements != null) {
-                for (TypedActor refinement : event.getRefinement()) {
-                    refinement.preinitialize();
-                }
-            }
-        }
     }
 
     /** Stop execution by invoking stop() of the director.
@@ -445,6 +447,17 @@ public class ERGController extends ModalController {
             }
         }
         return constraintList;
+    }
+
+    /** Wrap up the controller by invoking wrapup() of the director and that of
+     *  the refinements.
+     *
+     *  @exception IllegalActionException If wrapup() of the director or
+     *   refinements throws it.
+     */
+    public void wrapup() throws IllegalActionException {
+        director.wrapup();
+        super.wrapup();
     }
 
     /** A Boolean parameter that decides whether simultaneous events should be
