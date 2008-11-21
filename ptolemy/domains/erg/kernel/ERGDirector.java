@@ -165,30 +165,16 @@ public class ERGDirector extends Director implements TimedDirector,
     public TimedEvent cancel(Event event) throws IllegalActionException {
         TimedEvent timedEvent = findFirst(event, true);
         if (timedEvent != null) {
-            List<TimedEvent> events = _eventInstanceTable.remove(timedEvent);
+            _eventQueue.remove(timedEvent);
+            _refinementQueue.remove(timedEvent);
             Object contents = timedEvent.contents;
-            if (events == null) {
-                _eventQueue.remove(timedEvent);
-                _refinementQueue.remove(timedEvent);
-                if (contents instanceof Actor) {
-                    _scheduledRefinements.remove(contents);
-                }
-            } else {
-                for (TimedEvent eventInstance : events) {
-                    _eventQueue.remove(eventInstance);
-                    _refinementQueue.remove(eventInstance);
-                    contents = eventInstance.contents;
-                    if (contents instanceof Actor) {
-                        _scheduledRefinements.remove(contents);
-                    }
-                }
-                events.clear();
+            if (contents instanceof Actor) {
+                _scheduledRefinements.remove(contents);
             }
             for (Set<TimedEvent> set : _eventsListeningToPorts.values()) {
                 set.remove(timedEvent);
             }
-            for (Set<TimedEvent> set : _eventsListeningToVariables.values(
-                    )) {
+            for (Set<TimedEvent> set : _eventsListeningToVariables.values()) {
                 set.remove(timedEvent);
             }
         }
@@ -209,9 +195,6 @@ public class ERGDirector extends Director implements TimedDirector,
         newObject._controller = null;
         newObject._controllerVersion = -1;
         newObject._eventQueue = new LinkedList<TimedEvent>();
-        newObject._eventInstanceList = null;
-        newObject._eventInstanceTable = new HashMap<TimedEvent,
-                List<TimedEvent>>();
         newObject._eventsListeningToPorts = new HashMap<Port,
                 Set<TimedEvent>>();
         newObject._eventsListeningToVariables = new HashMap<Variable,
@@ -680,8 +663,6 @@ public class ERGDirector extends Director implements TimedDirector,
         }
 
         _eventQueue.clear();
-        _eventInstanceTable.clear();
-        _eventInstanceList = null;
         _eventsListeningToPorts.clear();
         _eventsListeningToVariables.clear();
         _refinementQueue.clear();
@@ -775,8 +756,6 @@ public class ERGDirector extends Director implements TimedDirector,
      */
     protected void _initializeSchedule() throws IllegalActionException {
         _eventQueue.clear();
-        _eventInstanceTable.clear();
-        _eventInstanceList = null;
         _eventsListeningToPorts.clear();
         _eventsListeningToVariables.clear();
         _refinementQueue.clear();
@@ -867,15 +846,6 @@ public class ERGDirector extends Director implements TimedDirector,
         if (event.contents instanceof Actor) {
             _addEvent(_refinementQueue, event);
         }
-        List<TimedEvent> list = _eventInstanceTable.get(event);
-        if (list == null) {
-            list = _eventInstanceList;
-            if (list == null) {
-                list = new LinkedList<TimedEvent>();
-            }
-            _eventInstanceTable.put(event, list);
-        }
-        list.add(event);
     }
 
     /** Fire an entry in the event queue. If the entry contains information
@@ -899,107 +869,96 @@ public class ERGDirector extends Director implements TimedDirector,
             Actor actor = (Actor) contents;
             boolean prefire = actor.prefire();
             if (prefire) {
-                _eventInstanceList = _eventInstanceTable.remove(timedEvent);
-                try {
-                    _eventInstanceList.remove(timedEvent);
+                if (timedEvent != null) {
                     _eventQueue.remove(timedEvent);
                     _refinementQueue.remove(timedEvent);
+                }
 
-                    actor.fire();
-                    boolean postfire = actor.postfire();
-                    if (!postfire) {
-                        _scheduledRefinements.remove(actor);
-                    }
-                    boolean scheduleNext = !postfire && _eventInstanceList
-                            .isEmpty();
-                    _eventInstanceList = null;
-                    if (scheduleNext) {
-                        List<Event> events = getController().entityList(
-                                Event.class);
-                        for (Event event : events) {
-                            TypedActor[] refinements = event.getRefinement();
-                            boolean scheduled = false;
-                            if (refinements != null) {
-                                for (TypedActor refinement : refinements) {
-                                    if (refinement == actor) {
-                                        if (event.isFinalEvent()) {
-                                            _eventQueue.clear();
-                                        } else {
-                                            event.scheduleEvents();
-                                        }
-                                        scheduled = true;
-                                        break;
+                actor.fire();
+                boolean postfire = actor.postfire();
+                if (!postfire) {
+                    _scheduledRefinements.remove(actor);
+                }
+                boolean scheduleNext = !postfire;
+                if (scheduleNext) {
+                    List<Event> events = getController().entityList(
+                            Event.class);
+                    for (Event event : events) {
+                        TypedActor[] refinements = event.getRefinement();
+                        boolean scheduled = false;
+                        if (refinements != null) {
+                            for (TypedActor refinement : refinements) {
+                                if (refinement == actor) {
+                                    if (event.isFinalEvent()) {
+                                        _eventQueue.clear();
+                                    } else {
+                                        event.scheduleEvents();
                                     }
+                                    scheduled = true;
+                                    break;
                                 }
                             }
-                            if (scheduled) {
-                                break;
-                            }
+                        }
+                        if (scheduled) {
+                            break;
                         }
                     }
-                    return true;
-                } finally {
-                    // Set the list to null in any case.
-                    _eventInstanceList = null;
                 }
+                return true;
             } else {
                 return false;
             }
         } else if (contents instanceof Event) {
             Event event = (Event) contents;
-            _eventInstanceList = _eventInstanceTable.remove(timedEvent);
-            try {
-                _eventInstanceList.remove(timedEvent);
-                _eventQueue.remove(timedEvent);
-                _refinementQueue.remove(timedEvent);
-                for (Set<TimedEvent> set : _eventsListeningToPorts.values()) {
-                    set.remove(timedEvent);
-                }
-                for (Set<TimedEvent> set : _eventsListeningToVariables.values(
-                        )) {
-                    set.remove(timedEvent);
-                }
+            _eventQueue.remove(timedEvent);
+            _refinementQueue.remove(timedEvent);
+            for (Set<TimedEvent> set : _eventsListeningToPorts.values()) {
+                set.remove(timedEvent);
+            }
+            for (Set<TimedEvent> set : _eventsListeningToVariables.values(
+                    )) {
+                set.remove(timedEvent);
+            }
 
-                controller._setCurrentEvent(event);
-                RefiringData data;
-                if (timedEvent.data == null) {
-                    data = event.fire(timedEvent.arguments);
-                } else {
-                    data = event.refire(timedEvent.arguments, timedEvent.data);
-                }
-                if (data != null) {
-                    _fireAt(event, getModelTime().add(data.getTimeAdvance()),
-                            timedEvent.arguments, null, data,
-                            timedEvent.priority);
-                }
+            controller._setCurrentEvent(event);
+            RefiringData data;
+            if (timedEvent.data == null) {
+                data = event.fire(timedEvent.arguments);
+            } else {
+                data = event.refire(timedEvent.arguments, timedEvent.data);
+            }
+            if (data != null) {
+                _fireAt(event, getModelTime().add(data.getTimeAdvance()),
+                        timedEvent.arguments, null, data,
+                        timedEvent.priority);
+            }
 
-                boolean scheduled = false;
-                if (timedEvent.data == null) {
-                    TypedActor[] refinements = event.getRefinement();
-                    if (refinements != null) {
-                        for (TypedActor refinement : refinements) {
-                            if (!_scheduledRefinements.contains(refinement) &&
-                                    event._scheduleRefinement(refinement)) {
-                                _scheduledRefinements.add(refinement);
-                                scheduled = true;
+            boolean scheduled = false;
+            if (timedEvent.data == null) {
+                TypedActor[] refinements = event.getRefinement();
+                if (refinements != null) {
+                    for (TypedActor refinement : refinements) {
+                        if (_scheduledRefinements.contains(refinement)) {
+                            if (refinement.prefire()) {
+                                refinement.fire();
+                                refinement.postfire();
                             }
+                            scheduled = true;
+                        } else if (event._scheduleRefinement(refinement)) {
+                            _scheduledRefinements.add(refinement);
+                            scheduled = true;
                         }
                     }
                 }
+            }
 
-                boolean scheduleNext = !scheduled && data == null &&
-                        _eventInstanceList.isEmpty();
-                _eventInstanceList = null;
-                if (scheduleNext) {
-                    if (event.isFinalEvent()) {
-                        _eventQueue.clear();
-                    } else {
-                        event.scheduleEvents();
-                    }
+            boolean scheduleNext = !scheduled && data == null;
+            if (scheduleNext) {
+                if (event.isFinalEvent()) {
+                    _eventQueue.clear();
+                } else {
+                    event.scheduleEvents();
                 }
-            } finally {
-                // Set the list to null in any case.
-                _eventInstanceList = null;
             }
 
             return true;
@@ -1166,17 +1125,6 @@ public class ERGDirector extends Director implements TimedDirector,
     /** Whether fireAt() invocations should be delegated to the director at the
         higher level. */
     private boolean _delegateFireAt = false;
-
-    /** The list containing the events and refinements that belong to the
-        current instance of events. */
-    private List<TimedEvent> _eventInstanceList;
-
-    /** A table that maps any instance of an event's refiring or an event's
-        refinement to the list of instances of refirings and refinements of the
-        same event. The completion of processing that instance of event is the
-        completion of all those instances in the list that it is mapped to. */
-    private Map<TimedEvent, List<TimedEvent>> _eventInstanceTable =
-        new HashMap<TimedEvent, List<TimedEvent>>();
 
     /** The event queue. */
     private List<TimedEvent> _eventQueue = new LinkedList<TimedEvent>();
