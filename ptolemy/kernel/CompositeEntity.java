@@ -1789,7 +1789,7 @@ public class CompositeEntity extends ComponentEntity {
             }
         }
     }
-
+    
     /** List the opaque entities that are directly or indirectly
      *  contained by this entity.  The list will be empty if there
      *  are no such contained entities. This list does not include
@@ -1801,14 +1801,21 @@ public class CompositeEntity extends ComponentEntity {
      *  @see #allAtomicEntityList()
      *  @see #deepEntityList()
      */
-    protected void _deepOpaqueEntityList(List result) {
-        List<ComponentEntity> containedEntities = entityList();
-        for (ComponentEntity entity : containedEntities) {
-            if (!entity.isClassDefinition()) {
-                if (entity.isOpaque()) {
-                    result.add(entity);
-                } else {
-                    ((CompositeEntity) entity)._deepOpaqueEntityList(result);
+    protected void _deepOpaqueEntityList(List result)  {
+
+        // This might be called from within a superclass constructor,
+        // in which case there are no contained entities yet.
+        if (_containedEntities != null) {
+            Iterator entities = _containedEntities.elementList().iterator();
+
+            while (entities.hasNext()) {
+                ComponentEntity entity = (ComponentEntity) entities.next();
+                if (!entity.isClassDefinition()) {
+                    if (entity.isOpaque()) {
+                        result.add(entity);
+                    } else {
+                        ((CompositeEntity) entity)._deepOpaqueEntityList(result);
+                    }
                 }
             }
         }
