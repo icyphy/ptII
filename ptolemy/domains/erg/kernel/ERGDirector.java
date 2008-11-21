@@ -866,48 +866,7 @@ public class ERGDirector extends Director implements TimedDirector,
         ERGController controller = getController();
         Object contents = timedEvent.contents;
         if (contents instanceof Actor) {
-            Actor actor = (Actor) contents;
-            boolean prefire = actor.prefire();
-            if (prefire) {
-                if (timedEvent != null) {
-                    _eventQueue.remove(timedEvent);
-                    _refinementQueue.remove(timedEvent);
-                }
-
-                actor.fire();
-                boolean postfire = actor.postfire();
-                if (!postfire) {
-                    _scheduledRefinements.remove(actor);
-                }
-                boolean scheduleNext = !postfire;
-                if (scheduleNext) {
-                    List<Event> events = getController().entityList(
-                            Event.class);
-                    for (Event event : events) {
-                        TypedActor[] refinements = event.getRefinement();
-                        boolean scheduled = false;
-                        if (refinements != null) {
-                            for (TypedActor refinement : refinements) {
-                                if (refinement == actor) {
-                                    if (event.isFinalEvent()) {
-                                        _eventQueue.clear();
-                                    } else {
-                                        event.scheduleEvents();
-                                    }
-                                    scheduled = true;
-                                    break;
-                                }
-                            }
-                        }
-                        if (scheduled) {
-                            break;
-                        }
-                    }
-                }
-                return true;
-            } else {
-                return false;
-            }
+            return _fireActor((Actor) contents, timedEvent);
         } else if (contents instanceof Event) {
             Event event = (Event) contents;
             _eventQueue.remove(timedEvent);
@@ -929,8 +888,7 @@ public class ERGDirector extends Director implements TimedDirector,
             }
             if (data != null) {
                 _fireAt(event, getModelTime().add(data.getTimeAdvance()),
-                        timedEvent.arguments, null, data,
-                        timedEvent.priority);
+                        timedEvent.arguments, null, data, timedEvent.priority);
             }
 
             boolean scheduled = false;
@@ -939,10 +897,7 @@ public class ERGDirector extends Director implements TimedDirector,
                 if (refinements != null) {
                     for (TypedActor refinement : refinements) {
                         if (_scheduledRefinements.contains(refinement)) {
-                            if (refinement.prefire()) {
-                                refinement.fire();
-                                refinement.postfire();
-                            }
+                            _fireActor(refinement, null);
                             scheduled = true;
                         } else if (event._scheduleRefinement(refinement)) {
                             _scheduledRefinements.add(refinement);
@@ -956,6 +911,8 @@ public class ERGDirector extends Director implements TimedDirector,
             if (scheduleNext) {
                 if (event.isFinalEvent()) {
                     _eventQueue.clear();
+                    _refinementQueue.clear();
+                    _scheduledRefinements.clear();
                 } else {
                     event.scheduleEvents();
                 }
@@ -965,6 +922,62 @@ public class ERGDirector extends Director implements TimedDirector,
         } else {
             throw new InternalErrorException(this, null, "The contents of a "
                     + "TimedEvent can only be Actor or Event.");
+        }
+    }
+
+    /** Fire an actor. The prefire(), fire() and postfire() methods of the actor
+     *  are called. If timedEvent is not null, then it is removed from the event
+     *  queues.
+     *
+     *  @param actor The actor to fire.
+     *  @param timedEvent The timed event that contains the actor as its
+     *  contents, or null if none.
+     *  @return True if an event is processed or an actor is fired, or false if
+     *  the prefire() method of the actor returns false.
+     *  @exception IllegalActionException If firing the actor throws it.
+     */
+    private boolean _fireActor(Actor actor, TimedEvent timedEvent)
+            throws IllegalActionException {
+        if (actor.prefire()) {
+            if (timedEvent != null) {
+                _eventQueue.remove(timedEvent);
+                _refinementQueue.remove(timedEvent);
+            }
+
+            actor.fire();
+            boolean postfire = actor.postfire();
+            if (!postfire) {
+                _scheduledRefinements.remove(actor);
+            }
+            boolean scheduleNext = !postfire;
+            if (scheduleNext) {
+                List<Event> events = getController().entityList(Event.class);
+                for (Event event : events) {
+                    TypedActor[] refinements = event.getRefinement();
+                    boolean scheduled = false;
+                    if (refinements != null) {
+                        for (TypedActor refinement : refinements) {
+                            if (refinement == actor) {
+                                if (event.isFinalEvent()) {
+                                    _eventQueue.clear();
+                                    _refinementQueue.clear();
+                                    _scheduledRefinements.clear();
+                                } else {
+                                    event.scheduleEvents();
+                                }
+                                scheduled = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (scheduled) {
+                        break;
+                    }
+                }
+            }
+            return true;
+        } else {
+            return false;
         }
     }
 
