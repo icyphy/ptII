@@ -38,7 +38,6 @@ import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
-import ptolemy.actor.TypedActor;
 import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.BreakCausalityInterface;
 import ptolemy.actor.util.CausalityInterface;
@@ -272,17 +271,6 @@ public class ERGController extends ModalController {
     public void initialize() throws IllegalActionException {
         director.initialize();
         super.initialize();
-
-        Iterator<?> entities = deepEntityList().iterator();
-        while (entities.hasNext()) {
-            Event event = (Event) entities.next();
-            TypedActor[] refinements = event.getRefinement();
-            if (refinements != null) {
-                for (TypedActor refinement : refinements) {
-                    refinement.initialize();
-                }
-            }
-        }
     }
 
     /** Return the result of isFireFunctional() from the director.
