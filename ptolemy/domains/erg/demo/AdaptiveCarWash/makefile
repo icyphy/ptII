@@ -48,6 +48,7 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
+	AdaptiveCarWash_FSM.xml \
 	AdaptiveCarWash.xml
 
 EXTRA_SRCS = \
@@ -74,9 +75,11 @@ install: all jars
 demo: demo_ptolemy demo_vergil
 
 demo_ptolemy:
+	"$(PTII)/bin/ptolemy" AdaptiveCarWash_FSM.xml
 	"$(PTII)/bin/ptolemy" AdaptiveCarWash.xml
 
 demo_vergil:
+	"$(PTII)/bin/vergil" AdaptiveCarWash_FSM.xml
 	"$(PTII)/bin/vergil" AdaptiveCarWash.xml
 
 # Get the rest of the rules
