@@ -26,7 +26,11 @@
                                         COPYRIGHTENDKEY
 */
 package ptolemy.data.expr;
-@SuppressWarnings("unused")
+import ptolemy.kernel.util.IllegalActionException;
+import java.util.Vector;
+import java.io.ByteArrayInputStream;
+import java.io.FileReader;
+
 public class MatrixParserTokenManager implements MatrixParserConstants
 {
   public static  java.io.PrintStream debugStream = System.out;
@@ -113,7 +117,6 @@ static private final int jjMoveNfa_0(int startState, int curPos)
    jjnewStateCnt = 23;
    int i = 1;
    jjstateSet[0] = startState;
-
    int j, kind = 0x7fffffff;
    for (;;)
    {

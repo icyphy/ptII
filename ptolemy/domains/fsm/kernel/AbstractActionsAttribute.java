@@ -34,6 +34,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import ptolemy.data.IntToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtAssignmentNode;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ParseTreeEvaluator;
@@ -42,6 +44,7 @@ import ptolemy.data.expr.ParseTreeTypeInference;
 import ptolemy.data.expr.ParseTreeWriter;
 import ptolemy.data.expr.ParserScope;
 import ptolemy.data.expr.PtParser;
+import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.HasTypeConstraints;
 import ptolemy.data.type.MonotonicFunction;
@@ -49,6 +52,7 @@ import ptolemy.data.type.Type;
 import ptolemy.data.type.Typeable;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -182,13 +186,26 @@ public abstract class AbstractActionsAttribute extends Action implements
      *  for this attribute.  If no destinations are specified, then return
      *  an empty list.
      *  @return the list of channel numbers.
+     *  @exception IllegalActionException 
      */
-    public List getChannelNumberList() {
-        if (_numbers == null) {
-            return new LinkedList();
-        } else {
-            return Collections.unmodifiableList(_numbers);
+    public List getChannelNumberList() throws IllegalActionException {
+        List list = new LinkedList();
+        if (_numbers != null) {
+            Iterator iterator = _numbers.iterator();
+            while (iterator.hasNext()) {
+                Object next = iterator.next();
+                if (next instanceof Integer) {
+                    list.add(next);
+                } else if (next instanceof ASTPtRootNode) {
+                    Token token = _parseTreeEvaluator.evaluateParseTree(
+                            (ASTPtRootNode) next, _getParserScope());
+                    list.add(((IntToken) token).intValue());
+                } else {
+                    list.add(null);
+                }
+            }
         }
+        return list;
     }
 
     /** Return the destination object referred to by the given name.
@@ -322,10 +339,7 @@ public abstract class AbstractActionsAttribute extends Action implements
                 try {
                     _numbers.add(Integer.valueOf(channelSpec));
                 } catch (NumberFormatException ex) {
-                    throw new IllegalActionException(this,
-                            "Malformed action: expected destination = "
-                                    + "expression. Got: "
-                                    + completeDestinationSpec);
+                    _numbers.add(parser.generateParseTree(channelSpec));
                 }
             } else {
                 // No channel is specified.
@@ -405,9 +419,6 @@ public abstract class AbstractActionsAttribute extends Action implements
      */
     protected long _destinationsListVersion = -1;
 
-    /** List of channels. */
-    protected List _numbers;
-
     /** The parse tree evaluator. */
     protected ParseTreeEvaluator _parseTreeEvaluator;
 
@@ -432,7 +443,6 @@ public abstract class AbstractActionsAttribute extends Action implements
                 _destinations = new LinkedList();
 
                 Iterator destinationNames = _destinationNames.iterator();
-
                 while (destinationNames.hasNext()) {
                     String destinationName = (String) destinationNames.next();
                     NamedObj destination = _getDestination(destinationName);
@@ -488,10 +498,31 @@ public abstract class AbstractActionsAttribute extends Action implements
                     }
                 }
 
-                ASTPtRootNode parseTree = (ASTPtRootNode) _parseTrees
-                        .get(_destinationNames.indexOf(_name));
+                int index = _destinationNames.indexOf(_name);
+                ASTPtRootNode parseTree = (ASTPtRootNode) _parseTrees.get(index);
 
                 Type type = _typeInference.inferTypes(parseTree, _getParserScope());
+
+                // Return the array type with type as the element type when
+                // there is an index following the name and the name resolves to
+                // a variable. E.g., A(i) accesses the i-th element of variable
+                // A, so when we get "type" as the type of A(i), we return the
+                // array type constructed with "type" as the type of A itself.
+                // -- tfeng (11/22/2008)
+                NamedObj container = getContainer();
+                while (container != null && !(container instanceof Entity)) {
+                    container = container.getContainer();
+                }
+                if (container != null &&
+                        ((Entity) container).getPort(_name) == null) {
+                    // Not a port, then it must be a variable.
+                    if (_numbers.get(index) != null) {
+                        // Has a number in parentheses following the name.
+                        ArrayType arrayType = new ArrayType(type);
+                        return arrayType;
+                    }
+                }
+                
                 return type;
             } catch (Exception ex) {
                 throw new IllegalActionException(AbstractActionsAttribute.this,
@@ -552,4 +583,7 @@ public abstract class AbstractActionsAttribute extends Action implements
         private ParseTreeFreeVariableCollector _variableCollector =
             new ParseTreeFreeVariableCollector();
     }
+
+    /** List of channels. Elements may be numbers or variable names. */
+    private List _numbers;
 }

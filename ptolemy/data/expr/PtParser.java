@@ -29,29 +29,22 @@ Created : May 1998
 
 package ptolemy.data.expr;
 
-import java.io.Reader;
-import java.io.StringReader;
+import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
+import ptolemy.data.*;
+import ptolemy.math.Complex;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Collections;
 import java.util.StringTokenizer;
 
-import ptolemy.data.BooleanToken;
-import ptolemy.data.ComplexToken;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.FloatToken;
-import ptolemy.data.IntToken;
-import ptolemy.data.LongToken;
-import ptolemy.data.PetiteToken;
-import ptolemy.data.ShortToken;
-import ptolemy.data.StringToken;
-import ptolemy.data.UnsignedByteToken;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.math.Complex;
+import java.io.*;
 
 //////////////////////////////////////////////////////////////////////
 //// PTParser.jjt
@@ -2071,14 +2064,28 @@ String tidied, x;
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case OPENPAREN:
         jj_consume_token(OPENPAREN);
-        jj_consume_token(INTEGER);
+        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+        case INTEGER:
+          jj_consume_token(INTEGER);
         name.append("(");
         name.append(token.image);
         name.append(")");
+          break;
+        case ID:
+          jj_consume_token(ID);
+        name.append("(");
+        name.append(token.image);
+        name.append(")");
+          break;
+        default:
+          jj_la1[33] = jj_gen;
+          jj_consume_token(-1);
+          throw new ParseException();
+        }
         jj_consume_token(CLOSEPAREN);
         break;
       default:
-        jj_la1[33] = jj_gen;
+        jj_la1[34] = jj_gen;
         ;
       }
       jjtree.closeNodeScope(jjtn000, true);
@@ -2111,7 +2118,7 @@ String tidied, x;
         jj_consume_token(SMIDPAREN);
         break;
       default:
-        jj_la1[34] = jj_gen;
+        jj_la1[35] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -2154,7 +2161,7 @@ String tidied, x;
             ;
             break;
           default:
-            jj_la1[35] = jj_gen;
+            jj_la1[36] = jj_gen;
             break label_17;
           }
           jj_consume_token(COMMA);
@@ -2168,7 +2175,7 @@ String tidied, x;
             ;
             break;
           default:
-            jj_la1[36] = jj_gen;
+            jj_la1[37] = jj_gen;
             break label_18;
           }
           jj_consume_token(SEPARATOR);
@@ -2182,7 +2189,7 @@ String tidied, x;
               ;
               break;
             default:
-              jj_la1[37] = jj_gen;
+              jj_la1[38] = jj_gen;
               break label_19;
             }
             jj_consume_token(COMMA);
@@ -2215,7 +2222,7 @@ String tidied, x;
             ;
             break;
           default:
-            jj_la1[38] = jj_gen;
+            jj_la1[39] = jj_gen;
             break label_20;
           }
           jj_consume_token(SEPARATOR);
@@ -2232,7 +2239,7 @@ String tidied, x;
                      jjtn000._form = 2; jjtn000._nRows = nRows;
         break;
       default:
-        jj_la1[39] = jj_gen;
+        jj_la1[40] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -2275,7 +2282,7 @@ String tidied, x;
           ;
           break;
         default:
-          jj_la1[40] = jj_gen;
+          jj_la1[41] = jj_gen;
           break label_21;
         }
         jj_consume_token(COMMA);
@@ -2324,7 +2331,7 @@ String tidied, x;
           ;
           break;
         default:
-          jj_la1[41] = jj_gen;
+          jj_la1[42] = jj_gen;
           break label_22;
         }
         jj_consume_token(COMMA);
@@ -2370,7 +2377,7 @@ String tidied, x;
           ;
           break;
         default:
-          jj_la1[42] = jj_gen;
+          jj_la1[43] = jj_gen;
           break label_23;
         }
         jj_consume_token(COMMA);
@@ -2518,11 +2525,6 @@ String tidied, x;
     finally { jj_save(14, xla); }
   }
 
-  final private boolean jj_3R_60() {
-    if (jj_scan_token(OPENBRACKET)) return true;
-    return false;
-  }
-
   final private boolean jj_3R_39() {
     Token xsp;
     xsp = jj_scanpos;
@@ -2582,16 +2584,6 @@ String tidied, x;
     return false;
   }
 
-  final private boolean jj_3R_51() {
-    if (jj_scan_token(OPENPAREN)) return true;
-    return false;
-  }
-
-  final private boolean jj_3R_37() {
-    if (jj_3R_38()) return true;
-    return false;
-  }
-
   final private boolean jj_3R_66() {
     Token xsp;
     xsp = jj_scanpos;
@@ -2608,6 +2600,16 @@ String tidied, x;
     return false;
   }
 
+  final private boolean jj_3R_51() {
+    if (jj_scan_token(OPENPAREN)) return true;
+    return false;
+  }
+
+  final private boolean jj_3R_37() {
+    if (jj_3R_38()) return true;
+    return false;
+  }
+
   final private boolean jj_3R_44() {
     if (jj_3R_45()) return true;
     return false;
@@ -2615,6 +2617,11 @@ String tidied, x;
 
   final private boolean jj_3R_30() {
     if (jj_3R_31()) return true;
+    return false;
+  }
+
+  final private boolean jj_3R_63() {
+    if (jj_scan_token(OPENBRACE)) return true;
     return false;
   }
 
@@ -2638,11 +2645,6 @@ String tidied, x;
     return false;
   }
 
-  final private boolean jj_3R_63() {
-    if (jj_scan_token(OPENBRACE)) return true;
-    return false;
-  }
-
   final private boolean jj_3R_29() {
     if (jj_3R_30()) return true;
     return false;
@@ -2650,6 +2652,11 @@ String tidied, x;
 
   final private boolean jj_3_15() {
     if (jj_3R_24()) return true;
+    return false;
+  }
+
+  final private boolean jj_3R_64() {
+    if (jj_scan_token(OPENBRACE)) return true;
     return false;
   }
 
@@ -2666,11 +2673,6 @@ String tidied, x;
 
   final private boolean jj_3R_35() {
     if (jj_3R_36()) return true;
-    return false;
-  }
-
-  final private boolean jj_3R_64() {
-    if (jj_scan_token(OPENBRACE)) return true;
     return false;
   }
 
@@ -2710,13 +2712,13 @@ String tidied, x;
     return false;
   }
 
-  final private boolean jj_3R_67() {
-    if (jj_scan_token(MINUS)) return true;
+  final private boolean jj_3R_61() {
+    if (jj_scan_token(OPENBRACE)) return true;
     return false;
   }
 
-  final private boolean jj_3R_61() {
-    if (jj_scan_token(OPENBRACE)) return true;
+  final private boolean jj_3R_67() {
+    if (jj_scan_token(MINUS)) return true;
     return false;
   }
 
@@ -2875,6 +2877,11 @@ String tidied, x;
     return false;
   }
 
+  final private boolean jj_3R_60() {
+    if (jj_scan_token(OPENBRACKET)) return true;
+    return false;
+  }
+
   final private boolean jj_3R_57() {
     if (jj_3R_65()) return true;
     return false;
@@ -2901,7 +2908,7 @@ String tidied, x;
   public boolean lookingAhead = false;
   private boolean jj_semLA;
   private int jj_gen;
-  final private int[] jj_la1 = new int[43];
+  final private int[] jj_la1 = new int[44];
   static private int[] jj_la1_0;
   static private int[] jj_la1_1;
   static private int[] jj_la1_2;
@@ -2911,13 +2918,13 @@ String tidied, x;
       jj_la1_2();
    }
    private static void jj_la1_0() {
-      jj_la1_0 = new int[] {0x0,0x0,0x0,0x2000000,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x8000,0xf0000000,0xf0000000,0x0,0x0,0xc00,0xc00,0x7000,0x7000,0x4150800,0x810000,0x400000,0x400000,0x810000,0x800,0x800,0x0,0x400000,0x0,0x1000000,0x400000,0x800000,0x10000,0x0,0x400000,0x0,0x400000,0x0,0x1600000,0x400000,0x400000,0x400000,};
+      jj_la1_0 = new int[] {0x0,0x0,0x0,0x2000000,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x8000,0xf0000000,0xf0000000,0x0,0x0,0xc00,0xc00,0x7000,0x7000,0x4150800,0x810000,0x400000,0x400000,0x810000,0x800,0x800,0x0,0x400000,0x0,0x1000000,0x400000,0x800000,0x0,0x10000,0x0,0x400000,0x0,0x400000,0x0,0x1600000,0x400000,0x400000,0x400000,};
    }
    private static void jj_la1_1() {
-      jj_la1_1 = new int[] {0x4000000,0x78000000,0x78000000,0x0,0x8,0x4,0x80,0x100,0x40,0x3,0x3,0x0,0x0,0x0,0xe00,0xe00,0x0,0x0,0x0,0x0,0x815c1030,0x0,0x0,0x0,0x0,0x1000,0x11c1000,0x80400000,0x0,0x400000,0x0,0x0,0x0,0x0,0x80400000,0x0,0x4000000,0x0,0x4000000,0x4000000,0x0,0x0,0x0,};
+      jj_la1_1 = new int[] {0x4000000,0x78000000,0x78000000,0x0,0x8,0x4,0x80,0x100,0x40,0x3,0x3,0x0,0x0,0x0,0xe00,0xe00,0x0,0x0,0x0,0x0,0x815c1030,0x0,0x0,0x0,0x0,0x1000,0x11c1000,0x80400000,0x0,0x400000,0x0,0x0,0x0,0x401000,0x0,0x80400000,0x0,0x4000000,0x0,0x4000000,0x4000000,0x0,0x0,0x0,};
    }
    private static void jj_la1_2() {
-      jj_la1_2 = new int[] {0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0xa,0x0,0x0,0x0,0x0,0x0,0x0,0xa,0x0,0x0,0x0,0x0,0x0,0x0,0xa,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,};
+      jj_la1_2 = new int[] {0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0xa,0x0,0x0,0x0,0x0,0x0,0x0,0xa,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0xa,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,};
    }
   final private JJCalls[] jj_2_rtns = new JJCalls[15];
   private boolean jj_rescan = false;
@@ -2932,7 +2939,7 @@ String tidied, x;
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 43; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 44; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -2946,7 +2953,7 @@ String tidied, x;
     jj_ntk = -1;
     jjtree.reset();
     jj_gen = 0;
-    for (int i = 0; i < 43; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 44; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -2956,7 +2963,7 @@ String tidied, x;
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 43; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 44; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -2967,7 +2974,7 @@ String tidied, x;
     jj_ntk = -1;
     jjtree.reset();
     jj_gen = 0;
-    for (int i = 0; i < 43; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 44; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -2976,7 +2983,7 @@ String tidied, x;
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 43; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 44; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -2986,7 +2993,7 @@ String tidied, x;
     jj_ntk = -1;
     jjtree.reset();
     jj_gen = 0;
-    for (int i = 0; i < 43; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 44; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -3105,7 +3112,7 @@ String tidied, x;
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 43; i++) {
+    for (int i = 0; i < 44; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {

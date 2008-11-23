@@ -36,6 +36,7 @@ import java.util.Iterator;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.TypedActor;
+import ptolemy.data.ArrayToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ParserScope;
@@ -106,6 +107,8 @@ public class ActionsAttribute extends AbstractActionsAttribute {
     public ActionsAttribute(Workspace workspace) {
         super(workspace);
     }
+    
+    
 
     /** Execute this action.  For each destination identified in the
      *  action, compute the value in the action and perform the
@@ -119,7 +122,7 @@ public class ActionsAttribute extends AbstractActionsAttribute {
 
         if (_destinations != null) {
             Iterator<?> destinations = _destinations.iterator();
-            Iterator<?> channels = _numbers.iterator();
+            Iterator<Integer> channels = getChannelNumberList().iterator();
             Iterator<?> parseTrees = _parseTrees.iterator();
 
             while (destinations.hasNext()) {
@@ -169,7 +172,15 @@ public class ActionsAttribute extends AbstractActionsAttribute {
                     Variable destination = (Variable) nextDestination;
 
                     try {
-                        destination.setToken(token);
+                        if (channel == null) {
+                            destination.setToken(token);
+                        } else {
+                            ArrayToken array =
+                                (ArrayToken) destination.getToken();
+                            Token[] tokens = array.arrayValue();
+                            tokens[channel.intValue()] = token;
+                            destination.setToken(new ArrayToken(tokens));
+                        }
                         destination.validate();
                     } catch (UnknownResultException ex) {
                         destination.setUnknown(true);

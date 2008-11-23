@@ -136,7 +136,7 @@ public class OutputActionsAttribute extends AbstractActionsAttribute implements
 
         if (_destinations != null) {
             Iterator destinations = _destinations.iterator();
-            Iterator channels = _numbers.iterator();
+            Iterator channels = getChannelNumberList().iterator();
             Iterator parseTrees = _parseTrees.iterator();
 
             while (destinations.hasNext()) {

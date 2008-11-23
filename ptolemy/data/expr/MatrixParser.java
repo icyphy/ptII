@@ -27,9 +27,11 @@
 */
 package ptolemy.data.expr;
 
-import java.util.Vector;
-
 import ptolemy.kernel.util.IllegalActionException;
+
+import java.util.Vector;
+import java.io.ByteArrayInputStream;
+import java.io.FileReader;
 
 //////////////////////////////////////////////////////////////////////////
 //// MatrixParser

@@ -1294,11 +1294,15 @@ void assignmentIdentifier() #PtLeafNode :
         name.append(".");
         name.append(token.image);
     })*
-    (<OPENPAREN> <INTEGER> {
+    (<OPENPAREN> (<INTEGER> {
         name.append("(");
         name.append(token.image);
         name.append(")");
-    } <CLOSEPAREN>)? 
+    } |<ID> {
+        name.append("(");
+        name.append(token.image);
+        name.append(")");
+    }) <CLOSEPAREN>)? 
     { 
         jjtThis._name = name.toString();
     }
