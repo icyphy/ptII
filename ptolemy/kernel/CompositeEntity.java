@@ -204,13 +204,14 @@ public class CompositeEntity extends ComponentEntity {
         return entities;
     }
 
-    /** Return a list that consists of all the composite entities in a model.
-     *  This method differs from allAtomicEntityList() in that this method
-     *  returns CompositeEntities and allAtomicEntityList() returns atomic entities.
-     *  This method differs from {@link #deepEntityList()} in that
-     *  this method looks inside opaque entities, whereas deepEntityList()
-     *  does not. The returned list does not include any entities that
-     *  are class definitions.
+    /** Return a list that consists of all the composite entities in a
+     *  model.  This method differs from allAtomicEntityList() in that
+     *  this method returns CompositeEntities and
+     *  allAtomicEntityList() returns atomic entities.  This method
+     *  differs from {@link #deepEntityList()} in that this method
+     *  returns only CompositeEntities, whereas deepEntityList()
+     *  returns ComponentEntities. The returned list of this method
+     *  does not include any entities that are class definitions.
      *  @return a List of all Composite entities in the model.
      */
     public List allCompositeEntityList() {
@@ -620,7 +621,6 @@ public class CompositeEntity extends ComponentEntity {
             // in which case there are no contained entities yet.
             if (_containedEntities != null) {
                 Iterator entities = _containedEntities.elementList().iterator();
-
                 while (entities.hasNext()) {
                     ComponentEntity entity = (ComponentEntity) entities.next();
 
@@ -1222,6 +1222,16 @@ public class CompositeEntity extends ComponentEntity {
         return allAtomicEntityList();
     }
 
+    /** Lazy version of {#link #allCompositeEntityList()}.
+     *  In this base class, this is identical to allCompositeEntityList() 
+     *  but derived classes may omit from the returned list any class
+     *  definitions whose instantiation is deferred.
+     *  @return A list of ComponentEntity objects.
+     */
+    public List lazyAllCompositeEntityList() {
+	return allCompositeEntityList();
+    }
+
     /** Lazy version of {@link #classDefinitionList()}.
      *  In this base class, this is identical to classDefinitionList(),
      *  but derived classes may omit from the returned list any class
@@ -1481,7 +1491,9 @@ public class CompositeEntity extends ComponentEntity {
     }
 
     /** Return a string describing how many actors, parameters,
-     * ports, and relations it has.
+     * ports, and relations are in this CompositeEntity.
+     * Entities whose instantiation is deferred are not
+     * included.
      * @param className If non-null and non-empty, then also
      * include the number of objects with the give name.
      * @return a string describing the number of components.
@@ -1555,7 +1567,7 @@ public class CompositeEntity extends ComponentEntity {
                 actorNames.append(actor.getKey() + " " + actor.getValue() + "\n");
             }
 
-            List relationList = relationList();
+            List relationList = lazyRelationList();
             int compositeEntityCount = 0, relationCount = relationList.size();
             if (clazz != null) {
                 // Search the relations
@@ -1569,7 +1581,7 @@ public class CompositeEntity extends ComponentEntity {
             }
 
             Map<Integer,Integer> compositeEntityDepthMap = new TreeMap<Integer,Integer>();
-            entities = allCompositeEntityList().iterator();
+            entities = lazyAllCompositeEntityList().iterator();
 
             while (entities.hasNext()) {
                 Entity entity = (Entity) entities.next();
@@ -1585,7 +1597,7 @@ public class CompositeEntity extends ComponentEntity {
                                                  Integer.valueOf(compositeEntityDepthMap.get(depth) + 1));
                     }
 
-                    relationList = ((CompositeEntity) entity).relationList();
+                    relationList = ((CompositeEntity) entity).lazyRelationList();
                     relationCount += relationList.size();
                     if (clazz != null) {
                         if (clazz.isAssignableFrom(entity.getClass())) {
