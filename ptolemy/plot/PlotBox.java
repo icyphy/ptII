@@ -67,9 +67,12 @@ import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Enumeration;
-import java.util.Iterator;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.Vector;
 
 import javax.print.attribute.HashPrintRequestAttributeSet;
@@ -234,7 +237,7 @@ import ptolemy.util.StringUtilities;
  This class uses features of JDK 1.2, and hence if used in an applet,
  it can only be viewed by a browser that supports JDK 1.2, or a plugin.
 
- @author Edward A. Lee, Christopher Brooks, Contributors: Jun Wu (jwu@inin.com.au), William Wu, Robert Kroeger, Tom Peachey
+ @author Edward A. Lee, Christopher Brooks, Contributors: Jun Wu (jwu@inin.com.au), William Wu, Robert Kroeger, Tom Peachey, Bert Rodiers
 
  @version $Id$
  @since Ptolemy II 0.2
@@ -431,9 +434,6 @@ public class PlotBox extends JPanel implements Printable {
         if (EventQueue.isDispatchThread()) {
             action.run();
         } else {
-            if (_deferredActions == null) {
-                _deferredActions = new LinkedList();
-            }
 
             // Add the specified action to the list of actions to perform.
             _deferredActions.add(action);
@@ -448,6 +448,8 @@ public class PlotBox extends JPanel implements Printable {
                 };
 
                 try {
+                    _actionsDeferred = true;
+                    
                     // NOTE: Using invokeAndWait() here risks causing
                     // deadlock.  Don't do it!
                     SwingUtilities.invokeLater(doActions);
@@ -456,7 +458,7 @@ public class PlotBox extends JPanel implements Printable {
                     // Other exceptions should not occur.
                 }
 
-                _actionsDeferred = true;
+                
             }
         }
     }
@@ -1202,6 +1204,22 @@ public class PlotBox extends JPanel implements Printable {
         // Empty default implementation.
     }
 
+    /**
+     * Set automatic rescale. Automatic rescaling is enabled
+     * when automaticRescale equals true and disabled when
+     * automaticRescale equals false.
+     * @param automaticRescale The boolean that specifies whether
+     * plots should be automatic rescaled.
+     */
+    public void setAutomaticRescale(boolean automaticRescale) {
+        _automaticRescale = automaticRescale;
+        if (automaticRescale) {
+            _timerTask.addListener(this);
+        } else if (!_timedRepaint) {
+            _timerTask.removeListener(this);
+        }
+    }    
+
     /** Set the background color.
      *  @param background The background color.
      */
@@ -1503,6 +1521,22 @@ public class PlotBox extends JPanel implements Printable {
         //_sizeHasBeenSet = true;
         super.setSize(width, height);
     }
+    
+    /**
+     * Set repainting with a certain fixed refresh rate. This timed
+     * repainting is enabled when timedRepaint equals true and
+     * disabled when timedRepaint equals false.
+     * @param timedRepaint The boolean that specifies whether
+     * repainting should happen with a certain fixed refresh rate.
+     */
+    public void setTimedRepaint(boolean timedRepaint) {
+        _timedRepaint = timedRepaint;
+        if (timedRepaint) {
+            _timerTask.addListener(this);
+        } else if (!_automaticRescale) {
+            _timerTask.removeListener(this);
+        }
+    }    
 
     /** Set the title of the graph.
      *  @param title The title.
@@ -1848,6 +1882,16 @@ public class PlotBox extends JPanel implements Printable {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /**
+     * Return whether rescaling of the plot should happen
+     * automatic.
+     * @return True when rescaling of the plot should happen
+     * automatic.
+     */
+    protected boolean _automaticRescale() {
+        return _automaticRescale; 
+    }
+    
     /** Draw the axes using the current range, label, and title information.
      *  If the second argument is true, clear the display before redrawing.
      *  This method is called by paintComponent().  To cause it to be called
@@ -2744,6 +2788,13 @@ public class PlotBox extends JPanel implements Printable {
 
         return false;
     }
+    
+    /** Perform a scheduled redraw. This base class does nothing.
+     *  Derived classes should define the correct behavior.
+     */
+    protected void _scheduledRedraw() {
+        // Does nothing on this level        
+    }
 
     /** Set the visibility of the Fill button.
      *  This is deprecated.  Use setButtons().
@@ -2771,6 +2822,14 @@ public class PlotBox extends JPanel implements Printable {
         _plotImage = null;
 
         _padding = padding;
+    }
+
+    /**
+     * Return whether repainting happens by a timed thread.
+     * @return True when repainting happens by a timer thread.
+     */
+    protected boolean _timedRepaint() {
+        return _timedRepaint || _automaticRescale; 
     }
 
     /** Write plot information to the specified output stream in the
@@ -2893,7 +2952,7 @@ public class PlotBox extends JPanel implements Printable {
 
     protected transient boolean _rangesGivenByZooming = false;
 
-    /** @serial The given X and Y ranges.
+    /** The given X and Y ranges.
      * If they have been given the top and bottom of the x and y ranges.
      * This is different from _xMin and _xMax, which actually represent
      * the range of data that is plotted.  This represents the range
@@ -2901,7 +2960,7 @@ public class PlotBox extends JPanel implements Printable {
      */
     protected double _xlowgiven;
 
-    /** @serial The given X and Y ranges.
+    /** The given X and Y ranges.
      * If they have been given the top and bottom of the x and y ranges.
      * This is different from _xMin and _xMax, which actually represent
      * the range of data that is plotted.  This represents the range
@@ -2909,7 +2968,7 @@ public class PlotBox extends JPanel implements Printable {
      */
     protected double _xhighgiven;
 
-    /** @serial The given X and Y ranges.
+    /** The given X and Y ranges.
      * If they have been given the top and bottom of the x and y ranges.
      * This is different from _xMin and _xMax, which actually represent
      * the range of data that is plotted.  This represents the range
@@ -2917,7 +2976,7 @@ public class PlotBox extends JPanel implements Printable {
      */
     protected double _ylowgiven;
 
-    /** @serial The given X and Y ranges.
+    /** The given X and Y ranges.
      * If they have been given the top and bottom of the x and y ranges.
      * This is different from _xMin and _xMax, which actually represent
      * the range of data that is plotted.  This represents the range
@@ -2925,61 +2984,61 @@ public class PlotBox extends JPanel implements Printable {
      */
     protected double _yhighgiven;
 
-    /** @serial The minimum X value registered so for, for auto ranging. */
+    /** The minimum X value registered so for, for auto ranging. */
     protected double _xBottom = Double.MAX_VALUE;
 
-    /** @serial The maximum X value registered so for, for auto ranging. */
+    /** The maximum X value registered so for, for auto ranging. */
     protected double _xTop = -Double.MAX_VALUE;
 
-    /** @serial The minimum Y value registered so for, for auto ranging. */
+    /** The minimum Y value registered so for, for auto ranging. */
     protected double _yBottom = Double.MAX_VALUE;
 
-    /** @serial The maximum Y value registered so for, for auto ranging. */
+    /** The maximum Y value registered so for, for auto ranging. */
     protected double _yTop = -Double.MAX_VALUE;
 
-    /** @serial Whether to draw the axes using a logarithmic scale. */
+    /** Whether to draw the axes using a logarithmic scale. */
     protected boolean _xlog = false;
 
-    /** @serial Whether to draw the axes using a logarithmic scale. */
+    /** Whether to draw the axes using a logarithmic scale. */
     protected boolean _ylog = false;
 
     // For use in calculating log base 10. A log times this is a log base 10.
     protected static final double _LOG10SCALE = 1 / Math.log(10);
 
-    /** @serial Whether to draw a background grid. */
+    /** Whether to draw a background grid. */
     protected boolean _grid = true;
 
-    /** @serial Whether to wrap the X axis. */
+    /** Whether to wrap the X axis. */
     protected boolean _wrap = false;
 
-    /** @serial The high range of the X axis for wrapping. */
+    /** The high range of the X axis for wrapping. */
     protected double _wrapHigh;
 
-    /** @serial The low range of the X axis for wrapping. */
+    /** The low range of the X axis for wrapping. */
     protected double _wrapLow;
 
-    /** @serial Color of the background, settable from HTML. */
+    /** Color of the background, settable from HTML. */
     protected Color _background = Color.white;
 
-    /** @serial Color of the foreground, settable from HTML. */
+    /** Color of the foreground, settable from HTML. */
     protected Color _foreground = Color.black;
 
-    /** @serial Top padding.
+    /** Top padding.
      *  Derived classes can increment these to make space around the plot.
      */
     protected int _topPadding = 10;
 
-    /** @serial Bottom padding.
+    /** Bottom padding.
      *  Derived classes can increment these to make space around the plot.
      */
     protected int _bottomPadding = 5;
 
-    /** @serial Right padding.
+    /** Right padding.
      *  Derived classes can increment these to make space around the plot.
      */
     protected int _rightPadding = 10;
 
-    /** @serial Left padding.
+    /** Left padding.
      *  Derived classes can increment these to make space around the plot.
      */
     protected int _leftPadding = 10;
@@ -3016,7 +3075,7 @@ public class PlotBox extends JPanel implements Printable {
      */
     protected double _xscale = 1.0;
 
-    /** @serial Indicator whether to use _colors. */
+    /** Indicator whether to use _colors. */
     protected boolean _usecolor = true;
 
     // Default _colors, by data set.
@@ -3036,22 +3095,22 @@ public class PlotBox extends JPanel implements Printable {
             new Color(0x14ff14), // green-ish
     };
 
-    /** @serial Width and height of component in pixels. */
+    /** Width and height of component in pixels. */
     protected int _width = 500;
 
-    /** @serial Width and height of component in pixels. */
+    /** Width and height of component in pixels. */
     protected int _height = 300;
 
-    /** @serial Width and height of component in pixels. */
+    /** Width and height of component in pixels. */
     protected int _preferredWidth = 500;
 
-    /** @serial Width and height of component in pixels. */
+    /** Width and height of component in pixels. */
     protected int _preferredHeight = 300;
 
-    /** @serial Indicator that size has been set. */
+    /** Indicator that size has been set. */
 
     //protected boolean _sizeHasBeenSet = false;
-    /** @serial The document base we use to find the _filespec.
+    /** The document base we use to find the _filespec.
      * NOTE: Use of this variable is deprecated.  But it is made available
      * to derived classes for backward compatibility.
      * FIXME: Sun's appletviewer gives an exception if this is protected.
@@ -3125,10 +3184,7 @@ public class PlotBox extends JPanel implements Printable {
     // synchronized methods.
     private synchronized void _executeDeferredActions() {
         try {
-            Iterator actions = _deferredActions.iterator();
-
-            while (actions.hasNext()) {
-                Runnable action = (Runnable) actions.next();
+            for (Runnable action : _deferredActions) {
                 action.run();
             }
         } finally {
@@ -3697,7 +3753,7 @@ public class PlotBox extends JPanel implements Printable {
             _yExp = 0;
         }
     }
-
+   
     /*
      *  Zoom in or out based on the box that has been drawn.
      *  The argument gives the lower right corner of the box.
@@ -3970,13 +4026,16 @@ public class PlotBox extends JPanel implements Printable {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** @serial Indicator of whether actions are deferred. */
+    /** Indicator of whether actions are deferred. */
     private boolean _actionsDeferred = false;
+    
+    // True when repainting happens by a timer thread.
+    private boolean _automaticRescale = false;    
 
-    /** @serial List of deferred actions. */
-    private List _deferredActions;
+    /** List of deferred actions. */
+    private LinkedList<Runnable> _deferredActions = new LinkedList<Runnable>();
 
-    /** @serial The file to be opened. */
+    /** The file to be opened. */
     private String _filespec = null;
 
     // Call setXORMode with a hardwired color because
@@ -3985,64 +4044,64 @@ public class PlotBox extends JPanel implements Printable {
     // NOTE: For some reason, this comes out blue, which is fine...
     private static final Color _boxColor = Color.orange;
 
-    /** @serial The range of the plot as labeled
+    /** The range of the plot as labeled
      * (multiply by 10^exp for actual range.
      */
     private double _ytickMax = 0.0;
 
-    /** @serial The range of the plot as labeled
+    /** The range of the plot as labeled
      * (multiply by 10^exp for actual range.
      */
     private double _ytickMin = 0.0;
 
-    /** @serial The range of the plot as labeled
+    /** The range of the plot as labeled
      * (multiply by 10^exp for actual range.
      */
     private double _xtickMax = 0.0;
 
-    /** @serial The range of the plot as labeled
+    /** The range of the plot as labeled
      * (multiply by 10^exp for actual range.
      */
     private double _xtickMin = 0.0;
 
-    /** @serial The power of ten by which the range numbers should
+    /** The power of ten by which the range numbers should
      *  be multiplied.
      */
     private int _yExp = 0;
 
-    /** @serial The power of ten by which the range numbers should
+    /** The power of ten by which the range numbers should
      *  be multiplied.
      */
     private int _xExp = 0;
 
-    /** @serial Scaling used in making tick marks. */
+    /** Scaling used in making tick marks. */
     private double _ytickscale = 0.0;
 
-    /** @serial Scaling used in making tick marks. */
+    /** Scaling used in making tick marks. */
     private double _xtickscale = 0.0;
 
-    /** @serial Caption font information. */
+    /** Caption font information. */
     private Font _captionFont = null;
 
-    /** @serial Font information. */
+    /** Font information. */
     private Font _labelFont = null;
 
-    /** @serial Font information. */
+    /** Font information. */
     private Font _superscriptFont = null;
 
-    /** @serial Font information. */
+    /** Font information. */
     private Font _titleFont = null;
 
-    /** @serial Caption font metric information. */
+    /** Caption font metric information. */
     private FontMetrics _captionFontMetrics = null;
 
-    /** @serial FontMetric information. */
+    /** FontMetric information. */
     private FontMetrics _labelFontMetrics = null;
 
-    /** @serial FontMetric information. */
+    /** FontMetric information. */
     private FontMetrics _superscriptFontMetrics = null;
 
-    /** @serial FontMetric information. */
+    /** FontMetric information. */
     private FontMetrics _titleFontMetrics = null;
 
     // Number format cache used by _formatNum.
@@ -4057,34 +4116,34 @@ public class PlotBox extends JPanel implements Printable {
     // An array of strings for reporting errors.
     private transient String[] _errorMsg;
 
-    /** @serial The title and label strings. */
+    /** The title and label strings. */
     private String _xlabel;
 
-    /** @serial The title and label strings. */
+    /** The title and label strings. */
     private String _ylabel;
 
-    /** @serial The title and label strings. */
+    /** The title and label strings. */
     private String _title;
 
-    /** @serial Caption information. */
+    /** Caption information. */
     private Vector _captionStrings = new Vector();
 
-    /** @serial Legend information. */
+    /** Legend information. */
     private Vector _legendStrings = new Vector();
 
-    /** @serial Legend information. */
+    /** Legend information. */
     private Vector _legendDatasets = new Vector();
 
-    /** @serial If XTicks or YTicks are given/ */
+    /** If XTicks or YTicks are given/ */
     private Vector _xticks = null;
 
-    /** @serial If XTicks or YTicks are given/ */
+    /** If XTicks or YTicks are given/ */
     private Vector _xticklabels = null;
 
-    /** @serial If XTicks or YTicks are given/ */
+    /** If XTicks or YTicks are given/ */
     private Vector _yticks = null;
 
-    /** @serial If XTicks or YTicks are given/ */
+    /** If XTicks or YTicks are given/ */
     private Vector _yticklabels = null;
 
     // A button for filling the plot
@@ -4119,6 +4178,12 @@ public class PlotBox extends JPanel implements Printable {
 
     // A button for filling the plot
     private transient JButton _resetButton = null;
+    
+    // True when repainting should be performed by a timed thread.
+    private boolean _timedRepaint = false;
+
+    // The timer task that does the repainting. 
+    static private TimedRepaint _timerTask = new TimedRepaint();
 
     // Variables keeping track of the interactive zoom box.
     // Initialize to impossible values.
@@ -4137,7 +4202,7 @@ public class PlotBox extends JPanel implements Printable {
 
     private transient boolean _drawn = false;
 
-    private transient boolean _zooming = false;
+    private transient boolean _zooming = false;    
 
     // NOTE: It is unfortunate to have to include the DTD here, but there
     // seems to be no other way to ensure that the generated data exactly
@@ -4454,5 +4519,41 @@ public class PlotBox extends JPanel implements Printable {
         private boolean _control = false;
 
         private boolean _shift = false;
+    }    
+
+    /**
+     * TimedRepaint is a timer thread that will schedule a
+     * redraw each _REPAINT_TIME_INTERVAL milliseonds.
+     */   
+    private static class TimedRepaint extends Timer {
+        static int _REPAINT_TIME_INTERVAL = 30;
+        
+        public synchronized void addListener(PlotBox plotBox) {
+            _listeners.add(plotBox);
+            if (_listeners.size() == 1) {
+                scheduleAtFixedRate(new TimerTask() {
+                    public void run() {
+                        synchronized (this) {
+                            // synchronized (this) to avoid changes to
+                            // _listeners while repainting.
+                            for (PlotBox plot : _listeners) {
+                                if (plot._timedRepaint()) {
+                                    plot._scheduledRedraw();
+                                }
+                            }
+                        }
+                    }
+                }, 0, _REPAINT_TIME_INTERVAL);
+            }
+        }
+
+        public synchronized void removeListener(PlotBox plotBox) {
+            _listeners.remove(plotBox);
+            if (_listeners.isEmpty()) {
+                purge();
+            }
+        }
+
+        private Set<PlotBox> _listeners = new HashSet<PlotBox>();
     }
 }

@@ -30,6 +30,7 @@ package ptolemy.actor.lib.gui;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PlotEffigy;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -135,6 +136,11 @@ public class Plotter extends PlotterBase {
             plot.setTitle(getName());
             plot.setButtons(true);
         }
+        
+        if (((BooleanToken) automaticRescale.getToken()).booleanValue()) {
+            plot.setAutomaticRescale(true);
+        }
+        
 
         if ((_frame == null) && (_container == null)) {
             // Need an effigy and a tableau so that menu ops work properly.

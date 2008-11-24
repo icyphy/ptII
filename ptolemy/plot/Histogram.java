@@ -31,10 +31,14 @@ import java.awt.Graphics;
 import java.io.BufferedWriter;
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Random;
 import java.util.Vector;
+
+import ptolemy.util.RunnableExceptionCatcher;
 
 //////////////////////////////////////////////////////////////////////////
 //// Histogram
@@ -113,7 +117,7 @@ import java.util.Vector;
  both classes.  The <i>x</i> data is ignored, and only the <i>y</i>
  data is used to calculate the histogram.
 
- @author Edward A. Lee
+ @author Edward A. Lee, Contributor: Bert Rodiers
  @version $Id$
  @since Ptolemy II 0.3
  @Pt.ProposedRating Yellow (cxh)
@@ -666,6 +670,43 @@ public class Histogram extends PlotBox {
         return false;
     }
 
+    /** Perform a scheduled redraw.
+     */
+    protected void _scheduledRedraw() {
+        if (_needPlotRefill || _needBinRedraw) {
+            Runnable redraw = new RunnableExceptionCatcher(new Runnable() {
+                public void run() {
+                    ArrayList<HashSet<Integer>> scheduledBinsToAdd = new ArrayList<HashSet<Integer>>();
+                    for (int i = 0; i < _scheduledBinsToAdd.size(); ++i) {
+                        HashSet<Integer> element = _scheduledBinsToAdd.get(i);
+                        scheduledBinsToAdd.add((HashSet<Integer>) element.clone());
+                        element.clear();
+                    }
+                    _needBinRedraw = false;
+                    if (_needPlotRefill) {                          
+                        fillPlot();
+                        _needPlotRefill = false;
+                    } else {
+                        Graphics graphics = getGraphics();
+                        if (graphics != null) {
+                            {
+                                int nbrOfDataSets = scheduledBinsToAdd.size();
+                                for (int i = 0; i < nbrOfDataSets; ++i) {
+                                    Hashtable bins = (Hashtable) _histogram.elementAt(i);                                
+                                    for (Integer bin : scheduledBinsToAdd.get(i)) {
+                                        _drawPlotPoint(graphics, i, bin, (Integer) bins.get(bin));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            synchronized(this) {
+                deferIfNecessary(redraw);
+            }
+        }        
+    }    
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -723,20 +764,35 @@ public class Histogram extends PlotBox {
         double x = (bin * _binWidth) + _binOffset;
 
         if (x < _xBottom) {
-            _xBottom = x;
+            if (_automaticRescale() && _xTop != -Double.MAX_VALUE && _xBottom != Double.MAX_VALUE) {
+                _needPlotRefill = true;
+                _xBottom = x - (_xTop - _xBottom);
+            } else {            
+                _xBottom = x;
+            }
         }
-
+        
         double xtop = x + (_binWidth / 2.0);
 
-        if (xtop > _xTop) {
-            _xTop = xtop;
-        }
-
-        if (count > _yTop) {
-            _yTop = count;
-        }
+        if (xtop > _xTop) {            
+            if (_automaticRescale() && _xTop != -Double.MAX_VALUE && _xBottom != Double.MAX_VALUE) {
+                _needPlotRefill = true;
+                _xTop = xtop + _xTop - _xBottom;
+            } else {
+                _xTop = xtop;
+            }
+        }        
 
         _yBottom = 0.0;
+        
+        if (count > _yTop) {            
+            if (_automaticRescale() && _yTop != -Double.MAX_VALUE && _yBottom != Double.MAX_VALUE) {
+                _needPlotRefill = true;
+                _yTop = count + _yTop - _yBottom;
+            } else {
+                _yTop = count;
+            }
+        }       
 
         Vector pts = (Vector) _points.elementAt(dataset);
         pts.addElement(Double.valueOf(value));
@@ -753,8 +809,14 @@ public class Histogram extends PlotBox {
             final int pendingBin = bin;
             final int pendingCount = count;
 
-            // We are in the event thread, so this is safe...
-            _drawPlotPoint(graphics, pendingDataset, pendingBin, pendingCount);
+            if (!_timedRepaint()) {
+                // We are in the event thread, so this is safe...
+                _drawPlotPoint(graphics, pendingDataset, pendingBin, pendingCount);
+            } else {
+                if (!_needPlotRefill) {
+                    _scheduleBinRedraw(dataset, bin);
+                }
+            }
         }
     }
 
@@ -851,6 +913,16 @@ public class Histogram extends PlotBox {
         super.fillPlot();
     }
 
+    /** Schedule a bin to be (re)drawn due to the addition of point.
+     */
+    private void _scheduleBinRedraw(int dataset, int bin) {
+        while (_scheduledBinsToAdd.size() <= dataset) {
+            _scheduledBinsToAdd.add(new HashSet<Integer>());
+        }
+        _scheduledBinsToAdd.get(dataset).add(bin);
+        _needBinRedraw = true;
+    }    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -866,6 +938,18 @@ public class Histogram extends PlotBox {
     /** @serial The offset between bins. */
     private double _binOffset = 0.5;
 
+    // True when a bin has been changed and it need to be repainted
+    // by the next scheduled repaint.
+    private boolean _needBinRedraw = false;
+
+    // True when a the plot need to be refilled 
+    // by the next scheduled repaint.
+    private boolean _needPlotRefill = false;
+    
+    // _scheduledBinsToAdd a a list a bins that should be added by the scheduled
+    // repaint.
+    private ArrayList<HashSet<Integer>> _scheduledBinsToAdd = new ArrayList<HashSet<Integer>>();
+    
     /** @serial  Set by _drawPlot(), and reset by clear(). */
     private boolean _showing = false;
 }

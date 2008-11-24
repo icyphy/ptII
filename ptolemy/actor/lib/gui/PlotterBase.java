@@ -104,6 +104,10 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
                 true));
         fillOnWrapup.setTypeEquals(BaseType.BOOLEAN);
 
+        automaticRescale = new Parameter(this, "automaticRescale", new BooleanToken(
+                false));
+        automaticRescale.setTypeEquals(BaseType.BOOLEAN);
+        
         legend = new StringAttribute(this, "legend");
 
         _windowProperties = new WindowPropertiesAttribute(this,
@@ -135,6 +139,11 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
+    /** If true, the plot will automatically rescale if necessary.
+     *  This parameter has type BooleanToken, and default value false.
+     */
+    public Parameter automaticRescale;
+    
     /** The plot object. */
     public transient PlotBox plot;
 
@@ -248,9 +257,9 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
         } else {
             // Defer until plot has been placed.
             if (_configureBases == null) {
-                _configureBases = new LinkedList();
-                _configureSources = new LinkedList();
-                _configureTexts = new LinkedList();
+                _configureBases = new LinkedList<URL>();
+                _configureSources = new LinkedList<String>();
+                _configureTexts = new LinkedList<String>();
             }
 
             _configureBases.add(base);
@@ -343,7 +352,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
         } else {
             if (plot == null) {
                 plot = _newPlot();
-                plot.setTitle(getName());
+                plot.setTitle(getName());                  
             }
 
             plot.setButtons(true);
@@ -371,7 +380,12 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
             // Do not clear the axes.
             plot.clear(false);
             plot.repaint();
+
+            if (((BooleanToken) automaticRescale.getToken()).booleanValue()) {
+                plot.setAutomaticRescale(true);
+            }
         }
+        
     }
 
     /** Override the base class to remove the plot from its graphical
@@ -401,7 +415,9 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
             }
         }
 
-        super.wrapup();
+        plot.setAutomaticRescale(false);
+        
+        super.wrapup();        
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -450,8 +466,8 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
             // Save the configuration just as specified.
             // Note that the bases are lost, since those are presumably
             // the URL of the file containing the XML.
-            Iterator sources = _configureSources.iterator();
-            Iterator texts = _configureTexts.iterator();
+            Iterator<String> sources = _configureSources.iterator();
+            Iterator<String> texts = _configureTexts.iterator();
 
             while (sources.hasNext()) {
                 String source = (String) sources.next();
@@ -486,9 +502,9 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
      */
     protected void _implementDeferredConfigurations() {
         if (_configureSources != null) {
-            Iterator sources = _configureSources.iterator();
-            Iterator texts = _configureTexts.iterator();
-            Iterator bases = _configureBases.iterator();
+            Iterator<String> sources = _configureSources.iterator();
+            Iterator<String> texts = _configureTexts.iterator();
+            Iterator<URL> bases = _configureBases.iterator();
 
             while (sources.hasNext()) {
                 URL base = (URL) bases.next();
@@ -591,11 +607,11 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
     // The bases and input streams given to the configure() method.
-    private List _configureBases = null;
+    private List<URL> _configureBases = null;
 
-    private List _configureSources = null;
+    private List<String> _configureSources = null;
 
-    private List _configureTexts = null;
+    private List<String> _configureTexts = null;
 
     private String _configureSource;
 

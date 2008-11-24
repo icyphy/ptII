@@ -1883,6 +1883,60 @@ public class Plot extends PlotBox {
         return false;
     }
 
+    /** Perform a scheduled redraw.
+     */
+    protected void _scheduledRedraw() {
+        if (_needPlotRefill || _needBinRedraw) {
+            Runnable redraw = new RunnableExceptionCatcher(new Runnable() {
+                public void run() {
+    
+                    ArrayList<Integer> scheduledBinsToAdd = new ArrayList<Integer>();
+                    for (int i = 0; i < _scheduledBinsToAdd.size(); ++i) {
+                        scheduledBinsToAdd.add(_scheduledBinsToAdd.get(i));
+                        _scheduledBinsToAdd.set(i, 0);
+                    }
+                    ArrayList<Integer> scheduledBinsToErase = new ArrayList<Integer>();
+                    for (int i = 0; i < _scheduledBinsToErase.size(); ++i) {
+                        scheduledBinsToErase.add(_scheduledBinsToErase.get(i));
+                        _scheduledBinsToErase.set(i, 0);
+                    }
+                    _needBinRedraw = false;
+                    if (_needPlotRefill) {                          
+                        fillPlot();
+                        _needPlotRefill = false;
+                    } else {                        
+                        Graphics graphics = getGraphics();
+                        if (graphics != null) {
+                            {
+                                int nbrOfDataSets = _scheduledBinsToAdd.size();
+                                for (int i = 0; i < nbrOfDataSets; ++i) {
+                                    int nbrOfBins = _bins.get(i).size();
+                                    int nbrOfBinsToAdd = scheduledBinsToAdd.get(i);
+                                    for (int binIndex = nbrOfBins-nbrOfBinsToAdd; binIndex < nbrOfBins; ++binIndex) {                                        
+                                        assert binIndex >= 0;
+                                        _drawBin(graphics, i,  binIndex);
+                                    }
+                                }
+                            }
+                            {
+                                int nbrOfDataSets = _scheduledBinsToErase.size();
+                                for (int i = 0; i < nbrOfDataSets; ++i) {
+                                    int nbrOfBinsToErase = scheduledBinsToErase.get(i);
+                                    for (int binIndex = 0; binIndex < nbrOfBinsToErase; ++binIndex) {                                    
+                                        _eraseFirstBin(i);
+                                    }
+                                }                                
+                            }
+                        }
+                    }
+                }
+            });
+            synchronized(this) {
+                deferIfNecessary(redraw);
+            }
+        }        
+    }
+    
     /** If the graphics argument is an instance of Graphics2D, then set
      *  the current stroke to the specified width.  Otherwise, do nothing.
      *  @param graphics The graphics object.
@@ -2145,14 +2199,19 @@ public class Plot extends PlotBox {
                 numToDelete++;
             }
             
-            numToDelete = Math.min(numToDelete, nbrOfBins-1);
+            numToDelete = Math.min(numToDelete, nbrOfBins - 1);
                 //We want to keep at least one bin.
 
-            for (int i = 0; i < numToDelete; i++) {
-                _eraseFirstBin(dataset); // Again, we are in the event thread, so this is safe...
+            if (!_timedRepaint()) {
+                for (int i = 0; i < numToDelete; i++) {
+                    // Again, we are in the event thread, so this is safe...
+                    _eraseFirstBin(dataset);
+                }
+            } else {
+                _scheduleBinRedrawRemove(dataset, numToDelete);
             }
-        }
-
+        }         
+          
         // Get the new size after deletions.
         int size = points.size();
 
@@ -2177,21 +2236,44 @@ public class Plot extends PlotBox {
             }
         }
 
+        boolean needPlotRefill = false;
+        
         // For auto-ranging, keep track of min and max.
+        
         if (x < _xBottom) {
-            _xBottom = x;
+            if (_automaticRescale() && _xTop != -Double.MAX_VALUE && _xBottom != Double.MAX_VALUE) {
+                needPlotRefill = true;
+                _xBottom = x - (_xTop - _xBottom);
+            } else {            
+                _xBottom = x;
+            }
         }
-
-        if (x > _xTop) {
-            _xTop = x;
+        
+        if (x > _xTop) {            
+            if (_automaticRescale() && _xTop != -Double.MAX_VALUE && _xBottom != Double.MAX_VALUE) {
+                needPlotRefill = true;
+                _xTop = x + _xTop - _xBottom;
+            } else {
+                _xTop = x;
+            }
         }
 
         if (y < _yBottom) {
-            _yBottom = y;
+            if (_automaticRescale() && _yTop != -Double.MAX_VALUE && _yBottom != Double.MAX_VALUE) {
+                needPlotRefill = true;
+                _xBottom = y - (_yTop - _yBottom);
+            } else {            
+                _xBottom = y;
+            }
         }
 
-        if (y > _yTop) {
-            _yTop = y;
+        if (y > _yTop) {            
+            if (_automaticRescale() && _yTop != -Double.MAX_VALUE && _yBottom != Double.MAX_VALUE) {
+                needPlotRefill = true;
+                _yTop = y + _yTop - _yBottom;
+            } else {
+                _yTop = y;
+            }
         }
 
         pt.x = x;
@@ -2233,14 +2315,22 @@ public class Plot extends PlotBox {
         }
 
         points.add(pt);
-        _addPointToBin(dataset, pt, size);               
+        
+        int nbrOfBins = dataset < _bins.size() ?  _bins.get(dataset).size() : 0;
+        _addPointToBin(dataset, pt, size);
+        
+        boolean binAdded = _bins.get(dataset).size() != nbrOfBins;               
 
         // If points persistence has been set, then delete first bin if there are to many points
         //      However we don't want to delete all bins...
         if (_pointsPersistence > 0) {
-            if (size > _pointsPersistence && bins.size() > 1) {
+            if (size > _pointsPersistence && bins.size() > 2) {
                 // Again, we are in the event thread, so this is safe...
-                _eraseFirstBin(dataset);
+                if (!_timedRepaint()) {
+                    _eraseFirstBin(dataset);
+                } else {
+                    _scheduleBinRedrawRemove(dataset, 1);
+                }
             }
         }
 
@@ -2304,8 +2394,17 @@ public class Plot extends PlotBox {
             }
 
             assert _bins.get(dataset).size() > 0;
-            // Again, we are in the event thread, so this is safe...
-            _drawBin(graphics, dataset, _bins.get(dataset).size() - 1);
+            
+            if (!_timedRepaint()) {
+                // Again, we are in the event thread, so this is safe...
+                _drawBin(graphics, dataset, _bins.get(dataset).size() - 1);
+            } else {                
+                if (needPlotRefill) {
+                    _needPlotRefill = true;
+                } else {
+                    _scheduleBinRedrawAdd(dataset, binAdded);                    
+                }
+            }
         }
 
         if (_wrap && (Math.abs(x - _wrapHigh)) < 0.00001) {
@@ -2411,6 +2510,15 @@ public class Plot extends PlotBox {
      * all existing bins will first be cleared.
      */
     private void _dividePointsIntoBins() {
+        for (int i = 0; i < _scheduledBinsToAdd.size(); ++i) {
+            _scheduledBinsToAdd.set(i, 0);            
+        }
+        for (int i = 0; i < _scheduledBinsToErase.size(); ++i) {
+            _scheduledBinsToErase.set(i, 0);            
+        }
+        _needBinRedraw = false;
+
+        
         _pointInBinOffset = 0;
         _bins.clear();
         int nbrOfDataSets = _points.size();
@@ -2469,7 +2577,9 @@ public class Plot extends PlotBox {
         Bin bin = bins.get(binIndex);
         long xpos = bin.xpos;
         
-        assert bin.needReplot();
+        if (!bin.needReplot()) {
+            return;
+        }
         
         if (bin.needConnectionWithPreviousBin()) {
             Bin previousBin = bins.get(binIndex - 1);
@@ -2571,7 +2681,6 @@ public class Plot extends PlotBox {
 
         // Plot has probably been dismissed.  Return.
         Graphics graphics = getGraphics();
-
 
         ArrayList<PlotPoint> points = _points.get(dataset);
         ArrayList<Bin> bins = _bins.get(dataset);
@@ -2815,6 +2924,29 @@ public class Plot extends PlotBox {
             return fmt.connected;
         }
     }
+    
+    /** Schedule a bin to be (re)drawn due to the addition of bin.
+     */
+    private void _scheduleBinRedrawAdd(int dataset, boolean binAdded) {
+        while (_scheduledBinsToAdd.size() <= dataset) {
+            _scheduledBinsToAdd.add(0);
+        }
+        int previousCount = _scheduledBinsToAdd.get(dataset);
+        if (binAdded || previousCount == 0) {
+            _scheduledBinsToAdd.set(dataset, previousCount + 1);
+            _needBinRedraw = true;
+        }
+    }
+    
+    /** Schedule a bin to be (re)drawn due to the removal of a bin.
+     */
+    private void _scheduleBinRedrawRemove(int dataset, int nbrOfElementsToErase) {
+        while (_scheduledBinsToErase.size() <= dataset) {
+            _scheduledBinsToErase.add(0);
+        }
+        _scheduledBinsToErase.set(dataset, Math.max(nbrOfElementsToErase, _scheduledBinsToErase.get(dataset)));
+        _needBinRedraw = true;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -2866,10 +2998,7 @@ public class Plot extends PlotBox {
     /** Initial value for elements in _prevx and _prevy that indicate
      *  we have not yet seen data.
      */
-    private static final Long _INITIAL_PREVIOUS_VALUE = Long.MIN_VALUE;
-    
-    /** @serial The highest data set used. */
-    private int _maxDataset = -1;
+    private static final Long _INITIAL_PREVIOUS_VALUE = Long.MIN_VALUE;    
 
     // The stroke to use for thin lines in the plot.
     //private static final BasicStroke _thinStroke = new BasicStroke(
@@ -2889,11 +3018,22 @@ public class Plot extends PlotBox {
     /** True if different line styles should be used. */
     private static String [] _LINE_STYLES_ARRAY = {
         "solid", "dotted", "dashed", "dotdashed", "dotdotdashed"};
+
+    /** @serial The highest data set used. */
+    private int _maxDataset = -1;
     
     // Maximum number of different marks
     // NOTE: There are 11 colors in the base class.  Combined with 10
     // marks, that makes 110 unique signal identities.
     private static final int _MAX_MARKS = 10;
+    
+    // True when a bin has been changed and it need to be repainted
+    // by the next scheduled repaint.
+    private boolean _needBinRedraw = false;
+
+    // True when a the plot need to be refilled 
+    // by the next scheduled repaint.
+    private boolean _needPlotRefill = false;
     
     /**
      * Points in bins have an absolute index within the virtual array
@@ -2923,6 +3063,14 @@ public class Plot extends PlotBox {
     /** @serial Have we seen a DataSet line in the current data file? */
     private boolean _sawFirstDataSet = false;
 
+    // _scheduledBinsToAdd a a list a bins that should be added by the scheduled
+    // repaint.
+    private ArrayList<Integer> _scheduledBinsToAdd = new ArrayList<Integer>();
+
+    // _scheduledBinsToAdd a a list a bins that should be erased by the scheduled
+    // repaint.
+    private ArrayList<Integer> _scheduledBinsToErase = new ArrayList<Integer>();
+   
     /** @serial Set by _drawPlot(), and reset by clear(). */
     private boolean _showing = false;
     
@@ -2982,7 +3130,7 @@ public class Plot extends PlotBox {
                 assert _afterLastPointIndex == absolutePointIndex; //Bin intervals should be contiguous intervals
             }
             
-            _afterLastPointIndex = absolutePointIndex+1;
+            _afterLastPointIndex = absolutePointIndex + 1;
             _lastYPos = ypos;
             _connected |= point.connected;
                 // if one point is connected within the bin, all points will be (it is difficult to do this otherwise)
