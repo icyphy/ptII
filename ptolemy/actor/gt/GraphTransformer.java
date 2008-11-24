@@ -155,25 +155,33 @@ public class GraphTransformer extends ChangeRequest {
     @SuppressWarnings("unchecked")
     protected void _addConnections() throws TransformationException {
         for (NamedObj replacement : _replacementToHost.keySet()) {
-            if (!(replacement instanceof Port)) {
-                continue;
-            }
-
             NamedObj host = _replacementToHost.get(replacement);
-            List<?> replacementLinkedList;
-            List<?> hostLinkdList;
+            List<NamedObj> replacementLinkedList;
+            List<NamedObj> hostLinkdList;
             if (host instanceof Port) {
-                replacementLinkedList = new LinkedList<Object>(
+                replacementLinkedList = new LinkedList<NamedObj>(
                         ((Port) replacement).linkedRelationList());
-                hostLinkdList = new LinkedList<Object>(
+                hostLinkdList = new LinkedList<NamedObj>(
                         ((Port) host).linkedRelationList());
+            } else if (host instanceof Relation) {
+                replacementLinkedList = new LinkedList<NamedObj>();
+                for (Object relation : ((Relation) replacement)
+                        .linkedObjectsList()) {
+                    if (relation instanceof Relation) {
+                        replacementLinkedList.add((Relation) relation);
+                    }
+                }
+                hostLinkdList = new LinkedList<NamedObj>();
+                for (Object relation : ((Relation) host).linkedObjectsList()) {
+                    if (relation instanceof Relation) {
+                        replacementLinkedList.add((Relation) relation);
+                    }
+                }
             } else {
                 continue;
             }
 
-            for (Object replacementLinkedObjectRaw : replacementLinkedList) {
-                NamedObj replacementLinkedObject =
-                    (NamedObj) replacementLinkedObjectRaw;
+            for (NamedObj replacementLinkedObject : replacementLinkedList) {
                 NamedObj hostLinkedObject = _replacementToHost.get(
                         replacementLinkedObject);
                 // FIXME: hostRelation shouldn't be null, but it seems if a
