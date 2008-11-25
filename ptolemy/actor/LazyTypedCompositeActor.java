@@ -138,13 +138,14 @@ import ptolemy.util.StringUtilities;
  
  @author Christopher Brooks and Edward A. Lee
  @version $Id: LazyTypedCompositeActor.java 47495 2007-12-06 21:57:21Z cxh $
- @since Ptolemy II 1.0
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (eal)
- @Pt.AcceptedRating Red (bilung)
+ @Pt.AcceptedRating Red (cxh)
  */
-
-// FIXME: Have to do ports and relations.  Only done attributes and entities.
 public class LazyTypedCompositeActor extends TypedCompositeActor implements LazyComposite {
+
+    // FIXME: Have to do ports and relations.  Only done attributes and entities.
+
     /** Construct a library in the default workspace with no
      *  container and an empty string as its name. Add the library to the
      *  workspace directory.
@@ -205,6 +206,27 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     
+    /** Return a list that consists of all the composite entities in a model.
+     *  This method differs from allAtomicEntityList() in that this method
+     *  returns CompositeEntities and allAtomicEntityList() returns atomic entities.
+     *  This method differs from {@link #deepEntityList()} in that
+     *  this method looks inside opaque entities, whereas deepEntityList()
+     *  does not. The returned list does not include any entities that
+     *  are class definitions.
+     *  <p>This method overrides the base class to first populate the
+     *  actor, if necessary, by calling populate().  Note that this
+     *  may result in a runtime exception being thrown (if there is an
+     *  error evaluating the MoML).  This method is read-synchronized
+     *  on the workspace.
+     *
+     *  @return a List of all Composite entities in the model.
+     *  @see #lazyAllCompositeEntityList()
+     */
+    public List allCompositeEntityList() {
+	populate();
+	return super.allCompositeEntityList();
+    }
+
     /** Clone the library into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there). If the library has not yet been
@@ -343,7 +365,36 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
      *  @return An unmodifiable list of ComponentEntity objects.
      */
     public List entityList() {
+	populate();
         return super.entityList();
+    }
+
+    /** Return a list of the component entities contained by this object that
+     *  are instances of the specified Java class.  If there are no such
+     *  instances, then return an empty list. The returned list does not
+     *  include class definitions.
+     *  This method is read-synchronized on the workspace.
+     *  @param filter The class of ComponentEntity of interest.
+     *  @return A list of instances of specified class.
+     *  @see #classDefinitionList()
+     */
+    public List entityList(Class filter) {
+        populate();
+        return super.entityList(filter);
+    }
+
+    /** Write a MoML description of this object with the specified
+     *  indentation depth and with the specified name substituting
+     *  for the name of this object. 
+     *  @param output The output stream to write to.
+     *  @param depth The depth in the hierarchy, to determine indenting.
+     *  @param name The name to use in the exported MoML.
+     *  @exception IOException If an I/O error occurs.
+     */
+    public void exportMoML(Writer output, int depth, String name)
+            throws IOException {
+	populate();
+	super.exportMoML(output, depth, name); 
     }
 
     /** Get a contained entity by name. The name may be compound,
@@ -450,11 +501,37 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
                 // the list.
                 i--;
                 entities.addAll(((CompositeEntity) entity)
-                        .allAtomicEntityList());
+                        .lazyAllAtomicEntityList());
             }
         }
         return entities;
     }
+
+    /** Lazy version of {#link #allCompositeEntityList()}.
+     *  In this base class, this is identical to allCompositeEntityList() 
+     *  but derived classes may omit from the returned list any class
+     *  definitions whose instantiation is deferred.
+     *  @return A list of ComponentEntity objects.
+     */
+    public List lazyAllCompositeEntityList() {
+        try {
+            _workspace.getReadAccess();
+
+            LinkedList result = new LinkedList();
+
+	    List<ComponentEntity> entities = lazyEntityList();
+            for (ComponentEntity entity : entities) {
+		if (!entity.isOpaque()) {
+		    result.add(entity);
+		    result.addAll(((CompositeEntity) entity)
+				  .lazyAllCompositeEntityList());
+                }                
+            }
+            return result;
+        } finally {
+            _workspace.doneReading();
+        }
+    }	
 
     /** Lazy version of {@link #classDefinitionList()}.
      *  In this base class, this is identical to classDefinitionList(),
@@ -804,6 +881,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
 
+	populate();
 	// Export top level attributes and ports
 
 	List _attributes = attributeList();
