@@ -2261,9 +2261,9 @@ public class Plot extends PlotBox {
         if (y < _yBottom) {
             if (_automaticRescale() && _yTop != -Double.MAX_VALUE && _yBottom != Double.MAX_VALUE) {
                 needPlotRefill = true;
-                _xBottom = y - (_yTop - _yBottom);
+                _yBottom = y - (_yTop - _yBottom);
             } else {            
-                _xBottom = y;
+                _yBottom = y;
             }
         }
 
