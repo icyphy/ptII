@@ -33,14 +33,15 @@ import java.util.Iterator;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
+import ptolemy.kernel.InstantiableNamedObj;
 
 //////////////////////////////////////////////////////////////////////////
 //// LazyTypedCompositeActorChanges
 
 /** When this class is registered with the MoMLParser.setMoMLFilter()
  method, it will cause MoMLParser to filter so that all
-the TypedCompositeActors except the top level one are changed
-to LazyTypedCompositeActors.
+the TypedCompositeActors except those within actor oriented class
+definitios are changed to LazyTypedCompositeActors.
 
  @author Christopher Hylands
  @version $Id: ClassChanges.java 50681 2008-09-19 20:08:02Z cxh $
@@ -49,9 +50,11 @@ to LazyTypedCompositeActors.
  @Pt.AcceptedRating Red (cxh)
  */
 public class LazyTypedCompositeActorChanges implements MoMLFilter {
-    /** If the attributeName is "class" and attributeValue names a
-     *  class that needs to be renamed, then substitute in the new class
-     *  name. 
+    /** Possibly replaced TypedCompositeActors with LazyTypedCompositeActors.
+     *	If the attributeName is "class", attributeValue is
+     *  "ptolemy.actor.TypedCompositeActor" and the container is
+     *  not withing an actor oriented class definition, then substitute
+     *  in the new class name "ptolemy.actor.LazyTypedCompositeActor".
      *  @param container  The container for this attribute.
      *  @param element The XML element name.
      *  @param attributeName The name of the attribute.
@@ -83,9 +86,12 @@ public class LazyTypedCompositeActorChanges implements MoMLFilter {
         if (attributeName.equals("class")) {
             if (attributeValue.equals("ptolemy.actor.TypedCompositeActor")
 		&& (container !=null /* && container.toplevel() != container */)) { 
-                // We found a class with a class change.
-                MoMLParser.setModified(true);
-                return (String) "ptolemy.actor.LazyTypedCompositeActor";
+		if (container instanceof InstantiableNamedObj
+		    && !(((InstantiableNamedObj)container).isWithinClassDefinition())) {
+		    // We found a class outside of a class change.
+		    MoMLParser.setModified(true);
+		    return (String) "ptolemy.actor.LazyTypedCompositeActor";
+		}
             }
         }
 
@@ -108,7 +114,7 @@ public class LazyTypedCompositeActorChanges implements MoMLFilter {
      */
     public String toString() {
         return getClass().getName()
-	    + ": change TypedCompositeActors below the top level into "
+	    + ": change TypedCompositeActors that are not within class definitions to"
 	    + " LazyTypedCompositeActors.";
     }
 
