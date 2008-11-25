@@ -208,10 +208,11 @@ public class Subscriber extends TypedAtomicActor {
         super.fire();
         int width = input.getWidth();
         if (width == 0) {
+	    channel.validate();
             throw new IllegalActionException(this,
    	            "Subscriber could not find a matching Publisher "
 		    + "with channel \""
-                    + channel.getExpression() + "\"");
+                    + channel.stringValue() + "\"");
 
         }
         for (int i = 0; i < width; i++) {
@@ -252,9 +253,28 @@ public class Subscriber extends TypedAtomicActor {
         if (!_updatedLinks || !input.isOutsideConnected()) {
             _updateLinks();
             if (!input.isOutsideConnected()) {
+		// Find the nearest opaque container above in the hierarchy.
+		CompositeEntity container = (CompositeEntity) getContainer();
+		while (container != null && !container.isOpaque()) {
+		    container = (CompositeEntity) container.getContainer();
+		}
+		StringBuffer publisherChannelNames = new StringBuffer();
+		if (container != null) {
+		    Iterator<?> actors = container.deepOpaqueEntityList().iterator();
+		    while (actors.hasNext()) {
+			Object actor = actors.next();
+			if (actor instanceof Publisher) {
+			    publisherChannelNames.append( ((Publisher) actor)._channel + "\n");
+			}
+		    }
+		}
+
                 throw new IllegalActionException(this,
                         "Subscriber has no matching Publisher, channel was \""
-						 + channel.getExpression() + "\".");
+						 + channel.getExpression()
+						 + "\" which evaluated to \""
+						 + channel.stringValue() + "\"."
+						 + publisherChannelNames);
             }
         }
 	// Call super.preinitialize() after updating links so that
