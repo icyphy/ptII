@@ -137,7 +137,7 @@ public class ParserAttribute extends SingletonAttribute {
             ParserAttribute attribute = new ParserAttribute(toplevel, "_parser");
             return attribute.getParser();
         } catch (KernelException ex) {
-            // This should not occur.
+	    // This should not occur.
             throw new InternalErrorException(ex);
         }
     }
