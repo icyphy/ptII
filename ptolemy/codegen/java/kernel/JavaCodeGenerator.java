@@ -396,63 +396,63 @@ public class JavaCodeGenerator extends CodeGenerator {
         }
 
         // Set to true if we need the unsupportedFunction() method.
-        //boolean defineUnsupportedTypeFunctionMethod = false;
+        boolean defineUnsupportedTypeFunctionMethod = false;
 
         // Set to true if we need to scalarDelete() method.
-        //boolean defineScalarDeleteMethod = false;
+        boolean defineScalarDeleteMethod = false;
 
-//         // Append type-polymorphic functions included in the function table.
-//         for (int i = 0; i < types.size(); i++) {
-//             // The "funcDeclareBlock" contains all function declarations for
-//             // the type.
-//             for (int j = 0; j < functionsArray.length; j++) {
-//                 String typeFunctionName = typesArray[i] + "_"
-//                         + functionsArray[j];
-//                 if (_unsupportedTypeFunctions.contains(typeFunctionName)) {
-//                     defineUnsupportedTypeFunctionMethod = true;
-//                 }
-//                 if (_scalarDeleteTypes.contains(typesArray[i])
-//                         && functionsArray[j].equals("delete")) {
-//                     defineScalarDeleteMethod = true;
-//                 }
-//                 if (functionsArray[j].equals("isCloseTo")
-//                         && (typesArray[i].equals("Boolean") || typesArray[i]
-//                                 .equals("String"))) {
-//                     boolean foundEquals = false;
-//                     for (int k = 0; k < functionsArray.length; k++) {
-//                         if (functionsArray[k].equals("equals")) {
-//                             foundEquals = true;
-//                         }
-//                     }
-//                     if (!foundEquals) {
-//                         // Boolean_isCloseTo and String_isCloseTo
-//                         // use Boolean_equals and String_equals.
-//                         args.clear();
-//                         args.add(typesArray[i] + "_equals");
-//                         sharedStream.appendCodeBlock("funcHeaderBlock", args);
-//                     }
-//                 }
-//                 if (!_scalarDeleteTypes.contains(typesArray[i])
-//                         || !functionsArray[j].equals("delete")) {
-//                     // Skip Boolean_delete etc.
-//                     args.clear();
-//                     args.add(typeFunctionName);
-//                     sharedStream.appendCodeBlock("funcHeaderBlock", args);
-//                 }
-//             }
-//         }
+        // Append type-polymorphic functions included in the function table.
+        for (int i = 0; i < types.size(); i++) {
+            // The "funcDeclareBlock" contains all function declarations for
+            // the type.
+            for (int j = 0; j < functionsArray.length; j++) {
+                String typeFunctionName = typesArray[i] + "_"
+                        + functionsArray[j];
+                if (_unsupportedTypeFunctions.contains(typeFunctionName)) {
+                    defineUnsupportedTypeFunctionMethod = true;
+                }
+                if (_scalarDeleteTypes.contains(typesArray[i])
+                        && functionsArray[j].equals("delete")) {
+                    defineScalarDeleteMethod = true;
+                }
+                if (functionsArray[j].equals("isCloseTo")
+                        && (typesArray[i].equals("Boolean") || typesArray[i]
+                                .equals("String"))) {
+                    boolean foundEquals = false;
+                    for (int k = 0; k < functionsArray.length; k++) {
+                        if (functionsArray[k].equals("equals")) {
+                            foundEquals = true;
+                        }
+                    }
+                    if (!foundEquals) {
+                        // Boolean_isCloseTo and String_isCloseTo
+                        // use Boolean_equals and String_equals.
+                        args.clear();
+                        args.add(typesArray[i] + "_equals");
+                        sharedStream.appendCodeBlock("funcHeaderBlock", args);
+                    }
+                }
+                if (!_scalarDeleteTypes.contains(typesArray[i])
+                         || !functionsArray[j].equals("delete")) {
+                     // Skip Boolean_delete etc.
+                    args.clear();
+                    args.add(typeFunctionName);
+                    sharedStream.appendCodeBlock("funcHeaderBlock", args);
+                }
+            }
+        }
 
-//         if (defineUnsupportedTypeFunctionMethod) {
-//             // Some type/function combos are not supported, so we
-//             // save space by defining only one method.
-//             sharedStream.appendCodeBlock("unsupportedTypeFunction");
-//         }
+        if (defineUnsupportedTypeFunctionMethod) {
+            // Some type/function combos are not supported, so we
+            // save space by defining only one method.
+            sharedStream.appendCodeBlock("unsupportedTypeFunction");
+        }
 
-//         if (defineScalarDeleteMethod) {
-//             // Types that share the scalarDelete() method, which does nothing.
-//             // We use one method so as to reduce code size.
-//             sharedStream.appendCodeBlock("scalarDeleteFunction");
-//         }
+        if (defineScalarDeleteMethod) {
+            // Types that share the scalarDelete() method, which does nothing.
+            // We use one method so as to reduce code size.
+             sharedStream.appendCodeBlock("scalarDeleteFunction");
+         }
 
         code.append(sharedStream.toString());
 
@@ -479,6 +479,7 @@ public class JavaCodeGenerator extends CodeGenerator {
             typeStreams[i].appendCodeBlock(typesArray[i] + "_new");
 
             for (int j = 0; j < functionsArray.length; j++) {
+		System.out.println("JavaCodeGenerator: functionsArray: " + typesArray[i] + "_" + functionsArray[i]);
                 // The code block declaration has to follow this convention:
                 // /*** [function name]Block ***/
                 //     .....
@@ -512,6 +513,8 @@ public class JavaCodeGenerator extends CodeGenerator {
                     // generated code because the function table makes
                     // reference to this label.
 
+		    System.out.println("Warning, failed to find " + typesArray[i] + "_"
+				       + functionsArray[j]);
 //                     typeStreams[i].append("#define " + typesArray[i] + "_"
 //                             + functionsArray[j] + " MISSING " + _eol);
 
@@ -792,6 +795,7 @@ public class JavaCodeGenerator extends CodeGenerator {
         _overloadedFunctions.parse(functionDir + "multiply.j");
         _overloadedFunctions.parse(functionDir + "divide.j");
         _overloadedFunctions.parse(functionDir + "subtract.j");
+        _overloadedFunctions.parse(functionDir + "toString.j");
         _overloadedFunctions.parse(functionDir + "convert.j");
         _overloadedFunctions.parse(functionDir + "negate.j");
         _overloadedFunctions.parse(typeDir + "Array.j");

@@ -7,7 +7,7 @@ $ref(output) = ($Array_toString($ref(input)).payload);
 /**/
 
 /*** TokenArrayFireBlock($elementType) ***/
-$ref(output) = $tokenFunc($typeFunc(TYPE_Array::convert($ref(input), $elementType))::toString()).payload.String;
+$ref(output) = (String)($tokenFunc($typeFunc(TYPE_Array::convert($ref(input), $elementType))::toString()).payload);
 /**/
 
 /*** FireBlock($type) ***/

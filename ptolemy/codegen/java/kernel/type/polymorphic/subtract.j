@@ -1,11 +1,11 @@
 /*** subtract_Array_Array() ***/
-inline Token subtract_Array_Array(Token a1, Token a2) {
+Token subtract_Array_Array(Token a1, Token a2) {
     return $Array_subtract(a1, a2);
 }
 /**/
 
 /*** subtract_Array_Double() ***/
-inline Token subtract_Array_Double(Token a1, double a2) {
+Token subtract_Array_Double(Token a1, double a2) {
     int i;
     Token result = $new(Array(a1.payload.Array->size, 0));
 
@@ -17,7 +17,7 @@ inline Token subtract_Array_Double(Token a1, double a2) {
 /**/
 
 /*** subtract_Array_Integer() ***/
-inline Token subtract_Integer_Array(Token a1, int a2) {
+Token subtract_Integer_Array(Token a1, int a2) {
     int i;
     Token result = $new(Array(a1.payload.Array->size, 0));
 
@@ -29,7 +29,7 @@ inline Token subtract_Integer_Array(Token a1, int a2) {
 /**/
 
 /*** subtract_Array_Long() ***/
-inline Token subtract_Long_Array(Token a1, long long a2) {
+Token subtract_Long_Array(Token a1, long long a2) {
     int i;
     Token result = $new(Array(a1.payload.Array->size, 0));
 
@@ -41,13 +41,13 @@ inline Token subtract_Long_Array(Token a1, long long a2) {
 /**/
 
 /*** subtract_Boolean_Boolean() ***/
-inline boolean subtract_Boolean_Boolean(boolean a1, boolean a2) {
+boolean subtract_Boolean_Boolean(boolean a1, boolean a2) {
     return a1 | a2;
 }
 /**/
 
 /*** subtract_Boolean_Integer() ***/
-inline int subtract_Boolean_Integer(boolean a1, int a2) {
+int subtract_Boolean_Integer(boolean a1, int a2) {
     //return $subtract_Integer_Boolean(a2, a1);
 }
 /**/
@@ -65,13 +65,13 @@ Token subtract_Double_Array(double a1, Token a2) {
 /**/
 
 /*** subtract_Double_Double() ***/
-inline double subtract_Double_Double(double a1, double a2) {
+double subtract_Double_Double(double a1, double a2) {
     return a1 - a2;
 }
 /**/
 
 /*** subtract_Double_Integer() ***/
-inline double subtract_Double_Integer(double a1, int a2) {
+double subtract_Double_Integer(double a1, int a2) {
     return a1 - a2;
 }
 /**/
@@ -127,7 +127,7 @@ Token subtract_Long_Array(long long a1, Token a2) {
 /**/
 
 /*** subtract_Long_Long() ***/
-inline long long subtract_Long_Long(long long a1, long long a2) {
+long long subtract_Long_Long(long long a1, long long a2) {
     return a1 - a2;
 }
 /**/
@@ -140,21 +140,21 @@ Token subtract_Long_Token(long long a1, Token a2) {
 /**/
 
 /*** subtract_Token_Double() ***/
-inline Token subtract_Token_Double(Token a1, double a2) {
+Token subtract_Token_Double(Token a1, double a2) {
     Token token = $new(Double(a2));
     return $subtract_Token_Token(a1, token);
 }
 /**/
 
 /*** subtract_Token_Integer() ***/
-inline int subtract_Token_Integer(Token a1, int a2) {
+int subtract_Token_Integer(Token a1, int a2) {
     Token token = $new(Integer, a2);
     return $typeFunc(TYPE_Integer::subtract(a1, token));
 }
 /**/
 
 /*** subtract_Token_Token() ***/
-inline Token subtract_Token_Token(Token a1, Token a2) {
+Token subtract_Token_Token(Token a1, Token a2) {
     return $tokenFunc(a1::subtract(a2));
 }
 /**/

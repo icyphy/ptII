@@ -185,6 +185,7 @@ int add_Token_Integer(Token a1, int a2) {
 Token add_Token_Token(Token a1, Token a2) {
     Token result = null;
     switch (a1.type) {
+#ifdef PTCG_TYPE_Double
     case TYPE_Double:
         switch (a2.type) {
 	    case TYPE_Double:
@@ -194,6 +195,18 @@ Token add_Token_Token(Token a1, Token a2) {
 	        result = null;
 
         };;
+#endif
+    case TYPE_Array:
+        switch (a2.type) {
+	    case TYPE_Array:
+	    	result = Array_add(a1, a2);
+		System.out.println("add_Token_Token: " + a1.type + " " + a2.type + " " + result);
+		break;
+	    default:
+	        result = null;
+
+        }
+	break;
     default:
         result = null;
     }
@@ -206,4 +219,5 @@ Token add_Token_Token(Token a1, Token a2) {
     return result;
 }
 /**/
+
 

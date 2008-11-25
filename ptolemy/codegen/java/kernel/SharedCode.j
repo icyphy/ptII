@@ -4,7 +4,7 @@
 
 /***funcHeaderBlock ($function)***/
 
-Token $function (Token thisToken, ...);
+// Token $function (Token thisToken, Token... tokens);  From codegen/java/kernel/SharedCode.j
 /**/
 
 /***tokenDeclareBlock ($types)***/
@@ -64,7 +64,7 @@ String UnsignedBytetoString(byte b) {
 
 /*** unsupportedTypeFunction ***/
 /* We share one method between all types so as to reduce code size. */
-Token unsupportedTypeFunction(Token token, ...) {
+Token unsupportedTypeFunction(Token token, Token... tokens) {
     System.err.println"Attempted to call unsupported method on a type");
     System.exit(1);
     return emptyToken;
@@ -73,7 +73,7 @@ Token unsupportedTypeFunction(Token token, ...) {
 
 /*** scalarDeleteFunction ***/
 /* We share one method between all scalar types so as to reduce code size. */
-Token scalarDelete(Token token, ...) {
+Token scalarDelete(Token token, Token... tokens) {
     /* We need to return something here because all the methods are declared
      * as returning a Token so we can use them in a table of functions.
      */

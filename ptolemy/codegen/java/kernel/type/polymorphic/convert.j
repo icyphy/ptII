@@ -154,3 +154,43 @@ char* convert_String_Boolean(char* a) {
 #define convert_Token_Token(a) a
 /**/
 
+/*** convert_Token_Token2() ***/
+Token convert_Token_Token2(Short type1, Token token, Short type2) {
+      switch (type1) {
+#ifdef PTCG_TYPE_Array
+    case TYPE_Array:
+        token.payload = BooleantoString((Boolean)(token.payload));
+        return token;
+#endif
+
+#ifdef PTCG_TYPE_Boolean
+    case TYPE_Boolean:
+        token.payload = BooleantoString((Boolean)(token.payload));
+        return token;
+#endif
+
+#ifdef PTCG_TYPE_Integer
+    case TYPE_Integer:
+        token.payload = IntegertoString((Integer(token.payload));
+        return token;
+#endif
+
+#ifdef PTCG_TYPE_Double
+    case TYPE_Double:
+        token.payload = DoubletoString((Double)(token.payload));
+        return token;
+#endif
+
+#ifdef PTCG_TYPE_String
+    case TYPE_String:
+        return token;
+	break;
+#endif
+    default:
+        throw new RuntimeException("String_convert(): Conversion from an unsupported type: "
+	 + token.type);
+    }
+
+}
+/**/
+

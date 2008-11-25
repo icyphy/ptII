@@ -119,7 +119,6 @@ Token String_convert(Token token, Token... ignored) {
 #endif
     case TYPE_String:
         return token;
-	break;
     default:
         throw new RuntimeException("String_convert(): Conversion from an unsupported type: "
 	 + token.type);
