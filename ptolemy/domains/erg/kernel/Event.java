@@ -511,15 +511,16 @@ public class Event extends State {
         if (relation.isEnabled(scope)) {
             double delay = relation.getDelay(scope);
             Event nextEvent = (Event) relation.destinationState();
-            int priority = ((IntToken) relation.priority.getToken())
-                    .intValue();
             if (relation.isCanceling()) {
                 director.cancel(nextEvent);
             } else {
+                int priority = ((IntToken) relation.priority.getToken())
+                        .intValue();
+                boolean reset = ((BooleanToken) relation.reset.getToken())
+                        .booleanValue();
                 ArrayToken edgeArguments = relation.getArguments(scope);
-                director.fireAt(nextEvent, director.getModelTime().add(
-                        delay), edgeArguments, relation.getTriggers(),
-                        priority);
+                director.fireAt(nextEvent, director.getModelTime().add(delay),
+                        edgeArguments, relation.getTriggers(), priority, reset);
             }
         }
     }

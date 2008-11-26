@@ -354,11 +354,11 @@ public class ERGDirector extends Director implements TimedDirector,
             Event event = (Event) ((RefinementActor) actor).getRefinedState();
             if (event != null) {
                 event.getController().director._fireAt(actor, time, null, null,
-                        null, 0);
+                        null, 0, false);
                 return;
             }
         }
-        _fireAt(actor, time, null, null, null, 0);
+        _fireAt(actor, time, null, null, null, 0, false);
     }
 
     /** Request to process an event at the given absolute time. This method puts
@@ -370,13 +370,15 @@ public class ERGDirector extends Director implements TimedDirector,
      *  @param arguments The arguments to the event.
      *  @param triggers A list of ports and variables that triggers the event
      *   before its scheduled time is reached.
+     *  @param reset Whether the refinement of the scheduled event should be
+     *   (re)initialized when the event is processed.
      *  @exception IllegalActionException If the operation is not
      *  permissible (e.g. the given time is in the past).
      */
     public void fireAt(Event event, Time time, ArrayToken arguments,
-            List<NamedObj> triggers, int priority)
+            List<NamedObj> triggers, int priority, boolean reset)
             throws IllegalActionException {
-        _fireAt(event, time, arguments, triggers, null, priority);
+        _fireAt(event, time, arguments, triggers, null, priority, reset);
     }
 
     /** Return the ERG controller has the same container as this director. The
@@ -651,7 +653,7 @@ public class ERGDirector extends Director implements TimedDirector,
                     try {
                         cancel(event);
                         fireAt(event, modelTime, timedEvent.arguments, null,
-                                timedEvent.priority);
+                                timedEvent.priority, timedEvent.reset);
                     } catch (IllegalActionException e) {
                         // This shouldn't happen because this event does not
                         // have any refinement.
@@ -719,11 +721,12 @@ public class ERGDirector extends Director implements TimedDirector,
          *   the event that causes this method to be called, or null if none.
          */
         public TimedEvent(Time time, Object object, ArrayToken arguments,
-                RefiringData data, int priority) {
+                RefiringData data, int priority, boolean reset) {
             super(time, object);
             this.arguments = arguments;
             this.data = data;
             this.priority = priority;
+            this.reset = reset;
         }
 
         /** Display timeStamp and contents.
@@ -757,6 +760,10 @@ public class ERGDirector extends Director implements TimedDirector,
         /** The priority of the scheduled event. (0 is the default for most
          *  events.) */
         public int priority;
+        
+        /** Whether the refinement of the scheduled event should be
+         *  (re)initialized when the event is processed. */
+        public boolean reset;
     }
 
     /** Insert initial events into the event queue, and request firing from the
@@ -777,7 +784,7 @@ public class ERGDirector extends Director implements TimedDirector,
                 Event event = (Event) entities.next();
                 if (event.isInitialEvent()) {
                     TimedEvent newEvent = new TimedEvent(_currentTime, event,
-                            null, null, 0);
+                            null, null, 0, false);
                     _addEvent(newEvent);
                 }
             }
@@ -786,7 +793,7 @@ public class ERGDirector extends Director implements TimedDirector,
             }
         } else {
             TimedEvent newEvent = new TimedEvent(_currentTime, controller,
-                    null, null, 0);
+                    null, null, 0, false);
             _addEvent(newEvent);
             if (_isEmbedded()) {
                 _requestFiring();
@@ -913,7 +920,10 @@ public class ERGDirector extends Director implements TimedDirector,
             }
             if (data != null) {
                 _fireAt(event, getModelTime().add(data.getTimeAdvance()),
-                        timedEvent.arguments, null, data, timedEvent.priority);
+                        timedEvent.arguments, null, data, timedEvent.priority,
+                        // If it is a refiring, do not reinitialize the
+                        // refinement.
+                        false);
             }
 
             boolean scheduled = false;
@@ -924,7 +934,7 @@ public class ERGDirector extends Director implements TimedDirector,
                         if (!event._isActiveRefinement(refinement)) {
                             continue;
                         }
-                        if (refinement instanceof ERGController ||
+                        if (timedEvent.reset ||
                                 !_initializedRefinements.contains(refinement)) {
                             refinement.initialize();
                             _initializedRefinements.add(refinement);
@@ -1002,12 +1012,14 @@ public class ERGDirector extends Director implements TimedDirector,
      *   before its scheduled time is reached.
      *  @param data The refiring data for the next refire() invocation of the
      *   event that causes this method to be called, or null if none.
+     *  @param reset Whether the refinement of the scheduled event should be
+     *   (re)initialized when the event is processed.
      *  @exception IllegalActionException If the actor or event is to be
      *   scheduled at a time in the past.
      */
     private void _fireAt(Object object, Time time, ArrayToken arguments,
-            List<NamedObj> triggers, RefiringData data, int priority)
-            throws IllegalActionException {
+            List<NamedObj> triggers, RefiringData data, int priority,
+            boolean reset) throws IllegalActionException {
         if (time.compareTo(getModelTime()) < 0) {
             throw new IllegalActionException(this,
                     "Attempt to schedule an event in the past:"
@@ -1016,7 +1028,7 @@ public class ERGDirector extends Director implements TimedDirector,
         }
 
         TimedEvent timedEvent = new TimedEvent(time, object, arguments, data,
-                priority);
+                priority, reset);
 
         Time topTime = null;
         if (!_eventQueue.isEmpty()) {

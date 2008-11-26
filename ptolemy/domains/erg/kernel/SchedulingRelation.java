@@ -111,7 +111,6 @@ public class SchedulingRelation extends Transition {
         guardExpression.setDisplayName("condition");
         outputActions.setVisibility(Settable.NONE);
         setActions.setVisibility(Settable.NONE);
-        reset.setVisibility(Settable.NONE);
         preemptive.setVisibility(Settable.NONE);
         defaultTransition.setVisibility(Settable.NONE);
         nondeterministic.setVisibility(Settable.NONE);
