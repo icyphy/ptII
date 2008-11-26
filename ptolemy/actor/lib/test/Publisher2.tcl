@@ -268,14 +268,14 @@ test PubSub-4.1 {create many} {
 	close $fd 
 	puts "Wrote $filename"
 
-	puts "Running model with $n pub/subs"
-	jdkCapture {
- 	    exec java -classpath $PTII ptolemy.actor.gui.MoMLSimpleStatisticalApplication $filename
-	    #set r [executeModel $n $e0 0]
-        } pubSubStat
-	$e0 setContainer [java::null]
-	puts "pubsub $pubSubStat"
-        lappend pubSubStats $pubSubStat
+#	puts "Running model with $n pub/subs"
+#	jdkCapture {
+# 	    #exec java -classpath $PTII ptolemy.actor.gui.MoMLSimpleStatisticalApplication $filename
+#	    set r [executeModel $n $e0 0]
+#        } pubSubStat
+#	puts "pubsub $pubSubStat"
+#        lappend pubSubStats $pubSubStat
+#	$e0 setContainer [java::null]
 
 # 	java::call System gc
 #         set e0 [createPubSubModel $n 0 0]
@@ -301,7 +301,7 @@ test PubSub-4.1 {create many} {
 	#}
     }
     #plotStats $pubSubStats $levelxingStats
-    plotStats $pubSubStats
+#    plotStats $pubSubStats
 
 } {}
 
