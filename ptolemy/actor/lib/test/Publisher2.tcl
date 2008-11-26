@@ -127,9 +127,15 @@ proc createPubSubModel {numberOfPubSubs {returnAll 1} {usePubSub 1}} {
 		[java::field [java::cast ptolemy.actor.lib.Transformer $scale] output] \
 		[java::field [java::cast ptolemy.actor.lib.Transformer $scale2] input]
 
-	    $e0 connect \
-		[java::field [java::cast ptolemy.actor.lib.Transformer $scale2] output] \
-		[java::field [java::cast ptolemy.actor.lib.Transformer $scale3] input]
+            
+	    set ar [$e1 newRelation [$e1 uniqueName "LevelXingRelation"]]
+            [java::field [java::cast ptolemy.actor.lib.Transformer $scale2] output] liberalLink $ar
+	    [java::field [java::cast ptolemy.actor.lib.Transformer $scale3] input] liberalLink $ar
+
+
+	    #$e0 connect \
+	    #	[java::field [java::cast ptolemy.actor.lib.Transformer $scale2] output] \
+	    #	[java::field [java::cast ptolemy.actor.lib.Transformer $scale3] input]
 
 	    set rec [java::cast ptolemy.actor.lib.Recorder [$e0 getEntity "rec_PS20_$i"]]
 	    $e0 connect \
@@ -217,7 +223,7 @@ proc memStats {name data} {
     return $r
 }
 
-proc plotStats {pubSubStats levelxingStats} {
+proc plotStats {pubSubStats {levelxingStats {}}} {
     set plot [open stats.xml w] 
     puts $plot {<?xml version="1.0" standalone="yes"?>
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -232,26 +238,29 @@ proc plotStats {pubSubStats levelxingStats} {
     puts $plot [timeStats {PubSub Time in ms.} $pubSubStats]
     puts $plot [memStats {PubSub Memory in 10K bytes} $pubSubStats]
 
-    puts $plot [timeStats {Level Xing Time in ms.} $levelxingStats]
-    puts $plot [memStats {Level Xing Memory in 10K bytes} $levelxingStats]
+    puts "PubSub results"
+    puts $pubSubStats
 
+    if { "$levelxingStats" != ""} {
+	puts $plot [timeStats {Level Xing Time in ms.} $levelxingStats]
+	puts $plot [memStats {Level Xing Memory in 10K bytes} $levelxingStats]
+	puts "Level Crossing results"
+	puts $levelxingStats
+    }
 
     puts $plot {</plot>}
     close $plot
 
-    puts "PubSub results"
-    puts $pubSubStats
-    puts "Level Crossing results"
-    puts $levelxingStats
 }
 
 test PubSub-4.1 {create many} {
     set pubSubStats {}
     set levelxingStats {}
-    #foreach n {10 20 50 100 200 300 400 500 600 700 800 900 1000 2000 5000 10000 20000}
-    foreach n {2} {
+    set runtime [java::call Runtime getRuntime]
+    foreach n {10 20 50 100 200 300 400 500 600 700 800 900 1000 2000 5000 10000 20000} {
 	puts "\n======"
-
+	java::call System gc
+	puts "After gc: Memory: [expr {[$runtime totalMemory]/1000}] K Free: [expr {[$runtime freeMemory]/1000}] K"
         set e0 [createPubSubModel $n 0 1]
 	set filename "pubsub$n.xml"
 	set fd [open $filename w]
@@ -264,29 +273,35 @@ test PubSub-4.1 {create many} {
  	    exec java -classpath $PTII ptolemy.actor.gui.MoMLSimpleStatisticalApplication $filename
 	    #set r [executeModel $n $e0 0]
         } pubSubStat
+	$e0 setContainer [java::null]
 	puts "pubsub $pubSubStat"
         lappend pubSubStats $pubSubStat
 
-        set e0 [createPubSubModel $n 0 0]
- 	set filename "levelxing$n.xml"
- 	set fd [open $filename w]
- 	puts $fd [$e0 exportMoML]
- 	close $fd 
- 	puts "Created $filename"
+# 	java::call System gc
+#         set e0 [createPubSubModel $n 0 0]
+#  	set filename "levelxing$n.xml"
+#  	set fd [open $filename w]
+#  	puts $fd [$e0 exportMoML]
+#  	close $fd 
+#  	puts "Created $filename"
 
- 	puts "\nRunning model with $n level crossing links"
- 	puts "levelxing $levelxingStat"
- 	jdkCapture {
- 	    exec java -classpath $PTII ptolemy.actor.gui.MoMLSimpleStatisticalApplication $filename
- 	    #set r2 [executeModel $n $e0 0]
-         } levelxingStat
-         lappend levelxingStats $levelxingStat
+#  	puts "\nRunning model with $n level crossing links"
+#  	jdkCapture {
+# 	    # MoML does not work with level crossing links, see
+# 	    # https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=217
+#  	    #exec java -classpath $PTII ptolemy.actor.gui.MoMLSimpleStatisticalApplication $filename
+#  	    set r2 [executeModel $n $e0 0]
+#          } levelxingStat
+# 	 $e0 setContainer [java::null]
+#          puts "levelxing $levelxingStat"
+#          lappend levelxingStats $levelxingStat
 
 	#if { [lindex $r 1] != [lindex $r2 1] } {
 	#    error "Results $r and $r2 are not equal"
 	#}
     }
-    plotStats $pubSubStats $levelxingStats
+    #plotStats $pubSubStats $levelxingStats
+    plotStats $pubSubStats
 
 } {}
 
