@@ -7,10 +7,10 @@
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="2000.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 50.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={220, 320, 821, 516}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={220, 320, 829, 514}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[606, 400]">
     </property>
@@ -36,26 +36,68 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 365.0]">
         </property>
     </property>
-    <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
-        <property name="time" class="ptolemy.data.expr.Parameter" value="1.0">
+    <property name="annotation2" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.25, 175.0]">
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:18; font-family:SansSerif; fill:red">Simultaneous Car Wash</text></svg></configure>
         </property>
-    </entity>
-    <entity name="InitQueue" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="5">
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
         </property>
-        <doc>Create a constant sequence.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-            </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 200.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 25.0]">
         </property>
-    </entity>
-    <entity name="InitServers" class="ptolemy.actor.lib.Const">
+    </property>
+    <property name="annotation3" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model simulates two car wash systems at the same time. Each system is similar to that in
+the CarWash demo. The two have different configurations, one with 1 server and 3 initial
+waiting cars, and the other with 3 servers and 5 initial waiting cars. The TimedPlotter plots the
+change of numbers of available servers and waiting cars during simulation.</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 195.0]">
+        </property>
+    </property>
+    <property name="annotation4" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Look inside ERGModalModel to perceive its internal design, which contains a Simulate event
+with an ERG refinement. The Simulate event is processed twice at model time 0, causing two
+instances of the refinement's initial event to be scheduled in the refinement's own event
+queue. The streams of events occurring in the two simulations are merged in that event
+queue and are processed in their time stamp orders.</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 275.0]">
+        </property>
+    </property>
+    <entity name="InitQueue1" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="3">
         </property>
         <doc>Create a constant sequence.</doc>
@@ -65,11 +107,24 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 100.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 140.0]">
+        </property>
+    </entity>
+    <entity name="InitServers1" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 45.0]">
         </property>
     </entity>
     <entity name="ERGModalModel" class="ptolemy.domains.erg.kernel.ERGModalModel">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.25, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 115.0]">
         </property>
         <port name="serversInput" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="input"/>
@@ -92,7 +147,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={232, 254, 815, 516}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={288, 268, 823, 514}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -254,7 +309,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
                 </property>
             </property>
-            <property name="Queue" class="ptolemy.data.expr.Parameter" value="{4, 154}">
+            <property name="Queue" class="ptolemy.data.expr.Parameter" value="{227, 2}">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -523,19 +578,6 @@
         <link port="Simulate.queueOutput" relation="queueOutputRelation"/>
     </entity>
     <entity name="InitServers2" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <doc>Create a constant sequence.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 145.0]">
-        </property>
-    </entity>
-    <entity name="InitQueue2" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="3">
         </property>
         <doc>Create a constant sequence.</doc>
@@ -545,38 +587,53 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 245.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 90.0]">
         </property>
     </entity>
-    <entity name="ArrayToElements2" class="ptolemy.actor.lib.ArrayToElements">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 225.0]">
+    <entity name="InitQueue2" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="5">
         </property>
-    </entity>
-    <entity name="ArrayToElements" class="ptolemy.actor.lib.ArrayToElements">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 130.0]">
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 185.0]">
         </property>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={389, 455, 508, 355}, maximized=false}">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={389, 455, 516, 357}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 110.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>TimedPlotter</title>
-<xRange min="0.0" max="1994.9782337829001"/>
-<yRange min="0.0" max="6.0"/>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="2000.0"/>
+<yRange min="0.0" max="250.0"/>
 </plot>?>
         </configure>
+    </entity>
+    <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
+        <property name="time" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 115.0]">
+        </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[145.25, 175.0]">
+        <vertex name="vertex1" value="[180.0, 115.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -595,41 +652,29 @@
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-    </relation>
-    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-    </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="2">
         </property>
     </relation>
-    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="2">
         </property>
     </relation>
-    <link port="SingleEvent.output" relation="relation"/>
-    <link port="InitQueue.output" relation="relation4"/>
-    <link port="InitQueue.trigger" relation="relation"/>
-    <link port="InitServers.output" relation="relation3"/>
-    <link port="InitServers.trigger" relation="relation"/>
+    <link port="InitQueue1.output" relation="relation4"/>
+    <link port="InitQueue1.trigger" relation="relation"/>
+    <link port="InitServers1.output" relation="relation3"/>
+    <link port="InitServers1.trigger" relation="relation"/>
     <link port="ERGModalModel.serversInput" relation="relation3"/>
     <link port="ERGModalModel.serversInput" relation="relation2"/>
     <link port="ERGModalModel.queueInput" relation="relation4"/>
     <link port="ERGModalModel.queueInput" relation="relation5"/>
-    <link port="ERGModalModel.serversOutput" relation="relation8"/>
+    <link port="ERGModalModel.serversOutput" relation="relation6"/>
     <link port="ERGModalModel.queueOutput" relation="relation7"/>
     <link port="InitServers2.output" relation="relation2"/>
     <link port="InitServers2.trigger" relation="relation"/>
     <link port="InitQueue2.output" relation="relation5"/>
     <link port="InitQueue2.trigger" relation="relation"/>
-    <link port="ArrayToElements2.input" relation="relation7"/>
-    <link port="ArrayToElements2.output" relation="relation9"/>
-    <link port="ArrayToElements.input" relation="relation8"/>
-    <link port="ArrayToElements.output" relation="relation6"/>
     <link port="TimedPlotter.input" relation="relation6"/>
-    <link port="TimedPlotter.input" relation="relation9"/>
+    <link port="TimedPlotter.input" relation="relation7"/>
+    <link port="SingleEvent.output" relation="relation"/>
 </entity>
