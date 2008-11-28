@@ -57,6 +57,8 @@ import ptolemy.kernel.util.NamedObj;
  @since Ptolemy II 6.0
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (eal)
+ @deprecated This code is old, hard to use and unmaintained.  See 
+  {@link ptolemy.actor.lib.jni.EmbeddedCActor} for a more recent implementation.
  */
 public class JNICodeGeneratorGUIFactory extends EditorFactory {
     /** Construct a factory with the specified container and name.

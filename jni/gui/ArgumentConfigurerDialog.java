@@ -62,6 +62,8 @@ import ptolemy.util.MessageHandler;
  @since Ptolemy II 3.0
  @Pt.ProposedRating Yellow (vincent.arnould)
  @Pt.AcceptedRating Red (vincent.arnould)
+ @deprecated This code is old, hard to use and unmaintained.  See 
+  {@link ptolemy.actor.lib.jni.EmbeddedCActor} for a more recent implementation.
  */
 public class ArgumentConfigurerDialog extends ComponentDialog implements
         ChangeListener {

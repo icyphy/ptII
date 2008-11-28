@@ -54,6 +54,8 @@ import ptolemy.util.StringUtilities;
  @Pt.ProposedRating Red (vincent.arnould)
  @Pt.AcceptedRating Red (vincent.arnould)
  @see jni.GenericJNIActor
+ @deprecated This code is old, hard to use and unmaintained.  See 
+  {@link ptolemy.actor.lib.jni.EmbeddedCActor} for a more recent implementation.
  */
 public class Argument extends AbstractSettableAttribute {
 

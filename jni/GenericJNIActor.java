@@ -85,6 +85,8 @@ import ptolemy.util.StringUtilities;
  @Pt.ProposedRating Red (vincent.arnould)
  @Pt.AcceptedRating Red (vincent.arnould)
  @see JNIUtilities
+ @deprecated This code is old, hard to use and unmaintained.  See 
+  {@link ptolemy.actor.lib.jni.EmbeddedCActor} for a more recent implementation.
  */
 public class GenericJNIActor extends TypedAtomicActor {
     /** Construct an entity in the default workspace with an empty string

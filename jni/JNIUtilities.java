@@ -54,6 +54,9 @@ import ptolemy.util.StringUtilities;
 /**
  A collection of utilities for generating Java Native Interface (JNI) classes.
 
+<p>This code is old, hard to use and unmaintained.  See 
+{@link ptolemy.actor.lib.jni.EmbeddedCActor} for a more recent implementation.
+
  <p>For information about JNI, see
  <a href="http://java.sun.com/docs/books/tutorial/native1.1/concepts/index.html"><code>http://java.sun.com/docs/books/tutorial/native1.1/concepts/index.html</code></a>
 
@@ -63,6 +66,23 @@ import ptolemy.util.StringUtilities;
 
  <p>For information about using JNI with Cygwin, see
  <a href="http://www.inonit.com/cygwin/jni/helloWorld/c.html" target="_top"><code>http://www.inonit.com/cygwin/jni/helloWorld/c.html</code></a>
+
+
+ <p>The code uses <code>gmake</code>, the GNU make program.  Under Windows, you must
+install <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/cygwin.htm" target="_top">Cygwin</a> and then you may need to make a symbolic link from gmake to make by
+starting up Cygwin bash and doing:
+<pre>
+cd c:/cygwin/usr/bin
+ln -s make.exe gmake.exe
+</pre>
+
+If you don't have <code>gmake</code> in your path, you might see a message like:
+<pre>
+IOException: java.io.IOException: CreateProcess: gmake -C jni/testTrois -f JnijnitestTroisIfnTest.mk error=2
+</pre>
+This message occurs under Windows because the Windows, Java calls the 
+Windows CreateProcess function, which returns 2, which
+means that the executable, in this case, <code>gmake</code> cannot be found.
 
  <h2>How to call an actor that calls C code that returns a double</h2>
  In this example, we call a C method called <code>meaningOfLife()</code>
@@ -183,6 +203,8 @@ import ptolemy.util.StringUtilities;
  @since Ptolemy II 2.3
  @Pt.ProposedRating Red (vincent.arnould)
  @Pt.AcceptedRating Red (vincent.arnould)
+ @deprecated This code is old, hard to use and unmaintained.  See 
+  {@link ptolemy.actor.lib.jni.EmbeddedCActor} for a more recent implementation.
  */
 public class JNIUtilities {
     /** Instances of this class cannot be created.

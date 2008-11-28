@@ -46,6 +46,8 @@ import ptolemy.util.ExecuteCommands;
  *  @since Ptolemy II 6.0
  *  @Pt.ProposedRating Red (cxh)
  *  @Pt.AcceptedRating Red (cxh)
+ *  @deprecated This code is old, hard to use and unmaintained.  See 
+ *   {@link ptolemy.actor.lib.jni.EmbeddedCActor} for a more recent implementation.
  */
 public class JNICodeGenerator extends Attribute {
     /** Create a new instance of JNI Generator.
