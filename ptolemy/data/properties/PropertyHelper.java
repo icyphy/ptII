@@ -247,8 +247,8 @@ public abstract class PropertyHelper {
      * 
      * @param component The specified component.
      */
-    public void setComponent(Object _component) {
-        this._component = _component;
+    public void setComponent(Object component) {
+        _component = component;
     }
 
     /**

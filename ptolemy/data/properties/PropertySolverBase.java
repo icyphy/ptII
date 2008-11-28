@@ -266,7 +266,7 @@ public abstract class PropertySolverBase extends Attribute {
      * Get the attribute that corresponds to the specified
      * ASTPtRootNode. This assumes that the correspondence is recorded
      * previously through calling
-     * {@link ptolemy.data.properties.PropertyHelper#putAttribute(ASTPtRootNode, Attribute)).
+     * {@link ptolemy.data.properties.PropertyHelper#putAttribute(ASTPtRootNode, Attribute)}.
      * 
      * @param node The specified ASTPtRootNode.
      * @return The attribute associated with the specified ASTPtRootNode.
