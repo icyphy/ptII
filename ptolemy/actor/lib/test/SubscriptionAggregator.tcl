@@ -84,7 +84,7 @@ test SubscriptionAggregator-2.0 {No Publisher} {
             [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
     catch {[$e0 getManager] execute} errMsg
     list $errMsg
-} {{ptolemy.kernel.util.IllegalActionException: Subscriber has no matching Publisher, channel was "channel1".
+} {{ptolemy.kernel.util.IllegalActionException: Subscriber has no matching Publisher, channel was "channel1" which evaluated to "channel1".
   in .top.subagg}}
 
 test SubscriptionAggregator-3.0 {Debugging messages} {
