@@ -131,11 +131,11 @@
         <link port="Subscriber2.output" relation="relation2"/>
     </entity>
     <entity name="TestExceptionHandler" class="ptolemy.actor.lib.TestExceptionHandler">
-        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="Subscriber has no matching Publisher, channel was &quot;foo&quot;.&#10;  in .PublisherSubscriber10.Subscriber">
+        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="Subscriber has no matching Publisher, channel was &quot;foo&quot; which evaluated to &quot;foo&quot;.channel1&#10;&#10;  in .PublisherSubscriber10.Subscriber">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{405, 135}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{405.0, 135.0}">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
