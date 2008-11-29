@@ -35,6 +35,7 @@ import java.util.List;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
@@ -67,6 +68,7 @@ import ptolemy.moml.HandlesInternalLinks;
  */
 public class MirrorComposite extends TypedCompositeActor implements
         HandlesInternalLinks {
+    
     /** Create an actor with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.  This actor will use the
@@ -83,7 +85,7 @@ public class MirrorComposite extends TypedCompositeActor implements
     public MirrorComposite(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        _init();
+        _init(true);
     }
     
     /** Construct a MirrorComposite in the specified workspace with
@@ -97,7 +99,30 @@ public class MirrorComposite extends TypedCompositeActor implements
      */
     public MirrorComposite(Workspace workspace) {
         super(workspace);
-        _init();
+        _init(true);
+    }
+
+    
+    /** Create an actor with a name and a container that optionally
+     *  mirrors the ports that are instances of ParameterPort.
+     *  The container argument must not be null, or a
+     *  NullPointerException will be thrown.  This actor will use the
+     *  workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty string.
+     *  Increment the version of the workspace.
+     *  @param container The container actor.
+     *  @param name The name of this actor.
+     *  @param mirrorParameterPorts If false, then ports that are instances of
+     *   ParameterPort are not mirrored.
+     *  @exception IllegalActionException If the container is incompatible
+     *   with this actor.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an actor already in the container.
+     */
+    public MirrorComposite(CompositeEntity container, String name, boolean mirrorParameterPorts)
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name);
+        _init(mirrorParameterPorts);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -249,6 +274,9 @@ public class MirrorComposite extends TypedCompositeActor implements
                         while (entityPorts.hasNext()) {
                             ComponentPort insidePort = (ComponentPort) entityPorts
                                     .next();
+                            if (!_mirrorParameterPorts && (insidePort instanceof ParameterPort)) {
+                                continue;
+                            }
                             String name = insidePort.getName();
 
                             // The outside port may already exist (e.g.
@@ -305,6 +333,10 @@ public class MirrorComposite extends TypedCompositeActor implements
         }
 
         super._addPort(port);
+        
+        if (!_mirrorParameterPorts && (port instanceof ParameterPort)) {
+            return;
+        }
 
         // Create and connect a matching inside port on contained entities.
         // Do this as a change request to ensure that the action of
@@ -513,17 +545,23 @@ public class MirrorComposite extends TypedCompositeActor implements
 
     /** Flag indicating that we are executing _removeEntity(). */
     private boolean _inRemoveEntity = false;
+    
+    /** Flag indicating whether to mirror instances of ParameterPort. */
+    private boolean _mirrorParameterPorts = true;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Initialize the class. */
-    private void _init() {
+    /** Initialize the class.
+     *  @param mirrorParameterPorts If true, then mirror instances of ParameterPort.
+     */
+    private void _init(boolean mirrorParameterPorts) {
         setClassName("ptolemy.actor.lib.hoc.MirrorComposite");
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-30\" y=\"-20\" " + "width=\"60\" height=\"40\" "
                 + "style=\"fill:white\"/>\n" + "<text x=\"-6\" y=\"10\""
                 + "style=\"font-size:24\">?</text>\n" + "</svg>\n");
+        _mirrorParameterPorts = mirrorParameterPorts;
     }
 
     ///////////////////////////////////////////////////////////////////

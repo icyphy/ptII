@@ -181,9 +181,15 @@ import ptolemy.kernel.util.Workspace;
  minimum increment between these or fireAt() could result in an
  exception.  Do we want a parameter to relax that?
  <p>
- FIXME: If there is a PortParameter, the parameter gets updated when the
- fire() method of this composite is invoked, which creates a nondeterminate
- interaction with the deferred execution. See CompositeActor.fire().
+ On subtlety of this actor is that it cannot expose instances of ParameterPort
+ without introducing nondeterminacy in the execution. A ParameterPort 
+ is an input port that sets the value of a parameter with the same. Upon receiving
+ a token at such a port, if this actor were to set a parameter visible by the
+ inside thread, there is no assurance that the inside thread is not still
+ executing an earlier iteration. Thus, it could appear to be sending a message
+ backward in time, which would be truly bizarre. To prevent this error,
+ this actor does not mirror such ports, and hence they appear on the outside
+ only as parameters.
 
  @author Edward A. Lee
  @version $Id: ThreadedComposite.java 47513 2007-12-07 06:32:21Z cxh $
@@ -207,8 +213,11 @@ public class ThreadedComposite extends MirrorComposite {
      */
     public ThreadedComposite(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(container, name);
-        setClassName("ptolemy.domains.de.lib.ThreadedComposite");
+        // The false argument specifies that instances of ParameterPort
+        // should not be mirrored. This would make the behavior nondeterminate,
+        // so we expose these only as parameters.
+        super(container, name, false);
+        setClassName("ptolemy.actor.lib.hoc.ThreadedComposite");
         new ThreadedDirector(this, "ThreadedDirector");
 
         // Hidden parameter defining "UNDEFINED".
