@@ -34,7 +34,9 @@ import javax.swing.SwingConstants;
 
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -50,7 +52,8 @@ import diva.canvas.toolbox.LabelFigure;
 //// AttributeValueIcon
 
 /**
- An icon that displays the value of an attribute of the container.
+ An icon that displays the value of an attribute of the container
+ or of some other entity contained by the container.
  The attribute is assumed to be an instance of Settable, and its name
  is given by the parameter <i>attributeName</i>.  The display is not
  automatically updated when the attribute value is updated.
@@ -85,6 +88,9 @@ public class AttributeValueIcon extends XMLIcon {
         displayHeight = new Parameter(this, "displayHeight");
         displayHeight.setExpression("1");
         displayHeight.setTypeEquals(BaseType.INT);
+        
+        entityName = new StringParameter(this, "entityName");
+        entityName.setExpression("");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -102,6 +108,13 @@ public class AttributeValueIcon extends XMLIcon {
      *  default value 6.
      */
     public Parameter displayWidth;
+    
+    /** Name of the entity contained by the container whose attribute
+     *  this icon will display. This is a string that defaults to the
+     *  empty string, which means that the attribute is contained
+     *  by the container of this attribute.
+     */
+    public StringParameter entityName;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -140,8 +153,19 @@ public class AttributeValueIcon extends XMLIcon {
         NamedObj container = getContainer();
 
         if (container != null) {
-            Attribute associatedAttribute = container
-                    .getAttribute(attributeName.getExpression());
+            Attribute associatedAttribute = null;
+            try {
+                if (entityName.stringValue().trim().equals("")) {
+                    associatedAttribute = container.getAttribute(attributeName.getExpression());
+                } else if (container instanceof CompositeEntity){
+                    NamedObj entity = ((CompositeEntity)container).getEntity(entityName.stringValue());
+                    if (entity != null) {
+                        associatedAttribute = entity.getAttribute(attributeName.getExpression());
+                    }
+                }
+            } catch (IllegalActionException e) {
+                // Ignore and produce a default icon.
+            }
 
             if (associatedAttribute instanceof Settable) {
                 String value = ((Settable) associatedAttribute).getExpression();

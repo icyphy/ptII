@@ -31,6 +31,11 @@ import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 
+import ptolemy.actor.gui.ColorAttribute;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -69,7 +74,38 @@ public class CopyCatIcon extends XMLIcon {
     public CopyCatIcon(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        
+        echos = new Parameter(this, "echos");
+        echos.setTypeEquals(BaseType.INT);
+        echos.setExpression("2");
+        
+        echoBoxColor = new ColorAttribute(this, "echoBoxColor");
+        echoBoxColor.setExpression("{1.0, 1.0, 1.0, 1.0}");
+        
+        includeName = new Parameter(this, "includeName");
+        includeName.setTypeEquals(BaseType.BOOLEAN);
+        includeName.setExpression("false");
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         parameters                        ////
+    
+    /** Color of the echo boxes. This defaults to white. */
+    public ColorAttribute echoBoxColor;
+
+    /** The number of echos of the bounding box to draw. This is an
+     *  int that defaults to 2.
+     */
+    public Parameter echos;
+    
+    /** If true, include the name of the copied actor in the icon
+     *  if the name is included normally in its icon. NOTE: This
+     *  will not include the name if the inside actor does not
+     *  have an icon attribute, but only has an _iconDescription,
+     *  so it's far from perfect.  This is a boolean
+     *  that defaults to false.
+     */
+    public Parameter includeName;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -119,7 +155,11 @@ public class CopyCatIcon extends XMLIcon {
                     }
 
                     if (icon != null) {
-                        result = icon.createBackgroundFigure();
+                        if (((BooleanToken)includeName.getToken()).booleanValue()) {
+                            result = icon.createFigure();
+                        } else {
+                            result = icon.createBackgroundFigure();
+                        }
                     } else {
                         // If there is no icon, then maybe there is an
                         // _iconDescription attribute.
@@ -176,20 +216,28 @@ public class CopyCatIcon extends XMLIcon {
         // Wrap in a CompositeFigure with echos of the bounding box.
         // Note that the bounds here are actually bigger than the
         // bounding box, which may be OK in this case.
+        int numberOfEchos = 2;
+        try {
+            numberOfEchos = ((IntToken)echos.getToken()).intValue();
+        } catch (IllegalActionException ex) {
+            // Ignore and use the default.
+        }
         Rectangle2D bounds = result.getBounds();
         CompositeFigure composite = new CompositeFigure();
-        BasicRectangle rectangle = new BasicRectangle(bounds.getX() + 10.0,
-                bounds.getY() + 10.0, bounds.getWidth(), bounds.getHeight(),
+        for (int i = numberOfEchos; i > 0; i--) {
+            BasicRectangle rectangle = new BasicRectangle(
+                    bounds.getX() + 5.0*i - _MARGIN,
+                    bounds.getY() + 5.0*i - _MARGIN,
+                    bounds.getWidth() + 2 * _MARGIN,
+                    bounds.getHeight() + 2 * _MARGIN,
+                    echoBoxColor.asColor());
+            composite.add(rectangle);            
+        }
+        BasicRectangle rectangle3 = new BasicRectangle(bounds.getX() - _MARGIN,
+                bounds.getY() - _MARGIN,
+                bounds.getWidth() + _MARGIN * 2,
+                bounds.getHeight() + _MARGIN * 2,
                 Color.white);
-        composite.add(rectangle);
-
-        BasicRectangle rectangle2 = new BasicRectangle(bounds.getX() + 5.0,
-                bounds.getY() + 5.0, bounds.getWidth(), bounds.getHeight(),
-                Color.white);
-        composite.add(rectangle2);
-
-        BasicRectangle rectangle3 = new BasicRectangle(bounds.getX(), bounds
-                .getY(), bounds.getWidth(), bounds.getHeight(), Color.white);
         composite.add(rectangle3);
         composite.add(result);
         return composite;
@@ -197,6 +245,11 @@ public class CopyCatIcon extends XMLIcon {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // Original description of the icon.
+
+    /** Original description of the icon. */
     private String _originalDescription = null;
+    
+    /** Margin around the inside icon. */
+    private static int _MARGIN = 2;
+    
 }
