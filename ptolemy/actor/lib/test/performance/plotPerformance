@@ -12,66 +12,77 @@ cat << EoF
 <!-- Ptolemy plot, version 5.7.1.devel , PlotML format. -->
 <title>Number of actors vs time and memory</title>
 <xLabel>Number of actors</xLabel>
-<yLabel>Time in ms, Memory in 10k Bytes</yLabel>
+<yLabel>Time in ms, Memory in K Bytes</yLabel>
 	<default marks="bigdots"/>}
 
 EoF
 
+rm -f plotPerformance.tmp
 echo '<dataset name="Open time (ms.)">'
 for file in $@
 do 
    basename=`basename $file`
-   size=`echo $basename | sed 's/pubsub//' | sed 's/.out//'`
+   size=`awk '{ if (NF == 2 && $1 ~ /^AtomicEntities:$/) { print $2 } }' $file`
    egrep "^Opened" $file | awk -v size=$size ' {
-	print "<p x=\"" size * 5 "\" y=\"" $3 "\"/>"
-     }'
+	print size, $3
+     }' >> plotPerformance.tmp
 done
+sort -n plotPerformance.tmp | awk '{print "<p x=\"" $1 "\" y=\"" $2 "\"/>"}'
 echo "</dataset>"
 
+rm -f plotPerformance.tmp
 echo '<dataset name="Preinitialize time (ms.)">'
 for file in $@
 do 
    basename=`basename $file`
-   size=`echo $basename | sed 's/pubsub//' | sed 's/.out//'`
+   size=`awk '{ if (NF == 2 && $1 ~ /^AtomicEntities:$/) { print $2 } }' $file`
    egrep "^preinitialize" $file | awk -v size=$size ' {
-	print "<p x=\"" size * 5 "\" y=\"" $3 "\"/>"
-     }'
+	print size, $3
+     }' >> plotPerformance.tmp
 done
+sort -n plotPerformance.tmp | awk '{print "<p x=\"" $1 "\" y=\"" $2 "\"/>"}'
 echo "</dataset>"
 
+rm -f plotPerformance.tmp
 echo '<dataset name="Preinit + Init time (ms.)">'
 for file in $@
 do 
    basename=`basename $file`
-   size=`echo $basename | sed 's/pubsub//' | sed 's/.out//'`
+   size=`awk '{ if (NF == 2 && $1 ~ /^AtomicEntities:$/) { print $2 } }' $file`
    egrep "^Manager.initialize" $file | awk -v size=$size ' {
-	print "<p x=\"" size * 5 "\" y=\"" $3 "\"/>"
-     }'
+	print size, $3
+     }' >> plotPerformance.tmp
 done
+sort -n plotPerformance.tmp | awk '{print "<p x=\"" $1 "\" y=\"" $2 "\"/>"}'
 echo "</dataset>"
 
+rm -f plotPerformance.tmp
 echo '<dataset name="Run time (ms.)">'
 for file in $@
 do 
    basename=`basename $file`
-   size=`echo $basename | sed 's/pubsub//' | sed 's/.out//'`
+   size=`awk '{ if (NF == 2 && $1 ~ /^AtomicEntities:$/) { print $2 } }' $file`
    grep StatRT $file | awk -v size=$size ' {
-	print "<p x=\"" size * 5 "\" y=\"" $1 "\"/>"
-     }'
+	print size, $1
+     }' >> plotPerformance.tmp
 done
+sort -n plotPerformance.tmp | awk '{print "<p x=\"" $1 "\" y=\"" $2 "\"/>"}'
 echo "</dataset>"
 
+rm -f plotPerformance.tmp
 echo "<dataset name=\"Memory\">"
 for file in $@
 do 
    basename=`basename $file`
-   size=`echo $basename | sed 's/pubsub//' | sed 's/.out//'`
+   size=`awk '{ if (NF == 2 && $1 ~ /^AtomicEntities:$/) { print $2 } }' $file`
    grep StatRT $file | awk -v size=$size ' {
    	mem = substr($4, 0, length($4)-1)
         free= substr($6, 0, length($6)-1)
 	used = (mem-free)
-	print "<p x=\"" size * 5 "\" y=\"" used "\"/>"
-     }'
+	print size, used
+     }' >> plotPerformance.tmp
 done
+sort -n plotPerformance.tmp | awk '{print "<p x=\"" $1 "\" y=\"" $2 "\"/>"}'
+
 echo "</dataset>"
 echo "</plot>"
