@@ -230,6 +230,7 @@ public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
                         System.out.println("Opened \"" + base + "\": "
                                 + Manager.timeAndMemory(startTime));
                     }
+		    System.out.println(_toplevel.statistics(null));
                 } else {
                     // Argument not recognized.
                     return false;
