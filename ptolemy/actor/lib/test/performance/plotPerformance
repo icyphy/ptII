@@ -86,3 +86,5 @@ sort -n plotPerformance.tmp | awk '{print "<p x=\"" $1 "\" y=\"" $2 "\"/>"}'
 
 echo "</dataset>"
 echo "</plot>"
+
+rm -f plotPerformance.tmp
