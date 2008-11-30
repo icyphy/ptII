@@ -32,6 +32,7 @@ import java.net.URI;
 import java.net.URL;
 import java.util.List;
 
+import ptolemy.actor.Manager;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.URIAttribute;
@@ -431,7 +432,8 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
 			    try {
 				String entityClassName = StringUtilities
                                     .getProperty("entityClassName");
-				if ((entityClassName.length() > 0 || endTime > startTime + 10000)
+				if ((entityClassName.length() > 0
+				     || endTime > startTime + Manager.minimumStatisticsTime)
                                     && toplevel instanceof CompositeEntity) {
 				    System.out
                                         .println("Opened "
@@ -440,8 +442,16 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
 						 + (System.currentTimeMillis() - startTime)
 						 + " ms.");
 
+				    long statisticsStartTime = System.currentTimeMillis();
 				    System.out.println(((CompositeEntity) toplevel)
 						       .statistics(entityClassName));
+				    long statisticsEndTime = System.currentTimeMillis();
+				    if (statisticsEndTime - statisticsStartTime
+					> Manager.minimumStatisticsTime) {
+					System.out.println("Generating statistics took"
+							   + (statisticsEndTime - statisticsStartTime)
+							   + " ms. ");
+				    }
 				}
 			    } catch (SecurityException ex) {
 				System.err.println("Warning, while trying to print timing statistics,"

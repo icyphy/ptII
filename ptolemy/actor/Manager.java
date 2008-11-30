@@ -327,7 +327,7 @@ public class Manager extends NamedObj implements Runnable {
         try {
             try {
                 initialize();
-                if (System.currentTimeMillis() - startTime > 60000) {
+                if (System.currentTimeMillis() - startTime > minimumStatisticsTime) {
                     System.out.println("Manager.initialize() finished: "
                             + timeAndMemory(startTime));
                 }
@@ -599,7 +599,7 @@ public class Manager extends NamedObj implements Runnable {
 
             long startTime = (new Date()).getTime();
             preinitializeAndResolveTypes();
-            if (System.currentTimeMillis() - startTime > 60000) {
+            if (System.currentTimeMillis() - startTime > minimumStatisticsTime) {
                 System.out.println("preinitialize() finished: "
                         + timeAndMemory(startTime));
             }
@@ -683,7 +683,7 @@ public class Manager extends NamedObj implements Runnable {
                  }
                  */
             }
-            if (System.currentTimeMillis() - startTime > 60000) {
+            if (System.currentTimeMillis() - startTime > minimumStatisticsTime) {
                 System.out
                         .println("Manager.iterate(): preinitialize() finished: "
                                 + timeAndMemory(startTime));
@@ -1351,6 +1351,21 @@ public class Manager extends NamedObj implements Runnable {
         _setState(IDLE);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** The minimum amount of time that may elapse during certain
+     *  operations before statistics are generated.  The Manager and
+     *  other classes in Ptolemy will print out statistics if the
+     *  amount of time (in milliseconds) named by this variable
+     *  elapses during certain steps such as preinitialize().
+     *  The initial default value is 10000, meaning that certain 
+     *  operations can take up to 10 seconds before statistics 
+     *  are printed.
+     *  @see ptolemy.kernel.CompositeEntity.statistics(String)
+     */
+    public static int minimumStatisticsTime = 10000;
+       
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 

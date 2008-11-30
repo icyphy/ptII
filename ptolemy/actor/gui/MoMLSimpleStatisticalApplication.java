@@ -128,6 +128,7 @@ public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
                 + Manager.timeAndMemory(startTime, totalMemory1, freeMemory1));
 
         // Second, we run and print memory stats.
+	Manager.minimumStatisticsTime = 0;
         manager.execute();
 
         long totalMemory2 = runtime.totalMemory() / 1024;
@@ -222,15 +223,18 @@ public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
                     // Assume this is a MoML file, and open it.
                     _parser.reset();
 
-                    // If the open time is more than 1 ms seconds, print it.
+                    // Always print the open time
                     long startTime = System.currentTimeMillis();
                     _toplevel = (CompositeActor) _parser.parse(base, inURL);
                     long endTime = System.currentTimeMillis();
-                    if (endTime - startTime > 1) {
-                        System.out.println("Opened \"" + base + "\": "
-                                + Manager.timeAndMemory(startTime));
-                    }
+		    System.out.println("Opened \"" + base + "\": "
+				       + Manager.timeAndMemory(startTime));
+		    long statisticsStartTime = System.currentTimeMillis();
 		    System.out.println(_toplevel.statistics(null));
+                    long statisticsEndTime = System.currentTimeMillis();
+		    System.out.println("Generating statistics took"
+				       + (statisticsEndTime - statisticsStartTime)
+				       + " ms. ");
                 } else {
                     // Argument not recognized.
                     return false;
