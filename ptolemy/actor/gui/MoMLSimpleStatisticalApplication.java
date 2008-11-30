@@ -226,7 +226,6 @@ public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
                     // Always print the open time
                     long startTime = System.currentTimeMillis();
                     _toplevel = (CompositeActor) _parser.parse(base, inURL);
-                    long endTime = System.currentTimeMillis();
 		    System.out.println("Opened \"" + base + "\": "
 				       + Manager.timeAndMemory(startTime));
 		    long statisticsStartTime = System.currentTimeMillis();
