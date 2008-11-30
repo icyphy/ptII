@@ -235,7 +235,7 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
 
             //return "functionTable[(int)" + typeOrToken + ".type][FUNC_"
             //+ functionName + "](" + typeOrToken + argumentList;
-	    String methodType = typeOrToken.substring(typeOrToken.indexOf('_') + 1);
+	    //String methodType = typeOrToken.substring(typeOrToken.indexOf('_') + 1);
 	    getCodeGenerator().markFunctionCalled(functionName + "_Token_Token", this);
             return functionName + "_Token_Token(" + typeOrToken + argumentList;
         }

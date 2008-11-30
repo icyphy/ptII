@@ -30,7 +30,6 @@
 package ptolemy.codegen.java.actor.lib;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 import ptolemy.codegen.java.kernel.JavaCodeGeneratorHelper;
 import ptolemy.data.type.BaseType;

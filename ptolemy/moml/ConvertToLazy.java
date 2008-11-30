@@ -36,7 +36,6 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.moml.filter.BackwardCompatibility;
-import ptolemy.moml.filter.RemoveGraphicalClasses;
 
 //////////////////////////////////////////////////////////////////////////
 //// ConvertToLazy

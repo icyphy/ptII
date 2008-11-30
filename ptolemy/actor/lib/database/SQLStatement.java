@@ -29,10 +29,8 @@ package ptolemy.actor.lib.database;
 
 import ptolemy.actor.lib.Source;
 import ptolemy.actor.parameters.PortParameter;
-import ptolemy.data.ArrayToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;

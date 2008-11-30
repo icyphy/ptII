@@ -727,9 +727,9 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
 
                 parser.setContext(this);
 
-		List savedFilters = parser.getMoMLFilters();
+		List savedFilters = MoMLParser.getMoMLFilters();
 		try {
-		    parser.setMoMLFilters(null);
+		    MoMLParser.setMoMLFilters(null);
 		    if ((_configureSource != null) && !_configureSource.equals("")) {
 			URL xmlFile = new URL(_base, _configureSource);
 			parser.parse(xmlFile, xmlFile);
@@ -758,7 +758,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
 			}
 		    }
 		} finally {
-		    parser.setMoMLFilters(savedFilters);
+		    MoMLParser.setMoMLFilters(savedFilters);
                 }
             }
         } catch (Exception ex) {

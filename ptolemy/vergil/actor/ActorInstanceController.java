@@ -30,7 +30,6 @@ package ptolemy.vergil.actor;
 import java.awt.event.ActionEvent;
 
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Instantiable;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NamedObj;

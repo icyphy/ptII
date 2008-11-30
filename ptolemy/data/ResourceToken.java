@@ -1,7 +1,6 @@
 package ptolemy.data;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.util.Time;
 import ptolemy.data.type.Type;
 
 /**
