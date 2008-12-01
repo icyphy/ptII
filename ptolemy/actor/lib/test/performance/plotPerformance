@@ -22,7 +22,7 @@ echo '<dataset name="Open time (ms.)">'
 for file in $@
 do 
    basename=`basename $file`
-   size=`awk '{ if (NF == 2 && $1 ~ /^AtomicEntities:$/) { print $2 } }' $file`
+   size=`awk '{ if (NF == 2 && $1 ~ /^AtomicEntities:$/) { print $2 } }' $file | head -1`
    egrep "^Opened" $file | awk -v size=$size ' {
 	print size, $3
      }' >> plotPerformance.tmp
@@ -35,7 +35,7 @@ echo '<dataset name="Preinitialize time (ms.)">'
 for file in $@
 do 
    basename=`basename $file`
-   size=`awk '{ if (NF == 2 && $1 ~ /^AtomicEntities:$/) { print $2 } }' $file`
+   size=`awk '{ if (NF == 2 && $1 ~ /^AtomicEntities:$/) { print $2 } }' $file | head -1`
    egrep "^preinitialize" $file | awk -v size=$size ' {
 	print size, $3
      }' >> plotPerformance.tmp
@@ -48,7 +48,7 @@ echo '<dataset name="Preinit + Init time (ms.)">'
 for file in $@
 do 
    basename=`basename $file`
-   size=`awk '{ if (NF == 2 && $1 ~ /^AtomicEntities:$/) { print $2 } }' $file`
+   size=`awk '{ if (NF == 2 && $1 ~ /^AtomicEntities:$/) { print $2 } }' $file | head -1`
    egrep "^Manager.initialize" $file | awk -v size=$size ' {
 	print size, $3
      }' >> plotPerformance.tmp
@@ -61,7 +61,7 @@ echo '<dataset name="Run time (ms.)">'
 for file in $@
 do 
    basename=`basename $file`
-   size=`awk '{ if (NF == 2 && $1 ~ /^AtomicEntities:$/) { print $2 } }' $file`
+   size=`awk '{ if (NF == 2 && $1 ~ /^AtomicEntities:$/) { print $2 } }' $file | head -1`
    grep StatRT $file | awk -v size=$size ' {
 	print size, $1
      }' >> plotPerformance.tmp
@@ -74,11 +74,11 @@ echo "<dataset name=\"Memory\">"
 for file in $@
 do 
    basename=`basename $file`
-   size=`awk '{ if (NF == 2 && $1 ~ /^AtomicEntities:$/) { print $2 } }' $file`
+   size=`awk '{ if (NF == 2 && $1 ~ /^AtomicEntities:$/) { print $2 } }' $file | head -1`
    grep StatRT $file | awk -v size=$size ' {
    	mem = substr($4, 0, length($4)-1)
         free= substr($6, 0, length($6)-1)
-	used = (mem-free)
+	used = mem-free
 	print size, used
      }' >> plotPerformance.tmp
 done

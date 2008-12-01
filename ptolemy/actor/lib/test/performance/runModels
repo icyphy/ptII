@@ -7,7 +7,7 @@ for file in $@
 do
     echo $file
     logfile="`dirname $file`/`basename $file .xml`.out"
-    time java -Xmx1600M -classpath "$PTII" \
+    (time java -Xmx1600M -classpath "$PTII" \
     	 ptolemy.actor.gui.MoMLSimpleStatisticalApplication \
-	 $file >& $logfile
+	 $file) >& $logfile
 done
