@@ -66,18 +66,31 @@ import ptolemy.kernel.util.Workspace;
  the appropriate time delay. Note that if the value of delay is 0.0, the
  actor schedules itself to fire at the current model time.
  <p>
- Occasionally, this actor is used inside a feedback loop just for scheduling
- purpose, where the delay parameter is set to 0.0. This implies that no
- output token is produced earlier than the time its trigger input arrives.
- Therefore the actor declares that there is a delay at microstep between the
- input and the output, and the DE director will leverage this when
+ Occasionally, this actor is useful with the
+ delay parameter set to 0.0.  The time stamp of the output will
+ equal that of the input, but there is a "microstep" delay.
+ The discrete-event domain in Ptolemy II has a "super dense" model
+ of time, meaning that a signal from one actor to another can
+ contain multiple events with the same time stamp. These events
+ are "simultaneous," but nonetheless
+ have a well-defined sequential ordering determined by the order
+ in which they are produced.
+ If \textit{delay} is 0.0, then the fire() method of this actor
+ always produces on its output port the event consumed in the
+ \textit{previous iteration} with the same time stamp, if there
+ was one. If there wasn't such a previous iteration, then it
+ produces no output.  Its postfire() method consumes and
+ records the input for use in the next iteration, if there
+ is such an input, and also requests a refiring at the current
+ time.  This refire request triggers the next iteration (at
+ the same time stamp), on which the output is produced.
+ <p>
+ A consequence of this strategy is that this actor is
+ able to produce an output (or assert that there is no output) before the
+ input with the same time is known.   Hence, it can be used to break
+ causality loops in feedback systems. The DE director will leverage this when
  determining the precedences of the actors. It is sometimes useful to think
  of this zero-valued delay as an infinitesimal delay.
- <p>
- Note that the output always has a large tag, either bigger time or bigger
- microstep than that of the input. This guarantees that a DE signal is
- functional in the sense that for any tag (a tuple of time and microstep),
- there is at most one value.
 
  @see ptolemy.domains.de.lib.VariableDelay
  @see ptolemy.domains.de.lib.Server
