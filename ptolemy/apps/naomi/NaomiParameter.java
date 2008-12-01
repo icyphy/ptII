@@ -90,7 +90,7 @@ public class NaomiParameter extends StringParameter implements ChangeListener {
         return _documentation;
     }
 
-    public static String getExpression(Method method, String attributeName,
+    public /*static*/ String getExpression(Method method, String attributeName,
             Date modifiedDate, String unit, String documentation) {
         return method + ":" + attributeName + " (" + DATE_FORMAT.format(
                 modifiedDate) + ") (" + unit + ") (" + documentation + ")";
@@ -183,7 +183,11 @@ public class NaomiParameter extends StringParameter implements ChangeListener {
         return super.validate();
     }
 
-    public static final DateFormat DATE_FORMAT =
+    // FindBugs: Don't make this static, see
+    // http://findbugs.sourceforge.net/bugDescriptions.html#STCAL_INVOKE_ON_STATIC_CALENDAR_INSTANCE
+    // and
+    // http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6231579
+    public /*static*/ final DateFormat DATE_FORMAT =
         new SimpleDateFormat("EEE, MMM dd yyyy HH:mm:ss.SSS Z");
 
     public enum Method {
