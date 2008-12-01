@@ -344,8 +344,6 @@ public class Display extends AbstractPlaceableActor {
     public boolean postfire() throws IllegalActionException {
         int width = input.getWidth();
 
-        boolean currentInputIsBlankLine = true;
-
         for (int i = 0; i < width; i++) {
             if (input.hasToken(i)) {
                 Token token = input.get(i);
@@ -373,19 +371,10 @@ public class Display extends AbstractPlaceableActor {
                     value = ((StringToken) token).stringValue();
                 }
 
-                // If the value is not an empty string, set the
-                // currentInputIsBlankLine to false.
-                // Note that if there are multiple input ports, and if any of
-                // the input ports has data, the current input is considered
-                // to be non-empty.
-                if (value.length() > 0) {
-                    currentInputIsBlankLine = false;
-                }
-
                 textArea.append(value);
 
                 // Append a newline character.
-                if (width > (i + 1)) {
+                if (value.length() > 0 || !_suppressBlankLines) {
                     textArea.append("\n");
                 }
 
@@ -403,16 +392,12 @@ public class Display extends AbstractPlaceableActor {
                     // Ignore ... worst case is that the scrollbar
                     // doesn't move.
                 }
+            } else if (!_suppressBlankLines) {
+                // There is no input token on this channel, so we
+                // output a blank line.
+                textArea.append("\n");
             }
         }
-
-        // If the current input is not a blank line, or the supressBlankLines
-        // parameter is configured to false, append a newline character.
-        if ((textArea != null)
-                && !(_suppressBlankLines && currentInputIsBlankLine)) {
-            textArea.append("\n");
-        }
-
         return super.postfire();
     }
 
