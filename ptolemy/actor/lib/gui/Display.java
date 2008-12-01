@@ -392,7 +392,7 @@ public class Display extends AbstractPlaceableActor {
                     // Ignore ... worst case is that the scrollbar
                     // doesn't move.
                 }
-            } else if (!_suppressBlankLines) {
+            } else if (!_suppressBlankLines && textArea != null) {
                 // There is no input token on this channel, so we
                 // output a blank line.
                 textArea.append("\n");
