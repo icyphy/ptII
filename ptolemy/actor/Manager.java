@@ -1362,7 +1362,7 @@ public class Manager extends NamedObj implements Runnable {
      *  The initial default value is 10000, meaning that certain 
      *  operations can take up to 10 seconds before statistics 
      *  are printed.
-     *  @see ptolemy.kernel.CompositeEntity.statistics(String)
+     *  @see ptolemy.kernel.CompositeEntity#statistics(String)
      */
     public static int minimumStatisticsTime = 10000;
        
