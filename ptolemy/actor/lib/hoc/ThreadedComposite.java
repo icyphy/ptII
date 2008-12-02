@@ -118,7 +118,7 @@ import ptolemy.kernel.util.Workspace;
  events in reaction to that event, those output events will be
  produced by this actor with time stamp <i>t</i> + <i>delay</i>.
  <p>
- If <i>delay</i> has value <i>UNDEFINED</i> (the default), then
+ If <i>delay</i> has value <i>UNDEFINED</i>, then
  outputs are produced at the current model time of the executive
  director when the inside thread happens to produce those events.
  This is accomplished by the inside thread calling
@@ -183,7 +183,7 @@ import ptolemy.kernel.util.Workspace;
  <p>
  On subtlety of this actor is that it cannot expose instances of ParameterPort
  without introducing nondeterminacy in the execution. A ParameterPort 
- is an input port that sets the value of a parameter with the same. Upon receiving
+ is an input port that sets the value of a parameter with the same name. Upon receiving
  a token at such a port, if this actor were to set a parameter visible by the
  inside thread, there is no assurance that the inside thread is not still
  executing an earlier iteration. Thus, it could appear to be sending a message
@@ -519,7 +519,16 @@ public class ThreadedComposite extends MirrorComposite {
                         ThreadedComposite.this._debug("Done waiting.");
                     }
 
-                    // Produce the outputs on the frame.
+                    // Produce the outputs on the frame, if there are any
+                    // outputs. Note that frame.tokens can only be null
+                    // if the inside thread was interrupted while executing.
+                    // If an exception occurred in the inside thread, then
+                    // the _exception variable tested above would have been
+                    // set (within a synchronized block), so that cannot be
+                    // the cause.
+                    if (frame.tokens == null) {
+                        throw new IllegalActionException(this, "Inside thread was interrupted.");
+                    }
                     for (QueuedToken token : frame.tokens) {
                         if (token.channel < token.port.getWidth()) {
                             // There is now an output frame to be produced.
@@ -1080,14 +1089,14 @@ public class ThreadedComposite extends MirrorComposite {
                         // Exit the thread.
                         break;
                     } catch (IllegalActionException ex) {
-                        // To stop the outside firing, set this variable.
-                        // On the next invocation of fire() or wrapup(), the
-                        // exception will be thrown.
-                        _exception = ex;
-                        // Post a stop frame.
-                        TokenFrame stopFrame = new TokenFrame(
-                                _currentTime, null, TokenFrame.STOP);
                         synchronized (ThreadedDirector.this) {
+                            // To stop the outside firing, set this variable.
+                            // On the next invocation of fire() or wrapup(), the
+                            // exception will be thrown.
+                            _exception = ex;
+                            // Post a stop frame.
+                            TokenFrame stopFrame = new TokenFrame(
+                                    _currentTime, null, TokenFrame.STOP);
                             _outputFrames.add(stopFrame);
                             ThreadedDirector.this.notifyAll();
                         }
