@@ -57,7 +57,7 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.2,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Construct a delay string.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Construct a display string.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 180.0]">
         </property>
@@ -67,7 +67,7 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.2,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Logical delay = 2.0.&#10;Execution time = 1.5 seconds.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="delay = 2.0.&#10;Execution time = 1.5 seconds.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 140.0]">
         </property>
@@ -143,6 +143,8 @@
         </port>
     </entity>
     <entity name="ThreadedComposite" class="ptolemy.actor.lib.hoc.ThreadedComposite">
+        <property name="delay" class="ptolemy.data.expr.Parameter" value="2.0">
+        </property>
         <doc>Execute the contained model in a separate thread with optional real-time properties.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.CopyCatIcon">
             <property name="echos" class="ptolemy.data.expr.Parameter" value="1">
