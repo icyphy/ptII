@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={220, 320, 829, 514}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 821, 516}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[606, 400]">
     </property>
@@ -227,7 +227,7 @@ queue and are processed in their time stamp orders.</text></svg></configure>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.6410759373772102">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
+<display name="initialize"/>                </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
@@ -253,7 +253,7 @@ queue and are processed in their time stamp orders.</text></svg></configure>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.5758743398206495">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
+<display name="initialize"/>                </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
@@ -279,7 +279,7 @@ queue and are processed in their time stamp orders.</text></svg></configure>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.2771207176837293">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
+<display name="initialize"/>                </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
@@ -433,7 +433,7 @@ queue and are processed in their time stamp orders.</text></svg></configure>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.11447432515125774">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
+<display name="initialize"/>                </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
@@ -455,7 +455,7 @@ queue and are processed in their time stamp orders.</text></svg></configure>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.510858573599481">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
+<display name="initialize"/>                </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
@@ -479,7 +479,7 @@ queue and are processed in their time stamp orders.</text></svg></configure>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.7515006754491314">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
+<display name="initialize"/>                </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
@@ -501,7 +501,7 @@ queue and are processed in their time stamp orders.</text></svg></configure>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.3936743465852791">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
+<display name="initialize"/>                </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
@@ -523,7 +523,7 @@ queue and are processed in their time stamp orders.</text></svg></configure>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.543479100712386">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
+<display name="initialize"/>                </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">

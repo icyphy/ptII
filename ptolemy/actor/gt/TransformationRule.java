@@ -116,103 +116,110 @@ public class TransformationRule extends MultiCompositeActor implements
     }
 
     public void fire() throws IllegalActionException {
+        // Obtain updated value for any PortParameter before each firing.
         try {
-            // Obtain updated value for any PortParameter before each firing.
-            try {
-                _workspace.getReadAccess();
-                for (Object parameterObject : attributeList()) {
-                    if (parameterObject instanceof PortParameter) {
-                        ((PortParameter) parameterObject).update();
-                    }
+            _workspace.getReadAccess();
+            for (Object parameterObject : attributeList()) {
+                if (parameterObject instanceof PortParameter) {
+                    ((PortParameter) parameterObject).update();
                 }
-            } finally {
-                _workspace.doneReading();
+            }
+        } finally {
+            _workspace.doneReading();
+        }
+
+        TransformationMode.Mode modeValue =
+            (TransformationMode.Mode) mode.getChosenValue();
+
+        if (modelInput.hasToken(0)) {
+            ActorToken token = (ActorToken) modelInput.get(0);
+            _lastModel = (CompositeEntity) token.getEntity(new Workspace());
+            _lastModel.setDeferringChangeRequests(false);
+
+            _lastResults.clear();
+
+            // Obtain a working copy of this transformation rule, which can
+            // be safely modified in the process of pattern matching.
+            TransformationRule workingCopy = mode.getWorkingCopy(this);
+
+            // Transfer the most updated values of the PortParameters to the
+            // working copy.
+            for (Object parameterObject : attributeList()) {
+                if (parameterObject instanceof PortParameter) {
+                    PortParameter param = (PortParameter) parameterObject;
+                    Token paramToken = param.getToken();
+                    PortParameter paramCopy = (PortParameter) workingCopy
+                            .getAttribute(param.getName());
+                    paramCopy.setToken(paramToken);
+                }
             }
 
-            TransformationMode.Mode modeValue =
-                (TransformationMode.Mode) mode.getChosenValue();
-
-            if (modelInput.hasToken(0)) {
-                ActorToken token = (ActorToken) modelInput.get(0);
-                _lastModel = (CompositeEntity) token.getEntity(new Workspace());
-                _lastModel.setDeferringChangeRequests(false);
-
-                _lastResults.clear();
-
-                // Obtain a working copy of this transformation rule, which can
-                // be safely modified in the process of pattern matching.
-                TransformationRule workingCopy = mode.getWorkingCopy(this);
-
-                // Transfer the most updated values of the PortParameters to the
-                // working copy.
-                for (Object parameterObject : attributeList()) {
-                    if (parameterObject instanceof PortParameter) {
-                        PortParameter param = (PortParameter) parameterObject;
-                        Token paramToken = param.getToken();
-                        PortParameter paramCopy = (PortParameter) workingCopy
-                                .getAttribute(param.getName());
-                        paramCopy.setToken(paramToken);
-                    }
-                }
-
-                if (modeValue == null) {
-                    // Full control.
-                    _lastResults = mode.findAllMatches(workingCopy, _lastModel);
-                } else {
-                    boolean untilFixpoint = ((BooleanToken)
-                            repeatUntilFixpoint.getToken()).booleanValue();
-                    long count = LongToken.convert(repeatCount.getToken())
-                            .longValue();
-                    boolean matchOnly = mode.isMatchOnly();
-                    boolean foundMatch = count > 0;
+            if (modeValue == null) {
+                // Full control.
+                _lastResults = mode.findAllMatches(workingCopy, _lastModel);
+            } else {
+                boolean untilFixpoint = ((BooleanToken)
+                        repeatUntilFixpoint.getToken()).booleanValue();
+                long count = LongToken.convert(repeatCount.getToken())
+                        .longValue();
+                boolean matchOnly = mode.isMatchOnly();
+                boolean foundMatch = count > 0;
+                try {
                     while (foundMatch) {
                         foundMatch = mode.transform(workingCopy, _lastModel);
                         if (matchOnly || !untilFixpoint && --count <= 0) {
                             break;
                         }
                     }
-                    if (!matchOnly) {
-                        modelOutput.send(0, new ActorToken(_lastModel));
-                    }
-                    matched.send(0, BooleanToken.getInstance(foundMatch));
+                } catch (Throwable t) {
+                    throw new IllegalActionException(this, t, "Error " +
+                            "occurred in the transformation in " + getFullName()
+                            + ".");
                 }
-            }
-
-            if (modeValue != null) {
-                return;
-            }
-
-            if (matchInput.isOutsideConnected() && matchInput.hasToken(0)
-                    && _lastModel != null) {
-                ObjectToken token = (ObjectToken) matchInput.get(0);
-                MatchResult match = (MatchResult) token.getValue();
-                if (match != null) {
-                    TransformationRule workingCopy = mode.getWorkingCopy(this);
-                    CompositeEntity host = (CompositeEntity) match
-                            .get(workingCopy.getPattern());
-                    if (_lastModel != host && !_lastModel.deepContains(host)) {
-                        throw new IllegalActionException(this,
-                                "The match result cannot be used with the "
-                                        + "current model.");
-                    }
-                    GraphTransformer.transform(workingCopy, match);
+                if (!matchOnly) {
                     modelOutput.send(0, new ActorToken(_lastModel));
                 }
+                matched.send(0, BooleanToken.getInstance(foundMatch));
             }
-
-            if (trigger.isOutsideConnected() && trigger.hasToken(0)
-                    && !_lastResults.isEmpty()) {
-                trigger.get(0);
-                _removeFirst = true;
-                MatchResult result = _lastResults.get(0);
-                matchOutput.send(0, new ObjectToken(result));
-            }
-
-            remaining.send(0, new IntToken(_lastResults.size()));
-        } catch (TransformationException e) {
-            throw new IllegalActionException(this, e,
-                    "Unable to transform model.");
         }
+
+        if (modeValue != null) {
+            return;
+        }
+
+        if (matchInput.isOutsideConnected() && matchInput.hasToken(0)
+                && _lastModel != null) {
+            ObjectToken token = (ObjectToken) matchInput.get(0);
+            MatchResult match = (MatchResult) token.getValue();
+            if (match != null) {
+                TransformationRule workingCopy = mode.getWorkingCopy(this);
+                CompositeEntity host = (CompositeEntity) match
+                        .get(workingCopy.getPattern());
+                if (_lastModel != host && !_lastModel.deepContains(host)) {
+                    throw new IllegalActionException(this,
+                            "The match result cannot be used with the "
+                                    + "current model.");
+                }
+                try {
+                    GraphTransformer.transform(workingCopy, match);
+                } catch (Throwable t) {
+                    throw new IllegalActionException(this, t, "Error " +
+                            "occurred in the transformation in " + getFullName()
+                            + ".");
+                }
+                modelOutput.send(0, new ActorToken(_lastModel));
+            }
+        }
+
+        if (trigger.isOutsideConnected() && trigger.hasToken(0)
+                && !_lastResults.isEmpty()) {
+            trigger.get(0);
+            _removeFirst = true;
+            MatchResult result = _lastResults.get(0);
+            matchOutput.send(0, new ObjectToken(result));
+        }
+
+        remaining.send(0, new IntToken(_lastResults.size()));
     }
 
     public Pattern getPattern() {

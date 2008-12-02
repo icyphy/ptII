@@ -340,7 +340,7 @@ public class Connector extends MoMLApplication {
                 }
 
                 Attribute attribute = model.getAttribute(paramName);
-                String expression = NaomiParameter.getExpression(method,
+                String expression = NaomiParameter.formatExpression(method,
                         naomiName, new Date(), unit, documentation);
                 String moml = "<property name=\"" +
                         attribute.uniqueName("naomi") + "\" class=\"" +
@@ -806,7 +806,7 @@ public class Connector extends MoMLApplication {
                 request.execute();
 
                 moml = "<property name=\"" + naomiParam.getName() + "\" " +
-                        "value=\"" + NaomiParameter.getExpression(
+                        "value=\"" + NaomiParameter.formatExpression(
                                 naomiParam.getMethod(),
                                 naomiParam.getAttributeName(), date, unit,
                                 doc) +

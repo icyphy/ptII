@@ -28,7 +28,6 @@
 
 package ptolemy.apps.naomi;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
@@ -66,7 +65,7 @@ public class NaomiParameter extends StringParameter implements ChangeListener {
             if (container != null && container.getContainer() ==
                     ((MoMLChangeRequest) change).getContext()) {
                 String expression = StringUtilities.unescapeForXML(
-                        getExpression(_method, _attributeName, new Date(),
+                        formatExpression(_method, _attributeName, new Date(),
                                 _unit, _documentation));
                 String moml = "<property name=\"" + getName() + "\" value=\"" +
                         expression + "\"/>";
@@ -90,10 +89,11 @@ public class NaomiParameter extends StringParameter implements ChangeListener {
         return _documentation;
     }
 
-    public /*static*/ String getExpression(Method method, String attributeName,
+    public static String formatExpression(Method method, String attributeName,
             Date modifiedDate, String unit, String documentation) {
-        return method + ":" + attributeName + " (" + DATE_FORMAT.format(
-                modifiedDate) + ") (" + unit + ") (" + documentation + ")";
+        return method + ":" + attributeName + " (" +
+                new SimpleDateFormat(DATE_FORMAT).format(modifiedDate) + ") (" +
+                unit + ") (" + documentation + ")";
     }
 
     public Method getMethod() {
@@ -109,7 +109,7 @@ public class NaomiParameter extends StringParameter implements ChangeListener {
     }
 
     public void setAttributeName(String name) {
-        setExpression(getExpression(_method, name, _modifiedDate, _unit,
+        setExpression(formatExpression(_method, name, _modifiedDate, _unit,
                 _documentation));
     }
 
@@ -128,29 +128,30 @@ public class NaomiParameter extends StringParameter implements ChangeListener {
     }
 
     public void setDocumentation(String documentation) {
-        setExpression(getExpression(_method, _attributeName, _modifiedDate,
+        setExpression(formatExpression(_method, _attributeName, _modifiedDate,
                 _unit, documentation));
     }
 
     public void setExpression(String expr) {
         if (expr == null || expr.equals("")) {
-            expr = "get:no_name (" + DATE_FORMAT.format(new Date()) + ")";
+            expr = "get:no_name (" + new SimpleDateFormat(DATE_FORMAT).format(
+                    new Date()) + ")";
         }
         super.setExpression(expr);
     }
 
     public void setMethod(Method method) {
-        setExpression(getExpression(method, _attributeName, _modifiedDate,
+        setExpression(formatExpression(method, _attributeName, _modifiedDate,
                 _unit, _documentation));
     }
 
     public void setModifiedDate(Date date) {
-        setExpression(getExpression(_method, _attributeName, date, _unit,
+        setExpression(formatExpression(_method, _attributeName, date, _unit,
                 _documentation));
     }
 
     public void setUnit(String unit) {
-        setExpression(getExpression(_method, _attributeName, _modifiedDate,
+        setExpression(formatExpression(_method, _attributeName, _modifiedDate,
                 unit, _documentation));
     }
 
@@ -173,7 +174,8 @@ public class NaomiParameter extends StringParameter implements ChangeListener {
         }
         _attributeName = matcher.group(2);
         try {
-            _modifiedDate = DATE_FORMAT.parse(matcher.group(3));
+            _modifiedDate = new SimpleDateFormat(DATE_FORMAT).parse(
+                    matcher.group(3));
         } catch (ParseException e) {
             throw new IllegalActionException(this, e, "Fail to parse: " +
                     expression);
@@ -183,12 +185,7 @@ public class NaomiParameter extends StringParameter implements ChangeListener {
         return super.validate();
     }
 
-    // FindBugs: Don't make this static, see
-    // http://findbugs.sourceforge.net/bugDescriptions.html#STCAL_INVOKE_ON_STATIC_CALENDAR_INSTANCE
-    // and
-    // http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6231579
-    public /*static*/ final DateFormat DATE_FORMAT =
-        new SimpleDateFormat("EEE, MMM dd yyyy HH:mm:ss.SSS Z");
+    public static final String DATE_FORMAT = "EEE, MMM dd yyyy HH:mm:ss.SSS Z";
 
     public enum Method {
         GET("get"), PUT("put"), SYNC("sync");

@@ -126,8 +126,14 @@ public class Transform extends GTEvent implements ConfigurableEntity {
 
         CompositeEntity model = getModelParameter().getModel();
         model.setDeferringChangeRequests(false);
-        boolean isMatched = mode.transform(mode.getWorkingCopy(_transformation),
+        boolean isMatched = false;
+        try {
+            isMatched = mode.transform(mode.getWorkingCopy(_transformation),
                 model);
+        } catch (Throwable t) {
+            throw new IllegalActionException(this, t, "Error occurred in the " +
+                    "transformation in " + getFullName() + ".");
+        }
         getModelParameter().setModel(model);
         matched.setToken(BooleanToken.getInstance(isMatched));
 
