@@ -150,6 +150,7 @@ JSRCS = \
 	Distributor.java \
 	ElementsToArray.java \
 	Exec.java \
+	ExecutionTime.java \
 	Exit.java \
 	Expression.java \
 	FileWriter.java \

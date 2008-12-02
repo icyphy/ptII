@@ -14,6 +14,7 @@
             </property>
           </property>
         </entity>
+        <entity name="ExecutionTime" class="ptolemy.actor.lib.ExecutionTime"/>
         <entity name="RealTimeComposite" class="ptolemy.actor.lib.hoc.RealTimeComposite">
         <doc>Iterate a contained actor over input arrays</doc>
         <property name="_icon" class="ptolemy.vergil.icon.CopyCatIcon"/>
