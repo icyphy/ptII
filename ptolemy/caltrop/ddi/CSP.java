@@ -100,12 +100,6 @@ public class CSP extends AbstractDDI {
 
     private ConditionalBranchController _cbc;
 
-    //TODO rodiers
-    public void createReceivers() throws IllegalActionException {
-        // TODO Auto-generated method stub
-        
-    }
-    
     public boolean isLegalActor() {
         return !PriorityUtil.hasPriorityOrder(_actor);
     }

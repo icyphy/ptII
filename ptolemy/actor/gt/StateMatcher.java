@@ -119,12 +119,6 @@ ValueListener {
         return newObject;
     }
 
-    //TODO rodiers
-    public void createReceivers() throws IllegalActionException {
-        // TODO Auto-generated method stub
-        
-    }
-    
     public void fire() throws IllegalActionException {
     }
 
@@ -380,4 +374,10 @@ ValueListener {
     /** The workspace version the last time when _labelSet was updated.
      */
     private long _version = -1;
+
+    //TODO rodiers
+    public void createReceivers() throws IllegalActionException {
+        // TODO Auto-generated method stub
+        
+    }
 }

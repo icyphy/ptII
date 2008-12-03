@@ -95,4 +95,7 @@ public interface Actor extends Executable, Nameable {
      *  @return A list of output IOPort objects.
      */
     public List outputPortList();
+
+    //TODO rodiers
+    public void createReceivers() throws IllegalActionException;
 }

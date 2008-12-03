@@ -203,7 +203,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
     }
 
     /** Declare the rate dependency on any external ports of the model.
-     *  SDF directors should invoke this method once during createSchedule.
+     *  SDF directors should invoke this method once during preinitialize.
      */
     public void declareRateDependency() throws IllegalActionException {
         ConstVariableModelAnalysis analysis = ConstVariableModelAnalysis

@@ -336,17 +336,6 @@ public class CompositeActor extends CompositeEntity implements Actor,
             }
         }
     }
-    
-    //TODO rodiers
-    public void createReceivers() throws IllegalActionException {
-        // As an optimization, avoid creating receivers if
-        // the workspace version has not changed.
-        if (workspace().getVersion() != _receiversVersion) {
-            _createReceivers();
-        }
-        getDirector().createReceivers();
-    }
-    
 
     /** If this actor is opaque, transfer any data from the input ports
      *  of this composite to the ports connected on the inside, and then
@@ -1078,7 +1067,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
                 for (Executable piggyback : _piggybacks) {
                     piggyback.preinitialize();
                 }
-            }
+            }            
 
             if (!isOpaque()) {
                 if (getContainer() == null && deepEntityList().size() == 0) {
@@ -1098,10 +1087,13 @@ public class CompositeActor extends CompositeEntity implements Actor,
                         "Actor says it is opaque, but it has no director: "
                                 + getFullName());
             }
-
+            
+            createReceivers();            
+            
             // Note that this is assured of firing the local director,
             // not the executive director, because this is opaque.
             getDirector().preinitialize();
+                        
         } finally {
             _workspace.doneReading();
         }
@@ -1687,4 +1679,13 @@ public class CompositeActor extends CompositeEntity implements Actor,
 
     /** Record of the workspace version the last time receivers were created. */
     private long _receiversVersion = -1;
+
+    //TODO rodiers
+    public void createReceivers() throws IllegalActionException {
+        // As an optimization, avoid creating receivers if
+        // the workspace version has not changed.
+        if (workspace().getVersion() != _receiversVersion) {
+            _createReceivers();
+        }
+    }
 }

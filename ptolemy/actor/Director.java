@@ -252,7 +252,7 @@ public class Director extends Attribute implements Executable {
 
 
     //TODO rodiers
-    public void createReceivers() throws IllegalActionException {
+    protected void _createReceivers() throws IllegalActionException {
         if (_debugging) {
             _debug(getFullName(), "Creating receivers ...");
         }
@@ -276,22 +276,6 @@ public class Director extends Attribute implements Executable {
         }
     }
     
-
-    //TODO rodiers
-    public void createSchedule() throws IllegalActionException {
-        Nameable container = getContainer();
-        if (container instanceof CompositeActor) {
-            for (Object actor : ((CompositeActor) container).deepEntityList()) {
-                if (actor instanceof CompositeActor) {
-                    Director director = ((Actor) actor).getDirector();
-                    if (director != null && director != this) {
-                        director.createSchedule();
-                    }
-                }
-            }
-        }
-    }    
-
     
     /** Return a default dependency to use between input input
      *  ports and output ports.
@@ -395,8 +379,9 @@ public class Director extends Attribute implements Executable {
      *  asynchronous threads should used the fireAtCurrentTime()
      *  method to schedule firings.
      *
-     *  This method does nothing in this base class. Derived classes
-     *  should override this method.  <p> Note that this method is not
+     *  This method unconditionally throws an exception in this base class.
+     *  Derived classes should override this method. 
+     *  <p> Note that this method is not
      *  made abstract to facilitate the use of the test suite.
      *  @param actor The actor scheduled to be fired.
      *  @param time The scheduled time.
@@ -404,10 +389,21 @@ public class Director extends Attribute implements Executable {
      *    permissible (e.g. the given time is in the past).
      */
     public void fireAt(Actor actor, Time time) throws IllegalActionException {
-        // do nothing in this base class.
+        // All derived classes of Director for which the fireAt() method is
+        // useful, should implement this method themselves. We throw an
+        // exception if the base class implementation of fireAt is called.
         // Note that, alternatively, this method could have been abstract.
         // But we didn't do that, because otherwise we wouldn't be able
         // to run Tcl Blend test script on this class.
+        
+        // FIXME rodiers: Temporarily removed the exception. I launched a
+        //    discussion on ptdevel and depending on the outcome I'll fix
+        //    the code appropriately. 
+        /*
+        throw new InternalErrorException(this, null,
+                "The actor " +  actor.getFullName() + " is incompatible " +
+                		"with the chosen director.");
+        */
     }
 
     /** Request a firing of the given actor as soon as possible.  If
@@ -447,7 +443,7 @@ public class Director extends Attribute implements Executable {
             container.getExecutiveDirector().fireAtCurrentTime(container);
         }
     }
-
+    
     /** Return the current time value of the model being executed by this
      *  director. This time can be set with the setCurrentTime method.
      *  In this base class, time never increases, and there are no restrictions
@@ -1008,6 +1004,7 @@ public class Director extends Attribute implements Executable {
                 actor.preinitialize();
             }
         }
+        _createReceivers();
         if (_debugging) {
             _debug(getFullName(), "Finished preinitialize().");
         }

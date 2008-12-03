@@ -606,9 +606,6 @@ public class Manager extends NamedObj implements Runnable {
 
             _setState(INITIALIZING);
             _container.initialize();
-            
-            
-
 
             // Since we have just initialized all actors, clear the
             // list of actors pending initialization.
@@ -950,18 +947,12 @@ public class Manager extends NamedObj implements Runnable {
             // based on the parameter values.
             // EAL 5/31/02.
             _container.preinitialize();
-            
-            executeChangeRequests();
+
+            executeChangeRequests();                      
 
             // Infer widths (if not already done)
             if (IORelation._USE_NEW_WIDTH_INFERENCE_ALGO) {
                 _inferRelationWidths();
-            }
-
-            _container.createReceivers();
-            Director director = _container.getDirector();
-            if (director != null) {
-                director.createSchedule();
             }
             
             resolveTypes();
