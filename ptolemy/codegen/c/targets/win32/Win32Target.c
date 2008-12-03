@@ -1,0 +1,3 @@
+/*** sharedBlock ***/
+#include <windows.h>
+/**/
