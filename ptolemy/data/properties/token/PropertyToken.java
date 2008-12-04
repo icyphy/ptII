@@ -14,6 +14,14 @@ public class PropertyToken extends Property {
         _token = token;
     }
     
+    /** Return a hash code value for this token. This method returns the
+     *  hash code of the contained token.
+     *  @return A hash code value for this token.
+     */
+    public int hashCode() {
+        return _token.hashCode();
+    }
+
     public boolean isCompatible(Property property) {
         return property instanceof PropertyToken;
     }

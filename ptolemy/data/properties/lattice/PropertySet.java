@@ -90,6 +90,14 @@ public class PropertySet extends LatticeProperty implements Set {
         return false;
     }
     
+    /** Return a hash code value for this Set. This method returns the
+     *  hash code of the set.
+     *  @return A hash code value for this Set.
+     */
+    public int hashCode() {
+        return _elements.hashCode();
+    }
+
     /**
      * Return true if this is an acceptable solution.
      * @return true if this is an acceptable solution; otherwise, false;
