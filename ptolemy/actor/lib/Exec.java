@@ -127,6 +127,8 @@ public class Exec extends LimitedFiringSource {
         new Parameter(command.getPort(), "_showName", BooleanToken.TRUE);
 
         directory = new FileParameter(this, "directory");
+        new Parameter(directory, "allowFiles", BooleanToken.FALSE);
+        new Parameter(directory, "allowDirectories", BooleanToken.TRUE);
         directory.setExpression("$CWD");
 
         environment = new Parameter(this, "environment");
