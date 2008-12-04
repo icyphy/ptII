@@ -45,6 +45,7 @@ import ptolemy.actor.Receiver;
 import ptolemy.actor.util.BreakCausalityInterface;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.Time;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -95,7 +96,10 @@ import ptolemy.kernel.util.Workspace;
  when the inside thread encounters an input or pure event
  with time stamp <i>t</i>, it stalls until real time matches
  or exceeds <i>t</i> (measured in seconds since the start of
- execution of the inside thread). FIXME: check
+ execution of the inside thread). In contrast for example
+ to the <i>synchronizeToRealTime</i> parameter of the DEDirector,
+ this enables construction of models where only a portion of the
+ model synchronizes to real time.
  <p>
  When the wrapup() method of this actor is called, the inside thread is
  provided with signal to terminate rather than to process additional
@@ -120,7 +124,10 @@ import ptolemy.kernel.util.Workspace;
  <p>
  If <i>delay</i> has value <i>UNDEFINED</i>, then
  outputs are produced at the current model time of the executive
- director when the inside thread happens to produce those events.
+ director when the inside thread happens to produce those events,
+ or if <i>synchronizeToRealTime</i>, at the greater of current
+ model time and current real time (measured in seconds since
+ the start of execution).
  This is accomplished by the inside thread calling
  fireAtFirstValidTimeAfter() of the enclosing director, and
  then producing the outputs when the requested firing occurs
@@ -229,6 +236,10 @@ public class ThreadedComposite extends MirrorComposite {
         delay = new Parameter(this, "delay");
         delay.setTypeEquals(BaseType.DOUBLE);
         delay.setExpression("0.0");
+        
+        synchronizeToRealTime = new Parameter(this, "synchronizeToRealTime");
+        synchronizeToRealTime.setTypeEquals(BaseType.BOOLEAN);
+        synchronizeToRealTime.setExpression("false");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -243,10 +254,22 @@ public class ThreadedComposite extends MirrorComposite {
      *  (or any negative number), then the output time stamp
      *  will be nondeterminate, and will depend on the current
      *  model time of the outside director when the output is
-     *  produced.
+     *  produced or on current real time.
      */
     public Parameter delay;
 
+    /** If set to true, the inside thread stalls until real time matches
+     *  the time stamps of input events or pure events for each firing.
+     *  In addition, if <i>delay</i> is set to undefined and this is set
+     *  to true, then output events are assigned a time stamp that is the
+     *  greater of current model time and real time.
+     *  Time is measured since the start of the execution of the inside
+     *  thread.  This is a boolean that defaults to false. Changing
+     *  the value of this parameter has no effect until the next
+     *  execution of the model.
+     */
+    public Parameter synchronizeToRealTime;
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -687,6 +710,8 @@ public class ThreadedComposite extends MirrorComposite {
             _inputFrames.clear();
             _outputFrames.clear();
             
+            _synchronizeToRealTime = ((BooleanToken)synchronizeToRealTime.getToken()).booleanValue();
+            
             // Create and start the inside thread.
             _thread = new CompositeThread();
             _thread.setPriority(Thread.MAX_PRIORITY);
@@ -944,6 +969,11 @@ public class ThreadedComposite extends MirrorComposite {
          */
         private Queue<Time> _outputTimes = new LinkedList<Time>();
         
+        /** The value of the synchronizeToRealTime parameter when
+         *  initialize() was invoked.
+         */
+        private boolean _synchronizeToRealTime;
+        
         /** The thread that executes the contained actors. */
         private Thread _thread;
 
@@ -953,7 +983,7 @@ public class ThreadedComposite extends MirrorComposite {
         ///////////////////////////////////////////////////////////////////
         //// CompositeThread
 
-        /** The thread that executes the contained actor.
+        /** The inside thread, which executes the contained actor.
          */
         private class CompositeThread extends Thread {
             public CompositeThread() {
@@ -990,21 +1020,14 @@ public class ThreadedComposite extends MirrorComposite {
                         // This is the view of time that should be presented to any inside actors.
                         _currentTime = frame.time;
 
-                        // If this is the first firing, record the start time.
-                        // FIXME: Should do this only if synchronizeToRealTime is true.
-                        // FIXME: Actually, this real-time behavior should probably be
-                        // on the inside thread.
-                        /*
-                        if (_realStartTime < 0L) {
-                            _realStartTime = System.currentTimeMillis();
-                        }
-                        if (_delayValue == 0.0) {
-                            // Delay is zero, so wait until current time matches
-                            // model time, and then treat this as an ordinary composite actor.
-                            long realTimeMillis = System.currentTimeMillis()
-                                    - _realStartTime;
-                            long modelTimeMillis = Math.round(environmentTime
-                                    .getDoubleValue() * 1000.0);
+                        if (_synchronizeToRealTime) {
+                            long currentRealTime = System.currentTimeMillis();
+                            // If this is the first firing, record the start time.
+                            if (_realStartTime < 0L) {
+                                _realStartTime = currentRealTime;
+                            }
+                            long realTimeMillis = currentRealTime - _realStartTime;
+                            long modelTimeMillis = Math.round(_currentTime.getDoubleValue() * 1000.0);
                             if (realTimeMillis < modelTimeMillis) {
                                 try {
                                     Thread.sleep(modelTimeMillis - realTimeMillis);
@@ -1012,10 +1035,7 @@ public class ThreadedComposite extends MirrorComposite {
                                     // Ignore and continue.
                                 }
                             }
-                            // FIXME: This isn't quite right, since this will postfire()
-                            // contained actors.
-                            super.fire();
-                        */
+                        }
 
                         // Note that there may not be any tokens here, since there
                         // may not be any inputs (the firing is in response to
@@ -1061,11 +1081,21 @@ public class ThreadedComposite extends MirrorComposite {
                         synchronized(ThreadedDirector.this) {
                             // If delay is UNDEFINED, then we have to now request a
                             // refiring at the first opportunity. This is because
-                            // the fire method won't do it.
+                            // the postfire method won't do it.
                             if (_delayValue < 0.0) {
-                                responseTime = ThreadedDirector.this.fireAtFirstValidTimeAfter(
-                                        ThreadedComposite.this, _currentTime);
-                                _outputTimes.add(responseTime.add(_delayValue));
+                                // If synchronizeToRealTime is true, then we want to use the
+                                // greater of real-time or the current environment time.
+                                // Otherwise, we just use the current environment time.
+                                if (_synchronizeToRealTime) {
+                                    long realTimeMillis = System.currentTimeMillis() - _realStartTime;
+                                    Time realTime = new Time(ThreadedDirector.this, realTimeMillis * 0.001);
+                                    responseTime = ThreadedDirector.this.fireAtFirstValidTimeAfter(
+                                            ThreadedComposite.this, realTime);
+                                } else {
+                                    responseTime = ThreadedDirector.this.fireAtFirstValidTimeAfter(
+                                            ThreadedComposite.this, _currentTime);
+                                }
+                                _outputTimes.add(responseTime);
                             }
                             TokenFrame outputFrame = new TokenFrame(
                                     responseTime, outputTokens, TokenFrame.EVENT);
