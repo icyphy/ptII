@@ -32,13 +32,15 @@ package ptolemy.util;
 ////RunnableExceptionCatcher
 
 /**
-A class (that implements the proxy design pattern) that encapsulates a runnable, catches the exception
-and will report the exception to the Ptolemy Message Handler
+A class (that implements the proxy design pattern) that encapsulates a
+runnable, catches the exception and will report the exception to the
+Ptolemy Message Handler.
 
 @author Bert Rodiers
 @version $Id$
 @since Ptolemy II 7.1
 @Pt.ProposedRating Green (rodiers)
+@Pt.AcceptedRating Green (rodiers)
 */
 
 public class RunnableExceptionCatcher implements Runnable{
@@ -47,14 +49,14 @@ public class RunnableExceptionCatcher implements Runnable{
     
     /** Construct an instance that will wrap a runnable,
      * catch its exceptions and report it to the Ptolemy
-     * Message Handler 
+     * Message Handler. 
      * @param runnable The runnable. 
      */
     public RunnableExceptionCatcher(Runnable runnable) {
         _runnable = runnable;           
     }
     
-    /** Execute the runnable
+    /** Execute the runnable.
      */
     public void run() {
         try {

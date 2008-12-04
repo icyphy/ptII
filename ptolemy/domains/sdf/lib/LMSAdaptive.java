@@ -251,7 +251,7 @@ public class LMSAdaptive extends FIR {
         }
     }
 
-    /** Override the base class to re initialize the taps
+    /** Override the base class to re-initialize the taps.
      *  @exception IllegalActionException If the superclass throws it.
      */
     public void initialize() throws IllegalActionException {

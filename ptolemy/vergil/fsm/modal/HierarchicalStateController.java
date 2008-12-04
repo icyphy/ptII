@@ -551,7 +551,7 @@ public class HierarchicalStateController extends StateController {
         return map;
     }
 
-    // The AddRefinement action.
+    /** The action that adds a refinement. */
     protected AddRefinementAction _addRefinementAction =
         new AddRefinementAction();
 
@@ -560,7 +560,7 @@ public class HierarchicalStateController extends StateController {
      */
     protected LookInsideAction _lookInsideAction = new LookInsideAction();
 
-    // The RemoveRefinement action.
+    /** The action that removes a refinement. */
     protected RemoveRefinementAction _removeRefinementAction =
         new RemoveRefinementAction();
 }

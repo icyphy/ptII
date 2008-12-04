@@ -58,7 +58,7 @@ import ptolemy.kernel.util.StringAttribute;
  there is no corresponding output channel).
  Because tokens are
  immutable, the same Token is sent to the output, rather than a copy.
- The <i>input</i> port may receive Tokens of any type.</p>
+ The <i>input</i> port may receive Tokens of any type.
 
  <p>Note that the this actor may be used in Synchronous Dataflow (SDF)
  models, but only under certain circumstances. Specifically, downstream

@@ -67,13 +67,23 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 public class ArrowKeyProbe extends ArrowKeySensor {
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
+    /**
+     * Create an actor that detects user presses on the arrow key. 
+     *
+     * @param container The container for this actor.
+     * @param name The name of this actor
+     * @exception IllegalActionException If the actor cannot be contained
+     *  by the proposed container.
+     * @exception NameDuplicationException If the container already has an
+     *  actor with this name.
+     */
     public ArrowKeyProbe(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Broadcast the integer value 1 for each key pressed and 0 for
      *  each released.

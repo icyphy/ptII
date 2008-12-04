@@ -615,6 +615,8 @@ public class CodeStream {
         }
     }
     
+    /** Perform a self test.
+     */
     public static void selfTest() {
         StringBuffer code;
 

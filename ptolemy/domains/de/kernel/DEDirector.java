@@ -380,6 +380,7 @@ public class DEDirector extends Director implements TimedDirector {
     /** Return a string that describes the depths of actors and their ports.
      *  These depths are used to prioritize firings, where lower depths
      *  result in higher priorities.
+     *  @return A string that describes the depths of actors and their ports.
      *  @exception IllegalActionException If there is a causality loop.
      */
     public String describePriorities() throws IllegalActionException {
@@ -395,7 +396,7 @@ public class DEDirector extends Director implements TimedDirector {
      *  <i>synchronizeToRealTime</i> is true, then before firing, wait
      *  until real time matches or exceeds the timestamp of the
      *  event. Note that the default unit for time is seconds.
-     *  </p><p>
+     *  <p>
      *  Each actor is fired repeatedly (prefire(), fire()),
      *  until either it has no more input tokens, or its prefire() method
      *  returns false. Note that if the actor fails to consume its

@@ -452,6 +452,8 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
      *  @return a list of Inequality objects.
      *  @see ptolemy.graph.Inequality
      *  @deprecated Use typeConstraints().
+     *  @exception IllegalActionException If thrown while constructing
+     *  the set of type constraints.
      */
     public List typeConstraintList() throws IllegalActionException {
         LinkedList result = new LinkedList();

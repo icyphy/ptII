@@ -31,8 +31,9 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
 /**
- * This is a collection of static methods used in the Ptides domain to determin
- * static properties of actors such as:
+ * A collection of static methods used in the Ptides domain to determine static
+ * actor properties.
+ * <p>The properities are: 
  * <ul>
  * <li>Is the actor a sensor?</li>
  * <li>Is the actor an actuator?</li>
@@ -44,7 +45,7 @@ import ptolemy.kernel.util.NamedObj;
  * module, tokens on input ports of TDL modules don't cause a firing of the
  * actor, the firing is caused by pure events scheduled by the TDL module.</li>
  * <li>Does this actor have to be fired at real time?</li>
- * </ul>.
+ * </ul>.</p>
  * 
  * @author Patricia Derler
  */

@@ -322,6 +322,9 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
 //        code.append(generateTypeConvertFireCode(true));
 //    }
 
+    /** Generate code for global variables.
+     *  @return The code for the global variables.
+     */
     public String generateGlobalCode() throws IllegalActionException {
         CompositeActor compositeActor = (CompositeActor) getComponent();
         ptolemy.actor.Director director = compositeActor.getDirector();

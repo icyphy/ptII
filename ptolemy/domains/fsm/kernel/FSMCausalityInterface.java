@@ -88,6 +88,8 @@ public class FSMCausalityInterface extends CausalityInterfaceForComposites {
     *   This is required to be an instance of CompositeEntity.
     *  @param defaultDependency The default dependency of an output
     *   port on an input port.
+    *  @exception IllegalArgumentException If the actor parameter is not
+    *  an instance of CompositeEntity.
     */
    public FSMCausalityInterface(
            Actor actor, Dependency defaultDependency) 

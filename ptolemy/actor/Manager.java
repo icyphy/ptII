@@ -975,6 +975,8 @@ public class Manager extends NamedObj implements Runnable {
      *  during editing a model to check types, to expand higher-order
      *  components, or to establish connections between Publisher and
      *  Subscriber actors.
+     *  @exception KernelException If thrown wil preinitializing
+     *  and resolving types.
      */
     public void preinitializeIfNecessary() throws KernelException {
         try {

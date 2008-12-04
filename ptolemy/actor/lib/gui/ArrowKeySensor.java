@@ -192,32 +192,57 @@ public class ArrowKeySensor extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables
+    ////                         protected variables               ////
 
-    /** The JFrame */
-    private MyFrame _myFrame;
 
-    /** The flags indicating which keys have been pressed or released
+    /** A flag indicating if the down arrow key has been pressed
      *  since the last firing of the actor.  <i>Pressed</i> and
      *  <i>Released</i> are are not allowed to both be true for the
      *  same key (Though both may be false).  The most recent action
      *  (press or release) takes precedence.
      */
-    protected boolean _upKeyPressed = false;
-
-    protected boolean _leftKeyPressed = false;
-
-    protected boolean _rightKeyPressed = false;
-
     protected boolean _downKeyPressed = false;
 
-    protected boolean _upKeyReleased = false;
+    /** A flag indicating if the down arrow key has been released
+     *  since the last firing of the actor. 
+     */
+    protected boolean _downKeyReleased = false;
 
+    /** A flag indicating if the left arrow key has been released
+     *  since the last firing of the actor. 
+     */
+    protected boolean _leftKeyPressed = false;
+
+    /** A flag indicating if the left arrow key has been released
+     *  since the last firing of the actor. 
+     */
     protected boolean _leftKeyReleased = false;
 
+    /** A flag indicating if the right arrow key has been pressed
+     *  since the last firing of the actor. 
+     */
+    protected boolean _rightKeyPressed = false;
+
+    /** A flag indicating if the right arrow key has been released
+     *  since the last firing of the actor. 
+     */
     protected boolean _rightKeyReleased = false;
 
-    protected boolean _downKeyReleased = false;
+    /** A flag indicating if the up arrow key has been pressed
+     *  since the last firing of the actor. 
+     */
+    protected boolean _upKeyPressed = false;
+
+    /** A flag indicating if the up arrow key has been released
+     *  since the last firing of the actor. 
+     */
+    protected boolean _upKeyReleased = false;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** The JFrame that contains the arrow keys. */
+    private MyFrame _myFrame;
 
     ///////////////////////////////////////////////////////////////////
     ////                     private inner classes                 ////

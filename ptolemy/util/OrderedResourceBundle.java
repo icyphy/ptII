@@ -36,14 +36,13 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 /**
- * A concrete subclass of <code>java.util.ResourceBundle</code> that manages
- * resources for a locale using a set of static strings from a property file.
- * See <code>java.util.ResourceBundle</code> for more information
+ * Manage the resources for a locale using a set of static strings from a property file.
+ * See <code>java.util.ResourceBundle</code> for more information.
  * 
  * <p>
- * Unlike other types of resource bundle, you don't subclass
- * <code>OrderedResourceBundle</code>. Instead, you supply properties files
- * containing the resource data. <code>OrderedResourceBundle.getBundle</code>
+ * Unlike other types of resource bundle, <code>OrderedResourceBundle</code> is not
+ * usually subclassed. Instead, the properties files containing the resource data
+ * are supplied. <code>OrderedResourceBundle.getBundle</code>
  * will automatically look for the appropriate properties file and create an
  * <code>OrderedResourceBundle</code> that refers to it. See
  * <code>java.util.ResourceBundle.getBundle()</code> for a complete description
@@ -56,7 +55,7 @@ import java.util.ResourceBundle;
 public class OrderedResourceBundle {
 
 	/**
-	 * Constructor
+	 * Construct an OrderedResourceBundle.
 	 * 
 	 * @param stream
 	 *            InputStream for reading the java properties file from which
@@ -88,7 +87,7 @@ public class OrderedResourceBundle {
 	//                                              public methods
 
 	/**
-	 * Gets a resource bundle using the specified base name and the default
+	 * Get a resource bundle using the specified base name and the default
 	 * locale. The returned bundle has its entries in the same order as those in
 	 * the original properties file, so a call to getKeys() will return an
 	 * Iterator that allows retrieval of the keys in the original order. See
@@ -131,7 +130,7 @@ public class OrderedResourceBundle {
 	}
 
 	/**
-	 * Gets a string for the given key from this resource bundle.
+	 * Get a string for the given key from this resource bundle.
 	 * 
 	 * @param key
 	 *            the key for the desired string
@@ -143,7 +142,7 @@ public class OrderedResourceBundle {
 	}
 
 	/**
-	 * get an Iterator over the Set of keys, allowing retrieval of the keys in
+	 * Get an Iterator over the Set of keys, allowing retrieval of the keys in
 	 * the original order as listed in the properties file.
 	 * 
 	 * @return Iterator

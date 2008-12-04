@@ -71,6 +71,8 @@ public class MirrorCausalityInterface extends CausalityInterfaceForComposites {
     *  interface.
     *  @param actor The actor for which this is an interface.
     *  @param causality The interface to mirror.
+     * @exception IllegalArgumentException If the actor parameter is not
+     * an instance of CompositeEntity.
     */
    public MirrorCausalityInterface(Actor actor, CausalityInterface causality)
            throws IllegalArgumentException {

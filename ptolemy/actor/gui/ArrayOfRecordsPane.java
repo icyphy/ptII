@@ -225,6 +225,7 @@ public class ArrayOfRecordsPane extends JPanel {
 
         /** Get the name of the specified column, which is the column
          *  index as a string.
+	 *  @param columnIndex The index of the column.
          *  @return The column index as a string.
          */
         public String getColumnName(int columnIndex) {

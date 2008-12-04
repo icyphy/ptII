@@ -145,7 +145,7 @@ public class TableauFrame extends Top {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Get the alternative pack() interface for the ptolemy.gui.Top JFrame
+    /** Get the alternative pack() interface for the ptolemy.gui.Top JFrame.
      * @return the alternative pack() interface if one was set by the 
      * _alternateTopPackClass in the Configuration.  If one there is no TopPack,
      * then return null.

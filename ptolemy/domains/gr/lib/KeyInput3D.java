@@ -174,9 +174,13 @@ public class KeyInput3D extends GRActor3D {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    private React _react;
 
+    /** True if this actor has data. */
     protected boolean _hasData;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    private React _react;
 
     private char _keycode;
 }

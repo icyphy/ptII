@@ -83,7 +83,6 @@ public class EmbeddedCFileActor extends EmbeddedCActor {
      * @exception IllegaActionException If there is a problem reading
      * the code block file.
      */
-
     public void changeEmbeddedCCode() throws IllegalActionException{
         BufferedReader reader = null;
 

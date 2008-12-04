@@ -666,6 +666,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         return _executeCommands();
     }
 
+    /** Reset the code generator.
+     */	
     public void reset() {
         // Reset the indent to zero.
         _indent = 0;

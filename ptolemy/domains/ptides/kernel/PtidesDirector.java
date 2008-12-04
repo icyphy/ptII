@@ -217,6 +217,12 @@ public class PtidesDirector extends TimedPNDirector {
      */
     public Parameter stopTime;
     
+    /** Specify whether the execution should synchronize to the
+     *  real time. This parameter must contain a BooleanToken.
+     *  If this parameter is true, then do not process events until the
+     *  elapsed real time matches the time stamp of the events.
+     *  The value defaults to false.
+     */
     public Parameter synchronizeToRealTime;
 
     // /////////////////////////////////////////////////////////////////
