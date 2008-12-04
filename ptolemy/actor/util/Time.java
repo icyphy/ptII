@@ -153,7 +153,8 @@ public class Time implements Comparable {
 
     /** Construct a Time object with the specified long value as its time value.
      *  @param director The director with which this time object is associated.
-     *  @param timeValue A double value as the specified time value.
+     *  @param timeValue A long value as the specified time value, as a multiple
+     *   of the resolution.
      */
     public Time(Director director, long timeValue) {
         _director = director;
