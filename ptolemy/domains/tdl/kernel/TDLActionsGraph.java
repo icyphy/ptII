@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.util.Time;
 import ptolemy.domains.fsm.kernel.FSMActor;
@@ -885,8 +886,9 @@ public class TDLActionsGraph {
             int frequency = TDLModuleDirector
                     .getFrequency((NamedObj) transition);
             long invocationPeriod = modePeriod.getLongValue() / frequency; 
+	    Director director = _module.getDirector();
             for (int i = 0; i < frequency; i++) {
-                List l = (List) sensorsAndTransitions.get(i);
+                List l = (List) sensorsAndTransitions.get(new Time(director, i));
                 if (l == null) {
                     l = new ArrayList();
                     sensorsAndTransitions.put(new Time(_module.getDirector(), i
