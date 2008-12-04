@@ -531,7 +531,9 @@ public final class NamedList implements Cloneable, Serializable {
     /** @serial A LinkedList containing the elements. */
     private LinkedList<Nameable> _namedList = new LinkedList<Nameable>() {
         public boolean add(Nameable obj) {
-            if (size() > _threshhold && !_hashEnabled) {
+	    // Findbugs: "Ambiguous invocation of either an outer or
+	    // inherited method java.util.LinkedList.size()," so we use super.size()
+            if (super.size() > _threshhold && !_hashEnabled) {
                 enableHash();
             }
             return super.add(obj);
