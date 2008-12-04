@@ -234,6 +234,7 @@ public class ObjectToken extends Token {
         return "object(" + value + clazz + ")";
     }
 
+    /** A new empty ObjectToken. */
     public static final ObjectToken NULL = new ObjectToken();
 
     ///////////////////////////////////////////////////////////////////

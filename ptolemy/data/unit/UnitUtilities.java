@@ -237,6 +237,7 @@ public class UnitUtilities {
 
     /** Return true if the given unit array is null, or the exponents for
      *  each index are zero.
+     *  @param exponents The unit array to be checked.
      *  @return true if the given unit array is unitless.
      */
     public static boolean isUnitless(int[] exponents) {

@@ -259,6 +259,9 @@ public class NameIcon extends EditorIcon {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Return the background size.
+     *  @return the background size.	
+     */
     protected Point2D _getBackgroundSize() {
         String name = "No Name";
         NamedObj container = getContainer();

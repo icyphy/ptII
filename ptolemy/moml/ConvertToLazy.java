@@ -46,11 +46,11 @@ import ptolemy.moml.filter.BackwardCompatibility;
  *  converted model's MoML is produced on standard out.
  *  To use this on the command line, invoke as follows:
  *  <pre>
- *     $PTII/bin/convertToLazy inputMoML.xml <i>numberOfEntities<i> &gt; outputMoML.xml
+ *     $PTII/bin/convertToLazy inputMoML.xml <i>numberOfEntities</i> &gt; outputMoML.xml
  *  </pre>
  *  or
  *  <pre>
- *     java -classpath $PTII ptolemy.moml.ConvertToLazy inputMoML.xml <i>numberOfEntities<i> &gt; outputMoML.xml
+ *     java -classpath $PTII ptolemy.moml.ConvertToLazy inputMoML.xml <i>numberOfEntities</i> &gt; outputMoML.xml
  *  </pre>
  *  If the <i>numberOfEntities<i> argument is not supplied, then it
  *  defaults to 100.

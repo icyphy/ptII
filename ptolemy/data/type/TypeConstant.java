@@ -61,6 +61,7 @@ public class TypeConstant implements InequalityTerm {
     /** Override to return true if the type is the same in this object
      *  as the specified object.
      *  @param object The object to compare against.
+     *  @return true if the argument is equal to this argument.
      */
     public boolean equals(Object object) {
         if (object instanceof TypeConstant) {

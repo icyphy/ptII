@@ -91,6 +91,90 @@ public class KeplerDocumentationAttribute extends Attribute implements
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Add port to the port hashtable.
+     *  @param name The name of the port.
+     *  @param value A String representing the port.
+     *  @exception NameDuplicationException If thrown while creating the port.
+     *  @exception Exception If thrown while configuring the port
+     */
+    public void addPort(String name, String value) 
+	throws NameDuplicationException, Exception {
+
+        _portHash.put(name, value);
+        ConfigurableAttribute port = new ConfigurableAttribute(this, "port:"
+                + name);
+        port.configure(null, null, value);
+    }
+
+    /** Add a property to the property hashtable.
+     *  @param name The name of the property.
+     *  @param value A string representing the propety.
+     *  @exception NameDuplicationException If thrown while creating the property
+     *  @exception Exception If thrown while configuring the attribute
+     *  @see #getProperty(String)
+     */
+    public void addProperty(String name, String value) 
+	throws NameDuplicationException, Exception {
+        _propertyHash.put(name, value);
+        ConfigurableAttribute attribute = new ConfigurableAttribute(this, "prop:"
+                + name);
+        attribute.configure(null, null, value);
+    }
+
+    /** Configure this documentation attribute.
+     *  @param base Currently ignored.
+     *  @param source The source of this configuration.
+     *  @param text The configuration text.
+     */
+    public void configure(java.net.URL base, String source, String text) {
+        this.source = source;
+        this.text = text;
+    }
+
+    /**
+     * Create empty fields for the main attribute as well as any
+     * params or ports that exist in the target.
+     * @param target the namedobj to create the empty attributes for
+     */
+    public void createEmptyFields(NamedObj target) {
+        try {
+            /*ConfigurableAttribute authorAtt =*/ new ConfigurableAttribute(this,
+                    "author");
+            /*ConfigurableAttribute versionAtt =*/ new ConfigurableAttribute(this,
+                    "version");
+            /*ConfigurableAttribute descriptionAtt =*/ new ConfigurableAttribute(
+                    this, "description");
+            /*ConfigurableAttribute uldAtt =*/ new ConfigurableAttribute(this,
+                    "userLevelDocumentation");
+
+            _author = "";
+            _version = "";
+            _description = "";
+            _userLevelDocumentation = "";
+
+            Iterator attributes = target.attributeList().iterator();
+            while (attributes.hasNext()) {
+                Attribute attribute = (Attribute) attributes.next();
+                String attributeName = attribute.getName();
+                if (!attributeName.substring(0, 1).equals("_")
+                        && !attributeName.equals("KeplerDocumentation")) {
+                    _propertyHash.put(attribute.getName(), "");
+                }
+            }
+
+            if (target instanceof Entity) {
+                Iterator ports = ((Entity) target).portList().iterator();
+                while (ports.hasNext()) {
+                    Port p = (Port) ports.next();
+                    _portHash.put(p.getName(), "");
+                }
+            }
+        } catch (Exception ex) {
+            throw new InternalErrorException(this, ex, 
+                    "Could not add KeplerDocumentation internal attributes.");
+        }
+    }
+
     /**
      * Populate the members of KeplerDocumentationAttribute from
      * another given KeplerDccumentationAtttribute.
@@ -131,50 +215,6 @@ public class KeplerDocumentationAttribute extends Attribute implements
                     _propertyHash.put(propertyName, propertyDescription);
                 }
             }
-        }
-    }
-
-    /**
-     * Create empty fields for the main attribute as well as any
-     * params or ports that exist in the target
-     * @param target the namedobj to create the empty attributes for
-     */
-    public void createEmptyFields(NamedObj target) {
-        try {
-            /*ConfigurableAttribute authorAtt =*/ new ConfigurableAttribute(this,
-                    "author");
-            /*ConfigurableAttribute versionAtt =*/ new ConfigurableAttribute(this,
-                    "version");
-            /*ConfigurableAttribute descriptionAtt =*/ new ConfigurableAttribute(
-                    this, "description");
-            /*ConfigurableAttribute uldAtt =*/ new ConfigurableAttribute(this,
-                    "userLevelDocumentation");
-
-            _author = "";
-            _version = "";
-            _description = "";
-            _userLevelDocumentation = "";
-
-            Iterator attributes = target.attributeList().iterator();
-            while (attributes.hasNext()) {
-                Attribute attribute = (Attribute) attributes.next();
-                String attributeName = attribute.getName();
-                if (!attributeName.substring(0, 1).equals("_")
-                        && !attributeName.equals("KeplerDocumentation")) {
-                    _propertyHash.put(attribute.getName(), "");
-                }
-            }
-
-            if (target instanceof Entity) {
-                Iterator ports = ((Entity) target).portList().iterator();
-                while (ports.hasNext()) {
-                    Port p = (Port) ports.next();
-                    _portHash.put(p.getName(), "");
-                }
-            }
-        } catch (Exception ex) {
-            throw new InternalErrorException(this, ex, 
-                    "Could not add KeplerDocumentation internal attributes.");
         }
     }
 
@@ -231,40 +271,50 @@ public class KeplerDocumentationAttribute extends Attribute implements
         output.write(results.toString());
     }
 
-    /**
-     * Exports this documentation attribute as docML.
-     * @return The docML
+    /** Return the author.
+     * @return the author
+     *  @see #setAuthor(String)
      */
-    public String toDocML() {
-        createInstanceFromExisting(this);
-        StringBuffer results = new StringBuffer(
-                "<?xml version=\"1.0\" standalone=\"yes\"?>\n"
-                + "<!DOCTYPE doc PUBLIC \"-//UC Berkeley//DTD DocML 1//EN\""
-                + "\"http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd\">\n"
-                + "<doc name=\"" + _docName + "\" class=\"" + _docClass
-                + "\">\n"
-                + "<description>\n" + _userLevelDocumentation
-                + "\n</description>\n"
-                + "<author>" + _author + "</author>\n");
-
-        Enumeration ports = _portHash.keys();
-        while (ports.hasMoreElements()) {
-            String name = (String) ports.nextElement();
-            String desc = (String) _portHash.get(name);
-            results.append("<port name=\"" + name + "\">"
-                    + desc + "</port>\n");
+    public String getAuthor() {
+        if (_author == null) {
+            return "";
         }
 
-        Enumeration propItt = _propertyHash.keys();
-        while (propItt.hasMoreElements()) {
-            String name = (String) propItt.nextElement();
-            String desc = (String) _propertyHash.get(name);
-            results.append("<property name=\"" + name + "\">"
-                    + desc + "</property>\n");
+        if (!_author.equals("null")) {
+            return _author;
+        } else {
+            return "";
+        }
+    }
+
+    /** Get the configuration source.
+     *  @return The configuration source.
+     */
+    public String getConfigureSource() {
+        return source;
+    }
+
+    /** Get the configuration text.
+     *  @return The configuration text
+     */
+    public String getConfigureText() {
+        return text;
+    }
+
+    /** Return the description.
+     *  @return the description
+     *  @see #setDescription(String)
+     */
+    public String getDescription() {
+        if (_description == null) {
+            return "";
         }
 
-        results.append("</doc>\n");
-        return results.toString();
+        if (!_description.equals("null")) {
+            return _description;
+        } else {
+            return "";
+        }
     }
 
     /**
@@ -315,44 +365,9 @@ public class KeplerDocumentationAttribute extends Attribute implements
 
     }
 
-    /**
-     * Method for configurable.
-     * In this class, we do nothing.
-     */
-    public void updateContent() throws InternalErrorException {
-        //do nothing
-    }
-
-    ////////////////////////////////////////////////////////////////////////
-    ///////////////////// Getters and Setters //////////////////////////////
-
-    /** Set the name of this document.
-     *  @param name The name of this document.
-     */
-    public void setDocName(String name) {
-        _docName = name;
-    }
-
-    /** return the document name
-     * @return the document name
-     */
-    public String getDocName() {
-        if (!_docName.equals("null")) {
-            return _docName;
-        } else {
-            return "";
-        }
-    }
-
-    /** Set the name of this docClass.
-     *  @param className The name of this docClass.
-     */
-    public void setDocClass(String className) {
-        _docClass = className;
-    }
-
     /** return the document class
      * @return the document class
+     *  @see #setDocClass(String)
      */
     public String getDocClass() {
         if (!_docClass.equals("null")) {
@@ -362,81 +377,54 @@ public class KeplerDocumentationAttribute extends Attribute implements
         }
     }
 
-    /** Set the description.
-     *  @param description The description.
+    /** Return the document name.
+     * @return the document name
+     *  @see #setDocName(String);
      */
-    public void setDescription(String description) {
-        _description = description;
-    }
-
-    /** return the description
-     * @return the description
-     */
-    public String getDescription() {
-        if (_description == null) {
-            return "";
-        }
-
-        if (!_description.equals("null")) {
-            return _description;
+    public String getDocName() {
+        if (!_docName.equals("null")) {
+            return _docName;
         } else {
             return "";
         }
     }
 
-    /** Set the author.
-     *  @param author The author.
+    /** Return the port documentation.
+     *  @param name The name of the port.
+     * @return the port documentation.
      */
-    public void setAuthor(String author) {
-        _author = author;
+    public String getPort(String name) {
+        return (String) _portHash.get(name);
     }
 
-    /** return the author
-     * @return the author
+    /** return the port hash
+     *  @return the port has
+     *  @see #setPortHash(Hashtable)
      */
-    public String getAuthor() {
-        if (_author == null) {
-            return "";
-        }
-
-        if (!_author.equals("null")) {
-            return _author;
-        } else {
-            return "";
-        }
+    public Hashtable getPortHash() {
+        return _portHash;
     }
 
-    /** Set the version.
-     *  @param version The version.
+    /** Return the property documenation.
+     *  @param The name of the property.
+     *  @return the property docs
+     *  @see #addProperty(String, String)
      */
-    public void setVersion(String version) {
-        _version = version;
+    public String getProperty(String name) {
+        return (String) _propertyHash.get(name);
     }
 
-    /** return the version
-     * @return the version
+    /** Return the property hash.
+     *  @return the property hash
+     *  @see #setPropertyHash(hashtable)
      */
-    public String getVersion() {
-        if (_version == null) {
-            return "";
-        }
-
-        if (!_version.equals("null")) {
-            return _version;
-        } else {
-            return "";
-        }
+    public Hashtable getPropertyHash() {
+        return _propertyHash;
     }
 
-    /** Set the user level documentation.
-     *  @param userLevelDocumentation The user level documentation.
-     */
-    public void setUserLevelDocumentation(String userLevelDocumentation) {
-        _userLevelDocumentation = userLevelDocumentation;
-    }
-
-    /** return the user level documentation
-     * @return the user level documentation
+    /** Return the user level documentation.
+     *  @return the user level documentation
+     *  @see #setUserLevelDocumentation(String)
      */
     public String getUserLevelDocumentation() {
         if (_userLevelDocumentation == null) {
@@ -450,94 +438,128 @@ public class KeplerDocumentationAttribute extends Attribute implements
         }
     }
 
+    /** Return the version.
+     *  @return the version
+     *  @see #getVersion(String)
+     */
+    public String getVersion() {
+        if (_version == null) {
+            return "";
+        }
+
+        if (!_version.equals("null")) {
+            return _version;
+        } else {
+            return "";
+        }
+    }
+
+    /** Set the author.
+     *  @param author The author.
+     *  @see #getAuthor()
+     */
+    public void setAuthor(String author) {
+        _author = author;
+    }
+
+    /** Set the description.
+     *  @param description The description.
+     *  @see #getDescription()
+     */
+    public void setDescription(String description) {
+        _description = description;
+    }
+
+    /** Set the name of this docClass.
+     *  @param className The name of this docClass.
+     *  @see #getDocClass()
+     */
+    public void setDocClass(String className) {
+        _docClass = className;
+    }
+
+    /** Set the name of this document.
+     *  @param name The name of this document.
+     *  @see #getDocName();
+     */
+    public void setDocName(String name) {
+        _docName = name;
+    }
+
     /** Set the port hash.
      *  @param portHash The port hash.
+     *  @see #getPortHash()
      */
     public void setPortHash(Hashtable portHash) {
         _portHash = portHash;
     }
 
-    /** return the port hash
-     * @return the port has
-     */
-    public Hashtable getPortHash() {
-        return _portHash;
-    }
-
-    /** Add port to the port hashtable.
-     *  @param name The name of the port.
-     *  @param value A String representing the port.
-     */
-    public void addPort(String name, String value)
-            throws IllegalActionException, NameDuplicationException, Exception {
-        _portHash.put(name, value);
-        ConfigurableAttribute port = new ConfigurableAttribute(this, "port:"
-                + name);
-        port.configure(null, null, value);
-    }
-
-    /** return the port docs
-     * @return the port docs
-     */
-    public String getPort(String name) {
-        return (String) _portHash.get(name);
-    }
-
     /** Set the property hashtable.
      *  @param propertyHash The property hashtable.
+     *  @see #getPropertyHash()
      */
     public void setPropertyHash(Hashtable propertyHash) {
         _propertyHash = propertyHash;
     }
 
-    /** Return the property hash
-     * @return the property hash
+    /** Set the user level documentation.
+     *  @param userLevelDocumentation The user level documentation.
+     *  @see #getUserLevelDocumentation()
      */
-    public Hashtable getPropertyHash() {
-        return _propertyHash;
+    public void setUserLevelDocumentation(String userLevelDocumentation) {
+        _userLevelDocumentation = userLevelDocumentation;
     }
 
-    /** Add a property to the property hashtable.
-     *  @param name The name of the property.
-     *  @param value A string representing the propety.
+    /** Set the version.
+     *  @param version The version.
+     *  @see #getVersion()
      */
-    public void addProperty(String name, String value)
-            throws NameDuplicationException, IllegalActionException, Exception {
-        _propertyHash.put(name, value);
-        ConfigurableAttribute ca = new ConfigurableAttribute(this, "prop:"
-                + name);
-        ca.configure(null, null, value);
+    public void setVersion(String version) {
+        _version = version;
     }
 
-    /** Return the property docs.
-     * @return the property docs
+    /**
+     * Exports this documentation attribute as docML.
+     * @return The docML
      */
-    public String getProperty(String name) {
-        return (String) _propertyHash.get(name);
+    public String toDocML() {
+        createInstanceFromExisting(this);
+        StringBuffer results = new StringBuffer(
+                "<?xml version=\"1.0\" standalone=\"yes\"?>\n"
+                + "<!DOCTYPE doc PUBLIC \"-//UC Berkeley//DTD DocML 1//EN\""
+                + "\"http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd\">\n"
+                + "<doc name=\"" + _docName + "\" class=\"" + _docClass
+                + "\">\n"
+                + "<description>\n" + _userLevelDocumentation
+                + "\n</description>\n"
+                + "<author>" + _author + "</author>\n");
+
+        Enumeration ports = _portHash.keys();
+        while (ports.hasMoreElements()) {
+            String name = (String) ports.nextElement();
+            String desc = (String) _portHash.get(name);
+            results.append("<port name=\"" + name + "\">"
+                    + desc + "</port>\n");
+        }
+
+        Enumeration propItt = _propertyHash.keys();
+        while (propItt.hasMoreElements()) {
+            String name = (String) propItt.nextElement();
+            String desc = (String) _propertyHash.get(name);
+            results.append("<property name=\"" + name + "\">"
+                    + desc + "</property>\n");
+        }
+
+        results.append("</doc>\n");
+        return results.toString();
     }
 
-    /** Configure this documentation attribute.
-     *  @param base Currently ignored.
-     *  @param source The source of this configuration.
-     *  @param text The configuration text.
+    /**
+     * Method for configurable.
+     * In this class, we do nothing.
      */
-    public void configure(java.net.URL base, String source, String text) {
-        this.source = source;
-        this.text = text;
-    }
-
-    /** Get the configuration source.
-     *  @return The configuration source.
-     */
-    public String getConfigureSource() {
-        return source;
-    }
-
-    /** Get the configuration text.
-     *  @return The configuration text
-     */
-    public String getConfigureText() {
-        return text;
+    public void updateContent() throws InternalErrorException {
+        //do nothing
     }
 
     //////////////////////////////////////////////////////////////////////
