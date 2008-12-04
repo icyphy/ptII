@@ -147,7 +147,7 @@ public class ActorToken extends Token implements Cloneable {
     public static final Type TYPE = new ActorType();
 
     /** The type of the ActorToken. */
-    public static class ActorType implements Type, Serializable {
+    public static class ActorType implements Type, Serializable, Cloneable {
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 

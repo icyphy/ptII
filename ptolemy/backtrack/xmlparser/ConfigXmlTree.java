@@ -44,7 +44,7 @@ import java.util.Vector;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class ConfigXmlTree {
+public class ConfigXmlTree implements Cloneable {
 
     /** Construct a node in the tree with no child.
      *
