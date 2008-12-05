@@ -84,7 +84,7 @@ public class GTParameter extends Parameter {
 
         public Token evaluateParseTree(ASTPtRootNode node, ParserScope scope)
                 throws IllegalActionException {
-            return super.evaluateParseTree(node, new Scope(_pattern,
+            return super.evaluateParseTree(node, _createScope(_pattern,
                     _matchResult, scope));
         }
 
@@ -118,6 +118,11 @@ public class GTParameter extends Parameter {
             }
 
             super.visitMethodCallNode(node);
+        }
+
+        protected ParserScope _createScope(Pattern pattern,
+                MatchResult matchResult, ParserScope superScope) {
+            return new Scope(pattern, matchResult, superScope);
         }
 
         private MatchResult _matchResult;
@@ -206,11 +211,11 @@ public class GTParameter extends Parameter {
             return identifiers;
         }
 
-        private MatchResult _matchResult;
+        protected MatchResult _matchResult;
 
-        private Pattern _pattern;
+        protected Pattern _pattern;
 
-        private ParserScope _superscope;
+        protected ParserScope _superscope;
     }
 
     public static class TypeInference extends ParseTreeTypeInference {

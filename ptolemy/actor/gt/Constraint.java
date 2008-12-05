@@ -32,6 +32,9 @@ package ptolemy.actor.gt;
 
 import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.ObjectToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.ParserScope;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
@@ -138,7 +141,38 @@ public class Constraint extends ParameterAttribute {
      */
     protected void _initParameter() throws IllegalActionException,
             NameDuplicationException {
-        parameter = new GTParameter(this, "constraint");
+        parameter = new GTParameter(this, "constraint") {
+            protected void _evaluate(Pattern pattern, MatchResult matchResult)
+                    throws IllegalActionException {
+                setParseTreeEvaluator(new Evaluator(pattern, matchResult) {
+                    protected ParserScope _createScope(Pattern pattern,
+                            MatchResult matchResult, ParserScope superScope) {
+                        return new Scope(pattern, matchResult, superScope) {
+                            public Token get(String name)
+                                    throws IllegalActionException {
+                                if (name.equals("this")) {
+                                    NamedObj container =
+                                        Constraint.this.getContainer();
+                                    NamedObj match =
+                                        (NamedObj) _matchResult.get(container);
+                                    if (match != null) {
+                                        return new ObjectToken(match,
+                                                match.getClass());
+                                    }
+                                }
+                                return super.get(name);
+                            }
+                        };
+                    }
+                });
+                try {
+                    super._evaluate();
+                } finally {
+                    setParseTreeEvaluator(null);
+                    _parserScope = null;
+                }
+            }
+        };
         parameter.setTypeEquals(BaseType.BOOLEAN);
         Variable variable = new Variable(parameter, "_textHeightHint");
         variable.setExpression("5");

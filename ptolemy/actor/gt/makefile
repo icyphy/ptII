@@ -136,6 +136,9 @@ MISC_FILES =	controller data ingredients test util
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	'Constraint$1$1$1.class' \
+	'Constraint$1$1.class' \
+	'Constraint$1.class' \
 	'GTEntityUtils$$1.class' \
 	'GTEntityUtils$$LoadActorIconChangeRequest.class' \
 	'GTEntityUtils$$RestoreAppearanceChangeRequest.class' \
