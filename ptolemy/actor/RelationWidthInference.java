@@ -359,12 +359,16 @@ public class RelationWidthInference {
 
         int unspecifiedWidthsSize = unspecifiedWidths.size();
         
-        if (difference > 0 && difference < unspecifiedWidthsSize) {
-            throw new IllegalActionException(port, 
-                    "The inside and outside widths of port " + port.getFullName()
-                    + " are not consistent.\n Can't determine a uniquely defined width for relation"
-                    + unspecifiedWidths.iterator().next().getFullName());            
-        }         
+        // Put the next test in comments since the condition
+        // difference >= unspecifiedWidthsSize only needs to be fulfilled
+        // in case we don't allow inferred widths to be zero.
+        //
+        // if (difference > 0 && difference < unspecifiedWidthsSize) {
+        //     throw new IllegalActionException(port, 
+        //             "The inside and outside widths of port " + port.getFullName()
+        //             + " are not consistent.\n Can't determine a uniquely defined width for relation"
+        //             + unspecifiedWidths.iterator().next().getFullName());
+        // }
         
         if (unspecifiedWidthsSize == 1 || unspecifiedWidthsSize == difference || difference == 0) {
             int width = difference / unspecifiedWidthsSize;
