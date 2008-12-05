@@ -262,8 +262,10 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
                 // $PTII/ptolemy/actor/parameters/test/auto/Priority4.xml
                 // tests this behavior.
                 
+                // The ChangeRequest has false as third argument to avoid complete
+                // repaints of the model.                
                 ChangeRequest request = new ChangeRequest(this,
-                        "SetVariable change request") {
+                        "SetVariable change request", false) {
                     protected void _execute() throws IllegalActionException {
                         _setValue(value);
                     }

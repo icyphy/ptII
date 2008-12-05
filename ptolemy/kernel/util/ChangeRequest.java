@@ -55,7 +55,7 @@ import java.util.List;
  inner class extending this class. MoMLChangeRequest is such a concrete
  derived class, where the mutation is specified as MoML code.
 
- @author  Edward A. Lee
+ @author  Edward A. Lee, Contributor: Bert Rodiers
  @version $Id$
  @since Ptolemy II 1.0
  @Pt.ProposedRating Green (eal)
@@ -70,13 +70,44 @@ public abstract class ChangeRequest {
      *  A listener to changes will probably want to check the source
      *  so that when it is notified of errors or successful completion
      *  of changes, it can tell whether the change is one it requested.
+     *  This constructor is here for backwards compatibility. The 
+     *  constructor <i>ChangeRequest(Object source, String description,
+     *  boolean isStructuralChange) </i> has an extra parameter that allows
+     *  you to specify whether this change is a structural change. If it isn't
+     *  one, no complete repaints will be done of the visual model.
+     *  By using this constructor the repaints will be done if there are
+     *  AbstractBasicGraphModel listeners listening to this ChangeRequest.
      *  @param source The source of the change request.
      *  @param description A description of the change request.
+     *  @see #ChangeRequest(Object, String, boolean)
      */
     public ChangeRequest(Object source, String description) {
+        this(source, description, true);
+    }
+
+    /** Construct a request with the specified source and description.
+     *  The description is a string that is used to report the change,
+     *  typically to the user in a debugging environment.
+     *  The source is the object that requested this change request.
+     *  A listener to changes will probably want to check the source
+     *  so that when it is notified of errors or successful completion
+     *  of changes, it can tell whether the change is one it requested.
+     *  This constructor is here for backwards compatibility.
+     *  isStructuralChange specifies whether the change is structural
+     *  or not. If it isn't a structural change (isStructuralChange equal
+     *  to false), no complete repaints will be done of the visual model.
+     *  If isStructuralChange equals true, repaints will be done if there
+     *  are AbstractBasicGraphModel listeners listening to this ChangeRequest.
+     *  @param source The source of the change request.
+     *  @param description A description of the change request.
+     *  @param isStructuralChange Specifies whether this change is a structural
+     *  one.
+     */
+    public ChangeRequest(Object source, String description, boolean isStructuralChange) {
         _source = source;
         _description = description;
         _errorReported = false;
+        _isStructuralChange = isStructuralChange;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -93,7 +124,7 @@ public abstract class ChangeRequest {
      */
     public void addChangeListener(ChangeListener listener) {
         if (_localListeners == null) {
-            _localListeners = new LinkedList();
+            _localListeners = new LinkedList<ChangeListener>();
         }
 
         // NOTE: We do not use weak references for these
@@ -143,11 +174,8 @@ public abstract class ChangeRequest {
         }
 
         if (_localListeners != null) {
-            Iterator listeners = _localListeners.iterator();
 
-            while (listeners.hasNext()) {
-                ChangeListener listener = (ChangeListener) listeners.next();
-
+            for (ChangeListener listener : _localListeners) {
                 if (_exception == null) {
                     listener.changeExecuted(this);
                 } else {
@@ -159,7 +187,7 @@ public abstract class ChangeRequest {
         }
 
         if (_listeners != null) {
-            Iterator listeners = _listeners.iterator();
+            Iterator<?> listeners = _listeners.iterator();
 
             while (listeners.hasNext()) {
                 Object listener = listeners.next();
@@ -271,7 +299,16 @@ public abstract class ChangeRequest {
      */
     public boolean isPersistent() {
         return _persistent;
-    }
+    }    
+
+    /** Return whether this change request is a structural change request.
+     *  This is used to determine whether a complete repaint of the model
+     *  is necessary.
+     *  @return True this change request is a structural one.
+     */
+    public boolean isStructuralChange() {
+        return _isStructuralChange;
+    }    
 
     /** Remove the given change listener from this request.
      *  The listener will no longer be
@@ -407,12 +444,15 @@ public abstract class ChangeRequest {
     // The exception thrown by the most recent call to execute(), if any.
     private Exception _exception;
 
+    // A flag indicating whether this change is a structural one.
+    private boolean _isStructuralChange;
+
     // A list of listeners or weak references to listeners
     // that are given in setListeners().
     private List _listeners;
 
     // A list of listeners that are maintained locally.
-    private List _localListeners;
+    private List<ChangeListener> _localListeners;
 
     // A flag indicating that this request has not been executed yet.
     private boolean _pending = true;
@@ -421,5 +461,5 @@ public abstract class ChangeRequest {
     private boolean _persistent = true;
 
     // The source of the change request.
-    private Object _source;
+    private Object _source;      
 }

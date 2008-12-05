@@ -107,8 +107,11 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel
         // of changes.
         // Note that a change listener is registered with the top-level
         // model, as it probably has to be, since a change to a model
-        // can have repercusions anywhere in the model.
-        if ((change != null) && (change.getSource() == this)) {
+        // can have repercussions anywhere in the model.
+
+        // If this change request is not a structural change we won't
+        // repaint the model.
+        if ((change != null) && (change.getSource() == this || !change.isStructuralChange())) {
             return;
         }
 
@@ -343,7 +346,7 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel
      *  @return The location of the object, or a new location if none.
      */
     protected Locatable _getLocation(NamedObj object) {
-        List locations = object.attributeList(Locatable.class);
+        List<?> locations = object.attributeList(Locatable.class);
 
         if (locations.size() > 0) {
             return (Locatable) locations.get(0);
