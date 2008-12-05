@@ -67,7 +67,7 @@ public class Transform extends GTEvent implements ConfigurableEntity {
     public Transform(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-
+        
         controllerFactory = new Factory(this, "controllerFactory");
 
         matched = new Parameter(this, "matched");
@@ -123,6 +123,8 @@ public class Transform extends GTEvent implements ConfigurableEntity {
     public RefiringData fire(ArrayToken arguments)
             throws IllegalActionException {
         RefiringData data = super.fire(arguments);
+
+        _debug("Start Transformation");
 
         CompositeEntity model = getModelParameter().getModel();
         model.setDeferringChangeRequests(false);
