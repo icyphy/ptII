@@ -1563,26 +1563,11 @@ public class Director extends Attribute implements Executable {
      *  @see Actor#createReceivers  
      */
     private void _createReceivers() throws IllegalActionException {
-        if (_debugging) {
-            _debug(getFullName(), "Creating receivers ...");
-        }
-
-        // create receivers all the contained actors.
         Nameable container = getContainer();
         if (container instanceof CompositeActor) {
-            Iterator<?> actors = ((CompositeActor) container).deepEntityList()
-                    .iterator();
-            while (actors.hasNext()) {
-                Actor actor = (Actor) actors.next();
-                if (_debugging) {
-                    _debug("Invoking createReceivers(): ", ((NamedObj) actor)
-                            .getFullName());
-                }
-                actor.createReceivers();
+            for (Object actor : ((CompositeActor) container).deepEntityList()) {
+                ((Actor) actor).createReceivers();                
             }
-        }
-        if (_debugging) {
-            _debug(getFullName(), "Finished createReceivers().");
         }
     }
     
