@@ -378,8 +378,8 @@ public class KeplerDocumentationAttribute extends Attribute implements
     }
 
     /** Return the document name.
-     * @return the document name
-     *  @see #setDocName(String);
+     *  @return the document name
+     *  @see #setDocName(String)
      */
     public String getDocName() {
         if (!_docName.equals("null")) {
@@ -406,7 +406,7 @@ public class KeplerDocumentationAttribute extends Attribute implements
     }
 
     /** Return the property documenation.
-     *  @param The name of the property.
+     *  @param name The name of the property.
      *  @return the property docs
      *  @see #addProperty(String, String)
      */
@@ -416,7 +416,7 @@ public class KeplerDocumentationAttribute extends Attribute implements
 
     /** Return the property hash.
      *  @return the property hash
-     *  @see #setPropertyHash(hashtable)
+     *  @see #setPropertyHash(Hashtable)
      */
     public Hashtable getPropertyHash() {
         return _propertyHash;
@@ -440,7 +440,7 @@ public class KeplerDocumentationAttribute extends Attribute implements
 
     /** Return the version.
      *  @return the version
-     *  @see #getVersion(String)
+     *  @see #setVersion(String)
      */
     public String getVersion() {
         if (_version == null) {
@@ -480,7 +480,7 @@ public class KeplerDocumentationAttribute extends Attribute implements
 
     /** Set the name of this document.
      *  @param name The name of this document.
-     *  @see #getDocName();
+     *  @see #getDocName()
      */
     public void setDocName(String name) {
         _docName = name;

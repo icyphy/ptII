@@ -314,7 +314,7 @@ public abstract class PropertySolverBase extends Attribute {
     /**
      * Return the property helper for the specified component.
      * 
-     * @param component The specified component.
+     * @param object The specified component.
      * @return The property helper for the component.
      * @exception IllegalActionException Thrown if the helper cannot
      * be found or instantiated.

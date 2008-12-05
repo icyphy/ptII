@@ -1678,7 +1678,7 @@ public class Query extends JPanel {
     public static class QueryActionListener implements ActionListener {
 	/** Construct a listener for line and radio button entries.
 	 *  @param owner The owner query
-	 *  @param nane The name of the query
+	 *  @param name The name of the query
 	 */
         public QueryActionListener(Query owner, String name) {
             _name = name;
@@ -1764,8 +1764,8 @@ public class Query extends JPanel {
             return _entryBox.getText();
         }
 
-	/** Set selected color name
-	 *  @param the value of the text in the entry box.
+	/** Set selected color name.
+	 *  @param name The value of the text in the entry box.
 	 */
         public void setColor(String name) {
             _entryBox.setText(name);
@@ -1921,7 +1921,7 @@ public class Query extends JPanel {
             }
         }
 
-	/** Get the selected file name
+	/** Get the selected file name.
 	 *  @return the value of the text in the entry box.
 	 */
 	public String getSelectedFileName() {
@@ -1929,7 +1929,7 @@ public class Query extends JPanel {
         }
 
 	/** Set selected file name.
-	 *  @param the value of the text in the entry box.
+	 *  @param name The value of the text in the entry box.
 	 */
         public void setFileName(String name) {
             _entryBox.setText(name);
