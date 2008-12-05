@@ -107,7 +107,7 @@ public class AtomicActor extends ComponentEntity implements Actor,
     ////                         public methods                    ////
 
     /** Add the specified object to the list of objects whose
-     *  preinitialize(), intialize(), and wrapup()
+     *  preinitialize(), initialize(), and wrapup()
      *  methods should be invoked upon invocation of the corresponding
      *  methods of this object.
      *  @param initializable The object whose methods should be invoked.
@@ -682,7 +682,7 @@ public class AtomicActor extends ComponentEntity implements Actor,
     }
 
     /** Remove the specified object from the list of objects whose
-     *  preinitialize(), intialize(), and wrapup()
+     *  preinitialize(), initialize(), and wrapup()
      *  methods should be invoked upon invocation of the corresponding
      *  methods of this object. If the specified object is not
      *  on the list, do nothing.

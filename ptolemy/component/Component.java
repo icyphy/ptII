@@ -33,7 +33,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
  This interface defines the basic methods for initializing and
- executing components. The intended usage is that preintialize()
+ executing components. The intended usage is that preinitialize()
  is invoked exactly once in an execution of a model, before any
  static analysis such as scheduling or type resolution is done.
  The initialize() method may be invoked more than once to

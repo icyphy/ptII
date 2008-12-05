@@ -1449,7 +1449,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             // value during execution.
             _modifiedVariables = helper.getModifiedVariables();
 
-            // Delegate to the container to generate preintialize code.
+            // Delegate to the container to generate preinitialize code.
             code.append(helper.generatePreinitializeCode());
 
             // Create variables for buffer offset indexing.

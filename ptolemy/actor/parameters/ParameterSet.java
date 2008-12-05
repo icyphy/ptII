@@ -156,7 +156,7 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
     ////                         public methods                    ////
 
     /** Add the specified object to the list of objects whose
-     *  preinitialize(), intialize(), and wrapup()
+     *  preinitialize(), initialize(), and wrapup()
      *  methods should be invoked upon invocation of the corresponding
      *  methods of this object.
      *  @param initializable The object whose methods should be invoked.
@@ -365,7 +365,7 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
     }
 
     /** Remove the specified object from the list of objects whose
-     *  preinitialize(), intialize(), and wrapup()
+     *  preinitialize(), initialize(), and wrapup()
      *  methods should be invoked upon invocation of the corresponding
      *  methods of this object. If the specified object is not
      *  on the list, do nothing.
