@@ -214,6 +214,22 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
+    /** Create receivers for each input port. In case the receivers
+     *  don't need to be created they are reset
+     *  @exception IllegalActionException If any port throws it.
+     */
+    public void createReceivers() throws IllegalActionException {
+        if (_receiversVersion != workspace().getVersion()) {
+            _createReceivers();
+            _receiversVersion = workspace().getVersion();
+        } else {
+            _resetReceivers();
+        }
+
+        _receiversVersion = workspace().getVersion();
+    }
+    
+    
     /** Attribute specifying the names of the final states of this
      *  actor. This attribute is kept for backward compatibility only,
      *  and is set to expert visibility. To set the final states,
@@ -678,14 +694,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // taken, preinitialize() is not called.
         reset();
 
-        // Update the receivers version here because there may
-        // other actors (e.g. other instances of this actor) that
-        // increment the workspace version during preinitialize().
-        // Without this, having two instances of FSMActor would
-        // always result in recreating receivers on each
-        // call to preinitialize().
-        _receiversVersion = workspace().getVersion();
-
         // Reset the visited status of all states to not visited.
         Iterator states = deepEntityList().iterator();
         while (states.hasNext()) {
@@ -936,12 +944,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
         _stopRequested = false;
         _reachedFinalState = false;
-        if (_receiversVersion != workspace().getVersion()) {
-            _createReceivers();
-            _receiversVersion = workspace().getVersion();
-        } else {
-            _resetReceivers();
-        }
+
         _newIteration = true;
         _tokenListArrays = new Hashtable();
 

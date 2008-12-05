@@ -119,6 +119,13 @@ ValueListener {
         return newObject;
     }
 
+    /** Create receivers for all necessary ports.
+     *  In this implementation no receivers will be created
+     *  @exception IllegalActionException If any port throws it.
+     */    
+    public void createReceivers() throws IllegalActionException {        
+    }
+
     public void fire() throws IllegalActionException {
     }
 

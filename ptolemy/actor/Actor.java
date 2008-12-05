@@ -51,7 +51,16 @@ import ptolemy.kernel.util.Nameable;
 public interface Actor extends Executable, Nameable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
+    
+    /** Create receivers for all necessary ports.
+     *  For Atomic Actors this is done for each input port, for
+     *  Composite Actors for both the input and the output ports.
+     *  @exception IllegalActionException If any port throws it.
+     *  @see AtomicActor#createReceivers
+     *  @see CompositeActor#createReceivers
+     */
+    public void createReceivers() throws IllegalActionException;
+    
     /** Return the local director, if there is one, otherwise the executive
      *  director, if there is one, otherwise null.
      *  @return The director.

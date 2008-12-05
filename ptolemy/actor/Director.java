@@ -182,7 +182,7 @@ public class Director extends Attribute implements Executable {
     ////                         public methods                    ////
 
     /** Add the specified object to the list of objects whose
-     *  preinitialize(), intialize(), and wrapup()
+     *  preinitialize(), initialize(), and wrapup()
      *  methods should be invoked upon invocation of the corresponding
      *  methods of this object.
      *  @param initializable The object whose methods should be invoked.
@@ -248,7 +248,7 @@ public class Director extends Attribute implements Executable {
 
         super.attributeChanged(attribute);
     }
-
+       
     /** Return a default dependency to use between input input
      *  ports and output ports.
      *  Director subclasses may override this if
@@ -296,7 +296,7 @@ public class Director extends Attribute implements Executable {
         Nameable container = getContainer();
 
         if (container instanceof CompositeActor) {
-            Iterator actors = ((CompositeActor) container).deepEntityList()
+            Iterator<?> actors = ((CompositeActor) container).deepEntityList()
                     .iterator();
             int iterationCount = 1;
 
@@ -697,7 +697,7 @@ public class Director extends Attribute implements Executable {
             }
 
             // Initialize the contained actors.
-            Iterator actors = ((CompositeActor) container).deepEntityList()
+            Iterator<?> actors = ((CompositeActor) container).deepEntityList()
                     .iterator();
 
             while (actors.hasNext() && !_stopRequested) {
@@ -973,7 +973,7 @@ public class Director extends Attribute implements Executable {
         }
 
         // validate all settable attributes.
-        Iterator attributes = attributeList(Settable.class).iterator();
+        Iterator<?> attributes = attributeList(Settable.class).iterator();
         while (attributes.hasNext()) {
             Settable attribute = (Settable) attributes.next();
             attribute.validate();
@@ -984,7 +984,7 @@ public class Director extends Attribute implements Executable {
         // preinitialize all the contained actors.
         Nameable container = getContainer();
         if (container instanceof CompositeActor) {
-            Iterator actors = ((CompositeActor) container).deepEntityList()
+            Iterator<?> actors = ((CompositeActor) container).deepEntityList()
                     .iterator();
             while (actors.hasNext()) {
                 Actor actor = (Actor) actors.next();
@@ -995,6 +995,7 @@ public class Director extends Attribute implements Executable {
                 actor.preinitialize();
             }
         }
+        _createReceivers();
         if (_debugging) {
             _debug(getFullName(), "Finished preinitialize().");
         }
@@ -1090,7 +1091,7 @@ public class Director extends Attribute implements Executable {
                 // use the most recently added one.
                 Director previous = null;
                 CompositeActor castContainer = (CompositeActor) oldContainer;
-                Iterator directors = castContainer
+                Iterator<?> directors = castContainer
                         .attributeList(Director.class).iterator();
 
                 while (directors.hasNext()) {
@@ -1176,7 +1177,7 @@ public class Director extends Attribute implements Executable {
         Nameable container = getContainer();
 
         if (container instanceof CompositeActor) {
-            Iterator actors = ((CompositeActor) container).deepEntityList()
+            Iterator<?> actors = ((CompositeActor) container).deepEntityList()
                     .iterator();
 
             while (actors.hasNext()) {
@@ -1207,7 +1208,7 @@ public class Director extends Attribute implements Executable {
         Nameable container = getContainer();
 
         if (container instanceof CompositeActor) {
-            Iterator actors = ((CompositeActor) container).deepEntityList()
+            Iterator<?> actors = ((CompositeActor) container).deepEntityList()
                     .iterator();
 
             while (actors.hasNext()) {
@@ -1263,7 +1264,7 @@ public class Director extends Attribute implements Executable {
         Nameable container = getContainer();
 
         if (container instanceof CompositeActor) {
-            Iterator actors = ((CompositeActor) container).deepEntityList()
+            Iterator<?> actors = ((CompositeActor) container).deepEntityList()
                     .iterator();
 
             while (actors.hasNext()) {
@@ -1333,7 +1334,7 @@ public class Director extends Attribute implements Executable {
         Nameable container = getContainer();
 
         if (container instanceof CompositeActor) {
-            Iterator actors = ((CompositeActor) container).deepEntityList()
+            Iterator<?> actors = ((CompositeActor) container).deepEntityList()
                     .iterator();
 
             while (actors.hasNext()) {
@@ -1555,6 +1556,36 @@ public class Director extends Attribute implements Executable {
                 + "style=\"fill:green\"/>\n" + "</svg>\n");
     }
 
+
+    /** Create receivers for all contained actors.
+     *  @exception IllegalActionException If any port of a contained
+     *  actor throws it when its receivers are created.
+     *  @see Actor#createReceivers  
+     */
+    private void _createReceivers() throws IllegalActionException {
+        if (_debugging) {
+            _debug(getFullName(), "Creating receivers ...");
+        }
+
+        // create receivers all the contained actors.
+        Nameable container = getContainer();
+        if (container instanceof CompositeActor) {
+            Iterator<?> actors = ((CompositeActor) container).deepEntityList()
+                    .iterator();
+            while (actors.hasNext()) {
+                Actor actor = (Actor) actors.next();
+                if (_debugging) {
+                    _debug("Invoking createReceivers(): ", ((NamedObj) actor)
+                            .getFullName());
+                }
+                actor.createReceivers();
+            }
+        }
+        if (_debugging) {
+            _debug(getFullName(), "Finished createReceivers().");
+        }
+    }
+    
     // Initialize parameters.
     private void _initializeParameters() {
         // This must happen first before any time objects get created.

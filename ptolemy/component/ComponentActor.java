@@ -318,7 +318,7 @@ public class ComponentActor extends TypedCompositeActor implements Component {
      */
 
     //FIXME: how should I modify this mehtod.
-    //    private void _createReceivers() throws IllegalActionException {
+    //    public void createReceivers() throws IllegalActionException {
     //        Iterator ports = portList().iterator();
     //
     //        while (ports.hasNext()) {

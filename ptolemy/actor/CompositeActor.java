@@ -303,7 +303,8 @@ public class CompositeActor extends CompositeEntity implements Actor,
                 if (castPort.isOutput()
                         && (getDirector() != null)
                         && (manager != null)
-                        && (manager.getState() != Manager.IDLE)) {
+                        && (manager.getState() != Manager.IDLE)
+                        && (manager.getState() != Manager.PREINITIALIZING)) {
                     // Note that even if castPort is opaque, we still have to
                     // check for director above.
                     try {
@@ -318,7 +319,8 @@ public class CompositeActor extends CompositeEntity implements Actor,
                 if (castPort.isInput()
                         && (getExecutiveDirector() != null)
                         && (manager != null)
-                        && (manager.getState() != Manager.IDLE)) {
+                        && (manager.getState() != Manager.IDLE)
+                        && (manager.getState() != Manager.PREINITIALIZING)) {
                     try {
                         castPort.createReceivers();
                     } catch (IllegalActionException ex) {
@@ -428,6 +430,33 @@ public class CompositeActor extends CompositeEntity implements Actor,
         }
     }
 
+    /** Create receivers for each port. If the port is an
+     *  input port, then receivers are created for outside
+     *  connections. If it is an output port, then receivers
+     *  are created for inside connections. This method replaces
+     *  any pre-existing receivers, so any data they contain
+     *  will be lost.
+     *  @exception IllegalActionException If any port throws it.
+     */
+    public void createReceivers() throws IllegalActionException {
+        if (workspace().getVersion() != _receiversVersion) {
+            Iterator<?> ports = portList().iterator();
+    
+            try {
+                workspace().getWriteAccess();
+                while (ports.hasNext()) {
+                    IOPort onePort = (IOPort) ports.next();
+                    onePort.createReceivers();
+                }
+                _receiversVersion = workspace().getVersion();
+            } finally {
+                // Note that this does not increment the workspace version.
+                // We have not changed the structure of the model.
+                workspace().doneTemporaryWriting();
+            }
+        }        
+    }
+    
     /** Return a causality interface for this actor. This returns an
      *  instance of {@link CausalityInterfaceForComposites}.
      *  If this is called multiple times, the same object is returned each
@@ -550,13 +579,6 @@ public class CompositeActor extends CompositeEntity implements Actor,
         if (_debugging) {
             _debug("Called initialize()");
         }
-
-        // Update the version only after everything has been
-        // preinitialized because there might have been additional
-        // workspace version updates during preinitialize().
-        // We assume they were properly handled and new receivers
-        // were created if needed.
-        _receiversVersion = workspace().getVersion();
 
         try {
             _workspace.getReadAccess();
@@ -1067,13 +1089,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
                 for (Executable piggyback : _piggybacks) {
                     piggyback.preinitialize();
                 }
-            }
-
-            // As an optimization, avoid creating receivers if
-            // the workspace version has not changed.
-            if (workspace().getVersion() != _receiversVersion) {
-                _createReceivers();
-            }
+            }            
 
             if (!isOpaque()) {
                 if (getContainer() == null && deepEntityList().size() == 0) {
@@ -1094,9 +1110,12 @@ public class CompositeActor extends CompositeEntity implements Actor,
                                 + getFullName());
             }
 
+            createReceivers();            
+
             // Note that this is assured of firing the local director,
             // not the executive director, because this is opaque.
             getDirector().preinitialize();
+                        
         } finally {
             _workspace.doneReading();
         }
@@ -1542,30 +1561,6 @@ public class CompositeActor extends CompositeEntity implements Actor,
         }
 
         super._addRelation(relation);
-    }
-
-    /** Create receivers for each port. If the port is an
-     *  input port, then receivers are created for outside
-     *  connections. If it is an output port, then receivers
-     *  are created for inside connections. This method replaces
-     *  any pre-existing receivers, so any data they contain
-     *  will be lost.
-     *  @exception IllegalActionException If any port throws it.
-     */
-    protected void _createReceivers() throws IllegalActionException {
-        Iterator<?> ports = portList().iterator();
-
-        try {
-            workspace().getWriteAccess();
-            while (ports.hasNext()) {
-                IOPort onePort = (IOPort) ports.next();
-                onePort.createReceivers();
-            }
-        } finally {
-            // Note that this does not increment the workspace version.
-            // We have not changed the structure of the model.
-            workspace().doneTemporaryWriting();
-        }
     }
 
     /** Notify this actor that the given entity has been added inside it.

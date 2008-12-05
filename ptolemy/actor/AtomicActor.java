@@ -189,7 +189,8 @@ public class AtomicActor extends ComponentEntity implements Actor,
             if (castPort.isInput() 
                     && (getDirector() != null) 
                     && (manager != null)
-                    && (manager.getState() != Manager.IDLE)) {
+                    && (manager.getState() != Manager.IDLE)
+                    && (manager.getState() != Manager.PREINITIALIZING)) {
                 try {
                     workspace().getWriteAccess();
                     castPort.createReceivers();
@@ -205,6 +206,32 @@ public class AtomicActor extends ComponentEntity implements Actor,
         }
     }
 
+    /** Create receivers for each input port.
+     *  @exception IllegalActionException If any port throws it.
+     */
+    public void createReceivers() throws IllegalActionException {
+        if (workspace().getVersion() != _receiversVersion) {
+            // NOTE:  Receivers are also getting created
+            // in connectionChanged(). This to make sure that
+            // the receivers are reset when the model changes while
+            // running the model.
+        
+            Iterator<?> inputPorts = inputPortList().iterator();
+            try {
+                workspace().getWriteAccess();
+                while (inputPorts.hasNext()) {
+                    IOPort inputPort = (IOPort) inputPorts.next();
+                    inputPort.createReceivers();
+                }
+                _receiversVersion = workspace().getVersion();
+            } finally {
+                // Note that this does not increment the workspace version.
+                // We have not changed the structure of the model.
+                workspace().doneTemporaryWriting();
+            }
+        }
+    }
+    
     /** Do nothing.  Derived classes override this method to define their
      *  primary run-time action.
      *
@@ -305,12 +332,6 @@ public class AtomicActor extends ComponentEntity implements Actor,
                 initializable.initialize();
             }
         }
-        // Update the version only after everything has been
-        // preinitialized because there might have been additional
-        // workspace version updates during preinitialize().
-        // We assume they were properly handled and new receivers
-        // were created if needed.
-        _receiversVersion = workspace().getVersion();
     }
 
     /** List all the input ports.
@@ -585,15 +606,6 @@ public class AtomicActor extends ComponentEntity implements Actor,
                 initializable.preinitialize();
             }
         }
-
-        // As an optimization, avoid creating receivers if
-        // the workspace version has not changed.
-        if (workspace().getVersion() != _receiversVersion) {
-            // NOTE:  Receivers are also getting created
-            // in connectionChanged().  Perhaps this is here to ensure
-            // that the receivers are reset?
-            _createReceivers();
-        }
     }
 
     /** Prune the dependency declarations, which by default state
@@ -832,24 +844,6 @@ public class AtomicActor extends ComponentEntity implements Actor,
         }
 
         super._addPort(port);
-    }
-
-    /**  Create receivers for each input port.
-     *  @exception IllegalActionException If any port throws it.
-     */
-    protected void _createReceivers() throws IllegalActionException {
-        Iterator inputPorts = inputPortList().iterator();
-        try {
-            workspace().getWriteAccess();
-            while (inputPorts.hasNext()) {
-                IOPort inputPort = (IOPort) inputPorts.next();
-                inputPort.createReceivers();
-            }
-        } finally {
-            // Note that this does not increment the workspace version.
-            // We have not changed the structure of the model.
-            workspace().doneTemporaryWriting();
-        }
     }
 
     ///////////////////////////////////////////////////////////////////

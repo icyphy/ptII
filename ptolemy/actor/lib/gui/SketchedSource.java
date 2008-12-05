@@ -343,11 +343,6 @@ public class SketchedSource extends SequencePlotter implements EditListener {
     public void preinitialize() throws IllegalActionException {
         // This code is copied from AtomicActor, since we can't call super.
         _stopRequested = false;
-
-        // NOTE:  Receivers are also getting created
-        // in connectionChanged().  Perhaps this is here to ensure
-        // that the receivers are reset?
-        _createReceivers();
     }
 
     ///////////////////////////////////////////////////////////////////
