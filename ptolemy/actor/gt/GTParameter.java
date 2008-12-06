@@ -159,8 +159,8 @@ public class GTParameter extends Parameter {
                     NamedObj container = _pattern.getContainer();
                     if (container != null) {
                         NamedObjVariable containerVar =
-                            NamedObjVariable.getNamedObjVariable(
-                                    _pattern.getContainer(), true);
+                            NamedObjVariable.getNamedObjVariable(container,
+                                    true);
                         ParserScope containerScope =
                             containerVar.getParserScope();
                         token = containerScope.get(name);
@@ -201,8 +201,8 @@ public class GTParameter extends Parameter {
                     .identifierSet());
             try {
                 _pattern.workspace().getReadAccess();
-                for (Object childObject : GTTools.getChildren(_pattern, true, true,
-                        true, true)) {
+                for (Object childObject : GTTools.getChildren(_pattern, true,
+                        true, true, true)) {
                     identifiers.add(((NamedObj) childObject).getName());
                 }
             } finally {

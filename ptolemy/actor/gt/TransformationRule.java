@@ -150,7 +150,17 @@ public class TransformationRule extends MultiCompositeActor implements
                     Token paramToken = param.getToken();
                     PortParameter paramCopy = (PortParameter) workingCopy
                             .getAttribute(param.getName());
-                    paramCopy.setToken(paramToken);
+                    while (paramCopy.getToken() == null && paramToken != null
+                            || paramCopy.getToken() != null &&
+                            paramToken == null) {
+                        // Don't understand why do we need a while loop here.
+                        // Maybe some bug in setToken() causes this. If you
+                        // change this while to if or remove it altogether, then
+                        // ptolemy/actor/gt/demo/MapReduce/MapReduceDDF.xml
+                        // usually fails.
+                        // -- tfeng (12/06/2008)
+                        paramCopy.setToken(paramToken);
+                    }
                 }
             }
 
