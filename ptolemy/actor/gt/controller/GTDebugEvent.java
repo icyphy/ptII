@@ -27,16 +27,10 @@
 */
 package ptolemy.actor.gt.controller;
 
-import ptolemy.data.ActorToken;
-import ptolemy.data.ArrayToken;
-import ptolemy.domains.erg.kernel.ERGController;
-import ptolemy.domains.fsm.modal.RefinementPort;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
-//// OutputModel
+//// DebugEvent
 
 /**
 
@@ -47,28 +41,27 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class OutputModel extends GTEvent {
+public class GTDebugEvent implements ptolemy.kernel.util.DebugEvent {
 
-    public OutputModel(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
-        super(container, name);
+    public GTDebugEvent(GTEvent source, String message) {
+        _source = source;
+        _message = message;
     }
 
-    public RefiringData fire(ArrayToken arguments) throws IllegalActionException {
-        RefiringData data = super.fire(arguments);
-
-        CompositeEntity entity = getModelParameter().getModel();
-        ERGController container = (ERGController) getContainer();
-        RefinementPort destination = (RefinementPort) container.getPort(
-                _OUTPUT_PORT_NAME);
-        destination.broadcastClear();
-        destination.broadcast(new ActorToken(entity));
-
-        _debug(new GTDebugEvent(this, "Output model sent to " +
-                _OUTPUT_PORT_NAME + "."));
-
-        return data;
+    public NamedObj getSource() {
+        return _source;
     }
 
-    private static final String _OUTPUT_PORT_NAME = "modelOutput";
+    public String toString() {
+        return _source.getName() + ": " + _message;
+    }
+    
+    public String toString(NamedObj sourceParent) {
+        return _source.getName(sourceParent) + ": " + _message;
+    }
+
+    private String _message;
+
+    private GTEvent _source;
+
 }

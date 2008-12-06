@@ -81,6 +81,8 @@ public class Execute extends GTEvent {
         NamedObj toplevel = getModelParameter().getModel().toplevel();
         if (toplevel instanceof CompositeActor) {
             try {
+                _debug(new GTDebugEvent(this, "Prepare to execute model."));
+
                 CompositeActor actor = (CompositeActor) toplevel;
                 if (_effigy == null || _effigy.getContainer() == null) {
                     Effigy parentEffigy = Configuration.findEffigy(toplevel());
@@ -100,7 +102,9 @@ public class Execute extends GTEvent {
                 }
                 actor.setManager(manager);
                 try {
+                    _debug(new GTDebugEvent(this, "Start model execution."));
                     manager.execute();
+                    _debug(new GTDebugEvent(this, "Model execution finished."));
                 } finally {
                     synchronized(_managers) {
                         _managers.remove(manager);
@@ -109,12 +113,16 @@ public class Execute extends GTEvent {
                     actor.setManager(oldManager);
                 }
             } catch (KernelException e) {
+                _debug(new GTErrorEvent(this, "Error occurred while " +
+                        "executing model."));
                 throw new IllegalActionException(this, e, "Unable to execute " +
                         "model.");
             } finally {
                 _effigy.setModel(null);
             }
         } else {
+            _debug(new GTErrorEvent(this, "Unable to execute a model that is " +
+                    "not a CompositeActor."));
             throw new IllegalActionException("Unable to execute a model that " +
                     "is not a CompositeActor.");
         }

@@ -83,6 +83,8 @@ public class InitModel extends GTEvent {
             modelParameter.setModel(_getInitialModel());
         }
 
+        _debug(new GTDebugEvent(this, "Model initialized."));
+
         return data;
     }
 

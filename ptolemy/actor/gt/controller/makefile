@@ -54,6 +54,8 @@ JSRCS = \
 	Configurer.java \
 	Execute.java \
 	FileUpdater.java \
+	GTDebugEvent.java \
+	GTErrorEvent.java \
 	GTEvent.java \
 	InitModel.java \
 	InitModelWithContainer.java \

@@ -67,7 +67,7 @@ public class Transform extends GTEvent implements ConfigurableEntity {
     public Transform(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         controllerFactory = new Factory(this, "controllerFactory");
 
         matched = new Parameter(this, "matched");
@@ -124,7 +124,9 @@ public class Transform extends GTEvent implements ConfigurableEntity {
             throws IllegalActionException {
         RefiringData data = super.fire(arguments);
 
-        _debug("Start Transformation");
+        _debug(new GTDebugEvent(this, "Start transformation."));
+
+        long start = System.currentTimeMillis();
 
         CompositeEntity model = getModelParameter().getModel();
         model.setDeferringChangeRequests(false);
@@ -132,12 +134,27 @@ public class Transform extends GTEvent implements ConfigurableEntity {
         try {
             isMatched = mode.transform(mode.getWorkingCopy(_transformation),
                 model);
+            if (isMatched) {
+                _debug(new GTDebugEvent(this, "Match found."));
+            } else {
+                _debug(new GTDebugEvent(this, "Match not found."));
+            }
         } catch (Throwable t) {
+            _debug(new GTErrorEvent(this, t.getMessage()));
             throw new IllegalActionException(this, t, "Error occurred in the " +
                     "transformation in " + getFullName() + ".");
         }
         getModelParameter().setModel(model);
         matched.setToken(BooleanToken.getInstance(isMatched));
+
+        long elapsed = System.currentTimeMillis() - start;
+        if (data == null) {
+            _debug(new GTDebugEvent(this, "Finish transformation (" +
+                    (double) elapsed / 1000 + " sec)."));
+        } else {
+            _debug(new GTDebugEvent(this, "Request refire (" +
+                    (double) elapsed / 1000 + " sec)."));
+        }
 
         return data;
     }
@@ -146,9 +163,9 @@ public class Transform extends GTEvent implements ConfigurableEntity {
         return _configureSource;
     }
 
-   public String getConfigureText() {
-    return null;
-}
+    public String getConfigureText() {
+        return null;
+    }
 
     public Configurer getConfigurer() {
         return _configurer;

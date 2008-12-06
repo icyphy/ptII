@@ -83,7 +83,9 @@ public class ReadModel extends GTEvent {
         URL url = modelFile.asURL();
         try {
             model = (CompositeEntity) _parser.parse(url, url);
+            _debug(new GTDebugEvent(this, "Read file " + url));
         } catch (Exception e) {
+            _debug(new GTErrorEvent(this, "Unable to read file " + url));
             throw new IllegalActionException(this, e, "Unable to parse the " +
                     "model from file \"" + modelFile.stringValue().trim() +
                     "\" as a CompositeEntity.");

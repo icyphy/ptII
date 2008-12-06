@@ -28,6 +28,9 @@
 package ptolemy.actor.gt.controller;
 
 import java.util.LinkedList;
+import java.util.List;
+
+import javax.swing.text.BadLocationException;
 
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.gui.Configuration;
@@ -35,6 +38,7 @@ import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TextEditor;
 import ptolemy.actor.gui.TextEffigy;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.expr.Parameter;
@@ -72,7 +76,7 @@ public class DebuggerParameter extends TableauParameter
 
         columnsDisplayed = new Parameter(this, "columnsDisplayed");
         columnsDisplayed.setTypeEquals(BaseType.INT);
-        columnsDisplayed.setExpression("40");
+        columnsDisplayed.setExpression("70");
 
         hierarchical = new Parameter(this, "hierarchical");
         hierarchical.setTypeEquals(BaseType.BOOLEAN);
@@ -83,14 +87,13 @@ public class DebuggerParameter extends TableauParameter
      *  @param event The event.
      */
     public void event(DebugEvent event) {
-        message(event.toString());
+        NamedObj container = getContainer();
+        message(((GTDebugEvent) event).toString(container));
     }
 
     public void initialize() throws IllegalActionException {
         super.initialize();
-
-        _createTableau();
-        _registerDebugListener();
+        _registerDebugListener(true);
     }
 
     /** React to a debug message.
@@ -99,14 +102,34 @@ public class DebuggerParameter extends TableauParameter
     public void message(String message) {
         try {
             Tableau tableau = (Tableau) ((ObjectToken) getToken()).getValue();
+
+            if (tableau == null) {
+                tableau = _createTableau();
+            }
+
             if (tableau != null) {
+                if (!tableau.getFrame().isVisible()) {
+                    tableau.getFrame().setVisible(true);
+                }
                 TextEditor frame = (TextEditor) tableau.getFrame();
                 frame.text.append(message + "\n");
+                try {
+                    int lineOffset = frame.text.getLineStartOffset(frame.text
+                            .getLineCount() - 1);
+                    frame.text.setCaretPosition(lineOffset);
+                } catch (BadLocationException ex) {
+                    // Ignore ... worst case is that the scrollbar doesn't move.
+                }
             }
         } catch (Throwable e) {
             throw new InternalErrorException(this, e, "Unable to report " +
                     "message \"" + message + "\".");
         }
+    }
+
+    public void wrapup() throws IllegalActionException {
+        super.wrapup();
+        _registerDebugListener(false);
     }
 
     /** The horizontal size of the display, in columns. This contains
@@ -121,8 +144,23 @@ public class DebuggerParameter extends TableauParameter
      */
     public Parameter rowsDisplayed;
 
-    private void _createTableau() throws IllegalActionException {
-        Effigy effigy = Configuration.findEffigy(toplevel());
+    private Tableau _createTableau() throws IllegalActionException {
+        NamedObj toplevel = toplevel();
+        Effigy effigy = null;
+        if (toplevel instanceof Configurer) {
+            Configurer configurer = (Configurer) toplevel;
+            List<?> list = configurer.entityList();
+            if (list.size() == 1) {
+                effigy = Configuration.findEffigy((NamedObj) list.get(0));
+            }
+        }
+        if (effigy == null) {
+            effigy = Configuration.findEffigy(toplevel);
+        }
+        if (effigy == null) {
+            return null;
+        }
+
         TextEffigy textEffigy;
         try {
             textEffigy = TextEffigy.newTextEffigy(effigy, "");
@@ -147,10 +185,14 @@ public class DebuggerParameter extends TableauParameter
         setToken(new ObjectToken(tableau, Tableau.class));
         frame.pack();
         frame.setVisible(true);
+        return tableau;
     }
 
-    private void _registerDebugListener() throws IllegalActionException {
+    private void _registerDebugListener(boolean register)
+    throws IllegalActionException {
         NamedObj container = getContainer();
+        boolean hierarchical = ((BooleanToken) this.hierarchical.getToken())
+                .booleanValue();
         if (container instanceof ERGController) {
             LinkedList<ERGController> controllers =
                 new LinkedList<ERGController>();
@@ -160,7 +202,14 @@ public class DebuggerParameter extends TableauParameter
                 for (Object entity : controller.deepEntityList()) {
                     if (entity instanceof GTEvent) {
                         GTEvent event = (GTEvent) entity;
-                        event.addDebugListener(this);
+                        if (register) {
+                            event.addDebugListener(this);
+                        } else {
+                            event.removeDebugListener(this);
+                        }
+                        if (!hierarchical) {
+                            continue;
+                        }
                         TypedActor[] refinements = event.getRefinement();
                         if (refinements != null) {
                             for (TypedActor refinement : refinements) {
