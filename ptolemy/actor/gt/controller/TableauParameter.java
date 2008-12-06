@@ -30,12 +30,14 @@ package ptolemy.actor.gt.controller;
 import javax.swing.SwingUtilities;
 
 import ptolemy.actor.Initializable;
+import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ObjectType;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
@@ -89,6 +91,15 @@ public class TableauParameter extends Parameter implements Initializable {
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
                     tableau.close();
+                    Effigy effigy = (Effigy) tableau.getContainer();
+                    if (effigy != null) {
+                        try {
+                            effigy.setContainer(null);
+                        } catch (KernelException e) {
+                            // Ignore if we can't remove the effigy from its
+                            // container.
+                        }
+                    }
                 }
             });
         }

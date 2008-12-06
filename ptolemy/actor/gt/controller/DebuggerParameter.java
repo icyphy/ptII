@@ -99,8 +99,10 @@ public class DebuggerParameter extends TableauParameter
     public void message(String message) {
         try {
             Tableau tableau = (Tableau) ((ObjectToken) getToken()).getValue();
-            TextEditor frame = (TextEditor) tableau.getFrame();
-            frame.text.append(message + "\n");
+            if (tableau != null) {
+                TextEditor frame = (TextEditor) tableau.getFrame();
+                frame.text.append(message + "\n");
+            }
         } catch (Throwable e) {
             throw new InternalErrorException(this, e, "Unable to report " +
                     "message \"" + message + "\".");
