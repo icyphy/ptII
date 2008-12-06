@@ -64,7 +64,7 @@ public class SequentialTwoWayHashMap<K, V> extends TwoWayHashMap<K, V> {
     }
 
     public V put(K key, V value) {
-        if (!super.containsKey(key)) {
+        if (value != null && !super.containsKey(key)) {
             _keySequence.add(key);
         }
         return super.put(key, value);

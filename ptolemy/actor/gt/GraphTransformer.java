@@ -855,17 +855,27 @@ public class GraphTransformer extends ChangeRequest {
                 true)) {
             if (child instanceof Port) {
                 Port port = (Port) child;
-                _recordMirroredObjects(port,
-                        ((Entity) host).getPort(port.getName()));
+                Port match = (Port) _matchResult.get(port);
+                if (match == null) {
+                    match = ((Entity) host).getPort(port.getName());
+                }
+                _recordMirroredObjects(port, match);
             } else if (child instanceof Entity) {
                 Entity entity = (Entity) child;
-                _recordMirroredObjects(entity,
-                        ((CompositeEntity) host).getEntity(entity.getName()));
+                Entity match = (Entity) _matchResult.get(entity);
+                if (match == null) {
+                    match = ((CompositeEntity) host).getEntity(entity.getName(
+                            ));
+                }
+                _recordMirroredObjects(entity, match);
             } else if (child instanceof Relation) {
                 Relation relation = (Relation) child;
-                _recordMirroredObjects(relation,
-                        ((CompositeEntity) host).getRelation(
-                                relation.getName()));
+                Relation match = (Relation) _matchResult.get(relation);
+                if (match == null) {
+                    match = ((CompositeEntity) host).getRelation(
+                            relation.getName());
+                }
+                _recordMirroredObjects(relation, match);
             }
         }
     }

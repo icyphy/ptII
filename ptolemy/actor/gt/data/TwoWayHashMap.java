@@ -101,9 +101,13 @@ public class TwoWayHashMap<K, V> extends HashMap<K, V> {
     }
 
     public V put(K key, V value) {
-        V oldValue = super.put(key, value);
-        _reverseMap.put(value, key);
-        return oldValue;
+        if (value == null) {
+            return remove(key);
+        } else {
+            V oldValue = super.put(key, value);
+            _reverseMap.put(value, key);
+            return oldValue;
+        }
     }
 
     public V remove(Object key) {
