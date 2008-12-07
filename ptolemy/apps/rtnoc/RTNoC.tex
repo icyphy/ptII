@@ -13,12 +13,21 @@ makes it very difficult to verify the timing semantics of a network on chip
 system, as a result, network on chip systems become unsuitable for real-time 
 applications, especially critical control applications.
 
+\begin{figure}[htp]\label{fig:NoCRt}
+\centering
+\includegraphics[width=7cm]{pics/NoC0}
+\caption[Demand for a hard real-time flow.]
+{How can a sending node make sure about the bounded delay for
+a packet?}
+\end{figure}
+
 Our purpose is to bring the real-time communication to network on chip so that 
 users can always guarantee deterministic behaviors of a critical system. To do 
 so, it requires bounded delay communications between nodes in the network. 
-For example, when processing element A wants to send a critical control packet 
-p to processing element I, how can it know for sure that the packet will reach 
-the destination within a certain amount of time? 
+For example, when processing element $0$ wants to send a critical control packet 
+p to processing element $11$, how can it know for sure that the packet will
+reach the destination within a certain amount of time? 
+
 \section{Related Work}
 \subsection{\AE thereal}
 This work \cite{Goossens_chapter4} is from NXP. This architecture tries to avoid
@@ -89,9 +98,17 @@ for a real-time flow is initiated by a sender in a network, the network will det
 it can accept that reservation or not based on its current state of other 
 reservations of other real-time flows on the network.
 
+\begin{figure}[htp]\label{fig:FlowMultiplex}
+\centering
+\includegraphics[width=7cm]{pics/Multiplex2}
+\caption[Real time flow multiplexing.]
+{Real-time flow multiplexing.}
+\end{figure}
+
 We will design an architecture with the following advantages:
 \begin{itemize}
-\item Multiple real-time flows can be multiplexed on one link \cite{Ferrari90ascheme}.
+\item Multiple real-time flows can be multiplexed on one link
+\cite{Ferrari90ascheme} as in Figure \ref{fig:FlowMultiplex}.
 \item Utilize the spatial data paths between sources and nodes to avoid the 
 conflicts between real-time flows.
 \item Does not block links completely as SoCBUS \cite{SoCBUS}, best-effort flows 
@@ -184,22 +201,39 @@ network on chip.
 \label{table:NetworkStack}
 \end{table}
 
+\subsection{Path Setup Protocol}
 When in need of a real-time communication, the processing unit at each node 
 will issue a request for setting up a path:
 
-{\em Setuppath.request(source\_id, destination\_id, T, L, D, Hard/Soft);}
+{\em Setuppath.request(source\_id, destination\_id, virtual\_channel\_id T, L,
+D, Hard/Soft);}
 
-This request will be sent over the network by a PATH message. Its demand has 
-to be met at each node on the network before reaching the destination node.
+This request will be sent over the network by a REQ message to a specific node
+in the network, called {\em master node}, as in Figure \ref{fig:ReqSetup}.
+Based on its knowledge about other flows in the network and the demand for the
+new real-time flow, the master node will seek to find a suitable path. If there
+exists a suitable path, the master node will send SETUP command messages to
+appropriate routers in the network to config routers' configurations. This re-configuration
+can include adjusting configurations of other flows at the routers.
 
-The destination node will then send back an ACCEPT message to the source saying 
-that the path has been set up. After that, the source can start sending data at 
-the specified rate.
+\begin{figure}[htp]\label{fig:ReqSetup}
+\centering
+\includegraphics[width=10cm]{pics/Protocol2}
+\caption[Setup request for a real-time flow.]
+{Real-time flow setup protocol.}
+\end{figure}
 
-If the set up request cannot reach the destination, the source then will receive 
-a REJECT message from an intermediate node. The source can receive in the reject 
-message about the lower possible rate and delay. It then can try another specification 
-for the path.
+Routers receiving SETUP command message will adjust their internal
+configurations as specified in the message. After finishing setting up internal
+configurations, routers will send back an acknowledgement ACK message to
+the master node. When the master node have received all its expected ACK
+messages from routers, it sends an ACCEPT message to the requesting node
+(node requested a new real-time flow). The requesting node can start sending
+data after receiving that ACCEPT message.
+
+If the master node cannot find a suitable path, it sends back to the requesting
+node a REJECT message saying that new real-time flow cannot be set up on the
+network.
 
 So the setting up path response can be: ACCEPT, REJECT
 
@@ -211,8 +245,8 @@ can be useful in some programming model like Giotto.
 or it reaches the source too late? We should give priority to such kind of control
 message.
 \item Real-time flows block other best-effort packets traveling on the link when 
-the utilization of all the packets on the link is 1. Need a mechanism to reroute 
-all best-effort packets.
+the utilization of all the packets on the link is $1$. We need a mechanism to
+reroute all best-effort packets.
 \end{itemize}
 
 To reduce the size of each router, we can use processing elements to do 
@@ -401,7 +435,8 @@ The structure of a real-time data packet is:
 \end{table}
 
 \subsection{Considerations}
-\includegraphics[width=12cm]{OtherArcs.png}
+\includegraphics[width=11cm]{pics/OtherArcs.png}
+
 From this we can consider the format of a data packet since we have the 
 tradeoff between the length of a packet and the bounded delay of the packet. 
 If the packet is long, then our network is more efficient, however, the bounded 
