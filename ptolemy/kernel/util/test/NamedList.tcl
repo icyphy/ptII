@@ -526,7 +526,7 @@ test NamedList-100.4 {insertBefore} {
 test NamedList-100.5 {prepend} {
     $namedList99 prepend [java::new ptolemy.kernel.util.NamedObj nA]
     $namedList100 prepend [java::new ptolemy.kernel.util.NamedObj nB]
-    $namedList101 prepend [java::new ptolemy.kernel.util.NamedObj nC]
+    $namedList101 prepend [java::new ptolemy.kernel.util.NamedObj nC]    
 
     set r1_99 [$namedList99 size]
     set r1_100 [$namedList100 size]
@@ -610,21 +610,22 @@ test NamedList-100.8 {change the name} {
     # This causes a model transformation model to fail, which generates 100+
     # entities, renames each entity after creation, and tries to use
     # getEntity(String) to get back those entities in the composite actor.
+    
+    set namedList200 [createNamedList 200]
+    
+    set n98_200 [$namedList200 get n98]
 
-    set n98_99 [$namedList99 get n98]
-    set n98_100 [$namedList100 get n98]
-    set n98_101 [$namedList101 get n98]
 
-    $n98_99 setName n98_99new
-    $n98_100 setName n98_100new
-    $n98_101 setName n98_101new
+    $n98_200 setName n98_200new
 
-    set r1_99 [[$namedList99 get n98_99new] getName]
-    set r1_100 [[$namedList100 get n98_100new] getName]
-    set r1_101 [[$namedList101 get n98_101new] getName]
+		# Next line works
+		set temp [[$namedList200 get n97] getName]
+		
+		# Next line fails
+    set r1_200 [[$namedList200 get n98_200new] getName]
 
-    list [list $r1_99 $r1_100 $r1_101]
-} {{n98_99new n98_100new n98_101new}}
+		list [list r1_200]
+} {{n98_200new}}
 
 test NamedList-100.666 {removeAll} {
     $namedList99 removeAll
