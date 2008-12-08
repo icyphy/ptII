@@ -115,6 +115,7 @@ JSRCS = \
 	ModelDirectory.java \
 	ModelFrame.java \
 	ModelPane.java \
+	ModelRepaintController.java \
 	MoMLApplet.java \
 	MoMLApplication.java \
 	MoMLSimpleApplication.java \
