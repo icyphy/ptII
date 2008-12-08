@@ -3,6 +3,7 @@
 \usepackage{graphicx}
 \usepackage{color} 
 \usepackage[colorlinks]{hyperref}
+\usepackage{palatino, url, multicol}
 
 %\pdfpagewidth 8.5in
 %\pdfpageheight 14in 
@@ -21,6 +22,19 @@
 \begin{center}
 \huge{Real-time Communication for Network on Chip} \hspace{0.5cm}
 \end{center}
+
+\begin{multicols}{2}{
+\begin{center}
+Dai Bui\\
+Electrical Engineering & Computer Sciences\\
+University of California, Berkeley
+
+Mentor: Alessandro Pinto\\
+United Technologies
+\end{center}
+}
+\end{multicols}
+
 \section{Introduction}
 As a network on chip gets larger, the communication on the network becomes 
 very complicated. Congestions on that network can occur resulting in unpredictable 
@@ -488,7 +502,7 @@ bounded delay of other flows we check if the increasing delay amounts of the
 flows exceed the slack of the flows and then recompute new slacks for these
 flows. The slack of a flow $f$ is computed as:
 
-\begin{equation}
+\begin{equation}\label{equ:slack1}
 	slack_f=P(f)(4)-P(f)(3) +
 1 - \sum_{e \in E} (\sum_{\forall g \in F:l_g <
 l_{f}}y_{g,e}P(g)(3)+max(P(i \in F)(3)y_{i,e}))y_{f,e}, \forall f \in F
@@ -498,9 +512,36 @@ With this scheme, we have to modify the configurations of other flows sharing
 the same link with the new flow. The master node will issue a SETUP command to
 override the previous configurations at routers.
 
+If a new flow $f'$ is requested, then employing {\em shortest maximum packet
+length first} ordering requires to modify the delay of flows at sharing some
+links with $f'$ that have larger maximum packet lengths larger than the new flow
+maximum packet length. 
+
+$\forall f \in F  that l_{f'} < l_f$ and $y_{f',e}u{f,e}=1 \mbox{ for some } e
+\in E$, from (\ref{equ:e2eDelayCTNonPipeline1}) we have:
+
+\begin{equation}\label{equ:e2eDelayModification}
+\sum_{e \in E} (\sum_{\forall g \in F:l_g <
+l_{f'}}y_{g,e}s_{g,e}+max(s_{i \in F}.y_{i,e}))y_{f',e} +y_{f',e}s_{f',e} \leq
+P(f)(4)-P(f)(3) + 1, \forall f \in F
+\end{equation}
+
+or
+
+\begin{equation}\label{equ:e2eDelayModificatio2}
+y_{f',e}s_{f',e} \leq P(f)(4)-P(f)(3) + 1 - \sum_{e \in E} (\sum_{\forall g \in
+F:l_g < l_{f'}}y_{g,e}s_{g,e}+max(s_{i \in F}.y_{i,e}))y_{f',e}, \forall f \in F
+\end{equation}
+
+or
+
+\begin{equation}\label{equ:e2eDelayModificatio3}
+y_{f',e}s_{f',e} \leq slack_f, \forall f \in F
+\end{equation}
+
 What we should minimize: power or future paths?
 
-\section{Specification}
+\section{Specifications}
 \subsection{Message Structures}
 
 There are two type of packets in best-effort flow identified by the head flit
@@ -620,7 +661,9 @@ and extend \cite{PehDelayModel, PehSpecPipeR} to have better performance.
 
 We use Noxim \cite{Noxim} as the implementation platform. Currently, we have tried
 to set up real-time paths and admission control for real-time paths when sharing 
-the same link. The real-time packets currently just contain one flit.
+the same link.
+
+%priority queue
 
 \bibliography{RTNoC}
 \bibliographystyle{plain}
