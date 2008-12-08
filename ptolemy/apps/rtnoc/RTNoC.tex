@@ -1,11 +1,11 @@
-\documentclass[10pt]{article}
+\documentclass[a4]{article}
 \usepackage[english,french]{babel}
 \usepackage{graphicx}
 \usepackage{color} 
 \usepackage[colorlinks]{hyperref}
 
-\pdfpagewidth 8.5in
-\pdfpageheight 11in 
+%\pdfpagewidth 8.5in
+%\pdfpageheight 14in 
 
 \setlength\topmargin{0in}
 \setlength\headheight{0in}
@@ -289,13 +289,12 @@ for real-time packets.
 \subsection{Delay Model in Cut-through Networks}
 
 The delay model in \cite{Ferrari90ascheme, VermaJitter91} is
-for store-and-forward networks \cite{DallyPrinNetwork} (a packet has to be
+for store-forward networks \cite{DallyPrinNetwork} (a packet has to be
 received {\em completely} by a router before it can be forwarded). However, we
 are considering cut-through networks (a packet can be sent while being
 received) since it has better throughput.
 
-{\textbf{Definitions}}
-
+{\textbf{Definitions:}}
 $q_{f,v}$ is the {\em maximum} delay of a {\em flit} in flow $f$ at
 hop (router) $v$ in cycles.This is the {\em queueing} delay.
 
@@ -327,7 +326,7 @@ and
 d_{f,e}y_{f,e} \geq I_{v,e}y_{f,e}r_{v,f,e} + I_{v',e}y_{f,e}r_{v',f,e}
 \end{equation}
 
-From \cite{Ferrari90ascheme}, for a simple case, if we assume that all $K$ 
+From \cite{Ferrari90ascheme}, for simplicity, if we assume that all $K$ 
 real-time flows going through a node $n$ satisfy the following condition:
 \begin{equation}\label{equ:intervalservice1}
 t_i \geq \sum_{j=1}^Ks_{j,n}, \forall i = 1,...,K
@@ -381,8 +380,8 @@ d_{f,e}y_{f,e} = \sum_{g \in F:l_g < l_f}y_{f,e}s_{f,e} +
 max(s_{i \in F}y{i,e}), \forall e \in E
 \end{equation}
 
-This means that, flows with smaller maximum packet lengths will be given smaller delays
-at this node (thereby smaller deadlines when packets come at the same time). This ordering scheme 
+This means that flows with smaller maximum packet lengths will be given smaller
+delays at this node (thereby smaller deadlines when packets come at the same time). This ordering scheme 
 will give the smallest {\em overall} delay at this node.
 
 \subsection{Configuration}
@@ -499,36 +498,71 @@ What we should minimize: power or future paths?
 
 \section{Specification}
 \subsection{Message Structures}
-The structure of a PATH message (this is often a flit) to set up a real-time 
-flow on the network is:
 
-\begin{table}[h]
+There are two type of packets in best-effort flow identified by the head flit
+in a packet. The head flit can be of CTRL (control) or HEAD (normal) type. The
+structure of a REQ message (this is often a flit) to set up a real-time flow on the network is:
+
+\begin{table}[htbp]
 \begin{center}
   \begin{tabular}{ | l | l | l | l | l | l | l | l | }
     \hline
-	Type & Source ID & Destination ID & Virtual Channel ID & 
-	$T_{min}$ & $L_{max}$ & $D_{max}$ & (optional) \\
+	CTRL & Req Node ID & Master Node ID & Command = REQ \\ \hline
+	BODY & Source ID & Destination ID & $t_{min}$ \\ \hline 
+	TAIL & Virtual Channel ID & $l_{max}$ & $d_{max}$ \\
     \hline
   \end{tabular}
 \end{center}
-\caption{Setup path message}
+\caption{REQ path message}
 \label{table:PathMsg}
 \end{table}
 
-The structure of a real-time data packet is:
+The SETUP message from the master node to router has the following structure:
 
-\begin{table}[h]
+\begin{table}[htbp]
 \begin{center}
-  \begin{tabular}{ | l | l | l | l | l |}
+  \begin{tabular}{ | l | l | l | l | l | l | l | l | }
     \hline
-	Type & Virtual Channel ID & Time stamp or jitter & Packet Length & Data \\ \hline
-	\multicolumn{5}{|c|}{Data flit} \\ \hline
-	\multicolumn{5}{|c|}{...} \\ \hline
-	\multicolumn{5}{|c|}{Data flit} \\
+	CTRL & Master Node ID & Router ID & Command = SETUP & Local delay \\ \hline
+	TAIL & Virtual Channel ID & Input gate & Output gate &  \\
     \hline
   \end{tabular}
 \end{center}
-\caption{Data message}
+\caption{SETUP path message}
+\label{table:PathMsg}
+\end{table}
+
+The ACK or ACCEPT message has the following form:
+
+
+\begin{table}[htbp]
+\begin{center}
+  \begin{tabular}{ | l | l | l | l | l | l | l | l | }
+    \hline
+	CTRL & Source ID & Destination ID & Command = (ACK, ACCEPT) \\ \hline
+	TAIL & \multicolumn{2}{|c|}{Virtual Channel ID} &  \\
+    \hline
+  \end{tabular}
+\end{center}
+\caption{SETUP path message}
+\label{table:PathMsg}
+\end{table}
+
+
+The structure of a real-time data packet is:
+
+\begin{table}[htbp]
+\begin{center}
+  \begin{tabular}{ | l | l | l | l | l |}
+    \hline
+	HEAD & Virtual Channel ID & Time stamp or jitter & Data \\ \hline 
+	BODY & \multicolumn{3}{|c|}{Data flit} \\ \hline
+	BODY &\multicolumn{3}{|c|}{...} \\ \hline
+	TAIL & \multicolumn{3}{|c|}{Data flit} \\
+    \hline
+  \end{tabular}
+\end{center}
+\caption{Real-time data message}
 \label{table:DataMsg}
 \end{table}
 
