@@ -1,6 +1,8 @@
 \documentclass[10pt]{article}
 \usepackage[english,french]{babel}
 \usepackage{graphicx}
+\usepackage{color} 
+\usepackage[colorlinks]{hyperref}
 
 \pdfpagewidth 8.5in
 \pdfpageheight 11in 
@@ -27,12 +29,12 @@ makes it very difficult to verify the timing semantics of a network on chip
 system, as a result, network on chip systems become unsuitable for real-time 
 applications, especially critical control applications.
 
-\begin{figure}[htp]\label{fig:NoCRt}
+\begin{figure}[htp]
 \centering
 \includegraphics[width=7cm]{pics/NoC0}
 \caption[Demand for a hard real-time flow.]
 {How can a sending node make sure about the bounded delay for
-a packet?}
+a packet?}\label{fig:NoCRt}
 \end{figure}
 
 Our purpose is to bring the real-time communication to network on chip so that 
@@ -71,7 +73,7 @@ low bandwidth.
 This work is from Technion \cite{QNoC}. Packets are sent synchronously. 
 This architecture supports multi service levels as in table \ref{table:QNoCTable}.
 
-\begin{table}[h]
+\begin{table}[htbp]
 \begin{center}
   \begin{tabular}{ | p{2.5cm} | p{6cm} | p{2cm} |}
     \hline
@@ -112,11 +114,11 @@ for a real-time flow is initiated by a sender in a network, the network will det
 it can accept that reservation or not based on its current state of other 
 reservations of other real-time flows on the network.
 
-\begin{figure}[htp]\label{fig:FlowMultiplex}
+\begin{figure}[htbp]
 \centering
 \includegraphics[width=7cm]{pics/Multiplex2}
 \caption[Real time flow multiplexing.]
-{Real-time flow multiplexing.}
+{Real-time flow multiplexing.}\label{fig:FlowMultiplex}
 \end{figure}
 
 We will design an architecture with the following advantages:
@@ -232,9 +234,8 @@ D);}
 \begin{figure}[htp]
 \centering
 \includegraphics[width=10cm]{pics/Protocol2}
-\label{fig:ReqSetup}
 \caption[Setup request for a real-time flow.]
-{Real-time flow setup protocol.}
+{Real-time flow setup protocol.}\label{fig:ReqSetup}
 \end{figure}
 
 This request will be sent over the network by a REQ message to a specific node
@@ -489,6 +490,11 @@ flows. The slack of a flow $f$ is computed as:
 1 - \sum_{e \in E} (\sum_{\forall g \in F:l_g <
 l_{f}}y_{g,e}P(g)(3)+max(P(i \in F)(3)y_{i,e}))y_{f,e}, \forall f \in F
 \end{equation}
+
+With this scheme, we have to modify the configurations of other flows sharing
+the same link with the new flow. The master node will issue a SETUP command to
+override the previous configurations at routers.
+
 What we should minimize: power or future paths?
 
 \section{Specification}
@@ -527,7 +533,13 @@ The structure of a real-time data packet is:
 \end{table}
 
 \subsection{Considerations}
-\includegraphics[width=11cm]{pics/OtherArcs.png}
+
+\begin{figure}[htp]
+\centering
+\includegraphics[width=15cm]{pics/OtherArcs.png}
+\caption[Other Spec.]
+{Specification of other network on chip architectures}\label{fig:otherSpec}
+\end{figure}
 
 From this we can consider the format of a data packet since we have the 
 tradeoff between the length of a packet and the bounded delay of the packet. 
@@ -560,10 +572,9 @@ bound for that reserving flow. What should the router do:
 \label{table:RoutingConsiderations}
 \end{table}
 
-Furthermore, should we employ routing able mechanism, this means that a table 
-is used at each node to store the information like left utilization $\frac{S}{T}$ at 
-each link and delay bound at each link from source to destination or we can 
-use some dynamic routing protocols like dynamic source routing (DSR) as in wireless networks.
+The master node monitors all configurations of real-time flows on the network
+so various routing policy can be employed to achieve better performance, delay,
+power and so on.
 
 \section{Implementation}
 The router architecture can be implemented as in \cite{Rexford98arouter, Zhang_1service} 
