@@ -51,12 +51,12 @@ contention using contention-free routing by {\em delaying} some packets.
 
 Guaranteed packets are multiplexed using TDMA. However, this approach requires
 design-time configuration and verification, which is not flexible for architectures
-like multicore.
+like multi-core.
 \subsection{SoCBUS}
 SoCBUS architecture \cite{SoCBUS} is from Linkoping University. It seeks to 
 guarantee real-time properties by setting up a path before ending:
 \begin{itemize}
-\item Init a path by sending a setting up packet.
+\item Initiate a path by sending a setting up packet.
 \item The path will be {\em blocked} until all data have been sent.
 \item After that the path is unlocked
 \end{itemize}
@@ -65,7 +65,7 @@ This approach has the following problems:
 \item What happens if we have two real-time paths on the same link?
 \item Other traffic sharing a link with this real-time path is blocked while 
 data is sent. This seems to be a good solution when sending a large bulk of data 
-but not good for periodic, un-continuous flows.
+but not good for periodic, non-continuous flows.
 \item Utilization of this approach can be low if real-time flows only require
 low bandwidth.
 \end{itemize}
@@ -101,7 +101,7 @@ To solve this problem, we need to keep track of the number and specifications of
 real-time flows on a link to make sure that the link is never overloaded.
 
 \section{Our Idea}
-We can achieve the real-time communication betweens some nodes in a network 
+We can achieve the real-time communication between some nodes in a network 
 on a chip by borrowing the resource reservation idea \cite{Zhang93rsvp} from the 
 Internet to the network on chip. In that, all the real-time communications 
 have to be previously reserved on the network. 
@@ -151,7 +151,8 @@ function of $l$: $s=f(l)$. We can set $s=value(l)$, this means that it takes $1$
 cycle for a router to process and send one flit over a link. In pipeline router
 model as in \cite{PehDelayModel, PehSpecPipeR}, we have to add some pipeline
 stages to $l$ to have $s$.
-\item $T \subseteq \mathbf{N}$ is the set of the min interval values between packets of flows. 
+\item $T \subseteq \mathbf{N}$ is the set of the minimum interval values between
+packets of flows.
 \item $L \subseteq \mathbf{N}$ is the set of packet lengths.
 \item $D \subseteq \mathbf{N}$ is the set of packet delays of real-time flows.
 \item $\mathcal{V} \subseteq \mathbf{N}$ is the set of virtual channels between pairs of nodes.
