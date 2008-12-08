@@ -86,6 +86,8 @@
     <entity name="Event" class="ptolemy.actor.gt.controller.GTEvent">
         <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
         </property>
+        <property name="_allowRefinement" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
     </entity>
     <entity name="Execute" class="ptolemy.actor.gt.controller.Execute">
     </entity>

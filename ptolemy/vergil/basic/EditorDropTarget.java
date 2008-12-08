@@ -45,6 +45,8 @@ import javax.swing.JComponent;
 import javax.swing.ToolTipManager;
 
 import ptolemy.actor.gui.Configuration;
+import ptolemy.kernel.util.DropTargetHandler;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
@@ -106,6 +108,13 @@ public class EditorDropTarget extends DropTarget {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Remove an additional listener.
+     *  @param listener The DropTargetListener to be removed.
+     */
+    public void deRegisterAdditionalListener(DropTargetListener listener) {
+        _additionalListeners.remove(listener);
+    }
+
     /** Return true if the feature is enabled that a a drop onto an
      *  instance of NamedObj results in that NamedObj containing the
      *  dropped object. Otherwise, return false.
@@ -122,13 +131,6 @@ public class EditorDropTarget extends DropTarget {
         _additionalListeners.addElement(listener);
     }
 
-    /** Remove an additional listener.
-     *  @param listener The DropTargetListener to be removed.
-     */
-    public void deRegisterAdditionalListener(DropTargetListener listener) {
-        _additionalListeners.remove(listener);
-    }
-
     /** If the argument is false, then disable the feature that a
      *  a drop onto an instance of NamedObj results in that NamedObj
      *  containing the dropped object.  If the argument is true, then
@@ -142,11 +144,11 @@ public class EditorDropTarget extends DropTarget {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** Flag indicating whether drop into is enabled. */
-    private boolean _dropIntoEnabled = true;
-
     /** Vector to contain additional listeners. */
     private Vector _additionalListeners = new Vector();
+
+    /** Flag indicating whether drop into is enabled. */
+    private boolean _dropIntoEnabled = true;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -291,12 +293,13 @@ public class EditorDropTarget extends DropTarget {
             // Get an iterator over objects to drop.
             Iterator iterator = null;
 
+            List dropObjects = null;
             if (dtde.isDataFlavorSupported(PtolemyTransferable.namedObjFlavor)) {
                 try {
                     dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
-                    iterator = (Iterator) dtde
-                            .getTransferable()
-                            .getTransferData(PtolemyTransferable.namedObjFlavor);
+                    dropObjects = (List) dtde.getTransferable().getTransferData(
+                            PtolemyTransferable.namedObjFlavor);
+                    iterator = dropObjects.iterator();
                 } catch (Exception e) {
                     MessageHandler.error(
                             "Can't find a supported data flavor for drop in "
@@ -314,7 +317,6 @@ public class EditorDropTarget extends DropTarget {
 
             // Create the MoML change request to instantiate the new objects.
             StringBuffer moml = new StringBuffer();
-            moml.append("<group>");
 
             while (iterator.hasNext()) {
                 final NamedObj dropObj = (NamedObj) iterator.next();
@@ -409,11 +411,22 @@ public class EditorDropTarget extends DropTarget {
                 moml.append("}\"/>\n</" + rootNodeName + ">\n");
             }
 
-            moml.append("</group>");
-            MoMLChangeRequest request = new MoMLChangeRequest(this, container,
-                    moml.toString());
-            request.setUndoable(true);
-            container.requestChange(request);
+            if (container instanceof DropTargetHandler) {
+                try {
+                    ((DropTargetHandler) container).dropObject(container,
+                            dropObjects, moml.toString());
+                } catch (IllegalActionException e) {
+                    MessageHandler.error("Unable to drop the object to " +
+                            container.getName() + ".", e);
+                }
+            } else {
+                moml.insert(0, "<group>");
+                moml.append("</group>");
+                MoMLChangeRequest request = new MoMLChangeRequest(this,
+                        container, moml.toString());
+                request.setUndoable(true);
+                container.requestChange(request);
+            }
             dtde.dropComplete(true); //success!
 
             //Added by MB 6Apr06 - without this, tooltips don't work

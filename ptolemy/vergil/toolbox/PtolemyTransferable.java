@@ -134,7 +134,7 @@ public class PtolemyTransferable implements Transferable, Serializable {
             // differ from the docs.  *sigh*
             return new StringReader(_getMoML());
         } else if (flavor.equals(namedObjFlavor)) {
-            return _objectList.iterator();
+            return Collections.unmodifiableList(_objectList);
         } else if (flavor.equals(DataFlavor.stringFlavor)) {
             return _getMoML();
         }

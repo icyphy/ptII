@@ -35,24 +35,17 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
 
-import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.gui.Configuration;
-import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.domains.fsm.kernel.Transition;
-import ptolemy.domains.fsm.modal.ModalController;
-import ptolemy.domains.fsm.modal.ModalModel;
 import ptolemy.domains.fsm.modal.Refinement;
 import ptolemy.domains.fsm.modal.RefinementExtender;
-import ptolemy.domains.fsm.modal.RefinementPort;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
@@ -138,7 +131,7 @@ public class HierarchicalStateController extends StateController {
                 return;
             }
 
-            final CompositeEntity container = (CompositeEntity) immediateContainer
+            CompositeEntity container = (CompositeEntity) immediateContainer
                     .getContainer();
 
             if (container == null) {
@@ -183,8 +176,8 @@ public class HierarchicalStateController extends StateController {
                     if (firstExtenderDescription == null) {
                         firstExtenderDescription = description;
                     }
-                    refinementClasses.put(description,
-                            extender.className.stringValue());
+                    refinementClasses.put(description, extender.className
+                            .stringValue());
                 } catch (IllegalActionException e1) {
                     // Ignore.
                 }
@@ -208,7 +201,7 @@ public class HierarchicalStateController extends StateController {
                 return;
             }
 
-            final String newName = query.getStringValue("Name");
+            String newName = query.getStringValue("Name");
 
             if (container.getEntity(newName) != null) {
                 MessageHandler.error("There is already a refinement with name "
@@ -227,138 +220,20 @@ public class HierarchicalStateController extends StateController {
                 currentRefinements = currentRefinements.trim() + ", " + newName;
             }
 
-            String moml;
-
             // The MoML we create depends on whether the configuration
             // specified a set of prototype refinements.
+            Entity template = null;
             if (refinements instanceof CompositeEntity) {
-                Entity template = ((CompositeEntity) refinements)
-                        .getEntity(choiceName);
-                String templateDescription = template.exportMoML(newName);
-                moml = "<group>" + templateDescription + "<entity name=\""
-                        + state.getName(container)
-                        + "\"><property name=\"refinementName\" value=\""
-                        + currentRefinements + "\"/></entity></group>";
-            } else {
-                moml = "<group><entity name=\"" + newName + "\" class=\""
-                        + newClass + "\"/>" + "<entity name=\""
-                        + state.getName(container)
-                        + "\"><property name=\"refinementName\" value=\""
-                        + currentRefinements + "\"/></entity></group>";
+                template = ((CompositeEntity) refinements).getEntity(
+                        choiceName);
             }
 
-            MoMLChangeRequest change = new MoMLChangeRequest(this, container,
-                    moml) {
-                protected void _execute() throws Exception {
-                    super._execute();
-
-                    // Mirror the ports of the container in the refinement.
-                    // Note that this is done here rather than as part of
-                    // the MoML because we have set protected variables
-                    // in the refinement to prevent it from trying to again
-                    // mirror the changes in the container.
-                    Entity entity = container.getEntity(newName);
-
-                    // Get the initial port configuration from the container.
-                    Iterator ports = container.portList().iterator();
-
-                    while (ports.hasNext()) {
-                        Port port = (Port) ports.next();
-
-                        try {
-                            // NOTE: This is awkward.
-                            if (entity instanceof Refinement) {
-                                ((Refinement) entity).setMirrorDisable(true);
-                            } else if (entity instanceof ModalController) {
-                                ((ModalController) entity)
-                                        .setMirrorDisable(true);
-                            }
-
-                            String name = port.getName();
-                            Port newPort = entity.getPort(name);
-                            if (newPort == null) {
-                                newPort = entity.newPort(port.getName());
-                            }
-
-                            if (newPort instanceof RefinementPort
-                                    && port instanceof IOPort) {
-                                try {
-                                    ((RefinementPort) newPort)
-                                            .setMirrorDisable(true);
-
-                                    if (((IOPort) port).isInput()) {
-                                        ((RefinementPort) newPort)
-                                                .setInput(true);
-                                    }
-
-                                    if (((IOPort) port).isOutput()) {
-                                        ((RefinementPort) newPort)
-                                                .setOutput(true);
-                                    }
-
-                                    if (((IOPort) port).isMultiport()) {
-                                        ((RefinementPort) newPort)
-                                                .setMultiport(true);
-                                    }
-
-                                    /* No longer needed since Yuhong modified
-                                     * the type system to allow UNKNOWN. EAL
-                                     if (port instanceof TypedIOPort
-                                     && newPort instanceof TypedIOPort) {
-                                     ((TypedIOPort)newPort).setTypeSameAs(
-                                     (TypedIOPort)port);
-                                     }
-                                     */
-
-                                    // Copy the location to the new port if any.
-                                    // (tfeng 08/29/08)
-                                    if (container instanceof ModalModel) {
-                                        FSMActor controller =
-                                            ((ModalModel) container)
-                                                    .getController();
-                                        if (controller != null &&
-                                                controller != container) {
-                                            Port controllerPort = controller
-                                                    .getPort(port.getName());
-                                            if (controllerPort != null) {
-                                                Location location = (Location)
-                                                        controllerPort
-                                                        .getAttribute(
-                                                                "_location",
-                                                                Location.class);
-                                                if (location != null) {
-                                                    location = (Location)
-                                                            location.clone(
-                                                            newPort.workspace());
-                                                    location.setContainer(newPort);
-                                                }
-                                            }
-                                        }
-                                    }
-                                } finally {
-                                    ((RefinementPort) newPort)
-                                            .setMirrorDisable(false);
-                                }
-                            }
-                        } finally {
-                            // NOTE: This is awkward.
-                            if (entity instanceof Refinement) {
-                                ((Refinement) entity).setMirrorDisable(false);
-                            } else if (entity instanceof ModalController) {
-                                ((ModalController) entity)
-                                        .setMirrorDisable(false);
-                            }
-                        }
-                    }
-
-                    if (_configuration != null) {
-                        // Look inside.
-                        _configuration.openInstance(entity);
-                    }
-                }
-            };
-
-            container.requestChange(change);
+            try {
+                Refinement.addRefinement(state, newName, template, newClass,
+                        configuration);
+            } catch (IllegalActionException ex) {
+                MessageHandler.error(ex.getMessage());
+            }
         }
     }
 

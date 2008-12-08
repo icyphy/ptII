@@ -63,6 +63,7 @@ JSRCS = \
 	Debuggable.java \
 	DebugListener.java \
 	Derivable.java \
+	DropTargetHandler.java \
 	ExceptionHandler.java \
 	IllegalActionException.java \
 	Instantiable.java \

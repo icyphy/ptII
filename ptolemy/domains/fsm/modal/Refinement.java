@@ -26,21 +26,31 @@
  */
 package ptolemy.domains.fsm.modal;
 
+import java.util.Iterator;
 import java.util.List;
 
+import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedActor;
+import ptolemy.actor.gui.Configuration;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.domains.ct.kernel.CTCompositeActor;
 import ptolemy.domains.fsm.kernel.ContainmentExtender;
+import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.RefinementActor;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.MoMLChangeRequest;
 
 // NOTE: This is a combination of ModalController and CTStepSizeControlActor,
 // but because of the inheritance hierarchy, there appears to be no convenient
@@ -81,13 +91,192 @@ public class Refinement extends CTCompositeActor implements RefinementActor {
         // The base class identifies the class name as TypedCompositeActor
         // irrespective of the actual class name.  We override that here.
         setClassName("ptolemy.domains.fsm.modal.Refinement");
-        
+
         new ContainmentExtender(this, "_containmentExtender");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
+    /** Create a refinement for the given state.
+     *
+     *  @param state The state that will contain the new refinement.
+     *  @param name The name of the composite entity that stores the refinement.
+     *  @param template The template used to create the refinement, or null if
+     *   template is not used.
+     *  @param className The class name for the refinement, which is used when
+     *   template is null.
+     *  @param configuration The configuration that is used to open the
+     *   refinement (as a look-inside action) after it is created, or null if it
+     *   is not needed to open the refinement.
+     *  @throws IllegalActionException If error occurs while creating the
+     *   refinement.
+     */
+    public static void addRefinement(State state, final String name,
+            Entity template, String className,
+            final Configuration configuration) throws IllegalActionException {
+        Attribute allowRefinement = state.getAttribute("_allowRefinement");
+        if (allowRefinement instanceof Parameter &&
+                !((BooleanToken) ((Parameter) allowRefinement).getToken())
+                        .booleanValue()) {
+            throw new IllegalActionException(state, "State does not support " +
+                    "refinement.");
+        }
+
+        // Check that all these containers exist.
+        Nameable immediateContainer = state.getContainer();
+
+        if (immediateContainer == null) {
+            throw new IllegalActionException(state, "State has no container!");
+        }
+
+        final CompositeEntity container = (CompositeEntity) immediateContainer
+                .getContainer();
+
+        if (container == null) {
+            throw new IllegalActionException(state, "State container has no " +
+                    "container!");
+        }
+
+        if (container.getEntity(name) != null) {
+            throw new IllegalActionException(state, "There is already a " +
+                    "refinement with name " + name + ".");
+        }
+
+        String currentRefinements = state.refinementName.getExpression();
+
+        if ((currentRefinements == null) || currentRefinements.equals("")) {
+            currentRefinements = name;
+        } else {
+            currentRefinements = currentRefinements.trim() + ", " + name;
+        }
+
+        String moml;
+
+        // The MoML we create depends on whether the configuration
+        // specified a set of prototype refinements.
+        if (template != null) {
+            String templateDescription = template.exportMoML(name);
+            moml = "<group>" + templateDescription + "<entity name=\""
+                    + state.getName(container)
+                    + "\"><property name=\"refinementName\" value=\""
+                    + currentRefinements + "\"/></entity></group>";
+        } else {
+            moml = "<group><entity name=\"" + name + "\" class=\""
+                    + className + "\"/>" + "<entity name=\""
+                    + state.getName(container)
+                    + "\"><property name=\"refinementName\" value=\""
+                    + currentRefinements + "\"/></entity></group>";
+        }
+
+        MoMLChangeRequest change = new MoMLChangeRequest(state, container,
+                moml) {
+            protected void _execute() throws Exception {
+                super._execute();
+
+                // Mirror the ports of the container in the refinement.
+                // Note that this is done here rather than as part of
+                // the MoML because we have set protected variables
+                // in the refinement to prevent it from trying to again
+                // mirror the changes in the container.
+                Entity entity = container.getEntity(name);
+
+                // Get the initial port configuration from the container.
+                Iterator ports = container.portList().iterator();
+
+                while (ports.hasNext()) {
+                    Port port = (Port) ports.next();
+
+                    try {
+                        // NOTE: This is awkward.
+                        if (entity instanceof Refinement) {
+                            ((Refinement) entity).setMirrorDisable(true);
+                        } else if (entity instanceof ModalController) {
+                            ((ModalController) entity).setMirrorDisable(true);
+                        }
+
+                        String name = port.getName();
+                        Port newPort = entity.getPort(name);
+                        if (newPort == null) {
+                            newPort = entity.newPort(port.getName());
+                        }
+
+                        if (newPort instanceof RefinementPort
+                                && port instanceof IOPort) {
+                            try {
+                                ((RefinementPort) newPort).setMirrorDisable(
+                                        true);
+
+                                if (((IOPort) port).isInput()) {
+                                    ((RefinementPort) newPort).setInput(true);
+                                }
+
+                                if (((IOPort) port).isOutput()) {
+                                    ((RefinementPort) newPort).setOutput(true);
+                                }
+
+                                if (((IOPort) port).isMultiport()) {
+                                    ((RefinementPort) newPort).setMultiport(
+                                            true);
+                                }
+
+                                /* No longer needed since Yuhong modified
+                                 * the type system to allow UNKNOWN. EAL
+                                 if (port instanceof TypedIOPort
+                                 && newPort instanceof TypedIOPort) {
+                                 ((TypedIOPort)newPort).setTypeSameAs(
+                                 (TypedIOPort)port);
+                                 }
+                                 */
+
+                                // Copy the location to the new port if any.
+                                // (tfeng 08/29/08)
+                                if (container instanceof ModalModel) {
+                                    FSMActor controller =((ModalModel)
+                                            container).getController();
+                                    if (controller != null &&
+                                            controller != container) {
+                                        Port controllerPort = controller
+                                                .getPort(port.getName());
+                                        if (controllerPort != null) {
+                                            Location location = (Location)
+                                                    controllerPort.getAttribute(
+                                                            "_location",
+                                                            Location.class);
+                                            if (location != null) {
+                                                location = (Location)
+                                                        location.clone(
+                                                        newPort.workspace());
+                                                location.setContainer(newPort);
+                                            }
+                                        }
+                                    }
+                                }
+                            } finally {
+                                ((RefinementPort) newPort).setMirrorDisable(
+                                        false);
+                            }
+                        }
+                    } finally {
+                        // NOTE: This is awkward.
+                        if (entity instanceof Refinement) {
+                            ((Refinement) entity).setMirrorDisable(false);
+                        } else if (entity instanceof ModalController) {
+                            ((ModalController) entity).setMirrorDisable(false);
+                        }
+                    }
+                }
+
+                if (configuration != null) {
+                    // Look inside.
+                    configuration.openInstance(entity);
+                }
+            }
+        };
+
+        container.requestChange(change);
+    }
+
     /** Get the state in any ModalController within this ModalModel that has
      *  this refinement as its refinement, if any. Return null if no such state
      *  is found.

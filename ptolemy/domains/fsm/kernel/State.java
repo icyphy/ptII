@@ -44,6 +44,7 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.DropTargetHandler;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
@@ -78,7 +79,8 @@ import ptolemy.kernel.util.Workspace;
  @see FSMActor
  @see FSMDirector
  */
-public class State extends ComponentEntity {
+public class State extends ComponentEntity implements DropTargetHandler {
+
     /** Construct a state with the given name contained by the specified
      *  composite entity. The container argument must not be null, or a
      *  NullPointerException will be thrown. This state will use the
@@ -149,7 +151,7 @@ public class State extends ComponentEntity {
         isFinalState = new Parameter(this, "isFinalState");
         isFinalState.setTypeEquals(BaseType.BOOLEAN);
         isFinalState.setExpression("false");
-        
+
         new ContainmentExtender(this, "_containmentExtender");
     }
 
@@ -219,6 +221,22 @@ public class State extends ComponentEntity {
         newObject._nonpreemptiveTransitionList = new LinkedList();
         newObject._preemptiveTransitionList = new LinkedList();
         return newObject;
+    }
+
+    /** React to a list of objects being dropped onto a target.
+     *
+     *  @param target The target on which the objects are dropped.
+     *  @param dropObjects The list of objects dropped onto the target.
+     *  @param moml The moml string generated for the dropped objects.
+     *  @exception IllegalActionException If the handling is unsuccessful.
+     */
+    public void dropObject(NamedObj target, List dropObjects, String moml)
+            throws IllegalActionException {
+        NamedObj container = getContainer();
+        if (container instanceof DropTargetHandler) {
+            ((DropTargetHandler) container).dropObject(target, dropObjects,
+                    moml);
+        }
     }
 
     /** Get a NamedObj with the given name in the refinement of this state, if

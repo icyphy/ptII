@@ -35,6 +35,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeMap;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
@@ -52,6 +53,7 @@ import ptolemy.domains.fsm.modal.ModalController;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -456,6 +458,19 @@ public class ERGController extends ModalController {
 
     /** The ERG director contained by this controller. */
     public ERGDirector director;
+
+    /** Return a map from the classes of the entities to be dropped into a state
+     *  and the class names of the refinements that can be used to contain those
+     *  entities.
+     *
+     *  @return The map.
+     */
+    protected TreeMap<Class<? extends Entity>, String> _getRefinementClasses() {
+        TreeMap<Class<? extends Entity>, String> map =
+            super._getRefinementClasses();
+        map.put(Event.class, ERGController.class.getName());
+        return map;
+    }
 
     /** Set the event currently being executed.
      *

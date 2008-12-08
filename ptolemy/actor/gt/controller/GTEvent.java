@@ -27,13 +27,18 @@
 */
 package ptolemy.actor.gt.controller;
 
+import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.domains.erg.kernel.ERGController;
 import ptolemy.domains.erg.kernel.Event;
+import ptolemy.domains.fsm.modal.ContainerSuggestion;
 import ptolemy.domains.fsm.modal.RefinementExtender;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.ValueListener;
 
 //////////////////////////////////////////////////////////////////////////
 //// GTEvent
@@ -47,17 +52,24 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class GTEvent extends Event {
+public class GTEvent extends Event implements ValueListener {
 
     public GTEvent(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
+        containerSuggestion = new ContainerSuggestion(this,
+                "containerSuggestion");
+        containerSuggestion.setPersistent(false);
+
         refinementExtender = new RefinementExtender(this, "refinementExtender");
+        refinementExtender.className.addValueListener(this);
         refinementExtender.description.setExpression(
                 "Embedded Transformation Controller");
         refinementExtender.setPersistent(false);
         _setRefinementExtender();
+        
+        new Parameter(this, "_allowRefinement").setToken(BooleanToken.FALSE);
     }
 
     public ModelParameter getModelParameter() throws IllegalActionException {
@@ -94,22 +106,30 @@ public class GTEvent extends Event {
 
     public RefinementExtender refinementExtender;
 
+    public ContainerSuggestion containerSuggestion;
+
     private void _setRefinementExtender() {
         NamedObj container = getContainer();
-        if (container == null || !(container instanceof ERGController)) {
-            return;
-        }
-
-        ERGController controller = (ERGController) container;
-        if (controller != null && refinementExtender != null) {
-            if (controller.getPort("modelInput") != null &&
-                    controller.getPort("modelOutput") != null) {
-                refinementExtender.className.setExpression("ptolemy.actor.gt." +
-                        "controller.EmbeddedTransformationControllerWithPorts");
-            } else {
-                refinementExtender.className.setExpression("ptolemy.actor.gt." +
-                        "controller.EmbeddedTransformationController");
+        if (refinementExtender != null) {
+            if (container instanceof ERGController) {
+                ERGController controller = (ERGController) container;
+                if (controller.getPort("modelInput") != null &&
+                        controller.getPort("modelOutput") != null) {
+                    refinementExtender.className.setExpression("ptolemy." +
+                            "actor.gt.controller." +
+                            "EmbeddedTransformationControllerWithPorts");
+                    return;
+                }
             }
+            refinementExtender.className.setExpression("ptolemy.actor.gt." +
+                    "controller.EmbeddedTransformationController");
+        }
+    }
+
+    public void valueChanged(Settable settable) {
+        if (settable == refinementExtender.className) {
+            containerSuggestion.containerClassName.setExpression(
+                    refinementExtender.className.getExpression());
         }
     }
 }

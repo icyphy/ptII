@@ -26,9 +26,12 @@
  */
 package ptolemy.domains.fsm.modal;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.TreeMap;
 
 import ptolemy.actor.TypedActor;
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.domains.fsm.kernel.ContainmentExtender;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.RefinementActor;
@@ -37,12 +40,14 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
+import ptolemy.kernel.util.DropTargetHandler;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.moml.MoMLChangeRequest;
 
 // NOTE: This class duplicates code in Refinement, but
 // because of the inheritance hierarchy, there appears to be no convenient
@@ -64,7 +69,9 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (reviewmoderator)
  */
-public class ModalController extends FSMActor implements RefinementActor {
+public class ModalController extends FSMActor implements DropTargetHandler,
+        RefinementActor {
+
     /** Construct a modal controller with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.
@@ -102,6 +109,94 @@ public class ModalController extends FSMActor implements RefinementActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** React to a list of objects being dropped onto a target.
+     *
+     *  @param target The target on which the objects are dropped.
+     *  @param dropObjects The list of objects dropped onto the target.
+     *  @param moml The moml string generated for the dropped objects.
+     *  @exception IllegalActionException If the handling is unsuccessful.
+     */
+    public void dropObject(NamedObj target, List dropObjects, String moml)
+            throws IllegalActionException {
+        boolean merge = false;
+        if (target instanceof State) {
+            State state = (State) target;
+
+            TreeMap<Class<? extends Entity>, String> map =
+                _getRefinementClasses();
+            String refinementClass = null;
+            boolean conflict = false;
+            for (Object dropObject : dropObjects) {
+                NamedObj namedObj = (NamedObj) dropObject;
+                ContainerSuggestion suggestion = (ContainerSuggestion) namedObj
+                        .getAttribute("containerSuggestion");
+                if (suggestion != null) {
+                    String className = suggestion.containerClassName
+                            .getExpression();
+                    if (refinementClass == null) {
+                        refinementClass = className;
+                        break;
+                    } else if (!refinementClass.equals(className)) {
+                        conflict = true;
+                        break;
+                    }
+                } else {
+                    for (Class<? extends Entity> keyClass : map.keySet()) {
+                        if (keyClass.isInstance(dropObject)) {
+                            String value = map.get(keyClass);
+                            if (refinementClass == null) {
+                                refinementClass = value;
+                                break;
+                            } else if (!refinementClass.equals(value)) {
+                                conflict = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+                if (conflict) {
+                    break;
+                }
+            }
+
+            if (conflict || refinementClass == null) {
+                throw new IllegalActionException(this, "Unable to determine " +
+                        "the type of all the dropped objects.");
+            }
+
+            TypedActor[] refinements = state.getRefinement();
+            TypedActor refinement = null;
+            if (refinements != null) {
+                for (TypedActor actor : refinements) {
+                    if (((NamedObj) actor).getClassName().equals(
+                            refinementClass)) {
+                        refinement = actor;
+                        break;
+                    }
+                }
+            }
+            if (refinement == null) {
+                CompositeEntity containerContainer =
+                    (CompositeEntity) state.getContainer().getContainer();
+                String name = containerContainer.uniqueName(state.getName());
+                Refinement.addRefinement(state, name, null, refinementClass,
+                        null);
+                merge = true;
+                refinement = (TypedActor) containerContainer.getEntity(name);
+            }
+            target = (NamedObj)refinement;
+            moml = "<group name=\"auto\">" + moml + "</group>";
+        } else {
+            moml = "<group>" + moml + "</group>";
+        }
+        MoMLChangeRequest request = new MoMLChangeRequest(this, target, moml);
+        request.setUndoable(true);
+        if (merge) {
+            request.setMergeWithPreviousUndo(true);
+        }
+        target.requestChange(request);
+    }
 
     /** Get the state in any ModalController within this ModalModel that has
      *  this ModalController as its refinement, if any. Return null if no such
@@ -220,10 +315,61 @@ public class ModalController extends FSMActor implements RefinementActor {
         }
     }
 
+    /** Return a map from the classes of the entities to be dropped into a state
+     *  and the class names of the refinements that can be used to contain those
+     *  entities.
+     *
+     *  @return The map.
+     */
+    protected TreeMap<Class<? extends Entity>, String> _getRefinementClasses() {
+        TreeMap map = new TreeMap<Class<? extends Entity>, String>(
+                new ClassComparator());
+        map.put(State.class, ModalController.class.getName());
+        map.put(TypedActor.class, TypedCompositeActor.class.getName());
+        return map;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    // These are protected to be accessible to ModalModel.
 
     /** Indicator that we are processing a newPort request. */
     protected boolean _mirrorDisable = false;
+
+    //////////////////////////////////////////////////////////////////////////
+    //// ClassComparator
+
+    /**
+     A comparator to compare classes, which is used to sort the map returned by
+     {@link #_getRefinementClasses()}.
+
+     @author Thomas Huining Feng
+     @version $Id$
+     @since Ptolemy II 7.1
+     @Pt.ProposedRating Red (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
+     */
+    private static class ClassComparator
+            implements Comparator<Class<? extends Entity>> {
+
+        /** Compare class1 and class2, and return -1 if class1 is a subclass of
+         *  class2, 1 if class2 is a subclass of class1, and otherwise, the
+         *  result of comparing the names of class1 and class2.
+         *
+         *  @param class1 The first class.
+         *  @param class2 The second class.
+         *  @return -1, 0, or 1 representing whether class1 is less than, equal
+         *   to, or greater than class2.
+         */
+        public int compare(Class<? extends Entity> class1,
+                Class<? extends Entity> class2) {
+            if (!class1.equals(class2)) {
+                if (class1.isAssignableFrom(class2)) {
+                    return 1;
+                } else if (class2.isAssignableFrom(class1)) {
+                    return -1;
+                }
+            }
+            return class1.getName().compareTo(class2.getName());
+        }
+    }
 }
