@@ -525,26 +525,27 @@ length first} ordering requires to modify the delay of flows at sharing some
 links with $f'$ that have larger maximum packet lengths larger than the new flow
 maximum packet length. 
 
-$\forall f \in F  that l_{f'} < l_f$ and $y_{f',e}u{f,e}=1 \mbox{ for some } e
+$\forall f \in F$  that $l_{f'} < l_f$ and $y_{f',e}y{f,e}=1 \mbox{ for some } e
 \in E$, from (\ref{equ:e2eDelayCTNonPipeline1}) we have:
 
 \begin{equation}\label{equ:e2eDelayModification}
-\sum_{e \in E} (\sum_{\forall g \in F:l_g <
-l_{f'}}y_{g,e}s_{g,e}+max(s_{i \in F}.y_{i,e}))y_{f',e} +y_{f',e}s_{f',e} \leq
-P(f)(4)-P(f)(3) + 1, \forall f \in F
+\sum_{e \in E} \left(\left(\sum_{\forall g \in F:l_g <
+l_{f}}y_{g,e}s_{g,e}+max(s_{i \in F}.y_{i,e})\right)y_{f,e}
++y_{f',e}s_{f',e}\right) \leq P(f)(4)-P(f)(3) + 1, \forall f \in F
 \end{equation}
 
 or
 
 \begin{equation}\label{equ:e2eDelayModificatio2}
-y_{f',e}s_{f',e} \leq P(f)(4)-P(f)(3) + 1 - \sum_{e \in E} (\sum_{\forall g \in
-F:l_g < l_{f'}}y_{g,e}s_{g,e}+max(s_{i \in F}.y_{i,e}))y_{f',e}, \forall f \in F
+\sum_{\forall e \in E}y_{f',e}s_{f',e} \leq P(f)(4)-P(f)(3) + 1 - \sum_{e \in E}
+\left(\sum_{\forall g \in F:l_g < l_f}y_{g,e}s_{g,e}+max(s_{i \in
+F}.y_{i,e})\right)y_{f,e}, \forall f \in F
 \end{equation}
 
 or
 
 \begin{equation}\label{equ:e2eDelayModificatio3}
-y_{f',e}s_{f',e} \leq slack_f, \forall f \in F
+\sum_{\forall e \in E}y_{f',e}s_{f',e} \leq slack_f, \forall f \in F
 \end{equation}
 
 What we should minimize: power or future paths?
