@@ -589,7 +589,44 @@ test NamedList-100.6 {remove String} {
 	[list $r2_99 $r2_100 $r2_101]
 } {{98 99 100} {1 1 1}}
 
-test NamedList-100.7 {removeAll} {
+test NamedList-100.8 {change the name} {
+
+    # Thomas writes:
+    # I think the newly updated NamedList has a bug that could break large
+    # models. It automatically uses a HashMap to accelerate element lookup
+    # by names when the number of elements contained in it exceeds 100. This
+    # is due to the following change:
+    #
+    # 50642 9/15/08 6:23 PM 1 cxh Performance enhancements by Jason
+    # E. Smith that use a HashMap if the size is over 100 elements.
+    #
+    # However, this does not take into account that elements' names could be
+    # changed. So if a list contains more than 100 element, a HashMap is
+    # created with the current elements' names as keys and the elements
+    # themselves as values. But if I change an element's name, then the key
+    # no longer matches its new name, and if I look up the element with
+    # get(String), I wouldn't be able to find it with the new name.
+    # 
+    # This causes a model transformation model to fail, which generates 100+
+    # entities, renames each entity after creation, and tries to use
+    # getEntity(String) to get back those entities in the composite actor.
+
+    set n98_99 [$namedList99 get n98]
+    set n98_100 [$namedList100 get n98]
+    set n98_101 [$namedList101 get n98]
+
+    $n98_99 setName n98_99new
+    $n98_100 setName n98_100new
+    $n98_101 setName n98_101new
+
+    set r1_99 [[$namedList99 get n98_99new] getName]
+    set r1_100 [[$namedList100 get n98_100new] getName]
+    set r1_101 [[$namedList101 get n98_101new] getName]
+
+    list [list $r1_99 $r1_100 $r1_101]
+} {{n98_99new n98_100new n98_101new}}
+
+test NamedList-100.666 {removeAll} {
     $namedList99 removeAll
     $namedList100 removeAll
     $namedList101 removeAll
