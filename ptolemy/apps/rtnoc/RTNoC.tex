@@ -338,7 +338,7 @@ the inequality (\ref{equ:intervalservice1}) can be expressed in the flowing way:
 t_f y_{f,e}\geq \sum_{f^{'} \in F} s_{f^{'}}y_{f^{'},e}, \forall e \in E
 \end{equation}
 or
-\begin{equation}
+\begin{equation}\label{equ:intervalservice3}
 P(f)(2) y_{f,e}\geq \sum_{f^{'} \in F} s_{f^{'}}y_{f^{'},e}, \forall e \in E
 \end{equation}
 This means that no deadlines for subsequent packets of a real-time flow will fall within the interval 
@@ -387,8 +387,8 @@ delays at this node (thereby smaller deadlines when packets come at the same tim
 will give the smallest {\em overall} delay at this node.
 
 \subsection{Configuration}
-A valid configuration $\mathcal{C}(F)$ must satisfy $(\ref{connectivity1}) 
-(\ref{equ:e2eDelayST}) (\ref{equ:utilization1})$
+A valid configuration $\mathcal{C}(F)$ must satisfy (\ref{connectivity1}) 
+(\ref{equ:e2eDelayST}) (\ref{equ:intervalservice3}) (\ref{equ:utilization1})
 
 \begin{equation}\label{connectivity1} Iy_f=b_f,\forall f \in F
 \end{equation}
@@ -452,7 +452,8 @@ l_{f}}y_{g,e}s_{g,e}+max(s_{i \in F}.y_{i,e}))y_{f,e} \leq P(f)(4)-P(f)(3) + 1,
 \end{equation}
 
 Now a valid configuration $\mathcal{C}(F)$ has to satisfy (\ref{connectivity1}) 
-(\ref{equ:utilization2}) (\ref{equ:e2eDelayCTNonPipeline1})
+(\ref{equ:utilization2})
+(\ref{equ:intervalservice3}) (\ref{equ:e2eDelayCTNonPipeline1})
 
 \subsection{Dynamic Path Establishment and Routing}
 When a new real-time path needs to be set up with some specifications, we have:
