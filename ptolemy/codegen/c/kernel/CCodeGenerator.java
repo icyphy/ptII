@@ -221,10 +221,13 @@ public class CCodeGenerator extends CodeGenerator {
             mainEntryCode.append(_eol + _eol
                     + "int main(int argc, char *argv[]) {" + _eol);
             String targetValue = target.getExpression();
-            if (!targetValue.equals(_DEFAULT_TARGET)) {
-                mainEntryCode.append("//FIXME: CCodeGenerator hack" + _eol
-                        + "init();" + _eol);
-            }
+
+            // FIXME: why do we need this?
+//            if (!targetValue.equals(_DEFAULT_TARGET)) {
+//                mainEntryCode.append("//FIXME: CCodeGenerator hack" + _eol
+//                        + "init();" + _eol);
+//            }
+            
         } else {
             // If the container is not in the top level, we are generating code
             // for the Java and C co-simulation.
