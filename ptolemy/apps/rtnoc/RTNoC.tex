@@ -106,8 +106,9 @@ on a chip by borrowing the resource reservation idea \cite{Zhang93rsvp} from the
 Internet to the network on chip. In that, all the real-time communications 
 have to be previously reserved on the network. 
 
-Real-time flows can be multiplexed \cite{Ferrari90ascheme, Zhang_1service} on links in networks without violating
-real-time requirements. Other best-effort flows can still use remaining bandwidth on reserved links.
+Real-time flows can be multiplexed \cite{Ferrari90ascheme, Zhang_1service} on
+links in networks without violating real-time requirements. Other best-effort
+flows can still use remaining bandwidth on reserved links.
 
 An admission control mechanism is implemented, thus when a reservation 
 for a real-time flow is initiated by a sender in a network, the network will determine if 
@@ -141,14 +142,15 @@ which is really not suitable for the multi-core architecture.
 \section{Formal Definitions}
 \begin{itemize}
 \item $t_f$ is the {\em minimum} packet interval time in cycles between two
-secessive packets of a real-time flow $f$.
+successive packets of a real-time flow $f$.
 \item $l_f$ is the {\em maximum} length of a packet in flits of real-time flow
 $f$.
 \item $s_{f,e}$ is the service time for a packet in a node including header 
 processing, transmission time, and any other operations. $s$ is often a 
 function of $l$: $s=f(l)$. We can set $s=value(l)$, this means that it takes $1$
 cycle for a router to process and send one flit over a link. In pipeline router
-model as in \cite{PehDelayModel, PehSpecPipeR}, we have to add some pipeline stages to $l$ to have $s$. 
+model as in \cite{PehDelayModel, PehSpecPipeR}, we have to add some pipeline
+stages to $l$ to have $s$.
 \item $T \subseteq \mathbf{N}$ is the set of the min interval values between packets of flows. 
 \item $L \subseteq \mathbf{N}$ is the set of packet lengths.
 \item $D \subseteq \mathbf{N}$ is the set of packet delays of real-time flows.
@@ -243,8 +245,8 @@ in the network, called {\em master node}, as in Figure \ref{fig:ReqSetup}.
 Based on its knowledge about other flows in the network and the demand for the
 new real-time flow, the master node will seek to find a suitable path. If there
 exists a suitable path, the master node will send SETUP command messages to
-appropriate routers in the network to config routers' configurations. This re-configuration
-can include adjusting configurations of other flows at the routers.
+appropriate routers in the network to configure routers' configurations. This
+re-configuration can include adjusting configurations of other flows at the routers.
 
 Routers receiving SETUP command message will adjust their internal
 configurations as specified in the message. After finishing setting up internal
@@ -299,10 +301,10 @@ $q_{f,v}$ is the {\em maximum} delay of a {\em flit} in flow $f$ at
 hop (router) $v$ in cycles.This is the {\em queueing} delay.
 
 The delay at each node of a packet is defined as the duration from the header
-of that  packet is received until the header is started to send, then we do not need to include
-the service time of the packet itself at the node. The {\em minimum} local
-delay of a packet at a node is thus the same as the maximum delay of a flit
-at a node since we do not allow to preempt real-time packets. In
+of that  packet is received until the header is started to send, then we do not
+need to include the service time of the packet itself at the node. The {\em
+minimum} local delay of a packet at a node is thus the same as the maximum
+delay of a flit at a node since we do not allow preempting real-time packets. In
 \cite{Ferrari90ascheme}, the delay is :
 
 \begin{equation}\label{equ:nodedelay1}
@@ -433,7 +435,7 @@ cut-through network, it becomes
 \sum_{e \in E}d_{f,e}y_{f,e} + (s_f - 1) \leq P(f)(4), \forall f \in F
 \end{equation}
 since we have to include the service time, $s_f-1$, for a packet of flow $f$ at
-the last node to receive {\em remaning} flits in the packet, not only the
+the last node to receive {\em remaining} flits in the packet, not only the
 header.
 
 For simple router models (non-pipeline), we have $s_f = P(f)(3)$, then
