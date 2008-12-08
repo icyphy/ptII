@@ -219,7 +219,7 @@ public final class NamedList implements Cloneable, Serializable {
             _insertAt((index + 1), element);
         }
         if (_hashEnabled) {
-            _hashedList.put(name, element);
+            _hashedList.put(element.getName(), element);
         }
     }
 
@@ -244,7 +244,7 @@ public final class NamedList implements Cloneable, Serializable {
             _insertAt(index, element);
         }
         if (_hashEnabled) {
-            _hashedList.put(name, element);
+            _hashedList.put(element.getName(), element);
         }
     }
 
@@ -504,7 +504,8 @@ public final class NamedList implements Cloneable, Serializable {
     }
 
     /*
-     * Activates use of a hashmap to quicken lookup times of items stored in this list.
+     * Activates use of a hashmap to quicken lookup times of items
+     * stored in this list.
      */
     private void enableHash() {
 
