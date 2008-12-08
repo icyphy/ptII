@@ -484,27 +484,18 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
      *  @return a List of all atomic entities in the model.
      */
     public List lazyAllAtomicEntityList() {
+        LinkedList result = new LinkedList();
         // We don't use an Iterator here so that we can modify the list
         // rather than having both an Iterator and a result list.
-        List entities = lazyDeepEntityList();
-
-        for (int i = 0; i < entities.size(); i++) {
-            Object entity = entities.get(i);
-
+        for (Object entity : lazyDeepEntityList()) {
             if (entity instanceof CompositeEntity) {
-                // Remove the composite actor and add its containees.
-                entities.remove(i);
-
-                // Note that removing an element from the list causes
-                // the indices of later elements to shift forward by 1.
-                // We reduce the index i by one to match the index in
-                // the list.
-                i--;
-                entities.addAll(((CompositeEntity) entity)
+                result.addAll(((CompositeEntity) entity)
                         .lazyAllAtomicEntityList());
+            } else {
+                result.add(entity);
             }
         }
-        return entities;
+        return result;
     }
 
     /** Lazy version of {#link #allCompositeEntityList()}.
