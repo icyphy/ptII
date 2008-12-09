@@ -80,7 +80,7 @@ public class ERGGraphFrame extends FSMGraphFrame {
         super(entity, tableau, defaultLibrary);
     }
 
-    public synchronized void saveAsEventGroup() {
+    public synchronized void saveAsDesignPattern() {
         Tableau tableau = getTableau();
         PtolemyEffigy effigy = (PtolemyEffigy) tableau.getContainer();
         NamedObj model = effigy.getModel();
@@ -96,7 +96,7 @@ public class ERGGraphFrame extends FSMGraphFrame {
         }
 
         try {
-            _performingSaveAsEventGroup = true;
+            _performingSaveAsDesignPattern = true;
             controller.exportAsGroup.setToken(BooleanToken.TRUE);
 
             JFileChooser fileDialog = _saveAsFileDialog();
@@ -123,7 +123,7 @@ public class ERGGraphFrame extends FSMGraphFrame {
             throw new InternalErrorException(controller, e,
                     "Unable to export model.");
         } finally {
-            _performingSaveAsEventGroup = false;
+            _performingSaveAsDesignPattern = false;
             try {
                 controller.exportAsGroup.setToken(BooleanToken.FALSE);
             } catch (IllegalActionException e) {
@@ -187,12 +187,12 @@ public class ERGGraphFrame extends FSMGraphFrame {
 
     protected synchronized JFileChooser _saveAsFileDialog() {
         JFileChooser dialog = super._saveAsFileDialog();
-        if (_performingSaveAsEventGroup) {
+        if (_performingSaveAsDesignPattern) {
             Query query = (Query) dialog.getAccessory();
             query.setBoolean("submodel", true);
         }
         return dialog;
     }
 
-    private boolean _performingSaveAsEventGroup = false;
+    private boolean _performingSaveAsDesignPattern = false;
 }

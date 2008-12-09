@@ -211,7 +211,7 @@ public class ERGGraphController extends FSMGraphController {
     public class SaveAsEventGroupAction extends FigureAction {
 
         public SaveAsEventGroupAction() {
-            super("Save as Event Group");
+            super("Save as Design Pattern");
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -219,7 +219,7 @@ public class ERGGraphController extends FSMGraphController {
 
             ERGGraphFrame frame = (ERGGraphFrame) ERGGraphController.this
                     .getFrame();
-            frame.saveAsEventGroup();
+            frame.saveAsDesignPattern();
         }
     }
 
