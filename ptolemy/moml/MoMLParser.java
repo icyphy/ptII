@@ -2013,7 +2013,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
                 if (!existedAlready) {
                     NamedObj candidate = _createEntity(className, entityName,
-                            source);
+                            source, true);
 
                     if (candidate instanceof Entity) {
                         entity = (Entity) candidate;
@@ -2444,7 +2444,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     }
                 } else {
                     NamedObj candidate = _createEntity(className, entityName,
-                            source);
+                            source, false);
 
                     if (candidate instanceof Entity) {
                         entity = (Entity) candidate;
@@ -3712,11 +3712,13 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      * @param className
      * @param entityName
      * @param source
+     * @param isClass True to create a class definition, false to create
+     *  an instance.
      * @return
      * @exception Exception
      */
     private NamedObj _createEntity(String className, String entityName,
-            String source) throws Exception {
+            String source, boolean isClass) throws Exception {
         if ((_current != null) && !(_current instanceof CompositeEntity)) {
             throw new XmlException("Cannot create an entity inside "
                     + "of another that is not a CompositeEntity "
@@ -3897,7 +3899,14 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
                 NamedObj newEntity = _createInstance(newClass, arguments);
 
-                newEntity.propagateExistence();
+                // Propagate existence, and then mark each newly created object as a class
+                // if this is a class.
+                List<InstantiableNamedObj> impliedObjects = newEntity.propagateExistence();
+                if (isClass) {
+                    for (InstantiableNamedObj impliedObject : impliedObjects) {
+                        impliedObject.setClassDefinition(true);
+                    }
+                }
 
                 _loadIconForClass(className, newEntity);
 
@@ -4000,6 +4009,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 ComponentEntity propagatedEntity = (ComponentEntity) propagatedInstances
                         .next();
 
+                // If this is a class definition, then newly created instances should be too.
+                if (isClass) {
+                    propagatedEntity.setClassDefinition(true);
+                }
                 // Get rid of URI attribute that may have been cloned.
                 // FIXME: Should that be done in the clone method
                 // for URIAttribute?  Doesn't this violate the
