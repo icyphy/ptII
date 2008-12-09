@@ -4,9 +4,27 @@
 <entity name="TrafficLight" class="ptolemy.domains.fsm.modal.Group">
     <property name="stateDependentCausality" class="ptolemy.data.expr.Parameter" value="false">
     </property>
+    <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
+    </property>
+    <property name="finalStateNames" class="ptolemy.kernel.util.StringAttribute">
+    </property>
+    <property name="_containmentExtender" class="ptolemy.domains.fsm.kernel.ContainmentExtender">
+    </property>
     <property name="_Director" class="ptolemy.domains.erg.kernel.ERGDirector">
+        <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1E-10">
+        </property>
+        <property name="controllerName" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="LIFO" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_hide" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
         </property>
+    </property>
+    <property name="LIFO" class="ptolemy.data.expr.Parameter" value="true">
+    </property>
+    <property name="_exportAsEventGroup" class="ptolemy.data.expr.Parameter" value="true">
     </property>
     <property name="SynchronizeToRealtime" class="ptolemy.domains.erg.lib.SynchronizeToRealtime" value="true">
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -80,8 +98,6 @@
         </property>
         <property name="height" class="ptolemy.data.expr.Parameter" value="20.0">
         </property>
-        <property name="centered" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
         <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1-light(1), 1, 1-light(1), 1.0}">
         </property>
     </property>
@@ -91,8 +107,6 @@
         <property name="width" class="ptolemy.data.expr.Parameter" value="20.0">
         </property>
         <property name="height" class="ptolemy.data.expr.Parameter" value="20.0">
-        </property>
-        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1, 1, 1-light(2), 1.0}">
         </property>

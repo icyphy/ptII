@@ -56,7 +56,6 @@ public class DEMessageSource extends TypedAtomicActor {
     /** Constructor.
      *  @param container The composite actor that this actor belongs to.
      *  @param name The name of this actor.
-     *  @param value The value of the output events.
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
      *  @exception NameDuplicationException If the container already has an

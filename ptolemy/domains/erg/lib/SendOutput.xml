@@ -4,9 +4,29 @@
 <entity name="SendOutput" class="ptolemy.domains.fsm.modal.Group">
     <property name="stateDependentCausality" class="ptolemy.data.expr.Parameter" value="false">
     </property>
+    <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
+    </property>
+    <property name="finalStateNames" class="ptolemy.kernel.util.StringAttribute">
+    </property>
+    <property name="_containmentExtender" class="ptolemy.domains.fsm.kernel.ContainmentExtender">
+    </property>
+    <property name="_exportAsGroup" class="ptolemy.data.expr.Parameter" value="true">
+    </property>
     <property name="_Director" class="ptolemy.domains.erg.kernel.ERGDirector">
+        <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1E-10">
+        </property>
+        <property name="controllerName" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="LIFO" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_hide" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
         </property>
+    </property>
+    <property name="LIFO" class="ptolemy.data.expr.Parameter" value="true">
+    </property>
+    <property name="_exportAsEventGroup" class="ptolemy.data.expr.Parameter" value="true">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Schedule the Output event with&#10;some data as parameter to send&#10;those data to the dataOutput&#10;port.">

@@ -32,6 +32,9 @@ import java.util.TreeMap;
 
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.domains.fsm.kernel.ContainmentExtender;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.RefinementActor;
@@ -47,6 +50,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLChangeRequest;
 
@@ -86,8 +90,40 @@ public class ModalController extends FSMActor implements DropTargetHandler,
     public ModalController(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-
+        _init();
+    }
+    
+    /** Clone the controller into the specified workspace. This calls the
+     *  base class and then sets the attribute public members to refer
+     *  to the attributes of the new actor.
+     *
+     *  @param workspace The workspace for the new controller.
+     *  @return A new ERGController.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ModalController controller = (ModalController) super.clone(workspace);
+        controller.exportAsGroup = (Parameter) controller.getAttribute(
+                "_exportAsGroup");
+        return controller;
+    }
+    
+    /** Initialize this modal controller.
+     * 
+     *  @exception IllegalActionException If the container is incompatible
+     *   with this actor.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an actor already in the container.
+     */
+    private void _init() throws IllegalActionException,
+            NameDuplicationException {
         new ContainmentExtender(this, "_containmentExtender");
+
+        exportAsGroup = new Parameter(this, "_exportAsGroup");
+        exportAsGroup.setTypeEquals(BaseType.BOOLEAN);
+        exportAsGroup.setToken(BooleanToken.FALSE);
+        exportAsGroup.setVisibility(Settable.EXPERT);
     }
 
     /** Construct a modal controller in the specified workspace with
@@ -100,7 +136,7 @@ public class ModalController extends FSMActor implements DropTargetHandler,
         super(workspace);
 
         try {
-            new ContainmentExtender(this, "_containmentExtender");
+            _init();
         } catch (KernelException e) {
             // This should never happen.
             throw new InternalErrorException("Constructor error "
@@ -297,6 +333,11 @@ public class ModalController extends FSMActor implements DropTargetHandler,
     public void setMirrorDisable(boolean disable) {
         _mirrorDisable = disable;
     }
+
+    /** A Boolean parameter that tells whether the Moml of this ERGController
+     *  should be generated as a group (an instance of {@link Group}) or not.
+     */
+    public Parameter exportAsGroup;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////

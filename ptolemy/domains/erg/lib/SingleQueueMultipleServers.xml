@@ -4,9 +4,27 @@
 <entity name="SingleQueueMultipleServers" class="ptolemy.domains.fsm.modal.Group">
     <property name="stateDependentCausality" class="ptolemy.data.expr.Parameter" value="false">
     </property>
+    <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
+    </property>
+    <property name="finalStateNames" class="ptolemy.kernel.util.StringAttribute">
+    </property>
+    <property name="_containmentExtender" class="ptolemy.domains.fsm.kernel.ContainmentExtender">
+    </property>
     <property name="_Director" class="ptolemy.domains.erg.kernel.ERGDirector">
+        <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1E-10">
+        </property>
+        <property name="controllerName" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="LIFO" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_hide" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
         </property>
+    </property>
+    <property name="LIFO" class="ptolemy.data.expr.Parameter" value="true">
+    </property>
+    <property name="_exportAsEventGroup" class="ptolemy.data.expr.Parameter" value="true">
     </property>
     <property name="servers" class="ptolemy.data.expr.Parameter" value="3">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">

@@ -27,18 +27,25 @@
  */
 package ptolemy.domains.fsm.modal;
 
+import java.io.IOException;
+import java.io.Writer;
+import java.util.List;
+
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.data.BooleanToken;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// RefinementPort
@@ -58,17 +65,6 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (liuxj)
  */
 public class RefinementPort extends TypedIOPort {
-    /** Construct a port in the given workspace.
-     *  @param workspace The workspace.
-     *  @exception IllegalActionException If the port is not of an acceptable
-     *   class for the container, or if the container does not implement the
-     *   TypedActor interface.
-     */
-    public RefinementPort(Workspace workspace) {
-        super(workspace);
-        _checkWhetherMirrorIsInput();
-    }
-
     /** Construct a port with a containing actor and a name
      *  that is neither an input nor an output.  The specified container
      *  must implement the TypedActor interface, or an exception will be
@@ -84,6 +80,14 @@ public class RefinementPort extends TypedIOPort {
     public RefinementPort(ComponentEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        _checkWhetherMirrorIsInput();
+    }
+
+    /** Construct a port in the given workspace.
+     *  @param workspace The workspace.
+     */
+    public RefinementPort(Workspace workspace) {
+        super(workspace);
         _checkWhetherMirrorIsInput();
     }
 
@@ -652,6 +656,61 @@ public class RefinementPort extends TypedIOPort {
         } finally {
             _mirrorDisable = disableStatus;
             _workspace.doneWriting();
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                          protected methods                ////
+
+    protected void _exportMoMLContents(Writer output, int depth)
+            throws IOException {
+        boolean isInput = isInput();
+        if (isInput) {
+            NamedObj container = getContainer();
+            if (container instanceof ModalController) {
+                boolean exportAsGroup;
+                try {
+                    exportAsGroup = ((BooleanToken) ((ModalController)
+                            container).exportAsGroup.getToken()).booleanValue();
+                } catch (IllegalActionException e) {
+                    exportAsGroup = false;
+                }
+                if (exportAsGroup) {
+                    // Check whether this port is indeed an input port by
+                    // looking at the ModalPort that it connects to.
+                    List<Port> connectedPorts = connectedPortList();
+                    for (Port port : connectedPorts) {
+                        if (port instanceof ModalPort && !((ModalPort) port).isInput()) {
+                            isInput = false;
+                            break;
+                        }
+                    }
+                }
+            }
+            if (isInput) {
+                output.write(_getIndentPrefix(depth)
+                        + "<property name=\"input\"/>\n");
+            }
+        }
+        if (isOutput()) {
+            output.write(_getIndentPrefix(depth)
+                    + "<property name=\"output\"/>\n");
+        }
+        if (isMultiport()) {
+            output.write(_getIndentPrefix(depth)
+                    + "<property name=\"multiport\"/>\n");
+        }
+
+        String displayName = getDisplayName();
+        if (!displayName.equals(getName())) {
+            output.write("<display name=\"");
+            output.write(StringUtilities.escapeForXML(displayName));
+            output.write("\"/>");
+        }
+
+        List<Attribute> attributes = attributeList();
+        for (Attribute attribute : attributes) {
+            attribute.exportMoML(output, depth);
         }
     }
 

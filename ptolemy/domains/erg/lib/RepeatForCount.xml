@@ -4,9 +4,27 @@
 <entity name="RepeatForCount" class="ptolemy.domains.fsm.modal.Group">
     <property name="stateDependentCausality" class="ptolemy.data.expr.Parameter" value="false">
     </property>
+    <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
+    </property>
+    <property name="finalStateNames" class="ptolemy.kernel.util.StringAttribute">
+    </property>
+    <property name="_containmentExtender" class="ptolemy.domains.fsm.kernel.ContainmentExtender">
+    </property>
     <property name="_Director" class="ptolemy.domains.erg.kernel.ERGDirector">
+        <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1E-10">
+        </property>
+        <property name="controllerName" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="LIFO" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_hide" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
         </property>
+    </property>
+    <property name="LIFO" class="ptolemy.data.expr.Parameter" value="true">
+    </property>
+    <property name="_exportAsEventGroup" class="ptolemy.data.expr.Parameter" value="true">
     </property>
     <property name="count" class="ptolemy.data.expr.Parameter" value="3">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -24,7 +42,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{245.0, 55.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[298.8406768161293, 68.82653310471702]">
         </property>
     </property>
     <property name="i" class="ptolemy.data.expr.Parameter" value="0">
@@ -43,13 +61,13 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{330.0, 55.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[383.8406768161293, 68.82653310471702]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Repeat the action for &quot;count&quot; times.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{185.0, 80.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[238.8406768161293, 93.82653310471702]">
         </property>
     </property>
     <entity name="Start" class="ptolemy.actor.gt.controller.GTEvent">
@@ -63,7 +81,7 @@
         </property>
         <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{120.0, 65.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[173.8406768161293, 78.82653310471702]">
         </property>
     </entity>
     <entity name="Act" class="ptolemy.domains.erg.kernel.Event">
@@ -71,7 +89,7 @@
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{176.7145116814515, 173.02156455659835}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.55518849758082, 186.84809766131536]">
         </property>
         <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
         </property>

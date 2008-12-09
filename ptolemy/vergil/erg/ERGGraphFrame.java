@@ -29,12 +29,14 @@
 package ptolemy.vergil.erg;
 
 import java.io.File;
-import java.util.Iterator;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.List;
 
 import javax.swing.JFileChooser;
 
 import ptolemy.actor.gt.GTTools;
-import ptolemy.actor.gui.Effigy;
+import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.data.BooleanToken;
 import ptolemy.domains.erg.kernel.ERGController;
@@ -79,20 +81,17 @@ public class ERGGraphFrame extends FSMGraphFrame {
     }
 
     public synchronized void saveAsEventGroup() {
-        ERGController controller = (ERGController) getModel();
-        _initialSaveAsFileName = controller.getName() + ".xml";
+        Tableau tableau = getTableau();
+        PtolemyEffigy effigy = (PtolemyEffigy) tableau.getContainer();
+        NamedObj model = effigy.getModel();
+        _initialSaveAsFileName = model.getName() + ".xml";
         if (_initialSaveAsFileName.length() == 4) {
-            // Useless model name (empty string).
             _initialSaveAsFileName = "model.xml";
         }
 
-        Tableau tableau = getTableau();
-
-        Effigy effigy = (Effigy) tableau.getContainer();
-        Iterator attributes = controller.attributeList(Attribute.class)
-                .iterator();
-        while (attributes.hasNext()) {
-            Attribute attribute = (Attribute) attributes.next();
+        ERGController controller = (ERGController) getModel();
+        List<Attribute> attributes = controller.attributeList();
+        for (Attribute attribute : attributes) {
             attribute.updateContent();
         }
 
@@ -114,7 +113,7 @@ public class ERGGraphFrame extends FSMGraphFrame {
                 try {
                     if (_confirmFile(null, file)) {
                         _directory = fileDialog.getCurrentDirectory();
-                        effigy.writeFile(file);
+                        _writeModelToFile(effigy.getElementName(), file);
                     }
                 } catch (Exception ex) {
                     report("Error in save as event group.", ex);
@@ -129,6 +128,36 @@ public class ERGGraphFrame extends FSMGraphFrame {
                 controller.exportAsGroup.setToken(BooleanToken.FALSE);
             } catch (IllegalActionException e) {
                 // Ignore.
+            }
+        }
+    }
+    
+    protected void _writeModelToFile(String elementName, File file)
+            throws IOException {
+        FileWriter fileWriter = null;
+
+        try {
+            fileWriter = new FileWriter(file);
+            String name = getModel().getName();
+            String filename = file.getName();
+            int period = filename.indexOf(".");
+            if (period > 0) {
+                name = filename.substring(0, period);
+            } else {
+                name = filename;
+            }
+            NamedObj model = getModel();
+            if (model.getContainer() != null) {
+                fileWriter.write("<?xml version=\"1.0\" standalone=\"no\"?>\n"
+                        + "<!DOCTYPE " + elementName + " PUBLIC "
+                        + "\"-//UC Berkeley//DTD MoML 1//EN\"\n"
+                        + "    \"http://ptolemy.eecs.berkeley.edu"
+                        + "/xml/dtd/MoML_1.dtd\">\n");
+            }
+            model.exportMoML(fileWriter, 0, name);
+        } finally {
+            if (fileWriter != null) {
+                fileWriter.close();
             }
         }
     }

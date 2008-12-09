@@ -52,6 +52,7 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	ListenToInput.xml \
+	ListenToStop.xml \
 	ParallelTasks.xml \
 	RepeatForCount.xml \
 	SendOutput.xml \

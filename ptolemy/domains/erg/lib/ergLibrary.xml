@@ -7,6 +7,7 @@
       <?moml
         <group>
           <input source="ptolemy/domains/erg/lib/ListenToInput.xml"/>
+          <input source="ptolemy/domains/erg/lib/ListenToStop.xml"/>
           <input source="ptolemy/domains/erg/lib/ParallelTasks.xml"/>
           <input source="ptolemy/domains/erg/lib/RepeatForCount.xml"/>
           <input source="ptolemy/domains/erg/lib/SendOutput.xml"/>

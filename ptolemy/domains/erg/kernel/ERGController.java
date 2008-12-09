@@ -60,7 +60,6 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.kernel.util.Workspace;
 
@@ -143,8 +142,6 @@ public class ERGController extends ModalController {
         controller._executiveDirectorVersion = -1;
         controller.director = (ERGDirector) controller.getAttribute(
                 "_Director");
-        controller.exportAsGroup = (Parameter) controller.getAttribute(
-                "_exportAsEventGroup");
         return controller;
     }
 
@@ -481,11 +478,6 @@ public class ERGController extends ModalController {
     /** The ERG director contained by this controller. */
     public ERGDirector director;
 
-    /** A Boolean parameter that tells whether the Moml of this ERGController
-     *  should be generated as a group (an instance of {@link Group}) or not.
-     */
-    public Parameter exportAsGroup;
-
     /** Return a map from the classes of the entities to be dropped into a state
      *  and the class names of the refinements that can be used to contain those
      *  entities.
@@ -524,11 +516,6 @@ public class ERGController extends ModalController {
         LIFO.setTypeEquals(BaseType.BOOLEAN);
         LIFO.setToken(BooleanToken.TRUE);
         director.LIFO.setToken(BooleanToken.TRUE);
-
-        exportAsGroup = new Parameter(this, "_exportAsEventGroup");
-        exportAsGroup.setTypeEquals(BaseType.BOOLEAN);
-        exportAsGroup.setToken(BooleanToken.FALSE);
-        exportAsGroup.setVisibility(Settable.EXPERT);
     }
 
     /** The last updated executive director. */

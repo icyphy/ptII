@@ -4,9 +4,27 @@
 <entity name="ParallelTasks" class="ptolemy.domains.fsm.modal.Group">
     <property name="stateDependentCausality" class="ptolemy.data.expr.Parameter" value="false">
     </property>
+    <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
+    </property>
+    <property name="finalStateNames" class="ptolemy.kernel.util.StringAttribute">
+    </property>
+    <property name="_containmentExtender" class="ptolemy.domains.fsm.kernel.ContainmentExtender">
+    </property>
     <property name="_Director" class="ptolemy.domains.erg.kernel.ERGDirector">
+        <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1E-10">
+        </property>
+        <property name="controllerName" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="LIFO" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_hide" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
         </property>
+    </property>
+    <property name="LIFO" class="ptolemy.data.expr.Parameter" value="true">
+    </property>
+    <property name="_exportAsEventGroup" class="ptolemy.data.expr.Parameter" value="true">
     </property>
     <property name="finish" class="ptolemy.data.expr.Parameter" value="0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -45,7 +63,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[218.97405021393206, 30.57267785060361]">
         </property>
     </entity>
-    <entity name="Task1_1" class="ptolemy.domains.erg.kernel.Event">
+    <entity name="Task1A" class="ptolemy.domains.erg.kernel.Event">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
         <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
@@ -53,7 +71,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[131.13105501735117, 90.06837353319094]">
         </property>
     </entity>
-    <entity name="Task2_1" class="ptolemy.domains.erg.kernel.Event">
+    <entity name="Task2A" class="ptolemy.domains.erg.kernel.Event">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
         <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
@@ -61,7 +79,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[306.1310550173512, 90.06837353319094]">
         </property>
     </entity>
-    <entity name="Task1_2" class="ptolemy.domains.erg.kernel.Event">
+    <entity name="Task1B" class="ptolemy.domains.erg.kernel.Event">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
         <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
@@ -69,7 +87,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[131.13105501735117, 160.06837353319094]">
         </property>
     </entity>
-    <entity name="Task2_2" class="ptolemy.domains.erg.kernel.Event">
+    <entity name="Task2B" class="ptolemy.domains.erg.kernel.Event">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
         <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
@@ -77,7 +95,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[306.1310550173512, 160.06837353319094]">
         </property>
     </entity>
-    <entity name="Task1_3" class="ptolemy.domains.erg.kernel.Event">
+    <entity name="Task1C" class="ptolemy.domains.erg.kernel.Event">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
         <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
@@ -85,7 +103,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[131.13105501735117, 230.06837353319094]">
         </property>
     </entity>
-    <entity name="Task2_3" class="ptolemy.domains.erg.kernel.Event">
+    <entity name="Task2C" class="ptolemy.domains.erg.kernel.Event">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
         <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
@@ -389,18 +407,18 @@
     </relation>
     <link port="Start.outgoingPort" relation="relation"/>
     <link port="Start.outgoingPort" relation="relation2"/>
-    <link port="Task1_1.incomingPort" relation="relation"/>
-    <link port="Task1_1.outgoingPort" relation="relation3"/>
-    <link port="Task2_1.incomingPort" relation="relation2"/>
-    <link port="Task2_1.outgoingPort" relation="relation4"/>
-    <link port="Task1_2.incomingPort" relation="relation3"/>
-    <link port="Task1_2.outgoingPort" relation="relation5"/>
-    <link port="Task2_2.incomingPort" relation="relation4"/>
-    <link port="Task2_2.outgoingPort" relation="relation6"/>
-    <link port="Task1_3.incomingPort" relation="relation5"/>
-    <link port="Task1_3.outgoingPort" relation="relation7"/>
-    <link port="Task2_3.incomingPort" relation="relation6"/>
-    <link port="Task2_3.outgoingPort" relation="relation10"/>
+    <link port="Task1A.incomingPort" relation="relation"/>
+    <link port="Task1A.outgoingPort" relation="relation3"/>
+    <link port="Task2A.incomingPort" relation="relation2"/>
+    <link port="Task2A.outgoingPort" relation="relation4"/>
+    <link port="Task1B.incomingPort" relation="relation3"/>
+    <link port="Task1B.outgoingPort" relation="relation5"/>
+    <link port="Task2B.incomingPort" relation="relation4"/>
+    <link port="Task2B.outgoingPort" relation="relation6"/>
+    <link port="Task1C.incomingPort" relation="relation5"/>
+    <link port="Task1C.outgoingPort" relation="relation7"/>
+    <link port="Task2C.incomingPort" relation="relation6"/>
+    <link port="Task2C.outgoingPort" relation="relation10"/>
     <link port="Task1End.incomingPort" relation="relation7"/>
     <link port="Task1End.outgoingPort" relation="relation8"/>
     <link port="Task2End.incomingPort" relation="relation10"/>

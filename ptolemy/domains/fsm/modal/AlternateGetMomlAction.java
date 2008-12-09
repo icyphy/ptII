@@ -86,15 +86,6 @@ public class AlternateGetMomlAction {
                         IOPort ioPort = (IOPort) port;
                         boolean isInput = ioPort.isInput();
                         boolean isOutput = ioPort.isOutput();
-                        if (isInput && isOutput && ioPort instanceof RefinementPort) {
-                            List<IOPort> connectedPorts = ioPort.connectedPortList();
-                            for (IOPort connectedPort : connectedPorts) {
-                                if (!connectedPort.isInput()) {
-                                    isInput = false;
-                                    break;
-                                }
-                            }
-                        }
                         if (isInput) {
                             buffer.write(StringUtilities.getIndentPrefix(1) +
                                     "<property name=\"input\"/>\n");
