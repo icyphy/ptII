@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
 */
-package ptolemy.actor.gt.controller;
+package ptolemy.actor.gt;
 
 import ptolemy.kernel.util.Configurable;
 

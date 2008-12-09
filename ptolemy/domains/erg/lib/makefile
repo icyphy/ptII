@@ -50,8 +50,14 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 JSRCS = \
 	SynchronizeToRealtime.java
 
-OTHER_FILES_TO_BE_JARED =
-	
+OTHER_FILES_TO_BE_JARED = \
+	ListenToInput.xml \
+	ParallelTasks.xml \
+	RepeatForCount.xml \
+	SendOutput.xml \
+	SingleQueueMultipleServers.xml \
+	TrafficLight.xml \
+	ergLibrary.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

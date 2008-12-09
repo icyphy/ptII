@@ -63,6 +63,8 @@ JSRCS = \
 	Checkable.java \
 	ChoiceParameter.java \
 	CompositeActorMatcher.java \
+	ConfigurableEntity.java \
+	Configurer.java \
 	Constraint.java \
 	ContainerIgnoringAttribute.java \
 	CreationAttribute.java \
@@ -136,9 +138,11 @@ MISC_FILES =	controller data ingredients test util
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	'Constraint$1$1$1.class' \
-	'Constraint$1$1.class' \
-	'Constraint$1.class' \
+	demo \
+	'Configurer$$ContainmentExtender.class' \
+	'Constraint$$1$$1$$1.class' \
+	'Constraint$$1$$1.class' \
+	'Constraint$$1.class' \
 	'GTEntityUtils$$1.class' \
 	'GTEntityUtils$$LoadActorIconChangeRequest.class' \
 	'GTEntityUtils$$RestoreAppearanceChangeRequest.class' \
@@ -157,7 +161,12 @@ OPTIONAL_FILES = \
 	'GraphMatcher$$ObjectList.class' \
 	'GraphMatcher$$ParameterIterator.class' \
 	'GraphTransformer$$CreateObjectChangeRequest.class' \
+	'IterativeParameter$$1.class' \
 	'IterativeParameter$$ConstraintViolationException.class' \
+	'IterativeParameter$$Mode$$1.class' \
+	'IterativeParameter$$Mode$$2.class' \
+	'IterativeParameter$$Mode$$3.class' \
+	'IterativeParameter$$Mode.class' \
 	'ModelExecutor$$Wrapper$$WrapperDirector.class' \
 	'ModelExecutor$$Wrapper.class' \
 	'ModelExecutor$$WrapperPort.class' \
@@ -169,8 +178,7 @@ OPTIONAL_FILES = \
 	'TransformationMode$$Mode$$5.class' \
 	'TransformationMode$$Mode.class' \
 	'TransformationMode$$WorkingCopyScopeExtender.class' \
-	'TransformationRule$$TransformationDirector.class' \
-	demo
+	'TransformationRule$$TransformationDirector.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

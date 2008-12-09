@@ -28,10 +28,22 @@
 
 package ptolemy.vergil.erg;
 
+import java.io.File;
+import java.util.Iterator;
+
+import javax.swing.JFileChooser;
+
 import ptolemy.actor.gt.GTTools;
+import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
+import ptolemy.data.BooleanToken;
+import ptolemy.domains.erg.kernel.ERGController;
 import ptolemy.domains.erg.kernel.Event;
+import ptolemy.gui.Query;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.vergil.fsm.FSMGraphFrame;
@@ -66,6 +78,61 @@ public class ERGGraphFrame extends FSMGraphFrame {
         super(entity, tableau, defaultLibrary);
     }
 
+    public synchronized void saveAsEventGroup() {
+        ERGController controller = (ERGController) getModel();
+        _initialSaveAsFileName = controller.getName() + ".xml";
+        if (_initialSaveAsFileName.length() == 4) {
+            // Useless model name (empty string).
+            _initialSaveAsFileName = "model.xml";
+        }
+
+        Tableau tableau = getTableau();
+
+        Effigy effigy = (Effigy) tableau.getContainer();
+        Iterator attributes = controller.attributeList(Attribute.class)
+                .iterator();
+        while (attributes.hasNext()) {
+            Attribute attribute = (Attribute) attributes.next();
+            attribute.updateContent();
+        }
+
+        try {
+            _performingSaveAsEventGroup = true;
+            controller.exportAsGroup.setToken(BooleanToken.TRUE);
+
+            JFileChooser fileDialog = _saveAsFileDialog();
+            fileDialog.setSelectedFile(new File(fileDialog
+                    .getCurrentDirectory(), _initialSaveAsFileName));
+
+            int returnVal = fileDialog.showSaveDialog(this);
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File file = fileDialog.getSelectedFile();
+                if (file.getName().indexOf(".") == -1) {
+                    file = new File(file.getAbsolutePath() + ".xml");
+                }
+
+                try {
+                    if (_confirmFile(null, file)) {
+                        _directory = fileDialog.getCurrentDirectory();
+                        effigy.writeFile(file);
+                    }
+                } catch (Exception ex) {
+                    report("Error in save as event group.", ex);
+                }
+            }
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(controller, e,
+                    "Unable to export model.");
+        } finally {
+            _performingSaveAsEventGroup = false;
+            try {
+                controller.exportAsGroup.setToken(BooleanToken.FALSE);
+            } catch (IllegalActionException e) {
+                // Ignore.
+            }
+        }
+    }
+
     protected GraphPane _createGraphPane(NamedObj entity) {
         _controller = new ERGGraphController();
         _controller.setConfiguration(getConfiguration());
@@ -77,7 +144,7 @@ public class ERGGraphFrame extends FSMGraphFrame {
                 (CompositeEntity) entity);
         return new FSMGraphPane(_controller, graphModel, entity);
     }
-    
+
     protected String _getDefaultEventMoML() {
         NamedObj child = GTTools.getChild(_topLibrary, "Event", false, false,
                 true, false);
@@ -85,7 +152,18 @@ public class ERGGraphFrame extends FSMGraphFrame {
             return child.exportMoML();
         } else {
             return "<entity name=\"Event\" class=\"ptolemy.domains.erg" +
-            		".kernel.Event\">";
+                    ".kernel.Event\">";
         }
     }
+
+    protected synchronized JFileChooser _saveAsFileDialog() {
+        JFileChooser dialog = super._saveAsFileDialog();
+        if (_performingSaveAsEventGroup) {
+            Query query = (Query) dialog.getAccessory();
+            query.setBoolean("submodel", true);
+        }
+        return dialog;
+    }
+
+    private boolean _performingSaveAsEventGroup = false;
 }

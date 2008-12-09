@@ -33,6 +33,7 @@ import java.util.List;
 import javax.swing.text.BadLocationException;
 
 import ptolemy.actor.TypedActor;
+import ptolemy.actor.gt.Configurer;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;

@@ -47,8 +47,9 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
+	AlternateGetMomlAction.java \
 	Case.java \
-	ContainerSuggestion.java \
+	Group.java \
 	MirrorCausalityInterface.java \
 	ModalController.java \
 	ModalModel.java \
@@ -56,10 +57,14 @@ JSRCS = \
 	Refinement.java \
 	RefinementExtender.java \
 	RefinementPort.java \
+	RefinementSuggestion.java \
 	TransitionRefinement.java \
 	TransitionRefinementPort.java
 
-EXTRA_SRCS =    $(JSRCS)
+OTHER_FILES_TO_BE_JARED = \
+	GroupIcon.xml
+
+EXTRA_SRCS =    $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -69,7 +74,10 @@ MISC_FILES =    $(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	'ModalModel$$1.class'
+	'ModalController$$1.class' \
+	'ModalController$$ClassComparator.class' \
+	'ModalModel$$1.class' \
+	'Refinement$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

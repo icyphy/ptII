@@ -49,6 +49,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.type.HasTypeConstraints;
 import ptolemy.domains.erg.lib.SynchronizeToRealtime;
 import ptolemy.domains.fsm.kernel.State;
+import ptolemy.domains.fsm.modal.Group;
 import ptolemy.domains.fsm.modal.ModalController;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.ComponentRelation;
@@ -59,6 +60,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.kernel.util.Workspace;
 
@@ -141,6 +143,8 @@ public class ERGController extends ModalController {
         controller._executiveDirectorVersion = -1;
         controller.director = (ERGDirector) controller.getAttribute(
                 "_Director");
+        controller.exportAsGroup = (Parameter) controller.getAttribute(
+                "_exportAsEventGroup");
         return controller;
     }
 
@@ -165,6 +169,24 @@ public class ERGController extends ModalController {
     public CausalityInterface getCausalityInterface() {
         return new BreakCausalityInterface(this,
                 BooleanDependency.OPLUS_IDENTITY);
+    }
+
+    /** Get the class name of this ERGController. If exportAsGroup is true, then
+     *  the class name equals to the class name of {@link Group}; otherwise, the
+     *  original class name is returned.
+     *
+     *  @return The class name.
+     */
+    public String getClassName() {
+        try {
+            if (exportAsGroup != null && ((BooleanToken) exportAsGroup.getToken(
+                    )).booleanValue()) {
+                return Group.class.getName();
+            }
+        } catch (IllegalActionException e) {
+            // Ignore; return super.
+        }
+        return super.getClassName();
     }
 
     /** Return the director responsible for the execution of this actor.
@@ -459,6 +481,11 @@ public class ERGController extends ModalController {
     /** The ERG director contained by this controller. */
     public ERGDirector director;
 
+    /** A Boolean parameter that tells whether the Moml of this ERGController
+     *  should be generated as a group (an instance of {@link Group}) or not.
+     */
+    public Parameter exportAsGroup;
+
     /** Return a map from the classes of the entities to be dropped into a state
      *  and the class names of the refinements that can be used to contain those
      *  entities.
@@ -469,6 +496,7 @@ public class ERGController extends ModalController {
         TreeMap<Class<? extends Entity>, String> map =
             super._getRefinementClasses();
         map.put(Event.class, ERGController.class.getName());
+        map.put(Group.class, ERGController.class.getName());
         return map;
     }
 
@@ -496,6 +524,11 @@ public class ERGController extends ModalController {
         LIFO.setTypeEquals(BaseType.BOOLEAN);
         LIFO.setToken(BooleanToken.TRUE);
         director.LIFO.setToken(BooleanToken.TRUE);
+
+        exportAsGroup = new Parameter(this, "_exportAsEventGroup");
+        exportAsGroup.setTypeEquals(BaseType.BOOLEAN);
+        exportAsGroup.setToken(BooleanToken.FALSE);
+        exportAsGroup.setVisibility(Settable.EXPERT);
     }
 
     /** The last updated executive director. */

@@ -351,64 +351,75 @@ public class EditorDropTarget extends DropTarget {
 
                 String result = "";
                 String rootNodeName = dropObj.getElementName();
-                List configsList = Configuration.configurations();
-
-                Configuration config = null;
                 Object object = null;
-                for (Iterator it = configsList.iterator(); it.hasNext();) {
-                    config = (Configuration) it.next();
-                    if (config != null) {
-                        break;
-                    }
-                }
-                if (config == null) {
-                    throw new KernelRuntimeException(dropObj, "Could not find "
-                            + "configuration, list of configurations was "
-                            + configsList.size() + " elements, all were null.");
-                }
-                StringAttribute alternateGetMomlActionAttribute = (StringAttribute) config
-                        .getAttribute("_alternateGetMomlAction");
-                if ((alternateGetMomlActionAttribute != null) && (lsidFlag)) {
-                    String alternateGetMomlClassName = alternateGetMomlActionAttribute
-                            .getExpression();
-                    try {
-                        Class getMomlClass = Class
-                                .forName(alternateGetMomlClassName);
-                        object = getMomlClass.newInstance();
-                        Class[] parameterTypes = new Class[] { NamedObj.class };
-                        Method getMomlMethod;
-                        getMomlMethod = getMomlClass.getMethod("getMoml",
-                                parameterTypes);
-                        Object[] arguments = new Object[] { dropObj };
-                        result = (String) getMomlMethod.invoke(object,
-                                arguments);
-                        int int1 = 1;
-                        int int2 = result.indexOf(" ");
-                        rootNodeName = result.substring(int1, int2);
-                        // following string substitution is needed to replace possible name changes
-                        // when multiple copies of an actor are added to a workspace canvas
-                        // (name then has integer appended to it)  -- DFH
-                        int1 = result.indexOf("\"", 1);
-                        int2 = result.indexOf("\"", int1 + 1);
 
-                        result = result.substring(0, int1 + 1) + name
-                                + result.substring(int2, result.length());
-                        //     System.out.println("alternate getMOML result string (in EditorDropTarget) - "+result);
+                StringAttribute alternateGetMomlActionAttribute = null;
+                alternateGetMomlActionAttribute = (StringAttribute) dropObj
+                        .getAttribute("_alternateGetMomlAction");
+                if (alternateGetMomlActionAttribute == null && lsidFlag) {
+                    Configuration config = null;
+                    List configsList = Configuration.configurations();
+                    for (Iterator it = configsList.iterator(); it.hasNext();) {
+                        config = (Configuration) it.next();
+                        if (config != null) {
+                            break;
+                        }
+                    }
+                    if (config == null) {
+                        throw new KernelRuntimeException(dropObj, "Could not find "
+                                + "configuration, list of configurations was "
+                                + configsList.size() + " elements, all were null.");
+                    }
+                    alternateGetMomlActionAttribute = (StringAttribute) config
+                            .getAttribute("_alternateGetMomlAction");
+                }
+                if (alternateGetMomlActionAttribute != null) {
+                    String alternateGetMomlClassName =
+                        alternateGetMomlActionAttribute.getExpression();
+                    try {
+                        Class getMomlClass = Class.forName(
+                                alternateGetMomlClassName);
+                        object = getMomlClass.newInstance();
+                        try {
+                            Method getMomlMethod = getMomlClass.getMethod(
+                                    "getMoml", new Class[] {NamedObj.class,
+                                            String.class});
+                            result = (String) getMomlMethod.invoke(object,
+                                    new Object[] {dropObj, name});
+                        } catch (NoSuchMethodException e) {
+                            Method getMomlMethod = getMomlClass.getMethod(
+                                    "getMoml", new Class[] { NamedObj.class });
+                            result = (String) getMomlMethod.invoke(object,
+                                    new Object[] { dropObj });
+                            int int1 = 1;
+                            int int2 = result.indexOf(" ");
+                            rootNodeName = result.substring(int1, int2);
+                            // following string substitution is needed to
+                            // replace possible name changes when multiple
+                            // copies of an actor are added to a workspace
+                            // canvas (name then has integer appended to it)
+                            // -- DFH
+                            int1 = result.indexOf("\"", 1);
+                            int2 = result.indexOf("\"", int1 + 1);
+
+                            result = result.substring(0, int1 + 1) + name
+                                    + result.substring(int2, result.length());
+                        }
+                        moml.append(result);
                     } catch (Exception w) {
                         System.out.println("Error creating alternateGetMoml!");
                     }
                 } else { // default method for PtolemyII use
                     result = dropObj.exportMoML(name);
+                    moml.append(result);
+                    moml.append("<" + rootNodeName + " name=\"" + name + "\">\n");
+                    moml.append("<property name=\"_location\" " +
+                            "class=\"ptolemy.kernel.util.Location\" value=\"{");
+                    moml.append((int) newPoint.getX());
+                    moml.append(", ");
+                    moml.append((int) newPoint.getY());
+                    moml.append("}\"/>\n</" + rootNodeName + ">\n");
                 }
-
-                moml.append(result);
-                moml.append("<" + rootNodeName + " name=\"" + name + "\">\n");
-                moml
-                        .append("<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{");
-                moml.append((int) newPoint.getX());
-                moml.append(", ");
-                moml.append((int) newPoint.getY());
-                moml.append("}\"/>\n</" + rootNodeName + ">\n");
             }
 
             if (container instanceof DropTargetHandler) {

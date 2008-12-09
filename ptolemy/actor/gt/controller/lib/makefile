@@ -1,10 +1,10 @@
-# Makefile for the Ptolemy II Finite State Machine (FSM) Domain kernel
+# Makefile for the ptolemy/actor/gt/controller package
 #
-# @Authors: Thomas Huining Feng
+# @Authors: Thomas Huining Feng, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2008 The Regents of the University of California.
+# @Copyright (c) 2007-2008 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -28,39 +28,31 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
+#
+#
 
-ME =            ptolemy/domains/erg/kernel
+ME =		ptolemy/actor/gt/controller/lib
 
-# Root of the ptII directory
-ROOT =		../../../..
+DIRS = 		
 
+# Root of the Ptolemy II directory
+ROOT =		../../../../..
+
+CLASSPATH = 	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-DIRS = 		
+# Used to build jar files
+PTPACKAGE = 	lib
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-CLASSPATH =	$(ROOT)
-
-# Used to build zip files
-PTPACKAGE = 	kernel
-PTCLASSJAR =	$(PTPACKAGE).jar
-
-JSRCS = \
-	ActionsAttribute.java \
-	ERGController.java \
-	ERGDirector.java \
-	ERGModalModel.java \
-	Event.java \
-	ParametersAttribute.java \
-	SchedulingRelation.java \
-	TimeAdvanceEvent.java \
-	VariableScope.java
+# Keep this list alphabetized.
+JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	ERGModalModelIcon.xml \
-	EventIcon.xml
+	RepeatForCount.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -70,16 +62,12 @@ MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	'ERGDirector$$TimedEvent.class' \
-	'Event$$EventParameter.class' \
-	'Event$$RefiringData.class' \
-	'SchedulingRelation$$1.class'
+OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-install: all jars
+install: jclass $(PTCLASSJAR)
 
 
 # Get the rest of the rules

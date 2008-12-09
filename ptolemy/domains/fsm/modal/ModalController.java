@@ -36,6 +36,7 @@ import ptolemy.domains.fsm.kernel.ContainmentExtender;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.RefinementActor;
 import ptolemy.domains.fsm.kernel.State;
+import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
@@ -127,19 +128,17 @@ public class ModalController extends FSMActor implements DropTargetHandler,
                 _getRefinementClasses();
             String refinementClass = null;
             boolean conflict = false;
+            RefinementSuggestion suggestion =
+                (RefinementSuggestion) target.getAttribute(
+                        "refinementSuggestion");
             for (Object dropObject : dropObjects) {
-                NamedObj namedObj = (NamedObj) dropObject;
-                ContainerSuggestion suggestion = (ContainerSuggestion) namedObj
-                        .getAttribute("containerSuggestion");
                 if (suggestion != null) {
-                    String className = suggestion.containerClassName
-                            .getExpression();
+                    String className = suggestion.getRefinementClass(
+                            (NamedObj) dropObject);
                     if (refinementClass == null) {
                         refinementClass = className;
-                        break;
                     } else if (!refinementClass.equals(className)) {
                         conflict = true;
-                        break;
                     }
                 } else {
                     for (Class<? extends Entity> keyClass : map.keySet()) {
@@ -186,9 +185,11 @@ public class ModalController extends FSMActor implements DropTargetHandler,
                 refinement = (TypedActor) containerContainer.getEntity(name);
             }
             target = (NamedObj)refinement;
-            moml = "<group name=\"auto\">" + moml + "</group>";
-        } else {
+        }
+        if (dropObjects.size() == 1 && dropObjects.get(0) instanceof Group) {
             moml = "<group>" + moml + "</group>";
+        } else {
+            moml = "<group name=\"auto\">" + moml + "</group>";
         }
         MoMLChangeRequest request = new MoMLChangeRequest(this, target, moml);
         request.setUndoable(true);
@@ -325,7 +326,7 @@ public class ModalController extends FSMActor implements DropTargetHandler,
         TreeMap map = new TreeMap<Class<? extends Entity>, String>(
                 new ClassComparator());
         map.put(State.class, ModalController.class.getName());
-        map.put(TypedActor.class, TypedCompositeActor.class.getName());
+        map.put(ComponentEntity.class, TypedCompositeActor.class.getName());
         return map;
     }
 

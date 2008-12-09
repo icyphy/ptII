@@ -1,0 +1,137 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="RepeatForCount" class="ptolemy.domains.fsm.modal.Group">
+    <property name="stateDependentCausality" class="ptolemy.data.expr.Parameter" value="false">
+    </property>
+    <property name="_Director" class="ptolemy.domains.erg.kernel.ERGDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+        </property>
+    </property>
+    <property name="count" class="ptolemy.data.expr.Parameter" value="3">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{245.0, 55.0}">
+        </property>
+    </property>
+    <property name="i" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{330.0, 55.0}">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Repeat the action for &quot;count&quot; times.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{185.0, 80.0}">
+        </property>
+    </property>
+    <entity name="Start" class="ptolemy.actor.gt.controller.GTEvent">
+        <property name="isInitialEvent" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="i = 0">
+        </property>
+        <property name="_allowRefinement" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{120.0, 65.0}">
+        </property>
+    </entity>
+    <entity name="Act" class="ptolemy.domains.erg.kernel.Event">
+        <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="i = i + 1">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{176.7145116814515, 173.02156455659835}">
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.domains.erg.kernel.SchedulingRelation">
+        <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.39213557246154745">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.1933448258992871">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+<display name="initialize"/>        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="0.0">
+        </property>
+        <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
+        </property>
+        <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="priority" class="ptolemy.actor.parameters.Priority" value="0">
+        </property>
+        <property name="triggers" class="ptolemy.data.expr.StringParameter" value="">
+        </property>
+    </relation>
+    <relation name="relation_1_" class="ptolemy.domains.erg.kernel.SchedulingRelation">
+        <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+        </property>
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="i &lt; count">
+<display name="condition"/>        </property>
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.31184938997764">
+        </property>
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.61303123029095">
+        </property>
+        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+<display name="initialize"/>        </property>
+        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="0.0">
+        </property>
+        <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
+        </property>
+        <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="priority" class="ptolemy.actor.parameters.Priority" value="0">
+        </property>
+        <property name="triggers" class="ptolemy.data.expr.StringParameter" value="">
+        </property>
+    </relation>
+    <link port="Start.outgoingPort" relation="relation"/>
+    <link port="Act.incomingPort" relation="relation"/>
+    <link port="Act.incomingPort" relation="relation_1_"/>
+    <link port="Act.outgoingPort" relation="relation_1_"/>
+</entity>

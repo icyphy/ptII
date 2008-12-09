@@ -184,12 +184,15 @@ public class CompositeActorMatcher extends TypedCompositeActor implements
      */
     public void updateAppearance(GTIngredientsAttribute attribute) {
         NamedObj container = getContainer();
-        if (container instanceof TransformationRule
-                && container.getContainer() instanceof EntityLibrary) {
-            // Do not update appearance if the containing TransformationRule is
-            // in the actor library, so opening the folder of the actor library
-            // would not cause a moml change.
-            return;
+        if (container instanceof TransformationRule) {
+            NamedObj containerContainer = container.getContainer();
+            if (containerContainer instanceof EntityLibrary ||
+                    containerContainer instanceof Configurer) {
+                // Do not update appearance if the containing TransformationRule
+                // is in the actor library or in a Configurer, so opening the
+                // folder of the actor library would not cause a moml change.
+                return;
+            }
         }
         GTEntityUtils.updateAppearance(this, attribute);
     }

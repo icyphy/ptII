@@ -33,6 +33,8 @@ import java.io.Writer;
 import java.net.URL;
 
 import ptolemy.actor.TypedActor;
+import ptolemy.actor.gt.ConfigurableEntity;
+import ptolemy.actor.gt.Configurer;
 import ptolemy.actor.gt.TransformationMode;
 import ptolemy.actor.gt.TransformationRule;
 import ptolemy.data.ArrayToken;

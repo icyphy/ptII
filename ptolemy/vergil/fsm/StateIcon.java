@@ -30,13 +30,20 @@ package ptolemy.vergil.fsm;
 import java.awt.Color;
 import java.awt.Paint;
 
+import javax.swing.Icon;
+
 import ptolemy.actor.TypedActor;
+import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.ScalarToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.icon.NameIcon;
+import diva.canvas.toolbox.RoundedRectangle;
+import diva.gui.toolbox.FigureIcon;
 
 //////////////////////////////////////////////////////////////////////////
 //// StateIcon
@@ -74,6 +81,22 @@ public class StateIcon extends NameIcon {
         rounding.setExpression("20");
     }
 
+    /** Create an icon.
+     *
+     *  @return The icon.
+     */
+    public Icon createIcon() {
+        if (_iconCache != null) {
+            return _iconCache;
+        }
+
+        RoundedRectangle figure = new RoundedRectangle(0, 0, 20, 10,
+                Color.white, 1.0f, 5.0, 5.0);
+        figure.setFillPaint(_getFill());
+        _iconCache = new FigureIcon(figure, 20, 15);
+        return _iconCache;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -83,6 +106,29 @@ public class StateIcon extends NameIcon {
      *  @return The paint to use to fill the icon.
      */
     protected Paint _getFill() {
+        Parameter colorParameter;
+        try {
+            colorParameter = (Parameter) (getAttribute("fill",
+                    Parameter.class));
+            if (colorParameter != null) {
+                ArrayToken array = (ArrayToken) colorParameter.getToken();
+                if (array.length() == 4) {
+                    Color color = new Color(
+                            (float) ((ScalarToken) array.getElement(0))
+                                    .doubleValue(),
+                            (float) ((ScalarToken) array.getElement(1))
+                                    .doubleValue(),
+                            (float) ((ScalarToken) array.getElement(2))
+                                    .doubleValue(),
+                            (float) ((ScalarToken) array.getElement(3))
+                                    .doubleValue());
+                    return color;
+                }
+            }
+        } catch (Throwable t) {
+            // Ignore and return the default.
+        }
+        
         NamedObj container = getContainer();
         if (container instanceof State) {
             try {
@@ -94,6 +140,7 @@ public class StateIcon extends NameIcon {
                 // Ignore and return the default.
             }
         }
+
         return Color.white;
     }
 

@@ -33,7 +33,7 @@
 
 ME =		ptolemy/actor/gt/controller
 
-DIRS = 		
+DIRS = 		lib
 
 # Root of the Ptolemy II directory
 ROOT =		../../../..
@@ -48,10 +48,13 @@ include $(CONFIG)
 PTPACKAGE = 	controller
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	lib/lib.jar
+
 # Keep this list alphabetized.
 JSRCS = \
-	ConfigurableEntity.java \
-	Configurer.java \
+	DebuggerParameter.java \
 	Execute.java \
 	FileUpdater.java \
 	GTDebugEvent.java \
@@ -67,6 +70,7 @@ JSRCS = \
 	OutputModel.java \
 	ReadModel.java \
 	ReceiveInput.java \
+	RefinementSuggestion.java \
 	Report.java \
 	SetTableau.java \
 	Stop.java \
@@ -114,7 +118,6 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	'Configurer$$ContainmentExtender.class' \
 	'FileUpdater$$MoMLContentFilter.class' \
 	'ReceiveInput$$InputListener.class' \
 	'Report$$1.class' \

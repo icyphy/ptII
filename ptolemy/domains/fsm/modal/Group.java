@@ -1,5 +1,4 @@
-/* An attribute that suggests the class of the container for the associated
- entity.
+/* A group of states.
 
  Copyright (c) 2008 The Regents of the University of California.
  All rights reserved.
@@ -28,18 +27,16 @@
 */
 package ptolemy.domains.fsm.modal;
 
-import ptolemy.data.expr.StringParameter;
-import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.StringAttribute;
 
 //////////////////////////////////////////////////////////////////////////
-//// ContainerSuggestion
+//// Group
 
 /**
- An attribute that suggests the class of the container for the associated
- entity.
+ A group of states stored as a design pattern in a library.
 
  @author Thomas Huining Feng
  @version $Id$
@@ -47,30 +44,25 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class ContainerSuggestion extends Attribute {
+public class Group extends ModalController {
 
-    /** Construct an attribute with the given name contained by the specified
-     *  entity. The container argument must not be null, or a
-     *  NullPointerException will be thrown.  This attribute will use the
-     *  workspace of the container for synchronization and version counts.
-     *  If the name argument is null, then the name is set to the empty string.
-     *  Increment the version of the workspace.
-     *  
-     *  @param container The container.
-     *  @param name The name of this attribute.
-     *  @exception IllegalActionException If the attribute is not of an
-     *   acceptable class for the container, or if the name contains a period.
-     *  @exception NameDuplicationException If the name coincides with
-     *   an attribute already in the container.
+    /** Construct an empty group of states.
+     *
+     *  @param container The container of the group.
+     *  @param name The name of the group.
+     *  @throws IllegalActionException If the container is incompatible
+     *   with this group.
+     *  @throws NameDuplicationException If the name coincides with
+     *   an entity already in the container.
      */
-    public ContainerSuggestion(NamedObj container, String name)
+    public Group(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
-        containerClassName = new StringParameter(this, "containerClassName");
+
+        StringAttribute alternateGetMoml = new StringAttribute(this,
+                "_alternateGetMomlAction");
+        alternateGetMoml.setExpression("ptolemy.domains.fsm.modal." +
+                "AlternateGetMomlAction");
+        alternateGetMoml.setPersistent(false);
     }
-    
-    /** The suggested class name of the container.
-     */
-    public StringParameter containerClassName;
 }

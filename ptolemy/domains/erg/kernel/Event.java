@@ -285,7 +285,12 @@ public class Event extends State {
      *  @return The ERG controller.
      */
     public ERGController getController() {
-        return (ERGController) getContainer();
+        NamedObj container = getContainer();
+        if (container instanceof ERGController) {
+            return (ERGController) container;
+        } else {
+            return null;
+        }
     }
 
     /** Return whether this event is a final event, so that its execution causes
@@ -505,7 +510,11 @@ public class Event extends State {
      */
     protected void _scheduleEvent(SchedulingRelation relation)
             throws IllegalActionException {
-        ERGController controller = (ERGController) getContainer();
+        ERGController controller = getController();
+        if (controller == null) {
+            throw new IllegalActionException(this, "To schedule events, the " +
+                    "container must be an ERGController.");
+        }
         ERGDirector director = controller.director;
         ParserScope scope = _getParserScope();
         if (relation.isEnabled(scope)) {

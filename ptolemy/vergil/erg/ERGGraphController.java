@@ -57,6 +57,7 @@ import diva.canvas.Figure;
 import diva.graph.GraphException;
 import diva.graph.GraphPane;
 import diva.graph.NodeRenderer;
+import diva.gui.GUIUtilities;
 import diva.gui.toolbox.FigureIcon;
 
 /**
@@ -69,9 +70,6 @@ import diva.gui.toolbox.FigureIcon;
  */
 public class ERGGraphController extends FSMGraphController {
 
-    /**
-     *
-     */
     public ERGGraphController() {
     }
 
@@ -102,17 +100,17 @@ public class ERGGraphController extends FSMGraphController {
             }
         }
 
-        diva.gui.GUIUtilities.addMenuItem(menu, _newEventAction);
-        diva.gui.GUIUtilities.addToolBarButton(toolbar, _newEventAction);
+        GUIUtilities.addMenuItem(menu, _newEventAction);
+        GUIUtilities.addToolBarButton(toolbar, _newEventAction);
+        GUIUtilities.addMenuItem(menu, _saveAsEventGroupAction);
     }
 
-    /** An action to create a new state. */
+    /** An action to create a new event. */
     public class NewEventAction extends FigureAction {
 
         /** Construct a new state. */
         public NewEventAction() {
             super("New Event");
-            putValue("tooltip", "New Event");
 
             NodeRenderer renderer = new StateController.StateRenderer(
                     getGraphModel());
@@ -120,10 +118,9 @@ public class ERGGraphController extends FSMGraphController {
 
             // Standard toolbar icons are 25x25 pixels.
             FigureIcon icon = new FigureIcon(figure, 25, 25, 1, true);
-            putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
+            putValue(GUIUtilities.LARGE_ICON, icon);
             putValue("tooltip", "New Event");
-            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, Integer
-                    .valueOf(KeyEvent.VK_W));
+            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_W));
         }
 
         /** Execute the action.
@@ -211,6 +208,21 @@ public class ERGGraphController extends FSMGraphController {
         }
     }
 
+    public class SaveAsEventGroupAction extends FigureAction {
+
+        public SaveAsEventGroupAction() {
+            super("Save as Event Group");
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+
+            ERGGraphFrame frame = (ERGGraphFrame) ERGGraphController.this
+                    .getFrame();
+            frame.saveAsEventGroup();
+        }
+    }
+
     protected void _createControllers() {
         super._createControllers();
         _transitionController = new SchedulingRelationController(this);
@@ -222,6 +234,9 @@ public class ERGGraphController extends FSMGraphController {
 
     /** Prototype state for rendering. */
     private static final Location _prototypeEvent;
+
+    private SaveAsEventGroupAction _saveAsEventGroupAction =
+        new SaveAsEventGroupAction();
 
     static {
         CompositeEntity container = new CompositeEntity();

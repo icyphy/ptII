@@ -34,12 +34,8 @@ import java.awt.Paint;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
-import javax.swing.Icon;
 import javax.swing.SwingConstants;
 
-import ptolemy.data.ArrayToken;
-import ptolemy.data.ScalarToken;
-import ptolemy.data.expr.Parameter;
 import ptolemy.domains.erg.kernel.Event;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -50,7 +46,6 @@ import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
 import diva.canvas.toolbox.LabelFigure;
 import diva.canvas.toolbox.RoundedRectangle;
-import diva.gui.toolbox.FigureIcon;
 
 /**
 
@@ -101,18 +96,6 @@ public class EventIcon extends StateIcon {
         return figure;
     }
 
-    public Icon createIcon() {
-        if (_iconCache != null) {
-            return _iconCache;
-        }
-
-        RoundedRectangle figure = new RoundedRectangle(0, 0, 20, 10,
-                Color.white, 1.0f, 5.0, 5.0);
-        figure.setFillPaint(_getFill());
-        _iconCache = new FigureIcon(figure, 20, 15);
-        return _iconCache;
-    }
-
     protected Point2D _getBackgroundSize() {
         Point2D size = super._getBackgroundSize();
         if (size.getY() < _MIN_HEIGHT) {
@@ -122,29 +105,6 @@ public class EventIcon extends StateIcon {
     }
 
     protected Paint _getFill() {
-        Parameter colorParameter;
-        try {
-            colorParameter = (Parameter) (getAttribute("fill",
-                    Parameter.class));
-            if (colorParameter != null) {
-                ArrayToken array = (ArrayToken) colorParameter.getToken();
-                if (array.length() == 4) {
-                    Color color = new Color(
-                            (float) ((ScalarToken) array.getElement(0))
-                                    .doubleValue(),
-                            (float) ((ScalarToken) array.getElement(1))
-                                    .doubleValue(),
-                            (float) ((ScalarToken) array.getElement(2))
-                                    .doubleValue(),
-                            (float) ((ScalarToken) array.getElement(3))
-                                    .doubleValue());
-                    return color;
-                }
-            }
-        } catch (Throwable t) {
-            // Ignore and return the default.
-        }
-
         Event event = (Event) getContainer();
         try {
             if (event.isInitialEvent()) {
