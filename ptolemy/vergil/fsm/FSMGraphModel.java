@@ -89,7 +89,6 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
      *  @param eventSource The source of the event that will be dispatched,
      *   e.g. the view that made this call.
      *  @param edge The edge.
-     *  @exception GraphException If the operation fails.
      */
     public void disconnectEdge(Object eventSource, Object edge) {
         if (!(getEdgeModel(edge) instanceof ArcModel)) {
@@ -200,7 +199,6 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
      *  @param eventSource The source of the event that will be dispatched,
      *   e.g. the view that made this call.
      *  @param node The node to be removed.
-     *  @exception GraphException If the operation fails.
      */
     public void removeNode(Object eventSource, Object node) {
         if (!(getNodeModel(node) instanceof NamedObjNodeModel)) {
