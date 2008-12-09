@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.codegen.c.targets.luminary.openRTOS.domains.pn.kernel;
+package ptolemy.codegen.c.targets.openRTOS.domains.pn.kernel;
 
 import java.util.HashSet;
 import java.util.LinkedHashSet;
