@@ -509,7 +509,7 @@ public final class NamedList implements Cloneable, Serializable {
      */
     private void enableHash() {
 
-        _hashedList = new HashMap<String, Nameable>(101, 3.0f);
+        _hashedList = new HashMap<String, Nameable>(_threshhold + 1, 3.0f);
 
         Iterator iterator = _namedList.iterator();
 
