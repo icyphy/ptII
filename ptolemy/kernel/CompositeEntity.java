@@ -1214,22 +1214,78 @@ public class CompositeEntity extends ComponentEntity {
     
     /** Lazy version of {@link #allAtomicEntityList()}.
      *  In this base class, this is identical to allAtomicEntityList(),
-     *  but derived classes may omit from the returned list any
+     *  except that if any inside entities are lazy, their contents
+     *  are listed lazily.  Derived classes may omit from the returned list any
      *  entities whose instantiation is deferred.
      *  @return A list of ComponentEntity objects.
      */
     public List lazyAllAtomicEntityList() {
-        return allAtomicEntityList();
+        // We don't use an Iterator here so that we can modify the list
+        // rather than having both an Iterator and a result list.
+        //
+        // Note:
+        // deepEntityList() should be renamed to deepOpaqueEntityList()
+        // allAtomicEntityList() to deepAtomicEntityList()
+        // However, the change would require a fair amount of work.
+        //LinkedList entities = (LinkedList) deepEntityList();
+        List entities = lazyDeepEntityList();
+
+        for (int i = 0; i < entities.size(); i++) {
+            Object entity = entities.get(i);
+
+            if (entity instanceof CompositeEntity) {
+                // Remove the composite actor and add its containees.
+                entities.remove(i);
+
+                // Note that removing an element from the list causes
+                // the indices of later elements to shift forward by 1.
+                // We reduce the index i by one to match the index in
+                // the list.
+                i--;
+                entities.addAll(((CompositeEntity) entity)
+                        .lazyAllAtomicEntityList());
+            }
+        }
+
+        return entities;
     }
 
     /** Lazy version of {#link #allCompositeEntityList()}.
-     *  In this base class, this is identical to allCompositeEntityList() 
-     *  but derived classes may omit from the returned list any class
+     *  In this base class, this is identical to allCompositeEntityList(),
+     *  except that if any contained composite is lazy, its contents
+     *  are listed lazily.
+     *  Derived classes may omit from the returned list any class
      *  definitions whose instantiation is deferred.
      *  @return A list of ComponentEntity objects.
      */
     public List lazyAllCompositeEntityList() {
-	return allCompositeEntityList();
+        try {
+            _workspace.getReadAccess();
+
+            LinkedList result = new LinkedList();
+
+            // This might be called from within a superclass constructor,
+            // in which case there are no contained entities yet.
+            if (_containedEntities != null) {
+                // Note that by directly using _containedEntities rather than
+                // entityList() we are automatically lazy.
+                Iterator entities = _containedEntities.elementList().iterator();
+
+                while (entities.hasNext()) {
+                    ComponentEntity entity = (ComponentEntity) entities.next();
+                    if (/*!entity.isClassDefinition()&& */!entity.isOpaque() /*entity instanceof CompositeEntity*/) {
+                        result.add(entity);
+                        result.addAll(((CompositeEntity) entity)
+                                .lazyAllCompositeEntityList());
+
+                    }
+                }
+            }
+
+            return result;
+        } finally {
+            _workspace.doneReading();
+        }
     }
 
     /** Lazy version of {@link #classDefinitionList()}.
@@ -1244,12 +1300,42 @@ public class CompositeEntity extends ComponentEntity {
     
     /** Lazy version of {@link #deepEntityList()}.
      *  In this base class, this is identical to deepEntityList(),
-     *  but derived classes may omit from the returned list any entities
+     *  except that if any contained composite is lazy, its contents
+     *  are listed lazily.
+     *  Derived classes may omit from the returned list any entities
      *  whose instantiation is deferred.
      *  @return A list of ComponentEntity objects.
      */
     public List lazyDeepEntityList() {
-        return deepEntityList();
+        try {
+            _workspace.getReadAccess();
+
+            LinkedList result = new LinkedList();
+
+            // This might be called from within a superclass constructor,
+            // in which case there are no contained entities yet.
+            if (_containedEntities != null) {
+                // Note that by directly using _containedEntities rather than
+                // entityList() we are automatically lazy.
+                Iterator entities = _containedEntities.elementList().iterator();
+                while (entities.hasNext()) {
+                    ComponentEntity entity = (ComponentEntity) entities.next();
+
+                    if (!entity.isClassDefinition()) {
+                        if (entity.isOpaque()) {
+                            result.add(entity);
+                        } else {
+                            result.addAll(((CompositeEntity) entity)
+                                    .lazyDeepEntityList());
+                        }
+                    }
+                }
+            }
+
+            return result;
+        } finally {
+            _workspace.doneReading();
+        }
     }
 
     /** Lazy version of {@link #entityList()}.
