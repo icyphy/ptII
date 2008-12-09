@@ -460,54 +460,62 @@ set namedList99 [createNamedList 99]
 set namedList100 [createNamedList 100]
 set namedList101 [createNamedList 101]
 set namedList102 [createNamedList 102]
+set namedList202 [createNamedList 202]
 
 test NamedList-100.1 {get} {
     set r1_99 [[$namedList99 get n98] getName]
     set r1_100 [[$namedList100 get n99] getName]
     set r1_101 [[$namedList101 get n100] getName]
     set r1_102 [[$namedList102 get n101] getName]
-    list $r1_99 $r1_100 $r1_101 $r1_102
-} {n98 n99 n100 n101}
+    set r1_202 [[$namedList202 get n201] getName]
+    list $r1_99 $r1_100 $r1_101 $r1_102 $r1_202
+} {n98 n99 n100 n101 n201}
 
 test NamedList-100.2 {includes} {
     set r1_99 [$namedList99 includes [$namedList99 get n98]]
     set r1_100 [$namedList100 includes [$namedList100 get n99]]
     set r1_101 [$namedList101 includes [$namedList101 get n100]]
     set r1_102 [$namedList102 includes [$namedList102 get n101]]
+    set r1_202 [$namedList202 includes [$namedList202 get n201]]
 
     set r2_99 [$namedList99 includes [$namedList100 get n99]]
     set r2_100 [$namedList100 includes [$namedList101 get n100]]
-    set r2_101 [$namedList101 includes [java::new ptolemy.kernel.util.NamedObj foo]]
-    set r2_102 [$namedList102 includes [java::new ptolemy.kernel.util.NamedObj foo]]
-    list [list $r1_99 $r1_100 $r1_101 $r1_101] \
-	[list $r2_99 $r2_100 $r2_101 $r2_102]
-} {{1 1 1 1} {0 0 0 0}}
+    set r2_101 [$namedList100 includes [$namedList101 get n101]]
+    set r2_102 [$namedList100 includes [$namedList101 get n102]]
+    set r2_202 [$namedList100 includes [$namedList101 get n202]]
+
+    list [list $r1_99 $r1_100 $r1_101 $r1_102 $r1_202] \
+	[list $r2_99 $r2_100 $r2_101 $r2_102 $r2_202]
+} {{1 1 1 1 1} {0 0 0 0 0}}
 
 test NamedList-100.3 {insertAfter} {
     set namedList99 [createNamedList 99]
     set namedList100 [createNamedList 100]
     set namedList101 [createNamedList 101]
     set namedList102 [createNamedList 102]
+    set namedList202 [createNamedList 202]
 
     $namedList99 insertAfter n98 [java::new ptolemy.kernel.util.NamedObj n99]
     $namedList100 insertAfter n99 [java::new ptolemy.kernel.util.NamedObj n100]
     $namedList101 insertAfter n100 [java::new ptolemy.kernel.util.NamedObj n101]
     $namedList102 insertAfter n101 [java::new ptolemy.kernel.util.NamedObj n102]
+    $namedList202 insertAfter n201 [java::new ptolemy.kernel.util.NamedObj n202]
 
     set r1_99 [$namedList99 size]
     set r1_100 [$namedList100 size]
     set r1_101 [$namedList101 size]
     set r1_102 [$namedList102 size]
+    set r1_202 [$namedList202 size]
 
     set r2_99 [[$namedList99 get n99] getName]
     set r2_100 [[$namedList100 get n100] getName]
     set r2_101 [[$namedList101 get n101] getName]
     set r2_102 [[$namedList102 get n102] getName]
+    set r2_202 [[$namedList202 get n202] getName]
 
-    list [list $r1_99 $r1_100 $r1_101 $r1_102] \
-	[list $r2_99 $r2_100 $r2_101 $r2_102]
-
-} {{100 101 102 103} {n99 n100 n101 n102}}
+    list [list $r1_99 $r1_100 $r1_101 $r1_102 $r1_202] \
+	[list $r2_99 $r2_100 $r2_101 $r2_102 $r2_202]
+} {{100 101 102 103 203} {n99 n100 n101 n102 n202}}
 
 test NamedList-100.4 {insertBefore} {
     # Reset
@@ -515,26 +523,29 @@ test NamedList-100.4 {insertBefore} {
     set namedList100 [createNamedList 100]
     set namedList101 [createNamedList 101]
     set namedList102 [createNamedList 102]
+    set namedList202 [createNamedList 202]
 
     $namedList99 insertBefore n98 [java::new ptolemy.kernel.util.NamedObj n97b]
     $namedList100 insertBefore n99 [java::new ptolemy.kernel.util.NamedObj n98b]
     $namedList101 insertBefore n100 [java::new ptolemy.kernel.util.NamedObj n99b]
     $namedList102 insertBefore n101 [java::new ptolemy.kernel.util.NamedObj n100b]
+    $namedList202 insertBefore n201 [java::new ptolemy.kernel.util.NamedObj n200b]
+
     set r1_99 [$namedList99 size]
     set r1_100 [$namedList100 size]
     set r1_101 [$namedList101 size]
-    set r1_102 [$namedList101 size]
+    set r1_102 [$namedList102 size]
+    set r1_202 [$namedList202 size]
 
     set r2_99 [[$namedList99 get n97b] getName]
     set r2_100 [[$namedList100 get n98b] getName]
     set r2_101 [[$namedList101 get n99b] getName]
     set r2_102 [[$namedList102 get n100b] getName]
+    set r2_202 [[$namedList202 get n200b] getName]
 
-
-    list [list $r1_99 $r1_100 $r1_101 $r1_102] \
-	[list $r2_99 $r2_100 $r2_101 $r2_102]
-
-} {{100 101 102 102} {n97b n98b n99b n100b}}
+    list [list $r1_99 $r1_100 $r1_101 $r1_102 $r1_202] \
+	[list $r2_99 $r2_100 $r2_101 $r2_102 $r2_202]
+} {{100 101 102 103 203} {n97b n98b n99b n100b n200b}}
 
 test NamedList-100.5 {prepend} {
     # Reset
@@ -542,25 +553,29 @@ test NamedList-100.5 {prepend} {
     set namedList100 [createNamedList 100]
     set namedList101 [createNamedList 101]
     set namedList102 [createNamedList 102]
+    set namedList202 [createNamedList 202]
 
     $namedList99 prepend [java::new ptolemy.kernel.util.NamedObj nA]
     $namedList100 prepend [java::new ptolemy.kernel.util.NamedObj nB]
     $namedList101 prepend [java::new ptolemy.kernel.util.NamedObj nC]    
-    $namedList102 prepend [java::new ptolemy.kernel.util.NamedObj nD]    
+    $namedList102 prepend [java::new ptolemy.kernel.util.NamedObj nD]
+    $namedList202 prepend [java::new ptolemy.kernel.util.NamedObj nE]
 
     set r1_99 [$namedList99 size]
     set r1_100 [$namedList100 size]
     set r1_101 [$namedList101 size]
     set r1_102 [$namedList102 size]
+    set r1_202 [$namedList202 size]
 
     set r2_99 [[$namedList99 get nA] getName]
     set r2_100 [[$namedList100 get nB] getName]
     set r2_101 [[$namedList101 get nC] getName]
     set r2_102 [[$namedList102 get nD] getName]
+    set r2_202 [[$namedList202 get nE] getName]
 
-    list [list $r1_99 $r1_100 $r1_101 $r1_102] \
-	[list $r2_99 $r2_100 $r2_101 $r2_102]
-} {{100 101 102 103} {nA nB nC nD}}
+    list [list $r1_99 $r1_100 $r1_101 $r1_102 $r1_202] \
+	[list $r2_99 $r2_100 $r2_101 $r2_102 $r2_202]
+} {{100 101 102 103 203} {nA nB nC nD nE}}
 
 test NamedList-100.6 {remove Nameable} {
     # Reset
@@ -568,26 +583,29 @@ test NamedList-100.6 {remove Nameable} {
     set namedList100 [createNamedList 100]
     set namedList101 [createNamedList 101]
     set namedList102 [createNamedList 102]
+    set namedList202 [createNamedList 202]
 
     $namedList99 remove [$namedList99 get n98]
     $namedList100 remove [$namedList100 get n99]
     $namedList101 remove [$namedList101 get n100]
     $namedList102 remove [$namedList102 get n101]
+    $namedList202 remove [$namedList202 get n201]
 
     set r1_99 [$namedList99 size]
     set r1_100 [$namedList100 size]
     set r1_101 [$namedList101 size]
     set r1_102 [$namedList102 size]
+    set r1_202 [$namedList202 size]
 
     set r2_99 [java::isnull [$namedList99 get n98]]
     set r2_100 [java::isnull [$namedList100 get n99]]
     set r2_101 [java::isnull [$namedList101 get n100]]
     set r2_102 [java::isnull [$namedList102 get n101]]
+    set r2_202 [java::isnull [$namedList202 get n201]]
 
-    list [list $r1_99 $r1_100 $r1_101 $r1_102] \
-	[list $r2_99 $r2_100 $r2_101 $r2_102]
-
-} {{98 99 100 101} {1 1 1 1}}
+    list [list $r1_99 $r1_100 $r1_101 $r1_102 $r1_202] \
+	[list $r2_99 $r2_100 $r2_101 $r2_102 $r2_202]
+} {{98 99 100 101 201} {1 1 1 1 1}}
 
 test NamedList-100.6 {remove String} {
     # Reset
@@ -595,25 +613,29 @@ test NamedList-100.6 {remove String} {
     set namedList100 [createNamedList 100]
     set namedList101 [createNamedList 101]
     set namedList102 [createNamedList 102]
+    set namedList202 [createNamedList 202]
 
     $namedList99 remove n98
     $namedList100 remove n99
     $namedList101 remove n100
     $namedList102 remove n101
+    $namedList202 remove n201
 
     set r1_99 [$namedList99 size]
     set r1_100 [$namedList100 size]
     set r1_101 [$namedList101 size]
     set r1_102 [$namedList102 size]
+    set r1_202 [$namedList202 size]
 
     set r2_99 [java::isnull [$namedList99 get n98]]
     set r2_100 [java::isnull [$namedList100 get n99]]
     set r2_101 [java::isnull [$namedList101 get n100]]
     set r2_102 [java::isnull [$namedList102 get n101]]
+    set r2_202 [java::isnull [$namedList202 get n201]]
 
-    list [list $r1_99 $r1_100 $r1_101 $r1_102] \
-	[list $r2_99 $r2_100 $r2_101 $r2_102]
-} {{98 99 100 101} {1 1 1 1}}
+    list [list $r1_99 $r1_100 $r1_101 $r1_102 $r1_202] \
+	[list $r2_99 $r2_100 $r2_101 $r2_102 $r2_202]
+} {{98 99 100 101 201} {1 1 1 1 1}}
 
 test NamedList-100.8 {change the name} {
     # Reset
@@ -621,6 +643,7 @@ test NamedList-100.8 {change the name} {
     set namedList100 [createNamedList 100]
     set namedList101 [createNamedList 101]
     set namedList102 [createNamedList 102]
+    set namedList202 [createNamedList 202]
 
     # Thomas writes:
     # I think the newly updated NamedList has a bug that could break large
@@ -642,34 +665,47 @@ test NamedList-100.8 {change the name} {
     # entities, renames each entity after creation, and tries to use
     # getEntity(String) to get back those entities in the composite actor.
     
-    set namedList200 [createNamedList 200]
-    
-    set n98_200 [$namedList200 get n98]
+    set n98_99 [$namedList99 get n98]
+    set n98_100 [$namedList100 get n98]
+    set n98_101 [$namedList101 get n98]
+    set n98_102 [$namedList102 get n98]
+    set n98_202 [$namedList202 get n98]
 
-    $n98_200 setName n98_200new
+    $n98_99 setName n98_new
+    $n98_100 setName n98_new
+    $n98_101 setName n98_new
+    $n98_102 setName n98_new
+    $n98_202 setName n98_new
 
-    # Next line works
-    set temp [[$namedList200 get n97] getName]
-		
-    # Next line fails
-    set r1_200 [[$namedList200 get n98_200new] getName]
+    set r1_99 [[$namedList99 get n98_new] getName]
+    set r1_100 [[$namedList100 get n98_new] getName]
+    set r1_101 [[$namedList101 get n98_new] getName]
+    set r1_102 [[$namedList102 get n98_new] getName]
+    set r1_202 [[$namedList202 get n98_new] getName]
 
-    list [list $r1_200]
-} {n98_200new}
+    # Make sure get shows that the name is really changed
+    set r2_99 [java::isnull [$namedList99 get n98]]
+    set r2_100 [java::isnull [$namedList100 get n98]]
+    set r2_101 [java::isnull [$namedList101 get n98]]
+    set r2_102 [java::isnull [$namedList102 get n98]]
+    set r2_202 [java::isnull [$namedList202 get n98]]
+
+    list [list $r1_99 $r1_100 $r1_101 $r1_102 $r1_202] \
+	[list $r2_99 $r2_100 $r2_101 $r2_102 $r2_202]
+} {{n98_new n98_new n98_new n98_new n98_new} {1 1 1 1 2}}
 
 test NamedList-100.666 {removeAll} {
     $namedList99 removeAll
     $namedList100 removeAll
     $namedList101 removeAll
+    $namedList102 removeAll
+    $namedList202 removeAll
 
     set r1_99 [$namedList99 size]
     set r1_100 [$namedList100 size]
     set r1_101 [$namedList101 size]
+    set r1_102 [$namedList102 size]
+    set r1_202 [$namedList202 size]
 
-    # Reset
-    set namedList99 [createNamedList 99]
-    set namedList100 [createNamedList 100]
-    set namedList101 [createNamedList 101]
-
-    list [list $r1_99 $r1_100 $r1_101]
-} {{0 0 0}}
+    list [list $r1_99 $r1_100 $r1_101 $r1_102 $r1_202]
+} {{0 0 0 0 0}}
