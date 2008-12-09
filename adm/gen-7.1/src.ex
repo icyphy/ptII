@@ -30,6 +30,7 @@ ant
 bin/ptcg.bat
 bin/copernicus.bat
 bin/copernicusjhdl.bat
+bin/convertToLazy
 bin/decompile.bat
 bin/emachine.bat
 bin/giottoc.bat
@@ -39,6 +40,7 @@ bin/mescal.bat
 bin/moml.bat
 bin/obfuscate.bat
 bin/ptcg
+bin/ptjg
 bin/ptexecute.bat
 bin/ptjacl.bat
 bin/ptjaclapp.bat
