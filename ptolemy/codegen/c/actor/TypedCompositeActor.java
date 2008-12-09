@@ -778,9 +778,6 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
             IOPort port = (IOPort) outputPorts.next();
             int length = port.getWidthInside();
 
-            int[] bufferSizes = new int[length];
-            _bufferSizes.put(port, bufferSizes);
-
             Director directorHelper = (Director) _getHelper((((Actor) getComponent())
                     .getDirector()));
 
@@ -792,12 +789,6 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
                 int bufferSize = directorHelper.getBufferSize(port, i);
                 setBufferSize(port, i, bufferSize);
             }
-
-            Object[] readOffsets = new Object[length];
-            _readOffsets.put(port, readOffsets);
-
-            Object[] writeOffsets = new Object[length];
-            _writeOffsets.put(port, writeOffsets);
 
             for (int i = 0; i < length; i++) {
                 setReadOffset(port, i, Integer.valueOf(0));

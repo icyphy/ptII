@@ -681,6 +681,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         _typeFuncUsed.clear();
         _libraries.clear();
         _includes.clear();
+        _helperStore.clear();
     }
 
     private String generateGlobalCode() throws IllegalActionException {

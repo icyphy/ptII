@@ -82,16 +82,6 @@ public class EmbeddedCActor extends CompiledCompositeActor {
                     .setCodeBlocks(((ptolemy.actor.lib.jni.EmbeddedCActor) getComponent()
                             .getContainer()).embeddedCCode.getExpression());
             return super.getSharedCode();
-        }
-        
-        /** Process the specified code, replacing macros with their values.
-         * @param code The code to process.
-         * @return The processed code.
-         * @exception IllegalActionException If illegal macro names are found.
-         */
-        public String processCode(String code) throws IllegalActionException {
-            return ((EmbeddedCActor) _getHelper(getComponent()
-                    .getContainer())).processCode(code);
-        }
+        }        
     }
 }
