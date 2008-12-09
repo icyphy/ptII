@@ -171,15 +171,28 @@ public final class NamedList implements Cloneable, Serializable {
      */
     public Nameable get(String name) {
         if (_hashEnabled) {
-            return _hashedList.get(name);
-        }
-
+	    // If the name was changed, then _hashedList will be wrong
+	    Nameable found = _hashedList.get(name);
+	    if (found != null) {
+		if (found.getName().equals(name)) {
+		    return found;
+		}
+		// We could remove the old name here, but what if
+		// two names hash to the same value?  Instead, we
+		// traverse the list and return the first match
+	    }
+	}
         Iterator iterator = _namedList.iterator();
 
         while (iterator.hasNext()) {
             Nameable obj = (Nameable) iterator.next();
 
             if (name.equals(obj.getName())) {
+		if (_hashEnabled) {
+		    // The name of the NamedObj was likely changed, so
+		    // add it to the hashedList.
+		    _hashedList.put(name, obj);
+		}
                 return obj;
             }
         }
@@ -193,7 +206,7 @@ public final class NamedList implements Cloneable, Serializable {
      */
     public boolean includes(Nameable element) {
         if (_hashEnabled) {
-            return _hashedList.get(element.getName()) != null;
+            return get(element.getName()) != null;
         }
         return _namedList.contains(element);
     }
@@ -418,12 +431,7 @@ public final class NamedList implements Cloneable, Serializable {
      *   object with the specified name is found.
      */
     public Nameable remove(String name) {
-        Nameable element = null;
-        if (_hashEnabled) {
-            element = _hashedList.get(name);
-        } else {
-            element = get(name);
-        }
+        Nameable element = get(name);
 
         if (element != null) {
             remove(element);

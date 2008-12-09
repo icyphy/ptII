@@ -692,7 +692,7 @@ test NamedList-100.8 {change the name} {
 
     list [list $r1_99 $r1_100 $r1_101 $r1_102 $r1_202] \
 	[list $r2_99 $r2_100 $r2_101 $r2_102 $r2_202]
-} {{n98_new n98_new n98_new n98_new n98_new} {1 1 1 1 2}}
+} {{n98_new n98_new n98_new n98_new n98_new} {1 1 1 1 1}}
 
 test NamedList-100.666 {removeAll} {
     $namedList99 removeAll
