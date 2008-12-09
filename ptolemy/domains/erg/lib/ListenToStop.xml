@@ -10,6 +10,8 @@
     </property>
     <property name="_containmentExtender" class="ptolemy.domains.fsm.kernel.ContainmentExtender">
     </property>
+    <property name="_exportAsGroup" class="ptolemy.data.expr.Parameter" value="true">
+    </property>
     <property name="_Director" class="ptolemy.domains.erg.kernel.ERGDirector">
         <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1E-10">
         </property>
@@ -28,7 +30,7 @@
     </property>
     <port name="stopInput" class="ptolemy.domains.fsm.modal.RefinementPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 325.0]">
         </property>
     </port>
     <entity name="Start" class="ptolemy.domains.erg.kernel.Event">
@@ -54,12 +56,6 @@
     <relation name="relation" class="ptolemy.domains.erg.kernel.SchedulingRelation">
         <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
         </property>
-        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute">
-<display name="condition"/>        </property>
-        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
-        </property>
-        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
-        </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
         </property>
         <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.10371433342281927">
@@ -71,8 +67,6 @@
         <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
         </property>
         <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="Infinity">
         </property>
