@@ -696,13 +696,20 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
                 // removeAllEntities();
 
 		// If we have a subclass that has LazyTypedCompositeActor
-		// in it, then things get trick.  See
+		// in it, then things get tricky.  See
 		// actor/lib/test/auto/LazySubClassModel.xml
+                
+                // If this is an instance or subclass of something, that
+                // something must also be a LazyTypedCompositeActor and
+                // it should be populated first.
+                if (getParent() != null) {
+                    ((LazyTypedCompositeActor)getParent()).populate();
+                }
 
 		// We were getting ConcurrentModifications because
 		// when we instantiate and call
 		// NamedObj._markContentsDerived() we end up
-		// eventuatlly calling populate(), which calls
+		// eventually calling populate(), which calls
 		// parse(URL, String, Reader) and adds a
 		// ParserAttribute, which results in a
 		// ConcurrentModificationException
@@ -871,7 +878,6 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
      */
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
-
 	populate();
 	// Export top level attributes and ports
 
@@ -922,21 +928,21 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
 
         while (classes.hasNext()) {
             ComponentEntity entity = (ComponentEntity) classes.next();
-            entity.exportMoML(output, depth);
+            entity.exportMoML(output, depth + 2);
         }
 
         Iterator entities = entityList().iterator();
 
         while (entities.hasNext()) {
             ComponentEntity entity = (ComponentEntity) entities.next();
-            entity.exportMoML(output, depth);
+            entity.exportMoML(output, depth + 2);
         }
 
         Iterator relations = relationList().iterator();
 
         while (relations.hasNext()) {
             ComponentRelation relation = (ComponentRelation) relations.next();
-            relation.exportMoML(output, depth);
+            relation.exportMoML(output, depth + 2);
         }
 
         // NOTE: We used to write the links only if
@@ -945,7 +951,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
         // would instead record links in a MoMLAttribute.
         // That mechanism was far too fragile.
         // EAL 3/10/04
-        output.write(exportLinks(depth, null));
+        output.write(exportLinks(depth + 2, null));
 	//FIXME: end of duplicated code from CompositeEntity
 
         output.write(_getIndentPrefix(depth + 1) + "</group>\n");
