@@ -57,6 +57,7 @@ OTHER_FILES_TO_BE_JARED = \
 	RepeatForCount.xml \
 	SendOutput.xml \
 	SingleQueueMultipleServers.xml \
+	SingleQueueMultipleServersTE.xml \
 	TrafficLight.xml \
 	ergLibrary.xml
 

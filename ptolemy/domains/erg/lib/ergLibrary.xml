@@ -12,6 +12,7 @@
           <input source="ptolemy/domains/erg/lib/RepeatForCount.xml"/>
           <input source="ptolemy/domains/erg/lib/SendOutput.xml"/>
           <input source="ptolemy/domains/erg/lib/SingleQueueMultipleServers.xml"/>
+          <input source="ptolemy/domains/erg/lib/SingleQueueMultipleServersTE.xml"/>
           <input source="ptolemy/domains/erg/lib/TrafficLight.xml"/>
         </group>
       ?>

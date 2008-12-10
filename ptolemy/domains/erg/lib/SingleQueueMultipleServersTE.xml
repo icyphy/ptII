@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="SingleQueueMultipleServers" class="ptolemy.domains.fsm.modal.Group">
+<entity name="SingleQueueMultipleServersTE" class="ptolemy.domains.fsm.modal.Group">
     <property name="stateDependentCausality" class="ptolemy.data.expr.Parameter" value="false">
     </property>
     <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
@@ -28,6 +28,12 @@
     </property>
     <property name="_exportAsEventGroup" class="ptolemy.data.expr.Parameter" value="true">
     </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A number of servers using the same queue to serve customers in a&#10;first-come-first-serve manner. The queue stores all the transient&#10;entities (TEs).">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 35.0]">
+        </property>
+    </property>
     <property name="servers" class="ptolemy.data.expr.Parameter" value="3">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -44,10 +50,10 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[234.62897040415396, 133.7109375]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 115.0]">
         </property>
     </property>
-    <property name="queue" class="ptolemy.data.expr.Parameter" value="0">
+    <property name="queue" class="ptolemy.data.expr.Parameter" value="{}">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -63,7 +69,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[439.62897040415396, 133.7109375]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 115.0]">
         </property>
     </property>
     <property name="serviceTime" class="ptolemy.data.expr.Parameter" value="5.0">
@@ -82,13 +88,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[319.62897040415396, 133.7109375]">
-        </property>
-    </property>
-    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A number of servers using the same queue to serve customers in a&#10;first-come-first-serve manner.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.3591753834072, 44.85546875]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 115.0]">
         </property>
     </property>
     <property name="initServers" class="ptolemy.data.expr.Parameter" value="3">
@@ -107,10 +107,10 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[234.62897040415396, 113.7109375]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 95.0]">
         </property>
     </property>
-    <property name="initQueue" class="ptolemy.data.expr.Parameter" value="0">
+    <property name="initQueue" class="ptolemy.data.expr.Parameter" value="{}">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -126,40 +126,46 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[334.62897040415396, 113.7109375]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 95.0]">
         </property>
     </property>
     <entity name="Arrive" class="ptolemy.domains.erg.kernel.Event">
-        <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="queue = queue + 1">
+        <property name="parameters" class="ptolemy.domains.erg.kernel.ParametersAttribute" value="(data : general)">
+        </property>
+        <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="queue = queue.append({data})">
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
         <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.3591753834072, 209.85546875]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[196.44334576065296, 212.64453124999994]">
         </property>
     </entity>
     <entity name="Serve" class="ptolemy.domains.erg.kernel.Event">
-        <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="servers = servers - 1;&#10;  queue = queue - 1">
+        <property name="parameters" class="ptolemy.domains.erg.kernel.ParametersAttribute" value="(data : general)">
+        </property>
+        <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="servers = servers - 1;&#10;  queue = queue.subarray(1)">
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
         <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.3591753834072, 214.85546875]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 220.0]">
         </property>
     </entity>
     <entity name="Finish" class="ptolemy.domains.erg.kernel.Event">
+        <property name="parameters" class="ptolemy.domains.erg.kernel.ParametersAttribute" value="(data : general)">
+        </property>
         <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="servers = servers + 1">
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
         <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.3591753834072, 324.85546875]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 345.0]">
         </property>
     </entity>
-    <entity name="Event" class="ptolemy.domains.erg.kernel.Event">
+    <entity name="Start" class="ptolemy.domains.erg.kernel.Event">
         <property name="isInitialEvent" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="servers = initServers;&#10;  queue = initQueue">
@@ -168,7 +174,7 @@
         </property>
         <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.3591753834072, 124.85546875]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 130.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.domains.erg.kernel.SchedulingRelation">
@@ -176,9 +182,9 @@
         </property>
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="servers &gt; 0">
 <display name="condition"/>        </property>
-        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.542873545718379">
+        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.5636793585469079">
         </property>
-        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.06960630629858512">
+        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.049156755861481514">
         </property>
         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
 <display name="initialize"/>        </property>
@@ -190,7 +196,7 @@
         </property>
         <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="0.0">
         </property>
-        <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
+        <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{queue(0)}">
         </property>
         <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -216,7 +222,7 @@
         </property>
         <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="serviceTime">
         </property>
-        <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
+        <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{data}">
         </property>
         <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -228,7 +234,7 @@
     <relation name="relation3" class="ptolemy.domains.erg.kernel.SchedulingRelation">
         <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
         </property>
-        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="queue &gt; 0">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="queue.length &gt; 0">
 <display name="condition"/>        </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.47489380863809394">
         </property>
@@ -244,7 +250,7 @@
         </property>
         <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="0.0">
         </property>
-        <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
+        <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{queue(0)}">
         </property>
         <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
         </property>

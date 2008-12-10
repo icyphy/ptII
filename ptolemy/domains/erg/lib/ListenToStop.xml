@@ -28,6 +28,12 @@
     </property>
     <property name="_exportAsEventGroup" class="ptolemy.data.expr.Parameter" value="true">
     </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Stop this ERG the first time when&#10;data is received at stopInput.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 330.0]">
+        </property>
+    </property>
     <port name="stopInput" class="ptolemy.domains.fsm.modal.RefinementPort">
         <property name="input"/>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 325.0]">
