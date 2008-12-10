@@ -66,9 +66,14 @@ import ptolemy.util.MessageHandler;
  toplevel iteration.  This helps ensure that users of value of the
  variable will see changes to the value deterministically
  (independent of the schedule of execution of the actors).
- However, there is a substantial performance penalty associated
+ There was a substantial performance penalty associated
  with this when running within Vergil because change requests
- trigger repainting the Vergil window.
+ triggered repainting the Vergil window. This is no long the case.
+ The downside of this that parameters no longer are updated visually
+ after they are changed by SetVariable. To circumvent this,
+ RepaintController has been created, which can be found under
+ Utilities in the library, and allows to specify when
+ repaints should happen. 
  </p><p>
  If <i>delayed</i> is false, then the change to the value of
  the variable is performed immediately.  This allows more frequent
