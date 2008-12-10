@@ -671,16 +671,10 @@ public class ERGDirector extends Director implements TimedDirector,
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
-
+        _clearState();
         for (Variable variable : _eventsListeningToVariables.keySet()) {
             variable.removeValueListener(this);
         }
-
-        _eventQueue.clear();
-        _eventsListeningToPorts.clear();
-        _eventsListeningToVariables.clear();
-        _initializedRefinements.clear();
-        _refinementQueue.clear();
     }
 
     /** A Boolean parameter that decides whether simultaneous events should be
@@ -878,6 +872,7 @@ public class ERGDirector extends Director implements TimedDirector,
         _eventsListeningToVariables.clear();
         _initializedRefinements.clear();
         _refinementQueue.clear();
+        _delegateFireAt = false;
     }
 
     /** Fire an entry in the event queue. If the entry contains information
