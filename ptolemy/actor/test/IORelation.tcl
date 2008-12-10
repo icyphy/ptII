@@ -426,13 +426,11 @@ test IORelation-3.19 {Resolve width through three levels} {
     $r2 setWidth 3
     $r1 setWidth 0
  # the outcome is not deterministic from the user point of view
- # however the consistency check has been temporarily disabled and
- # hence it is currently allowed.
- #   catch {$manager inferWidths} msg
- #   list $msg
-    $manager inferWidths
-    string match "5 ? 3 5 ? 3" "[$p0 getWidth] [$p1 getWidth] [$p2 getWidth]\
-         [$r0 getWidth] [$r1 getWidth] [$r2 getWidth]"
+    catch {$manager inferWidths} msg
+	  set widthInferenceNotDeterministic2 "ptolemy.kernel.util.IllegalActionException: The inside and outside widths of port * are not consistent.
+Can't determine a uniquely defined width for the connected relations.
+  in *"
+  string match $widthInferenceNotDeterministic2 $msg
 } {1}
 
     
