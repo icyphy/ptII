@@ -66,8 +66,7 @@ public class RelationWidthInference {
     public void inferWidths() throws IllegalActionException {
         if (_needsWidthInference) {
             final boolean logTimings = false;
-	    // Disable consistencyCheck until we get backward compatibility
-            final boolean checkConsistency = false;
+            final boolean checkConsistency = true;
             long startTime = (new Date()).getTime();
                         
             try {
