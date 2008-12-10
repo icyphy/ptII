@@ -210,6 +210,29 @@ public class ArrayToken extends AbstractNotConvertibleToken {
         }
     }
 
+    /** Append the given array to the end of this array, and return the
+     *  resulting array. For example, if this array is {1, 2, 3} and the given
+     *  array is {4, 5, 6}, then the result would be {1, 2, 3, 4, 5, 6}. If both
+     *  arrays are empty, then an empty array is returned.
+     *
+     *  @param token The array to be appended to the end of this array.
+     *  @return The result array.
+     *  @exception IllegalActionException If an array token cannot be created.
+     *  @since Ptolemy II 7.1
+     */
+    public ArrayToken append(ArrayToken token) throws IllegalActionException {
+        int newLength = _value.length + token._value.length;
+        if (newLength > 0) {
+            Token[] result = new Token[newLength];
+            System.arraycopy(_value, 0, result, 0, _value.length);
+            System.arraycopy(token._value, 0, result, _value.length,
+                    token._value.length);
+            return new ArrayToken(result);
+        } else {
+            return new ArrayToken(getElementType());
+        }
+    }
+
     /** Convert an ArrayToken to an array of unsigned bytes.
      *
      * @param dataArrayToken to be converted to a unsigned byte array.
@@ -705,6 +728,19 @@ public class ArrayToken extends AbstractNotConvertibleToken {
         }
 
         return new ArrayToken(oneValueArray);
+    }
+
+    /** Return the contiguous subarray starting at the specified index to the
+     *  end of this array. If the specified index is out of range,
+     *  then return an empty array with the same type as this array.
+     *  @param index The index of the beginning of the subarray.
+     *  @return The extracted subarray.
+     *  @exception IllegalActionException If the index argument is
+     *   less than zero.
+     *  @since Ptolemy II 7.1
+     */
+    public ArrayToken subarray(int index) throws IllegalActionException {
+        return subarray(index, _value.length - index);
     }
 
     /** Return the contiguous subarray starting at the specified index and
