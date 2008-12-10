@@ -44,8 +44,11 @@ import ptolemy.kernel.util.Settable;
 //// ModelRepaintController
 
 /**
- * A class to do scheduled repaints at certain user specified moments.
- * Currently only repaints at wrapup can be scheduled. 
+ * A class to do scheduled repaints at certain user specified moments in
+ * the execution of the model. This component piggy-backs with the execution
+ * of its container, and allows you to define that repaints need to happen when
+ * certain functions of its container are executed. Currently only repaints at
+ * wrapup or post-fire can be scheduled. 
  *
  * @author Bert Rodiers
  * @version $Id: ModelRepaintController.java 49562 2008-05-26 04:25:04Z rodiers $
@@ -73,6 +76,10 @@ public class ModelRepaintController extends ScopeExtendingAttribute {
         _repaintOnWrapUp = new Parameter(this, "_repaintOnWrapUp");
         _repaintOnWrapUp.setTypeEquals(BaseType.BOOLEAN);
         _repaintOnWrapUp.setExpression("true");
+        
+        _repaintOnPostFire = new Parameter(this, "_repaintOnPostFire");
+        _repaintOnPostFire.setTypeEquals(BaseType.BOOLEAN);
+        _repaintOnPostFire.setExpression("false");
 
         // The icon.
         _attachText("_iconDescription", "<svg>\n"
@@ -119,6 +126,7 @@ public class ModelRepaintController extends ScopeExtendingAttribute {
             }
             
             public boolean postfire() throws IllegalActionException {
+                _scheduleRepaint(_repaintOnPostFire);
                 return true;
             }
 
@@ -148,28 +156,42 @@ public class ModelRepaintController extends ScopeExtendingAttribute {
             }
 
             public void wrapup() throws IllegalActionException {
-                if (_repaintOnWrapUp.getExpression().equals("true")) {
-                    // The ChangeRequest has false as third argument to avoid complete
-                    // repaints of the model.                
-                    ChangeRequest request = new ChangeRequest(this,
-                            "SetVariable change request", true) {
-                        protected void _execute() throws IllegalActionException {
-                        }
-                    };
-
-                    // To prevent prompting for saving the model, mark this
-                    // change as non-persistent.
-                    request.setPersistent(false);
-                    requestChange(request);
-                }                
+                _scheduleRepaint(_repaintOnWrapUp);
             }
         };
         ((CompositeActor) container).addPiggyback(ex);        
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                       private methods                     ////
+    
+    /** Schedule a repaint in case the value parameter equals True.
+     *  This is done by requesting a ChangeRequest. 
+     *  @param parameter The parameter.
+     */    
+    private void _scheduleRepaint(Parameter parameter) {
+        if (parameter.getExpression().equals("true")) {
+            // The ChangeRequest has false as third argument to avoid complete
+            // repaints of the model.                
+            ChangeRequest request = new ChangeRequest(this,
+                    "SetVariable change request", true) {
+                protected void _execute() throws IllegalActionException {
+                }
+            };
+
+            // To prevent prompting for saving the model, mark this
+            // change as non-persistent.
+            request.setPersistent(false);
+            requestChange(request);
+        }
+    }
+                
+    ///////////////////////////////////////////////////////////////////
     ////                       private parameters                   ////
 
     // A flag that specifies whether a repaint should happen on wrapup.
     Parameter _repaintOnWrapUp;
+    
+    // A flag that specifies whether a repaint should happen on post-fire.
+    Parameter _repaintOnPostFire;
 }
