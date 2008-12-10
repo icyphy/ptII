@@ -76,16 +76,17 @@ public class GroupIcon extends StateIcon {
             return _iconCache;
         }
 
-        BasicRectangle figure1 = new BasicRectangle(0, 0, 14, 8, Color.darkGray,
+        BasicRectangle figure1 = new BasicRectangle(0, 0, 15, 10, Color.darkGray,
                 1.0f);
-        BasicRectangle figure2 = new BasicRectangle(3, 3, 14, 8, Color.gray,
+        BasicRectangle figure2 = new BasicRectangle(2, 2, 15, 10, Color.gray,
                 1.0f);
-        BasicRectangle figure3 = new BasicRectangle(6, 6, 14, 8, _getFill(),
+        BasicRectangle figure3 = new BasicRectangle(5, 5, 15, 10, _getFill(),
                 1.0f);
-        CompositeFigure figure = new CompositeFigure(figure1);
+        CompositeFigure figure = new CompositeFigure();
+        figure.add(figure1);
         figure.add(figure2);
         figure.add(figure3);
-        
+
         _iconCache = new FigureIcon(figure, 20, 15);
         return _iconCache;
     }
