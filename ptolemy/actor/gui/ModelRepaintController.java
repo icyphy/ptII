@@ -99,12 +99,7 @@ public class ModelRepaintController extends ScopeExtendingAttribute {
         if (container == null) {
             throw new IllegalActionException(this,
                     "This attribute should have a container different from null.");
-        }
-            
-        if (!(container instanceof CompositeActor)) {
-            throw new IllegalActionException(this, container,
-                    "This attribute should have a container of type CompositeActor.");
-        }
+        }                    
         
         // The inner class will be piggybacked as an executable for the container to
         // execute change request at the appropriate times. These change request will
@@ -159,7 +154,10 @@ public class ModelRepaintController extends ScopeExtendingAttribute {
                 _scheduleRepaint(_repaintOnWrapUp);
             }
         };
-        ((CompositeActor) container).addPiggyback(ex);        
+        
+        if (container instanceof CompositeActor) {
+            ((CompositeActor) container).addPiggyback(ex);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
