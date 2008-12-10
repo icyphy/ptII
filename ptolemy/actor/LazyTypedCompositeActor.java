@@ -243,6 +243,15 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
 
         try {
             LazyTypedCompositeActor result = (LazyTypedCompositeActor) super.clone(workspace);
+            
+            // There may or may not be configure text, but it won't be the
+            // same as what we are cloning (instantiating) from.
+            result._base = null;
+            result._configureDone = false;
+            result._populating = false;
+            result._configureSource = null;
+            result._configureText = null;
+
             result._cloning = false;
             return result;
         } finally {
