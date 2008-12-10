@@ -176,12 +176,16 @@ public final class NamedList implements Cloneable, Serializable {
 	    if (found != null) {
 		if (found.getName().equals(name)) {
 		    return found;
+		} else {
+		    // The name of the Nameable was changed, but the
+		    // _hashedList was not updated, so we remove the old
+		    // entry.
+		    _hashedList.remove(name);
 		}
-		// We could remove the old name here, but what if
-		// two names hash to the same value?  Instead, we
-		// traverse the list and return the first match
 	    }
 	}
+
+	// Do a linear search
         Iterator iterator = _namedList.iterator();
 
         while (iterator.hasNext()) {
