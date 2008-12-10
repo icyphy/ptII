@@ -8368,10 +8368,14 @@ echo "$as_me: WARNING: 'CLASSPATH=\"$PTII/config\" $JAVA MajorOSName' failed.
 		MATLAB_USE_MSVC="no"
 		case "`uname -s`" in
 		Linux)
-            MATLAB_LIBDIR=${MATLAB_DIR}/bin/glnx86
-            if ! test -d ${MATLAB_DIR}; then
-			    MATLAB_LIBDIR=${MATLAB_DIR}/extern/lib/glnx86
-            fi
+		    if test "`uname -m`" = "x86_64"; then
+			    MATLAB_LIBDIR=${MATLAB_DIR}/bin/glnxa64
+		    else
+			    MATLAB_LIBDIR=${MATLAB_DIR}/bin/glnx86
+			    if ! test -d ${MATLAB_DIR}; then
+				    MATLAB_LIBDIR=${MATLAB_DIR}/extern/lib/glnx86
+			    fi
+		    fi
 			;;
 		CYGWIN*)
                         # As of 5/2007, we no longer use MSVC cl for Matlab
@@ -8514,6 +8518,9 @@ echo "$as_me: WARNING: Failed to find MSVC cl or GNU gcc, so we will
 		        PTMATLAB_LD_ARGS="ptmatlab.cc -fno-exceptions -dynamiclib -o ${PTJNI_SHAREDLIBRARY_PREFIX}ptmatlab.${PTJNI_SHAREDLIBRARY_SUFFIX}	-L\"${MATLAB_LIBDIR}\" ${PTJNI_SHAREDLIBRARY_LDFLAG} -leng -lmx"
 		    else
 		        PTMATLAB_LD_ARGS="-shared ptmatlab.cc -fno-exceptions -o ${PTJNI_SHAREDLIBRARY_PREFIX}ptmatlab.${PTJNI_SHAREDLIBRARY_SUFFIX}	-L\"${MATLAB_LIBDIR}\" ${PTJNI_SHAREDLIBRARY_LDFLAG} -lc -leng -lmx"
+		        if test "`uname -m`" = "x86_64"; then
+		            PTMATLAB_LD_ARGS="$PTMATLAB_LD_ARGS -fPIC"
+		        fi
 		    fi
 
 
