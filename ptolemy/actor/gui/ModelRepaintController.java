@@ -31,9 +31,9 @@ import ptolemy.actor.Executable;
 import ptolemy.actor.Initializable;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.ScopeExtendingAttribute;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -56,19 +56,18 @@ import ptolemy.kernel.util.Settable;
  * @Pt.ProposedRating Red (rodiers)
  * @Pt.AcceptedRating Red (rodiers)
  */
-public class ModelRepaintController extends ScopeExtendingAttribute {
+public class ModelRepaintController extends Attribute {
     /** Construct an instance of the ModelRepaintController.
      *  @param container The container.
      *  @param name The name.
      *  @exception IllegalActionException If the attribute is not of an
      *   acceptable class for the container, or if the name contains a period.
-     *  @exception IllegalActionException If the container is null.
-     *  @exception IllegalActionException If the container is not a CompositeActor.
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
     public ModelRepaintController(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
+        
         super(container, name);
 
         // Names of the parameters start with underscores by convention to minimize
@@ -94,71 +93,106 @@ public class ModelRepaintController extends ScopeExtendingAttribute {
         // Hide the name.
         SingletonParameter _hideName = new SingletonParameter(this, "_hideName");
         _hideName.setToken(BooleanToken.TRUE);
-        _hideName.setVisibility(Settable.EXPERT);
-        
-        if (container == null) {
-            throw new IllegalActionException(this,
-                    "This attribute should have a container different from null.");
-        }                    
-        
-        // The inner class will be piggybacked as an executable for the container to
-        // execute change request at the appropriate times. These change request will
-        // lead to repaints of the GUI.
-        
-        Executable ex = new Executable() {
-            public void fire() throws IllegalActionException {
-            }
-
-            public boolean isFireFunctional() {
-                return true;
-            }
-
-            public boolean isStrict() throws IllegalActionException {
-                return true;
-            }
-            public int iterate(int count) throws IllegalActionException {
-                return Executable.COMPLETED;
-            }
-            
-            public boolean postfire() throws IllegalActionException {
-                _scheduleRepaint(_repaintOnPostFire);
-                return true;
-            }
-
-            public boolean prefire() throws IllegalActionException {
-                return true;
-            }
-
-            public void stop() {
-            }
-
-            public void stopFire() {
-            }
-
-            public void terminate() {
-            }
-
-            public void addInitializable(Initializable initializable) {
-            }
-
-            public void initialize() throws IllegalActionException {
-            }
-
-            public void preinitialize() throws IllegalActionException {
-            }
-
-            public void removeInitializable(Initializable initializable) {
-            }
-
-            public void wrapup() throws IllegalActionException {
-                _scheduleRepaint(_repaintOnWrapUp);
-            }
-        };
-        
-        if (container instanceof CompositeActor) {
-            ((CompositeActor) container).addPiggyback(ex);
-        }
+        _hideName.setVisibility(Settable.EXPERT);        
     }
+    
+
+    /** Specify the container NamedObj, adding this attribute to the
+     *  list of attributes in the container.  If the container already
+     *  contains an attribute with the same name, then throw an exception
+     *  and do not make any changes.  Similarly, if the container is
+     *  not in the same workspace as this attribute, throw an exception.
+     *  If this attribute is already contained by the NamedObj, do nothing.
+     *  If the attribute already has a container, remove
+     *  this attribute from its attribute list first.  Otherwise, remove
+     *  it from the directory of the workspace, if it is there.
+     *  If the argument is null, then remove it from its container.
+     *  It is not added to the workspace directory, so this could result in
+     *  this object being garbage collected.
+     *  Note that since an Attribute is a NamedObj, it can itself have
+     *  attributes.  However, recursive containment is not allowed, where
+     *  an attribute is an attribute of itself, or indirectly of any attribute
+     *  it contains.  This method is write-synchronized on the
+     *  workspace and increments its version number.
+     *  
+     *  @param container The container to attach this attribute to..
+     *  @exception IllegalActionException If this attribute is not of the
+     *   expected class for the container, or it has no name,
+     *   or the attribute and container are not in the same workspace, or
+     *   the proposed container would result in recursive containment.
+     *  @exception NameDuplicationException If the container already has
+     *   an attribute with the name of this attribute.
+     *  @see #getContainer()
+     */
+    public void setContainer(NamedObj container) throws IllegalActionException,
+            NameDuplicationException {
+        if (_executable == null) {
+            // The inner class will be piggybacked as an executable for the container to
+            // execute change request at the appropriate times. These change request will
+            // lead to repaints of the GUI.    
+            _executable = new Executable() {
+                public void fire() throws IllegalActionException {
+                }
+    
+                public boolean isFireFunctional() {
+                    return true;
+                }
+    
+                public boolean isStrict() throws IllegalActionException {
+                    return true;
+                }
+                
+                public int iterate(int count) throws IllegalActionException {
+                    return Executable.COMPLETED;
+                }
+                
+                public boolean postfire() throws IllegalActionException {
+                    _scheduleRepaint(_repaintOnPostFire);
+                    return true;
+                }
+    
+                public boolean prefire() throws IllegalActionException {
+                    return true;
+                }
+    
+                public void stop() {
+                }
+    
+                public void stopFire() {
+                }
+    
+                public void terminate() {
+                }
+    
+                public void addInitializable(Initializable initializable) {
+                }
+    
+                public void initialize() throws IllegalActionException {
+                }
+    
+                public void preinitialize() throws IllegalActionException {
+                }
+    
+                public void removeInitializable(Initializable initializable) {
+                }
+    
+                public void wrapup() throws IllegalActionException {
+                    _scheduleRepaint(_repaintOnWrapUp);
+                }
+            };
+        }
+
+        // Don't piggy back on previous container anymore.
+        NamedObj previousContainer = getContainer();
+        if (previousContainer != null && previousContainer instanceof CompositeActor) {
+            ((CompositeActor) previousContainer).removePiggyback(_executable);
+        }
+        super.setContainer(container);
+
+        if (container != null && container instanceof CompositeActor) {
+            ((CompositeActor) container).addPiggyback(_executable);
+        }
+    }    
 
     ///////////////////////////////////////////////////////////////////
     ////                       private methods                     ////
@@ -187,6 +221,12 @@ public class ModelRepaintController extends ScopeExtendingAttribute {
     ///////////////////////////////////////////////////////////////////
     ////                       private parameters                   ////
 
+    // An inner class that will be notified on certain events.
+    // The inner class will be piggybacked as an executable for the container to
+    // execute change request at the appropriate times. These change request will
+    // lead to repaints of the GUI.    
+     Executable _executable;
+    
     // A flag that specifies whether a repaint should happen on wrapup.
     Parameter _repaintOnWrapUp;
     
