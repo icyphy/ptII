@@ -26,7 +26,10 @@
  */
 package ptolemy.codegen.c.actor.lib;
 
+import java.util.ArrayList;
+
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import ptolemy.kernel.util.IllegalActionException;
 
 /**
  A code generation helper class for ptolemy.actor.lib.BooleanSwitch.
@@ -46,4 +49,41 @@ public class BooleanSwitch extends CCodeGeneratorHelper {
     public BooleanSwitch(ptolemy.actor.lib.BooleanSwitch actor) {
         super(actor);
     }
+    
+    public String generateTrueOutputs() throws IllegalActionException {
+        ptolemy.actor.lib.BooleanSwitch actor = 
+            (ptolemy.actor.lib.BooleanSwitch) getComponent();
+        
+        int width = Math.min(
+                actor.input.getWidth(), actor.trueOutput.getWidth());
+        
+        StringBuffer code = new StringBuffer();
+        ArrayList args = new ArrayList();
+        args.add(0);
+        
+        for (int i = 0; i < width; i++) {
+            args.set(0, i);
+            code.append(_generateBlockCode("trueBlock", args));
+        }
+        return processCode(code.toString());
+    }
+    
+    public String generateFalseOutputs() throws IllegalActionException {
+        ptolemy.actor.lib.BooleanSwitch actor = 
+            (ptolemy.actor.lib.BooleanSwitch) getComponent();
+        
+        int width = Math.min(
+                actor.input.getWidth(), actor.trueOutput.getWidth());
+        
+        StringBuffer code = new StringBuffer();
+        ArrayList args = new ArrayList();
+        args.add(0);
+        
+        for (int i = 0; i < width; i++) {
+            args.set(0, i);
+            code.append(_generateBlockCode("falseBlock", args));
+        }
+        return processCode(code.toString());        
+    }
+    
 }

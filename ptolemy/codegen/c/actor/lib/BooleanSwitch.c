@@ -1,7 +1,15 @@
 /*** fireBlock ***/
 if ($ref(control)) {
-    $ref(trueOutput) = $ref(input);
+	$generateTrueOutputs()
 } else {
-    $ref(falseOutput) = $ref(input);
+	$generateFalseOutputs()
 }
+/**/
+
+/*** trueBlock($channel) ***/
+$ref(trueOutput#$channel) = $ref(input#$channel);
+/**/
+
+/*** falseBlock($channel) ***/
+$ref(falseOutput#$channel) = $ref(input#$channel);
 /**/

@@ -2239,6 +2239,15 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             return getFunctionInvocation(parameter, true);
 
         } else {
+            // Try calling a method defined in the helper first.
+            try {
+                Method method = getClass().getMethod(macro, new Class[0]);
+                return (String) method.invoke(this, new Object[0]);
+            } catch (Exception ex) {
+                // Don't print out error, since this is probably not an user macro.
+            }
+        
+            // Try to treat this as an user macro class.
             Method handler = null;
             Method checker = null;
             Class userMacro = null;
@@ -2418,22 +2427,21 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         String channel = "";
         String dataToken = "";
 
-        if (parameters.size() == 2) {
-            port = getPort(parameters.get(0));
-            channel = parameters.get(1);
-            dataToken = processCode("$ref(" + port.getName() + "#" + channel + ")");
-
-        } else if (parameters.size() == 3) {
-            port = getPort(parameters.get(0));
-            channel = parameters.get(1);
-            dataToken = parameters.get(2);
-        }
+        port = getPort(parameters.get(0));
+        channel = parameters.get(1);
 
         if (port == null || channel.length() == 0) {
             throw new IllegalActionException(parameter
                     + " is not acceptable by $send(). "
                     + "The $send macro takes in as arguments " +
             "a channelNumber, port, and data (e.g. $send(0, output, 45).");
+        }
+        
+        if (parameters.size() == 2) {
+            dataToken = processCode("$ref(" + port.getName() + "#" + channel + ")");
+
+        } else if (parameters.size() == 3) {
+            dataToken = parameters.get(2);
         }
 
         PortCodeGenerator portHelper = (PortCodeGenerator) _getHelper(port);
