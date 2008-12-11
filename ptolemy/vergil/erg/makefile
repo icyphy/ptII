@@ -73,7 +73,6 @@ OPTIONAL_FILES = \
     $(PTCLASSJAR) \
 	'ERGGraphController$$NewEventAction$$1.class' \
 	'ERGGraphController$$NewEventAction.class' \
-	'ERGGraphController$$SaveAsEventGroupAction.class' \
 	'ERGGraphTableau$$Factory.class' \
 	'SchedulingRelationController$$SchedulingRelationRenderer.class'
 

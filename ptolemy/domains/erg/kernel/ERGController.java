@@ -48,8 +48,8 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.HasTypeConstraints;
 import ptolemy.domains.erg.lib.SynchronizeToRealtime;
+import ptolemy.domains.fsm.kernel.Group;
 import ptolemy.domains.fsm.kernel.State;
-import ptolemy.domains.fsm.modal.Group;
 import ptolemy.domains.fsm.modal.ModalController;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.ComponentRelation;
@@ -168,24 +168,6 @@ public class ERGController extends ModalController {
                 BooleanDependency.OPLUS_IDENTITY);
     }
 
-    /** Get the class name of this ERGController. If exportAsGroup is true, then
-     *  the class name equals to the class name of {@link Group}; otherwise, the
-     *  original class name is returned.
-     *
-     *  @return The class name.
-     */
-    public String getClassName() {
-        try {
-            if (exportAsGroup != null && ((BooleanToken) exportAsGroup.getToken(
-                    )).booleanValue()) {
-                return Group.class.getName();
-            }
-        } catch (IllegalActionException e) {
-            // Ignore; return super.
-        }
-        return super.getClassName();
-    }
-
     /** Return the director responsible for the execution of this actor.
      *
      *  @return The director responsible for the execution of this actor.
@@ -211,7 +193,7 @@ public class ERGController extends ModalController {
                 if (modalModel.getController() == this) {
                     _executiveDirector = super.getDirector();
                 } else {
-                	_executiveDirector = null;
+                    _executiveDirector = null;
                     for (Object atomicEntity
                             : modalModel.allAtomicEntityList()) {
                         if (atomicEntity instanceof Event) {
@@ -234,7 +216,7 @@ public class ERGController extends ModalController {
                                     }
                                 }
                                 if (_executiveDirector != null) {
-                                	break;
+                                    break;
                                 }
                             }
                         }

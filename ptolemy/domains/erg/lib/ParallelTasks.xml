@@ -1,14 +1,14 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="ParallelTasks" class="ptolemy.domains.fsm.modal.Group">
+<entity name="ParallelTasks" class="ptolemy.domains.fsm.kernel.Group">
     <property name="stateDependentCausality" class="ptolemy.data.expr.Parameter" value="false">
     </property>
     <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
     </property>
     <property name="finalStateNames" class="ptolemy.kernel.util.StringAttribute">
     </property>
-    <property name="_containmentExtender" class="ptolemy.domains.fsm.kernel.ContainmentExtender">
+    <property name="_containmentExtender" class="ptolemy.domains.fsm.modal.ContainmentExtender">
     </property>
     <property name="_Director" class="ptolemy.domains.erg.kernel.ERGDirector">
         <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1E-10">

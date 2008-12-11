@@ -58,13 +58,14 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 JSRCS = \
 	AbstractActionsAttribute.java \
 	Action.java \
+	AlternateGetMomlAction.java \
 	ChoiceAction.java \
 	CommitAction.java \
 	CommitActionsAttribute.java \
-	ContainmentExtender.java \
 	FSMActor.java \
 	FSMCausalityInterface.java \
 	FSMDirector.java \
+	Group.java \
 	ModalDirector.java \
 	MultipleEnabledTransitionsException.java \
 	MultirateFSMDirector.java \
@@ -80,8 +81,9 @@ JSRCS = \
 	Transition.java
 
 OTHER_FILES_TO_BE_JARED = \
-	fsmentities.xml \
-	StateIcon.xml
+	GroupIcon.xml \
+	StateIcon.xml \
+	fsmentities.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -96,12 +98,7 @@ OPTIONAL_FILES = \
 	'AbstractActionsAttribute$$TypeFunction.class' \
 	'FSMActor$$1.class' \
 	'FSMActor$$PortScope.class' \
-	'FSMDirector$$1.class' \
-	'FSMDirector$$2.class' \
-	'InterfaceAutomaton$$1.class' \
-	'InterfaceAutomaton$$Triple.class' \
-	'ModalDirector$$1.class' \
-	'RelationList$$RelationNode.class'
+	'FSMDirector$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

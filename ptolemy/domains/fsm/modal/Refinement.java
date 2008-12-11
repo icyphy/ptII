@@ -35,7 +35,6 @@ import ptolemy.actor.gui.Configuration;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.ct.kernel.CTCompositeActor;
-import ptolemy.domains.fsm.kernel.ContainmentExtender;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.RefinementActor;
 import ptolemy.domains.fsm.kernel.State;

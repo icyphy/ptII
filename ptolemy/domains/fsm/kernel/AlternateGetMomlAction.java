@@ -26,7 +26,7 @@
  COPYRIGHTENDKEY
 
 */
-package ptolemy.domains.fsm.modal;
+package ptolemy.domains.fsm.kernel;
 
 import java.io.IOException;
 import java.io.StringWriter;

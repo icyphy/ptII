@@ -182,18 +182,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         _init();
     }
 
-    /** Construct an FSMActor in the specified workspace with an empty
-     *  string as its name. You can then change the name with setName().
-     *  If the workspace argument is null, then use the default workspace.
-     *  Add the actor to the workspace directory.
-     *  Increment the version number of the workspace.
-     *  @param workspace The workspace that will list the actor.
-     */
-    public FSMActor(Workspace workspace) {
-        super(workspace);
-        _init();
-    }
-
     /** Create an FSMActor in the specified container with the specified
      *  name. The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
@@ -211,50 +199,17 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         _init();
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-
-    /** Create receivers for each input port. In case the receivers
-     *  don't need to be created they are reset
-     *  @exception IllegalActionException If any port throws it.
+    /** Construct an FSMActor in the specified workspace with an empty
+     *  string as its name. You can then change the name with setName().
+     *  If the workspace argument is null, then use the default workspace.
+     *  Add the actor to the workspace directory.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the actor.
      */
-    public void createReceivers() throws IllegalActionException {
-        if (_receiversVersion != workspace().getVersion()) {
-            _createReceivers();
-            _receiversVersion = workspace().getVersion();
-        } else {
-            _resetReceivers();
-        }
-
-        _receiversVersion = workspace().getVersion();
+    public FSMActor(Workspace workspace) {
+        super(workspace);
+        _init();
     }
-    
-    
-    /** Attribute specifying the names of the final states of this
-     *  actor. This attribute is kept for backward compatibility only,
-     *  and is set to expert visibility. To set the final states,
-     *  set the <i>isFinalState</i> parameter of a States.
-     */
-    public StringAttribute finalStateNames = null;
-
-    /** Attribute specifying the name of the initial state of this
-     *  actor. This attribute is kept for backward compatibility only,
-     *  and is set to expert visibility. To set the initial state,
-     *  set the <i>isInitialState</i> parameter of a State.
-     */
-    public StringAttribute initialStateName = null;
-
-    /** Indicate whether input/output dependencies can depend on the
-     *  state. By default, this is false (the default), indicating that a conservative
-     *  dependency is provided by the causality interface. Specifically,
-     *  if there is a dependency in any state, then the causality interface
-     *  indicates that there is a dependency. If this is true, then a less
-     *  conservative dependency is provided, indicating a dependency only
-     *  if there can be one in the current state.  If this is true, then
-     *  upon any state transition, this actor issues a change request, which
-     *  forces causality analysis to be redone. Note that this can be expensive.
-     */
-    public Parameter stateDependentCausality;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -273,6 +228,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         }
         _initializables.add(initializable);
     }
+
 
     /** React to a change in an attribute.
      *  @param attribute The attribute that changed.
@@ -381,6 +337,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             newObject._initialState = (State) newObject.getEntity(_initialState
                     .getName());
         }
+        newObject.exportAsGroup = (Parameter) newObject.getAttribute(
+                "_exportAsGroup");
+
         newObject._inputPortsVersion = -1;
         newObject._cachedInputPorts = null;
         newObject._outputPortsVersion = -1;
@@ -398,6 +357,21 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         newObject._tokenListArrays = null;
 
         return newObject;
+    }
+
+    /** Create receivers for each input port. In case the receivers
+     *  don't need to be created they are reset
+     *  @exception IllegalActionException If any port throws it.
+     */
+    public void createReceivers() throws IllegalActionException {
+        if (_receiversVersion != workspace().getVersion()) {
+            _createReceivers();
+            _receiversVersion = workspace().getVersion();
+        } else {
+            _resetReceivers();
+        }
+
+        _receiversVersion = workspace().getVersion();
     }
 
     /** Return the current state of this actor.
@@ -514,6 +488,24 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             _causalityInterfacesVersions.put(_currentState, Long.valueOf(workspace().getVersion()));
         }
         return causality;
+    }
+
+    /** Get the class name of this ERGController. If exportAsGroup is true, then
+     *  the class name equals to the class name of {@link Group}; otherwise, the
+     *  original class name is returned.
+     *
+     *  @return The class name.
+     */
+    public String getClassName() {
+        try {
+            if (exportAsGroup != null && ((BooleanToken) exportAsGroup.getToken(
+                    )).booleanValue()) {
+                return Group.class.getName();
+            }
+        } catch (IllegalActionException e) {
+            // Ignore; return super.
+        }
+        return super.getClassName();
     }
 
     /**
@@ -1165,6 +1157,40 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** A Boolean parameter that tells whether the Moml of this ERGController
+     *  should be generated as a group (an instance of {@link Group}) or not.
+     */
+    public Parameter exportAsGroup;
+
+    /** Attribute specifying the names of the final states of this
+     *  actor. This attribute is kept for backward compatibility only,
+     *  and is set to expert visibility. To set the final states,
+     *  set the <i>isFinalState</i> parameter of a States.
+     */
+    public StringAttribute finalStateNames = null;
+
+    /** Attribute specifying the name of the initial state of this
+     *  actor. This attribute is kept for backward compatibility only,
+     *  and is set to expert visibility. To set the initial state,
+     *  set the <i>isInitialState</i> parameter of a State.
+     */
+    public StringAttribute initialStateName = null;
+
+    /** Indicate whether input/output dependencies can depend on the
+     *  state. By default, this is false (the default), indicating that a conservative
+     *  dependency is provided by the causality interface. Specifically,
+     *  if there is a dependency in any state, then the causality interface
+     *  indicates that there is a dependency. If this is true, then a less
+     *  conservative dependency is provided, indicating a dependency only
+     *  if there can be one in the current state.  If this is true, then
+     *  upon any state transition, this actor issues a change request, which
+     *  forces causality analysis to be redone. Note that this can be expensive.
+     */
+    public Parameter stateDependentCausality;
+
     /** This class implements a scope, which is used to evaluate the
      *  parsed expressions.  This class is currently rather simple,
      *  but in the future should allow the values of input ports to
@@ -1487,20 +1513,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         return flags[channel];
     }
 
-    /** Set the map from input ports to boolean flags indicating whether a
-     *  channel is connected to an output port of the refinement of the
-     *  current state.
-     *  @exception IllegalActionException If the refinement specified
-     *   for one of the states is not valid.
-     */
-    protected void _setCurrentConnectionMap() throws IllegalActionException {
-        if (_connectionMapsVersion != workspace().getVersion()) {
-            _buildConnectionMaps();
-        }
-
-        _currentConnectionMap = (Map) _connectionMaps.get(_currentState);
-    }
-
     /** Read tokens from the given channel of the given input port and
      *  make them accessible to the expressions of guards and
      *  transitions through the port scope.  If the specified port is
@@ -1635,6 +1647,20 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         }
     }
 
+    /** Set the map from input ports to boolean flags indicating whether a
+     *  channel is connected to an output port of the refinement of the
+     *  current state.
+     *  @exception IllegalActionException If the refinement specified
+     *   for one of the states is not valid.
+     */
+    protected void _setCurrentConnectionMap() throws IllegalActionException {
+        if (_connectionMapsVersion != workspace().getVersion()) {
+            _buildConnectionMaps();
+        }
+
+        _currentConnectionMap = (Map) _connectionMaps.get(_currentState);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected fields                  ////
 
@@ -1660,6 +1686,14 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
     /** Indicator that a stop has been requested by a call to stop(). */
     protected boolean _stopRequested = false;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                package friendly variables                 ////
+
+    /** The initial state. This is package friendly so that State can
+     *  access it.
+     */
+    State _initialState = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -1741,30 +1775,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         }
     }
 
-    /** Parse the final state names. This method handles backward
-     *  compatibility, because it used to be that final states were
-     *  specified in a parameter of the FSMActor, as a comma-separated
-     *  list of names. Now, each state has an attribute that indicates
-     *  whether it is a final state. This method parses the list of names,
-     *  sets the attribute of each state, and then sets the list to null.
-     *  If the model is then saved, it will have switched to the modern
-     *  method for recording final states.
-     */
-    private void _parseFinalStates(String names) {
-        StringTokenizer nameTokens = new StringTokenizer(names, ",");
-        while (nameTokens.hasMoreElements()) {
-            String name = (String) nameTokens.nextElement();
-            name = name.trim();
-            //State finalState = (State) getEntity(name);
-            // State has not been created. Record that it is
-            // final state to mark it when it is created.
-            if (_finalStateNames == null) {
-                _finalStateNames = new HashSet<String>();
-            }
-            _finalStateNames.add(name);
-        }
-    }
-
     /** Create receivers for each input port.
      *  This method gets write permission on the workspace.
      *  @exception IllegalActionException If any port throws it.
@@ -1812,6 +1822,12 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             finalStateNames = new StringAttribute(this, "finalStateNames");
             finalStateNames.setExpression("");
             finalStateNames.setVisibility(Settable.EXPERT);
+
+            exportAsGroup = new Parameter(this, "_exportAsGroup");
+            exportAsGroup.setTypeEquals(BaseType.BOOLEAN);
+            exportAsGroup.setToken(BooleanToken.FALSE);
+            exportAsGroup.setVisibility(Settable.EXPERT);
+            exportAsGroup.setPersistent(false);
         } catch (KernelException ex) {
             // This should never happen.
             throw new InternalErrorException("Constructor error "
@@ -1829,6 +1845,30 @@ public class FSMActor extends CompositeEntity implements TypedActor,
          "cannot create default tokenHistorySize parameter:\n" + e);
          }
          */
+    }
+
+    /** Parse the final state names. This method handles backward
+     *  compatibility, because it used to be that final states were
+     *  specified in a parameter of the FSMActor, as a comma-separated
+     *  list of names. Now, each state has an attribute that indicates
+     *  whether it is a final state. This method parses the list of names,
+     *  sets the attribute of each state, and then sets the list to null.
+     *  If the model is then saved, it will have switched to the modern
+     *  method for recording final states.
+     */
+    private void _parseFinalStates(String names) {
+        StringTokenizer nameTokens = new StringTokenizer(names, ",");
+        while (nameTokens.hasMoreElements()) {
+            String name = (String) nameTokens.nextElement();
+            name = name.trim();
+            //State finalState = (State) getEntity(name);
+            // State has not been created. Record that it is
+            // final state to mark it when it is created.
+            if (_finalStateNames == null) {
+                _finalStateNames = new HashSet<String>();
+            }
+            _finalStateNames.add(name);
+        }
     }
 
     /** Reset receivers for each input port.
@@ -1875,22 +1915,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                package friendly variables                 ////
-
-    /** The initial state. This is package friendly so that State can
-     *  access it.
-     */
-    State _initialState = null;
-
-    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Cached lists of input and output ports.
-    private transient long _inputPortsVersion = -1;
-
     private transient LinkedList _cachedInputPorts;
-
-    private transient long _outputPortsVersion = -1;
 
     private transient LinkedList _cachedOutputPorts;
 
@@ -1899,6 +1926,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  dependent.
      */
     private CausalityInterface _causalityInterface;
+
+    /** The director for which the causality interface was created. */
+    private Director _causalityInterfaceDirector;
 
     /** The causality interfaces by state, for the case
      *  where the causality interface is state dependent.
@@ -1909,9 +1939,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  where the causality interface is state dependent.
      */
     private Map<State,Long> _causalityInterfacesVersions;
-
-    /** The director for which the causality interface was created. */
-    private Director _causalityInterfaceDirector;
 
     // Stores for each state a map from input ports to boolean flags
     // indicating whether a channel is connected to an output port
@@ -1930,10 +1957,15 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     // parameter.
     private HashSet<String> _finalStateNames = null;
 
+    // Cached lists of input and output ports.
+    private transient long _inputPortsVersion = -1;
+
     // A flag indicating whether this is at the beginning
     // of one iteration (firing). Normally it is set to true.
     // It is only set to false in HDF.
     private boolean _newIteration = true;
+
+    private transient long _outputPortsVersion = -1;
 
     // True if the current state is a final state.
     private boolean _reachedFinalState;

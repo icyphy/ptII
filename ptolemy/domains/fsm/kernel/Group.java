@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
 */
-package ptolemy.domains.fsm.modal;
+package ptolemy.domains.fsm.kernel;
 
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -44,7 +44,7 @@ import ptolemy.kernel.util.StringAttribute;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class Group extends ModalController {
+public class Group extends FSMActor {
 
     /** Construct an empty group of states.
      *
@@ -61,7 +61,7 @@ public class Group extends ModalController {
 
         StringAttribute alternateGetMoml = new StringAttribute(this,
                 "_alternateGetMomlAction");
-        alternateGetMoml.setExpression("ptolemy.domains.fsm.modal." +
+        alternateGetMoml.setExpression("ptolemy.domains.fsm.kernel." +
                 "AlternateGetMomlAction");
         alternateGetMoml.setPersistent(false);
     }

@@ -75,7 +75,7 @@ import ptolemy.util.StringUtilities;
  Derived classes may wish to modify the menus.  The File
  and Help menus are exposed as protected members.
  The File menu items in the _fileMenuItems protected array are,
- in order, Open File, Open URL, New, Save, SaveAs, Print, Close, and Exit.
+ in order, Open File, Open URL, New, Save, Save As, Print, Close, and Exit.
  The Help menu items in the _helpMenuItems protected array are,
  in order, About and Help.
  <p>
@@ -160,19 +160,6 @@ public abstract class Top extends JFrame {
 
         // Make this the default context for modal messages.
         GraphicalMessageHandler.setContext(this);
-    }
-
-    /**
-     * Set the initial default directory.  If this method is not
-     * called, then the initial default directory will be the value of
-     * the user.dir Java property, which is typically the current
-     * working directory.  This method allows external configuration
-     * to determine the initial/default opening/saving directory to
-     * use for file dialogs.  (Used in Kepler)
-     * @param dir the initial directory to use for file dialogs
-     */
-    public static void setDirectory(File dir) {
-        _directory = dir;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -326,43 +313,6 @@ public abstract class Top extends JFrame {
                     _fileMenu.setMnemonic(KeyEvent.VK_F);
                     _helpMenu.setMnemonic(KeyEvent.VK_H);
 
-                    // Open button = ctrl-o.
-                    _fileMenuItems[0].setAccelerator(KeyStroke.getKeyStroke(
-                            KeyEvent.VK_O, Toolkit.getDefaultToolkit()
-                                    .getMenuShortcutKeyMask()));
-
-                    // The mnemonic isn't set in the static
-                    // initializer because JMenu doesn't have an
-                    // appropriate constructor.
-                    _fileMenuItems[2].setMnemonic(KeyEvent.VK_N);
-
-                    // New button disabled by default.
-                    _fileMenuItems[2].setEnabled(false);
-
-                    // Save button = ctrl-s.
-                    _fileMenuItems[3].setAccelerator(KeyStroke.getKeyStroke(
-                            KeyEvent.VK_S, Toolkit.getDefaultToolkit()
-                                    .getMenuShortcutKeyMask()));
-
-                    // Print button = ctrl-p.
-                    _fileMenuItems[5].setAccelerator(KeyStroke.getKeyStroke(
-                            KeyEvent.VK_P, Toolkit.getDefaultToolkit()
-                                    .getMenuShortcutKeyMask()));
-
-                    // Print button disabled by default, unless this class implements
-                    // one of the JDK1.2 printing interfaces.
-                    if (Top.this instanceof Printable
-                            || Top.this instanceof Pageable) {
-                        _fileMenuItems[5].setEnabled(true);
-                    } else {
-                        _fileMenuItems[5].setEnabled(false);
-                    }
-
-                    // Close button = ctrl-w.
-                    _fileMenuItems[6].setAccelerator(KeyStroke.getKeyStroke(
-                            KeyEvent.VK_W, Toolkit.getDefaultToolkit()
-                                    .getMenuShortcutKeyMask()));
-
                     // Construct the File menu by adding action commands
                     // and action listeners.
                     FileMenuListener fileMenuListener = new FileMenuListener();
@@ -424,18 +374,6 @@ public abstract class Top extends JFrame {
         deferIfNecessary(doPack);
     }
 
-    /** Report a Throwable, which is usually an Exception but can also
-     *        be an Error.  This displays a message in a dialog by
-     *  calling the two-argument version with an empty string as the
-     *  first argument.  If this method is called outside the AWT event
-     *  thread, then its execution is deferred and performed in that thread.
-     *  @param throwable The Throwable to report
-     *  @see #report(String, Throwable)
-     */
-    public void report(Throwable throwable) {
-        report("", throwable);
-    }
-
     /** Report a message to the user by displaying it in a status bar,
      *  if there is one. If this method is called outside the AWT event
      *  thread, then its execution is deferred and performed in that thread.
@@ -478,6 +416,18 @@ public abstract class Top extends JFrame {
         deferIfNecessary(doReport);
     }
 
+    /** Report a Throwable, which is usually an Exception but can also
+     *        be an Error.  This displays a message in a dialog by
+     *  calling the two-argument version with an empty string as the
+     *  first argument.  If this method is called outside the AWT event
+     *  thread, then its execution is deferred and performed in that thread.
+     *  @param throwable The Throwable to report
+     *  @see #report(String, Throwable)
+     */
+    public void report(Throwable throwable) {
+        report("", throwable);
+    }
+
     /** Set background color.  This overrides the base class to set the
      *  background of the status bar. If this method is called outside
      *  the AWT event thread, then its execution is deferred and
@@ -508,6 +458,19 @@ public abstract class Top extends JFrame {
      */
     public void setCentering(boolean centering) {
         _centering = centering;
+    }
+
+    /**
+     * Set the initial default directory.  If this method is not
+     * called, then the initial default directory will be the value of
+     * the user.dir Java property, which is typically the current
+     * working directory.  This method allows external configuration
+     * to determine the initial/default opening/saving directory to
+     * use for file dialogs.  (Used in Kepler)
+     * @param dir the initial directory to use for file dialogs
+     */
+    public static void setDirectory(File dir) {
+        _directory = dir;
     }
 
     /** Record whether the data associated with this window has been
@@ -620,6 +583,55 @@ public abstract class Top extends JFrame {
             dispose();
             return true;
         }
+    }
+
+    /** Create the items in the File menu.
+     *
+     *  @return The items in the File menu.
+     */
+    protected JMenuItem[] _createFileMenuItems() {
+        JMenuItem[] fileMenuItems = {
+                new JMenuItem("Open File", KeyEvent.VK_O),
+                new JMenuItem("Open URL", KeyEvent.VK_U), new JMenu("New"),
+                new JMenuItem("Save", KeyEvent.VK_S),
+                new JMenuItem("Save As", KeyEvent.VK_A),
+                new JMenuItem("Print", KeyEvent.VK_P),
+                new JMenuItem("Close", KeyEvent.VK_C),
+                new JMenuItem("Exit", KeyEvent.VK_X), };
+
+        // Open button = ctrl-o.
+        fileMenuItems[0].setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O,
+                Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+
+        // The mnemonic isn't set in the static
+        // initializer because JMenu doesn't have an
+        // appropriate constructor.
+        fileMenuItems[2].setMnemonic(KeyEvent.VK_N);
+
+        // New button disabled by default.
+        fileMenuItems[2].setEnabled(false);
+
+        // Save button = ctrl-s.
+        fileMenuItems[3].setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
+                Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+
+        // Print button = ctrl-p.
+        fileMenuItems[5].setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P,
+                Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+
+        // Print button disabled by default, unless this class implements
+        // one of the JDK1.2 printing interfaces.
+        if (Top.this instanceof Printable || Top.this instanceof Pageable) {
+            fileMenuItems[5].setEnabled(true);
+        } else {
+            fileMenuItems[5].setEnabled(false);
+        }
+
+        // Close button = ctrl-w.
+        fileMenuItems[6].setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_W,
+                Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+
+        return fileMenuItems;
     }
 
     /** Exit the application after querying the user to save data.
@@ -767,7 +779,7 @@ public abstract class Top extends JFrame {
      */
     protected void _print() {
         // If you are using $PTII/bin/vergil, under bash, set this property:
-        // export JAVAFLAGS=-Dptolemy.ptII.print.platform=CrossPlatform 
+        // export JAVAFLAGS=-Dptolemy.ptII.print.platform=CrossPlatform
         // and then run $PTII/bin/vergil
         if (StringUtilities.getProperty("ptolemy.ptII.print.platform").equals("CrossPlatform")) {
             _printCrossPlatform();
@@ -958,13 +970,16 @@ public abstract class Top extends JFrame {
                     .getProperty("user.dir");
 
             if (currentWorkingDirectory != null) {
-                fileDialog
-                        .setCurrentDirectory(new File(currentWorkingDirectory));
+                fileDialog.setCurrentDirectory(new File(
+                        currentWorkingDirectory));
             }
         }
 
         return fileDialog;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
 
     /** Write the model to the specified file.
      *  @param file The file to write to.
@@ -972,20 +987,17 @@ public abstract class Top extends JFrame {
      */
     protected abstract void _writeFile(File file) throws IOException;
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    /** Indicator that a file is saved. */
-    protected static final int _SAVED = 0;
+    /** Indicator that a close operation is canceled. */
+    protected static final int _CANCELED = 2;
 
     /** Indicator that a file is discarded. */
     protected static final int _DISCARDED = 1;
 
-    /** Indicator that a close operation is canceled. */
-    protected static final int _CANCELED = 2;
-
     /** Indicator that a file save failed. */
     protected static final int _FAILED = 3;
+
+    /** Indicator that a file is saved. */
+    protected static final int _SAVED = 0;
 
     /** The most recent directory used in a file dialog. */
     protected static File _directory = null;
@@ -1001,14 +1013,7 @@ public abstract class Top extends JFrame {
     protected JMenu _fileMenu = new JMenu("File");
 
     /** Items in the file menu. */
-    protected JMenuItem[] _fileMenuItems = {
-            new JMenuItem("Open File", KeyEvent.VK_O),
-            new JMenuItem("Open URL", KeyEvent.VK_U), new JMenu("New"),
-            new JMenuItem("Save", KeyEvent.VK_S),
-            new JMenuItem("SaveAs", KeyEvent.VK_A),
-            new JMenuItem("Print", KeyEvent.VK_P),
-            new JMenuItem("Close", KeyEvent.VK_C),
-            new JMenuItem("Exit", KeyEvent.VK_X), };
+    protected JMenuItem[] _fileMenuItems = _createFileMenuItems();
 
     /** Help menu for this frame. */
     protected JMenu _helpMenu = new JMenu("Help");
@@ -1023,61 +1028,6 @@ public abstract class Top extends JFrame {
 
     /** The status bar. */
     protected StatusBar _statusBar = null;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    /** Indicator of whether actions are deferred. */
-    private static boolean _actionsDeferred = false;
-
-    /** List of deferred actions. */
-    private static List _deferredActions = new LinkedList();
-
-    // The input file.
-    private File _file = null;
-
-    // Flag to hide the menu bar.
-    private boolean _hideMenuBar = false;
-
-    // The most recently entered URL in Open URL.
-    private String _lastURL = "http://ptolemy.eecs.berkeley.edu/xml/models/";
-
-    // Indicator that the menu has been populated.
-    private boolean _menuPopulated = false;
-
-    // Indicator that the data represented in the window has been modified.
-    private boolean _modified = false;
-
-    // A flag indicating whether or not to center the window.
-    private boolean _centering = true;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-    // Execute all actions pending on the deferred action list.
-    // The list is cleared and the _actionsDeferred variable is set
-    // to false, even if one of the deferred actions fails.
-    // This method should only be invoked in the event dispatch thread.
-    // It is synchronized on the _deferredActions list, so the integrity
-    // of that list is ensured, since modifications to that list occur
-    // only in other places that are also synchronized on the list.
-    private static void _executeDeferredActions() {
-        synchronized (_deferredActions) {
-            try {
-                Iterator actions = _deferredActions.iterator();
-
-                while (actions.hasNext()) {
-                    Runnable action = (Runnable) actions.next();
-                    action.run();
-                }
-            } finally {
-                _actionsDeferred = false;
-                _deferredActions.clear();
-            }
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
 
     /** Listener for file menu commands. */
     class FileMenuListener implements ActionListener {
@@ -1095,7 +1045,7 @@ public abstract class Top extends JFrame {
                     _openURL();
                 } else if (actionCommand.equals("Save")) {
                     _save();
-                } else if (actionCommand.equals("SaveAs")) {
+                } else if (actionCommand.equals("Save As")) {
                     _saveAs();
                 } else if (actionCommand.equals("Print")) {
                     _print();
@@ -1146,4 +1096,60 @@ public abstract class Top extends JFrame {
             repaint();
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    // Execute all actions pending on the deferred action list.
+    // The list is cleared and the _actionsDeferred variable is set
+    // to false, even if one of the deferred actions fails.
+    // This method should only be invoked in the event dispatch thread.
+    // It is synchronized on the _deferredActions list, so the integrity
+    // of that list is ensured, since modifications to that list occur
+    // only in other places that are also synchronized on the list.
+    private static void _executeDeferredActions() {
+        synchronized (_deferredActions) {
+            try {
+                Iterator actions = _deferredActions.iterator();
+
+                while (actions.hasNext()) {
+                    Runnable action = (Runnable) actions.next();
+                    action.run();
+                }
+            } finally {
+                _actionsDeferred = false;
+                _deferredActions.clear();
+            }
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** Indicator of whether actions are deferred. */
+    private static boolean _actionsDeferred = false;
+
+    // A flag indicating whether or not to center the window.
+    private boolean _centering = true;
+
+    /** List of deferred actions. */
+    private static List _deferredActions = new LinkedList();
+
+    // The input file.
+    private File _file = null;
+
+    // Flag to hide the menu bar.
+    private boolean _hideMenuBar = false;
+
+    // The most recently entered URL in Open URL.
+    private String _lastURL = "http://ptolemy.eecs.berkeley.edu/xml/models/";
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    // Indicator that the menu has been populated.
+    private boolean _menuPopulated = false;
+
+    // Indicator that the data represented in the window has been modified.
+    private boolean _modified = false;
 }

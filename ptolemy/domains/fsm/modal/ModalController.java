@@ -32,11 +32,8 @@ import java.util.TreeMap;
 
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedCompositeActor;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
-import ptolemy.domains.fsm.kernel.ContainmentExtender;
 import ptolemy.domains.fsm.kernel.FSMActor;
+import ptolemy.domains.fsm.kernel.Group;
 import ptolemy.domains.fsm.kernel.RefinementActor;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.kernel.ComponentEntity;
@@ -50,7 +47,6 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLChangeRequest;
 
@@ -90,40 +86,7 @@ public class ModalController extends FSMActor implements DropTargetHandler,
     public ModalController(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        _init();
-    }
-    
-    /** Clone the controller into the specified workspace. This calls the
-     *  base class and then sets the attribute public members to refer
-     *  to the attributes of the new actor.
-     *
-     *  @param workspace The workspace for the new controller.
-     *  @return A new ERGController.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ModalController controller = (ModalController) super.clone(workspace);
-        controller.exportAsGroup = (Parameter) controller.getAttribute(
-                "_exportAsGroup");
-        return controller;
-    }
-    
-    /** Initialize this modal controller.
-     * 
-     *  @exception IllegalActionException If the container is incompatible
-     *   with this actor.
-     *  @exception NameDuplicationException If the name coincides with
-     *   an actor already in the container.
-     */
-    private void _init() throws IllegalActionException,
-            NameDuplicationException {
         new ContainmentExtender(this, "_containmentExtender");
-
-        exportAsGroup = new Parameter(this, "_exportAsGroup");
-        exportAsGroup.setTypeEquals(BaseType.BOOLEAN);
-        exportAsGroup.setToken(BooleanToken.FALSE);
-        exportAsGroup.setVisibility(Settable.EXPERT);
     }
 
     /** Construct a modal controller in the specified workspace with
@@ -136,16 +99,13 @@ public class ModalController extends FSMActor implements DropTargetHandler,
         super(workspace);
 
         try {
-            _init();
+        	new ContainmentExtender(this, "_containmentExtender");
         } catch (KernelException e) {
             // This should never happen.
             throw new InternalErrorException("Constructor error "
                     + e.getMessage());
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
 
     /** React to a list of objects being dropped onto a target.
      *
@@ -234,6 +194,9 @@ public class ModalController extends FSMActor implements DropTargetHandler,
         }
         target.requestChange(request);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Get the state in any ModalController within this ModalModel that has
      *  this ModalController as its refinement, if any. Return null if no such
@@ -334,14 +297,6 @@ public class ModalController extends FSMActor implements DropTargetHandler,
         _mirrorDisable = disable;
     }
 
-    /** A Boolean parameter that tells whether the Moml of this ERGController
-     *  should be generated as a group (an instance of {@link Group}) or not.
-     */
-    public Parameter exportAsGroup;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
     /** Override the base class to ensure that the proposed container
      *  is a ModalModel or null.
      *  @param container The proposed container.
@@ -356,6 +311,9 @@ public class ModalController extends FSMActor implements DropTargetHandler,
                             + "ModalModel objects.");
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Return a map from the classes of the entities to be dropped into a state
      *  and the class names of the refinements that can be used to contain those

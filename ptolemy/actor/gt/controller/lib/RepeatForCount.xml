@@ -1,10 +1,8 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="RepeatForCount" class="ptolemy.domains.fsm.modal.Group">
+<entity name="RepeatForCount" class="ptolemy.domains.fsm.kernel.Group">
     <property name="stateDependentCausality" class="ptolemy.data.expr.Parameter" value="false">
-    </property>
-    <property name="_exportAsGroup" class="ptolemy.data.expr.Parameter" value="true">
     </property>
     <property name="count" class="ptolemy.data.expr.Parameter" value="3">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">

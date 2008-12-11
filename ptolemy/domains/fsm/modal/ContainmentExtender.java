@@ -29,10 +29,11 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
  */
 
-package ptolemy.domains.fsm.kernel;
+package ptolemy.domains.fsm.modal;
 
-import ptolemy.domains.fsm.modal.ModalController;
-import ptolemy.domains.fsm.modal.Refinement;
+import ptolemy.domains.fsm.kernel.FSMActor;
+import ptolemy.domains.fsm.kernel.RefinementActor;
+import ptolemy.domains.fsm.kernel.State;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -74,7 +75,7 @@ public class ContainmentExtender extends Attribute implements
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    public ContainmentExtender(ModalController container, String name)
+    public ContainmentExtender(FSMActor container, String name)
     throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }

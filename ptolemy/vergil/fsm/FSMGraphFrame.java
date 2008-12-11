@@ -31,23 +31,32 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
 import ptolemy.actor.gui.DebugListenerTableau;
 import ptolemy.actor.gui.Effigy;
+import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.PtolemyPreferences;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TextEffigy;
+import ptolemy.data.BooleanToken;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
@@ -73,8 +82,9 @@ import diva.gui.GUIUtilities;
  @Pt.ProposedRating Red (neuendor)
  @Pt.AcceptedRating Red (johnr)
  */
-public class FSMGraphFrame extends ExtendedGraphFrame {
-    
+public class FSMGraphFrame extends ExtendedGraphFrame
+        implements ActionListener {
+
     /** Construct a frame associated with the specified FSM model.
      *  After constructing this, it is necessary
      *  to call setVisible(true) to make the frame appear.
@@ -113,6 +123,73 @@ public class FSMGraphFrame extends ExtendedGraphFrame {
         _layoutAction = new LayoutAction();
     }
 
+    /** React to the actions specific to this FSM graph frame.
+     *
+     *  @param e The action event.
+     */
+    public void actionPerformed(ActionEvent e) {
+        JMenuItem target = (JMenuItem) e.getSource();
+        String actionCommand = target.getActionCommand();
+        if (actionCommand.equals("Save As Design Pattern")) {
+            saveAsDesignPattern();
+        }
+    }
+
+    /** Save the current submodel as a design pattern using a method similar to
+     *  Save As.
+     */
+    public synchronized void saveAsDesignPattern() {
+        Tableau tableau = getTableau();
+        PtolemyEffigy effigy = (PtolemyEffigy) tableau.getContainer();
+        NamedObj model = effigy.getModel();
+        _initialSaveAsFileName = model.getName() + ".xml";
+        if (_initialSaveAsFileName.length() == 4) {
+            _initialSaveAsFileName = "model.xml";
+        }
+
+        FSMActor controller = (FSMActor) getModel();
+        List<Attribute> attributes = controller.attributeList();
+        for (Attribute attribute : attributes) {
+            attribute.updateContent();
+        }
+
+        try {
+            _performingSaveAsDesignPattern = true;
+            controller.exportAsGroup.setToken(BooleanToken.TRUE);
+
+            JFileChooser fileDialog = _saveAsFileDialog();
+            fileDialog.setSelectedFile(new File(fileDialog
+                    .getCurrentDirectory(), _initialSaveAsFileName));
+
+            int returnVal = fileDialog.showSaveDialog(this);
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File file = fileDialog.getSelectedFile();
+                if (file.getName().indexOf(".") == -1) {
+                    file = new File(file.getAbsolutePath() + ".xml");
+                }
+
+                try {
+                    if (_confirmFile(null, file)) {
+                        _directory = fileDialog.getCurrentDirectory();
+                        _writeModelToFile(effigy.getElementName(), file);
+                    }
+                } catch (Exception ex) {
+                    report("Error in save as event group.", ex);
+                }
+            }
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(controller, e,
+                    "Unable to export model.");
+        } finally {
+            _performingSaveAsDesignPattern = false;
+            try {
+                controller.exportAsGroup.setToken(BooleanToken.FALSE);
+            } catch (IllegalActionException e) {
+                // Ignore.
+            }
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                     public inner classes                  ////
 
@@ -135,9 +212,8 @@ public class FSMGraphFrame extends ExtendedGraphFrame {
                             .uniqueName("debug listener"));
                     DebugListenerTableau tableau = new DebugListenerTableau(
                             textEffigy, textEffigy.uniqueName("debugListener"));
-                    tableau
-                            .setDebuggable(((FSMActor) getModel())
-                                    .getDirector());
+                    tableau.setDebuggable(((FSMActor) getModel())
+                            .getDirector());
                 } else if (actionCommand.equals("Listen to State Machine")) {
                     Effigy effigy = (Effigy) getTableau().getContainer();
 
@@ -206,7 +282,7 @@ public class FSMGraphFrame extends ExtendedGraphFrame {
     public static class FSMGraphPane extends GraphPane {
 
         /** Construct a pane that updates the background color on each
-         *  repait if there is a preference attribute.   
+         *  repait if there is a preference attribute.
          * @param controller The graph controller
          * @param model The model
          * @param entity The entity
@@ -302,6 +378,31 @@ public class FSMGraphFrame extends ExtendedGraphFrame {
         return super._close();
     }
 
+    /** Create the items in the File menu.
+     *
+     *  @return The items in the File menu.
+     */
+    protected JMenuItem[] _createFileMenuItems() {
+        JMenuItem[] fileMenuItems = super._createFileMenuItems();
+        int i = 0;
+        for (JMenuItem item : fileMenuItems) {
+            if (item.getActionCommand().equals("Save As")) {
+                // Add a SaveAsDesignPattern here.
+                JMenuItem newItem = new JMenuItem(
+                        "Save As Design Pattern", KeyEvent.VK_D);
+                JMenuItem[] newItems = new JMenuItem[fileMenuItems.length + 1];
+                System.arraycopy(fileMenuItems, 0, newItems, 0, i);
+                newItems[i] = newItem;
+                newItem.addActionListener(this);
+                System.arraycopy(fileMenuItems, i, newItems, i + 1,
+                        fileMenuItems.length - i);
+                return newItems;
+            }
+            i++;
+        }
+        return fileMenuItems;
+    }
+
     /** Create a new graph pane. Note that this method is called in
      *  constructor of the base class, so it must be careful to not reference
      *  local variables that may not have yet been created.
@@ -319,6 +420,57 @@ public class FSMGraphFrame extends ExtendedGraphFrame {
         final FSMGraphModel graphModel = new FSMGraphModel(
                 (CompositeEntity) entity);
         return new FSMGraphPane(_controller, graphModel, entity);
+    }
+
+    /** Create and return a file dialog for the "Save As" command.
+     *  This overrides the base class to add options to the dialog.
+     *  @return A file dialog for save as.
+     */
+    protected synchronized JFileChooser _saveAsFileDialog() {
+        JFileChooser dialog = super._saveAsFileDialog();
+        if (_performingSaveAsDesignPattern) {
+            Query query = (Query) dialog.getAccessory();
+            if (query != null && query.hasEntry("submodel")) {
+                query.setBoolean("submodel", true);
+            }
+        }
+        return dialog;
+    }
+
+    /** Write the current submodel to a file.
+     * 
+     *  @param elementName The element name to be used in the DTD header.
+     *  @param file The file.
+     *  @exception IOException If it occurs while writing to the file.
+     */
+    protected void _writeModelToFile(String elementName, File file)
+            throws IOException {
+        FileWriter fileWriter = null;
+
+        try {
+            fileWriter = new FileWriter(file);
+            String name = getModel().getName();
+            String filename = file.getName();
+            int period = filename.indexOf(".");
+            if (period > 0) {
+                name = filename.substring(0, period);
+            } else {
+                name = filename;
+            }
+            NamedObj model = getModel();
+            if (model.getContainer() != null) {
+                fileWriter.write("<?xml version=\"1.0\" standalone=\"no\"?>\n"
+                        + "<!DOCTYPE " + elementName + " PUBLIC "
+                        + "\"-//UC Berkeley//DTD MoML 1//EN\"\n"
+                        + "    \"http://ptolemy.eecs.berkeley.edu"
+                        + "/xml/dtd/MoML_1.dtd\">\n");
+            }
+            model.exportMoML(fileWriter, 0, name);
+        } finally {
+            if (fileWriter != null) {
+                fileWriter.close();
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -342,13 +494,16 @@ public class FSMGraphFrame extends ExtendedGraphFrame {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     // The delay time specified that last time animation was set.
     private long _lastDelayTime = 0;
 
+    // Whether the save dialog should select the submodel check box.
+    private boolean _performingSaveAsDesignPattern = false;
+
     ///////////////////////////////////////////////////////////////////
     ////                       private inner classes               ////
-    
+
     ///////////////////////////////////////////////////////////////////
     //// LayoutAction
 

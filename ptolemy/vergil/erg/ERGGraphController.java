@@ -102,7 +102,6 @@ public class ERGGraphController extends FSMGraphController {
 
         GUIUtilities.addMenuItem(menu, _newEventAction);
         GUIUtilities.addToolBarButton(toolbar, _newEventAction);
-        GUIUtilities.addMenuItem(menu, _saveAsEventGroupAction);
     }
 
     /** An action to create a new event. */
@@ -208,21 +207,6 @@ public class ERGGraphController extends FSMGraphController {
         }
     }
 
-    public class SaveAsEventGroupAction extends FigureAction {
-
-        public SaveAsEventGroupAction() {
-            super("Save as Design Pattern");
-        }
-
-        public void actionPerformed(ActionEvent e) {
-            super.actionPerformed(e);
-
-            ERGGraphFrame frame = (ERGGraphFrame) ERGGraphController.this
-                    .getFrame();
-            frame.saveAsDesignPattern();
-        }
-    }
-
     protected void _createControllers() {
         super._createControllers();
         _transitionController = new SchedulingRelationController(this);
@@ -234,9 +218,6 @@ public class ERGGraphController extends FSMGraphController {
 
     /** Prototype state for rendering. */
     private static final Location _prototypeEvent;
-
-    private SaveAsEventGroupAction _saveAsEventGroupAction =
-        new SaveAsEventGroupAction();
 
     static {
         CompositeEntity container = new CompositeEntity();
