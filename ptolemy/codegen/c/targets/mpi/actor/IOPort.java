@@ -579,18 +579,13 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
     }
 
 
-//    private boolean _isMpi() {
-//        return getCodeGenerator().getAttribute("mpi") != null;
-//    }
-
-
     private boolean _isPthread() {
         ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
         boolean isPN = (((Actor) port.getContainer()).getDirector() 
                 instanceof ptolemy.domains.pn.kernel.PNDirector);
 
-        return isPN && (null == getCodeGenerator().getAttribute("mpi"))
-        && getCodeGenerator().target.getExpression().equals("default");
+        return isPN && 
+        getCodeGenerator().target.getExpression().equals("default");
     }
 
 

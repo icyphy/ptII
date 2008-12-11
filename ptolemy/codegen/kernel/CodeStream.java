@@ -570,30 +570,45 @@ public class CodeStream {
 
     /**
      * Parse additional code blocks from the file specified by the given
-     * file path. The new code blocks will be put alongside and have higher
-     * precedence than the code blocks already contained by this CodeStream.
-     * Also, the specified file path is required to point to an existing
-     * file; otherwise, an exception is thrown.
+     * file path. This assumes the given filePath points to an existing
+     * file.
      * @param filePath The given file path.
      * @exception IllegalActionException Thrown if an error occurs when
      *  parsing the code blocks in the file.
      */
     public void parse(String filePath) throws IllegalActionException {
+        parse(filePath, false);
+    }
+
+    /**
+     * Parse additional code blocks from the file specified by the given
+     * file path. The new code blocks will be put alongside and have higher
+     * precedence than the code blocks already contained by this CodeStream.
+     * Also, the specified file path is required to point to an existing
+     * file; otherwise, an exception is thrown.
+     * @param filePath The given file path.
+     * @param filePath Indicate whether the given filePath may be invalid.
+     * @exception IllegalActionException Thrown if an error occurs when
+     *  parsing the code blocks in the file.
+     */
+    public void parse(String filePath, boolean mayNotExist) 
+    throws IllegalActionException {
         // Since CodeStream does lazy evaluation, we have to force it
         // to parse the previous specified code blocks.
         if (_doParsing) {
             _constructCodeTable(true);
         }
-
+        
         // Set the new filePath.
         _filePath = filePath;
-	_originalFilePath = filePath;
-
+        _originalFilePath = filePath;
+        
         // We do not follow the lazy-eval semantics here because the
         // user explicitly specified parsing here.
-        _constructCodeTable(false);
+        _constructCodeTable(mayNotExist);
     }
 
+    
     /** Reset this CodeStream object so that its code table will be
      *  re-constructed when needed.
      */

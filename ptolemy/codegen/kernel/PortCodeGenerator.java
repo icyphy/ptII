@@ -74,7 +74,7 @@ public interface PortCodeGenerator extends ComponentCodeGenerator {
 
     /** Update the write offset of the [multiple] connected ports.
      */
-    public Object updateConnectedPortsOffset(int rate, Director director) throws IllegalActionException;
+    public String updateConnectedPortsOffset(int rate, Director director) throws IllegalActionException;
 
 
     /** Initialize the offsets. 

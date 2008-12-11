@@ -786,9 +786,10 @@ public class CCodeGenerator extends CodeGenerator {
      */
     protected void _analyzeTypeConversions() throws IllegalActionException {
         super._analyzeTypeConversions();
-
-        String cCodegenPath = "$CLASSPATH/ptolemy/codegen/c/kernel/";
-        String typeDir = cCodegenPath + "type/";
+        _overloadedFunctionSet = new HashSet<String>();
+        
+        String cCodegenPath = "$CLASSPATH/ptolemy/codegen/c/";
+        String typeDir = cCodegenPath + "kernel/type/";
         String functionDir = typeDir + "polymorphic/";
 
         _overloadedFunctions = new CodeStream(functionDir + "add.c", this);
@@ -797,6 +798,7 @@ public class CCodeGenerator extends CodeGenerator {
         _overloadedFunctions.parse(functionDir + "subtract.c");
         _overloadedFunctions.parse(functionDir + "convert.c");
         _overloadedFunctions.parse(functionDir + "negate.c");
+
         _overloadedFunctions.parse(typeDir + "Array.c");
         _overloadedFunctions.parse(typeDir + "Boolean.c");
         _overloadedFunctions.parse(typeDir + "Double.c");
@@ -804,13 +806,23 @@ public class CCodeGenerator extends CodeGenerator {
         _overloadedFunctions.parse(typeDir + "Matrix.c");
         _overloadedFunctions.parse(typeDir + "String.c");
 
-        String directorFunctionDir = cCodegenPath + "parameterized/directorFunctions/";
+        // Parse other function files. 
+        String directorFunctionDir = cCodegenPath + "kernel/parameterized/directorFunctions/";
         _overloadedFunctions.parse(directorFunctionDir + "PNDirector.c");
-        _overloadedFunctions.parse(directorFunctionDir + "OpenRtosPNDirector.c");
-        _overloadedFunctions.parse(directorFunctionDir + "MpiPNDirector.c");
 
-        _overloadedFunctionSet = new HashSet<String>();
+        
+        // ------------ Parse target-specific functions. --------------------        
+        if (target.getExpression().equals("default")) {
+            return;
+        }
 
+        try {
+            String targetDir = cCodegenPath + "targets/" + target.getExpression() + "/";
+            directorFunctionDir = targetDir + "kernel/parameterized/directorFunctions/";
+            _overloadedFunctions.parse(directorFunctionDir + "PNDirector.c", true);
+        } catch (IllegalActionException ex) {
+            // Some API's may not have these files. 
+        }
     }
 
     /** Execute the compile and run commands in the
