@@ -53,10 +53,16 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[243.0736849308014, 118.97714162752925]">
         </property>
     </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={288, 268, 823, 514}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
     <entity name="Start" class="ptolemy.actor.gt.controller.GTEvent">
         <property name="isInitialEvent" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute">
         </property>
         <property name="_allowRefinement" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -94,7 +100,7 @@
         </property>
         <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="0.0">
         </property>
-        <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{count}">
+        <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{1}">
         </property>
         <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -106,7 +112,7 @@
     <relation name="relation_1_" class="ptolemy.domains.erg.kernel.SchedulingRelation">
         <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
         </property>
-        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="i &gt; 1">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="i &lt; count">
 <display name="condition"/>        </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.2314748884650943">
         </property>
@@ -122,7 +128,7 @@
         </property>
         <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="0.0">
         </property>
-        <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{i - 1}">
+        <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{i + 1}">
         </property>
         <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
         </property>
