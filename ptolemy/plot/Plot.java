@@ -2586,7 +2586,7 @@ public class Plot extends PlotBox {
             _drawLine(graphics, dataset, xpos, bin.firstYPos(), previousBin.xpos, previousBin.lastYPos(), true, _DEFAULT_WIDTH);
         }
 
-        if (bin.rangeChanged() && bin.minYPos() != bin.maxYPos()) {
+        if (_isConnected(dataset) && bin.rangeChanged() && bin.minYPos() != bin.maxYPos()) {
             _drawLine(graphics, dataset, xpos, bin.minYPos(), xpos, bin.maxYPos(), true, _DEFAULT_WIDTH);
         }
 
