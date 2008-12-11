@@ -178,5 +178,4 @@ public interface ActorCodeGenerator extends ComponentCodeGenerator {
     public String generateVariableInitialization()
             throws IllegalActionException;
 
-    public String generateGlobalCode() throws IllegalActionException;
 }
