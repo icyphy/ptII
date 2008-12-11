@@ -107,22 +107,22 @@ test LazyTypedCompositeActor-12.1 {deepConnectedIn(out)Ports} {
         </port>
         <configure>
             <group>
-        <entity name="E3" class="ptolemy.actor.LazyTypedCompositeActor">
-            <port name="P3" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <configure>
-                <group>
-                </group>
-            </configure>
-        </entity>
-        <relation name="R2" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-        </relation>
-        <link port="P2" relation="R2"/>
-        <link port="P4" relation="R2"/>
-        <link port="E3.P3" relation="R2"/>
+                <entity name="E3" class="ptolemy.actor.LazyTypedCompositeActor">
+                    <port name="P3" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                    </port>
+                    <configure>
+                        <group>
+                        </group>
+                    </configure>
+                </entity>
+                <relation name="R2" class="ptolemy.actor.TypedIORelation">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </relation>
+                <link port="P2" relation="R2"/>
+                <link port="P4" relation="R2"/>
+                <link port="E3.P3" relation="R2"/>
             </group>
         </configure>
     </entity>
