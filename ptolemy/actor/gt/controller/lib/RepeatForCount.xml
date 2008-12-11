@@ -34,8 +34,6 @@
     <entity name="Start" class="ptolemy.actor.gt.controller.GTEvent">
         <property name="isInitialEvent" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute">
-        </property>
         <property name="_allowRefinement" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -47,8 +45,6 @@
     </entity>
     <entity name="Transform" class="ptolemy.actor.gt.controller.Transform">
         <property name="parameters" class="ptolemy.domains.erg.kernel.ParametersAttribute" value="(i : int)">
-        </property>
-        <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute">
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
@@ -86,7 +82,7 @@
         </property>
         <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="0.0">
         </property>
-        <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{count}">
+        <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{1}">
         </property>
         <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -98,7 +94,7 @@
     <relation name="relation_1_" class="ptolemy.domains.erg.kernel.SchedulingRelation">
         <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
         </property>
-        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="matched &amp;&amp; i != 1">
+        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="matched &amp;&amp; i != count">
 <display name="condition"/>        </property>
         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.3525806841564156">
         </property>
@@ -114,7 +110,7 @@
         </property>
         <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="0.0">
         </property>
-        <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{i - 1}">
+        <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{i + 1}">
         </property>
         <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
         </property>

@@ -165,7 +165,7 @@ public class ERGDirector extends Director implements TimedDirector,
     public TimedEvent cancel(Event event) throws IllegalActionException {
         TimedEvent timedEvent = findFirst(event, true);
         if (timedEvent != null) {
-            _eventQueue.remove(timedEvent);
+            timedEvent.canceled = true;
             _refinementQueue.remove(timedEvent);
             Object contents = timedEvent.contents;
             if (contents instanceof TypedActor) {
@@ -238,11 +238,9 @@ public class ERGDirector extends Director implements TimedDirector,
                 }
             }
         }
-        Iterator<TimedEvent> iterator = _eventQueue.iterator();
-        while (iterator.hasNext()) {
-            TimedEvent timedEvent = iterator.next();
-            if (timedEvent.contents == event
-                    || refinementSet.contains(timedEvent.contents)) {
+        for (TimedEvent timedEvent : _eventQueue) {
+            if (!timedEvent.canceled && (timedEvent.contents == event
+                    || refinementSet.contains(timedEvent.contents))) {
                 return timedEvent;
             }
         }
@@ -279,6 +277,15 @@ public class ERGDirector extends Director implements TimedDirector,
         boolean synchronize = controller.synchronizeToRealtime();
         Time modelTime = getModelTime();
 
+        Iterator<TimedEvent> eventQueueIterator = _eventQueue.iterator();
+        while (eventQueueIterator.hasNext()) {
+            TimedEvent event = eventQueueIterator.next();
+            if (event.canceled) {
+                eventQueueIterator.remove();
+            } else {
+                break;
+            }
+        }
         List<TimedEvent> eventQueue = new LinkedList<TimedEvent>(_eventQueue);
         List<TimedEvent> refinementQueue = new LinkedList<TimedEvent>(
                 _refinementQueue);
@@ -286,11 +293,11 @@ public class ERGDirector extends Director implements TimedDirector,
 
         if (hasInput) {
             // Fire the refinements of all input events.
-            Iterator<TimedEvent> iterator = refinementQueue.iterator();
-            while (iterator.hasNext() && !_stopRequested) {
-                TimedEvent timedEvent = iterator.next();
-                firedEvents.add(timedEvent);
-                _fire(timedEvent);
+            for (TimedEvent event : refinementQueue) {
+                if (!event.canceled) {
+                    firedEvents.add(event);
+                    _fire(event);
+                }
             }
 
             Set<TimedEvent> timedEvents = new LinkedHashSet<TimedEvent>();
@@ -307,28 +314,36 @@ public class ERGDirector extends Director implements TimedDirector,
                     entryIterator.remove();
                 }
             }
-            for (TimedEvent timedEvent : timedEvents) {
-                if (timedEvent.contents instanceof Event) {
-                    firedEvents.add(timedEvent);
-                    _fire(timedEvent);
+            for (TimedEvent event : timedEvents) {
+                if (!event.canceled && event.contents instanceof Event) {
+                    firedEvents.add(event);
+                    _fire(event);
                 }
             }
         }
 
         // Fire the next imminent event.
-        if (!eventQueue.isEmpty() && !_stopRequested) {
-            TimedEvent timedEvent = eventQueue.get(0);
-            Time nextEventTime = timedEvent.timeStamp;
-            if (nextEventTime.compareTo(modelTime) <= 0
-                    && !firedEvents.contains(timedEvent)) {
-                if (synchronize) {
-                    if (!_synchronizeToRealtime(nextEventTime)) {
-                        return;
-                    }
-                    synchronize = false;
+        if (!_stopRequested) {
+            TimedEvent timedEvent = null;
+            for (TimedEvent event : eventQueue) {
+                if (!event.canceled) {
+                    timedEvent = event;
+                    break;
                 }
+            }
+            if (timedEvent != null) {
+                Time nextEventTime = timedEvent.timeStamp;
+                if (nextEventTime.compareTo(modelTime) <= 0
+                        && !firedEvents.contains(timedEvent)) {
+                    if (synchronize) {
+                        if (!_synchronizeToRealtime(nextEventTime)) {
+                            return;
+                        }
+                        synchronize = false;
+                    }
 
-                _fire(timedEvent);
+                    _fire(timedEvent);
+                }
             }
         }
     }
@@ -514,6 +529,17 @@ public class ERGDirector extends Director implements TimedDirector,
      */
     public boolean postfire() throws IllegalActionException {
         boolean result = super.postfire();
+
+        Iterator<TimedEvent> eventQueueIterator = _eventQueue.iterator();
+        while (eventQueueIterator.hasNext()) {
+            TimedEvent event = eventQueueIterator.next();
+            if (event.canceled) {
+                eventQueueIterator.remove();
+            } else {
+                break;
+            }
+        }
+
         if (result) {
             if (_eventQueue.isEmpty()) {
                 result = false;
@@ -565,7 +591,6 @@ public class ERGDirector extends Director implements TimedDirector,
                 if (!nextEventTime.equals(modelTime)) {
                     result = false;
                 }
-
             }
         }
 
@@ -721,6 +746,7 @@ public class ERGDirector extends Director implements TimedDirector,
             this.data = data;
             this.priority = priority;
             this.reset = reset;
+            this.canceled = false;
         }
 
         /** Display timeStamp and contents.
@@ -747,6 +773,9 @@ public class ERGDirector extends Director implements TimedDirector,
         /** Arguments to the event. */
         public ArrayToken arguments;
 
+        /** Whether this event has been canceled. */
+        public boolean canceled;
+
         /** The refiring data returned from the previous fire() or refire(), or
             null if the scheduled firing is the first one. */
         public RefiringData data;
@@ -754,7 +783,7 @@ public class ERGDirector extends Director implements TimedDirector,
         /** The priority of the scheduled event. (0 is the default for most
          *  events.) */
         public int priority;
-        
+
         /** Whether the refinement of the scheduled event should be
          *  (re)initialized when the event is processed. */
         public boolean reset;
@@ -933,9 +962,8 @@ public class ERGDirector extends Director implements TimedDirector,
                                 !_initializedRefinements.contains(refinement)) {
                             refinement.initialize();
                             _initializedRefinements.add(refinement);
-                        } else {
-                            _fireActor(refinement, null);
                         }
+                        _fireActor(refinement, null);
                         scheduled = true;
                     }
                 }
@@ -944,7 +972,9 @@ public class ERGDirector extends Director implements TimedDirector,
             boolean scheduleNext = !scheduled && data == null;
             if (scheduleNext) {
                 if (event.isFinalEvent()) {
-                    _eventQueue.clear();
+                    for (TimedEvent eventToCancel : _eventQueue) {
+                        eventToCancel.canceled = true;
+                    }
                     _refinementQueue.clear();
                 } else {
                     event.scheduleEvents();
@@ -984,7 +1014,9 @@ public class ERGDirector extends Director implements TimedDirector,
                         .getRefinedState();
                 if (event != null) {
                     if (event.isFinalEvent()) {
-                        _eventQueue.clear();
+                        for (TimedEvent eventToCancel : _eventQueue) {
+                            eventToCancel.canceled = true;
+                        }
                         _refinementQueue.clear();
                     } else {
                         event.scheduleEvents();

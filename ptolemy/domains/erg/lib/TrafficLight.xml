@@ -10,6 +10,8 @@
     </property>
     <property name="_containmentExtender" class="ptolemy.domains.fsm.kernel.ContainmentExtender">
     </property>
+    <property name="_exportAsGroup" class="ptolemy.data.expr.Parameter" value="true">
+    </property>
     <property name="_Director" class="ptolemy.domains.erg.kernel.ERGDirector">
         <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1E-10">
         </property>
@@ -81,8 +83,14 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[300.6571076506695, 108.78761786222458]">
         </property>
     </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A three-state traffic light. Interestingly,&#10;this ERG is almost identical to an&#10;FSM that provides the same function.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 30.0]">
+        </property>
+    </property>
     <property name="Ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 130.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 135.0]">
         </property>
         <property name="width" class="ptolemy.data.expr.Parameter" value="20.0">
         </property>
@@ -92,7 +100,7 @@
         </property>
     </property>
     <property name="Ellipse2" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 185.0]">
         </property>
         <property name="width" class="ptolemy.data.expr.Parameter" value="20.0">
         </property>
@@ -102,19 +110,13 @@
         </property>
     </property>
     <property name="Ellipse3" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 160.0]">
         </property>
         <property name="width" class="ptolemy.data.expr.Parameter" value="20.0">
         </property>
         <property name="height" class="ptolemy.data.expr.Parameter" value="20.0">
         </property>
         <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1, 1, 1-light(2), 1.0}">
-        </property>
-    </property>
-    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A three-state traffic light. Interestingly,&#10;this ERG is almost identical to an&#10;FSM that provides the same function.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 30.0]">
         </property>
     </property>
     <entity name="Start" class="ptolemy.domains.erg.kernel.Event">

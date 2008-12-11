@@ -325,9 +325,12 @@ public class SchedulingRelation extends Transition {
      *  cannot be obtained.
      */
     public List<NamedObj> getTriggers() throws IllegalActionException {
+        CompositeEntity controller = (CompositeEntity) getContainer();
+        if (controller == null) {
+            return null;
+        }
         String[] names = triggers.stringValue().split(",");
         List<NamedObj> list = null;
-        CompositeEntity controller = (CompositeEntity) getContainer();
         for (String name : names) {
             name = name.trim();
             if (name.equals("")) {

@@ -83,15 +83,7 @@
             ?>
         </configure>
     </entity>
-    <entity name="DesignPatterns" class="ptolemy.moml.EntityLibrary">
-        <configure>
-            <?moml
-                <group>
-                    <input source="ptolemy/actor/gt/controller/lib/RepeatForCount.xml"/>
-                </group>
-            ?>
-        </configure>
-    </entity>
+    <input source="ptolemy/actor/gt/controller/lib/designPatterns.xml"/>
     <entity name="Event" class="ptolemy.actor.gt.controller.GTEvent">
         <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
         </property>
