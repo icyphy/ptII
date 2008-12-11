@@ -47,23 +47,18 @@ public class ResourceToken extends Token {
      *  that task.
      *  @param actorToSchedule The actor to be scheduled.
      *  @param requestedValue The requested execution time.
+     * @param isMinValue 
      */
     public ResourceToken(Actor actorToSchedule, Object requestedValue) {
         super();
         this.actorToSchedule = actorToSchedule;
-        this.requestedValue = requestedValue;
+        this.requestedValue = requestedValue; 
     }
     
     /** The actor to be scheduled. */
     public Actor actorToSchedule;
 
     /** The requested execution time. */
-    public Object requestedValue;
-    
-    @Override
-    public Type getType() {
-        // TODO Auto-generated method stub
-        return super.getType();
-    }
+    public Object requestedValue; 
     
 }

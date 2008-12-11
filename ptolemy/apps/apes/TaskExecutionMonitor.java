@@ -164,7 +164,7 @@ public class TaskExecutionMonitor extends TypedAtomicActor implements TaskExecut
             List<Actor> list = ((CompositeActor)director.getContainer()).entityList();
             for (Actor actor : list) {
                 if (actor instanceof CPUScheduler) {
-                    ((CPUScheduler)actor).registerExecutionListener(this);
+                    ((CPUScheduler)actor)._registerExecutionListener(this);
                 } else if (actor instanceof CTask) {
                     actors.add(actor);
                 }

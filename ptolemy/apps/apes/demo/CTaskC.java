@@ -30,7 +30,8 @@ public class CTaskC extends CTask {
  //           synchronized(this){
  //               this.wait(100L);
  //           }
-            accessPointCallback(1.0,-1.0,"");
+            accessPointCallback(-1.0, 0.5, "");
+            accessPointCallback(1.0, 0.5,"theEnd");
 //            synchronized(this){
 //                this.wait(100);
 //            }

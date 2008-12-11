@@ -36,7 +36,8 @@ public class CTaskA extends CTask {
         period = System.currentTimeMillis() - period;
         System.out.println("duration of CMethod of " + this.getName() + ": " + Long.toString(period));            
             try {
-                accessPointCallback(3.0,-1.0,"");
+                accessPointCallback(-1.0, 1.0, "");
+                accessPointCallback(3.0, 1.0,"");
             } catch (NoRoomException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
