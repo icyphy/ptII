@@ -86,7 +86,9 @@ public class ModalController extends FSMActor implements DropTargetHandler,
     public ModalController(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        new ContainmentExtender(this, "_containmentExtender");
+        ContainmentExtender containmentExtender = new ContainmentExtender(this,
+        		"_containmentExtender");
+        containmentExtender.setPersistent(false);
     }
 
     /** Construct a modal controller in the specified workspace with

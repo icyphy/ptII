@@ -8,8 +8,6 @@
     </property>
     <property name="finalStateNames" class="ptolemy.kernel.util.StringAttribute">
     </property>
-    <property name="_containmentExtender" class="ptolemy.domains.fsm.modal.ContainmentExtender">
-    </property>
     <property name="_Director" class="ptolemy.domains.erg.kernel.ERGDirector">
         <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1E-10">
         </property>

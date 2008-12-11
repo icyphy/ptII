@@ -153,7 +153,9 @@ public class State extends ComponentEntity implements DropTargetHandler {
         isFinalState.setTypeEquals(BaseType.BOOLEAN);
         isFinalState.setExpression("false");
 
-        new ContainmentExtender(this, "_containmentExtender");
+        ContainmentExtender containmentExtender = new ContainmentExtender(this,
+        		"_containmentExtender");
+        containmentExtender.setPersistent(false);
     }
 
     /** React to a change in an attribute. If the changed attribute is

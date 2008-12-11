@@ -78,6 +78,7 @@ public class ContainmentExtender extends Attribute implements
     public ContainmentExtender(FSMActor container, String name)
     throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        setPersistent(false);
     }
 
     /** Construct a ContainmentExtender attribute with the given name contained
