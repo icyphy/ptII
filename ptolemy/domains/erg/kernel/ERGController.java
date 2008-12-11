@@ -211,6 +211,7 @@ public class ERGController extends ModalController {
                 if (modalModel.getController() == this) {
                     _executiveDirector = super.getDirector();
                 } else {
+                	_executiveDirector = null;
                     for (Object atomicEntity
                             : modalModel.allAtomicEntityList()) {
                         if (atomicEntity instanceof Event) {
@@ -231,6 +232,9 @@ public class ERGController extends ModalController {
                                                 event.getContainer()).director;
                                         break;
                                     }
+                                }
+                                if (_executiveDirector != null) {
+                                	break;
                                 }
                             }
                         }
