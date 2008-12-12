@@ -37,7 +37,7 @@ public class CTask extends TypedAtomicActor implements Runnable {
     }
 
     /** outgoing port to resource actors */
-    public IOPort toResourcePort;
+    public MulticastIOPort toResourcePort;
 
     /** incoming port from resource actors */
     public IOPort fromResourcePort;
@@ -56,9 +56,9 @@ public class CTask extends TypedAtomicActor implements Runnable {
         if (extime >= 0) {
             _sendResourceToken("CPUScheduler", new Time(getDirector(), extime), false);
         }
-        _minDelay = new Time(getDirector(), minNextTime);
 
         synchronized (this) {
+            _minDelay = new Time(getDirector(), minNextTime);
             _inExecution = false;
             this.notifyAll(); // wake up the DEDirector thread
             while (!_inExecution) {
@@ -99,11 +99,11 @@ public class CTask extends TypedAtomicActor implements Runnable {
             }
             _waitForMinDelay = false;
         } else {
-            if (_minDelay.getDoubleValue() > 0) {
+            synchronized (this) {
+               if (_minDelay.getDoubleValue() >= 0) {
                 getDirector().fireAt(this, getDirector().getModelTime().add(_minDelay));
                 _waitForMinDelay = true;
             }
-            synchronized (this) {
                 _inExecution = true; 
                 this.notifyAll();
             }
@@ -142,7 +142,7 @@ public class CTask extends TypedAtomicActor implements Runnable {
                         .getContainer()), channelId);
             }
         }
-
+        _waitForMinDelay = false;
         _thread = new Thread(this);
         _thread.start();
         synchronized(this) {
@@ -179,9 +179,12 @@ public class CTask extends TypedAtomicActor implements Runnable {
                     false);
             fromResourcePort.setMultiport(true);
 
-            toResourcePort = new TypedIOPort(this, "toResourcePort", false,
+            toResourcePort = new MulticastIOPort(this, "toResourcePort", false,
                     true);
-            toResourcePort.setMultiport(true);
+            
+            Parameter destinationActorList= (Parameter) toResourcePort.getAttribute("destinationActors");
+            destinationActorList.setExpression("CPUScheduler");
+            
             triggerConnector = new TypedIOPort(this, "triggerConnector", false,
                     true);
 

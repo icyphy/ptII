@@ -25,13 +25,30 @@ public class CTaskB extends CTask {
     
     @Override
     protected void _callCMethod() {
-        //       CMethod();
+        long period;
+
+        System.out.println("Entering CMethod of " + this.getName());
+        try {
+            accessPointCallback(-1.0, 2.0, "");
+        } catch (NoRoomException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        } catch (IllegalActionException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+        period = System.currentTimeMillis();
+                for (int i=0;i<Integer.MAX_VALUE/4;i++){
+                    double a = Math.PI*Math.PI;
+                }
+        period = System.currentTimeMillis() - period;
+        System.out.println("duration of CMethod of " + this.getName() + ": " + Long.toString(period) + " ms.");            
+       //       CMethod();
         try {
 //            synchronized(this){
 //                this.wait(100L);
 //            }
-            accessPointCallback(-1.0, 1.0, "");
-            accessPointCallback(2.0, 1.0,"");
+            accessPointCallback(2.0, -1.0,"");
 //            synchronized(this){
 //                this.wait(100);
 //            }

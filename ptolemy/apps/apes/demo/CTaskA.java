@@ -29,15 +29,23 @@ public class CTaskA extends CTask {
         //       CMethod();
         long period;
         System.out.println("Entering CMethod of " + this.getName());
+        try {
+            accessPointCallback(-1.0, 1.0, "");
+        } catch (NoRoomException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        } catch (IllegalActionException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
         period = System.currentTimeMillis();
-                for (int i=0;i<Integer.MAX_VALUE/8;i++){
+                for (int i=0;i<Integer.MAX_VALUE/6;i++){
                     double a = Math.PI*Math.PI;
                 }
         period = System.currentTimeMillis() - period;
-        System.out.println("duration of CMethod of " + this.getName() + ": " + Long.toString(period));            
+        System.out.println("duration of CMethod of " + this.getName() + ": " + Long.toString(period) + " ms.");            
             try {
-                accessPointCallback(-1.0, 1.0, "");
-                accessPointCallback(3.0, 1.0,"");
+                accessPointCallback(3.0, -1.0,"");
             } catch (NoRoomException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

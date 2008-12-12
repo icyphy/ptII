@@ -7,29 +7,29 @@
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="16">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={143, 117, 850, 652}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={255, 22, 834, 548}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[635, 534]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[619, 430]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{317.5, 267.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{309.5, 215.0}">
     </property>
     <entity name="CPUScheduler" class="ptolemy.apps.apes.CPUScheduler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 95.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 110.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
     </entity>
     <entity name="TaskExecutionMonitor" class="ptolemy.apps.apes.TaskExecutionMonitor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 40.0]">
         </property>
     </entity>
     <entity name="ISR_A" class="ptolemy.apps.apes.InterruptServiceRoutine">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 470.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 405.0]">
         </property>
         <property name="priority" class="ptolemy.data.expr.Parameter" value="10">
         </property>
@@ -40,7 +40,7 @@
         </port>
     </entity>
     <entity name="ISR_B" class="ptolemy.apps.apes.InterruptServiceRoutine">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 465.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 400.0]">
         </property>
         <property name="priority" class="ptolemy.data.expr.Parameter" value="10">
         </property>
@@ -51,7 +51,7 @@
         </port>
     </entity>
     <entity name="ISR_C" class="ptolemy.apps.apes.InterruptServiceRoutine">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 465.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 400.0]">
         </property>
         <property name="priority" class="ptolemy.data.expr.Parameter" value="10">
         </property>
@@ -67,7 +67,7 @@
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 8.0}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 460.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 395.0]">
         </property>
     </entity>
     <entity name="Clock2" class="ptolemy.actor.lib.Clock">
@@ -76,7 +76,7 @@
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{1.0, 9.0}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 455.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 390.0]">
         </property>
     </entity>
     <entity name="Clock3" class="ptolemy.actor.lib.Clock">
@@ -85,11 +85,11 @@
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{2.0,6.0}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 455.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 390.0]">
         </property>
     </entity>
     <entity name="CTaskA" class="ptolemy.apps.apes.demo.CTaskA">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 400.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 335.0]">
         </property>
         <property name="priority" class="ptolemy.data.expr.Parameter" value="1">
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
@@ -102,7 +102,7 @@
         </port>
     </entity>
     <entity name="CTaskB" class="ptolemy.apps.apes.demo.CTaskB">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 350.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 285.0]">
         </property>
         <property name="priority" class="ptolemy.data.expr.Parameter" value="2">
         </property>
@@ -113,7 +113,7 @@
         </port>
     </entity>
     <entity name="CTaskC" class="ptolemy.apps.apes.demo.CTaskC">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 295.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 230.0]">
         </property>
         <property name="priority" class="ptolemy.data.expr.Parameter" value="3">
         </property>
@@ -151,10 +151,6 @@
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-    </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -171,10 +167,6 @@
             </property>
         </property>
     </relation>
-    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-    </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -185,10 +177,6 @@
         <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
         </property>
     </relation>
-    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-    </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -196,9 +184,6 @@
     <link port="CPUScheduler.input" relation="relation7"/>
     <link port="CPUScheduler.input" relation="relation10"/>
     <link port="CPUScheduler.input" relation="relation11"/>
-    <link port="CPUScheduler.input" relation="relation3"/>
-    <link port="CPUScheduler.input" relation="relation13"/>
-    <link port="CPUScheduler.input" relation="relation9"/>
     <link port="CPUScheduler.output" relation="relation8"/>
     <link port="CPUScheduler.output" relation="relation2"/>
     <link port="CPUScheduler.output" relation="relation6"/>
@@ -215,12 +200,9 @@
     <link port="Clock2.output" relation="relation12"/>
     <link port="Clock3.output" relation="relation15"/>
     <link port="CTaskA.fromResourcePort" relation="relation8"/>
-    <link port="CTaskA.toResourcePort" relation="relation3"/>
     <link port="CTaskA.triggerConnector" relation="relation4"/>
     <link port="CTaskB.fromResourcePort" relation="relation2"/>
-    <link port="CTaskB.toResourcePort" relation="relation13"/>
     <link port="CTaskB.triggerConnector" relation="relation16"/>
     <link port="CTaskC.fromResourcePort" relation="relation6"/>
-    <link port="CTaskC.toResourcePort" relation="relation9"/>
     <link port="CTaskC.triggerConnector" relation="relation"/>
 </entity>
