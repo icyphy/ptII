@@ -152,6 +152,20 @@ public class CPUScheduler extends ResourceActor {
                 // the task is not in execution yet, only after 
             }
         }
+        
+        while(requestPort.hasToken(0)){
+            ResourceToken token = (ResourceToken) requestPort.get(0);
+            Actor actorToSchedule = token.actorToSchedule;
+            Time executionTime = (Time) token.requestedValue;
+
+            // if task is scheduled as a result of a callback
+            if (executionTime.compareTo(new Time(getDirector(), 0.0)) >= 0) {
+                _scheduleTask(actorToSchedule, executionTime);
+            } // else task is scheduled as a result of a trigger
+            // the task is not in execution yet, only after 
+            
+        }
+        
 
         // next task in list can be started?
         if (_tasksInExecution.size() > 0) {
@@ -222,7 +236,6 @@ public class CPUScheduler extends ResourceActor {
         }
 
     }
-
     /**
      * Register task execution listener.
      * @param taskExecutionListener
@@ -260,7 +273,7 @@ public class CPUScheduler extends ResourceActor {
         _usedExecutionTimes = new HashMap<Actor, Time>();
         _tasksInExecution = new Stack<Actor>();
         _taskStates = new HashMap<Actor, TaskState>();
-    }
+     }
 
     /**
      * If the actor to schedule is not in the list, add it to the list at the 

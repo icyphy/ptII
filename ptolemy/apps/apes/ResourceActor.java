@@ -75,6 +75,12 @@ public abstract class ResourceActor extends TypedAtomicActor {
     /** multiport input port that receives requests from tasks and triggeres */
     public TypedIOPort input;
     
+    public MulticastIOPort requestPort;
+    /** multicast input port that receives requests from tasks */
+
+    public MulticastIOPort answerPort;
+    /** multicast output port used to send answers to requests */
+    
     /** multiport output port through which tasks are triggered */
     public TypedIOPort output;
     
@@ -110,6 +116,11 @@ public abstract class ResourceActor extends TypedAtomicActor {
             output = new TypedIOPort(this, "output", false, true);
             output.setMultiport(true);
             output.setTypeEquals(BaseType.GENERAL);
+
+            requestPort = new MulticastIOPort(this, "requestPort", true, false);
+            requestPort.setTypeEquals(BaseType.GENERAL);
+            requestPort.setMultiport(false);
+        
         } catch (IllegalActionException ex) {
             ex.printStackTrace();
         } catch (NameDuplicationException ex) {
