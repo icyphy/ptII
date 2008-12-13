@@ -1862,9 +1862,11 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  class to record the current size and position of the window
      *  in the model.
      *  @param file The file to write to.
+     *  @param submodel Whether to save the submodel only, instead of the
+     *   top-level model.
      *  @exception IOException If the write fails.
      */
-    protected void _writeFile(File file) throws IOException {
+    protected void _writeFile(File file, boolean submodel) throws IOException {
         // First, record size and position.
         try {
             // Record the position of the top-level frame, assuming
@@ -1935,7 +1937,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // size and location.
         }
 
-        super._writeFile(file);
+        super._writeFile(file, submodel);
     }
 
     ///////////////////////////////////////////////////////////////////

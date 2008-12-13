@@ -95,26 +95,10 @@ MISC_FILES =	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
-	'ActorGraphModel$$LinkModel$$1.class' \
-	'ActorGraphModel$$LinkModel$$2.class' \
-	'ActorController$$OpenInstanceAction.class' \
-	'DocBuilderEffigy$$Factory.class DocBuilderGUI$$1.class' \
-	'DocBuilderGUI$$2.class DocBuilderGUI$$3.class' \
-	'DocBuilderGUI$$4.class DocBuilderTableau$$Factory.class' \
-	'DocViewer$$BuildMenuListener.class' \
-	'ExternalIOPortController$$PortRenderer$$1.class' \
-	'ExternalIOPortController$$PortRenderer$$2.class' \
-	'FindPackages$$1.class' \
-	'FindPackages$$ClassFileFilter.class' \
-	'FindPackages$$DirectoryFileFilter.class' \
-	'IOPortController$$EntityPortRenderer$$1.class' \
-	'IOPortController$$EntityPortRenderer$$2.class' \
-	'ActorController$$1.class' \
-	'ActorController$$DebugListenerAction.class' \
 	'ActorController$$EntityLayout.class' \
 	'ActorController$$ListenToActorAction.class' \
 	'ActorController$$LookInsideAction.class' \
-	'ActorController$$SaveInFileAction.class' \
+	'ActorController$$OpenInstanceAction.class' \
 	'ActorController$$SaveInLibraryAction.class' \
 	'ActorEditorGraphController$$1.class' \
 	'ActorEditorGraphController$$LinkCreator.class' \
@@ -125,16 +109,16 @@ OPTIONAL_FILES = \
 	'ActorGraphFrame$$CreateHierarchyAction.class' \
 	'ActorGraphFrame$$DebugMenuListener.class' \
 	'ActorGraphFrame$$ImportLibraryAction.class' \
+	'ActorGraphFrame$$InstantiateAttributeAction.class' \
 	'ActorGraphFrame$$InstantiateEntityAction.class' \
 	'ActorGraphFrame$$LayoutAction.class' \
 	'ActorGraphFrame$$SaveInLibraryAction.class' \
-	'ActorGraphFrame$$InstantiateAttributeAction.class' \
-	'ActorGraphModel$$1.class' \
-	'ActorGraphModel$$2.class' \
 	'ActorGraphModel$$ExternalPortModel.class' \
 	'ActorGraphModel$$IconModel.class' \
-	'ActorGraphModel$$LinkModel.class' \
+	'ActorGraphModel$$LinkModel$$1.class' \
+	'ActorGraphModel$$LinkModel$$2.class' \
 	'ActorGraphModel$$LinkModel$$LinkChangeListener.class' \
+	'ActorGraphModel$$LinkModel.class' \
 	'ActorGraphModel$$PortModel.class' \
 	'ActorGraphModel$$VertexModel.class' \
 	'ActorGraphTableau$$Factory.class' \
@@ -146,20 +130,28 @@ OPTIONAL_FILES = \
 	'ClassDefinitionController$$ConvertToInstanceAction.class' \
 	'ClassDefinitionController$$CreateInstanceAction.class' \
 	'ClassDefinitionController$$CreateSubclassAction.class' \
+	'DocBuilderEffigy$$Factory.class' \
+	'DocBuilderGUI$$1.class' \
+	'DocBuilderGUI$$2.class' \
+	'DocBuilderGUI$$3.class' \
+	'DocBuilderGUI$$4.class' \
+	'DocBuilderTableau$$Factory.class' \
 	'DocEffigy$$Factory.class' \
 	'DocTableau$$Factory.class' \
 	'DocViewer$$1.class' \
 	'DocViewer$$2.class' \
 	'DocViewer$$3.class' \
-	'ExternalIOPortController$$1.class' \
-	'ExternalIOPortController$$2.class' \
-	'ExternalIOPortController$$NameWrapper.class' \
+	'DocViewer$$BuildMenuListener.class' \
+	'ExternalIOPortController$$PortRenderer$$1.class' \
+	'ExternalIOPortController$$PortRenderer$$2.class' \
 	'ExternalIOPortController$$PortRenderer.class' \
-	'IOPortController$$1.class' \
-	'IOPortController$$2.class' \
+	'FindPackages$$1.class' \
+	'FindPackages$$ClassFileFilter.class' \
+	'FindPackages$$DirectoryFileFilter.class' \
+	'IOPortController$$EntityPortRenderer$$1.class' \
+	'IOPortController$$EntityPortRenderer$$2.class' \
 	'IOPortController$$EntityPortRenderer.class' \
 	'IOPortController$$ListenToPortAction.class' \
-	'LinkController$$1.class' \
 	'LinkController$$LinkDropper.class' \
 	'LinkController$$LinkRenderer.class' \
 	'LinkController$$LinkTarget.class'

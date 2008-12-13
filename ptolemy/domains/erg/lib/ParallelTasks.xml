@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="ParallelTasks" class="ptolemy.domains.fsm.kernel.Group">
+<entity name="ParallelTasks" class="ptolemy.domains.erg.kernel.ERGController">
     <property name="stateDependentCausality" class="ptolemy.data.expr.Parameter" value="false">
     </property>
     <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
@@ -22,7 +22,13 @@
     </property>
     <property name="LIFO" class="ptolemy.data.expr.Parameter" value="true">
     </property>
-    <property name="_exportAsEventGroup" class="ptolemy.data.expr.Parameter" value="true">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={288, 268, 823, 514}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
     <property name="finish" class="ptolemy.data.expr.Parameter" value="0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -48,6 +54,18 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[354.99999905133154, 120.0]">
         </property>
+    </property>
+    <property name="_alternateGetMomlAction" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.actor.DesignPatternGetMoMLAction">
+    </property>
+    <property name="_designPatternIcon" class="ptolemy.vergil.icon.DesignPatternIcon">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="rounding" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="spacing" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+    </property>
+    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
     </property>
     <entity name="Start" class="ptolemy.domains.erg.kernel.Event">
         <property name="isInitialEvent" class="ptolemy.data.expr.Parameter" value="true">

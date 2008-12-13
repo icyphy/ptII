@@ -48,7 +48,6 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.HasTypeConstraints;
 import ptolemy.domains.erg.lib.SynchronizeToRealtime;
-import ptolemy.domains.fsm.kernel.Group;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.domains.fsm.modal.ModalController;
 import ptolemy.graph.Inequality;
@@ -474,7 +473,7 @@ public class ERGController extends ModalController {
         TreeMap<Class<? extends Entity>, String> map =
             super._getRefinementClasses();
         map.put(Event.class, ERGController.class.getName());
-        map.put(Group.class, ERGController.class.getName());
+        map.put(ERGController.class, ERGController.class.getName());
         return map;
     }
 

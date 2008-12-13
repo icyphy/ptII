@@ -33,7 +33,6 @@ import java.util.TreeMap;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.domains.fsm.kernel.FSMActor;
-import ptolemy.domains.fsm.kernel.Group;
 import ptolemy.domains.fsm.kernel.RefinementActor;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.kernel.ComponentEntity;
@@ -87,7 +86,7 @@ public class ModalController extends FSMActor implements DropTargetHandler,
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         ContainmentExtender containmentExtender = new ContainmentExtender(this,
-        		"_containmentExtender");
+                "_containmentExtender");
         containmentExtender.setPersistent(false);
     }
 
@@ -101,7 +100,7 @@ public class ModalController extends FSMActor implements DropTargetHandler,
         super(workspace);
 
         try {
-        	new ContainmentExtender(this, "_containmentExtender");
+            new ContainmentExtender(this, "_containmentExtender");
         } catch (KernelException e) {
             // This should never happen.
             throw new InternalErrorException("Constructor error "
@@ -183,11 +182,6 @@ public class ModalController extends FSMActor implements DropTargetHandler,
                 refinement = (TypedActor) containerContainer.getEntity(name);
             }
             target = (NamedObj)refinement;
-        }
-        if (dropObjects.size() == 1 && dropObjects.get(0) instanceof Group) {
-            moml = "<group>" + moml + "</group>";
-        } else {
-            moml = "<group name=\"auto\">" + moml + "</group>";
         }
         MoMLChangeRequest request = new MoMLChangeRequest(this, target, moml);
         request.setUndoable(true);

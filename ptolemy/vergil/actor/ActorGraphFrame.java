@@ -44,8 +44,10 @@ import javax.swing.KeyStroke;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.DesignPatternGetMoMLAction;
 import ptolemy.actor.Director;
 import ptolemy.actor.Manager;
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.DebugListenerTableau;
 import ptolemy.actor.gui.Effigy;
@@ -58,9 +60,11 @@ import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.CancelException;
@@ -68,6 +72,7 @@ import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.basic.AbstractBasicGraphModel;
 import ptolemy.vergil.basic.ExtendedGraphFrame;
+import ptolemy.vergil.icon.DesignPatternIcon;
 import diva.canvas.DamageRegion;
 import diva.graph.GraphController;
 import diva.graph.GraphPane;
@@ -89,7 +94,8 @@ import diva.gui.GUIUtilities;
  * @Pt.ProposedRating Red (neuendor)
  * @Pt.AcceptedRating Red (johnr)
  */
-public class ActorGraphFrame extends ExtendedGraphFrame {
+public class ActorGraphFrame extends ExtendedGraphFrame
+        implements ActionListener {
     /**
      * Construct a frame associated with the specified Ptolemy II model. After
      * constructing this, it is necessary to call setVisible(true) to make the
@@ -141,8 +147,65 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
         _instantiateEntityAction = new InstantiateEntityAction();
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // protected methods ////
+    /** React to the actions specific to this FSM graph frame.
+     *
+     *  @param e The action event.
+     */
+    public void actionPerformed(ActionEvent e) {
+        JMenuItem target = (JMenuItem) e.getSource();
+        String actionCommand = target.getActionCommand();
+        if (actionCommand.equals("Save As Design Pattern")) {
+            saveAsDesignPattern();
+        }
+    }
+
+    /** Save the current submodel as a design pattern using a method similar to
+     *  Save As.
+     */
+    public synchronized void saveAsDesignPattern() {
+        Tableau tableau = getTableau();
+        PtolemyEffigy effigy = (PtolemyEffigy) tableau.getContainer();
+        NamedObj model = effigy.getModel();
+        _initialSaveAsFileName = model.getName() + ".xml";
+        if (_initialSaveAsFileName.length() == 4) {
+            _initialSaveAsFileName = "model.xml";
+        }
+
+        TypedCompositeActor actor = (TypedCompositeActor) getModel();
+        StringAttribute alternateGetMoml = null;
+        DesignPatternIcon icon = null;
+        try {
+            alternateGetMoml = new StringAttribute(actor,
+                    "_alternateGetMomlAction");
+            alternateGetMoml.setExpression(
+                    DesignPatternGetMoMLAction.class.getName());
+
+            icon = new DesignPatternIcon(actor, "_designPatternIcon");
+
+            super._saveAs(".xml", true, false);
+        } catch (KernelException e) {
+            throw new InternalErrorException(actor, e,
+                    "Unable to export model.");
+        } finally {
+            if (alternateGetMoml != null) {
+                try {
+                    alternateGetMoml.setContainer(null);
+                } catch (KernelException e) {
+                    // Ignore.
+                }
+            }
+            if (icon != null) {
+                try {
+                    icon.setContainer(null);
+                } catch (KernelException e) {
+                    // Ignore.
+                }
+            }
+        }
+    }
+
+    /////////////////////////////////////////////////////////////////
+    ////                        protected methods                ////
 
     /**
      * Create the menus that are used by this frame. It is essential that
@@ -225,6 +288,31 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
         return super._close();
     }
 
+    /** Create the items in the File menu.
+     *
+     *  @return The items in the File menu.
+     */
+    protected JMenuItem[] _createFileMenuItems() {
+        JMenuItem[] fileMenuItems = super._createFileMenuItems();
+        int i = 0;
+        for (JMenuItem item : fileMenuItems) {
+            i++;
+            if (item.getActionCommand().equals("Save As")) {
+                // Add a SaveAsDesignPattern here.
+                JMenuItem newItem = new JMenuItem(
+                        "Save As Design Pattern", KeyEvent.VK_D);
+                JMenuItem[] newItems = new JMenuItem[fileMenuItems.length + 1];
+                System.arraycopy(fileMenuItems, 0, newItems, 0, i);
+                newItems[i] = newItem;
+                newItem.addActionListener(this);
+                System.arraycopy(fileMenuItems, i, newItems, i + 1,
+                        fileMenuItems.length - i);
+                return newItems;
+            }
+        }
+        return fileMenuItems;
+    }
+
     /**
      * Create a new graph pane. Note that this method is called in constructor
      * of the base class, so it must be careful to not reference local variables
@@ -292,7 +380,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
 
     ///////////////////////////////////////////////////////////////////
     //// public inner classes ////
-    
+
     ///////////////////////////////////////////////////////////////////
     //// ActorGraphPane
 
@@ -432,7 +520,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
                                                     + "is because this is a class, not an "
                                                     + "instance.");
                                 }
-                                
+
                             } catch (NumberFormatException ex) {
                                 MessageHandler.error(
                                         "Invalid time, which is required "

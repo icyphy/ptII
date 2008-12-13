@@ -468,8 +468,12 @@ public class Transition extends ComponentRelation {
      *  @exception IllegalActionException If thrown when evaluating the guard.
      */
     public boolean isEnabled() throws IllegalActionException {
-        FSMActor fsmActor = (FSMActor) getContainer();
-        return isEnabled(fsmActor.getPortScope());
+        NamedObj container = getContainer();
+        if (container instanceof FSMActor) {
+            return isEnabled(((FSMActor) container).getPortScope());
+        } else {
+            return false;
+        }
     }
 
     /** Return true if the transition is enabled, that is the guard is true, or
@@ -854,7 +858,7 @@ public class Transition extends ComponentRelation {
 
     // The parse tree for the guard expression.
     private ASTPtRootNode _guardParseTree;
-    
+
     // Version of the cached guard parse tree
     private long _guardParseTreeVersion = -1;
 

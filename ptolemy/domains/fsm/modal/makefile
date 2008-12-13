@@ -72,6 +72,7 @@ MISC_FILES =    $(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	'ModalController$$1.class' \
 	'ModalController$$ClassComparator.class' \
 	'ModalModel$$1.class' \
 	'Refinement$$1.class'

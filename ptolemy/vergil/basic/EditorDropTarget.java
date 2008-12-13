@@ -410,15 +410,18 @@ public class EditorDropTarget extends DropTarget {
                         System.out.println("Error creating alternateGetMoml!");
                     }
                 } else { // default method for PtolemyII use
+                    moml.append("<group name=\"auto\">\n");
                     result = dropObj.exportMoML(name);
                     moml.append(result);
-                    moml.append("<" + rootNodeName + " name=\"" + name + "\">\n");
+                    moml.append("<" + rootNodeName + " name=\"" + name +
+                            "\">\n");
                     moml.append("<property name=\"_location\" " +
                             "class=\"ptolemy.kernel.util.Location\" value=\"{");
                     moml.append((int) newPoint.getX());
                     moml.append(", ");
                     moml.append((int) newPoint.getY());
                     moml.append("}\"/>\n</" + rootNodeName + ">\n");
+                    moml.append("</group>\n");
                 }
             }
 

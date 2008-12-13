@@ -37,7 +37,7 @@ ME =		ptolemy/actor
 # Only go into ptalon if $(PTPTALON_DIR) is set by configure.
 # If $(PTPTALON_DIR) is empty, then configure failed and compilation
 # will fail.
-DIRS = 		util sched process gui lib corba parameters gt test \
+DIRS = 		util sched process gui lib corba parameters gt designs test \
 		$(PTPTALON_DIR)
 
 # Root of the Ptolemy II directory
@@ -54,6 +54,7 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
+	designs/designs.jar \
 	gui/gui.jar \
 	lib/lib.jar \
 	parameters/parameters.jar \
@@ -68,21 +69,22 @@ JSRCS = \
 	AbstractReceiver.java \
 	Actor.java \
 	ActorFiringListener.java \
-	AtomicActor.java \
 	ApplicationConfigurer.java \
+	AtomicActor.java \
 	CompositeActor.java \
+	DesignPatternGetMoMLAction.java \
 	Director.java \
 	Executable.java \
 	ExecutionListener.java \
 	FiringEvent.java \
 	FiringsRecordable.java \
 	GraphReader.java \
-	Initializable.java \
-	InvariantViolationException.java \
 	IOPort.java \
 	IOPortEvent.java \
 	IOPortEventListener.java \
 	IORelation.java \
+	Initializable.java \
+	InvariantViolationException.java \
 	LazyTypedCompositeActor.java \
 	Mailbox.java \
 	Manager.java \
@@ -102,14 +104,14 @@ JSRCS = \
 	TokenSentListener.java \
 	TypeAttribute.java \
 	TypeConflictException.java \
+	TypeEvent.java \
+	TypeListener.java \
+	TypeOpaqueCompositeActor.java \
 	TypedActor.java \
 	TypedAtomicActor.java \
 	TypedCompositeActor.java \
 	TypedIOPort.java \
-	TypedIORelation.java \
-	TypeEvent.java \
-	TypeListener.java \
-	TypeOpaqueCompositeActor.java 	
+	TypedIORelation.java
 
 EXTRA_SRCS =	$(JSRCS)
 
@@ -124,6 +126,7 @@ OPTIONAL_FILES = \
 	doc \
 	'FiringEvent$$1.class' \
 	'FiringEvent$$FiringEventType.class' \
+	'LazyTypedCompositeActor$$ContainedObjectsIterator.class' \
 	'Manager$$1.class' \
 	'Manager$$2.class' \
 	'Manager$$3.class' \

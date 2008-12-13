@@ -146,7 +146,7 @@ public class TableauFrame extends Top {
     ////                         public methods                    ////
 
     /** Get the alternative pack() interface for the ptolemy.gui.Top JFrame.
-     * @return the alternative pack() interface if one was set by the 
+     * @return the alternative pack() interface if one was set by the
      * _alternateTopPackClass in the Configuration.  If one there is no TopPack,
      * then return null.
      * @see #pack()
@@ -262,7 +262,7 @@ public class TableauFrame extends Top {
     public void setTableau(Tableau tableau) {
         _tableau = tableau;
     }
-    
+
     /**
      * Optionally invoke an alternative pack() method.  If the
      * _alternateTopPackClass attribute in the Configuration is set to
@@ -311,7 +311,7 @@ public class TableauFrame extends Top {
             }
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
@@ -463,7 +463,7 @@ public class TableauFrame extends Top {
                         // From Daniel Crawl for Kepler
                         item.setAccelerator(
                             KeyStroke.getKeyStroke(
-                                KeyEvent.VK_N, 
+                                KeyEvent.VK_N,
                                 Toolkit.getDefaultToolkit()
                                     .getMenuShortcutKeyMask()));
                     }
@@ -944,7 +944,7 @@ public class TableauFrame extends Top {
             return _saveAs();
         } else {
             try {
-                _writeFile(file);
+                _writeFile(file, false);
                 setModified(false);
                 return true;
             } catch (IOException ex) {
@@ -961,7 +961,29 @@ public class TableauFrame extends Top {
      *  @return True if the save succeeds.
      */
     protected boolean _saveAs() {
-        return _saveAs(null);
+        return _saveAs(null, false, true);
+    }
+
+    /** Create and return a file dialog for the "Save As" command.
+     *  This overrides the base class to add options to the dialog.
+     *  @return A file dialog for save as.
+     */
+    protected JFileChooser _saveAsFileDialog() {
+        return _saveAsFileDialog(false);
+    }
+
+    /** Create and return a file dialog for the "Save As" command.
+     *  This overrides the base class to add options to the dialog.
+     *  @param submodel Whether the submodel option is selected initially.
+     *  @return A file dialog for save as.
+     */
+    protected JFileChooser _saveAsFileDialog(boolean submodel) {
+        if (submodel) {
+            throw new InternalErrorException("TableauFrame does not know how " +
+                    "to save a submodel. Use a subclass of it instead.");
+        }
+
+        return super._saveAsFileDialog();
     }
 
     /** Query the user for a filename, save the model to that file,
@@ -970,10 +992,14 @@ public class TableauFrame extends Top {
      *  ModelDirectory and to rename the model to match the file name.
      *  @param extension If non-null, then the extension that is
      *  appended to the file name if there is no extension.
+     *  @param submodel Whether to save the submodel only, instead of the
+     *  top-level model.
+     *  @param open Whether the saved model should be opened.
      *
      *  @return True if the save succeeds.
      */
-    protected boolean _saveAs(String extension) {
+    protected boolean _saveAs(String extension, boolean submodel,
+            boolean open) {
         if (_tableau == null) {
             throw new InternalErrorException(
                     "No associated Tableau! Can't save.");
@@ -981,7 +1007,7 @@ public class TableauFrame extends Top {
 
         // Use the strategy pattern here to create the actual
         // dialog so that subclasses can customize this dialog.
-        JFileChooser fileDialog = _saveAsFileDialog();
+        JFileChooser fileDialog = _saveAsFileDialog(submodel);
         if (_initialSaveAsFileName != null) {
             fileDialog.setSelectedFile(new File(fileDialog
                     .getCurrentDirectory(), _initialSaveAsFileName));
@@ -1005,25 +1031,27 @@ public class TableauFrame extends Top {
                 String newKey = newURL.toExternalForm();
 
                 _directory = fileDialog.getCurrentDirectory();
-                _writeFile(file);
+                _writeFile(file, submodel);
 
-                // The original file will still be open, and has not
-                // been saved, so we do not change its modified status.
-                // setModified(false);
-                // Open a new window on the model.
-                getConfiguration().openModel(newURL, newURL, newKey);
+                if (open) {
+                    // The original file will still be open, and has not
+                    // been saved, so we do not change its modified status.
+                    // setModified(false);
+                    // Open a new window on the model.
+                    getConfiguration().openModel(newURL, newURL, newKey);
 
-                // If the tableau was unnamed before, then we need
-                // to close this window after doing the save.
-                Effigy effigy = getEffigy();
+                    // If the tableau was unnamed before, then we need
+                    // to close this window after doing the save.
+                    Effigy effigy = getEffigy();
 
-                if (effigy != null) {
-                    String id = effigy.identifier.getExpression();
+                    if (effigy != null) {
+                        String id = effigy.identifier.getExpression();
 
-                    if (id.equals("Unnamed")) {
-                        // This will have the effect of closing all the
-                        // tableaux associated with the unnamed model.
-                        effigy.setContainer(null);
+                        if (id.equals("Unnamed")) {
+                            // This will have the effect of closing all the
+                            // tableaux associated with the unnamed model.
+                            effigy.setContainer(null);
+                        }
                     }
                 }
 
@@ -1042,9 +1070,17 @@ public class TableauFrame extends Top {
      *  to the effigy containing the associated Tableau, if there
      *  is one, and otherwise throws an exception.
      *  @param file The file to write to.
+     *  @param submodel Whether to save the submodel only, instead of the
+     *   top-level model.
      *  @exception IOException If the write fails.
      */
-    protected void _writeFile(File file) throws IOException {
+    protected void _writeFile(File file, boolean submodel)
+            throws IOException {
+        if (submodel) {
+            throw new InternalErrorException("TableauFrame does not know how " +
+                    "to save a submodel. Use a subclass of it instead.");
+        }
+
         Tableau tableau = getTableau();
 
         if (tableau != null) {
@@ -1152,10 +1188,10 @@ public class TableauFrame extends Top {
 
     /** Associated placeable. */
     private Placeable _placeable;
-    
+
     /** Set to true when the pack() method is called.  Used by TopPack.pack(). */
     private boolean _packCalled = false;
-    
+
     /** Set in pack() if an alternate topPack is used. */
     private TopPack _topPack = null;
 

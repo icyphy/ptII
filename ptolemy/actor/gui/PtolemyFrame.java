@@ -27,6 +27,7 @@
 package ptolemy.actor.gui;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Iterator;
@@ -142,7 +143,7 @@ public abstract class PtolemyFrame extends TableauFrame {
      *  rows in the configuration.
      */
     public void expandAllLibraryRows() {
-        // This method is here so that HTMLAbout does not depend on  
+        // This method is here so that HTMLAbout does not depend on
         // vergil BasicGraphFrame
     }
 
@@ -298,19 +299,20 @@ public abstract class PtolemyFrame extends TableauFrame {
         }
 
         // If the user saves a file without an extension, we force .xml.
-        return super._saveAs(".xml");
+        return super._saveAs(".xml", false, true);
     }
 
     /** Create and return a file dialog for the "Save As" command.
      *  This overrides the base class to add options to the dialog.
+     *  @param submodel Whether the submodel option is selected initially.
      *  @return A file dialog for save as.
      */
-    protected JFileChooser _saveAsFileDialog() {
-        JFileChooser fileDialog = super._saveAsFileDialog();
+    protected JFileChooser _saveAsFileDialog(boolean submodel) {
+        JFileChooser fileDialog = super._saveAsFileDialog(false);
 
         if ((_model != null) && (_model.getContainer() != null)) {
             _query = new Query();
-            _query.addCheckBox("submodel", "Save submodel only", false);
+            _query.addCheckBox("submodel", "Save submodel only", submodel);
             fileDialog.setAccessory(_query);
         }
 
@@ -327,50 +329,79 @@ public abstract class PtolemyFrame extends TableauFrame {
      *  overrides the base class to update the attributes if they need
      *  to update their content.
      *  @param file The file to write to.
+     *  @param submodel Whether to save the submodel only, instead of the
+     *   top-level model.
      *  @exception IOException If the write fails.
      */
-    protected void _writeFile(File file) throws IOException {
-        Tableau tableau = getTableau();
+    protected void _writeFile(File file, boolean submodel) throws IOException {
+        if (submodel) {
+            FileWriter fileWriter = null;
 
-        if (tableau != null) {
-            Effigy effigy = (Effigy) tableau.getContainer();
-
-            if (effigy != null) {
-                // Update all the attributes that need updated.
-                if (_model != null) {
-                    Iterator attributes = _model.attributeList(Attribute.class)
-                            .iterator();
-
-                    while (attributes.hasNext()) {
-                        Attribute attribute = (Attribute) attributes.next();
-                        attribute.updateContent();
-                    }
+            try {
+                fileWriter = new FileWriter(file);
+                String name = getModel().getName();
+                String filename = file.getName();
+                int period = filename.indexOf(".");
+                if (period > 0) {
+                    name = filename.substring(0, period);
+                } else {
+                    name = filename;
                 }
-
-                // Ensure that if we do ever try to call this method,
-                // that it is the top effigy that is written.
-                // If there is no model, delegate to the top effigy.
-                // Otherwise, delegate to the effigy corresponding
-                // to the top-level of the model (which may not be
-                // the same as the top effigy, e.g. when using
-                // ModelReference). An exception is that if we
-                // in a saveAs command (_query != null) and the
-                // user has requested saving the submodel, then
-                // we do no delegating.
-                if (_model == null) {
-                    effigy = effigy.topEffigy();
-                } else if ((_query == null)
-                        || ((_model.getContainer() != null) && !_query
-                                .getBooleanValue("submodel"))) {
-                    effigy = effigy.masterEffigy();
+                NamedObj model = getModel();
+                if (model.getContainer() != null) {
+                    fileWriter.write(
+                            "<?xml version=\"1.0\" standalone=\"no\"?>\n"
+                            + "<!DOCTYPE entity PUBLIC "
+                            + "\"-//UC Berkeley//DTD MoML 1//EN\"\n"
+                            + "    \"http://ptolemy.eecs.berkeley.edu"
+                            + "/xml/dtd/MoML_1.dtd\">\n");
                 }
-
-                effigy.writeFile(file);
-                return;
+                model.exportMoML(fileWriter, 0, name);
+            } finally {
+                if (fileWriter != null) {
+                    fileWriter.close();
+                }
             }
-        }
+        } else {
+            Tableau tableau = getTableau();
 
-        throw new IOException("Cannot find an effigy to delegate writing.");
+            if (tableau != null) {
+                Effigy effigy = (Effigy) tableau.getContainer();
+
+                if (effigy != null) {
+                    // Update all the attributes that need updated.
+                    if (_model != null) {
+                        List<Attribute> attributes = _model.attributeList();
+                        for (Attribute attribute : attributes) {
+                            attribute.updateContent();
+                        }
+                    }
+
+                    // Ensure that if we do ever try to call this method,
+                    // that it is the top effigy that is written.
+                    // If there is no model, delegate to the top effigy.
+                    // Otherwise, delegate to the effigy corresponding
+                    // to the top-level of the model (which may not be
+                    // the same as the top effigy, e.g. when using
+                    // ModelReference). An exception is that if we
+                    // in a saveAs command (_query != null) and the
+                    // user has requested saving the submodel, then
+                    // we do no delegating.
+                    if (_model == null) {
+                        effigy = effigy.topEffigy();
+                    } else if ((_query == null)
+                            || ((_model.getContainer() != null) && !_query
+                                    .getBooleanValue("submodel"))) {
+                        effigy = effigy.masterEffigy();
+                    }
+
+                    effigy.writeFile(file);
+                    return;
+                }
+            }
+
+            throw new IOException("Cannot find an effigy to delegate writing.");
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="RepeatForCount" class="ptolemy.domains.fsm.kernel.Group">
+<entity name="RepeatForCount" class="ptolemy.actor.gt.controller.EmbeddedTransformationController">
     <property name="stateDependentCausality" class="ptolemy.data.expr.Parameter" value="false">
     </property>
     <property name="count" class="ptolemy.data.expr.Parameter" value="3">
@@ -28,6 +28,18 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 120.0]">
         </property>
+    </property>
+    <property name="_alternateGetMomlAction" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.actor.DesignPatternGetMoMLAction">
+    </property>
+    <property name="_designPatternIcon" class="ptolemy.vergil.icon.DesignPatternIcon">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <property name="rounding" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="spacing" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+    </property>
+    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
     </property>
     <entity name="Start" class="ptolemy.actor.gt.controller.GTEvent">
         <property name="isInitialEvent" class="ptolemy.data.expr.Parameter" value="true">

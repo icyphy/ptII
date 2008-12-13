@@ -828,7 +828,14 @@ public abstract class Top extends JFrame {
         // See PlotFrame for notes.
 
         PrinterJob job = PrinterJob.getPrinterJob();
-        PageFormat pageFormat = job.pageDialog(job.defaultPage());
+        PageFormat defaultFormat = job.defaultPage();
+        PageFormat pageFormat = job.pageDialog(defaultFormat);
+
+        // If the print dialog is cancelled, we do not handle the job any more.
+        // -- tfeng (12/12/2008)
+        if (defaultFormat == pageFormat) {
+            return;
+        }
 
         if (this instanceof Pageable) {
             // FIXME: what about the page format?
@@ -896,7 +903,7 @@ public abstract class Top extends JFrame {
     protected boolean _save() {
         if (_file != null) {
             try {
-                _writeFile(_file);
+                _writeFile(_file, false);
                 setModified(false);
                 return true;
             } catch (IOException ex) {
@@ -985,7 +992,8 @@ public abstract class Top extends JFrame {
      *  @param file The file to write to.
      *  @exception IOException If the write fails.
      */
-    protected abstract void _writeFile(File file) throws IOException;
+    protected abstract void _writeFile(File file, boolean submodel)
+            throws IOException;
 
     /** Indicator that a close operation is canceled. */
     protected static final int _CANCELED = 2;

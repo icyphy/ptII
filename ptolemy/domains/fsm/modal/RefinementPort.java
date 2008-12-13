@@ -27,25 +27,18 @@
  */
 package ptolemy.domains.fsm.modal;
 
-import java.io.IOException;
-import java.io.Writer;
-import java.util.List;
-
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.BooleanToken;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// RefinementPort
@@ -656,61 +649,6 @@ public class RefinementPort extends TypedIOPort {
         } finally {
             _mirrorDisable = disableStatus;
             _workspace.doneWriting();
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                          protected methods                ////
-
-    protected void _exportMoMLContents(Writer output, int depth)
-            throws IOException {
-        boolean isInput = isInput();
-        if (isInput) {
-            NamedObj container = getContainer();
-            if (container instanceof ModalController) {
-                boolean exportAsGroup;
-                try {
-                    exportAsGroup = ((BooleanToken) ((ModalController)
-                            container).exportAsGroup.getToken()).booleanValue();
-                } catch (IllegalActionException e) {
-                    exportAsGroup = false;
-                }
-                if (exportAsGroup) {
-                    // Check whether this port is indeed an input port by
-                    // looking at the ModalPort that it connects to.
-                    List<Port> connectedPorts = connectedPortList();
-                    for (Port port : connectedPorts) {
-                        if (port instanceof ModalPort && !((ModalPort) port).isInput()) {
-                            isInput = false;
-                            break;
-                        }
-                    }
-                }
-            }
-            if (isInput) {
-                output.write(_getIndentPrefix(depth)
-                        + "<property name=\"input\"/>\n");
-            }
-        }
-        if (isOutput()) {
-            output.write(_getIndentPrefix(depth)
-                    + "<property name=\"output\"/>\n");
-        }
-        if (isMultiport()) {
-            output.write(_getIndentPrefix(depth)
-                    + "<property name=\"multiport\"/>\n");
-        }
-
-        String displayName = getDisplayName();
-        if (!displayName.equals(getName())) {
-            output.write("<display name=\"");
-            output.write(StringUtilities.escapeForXML(displayName));
-            output.write("\"/>");
-        }
-
-        List<Attribute> attributes = attributeList();
-        for (Attribute attribute : attributes) {
-            attribute.exportMoML(output, depth);
         }
     }
 

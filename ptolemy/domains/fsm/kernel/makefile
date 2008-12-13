@@ -58,14 +58,12 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 JSRCS = \
 	AbstractActionsAttribute.java \
 	Action.java \
-	AlternateGetMomlAction.java \
 	ChoiceAction.java \
 	CommitAction.java \
 	CommitActionsAttribute.java \
 	FSMActor.java \
 	FSMCausalityInterface.java \
 	FSMDirector.java \
-	Group.java \
 	ModalDirector.java \
 	MultipleEnabledTransitionsException.java \
 	MultirateFSMDirector.java \
@@ -81,7 +79,6 @@ JSRCS = \
 	Transition.java
 
 OTHER_FILES_TO_BE_JARED = \
-	GroupIcon.xml \
 	StateIcon.xml \
 	fsmentities.xml
 

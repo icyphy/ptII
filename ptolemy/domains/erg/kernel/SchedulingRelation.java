@@ -51,7 +51,6 @@ import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.Transition;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -106,7 +105,7 @@ public class SchedulingRelation extends Transition {
      *  @exception NameDuplicationException If the name coincides with
      *   any relation already in the container.
      */
-    public SchedulingRelation(FSMActor container, String name)
+    public SchedulingRelation(ERGController container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 

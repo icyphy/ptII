@@ -337,8 +337,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             newObject._initialState = (State) newObject.getEntity(_initialState
                     .getName());
         }
-        newObject.exportAsGroup = (Parameter) newObject.getAttribute(
-                "_exportAsGroup");
 
         newObject._inputPortsVersion = -1;
         newObject._cachedInputPorts = null;
@@ -488,24 +486,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             _causalityInterfacesVersions.put(_currentState, Long.valueOf(workspace().getVersion()));
         }
         return causality;
-    }
-
-    /** Get the class name of this ERGController. If exportAsGroup is true, then
-     *  the class name equals to the class name of {@link Group}; otherwise, the
-     *  original class name is returned.
-     *
-     *  @return The class name.
-     */
-    public String getClassName() {
-        try {
-            if (exportAsGroup != null && ((BooleanToken) exportAsGroup.getToken(
-                    )).booleanValue()) {
-                return Group.class.getName();
-            }
-        } catch (IllegalActionException e) {
-            // Ignore; return super.
-        }
-        return super.getClassName();
     }
 
     /**
@@ -1159,11 +1139,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-
-    /** A Boolean parameter that tells whether the Moml of this ERGController
-     *  should be generated as a group (an instance of {@link Group}) or not.
-     */
-    public Parameter exportAsGroup;
 
     /** Attribute specifying the names of the final states of this
      *  actor. This attribute is kept for backward compatibility only,
@@ -1822,12 +1797,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             finalStateNames = new StringAttribute(this, "finalStateNames");
             finalStateNames.setExpression("");
             finalStateNames.setVisibility(Settable.EXPERT);
-
-            exportAsGroup = new Parameter(this, "_exportAsGroup");
-            exportAsGroup.setTypeEquals(BaseType.BOOLEAN);
-            exportAsGroup.setToken(BooleanToken.FALSE);
-            exportAsGroup.setVisibility(Settable.EXPERT);
-            exportAsGroup.setPersistent(false);
         } catch (KernelException ex) {
             // This should never happen.
             throw new InternalErrorException("Constructor error "

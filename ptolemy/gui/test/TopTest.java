@@ -55,9 +55,11 @@ public class TopTest extends Top {
 
     /** Write the model to the specified file.
      *  @param file The file to write to.
+     *  @param submodel Whether to save the submodel only, instead of the
+     *   top-level model.
      *  @exception IOException If the write fails.
      */
-    protected void _writeFile(File file) throws IOException {
+    protected void _writeFile(File file, boolean submodel) throws IOException {
         throw new RuntimeException("TopTest._writeFile() not implemented");
     }
 }

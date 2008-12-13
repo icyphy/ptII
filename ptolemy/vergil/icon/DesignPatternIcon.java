@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
 */
-package ptolemy.vergil.fsm;
+package ptolemy.vergil.icon;
 
 import java.awt.Color;
 
@@ -50,7 +50,7 @@ import diva.gui.toolbox.FigureIcon;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class GroupIcon extends StateIcon {
+public class DesignPatternIcon extends NameIcon {
 
     /** Create a new icon with the given name in the given container.
      *  The container is required to implement Settable, or an exception
@@ -62,7 +62,7 @@ public class GroupIcon extends StateIcon {
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    public GroupIcon(NamedObj container, String name)
+    public DesignPatternIcon(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
@@ -90,4 +90,7 @@ public class GroupIcon extends StateIcon {
         _iconCache = new FigureIcon(figure, 20, 15);
         return _iconCache;
     }
+    
+    /** The cached Swing icon. */
+    protected Icon _iconCache = null;
 }
