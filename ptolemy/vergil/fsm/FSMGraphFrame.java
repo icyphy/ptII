@@ -31,11 +31,14 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
@@ -54,14 +57,18 @@ import ptolemy.domains.fsm.modal.RefinementPort;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.LibraryAttribute;
+import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.moml.MoMLParser;
 import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
+import ptolemy.util.StringUtilities;
 import ptolemy.vergil.basic.ExtendedGraphFrame;
 import ptolemy.vergil.icon.DesignPatternIcon;
 import diva.canvas.DamageRegion;
@@ -131,15 +138,70 @@ public class FSMGraphFrame extends ExtendedGraphFrame
     public void actionPerformed(ActionEvent e) {
         JMenuItem target = (JMenuItem) e.getSource();
         String actionCommand = target.getActionCommand();
-        if (actionCommand.equals("Save As Design Pattern")) {
-            saveAsDesignPattern();
+        if (actionCommand.equals("Import Design Pattern")) {
+            importDesignPattern();
+        } else if (actionCommand.equals("Export Design Pattern")) {
+            exportDesignPattern();
+        }
+    }/** Import a design pattern into the current design.
+     */
+    public void importDesignPattern() {
+        JFileChooser fileDialog = new JFileChooser();
+
+        if (_fileFilter != null) {
+            fileDialog.addChoosableFileFilter(_fileFilter);
+        }
+
+        fileDialog.setDialogTitle("Select a design pattern file.");
+        if (_directory != null) {
+            fileDialog.setCurrentDirectory(_directory);
+        } else {
+            String currentWorkingDirectory = StringUtilities.getProperty(
+                    "user.dir");
+            if (currentWorkingDirectory != null) {
+                fileDialog.setCurrentDirectory(new File(
+                        currentWorkingDirectory));
+            }
+        }
+
+        if (fileDialog.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            _directory = fileDialog.getCurrentDirectory();
+            NamedObj model = null;
+            try {
+                File file = fileDialog.getSelectedFile().getCanonicalFile();
+                URL url = file.toURI().toURL();
+                MoMLParser parser = new MoMLParser();
+                model = parser.parse(url, url);
+            } catch (Exception e) {
+                report(new IllegalActionException(null, e,
+                        "Error reading input"));
+            }
+            if (model != null) {
+                Attribute attribute = model.getAttribute(
+                        "_alternateGetMomlAction");
+                String className = DesignPatternGetMoMLAction.class.getName();
+                if (attribute == null ||
+                        !(attribute instanceof StringAttribute) ||
+                        !((StringAttribute) attribute).getExpression().equals(
+                                className)) {
+                    report(new IllegalActionException(
+                            "The model is not a design pattern."));
+                } else {
+                    String moml = new DesignPatternGetMoMLAction().getMoml(
+                            model, model.getName());
+                    NamedObj context = getModel();
+                    MoMLChangeRequest request = new MoMLChangeRequest(this,
+                            context, moml);
+                    context.requestChange(request);
+                }
+            }
         }
     }
 
     /** Save the current submodel as a design pattern using a method similar to
      *  Save As.
      */
-    public synchronized void saveAsDesignPattern() {
+    public void exportDesignPattern() {
         Tableau tableau = getTableau();
         PtolemyEffigy effigy = (PtolemyEffigy) tableau.getContainer();
         NamedObj model = effigy.getModel();
@@ -396,7 +458,8 @@ public class FSMGraphFrame extends ExtendedGraphFrame
         return super._close();
     }
 
-    /** Create the items in the File menu.
+    /** Create the items in the File menu. A null element in the array
+     *  represents a separator in the menu.
      *
      *  @return The items in the File menu.
      */
@@ -407,13 +470,17 @@ public class FSMGraphFrame extends ExtendedGraphFrame
             i++;
             if (item.getActionCommand().equals("Save As")) {
                 // Add a SaveAsDesignPattern here.
-                JMenuItem newItem = new JMenuItem(
-                        "Save As Design Pattern", KeyEvent.VK_D);
-                JMenuItem[] newItems = new JMenuItem[fileMenuItems.length + 1];
+                JMenuItem importItem = new JMenuItem(
+                        "Import Design Pattern", KeyEvent.VK_D);
+                JMenuItem exportItem = new JMenuItem(
+                        "Export Design Pattern", KeyEvent.VK_D);
+                JMenuItem[] newItems = new JMenuItem[fileMenuItems.length + 4];
                 System.arraycopy(fileMenuItems, 0, newItems, 0, i);
-                newItems[i] = newItem;
-                newItem.addActionListener(this);
-                System.arraycopy(fileMenuItems, i, newItems, i + 1,
+                newItems[i+1] = importItem;
+                importItem.addActionListener(this);
+                newItems[i+2] = exportItem;
+                exportItem.addActionListener(this);
+                System.arraycopy(fileMenuItems, i, newItems, i + 4,
                         fileMenuItems.length - i);
                 return newItems;
             }
