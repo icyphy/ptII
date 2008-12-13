@@ -319,10 +319,15 @@ public abstract class Top extends JFrame {
 
                     // Set the action command and listener for each menu item.
                     for (int i = 0; i < _fileMenuItems.length; i++) {
-                        _fileMenuItems[i].setActionCommand(_fileMenuItems[i]
-                                .getText());
-                        _fileMenuItems[i].addActionListener(fileMenuListener);
-                        _fileMenu.add(_fileMenuItems[i]);
+                    	if (_fileMenuItems[i] == null) {
+                    		_fileMenu.addSeparator();
+                    	} else {
+	                        _fileMenuItems[i].setActionCommand(_fileMenuItems[i]
+	                                .getText());
+	                        _fileMenuItems[i].addActionListener(
+	                        		fileMenuListener);
+	                        _fileMenu.add(_fileMenuItems[i]);
+                    	}
                     }
 
                     _menubar.add(_fileMenu);
@@ -585,7 +590,8 @@ public abstract class Top extends JFrame {
         }
     }
 
-    /** Create the items in the File menu.
+    /** Create the items in the File menu. A null element in the array
+     *  represents a separator in the menu.
      *
      *  @return The items in the File menu.
      */
@@ -1020,7 +1026,7 @@ public abstract class Top extends JFrame {
     /** File menu for this frame. */
     protected JMenu _fileMenu = new JMenu("File");
 
-    /** Items in the file menu. */
+    /** Items in the file menu. A null element represents a separator. */
     protected JMenuItem[] _fileMenuItems = _createFileMenuItems();
 
     /** Help menu for this frame. */
