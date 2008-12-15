@@ -33,7 +33,7 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model opens two interactive shells into which you can type&#10;and reports the time (since the start of execution) when you type&#10;something in either shell.  Normally, the InteractiveShell actor blocks&#10;until you type something, so each firing would block execution&#10;in other parts of the model.  Here, each InteractiveShell is placed&#10;within a ThreadedComposite with the delay parameter set to&#10;UNDEFINED and synchronizeToRealTime set to true.&#10;Thus, the InteractiveShell actors execute in their own threads,&#10;and when they produce outputs, the outputs are assigned time&#10;stamps equal to real time.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 295.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 315.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -41,7 +41,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 480.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 500.0]">
         </property>
     </property>
     <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
@@ -153,7 +153,13 @@
         </property>
     </entity>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="&quot;Top typed '&quot; + in + &quot;' at time &quot; + time">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="&quot;Top types: '&quot;&#10;+ in&#10;+ &quot;' at time &quot;&#10;+ time">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -170,7 +176,13 @@
         </port>
     </entity>
     <entity name="Expression2" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="&quot;Bottom typed '&quot; + in + &quot;' at time &quot; + time">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="&quot;Bottom types: '&quot;&#10;+ in&#10;+ &quot;' at time &quot;&#10;+ time">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -180,7 +192,7 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 265.0]">
         </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -215,7 +227,7 @@
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[260.0, 265.0]">
+        <vertex name="vertex1" value="{260.0, 265.0}">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
