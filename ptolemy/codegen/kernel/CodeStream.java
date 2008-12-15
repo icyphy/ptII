@@ -571,7 +571,8 @@ public class CodeStream {
     /**
      * Parse additional code blocks from the file specified by the given
      * file path. This assumes the given filePath points to an existing
-     * file.
+     * file. This is equivalent to calling parse(filePath, false). See
+     * {@link #parse(String, boolean)}.
      * @param filePath The given file path.
      * @exception IllegalActionException Thrown if an error occurs when
      *  parsing the code blocks in the file.
@@ -584,10 +585,12 @@ public class CodeStream {
      * Parse additional code blocks from the file specified by the given
      * file path. The new code blocks will be put alongside and have higher
      * precedence than the code blocks already contained by this CodeStream.
-     * Also, the specified file path is required to point to an existing
-     * file; otherwise, an exception is thrown.
+     * Also, the specified file path may not be required to point to an 
+     * existing file; otherwise, an exception is thrown.
      * @param filePath The given file path.
-     * @param filePath Indicate whether the given filePath may be invalid.
+     * @param mayNotExist Whether to allow invalid filePath input. True
+     *  if the given filePath may not exist (no exception thrown for
+     *  invalid file path); false, otherwise. 
      * @exception IllegalActionException Thrown if an error occurs when
      *  parsing the code blocks in the file.
      */
