@@ -73,6 +73,10 @@ import ptolemy.kernel.util.Workspace;
  (initialize(), prefire(), fire(), postfire(), and wrapup())
  is called the <i>director thread</i>.
  <p>
+ A paper describing the use of this actor is found at
+ <a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2008/EECS-2008-151.html">
+ http://www.eecs.berkeley.edu/Pubs/TechRpts/2008/EECS-2008-151.html</a>.
+ <p>
  This actor automatically creates input and output ports to
  match those of the inside actor. Input events provided at those
  input ports are provided as input events to the contained actor.
@@ -140,11 +144,16 @@ import ptolemy.kernel.util.Workspace;
  it produces after the wrapup phase has started will be
  discarded.
  <p>
- The most common use of this actor is in the DE domain.
+ The most common use of this actor is in the DE domain,
+ although it can also be used in CT, SR, SDF, and other domains,
+ with some care. See the above referenced memo.
  Regardless of the value of <i>delay</i>, this actor is treated
  by DE as introducing a delay, much like the TimedDelay actor.
  In fact, if <i>delay</i> is 0.0, there will be a one tick delay
  in superdense time, just as with the TimedDelay actor.
+ If the inside model also has a time delay (e.g. if you
+ put a TimedDelay actor inside a ThreadedComposite), then
+ the total delay is the sum of the two delays.
  <p>
  <b>Discussion:</b>
  <p>
