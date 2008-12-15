@@ -100,6 +100,10 @@ public class LineWriter extends Sink {
         confirmOverwrite.setTypeEquals(BaseType.BOOLEAN);
         confirmOverwrite.setToken(BooleanToken.TRUE);
 
+        endOfLineCharacter = new Parameter(this, "endOfLineCharacter");
+        endOfLineCharacter.setTypeEquals(BaseType.STRING);
+        endOfLineCharacter.setExpression("\n");
+
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-25\" y=\"-20\" " + "width=\"50\" height=\"40\" "
                 + "style=\"fill:white\"/>\n"
@@ -129,6 +133,12 @@ public class LineWriter extends Sink {
      *  exists, ask for confirmation before overwriting.
      */
     public Parameter confirmOverwrite;
+    
+    /** End of line character to use. This is a string
+     *  that defaults to "\n". If an empty string is specified,
+     *  then no end of line character is used.
+     */
+    public Parameter endOfLineCharacter;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -249,8 +259,12 @@ public class LineWriter extends Sink {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     protected void _writeToken(Token token) throws IllegalActionException {
+        String eol = ((StringToken)endOfLineCharacter.getToken()).stringValue();
+        if (eol == null) {
+            eol = "";
+        }
         // In this base class, the cast is safe.
-        _writer.println(((StringToken) token).stringValue());
+        _writer.print(((StringToken) token).stringValue() + eol);
     }
 
     ///////////////////////////////////////////////////////////////////
