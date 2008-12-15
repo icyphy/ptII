@@ -102,7 +102,7 @@ public class LineWriter extends Sink {
 
         endOfLineCharacter = new Parameter(this, "endOfLineCharacter");
         endOfLineCharacter.setTypeEquals(BaseType.STRING);
-        endOfLineCharacter.setExpression("\n");
+        // Default value is null.
 
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-25\" y=\"-20\" " + "width=\"50\" height=\"40\" "
@@ -135,8 +135,11 @@ public class LineWriter extends Sink {
     public Parameter confirmOverwrite;
     
     /** End of line character to use. This is a string
-     *  that defaults to "\n". If an empty string is specified,
-     *  then no end of line character is used.
+     *  that defaults to null, which results in the current
+     *  platform's standard end-of-line character being used.
+     *  If an empty string is specified,
+     *  then no end of line character is used after each
+     *  output written to the file.
      */
     public Parameter endOfLineCharacter;
 
@@ -261,7 +264,7 @@ public class LineWriter extends Sink {
     protected void _writeToken(Token token) throws IllegalActionException {
         String eol = ((StringToken)endOfLineCharacter.getToken()).stringValue();
         if (eol == null) {
-            eol = "";
+            eol = "\n";
         }
         // In this base class, the cast is safe.
         _writer.print(((StringToken) token).stringValue() + eol);
