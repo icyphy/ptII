@@ -321,14 +321,6 @@ public class TypedCompositeActor extends JavaCodeGeneratorHelper {
 //        // Generate the type conversion code before fire code.
 //        code.append(generateTypeConvertFireCode(true));
 //    }
-
-    public String generateGlobalCode() throws IllegalActionException {
-        CompositeActor compositeActor = (CompositeActor) getComponent();
-        ptolemy.actor.Director director = compositeActor.getDirector();
-        Director directorHelper = (Director) _getHelper(director);
-
-        return directorHelper.generateGlobalCode();
-    }
     
     /** Generate The fire function code. This method is called when
      *  the firing code of each actor is not inlined. Each actor's
