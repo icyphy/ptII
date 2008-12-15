@@ -661,7 +661,7 @@ public class IORelation extends ComponentRelation {
     public static final int CONFIGURATION = 512;
     
     /** The value of the width we should infer. */
-    public static final int WIDTH_TO_INFER = 0;    
+    public static final int WIDTH_TO_INFER = -1;    
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////

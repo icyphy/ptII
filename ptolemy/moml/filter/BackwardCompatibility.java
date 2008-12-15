@@ -27,7 +27,6 @@
  */
 package ptolemy.moml.filter;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -75,20 +74,19 @@ public class BackwardCompatibility {
         // can't do that because Object.toString() is not static
         StringBuffer results = new StringBuffer(
                 "This filter contains the following filters:\n");
-        Iterator filters = _filterList.iterator();
 
-        while (filters.hasNext()) {
-            results.append(((MoMLFilter) filters.next()).toString() + "\n");
+        for (MoMLFilter filter : _filterList) {
+            results.append(filter.toString() + "\n");
         }
 
         return results.toString();
     }
 
     // List of MoMLFilters to be applied.
-    private static List _filterList;
+    private static List<MoMLFilter> _filterList;
 
     static {
-        _filterList = new LinkedList();
+        _filterList = new LinkedList<MoMLFilter>();
         _filterList.add(new AddEditorFactory());
         _filterList.add(new AddIcon());
         _filterList.add(new ClassChanges());
@@ -103,6 +101,7 @@ public class BackwardCompatibility {
         _filterList.add(new RemoveProperties());
 	//System.out.println("Filtering and converting to LazyTypedCompositeActors");
         //_filterList.add(new LazyTypedCompositeActorChanges());
+        _filterList.add(new RelationWidthChanges());        
     }
 }
 
