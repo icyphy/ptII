@@ -909,7 +909,7 @@ public abstract class Top extends JFrame {
     protected boolean _save() {
         if (_file != null) {
             try {
-                _writeFile(_file, false);
+                _writeFile(_file);
                 setModified(false);
                 return true;
             } catch (IOException ex) {
@@ -998,8 +998,7 @@ public abstract class Top extends JFrame {
      *  @param file The file to write to.
      *  @exception IOException If the write fails.
      */
-    protected abstract void _writeFile(File file, boolean submodel)
-            throws IOException;
+    protected abstract void _writeFile(File file) throws IOException;
 
     /** Indicator that a close operation is canceled. */
     protected static final int _CANCELED = 2;

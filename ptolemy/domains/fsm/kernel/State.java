@@ -26,6 +26,8 @@
  */
 package ptolemy.domains.fsm.kernel;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -47,6 +49,7 @@ import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.DropTargetHandler;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
@@ -153,10 +156,20 @@ public class State extends ComponentEntity implements DropTargetHandler {
         isFinalState.setTypeEquals(BaseType.BOOLEAN);
         isFinalState.setExpression("false");
 
+        saveRefinementsInConfigurer = new Parameter(this,
+                "saveRefinementsInConfigurer");
+        saveRefinementsInConfigurer.setTypeEquals(BaseType.BOOLEAN);
+        saveRefinementsInConfigurer.setVisibility(Settable.EXPERT);
+        saveRefinementsInConfigurer.setExpression("false");
+        saveRefinementsInConfigurer.setPersistent(false);
+
         ContainmentExtender containmentExtender = new ContainmentExtender(this,
-        		"_containmentExtender");
+                "_containmentExtender");
         containmentExtender.setPersistent(false);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** React to a change in an attribute. If the changed attribute is
      *  the <i>refinementName</i> attribute, record the change but do
@@ -199,9 +212,6 @@ public class State extends ComponentEntity implements DropTargetHandler {
             }
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
 
     /** Clone the state into the specified workspace. This calls the
      *  base class and then sets the attribute and port public members
@@ -385,9 +395,6 @@ public class State extends ComponentEntity implements DropTargetHandler {
         return _nonpreemptiveTransitionList;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
     /** Return the list of preemptive outgoing transitions from
      *  this state.
      *  @return The list of preemptive outgoing transitions from
@@ -409,6 +416,9 @@ public class State extends ComponentEntity implements DropTargetHandler {
     public void setVisited(boolean visited) {
         _visited = visited;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
     /** The port linking incoming transitions.
      */
@@ -447,6 +457,51 @@ public class State extends ComponentEntity implements DropTargetHandler {
      *  expression when the state is not refined.
      */
     public StringAttribute refinementName = null;
+
+    /** A boolean attribute to decide refinements of this state should be
+     *  exported as configurations of this state or not.
+     */
+    public Parameter saveRefinementsInConfigurer;
+
+    /** Write a MoML description of the contents of this object, which
+     *  in this class are the attributes plus the ports.  This method is called
+     *  by exportMoML().  Each description is indented according to the
+     *  specified depth and terminated with a newline character.
+     *  @param output The output to write to.
+     *  @param depth The depth in the hierarchy, to determine indenting.
+     *  @exception IOException If an I/O error occurs.
+     */
+    protected void _exportMoMLContents(Writer output, int depth)
+            throws IOException {
+        super._exportMoMLContents(output, depth);
+        boolean createConfigurer = false;
+        try {
+            createConfigurer = ((BooleanToken) saveRefinementsInConfigurer
+                    .getToken()).booleanValue();
+        } catch (IllegalActionException e) {
+            // Ignore. Use false.
+        }
+        if (createConfigurer) {
+            try {
+                TypedActor[] actors = getRefinement();
+                if (actors != null) {
+                    output.write(_getIndentPrefix(depth) + "<configure>\n");
+                    for (TypedActor actor : actors) {
+                        if (actor instanceof FSMActor) {
+                            ((FSMActor) actor).exportSubmodel(output, depth + 1,
+                                    actor.getName());
+                        } else {
+                            ((NamedObj) actor).exportMoML(output, depth + 1);
+                        }
+                    }
+                    output.write(_getIndentPrefix(depth) + "</configure>\n");
+                }
+            } catch (IllegalActionException e) {
+                throw new InternalErrorException(this, e,
+                        "Unable to save refinements.");
+            }
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////

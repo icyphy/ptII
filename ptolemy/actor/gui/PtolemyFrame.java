@@ -29,6 +29,7 @@ package ptolemy.actor.gui;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -126,16 +127,6 @@ public abstract class PtolemyFrame extends TableauFrame {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Get the associated model or Ptolemy II object.
-     *  This can be a CompositeEntity or an EditorIcon, and possibly
-     *  other Ptolemy II objects.
-     *  @return The associated model or object.
-     *  @see #setModel(NamedObj)
-     */
-    public NamedObj getModel() {
-        return _model;
-    }
-
     /** Expand all the rows of the library.
      *  Expanding all the rows is useful for testing.
      *  In this baseclass, this method merely returns.
@@ -145,6 +136,16 @@ public abstract class PtolemyFrame extends TableauFrame {
     public void expandAllLibraryRows() {
         // This method is here so that HTMLAbout does not depend on
         // vergil BasicGraphFrame
+    }
+
+    /** Get the associated model or Ptolemy II object.
+     *  This can be a CompositeEntity or an EditorIcon, and possibly
+     *  other Ptolemy II objects.
+     *  @return The associated model or object.
+     *  @see #setModel(NamedObj)
+     */
+    public NamedObj getModel() {
+        return _model;
     }
 
     /** Set the associated model.  This also sets an error handler for
@@ -215,6 +216,20 @@ public abstract class PtolemyFrame extends TableauFrame {
         }
 
         return super._close();
+    }
+
+    /** Export the model into the writer with the given name. In this base
+     *  class, the exportMoML() method of the model is used. Subclasses may
+     *  override this method to export the model in a different way.
+     *
+     *  @param writer The writer.
+     *  @param model The model to export.
+     *  @param name The name of the exported model.
+     *  @exception IOException If an I/O error occurs.
+     */
+    protected void _exportModel(Writer writer, NamedObj model, String name)
+            throws IOException {
+        model.exportMoML(writer, 0, name);
     }
 
     /** Display more detailed information than given by _about().
@@ -299,24 +314,34 @@ public abstract class PtolemyFrame extends TableauFrame {
         }
 
         // If the user saves a file without an extension, we force .xml.
-        return super._saveAs(".xml", false, true);
+        return super._saveAs(".xml", true);
     }
 
     /** Create and return a file dialog for the "Save As" command.
      *  This overrides the base class to add options to the dialog.
-     *  @param submodel Whether the submodel option is selected initially.
      *  @return A file dialog for save as.
      */
-    protected JFileChooser _saveAsFileDialog(boolean submodel) {
-        JFileChooser fileDialog = super._saveAsFileDialog(false);
+    protected JFileChooser _saveAsFileDialog() {
+        JFileChooser fileDialog = super._saveAsFileDialog();
 
-        if ((_model != null) && (_model.getContainer() != null)) {
+        if (_useEffigyToSaveModel && _model != null &&
+                _model.getContainer() != null) {
             _query = new Query();
-            _query.addCheckBox("submodel", "Save submodel only", submodel);
+            _query.addCheckBox("submodel", "Save submodel only", false);
             fileDialog.setAccessory(_query);
         }
 
         return fileDialog;
+    }
+
+    /** Write the model to the specified file.  This method delegates
+     *  to the effigy containing the associated Tableau, if there
+     *  is one, and otherwise throws an exception.
+     *  @param file The file to write to.
+     *  @exception IOException If the write fails.
+     */
+    protected void _writeFile(File file) throws IOException {
+        _writeFile(file, _useEffigyToSaveModel);
     }
 
     /** Write the model to the specified file.  This method delegates
@@ -329,40 +354,15 @@ public abstract class PtolemyFrame extends TableauFrame {
      *  overrides the base class to update the attributes if they need
      *  to update their content.
      *  @param file The file to write to.
-     *  @param submodel Whether to save the submodel only, instead of the
-     *   top-level model.
+     *  @param useEffigy Whether to use the effigy of the current tableau to
+     *   save the model. For a modal model, the effigy corresponds to the
+     *   ModalModel. If effigy is not used, then getModel() will be invoked
+     *   to get the model, which is an FSMActor contained by the ModalModel in
+     *   that case.
      *  @exception IOException If the write fails.
      */
-    protected void _writeFile(File file, boolean submodel) throws IOException {
-        if (submodel) {
-            FileWriter fileWriter = null;
-
-            try {
-                fileWriter = new FileWriter(file);
-                String name = getModel().getName();
-                String filename = file.getName();
-                int period = filename.indexOf(".");
-                if (period > 0) {
-                    name = filename.substring(0, period);
-                } else {
-                    name = filename;
-                }
-                NamedObj model = getModel();
-                if (model.getContainer() != null) {
-                    fileWriter.write(
-                            "<?xml version=\"1.0\" standalone=\"no\"?>\n"
-                            + "<!DOCTYPE entity PUBLIC "
-                            + "\"-//UC Berkeley//DTD MoML 1//EN\"\n"
-                            + "    \"http://ptolemy.eecs.berkeley.edu"
-                            + "/xml/dtd/MoML_1.dtd\">\n");
-                }
-                model.exportMoML(fileWriter, 0, name);
-            } finally {
-                if (fileWriter != null) {
-                    fileWriter.close();
-                }
-            }
-        } else {
+    protected void _writeFile(File file, boolean useEffigy) throws IOException {
+        if (useEffigy) {
             Tableau tableau = getTableau();
 
             if (tableau != null) {
@@ -401,8 +401,44 @@ public abstract class PtolemyFrame extends TableauFrame {
             }
 
             throw new IOException("Cannot find an effigy to delegate writing.");
+        } else {
+            FileWriter fileWriter = null;
+
+            try {
+                fileWriter = new FileWriter(file);
+                String name = getModel().getName();
+                String filename = file.getName();
+                int period = filename.indexOf(".");
+                if (period > 0) {
+                    name = filename.substring(0, period);
+                } else {
+                    name = filename;
+                }
+                NamedObj model = getModel();
+                if (model.getContainer() != null) {
+                    fileWriter.write(
+                            "<?xml version=\"1.0\" standalone=\"no\"?>\n"
+                            + "<!DOCTYPE entity PUBLIC "
+                            + "\"-//UC Berkeley//DTD MoML 1//EN\"\n"
+                            + "    \"http://ptolemy.eecs.berkeley.edu"
+                            + "/xml/dtd/MoML_1.dtd\">\n");
+                }
+                _exportModel(fileWriter, model, name);
+            } finally {
+                if (fileWriter != null) {
+                    fileWriter.close();
+                }
+            }
         }
     }
+
+    /** Whether to use the effigy of the current tableau to save the model in
+     *  _writeFile(File). For a modal model, the effigy corresponds to the
+     *  ModalModel. If effigy is not used, then getModel() will be invoked to
+     *  get the model, which is an FSMActor contained by the ModalModel in that
+     *  case.
+     */
+    protected boolean _useEffigyToSaveModel = true;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

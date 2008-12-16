@@ -243,11 +243,13 @@ public class ActorGraphFrame extends ExtendedGraphFrame
 
             icon = new DesignPatternIcon(actor, "_designPatternIcon");
 
-            super._saveAs(".xml", true, false);
+            _useEffigyToSaveModel = false;
+            super._saveAs(".xml", false);
         } catch (KernelException e) {
             throw new InternalErrorException(actor, e,
                     "Unable to export model.");
         } finally {
+            _useEffigyToSaveModel = true;
             if (alternateGetMoml != null) {
                 try {
                     alternateGetMoml.setContainer(null);

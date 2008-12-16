@@ -33,11 +33,11 @@ import java.io.Writer;
 import java.net.URL;
 
 import ptolemy.actor.Manager;
-import ptolemy.actor.gt.Configurer;
 import ptolemy.actor.gt.GTAttribute;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.domains.erg.kernel.ERGModalModel;
+import ptolemy.domains.fsm.kernel.Configurer;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.Configurable;

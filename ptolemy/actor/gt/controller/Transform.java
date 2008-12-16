@@ -33,14 +33,14 @@ import java.io.Writer;
 import java.net.URL;
 
 import ptolemy.actor.TypedActor;
-import ptolemy.actor.gt.ConfigurableEntity;
-import ptolemy.actor.gt.Configurer;
 import ptolemy.actor.gt.TransformationMode;
 import ptolemy.actor.gt.TransformationRule;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.fsm.kernel.ConfigurableEntity;
+import ptolemy.domains.fsm.kernel.Configurer;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.IllegalActionException;

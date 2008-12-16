@@ -26,6 +26,8 @@
  */
 package ptolemy.domains.fsm.kernel;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -409,6 +411,40 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             return enabledTransitions;
         } else {
             return defaultTransitions;
+        }
+    }
+
+    /** Write this FSMActor into the output writer as a submodel. All
+     *  refinements of the events in this FSMActor will be exported as
+     *  configurations of those events, not as composite entities belonging to
+     *  the closest modal model.
+     *
+     *  @param output The output stream to write to.
+     *  @param depth The depth in the hierarchy, to determine indenting.
+     *  @param name The name to use in the exported MoML.
+     *  @exception IOException If an I/O error occurs.
+     */
+    public void exportSubmodel(Writer output, int depth, String name)
+            throws IOException {
+        try {
+            List<State> stateList = deepEntityList();
+            for (State state : stateList) {
+                state.saveRefinementsInConfigurer.setToken(BooleanToken.TRUE);
+            }
+            super.exportMoML(output, depth, name);
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(this, e, "Unable to set " +
+                    "attributes for the states.");
+        } finally {
+            List<State> stateList = deepEntityList();
+            for (State state : stateList) {
+                try {
+                    state.saveRefinementsInConfigurer.setToken(
+                            BooleanToken.FALSE);
+                } catch (IllegalActionException e) {
+                    // Ignore.
+                }
+            }
         }
     }
 

@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
 */
-package ptolemy.actor.gt;
+package ptolemy.domains.fsm.kernel;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.kernel.util.Attribute;

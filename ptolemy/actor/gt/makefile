@@ -63,8 +63,6 @@ JSRCS = \
 	Checkable.java \
 	ChoiceParameter.java \
 	CompositeActorMatcher.java \
-	ConfigurableEntity.java \
-	Configurer.java \
 	Constraint.java \
 	ContainerIgnoringAttribute.java \
 	CreationAttribute.java \

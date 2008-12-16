@@ -33,7 +33,6 @@ import java.util.List;
 import javax.swing.text.BadLocationException;
 
 import ptolemy.actor.TypedActor;
-import ptolemy.actor.gt.Configurer;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
@@ -45,6 +44,7 @@ import ptolemy.data.ObjectToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.erg.kernel.ERGController;
+import ptolemy.domains.fsm.kernel.Configurer;
 import ptolemy.kernel.util.DebugEvent;
 import ptolemy.kernel.util.DebugListener;
 import ptolemy.kernel.util.IllegalActionException;

@@ -944,7 +944,7 @@ public class TableauFrame extends Top {
             return _saveAs();
         } else {
             try {
-                _writeFile(file, false);
+                _writeFile(file);
                 setModified(false);
                 return true;
             } catch (IOException ex) {
@@ -961,29 +961,7 @@ public class TableauFrame extends Top {
      *  @return True if the save succeeds.
      */
     protected boolean _saveAs() {
-        return _saveAs(null, false, true);
-    }
-
-    /** Create and return a file dialog for the "Save As" command.
-     *  This overrides the base class to add options to the dialog.
-     *  @return A file dialog for save as.
-     */
-    protected JFileChooser _saveAsFileDialog() {
-        return _saveAsFileDialog(false);
-    }
-
-    /** Create and return a file dialog for the "Save As" command.
-     *  This overrides the base class to add options to the dialog.
-     *  @param submodel Whether the submodel option is selected initially.
-     *  @return A file dialog for save as.
-     */
-    protected JFileChooser _saveAsFileDialog(boolean submodel) {
-        if (submodel) {
-            throw new InternalErrorException("TableauFrame does not know how " +
-                    "to save a submodel. Use a subclass of it instead.");
-        }
-
-        return super._saveAsFileDialog();
+        return _saveAs(null, true);
     }
 
     /** Query the user for a filename, save the model to that file,
@@ -992,14 +970,11 @@ public class TableauFrame extends Top {
      *  ModelDirectory and to rename the model to match the file name.
      *  @param extension If non-null, then the extension that is
      *  appended to the file name if there is no extension.
-     *  @param submodel Whether to save the submodel only, instead of the
-     *  top-level model.
      *  @param open Whether the saved model should be opened.
      *
      *  @return True if the save succeeds.
      */
-    protected boolean _saveAs(String extension, boolean submodel,
-            boolean open) {
+    protected boolean _saveAs(String extension, boolean open) {
         if (_tableau == null) {
             throw new InternalErrorException(
                     "No associated Tableau! Can't save.");
@@ -1007,7 +982,7 @@ public class TableauFrame extends Top {
 
         // Use the strategy pattern here to create the actual
         // dialog so that subclasses can customize this dialog.
-        JFileChooser fileDialog = _saveAsFileDialog(submodel);
+        JFileChooser fileDialog = _saveAsFileDialog();
         if (_initialSaveAsFileName != null) {
             fileDialog.setSelectedFile(new File(fileDialog
                     .getCurrentDirectory(), _initialSaveAsFileName));
@@ -1031,7 +1006,7 @@ public class TableauFrame extends Top {
                 String newKey = newURL.toExternalForm();
 
                 _directory = fileDialog.getCurrentDirectory();
-                _writeFile(file, submodel);
+                _writeFile(file);
 
                 if (open) {
                     // The original file will still be open, and has not
@@ -1070,17 +1045,9 @@ public class TableauFrame extends Top {
      *  to the effigy containing the associated Tableau, if there
      *  is one, and otherwise throws an exception.
      *  @param file The file to write to.
-     *  @param submodel Whether to save the submodel only, instead of the
-     *   top-level model.
      *  @exception IOException If the write fails.
      */
-    protected void _writeFile(File file, boolean submodel)
-            throws IOException {
-        if (submodel) {
-            throw new InternalErrorException("TableauFrame does not know how " +
-                    "to save a submodel. Use a subclass of it instead.");
-        }
-
+    protected void _writeFile(File file) throws IOException {
         Tableau tableau = getTableau();
 
         if (tableau != null) {

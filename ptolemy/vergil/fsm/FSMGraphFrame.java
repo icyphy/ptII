@@ -32,6 +32,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.IOException;
+import java.io.Writer;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
@@ -143,7 +145,9 @@ public class FSMGraphFrame extends ExtendedGraphFrame
         } else if (actionCommand.equals("Export Design Pattern")) {
             exportDesignPattern();
         }
-    }/** Import a design pattern into the current design.
+    }
+    
+    /** Import a design pattern into the current design.
      */
     public void importDesignPattern() {
         JFileChooser fileDialog = new JFileChooser();
@@ -197,6 +201,22 @@ public class FSMGraphFrame extends ExtendedGraphFrame
             }
         }
     }
+    
+    /** Export the model into the writer with the given name.
+     *
+     *  @param writer The writer.
+     *  @param model The model to export.
+     *  @param name The name of the exported model.
+     *  @exception IOException If an I/O error occurs.
+     */
+    protected void _exportModel(Writer writer, NamedObj model, String name)
+            throws IOException {
+        if (model instanceof FSMActor) {
+            ((FSMActor) model).exportSubmodel(writer, 0, name);
+        } else {
+            model.exportMoML(writer, 0, name);
+        }
+    }
 
     /** Save the current submodel as a design pattern using a method similar to
      *  Save As.
@@ -239,11 +259,13 @@ public class FSMGraphFrame extends ExtendedGraphFrame
                 }
             }
 
-            super._saveAs(".xml", true, false);
+            _useEffigyToSaveModel = false;
+            super._saveAs(".xml", false);
         } catch (KernelException e) {
             throw new InternalErrorException(actor, e,
                     "Unable to export model.");
         } finally {
+            _useEffigyToSaveModel = true;
             if (alternateGetMoml != null) {
                 try {
                     alternateGetMoml.setContainer(null);

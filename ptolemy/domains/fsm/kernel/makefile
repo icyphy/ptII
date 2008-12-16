@@ -61,6 +61,8 @@ JSRCS = \
 	ChoiceAction.java \
 	CommitAction.java \
 	CommitActionsAttribute.java \
+	ConfigurableEntity.java \
+	Configurer.java \
 	FSMActor.java \
 	FSMCausalityInterface.java \
 	FSMDirector.java \
