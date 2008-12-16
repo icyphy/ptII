@@ -62,6 +62,7 @@ JSRCS = \
 	PortClassChanges.java \
 	PortNameChanges.java \
 	PropertyClassChanges.java \
+	RelationWidthChanges.java \
 	RemoveGraphicalClasses.java \
 	RemoveProperties.java
 

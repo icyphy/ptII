@@ -94,7 +94,9 @@ public class RelationWidthChanges implements MoMLFilter {
                         }
                         VersionAttribute version = (VersionAttribute) containerVar.getAttribute("_createdBy");
                         try {
-                            _changesNeeded = version.isLessThan(new VersionAttribute("7.2.devel"));
+                            _changesNeeded = version!= null && version.isLessThan(new VersionAttribute("7.2.devel"));
+                            // FIXME: what to do when version equals null? throw an exception, but then
+                            // this model can't be opened anymore. Or not change anything?
                         } catch (IllegalActionException e) {
                             // We don't expect that this fails.                            
                             throw new IllegalStateException(e);
