@@ -262,9 +262,10 @@ public class LineWriter extends Sink {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     protected void _writeToken(Token token) throws IllegalActionException {
-        String eol = ((StringToken)endOfLineCharacter.getToken()).stringValue();
-        if (eol == null) {
-            eol = "\n";
+        String eol = "\n";
+        Token eolToken = endOfLineCharacter.getToken();
+        if (eolToken != null) {
+             eol = ((StringToken)eolToken).stringValue();
         }
         // In this base class, the cast is safe.
         _writer.print(((StringToken) token).stringValue() + eol);
