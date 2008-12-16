@@ -106,7 +106,7 @@ public class RefinementPort extends TypedIOPort {
         super.link(relation);
 
         if (isMultiport()) {
-            ((IORelation) relation).setWidth(0);
+            ((IORelation) relation).setWidth(IORelation.WIDTH_TO_INFER);
         }
     }
 
