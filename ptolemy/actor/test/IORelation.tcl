@@ -103,7 +103,7 @@ test IORelation-3.3 {Test getWidth} {
     $e1 setManager $manager
     $e1 setName E1
     set r1 [java::new ptolemy.actor.IORelation $e1 R1]
-    $r1 setWidth 0
+    $r1 setWidth [java::field ptolemy.actor.IORelation WIDTH_TO_INFER]
     catch {$manager inferWidths} msg
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: The width of relation .E1.R1 can not be uniquely inferred.
@@ -153,7 +153,7 @@ test IORelation-3.5 {Test getWidth of a port with unspecified relation width} {
     set e2 [java::new ptolemy.actor.AtomicActor $e1 E2]
     set r1 [java::new ptolemy.actor.IORelation $e1 R1]
     set p1 [java::new ptolemy.actor.IOPort $e2 P1]
-    $r1 setWidth 0
+    $r1 setWidth [java::field ptolemy.actor.IORelation WIDTH_TO_INFER]
     $p1 link $r1
     $manager inferWidths
     $r1 getWidth
@@ -167,7 +167,7 @@ test IORelation-3.6 {Test getWidth of a port with unspecified relation width. No
     set e2 [java::new ptolemy.actor.AtomicActor $e1 E2]
     set r1 [java::new ptolemy.actor.IORelation $e1 R1]
     set p1 [java::new ptolemy.actor.IOPort $e2 P1]
-    $r1 setWidth 0
+    $r1 setWidth [java::field ptolemy.actor.IORelation WIDTH_TO_INFER]
     $p1 setMultiport true
     $p1 link $r1
     catch {$manager inferWidths} msg
@@ -192,7 +192,7 @@ test IORelation-3.7 {Test getWidth of a port with inferred relation width} {
     $p1 link $r1
     $p2 link $r1
     $p2 link $r2
-    $r1 setWidth 0
+    $r1 setWidth [java::field ptolemy.actor.IORelation WIDTH_TO_INFER]
     $manager inferWidths
     list [$p1 getWidth] [$r1 getWidth] [$p2 getWidth] [$r2 getWidth]
 } {1 1 1 1}
@@ -212,7 +212,7 @@ test IORelation-3.8 {Test getWidth of a port with inferred relation width} {
     $p2 link $r1
     $p2 link $r2
     $p1 setMultiport true
-    $r1 setWidth 0
+    $r1 setWidth [java::field ptolemy.actor.IORelation WIDTH_TO_INFER]
     $manager inferWidths
     list [$p1 getWidth] [$r1 getWidth] [$p2 getWidth] [$r2 getWidth]
 } {1 1 1 1}
@@ -233,7 +233,7 @@ test IORelation-3.9 {Test getWidth of a port with inferred relation width} {
     $p2 link $r2
     $p1 setMultiport true
     $p2 setMultiport true
-    $r1 setWidth 0
+    $r1 setWidth [java::field ptolemy.actor.IORelation WIDTH_TO_INFER]
     $r2 setWidth 4
     $manager inferWidths
     list [$p1 getWidth] [$r1 getWidth] [$p2 getWidth] [$r2 getWidth]
@@ -250,7 +250,7 @@ test IORelation-3.10 {Test getWidth of a port with inferred relation width} {
 test IORelation-3.11 {Test getWidth of a port with inferred relation width} {
     # NOTE: Append to previous design
     set r4 [java::new ptolemy.actor.IORelation $e1 R4]
-    $r4 setWidth 0
+    $r4 setWidth [java::field ptolemy.actor.IORelation WIDTH_TO_INFER]
     $p2 link $r4    
     catch {$manager inferWidths} msg
     set widthInferenceNotDeterministic "ptolemy.kernel.util.IllegalActionException: The width of relation * can not be uniquely inferred.
@@ -285,7 +285,7 @@ test IORelation-3.12 {Test getWidth of a port with inferred relation width} {
     $p1 setMultiport true
     $p2 setMultiport true
     $r1 setWidth 4
-    $r2 setWidth 0
+    $r2 setWidth [java::field ptolemy.actor.IORelation WIDTH_TO_INFER]
     $manager inferWidths
     list [$p1 getWidth] [$r1 getWidth] [$p2 getWidth] [$r2 getWidth]
 } {4 4 4 4}
@@ -298,7 +298,7 @@ test IORelation-3.13 {Test getWidth of a port with inferred relation width} {
     set e1 [java::new ptolemy.actor.CompositeActor $e0 E1]
     set e2 [java::new ptolemy.actor.AtomicActor $e0 E2]
     set r1 [java::new ptolemy.actor.IORelation $e0 R1]
-    $r1 setWidth 0
+    $r1 setWidth [java::field ptolemy.actor.IORelation WIDTH_TO_INFER]
     set p1 [java::new ptolemy.actor.IOPort $e1 P1]
     set p2 [java::new ptolemy.actor.IOPort $e2 P2]
     $p1 setMultiport true
@@ -320,11 +320,11 @@ test IORelation-3.14 {No two relations from both inside and outside can be a bus
     $p0 setMultiport true
     # inside relation, *
     set r1 [java::new ptolemy.actor.IORelation $e1 R1]
-    $r1 setWidth 0
+    $r1 setWidth [java::field ptolemy.actor.IORelation WIDTH_TO_INFER]
     $p0 link $r1
     # outside relation, *
     set r2 [java::new ptolemy.actor.IORelation $e0 R2]
-    $r2 setWidth 0
+    $r2 setWidth [java::field ptolemy.actor.IORelation WIDTH_TO_INFER]
     $p0 link $r2
     catch {$manager inferWidths} msg    
     string match $widthInferenceNotDeterministic $msg
@@ -339,12 +339,12 @@ test IORelation-3.15 {No two relations from both inside and outside can be a bus
     $p0 setMultiport true
     # inside relation, *
     set r1 [java::new ptolemy.actor.IORelation $e1 R1]
-    $r1 setWidth 0
+    $r1 setWidth [java::field ptolemy.actor.IORelation WIDTH_TO_INFER]
     $p0 link $r1
     # outside relation, *
     set r2 [java::new ptolemy.actor.IORelation $e0 R2]
 	  $p0 link $r2
-    $r2 setWidth 0
+    $r2 setWidth [java::field ptolemy.actor.IORelation WIDTH_TO_INFER]
     catch {$manager inferWidths} msg
     string match $widthInferenceNotDeterministic $msg
 } {1}
@@ -364,9 +364,9 @@ test IORelation-3.16 {Resolve width through three levels} {
     set p2 [java::new ptolemy.actor.IOPort $e2 P2]
     $p2 setMultiport true
     set r1 [java::new ptolemy.actor.IORelation $e0 R1]
-    $r1 setWidth 0
+    $r1 setWidth [java::field ptolemy.actor.IORelation WIDTH_TO_INFER]
     set r2 [java::new ptolemy.actor.IORelation $e1 R2]
-    $r2 setWidth 0
+    $r2 setWidth [java::field ptolemy.actor.IORelation WIDTH_TO_INFER]
     $p2 link $r2
     $p1 link $r1
     # it is okay to not specify widths of relations at the same level
@@ -397,7 +397,7 @@ test IORelation-3.17 {Resolve width through four levels} {
     set r1 [java::new ptolemy.actor.IORelation $e0 R1]
     $r1 setWidth 3
     set r2 [java::new ptolemy.actor.IORelation $e1 R2]
-    $r2 setWidth 0
+    $r2 setWidth [java::field ptolemy.actor.IORelation WIDTH_TO_INFER]
     $p2 link $r2
     $p1 link $r1
     $p1 link $r2
@@ -413,7 +413,7 @@ test IORelation-3.17 {Resolve width through four levels} {
 test IORelation-3.18 {Resolve width through three levels} {
 	# use the above settings
     $r0 setWidth 5
-    $r1 setWidth 0
+    $r1 setWidth [java::field ptolemy.actor.IORelation WIDTH_TO_INFER]
 #note: This test is similar to 3.19 except the order or settings widths.
     $manager inferWidths
     list [$p0 getWidth] [$p1 getWidth] [$p2 getWidth] \
@@ -424,7 +424,7 @@ test IORelation-3.19 {Resolve width through three levels} {
 	# use the above settings
     $r0 setWidth 5
     $r2 setWidth 3
-    $r1 setWidth 0
+    $r1 setWidth [java::field ptolemy.actor.IORelation WIDTH_TO_INFER]
  # the outcome is not deterministic from the user point of view
     catch {$manager inferWidths} msg
 	  set widthInferenceNotDeterministic2 "ptolemy.kernel.util.IllegalActionException: The inside and outside widths of port * are not consistent.
@@ -437,7 +437,7 @@ Can't determine a uniquely defined width for the connected relations.
 test IORelation-3.20 {Resolve width through three levels} {
 	# use the above settings
     $r1 setWidth 2
-    $r0 setWidth 0
+    $r0 setWidth [java::field ptolemy.actor.IORelation WIDTH_TO_INFER]
     $r2 setWidth 3
 #note: we don't constrain that the sum of input widths equals the sum of the
 #output widths because we allow dangling ports.
@@ -495,7 +495,7 @@ test IORelation-4.1 {Elaborate test system} {
     $p1 setMultiport true
     $p1 setOutput true
     set r1 [java::new ptolemy.actor.IORelation $e1 R1]
-    $r1 setWidth 0
+    $r1 setWidth [java::field ptolemy.actor.IORelation WIDTH_TO_INFER]
     $p1 link $r1
     $p2 link $r1
     $p3 link $r1
@@ -511,7 +511,7 @@ test IORelation-4.1 {Elaborate test system} {
     $p9 setMultiport true
     $p9 setInput true
     set r5 [java::new ptolemy.actor.IORelation $e3 R5]
-    $r5 setWidth 0
+    $r5 setWidth [java::field ptolemy.actor.IORelation WIDTH_TO_INFER]
     set r6 [java::new ptolemy.actor.IORelation $e3 R6]
     set r7 [java::new ptolemy.actor.IORelation $e3 R7]
     $p5 link $r5
@@ -731,7 +731,7 @@ test IORelation-11.2 {Test getWidth of a port with inferred relation width} {
     $r2 link $r4
     $p1 setMultiport true
     $p2 setMultiport true
-    $r3 setWidth 0
+    $r3 setWidth [java::field ptolemy.actor.IORelation WIDTH_TO_INFER]
     $r4 setWidth 4
     $manager inferWidths
     list [$p1 getWidth] [$r1 getWidth] [$p2 getWidth]
