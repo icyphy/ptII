@@ -336,7 +336,7 @@ public class FIR extends SDFTransformer {
 
     /** Initialize the taps.
      *  @exception IllegalActionException If we can't get the token from
-     *  the parameter tabs.
+     *  the parameter taps.
      *  
      */
     protected void _initializeTaps() throws IllegalActionException {
@@ -477,15 +477,15 @@ public class FIR extends SDFTransformer {
             int phaseLength = _taps.length / _interpolationValue;
 
 
-            // Tabs are normally initialized  in attributeChanged when they change.
+            // Taps are normally initialized  in attributeChanged when they change.
             // Evaluation of parameters however is a lazy process and hence if the public
-            // parameter tabs is not evaluated for some reason the private member
-            // variable _tabs is not initialized which results in a crash when
+            // parameter taps is not evaluated for some reason the private member
+            // variable _taps is not initialized which results in a crash when
             // getValue is called.
-            // To avoid this we explicitly initialize the tabs here.
+            // To avoid this we explicitly initialize the taps here.
             // There is however an issue. When _initializeTaps is executed, the 
-            // public parameter tabs will be executed, which results in a call of
-            // attributeChanged, which will call _initializeTaps and hence the tabs
+            // public parameter taps will be executed, which results in a call of
+            // attributeChanged, which will call _initializeTaps and hence the taps
             // are now initialized twice.
             if (_taps == null) {
                 try {                
