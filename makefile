@@ -55,6 +55,11 @@ PTPACKAGE = 	ptII
 # If you change the version number, be sure to edit doc/*,
 # ptolemy/configs/*, ptolemy/configs/doc and
 # ptolemy/kernel/attributes/VersionAttribute.java
+# Also, create a new build director:
+#  cd $PTII/adm
+#  svn cp gen-N.M gen-N.O
+# and update the versions in gen-N.O/makefile
+# On the build server, update ~bldmastr/adm/makefile.source
 PTVERSION =	7.2.devel
 PTCLASSJAR =
 
