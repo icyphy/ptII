@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?>
+
+<processing>
+  <job name="unjar sources">
+    <executeForPack name="Sources"/>
+    <executeclass name="ExtractJarFile">
+      <arg>ptII7.1.devel.src.jar</arg>
+      <arg>$INSTALL_PATH</arg>
+    </executeclass>
+  </job>
+  <job name="Done">
+    <executeclass name="Echo">
+      <arg>Processing completed, please press Next.</arg>
+    </executeclass>
+  </job>
+</processing>
