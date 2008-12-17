@@ -66,7 +66,7 @@ public class Refinement extends TypedCompositeActor {
 
         // The base class identifies the class name as TypedCompositeActor
         // irrespective of the actual class name.  We override that here.
-        setClassName("ptolemy.domains.fsm.modal.Refinement");
+        setClassName("ptolemy.actor.lib.hoc.Refinement");
     }
 
     ///////////////////////////////////////////////////////////////////
