@@ -228,16 +228,7 @@ public class FIR extends SDFTransformer {
         // Set the type constraints.
         newObject.taps.setTypeAtLeast(ArrayType.ARRAY_BOTTOM);
         newObject._initTypeConstraints();
-
-	try {
-	    ArrayToken tapsToken = (ArrayToken) (newObject.taps.getToken());
-	    newObject._taps = tapsToken.arrayValue();
-	} catch (IllegalActionException throwable) {
-            CloneNotSupportedException exception = new CloneNotSupportedException();
-            exception.initCause(throwable);
-            throw exception;
- 	}
-
+        newObject._taps = null;
         return newObject;
     }
 
@@ -298,6 +289,24 @@ public class FIR extends SDFTransformer {
         }
     }
 
+    /** Perform domain-specific initialization by calling the
+     *  initialize(Actor) method of the director. The director may
+     *  reject the actor by throwing an exception if the actor is
+     *  incompatible with the domain.
+     *  Set a flag that reinitializes the data buffer at the first firing.
+     *  @exception IllegalActionException If the superclass throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+
+        // Must be sure to throw away the old data buffer.
+        _data = null;
+        
+        // If this object was created by cloning, then the _taps
+        // variable may be null.
+        _initializeTaps();
+    }
+    
     /** Return false if the input does not have enough tokens to fire.
      *  Otherwise, return what the superclass returns.
      *  @return False if the number of input tokens available is not at least
@@ -321,21 +330,6 @@ public class FIR extends SDFTransformer {
         return false;
     }
 
-    /** Perform domain-specific initialization by calling the
-     *  initialize(Actor) method of the director. The director may
-     *  reject the actor by throwing an exception if the actor is
-     *  incompatible with the domain.
-     *  Set a flag that reinitializes the data buffer at the first firing.
-     *  @exception IllegalActionException If the superclass throws it.
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-
-        // Must be sure to throw away the old data buffer.
-        _data = null;
-        _reinitializeNeeded = true;
-    }
-    
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
