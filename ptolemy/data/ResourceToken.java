@@ -47,7 +47,6 @@ public class ResourceToken extends Token {
      *  that task.
      *  @param actorToSchedule The actor to be scheduled.
      *  @param requestedValue The requested execution time.
-     * @param isMinValue 
      */
     public ResourceToken(Actor actorToSchedule, Object requestedValue) {
         super();
