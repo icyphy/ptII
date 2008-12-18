@@ -474,9 +474,6 @@ public class FIR extends SDFTransformer {
             Type productType = inputType.multiply(tapsElementType);
             Type outputType = productType;
 
-            int phaseLength = _taps.length / _interpolationValue;
-
-
             // Taps are normally initialized  in attributeChanged when they change.
             // Evaluation of parameters however is a lazy process and hence if the public
             // parameter taps is not evaluated for some reason the private member
@@ -494,6 +491,8 @@ public class FIR extends SDFTransformer {
                     throw new IllegalStateException(e);
                 }
             }
+            
+            int phaseLength = _taps.length / _interpolationValue;
             
             if ((_taps.length % _interpolationValue) != 0) {
                 phaseLength++;
