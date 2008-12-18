@@ -962,17 +962,23 @@ public class ERGDirector extends Director implements TimedDirector,
                                 !_initializedRefinements.contains(refinement)) {
                             refinement.initialize();
                             _initializedRefinements.add(refinement);
+                            TimedEvent eventToFire = null;
                             for (TimedEvent refinementEvent
-                            		: _refinementQueue) {
-                            	if (refinementEvent.contents == refinement &&
-                            			refinementEvent.timeStamp.equals(
-                            					getModelTime())) {
-                            		_fire(refinementEvent);
-                            		break;
-                            	}
+                                    : _refinementQueue) {
+                                if (refinementEvent.contents == refinement &&
+                                        refinementEvent.timeStamp.equals(
+                                                getModelTime())) {
+                                    eventToFire = refinementEvent;
+                                    break;
+                                }
+                            }
+                            if (eventToFire == null) {
+                                _fireActor(refinement, null);
+                            } else {
+                                _fire(eventToFire);
                             }
                         } else {
-                        	_fireActor(refinement, null);
+                            _fireActor(refinement, null);
                         }
                         scheduled = true;
                     }
