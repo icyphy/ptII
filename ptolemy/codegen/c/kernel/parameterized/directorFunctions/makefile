@@ -52,7 +52,6 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
-	MpiPNDirector.c \
 	PNDirector.c \
 	$(JSRCS:%.java=%.c) \
 
