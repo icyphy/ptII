@@ -926,7 +926,7 @@ public class IORelation extends ComponentRelation {
     private void _init() {
         try {
             width = new Parameter(this, "width");
-            width.setExpression("1");
+            width.setExpression(Integer.toString(WIDTH_TO_INFER));
             width.setTypeEquals(BaseType.INT);
         } catch (KernelException ex) {
             throw new InternalErrorException(ex);

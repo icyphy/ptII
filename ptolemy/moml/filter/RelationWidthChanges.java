@@ -44,7 +44,10 @@ import ptolemy.moml.MoMLParser;
  earlier releases will run in the current release.
  This class will filter for relations that have a width equal to zero
  for Ptolemy versions 7.2.devel or older. The width value will be changed
- from 0 to -1, which is the new default for width inference. 
+ from 0 to -1, which is the new default for width inference.
+ If the width has not been specified for a models with Ptolemy version
+ less than 7.2.devel, the width will be changed to 1. This because 1
+ used to be the default value, while now -1 has become the default.
 
  @author Bert Rodiers
  @version $Id: RelationWidthChanges.java 49346 2008-05-01 18:42:42Z rodiers $
@@ -85,24 +88,6 @@ public class RelationWidthChanges implements MoMLFilter {
         if (_currentlyProcessingRelation) {
             if (_currentlyProcessingWidth) {
                 if (attributeName.equals("value")) {
-                    if (!_versionDetermined) {
-                        NamedObj containerVar = container;
-                        NamedObj containerParent = containerVar.getContainer();
-                        while (containerParent != null) {
-                            containerVar = containerParent;
-                            containerParent = containerVar.getContainer();
-                        }
-                        VersionAttribute version = (VersionAttribute) containerVar.getAttribute("_createdBy");
-                        try {
-                            _changesNeeded = version != null && version.isLessThan(new VersionAttribute("7.2.devel"));
-                            // FIXME: what to do when version equals null? throw an exception, but then
-                            // this model can't be opened anymore. Or not change anything?
-                        } catch (IllegalActionException e) {
-                            // We don't expect that this fails.                            
-                            throw new IllegalStateException(e);
-                        }                        
-                        _versionDetermined = true;
-                    }                    
                     _currentlyProcessingRelation = false;
                     _currentlyProcessingWidth = false;
                     
@@ -145,7 +130,32 @@ public class RelationWidthChanges implements MoMLFilter {
      */
     public void filterEndElement(NamedObj container, String elementName,
             StringBuffer currentCharData) throws Exception {
-        if (container instanceof IORelation) {
+        if (container instanceof VersionAttribute) {
+            VersionAttribute version = (VersionAttribute) container;
+            try {
+                _changesNeeded = version != null && version.isLessThan(new VersionAttribute("7.2.devel"));
+                // FIXME: what to do when version equals null? throw an exception, but then
+                // this model can't be opened anymore. Or not change anything?
+            } catch (IllegalActionException e) {
+                // We don't expect that this fails.                            
+                throw new IllegalStateException(e);
+            }                          
+        } else if (container instanceof IORelation) {
+            if (_currentlyProcessingRelation && !_currentlyProcessingWidth) {
+                // We have processed a relation, but we did not encounter
+                // the width. This means that the default one is being used.
+                // The default one was 1, but this has been changed to
+                // IORelation.WIDTH_TO_INFER. If we encounter this case with
+                // a Ptolemy model before 7.2 we need to update the width of
+                // the relation to 1 to not change the user's model.
+
+                if (_changesNeeded) {
+                    IORelation relation = (IORelation) container;
+                    relation.setWidth(1);
+                    relation.width.propagateValue();
+                    MoMLParser.setModified(true);
+                }
+            }
             _currentlyProcessingRelation = false;
             _currentlyProcessingWidth = false;
         }
@@ -160,7 +170,7 @@ public class RelationWidthChanges implements MoMLFilter {
         results.append("\t0 --> -1");
         return results.toString();
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
      
@@ -174,9 +184,4 @@ public class RelationWidthChanges implements MoMLFilter {
      * This is only the case for models older than version 7.2.devel
      */
     private boolean _changesNeeded = true;
-    
-    /**A flag that specifies whether the version of this model has already been
-     * determined.
-     */        
-    private boolean _versionDetermined = false;       
 }
