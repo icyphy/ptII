@@ -47,8 +47,8 @@ faster is better to not fast enough is wrong. In multi-core age, communication
 is expensive, computation is free. For most of algorithms, running on 8 cores
 will have a speed up of 1.5 due to communication overhead. We need an explicit
 communication mechanism between cores running critical task. This mechanism
-needs to be simple yet effient. We prove that we can achieve that by using scheduling
-analysis and simulation in an cycle accurate platform. The result from
+needs to be simple yet efficient. We prove that we can achieve that by using
+scheduling analysis and simulation in a cycle accurate platform. The result from
 simulation matches quite well with our analysis. This approach can have a
 significant impact on the design of future network on chip.
 
@@ -76,15 +76,53 @@ so, it requires bounded delay communications between nodes in the network.
 For example, when processing element $0$ wants to send a critical control packet 
 p to processing element $11$, how can it know for sure that the packet will
 reach the destination within a certain amount of time? 
-
+\section{Background}
+%packet figure
+\subsection{Allocation Units}
+A packet is devided into {\em flits} to transmit ~\cite{DallyPrinNetwork}. The
+position of a flit determine if the flit is {\em head, body} or {\em tail}
+flit. Only head flits contain routing information for packets, body and tail
+flits follow head flits on the same path from sources to destinations.
+\subsection{Flow Control Schemes}
+\subsubsection{Store-and-Forward}
+In store-and-forward flow control scheme, a packet has to be received entirely
+before being forwarded. This flow control scheme gives longer end-to-end delay
+in comparision with the following flow control schemes.
+\subsubsection{Virtual-Cut-Through}
+In virtual-cut-through scheme, a packet does not need to be received entirely
+before being forwarded, however, receiving nodes is required to have enough
+buffer space for incoming packets.
+\subsubsection{Wormhole}
+In Worm-hole flow control, receiving nodes do not need to have enough buffer
+space for incoming packets. Instead, packets are devided into flits and flits
+are pipelined through networks. We will employ this flow control scheme in our
+design.
 \section{Related Work}
 \subsection{\AE thereal}
 This work \cite{Goossens_chapter4} is from NXP. This architecture tries to avoid
-contention using contention-free routing by {\em delaying} some packets. 
+contention using contention-free routing by {\em delaying} some packets. \AE
+thereal design tries to minimize the area of routers by minizing buffer spaces.
+This design purpose makes \AE thereal very suitable for small and less
+complicated systems.
 
-Guaranteed packets are multiplexed using TDMA. However, this approach requires
-design-time configuration and verification, which is not flexible for architectures
-like multi-core.
+Guaranteed packets are multiplexed using TDMA by {\em global} scheduling of
+packet injection ~\cite{Moonen07SPRINGER} from network interfaces to
+routers. This mechanism makes systems based on this architecture less flexible
+since as the number of components in a network on chip grows larger, it is very
+difficult to find a suitable and efficiecent {global  scheduling} algorithm.
+Furthermore, the TDMA slot allocation is currently solved at {\em design time}
+to optimize the system ~\cite{Moonen07SPRINGER}, resulting in a number of
+configurations and these configurations are programmed (or loaded) in the
+network on chip. \AE thereal routers are often configured at design-time so
+minimize the size of routers by removing slot tables, which could be very large
+for a large network. This router optimization makes this architecture unable to
+exploit multiple paths from source to destination to avoid conflicts between
+guaranteed service packets. \AE also hase some know issues with bursty traffic
+~\cite{Hansson07ISSS}, which is typical in multi-core.
+
+The above problems make \AE thereal unsuitable for systems requiring
+flexibility like multi-core.
+
 \subsection{SoCBUS}
 SoCBUS architecture \cite{SoCBUS} is from Linkoping University. It seeks to 
 guarantee real-time properties by setting up a path before ending:
@@ -168,9 +206,10 @@ multiple real-time flows suddenly travelling on the same link and their total ba
 exceeds the bandwidth of the link. The admission control in our architecture can 
 prevent that. Senders should always know if their required specifications for 
 their communications can be met or not. 
-\item Provide a reconfigurable state for real-time flows on a network, we do not 
-need to pre-calculate that at {\em design time} as in \AE thereal
-\cite{Goossens_chapter4}, which is really not suitable for the multi-core architecture.
+\item Provide maximum flexibility to applications, no specific configuration
+is done at {\em design time} as in \AE thereal ~\cite{Moonen07SPRINGER}. The
+new architecture also needs to avoid {\em global scheduling} problem since this
+makes a network on chip difficult to be dynamically reconfigured effectively.
 \end{itemize}
 \section{Formal Definitions}
 \begin{itemize}
@@ -228,13 +267,13 @@ y_{f,e} = \left\{ \begin{array}{lrc}
 \end{array}\right.
 \end{equation}
 
-\begin{equation}
+\begin{eqnarray}
 \sigmal_{f,e} = \left\{ \begin{array}{lrc}
-1 \mbox{ if flow } f \in F \mbox{ has the largest maximum packet length of all
-flows on } e \in V \\ 
+1 \mbox{ if flow } f \in F \mbox{ has the largest maximum} \\
+\mbox{packet length of all flows on } e \in V \\ 
 0 \mbox{ otherwise} 
 \end{array}\right.
-\end{equation}
+\end{eqnarray}
 
 \begin{equation}
 I_{v,e} = \left\{ \begin{array}{lrc}
@@ -250,6 +289,8 @@ $b_f(d) = -1$ and $b_f(i) = 0, \forall i \in C \mbox{ and } i \neq s, d$,
 
 Configuration $\mathcal{C}(F)=(P, \{y_f\}_{f \in F})$.
 \section{Architecture}
+\subsection{Programming Model}
+\subsubsection{Network Stack Model}
 At each node in a router, we employ the Internet stack to each node in the 
 network on chip.
 \begin{table}[h]
@@ -267,6 +308,7 @@ network on chip.
 \caption{Network stack model}
 \label{table:NetworkStack}
 \end{table}
+\subsubsection{Configuration: Distributed vs. Centralized}
 
 \subsection{Path Setup Protocol}
 When in need of a real-time communication, the processing unit at each node 
@@ -344,8 +386,8 @@ real-time packets is two time faster than best-effort packets.
 differently.}\label{fig:HeteroComm}
 \end{figure}
 
-\section{Theoretical Foundations}
-\subsection{Delay Model in Cut-through Networks}
+\section{Theoritical Foundations}
+\subsection{Delay Model Analysis}
 
 The delay model in \cite{Ferrari90ascheme}, \cite{VermaJitter91} is
 for store-forward networks \cite{DallyPrinNetwork} (a packet has to be
@@ -415,7 +457,7 @@ $order_{v,e}(f_1) < order_{v,e}(f_2)$.
 {Delay Model.}\label{fig:DelayModel}
 \end{figure}
 
-In our cut-through network, the local delay at each node is a little bit
+In worm-hole flow control scheme, the local delay at each node is a little bit
 different from \cite{Ferrari90ascheme} as shown in the below equation:
 
 \begin{eqnarray}\label{equ:queueDelay}
@@ -428,8 +470,8 @@ The detail analysis of (\ref{equ:queueDelay}) is that: From Figure
 \ref{fig:DelayModel}, if we suppose $p_i$ is a packet of flow $f_i$, and
 $order_{v,e}(f_1) < order_{v,e}(f_2) < order(f_3)$, then we can easily see that
 the bounded {\em queueing} delay for packets $p_1$ and $p_2$ are 3 and 5
-respectively as computed by quation (\ref{equ:queueDelay}). However, the bounded
-queueing delay for packet $p_3$ is 5 if it comes at the the same time as $p_1$ and $p_2$. So we
+respectively as computed by equation (\ref{equ:queueDelay}). However, the
+bounded queueing delay for packet $p_3$ is 5 if it comes at the the same time as $p_1$ and $p_2$. So we
 have the bounded delay for a packet of a real-time flow that has {\em largest
 maximum} packet length is:
 
@@ -492,7 +534,7 @@ bound of a packet is still the same as in (\ref{equ:edgeDelayMaxPacketFlow1}).
 This virtual delay is set to the largest bounded delay of all other flows
 sharing the same link.
 
-{\textbf{Theorem 1:}} {\em  The above virtual dealy scheme never makes
+{\textbf{Theorem 1:}} {\em  The above virtual delay scheme never makes
 packets of flow $f$ miss their real deadlines computed from
 (\ref{equ:deadline1}) and (\ref{equ:edgeDelayMaxPacketFlow1})}.
 
@@ -645,9 +687,9 @@ $\forall f \in F$  that $l_{f'} < l_f$ and $y_{f',e}y_{f,e}=1 \mbox{ for some }
 e \in E$, from (\ref{equ:e2eDelayCTNonPipeline1}) we have:
 
 \begin{eqnarray}\label{equ:e2eDelayModification}
-\begin{eqnarray}\label{equ:e2eDelayCTNonPipeline1}
 \sum_{e \in E} \Biggl((\sum_{\forall g \in F:l_g <
-l_{f}}y_{g,e}s_{g,e}+max(s_{i \in F}.y_{i,e})+y_{f',e}s_{f',e})(1-\sigma_{f,e})
+l_{f}}y_{g,e}s_{g,e}+ \notag \\
+max(s_{i \in F}.y_{i,e})+y_{f',e}s_{f',e})(1-\sigma_{f,e})
 + \notag \\ 
 \sigma_{f,e}(\sum_{g \in F:l_g <
 l_f}\delta_{g,v}y_{g,e}s_{g,e} + 1)\Biggr) y_{f,e} \notag \\ \leq
@@ -765,8 +807,8 @@ delay will probably large.
 Figure \ref{fig:RouterStructure} show the structure of a router. In a router,
 each input has one {\em priority} queue for real-time packets of each output.
 Packets in the priority queue is {\em ordered} by deadline as in
-\ref{equ:deadline2}. Each output will pick the top packets from priority queues
-and compare their deadlines to find the packet with closest deadline and this
+(\ref{equ:deadline2}). Each output will pick the top packets from priority
+queues and compare their deadlines to find the packet with closest deadline and this
 packet is selected to send. Best-effort packets are stored in FIFO queues as in
 normal routers. The router is a cut-through router so that one packet can be
 compared the deadline and forwarded right at the time its header each a node.
@@ -785,15 +827,10 @@ bound for that reserving flow. The master node monitors all configurations of
 real-time flows on the network so various routing policy can be employed to
 achieve better performance, delay, power and so on.
 
-The routing alogrithm is depth first search based on XY routing (try X
+The routing algorithm is depth first search based on XY routing (try X
 direction first). An example about routing is shown in Figure
-\ref{fig:3FlowsEx} with three real-time flows.
-
-\begin{itemize}
-  \item Flow 1: PE7-> PE23
-  \item Flow 2: PE6-> PE3
-  \item Flow 3: PE5-> PE19
-\end{itemize}
+\ref{fig:3FlowsEx} with three real-time flows. $Flow 1: PE7 \rightarrow
+PE23, Flow 2: PE6 \rightarrow PE3, Flow 3: PE5 \rightarrow PE19$.
 
 Flow 1 comes first and gets routed in blue path. Flow 2 comes later and gets
 routed in read path.  When flow 2 gets routed through link from node 7 to node
@@ -853,4 +890,4 @@ cycles.
 \bibliography{RTNoC}
 \bibliographystyle{plain}
 
-\end{document}.
+\end{document}
