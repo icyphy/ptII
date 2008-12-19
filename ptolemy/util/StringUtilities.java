@@ -295,6 +295,9 @@ public class StringUtilities {
 
         if (propertyName.equals("user.dir")) {
             try {
+		if (property == null) {
+		    return property;
+		}
                 File userDirFile = new File(property);
                 return userDirFile.getCanonicalPath();
             } catch (IOException ex) {
