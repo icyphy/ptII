@@ -66,6 +66,10 @@ test LazyTypedCompositeActor-12.1 {deepConnectedIn(out)Ports} {
     set r1 [java::new ptolemy.actor.TypedIORelation $e0 "R1"]
     set r2 [java::new ptolemy.actor.TypedIORelation $e2 "R2"]
     set r3 [java::new ptolemy.actor.TypedIORelation $e0 "R3"]
+    
+    $r1 setWidth 1
+    $r2 setWidth 1
+    $r3 setWidth 1
 
     # Connect
     $p1 link $r1
