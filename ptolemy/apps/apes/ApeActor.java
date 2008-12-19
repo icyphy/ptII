@@ -4,9 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.NoRoomException;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -25,7 +27,7 @@ import ptolemy.kernel.util.Workspace;
  * @author Patricia Derler
  *
  */
-public abstract class ResourceActor extends TypedAtomicActor {
+public abstract class ApeActor extends TypedAtomicActor {
     
     
     /** Construct an actor in the default workspace with an empty string
@@ -33,7 +35,7 @@ public abstract class ResourceActor extends TypedAtomicActor {
      *  Increment the version number of the workspace.
      * @throws IllegalActionException 
      */
-    public ResourceActor() {
+    public ApeActor() {
         super();
         _initialize();
     }
@@ -45,7 +47,7 @@ public abstract class ResourceActor extends TypedAtomicActor {
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the entity.
      */
-    public ResourceActor(Workspace workspace) {
+    public ApeActor(Workspace workspace) {
         super(workspace);
         _initialize();
     }
@@ -62,7 +64,7 @@ public abstract class ResourceActor extends TypedAtomicActor {
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public ResourceActor(CompositeEntity container, String name)
+    public ApeActor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _initialize();
@@ -72,63 +74,33 @@ public abstract class ResourceActor extends TypedAtomicActor {
     ////                         public variables                  ////
 
 
-    /** multiport input port that receives requests from tasks and triggeres */
-    public TypedIOPort input;
-    
-    public MulticastIOPort requestPort;
-    /** multicast input port that receives requests from tasks */
+     /** multicast input port that receives requests from tasks */
+    public MulticastIOPort input;
 
-    public MulticastIOPort answerPort;
     /** multicast output port used to send answers to requests */
+    public MulticastIOPort output;
+      
     
-    /** multiport output port through which tasks are triggered */
-    public TypedIOPort output;
-    
-    
-    /**
-     * Resolve actors on the output channels of this resource and put them 
-     * into a list. 
-     */
     public void initialize() throws IllegalActionException { 
         super.initialize();
         
-        for (int channelId = 0; channelId < output.getWidth(); channelId++) {
-            Receiver[] receivers = output.getRemoteReceivers()[channelId];
-            if (receivers.length > 0) {
-                Receiver receiver = receivers[0];
-                _connectedTasks.put(((Actor)receiver.getContainer().getContainer()), channelId);
-            }
-        }
     }
-    
-    /** Map of channel Id's to task actors connected on the output port */
-    protected Map<Actor, Integer> _connectedTasks;
     
     /**
      * Initialize ports.
      */
     private void _initialize() {
-        _connectedTasks = new HashMap<Actor, Integer>();
         try {
-            input = new TypedIOPort(this, "input", true, false);
+            input = new MulticastIOPort(this, "input", true, false);
             input.setMultiport(true); 
             input.setTypeEquals(BaseType.GENERAL);
-            output = new TypedIOPort(this, "output", false, true);
+            output = new MulticastIOPort(this, "output", false, true);
             output.setMultiport(true);
             output.setTypeEquals(BaseType.GENERAL);
-
-            requestPort = new MulticastIOPort(this, "requestPort", true, false);
-            requestPort.setTypeEquals(BaseType.GENERAL);
-            requestPort.setMultiport(false);
-        
-        } catch (IllegalActionException ex) {
+       
+        } catch (Exception ex) {
             ex.printStackTrace();
-        } catch (NameDuplicationException ex) {
-            ex.printStackTrace();
-        }
+         }
     }
-    
-    
-    
-    
+  
 }

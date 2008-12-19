@@ -1,17 +1,23 @@
 package ptolemy.apps.apes;
 
+import java.util.Iterator;
+import java.util.List;
+
 import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.Time;
 import ptolemy.data.ResourceToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-public class InterruptServiceRoutine extends TypedAtomicActor {
+public class InterruptServiceRoutine extends ApeActor {
 
     /** Construct an actor in the default workspace with an empty string
      *  as its name.  The object is added to the workspace directory.
@@ -51,38 +57,50 @@ public class InterruptServiceRoutine extends TypedAtomicActor {
         super(container, name);
         _initialize();
     }
-
-    public IOPort input;
-    public IOPort output;
-    public IOPort taskConnector;
     
     @Override
     public void fire() throws IllegalActionException {
-        input.get(0);
-        System.out.println("Time: " + getDirector().getModelTime().toString() + "; Task: " + this.getName());
-        output.send(0, new ResourceToken(_task, new Time(getDirector(), 0.0)));
+        System.out.println("Time: " + getDirector().getModelTime().toString() + "; Interrupt service routine: " + this.getName());
+        output.send(new ResourceToken(_task, new Time(getDirector(), 0.0)));
     }
     
     @Override
     public void initialize() throws IllegalActionException { 
         super.initialize();
-        
-        _task = (Actor) ((IOPort)taskConnector.sourcePortList().get(0)).getContainer();
-        
+     
+        CompositeActor container = (CompositeActor) this.getContainer();
+        List entities = container.entityList();
+        for (Iterator it = entities.iterator(); it.hasNext(); ) {
+            Object entity = it.next();
+            if (entity instanceof Actor) {
+                Actor actor = (Actor) entity;
+                if (triggerTarget.getExpression().equals(actor.getName())) {
+                    _task = actor;
+                }
+            }
+        }
     }
     
+    public StringParameter triggerTarget;
+    
+    
     private void _initialize() {
+        Parameter sourceActorList= (Parameter) input.getAttribute("sourceActors");
+        sourceActorList.setExpression("*");
+
+        Parameter destinationActorList= (Parameter) output.getAttribute("destinationActors");
+        destinationActorList.setExpression("CPUScheduler");
+        
         try {
-            input = new TypedIOPort(this, "input", true, false);
-            output = new TypedIOPort(this, "output", false, true);
-            taskConnector = new TypedIOPort(this, "taskConnector", true, false);
+            triggerTarget = new StringParameter(this, "triggerTarget");
         } catch (IllegalActionException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (NameDuplicationException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        } 
+        }
+ 
     }
     
     private Actor _task;

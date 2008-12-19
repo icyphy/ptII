@@ -373,6 +373,127 @@ private long _destinationActorsVersion;
   }
 
 
+  /** 
+   * Send to actors in the intersection of the list given by the port parameter 
+   * and the list given in the argument of the method
+   * 
+   */
+  public void send(List<String> destinations, Token token)
+  throws IllegalActionException, NoRoomException {
+
+      if (!_destinationActorNames.isEmpty()){
+          for(String actorName : destinations){
+              if ( _destinationActorNames.contains("*")|| _destinationActorNames.contains(actorName)){
+
+                  if (!_destinationActorPorts.containsKey(actorName) || workspace().getVersion() != _destinationActorsVersion){
+                      CompositeActor compositeActor = (CompositeActor) getContainer().getContainer();
+                      Object entity = compositeActor.getEntity(actorName);
+                      if (entity instanceof Actor) {
+                          Actor actor = (Actor) entity;
+                          List<IOPort> inputPorts = actor.inputPortList();
+                          MulticastIOPort sinkPort = null;
+                          for (IOPort port : inputPorts) {
+                              if (port instanceof MulticastIOPort) {
+                                  sinkPort = (MulticastIOPort) port;
+                              }
+                          }
+                          _destinationActorPorts.put(actorName, sinkPort); 
+                      }
+                      _destinationActorsVersion = workspace().getVersion();
+                  }
+                  IOPort port = _destinationActorPorts.get(actorName);
+                  Receiver[][] receivers = port.getReceivers();
+                  for (int i = 0; i < receivers.length; i++) {
+                      for (int j = 0; j < receivers[0].length; j++) {
+                          Receiver receiver = receivers[i][j];
+                          receiver.put(token);
+                      }
+                  }
+              }
+          }
+      }
+  }
+
+
+  /** 
+   * Send to actor given by actorName
+   * 
+   */
+  public void send(String actorName, Token token)
+  throws IllegalActionException, NoRoomException {
+
+      if (!_destinationActorNames.isEmpty()){
+          if ( _destinationActorNames.contains("*")|| _destinationActorNames.contains(actorName)){
+
+              if (!_destinationActorPorts.containsKey(actorName) || workspace().getVersion() != _destinationActorsVersion){
+                  CompositeActor compositeActor = (CompositeActor) getContainer().getContainer();
+                  Object entity = compositeActor.getEntity(actorName);
+                  if (entity instanceof Actor) {
+                      Actor actor = (Actor) entity;
+                      List<IOPort> inputPorts = actor.inputPortList();
+                      MulticastIOPort sinkPort = null;
+                      for (IOPort port : inputPorts) {
+                          if (port instanceof MulticastIOPort) {
+                              sinkPort = (MulticastIOPort) port;
+                          }
+                      }
+                      _destinationActorPorts.put(actorName, sinkPort); 
+                  }
+                  _destinationActorsVersion = workspace().getVersion();
+              }
+              IOPort port = _destinationActorPorts.get(actorName);
+              if (port != null){
+                  Receiver[][] receivers = port.getReceivers();
+                  for (int i = 0; i < receivers.length; i++) {
+                      for (int j = 0; j < receivers[0].length; j++) {
+                          Receiver receiver = receivers[i][j];
+                          receiver.put(token);
+                      }
+                  }
+              }
+          }
+      }
+  }
+
+  /** 
+   * Send to actor given by actorName
+   * 
+   */
+  public void send(Actor actor, Token token)
+  throws IllegalActionException, NoRoomException {
+
+      if (!_destinationActorNames.isEmpty()){
+          if ( _destinationActorNames.contains("*")|| _destinationActorNames.contains(actor.getName())){
+              if (!_destinationActorPorts.containsKey(actor.getName()) || workspace().getVersion() != _destinationActorsVersion){
+                  List<IOPort> inputPorts = actor.inputPortList();
+                  MulticastIOPort sinkPort = null;
+                  for (IOPort port : inputPorts) {
+                      if (port instanceof MulticastIOPort) {
+                          sinkPort = (MulticastIOPort) port;
+                      }
+                  }
+                  _destinationActorPorts.put(actor.getName(), sinkPort); 
+              }
+              _destinationActorsVersion = workspace().getVersion();
+          }
+          IOPort port = _destinationActorPorts.get(actor.getName());
+          if (port != null){
+              Receiver[][] receivers = port.getReceivers();
+              for (int i = 0; i < receivers.length; i++) {
+                  for (int j = 0; j < receivers[0].length; j++) {
+                      Receiver receiver = receivers[i][j];
+                      receiver.put(token);
+                  }
+              }
+          }
+      }
+  }
+
+  public void send(Token token)
+  throws IllegalActionException, NoRoomException {
+      send(0,token);
+  }
+
   ///////////////////////////////////////////////////////////////////
   ////                         private variables                 ////
   // To ensure that getReceivers() and variants never return null.

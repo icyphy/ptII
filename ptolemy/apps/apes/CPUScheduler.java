@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.Receiver;
 import ptolemy.actor.util.Time;
 import ptolemy.apps.apes.TaskExecutionListener.ScheduleEventType;
 import ptolemy.data.BooleanToken;
@@ -33,7 +36,7 @@ import ptolemy.kernel.util.Workspace;
  * 
  * @author Patricia Derler
  */
-public class CPUScheduler extends ResourceActor {
+public class CPUScheduler extends ApeActor {
 
     /**
      * Construct an actor in the default workspace with an empty string as its
@@ -129,32 +132,19 @@ public class CPUScheduler extends ResourceActor {
                                 .getModelTime().getDoubleValue(),
                                 ScheduleEventType.START);
                     }
-                    output.send(
-                            ((Integer) _connectedTasks.get(taskInExecution))
-                                    .intValue(), new BooleanToken(true));
+//                    output.send(
+//                            ((Integer) _connectedTasks.get(taskInExecution))
+//                                    .intValue(), new BooleanToken(true));
+                    output.send(taskInExecution, new BooleanToken(true));
                 }
                 _taskExecutionTimes.put(taskInExecution,
                         remainingTimeForTaskInExecution);
             }
         }
 
-        // schedule tasks that requested refiring
-        for (int channelId = 0; channelId < input.getWidth(); channelId++) {
-            if (input.hasToken(channelId)) {
-                ResourceToken token = (ResourceToken) input.get(channelId);
-                Actor actorToSchedule = token.actorToSchedule;
-                Time executionTime = (Time) token.requestedValue;
-
-                // if task is scheduled as a result of a callback
-                if (executionTime.compareTo(new Time(getDirector(), 0.0)) >= 0) {
-                    _scheduleTask(actorToSchedule, executionTime);
-                } // else task is scheduled as a result of a trigger
-                // the task is not in execution yet, only after 
-            }
-        }
-        
-        while(requestPort.hasToken(0)){
-            ResourceToken token = (ResourceToken) requestPort.get(0);
+ 
+        while(input.hasToken(0)){
+            ResourceToken token = (ResourceToken) input.get(0);
             Actor actorToSchedule = token.actorToSchedule;
             Time executionTime = (Time) token.requestedValue;
 
@@ -182,8 +172,10 @@ public class CPUScheduler extends ResourceActor {
                             .getModelTime().getDoubleValue(),
                             ScheduleEventType.STOP);
                 }
-                output.send(_connectedTasks.get(taskInExecution).intValue(),
-                        new BooleanToken(true));
+//                output.send(_connectedTasks.get(taskInExecution).intValue(),
+//                        new BooleanToken(true));
+                output.send(taskInExecution, new BooleanToken(true));
+                
                 _tasksInExecution.push(taskInExecution);
                 _taskExecutionTimes
                         .put(taskInExecution, Time.POSITIVE_INFINITY);
@@ -273,6 +265,13 @@ public class CPUScheduler extends ResourceActor {
         _usedExecutionTimes = new HashMap<Actor, Time>();
         _tasksInExecution = new Stack<Actor>();
         _taskStates = new HashMap<Actor, TaskState>();
+        
+        Parameter sourceActorList= (Parameter) input.getAttribute("sourceActors");
+        sourceActorList.setExpression("*");
+
+        Parameter destinationActorList= (Parameter) output.getAttribute("destinationActors");
+        destinationActorList.setExpression("*");
+
      }
 
     /**

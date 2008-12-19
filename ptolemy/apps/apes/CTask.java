@@ -1,6 +1,8 @@
 package ptolemy.apps.apes;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import ptolemy.actor.IOPort;
@@ -19,9 +21,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-public class CTask extends TypedAtomicActor implements Runnable {
+public class CTask extends ApeActor implements Runnable {
 
     public CTask() {
+        super();
         _initialize();
     }
 
@@ -36,42 +39,37 @@ public class CTask extends TypedAtomicActor implements Runnable {
         _initialize();
     }
 
-    /** outgoing port to resource actors */
-    public MulticastIOPort toResourcePort;
-
-    /** incoming port from resource actors */
-    public IOPort fromResourcePort;
-
-    public IOPort triggerConnector;
-
     public Parameter methodName;
 
     public void accessPointCallback(double extime, double minNextTime,
             String syscall) throws NoRoomException, IllegalActionException {
-        System.out.println("Time: " + getDirector().getModelTime()
-                + "; callback of task: " + this.getName() + " params: ("
-                + extime + "/ " + new Time(getDirector(), extime) + ", "
-                + minNextTime + ")");
 
-        if (extime >= 0) {
-            _sendResourceToken("CPUScheduler", new Time(getDirector(), extime), false);
-        }
+        if (!_actorStopped){
+            System.out.println("Time: " + getDirector().getModelTime()
+                    + "; callback of task: " + this.getName() + " params: ("
+                    + extime + "/ " + new Time(getDirector(), extime) + ", "
+                    + minNextTime + ")");
 
-        synchronized (this) {
-            _minDelay = new Time(getDirector(), minNextTime);
-            _inExecution = false;
-            this.notifyAll(); // wake up the DEDirector thread
-            while (!_inExecution) {
-                try {
-                    System.out.println(getDirector().getModelTime());
-                    this.wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+            if (extime >= 0) {
+                _sendResourceToken("CPUScheduler", new Time(getDirector(), extime), false);
+            }
+
+            synchronized (this) {
+                _minDelay = new Time(getDirector(), minNextTime);
+                _inExecution = false;
+                this.notifyAll(); // wake up the DEDirector thread
+                while (!_inExecution) {
+                    try {
+                        System.out.println(getDirector().getModelTime());
+                        this.wait();
+                    } catch (InterruptedException e) {
+                        if (!_actorStopped){
+                            e.printStackTrace();
+                        }
+                    }
                 }
             }
-        } 
-        
-        
+        }
     } //return to the C part  
     
     public void fire() throws IllegalActionException {
@@ -80,11 +78,15 @@ public class CTask extends TypedAtomicActor implements Runnable {
 
         boolean readInputs = false;
         
-        for (int i = 0; i < fromResourcePort.getWidth(); i++) {
-            if (fromResourcePort.hasToken(i)) {
-                fromResourcePort.get(i);
-                readInputs = true;
-            }
+//        for (int i = 0; i < fromResourcePort.getWidth(); i++) {
+//            if (fromResourcePort.hasToken(i)) {
+//                fromResourcePort.get(i);
+//                readInputs = true;
+//            }
+//        }
+        while (input.hasToken(0)){
+            input.get(0);
+            readInputs=true;
         }
 
         if (_waitForMinDelay && !readInputs) {
@@ -93,7 +95,12 @@ public class CTask extends TypedAtomicActor implements Runnable {
                     try {
                         this.wait();
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
+                        if (_stopRequested){
+                            break;
+                        }
+                        else{
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
@@ -134,14 +141,14 @@ public class CTask extends TypedAtomicActor implements Runnable {
         }
 
         // parse resources
-        for (int channelId = 0; channelId < toResourcePort.getWidth(); channelId++) {
-            Receiver[] receivers = toResourcePort.getRemoteReceivers()[channelId];
-            if (receivers.length > 0) {
-                Receiver receiver = receivers[0];
-                _resources.put(((ResourceActor) receiver.getContainer()
-                        .getContainer()), channelId);
-            }
-        }
+//        for (int channelId = 0; channelId < toResourcePort.getWidth(); channelId++) {
+//            Receiver[] receivers = toResourcePort.getRemoteReceivers()[channelId];
+//            if (receivers.length > 0) {
+//                Receiver receiver = receivers[0];
+//                _resources.put(((ApeActor) receiver.getContainer()
+//                        .getContainer()), channelId);
+//            }
+//        }
         _waitForMinDelay = false;
         _thread = new Thread(this);
         _thread.start();
@@ -157,12 +164,13 @@ public class CTask extends TypedAtomicActor implements Runnable {
     }
 
     public void run() {
-        while (true) { 
+        while (!_actorStopped) { 
             _callCMethod(); 
         }
     }
 
     public void wrapup() throws IllegalActionException {
+        _actorStopped = true;
         _thread.interrupt();
         _thread = null;
     }
@@ -172,40 +180,19 @@ public class CTask extends TypedAtomicActor implements Runnable {
     }
 
     private void _initialize() {
-        _resources = new HashMap<ResourceActor, Integer>();
-        
-        try {
-            fromResourcePort = new TypedIOPort(this, "fromResourcePort", true,
-                    false);
-            fromResourcePort.setMultiport(true);
 
-            toResourcePort = new MulticastIOPort(this, "toResourcePort", false,
-                    true);
-            
-            Parameter destinationActorList= (Parameter) toResourcePort.getAttribute("destinationActors");
-            destinationActorList.setExpression("CPUScheduler");
-            
-            triggerConnector = new TypedIOPort(this, "triggerConnector", false,
-                    true);
+        Parameter sourceActorList= (Parameter) input.getAttribute("sourceActors");
+        sourceActorList.setExpression("*");
 
-        } catch (IllegalActionException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (NameDuplicationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        Parameter destinationActorList= (Parameter) output.getAttribute("destinationActors");
+        destinationActorList.setExpression("CPUScheduler");
     }
 
     private void _sendResourceToken(String resourceName, Object requestedValue,
             boolean isMinValue) throws NoRoomException, IllegalActionException {
-        int channelId = -1;
-        for (ResourceActor actor : _resources.keySet()) {
-            if (actor.getName().equals(resourceName))
-                channelId = _resources.get(actor).intValue();
-        }
+
         ResourceToken token = new ResourceToken(this, requestedValue);
-        toResourcePort.send(channelId, token); // send the output
+         output.send(resourceName, token); // send the output
     }
 
     /** The causality interface, if it has been created. */
@@ -217,8 +204,8 @@ public class CTask extends TypedAtomicActor implements Runnable {
 
     private boolean _inExecution = true;
 
-    private Map<ResourceActor, Integer> _resources;
-
     private boolean _waitForMinDelay;
+    
+    private boolean _actorStopped = false;
 
 }
