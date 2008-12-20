@@ -1288,7 +1288,9 @@ public class Manager extends NamedObj implements Runnable {
             // Result: This would almost certainly deadlock if called
             // from a thread apart from the executing thread because execute()
             // is synchronized, so the running thread holds the lock!
-            synchronized (this) {
+            // NOTE: Synchronizing here is not correct.
+            // See Workspace.wait(Object)
+            // synchronized (this) {
                 while ((getState() != IDLE) && (getState() != CORRUPTED)) {
                     try {
                         workspace().wait(this);
@@ -1296,7 +1298,7 @@ public class Manager extends NamedObj implements Runnable {
                         break;
                     }
                 }
-            }
+            // }
         }
     }
 
