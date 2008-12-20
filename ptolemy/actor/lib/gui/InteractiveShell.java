@@ -249,14 +249,16 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
      *  @return The output string to be sent.
      *  @see #setOutput(String)
      */
-    public synchronized String getOutput() {
+    public String getOutput() {
         while ((_outputValues.size() < 1) && !_stopRequested) {
             try {
                 // NOTE: Do not call wait on this object directly!
                 // If another thread tries to get write access to the
                 // workspace, it will deadlock!  This method releases
                 // all read accesses on the workspace before doing the
-                // wait.
+                // wait. Note that this cannot be called from within
+                // a synchronized(this) block without additional
+                // risk of deadlock.
                 workspace().wait(this);
             } catch (InterruptedException ex) {
             }
