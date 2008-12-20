@@ -1629,94 +1629,102 @@ public class DEDirector extends Director implements TimedDirector {
 
                 if (_synchronizeToRealTime) {
                     // If synchronized to the real time.
-                    synchronized (_eventQueue) {
-                        while (!_stopRequested && !_stopFireRequested) {
-                            lastFoundEvent = _eventQueue.get();
-                            currentTime = lastFoundEvent.timeStamp();
-
-                            long elapsedTime = System.currentTimeMillis()
-                                    - _realStartTime;
-
-                            // NOTE: We assume that the elapsed time can be
-                            // safely cast to a double.  This means that
-                            // the DE domain has an upper limit on running
-                            // time of Double.MAX_VALUE milliseconds.
-                            double elapsedTimeInSeconds = elapsedTime / 1000.0;
-                            ptolemy.actor.util.Time elapsed
-                                    = new ptolemy.actor.util.Time(this, elapsedTimeInSeconds);
-                            if (currentTime.compareTo(elapsed) <= 0) {
-                                break;
-                            }
+                    int depth = 0;
+                    try {
+                        synchronized (_eventQueue) {
+                            while (!_stopRequested && !_stopFireRequested) {
+                                lastFoundEvent = _eventQueue.get();
+                                currentTime = lastFoundEvent.timeStamp();
+    
+                                long elapsedTime = System.currentTimeMillis()
+                                        - _realStartTime;
+    
+                                // NOTE: We assume that the elapsed time can be
+                                // safely cast to a double.  This means that
+                                // the DE domain has an upper limit on running
+                                // time of Double.MAX_VALUE milliseconds.
+                                double elapsedTimeInSeconds = elapsedTime / 1000.0;
+                                ptolemy.actor.util.Time elapsed
+                                        = new ptolemy.actor.util.Time(this, elapsedTimeInSeconds);
+                                if (currentTime.compareTo(elapsed) <= 0) {
+                                    break;
+                                }
+                                
+                                // NOTE: We used to do the following, but it had a limitation.
+                                // In particular, if any user code also calculated the elapsed
+                                // time and then constructed a Time object to post an event
+                                // on the event queue, there was no assurance that the quantization
+                                // would be the same, and hence it was possible for that event
+                                // to be in the past when posted, even if done in the same thread.
+                                // To ensure that the comparison of current time against model time
+                                // always yields the same result, we have to do the comparison using
+                                // the Time class, which is what the event queue does.
+                                /*
+                                if (currentTime.getDoubleValue() <= elapsedTimeInSeconds) {
+                                    break;
+                                }*/
+    
+                                long timeToWait = (long) (currentTime.subtract(
+                                        elapsed).getDoubleValue() * 1000.0);
+    
+                                if (timeToWait > 0) {
+                                    if (_debugging) {
+                                        _debug("Waiting for real time to pass: "
+                                                + timeToWait);
+                                    }
+    
+                                    try {
+                                        // NOTE: The built-in Java wait() method
+                                        // does not release the
+                                        // locks on the workspace, which would block
+                                        // UI interactions and may cause deadlocks.
+                                        // SOLUTION: explicitly release read permissions.
+                                        depth = _workspace.releaseReadPermission();
+                                        _eventQueue.wait(timeToWait);
+                                    } catch (InterruptedException ex) {
+                                        // Continue executing?
+                                        // No, because this could be a problem if any
+                                        // actor assumes that model time always exceeds
+                                        // real time when synchronizeToRealTime is set.
+                                        throw new IllegalActionException(this, ex,
+                                                "Thread interrupted when waiting for" +
+                                                " real time to match model time.");
+                                    }
+                                }
+                            } // while
+                            // If stopFire() has been called, then the wait for real
+                            // time above was interrupted by a change request. Hence,
+                            // real time will not have reached the time of the first
+                            // event in the event queue. If we allow this method to
+                            // proceed, it will set model time to that event time,
+                            // which is in the future. This violates the principle
+                            // of synchronize to real time.  Hence, we must return
+                            // without processing the event or incrementing time.
                             
-                            // NOTE: We used to do the following, but it had a limitation.
-                            // In particular, if any user code also calculated the elapsed
-                            // time and then constructed a Time object to post an event
-                            // on the event queue, there was no assurance that the quantization
-                            // would be the same, and hence it was possible for that event
-                            // to be in the past when posted, even if done in the same thread.
-                            // To ensure that the comparison of current time against model time
-                            // always yields the same result, we have to do the comparison using
-                            // the Time class, which is what the event queue does.
-                            /*
-                            if (currentTime.getDoubleValue() <= elapsedTimeInSeconds) {
-                                break;
-                            }*/
-
-                            long timeToWait = (long) (currentTime.subtract(
-                                    elapsed).getDoubleValue() * 1000.0);
-
-                            if (timeToWait > 0) {
-                                if (_debugging) {
-                                    _debug("Waiting for real time to pass: "
-                                            + timeToWait);
-                                }
-
-                                try {
-                                    // NOTE: The built-in Java wait() method
-                                    // does not release the
-                                    // locks on the workspace, which would block
-                                    // UI interactions and may cause deadlocks.
-                                    // SOLUTION: workspace.wait(object, long).
-                                    _workspace.wait(_eventQueue, timeToWait);
-                                } catch (InterruptedException ex) {
-                                    // Continue executing?
-                                    // No, because this could be a problem if any
-                                    // actor assumes that model time always exceeds
-                                    // real time when synchronizeToRealTime is set.
-                                    throw new IllegalActionException(this, ex,
-                                            "Thread interrupted when waiting for" +
-                                            " real time to match model time.");
-                                }
+                            // NOTE: CompositeActor used to call stopFire() before
+                            // queuing the change request, which created the risk
+                            // that the above wait() would be terminated by
+                            // a notifyAll() on _eventQueue with _stopFireRequested
+                            // having been set, but before the change request has
+                            // actually been filed.  See CompositeActor.requestChange().
+                            // Does this matter? It means that on the next invocation
+                            // of the fire() method, we could resume processing the
+                            // same event, waiting for real time to elapse, without
+                            // having filed the change request. That filing will
+                            // no longer succeed in interrupting this wait, since
+                            // stopFire() has already been called. Alternatively,
+                            // before we get to the wait for real time in the next
+                            // firing, the change request could complete and be
+                            // executed.
+                            if (_stopRequested || _stopFireRequested) {
+                                return null;
                             }
-                        } // while
-                        // If stopFire() has been called, then the wait for real
-                        // time above was interrupted by a change request. Hence,
-                        // real time will not have reached the time of the first
-                        // event in the event queue. If we allow this method to
-                        // proceed, it will set model time to that event time,
-                        // which is in the future. This violates the principle
-                        // of synchronize to real time.  Hence, we must return
-                        // without processing the event or incrementing time.
-                        
-                        // NOTE: CompositeActor used to call stopFire() before
-                        // queuing the change request, which created the risk
-                        // that the above wait() would be terminated by
-                        // a notifyAll() on _eventQueue with _stopFireRequested
-                        // having been set, but before the change request has
-                        // actually been filed.  See CompositeActor.requestChange().
-                        // Does this matter? It means that on the next invocation
-                        // of the fire() method, we could resume processing the
-                        // same event, waiting for real time to elapse, without
-                        // having filed the change request. That filing will
-                        // no longer succeed in interrupting this wait, since
-                        // stopFire() has already been called. Alternatively,
-                        // before we get to the wait for real time in the next
-                        // firing, the change request could complete and be
-                        // executed.
-                        if (_stopRequested || _stopFireRequested) {
-                            return null;
+                        } // sync
+                    } finally {
+                        if (depth > 0) {
+                            _workspace.reacquireReadPermission(depth);
                         }
-                    } // sync
+                    }
                 } // if (_synchronizeToRealTime)
 
                 // Consume the earliest event from the queue. The event must be
