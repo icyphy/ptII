@@ -586,6 +586,44 @@ public final class Workspace implements Nameable, Serializable {
     public final synchronized void incrVersion() {
         _version++;
     }
+    
+    /** Reacquire read permission on the workspace for
+     *  the current thread. Call this after a call to
+     *  releaseReadPermissions().
+     *  @param depth The depth of the permissions to reacquire.
+     *  @see #releaseReadPermission()
+     */
+    public void reacquireReadPermission(int depth) {
+        _reacquireReadPermissions(depth);
+    }
+
+    /** Release read permission on the workspace
+     *  held by the current thread, and return the depth of the
+     *  nested calls to getReadAccess(). It is essential that
+     *  after calling this, you also call
+     *  reacquireReadPermission(int), passing it as an argument
+     *  the value returned by this method.  Hence, you should
+     *  use this as follows:
+     *  <pre>
+     *    int depth = releaseReadPermission();
+     *    try {
+     *       ... do whatever here ...
+     *    } finally {
+     *       reacquireReadPermission(depth);
+     *    }
+     *  </pre>
+     *  Note that this is done automatically by the
+     *  wait(Object) method, so if you can use that instead,
+     *  please do.
+     *  @return The depth of read permissions held by the current
+     *   thread.
+     *  @see #reacquireReadPermission(int)
+     *  @see #wait(Object)
+     *  @see #wait(Object, long)
+     */
+    public synchronized int releaseReadPermission() {
+        return _releaseAllReadPermissions();
+    }
 
     /** Remove the specified item from the directory.
      *  Note that that item will still refer to this workspace as
@@ -641,6 +679,35 @@ public final class Workspace implements Nameable, Serializable {
      *  This method helps prevent deadlocks caused when a thread that
      *  waits for another thread to do something prevents it from doing
      *  that something by holding read access on the workspace.
+     *  <b>IMPORTANT</b>: The calling thread should <i>not</i> hold a lock
+     *  on <i>obj</i> when calling this method, unlike a direct call to
+     *  <i>obj</i>.wait().  Holding such a lock can lead to deadlock because
+     *  this method can block for an indeterminate amount of time while trying
+     *  to reacquire read permissions that it releases. Moreover, holding such
+     *  a lock is pointless since this method internally calls
+     *  <i>obj</i>.wait() (within its own synchronized(<i>obj</i>) block,
+     *  so the calling method cannot assume that the lock on <i>obj</i> was
+     *  held during the entire execution of this method.
+     *  If the calling thread needs to hold a lock on <i>obj</i> until
+     *  <i>obj</i>.wait() is called, then you should manually release
+     *  read permissions and release the <i>obj</i> before reacquiring them,
+     *  as follows:
+     *  
+     *  <pre>
+     *    int depth = 0;
+     *    try {
+     *       synchrononized(obj) {
+     *           ...
+     *           depth = releaseReadPermission();
+     *           obj.wait();
+     *        }
+     *    } finally {
+     *       if (depth > 0) {
+     *          reacquireReadPermission(depth);
+     *       }
+     *    }
+     *  </pre>
+     *  
      *  @param obj The object that the thread wants to wait on.
      *  @exception InterruptedException If the calling thread is interrupted
      *   while waiting on the specified object and all the read accesses held
@@ -657,6 +724,14 @@ public final class Workspace implements Nameable, Serializable {
                 obj.wait();
             }
         } finally {
+            // NOTE: If obj != this, and this method is called
+            // inside a synchronized(obj) block, then the following
+            // call can lead to deadlock because it does a wait() on
+            // this workspace. It has to, since notification that will
+            // free the reacquire occurs on the workspace. But it holds
+            // a lock on obj during that wait. Meanwhile, another thread
+            // with write permission may attempt to acquire a lock on obj.
+            // Deadlock. Hence the warning in the method comment.
             _reacquireReadPermissions(depth);
         }
     }
@@ -667,6 +742,15 @@ public final class Workspace implements Nameable, Serializable {
      *  to the single argument version, and no timeout is implemented. If
      *  the value is larger than zero, then the method returns if either
      *  the thread is notified by another thread or the timeout expires.
+     *  <b>IMPORTANT</b>: The calling thread should <i>not</i> hold a lock
+     *  on <i>obj</i> when calling this method, unlike a direct call to
+     *  <i>obj</i>.wait().  Holding such a lock can lead to deadlock because
+     *  this method can block for an indeterminate amount of time while trying
+     *  to reacquire read permissions that it releases. Moreover, holding such
+     *  a lock is pointless since this method internally calls
+     *  <i>obj</i>.wait() (within its own synchronized(<i>obj</i>) block,
+     *  so the calling method cannot assume that the lock on <i>obj</i> was
+     *  held during the entire execution of this method.
      *  @param obj The object that the thread wants to wait on.
      *  @param timeout The maximum amount of time to wait, in milliseconds,
      *   or zero to not specify a timeout.
