@@ -145,48 +145,58 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      */
     public Token get() {
         Token result = null;
-
-        // NOTE: This method used to be synchronized on this
-        // receiver, but since it calls synchronized methods in
-        // the director, that can cause deadlock.
-        synchronized (_director) {
-            while (!_terminate) {
-                // Try to read.
-                if (super.hasToken()) {
-                    result = super.get();
-
-                    // Need to mark any thread that is write blocked on
-                    // this receiver unblocked now, before any notification,
-                    // or we will detect deadlock and increase the buffer sizes.
-                    // Note that there is no need to clear the _readPending
-                    // reference because that will have been cleared by the write.
-                    if (_writePending != null) {
-                        _director.threadUnblocked(_writePending, this,
-                                PNDirector.WRITE_BLOCKED);
-                        _writePending = null;
+        Workspace workspace = getContainer().workspace();
+        while (!_terminate) {
+            int depth = 0;
+            try {
+                // NOTE: This used to synchronize on this, but since it calls
+                // director methods that are synchronized on the director,
+                // this can cause deadlock.
+                synchronized (_director) {
+                    // Need to check this again after acquiring the lock.
+                    // Otherwise, could end up calling wait() below _after_
+                    // notification has occurred.
+                    if (_terminate) {
+                        break;
                     }
-
-                    break;
-                }
-
-                // Wait to try again.
-                try {
+                    // Try to read.
+                    if (super.hasToken()) {
+                        result = super.get();
+    
+                        // Need to mark any thread that is write blocked on
+                        // this receiver unblocked now, before any notification,
+                        // or we will detect deadlock and increase the buffer sizes.
+                        // Note that there is no need to clear the _readPending
+                        // reference because that will have been cleared by the write.
+                        if (_writePending != null) {
+                            _director.threadUnblocked(_writePending, this,
+                                    PNDirector.WRITE_BLOCKED);
+                            _writePending = null;
+                        }
+    
+                        break;
+                    }
                     _readPending = Thread.currentThread();
                     _director.threadBlocked(Thread.currentThread(), this,
                             PNDirector.READ_BLOCKED);
 
-                    Workspace workspace = getContainer().workspace();
-                    workspace.wait(_director);
-                } catch (InterruptedException e) {
-                    _terminate = true;
+                    // NOTE: We cannot use workspace.wait(Object) here without
+                    // introducing a race condition, because we have to release
+                    // the lock on the _director before calling workspace.wait(_director).
+                    depth = workspace.releaseReadPermission();
+                    _director.wait();
+                } // release lock on _director before reacquiring read permissions.
+            } catch (InterruptedException e) {
+                _terminate = true;
+            } finally {
+                if (depth > 0) {
+                    workspace.reacquireReadPermission(depth);
                 }
             }
-
-            if (_terminate) {
-                throw new TerminateProcessException("");
-            }
         }
-
+        if (_terminate) {
+            throw new TerminateProcessException("");
+        }
         return result;
     }
 
@@ -370,54 +380,69 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  @param token The token to be put in the receiver.
      */
     public void put(Token token) {
-        // NOTE: This used to synchronize on this, but since it calls
-        // director methods that are synchronized on the director,
-        // this can cause deadlock.
-        synchronized (_director) {
-            while (!_terminate) {
-                // Try to write.
-                if (super.hasRoom()) {
-                    super.put(token);
-
-                    // If any thread is blocked on a get(), then it will become
-                    // unblocked. Notify the director now so that there isn't a
-                    // spurious deadlock detection.
-                    if (_readPending != null) {
-                        _director.threadUnblocked(_readPending, this,
-                                PNDirector.READ_BLOCKED);
-                        _readPending = null;
+        Workspace workspace = getContainer().workspace();
+        while (!_terminate) {
+            int depth = 0;
+            try {
+                // NOTE: This used to synchronize on this, but since it calls
+                // director methods that are synchronized on the director,
+                // this can cause deadlock.
+                synchronized (_director) {
+                    // Need to check this again after acquiring the lock.
+                    // Otherwise, could end up calling wait() below _after_
+                    // notification has occurred.
+                    if (_terminate) {
+                        break;
                     }
-
-                    // Normally, the _writePending reference will have
-                    // been cleared by the read that unblocked this write.
-                    // However, it might be that the director increased the
-                    // buffer size, which would also have the affect of unblocking
-                    // this write. Hence, we clear it here if it is set.
-                    if (_writePending != null) {
-                        _director.threadUnblocked(_writePending, this,
-                                PNDirector.WRITE_BLOCKED);
-                        _writePending = null;
+                    // Try to write.
+                    if (super.hasRoom()) {
+                        super.put(token);
+    
+                        // If any thread is blocked on a get(), then it will become
+                        // unblocked. Notify the director now so that there isn't a
+                        // spurious deadlock detection.
+                        if (_readPending != null) {
+                            _director.threadUnblocked(_readPending, this,
+                                    PNDirector.READ_BLOCKED);
+                            _readPending = null;
+                        }
+    
+                        // Normally, the _writePending reference will have
+                        // been cleared by the read that unblocked this write.
+                        // However, it might be that the director increased the
+                        // buffer size, which would also have the affect of unblocking
+                        // this write. Hence, we clear it here if it is set.
+                        if (_writePending != null) {
+                            _director.threadUnblocked(_writePending, this,
+                                    PNDirector.WRITE_BLOCKED);
+                            _writePending = null;
+                        }
+    
+                        break;
                     }
-
-                    break;
-                }
-
-                // Wait to try again.
-                try {
+    
+                    // Wait to try again.
                     _writePending = Thread.currentThread();
                     _director.threadBlocked(_writePending, this,
                             PNDirector.WRITE_BLOCKED);
 
-                    Workspace workspace = getContainer().workspace();
-                    workspace.wait(_director);
-                } catch (InterruptedException e) {
-                    _terminate = true;
+                    // NOTE: We cannot use workspace.wait(Object) here without
+                    // introducing a race condition, because we have to release
+                    // the lock on the _director before calling workspace.wait(_director).
+                    depth = workspace.releaseReadPermission();
+                    _director.wait();
+                } // release lock on _director before reacquiring read permissions.
+            } catch (InterruptedException e) {
+                _terminate = true;
+            } finally {
+                if (depth > 0) {
+                    workspace.reacquireReadPermission(depth);
                 }
             }
+        }
 
-            if (_terminate) {
-                throw new TerminateProcessException("Process terminated.");
-            }
+        if (_terminate) {
+            throw new TerminateProcessException("Process terminated.");
         }
     }
 
