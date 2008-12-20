@@ -307,25 +307,41 @@ public class PtidesDirector extends TimedPNDirector {
      *                If the operation is not permissible (e.g. the given time
      *                is in the past).
      */
-    public synchronized void fireAt(Actor actor, Time newFiringTime)
+    public void fireAt(Actor actor, Time newFiringTime)
             throws IllegalActionException {
-        if (newFiringTime.compareTo(getModelTime()) < 0) {
-            throw new IllegalActionException(this, "The process wants to "
-                    + " get fired in the past! (current time: " + getModelTime() + ", " +
-                    		"requestedFiring: " + newFiringTime + ")");
+        // We have to do a little song and dance to avoid holding
+        // a lock on this while calling worksapce().wait(this).
+        boolean condition = false;
+        synchronized(this) {
+            if (newFiringTime.compareTo(getModelTime()) < 0) {
+                throw new IllegalActionException(this, "The process wants to "
+                        + " get fired in the past! (current time: " + getModelTime() + ", " +
+                        		"requestedFiring: " + newFiringTime + ")");
+            }
+    
+            _eventQueue.put(new TimedEvent(newFiringTime, actor));
+            _informOfDelayBlock();
+            
+            condition = !_stopRequested 
+                    && getModelTime().compareTo(newFiringTime) < 0;
+            if (condition && _platformsToUnblock.remove(actor)) {
+                _informOfDelayUnblock();
+                condition = false;
+            }
         }
-
-        _eventQueue.put(new TimedEvent(newFiringTime, actor));
-        _informOfDelayBlock();
-
         try {
-            while (!_stopRequested 
-                    && getModelTime().compareTo(newFiringTime) < 0) {
-                if (_platformsToUnblock.remove(actor)) { 
-                    _informOfDelayUnblock();
-                    break;
-                }
+            while (condition) {
+                // Cannot hold a lock on this during the following call.
                 workspace().wait(this);
+                // Reacquire the lock.
+                synchronized(this) {
+                    condition = !_stopRequested 
+                            && getModelTime().compareTo(newFiringTime) < 0;
+                    if (condition && _platformsToUnblock.remove(actor)) { 
+                        _informOfDelayUnblock();
+                        break;
+                    }
+                }
             }
         } catch (InterruptedException e) {
             throw new IllegalActionException(this, e.getCause(), e.getMessage());
