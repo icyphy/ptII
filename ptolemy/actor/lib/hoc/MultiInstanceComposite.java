@@ -185,162 +185,169 @@ public class MultiInstanceComposite extends TypedCompositeActor {
             throw new IllegalActionException(this, getFullName()
                     + "No director.");
         }
-        int N = ((IntToken) nInstances.getToken()).intValue();
+        // Get write permission on the workspace.
+        try {
+            _workspace.getWriteAccess();
 
-        // Make sure instance is correct (ignore any user errors :)
-        instance.setToken(new IntToken(0));
+            int N = ((IntToken) nInstances.getToken()).intValue();
 
-        TypedCompositeActor container = (TypedCompositeActor) getContainer();
+            // Make sure instance is correct (ignore any user errors :)
+            instance.setToken(new IntToken(0));
 
-        // Now instantiate the clones and connect them to the model
-        for (int i = 1; i < N; i++) {
-            MultiInstanceComposite clone = (MultiInstanceComposite) container
-                    .getEntity(getName() + "_" + i);
+            TypedCompositeActor container = (TypedCompositeActor) getContainer();
 
-            if (clone == null) {
-                try {
-                    clone = (MultiInstanceComposite) _cloneClone(container
-                            .workspace());
-                } catch (CloneNotSupportedException ex) {
-                    throw new IllegalActionException(this, ex, "Clone failed.");
-                }
+            // Now instantiate the clones and connect them to the model
+            for (int i = 1; i < N; i++) {
+                MultiInstanceComposite clone = (MultiInstanceComposite) container
+                        .getEntity(getName() + "_" + i);
 
-                try {
-                    // See if we should draw the clone.
-                    if (((BooleanToken)showClones.getToken()).booleanValue()) {
-                        // Draw the clone beneath the master's location.
-                        Location location = (Location) clone
-                                .getAttribute("_location");
-                        if (location != null) {
-                            double coords[] = location.getLocation();
-                            coords[1] += 60 * i;
-                            location.setLocation(coords);
-                        }
-                    } else {
-                        // Hide the clone.
-                        try {
-                            new Attribute(clone, "_hide");
-                        } catch (KernelException e) {
-                            // This should not occur.  Ignore if it does
-                            // since the only downside is that the actor is
-                            // rendered.
-                        }
+                if (clone == null) {
+                    try {
+                        clone = (MultiInstanceComposite) _cloneClone(container
+                                .workspace());
+                    } catch (CloneNotSupportedException ex) {
+                        throw new IllegalActionException(this, ex, "Clone failed.");
                     }
 
-                    clone.setName(getName() + "_" + i);
-                    clone.setContainer(container);
-                    clone.validateSettables();
-
-                    if (_debugging) {
-                        _debug("Cloned: " + clone.getFullName());
-                    }
-
-                    // Clone all attached relations and link to same
-                    // ports as the originals
-                    Iterator ports = portList().iterator();
-
-                    while (ports.hasNext()) {
-                        TypedIOPort port = (TypedIOPort) ports.next();
-                        TypedIOPort newPort = (TypedIOPort) clone.getPort(port
-                                .getName());
-                        List relations = port.linkedRelationList();
-                        if (relations == null || relations.size() < 1) {
-                            continue;
-                        }
-                        if (relations.size() > 1) {
-                            throw new IllegalActionException(port,
-                                    "Can be linked to one relation only");
+                    try {
+                        // See if we should draw the clone.
+                        if (((BooleanToken)showClones.getToken()).booleanValue()) {
+                            // Draw the clone beneath the master's location.
+                            Location location = (Location) clone
+                                    .getAttribute("_location");
+                            if (location != null) {
+                                double coords[] = location.getLocation();
+                                coords[1] += 60 * i;
+                                location.setLocation(coords);
+                            }
+                        } else {
+                            // Hide the clone.
+                            try {
+                                new Attribute(clone, "_hide");
+                            } catch (KernelException e) {
+                                // This should not occur.  Ignore if it does
+                                // since the only downside is that the actor is
+                                // rendered.
+                            }
                         }
 
-                        TypedIORelation relation = (TypedIORelation) relations
-                                .get(0);
-                        TypedIORelation oldRelation = relation;
+                        clone.setName(getName() + "_" + i);
+                        clone.setContainer(container);
+                        clone.validateSettables();
 
-                        // Iterate through other ports that are connected to this port.
-                        // If a connected port is a multiport, then we create
-                        // a new relation to connect the clone's newPort
-                        // to that multiport. Otherwise, we use the
-                        // relation above to link newPort.
-                        Iterator otherPorts = relation.linkedPortList(port)
-                                .iterator();
+                        if (_debugging) {
+                            _debug("Cloned: " + clone.getFullName());
+                        }
 
-                        // Added by Gang Zhou. If a port is connected to
-                        // multiple other ports (through a single relation),
-                        // only one relation should be created.
-                        boolean isRelationCreated = false;
-                        boolean isPortLinked = false;
+                        // Clone all attached relations and link to same
+                        // ports as the originals
+                        Iterator ports = portList().iterator();
 
-                        while (otherPorts.hasNext()) {
-                            TypedIOPort otherPort = (TypedIOPort) otherPorts
-                                    .next();
-
-                            if (port.isOutput() && !otherPort.isMultiport()) {
-                                throw new IllegalActionException(
-                                        this,
-                                        getFullName()
-                                                + ".preinitialize(): "
-                                                + "output port "
-                                                + port.getName()
-                                                + "must be connected to a multi-port");
+                        while (ports.hasNext()) {
+                            TypedIOPort port = (TypedIOPort) ports.next();
+                            TypedIOPort newPort = (TypedIOPort) clone.getPort(port
+                                    .getName());
+                            List relations = port.linkedRelationList();
+                            if (relations == null || relations.size() < 1) {
+                                continue;
+                            }
+                            if (relations.size() > 1) {
+                                throw new IllegalActionException(port,
+                                        "Can be linked to one relation only");
                             }
 
-                            // Modified by Gang Zhou so that the port can
-                            // be connected to the otherPort either from inside
-                            // or from outside.
-                            boolean isInsideLinked = otherPort
-                                    .isInsideGroupLinked(oldRelation);
+                            TypedIORelation relation = (TypedIORelation) relations
+                                    .get(0);
+                            TypedIORelation oldRelation = relation;
 
-                            if ((port.isInput() && ((!isInsideLinked && otherPort
-                                    .isOutput()) || (isInsideLinked && otherPort
-                                    .isInput())))
-                                    || (port.isOutput() && ((!isInsideLinked && otherPort
-                                            .isInput()) || (isInsideLinked && otherPort
-                                            .isOutput())))) {
-                                if (otherPort.isMultiport()) {
-                                    if (!isRelationCreated) {
-                                        relation = new TypedIORelation(
-                                                container, "r_" + getName()
-                                                        + "_" + i + "_"
-                                                        + port.getName());
-                                        relation.setPersistent(false);
-                                        isRelationCreated = true;
+                            // Iterate through other ports that are connected to this port.
+                            // If a connected port is a multiport, then we create
+                            // a new relation to connect the clone's newPort
+                            // to that multiport. Otherwise, we use the
+                            // relation above to link newPort.
+                            Iterator otherPorts = relation.linkedPortList(port)
+                                    .iterator();
+
+                            // Added by Gang Zhou. If a port is connected to
+                            // multiple other ports (through a single relation),
+                            // only one relation should be created.
+                            boolean isRelationCreated = false;
+                            boolean isPortLinked = false;
+
+                            while (otherPorts.hasNext()) {
+                                TypedIOPort otherPort = (TypedIOPort) otherPorts
+                                        .next();
+
+                                if (port.isOutput() && !otherPort.isMultiport()) {
+                                    throw new IllegalActionException(
+                                            this,
+                                            getFullName()
+                                                    + ".preinitialize(): "
+                                                    + "output port "
+                                                    + port.getName()
+                                                    + "must be connected to a multi-port");
+                                }
+
+                                // Modified by Gang Zhou so that the port can
+                                // be connected to the otherPort either from inside
+                                // or from outside.
+                                boolean isInsideLinked = otherPort
+                                        .isInsideGroupLinked(oldRelation);
+
+                                if ((port.isInput() && ((!isInsideLinked && otherPort
+                                        .isOutput()) || (isInsideLinked && otherPort
+                                        .isInput())))
+                                        || (port.isOutput() && ((!isInsideLinked && otherPort
+                                                .isInput()) || (isInsideLinked && otherPort
+                                                .isOutput())))) {
+                                    if (otherPort.isMultiport()) {
+                                        if (!isRelationCreated) {
+                                            relation = new TypedIORelation(
+                                                    container, "r_" + getName()
+                                                            + "_" + i + "_"
+                                                            + port.getName());
+                                            relation.setPersistent(false);
+                                            isRelationCreated = true;
+
+                                            if (_debugging) {
+                                                _debug(port.getFullName()
+                                                        + ": created relation "
+                                                        + relation.getFullName());
+                                            }
+                                        }
+
+                                        otherPort.link(relation);
+                                    }
+
+                                    if (!isPortLinked) {
+                                        newPort.link(relation);
+                                        isPortLinked = true;
 
                                         if (_debugging) {
-                                            _debug(port.getFullName()
-                                                    + ": created relation "
+                                            _debug(newPort.getFullName()
+                                                    + ": linked to "
                                                     + relation.getFullName());
                                         }
                                     }
-
-                                    otherPort.link(relation);
-                                }
-
-                                if (!isPortLinked) {
-                                    newPort.link(relation);
-                                    isPortLinked = true;
-
-                                    if (_debugging) {
-                                        _debug(newPort.getFullName()
-                                                + ": linked to "
-                                                + relation.getFullName());
-                                    }
                                 }
                             }
                         }
+
+                        // Let the clone know which instance it is
+                        clone.instance.setToken(new IntToken(i));
+                    } catch (NameDuplicationException ex) {
+                        throw new IllegalActionException(this, ex,
+                                "couldn't clone/create");
                     }
 
-                    // Let the clone know which instance it is
-                    clone.instance.setToken(new IntToken(i));
-                } catch (NameDuplicationException ex) {
-                    throw new IllegalActionException(this, ex,
-                            "couldn't clone/create");
+                    // The clone is preinitialized only if it has just been
+                    // created, otherwise the current director schedule will
+                    // initialize it.
+                    clone.preinitialize();
                 }
-
-                // The clone is preinitialized only if it has just been
-                // created, otherwise the current director schedule will
-                // initialize it.
-                clone.preinitialize();
             }
+        } finally {
+            _workspace.doneWriting();
         }
     }
 
@@ -371,61 +378,67 @@ public class MultiInstanceComposite extends TypedCompositeActor {
             return;
         }
 
-        int i = 1;
-        while (true) {
-            // FIXME: Using a naming convention here is fragile!
-            MultiInstanceComposite clone = (MultiInstanceComposite) container
-                    .getEntity(getName() + "_" + i);
-            if (clone == null) {
-                break;
-            }
-            ++i;
-            Iterator ports = clone.portList().iterator();
-            while (ports.hasNext()) {
-                TypedIOPort port = (TypedIOPort) ports.next();
-                Iterator relations = port.linkedRelationList().iterator();
-                while (relations.hasNext()) {
-                    TypedIORelation relation = (TypedIORelation) relations
-                            .next();
+        // Get write permission on the workspace.
+        try {
+            _workspace.getWriteAccess();
+            int i = 1;
+            while (true) {
+                // FIXME: Using a naming convention here is fragile!
+                MultiInstanceComposite clone = (MultiInstanceComposite) container
+                        .getEntity(getName() + "_" + i);
+                if (clone == null) {
+                    break;
+                }
+                ++i;
+                Iterator ports = clone.portList().iterator();
+                while (ports.hasNext()) {
+                    TypedIOPort port = (TypedIOPort) ports.next();
+                    Iterator relations = port.linkedRelationList().iterator();
+                    while (relations.hasNext()) {
+                        TypedIORelation relation = (TypedIORelation) relations
+                                .next();
 
-                    // Use a different criterion to delete relation
-                    // since the old one wouldn't work any more.
-                    // Added by Gang Zhou.
-                    TypedIOPort mirrorPort = (TypedIOPort) getPort(port
-                            .getName());
+                        // Use a different criterion to delete relation
+                        // since the old one wouldn't work any more.
+                        // Added by Gang Zhou.
+                        TypedIOPort mirrorPort = (TypedIOPort) getPort(port
+                                .getName());
 
-                    if (!port.isDeeplyConnected(mirrorPort)) {
-                        //if (relation.linkedPortList().size() <= 2) {
-                        // Delete the relation that was created in
-                        // preinitialize()
-                        try {
-                            if (_debugging) {
-                                _debug("Deleting " + relation.getFullName());
+                        if (!port.isDeeplyConnected(mirrorPort)) {
+                            //if (relation.linkedPortList().size() <= 2) {
+                            // Delete the relation that was created in
+                            // preinitialize()
+                            try {
+                                if (_debugging) {
+                                    _debug("Deleting " + relation.getFullName());
+                                }
+                                relation.setContainer(null);
+                            } catch (NameDuplicationException ex) {
+                                throw new InternalErrorException(ex);
                             }
-                            relation.setContainer(null);
-                        } catch (NameDuplicationException ex) {
-                            throw new InternalErrorException(ex);
+                        } else {
+                            // Unlink the clone's port from the relation
+                            if (_debugging) {
+                                _debug("Unlinking " + port.getFullName() + " from "
+                                        + relation.getFullName());
+                            }
+                            port.unlink(relation);
                         }
-                    } else {
-                        // Unlink the clone's port from the relation
-                        if (_debugging) {
-                            _debug("Unlinking " + port.getFullName() + " from "
-                                    + relation.getFullName());
-                        }
-                        port.unlink(relation);
                     }
                 }
-            }
 
-            // Now delete the clone itself
-            try {
-                if (_debugging) {
-                    _debug("Deleting " + clone.getFullName());
+                // Now delete the clone itself
+                try {
+                    if (_debugging) {
+                        _debug("Deleting " + clone.getFullName());
+                    }
+                    clone.setContainer(null);
+                } catch (NameDuplicationException ex) {
+                    throw new InternalErrorException(ex);
                 }
-                clone.setContainer(null);
-            } catch (NameDuplicationException ex) {
-                throw new InternalErrorException(ex);
             }
+        } finally {
+            _workspace.doneWriting();
         }
         // Queue a dummy change request that will cause a vergil model
         // graph update
