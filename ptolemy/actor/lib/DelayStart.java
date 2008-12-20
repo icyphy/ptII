@@ -128,13 +128,15 @@ public class DelayStart extends TypedAtomicActor {
                     break;
                 }
 
-                synchronized (director) {
+                // Synchronizing on the director here is incorrect.
+                // See Workspace.wait(Object)
+                // synchronized (director) {
                     try {
                         _workspace.wait(director, time - current);
                     } catch (InterruptedException e) {
                         // Ignore and continue;
                     }
-                }
+                // }
             }
         } catch (ParseException e) {
             throw new IllegalActionException(this, "Invalid startTime: "
