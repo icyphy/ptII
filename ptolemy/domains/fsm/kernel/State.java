@@ -27,12 +27,15 @@
 package ptolemy.domains.fsm.kernel;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.io.Writer;
+import java.net.URL;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import ptolemy.actor.DesignPatternGetMoMLAction;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.data.BooleanToken;
@@ -40,6 +43,8 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.fsm.modal.ContainmentExtender;
+import ptolemy.domains.fsm.modal.ModalModel;
+import ptolemy.domains.fsm.modal.Refinement;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.CompositeEntity;
@@ -47,6 +52,7 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.DropTargetHandler;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -56,6 +62,8 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.moml.MoMLParser;
 
 //////////////////////////////////////////////////////////////////////////
 //// State
@@ -83,7 +91,8 @@ import ptolemy.kernel.util.Workspace;
  @see FSMActor
  @see FSMDirector
  */
-public class State extends ComponentEntity implements DropTargetHandler {
+public class State extends ComponentEntity implements ConfigurableEntity,
+        DropTargetHandler {
 
     /** Construct a state with the given name contained by the specified
      *  composite entity. The container argument must not be null, or a
@@ -105,7 +114,26 @@ public class State extends ComponentEntity implements DropTargetHandler {
         super(container, name);
         incomingPort = new ComponentPort(this, "incomingPort");
         outgoingPort = new ComponentPort(this, "outgoingPort");
-        refinementName = new StringAttribute(this, "refinementName");
+        refinementName = new StringAttribute(this, "refinementName") {
+            // Do not export refinementName if we are exporting the configurer
+            // for this state, because refinementName will be recreated when the
+            // entities in the configurer is populated to the containing modal
+            // model.
+            public void exportMoML(Writer output, int depth, String name)
+                    throws IOException {
+                boolean createConfigurer = false;
+                try {
+                    createConfigurer =
+                        ((BooleanToken) saveRefinementsInConfigurer.getToken())
+                                .booleanValue();
+                } catch (IllegalActionException e) {
+                    // Ignore. Use false.
+                }
+                if (!createConfigurer) {
+                    super.exportMoML(output, depth, name);
+                }
+            }
+        };
 
         _attachText("_iconDescription", "<svg>\n"
                 + "<circle cx=\"0\" cy=\"0\" r=\"20\" style=\"fill:white\"/>\n"
@@ -166,6 +194,8 @@ public class State extends ComponentEntity implements DropTargetHandler {
         ContainmentExtender containmentExtender = new ContainmentExtender(this,
                 "_containmentExtender");
         containmentExtender.setPersistent(false);
+
+        _configurer = new Configurer(workspace());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -229,11 +259,25 @@ public class State extends ComponentEntity implements DropTargetHandler {
                 .getPort("outgoingPort");
         newObject.refinementName = (StringAttribute) newObject
                 .getAttribute("refinementName");
-        newObject._refinementVersion = -1;
-        newObject._transitionListVersion = -1;
+        newObject._configurer = new Configurer(newObject.workspace());
         newObject._nonpreemptiveTransitionList = new LinkedList();
         newObject._preemptiveTransitionList = new LinkedList();
+        newObject._refinementVersion = -1;
+        newObject._transitionListVersion = -1;
         return newObject;
+    }
+
+    public void configure(URL base, String source, String text)
+            throws Exception {
+        _configureSource = source;
+        text = text.trim();
+        if (!text.equals("")) {
+            MoMLParser parser = new MoMLParser(workspace());
+            _configurer.removeAllEntities();
+            parser.setContext(_configurer);
+            parser.parse(base, source, new StringReader(text));
+            _populateRefinements();
+        }
     }
 
     /** React to a list of objects being dropped onto a target.
@@ -250,6 +294,18 @@ public class State extends ComponentEntity implements DropTargetHandler {
             ((DropTargetHandler) container).dropObject(target, dropObjects,
                     moml);
         }
+    }
+
+    public String getConfigureSource() {
+        return _configureSource;
+    }
+
+    public String getConfigureText() {
+        return null;
+    }
+
+    public Configurer getConfigurer() {
+        return _configurer;
     }
 
     /** Get a NamedObj with the given name in the refinement of this state, if
@@ -375,6 +431,9 @@ public class State extends ComponentEntity implements DropTargetHandler {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
     /** Return true if this state has been visited. Otherwise, return false.
      *  @return Returns true if this state has been visited.
      */
@@ -417,9 +476,6 @@ public class State extends ComponentEntity implements DropTargetHandler {
         _visited = visited;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-
     /** The port linking incoming transitions.
      */
     public ComponentPort incomingPort = null;
@@ -445,6 +501,9 @@ public class State extends ComponentEntity implements DropTargetHandler {
     /** The port linking outgoing transitions.
      */
     public ComponentPort outgoingPort = null;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     /** Attribute specifying one or more names of refinements. The
      *  refinements must be instances of TypedActor and have the same
@@ -481,12 +540,17 @@ public class State extends ComponentEntity implements DropTargetHandler {
         } catch (IllegalActionException e) {
             // Ignore. Use false.
         }
+        boolean configurePrinted = false;
         if (createConfigurer) {
             try {
                 TypedActor[] actors = getRefinement();
                 if (actors != null) {
-                    output.write(_getIndentPrefix(depth) + "<configure>\n");
                     for (TypedActor actor : actors) {
+                        if (!configurePrinted) {
+                            output.write(_getIndentPrefix(depth) +
+                                    "<configure>\n");
+                            configurePrinted = true;
+                        }
                         if (actor instanceof FSMActor) {
                             ((FSMActor) actor).exportSubmodel(output, depth + 1,
                                     actor.getName());
@@ -494,11 +558,51 @@ public class State extends ComponentEntity implements DropTargetHandler {
                             ((NamedObj) actor).exportMoML(output, depth + 1);
                         }
                     }
-                    output.write(_getIndentPrefix(depth) + "</configure>\n");
                 }
             } catch (IllegalActionException e) {
                 throw new InternalErrorException(this, e,
                         "Unable to save refinements.");
+            }
+        }
+        List<ComponentEntity> actors = _configurer.entityList();
+        for (ComponentEntity actor : actors) {
+            if (!configurePrinted) {
+                output.write(_getIndentPrefix(depth) + "<configure>\n");
+                configurePrinted = true;
+            }
+            if (actor instanceof FSMActor) {
+                ((FSMActor) actor).exportSubmodel(output, depth + 1,
+                        actor.getName());
+            } else {
+                ((NamedObj) actor).exportMoML(output, depth + 1);
+            }
+        }
+        if (configurePrinted) {
+            output.write(_getIndentPrefix(depth) + "</configure>\n");
+        }
+    }
+
+    private void _populateRefinements() throws IllegalActionException {
+        CompositeEntity modalModel = (CompositeEntity) getContainer()
+                .getContainer();
+        if (!(modalModel instanceof ModalModel)) {
+            return;
+        }
+        List<ComponentEntity> entities = new LinkedList<ComponentEntity>(
+                _configurer.entityList());
+        for (ComponentEntity entity : entities) {
+            String name = modalModel.uniqueName(entity.getName());
+            Refinement.addRefinement(this, name, null, entity.getClassName(),
+                    null);
+            String moml = new DesignPatternGetMoMLAction().getMoml(entity,
+                    name);
+            UpdateContentsRequest request = new UpdateContentsRequest(this,
+                    modalModel, name, moml);
+            modalModel.requestChange(request);
+            try {
+                entity.setContainer(null);
+            } catch (NameDuplicationException e) {
+                // Ignore.
             }
         }
     }
@@ -531,6 +635,10 @@ public class State extends ComponentEntity implements DropTargetHandler {
         }
     }
 
+    private String _configureSource;
+
+    private Configurer _configurer;
+
     // Cached list of non-preemptive outgoing transitions from this state.
     private List _nonpreemptiveTransitionList = new LinkedList();
 
@@ -546,8 +654,30 @@ public class State extends ComponentEntity implements DropTargetHandler {
     // Version of cached transition lists.
     private long _transitionListVersion = -1;
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
     // Flag indicating whether this state has been visited.
     private boolean _visited = false;
+
+    private static class UpdateContentsRequest extends ChangeRequest {
+
+        public UpdateContentsRequest(Object source, CompositeEntity modalModel,
+                String entityName, String moml) {
+            super(source, "Update contents of refinement " + entityName + ".");
+            _modalModel = modalModel;
+            _entityName = entityName;
+            _moml = moml;
+        }
+
+        protected void _execute() throws Exception {
+            ComponentEntity entity = _modalModel.getEntity(_entityName);
+            MoMLChangeRequest request = new MoMLChangeRequest(this, entity,
+                    _moml);
+            request.execute();
+        }
+
+        private String _entityName;
+
+        private CompositeEntity _modalModel;
+
+        private String _moml;
+    }
 }

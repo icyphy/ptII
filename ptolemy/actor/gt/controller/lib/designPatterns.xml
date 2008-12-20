@@ -4,7 +4,9 @@
 <entity name="DesignPatterns" class="ptolemy.moml.EntityLibrary">
   <configure>
       <?moml
-        <input source="ptolemy/actor/gt/controller/lib/RepeatForCount.xml"/>
+        <group>
+          <input source="ptolemy/actor/gt/controller/lib/RepeatForCount.xml"/>
+        </group>
       ?>
   </configure>
 </entity>

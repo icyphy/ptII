@@ -35,6 +35,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
 import java.net.URL;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -53,7 +54,9 @@ import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.PtolemyPreferences;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TextEffigy;
+import ptolemy.data.BooleanToken;
 import ptolemy.domains.fsm.kernel.FSMActor;
+import ptolemy.domains.fsm.kernel.State;
 import ptolemy.domains.fsm.modal.ModalPort;
 import ptolemy.domains.fsm.modal.RefinementPort;
 import ptolemy.gui.ComponentDialog;
@@ -146,75 +149,34 @@ public class FSMGraphFrame extends ExtendedGraphFrame
             exportDesignPattern();
         }
     }
-    
-    /** Import a design pattern into the current design.
+
+    /** Get the currently selected objects from this document, if any,
+     *  and place them on the clipboard in MoML format.
      */
-    public void importDesignPattern() {
-        JFileChooser fileDialog = new JFileChooser();
-
-        if (_fileFilter != null) {
-            fileDialog.addChoosableFileFilter(_fileFilter);
-        }
-
-        fileDialog.setDialogTitle("Select a design pattern file.");
-        if (_directory != null) {
-            fileDialog.setCurrentDirectory(_directory);
-        } else {
-            String currentWorkingDirectory = StringUtilities.getProperty(
-                    "user.dir");
-            if (currentWorkingDirectory != null) {
-                fileDialog.setCurrentDirectory(new File(
-                        currentWorkingDirectory));
-            }
-        }
-
-        if (fileDialog.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            _directory = fileDialog.getCurrentDirectory();
-            NamedObj model = null;
-            try {
-                File file = fileDialog.getSelectedFile().getCanonicalFile();
-                URL url = file.toURI().toURL();
-                MoMLParser parser = new MoMLParser();
-                model = parser.parse(url, url);
-            } catch (Exception e) {
-                report(new IllegalActionException(null, e,
-                        "Error reading input"));
-            }
-            if (model != null) {
-                Attribute attribute = model.getAttribute(
-                        "_alternateGetMomlAction");
-                String className = DesignPatternGetMoMLAction.class.getName();
-                if (attribute == null ||
-                        !(attribute instanceof StringAttribute) ||
-                        !((StringAttribute) attribute).getExpression().equals(
-                                className)) {
-                    report(new IllegalActionException(
-                            "The model is not a design pattern."));
-                } else {
-                    String moml = new DesignPatternGetMoMLAction().getMoml(
-                            model, model.getName());
-                    NamedObj context = getModel();
-                    MoMLChangeRequest request = new MoMLChangeRequest(this,
-                            context, moml);
-                    context.requestChange(request);
+    public void copy() {
+        HashSet<NamedObj> namedObjSet = _getSelectionSet();
+        try {
+            for (NamedObj namedObj : namedObjSet) {
+                if (namedObj instanceof State) {
+                    ((State) namedObj).saveRefinementsInConfigurer.setToken(
+                            BooleanToken.TRUE);
                 }
             }
-        }
-    }
-    
-    /** Export the model into the writer with the given name.
-     *
-     *  @param writer The writer.
-     *  @param model The model to export.
-     *  @param name The name of the exported model.
-     *  @exception IOException If an I/O error occurs.
-     */
-    protected void _exportModel(Writer writer, NamedObj model, String name)
-            throws IOException {
-        if (model instanceof FSMActor) {
-            ((FSMActor) model).exportSubmodel(writer, 0, name);
-        } else {
-            model.exportMoML(writer, 0, name);
+            super.copy();
+        } catch (IllegalActionException e) {
+            MessageHandler.error("Unable to set attributes of the selected " +
+                    "states.");
+        } finally {
+            for (NamedObj namedObj : namedObjSet) {
+                if (namedObj instanceof State) {
+                    try {
+                        ((State) namedObj).saveRefinementsInConfigurer.setToken(
+                                BooleanToken.FALSE);
+                    } catch (IllegalActionException e) {
+                        // Ignore.
+                    }
+                }
+            }
         }
     }
 
@@ -287,6 +249,61 @@ public class FSMGraphFrame extends ExtendedGraphFrame
                     } catch (IllegalActionException e) {
                         // Ignore.
                     }
+                }
+            }
+        }
+    }
+
+    /** Import a design pattern into the current design.
+     */
+    public void importDesignPattern() {
+        JFileChooser fileDialog = new JFileChooser();
+
+        if (_fileFilter != null) {
+            fileDialog.addChoosableFileFilter(_fileFilter);
+        }
+
+        fileDialog.setDialogTitle("Select a design pattern file.");
+        if (_directory != null) {
+            fileDialog.setCurrentDirectory(_directory);
+        } else {
+            String currentWorkingDirectory = StringUtilities.getProperty(
+                    "user.dir");
+            if (currentWorkingDirectory != null) {
+                fileDialog.setCurrentDirectory(new File(
+                        currentWorkingDirectory));
+            }
+        }
+
+        if (fileDialog.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            _directory = fileDialog.getCurrentDirectory();
+            NamedObj model = null;
+            try {
+                File file = fileDialog.getSelectedFile().getCanonicalFile();
+                URL url = file.toURI().toURL();
+                MoMLParser parser = new MoMLParser();
+                model = parser.parse(url, url);
+            } catch (Exception e) {
+                report(new IllegalActionException(null, e,
+                        "Error reading input"));
+            }
+            if (model != null) {
+                Attribute attribute = model.getAttribute(
+                        "_alternateGetMomlAction");
+                String className = DesignPatternGetMoMLAction.class.getName();
+                if (attribute == null ||
+                        !(attribute instanceof StringAttribute) ||
+                        !((StringAttribute) attribute).getExpression().equals(
+                                className)) {
+                    report(new IllegalActionException(
+                            "The model is not a design pattern."));
+                } else {
+                    String moml = new DesignPatternGetMoMLAction().getMoml(
+                            model, model.getName());
+                    NamedObj context = getModel();
+                    MoMLChangeRequest request = new MoMLChangeRequest(this,
+                            context, moml);
+                    context.requestChange(request);
                 }
             }
         }
@@ -527,6 +544,22 @@ public class FSMGraphFrame extends ExtendedGraphFrame
         final FSMGraphModel graphModel = new FSMGraphModel(
                 (CompositeEntity) entity);
         return new FSMGraphPane(_controller, graphModel, entity);
+    }
+
+    /** Export the model into the writer with the given name.
+     *
+     *  @param writer The writer.
+     *  @param model The model to export.
+     *  @param name The name of the exported model.
+     *  @exception IOException If an I/O error occurs.
+     */
+    protected void _exportModel(Writer writer, NamedObj model, String name)
+            throws IOException {
+        if (model instanceof FSMActor) {
+            ((FSMActor) model).exportSubmodel(writer, 0, name);
+        } else {
+            model.exportMoML(writer, 0, name);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -95,9 +95,12 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	doc \
 	'AbstractActionsAttribute$$TypeFunction.class' \
+	'Configurer$$ContainmentExtender.class' \
 	'FSMActor$$1.class' \
 	'FSMActor$$PortScope.class' \
-	'FSMDirector$$1.class'
+	'FSMDirector$$1.class' \
+	'State$$1.class' \
+	'State$$UpdateContentsRequest.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
