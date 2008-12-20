@@ -56,6 +56,7 @@ public class NotifyThread extends Thread {
      *  @param locks The set of locks to call notifyAll() on.
      */
     public NotifyThread(LinkedList locks) {
+        this.setName("NotifyThread");
         _locks = new LinkedList();
 
         Iterator e = locks.iterator();
@@ -69,6 +70,7 @@ public class NotifyThread extends Thread {
      *  @param lock The lock to call notifyAll() on.
      */
     public NotifyThread(Object lock) {
+        this.setName("NotifyThread");
         _lock = lock;
     }
 

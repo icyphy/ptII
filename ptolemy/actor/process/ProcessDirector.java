@@ -184,57 +184,69 @@ public class ProcessDirector extends Director {
             outsideDirector = null;
         }
 
-        synchronized (this) {
-            while (!_areThreadsDeadlocked() && !_areAllThreadsStopped()
-                    && !_stopRequested) {
-                // Added to get thread to stop reliably on pushing stop button.
-                // EAL 8/05
-                if (_stopRequested) {
-                    return;
-                }
-
-                if (_debugging) {
-                    _debug("Waiting for actors to stop.");
-                }
-
-                try {
-                    if (outsideDirector != null) {
-                        ((ProcessDirector) outsideDirector).threadBlocked(
-                                Thread.currentThread(), null);
+        int depth = 0;
+        try {
+            synchronized (this) {
+                while (!_areThreadsDeadlocked() && !_areAllThreadsStopped()
+                        && !_stopRequested) {
+                    // Added to get thread to stop reliably on pushing stop button.
+                    // EAL 8/05
+                    if (_stopRequested) {
+                        return;
                     }
-
-                    workspace.wait(this);
-                } catch (InterruptedException e) {
-                    // stop all threads
-                    stop();
-                    return;
-                } finally {
-                    if (outsideDirector != null) {
-                        ((ProcessDirector) outsideDirector).threadUnblocked(
-                                Thread.currentThread(), null);
+    
+                    if (_debugging) {
+                        _debug("Waiting for actors to stop.");
+                    }
+    
+                    try {
+                        if (outsideDirector != null) {
+                            ((ProcessDirector) outsideDirector).threadBlocked(
+                                    Thread.currentThread(), null);
+                        }
+                        // NOTE: We cannot use workspace.wait(Object) here without
+                        // introducing a race condition, because we have to release
+                        // the lock on the _director before calling workspace.wait(_director).
+                        if (depth == 0) {
+                            depth = workspace.releaseReadPermission();
+                        }
+                        wait();
+                    } catch (InterruptedException e) {
+                        // stop all threads
+                        stop();
+                        return;
+                    } finally {
+                        if (outsideDirector != null) {
+                            ((ProcessDirector) outsideDirector).threadUnblocked(
+                                    Thread.currentThread(), null);
+                        }
+                    }
+                }
+    
+                if (_debugging) {
+                    _debug("Actors have stopped.");
+                }
+    
+                // Don't resolve deadlock if we are just pausing
+                // or if a stop has been requested.
+                // NOTE: Added !_stopRequested.  EAL 3/12/03.
+                if (_areThreadsDeadlocked() && !_stopRequested) {
+                    if (_debugging) {
+                        _debug("Deadlock detected.");
+                    }
+    
+                    try {
+                        _notDone = _resolveDeadlock();
+                    } catch (IllegalActionException e) {
+                        // stop all threads.
+                        stop();
+                        throw e;
                     }
                 }
             }
-
-            if (_debugging) {
-                _debug("Actors have stopped.");
-            }
-
-            // Don't resolve deadlock if we are just pausing
-            // or if a stop has been requested.
-            // NOTE: Added !_stopRequested.  EAL 3/12/03.
-            if (_areThreadsDeadlocked() && !_stopRequested) {
-                if (_debugging) {
-                    _debug("Deadlock detected.");
-                }
-
-                try {
-                    _notDone = _resolveDeadlock();
-                } catch (IllegalActionException e) {
-                    // stop all threads.
-                    stop();
-                    throw e;
-                }
+        } finally {
+            if (depth > 0) {
+                workspace.reacquireReadPermission(depth);
             }
         }
     }
@@ -621,27 +633,36 @@ public class ProcessDirector extends Director {
 
         CompositeActor container = (CompositeActor) getContainer();
 
-        _requestFinishOnReceivers();
+        // To ensure that we don't miss the notification from
+        // the processes that are ending, put this in a synchronized
+        // block.
+        int depth = 0;
+        try {
+            synchronized(this) {
+                _requestFinishOnReceivers();
 
-        // Now wake up threads that depend on the manager.
-        Manager manager = container.getManager();
+                // Now wake up threads that depend on the manager.
+                Manager manager = container.getManager();
 
-        // NOTE: Used to do the notification in a new thread.
-        // For some reason, however, this isn't sufficient.
-        // Have to click the stop button twice.
-        // (new NotifyThread(manager)).start();
-        synchronized (manager) {
-            manager.notifyAll();
-        }
+                // Do the notification in a new thread so as not
+                // to deadlock with this synchronized block.
+                (new NotifyThread(manager)).start();
 
-        // Wait until all threads stop.
-        synchronized (this) {
-            while (_activeThreads.size() > 0) {
-                try {
-                    workspace().wait(this);
-                } catch (InterruptedException ex) {
-                    // ignore, wait until all process threads stop
+                // Wait until all threads stop.
+                while (_activeThreads.size() > 0) {
+                    if (depth == 0) {
+                        depth = workspace().releaseReadPermission();
+                    }
+                    try {
+                        wait();
+                    } catch (InterruptedException ex) {
+                        // ignore, wait until all process threads stop
+                    }
                 }
+            }
+        } finally {
+            if (depth > 0) {
+                workspace().reacquireReadPermission(depth);
             }
         }
     }

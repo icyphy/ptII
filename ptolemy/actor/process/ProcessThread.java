@@ -144,37 +144,48 @@ public class ProcessThread extends PtolemyThread {
                     // And wait until the flag has been cleared.
                     _debug("-- Thread pause requested. Get lock on director.");
 
-                    synchronized (_director) {
-                        // Tell the director we're stopped (necessary
-                        // for deadlock detection).
-                        _director.threadHasPaused(this);
-
-                        while (_director.isStopFireRequested()) {
-                            // If a stop has been requested, in addition
-                            // to a stopFire, then stop execution
-                            // altogether and skip to wrapup().
-                            if (_director.isStopRequested()) {
-                                _debug("-- Thread stop requested, "
-                                        + "so cancel iteration.");
-                                break;
+                    int depth = 0;
+                    try {
+                        synchronized (_director) {
+                            // Tell the director we're stopped (necessary
+                            // for deadlock detection).
+                            _director.threadHasPaused(this);
+    
+                            while (_director.isStopFireRequested()) {
+                                // If a stop has been requested, in addition
+                                // to a stopFire, then stop execution
+                                // altogether and skip to wrapup().
+                                if (_director.isStopRequested()) {
+                                    _debug("-- Thread stop requested, "
+                                            + "so cancel iteration.");
+                                    break;
+                                }
+    
+                                _debug("-- Thread waiting for "
+                                        + "canceled pause request.");
+    
+                                // NOTE: We cannot use workspace.wait(Object) here without
+                                // introducing a race condition, because we have to release
+                                // the lock on the _director before calling workspace.wait(_director).
+                                if (depth == 0) {
+                                    depth = workspace.releaseReadPermission();
+                                }
+                                _director.wait();
                             }
-
-                            _debug("-- Thread waiting for "
-                                    + "canceled pause request.");
-
-                            try {
-                                workspace.wait(_director);
-                            } catch (InterruptedException ex) {
-                                _debug("-- Thread interrupted, "
-                                        + "so cancel iteration.");
-                                break;
-                            }
+                            _director.threadHasResumed(this);
+                            _debug("-- Thread resuming.");
                         }
-
-                        _director.threadHasResumed(this);
+                    } catch (InterruptedException ex) {
+                        _debug("-- Thread interrupted, "
+                                + "so cancel iteration.");
+                        break;
+                    } finally {
+                        if (depth > 0) {
+                            // This has to happen outside the synchronized(_director)
+                            // block to prevent deadlock.
+                            workspace.reacquireReadPermission(depth);
+                        }
                     }
-
-                    _debug("-- Thread resuming.");
                 }
 
                 if (_director.isStopRequested()) {
@@ -210,64 +221,63 @@ public class ProcessThread extends PtolemyThread {
         } catch (Throwable t) {
             thrownWhenIterate = t;
         } finally {
-            // Let the director know that this thread stopped.
-            // This is synchronized to prevent a race condition
-            // where the director might conclude before the
-            // call to wrapup() below.
-            synchronized (_director) {
-                _director.removeThread(this);
 
-                try {
-                    // NOTE: Deadlock risk here.
-                    // Holding a lock on the _director during wrapup()
-                    // might cause deadlock with hierarchical models where
-                    // wrapup() waits for internal actors to conclude,
-                    // doing a wait() on its own internal director.
-                    // Meanwhile, this thread will hold a lock on this
-                    // outside director.  As long as the inside model
-                    // doesn't try to access synchronized methods of
-                    // outside director, this may be OK.
-                    wrapup();
-                } catch (IllegalActionException e) {
-                    thrownWhenWrapup = e;
-                } finally {
-                    _debug("-- Thread stopped.");
+            try {
+                // NOTE: Deadlock risk here if wrapup is done inside
+                // a block synchronized on the _director, as it used to be.
+                // Holding a lock on the _director during wrapup()
+                // might cause deadlock with hierarchical models where
+                // wrapup() waits for internal actors to conclude,
+                // doing a wait() on its own internal director,
+                // or trying to acquire a write lock on the workspace.
+                // Meanwhile, this thread will hold a lock on this
+                // outside director, which may prevent the other
+                // threads from releasing their write lock!
+                wrapup();
+            } catch (IllegalActionException e) {
+                thrownWhenWrapup = e;
+            } finally {
+                // Let the director know that this thread stopped.
+                // This must occur after the call to wrapup above.
+                synchronized (_director) {
+                    _director.removeThread(this);
+                }
+                _debug("-- Thread stopped.");
 
-                    boolean rethrow = false;
+                boolean rethrow = false;
 
-                    if (thrownWhenIterate instanceof TerminateProcessException) {
-                        // Process was terminated.
-                        _debug("-- Blocked Receiver call "
-                                + "threw TerminateProcessException.");
-                    } else if (thrownWhenIterate instanceof InterruptedException) {
-                        // Process was terminated by call to stop();
-                        _debug("-- Thread was interrupted: "
-                                + thrownWhenIterate);
-                    } else if (thrownWhenIterate instanceof InterruptedIOException
-                            || ((thrownWhenIterate != null) && thrownWhenIterate
-                                    .getCause() instanceof InterruptedIOException)) {
-                        // PSDF has problems here when run with JavaScope
-                        _debug("-- IO was interrupted: " + thrownWhenIterate);
-                    } else if (thrownWhenIterate instanceof IllegalActionException) {
-                        _debug("-- Exception: " + thrownWhenIterate);
-                        _manager
-                                .notifyListenersOfException((IllegalActionException) thrownWhenIterate);
-                    } else if (thrownWhenIterate != null) {
-                        rethrow = true;
-                    }
+                if (thrownWhenIterate instanceof TerminateProcessException) {
+                    // Process was terminated.
+                    _debug("-- Blocked Receiver call "
+                            + "threw TerminateProcessException.");
+                } else if (thrownWhenIterate instanceof InterruptedException) {
+                    // Process was terminated by call to stop();
+                    _debug("-- Thread was interrupted: "
+                            + thrownWhenIterate);
+                } else if (thrownWhenIterate instanceof InterruptedIOException
+                        || ((thrownWhenIterate != null) && thrownWhenIterate
+                                .getCause() instanceof InterruptedIOException)) {
+                    // PSDF has problems here when run with JavaScope
+                    _debug("-- IO was interrupted: " + thrownWhenIterate);
+                } else if (thrownWhenIterate instanceof IllegalActionException) {
+                    _debug("-- Exception: " + thrownWhenIterate);
+                    _manager
+                            .notifyListenersOfException((IllegalActionException) thrownWhenIterate);
+                } else if (thrownWhenIterate != null) {
+                    rethrow = true;
+                }
 
-                    if (thrownWhenWrapup instanceof IllegalActionException) {
-                        _debug("-- Exception: " + thrownWhenWrapup);
-                        _manager
-                                .notifyListenersOfException((IllegalActionException) thrownWhenWrapup);
-                    } else if (thrownWhenWrapup != null) {
-                        // Must be a runtime exception.
-                        // Call notifyListenerOfThrowable() here so that
-                        // the stacktrace appears in the UI and not in stderr.
-                        _manager.notifyListenersOfThrowable(thrownWhenWrapup);
-                    } else if (rethrow) {
-                        _manager.notifyListenersOfThrowable(thrownWhenIterate);
-                    }
+                if (thrownWhenWrapup instanceof IllegalActionException) {
+                    _debug("-- Exception: " + thrownWhenWrapup);
+                    _manager
+                            .notifyListenersOfException((IllegalActionException) thrownWhenWrapup);
+                } else if (thrownWhenWrapup != null) {
+                    // Must be a runtime exception.
+                    // Call notifyListenerOfThrowable() here so that
+                    // the stacktrace appears in the UI and not in stderr.
+                    _manager.notifyListenersOfThrowable(thrownWhenWrapup);
+                } else if (rethrow) {
+                    _manager.notifyListenersOfThrowable(thrownWhenIterate);
                 }
             }
         }

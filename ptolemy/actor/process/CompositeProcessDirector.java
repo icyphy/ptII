@@ -611,7 +611,7 @@ public class CompositeProcessDirector extends ProcessDirector {
      *   iterations are not allowed; return true otherwise.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    protected synchronized boolean _resolveDeadlock()
+    protected boolean _resolveDeadlock()
             throws IllegalActionException {
         if (_debugging) {
             _debug("Resolving Deadlock");
@@ -620,97 +620,125 @@ public class CompositeProcessDirector extends ProcessDirector {
         Director execDir = ((Actor) getContainer()).getExecutiveDirector();
         Workspace workspace = workspace();
 
-        if (_areThreadsDeadlocked()) {
-            if (_areActorsExternallyBlocked()) {
-                // There are actors that are blocked on a communication
-                // (send or receive) to the outside world.
-                if (_inputBranchController.isBlocked()) {
-                    while (!_outputBranchController.isBlocked()) {
-                        try {
-                            workspace.wait(this);
-                        } catch (InterruptedException e) {
-                            // TODO: determine best way to handle the exception
-                            throw new IllegalActionException(this,
-                                    "Interrupted.");
+        int depth = 0;
+        try {
+            synchronized(this) {
+                if (_areThreadsDeadlocked()) {
+                    if (_areActorsExternallyBlocked()) {
+                        // There are actors that are blocked on a communication
+                        // (send or receive) to the outside world.
+                        if (_inputBranchController.isBlocked()) {
+                            while (!_outputBranchController.isBlocked()) {
+                                try {
+                                    // NOTE: We cannot use workspace.wait(Object) here without
+                                    // introducing a race condition, because we have to release
+                                    // the lock on the _director before calling workspace.wait(_director).
+                                    if (depth == 0) {
+                                        depth = workspace.releaseReadPermission();
+                                    }
+                                    wait();
+                                } catch (InterruptedException e) {
+                                    // TODO: determine best way to handle the exception
+                                    throw new IllegalActionException(this,
+                                            "Interrupted.");
+                                }
+                            }
+        
+                            stopInputBranchController();
+                            stopOutputBranchController();
+        
+                            if (execDir == null) {
+                                // This is the top level director - problem!!!
+                                throw new IllegalActionException(
+                                        this,
+                                        "No executive director exists yet this "
+                                                + "director's composite actor is externally "
+                                                + "deadlocked.");
+                            } else if (execDir instanceof CompositeProcessDirector) {
+                                // This is contained by a process-oriented MoC
+                                ((CompositeProcessDirector) execDir).threadBlocked(
+                                        Thread.currentThread(), null);
+                                return true;
+                            } else {
+                                // This is contained by a schedule-oriented MoC
+                                return true;
+                            }
+                        } else if (_outputBranchController.isBlocked()) {
+                            stopInputBranchController();
+                            stopOutputBranchController();
+        
+                            if (execDir == null) {
+                                // This is the top level director - problem!!!
+                                throw new IllegalActionException(
+                                        this,
+                                        "No executive director exists yet this "
+                                                + "director's composite actor is externally "
+                                                + "deadlocked.");
+                            } else if (execDir instanceof CompositeProcessDirector) {
+                                // This is contained by a process-oriented MoC
+                                ((CompositeProcessDirector) execDir).threadBlocked(
+                                        Thread.currentThread(), null);
+                                return true;
+                            } else {
+                                // This is contained by a schedule-oriented MoC
+                                return true;
+                            }
                         }
-                    }
-
-                    stopInputBranchController();
-                    stopOutputBranchController();
-
-                    if (execDir == null) {
-                        // This is the top level director - problem!!!
-                        throw new IllegalActionException(
-                                this,
-                                "No executive director exists yet this "
-                                        + "director's composite actor is externally "
-                                        + "deadlocked.");
-                    } else if (execDir instanceof CompositeProcessDirector) {
-                        // This is contained by a process-oriented MoC
-                        ((CompositeProcessDirector) execDir).threadBlocked(
-                                Thread.currentThread(), null);
-                        return true;
                     } else {
-                        // This is contained by a schedule-oriented MoC
-                        return true;
-                    }
-                } else if (_outputBranchController.isBlocked()) {
-                    stopInputBranchController();
-                    stopOutputBranchController();
-
-                    if (execDir == null) {
-                        // This is the top level director - problem!!!
-                        throw new IllegalActionException(
-                                this,
-                                "No executive director exists yet this "
-                                        + "director's composite actor is externally "
-                                        + "deadlocked.");
-                    } else if (execDir instanceof CompositeProcessDirector) {
-                        // This is contained by a process-oriented MoC
-                        ((CompositeProcessDirector) execDir).threadBlocked(
-                                Thread.currentThread(), null);
-                        return true;
-                    } else {
-                        // This is contained by a schedule-oriented MoC
-                        return true;
+                        // There are no actors that are blocked on a communication
+                        // (send or receive) to the outside world.
+                        if (_inputBranchController.isBlocked()) {
+                            while (!_outputBranchController.isBlocked()) {
+                                try {
+                                    // NOTE: We cannot use workspace.wait(Object) here without
+                                    // introducing a race condition, because we have to release
+                                    // the lock on the _director before calling workspace.wait(_director).
+                                    if (depth == 0) {
+                                        depth = workspace.releaseReadPermission();
+                                    }
+                                    wait();
+                                } catch (InterruptedException e) {
+                                    // TODO: determine best way to handle the exception
+                                    throw new IllegalActionException(this,
+                                            "Interrupted.");
+                                }
+                            }
+        
+                            stopInputBranchController();
+                            stopOutputBranchController();
+                            return _resolveInternalDeadlock();
+                        } else if (_outputBranchController.isBlocked()) {
+                            stopInputBranchController();
+                            stopOutputBranchController();
+                            return _resolveInternalDeadlock();
+                        } else {
+                            while (!_outputBranchController.isBlocked()) {
+                                try {
+                                    // NOTE: We cannot use workspace.wait(Object) here without
+                                    // introducing a race condition, because we have to release
+                                    // the lock on the _director before calling workspace.wait(_director).
+                                    if (depth == 0) {
+                                        depth = workspace.releaseReadPermission();
+                                    }
+                                    wait();
+                                } catch (InterruptedException e) {
+                                    //TODO: determine best way to handle the exception
+                                    throw new IllegalActionException(this,
+                                            "Interrupted.");
+                                }
+                            }
+        
+                            stopInputBranchController();
+                            stopOutputBranchController();
+                            return _resolveInternalDeadlock();
+                        }
                     }
                 }
-            } else {
-                // There are no actors that are blocked on a communication
-                // (send or receive) to the outside world.
-                if (_inputBranchController.isBlocked()) {
-                    while (!_outputBranchController.isBlocked()) {
-                        try {
-                            workspace.wait(this);
-                        } catch (InterruptedException e) {
-                            // TODO: determine best way to handle the exception
-                            throw new IllegalActionException(this,
-                                    "Interrupted.");
-                        }
-                    }
-
-                    stopInputBranchController();
-                    stopOutputBranchController();
-                    return _resolveInternalDeadlock();
-                } else if (_outputBranchController.isBlocked()) {
-                    stopInputBranchController();
-                    stopOutputBranchController();
-                    return _resolveInternalDeadlock();
-                } else {
-                    while (!_outputBranchController.isBlocked()) {
-                        try {
-                            workspace.wait(this);
-                        } catch (InterruptedException e) {
-                            //TODO: determine best way to handle the exception
-                            throw new IllegalActionException(this,
-                                    "Interrupted.");
-                        }
-                    }
-
-                    stopInputBranchController();
-                    stopOutputBranchController();
-                    return _resolveInternalDeadlock();
-                }
+            } // synchronized(this)
+        } finally {
+            // This has to happen outside the synchronized block.
+            if (depth > 0) {
+                workspace.reacquireReadPermission(depth);
             }
         }
 
