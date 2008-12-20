@@ -300,13 +300,15 @@ public class NondeterministicMerge extends TypedCompositeActor {
                 // Input channel is no longer connected.
                 // We don't want to spin lock here, so we
                 // wait.
-                synchronized (this) {
+                // NOTE: synchronizing is neither allowed
+                // nor necessary here. See workspace().wait(Object).
+                // synchronized (this) {
                     try {
                         workspace().wait(this);
                     } catch (InterruptedException ex) {
                         // Ignore and continue executing.
                     }
-                }
+                // }
             }
         }
 
