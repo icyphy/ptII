@@ -498,7 +498,9 @@ public class ModelReference extends TypedAtomicActor implements
             // If there is a previous execution, then wait for it to finish.
             // Avoid the synchronize block if possible.
             if (_executing) {
-                synchronized (this) {
+                // Synchronizing here is not correct.
+                // See Workspace.wait(Object)
+                // synchronized (this) {
                     while (_executing) {
                         try {
                             if (_debugging) {
@@ -518,7 +520,7 @@ public class ModelReference extends TypedAtomicActor implements
                     if (_debugging) {
                         _debug("** Previous execution has finished.");
                     }
-                }
+                // }
             }
 
             if (_executionOnFiringValue == _RUN_IN_CALLING_THREAD) {
