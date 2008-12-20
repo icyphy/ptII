@@ -88,7 +88,9 @@ public class TestWorkspace2 extends Thread {
                 }
             }
 
-            synchronized (_notif) {
+            // NOTE: Must not hold lock on _workspace when calling
+            // _workspace.wait(obj).
+            // synchronized (_notif) {
                 _notif.getWriteAccess = true;
 
                 try {
@@ -98,7 +100,7 @@ public class TestWorkspace2 extends Thread {
                 }
 
                 _notif.done = true;
-            }
+            // }
         } finally {
             for (int j = i; j > 0; j--) {
                 _workspace.doneReading();
