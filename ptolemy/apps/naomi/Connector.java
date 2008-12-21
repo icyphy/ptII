@@ -134,7 +134,7 @@ public class Connector extends MoMLApplication {
             try {
                 _saveAttributes(_inModel, _attributesPath, true);
                 _outputModel(_inModel);
-                _outputInterface();
+                _saveInterface();
                 StringUtilities.exit(0);
             } catch (IllegalActionException e) {
                 throw new InternalErrorException(null, e,
@@ -215,26 +215,26 @@ public class Connector extends MoMLApplication {
             for (String attr : save.values()) {
                 System.out.println("Save: " + attr);
             }
-            _outputInterface();
+            _saveInterface();
             break;
 
         case LOAD:
             _loadAttributes(_inModel, _attributesPath, true);
             _outputModel(_inModel);
-            _outputInterface();
+            _saveInterface();
             break;
 
         case SAVE:
             _saveAttributes(_inModel, _attributesPath, true);
             _outputModel(_inModel);
-            _outputInterface();
+            _saveInterface();
             break;
 
         case SYNC:
             _loadAttributes(_inModel, _attributesPath, false);
             _saveAttributes(_inModel, _attributesPath, false);
             _outputModel(_inModel);
-            _outputInterface();
+            _saveInterface();
             break;
         }
     }
@@ -375,7 +375,7 @@ public class Connector extends MoMLApplication {
             HashMap<Attribute, String> save = new HashMap<Attribute, String>();
             _list(model, sync, load, save);
             try {
-                _outputInterface();
+                _saveInterface();
             } catch (IllegalActionException ex) {
                 throw new InternalErrorException(ex);
             }
@@ -419,7 +419,7 @@ public class Connector extends MoMLApplication {
                             _undoable = true;
                             _mergeWithPrevious = false;
                             _loadAttributes(model, _getAttributesPath(), true);
-                            _outputInterface();
+                            _saveInterface();
                         }
                     } catch (IllegalActionException e) {
                         throw new InternalErrorException(e);
@@ -490,7 +490,7 @@ public class Connector extends MoMLApplication {
                             _undoable = true;
                             _mergeWithPrevious = false;
                             _saveAttributes(model, _getAttributesPath(), true);
-                            _outputInterface();
+                            _saveInterface();
                         }
                     } catch (IllegalActionException e) {
                         throw new InternalErrorException(e);
@@ -524,7 +524,7 @@ public class Connector extends MoMLApplication {
                             _mergeWithPrevious = false;
                             _loadAttributes(model, _getAttributesPath(), false);
                             _saveAttributes(model, _getAttributesPath(), false);
-                            _outputInterface();
+                            _saveInterface();
                         }
                     } catch (IllegalActionException e) {
                         throw new InternalErrorException(e);
@@ -897,13 +897,13 @@ public class Connector extends MoMLApplication {
         return tableau;
     }
 
-    protected void _outputInterface() throws IllegalActionException {
+    protected void _saveInterface() throws IllegalActionException {
         File interfaceFile = _getInterfaceFile();
         System.out.println("Output interface: " + interfaceFile.getPath());
         Document interfaceDocument = _generateInterface();
         try {
-            _serializeXML(interfaceDocument,
-                    new FileOutputStream(interfaceFile));
+            _serializeXML(interfaceDocument, new FileOutputStream(
+                    interfaceFile));
         } catch (FileNotFoundException e) {
             throw new IllegalActionException(null, e,
                     "Cannot output interface.");
@@ -1099,34 +1099,37 @@ public class Connector extends MoMLApplication {
 
     private Document _generateInterface() throws IllegalActionException {
         try {
-            DocumentBuilderFactory docFactory =
+            DocumentBuilderFactory factory =
                 DocumentBuilderFactory.newInstance();
-            docFactory.setNamespaceAware(true);
-            DocumentBuilder builder = docFactory.newDocumentBuilder();
-            Document document = builder.newDocument();
+            factory.setNamespaceAware(true);
+            factory.setValidating(true);
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document document = builder.getDOMImplementation().createDocument(
+                    NAMESPACES[1][1], "interface", null);
+            Element interfaceElement = document.getDocumentElement();
 
-            Element interfaceNode = document.createElementNS(NAMESPACES[1][1],
-                    "interface");
-            document.appendChild(interfaceNode);
-
-            Element nameNode = document.createElement("name");
+            Element nameNode = document.createElementNS(NAMESPACES[1][1],
+                    "name");
             nameNode.setTextContent(_owner);
-            interfaceNode.appendChild(nameNode);
+            interfaceElement.appendChild(nameNode);
 
-            Element typeNode = document.createElement("type");
+            Element typeNode = document.createElementNS(NAMESPACES[1][1],
+                    "type");
             typeNode.setTextContent(_owner);
-            interfaceNode.appendChild(typeNode);
+            interfaceElement.appendChild(typeNode);
 
             for (String inputAttribute : _inputAttributes) {
-                Element inputNode = document.createElement("input");
+                Element inputNode = document.createElementNS(NAMESPACES[1][1],
+                        "input");
                 inputNode.setTextContent(inputAttribute);
-                interfaceNode.appendChild(inputNode);
+                interfaceElement.appendChild(inputNode);
             }
 
             for (String outputAttribute : _outputAttributes) {
-                Element outputNode = document.createElement("output");
+                Element outputNode = document.createElementNS(NAMESPACES[1][1],
+                        "output");
                 outputNode.setTextContent(outputAttribute);
-                interfaceNode.appendChild(outputNode);
+                interfaceElement.appendChild(outputNode);
             }
 
             return document;
