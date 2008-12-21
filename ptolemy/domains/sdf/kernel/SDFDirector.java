@@ -425,51 +425,59 @@ public class SDFDirector extends StaticSchedulingDirector {
                 .getToken()).booleanValue();
 
         if ((periodValue > 0.0) && synchronizeValue) {
-            synchronized (this) {
-                while (true) {
-                    long elapsedTime = System.currentTimeMillis()
-                            - _realStartTime;
-
-                    // NOTE: We assume that the elapsed time can be
-                    // safely cast to a double.  This means that
-                    // the SDF domain has an upper limit on running
-                    // time of Double.MAX_VALUE milliseconds.
-                    double elapsedTimeInSeconds = elapsedTime / 1000.0;
-                    double currentTime = getModelTime().getDoubleValue();
-
-                    if (currentTime <= elapsedTimeInSeconds) {
-                        break;
-                    }
-
-                    long timeToWait = (long) ((currentTime - elapsedTimeInSeconds) * 1000.0);
-
-                    if (_debugging) {
-                        _debug("Waiting for real time to pass: " + timeToWait);
-                    }
-
-                    try {
-                        // NOTE: The built-in Java wait() method
-                        // does not release the
-                        // locks on the workspace, which would block
-                        // UI interactions and may cause deadlocks.
-                        // SOLUTION: workspace.wait(object, long).
-                        if (timeToWait > 0) {
-                            // Bug fix from J. S. Senecal:
-                            //
-                            //  The problem was that sometimes, the
-                            //  method Object.wait(timeout) was called
-                            //  with timeout = 0. According to java
-                            //  documentation:
-                            //
-                            // " If timeout is zero, however, then
-                            // real time is not taken into
-                            // consideration and the thread simply
-                            // waits until notified."
-                            _workspace.wait(this, timeToWait);
+            int depth = 0;
+            try {
+                synchronized (this) {
+                    while (true) {
+                        long elapsedTime = System.currentTimeMillis()
+                                - _realStartTime;
+    
+                        // NOTE: We assume that the elapsed time can be
+                        // safely cast to a double.  This means that
+                        // the SDF domain has an upper limit on running
+                        // time of Double.MAX_VALUE milliseconds.
+                        double elapsedTimeInSeconds = elapsedTime / 1000.0;
+                        double currentTime = getModelTime().getDoubleValue();
+    
+                        if (currentTime <= elapsedTimeInSeconds) {
+                            break;
                         }
-                    } catch (InterruptedException ex) {
-                        // Continue executing.
+    
+                        long timeToWait = (long) ((currentTime - elapsedTimeInSeconds) * 1000.0);
+    
+                        if (_debugging) {
+                            _debug("Waiting for real time to pass: " + timeToWait);
+                        }
+    
+                        try {
+                            // NOTE: The built-in Java wait() method
+                            // does not release the
+                            // locks on the workspace, which would block
+                            // UI interactions and may cause deadlocks.
+                            // SOLUTION: explicitly release read permissions.
+                            if (timeToWait > 0) {
+                                // Bug fix from J. S. Senecal:
+                                //
+                                //  The problem was that sometimes, the
+                                //  method Object.wait(timeout) was called
+                                //  with timeout = 0. According to java
+                                //  documentation:
+                                //
+                                // " If timeout is zero, however, then
+                                // real time is not taken into
+                                // consideration and the thread simply
+                                // waits until notified."
+                                depth = _workspace.releaseReadPermission();
+                                wait(timeToWait);
+                            }
+                        } catch (InterruptedException ex) {
+                            // Continue executing.
+                        }
                     }
+                }
+            } finally {
+                if (depth > 0) {
+                    _workspace.reacquireReadPermission(depth);
                 }
             }
         }
