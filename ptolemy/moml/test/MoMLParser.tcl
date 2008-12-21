@@ -2463,6 +2463,7 @@ test MoMLParser-6.1 {Test indexed I/O with actor model.} {
     removeGraphicalClasses $parser
     set toplevel [java::cast ptolemy.actor.TypedCompositeActor \
             [$parser parse $incMomlBase]]
+    # The width is explicitly specified since the filters are not used here
     $parser parse {
 <entity name=".top">
 <property name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
@@ -2472,9 +2473,18 @@ test MoMLParser-6.1 {Test indexed I/O with actor model.} {
 <entity name="dist" class="ptolemy.actor.lib.Distributor"/>
 <entity name="comm" class="ptolemy.actor.lib.Commutator"/>
 <entity name="sink" class="ptolemy.actor.lib.Recorder"/>
-<relation name="r1" class="ptolemy.actor.TypedIORelation"/>
-<relation name="r2" class="ptolemy.actor.TypedIORelation"/>
-<relation name="r3" class="ptolemy.actor.TypedIORelation"/>
+<relation name="r1" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+</relation>
+<relation name="r2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+</relation>
+<relation name="r3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+</relation>
 <link port="source.output" relation="r1"/>
 <link port="dist.input" relation="r1"/>
 <link port="dist.output" relation="r2"/>
@@ -2498,11 +2508,14 @@ test MoMLParser-6.1 {Test indexed I/O with actor model.} {
 test MoMLParser-6.1 {Test indexed I/O with actor model.} {
     set incMomlBase "$header
 <entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
+    <property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"3.1-devel\">
+    </property>
 </entity>
 "
     set parser [java::new ptolemy.moml.MoMLParser]
     set toplevel [java::cast ptolemy.actor.TypedCompositeActor \
             [$parser parse $incMomlBase]]
+		# The width is explicitly specified since the filters are not used here            
     $parser parse {
 <entity name=".top">
 <property name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
@@ -2512,9 +2525,18 @@ test MoMLParser-6.1 {Test indexed I/O with actor model.} {
 <entity name="dist" class="ptolemy.actor.lib.Distributor"/>
 <entity name="comm" class="ptolemy.actor.lib.Commutator"/>
 <entity name="sink" class="ptolemy.actor.lib.Recorder"/>
-<relation name="r1" class="ptolemy.actor.TypedIORelation"/>
-<relation name="r2" class="ptolemy.actor.TypedIORelation"/>
-<relation name="r3" class="ptolemy.actor.TypedIORelation"/>
+<relation name="r1" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+</relation>
+<relation name="r2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+</relation>
+<relation name="r3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+</relation>
 <link port="source.output" relation="r1"/>
 <link port="dist.input" relation="r1"/>
 <link port="dist.output" relation="r2"/>
@@ -2536,9 +2558,13 @@ test MoMLParser-6.1 {Test indexed I/O with actor model.} {
 ####
 #
 test MoMLParser-6.2 {Straight with blocksize 2.} {
+    # The width is explicitly specified since the filters are not used here
     $parser parse {
 <entity name=".top">
-<relation name="r4" class="ptolemy.actor.TypedIORelation"/>
+<relation name="r4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+</relation>
 <link port="dist.output" relation="r4"/>
 <link port="comm.input" relation="r4"/>
 </entity>
@@ -3697,11 +3723,15 @@ test MoMLParser-21.2 {Delete entity.} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
+    </property>
     <class name="Ramp" extends="ptolemy.actor.lib.Ramp">
     </class>
     <entity name="InstanceOfRamp" class="Ramp">
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <link port="InstanceOfRamp.output" relation="relation"/>
 </entity>
@@ -3715,6 +3745,8 @@ test MoMLParser-21.3 {Undo delete entity.} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
+    </property>
     <class name="Ramp" extends="ptolemy.actor.lib.Ramp">
     </class>
     <class name="SubclassOfRamp" extends="Ramp">
@@ -3724,6 +3756,8 @@ test MoMLParser-21.3 {Undo delete entity.} {
     <entity name="InstanceOfSubclassOfRamp" class="SubclassOfRamp">
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <link port="InstanceOfRamp.output" relation="relation"/>
     <link port="InstanceOfSubclassOfRamp.trigger" relation="relation"/>
@@ -3743,7 +3777,11 @@ test MoMLParser-21.4 {Delete base class.} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
+    </property>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
 </entity>
 }
@@ -3756,6 +3794,8 @@ test MoMLParser-21.5 {Undo delete base class.} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
+    </property>
     <class name="Ramp" extends="ptolemy.actor.lib.Ramp">
     </class>
     <class name="SubclassOfRamp" extends="Ramp">
@@ -3765,6 +3805,8 @@ test MoMLParser-21.5 {Undo delete base class.} {
     <entity name="InstanceOfSubclassOfRamp" class="SubclassOfRamp">
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <link port="InstanceOfRamp.output" relation="relation"/>
     <link port="InstanceOfSubclassOfRamp.trigger" relation="relation"/>
@@ -3823,6 +3865,8 @@ test MoMLParser-22.2 {Delete port.} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
+    </property>
     <class name="Ramp" extends="ptolemy.actor.TypedAtomicActor">
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -3835,6 +3879,8 @@ test MoMLParser-22.2 {Delete port.} {
     <entity name="InstanceOfSubclassOfRamp" class="SubclassOfRamp">
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <link port="InstanceOfSubclassOfRamp.trigger" relation="relation"/>
 </entity>
@@ -3848,6 +3894,8 @@ test MoMLParser-22.3 {Undo delete port.} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
+    </property>
     <class name="Ramp" extends="ptolemy.actor.TypedAtomicActor">
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -3863,6 +3911,8 @@ test MoMLParser-22.3 {Undo delete port.} {
     <entity name="InstanceOfSubclassOfRamp" class="SubclassOfRamp">
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <link port="InstanceOfRamp.output" relation="relation"/>
     <link port="InstanceOfSubclassOfRamp.trigger" relation="relation"/>
