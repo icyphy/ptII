@@ -4,7 +4,7 @@
   <job name="unjar sources">
     <executeForPack name="Sources"/>
     <executeclass name="ExtractJarFile">
-      <arg>ptII7.1.devel.src.jar</arg>
+      <arg>ptII7.2.devel.src.jar</arg>
       <arg>$INSTALL_PATH</arg>
     </executeclass>
   </job>
