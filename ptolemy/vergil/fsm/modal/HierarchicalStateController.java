@@ -37,9 +37,9 @@ import java.util.TreeMap;
 
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.gui.Configuration;
+import ptolemy.domains.fsm.kernel.RefinementActor;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.domains.fsm.kernel.Transition;
-import ptolemy.domains.fsm.modal.Refinement;
 import ptolemy.domains.fsm.modal.RefinementExtender;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
@@ -229,8 +229,8 @@ public class HierarchicalStateController extends StateController {
             }
 
             try {
-                Refinement.addRefinement(state, newName, template, newClass,
-                        configuration);
+                ((RefinementActor) state.getContainer()).addRefinement(state,
+                        newName, template, newClass, configuration);
             } catch (IllegalActionException ex) {
                 MessageHandler.error(ex.getMessage());
             }
