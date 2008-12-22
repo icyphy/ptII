@@ -1,4 +1,4 @@
-/*
+/* An interface for entities that can be configured.
 
  Copyright (c) 2008 The Regents of the University of California.
  All rights reserved.
@@ -33,7 +33,10 @@ import ptolemy.kernel.util.Configurable;
 //// ConfigurableEntity
 
 /**
-
+ An interface for entities that can be configured. Such an entity should have
+ a {@link Configurer} in it, whose container need not be that entity. The entity
+ should also be configurable by implementing all the methods in {@link
+ Configurable}.
 
  @author Thomas Huining Feng
  @version $Id$
@@ -43,6 +46,8 @@ import ptolemy.kernel.util.Configurable;
 */
 public interface ConfigurableEntity extends Configurable {
 
+    /** Get the {@link Configurer} object for this entity.
+     */
     public Configurer getConfigurer();
 
 }

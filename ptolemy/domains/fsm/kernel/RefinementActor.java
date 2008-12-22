@@ -29,6 +29,8 @@
 package ptolemy.domains.fsm.kernel;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.gui.Configuration;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -54,4 +56,22 @@ public interface RefinementActor extends Actor {
      *  refined state or event.
      */
     public State getRefinedState() throws IllegalActionException;
+    
+    /** Create a refinement for the given state.
+     *
+     *  @param state The state that will contain the new refinement.
+     *  @param name The name of the composite entity that stores the refinement.
+     *  @param template The template used to create the refinement, or null if
+     *   template is not used.
+     *  @param className The class name for the refinement, which is used when
+     *   template is null.
+     *  @param configuration The configuration that is used to open the
+     *   refinement (as a look-inside action) after it is created, or null if it
+     *   is not needed to open the refinement.
+     *  @throws IllegalActionException If error occurs while creating the
+     *   refinement.
+     */
+    public void addRefinement(State state, String name,
+            Entity template, String className,
+            Configuration configuration) throws IllegalActionException;
 }

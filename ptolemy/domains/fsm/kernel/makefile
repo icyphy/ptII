@@ -63,6 +63,7 @@ JSRCS = \
 	CommitActionsAttribute.java \
 	ConfigurableEntity.java \
 	Configurer.java \
+	ContainmentExtender.java \
 	FSMActor.java \
 	FSMCausalityInterface.java \
 	FSMDirector.java \

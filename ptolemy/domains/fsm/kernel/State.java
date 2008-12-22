@@ -42,9 +42,6 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.fsm.modal.ContainmentExtender;
-import ptolemy.domains.fsm.modal.ModalModel;
-import ptolemy.domains.fsm.modal.Refinement;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.CompositeEntity;
@@ -267,6 +264,24 @@ public class State extends ComponentEntity implements ConfigurableEntity,
         return newObject;
     }
 
+    /** Configure the object with data from the specified input source
+     *  (a URL) and/or textual data.  The object should interpret the
+     *  source first, if it is specified, followed by the literal text,
+     *  if that is specified.  The new configuration should usually
+     *  override any old configuration wherever possible, in order to
+     *  ensure that the current state can be successfully retrieved.
+     *  <p>
+     *  This method is defined to throw a very general exception to allow
+     *  classes that implement the interface to use whatever exceptions
+     *  are appropriate.
+     *  @param base The base relative to which references within the input
+     *   are found, or null if this is not known, or there is none.
+     *  @param source The input source, which specifies a URL, or null
+     *   if none.
+     *  @param text Configuration information given as text, or null if
+     *   none.
+     *  @exception Exception If something goes wrong.
+     */
     public void configure(URL base, String source, String text)
             throws Exception {
         _configureSource = source;
@@ -296,14 +311,30 @@ public class State extends ComponentEntity implements ConfigurableEntity,
         }
     }
 
+    /** Return the input source that was specified the last time the configure
+     *  method was called.
+     *  @return The string representation of the input URL, or null if the
+     *  no source has been used to configure this object, or null if no
+     *  external source need be used to configure this object.
+     */
     public String getConfigureSource() {
         return _configureSource;
     }
 
+    /** Return the text string that represents the current configuration of
+     *  this object.  Note that any configuration that was previously
+     *  specified using the source attribute need not be represented here
+     *  as well.
+     *  @return A configuration string, or null if no configuration
+     *  has been used to configure this object, or null if no
+     *  configuration string need be used to configure this object.
+     */
     public String getConfigureText() {
         return null;
     }
 
+    /** Get the {@link Configurer} object for this entity.
+     */
     public Configurer getConfigurer() {
         return _configurer;
     }
@@ -585,24 +616,28 @@ public class State extends ComponentEntity implements ConfigurableEntity,
     private void _populateRefinements() throws IllegalActionException {
         CompositeEntity modalModel = (CompositeEntity) getContainer()
                 .getContainer();
-        if (!(modalModel instanceof ModalModel)) {
+        if (!(modalModel instanceof TypedCompositeActor)) {
             return;
         }
         List<ComponentEntity> entities = new LinkedList<ComponentEntity>(
                 _configurer.entityList());
-        for (ComponentEntity entity : entities) {
-            String name = modalModel.uniqueName(entity.getName());
-            Refinement.addRefinement(this, name, null, entity.getClassName(),
-                    null);
-            String moml = new DesignPatternGetMoMLAction().getMoml(entity,
-                    name);
-            UpdateContentsRequest request = new UpdateContentsRequest(this,
-                    modalModel, name, moml);
-            modalModel.requestChange(request);
-            try {
-                entity.setContainer(null);
-            } catch (NameDuplicationException e) {
-                // Ignore.
+        NamedObj container = getContainer();
+        if (container instanceof RefinementActor) {
+            RefinementActor actor = (RefinementActor) container;
+            for (ComponentEntity entity : entities) {
+                String name = modalModel.uniqueName(entity.getName());
+                actor.addRefinement(this, name, null, entity.getClassName(),
+                        null);
+                String moml = new DesignPatternGetMoMLAction().getMoml(entity,
+                        name);
+                UpdateContentsRequest request = new UpdateContentsRequest(this,
+                        modalModel, name, moml);
+                modalModel.requestChange(request);
+                try {
+                    entity.setContainer(null);
+                } catch (NameDuplicationException e) {
+                    // Ignore.
+                }
             }
         }
     }
@@ -635,8 +670,10 @@ public class State extends ComponentEntity implements ConfigurableEntity,
         }
     }
 
+    // The source of the configuration, which is not used.
     private String _configureSource;
 
+    // The Configurer object for this state.
     private Configurer _configurer;
 
     // Cached list of non-preemptive outgoing transitions from this state.

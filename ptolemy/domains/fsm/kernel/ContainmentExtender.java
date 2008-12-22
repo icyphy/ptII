@@ -29,11 +29,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
  */
 
-package ptolemy.domains.fsm.modal;
+package ptolemy.domains.fsm.kernel;
 
-import ptolemy.domains.fsm.kernel.FSMActor;
-import ptolemy.domains.fsm.kernel.RefinementActor;
-import ptolemy.domains.fsm.kernel.State;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -63,25 +60,6 @@ public class ContainmentExtender extends Attribute implements
         ptolemy.data.expr.ContainmentExtender {
 
     /** Construct a ContainmentExtender attribute with the given name contained
-     *  by the specified ModalController. The container argument must not be
-     *  null, or a NullPointerException will be thrown.  This attribute will use
-     *  the workspace of the container for synchronization and version counts.
-     *  If the name argument is null, then the name is set to the empty string.
-     *  Increment the version of the workspace.
-     *  @param container The container.
-     *  @param name The name of this attribute.
-     *  @exception IllegalActionException If the attribute is not of an
-     *   acceptable class for the container, or if the name contains a period.
-     *  @exception NameDuplicationException If the name coincides with
-     *   an attribute already in the container.
-     */
-    public ContainmentExtender(FSMActor container, String name)
-    throws IllegalActionException, NameDuplicationException {
-        super(container, name);
-        setPersistent(false);
-    }
-
-    /** Construct a ContainmentExtender attribute with the given name contained
      *  by the specified Refinement. The container argument must not be null,
      *  or a NullPointerException will be thrown.  This attribute will use the
      *  workspace of the container for synchronization and version counts.
@@ -94,9 +72,10 @@ public class ContainmentExtender extends Attribute implements
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    public ContainmentExtender(Refinement container, String name)
+    public ContainmentExtender(RefinementActor container, String name)
     throws IllegalActionException, NameDuplicationException {
-        super(container, name);
+        super((NamedObj) container, name);
+        setPersistent(false);
     }
 
     /** Construct a ContainmentExtender attribute with the given name contained
@@ -115,6 +94,7 @@ public class ContainmentExtender extends Attribute implements
     public ContainmentExtender(State container, String name)
     throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        setPersistent(false);
     }
 
     /** Get an object with the given name within the container.

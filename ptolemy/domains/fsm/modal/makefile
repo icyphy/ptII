@@ -48,7 +48,6 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
 	Case.java \
-	ContainmentExtender.java \
 	MirrorCausalityInterface.java \
 	ModalController.java \
 	ModalModel.java \
@@ -74,8 +73,7 @@ OPTIONAL_FILES = \
 	doc \
 	'ModalController$$1.class' \
 	'ModalController$$ClassComparator.class' \
-	'ModalModel$$1.class' \
-	'Refinement$$1.class'
+	'ModalModel$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
