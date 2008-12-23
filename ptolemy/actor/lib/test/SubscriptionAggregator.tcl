@@ -222,3 +222,6 @@ test SubscriptionAggregator-4.0 {7*9*11 SubscriptionAggregators} {
 	[enumToTokenValues [$rec getRecord [expr {$count/5 - 1}]]] \
 	[enumToTokenValues [$rec getRecord [expr {$count/5}]]]
 } {35 {0 1 2 3 4} {0 1 2 3 4} {{"_"} {"_"} {"_"} {"_"} {"_"}}} 
+
+# The list of filters is static, so we reset it
+java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]

@@ -436,3 +436,5 @@ test FSMActor-9.1 {test working with MoML} {
     listToStrings [$rec getHistory 0]
 } {0 1 -1 1 0 -1 0 1 -1 0 1 -1 0 0}
 
+# The list of filters is static, so we reset it
+java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]

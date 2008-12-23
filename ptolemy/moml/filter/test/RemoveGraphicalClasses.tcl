@@ -758,3 +758,5 @@ diva.jar do not need to be downloaded.
 The following actors are affected:
 }
 
+# The list of filters is static, so we reset it
+java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]

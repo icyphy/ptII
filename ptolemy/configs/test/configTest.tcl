@@ -56,3 +56,6 @@ $configuration description
 puts "Done expanding"
 set results [[java::cast ptolemy.actor.gui.Configuration $configuration] check]
 puts $results
+
+# The list of filters is static, so we reset it
+java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]

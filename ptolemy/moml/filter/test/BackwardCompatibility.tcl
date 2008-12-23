@@ -1053,5 +1053,9 @@ foreach file [lsort [glob -nocomplain compat/*.xml compat2/*.xml compat3/*.xml c
     #	list {}
     #} {{}}
 }
+
+# The list of filters is static, so we reset it
+java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]
+
 #doneTests
 

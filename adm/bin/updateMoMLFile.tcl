@@ -49,6 +49,8 @@ proc updateMoMLFile { {file ../../ptolemy/domains/ct/demo/CarTracking/CarTrackin
     puts "exporting $outputFile"
     $toplevel exportMoML $outputStreamWriter
     $outputStreamWriter close
+		# The list of filters is static, so we reset it
+		java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]    
 }
 
 if {$argc > 0 } {

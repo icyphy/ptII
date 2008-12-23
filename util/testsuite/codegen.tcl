@@ -642,4 +642,7 @@ proc sootCodeGeneration {{PTII} modelPath {codeGenType Shallow} \
 #      return [exec java -Xfuture -classpath $classpath ptolemy.actor.gui.CompositeActorApplication -class $modelName]
 #  }
 
+# The list of filters is static, so we reset it
+java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]
+
 

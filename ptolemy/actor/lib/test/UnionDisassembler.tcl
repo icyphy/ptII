@@ -80,3 +80,6 @@ test UnionDisassembler-1.1 {Test getVerboseString} {
 {'(ptolemy.actor.lib.UnionDisassembler$PortFunction, int) <= (ptolemy.actor.TypedIOPort {.UnionDisassemblerTest.UnionDisassembler.cloth}, int)'}
 {'(ptolemy.actor.lib.UnionDisassembler$PortFunction, string) <= (ptolemy.actor.TypedIOPort {.UnionDisassemblerTest.UnionDisassembler.money}, string)'}
 {'(ptolemy.actor.lib.UnionDisassembler$PortFunction, {car = int, cloth = int, money = string}) <= (ptolemy.actor.TypedIOPort {.UnionDisassemblerTest.UnionDisassembler.record}, {car = int, cloth = int, money = string})}}}}
+
+# The list of filters is static, so we reset it
+java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]

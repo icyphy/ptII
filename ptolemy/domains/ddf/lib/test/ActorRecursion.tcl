@@ -99,3 +99,6 @@ test ActorRecursion-1.2 {cover _exportMoML in a model} {
     </port>
 </entity>
 }
+
+# The list of filters is static, so we reset it
+java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]

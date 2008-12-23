@@ -189,3 +189,5 @@ test RelationWidhtChanges-4.0 {Version 8.0, width set to 0} {
 </entity>
 }}
 
+# The list of filters is static, so we reset it
+java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]

@@ -188,4 +188,6 @@ test PropertyClassChanges-1.2 {Remove _Director from a modal model, based on dom
 # Below are the actors that are affected, along with the port name
 # and the new classname:}
 
+# The list of filters is static, so we reset it
+java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]
 

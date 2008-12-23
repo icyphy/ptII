@@ -44,6 +44,12 @@ if {[info procs jdkCapture] == "" } then {
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
+# The list of filters is static, so we reset it in case there
+# filters were already added.
+java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]
+java::call ptolemy.moml.MoMLParser addMoMLFilters \
+[java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
+
 
 test UserActorLibrary-0.1 {Read in the configuration} { 
     set configurationURL [java::call ptolemy.util.FileUtilities nameToURL \
@@ -136,6 +142,8 @@ test UserActorLibrary-1.0 {} {
                     </property>
                 </entity>
                 <relation name="r1" class="ptolemy.actor.TypedIORelation">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
                 </relation>
                 <link port="ramp.output" relation="r1"/>
                 <link port="rec.input" relation="r1"/>
@@ -199,3 +207,5 @@ test UserActorLibrary-1.4 {Try to assign to a Singleton. ComponentEntity._checkC
     java::call ptolemy.actor.gui.UserActorLibrary  saveComponentInLibrary  $configuration $entity2
 } {}
 
+# The list of filters is static, so we reset it
+java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]

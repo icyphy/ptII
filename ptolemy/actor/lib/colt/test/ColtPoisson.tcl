@@ -86,3 +86,6 @@ test ColtPoisson-1.2 {Change the seed parameter of one actor.  All actors should
 	[$instanceSeed1 getExpression] \
 	[$compositeSeed1 getExpression]
 } {0L 0L 0L}
+
+# The list of filters is static, so we reset it
+java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]

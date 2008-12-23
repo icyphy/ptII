@@ -74,3 +74,6 @@ test StringCompare-1.1 {test PortParameter memory leak} {
     set r2 [listToNames $rateVariables]
     list $r1 $r2
 } {{tokenConsumptionRate tokenConsumptionRate tokenConsumptionRate tokenConsumptionRate tokenConsumptionRate tokenConsumptionRate tokenConsumptionRate tokenConsumptionRate tokenConsumptionRate tokenConsumptionRate tokenConsumptionRate tokenConsumptionRate tokenConsumptionRate tokenConsumptionRate tokenConsumptionRate tokenConsumptionRate} {tokenConsumptionRate tokenConsumptionRate tokenConsumptionRate tokenConsumptionRate tokenConsumptionRate tokenConsumptionRate tokenConsumptionRate tokenConsumptionRate tokenConsumptionRate tokenConsumptionRate tokenConsumptionRate tokenConsumptionRate tokenConsumptionRate tokenConsumptionRate tokenConsumptionRate tokenConsumptionRate}}
+
+# The list of filters is static, so we reset it
+java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]

@@ -365,3 +365,7 @@ test Test-3.0 {Test case where training and we get no data} {
 # Reset the isRunningNightlyBuild property
 java::call System setProperty "ptolemy.ptII.isRunningNightlyBuild" \
     $oldIsRunningNightlyBuild 
+
+# The list of filters is static, so we reset it
+java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]
+    

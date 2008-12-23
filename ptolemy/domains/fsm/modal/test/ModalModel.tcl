@@ -362,3 +362,6 @@ test ModalModel-1.12 {Remove a port in the refinement and check modal model} {
             [$toplevel getEntity "modal model"]]
     _testEntityGetPorts $modal
 } {{}}
+
+# The list of filters is static, so we reset it
+java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]

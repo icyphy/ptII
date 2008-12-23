@@ -434,3 +434,6 @@ start Multimode {
 }
 
 }
+
+# The list of filters is static, so we reset it
+java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]

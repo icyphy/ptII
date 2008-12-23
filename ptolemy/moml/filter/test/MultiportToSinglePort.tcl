@@ -162,3 +162,6 @@ test MultiportToSinglePort-2.1 {output port is not a multiport, should not be ma
     set newMoML [$toplevel exportMoML]
     list [java::call ptolemy.moml.MoMLParser isModified]
 } {0}
+
+# The list of filters is static, so we reset it
+java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]

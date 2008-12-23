@@ -207,3 +207,6 @@ test UpdateAnnotation-1.2 {Fix an old style author annotation} {
     </property>
 </entity>
 }}   
+
+# The list of filters is static, so we reset it
+java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]

@@ -278,3 +278,7 @@ test Publisher-2.0 {Test deletion of a Publisher} {
     set r2 [[[java::cast ptolemy.actor.lib.Recorder $recorder] getLatest 0] toString]
     list $r1 $r2
 } {2 1}
+
+# The list of filters is static, so we reset it
+java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]
+

@@ -154,3 +154,6 @@ test VergilConfiguration-1.3 {make sure that everything inside the Full configur
 #    expandConfiguration "ptolemy/configs/vergilConfiguration.xml"
 #    # This is a known Failure because of matlab problems
 #} {0} {Known Failure}
+
+# The list of filters is static, so we reset it
+java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]

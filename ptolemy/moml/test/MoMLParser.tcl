@@ -4204,3 +4204,7 @@ test MoMLParser-31.1 {Make sure that the error message refers to the proper file
 } {{com.microstar.xml.XmlException: XML element "property" triggers exception. in file:XXXPTIIXXX at line 5 and column 95
 Caused by:
  java.lang.ClassNotFoundException: ptolemy.domains.DoesNotExist.kernel.DoesNotExistDirector}}
+
+# The list of filters is static, so we reset it
+java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]
+ 

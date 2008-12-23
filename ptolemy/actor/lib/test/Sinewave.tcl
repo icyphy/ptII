@@ -57,3 +57,6 @@ test Sinewave-1.0 {test constructor and initial value} {
     $sinewave setContainer $compositeEntity
     list $r1 [$sinewave getFullName]	    	
 } {.Sinewave .MyCompositeEntity.Sinewave}
+
+# The list of filters is static, so we reset it
+java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]

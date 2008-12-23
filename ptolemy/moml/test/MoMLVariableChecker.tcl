@@ -602,3 +602,6 @@ test MoMLVariableChecker-3.1 {copy a composite that has an expression that refer
 	[[$copy getAttribute ParameterP3] getName]
 
 } {ParameterP ParameterAP ParameterP2 ParameterP3}
+
+# The list of filters is static, so we reset it
+java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]

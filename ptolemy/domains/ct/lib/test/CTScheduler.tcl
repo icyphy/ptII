@@ -55,3 +55,7 @@ test CTScheduler {A model that has top level ports that are not connected} {
   in .CTTopLevelUnconnectedPorts.Continuous Time (CT) Solver.CTScheduler
 Because:
 0}}
+
+# The list of filters is static, so we reset it
+java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]
+

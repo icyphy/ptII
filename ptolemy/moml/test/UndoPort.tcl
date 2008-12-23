@@ -398,3 +398,7 @@ test UndoPort-2.2 {Test undoing port creation on two ports in a group} {
     </property>
 </entity>
 }
+
+# The list of filters is static, so we reset it
+java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]
+
