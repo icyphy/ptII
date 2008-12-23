@@ -28,11 +28,11 @@
 */
 package ptolemy.actor;
 
-import java.io.IOException;
 import java.io.StringWriter;
 import java.util.HashSet;
 import java.util.List;
 
+import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
@@ -65,9 +65,22 @@ public class DesignPatternGetMoMLAction {
      */
     public String getMoml(NamedObj object, String name) {
         CompositeEntity group = (CompositeEntity) object;
+        Attribute before = null;
+        Attribute after = null;
         StringWriter buffer = new StringWriter();
         try {
             buffer.write("<group>\n");
+
+            before = object.getAttribute("_transformationBefore");
+            if (before != null) {
+                new StringParameter(before, "_type").setExpression("immediate");
+            }
+
+            after = object.getAttribute("_transformationAfter");
+            if (after != null) {
+                new StringParameter(after, "_type").setExpression("delayed");
+            }
+
             List<Attribute> attributes = group.attributeList();
             for (Attribute attribute : attributes) {
                 if (!_IGNORED_ATTRIBUTES.contains(attribute.getName())) {
@@ -127,10 +140,31 @@ public class DesignPatternGetMoMLAction {
             buffer.write(StringUtilities.getIndentPrefix(1) + "</group>\n");
             buffer.write("</group>\n");
             return buffer.toString();
-        } catch (IOException e) {
+        } catch (Exception e) {
             // This should not occur.
             throw new InternalErrorException(null, e, "Unable to get the " +
                     "Moml content for group " + group.getName() + ".");
+        } finally {
+            if (before != null) {
+                Attribute attribute = before.getAttribute("_type");
+                if (attribute != null) {
+                    try {
+                        attribute.setContainer(null);
+                    } catch (Throwable t) {
+                        // Ignore.
+                    }
+                }
+            }
+            if (after != null) {
+                Attribute attribute = after.getAttribute("_type");
+                if (attribute != null) {
+                    try {
+                        attribute.setContainer(null);
+                    } catch (Throwable t) {
+                        // Ignore.
+                    }
+                }
+            }
         }
     }
 

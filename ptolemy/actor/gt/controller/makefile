@@ -84,6 +84,7 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	ComplexTransformation.xml \
+	DesignPatternTransformer.xml \
 	EmbeddedTransformationController.xml \
 	EmbeddedTransformationControllerWithPorts.xml \
 	EventLibrary.xml \
@@ -134,7 +135,9 @@ OPTIONAL_FILES = \
 	'SetTableau$$TableauState.class' \
 	'TableauControllerEvent$$1.class' \
 	'TableauParameter$$1.class' \
-	'Transform$$EmbeddedConfigurer.class'
+	'Transform$$EmbeddedConfigurer.class' \
+	'TransformationAttribute$$1.class' \
+	'TransformationAttribute$$2.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

@@ -91,72 +91,56 @@ MISC_FILES =	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
-	'BasicGraphFrame$$DocumentationMenuItemFactory$$1.class' \
-	'BasicGraphFrame$$DocumentationMenuItemFactory.class' \
-	'BasicGraphFrame$$MoveToBackAction$$1.class' \
-	'BasicGraphFrame$$MoveToFrontAction$$1.class' \
-	'BasicGraphFrame$$OpenContainerAction.class' \
-	'BasicGraphFrame$$PrintAction.class' \
-	'BasicGraphFrame$$SaveAction.class' \
-	'CustomizeDocumentationAction$$3.class' \
-	'DependencyHighlighter$$DependencyController.class' \
-	'DependencyHighlighter$$HighlightDependents.class' \
-	'BasicGraphFrame$$OpenLibraryMenuItemFactory$$1.class' \
-	'CustomizeDocumentationAction$$2.class' \
-	'WithIconGraphController$$NewPortAction$$1.class' \
-	'AbstractBasicGraphModel$$GraphChangeListener.class' \
-	'RunnableGraphController$$1.class' \
-	'RunnableGraphController$$2.class' \
 	'BasicGraphController$$1.class' \
-	'BasicGraphController$$NewPortAction.class' \
+	'BasicGraphController$$OpenBaseClassAction.class' \
 	'BasicGraphController$$SchematicContextMenuFactory.class' \
-	'BasicGraphController$$2.class' \
+	'BasicGraphController$$UnitSolverDialogAction.class' \
 	'BasicGraphFrame$$1.class' \
-	'BasicGraphFrame$$4.class' \
+	'BasicGraphFrame$$2.class' \
 	'BasicGraphFrame$$CopyAction.class' \
 	'BasicGraphFrame$$CutAction.class' \
+	'BasicGraphFrame$$DocumentationMenuItemFactory$$1.class' \
+	'BasicGraphFrame$$DocumentationMenuItemFactory.class' \
 	'BasicGraphFrame$$EditPreferencesAction.class' \
-	'BasicGraphFrame$$ExecuteSystemAction.class' \
-	'BasicGraphFrame$$ImportLibraryAction.class' \
-	'BasicGraphFrame$$LayoutAction.class' \
+	'BasicGraphFrame$$ElementInLinkType.class' \
+	'BasicGraphFrame$$LinkElementProperties.class' \
+	'BasicGraphFrame$$MoveToBackAction$$1.class' \
+	'BasicGraphFrame$$MoveToBackAction.class' \
+	'BasicGraphFrame$$MoveToFrontAction$$1.class' \
+	'BasicGraphFrame$$MoveToFrontAction.class' \
+	'BasicGraphFrame$$OpenContainerAction.class' \
+	'BasicGraphFrame$$OpenLibraryMenuItemFactory$$1.class' \
+	'BasicGraphFrame$$OpenLibraryMenuItemFactory.class' \
 	'BasicGraphFrame$$PasteAction.class' \
+	'BasicGraphFrame$$PrintAction.class' \
 	'BasicGraphFrame$$PtolemyLayout.class' \
 	'BasicGraphFrame$$PtolemyLayoutTarget.class' \
-	'BasicGraphFrame$$SaveInLibraryAction.class' \
+	'BasicGraphFrame$$RedoAction.class' \
+	'BasicGraphFrame$$SaveAction.class' \
+	'BasicGraphFrame$$UndoAction.class' \
 	'BasicGraphFrame$$ZoomFitAction.class' \
 	'BasicGraphFrame$$ZoomInAction.class' \
 	'BasicGraphFrame$$ZoomOutAction.class' \
 	'BasicGraphFrame$$ZoomResetAction.class' \
-	'BasicGraphController$$OpenBaseClassAction.class' \
-	'BasicGraphController$$UnitSolverDialogAction.class' \
-	'BasicGraphFrame$$2.class' \
-	'BasicGraphFrame$$3.class' \
-	'BasicGraphFrame$$OpenLibraryMenuItemFactory.class' \
-	'BasicGraphFrame$$RedoAction.class' \
-	'BasicGraphFrame$$UndoAction.class' \
 	'CustomizeDocumentationAction$$1.class' \
+	'CustomizeDocumentationAction$$2.class' \
+	'CustomizeDocumentationAction$$3.class' \
+	'DependencyHighlighter$$DependencyController.class' \
+	'DependencyHighlighter$$HighlightDependents.class' \
 	'EditorDropTarget$$1.class' \
-	'EditorDropTarget$$2.class' \
-	'EditorDropTarget$$3.class' \
-	'EditorDropTarget$$4.class' \
 	'EditorDropTarget$$DTListener.class' \
 	'ExtendedGraphFrame$$FullScreenAction.class' \
-	'IconController$$1.class' \
-	'IconController$$IconRenderer.class' \
 	'IconController$$IconRenderer$$1.class' \
-	'NamedObjController$$GetDocumentationAction.class' \
-	'ParameterizedNodeController$$1.class' \
+	'IconController$$IconRenderer.class' \
+	'LocatableNodeDragInteractor$$1.class' \
+	'RunnableGraphController$$1.class' \
+	'RunnableGraphController$$2.class' \
 	'RunnableGraphController$$ButtonFigureAction.class' \
 	'RunnableGraphController$$PauseModelAction.class' \
 	'RunnableGraphController$$RunModelAction.class' \
 	'RunnableGraphController$$StopModelAction.class' \
-	'WithIconGraphController$$1.class' \
-	'WithIconGraphController$$NewPortAction.class' \
-	'BasicGraphFrame$$5.class' \
-	'BasicGraphFrame$$6.class' \
-	'BasicGraphFrame$$MoveToBackAction.class' \
-	'BasicGraphFrame$$MoveToFrontAction.class' \
-	'LocatableNodeDragInteractor$$1.class'
+	'WithIconGraphController$$NewPortAction$$1.class' \
+	'WithIconGraphController$$NewPortAction.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

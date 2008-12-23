@@ -219,7 +219,7 @@ public class Transform extends GTEvent implements ConfigurableEntity {
         output.write(_getIndentPrefix(depth) + "<configure" + sourceSpec +
                 ">\n");
         _transformation.exportMoML(output, depth + 1);
-        output.write("</configure>\n");
+        output.write(_getIndentPrefix(depth) + "</configure>\n");
     }
 
     protected boolean _isActiveRefinement(TypedActor refinement) {

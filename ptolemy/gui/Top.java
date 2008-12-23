@@ -319,15 +319,15 @@ public abstract class Top extends JFrame {
 
                     // Set the action command and listener for each menu item.
                     for (int i = 0; i < _fileMenuItems.length; i++) {
-                    	if (_fileMenuItems[i] == null) {
-                    		_fileMenu.addSeparator();
-                    	} else {
-	                        _fileMenuItems[i].setActionCommand(_fileMenuItems[i]
-	                                .getText());
-	                        _fileMenuItems[i].addActionListener(
-	                        		fileMenuListener);
-	                        _fileMenu.add(_fileMenuItems[i]);
-                    	}
+                        if (_fileMenuItems[i] == null) {
+                            _fileMenu.addSeparator();
+                        } else {
+                            _fileMenuItems[i].setActionCommand(_fileMenuItems[i]
+                                    .getText());
+                            _fileMenuItems[i].addActionListener(
+                                    fileMenuListener);
+                            _fileMenu.add(_fileMenuItems[i]);
+                        }
                     }
 
                     _menubar.add(_fileMenu);
@@ -657,6 +657,24 @@ public abstract class Top extends JFrame {
         }
     }
 
+    protected File _getCurrentDirectory() {
+        if (_directory != null) {
+            return _directory;
+        } else {
+            // The default on Windows is to open at user.home, which is
+            // typically not what we want.
+            // So we use the current directory instead.
+            // This will fail with a security exception in applets.
+            String currentWorkingDirectory = StringUtilities.getProperty(
+                    "user.dir");
+            if (currentWorkingDirectory == null) {
+                return null;
+            } else {
+                return new File(currentWorkingDirectory);
+            }
+        }
+    }
+
     /** Get the name of this object, which in this base class is
      *  either the name of the file that has been associated with this
      *  object, or the string "Unnamed" if none.
@@ -971,23 +989,7 @@ public abstract class Top extends JFrame {
         }
 
         fileDialog.setDialogTitle("Save as...");
-
-        if (_directory != null) {
-            fileDialog.setCurrentDirectory(_directory);
-        } else {
-            // The default on Windows is to open at user.home, which is
-            // typically not what we want.
-            // So we use the current directory instead.
-            // This will fail with a security exception in applets.
-            String currentWorkingDirectory = StringUtilities
-                    .getProperty("user.dir");
-
-            if (currentWorkingDirectory != null) {
-                fileDialog.setCurrentDirectory(new File(
-                        currentWorkingDirectory));
-            }
-        }
-
+        fileDialog.setCurrentDirectory(_getCurrentDirectory());
         return fileDialog;
     }
 

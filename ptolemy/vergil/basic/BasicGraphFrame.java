@@ -58,6 +58,8 @@ import java.awt.print.PrinterException;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.io.Writer;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -78,12 +80,15 @@ import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
 import javax.swing.JTree;
 import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
+import ptolemy.actor.DesignPatternGetMoMLAction;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.EditParametersDialog;
+import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.PtolemyPreferences;
 import ptolemy.actor.gui.SizeAttribute;
@@ -95,6 +100,8 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ExpertParameter;
 import ptolemy.data.expr.Parameter;
+import ptolemy.gui.ComponentDialog;
+import ptolemy.gui.Query;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -112,6 +119,7 @@ import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.IconLoader;
 import ptolemy.moml.LibraryAttribute;
@@ -122,6 +130,7 @@ import ptolemy.moml.MoMLVariableChecker;
 import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
+import ptolemy.vergil.icon.DesignPatternIcon;
 import ptolemy.vergil.kernel.AttributeNodeModel;
 import ptolemy.vergil.toolbox.MenuItemFactory;
 import ptolemy.vergil.toolbox.MoveAction;
@@ -542,13 +551,13 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      */
     public void createHierarchy() {
         GraphController controller = _getGraphController();
-        SelectionModel model = controller.getSelectionModel();        
+        SelectionModel model = controller.getSelectionModel();
         AbstractBasicGraphModel graphModel = (AbstractBasicGraphModel) controller
                 .getGraphModel();
-        
+
         List<Object> origSelection = Arrays.asList(model.getSelectionAsArray());
         HashSet<Object> selection = new HashSet<Object>();
-        selection.addAll(origSelection);        
+        selection.addAll(origSelection);
 
         // A set, because some objects may represent the same
         // ptolemy object.
@@ -560,9 +569,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         StringBuffer extConnections = new StringBuffer();
         StringBuffer intRelations = new StringBuffer();
         StringBuffer intConnections = new StringBuffer();
-        
+
         HashSet<Object> selectedEdges = new HashSet<Object>();
-        
+
         // First get all the nodes.
         try {
             NamedObj container = (NamedObj) graphModel.getRoot();
@@ -573,7 +582,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 throw new InternalErrorException(
                         "Cannot create hierarchy if the container is not a CompositeEntity.");
             }
-            
+
             CompositeEntity compositeActor = (CompositeEntity) container;
 
             String compositeActorName = container.uniqueName("CompositeActor");
@@ -584,7 +593,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             for (Object selectedItem : origSelection) {
                 if (selectedItem instanceof Figure) {
                     Object userObject = ((Figure) selectedItem).getUserObject();
-                    
+
                     // We want to skip the selection of ports in composite actors since
                     //  these should remain in the already existing composite actor.
                     // When the wire has been selected the port will be correctly duplicated.
@@ -597,22 +606,22 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                                 // Remove element from selection
                                 model.removeSelection(selectedItem);
                                 selection.remove(selectedItem);
-                                
+
                                 // Don't process this node.
                                 continue;
                             }
                         }
-                        
+
                     }
-                    
-                    
+
+
                     if (!gotLocation) {
                         location[0] = ((Figure) selectedItem).getBounds()
                                 .getCenterX();
                         location[1] = ((Figure) selectedItem).getBounds()
                                 .getCenterY();
                         gotLocation = true;
-                    }                    
+                    }
 
                     if (graphModel.isNode(userObject)) {
                         nodeSet.add(userObject);
@@ -620,13 +629,13 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                         NamedObj actual = (NamedObj) graphModel
                                 .getSemanticObject(userObject);
                         namedObjSet.add(actual);
-                        
+
                         // We will now add all links from and to the ports of the actor
                         //      as selected links since we don't want to lose links and relations when creating
                         //      hierarchies
 
                         if (actual instanceof Entity) {
-                            for (IOPort port : (List<IOPort>) ((Entity) actual).portList()) {                                                    
+                            for (IOPort port : (List<IOPort>) ((Entity) actual).portList()) {
                                 Iterator<?> outEdges =  graphModel.outEdges(port);
                                 while (outEdges.hasNext()) {
                                     Object obj = outEdges.next();
@@ -638,12 +647,12 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                                     Object obj = inEdges.next();
                                     selectedEdges.add(obj);
                                     selection.add(controller.getFigure(obj));
-                                }                        
+                                }
                             }
                         }
                     } else if (graphModel.isEdge(userObject)) {
                         selectedEdges.add(userObject);
-                    }                    
+                    }
                 }
             }
 
@@ -677,7 +686,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                         tailOK = true;
                     }
                 }
-                
+
                 // For the edges at the boundary.
                 if ((!headOK && tailOK) || (headOK && !tailOK)) {
 
@@ -685,17 +694,17 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                         = LinkElementProperties.extractLinkProperties(head);
                     LinkElementProperties tailProperties
                         = LinkElementProperties.extractLinkProperties(tail);
-                   
-                    
+
+
                     if (headProperties.port == null && tailProperties.port != null) {
                         //Swap head and tail
                         LinkElementProperties temp = headProperties;
                         headProperties = tailProperties;
-                        tailProperties = temp;                                
+                        tailProperties = temp;
                     }
-                    
+
                     IORelation relation = null;
-                    
+
                     boolean duplicateRelation = true;
                     if (headProperties.type == ElementInLinkType.RELATION) {
                         relation = (IORelation) graphModel.getSemanticObject(headProperties.element);
@@ -703,12 +712,12 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                     } else if (tailProperties.type == ElementInLinkType.RELATION) {
                         relation = (IORelation) graphModel.getSemanticObject(tailProperties.element);
                         duplicateRelation = false;
-                    } else {                                
+                    } else {
                         relation = (IORelation) graphModel.getSemanticObject(userObject);
                         duplicateRelation = true;
                     }
-                    
-                    if (headProperties.port != null) {                                                       
+
+                    if (headProperties.port != null) {
                         ComponentEntity entity = (ComponentEntity) headProperties.port
                                 .getContainer();
                         String portName = "port_" + i;
@@ -798,14 +807,14 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                         } else {
                             // The port is outside the hierarchy.
                             // The relation must be inside.
-                            if ((isInput && headProperties.type == ElementInLinkType.PORT_IN_ACTOR) || 
+                            if ((isInput && headProperties.type == ElementInLinkType.PORT_IN_ACTOR) ||
                                     (isOutput && headProperties.type == ElementInLinkType.STANDALONE_PORT)){
                                 newPorts
                                         .append("<property name=\"output\"/>");
                             }
 
-                            if ((isOutput && headProperties.type == ElementInLinkType.PORT_IN_ACTOR) || 
-                                    (isInput && headProperties.type == ElementInLinkType.STANDALONE_PORT)){                                        
+                            if ((isOutput && headProperties.type == ElementInLinkType.PORT_IN_ACTOR) ||
+                                    (isInput && headProperties.type == ElementInLinkType.STANDALONE_PORT)){
                                 newPorts
                                         .append("<property name=\"input\"/>");
                             }
@@ -821,7 +830,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                                             + "ptolemy.actor.TypedIORelation\"/>\n");
                             String entityPrefix = "";
                             if (getModel() !=  entity) {
-                                entityPrefix = entity.getName() + ".";                                        
+                                entityPrefix = entity.getName() + ".";
                             }
                             extConnections.append("<link port=\""
                                     + entityPrefix
@@ -842,12 +851,12 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
                                 ComponentEntity otherEntity = (ComponentEntity) tailProperties.port
                                         .getContainer();
-                                
+
                                 String otherEntityPrefix = "";
                                 if (getModel() !=  otherEntity) {
-                                    otherEntityPrefix = otherEntity.getName() + ".";                                        
+                                    otherEntityPrefix = otherEntity.getName() + ".";
                                 }
-                                
+
                                 intConnections
                                         .append("<link port=\""
                                                 + otherEntityPrefix
@@ -869,7 +878,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 }
                 ++i;
             }
-       
+
 
             // System.out.println(" new ports:" + newPorts);
 
@@ -901,7 +910,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                         "Getting data from clipboard failed.");
             }
 
-            // Generate the MoML to carry out the deletion.            
+            // Generate the MoML to carry out the deletion.
 
             moml.append(_deleteMoML(graphModel, selection.toArray(new Object[]{}), model));
 
@@ -923,7 +932,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // External relations and connections.
             moml.append(extRelations);
             moml.append(extConnections);
-            
+
 
             moml.append("</group>\n");
 
@@ -1008,6 +1017,175 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         }
     }
 
+    /** Export the current submodel as a design pattern using a method similar to
+     *  Save As.
+     */
+    public void exportDesignPattern() {
+        Query query = new Query();
+        query.setTextWidth(40);
+
+        Tableau tableau = getTableau();
+        PtolemyEffigy effigy = (PtolemyEffigy) tableau.getContainer();
+        NamedObj model = effigy.getModel();
+        _initialSaveAsFileName = model.getName() + ".xml";
+        if (_initialSaveAsFileName.length() == 4) {
+            _initialSaveAsFileName = "model.xml";
+        }
+
+        HashSet<NamedObj> namedObjSet = _getSelectionSet();
+        boolean hasSelectedObjects = !namedObjSet.isEmpty();
+        query.addCheckBox("selected", "Selected Objects Only",
+                hasSelectedObjects).setEnabled(hasSelectedObjects);
+        File directory = _getCurrentDirectory();
+        query.addFileChooser("file", "Design Pattern File",
+                _initialSaveAsFileName, null, directory);
+        query.addSeparator();
+        query.addText("Supply the complex transformations to be applied " +
+                "before and after applying the design pattern.", Color.blue,
+                SwingConstants.CENTER);
+        query.addFileChooser("before", "Transformation Before", null, null,
+                directory);
+        query.addFileChooser("after", "Transformation After", null, null,
+                directory);
+
+        File file = null;
+        while (file == null) {
+            ComponentDialog dialog = new ComponentDialog(this,
+                    "Export Design Pattern", query);
+            if (!dialog.buttonPressed().equals("OK")) {
+                return;
+            }
+            String fileName = query.getStringValue("file").trim();
+            if (fileName.equals("")) {
+                MessageHandler.error("Please specify a file name for the " +
+                        "design pattern.");
+            } else {
+                file = new File(fileName);
+                if (file.exists()) {
+                    if (!MessageHandler.yesNoQuestion("File " + file +
+                            " exists. Do you want to overwrite it?")) {
+                        file = null;
+                    }
+                }
+            }
+        }
+
+        NamedObj actor = getModel();
+        StringAttribute alternateGetMoml = null;
+        DesignPatternIcon icon = null;
+        String before = "";
+        String after = "";
+        MoMLParser parser = null;
+
+        try {
+            alternateGetMoml = new StringAttribute(actor,
+                    "_alternateGetMomlAction");
+            alternateGetMoml.setExpression(
+                    DesignPatternGetMoMLAction.class.getName());
+
+            icon = new DesignPatternIcon(actor, "_designPatternIcon");
+
+            _prepareExportDesignPattern();
+
+            before = query.getStringValue("before").trim();
+            if (!before.equals("")) {
+                if (parser == null) {
+                    parser = new MoMLParser();
+                }
+
+                URL base = new File(before).toURI().toURL();
+                NamedObj transformation = parser.parse(base, base);
+
+                StringWriter writer = new StringWriter();
+                writer.write("<property name=\"_transformationBefore\" " +
+                        "class=\"ptolemy.actor.gt.controller." +
+                        "TransformationAttribute\">\n");
+                writer.write("    <configure>\n");
+
+                transformation.setClassName( "ptolemy.actor.gt.controller" +
+                        ".DesignPatternTransformer");
+                transformation.exportMoML(writer, 2,
+                        "DesignPatternTransformer");
+
+                writer.write("    </configure>\n");
+                writer.write("</property>\n");
+
+                parser.reset();
+                parser.setContext(model);
+                parser.parse(writer.toString());
+            }
+
+            after = query.getStringValue("after").trim();
+            if (!after.equals("")) {
+                if (parser == null) {
+                    parser = new MoMLParser();
+                }
+
+                URL base = new File(after).toURI().toURL();
+                NamedObj transformation = parser.parse(base, base);
+
+                StringWriter writer = new StringWriter();
+                writer.write("<property name=\"_transformationAfter\" " +
+                        "class=\"ptolemy.actor.gt.controller." +
+                        "TransformationAttribute\">\n");
+                writer.write("    <configure>\n");
+
+                transformation.setClassName( "ptolemy.actor.gt.controller" +
+                        ".DesignPatternTransformer");
+                transformation.exportMoML(writer, 2,
+                        "DesignPatternTransformer");
+
+                writer.write("    </configure>\n");
+                writer.write("</property>\n");
+
+                parser.reset();
+                parser.setContext(model);
+                parser.parse(writer.toString());
+            }
+
+            _exportSelectedObjectsOnly = query.getBooleanValue("selected");
+            _useEffigyToSaveModel = false;
+
+            _writeFile(file);
+        } catch (Throwable t) {
+            MessageHandler.error("Unable to export model.", t);
+        } finally {
+            _exportSelectedObjectsOnly = false;
+            _useEffigyToSaveModel = true;
+            if (alternateGetMoml != null) {
+                try {
+                    alternateGetMoml.setContainer(null);
+                } catch (Throwable t) {
+                    // Ignore.
+                }
+            }
+            if (icon != null) {
+                try {
+                    icon.setContainer(null);
+                } catch (Throwable t) {
+                    // Ignore.
+                }
+            }
+            _finishExportDesignPattern();
+            Attribute attribute = model.getAttribute("_transformationBefore");
+            if (attribute != null) {
+                try {
+                    attribute.setContainer(null);
+                } catch (Throwable t) {
+                    // Ignore.
+                }
+            }
+            attribute = model.getAttribute("_transformationAfter");
+            if (attribute != null) {
+                try {
+                    attribute.setContainer(null);
+                } catch (Throwable t) {
+                    // Ignore.
+                }
+            }
+        }
+    }
+
     /** Return the center location of the visible part of the pane.
      *  @return The center of the visible part.
      *  @see #setCenter(Point2D)
@@ -1055,6 +1233,62 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     public Rectangle2D getVisibleRectangle() {
         Dimension size = getJGraph().getSize();
         return new Rectangle2D.Double(0, 0, size.getWidth(), size.getHeight());
+    }
+
+    /** Import a design pattern into the current design.
+     */
+    public void importDesignPattern() {
+        JFileChooser fileDialog = new JFileChooser();
+
+        if (_fileFilter != null) {
+            fileDialog.addChoosableFileFilter(_fileFilter);
+        }
+
+        fileDialog.setDialogTitle("Select a design pattern file.");
+        if (_directory != null) {
+            fileDialog.setCurrentDirectory(_directory);
+        } else {
+            String currentWorkingDirectory = StringUtilities.getProperty(
+                    "user.dir");
+            if (currentWorkingDirectory != null) {
+                fileDialog.setCurrentDirectory(new File(
+                        currentWorkingDirectory));
+            }
+        }
+
+        if (fileDialog.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            _directory = fileDialog.getCurrentDirectory();
+            NamedObj model = null;
+            try {
+                File file = fileDialog.getSelectedFile().getCanonicalFile();
+                URL url = file.toURI().toURL();
+                MoMLParser parser = new MoMLParser();
+                MoMLParser.purgeModelRecord(url);
+                model = parser.parse(url, url);
+            } catch (Exception e) {
+                report(new IllegalActionException(null, e,
+                        "Error reading input"));
+            }
+            if (model != null) {
+                Attribute attribute = model.getAttribute(
+                        "_alternateGetMomlAction");
+                String className = DesignPatternGetMoMLAction.class.getName();
+                if (attribute == null ||
+                        !(attribute instanceof StringAttribute) ||
+                        !((StringAttribute) attribute).getExpression().equals(
+                                className)) {
+                    report(new IllegalActionException(
+                            "The model is not a design pattern."));
+                } else {
+                    String moml = new DesignPatternGetMoMLAction().getMoml(
+                            model, model.getName());
+                    NamedObj context = getModel();
+                    MoMLChangeRequest request = new MoMLChangeRequest(this,
+                            context, moml);
+                    context.requestChange(request);
+                }
+            }
+        }
     }
 
     /** Layout the graph view.
@@ -1729,6 +1963,75 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         return size;
     }
 
+    /** Export the model into the writer with the given name. If {@link
+     *  _exportSelectedObjectsOnly} is set to true, then only the selected named
+     *  objects are exported; otherwise, the whole model is exported with its
+     *  exportMoML() method.
+     *
+     *  @param writer The writer.
+     *  @param model The model to export.
+     *  @param name The name of the exported model.
+     *  @exception IOException If an I/O error occurs.
+     */
+    protected void _exportModel(Writer writer, NamedObj model, String name)
+            throws IOException {
+        if (_exportSelectedObjectsOnly) {
+            try {
+                model.workspace().getReadAccess();
+                String elementName = model.getElementName();
+                writer.write("<?xml version=\"1.0\" standalone=\"no\"?>\n"
+                        + "<!DOCTYPE " + elementName + " PUBLIC "
+                        + "\"-//UC Berkeley//DTD MoML 1//EN\"\n"
+                        + "    \"http://ptolemy.eecs.berkeley.edu"
+                        + "/xml/dtd/MoML_1.dtd\">\n");
+
+                writer.write("<" + elementName + " name=\"" + name
+                        + "\" class=\"" + model.getClassName() + "\"");
+
+                if (model.getSource() != null) {
+                    writer.write(" source=\"" + model.getSource() + "\">\n");
+                } else {
+                    writer.write(">\n");
+                }
+
+                String[] attributeNames = {"_alternateGetMomlAction",
+                        "_designPatternIcon", "_transformationBefore",
+                        "_transformationAfter"};
+                for (String attributeName : attributeNames) {
+                    Attribute attribute = model.getAttribute(attributeName);
+                    if (attribute != null) {
+                        attribute.exportMoML(writer, 1);
+                    }
+                }
+
+                HashSet<NamedObj> namedObjSet = _getSelectionSet();
+                NamedObj container = (NamedObj) _getGraphModel().getRoot();
+                Iterator<NamedObj> elements = container.sortContainedObjects(
+                        namedObjSet).iterator();
+                while (elements.hasNext()) {
+                    elements.next().exportMoML(writer, 1);
+                }
+
+                if (model instanceof CompositeEntity) {
+                    writer.write(((CompositeEntity) model).exportLinks(1,
+                            namedObjSet));
+                }
+
+                writer.write("</" + elementName + ">\n");
+            } finally {
+                model.workspace().doneReading();
+            }
+        } else {
+            model.exportMoML(writer, 0, name);
+        }
+    }
+
+    /** Finish exporting a design pattern. Nothing is done in this base class.
+     *  Subclasses may override this method to perform extra wrapup operations.
+     */
+    protected void _finishExportDesignPattern() {
+    }
+
     /** Get the directory that was last accessed by this window.
      *  @see #_setDirectory
      *  @return The directory last accessed.
@@ -1839,6 +2142,14 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         return namedObjSet;
     }
 
+    /** Prepare to export a design pattern. Nothing is done in this base class.
+     *  Subclasses may override this method to perform extra operations.
+     *
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    protected void _prepareExportDesignPattern() throws IllegalActionException {
+    }
+
     /** Set the directory that was last accessed by this window.
      *  @see #_getDirectory
      *  @param directory The directory last accessed.
@@ -1850,7 +2161,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         // static members.
         _directory = directory;
     }
-    
+
     /** Enable or disable drop into.
      *  @param enable False to disable.
      */
@@ -1954,6 +2265,11 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
     /** The action to edit preferences. */
     protected EditPreferencesAction _editPreferencesAction;
+
+    /** Whether {@link #_exportModel(Writer, NamedObj, String)} should only
+     *  export the selected objects.
+     */
+    protected boolean _exportSelectedObjectsOnly = false;
 
     /** The panner. */
     protected JCanvasPanner _graphPanner;
@@ -2223,7 +2539,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         }
     }
 
-    
+
     ///////////////////////////////////////////////////////////////////
     //// EditPreferencesAction
 
@@ -2302,10 +2618,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     ///////////////////////////////////////////////////////////////////
     //// ElementInLinkType
     /**
-     * An enumerate to specifies what kind of element the element (head or tail) is in a link. 
+     * An enumerate to specifies what kind of element the element (head or tail) is in a link.
      */
     private enum ElementInLinkType { PORT_IN_ACTOR, STANDALONE_PORT, RELATION }
-    
+
     ///////////////////////////////////////////////////////////////////
     //// ExecuteSystemAction
 
@@ -2332,8 +2648,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     //            }
     //        }
     //    }
-    
-    
+
+
     ///////////////////////////////////////////////////////////////////
     //// LinkElementProperties
     /**
@@ -2349,10 +2665,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             this.port = port;
             this.type = type;
         }
-        
+
         /**
          * Extract the properties from an element (head or tail) in a link a return these as an ElementInLinkType
-         */        
+         */
         static LinkElementProperties extractLinkProperties(Object element) {
             IOPort elementPort = null;
             ElementInLinkType elementType = ElementInLinkType.PORT_IN_ACTOR;
@@ -2363,7 +2679,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             else if (element instanceof Location) {
                 //FIXME Rodiers: it's weird that these Ports are as Locations in the Link
                 //      and not as IOPort. Is this a bug, or a (weird) design decision?
-                
+
                 //Either a port (not one of an actor) or a relation
                 NamedObj elementContainer = ((Location) element).getContainer();
                 if (elementContainer instanceof IOPort) {
@@ -2374,16 +2690,16 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                     //This is a relation
                     assert elementContainer instanceof IORelation;
                     elementType =  ElementInLinkType.RELATION;
-                }                                
+                }
             }
             return new LinkElementProperties(element, elementPort, elementType);
         }
-        
+
         public final Object element;
-        public final IOPort port;        
+        public final IOPort port;
         public final ElementInLinkType type;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     //// MoveToBackAction
     /** Action to move the current selection to the back (which corresponds
@@ -3077,5 +3393,5 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             zoom(1.0 / 1.25);
         }
     }
-    
+
 }

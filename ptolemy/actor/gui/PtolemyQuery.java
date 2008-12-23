@@ -880,7 +880,9 @@ public class PtolemyQuery extends Query implements QueryListener,
         // trigger a dialog even if the cancel button is pressed!
         // No good workaround here.
         // notifyListeners();
-        _handler.removeChangeListener(PtolemyQuery.this);
+        if (_handler != null) {
+            _handler.removeChangeListener(PtolemyQuery.this);
+        }
 
         // It's a bit bizarre that we have to remove ourselves as a listener
         // to ourselves, since the window is closing.  But if we don't do

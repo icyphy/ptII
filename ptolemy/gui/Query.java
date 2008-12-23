@@ -27,6 +27,7 @@
  */
 package ptolemy.gui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -70,6 +71,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JSlider;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -622,6 +624,31 @@ public class Query extends JPanel {
         _addPair(name, lbl, buttonPanel, buttons);
     }
 
+    /** Create a horizontal separator between components.
+     */
+    public void addSeparator() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+
+        JPanel top = new JPanel();
+        top.setPreferredSize(new Dimension(-1, 5));
+        panel.add(top, BorderLayout.NORTH);
+
+        JSeparator separator = new JSeparator(JSeparator.HORIZONTAL);
+        panel.add(separator, BorderLayout.CENTER);
+
+        JPanel bottom = new JPanel();
+        bottom.setPreferredSize(new Dimension(-1, 5));
+        panel.add(bottom, BorderLayout.SOUTH);
+
+        _constraints.gridwidth = GridBagConstraints.REMAINDER;
+        _constraints.insets = _noPadding;
+        _grid.setConstraints(panel, _constraints);
+        _entryPanel.add(panel);
+
+        _recalculatePreferredSize(panel);
+    }
+
     /** Create a slider with the specified name, label, default
      *  value, maximum, and minimum.
      *  @param name The name used to identify the slider.
@@ -653,6 +680,30 @@ public class Query extends JPanel {
         _addPair(name, lbl, slider, slider);
         slider.addChangeListener(new SliderListener(this, name));
         return slider;
+    }
+
+    public void addText(String text, Color color, int alignment) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+
+        JPanel top = new JPanel();
+        top.setPreferredSize(new Dimension(-1, 5));
+        panel.add(top, BorderLayout.NORTH);
+
+        JLabel label = new JLabel(text, alignment);
+        label.setForeground(color);
+        panel.add(label, BorderLayout.CENTER);
+
+        JPanel bottom = new JPanel();
+        bottom.setPreferredSize(new Dimension(-1, 5));
+        panel.add(bottom, BorderLayout.SOUTH);
+
+        _constraints.gridwidth = GridBagConstraints.REMAINDER;
+        _constraints.insets = _noPadding;
+        _grid.setConstraints(panel, _constraints);
+        _entryPanel.add(panel);
+
+        _recalculatePreferredSize(panel);
     }
 
     /**  Create a text area.
@@ -1554,6 +1605,13 @@ public class Query extends JPanel {
         _labels.put(name, label);
         _previous.put(name, getStringValue(name));
 
+        _recalculatePreferredSize(widget);
+    }
+
+    /** Recalculate the preferred size of the entry panel.
+     *  @param widget The widget added to the entry panel.
+     */
+    protected void _recalculatePreferredSize(Component widget) {
         Dimension preferredSize = _entryPanel.getPreferredSize();
 
         // Add some slop to the width to take in to account
@@ -1868,14 +1926,18 @@ public class Query extends JPanel {
         public void actionPerformed(ActionEvent e) {
             // NOTE: If the last argument is null, then choose a default dir.
             JFileChooser fileChooser = new JFileChooser(_startingDirectory);
+            String fileName = getSelectedFileName().trim();
+            if (!fileName.equals("")) {
+                fileChooser.setSelectedFile(new File(fileName));
+            }
             fileChooser.setApproveButtonText("Select");
 
             // FIXME: The following doesn't have any effect.
             fileChooser.setApproveButtonMnemonic('S');
 
             if (_allowFiles && _allowDirectories) {
-                fileChooser
-                        .setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+                fileChooser.setFileSelectionMode(
+                        JFileChooser.FILES_AND_DIRECTORIES);
             } else if (_allowFiles && !_allowDirectories) {
                 // This is the default.
                 fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);

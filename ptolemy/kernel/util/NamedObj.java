@@ -67,7 +67,7 @@ import ptolemy.util.StringUtilities;
  and {@link #attributeList(Class)} methods.
  Classes derived from NamedObj may constrain attributes to be a
  subclass of Attribute.  To do that, they should override the protected
- {@link #_addAttribute(Attribute)} method to throw an exception if
+ _addAttribute(Attribute) method to throw an exception if
  the object provided is not of the right class.
  <p>
  An instance of this class has a name.
@@ -769,8 +769,8 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  version of this method.  It is final to ensure that
      *  derived classes only need to override that method to change
      *  the MoML description.
-     *  @exception IOException If an I/O error occurs.
      *  @param output The stream to write to.
+     *  @exception IOException If an I/O error occurs.
      *  @see MoMLExportable
      *  @see #exportMoML(Writer, int, String)
      *  @see #isPersistent()
@@ -2381,9 +2381,9 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         // to export _displayName.  
         // See: http://bugzilla.ecoinformatics.org/show_bug.cgi?id=3361
         if (_displayName != null) {
-            output.write("<display name=\"");
+            output.write(_getIndentPrefix(depth) + "<display name=\"");
             output.write(StringUtilities.escapeForXML(_displayName));
-            output.write("\"/>");
+            output.write("\"/>\n");
         }
 
         // Callers of this method should hold read access 

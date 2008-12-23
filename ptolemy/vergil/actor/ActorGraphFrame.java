@@ -33,7 +33,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
-import java.net.URL;
 import java.util.List;
 
 import javax.swing.AbstractAction;
@@ -45,10 +44,8 @@ import javax.swing.KeyStroke;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.DesignPatternGetMoMLAction;
 import ptolemy.actor.Director;
 import ptolemy.actor.Manager;
-import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.DebugListenerTableau;
 import ptolemy.actor.gui.Effigy;
@@ -61,22 +58,16 @@ import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.moml.MoMLParser;
 import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.basic.AbstractBasicGraphModel;
 import ptolemy.vergil.basic.ExtendedGraphFrame;
-import ptolemy.vergil.icon.DesignPatternIcon;
 import diva.canvas.DamageRegion;
 import diva.graph.GraphController;
 import diva.graph.GraphPane;
@@ -151,7 +142,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame
         _instantiateEntityAction = new InstantiateEntityAction();
     }
 
-    /** React to the actions specific to this FSM graph frame.
+    /** React to the actions specific to this actor graph frame.
      *
      *  @param e The action event.
      */
@@ -162,108 +153,6 @@ public class ActorGraphFrame extends ExtendedGraphFrame
             importDesignPattern();
         } else if (actionCommand.equals("Export Design Pattern")) {
             exportDesignPattern();
-        }
-    }
-
-    /** Import a design pattern into the current design.
-     */
-    public void importDesignPattern() {
-        JFileChooser fileDialog = new JFileChooser();
-
-        if (_fileFilter != null) {
-            fileDialog.addChoosableFileFilter(_fileFilter);
-        }
-
-        fileDialog.setDialogTitle("Select a design pattern file.");
-        if (_directory != null) {
-            fileDialog.setCurrentDirectory(_directory);
-        } else {
-            String currentWorkingDirectory = StringUtilities.getProperty(
-                    "user.dir");
-            if (currentWorkingDirectory != null) {
-                fileDialog.setCurrentDirectory(new File(
-                        currentWorkingDirectory));
-            }
-        }
-
-        if (fileDialog.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            _directory = fileDialog.getCurrentDirectory();
-            NamedObj model = null;
-            try {
-                File file = fileDialog.getSelectedFile().getCanonicalFile();
-                URL url = file.toURI().toURL();
-                MoMLParser parser = new MoMLParser();
-                model = parser.parse(url, url);
-            } catch (Exception e) {
-                report(new IllegalActionException(null, e,
-                        "Error reading input"));
-            }
-            if (model != null) {
-                Attribute attribute = model.getAttribute(
-                        "_alternateGetMomlAction");
-                String className = DesignPatternGetMoMLAction.class.getName();
-                if (attribute == null ||
-                        !(attribute instanceof StringAttribute) ||
-                        !((StringAttribute) attribute).getExpression().equals(
-                                className)) {
-                    report(new IllegalActionException(
-                            "The model is not a design pattern."));
-                } else {
-                    String moml = new DesignPatternGetMoMLAction().getMoml(
-                            model, model.getName());
-                    NamedObj context = getModel();
-                    MoMLChangeRequest request = new MoMLChangeRequest(this,
-                            context, moml);
-                    context.requestChange(request);
-                }
-            }
-        }
-    }
-
-    /** Save the current submodel as a design pattern using a method similar to
-     *  Save As.
-     */
-    public void exportDesignPattern() {
-        Tableau tableau = getTableau();
-        PtolemyEffigy effigy = (PtolemyEffigy) tableau.getContainer();
-        NamedObj model = effigy.getModel();
-        _initialSaveAsFileName = model.getName() + ".xml";
-        if (_initialSaveAsFileName.length() == 4) {
-            _initialSaveAsFileName = "model.xml";
-        }
-
-        TypedCompositeActor actor = (TypedCompositeActor) getModel();
-        StringAttribute alternateGetMoml = null;
-        DesignPatternIcon icon = null;
-        try {
-            alternateGetMoml = new StringAttribute(actor,
-                    "_alternateGetMomlAction");
-            alternateGetMoml.setExpression(
-                    DesignPatternGetMoMLAction.class.getName());
-
-            icon = new DesignPatternIcon(actor, "_designPatternIcon");
-
-            _useEffigyToSaveModel = false;
-            super._saveAs(".xml", false);
-        } catch (KernelException e) {
-            throw new InternalErrorException(actor, e,
-                    "Unable to export model.");
-        } finally {
-            _useEffigyToSaveModel = true;
-            if (alternateGetMoml != null) {
-                try {
-                    alternateGetMoml.setContainer(null);
-                } catch (KernelException e) {
-                    // Ignore.
-                }
-            }
-            if (icon != null) {
-                try {
-                    icon.setContainer(null);
-                } catch (KernelException e) {
-                    // Ignore.
-                }
-            }
         }
     }
 
@@ -401,8 +290,8 @@ public class ActorGraphFrame extends ExtendedGraphFrame
         return new ActorGraphPane(_controller, graphModel, entity);
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // protected variables ////
+    /////////////////////////////////////////////////////////////////
+    //                    protected variables                    ////
 
     /** The graph controller. This is created in _createGraphPane(). */
     protected ActorEditorGraphController _controller;
@@ -431,11 +320,12 @@ public class ActorGraphFrame extends ExtendedGraphFrame
     /** The action for instantiating an entity. */
     protected Action _instantiateEntityAction;
 
-    // /////////////////////////////////////////////////////////////////
-    // // private variables ////
+    /////////////////////////////////////////////////////////////////
+    //                     private variables                     ////
 
     /** The most recent class name for instantiating an attribute. */
-    private String _lastAttributeClassName = "ptolemy.vergil.kernel.attributes.EllipseAttribute";
+    private String _lastAttributeClassName =
+        "ptolemy.vergil.kernel.attributes.EllipseAttribute";
 
     /** The most recent class name for instantiating an entity. */
     private String _lastEntityClassName = "ptolemy.actor.lib.Ramp";
@@ -447,7 +337,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame
     private long _lastDelayTime = 0;
 
     ///////////////////////////////////////////////////////////////////
-    //// public inner classes ////
+    ////                   public inner classes                    ////
 
     ///////////////////////////////////////////////////////////////////
     //// ActorGraphPane
@@ -576,17 +466,17 @@ public class ActorGraphFrame extends ExtendedGraphFrame
                                 if ((director != null)
                                         && (_listeningTo != director)) {
                                     if (_listeningTo != null) {
-                                        _listeningTo
-                                                .removeDebugListener(_controller);
+                                        _listeningTo.removeDebugListener(
+                                                _controller);
                                     }
 
                                     director.addDebugListener(_controller);
                                     _listeningTo = director;
                                 } else {
-                                    MessageHandler
-                                            .error("Cannot find the director. Possibly this "
-                                                    + "is because this is a class, not an "
-                                                    + "instance.");
+                                    MessageHandler.error(
+                                            "Cannot find the director. " +
+                                            "Possibly this is because this " +
+                                            "is a class, not an instance.");
                                 }
 
                             } catch (NumberFormatException ex) {

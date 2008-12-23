@@ -31,26 +31,22 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
-import java.net.URL;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
-import ptolemy.actor.DesignPatternGetMoMLAction;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.gui.DebugListenerTableau;
 import ptolemy.actor.gui.Effigy;
-import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.PtolemyPreferences;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TextEffigy;
@@ -62,20 +58,14 @@ import ptolemy.domains.fsm.modal.RefinementPort;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.LibraryAttribute;
-import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.moml.MoMLParser;
 import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
-import ptolemy.util.StringUtilities;
 import ptolemy.vergil.basic.ExtendedGraphFrame;
-import ptolemy.vergil.icon.DesignPatternIcon;
 import diva.canvas.DamageRegion;
 import diva.graph.GraphPane;
 import diva.gui.GUIUtilities;
@@ -179,141 +169,6 @@ public class FSMGraphFrame extends ExtendedGraphFrame
             }
         }
     }
-
-    /** Save the current submodel as a design pattern using a method similar to
-     *  Save As.
-     */
-    public void exportDesignPattern() {
-        Tableau tableau = getTableau();
-        PtolemyEffigy effigy = (PtolemyEffigy) tableau.getContainer();
-        NamedObj model = effigy.getModel();
-        _initialSaveAsFileName = model.getName() + ".xml";
-        if (_initialSaveAsFileName.length() == 4) {
-            _initialSaveAsFileName = "model.xml";
-        }
-
-        FSMActor actor = (FSMActor) getModel();
-        StringAttribute alternateGetMoml = null;
-        DesignPatternIcon icon = null;
-        List<IOPort> modifiedPorts = null;
-        try {
-            alternateGetMoml = new StringAttribute(actor,
-                    "_alternateGetMomlAction");
-            alternateGetMoml.setExpression(
-                    DesignPatternGetMoMLAction.class.getName());
-
-            icon = new DesignPatternIcon(actor, "_designPatternIcon");
-
-            List<IOPort> ports = actor.portList();
-            modifiedPorts = new LinkedList<IOPort>();
-            for (IOPort port : ports) {
-                if (port instanceof RefinementPort && port.isInput()
-                        && port.isOutput()) {
-                    List<IOPort> connectedPorts = port.connectedPortList();
-                    for (IOPort connectedPort : connectedPorts) {
-                        if (connectedPort instanceof ModalPort
-                                && !connectedPort.isInput()) {
-                            modifiedPorts.add(port);
-                            port.setInput(false);
-                            break;
-                        }
-                    }
-                }
-            }
-
-            _useEffigyToSaveModel = false;
-            super._saveAs(".xml", false);
-        } catch (KernelException e) {
-            throw new InternalErrorException(actor, e,
-                    "Unable to export model.");
-        } finally {
-            _useEffigyToSaveModel = true;
-            if (alternateGetMoml != null) {
-                try {
-                    alternateGetMoml.setContainer(null);
-                } catch (KernelException e) {
-                    // Ignore.
-                }
-            }
-            if (icon != null) {
-                try {
-                    icon.setContainer(null);
-                } catch (KernelException e) {
-                    // Ignore.
-                }
-            }
-            if (modifiedPorts != null) {
-                for (IOPort port : modifiedPorts) {
-                    try {
-                        port.setInput(true);
-                    } catch (IllegalActionException e) {
-                        // Ignore.
-                    }
-                }
-            }
-        }
-    }
-
-    /** Import a design pattern into the current design.
-     */
-    public void importDesignPattern() {
-        JFileChooser fileDialog = new JFileChooser();
-
-        if (_fileFilter != null) {
-            fileDialog.addChoosableFileFilter(_fileFilter);
-        }
-
-        fileDialog.setDialogTitle("Select a design pattern file.");
-        if (_directory != null) {
-            fileDialog.setCurrentDirectory(_directory);
-        } else {
-            String currentWorkingDirectory = StringUtilities.getProperty(
-                    "user.dir");
-            if (currentWorkingDirectory != null) {
-                fileDialog.setCurrentDirectory(new File(
-                        currentWorkingDirectory));
-            }
-        }
-
-        if (fileDialog.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            _directory = fileDialog.getCurrentDirectory();
-            NamedObj model = null;
-            try {
-                File file = fileDialog.getSelectedFile().getCanonicalFile();
-                URL url = file.toURI().toURL();
-                MoMLParser parser = new MoMLParser();
-                model = parser.parse(url, url);
-            } catch (Exception e) {
-                report(new IllegalActionException(null, e,
-                        "Error reading input"));
-            }
-            if (model != null) {
-                Attribute attribute = model.getAttribute(
-                        "_alternateGetMomlAction");
-                String className = DesignPatternGetMoMLAction.class.getName();
-                if (attribute == null ||
-                        !(attribute instanceof StringAttribute) ||
-                        !((StringAttribute) attribute).getExpression().equals(
-                                className)) {
-                    report(new IllegalActionException(
-                            "The model is not a design pattern."));
-                } else {
-                    String moml = new DesignPatternGetMoMLAction().getMoml(
-                            model, model.getName());
-                    NamedObj context = getModel();
-                    MoMLChangeRequest request = new MoMLChangeRequest(this,
-                            context, moml);
-                    context.requestChange(request);
-                }
-            }
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     public inner classes                  ////
-
-    ///////////////////////////////////////////////////////////////////
-    //// DebugMenuListener
 
     /** Listener for debug menu commands. */
     public class DebugMenuListener implements ActionListener {
@@ -546,7 +401,10 @@ public class FSMGraphFrame extends ExtendedGraphFrame
         return new FSMGraphPane(_controller, graphModel, entity);
     }
 
-    /** Export the model into the writer with the given name.
+    /** Export the model into the writer with the given name. If {@link
+     *  _exportSelectedObjectsOnly} is set to true, then only the selected named
+     *  objects are exported; otherwise, the whole model is exported with its
+     *  exportMoML() method.
      *
      *  @param writer The writer.
      *  @param model The model to export.
@@ -555,10 +413,71 @@ public class FSMGraphFrame extends ExtendedGraphFrame
      */
     protected void _exportModel(Writer writer, NamedObj model, String name)
             throws IOException {
-        if (model instanceof FSMActor) {
-            ((FSMActor) model).exportSubmodel(writer, 0, name);
+        if (_exportSelectedObjectsOnly) {
+            List<State> modifiedStates = new LinkedList<State>();
+            try {
+                Set<?> set = _getSelectionSet();
+                for (Object object : set) {
+                    if (object instanceof State) {
+                        State state = (State) object;
+                        modifiedStates.add(state);
+                        state.saveRefinementsInConfigurer.setToken(
+                                BooleanToken.TRUE);
+                    }
+                }
+                super._exportModel(writer, model, name);
+            } catch (IllegalActionException e) {
+                throw new InternalErrorException(null, e, "Unable to set " +
+                        "attributes for the states.");
+            } finally {
+                for (State state : modifiedStates) {
+                    try {
+                        state.saveRefinementsInConfigurer.setToken(
+                                BooleanToken.FALSE);
+                    } catch (IllegalActionException e) {
+                        // Ignore.
+                    }
+                }
+            }
         } else {
-            model.exportMoML(writer, 0, name);
+            ((FSMActor) model).exportSubmodel(writer, 0, name);
+        }
+    }
+
+    /** Finish exporting a design pattern.
+     */
+    protected void _finishExportDesignPattern() {
+        for (IOPort port : _modifiedPorts) {
+            try {
+                port.setInput(true);
+            } catch (IllegalActionException e) {
+                // Ignore.
+            }
+        }
+    }
+
+    /** Prepare to export a design pattern.
+     *
+     *  @exception IllegalActionException Thrown if attributes of the ports to
+     *   be exported cannot be set.
+     */
+    protected void _prepareExportDesignPattern() throws IllegalActionException {
+        FSMActor actor = (FSMActor) getModel();
+        List<IOPort> ports = actor.portList();
+        _modifiedPorts.clear();
+        for (IOPort port : ports) {
+            if (port instanceof RefinementPort && port.isInput()
+                    && port.isOutput()) {
+                List<IOPort> connectedPorts = port.connectedPortList();
+                for (IOPort connectedPort : connectedPorts) {
+                    if (connectedPort instanceof ModalPort
+                            && !connectedPort.isInput()) {
+                        _modifiedPorts.add(port);
+                        port.setInput(false);
+                        break;
+                    }
+                }
+            }
         }
     }
 
@@ -586,6 +505,10 @@ public class FSMGraphFrame extends ExtendedGraphFrame
 
     // The delay time specified that last time animation was set.
     private long _lastDelayTime = 0;
+
+    // The list of ports modified by the previous invocation of
+    // _prepareExportDesignPattern().
+    private List<IOPort> _modifiedPorts = new LinkedList<IOPort>();
 
     ///////////////////////////////////////////////////////////////////
     ////                       private inner classes               ////

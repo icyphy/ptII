@@ -32,14 +32,20 @@ import java.io.StringReader;
 import java.io.Writer;
 import java.net.URL;
 
+import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.Manager;
 import ptolemy.actor.gt.GTAttribute;
+import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.Effigy;
+import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.domains.erg.kernel.ERGModalModel;
 import ptolemy.domains.fsm.kernel.Configurer;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.URIAttribute;
+import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.Configurable;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -67,37 +73,32 @@ import ptolemy.vergil.gt.TransformationAttributeIcon;
 public class TransformationAttribute extends GTAttribute
 implements Configurable {
 
-    public TransformationAttribute(CompositeEntity container, String name)
+    public TransformationAttribute(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        condition = new Parameter(this, "condition");
-        condition.setExpression("true");
+        _init();
+    }
 
-        _configurer = new Configurer(workspace());
-        _configurer.setName("Configurer");
-        new DEDirector(_configurer, "_director");
-        _configurer.setManager(new Manager(workspace(), "_manager"));
-        _configurer.setConfiguredObject(this);
+    public TransformationAttribute(Workspace workspace) {
+        super(workspace);
 
-        String moml = "<entity name=\"ModelUpdater\" " +
-                "class=\"ptolemy.actor.gt.controller.ModelUpdater\"/>";
-        MoMLParser parser = new MoMLParser();
-        parser.setContext(_configurer);
         try {
-            parser.parse(moml);
-        } catch (Exception e) {
-            throw new IllegalActionException(this, e, "Unable to populate " +
-                    "the transformation rule within \"" + getFullName() +
-                    "\".");
+            _init();
+        } catch (KernelException e) {
+            throw new InternalErrorException(e);
         }
-        _modelUpdater = (ERGModalModel) _configurer.getEntity("ModelUpdater");
+    }
 
-        new TransformationAttributeIcon(this, "_icon");
-        new TransformationAttributeController.Factory(this,
-                "_controllerFactory");
-        editorFactory = new TransformationAttributeEditorFactory(this,
-                "editorFactory");
+    public TransformationAttribute(Workspace workspace, String name) {
+        super(workspace);
+
+        try {
+            setName(name);
+            _init();
+        } catch (KernelException e) {
+            throw new InternalErrorException(e);
+        }
     }
 
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
@@ -121,15 +122,68 @@ implements Configurable {
 
     public void configure(URL base, String source, String text)
             throws Exception {
-        _configureSource = source;
-        text = text.trim();
-        if (!text.equals("")) {
+        StringParameter type = (StringParameter) getAttribute("_type");
+        boolean isImmediate = false;
+        boolean isDelayed = false;
+        if (type != null) {
+            String expression = type.getExpression();
+            if (expression.equals("immediate")) {
+                isImmediate = true;
+            } else if (expression.equals("delayed")) {
+                isDelayed = true;
+            }
+        }
+        if (isImmediate || isDelayed) {
+            Effigy masterEffigy = Configuration.findEffigy(toplevel());
+            PtolemyEffigy effigy = new PtolemyEffigy(masterEffigy,
+                    masterEffigy.uniqueName("effigy"));
             MoMLParser parser = new MoMLParser(workspace());
-            _configurer.removeAllEntities();
-            parser.setContext(_configurer);
-            parser.parse(base, source, new StringReader(text));
-            _modelUpdater = (ERGModalModel) _configurer.entityList().get(0);
-            _clearURI(_modelUpdater);
+            final ERGModalModel transformer = (ERGModalModel) parser.parse(base,
+                    source, new StringReader(text));
+            final Manager manager = new Manager(transformer.workspace(),
+                    "_manager");
+            effigy.setModel(transformer);
+            transformer.setManager(manager);
+            manager.addExecutionListener(new ExecutionListener() {
+                public void executionError(Manager manager,
+                        Throwable throwable) {
+                }
+
+                public void executionFinished(Manager manager) {
+                }
+
+                public void managerStateChanged(Manager manager) {
+                    if (manager.getState() == Manager.INITIALIZING) {
+                        ModelParameter modelAttribute =
+                            (ModelParameter) transformer.getController()
+                                    .getAttribute("Model");
+                        CompositeEntity container =
+                            (CompositeEntity) getContainer();
+                        modelAttribute.setModel(container);
+                    }
+                }
+            });
+            if (isImmediate) {
+                manager.execute();
+            }
+            if (isDelayed) {
+                getContainer().requestChange(new ChangeRequest(this, "") {
+                    protected void _execute() throws Exception {
+                        manager.execute();
+                    }
+                });
+            }
+        } else {
+            _configureSource = source;
+            text = text.trim();
+            if (!text.equals("")) {
+                MoMLParser parser = new MoMLParser(workspace());
+                _configurer.removeAllEntities();
+                parser.setContext(_configurer);
+                parser.parse(base, source, new StringReader(text));
+                _modelUpdater = (ERGModalModel) _configurer.entityList().get(0);
+                _clearURI(_modelUpdater);
+            }
         }
     }
 
@@ -162,7 +216,7 @@ implements Configurable {
         output.write(_getIndentPrefix(depth) + "<configure" + sourceSpec +
                 ">\n");
         _modelUpdater.exportMoML(output, depth + 1);
-        output.write("</configure>\n");
+        output.write(_getIndentPrefix(depth) + "</configure>\n");
     }
 
     private static void _clearURI(NamedObj object)
@@ -172,6 +226,37 @@ implements Configurable {
         if (attribute != null) {
             attribute.setContainer(null);
         }
+    }
+
+    private void _init() throws IllegalActionException,
+            NameDuplicationException {
+        condition = new Parameter(this, "condition");
+        condition.setExpression("true");
+
+        _configurer = new Configurer(workspace());
+        _configurer.setName("Configurer");
+        new DEDirector(_configurer, "_director");
+        _configurer.setManager(new Manager(workspace(), "_manager"));
+        _configurer.setConfiguredObject(this);
+
+        String moml = "<entity name=\"ModelUpdater\" " +
+                "class=\"ptolemy.actor.gt.controller.ModelUpdater\"/>";
+        MoMLParser parser = new MoMLParser();
+        parser.setContext(_configurer);
+        try {
+            parser.parse(moml);
+        } catch (Exception e) {
+            throw new IllegalActionException(this, e, "Unable to populate " +
+                    "the transformation rule within \"" + getFullName() +
+                    "\".");
+        }
+        _modelUpdater = (ERGModalModel) _configurer.getEntity("ModelUpdater");
+
+        new TransformationAttributeIcon(this, "_icon");
+        new TransformationAttributeController.Factory(this,
+                "_controllerFactory");
+        editorFactory = new TransformationAttributeEditorFactory(this,
+                "editorFactory");
     }
 
     private String _configureSource;

@@ -414,16 +414,7 @@ public abstract class PtolemyFrame extends TableauFrame {
                 } else {
                     name = filename;
                 }
-                NamedObj model = getModel();
-                if (model.getContainer() != null) {
-                    fileWriter.write(
-                            "<?xml version=\"1.0\" standalone=\"no\"?>\n"
-                            + "<!DOCTYPE entity PUBLIC "
-                            + "\"-//UC Berkeley//DTD MoML 1//EN\"\n"
-                            + "    \"http://ptolemy.eecs.berkeley.edu"
-                            + "/xml/dtd/MoML_1.dtd\">\n");
-                }
-                _exportModel(fileWriter, model, name);
+                _exportModel(fileWriter, getModel(), name);
             } finally {
                 if (fileWriter != null) {
                     fileWriter.close();
