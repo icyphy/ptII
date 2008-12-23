@@ -1964,7 +1964,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     }
 
     /** Export the model into the writer with the given name. If {@link
-     *  _exportSelectedObjectsOnly} is set to true, then only the selected named
+     *  #_exportSelectedObjectsOnly} is set to true, then only the selected named
      *  objects are exported; otherwise, the whole model is exported with its
      *  exportMoML() method.
      *
