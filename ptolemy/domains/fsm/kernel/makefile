@@ -100,7 +100,6 @@ OPTIONAL_FILES = \
 	'FSMActor$$1.class' \
 	'FSMActor$$PortScope.class' \
 	'FSMDirector$$1.class' \
-	'State$$1.class' \
 	'State$$UpdateContentsRequest.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
