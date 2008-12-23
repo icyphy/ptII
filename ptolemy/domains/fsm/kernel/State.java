@@ -111,26 +111,7 @@ public class State extends ComponentEntity implements ConfigurableEntity,
         super(container, name);
         incomingPort = new ComponentPort(this, "incomingPort");
         outgoingPort = new ComponentPort(this, "outgoingPort");
-        refinementName = new StringAttribute(this, "refinementName") {
-            // Do not export refinementName if we are exporting the configurer
-            // for this state, because refinementName will be recreated when the
-            // entities in the configurer is populated to the containing modal
-            // model.
-            public void exportMoML(Writer output, int depth, String name)
-                    throws IOException {
-                boolean createConfigurer = false;
-                try {
-                    createConfigurer =
-                        ((BooleanToken) saveRefinementsInConfigurer.getToken())
-                                .booleanValue();
-                } catch (IllegalActionException e) {
-                    // Ignore. Use false.
-                }
-                if (!createConfigurer) {
-                    super.exportMoML(output, depth, name);
-                }
-            }
-        };
+        refinementName = new StringAttribute(this, "refinementName");
 
         _attachText("_iconDescription", "<svg>\n"
                 + "<circle cx=\"0\" cy=\"0\" r=\"20\" style=\"fill:white\"/>\n"
@@ -284,6 +265,7 @@ public class State extends ComponentEntity implements ConfigurableEntity,
      */
     public void configure(URL base, String source, String text)
             throws Exception {
+        refinementName.setExpression("");
         _configureSource = source;
         text = text.trim();
         if (!text.equals("")) {
