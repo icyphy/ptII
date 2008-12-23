@@ -250,10 +250,11 @@ public class ModelAnalyzer extends Transformer {
         try {
             file = new File(FileUtilities.nameToURL(
                     "$CLASSPATH/" + path.replace(".", "/"), 
-                    null, null).getFile());
-        } catch (IOException ex) {
-            // Should not happen.
-            assert false;
+                    null, null).toURI());
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
         File[] classFiles = file.listFiles();

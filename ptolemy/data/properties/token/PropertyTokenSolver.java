@@ -2,6 +2,7 @@ package ptolemy.data.properties.token;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -163,10 +164,11 @@ public class PropertyTokenSolver extends PropertySolver {
         try {
             file = new File(FileUtilities.nameToURL(
                     "$CLASSPATH/ptolemy/data/properties/token", 
-                    null, null).getFile());
-        } catch (IOException ex) {
-            // Should not happen.
-            assert false;
+                    null, null).toURI());
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
         File[] lattices = file.listFiles(); 

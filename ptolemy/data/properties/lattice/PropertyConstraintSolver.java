@@ -10,6 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -620,10 +621,11 @@ public class PropertyConstraintSolver extends PropertySolver {
         try {
             file = new File(FileUtilities.nameToURL(
                     "$CLASSPATH/ptolemy/data/properties/lattice", 
-                    null, null).getFile());
-        } catch (IOException ex) {
-            // Should not happen.
-            assert false;
+                    null, null).toURI());
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
         File[] lattices = file.listFiles(); 
