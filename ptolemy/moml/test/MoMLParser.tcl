@@ -2600,7 +2600,10 @@ test MoMLParser-6.3 {Reverse with blocksize 2.} {
 test MoMLParser-6.4 {Reverse with blocksize 3.} {
     $parser parse {
 <entity name=".top">
-<relation name="r5" class="ptolemy.actor.TypedIORelation"/>
+<relation name="r5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+</relation>
 <link port="dist.output" relation="r5" insertAt="0"/>
 <link port="comm.input" relation="r5"/>
 </entity>
@@ -2615,7 +2618,10 @@ test MoMLParser-6.4 {Reverse with blocksize 3.} {
 test MoMLParser-6.5 {Reverse with blocksize 4 and gaps.} {
     $parser parse {
 <entity name=".top">
-<relation name="r6" class="ptolemy.actor.TypedIORelation"/>
+<relation name="r6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+</relation>
 <link port="dist.output" relation="r6" insertAt="10"/>
 <link port="comm.input" relation="r6" insertAt="0"/>
 </entity>
