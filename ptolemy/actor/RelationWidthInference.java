@@ -290,8 +290,7 @@ public class RelationWidthInference {
     static private Set<IORelation> _relationsWithUnspecifiedWidths(List<?> relationList) {
         Set<IORelation> result = new HashSet<IORelation>();
         for (Object relation : relationList) {
-            assert relation != null;
-            if (((IORelation) relation).needsWidthInference()) {
+            if (relation != null && ((IORelation) relation).needsWidthInference()) {
                 result.add((IORelation) relation);                
             }
         }
