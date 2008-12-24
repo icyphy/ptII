@@ -251,7 +251,7 @@ public class SubscriptionAggregator extends Subscriber {
     /** Find matching publishers, if there are any.
      *  @return A list of publishers.
      */
-    private List _findPublishers() {
+    protected List _findPublishers() {
 	// This method is protected so that users can subclass this class
 	// and create alternative ways of managing finding Publishers.
 

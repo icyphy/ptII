@@ -288,7 +288,7 @@ public class Subscriber extends TypedAtomicActor {
     /** Find the publisher, if there is one.
      *  @return A publisher, or null if none is found.
      */
-    private Publisher _findPublisher() {
+    protected Publisher _findPublisher() {
 	// This method is protected so that users can subclass this class
 	// and create alternative ways of managing finding Publishers.
 
