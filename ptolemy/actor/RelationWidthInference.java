@@ -281,7 +281,7 @@ public class RelationWidthInference {
                      + " are not either equal to 0 or not equal to each other and are therefore"
 		     + " inconsistent.\nCan't determine a uniquely defined width for"
                      + " the connected relations. A possible fix is to right clicking on either the"
-	             + " inside or outside relation and set the width to 0 or -1");
+	             + " inside or outside relation and set the width -1.");
          }
      }
 
