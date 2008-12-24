@@ -401,10 +401,11 @@ public class FSMGraphFrame extends ExtendedGraphFrame
         return new FSMGraphPane(_controller, graphModel, entity);
     }
 
-    /** Export the model into the writer with the given name. If {@link
-     *  #_exportSelectedObjectsOnly} is set to true, then only the selected named
-     *  objects are exported; otherwise, the whole model is exported with its
-     *  exportMoML() method.
+    /** Export the model into the writer with the given name. If
+     *  {@link ptolemy.vergil.fsm#_exportSelectedObjectsOnly} is set
+     *  to true, then only the selected named objects are exported;
+     *  otherwise, the whole model is exported with its exportMoML()
+     *  method.
      *
      *  @param writer The writer.
      *  @param model The model to export.
