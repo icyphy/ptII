@@ -2,7 +2,7 @@
 #
 # @Authors: Thomas Huining Feng, based on a file by Thomas M. Parks
 #
-# @Version: $Id: makefile 51840 2008-12-11 01:35:12Z tfeng $
+# @Version: $Id$
 #
 # @Copyright (c) 2007-2008 The Regents of the University of California.
 # All rights reserved.
