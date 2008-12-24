@@ -589,7 +589,8 @@ public class IOPort extends JavaCodeGeneratorHelper implements PortCodeGenerator
                 instanceof ptolemy.domains.pn.kernel.PNDirector);
 
         return isPN && (null == getCodeGenerator().getAttribute("mpi"))
-        && getCodeGenerator().target.getExpression().equals("default");
+        && (getCodeGenerator().target.getExpression().equals("default") || 
+            getCodeGenerator().target.getExpression().equals("posix"));
     }
 
 
