@@ -311,7 +311,7 @@ public class PNDirector extends Director {
 				for (int k = 0; k < rate; k++) {
 					code.append(compositeActorHelper.getReference("@" + name
 							+ "," + k));
-					code.append(" =" + _eol);
+					code.append(" = " + _eol);
 					code.append(compositeActorHelper.getReference(name + ","
 							+ k));
 					code.append(";" + _eol);
@@ -461,22 +461,12 @@ public class PNDirector extends Director {
 
 		List actorList = ((CompositeActor) _director.getContainer())
 				.deepEntityList();
-		boolean inline = ((BooleanToken) _codeGenerator.inline.getToken())
-				.booleanValue();
-
-		Iterator actors = actorList.iterator();
 
 		// Generate the function for each actor thread.
-		actors = actorList.iterator();
-		while (actors.hasNext()) {
+		for (Actor actor : (List<Actor>) actorList) {
 			StringBuffer functionCode = new StringBuffer();
 
-			Actor actor = (Actor) actors.next();
 			CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
-
-			if (!inline) {
-				code.append(helper.generateFireFunctionCode());
-			}
 
 			code.append(_eol + "void* " + _getActorThreadLabel(actor)
 					+ "(void* arg) {" + _eol);
@@ -521,9 +511,9 @@ public class PNDirector extends Director {
 				// If not inline, generateFireCode() would be a call
 				// to the fire function which already includes the
 				// type conversion code.
-				if (inline) {
-					functionCode.append(helper.generateTypeConvertFireCode());
-				}
+//				if (inline) {
+//					functionCode.append(helper.generateTypeConvertFireCode());
+//				}
 
 				functionCode.append(helper.generatePostfireCode());
 

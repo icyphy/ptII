@@ -75,8 +75,8 @@ import ptolemy.kernel.util.NamedObj;
  @author Man-Kit Leung
  @version $Id: PNDirector.java 50690 2008-09-21 06:27:03Z mankit $
  @since Ptolemy II 7.0
- @Pt.ProposedRating Red (mankit)
- @Pt.AcceptedRating Red (mankit)
+ @Pt.ProposedRating Yellow (mankit)
+ @Pt.AcceptedRating Yellow (mankit)
  */
 public class PNDirector extends Director {
 
@@ -511,11 +511,13 @@ public class PNDirector extends Director {
                 (CodeGeneratorHelper) _getHelper((NamedObj) actor);
 
             if (!inline) {
-                code.append(helper.generateFireFunctionCode());
+            //    code.append(helper.generateFireFunctionCode());
             } 
 
             code.append(_eol + "static void " + 
                     _getActorTaskLabel(actor) + "(void* arg) {" + _eol);
+            
+            String loopCountDeclare = "";
             
             // Check if the actor is an opague CompositeActor. 
             // The actor is guaranteed to be opague from calling deepEntityList(),
@@ -535,34 +537,34 @@ public class PNDirector extends Director {
                     int firingCount = ((IntToken) ((LimitedFiringSource) actor)
                             .firingCountLimit.getToken()).intValue();
                     
-                    functionCode.append("int i = 0;" + _eol);
+                    loopCountDeclare = new String("int i = 0;" + _eol);
                     functionCode.append("for (; i < " + firingCount 
                             + "; i++) {" + _eol);
 
                 } else {
                     functionCode.append("while (true) {" + _eol);                
                 }
-
+                
                 functionCode.append(helper.generateFireCode());
                 functionCode.append(helper.generatePostfireCode());
 
                 functionCode.append(_eol + "}" + _eol);
             }            
-
+            
             // wrapup
             functionCode.append(helper.generateWrapupCode());
             
             // Make sure the task is running forever.
             functionCode.append("while(true);" + _eol);
-            
             functionCode.append("}" + _eol);
-
+            
             // init
             // This needs to be called last because all references
             // need to be collected before generating their initialization.
-            String initializeCode = helper.generateInitializeCode(); 
             String variableInitializeCode = helper.generateVariableInitialization();
+            String initializeCode = helper.generateInitializeCode();
             
+            code.append(loopCountDeclare);
             code.append(variableInitializeCode);
             code.append(initializeCode);
             code.append(functionCode);
