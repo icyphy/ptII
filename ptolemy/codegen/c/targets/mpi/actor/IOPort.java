@@ -585,7 +585,8 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
                 instanceof ptolemy.domains.pn.kernel.PNDirector);
 
         return isPN && 
-        getCodeGenerator().target.getExpression().equals("default");
+        (getCodeGenerator().target.getExpression().equals("default") || 
+         getCodeGenerator().target.getExpression().equals("posix"));
     }
 
 
