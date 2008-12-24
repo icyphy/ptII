@@ -207,3 +207,35 @@ test UtilityFunctions-5.1 {Test zeroMatrix} {
     $matrix toString
 } {[0.0, 0.0, 0.0; 0.0, 0.0, 0.0]}
 
+######################################################################
+####
+test UtilityFunctions-6.1 {Test getenv(String)} {
+    set ptIIAsFile [[java::new java.io.File $PTII] getCanonicalFile]
+    set ptIIAsURL [$ptIIAsFile toURL]
+    set parser [java::new ptolemy.data.expr.PtParser]
+    set tree [$parser generateParseTree "getenv(\"PTII\")"]
+    set results [$tree evaluateParseTree]
+    set stringResults [java::cast ptolemy.data.StringToken $results]
+    set ptIIFromEnvironmentAsURL [[java::new java.io.File [$stringResults stringValue]] toURL]
+    $ptIIAsURL sameFile $ptIIFromEnvironmentAsURL
+} {1}
+
+######################################################################
+####
+test UtilityFunctions-6.2 {Test getenv(String), non-existent environment variable} {
+    set parser [java::new ptolemy.data.expr.PtParser]
+    set tree [$parser generateParseTree "getenv(\"NonExisTaNTEnvVariable\")"]
+    set res [$tree evaluateParseTree]
+    $res toString
+} {""}
+
+######################################################################
+####
+test UtilityFunctions-7.2 {Test getenv()} {
+    set parser [java::new ptolemy.data.expr.PtParser]
+    set tree [$parser generateParseTree "getenv()"]
+    set results [$tree evaluateParseTree]
+    set recordTokenResults [java::cast ptolemy.data.RecordToken $results]
+    list [expr {[$recordTokenResults length] > 1}]
+} {1}
+

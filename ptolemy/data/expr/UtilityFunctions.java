@@ -38,10 +38,12 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -609,6 +611,32 @@ public class UtilityFunctions {
                     + "Cannot create the DoubleMatrixToken that contains "
                     + "Gaussian random numbers.");
         }
+    }
+
+    /** Get a variable from the environment.
+     *  @param variableName The name of the environment variable to get
+     *  @return the environment variable, or null if the variable is not defined.
+     */
+    public static StringToken getenv(String variableName) {
+	return new StringToken(System.getenv(variableName));
+    }
+
+    /** Get a variable from the environment.
+     *  @param variableName The name of the environment variable to get
+     *  @return the environment variable, or null if the variable is not defined.
+     */
+    public static RecordToken getenv() throws IllegalActionException {
+
+	Map<String,Token> environmentMap = new HashMap<String,Token>();
+
+	Map<String,String> environment = System.getenv();
+
+	Iterator environmentVariables = environment.entrySet().iterator();
+	while (environmentVariables.hasNext()) {
+	    Map.Entry pairs = (Map.Entry)environmentVariables.next();
+	    environmentMap.put((String)(pairs.getKey()), new StringToken((String)(pairs.getValue())));
+	}
+	return new RecordToken(environmentMap);
     }
 
     /** Get the specified property from the environment. An empty string
