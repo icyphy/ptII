@@ -61,7 +61,7 @@ import ptolemy.util.StringUtilities;
 //////////////////////////////////////////////////////////////////////////
 ////CodeGenerator
 
-/** Base class for C code generator.
+/** Base class for Java code generator.
  *
  *  @author Gang Zhou
  *  @version $Id: JavaCodeGenerator.java 50818 2008-10-15 10:16:22Z mankit $
@@ -72,9 +72,9 @@ import ptolemy.util.StringUtilities;
 
 public class JavaCodeGenerator extends CodeGenerator {
 
-    /** Create a new instance of the C code generator.
+    /** Create a new instance of the Java code generator.
      *  @param container The container.
-     *  @param name The name of the C code generator.
+     *  @param name The name of the Java code generator.
      *  @exception IllegalActionException If the super class throws the
      *   exception or error occurs when setting the file path.
      *  @exception NameDuplicationException If the super class throws the
