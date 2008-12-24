@@ -4,13 +4,13 @@
 <entity name="PNButterfly" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 991, 776}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 988, 768}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[776, 659]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[773, 650]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8177028451001">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{374.3356735641892, 265.088893581081}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{372.5012663476943, 259.5856719315964}">
     </property>
     <property name="PN Director" class="ptolemy.domains.pn.kernel.PNDirector">
         <property name="initialQueueCapacity" class="ptolemy.data.expr.Parameter" value="60">
@@ -64,12 +64,12 @@
         </property>
         <property name="run" class="ptolemy.data.expr.Parameter" value="false">
         </property>
+        <property name="target" class="ptolemy.data.expr.StringParameter" value="mpi">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[690.0, 170.0]">
         </property>
-        <property name="mpi" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
     </property>
-    <property name="ChacoCodeGenerator" class="ptolemy.codegen.chaco.kernel.ChacoCodeGenerator">
+    <property name="ChacoAnnotator" class="ptolemy.codegen.chaco.kernel.ChacoCodeGenerator">
         <property name="compile" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="measureTime" class="ptolemy.data.expr.Parameter" value="false">
