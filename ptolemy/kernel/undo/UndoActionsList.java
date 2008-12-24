@@ -37,7 +37,7 @@ import java.util.List;
  can be executed in order.
 
  @author  Edward A. Lee
- @version $Id: UndoAction.java 38798 2005-07-08 20:00:01Z cxh $
+ @version $Id$
  @since Ptolemy II 7.2
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)

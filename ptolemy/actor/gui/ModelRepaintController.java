@@ -51,7 +51,7 @@ import ptolemy.kernel.util.Settable;
  * wrapup or post-fire can be scheduled. 
  *
  * @author Bert Rodiers
- * @version $Id: ModelRepaintController.java 49562 2008-05-26 04:25:04Z rodiers $
+ * @version $Id$
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (rodiers)
  * @Pt.AcceptedRating Red (rodiers)

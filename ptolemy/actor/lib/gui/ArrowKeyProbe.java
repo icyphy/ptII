@@ -60,7 +60,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  this director's fireAtCurrentTime() method.
 
  @author Winthrop Williams
- @version $Id: ArrowKeySensor.java 50768 2008-09-30 22:21:41Z cxh $
+ @version $Id$
  @since Ptolemy II 2.0
  @Pt.ProposedRating Red (winthrop)
  @Pt.AcceptedRating Red (winthrop)

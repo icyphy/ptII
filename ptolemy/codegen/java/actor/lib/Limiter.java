@@ -35,7 +35,7 @@ import ptolemy.codegen.java.kernel.JavaCodeGeneratorHelper;
  * A helper class for ptolemy.actor.lib.Limiter.
  *
  * @author Man-Kit Leung
- * @version $Id: Limiter.java 42559 2006-05-16 23:25:30Z cxh $
+ * @version $Id$
  * @since Ptolemy II 6.0
  * @Pt.ProposedRating Green (mankit)
  * @Pt.AcceptedRating Green (cxh)

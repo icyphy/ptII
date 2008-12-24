@@ -2,7 +2,7 @@
 #
 # @Author: Christopher Brooks
 #
-# @Version: $Id: LazyTypedCompositeActorChanges.tcl 50759 2008-09-29 17:37:04Z cxh $
+# @Version: $Id$
 #
 # @Copyright (c) 2008 The Regents of the University of California.
 # All rights reserved.

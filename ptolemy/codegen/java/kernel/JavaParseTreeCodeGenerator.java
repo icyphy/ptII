@@ -101,7 +101,7 @@ import ptolemy.util.StringUtilities;
  </ul>
 
  @author Man-Kit Leung
- @version $Id: JavaParseTreeCodeGenerator.java 50345 2008-08-08 14:59:53Z cxh $
+ @version $Id$
  @since Ptolemy II 6.0
  @Pt.ProposedRating Red
  @Pt.AcceptedRating Red

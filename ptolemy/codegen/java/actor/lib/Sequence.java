@@ -37,7 +37,7 @@ import ptolemy.kernel.util.IllegalActionException;
  A helper class for ptolemy.actor.lib.Sequence.
 
  @author Man-Kit Leung, Gang Zhou
- @version $Id: Sequence.java 42565 2006-05-16 23:42:16Z cxh $
+ @version $Id$
  @since Ptolemy II 6.0
  @Pt.ProposedRating Green (mankit)
  @Pt.AcceptedRating Green (cxh)

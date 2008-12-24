@@ -34,7 +34,7 @@ import ptolemy.codegen.java.kernel.JavaCodeGeneratorHelper;
  * A helper class for ptolemy.actor.lib.Const.
  *
  * @author Man-Kit Leung
- * @version $Id: Const.java 41772 2006-04-04 23:15:02Z cxh $
+ * @version $Id$
  * @since Ptolemy II 6.0
  * @Pt.ProposedRating Green (mankit)
  * @Pt.AcceptedRating Green (mankit)

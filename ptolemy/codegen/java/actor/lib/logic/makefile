@@ -1,6 +1,6 @@
 # Makefile for helper classes that match ptolemy.actor.lib.logic classes
 #
-# @Version: $Id: makefile 42408 2006-05-11 20:14:15Z cxh $
+# @Version: $Id$
 # @Author: Christopher Brooks
 #
 # @Copyright (c) 2005-2006 The Regents of the University of California

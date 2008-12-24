@@ -1,6 +1,6 @@
 # Makefile for the Luminary Target
 #
-# @Version: $Id: makefile 47617 2007-12-18 19:59:51Z cxh $
+# @Version: $Id$
 # @Author: Christopher Brooks
 #
 # @Copyright (c) 2005-2006 The Regents of the University of California

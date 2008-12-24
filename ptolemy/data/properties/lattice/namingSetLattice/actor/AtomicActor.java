@@ -47,7 +47,7 @@ import ptolemy.kernel.util.IllegalActionException;
  A helper class for ptolemy.actor.AtomicActor.
 
  @author Man-Kit Leung, Thomas Mandl
- @version $Id: AtomicActor.java,v 1.1 2008/04/20 05:35:08 mankit Exp $
+ @version $Id$
  @since Ptolemy II 6.2
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)

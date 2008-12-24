@@ -36,7 +36,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * A code generation helper class for ptolemy.actor.lib.Commutator.
  *
  * @author Man-Kit Leung
- * @version $Id: Commutator.java 45846 2007-04-12 04:02:11Z cxh $
+ * @version $Id$
  * @since Ptolemy II 6.0
  * @Pt.ProposedRating Green (mankit)
  * @Pt.AcceptedRating Green (cxh)

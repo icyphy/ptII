@@ -52,7 +52,7 @@ import ptolemy.kernel.util.InternalErrorException;
  * A code generation helper class for ptolemy.actor.lib.Expression.
  *
  * @author Man-Kit Leung
- * @version $Id: Expression.java 47513 2007-12-07 06:32:21Z cxh $
+ * @version $Id$
  * @since Ptolemy II 6.0
  * @Pt.ProposedRating Red (mankit) Needs 2nd pass for array children of different types
  * @Pt.AcceptedRating Red (mankit)

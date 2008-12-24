@@ -33,7 +33,7 @@ import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
  * Common code for the OpenRTOS.
  * 
  * @author Man-Kit Leung
- * @version $Id: LuminaryTarget.java 47617 2007-12-18 19:59:51Z cxh $
+ * @version $Id$
  * @since Ptolemy II 7.0
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)

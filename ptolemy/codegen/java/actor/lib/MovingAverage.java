@@ -39,7 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *
  * @see ptolemy.actor.lib.MovingAverage
  * @author Christopher Brooks
- * @version $Id: MovingAverage.java 47495 2007-12-06 21:57:21Z cxh $
+ * @version $Id$
  * @since Ptolemy II 6.1
  * @Pt.ProposedRating Red (mankit)
  * @Pt.AcceptedRating Red (cxh)

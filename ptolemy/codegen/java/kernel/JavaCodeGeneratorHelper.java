@@ -82,7 +82,7 @@ import ptolemy.util.StringUtilities;
  <p>For further details, see <code>$PTII/ptolemy/codegen/README.html</code>
 
  @author Christopher Brooks, Edward Lee, Man-Kit Leung, Gang Zhou, Ye Zhou
- @version $Id: JavaCodeGeneratorHelper.java 50401 2008-08-12 15:11:01Z cxh $
+ @version $Id$
  @since Ptolemy II 6.0
  o @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Red (cxh)

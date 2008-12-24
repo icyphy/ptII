@@ -51,7 +51,7 @@ import ptolemy.kernel.util.IllegalActionException;
 Code generator helper for IOPort.
 
 @author Man-Kit Leung
-@version $Id: IOPort.java 50872 2008-10-22 15:08:13Z cxh $
+@version $Id$
 @since Ptolemy II 7.0
 @Pt.ProposedRating Red (mankit)
 @Pt.AcceptedRating Red (mankit)

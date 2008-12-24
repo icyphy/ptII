@@ -40,7 +40,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * A helper class for ptolemy.actor.lib.conversions.TokenToExpression.
  *
  * @author Christopher Brooks
- * @version $Id: TokenToExpression.java 47482 2007-12-06 18:33:55Z cxh $
+ * @version $Id$
  * @since Ptolemy II 6.0
  * @Pt.ProposedRating Green (mankit)
  * @Pt.AcceptedRating Green (cxh)

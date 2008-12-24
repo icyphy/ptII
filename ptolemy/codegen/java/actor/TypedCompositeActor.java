@@ -52,7 +52,7 @@ import ptolemy.kernel.util.NamedObj;
  Code generator helper for typed composite actor.
 
  @author Gang Zhou, Contributors: Teale Fristoe
- @version $Id: TypedCompositeActor.java 50804 2008-10-14 15:55:27Z mankit $
+ @version $Id$
  @since Ptolemy II 6.0
  @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Red (zgang)

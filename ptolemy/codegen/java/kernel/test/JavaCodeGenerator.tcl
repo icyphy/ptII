@@ -2,7 +2,7 @@
 #
 # @Author: Christopher Brooks
 #
-# @Version: $Id: CCodeGenerator.tcl 47685 2007-12-29 23:50:37Z cxh $
+# @Version: $Id$
 #
 # @Copyright (c) 2007 The Regents of the University of California.
 # All rights reserved.

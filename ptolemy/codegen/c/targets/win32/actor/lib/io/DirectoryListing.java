@@ -40,7 +40,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * A Win32-specific helper class for ptolemy.actor.lib.io.DirectoryListing.
  *
  * @author Man-Kit Leung, Tony Huang
- * @version $Id: DirectoryListing.java 47602 2007-12-18 01:33:08Z cxh $
+ * @version $Id$
  * @since Ptolemy II 7.0
  * @Pt.ProposedRating Red (mankit)
  * @Pt.AcceptedRating Red (mankit)

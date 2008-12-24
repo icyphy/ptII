@@ -40,7 +40,7 @@ import ptolemy.kernel.util.IllegalActionException;
  A helper class for ptolemy.actor.lib.MultiplyDivide.
 
  @author Man-Kit (Jackie) Leung, Gang Zhou
- @version $Id: MultiplyDivide.java 47896 2008-01-24 02:07:38Z cxh $
+ @version $Id$
  @since Ptolemy II 6.0
  @Pt.ProposedRating Green (mankit)
  @Pt.AcceptedRating Green (cxh)

@@ -137,7 +137,7 @@ import ptolemy.util.StringUtilities;
 
  
  @author Christopher Brooks and Edward A. Lee
- @version $Id: LazyTypedCompositeActor.java 47495 2007-12-06 21:57:21Z cxh $
+ @version $Id$
  @since Ptolemy II 7.1
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (cxh)

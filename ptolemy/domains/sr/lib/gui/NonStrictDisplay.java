@@ -52,7 +52,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  converge to a fixed point.
 
  @author  Paul Whitaker, Yuhong Xiong, Edward A. Lee
- @version $Id: NonStrictDisplay.java 49087 2008-03-30 01:40:02Z cxh $
+ @version $Id$
  @since Ptolemy II 2.0
  @Pt.ProposedRating Red (pwhitake)
  @Pt.AcceptedRating Red (pwhitake)

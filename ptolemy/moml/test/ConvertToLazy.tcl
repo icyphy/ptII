@@ -2,7 +2,7 @@
 #
 # @Author: Christopher Brooks
 #
-# @Version: $Id: ImportAttribute.tcl 36425 2005-02-28 20:51:43Z cxh $
+# @Version: $Id$
 #
 # @Copyright (c) 2008 The Regents of the University of California.
 # All rights reserved.

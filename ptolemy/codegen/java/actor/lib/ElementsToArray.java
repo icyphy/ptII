@@ -36,7 +36,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * A code generation helper class for ptolemy.actor.lib.ElementsToArray.
  *
  * @author Man-Kit Leung
- * @version $Id: ElementsToArray.java 47495 2007-12-06 21:57:21Z cxh $
+ * @version $Id$
  * @since Ptolemy II 6.0
  * @Pt.ProposedRating Green (mankit)
  * @Pt.AcceptedRating Green (cxh)

@@ -36,7 +36,7 @@ import ptolemy.codegen.java.kernel.JavaCodeGeneratorHelper;
  A code generation helper class for ptolemy.domains.sdf.lib.Repeat.
 
  @author Ye Zhou
- @version $Id: Repeat.java 44788 2006-12-19 18:31:56Z cxh $
+ @version $Id$
  @since Ptolemy II 6.0
  @Pt.ProposedRating Green (zhouye)
  @Pt.AcceptedRating Green (cxh)

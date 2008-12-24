@@ -34,7 +34,7 @@ import ptolemy.kernel.util.IllegalActionException;
  A code generation helper class for ptolemy.actor.lib.logic.Comparator.
 
  @author Man-Kit Leung
- @version $Id: Comparator.java 47513 2007-12-07 06:32:21Z cxh $
+ @version $Id$
  @since Ptolemy II 6.0
  @Pt.ProposedRating Green (mankit)
  @Pt.AcceptedRating Green (mankit)

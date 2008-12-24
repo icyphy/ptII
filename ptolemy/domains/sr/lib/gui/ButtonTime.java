@@ -53,7 +53,7 @@ import ptolemy.kernel.util.StringAttribute;
  Output the current wall clock time in response to a click of a button.
 
  @author  Paul Whitaker
- @version $Id: ButtonTime.java 49087 2008-03-30 01:40:02Z cxh $
+ @version $Id$
  @since Ptolemy II 2.0
  @Pt.ProposedRating Red (pwhitake)
  @Pt.AcceptedRating Red (pwhitake)

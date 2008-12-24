@@ -41,7 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
  A helper class for ptolemy.actor.lib.RandomSource.
 
  @author Gang Zhou
- @version $Id: RandomSource.java 47513 2007-12-07 06:32:21Z cxh $
+ @version $Id$
  @since Ptolemy II 6.0
  @Pt.ProposedRating Green (zgang)
  @Pt.AcceptedRating Green (cxh)

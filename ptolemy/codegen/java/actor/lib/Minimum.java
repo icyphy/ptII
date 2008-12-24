@@ -37,7 +37,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * A helper class for ptolemy.actor.lib.Minimum.
  *
  * @author Man-Kit Leung, Gang Zhou
- * @version $Id: Minimum.java 45846 2007-04-12 04:02:11Z cxh $
+ * @version $Id$
  * @since Ptolemy II 6.0
  * @Pt.ProposedRating Green (cxh)
  * @Pt.AcceptedRating Green (mankit)

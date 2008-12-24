@@ -56,7 +56,7 @@ import ptolemy.moml.filter.BackwardCompatibility;
  *  defaults to 100.
  
  @author Edward A. Lee
- @version $Id: ConvertToLazy.java 50870 2008-10-22 15:05:00Z cxh $
+ @version $Id$
  @since Ptolemy II 2.0
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (eal)

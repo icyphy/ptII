@@ -1,5 +1,5 @@
 # Template makefile from $PTII/ptolemy/codegen/java/makefile.in
-# $Id: makefile.in 47648 2007-12-24 17:54:29Z cxh $
+# $Id$
 # The CodeGenerator class subsitutes strings like "@modelName@" with
 # the value of parameters and writes the results in the directory
 # where the source code is created.

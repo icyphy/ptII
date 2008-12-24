@@ -2,7 +2,7 @@
 #
 # @Author: Christopher Brooks
 #
-# @Version: $Id: Publisher.tcl 47596 2007-12-18 00:51:11Z cxh $
+# @Version: $Id$
 #
 # @Copyright (c) 2008 The Regents of the University of California.
 # All rights reserved.

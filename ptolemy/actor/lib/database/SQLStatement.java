@@ -44,7 +44,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  database manager. The output is string description of the result.
 
  @author Edward A. Lee
- @version $Id: DatabaseQuery.java 50667 2008-09-19 02:21:38Z cxh $
+ @version $Id$
  @since Ptolemy II 0.3
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (cxh)

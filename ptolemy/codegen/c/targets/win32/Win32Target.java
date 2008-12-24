@@ -33,7 +33,7 @@ import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
  Common code for the Win32.
 
  @author Man-Kit Leung, Tony Huang
- @version $Id: Win32Target.java 47617 2007-12-18 19:59:51Z cxh $
+ @version $Id$
  @since Ptolemy II 6.1
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)

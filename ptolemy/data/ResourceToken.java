@@ -35,7 +35,7 @@ import ptolemy.data.type.Type;
  * Token sent to a ResourceActor containing the Task to be scheduled and the execution 
  * time for that task. 
  * @author Patricia Derler
- * @version $Id: ObjectToken.java 50178 2008-07-25 23:10:40Z tfeng $
+ * @version $Id$
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)

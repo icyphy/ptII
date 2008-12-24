@@ -66,7 +66,7 @@ import ptolemy.kernel.util.StringAttribute;
  * FIXME: How to make it possible for executions to be finite?
  * 
  * @author Man-Kit Leung, Isaac Liu, Jia Zou
- * @version $Id: MpiPNDirector.java 51562 2008-11-11 07:44:39Z cxh $
+ * @version $Id$
  * @since Ptolemy II 7.0
  * @Pt.ProposedRating Red (mankit)
  * @Pt.AcceptedRating Red (mankit)

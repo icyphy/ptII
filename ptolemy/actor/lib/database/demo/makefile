@@ -1,6 +1,6 @@
 # Makefile for Ptolemy II Database Demos
 #
-# @Version: $Id: makefile 43472 2006-08-21 23:16:56Z cxh $
+# @Version: $Id$
 # @Author: Christopher Hylands (makefile only)
 #
 # @Copyright (c) 2002-2006 The Regents of the University of California.

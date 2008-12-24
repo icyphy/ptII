@@ -40,7 +40,7 @@ import ptolemy.kernel.util.IllegalActionException;
  A code generation helper class for ptolemy.domains.sdf.lib.SampleDelay.
 
  @author Ye Zhou
- @version $Id: SampleDelay.java 50323 2008-08-07 14:08:03Z cxh $
+ @version $Id$
  @since Ptolemy II 6.0
  @Pt.ProposedRating Green (cxh)
  @Pt.AcceptedRating Green (cxh)

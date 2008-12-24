@@ -64,7 +64,7 @@ import ptolemy.util.StringUtilities;
 /** Base class for Java code generator.
  *
  *  @author Gang Zhou
- *  @version $Id: JavaCodeGenerator.java 50818 2008-10-15 10:16:22Z mankit $
+ *  @version $Id$
  *  @since Ptolemy II 6.0
  *  @Pt.ProposedRating red (zgang)
  *  @Pt.AcceptedRating red (zgang)

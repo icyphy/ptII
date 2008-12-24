@@ -37,7 +37,7 @@ import ptolemy.codegen.java.kernel.JavaCodeGeneratorHelper;
  *
  * @see ptolemy.actor.lib.CurrentTime
  * @author Man-Kit Leung
- * @version $Id: CurrentTime.java 47487 2007-12-06 19:48:42Z cxh $
+ * @version $Id$
  * @since Ptolemy II 6.1
  * @Pt.ProposedRating Green (mankit)
  * @Pt.AcceptedRating Green (cxh)

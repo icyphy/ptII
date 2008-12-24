@@ -1,6 +1,6 @@
 # Makefile for Ptolemy Classic style Codegen using Java actors
 #
-# @Version: $Id: makefile 44464 2006-11-25 07:50:03Z cxh $
+# @Version: $Id$
 # @Author: Christopher Brooks
 #
 # @Copyright (c) 2005-2006 The Regents of the University of California

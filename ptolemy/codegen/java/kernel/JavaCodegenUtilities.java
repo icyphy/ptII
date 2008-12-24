@@ -33,7 +33,7 @@ package ptolemy.codegen.java.kernel;
 A utility class used to simplify creating c templates in EmbeddedCActors.
 
 @author Teale Fristoe
-@version $Id: CCodegenUtilities.java 48924 2008-03-25 21:22:11Z cxh $
+@version $Id$
 @since Ptolemy II 6.1
 @Pt.ProposedRating red (tbf)
 @Pt.AcceptedRating

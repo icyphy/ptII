@@ -1,6 +1,6 @@
 # Makefile for Ptolemy Classic style SDF Java Codegen
 #
-# @Version: $Id: makefile 41119 2006-03-16 05:09:10Z cxh $
+# @Version: $Id$
 # @Author: Christopher Brooks
 #
 # @Copyright (c) 2008 The Regents of the University of California

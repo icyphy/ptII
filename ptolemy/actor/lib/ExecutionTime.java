@@ -53,7 +53,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  done is fixed. The default is false.
 
  @author Edward A. Lee
- @version $Id: ExecutionTime.java 51551 2008-11-11 00:19:48Z rodiers $
+ @version $Id$
  @since Ptolemy II 7.2
  @see Sleep
  @Pt.ProposedRating Yellow (eal)

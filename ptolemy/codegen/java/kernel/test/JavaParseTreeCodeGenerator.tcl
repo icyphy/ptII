@@ -2,7 +2,7 @@
 #
 # @Author: Christopher Brooks
 #
-# @Version: $Id: JavaParseTreeCodeGenerator.tcl 50072 2008-07-10 01:07:46Z cxh $
+# @Version: $Id$
 #
 # @Copyright (c) 2005-2006 The Regents of the University of California.
 # All rights reserved.

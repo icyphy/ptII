@@ -2,7 +2,7 @@
 #
 # @Author: Bert Rodiers
 #
-# @Version: $Id: RelationWidthChanges.tcl 50302 2008-08-07 01:34:18Z rodiers $
+# @Version: $Id$
 #
 # @Copyright (c) 2002-2006 The Regents of the University of California.
 # All rights reserved.

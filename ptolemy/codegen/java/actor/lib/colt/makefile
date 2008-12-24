@@ -1,6 +1,6 @@
 # Makefile for helper classes that match ptolemy.actor.lib.colt classes
 #
-# @Version: $Id: makefile 47451 2007-12-06 17:07:47Z cxh $
+# @Version: $Id$
 # @Author: Christopher Brooks
 #
 # @Copyright (c) 2007 The Regents of the University of California

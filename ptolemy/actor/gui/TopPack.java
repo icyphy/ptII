@@ -38,7 +38,7 @@ import ptolemy.gui.Top;
  in Vergil.  
 
  @author Chad Berkley
- @version $Id: TableauFrame.java 49900 2008-06-20 17:37:40Z cxh $
+ @version $Id$
  @since Ptolemy II 7.2
  @Pt.AcceptedRating Red (berkley)
  @Pt.ProposedRating Red (berkley)

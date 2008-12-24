@@ -84,7 +84,7 @@ into a constraint solver.
 
 
 @author Man-Kit Leung
-@version $Id: PropertySolverBase.java 50870 2008-10-22 15:05:00Z cxh $
+@version $Id$
 @since Ptolemy II 7.1
 @Pt.ProposedRating Red (mankit)
 @Pt.AcceptedRating Red (mankit)

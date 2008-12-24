@@ -47,7 +47,7 @@ import ptolemy.util.StringUtilities;
   design pattern.
 
   @author Thomas Huining Feng
-  @version $Id: AlternateGetMomlAction.java 51844 2008-12-11 08:44:00Z tfeng $
+  @version $Id$
   @since Ptolemy II 7.1
   @Pt.ProposedRating Red (tfeng)
   @Pt.AcceptedRating Red (tfeng)

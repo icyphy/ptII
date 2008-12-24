@@ -40,7 +40,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *
  * @see ptolemy.actor.lib.Subscriber
  * @author Man-Kit Leung
- * @version $Id: Subscriber.java 47487 2007-12-06 19:48:42Z cxh $
+ * @version $Id$
  * @since Ptolemy II 6.1
  * @Pt.ProposedRating Green (mankit)
  * @Pt.AcceptedRating Green (cxh)

@@ -41,7 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *
  * @see ptolemy.actor.lib.ColtPoisson
  * @author Teale Fristoe
- * @version $Id: ColtPoisson.java 47717 2008-01-07 05:45:42Z cxh $
+ * @version $Id$
  * @since Ptolemy II 6.0
  * @Pt.ProposedRating Red
  * @Pt.AcceptedRating

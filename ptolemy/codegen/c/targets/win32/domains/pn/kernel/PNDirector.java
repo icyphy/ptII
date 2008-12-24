@@ -60,7 +60,7 @@ import ptolemy.kernel.util.NamedObj;
  * FIXME: How to make it possible for executions to be finite?
  * 
  * @author Edward A. Lee (based on SDFDirector helper class)
- * @version $Id: PNDirector.java 50874 2008-10-22 15:13:20Z cxh $
+ * @version $Id$
  * @since Ptolemy II 7.0
  * @Pt.ProposedRating Yellow (eal)
  * @Pt.AcceptedRating Red (eal)

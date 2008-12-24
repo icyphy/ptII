@@ -35,7 +35,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * A helper class for ptolemy.actor.lib.conversions.Round.
  *
  * @author Man-Kit Leung
- * @version $Id: Round.java 46972 2007-10-02 17:16:38Z cxh $
+ * @version $Id$
  * @since Ptolemy II 6.0
  * @Pt.ProposedRating Green (mankit)
  * @Pt.AcceptedRating Green (cxh)

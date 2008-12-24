@@ -35,7 +35,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
  An actor that listens for keys pressed on the viewscreen.
  @author C. Fong
- @version $Id: KeyInput3D.java 43428 2006-08-20 19:56:05Z cxh $
+ @version $Id$
  @since Ptolemy II 1.0
  @Pt.ProposedRating Red (chf)
  @Pt.AcceptedRating Red (chf)

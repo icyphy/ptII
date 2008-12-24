@@ -33,7 +33,7 @@ import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
  Common code for the POSIX.
 
  @author Man-Kit Leung, Tony Huang
- @version $Id: POSIXTarget.java 47617 2007-12-18 19:59:51Z cxh $
+ @version $Id$
  @since Ptolemy II 6.1
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)

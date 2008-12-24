@@ -38,7 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *
  * @see ptolemy.actor.lib.ColtBinomialSelector
  * @author Teale Fristoe
- * @version $Id: ColtBinomialSelector.java 47698 2008-01-02 20:22:47Z cxh $
+ * @version $Id$
  * @since Ptolemy II 6.0
  * @Pt.ProposedRating Red
  * @Pt.AcceptedRating

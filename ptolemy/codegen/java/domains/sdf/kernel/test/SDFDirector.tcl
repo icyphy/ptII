@@ -2,7 +2,7 @@
 #
 # @Author: Christopher Brooks
 #
-# @Version: $Id: SDFDirector.tcl 44076 2006-10-23 21:00:50Z zgang $
+# @Version: $Id$
 #
 # @Copyright (c) 2005-2006 The Regents of the University of California.
 # All rights reserved.

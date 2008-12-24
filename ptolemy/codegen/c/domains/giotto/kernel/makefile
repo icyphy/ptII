@@ -1,6 +1,6 @@
 # Makefile for Ptolemy Classic style Codegen giotto kernel
 #
-# @Version: $Id: makefile 48409 2008-02-07 05:00:59Z cxh $
+# @Version: $Id$
 # @Author: Christopher Brooks
 #
 # @Copyright (c) 2005-2008 The Regents of the University of California

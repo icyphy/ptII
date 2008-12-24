@@ -39,7 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * A helper class for ptolemy.actor.lib.Accumulator.
  *
  * @author Man-Kit Leung, Gang Zhou
- * @version $Id: Accumulator.java 47513 2007-12-07 06:32:21Z cxh $
+ * @version $Id$
  * @since Ptolemy II 6.0
  * @Pt.ProposedRating Green (mankit)
  * @Pt.AcceptedRating Green (cxh)

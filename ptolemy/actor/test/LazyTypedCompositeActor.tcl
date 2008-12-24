@@ -2,7 +2,7 @@
 #
 # @Author: Edward A. Lee, Lukito Muliadi, Christopher Hylands
 #
-# @Version: $Id: IOPort.tcl 50883 2008-10-22 19:23:57Z rodiers $
+# @Version: $Id$
 #
 # @Copyright (c) 1997-2005 The Regents of the University of California.
 # All rights reserved.

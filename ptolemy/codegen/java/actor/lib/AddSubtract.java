@@ -40,7 +40,7 @@ import ptolemy.kernel.util.IllegalActionException;
  A helper class for ptolemy.actor.lib.AddSubtract.
 
  @author Man-Kit (Jackie) Leung, Gang Zhou
- @version $Id: AddSubtract.java 51401 2008-10-27 05:04:25Z cxh $
+ @version $Id$
  @since Ptolemy II 6.0
  @Pt.ProposedRating Yellow (mankit) Pending FIXME in AddSubtract.c: need to deallocate Tokens
  @Pt.AcceptedRating Yellow (cxh)

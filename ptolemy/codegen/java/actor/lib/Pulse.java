@@ -41,7 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
  A helper class for ptolemy.actor.lib.Pulse.
 
  @author Gang Zhou
- @version $Id: Pulse.java 50416 2008-08-12 21:22:28Z mankit $
+ @version $Id$
  @since Ptolemy II 5.2
  @Pt.ProposedRating Green (mankit)
  @Pt.AcceptedRating Green (cxh)

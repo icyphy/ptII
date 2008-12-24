@@ -34,7 +34,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * A helper class for ptolemy.actor.lib.Uniform.
  *
  * @author Man-Kit Leung
- * @version $Id: Uniform.java 42324 2006-05-09 21:39:42Z cxh $
+ * @version $Id$
  * @since Ptolemy II 6.0
  * @Pt.ProposedRating Green (mankit)
  * @Pt.AcceptedRating Green (cxh)

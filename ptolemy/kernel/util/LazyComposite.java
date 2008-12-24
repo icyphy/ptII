@@ -46,7 +46,7 @@ package ptolemy.kernel.util;
  this limitation may not be onerous.
 
  @author  Edward A. Lee, Christopher Hylands
- @version $Id: LazyComposite.java 38798 2005-07-08 20:00:01Z cxh $
+ @version $Id$
  @since Ptolemy II 0.3
  @Pt.ProposedRating Green (eal)
  @Pt.AcceptedRating Green (cxh)

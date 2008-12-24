@@ -1,5 +1,5 @@
 #! /bin/sh
-# $Id: ptChangeLogs,v 1.1 2008/09/19 01:29:25 bldmastr Exp $
+# $Id$
 # Create a ChangeLog
 
 # We use svn2cl, which is a bit slow because it uses XSLT and we have

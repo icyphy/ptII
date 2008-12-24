@@ -40,7 +40,7 @@ the TypedCompositeActors except those within actor oriented class
 definitios are changed to LazyTypedCompositeActors.
 
  @author Christopher Hylands
- @version $Id: ClassChanges.java 50681 2008-09-19 20:08:02Z cxh $
+ @version $Id$
  @since Ptolemy II 2.0
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)

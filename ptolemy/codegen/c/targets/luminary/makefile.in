@@ -1,6 +1,6 @@
 /*This should be modified to match the luminary board. Right now it's a copy of ArduinoTarget's makefile*/
 # Hey Emacs, this is a -*- makefile -*-
-# $Id: makefile.in 47617 2007-12-18 19:59:51Z cxh $
+# $Id$
 #----------------------------------------------------------------------------
 # WinAVR Makefile Template written by Eric B. Weddington, Jörg Wunsch, et al.
 #

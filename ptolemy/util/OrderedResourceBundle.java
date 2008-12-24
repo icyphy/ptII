@@ -48,7 +48,7 @@ import java.util.ResourceBundle;
  * <code>java.util.ResourceBundle.getBundle()</code> for a complete description
  * of the search and instantiation strategy.
  * 
- * @version $Id: OrderedResourceBundle.java 4777 2006-03-02 22:41:29Z brooke $
+ * @version $Id$
  * @author Matthew Brooke
  * @since Ptolemy II 7.1
  */

@@ -73,7 +73,7 @@ import ptolemy.kernel.util.NamedObj;
  channel. There is one referable port channel for each connection. 
 
  @author Man-Kit Leung
- @version $Id: PNDirector.java 50690 2008-09-21 06:27:03Z mankit $
+ @version $Id$
  @since Ptolemy II 7.0
  @Pt.ProposedRating Yellow (mankit)
  @Pt.AcceptedRating Yellow (mankit)

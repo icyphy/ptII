@@ -50,7 +50,7 @@ import ptolemy.moml.MoMLParser;
  used to be the default value, while now -1 has become the default.
 
  @author Bert Rodiers
- @version $Id: RelationWidthChanges.java 49346 2008-05-01 18:42:42Z rodiers $
+ @version $Id$
  @since Ptolemy II 7.1
  @Pt.ProposedRating Red (rodiers)
  @Pt.AcceptedRating Red (rodiers)

@@ -39,7 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
  A helper class for ptolemy.actor.lib.Discard.
 
  @author Gang Zhou
- @version $Id: Discard.java 48974 2008-03-27 22:53:45Z mankit $
+ @version $Id$
  @since Ptolemy II 5.2
  @Pt.ProposedRating Green (cxh)
  @Pt.AcceptedRating Green (cxh)

@@ -35,7 +35,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * A helper class for ptolemy.actor.lib.StringConst.
  *
  * @author Man-Kit Leung
- * @version $Id: StringConst.java 51403 2008-10-27 05:22:03Z cxh $
+ * @version $Id$
  * @since Ptolemy II 6.0
  * @Pt.ProposedRating Green (mankit)
  * @Pt.AcceptedRating Green (cxh)

@@ -36,7 +36,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * A helper class for ptolemy.actor.lib.TrigFunction.
  *
  * @author Man-Kit Leung
- * @version $Id: TrigFunction.java 46972 2007-10-02 17:16:38Z cxh $
+ * @version $Id$
  * @since Ptolemy II 6.0
  * @Pt.ProposedRating Green (cxh)
  * @Pt.AcceptedRating Green (cxh)

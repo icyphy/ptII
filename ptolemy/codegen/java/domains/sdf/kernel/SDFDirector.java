@@ -59,7 +59,7 @@ import ptolemy.kernel.util.NamedObj;
  is also associated with a code generator.
 
  @author Ye Zhou, Gang Zhou
- @version $Id: SDFDirector.java 50870 2008-10-22 15:05:00Z cxh $
+ @version $Id$
  @since Ptolemy II 6.0
  @Pt.ProposedRating Yellow (zgang)
  @Pt.AcceptedRating Red (eal)
