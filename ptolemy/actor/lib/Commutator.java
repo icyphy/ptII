@@ -27,15 +27,15 @@
  */
 package ptolemy.actor.lib;
 
+import ptolemy.actor.IOPort;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -90,9 +90,8 @@ public class Commutator extends Transformer implements SequenceActor {
         super(container, name);
         input.setMultiport(true);
 
-        output_tokenProductionRate = new Parameter(output,
-                "tokenProductionRate");
-        output_tokenProductionRate.setExpression("0");
+        output_tokenProductionRate = new WidthDependentParameter(output,
+                "tokenProductionRate", input);
 
         input_tokenConsumptionRate = new Parameter(input,
                 "tokenConsumptionRate");
@@ -138,29 +137,8 @@ public class Commutator extends Transformer implements SequenceActor {
         Commutator newObject = (Commutator) super.clone(workspace);
         newObject.output_tokenProductionRate = (Parameter) (newObject.output
                 .getAttribute("tokenProductionRate"));
+        ((WidthDependentParameter) newObject.output_tokenProductionRate).setPort(newObject.input);
         return newObject;
-    }
-
-    /** Notify this entity that the links to the specified port have
-     *  been altered.  This sets the production rate of the output port
-     *  and notifies the director that the schedule is invalid, if there
-     *  is a director.
-     */
-    public void connectionsChanged(Port port) {
-        super.connectionsChanged(port);
-
-        if (port == input) {
-            try {
-                output_tokenProductionRate.setExpression(input.getWidth()
-                        + " * blockSize");
-            } catch (IllegalActionException ex) {
-                throw new InternalErrorException(this, ex,
-                        "At this time IllegalActionExceptions are not allowed to happen.\n" +
-                        "Width inference should already have been done.");
-            }
-            // NOTE: schedule is invalidated automatically already
-            // by the changed connections.
-        }
     }
 
     /** Read <i>blockSize</i> tokens from each input channel and send them
@@ -177,7 +155,7 @@ public class Commutator extends Transformer implements SequenceActor {
     public void fire() throws IllegalActionException {
         super.fire();
         _tentativeInputPosition = _currentInputPosition;
-
+        
         int width = input.getWidth();
         int blockSizeValue = ((IntToken) blockSize.getToken()).intValue();
 
@@ -234,4 +212,27 @@ public class Commutator extends Transformer implements SequenceActor {
 
     // The new channel number for the next input as determined by fire().
     private int _tentativeInputPosition;
+
+    /**
+     * This class will set _port.getWidth() + " * blockSize" as expression
+     * of the parameter, but will only do it when the token is requested to
+     * delay the triggering of the width.
+     */
+    private class WidthDependentParameter extends Parameter {
+        public WidthDependentParameter(NamedObj container, String name,
+                IOPort port) throws IllegalActionException, NameDuplicationException {
+            super(container, name);
+            _port = port;
+        }
+
+        public ptolemy.data.Token getToken() throws IllegalActionException {
+            setExpression(_port.getWidth() + " * blockSize");
+            return super.getToken();
+        }
+        void setPort(IOPort port) {
+            _port = port;
+        }
+        
+        private IOPort _port;
+    }; 
 }

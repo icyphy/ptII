@@ -27,6 +27,7 @@
  */
 package ptolemy.actor.lib;
 
+import ptolemy.actor.IOPort;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -34,8 +35,8 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
@@ -95,8 +96,9 @@ public class Distributor extends Transformer implements SequenceActor {
         blockSize.setExpression("1");
 
         // These parameters are required for SDF
-        input_tokenConsumptionRate = new Parameter(input,
-                "tokenConsumptionRate", new IntToken(0));
+        input_tokenConsumptionRate = new WidthDependentParameter(input,
+                "tokenConsumptionRate", new IntToken(0), output);
+
         input_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         input_tokenConsumptionRate.setTypeEquals(BaseType.INT);
         input_tokenConsumptionRate.setPersistent(false);
@@ -145,6 +147,7 @@ public class Distributor extends Transformer implements SequenceActor {
         Distributor newObject = (Distributor) super.clone(workspace);
         newObject.input_tokenConsumptionRate = (Parameter) (newObject.input
                 .getAttribute("tokenConsumptionRate"));
+        ((WidthDependentParameter) newObject.input_tokenConsumptionRate).setPort(newObject.output);
         return newObject;
     }
 
@@ -159,14 +162,6 @@ public class Distributor extends Transformer implements SequenceActor {
         super.connectionsChanged(port);
 
         if (port == output) {
-            try {
-                input_tokenConsumptionRate.setExpression(output.getWidth()
-                        + " * blockSize");
-            } catch (IllegalActionException ex) {
-                throw new InternalErrorException(this, ex,
-                        "At this time IllegalActionExceptions are not allowed to happen.\n" +
-                        "Width inference should already have been done.");
-            }
             _currentOutputPosition = 0;
 
             // NOTE: schedule is invalidated automatically already
@@ -229,4 +224,27 @@ public class Distributor extends Transformer implements SequenceActor {
 
     // The new channel number for the next output as determined by fire().
     private int _tentativeOutputPosition;
+    
+    /**
+     * This class will set _port.getWidth() + " * blockSize" as expression
+     * of the parameter, but will only do it when the token is requested to
+     * delay the triggering of the width.
+     */
+    private class WidthDependentParameter extends Parameter {
+        public WidthDependentParameter(NamedObj container, String name, Token token,
+                IOPort port) throws IllegalActionException, NameDuplicationException {
+            super(container, name, token);
+            _port = port;
+        }
+
+        public ptolemy.data.Token getToken() throws IllegalActionException {
+            setExpression(_port.getWidth() + " * blockSize");
+            return super.getToken();
+        }
+        void setPort(IOPort port) {
+            _port = port;
+        }
+        
+        private IOPort _port;
+    };     
 }
