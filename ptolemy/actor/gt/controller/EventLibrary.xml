@@ -96,6 +96,8 @@
     </entity>
     <entity name="Match" class="ptolemy.actor.gt.controller.Match">
     </entity>
+    <entity name="Prompt" class="ptolemy.actor.gt.controller.Prompt">
+    </entity>
     <entity name="ReceiveInput" class="ptolemy.actor.gt.controller.ReceiveInput">
     </entity>
     <entity name="ReadModel" class="ptolemy.actor.gt.controller.ReadModel">

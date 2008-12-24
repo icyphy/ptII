@@ -176,7 +176,7 @@ public class ReceiveInput extends TableauControllerEvent
         synchronized (listener) {
             if (!listener._finished) {
                 try {
-                    listener.wait();
+                    workspace().wait(listener);
                 } catch (InterruptedException e) {
                     // Ignore.
                 }

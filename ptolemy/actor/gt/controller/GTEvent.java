@@ -29,6 +29,7 @@ package ptolemy.actor.gt.controller;
 
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.domains.erg.kernel.ERGController;
 import ptolemy.domains.erg.kernel.Event;
 import ptolemy.domains.fsm.modal.RefinementExtender;
@@ -36,6 +37,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 
 //////////////////////////////////////////////////////////////////////////
 //// GTEvent
@@ -63,7 +65,11 @@ public class GTEvent extends Event {
 
         refinementSuggestion = new RefinementSuggestion(this,
                 "refinementSuggestion");
-        new Parameter(this, "_allowRefinement").setToken(BooleanToken.FALSE);
+
+        Parameter allowRefinement = new Parameter(this, "_allowRefinement");
+        allowRefinement.setTypeEquals(BaseType.BOOLEAN);
+        allowRefinement.setToken(BooleanToken.FALSE);
+        allowRefinement.setVisibility(Settable.EXPERT);
     }
 
     public ModelParameter getModelParameter() throws IllegalActionException {

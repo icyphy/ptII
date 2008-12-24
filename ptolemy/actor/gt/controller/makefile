@@ -68,6 +68,7 @@ JSRCS = \
 	ModelIOPort.java \
 	ModelParameter.java \
 	OutputModel.java \
+	Prompt.java \
 	ReadModel.java \
 	ReceiveInput.java \
 	RefinementSuggestion.java \
@@ -98,6 +99,7 @@ OTHER_FILES_TO_BE_JARED = \
 	ModelUpdater.xml \
 	ModelUpdaterIcon.xml \
 	OutputModelIcon.xml \
+	PromptIcon.xml \
 	ReadModelIcon.xml \
 	ReceiveInputIcon.xml \
 	ReportIcon.xml \
@@ -120,6 +122,8 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	'FileUpdater$$MoMLContentFilter.class' \
+	'Prompt$$Configurer.class' \
+	'Prompt$$Listener.class' \
 	'ReceiveInput$$InputListener.class' \
 	'Report$$1.class' \
 	'Report$$Mode$$1.class' \
