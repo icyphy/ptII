@@ -27,12 +27,8 @@
 */
 package ptolemy.actor.gt.controller;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import javax.swing.SwingUtilities;
 
-import ptolemy.actor.Initializable;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.expr.ModelScope;
@@ -54,8 +50,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public abstract class TableauControllerEvent extends GTEvent
-        implements Initializable {
+public abstract class TableauControllerEvent extends InitializableGTEvent {
 
     /**
      *  @param container
@@ -68,58 +63,6 @@ public abstract class TableauControllerEvent extends GTEvent
         super(container, name);
 
         referredTableau = new StringParameter(this, "referredTableau");
-    }
-
-    public void addInitializable(Initializable initializable) {
-        if (_initializables == null) {
-            _initializables = new LinkedList<Initializable>();
-        }
-        _initializables.add(initializable);
-    }
-
-    public void initialize() throws IllegalActionException {
-        if (_initializables != null) {
-            for (Initializable initializable : _initializables) {
-                initializable.initialize();
-            }
-        }
-    }
-
-    public void preinitialize() throws IllegalActionException {
-        if (_initializables != null) {
-            for (Initializable initializable : _initializables) {
-                initializable.preinitialize();
-            }
-        }
-    }
-
-    public void removeInitializable(Initializable initializable) {
-        if (_initializables != null) {
-            _initializables.remove(initializable);
-            if (_initializables.size() == 0) {
-                _initializables = null;
-            }
-        }
-    }
-
-    public void setContainer(CompositeEntity container)
-    throws IllegalActionException, NameDuplicationException {
-        CompositeEntity oldContainer = (CompositeEntity) getContainer();
-        if (oldContainer != null && oldContainer instanceof Initializable) {
-            ((Initializable) oldContainer).removeInitializable(this);
-        }
-        super.setContainer(container);
-        if (container != null && container instanceof Initializable) {
-            ((Initializable) container).addInitializable(this);
-        }
-    }
-
-    public void wrapup() throws IllegalActionException {
-        if (_initializables != null) {
-            for (Initializable initializable : _initializables) {
-                initializable.wrapup();
-            }
-        }
     }
 
     public StringParameter referredTableau;
@@ -166,9 +109,4 @@ public abstract class TableauControllerEvent extends GTEvent
         ObjectToken token = new ObjectToken(tableau, Tableau.class);
         _getTableauParameter().setToken(token);
     }
-
-    /** List of objects whose (pre)initialize() and wrapup() methods
-     *  should be slaved to these.
-     */
-    protected transient List<Initializable> _initializables;
 }

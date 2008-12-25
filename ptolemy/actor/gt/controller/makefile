@@ -54,12 +54,14 @@ PTCLASSALLJARS = \
 
 # Keep this list alphabetized.
 JSRCS = \
+	Configure.java \
 	DebuggerParameter.java \
 	Execute.java \
 	FileUpdater.java \
 	GTDebugEvent.java \
 	GTErrorEvent.java \
 	GTEvent.java \
+	InitializableGTEvent.java \
 	InitModel.java \
 	InitModelWithContainer.java \
 	InputModel.java \
@@ -68,7 +70,6 @@ JSRCS = \
 	ModelIOPort.java \
 	ModelParameter.java \
 	OutputModel.java \
-	Prompt.java \
 	ReadModel.java \
 	ReceiveInput.java \
 	RefinementSuggestion.java \
@@ -85,6 +86,7 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	ComplexTransformation.xml \
+	ConfigureIcon.xml \
 	DesignPatternTransformer.xml \
 	EmbeddedTransformationController.xml \
 	EmbeddedTransformationControllerWithPorts.xml \
@@ -99,7 +101,6 @@ OTHER_FILES_TO_BE_JARED = \
 	ModelUpdater.xml \
 	ModelUpdaterIcon.xml \
 	OutputModelIcon.xml \
-	PromptIcon.xml \
 	ReadModelIcon.xml \
 	ReceiveInputIcon.xml \
 	ReportIcon.xml \

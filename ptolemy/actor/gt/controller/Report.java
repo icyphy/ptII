@@ -110,6 +110,8 @@ public class Report extends TableauControllerEvent {
         case MESSAGE:
             GraphicalMessageHandler.message(text);
             break;
+        case EXCEPTION:
+            throw new RuntimeException(text);
         case TABLEAU:
             Effigy effigy = Configuration.findEffigy(toplevel());
             if (effigy == null) {
@@ -118,7 +120,8 @@ public class Report extends TableauControllerEvent {
             }
 
             Tableau tableau = _getTableau();
-            if (tableau != null && !(tableau.getFrame() instanceof TextEditor)) {
+            if (tableau != null &&
+                    !(tableau.getFrame() instanceof TextEditor)) {
                 _setTableau(null);
                 _closeTableau(tableau);
                 tableau = null;
@@ -226,6 +229,11 @@ public class Report extends TableauControllerEvent {
         MESSAGE {
             public String toString() {
                 return "message";
+            }
+        },
+        EXCEPTION {
+            public String toString() {
+                return "runtime exception";
             }
         },
         TABLEAU {

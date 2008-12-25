@@ -84,36 +84,42 @@
         </configure>
     </entity>
     <input source="ptolemy/actor/gt/controller/lib/designPatterns.xml"/>
+    <entity name="ExecutionControl" class="ptolemy.moml.EntityLibrary">
+        <entity name="Execute" class="ptolemy.actor.gt.controller.Execute">
+        </entity>
+        <entity name="Stop" class="ptolemy.actor.gt.controller.Stop">
+        </entity>
+        <entity name="Test" class="ptolemy.actor.gt.controller.Test">
+        </entity>
+    </entity>
+    <entity name="IO" class="ptolemy.moml.EntityLibrary">
+        <entity name="ListDirectory" class="ptolemy.actor.gt.controller.ListDirectory">
+        </entity>
+        <entity name="ReadModel" class="ptolemy.actor.gt.controller.ReadModel">
+        </entity>
+        <entity name="WriteModel" class="ptolemy.actor.gt.controller.WriteModel">
+        </entity>
+    </entity>
+    <entity name="UserInteraction" class="ptolemy.moml.EntityLibrary">
+        <entity name="Configure" class="ptolemy.actor.gt.controller.Configure">
+        </entity>
+        <entity name="ReceiveInput" class="ptolemy.actor.gt.controller.ReceiveInput">
+        </entity>
+        <entity name="Report" class="ptolemy.actor.gt.controller.Report">
+        </entity>
+        <entity name="SetTableau" class="ptolemy.actor.gt.controller.SetTableau">
+        </entity>
+    </entity>
     <entity name="Event" class="ptolemy.actor.gt.controller.GTEvent">
         <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
         </property>
         <property name="_allowRefinement" class="ptolemy.data.expr.Parameter" value="true">
         </property>
     </entity>
-    <entity name="Execute" class="ptolemy.actor.gt.controller.Execute">
-    </entity>
-    <entity name="ListDirectory" class="ptolemy.actor.gt.controller.ListDirectory">
-    </entity>
     <entity name="Match" class="ptolemy.actor.gt.controller.Match">
-    </entity>
-    <entity name="Prompt" class="ptolemy.actor.gt.controller.Prompt">
-    </entity>
-    <entity name="ReceiveInput" class="ptolemy.actor.gt.controller.ReceiveInput">
-    </entity>
-    <entity name="ReadModel" class="ptolemy.actor.gt.controller.ReadModel">
-    </entity>
-    <entity name="Report" class="ptolemy.actor.gt.controller.Report">
-    </entity>
-    <entity name="SetTableau" class="ptolemy.actor.gt.controller.SetTableau">
-    </entity>
-    <entity name="Stop" class="ptolemy.actor.gt.controller.Stop">
-    </entity>
-    <entity name="Test" class="ptolemy.actor.gt.controller.Test">
     </entity>
     <entity name="Transform" class="ptolemy.actor.gt.controller.Transform">
     </entity>
     <entity name="View" class="ptolemy.actor.gt.controller.View">
-    </entity>
-    <entity name="WriteModel" class="ptolemy.actor.gt.controller.WriteModel">
     </entity>
 </group>

@@ -27,31 +27,33 @@
 */
 package ptolemy.actor.gt.controller;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
+import java.awt.Frame;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.Window;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+import javax.swing.WindowConstants;
 
 import ptolemy.data.ArrayToken;
-import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
-//// Prompt
+//// Configure
 
 /**
 
@@ -62,7 +64,7 @@ import ptolemy.kernel.util.Settable;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class Prompt extends TableauControllerEvent {
+public class Configure extends InitializableGTEvent {
 
     /**
      *  @param container
@@ -70,13 +72,9 @@ public class Prompt extends TableauControllerEvent {
      *  @throws IllegalActionException
      *  @throws NameDuplicationException
      */
-    public Prompt(CompositeEntity container, String name)
+    public Configure(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-
-        tableau = new TableauParameter(this, "tableau");
-        tableau.setPersistent(false);
-        tableau.setVisibility(Settable.EXPERT);
 
         List<Settable> parameters = attributeList(Settable.class);
         for (Settable parameter : parameters) {
@@ -84,77 +82,84 @@ public class Prompt extends TableauControllerEvent {
         }
     }
 
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Configure newObject = (Configure) super.clone(workspace);
+        newObject._ignoredParameters = new HashSet<String>(_ignoredParameters);
+        newObject._oldValues = new HashMap<Settable, String>();
+        return newObject;
+    }
+
     public RefiringData fire(ArrayToken arguments)
             throws IllegalActionException {
         RefiringData data = super.fire(arguments);
 
-        JFrame frame = new JFrame();
-
-        JPanel contentPane = new JPanel();
-        contentPane.setLayout(new BorderLayout());
-        frame.setContentPane(contentPane);
-
+        JDialog dialog = new JDialog((Frame) null, getName(), true);
+        dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         Configurer configurer = new Configurer();
-        _executeChangeRequests(configurer);
-        contentPane.add(configurer, BorderLayout.CENTER);
 
-        JPanel panel = new JPanel();
-        panel.setLayout(new FlowLayout());
-        JButton ok = new JButton("OK");
-        JButton cancel = new JButton("Cancel");
-        Listener listener = new Listener(frame);
-        ok.addActionListener(listener);
-        cancel.addActionListener(listener);
-        panel.add(ok);
-        panel.add(cancel);
-        contentPane.add(panel, BorderLayout.SOUTH);
+        _executeChangeRequests();
 
-        synchronized (frame) {
-            frame.pack();
-            frame.addWindowListener(listener);
-            Toolkit toolkit = Toolkit.getDefaultToolkit();
-            int x = (toolkit.getScreenSize().width - frame.getSize().width) / 2;
-            int y = (toolkit.getScreenSize().height - frame.getSize().height)
-                    / 2;
-            frame.setLocation(x, y);
-            frame.setAlwaysOnTop(true);
-            frame.setVisible(true);
+        JOptionPane contentPane = new JOptionPane(configurer,
+                JOptionPane.QUESTION_MESSAGE, JOptionPane.YES_NO_OPTION, null,
+                new String[]{"Set", "Unset"}, "Set");
+        dialog.setContentPane(contentPane);
+        Listener listener = new Listener(dialog);
+        contentPane.addPropertyChangeListener(listener);
 
-            try {
-                workspace().wait(frame);
-            } catch (InterruptedException e) {
-                // Ignore.
-            }
-        }
+        dialog.addWindowListener(listener);
+        dialog.pack();
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        int x = (toolkit.getScreenSize().width - dialog.getSize().width) / 2;
+        int y = (toolkit.getScreenSize().height - dialog.getSize().height) / 2;
+        dialog.setLocation(x, y);
+        dialog.setAlwaysOnTop(true);
+        dialog.setVisible(true);
 
         if (listener._cancelled) {
             configurer.restore();
         } else {
-            _executeChangeRequests(configurer);
+            _executeChangeRequests();
         }
 
         return data;
     }
 
-    public TableauParameter tableau;
-
-    public StringParameter title;
-
-    protected TableauParameter _getDefaultTableau() {
-        return tableau;
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        List<Settable> parameters = attributeList(Settable.class);
+        _oldValues.clear();
+        for (Settable parameter : parameters) {
+            if (_isVisible(parameter)) {
+                _oldValues.put(parameter, parameter.getExpression());
+            }
+        }
     }
 
-    private void _executeChangeRequests(Configurer configurer) {
+    public void wrapup() throws IllegalActionException {
+        for (Map.Entry<Settable, String> entry : _oldValues.entrySet()) {
+            entry.getKey().setExpression(entry.getValue());
+        }
+        _oldValues.clear();
+        super.wrapup();
+    }
+
+    private void _executeChangeRequests() {
         List<Settable> parameters = attributeList(Settable.class);
         for (Settable parameter : parameters) {
-            if (!_ignoredParameters.contains(parameter.getName()) &&
-                    configurer.isVisible(parameter)) {
+            if (_isVisible(parameter)) {
                 ((NamedObj) parameter).executeChangeRequests();
             }
         }
     }
 
+    private boolean _isVisible(Settable settable) {
+        return !_ignoredParameters.contains(settable.getName()) &&
+                Configurer.isVisible(this, settable);
+    }
+
     private Set<String> _ignoredParameters = new HashSet<String>();
+
+    private Map<Settable, String> _oldValues = new HashMap<Settable, String>();
 
     private class Configurer extends ptolemy.actor.gui.Configurer {
 
@@ -166,7 +171,7 @@ public class Prompt extends TableauControllerEvent {
          *  editor pane factories, then a default editor pane is created.
          */
         public Configurer() {
-            super(Prompt.this);
+            super(Configure.this);
         }
 
         /** Return true if the given settable should be visible in this
@@ -180,59 +185,50 @@ public class Prompt extends TableauControllerEvent {
          *  is EXPERT.  Otherwise, return false.
          */
         public boolean isVisible(Settable settable) {
-            return !_ignoredParameters.contains(settable.getName()) &&
-                    super.isVisible(settable);
+            return _isVisible(settable);
         }
     }
 
-    private class Listener implements ActionListener, WindowListener {
+    private class Listener extends WindowAdapter
+            implements PropertyChangeListener {
 
-        public void actionPerformed(ActionEvent e) {
-            String c = e.getActionCommand();
-            if (c.equals("OK")) {
-                synchronized (_frame) {
+        public void propertyChange(PropertyChangeEvent e) {
+            String property = e.getPropertyName();
+            if (!_dialog.isVisible() ||
+                    !(e.getSource() instanceof JOptionPane) ||
+                    !property.equals(JOptionPane.VALUE_PROPERTY) &&
+                    !property.equals(JOptionPane.INPUT_VALUE_PROPERTY)) {
+                return;
+            }
+            JOptionPane optionPane = (JOptionPane) e.getSource();
+            Object value = optionPane.getValue();
+            boolean isUnset = value instanceof Integer &&
+                    ((Integer) value).intValue() == JOptionPane.CLOSED_OPTION ||
+                    value instanceof String && ((String) value).equals("Unset");
+            if (isUnset) {
+                _cancelled = true;
+                _dialog.setVisible(false);
+            } else {
+                boolean isSet = value instanceof String &&
+                        ((String) value).equals("Set");
+                if (isSet) {
                     _cancelled = false;
-                    _frame.notify();
-                }
-            } else if (c.equals("Cancel")) {
-                synchronized (_frame) {
-                    _frame.notify();
+                    _dialog.setVisible(false);
                 }
             }
-            _frame.dispose();
-        }
-
-        public void windowActivated(WindowEvent e) {
-        }
-
-        public void windowClosed(WindowEvent e) {
         }
 
         public void windowClosing(WindowEvent e) {
-            synchronized (_frame) {
-                _frame.notify();
-            }
-            _frame.dispose();
+            _cancelled = true;
+            _dialog.setVisible(false);
         }
 
-        public void windowDeactivated(WindowEvent e) {
-        }
-
-        public void windowDeiconified(WindowEvent e) {
-        }
-
-        public void windowIconified(WindowEvent e) {
-        }
-
-        public void windowOpened(WindowEvent e) {
-        }
-
-        Listener(JFrame frame) {
-            _frame = frame;
+        Listener(Window frame) {
+            _dialog = frame;
         }
 
         private boolean _cancelled = true;
 
-        private JFrame _frame;
+        private Window _dialog;
     }
 }

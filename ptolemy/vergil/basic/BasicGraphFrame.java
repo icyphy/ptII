@@ -1031,6 +1031,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         if (_initialSaveAsFileName.length() == 4) {
             _initialSaveAsFileName = "model.xml";
         }
+        model = getModel();
 
         HashSet<NamedObj> namedObjSet = _getSelectionSet();
         boolean hasSelectedObjects = !namedObjSet.isEmpty();
@@ -1075,7 +1076,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         DesignPatternIcon icon = null;
         String before = "";
         String after = "";
-        MoMLParser parser = null;
 
         try {
             alternateGetMoml = new StringAttribute(actor,
@@ -1089,9 +1089,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
             before = query.getStringValue("before").trim();
             if (!before.equals("")) {
-                if (parser == null) {
-                    parser = new MoMLParser();
-                }
+                MoMLParser parser = new MoMLParser();
 
                 URL base = new File(before).toURI().toURL();
                 NamedObj transformation = parser.parse(base, base);
@@ -1113,13 +1111,17 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 parser.reset();
                 parser.setContext(model);
                 parser.parse(writer.toString());
+
+                Attribute attribute = model.getAttribute(
+                        "_transformationBefore");
+                if (attribute != null) {
+                    attribute.moveToFirst();
+                }
             }
 
             after = query.getStringValue("after").trim();
             if (!after.equals("")) {
-                if (parser == null) {
-                    parser = new MoMLParser();
-                }
+                MoMLParser parser = new MoMLParser();
 
                 URL base = new File(after).toURI().toURL();
                 NamedObj transformation = parser.parse(base, base);

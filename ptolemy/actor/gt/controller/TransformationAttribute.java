@@ -173,6 +173,7 @@ implements Configurable {
                     }
                 });
             }
+            setContainer(null);
         } else {
             _configureSource = source;
             text = text.trim();
