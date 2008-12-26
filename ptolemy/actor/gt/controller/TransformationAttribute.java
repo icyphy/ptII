@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.Writer;
 import java.net.URL;
+import java.util.List;
 
 import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.Manager;
@@ -38,14 +39,13 @@ import ptolemy.actor.gt.GTAttribute;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.StringParameter;
 import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.domains.erg.kernel.ERGModalModel;
 import ptolemy.domains.fsm.kernel.Configurer;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.URIAttribute;
-import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.Configurable;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -54,6 +54,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
+import ptolemy.moml.ParserAttribute;
 import ptolemy.vergil.gt.TransformationAttributeController;
 import ptolemy.vergil.gt.TransformationAttributeEditorFactory;
 import ptolemy.vergil.gt.TransformationAttributeIcon;
@@ -122,18 +123,10 @@ implements Configurable {
 
     public void configure(URL base, String source, String text)
             throws Exception {
-        StringParameter type = (StringParameter) getAttribute("_type");
-        boolean isImmediate = false;
-        boolean isDelayed = false;
-        if (type != null) {
-            String expression = type.getExpression();
-            if (expression.equals("immediate")) {
-                isImmediate = true;
-            } else if (expression.equals("delayed")) {
-                isDelayed = true;
-            }
-        }
-        if (isImmediate || isDelayed) {
+        Parameter immediate = (Parameter) getAttribute("_immediate");
+        boolean isImmediate = immediate != null &&
+                ((BooleanToken) immediate.getToken()).booleanValue();
+        if (isImmediate) {
             Effigy masterEffigy = Configuration.findEffigy(toplevel());
             PtolemyEffigy effigy = new PtolemyEffigy(masterEffigy,
                     masterEffigy.uniqueName("effigy"));
@@ -142,8 +135,11 @@ implements Configurable {
                     source, new StringReader(text));
             final Manager manager = new Manager(transformer.workspace(),
                     "_manager");
+            final CompositeEntity context = (CompositeEntity) getContainer();
             effigy.setModel(transformer);
             transformer.setManager(manager);
+
+
             manager.addExecutionListener(new ExecutionListener() {
                 public void executionError(Manager manager,
                         Throwable throwable) {
@@ -157,22 +153,29 @@ implements Configurable {
                         ModelParameter modelAttribute =
                             (ModelParameter) transformer.getController()
                                     .getAttribute("Model");
-                        CompositeEntity container =
-                            (CompositeEntity) getContainer();
-                        modelAttribute.setModel(container);
+                        modelAttribute.setModel(context);
                     }
                 }
             });
-            if (isImmediate) {
+
+            List<ParserAttribute> parsers = context.attributeList(
+                    ParserAttribute.class);
+            ParserAttribute parserAttribute = parsers.size() > 0 ?
+                    parsers.get(0) :
+                    new ParserAttribute(context, context.uniqueName("_parser"));
+            MoMLParser oldParser = parsers.size() > 0 ?
+                    parserAttribute.getParser() : null;
+            parserAttribute.setParser(new MoMLParser());
+            try {
                 manager.execute();
+            } finally {
+                if (oldParser == null) {
+                    parserAttribute.setContainer(null);
+                } else {
+                    parserAttribute.setParser(oldParser);
+                }
             }
-            if (isDelayed) {
-                getContainer().requestChange(new ChangeRequest(this, "") {
-                    protected void _execute() throws Exception {
-                        manager.execute();
-                    }
-                });
-            }
+
             setContainer(null);
         } else {
             _configureSource = source;

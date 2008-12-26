@@ -199,7 +199,18 @@ public class Configurer extends JPanel implements CloseListener {
         // FIXME: Unfortunately, this gets
         // invoked before that notification occurs if the
         // "X" is used to close the window.  Swing bug?
-        SwingUtilities.invokeLater(new Runnable() {
+        restore(true);
+    }
+
+    /** Request restoration of the user settable attribute values to what they
+     *  were when this object was created.  If <i>delay</i> is true, the actual
+     *  restoration occurs later, in the UI thread, in order to allow all
+     *  pending changes to the attribute values to be processed first. If the
+     *  original values match the current values, then nothing is done.
+     *  @param delay Whether the restoration should be delayed later.
+     */
+    public void restore(boolean delay) {
+        Runnable restoreCode = new Runnable() {
             public void run() {
                 // First check for changes.
                 Iterator parameters = _object.attributeList(Settable.class)
@@ -241,7 +252,12 @@ public class Configurer extends JPanel implements CloseListener {
                     _object.requestChange(request);
                 }
             }
-        });
+        };
+        if (delay) {
+            SwingUtilities.invokeLater(restoreCode);
+        } else {
+            restoreCode.run();
+        }
     }
 
     /** Restore parameter values to their defaults.

@@ -53,6 +53,7 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.SingletonConfigurableAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
@@ -268,14 +269,11 @@ public class GTEntityUtils {
     }
 
     private static void _setIconDescription(GTEntity entity,
-            String iconDescription) {
-        String moml = "<property name=\"_iconDescription\" class="
-                + "\"ptolemy.kernel.util.SingletonConfigurableAttribute\">"
-                + "  <configure>" + iconDescription + "</configure>"
-                + "</property>";
-        MoMLChangeRequest request =
-            new MoMLChangeRequest(entity, (NamedObj) entity, moml);
-        request.execute();
+            String iconDescription) throws Exception {
+        SingletonConfigurableAttribute description =
+            new SingletonConfigurableAttribute((NamedObj) entity,
+                    "_iconDescription");
+        description.configure(null, null, iconDescription);
     }
 
     private static class LoadActorIconChangeRequest extends ChangeRequest {

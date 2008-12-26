@@ -32,7 +32,8 @@ import java.io.StringWriter;
 import java.util.HashSet;
 import java.util.List;
 
-import ptolemy.data.expr.StringParameter;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
@@ -68,77 +69,98 @@ public class DesignPatternGetMoMLAction {
         Attribute before = null;
         Attribute after = null;
         StringWriter buffer = new StringWriter();
+        int extraIndent = 0;
         try {
             buffer.write("<group>\n");
 
             before = object.getAttribute("_transformationBefore");
             if (before != null) {
-                new StringParameter(before, "_type").setExpression("immediate");
+                new Parameter(before, "_immediate").setToken(BooleanToken.TRUE);
             }
 
             after = object.getAttribute("_transformationAfter");
             if (after != null) {
-                new StringParameter(after, "_type").setExpression("delayed");
+                new Parameter(after, "_immediate").setToken(BooleanToken.TRUE);
+                extraIndent++;
+                buffer.write(StringUtilities.getIndentPrefix(extraIndent) +
+                        "<group>\n");
             }
 
             List<Attribute> attributes = group.attributeList();
             for (Attribute attribute : attributes) {
-                if (!_IGNORED_ATTRIBUTES.contains(attribute.getName())) {
-                    attribute.exportMoML(buffer, 1);
+                if (!_IGNORED_ATTRIBUTES.contains(attribute.getName()) &&
+                        (after == null || attribute != after)) {
+                    attribute.exportMoML(buffer, extraIndent + 1);
                 }
             }
 
             List<Port> ports = group.portList();
             for (Port port : ports) {
-                buffer.write(StringUtilities.getIndentPrefix(1) +
+                buffer.write(StringUtilities.getIndentPrefix(extraIndent + 1) +
                         "<port name=\"" + port.getName() + "\">\n");
                 if (port instanceof IOPort) {
                     IOPort ioPort = (IOPort) port;
                     boolean isInput = ioPort.isInput();
                     boolean isOutput = ioPort.isOutput();
                     if (isInput) {
-                        buffer.write(StringUtilities.getIndentPrefix(2) +
+                        buffer.write(StringUtilities.getIndentPrefix(
+                                extraIndent + 2) +
                                 "<property name=\"input\"/>\n");
                     }
                     if (isOutput) {
-                        buffer.write(StringUtilities.getIndentPrefix(2) +
+                        buffer.write(StringUtilities.getIndentPrefix(
+                                extraIndent + 2) +
                                 "<property name=\"output\"/>\n");
                     }
                     if (ioPort.isMultiport()) {
-                        buffer.write(StringUtilities.getIndentPrefix(2) +
+                        buffer.write(StringUtilities.getIndentPrefix(
+                                extraIndent + 2) +
                                 "<property name=\"multiport\"/>\n");
                     }
                 }
                 attributes = port.attributeList();
                 for (Attribute attribute : attributes) {
                     if (!_IGNORED_ATTRIBUTES.contains(attribute.getName())) {
-                        attribute.exportMoML(buffer, 2);
+                        attribute.exportMoML(buffer, extraIndent + 2);
                     }
                 }
-                buffer.write(StringUtilities.getIndentPrefix(1) + "</port>");
+                buffer.write(StringUtilities.getIndentPrefix(extraIndent + 1) +
+                        "</port>");
             }
 
-            buffer.write(StringUtilities.getIndentPrefix(1) +
+            buffer.write(StringUtilities.getIndentPrefix(extraIndent + 1) +
                     "<group name=\"auto\">\n");
 
             List<ComponentEntity> classes = group.classDefinitionList();
             for (ComponentEntity entity : classes) {
-                entity.exportMoML(buffer, 2);
+                entity.exportMoML(buffer, extraIndent + 2);
             }
 
             List<ComponentEntity> entities = group.entityList();
             for (ComponentEntity entity : entities) {
-                entity.exportMoML(buffer, 2);
+                entity.exportMoML(buffer, extraIndent + 2);
             }
 
             List<ComponentRelation> relations = group.relationList();
             for (ComponentRelation relation : relations) {
-                relation.exportMoML(buffer, 2);
+                relation.exportMoML(buffer, extraIndent + 2);
             }
 
-            buffer.write(group.exportLinks(2, null));
-            buffer.write(StringUtilities.getIndentPrefix(1) + "</group>\n");
-            buffer.write("</group>\n");
+            buffer.write(group.exportLinks(extraIndent + 2, null));
+            buffer.write(StringUtilities.getIndentPrefix(extraIndent + 1) +
+                    "</group>\n");
+            buffer.write(StringUtilities.getIndentPrefix(extraIndent) +
+                    "</group>\n");
+
+            if (after != null) {
+                buffer.write(StringUtilities.getIndentPrefix(extraIndent) +
+                        "<group>\n");
+                after.exportMoML(buffer, extraIndent + 1);
+                buffer.write(StringUtilities.getIndentPrefix(extraIndent) +
+                        "</group>\n");
+                buffer.write("</group>\n");
+            }
+
             return buffer.toString();
         } catch (Exception e) {
             // This should not occur.
@@ -146,7 +168,7 @@ public class DesignPatternGetMoMLAction {
                     "Moml content for group " + group.getName() + ".");
         } finally {
             if (before != null) {
-                Attribute attribute = before.getAttribute("_type");
+                Attribute attribute = before.getAttribute("_immediate");
                 if (attribute != null) {
                     try {
                         attribute.setContainer(null);
@@ -156,7 +178,7 @@ public class DesignPatternGetMoMLAction {
                 }
             }
             if (after != null) {
-                Attribute attribute = after.getAttribute("_type");
+                Attribute attribute = after.getAttribute("_immediate");
                 if (attribute != null) {
                     try {
                         attribute.setContainer(null);

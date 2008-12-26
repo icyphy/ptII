@@ -28,23 +28,14 @@
 package ptolemy.actor.gt.controller;
 
 import java.awt.Frame;
-import java.awt.Toolkit;
-import java.awt.Window;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.swing.JDialog;
-import javax.swing.JOptionPane;
-import javax.swing.WindowConstants;
-
 import ptolemy.data.ArrayToken;
+import ptolemy.gui.ComponentDialog;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -93,32 +84,15 @@ public class Configure extends InitializableGTEvent {
             throws IllegalActionException {
         RefiringData data = super.fire(arguments);
 
-        JDialog dialog = new JDialog((Frame) null, getName(), true);
-        dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        Configurer configurer = new Configurer();
-
         _executeChangeRequests();
 
-        JOptionPane contentPane = new JOptionPane(configurer,
-                JOptionPane.QUESTION_MESSAGE, JOptionPane.YES_NO_OPTION, null,
-                new String[]{"Set", "Unset"}, "Set");
-        dialog.setContentPane(contentPane);
-        Listener listener = new Listener(dialog);
-        contentPane.addPropertyChangeListener(listener);
-
-        dialog.addWindowListener(listener);
-        dialog.pack();
-        Toolkit toolkit = Toolkit.getDefaultToolkit();
-        int x = (toolkit.getScreenSize().width - dialog.getSize().width) / 2;
-        int y = (toolkit.getScreenSize().height - dialog.getSize().height) / 2;
-        dialog.setLocation(x, y);
-        dialog.setAlwaysOnTop(true);
-        dialog.setVisible(true);
-
-        if (listener._cancelled) {
-            configurer.restore();
-        } else {
+        Configurer configurer = new Configurer();
+        ComponentDialog dialog = new ComponentDialog((Frame) null, getName(),
+                configurer, new String[]{"Set", "Unset"});
+        if (dialog.buttonPressed().equals("Set")) {
             _executeChangeRequests();
+        } else {
+            configurer.restore(false);
         }
 
         return data;
@@ -187,48 +161,5 @@ public class Configure extends InitializableGTEvent {
         public boolean isVisible(Settable settable) {
             return _isVisible(settable);
         }
-    }
-
-    private class Listener extends WindowAdapter
-            implements PropertyChangeListener {
-
-        public void propertyChange(PropertyChangeEvent e) {
-            String property = e.getPropertyName();
-            if (!_dialog.isVisible() ||
-                    !(e.getSource() instanceof JOptionPane) ||
-                    !property.equals(JOptionPane.VALUE_PROPERTY) &&
-                    !property.equals(JOptionPane.INPUT_VALUE_PROPERTY)) {
-                return;
-            }
-            JOptionPane optionPane = (JOptionPane) e.getSource();
-            Object value = optionPane.getValue();
-            boolean isUnset = value instanceof Integer &&
-                    ((Integer) value).intValue() == JOptionPane.CLOSED_OPTION ||
-                    value instanceof String && ((String) value).equals("Unset");
-            if (isUnset) {
-                _cancelled = true;
-                _dialog.setVisible(false);
-            } else {
-                boolean isSet = value instanceof String &&
-                        ((String) value).equals("Set");
-                if (isSet) {
-                    _cancelled = false;
-                    _dialog.setVisible(false);
-                }
-            }
-        }
-
-        public void windowClosing(WindowEvent e) {
-            _cancelled = true;
-            _dialog.setVisible(false);
-        }
-
-        Listener(Window frame) {
-            _dialog = frame;
-        }
-
-        private boolean _cancelled = true;
-
-        private Window _dialog;
     }
 }

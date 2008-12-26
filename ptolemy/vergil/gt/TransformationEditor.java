@@ -955,7 +955,10 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             _linkController = new TransformationLinkController(this);
             _portController = new TransformationExternalPortController(this);
             _relationController = new TransformationRelationController(this);
-
+        }
+        
+        protected void initializeInteraction() {
+            super.initializeInteraction();
             Action oldConfigureAction = _configureAction;
             _configureAction = new GTEntityConfigureAction("Configure");
             _configureMenuFactory.substitute(oldConfigureAction,
