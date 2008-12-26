@@ -41,7 +41,7 @@ import ptolemy.util.StringUtilities;
 import com.sun.j3d.loaders.IncorrectFormatException;
 import com.sun.j3d.loaders.ParsingErrorException;
 import com.sun.j3d.loaders.Scene;
-import com.sun.j3d.loaders.vrml97.VrmlLoader;
+import org.jdesktop.j3d.loaders.vrml97.VrmlLoader;
 import com.sun.j3d.utils.geometry.*;
 import com.sun.j3d.utils.universe.*;
 
@@ -58,6 +58,11 @@ import javax.vecmath.*;
 //// VrmlLoader3D
 
 /**
+   A VRML model loader actor.
+
+   <p>This class uses the VRML Downloader, see
+   {@link ptolemy.domains.gr.lib.experimental.GRPickActor}.
+
    @author C. Fong
    @version $Id$
    @Pt.ProposedRating Red (chf)
@@ -94,34 +99,34 @@ public class VrmlLoad extends GRPickActor {
 
         VrmlLoader loader = new VrmlLoader();
         URL loadUrl = null;
-        String locString = StringUtilities.getProperty("user.dir") + "\\"
+        String locString = StringUtilities.getProperty("user.dir") + File.separator
             + fileName;
         System.out.println("location:-->  " + locString);
 
         Scene scene = null;
 
-        try {
-            //loadUrl = new URL(fileName);
-            loadUrl = new URL(locString);
-        } catch (MalformedURLException e) {
-            System.err.println(e);
-            System.out.println("bad URL damn " + locString);
-        }
+//         try {
+//             //loadUrl = new URL(fileName);
+//             loadUrl = new URL(locString);
+//         } catch (MalformedURLException ex) {
+//             throw new IllegalActionException(this, ex, "Bad URL: \"" + locString
+// 					     + "\"" );
+//         }
 
         try {
             //scene = loader.load(fileName);
             scene = loader.load(locString);
 
             //scene = loader.load(loadUrl);
-        } catch (FileNotFoundException e) {
-            System.err.println(e);
-            throw new IllegalActionException("File not found!");
-        } catch (ParsingErrorException e) {
-            System.err.println(e);
-            throw new IllegalActionException("File is not a valid 3D OBJ file");
-        } catch (IncorrectFormatException e) {
-            System.err.println(e);
-            throw new IllegalActionException("File is not a valid 3D OBJ file");
+        } catch (FileNotFoundException ex) {
+            throw new IllegalActionException(this, ex, "File \"" + locString
+					     + "\" not found!");
+        } catch (ParsingErrorException ex) {
+            throw new IllegalActionException(this, ex, "File \"" + locString
+					     + "\" is not a valid 3D OBJ file");
+        } catch (IncorrectFormatException ex) {
+            throw new IllegalActionException(this, ex, "File \"" + locString
+					     + "\" is not a valid 3D OBJ file");
         }
 
         obj = scene;

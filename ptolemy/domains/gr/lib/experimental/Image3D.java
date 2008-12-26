@@ -125,7 +125,7 @@ public class Image3D extends GRPickActor {
                     .stringValue();
 
         TextureLoader loader = new TextureLoader(fileName,
-                ((ViewScreen) _root).getCanvas());
+                _viewScreen.getCanvas());
         ImageComponent2D image = loader.getImage();
         System.out.println("image " + image);
 

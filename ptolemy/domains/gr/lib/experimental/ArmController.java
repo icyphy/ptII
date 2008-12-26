@@ -43,7 +43,10 @@ import java.io.*;
 import java.lang.*;
 import java.util.*;
 
-import javax.comm.*;
+import gnu.io.CommPortIdentifier;
+import gnu.io.SerialPort;
+import gnu.io.SerialPortEvent;
+import gnu.io.SerialPortEventListener;
 
 
 public class ArmController extends TypedAtomicActor {

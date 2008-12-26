@@ -1,4 +1,4 @@
-/* A base class for all pickable actor
+/* A base class for all pickable actors
 
 Copyright (c) 2000-2005 The Regents of the University of California.
 All rights reserved.
@@ -41,7 +41,7 @@ import ptolemy.kernel.util.*;
 import com.sun.j3d.loaders.IncorrectFormatException;
 import com.sun.j3d.loaders.ParsingErrorException;
 import com.sun.j3d.loaders.Scene;
-import com.sun.j3d.loaders.vrml97.VrmlLoader;
+import org.jdesktop.j3d.loaders.vrml97.VrmlLoader;
 import com.sun.j3d.utils.geometry.*;
 import com.sun.j3d.utils.picking.PickResult;
 import com.sun.j3d.utils.picking.PickTool;
@@ -61,12 +61,28 @@ import javax.vecmath.*;
 //// GRPickActor
 
 /**
+   A base class for all pickable actors.
+
+   <p>This class uses the VRML loader from
+   <a href="https://j3d-vrml97.dev.java.net/">https://j3d-vrml97.dev.java.net/</a>
+
+   <p>To install, download and untar:
+   <pre>
+   wget --no-check-certificate https://j3d-vrml97.dev.java.net/files/documents/2124/3
+   tar -zxf j3d-vrml97-06-04-20.tar.gz 
+   </pre>
+
+   <p>To install on the Mac:
+   <pre>
+   sudo cp j3d-vrml97/j3d-vrml97.jar /System/Library/Java/Extensions/
+   </pre>
+
    @author C. Fong
    @version $Id$
    @Pt.ProposedRating Red (chf)
    @Pt.AcceptedRating Red (cxh)
 */
-abstract public class GRPickActor extends GRActor {
+abstract public class GRPickActor extends GRActor3D {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -155,8 +171,9 @@ abstract public class GRPickActor extends GRActor {
         //bg.addChild(_containedNode);
         BoundingSphere bounds = new BoundingSphere(new Point3d(0.0, 0.0, 0.0),
                 100.0);
-        Canvas3D canvas = ((ViewScreen) _root).getCanvas();
-        BranchGroup branchGroup = ((ViewScreen) _root).getBranchGroup();
+	_setViewScreen(this);
+        Canvas3D canvas = _viewScreen.getCanvas();
+        BranchGroup branchGroup = _viewScreen.getBranchGroup();
         branchGroup = _getBranchGroup();
         System.out.println(" alert " + canvas + " " + branchGroup);
 

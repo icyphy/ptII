@@ -41,7 +41,7 @@ import ptolemy.util.StringUtilities;
 import com.sun.j3d.loaders.IncorrectFormatException;
 import com.sun.j3d.loaders.ParsingErrorException;
 import com.sun.j3d.loaders.Scene;
-import com.sun.j3d.loaders.vrml97.VrmlLoader;
+import org.jdesktop.j3d.loaders.vrml97.VrmlLoader;
 import com.sun.j3d.utils.geometry.*;
 import com.sun.j3d.utils.universe.*;
 
@@ -58,6 +58,11 @@ import javax.vecmath.*;
 //// VrmlLoader3D
 
 /**
+   A VRML model loader actor.
+
+   <p>This class uses the VRML Downloader, see
+   {@link ptolemy.domains.gr.lib.experimental.GRPickActor}.
+
    @author C. Fong
    @version $Id$
    @Pt.ProposedRating Red (chf)

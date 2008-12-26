@@ -46,7 +46,12 @@ import javax.vecmath.*;
 //// Switch3D
 
 /**
+   A switch/demux for GR scene graph objects.
+
    @author C. Fong
+   @version $Id$
+   @Pt.ProposedRating Red (chf)
+   @Pt.AcceptedRating Red (cxh)
 */
 public class Switch3D extends GRTransform {
     /** Construct an actor in the specified container with the specified
@@ -107,11 +112,11 @@ public class Switch3D extends GRTransform {
                     int width = sceneGraphOut.getWidth();
 
                     if (index < width) {
-                        _stopRenderer();
+                        //_stopRenderer();
                         detachableGroup.detach();
                         attachmentGroup[index].addChild(detachableGroup);
                         _previousIndex = index;
-                        _startRenderer();
+                        //_startRenderer();
                     }
                 }
             }

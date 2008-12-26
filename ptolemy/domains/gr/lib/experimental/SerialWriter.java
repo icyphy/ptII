@@ -40,9 +40,11 @@ import java.io.*;
 import java.lang.*;
 import java.util.*;
 
-import javax.comm.*;
+import gnu.io.*;
 
+/** 
 
+ */
 public class SerialWriter extends TypedAtomicActor {
     public SerialWriter(TypedCompositeActor container, String name)
         throws NameDuplicationException, IllegalActionException {

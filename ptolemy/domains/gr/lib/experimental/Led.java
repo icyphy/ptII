@@ -34,13 +34,13 @@ import ptolemy.actor.lib.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.dt.kernel.DTDebug;
 import ptolemy.domains.gr.lib.*;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 
 import com.sun.j3d.utils.geometry.*;
 
+import java.awt.Color; 
 import javax.media.j3d.*;
 import javax.vecmath.*;
 
@@ -79,7 +79,13 @@ public class Led extends Box3D {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    protected void _createAppearance() {
+
+    /** Create the material appearance of the shaded 3D actor.
+     *  This has the side effect of setting the protected variable
+     *  _changesAllowedNow so that derived classes can check it.
+     *  @exception IllegalActionException If a parameter cannot be evaluated.
+     */
+    protected void _createAppearance() throws IllegalActionException {
         super._createAppearance();
         _material = new Material();
         _material.setCapability(Material.ALLOW_COMPONENT_READ
@@ -88,13 +94,17 @@ public class Led extends Box3D {
         _appearance.setCapability(Appearance.ALLOW_MATERIAL_READ
                     | Appearance.ALLOW_MATERIAL_WRITE);
 
-        _material.setDiffuseColor(_color);
+        Color3f color = new Color3f(diffuseColor.asColor());
+        _material.setDiffuseColor(color);
 
-        if (_shine > 1.0) {
-            _material.setSpecularColor(whiteColor);
-            _material.setShininess(_shine);
+        float shine = (float) ((DoubleToken) shininess.getToken())
+                .doubleValue();
+
+        if (shine > 1.0) {
+            _material.setSpecularColor(new Color3f(Color.white));
+            _material.setShininess(shine);
         } else {
-            _material.setSpecularColor(_color);
+            _material.setSpecularColor(color);
         }
 
         /*
@@ -130,7 +140,7 @@ public class Led extends Box3D {
     protected void _createModel() throws IllegalActionException {
         super._createModel();
         System.out.println("create model");
-        _containedNode.setCapability(Shape3D.ALLOW_APPEARANCE_READ
+        _getNodeObject().setCapability(Shape3D.ALLOW_APPEARANCE_READ
                     | Shape3D.ALLOW_APPEARANCE_WRITE);
     }
 
