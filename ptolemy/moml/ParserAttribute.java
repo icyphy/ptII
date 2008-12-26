@@ -119,7 +119,7 @@ public class ParserAttribute extends SingletonAttribute {
         NamedObj container = object;
 
         while (container != null) {
-            List attributes = container.attributeList(ParserAttribute.class);
+            List attributes = object.attributeList(ParserAttribute.class);
 
             if ((attributes != null) && (attributes.size() > 0)) {
                 // Found one.
