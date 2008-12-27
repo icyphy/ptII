@@ -60,8 +60,19 @@ import javax.vecmath.*;
 /**
    A VRML model loader actor.
 
-   <p>This class uses the VRML Downloader, see
-   {@link ptolemy.domains.gr.lib.experimental.GRPickActor}.
+   <p>This class uses the VRML loader from
+   <a href="https://j3d-vrml97.dev.java.net/">https://j3d-vrml97.dev.java.net/</a>
+
+   <p>To install, download and untar:
+   <pre>
+   wget --no-check-certificate https://j3d-vrml97.dev.java.net/files/documents/2124/3
+   tar -zxf j3d-vrml97-06-04-20.tar.gz 
+   </pre>
+
+   <p>To install on the Mac:
+   <pre>
+   sudo cp j3d-vrml97/j3d-vrml97.jar /System/Library/Java/Extensions/
+   </pre>
 
    @author C. Fong
    @version $Id$

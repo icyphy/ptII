@@ -61,7 +61,7 @@ import javax.vecmath.*;
    A VRML model loader actor.
 
    <p>This class uses the VRML Downloader, see
-   {@link ptolemy.domains.gr.lib.experimental.GRPickActor}.
+   {@link ptolemy.domains.gr.lib.experimental.VrmlLoad}.
 
    @author C. Fong
    @version $Id$

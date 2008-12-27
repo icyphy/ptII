@@ -34,6 +34,7 @@ import ptolemy.actor.lib.gui.Display;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.gr.kernel.*;
 import ptolemy.domains.gr.lib.*;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
@@ -52,10 +53,14 @@ import javax.vecmath.*;
     box.  The output port is used to connect this actor to the Java3D scene
     graph. This actor will only have meaning in the GR domain.
 
-    The parameters <i>xLength</i>, <i>yHeight</i>, and <i>zWidth</i> determine
+    <p>The parameters <i>xLength</i>, <i>yHeight</i>, and <i>zWidth</i> determine
     the dimensions of box.
 
     @author C. Fong
+    @version $Id$
+    @Pt.ProposedRating Red (chf)
+    @Pt.AcceptedRating Red (cxh)
+    @deprecated, see {@link ptolemy.domains.gr.lib.Box3D}
 */
 public class Image3D extends GRPickActor {
     /** Construct an actor with the given container and name.
@@ -93,9 +98,68 @@ public class Image3D extends GRPickActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    BranchGroup top = new BranchGroup();
+
+    public void processCallback() {
+        super.processCallback();
+
+        try {
+            System.out.println("call "
+                + ((StringToken) filename.getToken()).stringValue());
+        } catch (Exception e) {
+            System.out.println("process call back exception");
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    protected void _createModel() throws IllegalActionException {
+
+    /** Return the encapsulated Java3D node of this 3D actor. The encapsulated
+     *  node for this actor is a Java3D box.
+     *  @return the Java3D box.
+     */
+    protected Node _getNodeObject() {
+        return (Node) top; //_containedNode;
+    }
+
+    protected BranchGroup _getBranchGroup() {
+        return (BranchGroup) top;
+    }
+
+    /** Override the base class to set the texture, if one is specified,
+     *  now that the view screen is known.
+     *  @exception IllegalActionException If the given actor is not a
+     *   ViewScreen3D or if an invalid texture is specified.
+     */
+    protected void _setViewScreen(GRActor actor) throws IllegalActionException {
+        super._setViewScreen(actor);
+        String fileName = (String) ((StringToken) filename.getToken())
+                    .stringValue();
+
+	ImageComponent2D image = null;
+	try {
+	    TextureLoader loader = new TextureLoader(fileName,
+						     _viewScreen.getCanvas());
+	    image = loader.getImage();
+	    System.out.println("image " + image);
+	} catch (Throwable throwable) {
+	    throw new IllegalActionException(this, throwable, "Failed to load texture \""
+						 + fileName + "\"");
+	}
+
+	// can't use parameterless constuctor
+	Texture2D texture = new Texture2D(Texture.BASE_LEVEL, Texture.RGBA,
+					      image.getWidth(), image.getHeight());
+	texture.setImage(0, image);
+
+	//texture.setEnable(false);
+        Appearance appear = new Appearance();
+	appear.setTexture(texture);
+	    
+	appear.setTransparencyAttributes(new TransparencyAttributes(
+									TransparencyAttributes.FASTEST, 0.1f));
+
         QuadArray plane = new QuadArray(4,
                 GeometryArray.COORDINATES | QuadArray.NORMALS
                         | GeometryArray.TEXTURE_COORDINATE_2);
@@ -119,60 +183,11 @@ public class Image3D extends GRPickActor {
         plane.setTextureCoordinate(0, 2, new TexCoord2f(qq[2]));
         plane.setTextureCoordinate(0, 3, new TexCoord2f(qq[3]));
 
-        Appearance appear = new Appearance();
+	_containedNode = new Shape3D(plane, appear);
 
-        String fileName = (String) ((StringToken) filename.getToken())
-                    .stringValue();
-
-        TextureLoader loader = new TextureLoader(fileName,
-                _viewScreen.getCanvas());
-        ImageComponent2D image = loader.getImage();
-        System.out.println("image " + image);
-
-        if (image == null) {
-            System.out.println("load failed for texture: " + filename);
-        }
-
-        // can't use parameterless constuctor
-        Texture2D texture = new Texture2D(Texture.BASE_LEVEL, Texture.RGBA,
-                image.getWidth(), image.getHeight());
-        texture.setImage(0, image);
-
-        //texture.setEnable(false);
-        appear.setTexture(texture);
-
-        appear.setTransparencyAttributes(new TransparencyAttributes(
-                TransparencyAttributes.FASTEST, 0.1f));
-        top = new BranchGroup();
-        _containedNode = new Shape3D(plane, appear);
-        top.addChild(_containedNode);
-
-        //_containedNode = new Shape3D(cube);
-    }
-
-    BranchGroup top = new BranchGroup();
-
-    public void processCallback() {
-        super.processCallback();
-
-        try {
-            System.out.println("call "
-                + ((StringToken) filename.getToken()).stringValue());
-        } catch (Exception e) {
-            System.out.println("process call back exception");
-        }
-    }
-
-    /** Return the encapsulated Java3D node of this 3D actor. The encapsulated
-     *  node for this actor is a Java3D box.
-     *  @return the Java3D box.
-     */
-    protected Node _getNodeObject() {
-        return (Node) top; //_containedNode;
-    }
-
-    protected BranchGroup _getBranchGroup() {
-        return (BranchGroup) top;
+	top = new BranchGroup();
+	top.addChild(_containedNode);
+	//_containedNode = new Shape3D(cube);
     }
 
     ///////////////////////////////////////////////////////////////////

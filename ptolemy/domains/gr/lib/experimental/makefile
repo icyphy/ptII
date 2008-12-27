@@ -42,6 +42,7 @@ DIRS =	$(PTQUICKTIME_DIR)
 ROOT =		../../../../..
 
 # We use rxtx, which should be in the ext directory
+# Some of these classes use the VRML Loader, see VrmlLoad.java
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
 
 # Get configuration info

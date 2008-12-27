@@ -41,13 +41,13 @@ import ptolemy.kernel.util.*;
 import com.sun.j3d.loaders.IncorrectFormatException;
 import com.sun.j3d.loaders.ParsingErrorException;
 import com.sun.j3d.loaders.Scene;
-import org.jdesktop.j3d.loaders.vrml97.VrmlLoader;
 import com.sun.j3d.utils.geometry.*;
 import com.sun.j3d.utils.picking.PickResult;
 import com.sun.j3d.utils.picking.PickTool;
 import com.sun.j3d.utils.picking.behaviors.PickMouseBehavior;
 import com.sun.j3d.utils.universe.*;
 
+import java.awt.event.InputEvent;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -63,26 +63,12 @@ import javax.vecmath.*;
 /**
    A base class for all pickable actors.
 
-   <p>This class uses the VRML loader from
-   <a href="https://j3d-vrml97.dev.java.net/">https://j3d-vrml97.dev.java.net/</a>
-
-   <p>To install, download and untar:
-   <pre>
-   wget --no-check-certificate https://j3d-vrml97.dev.java.net/files/documents/2124/3
-   tar -zxf j3d-vrml97-06-04-20.tar.gz 
-   </pre>
-
-   <p>To install on the Mac:
-   <pre>
-   sudo cp j3d-vrml97/j3d-vrml97.jar /System/Library/Java/Extensions/
-   </pre>
-
    @author C. Fong
    @version $Id$
    @Pt.ProposedRating Red (chf)
    @Pt.AcceptedRating Red (cxh)
 */
-abstract public class GRPickActor extends GRActor3D {
+abstract public class GRPickActor extends GRShadedShape {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -94,9 +80,6 @@ abstract public class GRPickActor extends GRActor3D {
     public GRPickActor(CompositeEntity container, String name)
         throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        sceneGraphOut = new TypedIOPort(this, "sceneGraphOut");
-        sceneGraphOut.setOutput(true);
-        sceneGraphOut.setTypeEquals(SceneGraphToken.TYPE);
         clicked = new TypedIOPort(this, "click trigger");
         clicked.setOutput(true);
         clicked.setTypeEquals(BaseType.BOOLEAN);
@@ -117,7 +100,6 @@ abstract public class GRPickActor extends GRActor3D {
      */
     public boolean prefire() throws IllegalActionException {
         boolean returnValue = true;
-        ;
 
         if (_isSceneGraphInitialized) {
             returnValue = false;
@@ -150,39 +132,34 @@ abstract public class GRPickActor extends GRActor3D {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /*  Create the Java3D geometry and appearance for this GR actors
-     *
-     *  @exception IllegalActionException if the current director
-     *    is not a GRDirector
-     */
-    /*
-      public void initialize() throws IllegalActionException {
-      super.initialize();
-      _createModel();
-      }*/
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-        System.out.println("init picker");
-        _createModel();
-
-        //bg = new BranchGroup();
-        //bg.addChild(_containedNode);
-        BoundingSphere bounds = new BoundingSphere(new Point3d(0.0, 0.0, 0.0),
-                100.0);
-	_setViewScreen(this);
-        Canvas3D canvas = _viewScreen.getCanvas();
-        BranchGroup branchGroup = _viewScreen.getBranchGroup();
-        branchGroup = _getBranchGroup();
-        System.out.println(" alert " + canvas + " " + branchGroup);
-
-        // FIXME: this is one big fat hack!
-        //if (pick!=null) pick.setEnable(false);
-        pick = new PickCallback(this, canvas, branchGroup, bounds);
-    }
+    ////                         package protected variables       ////
 
     static PickCallback pick = null;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Override the base class to set the texture, if one is specified,
+     *  now that the view screen is known.
+     *  @exception IllegalActionException If the given actor is not a
+     *   ViewScreen3D or if an invalid texture is specified.
+     */
+    protected void _setViewScreen(GRActor actor) throws IllegalActionException {
+	super._setViewScreen(actor);
+	BoundingSphere bounds = new BoundingSphere(new Point3d(0.0, 0.0, 0.0),
+						       100.0);
+	Canvas3D canvas = _viewScreen.getCanvas();
+	BranchGroup branchGroup = _viewScreen.getBranchGroup();
+	branchGroup = _getBranchGroup();
+
+	// FIXME: this is one big fat hack!
+	//if (pick!=null) pick.setEnable(false);
+	try {
+	    pick = new PickCallback(this, canvas, branchGroup, bounds);
+	} catch (Exception ex) {
+	    throw new IllegalActionException(this, ex, "Failed to create PickCallback");
+	}
+    }
 
     abstract protected BranchGroup _getBranchGroup();
 
@@ -190,14 +167,10 @@ abstract public class GRPickActor extends GRActor3D {
         return (Node) branchGroup;
     }
 
-    protected void _makeSceneGraphConnection() throws IllegalActionException {
-        sceneGraphOut.send(0, new SceneGraphToken(_getNodeObject()));
-    }
-
-    protected void _createModel() throws IllegalActionException {
-    }
-
     protected BranchGroup branchGroup;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private inner classes             ////
 
     private class PickCallback extends PickMouseBehavior {
         Appearance savedAppearance = null;
@@ -224,18 +197,23 @@ abstract public class GRPickActor extends GRActor3D {
             pickCanvas.setMode(PickTool.BOUNDS);
         }
 
-        public void updateScene(int xpos, int ypos) {
-            PickResult pickResult = null;
-            Shape3D shape = null;
+	/** If the user presses the left button (button 3), then process the callback.
+	 *  @param xPosition The X position of the event   
+	 *  @param yPosition The Y position of the event   
+	 */   
+        public void updateScene(int xPosition, int yPosition) {
+            pickCanvas.setShapeLocation(xPosition, yPosition);
 
-            pickCanvas.setShapeLocation(xpos, ypos);
+            PickResult pickResult = pickCanvas.pickClosest();
 
-            pickResult = pickCanvas.pickClosest();
-
+	    System.out.println("GRPickActor.updateScene(" + xPosition
+			       + yPosition + "): " + callbackActor.getFullName() + " " + (pickResult == null) + " " + mevent.getModifiers());
             if (pickResult != null) {
-                if (mevent.getModifiers() == 4) {
-                    shape = (Shape3D) pickResult.getNode(PickResult.SHAPE3D);
-                    System.out.println("the result " + shape + " "
+                if (mevent.getModifiers() == InputEvent.BUTTON3_MASK) {
+		    Shape3D shape = (Shape3D) pickResult.getNode(PickResult.SHAPE3D);
+                    System.out.println("GRPickActor" + callbackActor.getFullName() + " "
+				       + InputEvent.getModifiersExText(mevent.getModifiersEx())
+				       + " the result " + shape + " "
                         + callbackActor);
                     callbackActor.processCallback();
                 }
