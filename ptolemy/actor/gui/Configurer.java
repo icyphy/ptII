@@ -92,7 +92,7 @@ public class Configurer extends JPanel implements CloseListener {
         while (parameters.hasNext()) {
             Settable parameter = (Settable) parameters.next();
 
-            if (isVisible(parameter)) {
+            if (isVisible(_object, parameter)) {
                 _originalValues.put(parameter, parameter.getExpression());
             }
         }
@@ -105,7 +105,7 @@ public class Configurer extends JPanel implements CloseListener {
             foundOne = true;
 
             EditorPaneFactory editor = (EditorPaneFactory) editors.next();
-            Component pane = editor.createEditorPane(this);
+            Component pane = editor.createEditorPane();
             add(pane);
 
             // Inherit the background color from the container.
@@ -125,7 +125,7 @@ public class Configurer extends JPanel implements CloseListener {
             // and the event dispatch thread prove to be very tricky,
             // and likely lead to deadlock.  Hence, instead, we use
             // the static method of EditorPaneFactory.
-            Component pane = EditorPaneFactory.createEditorPane(object, this);
+            Component pane = EditorPaneFactory.createEditorPane(object);
             add(pane);
 
             // Inherit the background color from the container.
@@ -139,20 +139,6 @@ public class Configurer extends JPanel implements CloseListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Return true if the given settable should be visible in this
-     *  configurer panel for the specified target. Any settable with
-     *  visibility FULL or NOT_EDITABLE will be visible.  If the target
-     *  contains an attribute named "_expertMode", then any
-     *  attribute with visibility EXPERT will also be visible.
-     *  @param settable The object whose visibility is returned.
-     *  @return True if settable is FULL or NOT_EDITABLE or True
-     *  if the target has an _expertMode attribute and the settable
-     *  is EXPERT.  Otherwise, return false.
-     */
-    public boolean isVisible(Settable settable) {
-        return isVisible(_object, settable);
-    }
 
     /** Return true if the given settable should be visible in a
      *  configurer panel for the specified target. Any settable with
@@ -199,18 +185,7 @@ public class Configurer extends JPanel implements CloseListener {
         // FIXME: Unfortunately, this gets
         // invoked before that notification occurs if the
         // "X" is used to close the window.  Swing bug?
-        restore(true);
-    }
-
-    /** Request restoration of the user settable attribute values to what they
-     *  were when this object was created.  If <i>delay</i> is true, the actual
-     *  restoration occurs later, in the UI thread, in order to allow all
-     *  pending changes to the attribute values to be processed first. If the
-     *  original values match the current values, then nothing is done.
-     *  @param delay Whether the restoration should be delayed later.
-     */
-    public void restore(boolean delay) {
-        Runnable restoreCode = new Runnable() {
+        SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 // First check for changes.
                 Iterator parameters = _object.attributeList(Settable.class)
@@ -221,7 +196,7 @@ public class Configurer extends JPanel implements CloseListener {
                 while (parameters.hasNext()) {
                     Settable parameter = (Settable) parameters.next();
 
-                    if (isVisible(parameter)) {
+                    if (isVisible(_object, parameter)) {
                         String newValue = parameter.getExpression();
                         String oldValue = (String) _originalValues
                                 .get(parameter);
@@ -252,12 +227,7 @@ public class Configurer extends JPanel implements CloseListener {
                     _object.requestChange(request);
                 }
             }
-        };
-        if (delay) {
-            SwingUtilities.invokeLater(restoreCode);
-        } else {
-            restoreCode.run();
-        }
+        });
     }
 
     /** Restore parameter values to their defaults.
@@ -283,7 +253,7 @@ public class Configurer extends JPanel implements CloseListener {
                 while (parameters.hasNext()) {
                     Settable parameter = (Settable) parameters.next();
 
-                    if (isVisible(parameter)) {
+                    if (isVisible(_object, parameter)) {
                         String newValue = parameter.getExpression();
                         String defaultValue = parameter.getDefaultExpression();
 
@@ -322,7 +292,7 @@ public class Configurer extends JPanel implements CloseListener {
                                 Settable parameter = (Settable) parameters
                                         .next();
 
-                                if (isVisible(parameter)) {
+                                if (isVisible(_object, parameter)) {
                                     int derivedLevel = ((NamedObj) parameter)
                                             .getDerivedLevel();
                                     ((NamedObj) parameter)

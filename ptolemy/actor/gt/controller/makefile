@@ -122,9 +122,9 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	'Configure$$Listener.class' \
+	'Configure$$Query.class' \
 	'FileUpdater$$MoMLContentFilter.class' \
-	'Prompt$$Configurer.class' \
-	'Prompt$$Listener.class' \
 	'ReceiveInput$$InputListener.class' \
 	'Report$$1.class' \
 	'Report$$Mode$$1.class' \
@@ -132,6 +132,7 @@ OPTIONAL_FILES = \
 	'Report$$Mode$$3.class' \
 	'Report$$Mode$$4.class' \
 	'Report$$Mode$$5.class' \
+	'Report$$Mode$$6.class' \
 	'Report$$Mode.class' \
 	'SetTableau$$1.class' \
 	'SetTableau$$TableauState$$1.class' \
@@ -141,8 +142,7 @@ OPTIONAL_FILES = \
 	'TableauControllerEvent$$1.class' \
 	'TableauParameter$$1.class' \
 	'Transform$$EmbeddedConfigurer.class' \
-	'TransformationAttribute$$1.class' \
-	'TransformationAttribute$$2.class'
+	'TransformationAttribute$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

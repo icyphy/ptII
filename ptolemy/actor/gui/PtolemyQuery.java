@@ -899,6 +899,12 @@ public class PtolemyQuery extends Query implements QueryListener,
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** Maps an entry name to the attribute that is attached to it. */
+    protected Map _attributes = new HashMap();
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     /** Return the expression for the specified Settable, unless it
@@ -952,9 +958,6 @@ public class PtolemyQuery extends Query implements QueryListener,
 
     // Indicator that this is an open dialog reporting an erroneous entry.
     private boolean _isOpenErrorWindow = false;
-
-    // Maps an entry name to the attribute that is attached to it.
-    private Map _attributes = new HashMap();
 
     // Background color for string mode edit boxes.
     //private static Color _NOT_OVERRIDDEN_FOREGROUND_COLOR = new Color(200, 10,

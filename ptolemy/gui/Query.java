@@ -1649,6 +1649,9 @@ public class Query extends JPanel {
     /** Standard constraints for use with _grid. */
     protected GridBagConstraints _constraints;
 
+    /** The hashtable of items in the query. */
+    protected Map _entries = new HashMap();
+
     /** Layout control. */
     protected GridBagLayout _grid;
 
@@ -1695,9 +1698,6 @@ public class Query extends JPanel {
     ////                         private variables                 ////
     // The number of columns.
     private int _columns = 1;
-
-    // The hashtable of items in the query.
-    private Map _entries = new HashMap();
 
     // A panel within which the entries are placed.
     private JPanel _entryPanel = new JPanel();

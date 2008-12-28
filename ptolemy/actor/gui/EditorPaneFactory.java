@@ -90,21 +90,9 @@ public class EditorPaneFactory extends Attribute {
      *  @return A new widget for configuring the container.
      */
     public Component createEditorPane() {
-        return createEditorPane(getContainer(), null);
+        return createEditorPane(getContainer());
     }
-    
-    /** Return a new widget for configuring the container.  In this
-     *  base class, this method defers to the static createEditorPane method.
-     *  Subclasses that implement specialized interaction should override
-     *  this method to create an appropriate type of component.
-     *  @param configurer The configurer to be used to determine visibility of
-     *   parameters.
-     *  @return A new widget for configuring the container.
-     */
-    public Component createEditorPane(Configurer configurer) {
-        return createEditorPane(getContainer(), configurer);
-    }
-    
+
     /** Return a new default widget for configuring the specified object.
      *  This is used by the Configurer for objects that do not contain
      *  an instance of EditorPaneFactory as an attribute.  The resulting
@@ -114,19 +102,6 @@ public class EditorPaneFactory extends Attribute {
      *  with styles according to the type given in each visible attribute.
      */
     public static Component createEditorPane(NamedObj object) {
-        return createEditorPane(object, null);
-    }
-
-    /** Return a new default widget for configuring the specified object.
-     *  This is used by the Configurer for objects that do not contain
-     *  an instance of EditorPaneFactory as an attribute.  The resulting
-     *  component is an instance of the PtolemyQuery class that
-     *  @param object The object to be configured.
-     *  @return An instance of the PtolemyQuery class that is created
-     *  with styles according to the type given in each visible attribute.
-     */
-    public static Component createEditorPane(NamedObj object,
-            Configurer configurer) {
         PtolemyQuery query = new PtolemyQuery(object);
         query.setTextWidth(40);
 
@@ -136,9 +111,7 @@ public class EditorPaneFactory extends Attribute {
         while (parameters.hasNext()) {
             Settable parameter = (Settable) parameters.next();
 
-            if (configurer != null && configurer.isVisible(parameter) ||
-                    configurer == null &&
-                    Configurer.isVisible(object, parameter)) {
+            if (Configurer.isVisible(object, parameter)) {
                 foundOne = true;
                 query.addStyledEntry(parameter);
             }
