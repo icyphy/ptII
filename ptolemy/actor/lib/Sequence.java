@@ -191,6 +191,7 @@ public class Sequence extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public boolean postfire() throws IllegalActionException {
+        boolean result = super.postfire();
         if (_outputProduced) {
             _outputProduced = false;
             _currentIndex += 1;
@@ -212,12 +213,14 @@ public class Sequence extends TypedAtomicActor {
                     } else {
                         // To prevent overflow.
                         _currentIndex = valuesArray.length();
+                        // No more outputs to produce.
+                        result = false;
                     }
                 }
             }
         }
 
-        return super.postfire();
+        return result;
     }
 
     ///////////////////////////////////////////////////////////////////
