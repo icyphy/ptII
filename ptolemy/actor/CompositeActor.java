@@ -252,6 +252,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
         newObject._outputPortsVersion = -1;
         newObject._causalityInterface = null;
         newObject._causalityInterfaceDirector = null;
+        newObject._initializables = null;
         return newObject;
     }
 
@@ -299,7 +300,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
 
             if (castPort.isOpaque()) {
                 Manager manager = getManager();
-                
+
                 if (castPort.isOutput()
                         && (getDirector() != null)
                         && (manager != null)
@@ -441,7 +442,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
     public void createReceivers() throws IllegalActionException {
         if (workspace().getVersion() != _receiversVersion) {
             Iterator<?> ports = portList().iterator();
-    
+
             try {
                 workspace().getWriteAccess();
                 while (ports.hasNext()) {
@@ -454,9 +455,9 @@ public class CompositeActor extends CompositeEntity implements Actor,
                 // We have not changed the structure of the model.
                 workspace().doneTemporaryWriting();
             }
-        }        
+        }
     }
-    
+
     /** Return a causality interface for this actor. This returns an
      *  instance of {@link CausalityInterfaceForComposites}.
      *  If this is called multiple times, the same object is returned each
@@ -738,8 +739,8 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *  composite actor.
      *
      *  @return True if the local director's isStrict() method returns true or
-     *   if this actor is not opaque. 
-     *  @exception IllegalActionException Thrown if causality interface 
+     *   if this actor is not opaque.
+     *  @exception IllegalActionException Thrown if causality interface
      *  cannot be computed.
      */
     public boolean isStrict() throws IllegalActionException {
@@ -1090,7 +1091,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
                 for (Executable piggyback : _piggybacks) {
                     piggyback.preinitialize();
                 }
-            }            
+            }
 
             if (!isOpaque()) {
                 if (getContainer() == null && deepEntityList().size() == 0) {
@@ -1111,12 +1112,12 @@ public class CompositeActor extends CompositeEntity implements Actor,
                                 + getFullName());
             }
 
-            createReceivers();            
+            createReceivers();
 
             // Note that this is assured of firing the local director,
             // not the executive director, because this is opaque.
             getDirector().preinitialize();
-                        
+
         } finally {
             _workspace.doneReading();
         }
@@ -1624,7 +1625,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
             }
         }
     }
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
@@ -1669,7 +1670,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
     private transient long _outputPortsVersion = -1;
 
     private transient List<IOPort> _cachedOutputPorts;
-    
+
     /** The director for which the causality interface was created. */
     private Director _causalityInterfaceDirector;
 

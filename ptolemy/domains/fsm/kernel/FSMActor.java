@@ -356,6 +356,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         newObject._receiversVersion = -1;
         newObject._tokenListArrays = null;
 
+        newObject._initializables = null;
+
         return newObject;
     }
 
