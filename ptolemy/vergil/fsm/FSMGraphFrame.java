@@ -412,9 +412,10 @@ public class FSMGraphFrame extends ExtendedGraphFrame
      *  @param name The name of the exported model.
      *  @exception IOException If an I/O error occurs.
      */
-    protected void _exportModel(Writer writer, NamedObj model, String name)
+    protected void _exportDesignPattern(Writer writer, NamedObj model, String name)
             throws IOException {
-        if (_exportSelectedObjectsOnly) {
+        if (_query != null && _query.hasEntry("selected") &&
+                _query.getBooleanValue("selected")) {
             List<State> modifiedStates = new LinkedList<State>();
             try {
                 Set<?> set = _getSelectionSet();
@@ -426,7 +427,7 @@ public class FSMGraphFrame extends ExtendedGraphFrame
                                 BooleanToken.TRUE);
                     }
                 }
-                super._exportModel(writer, model, name);
+                super._exportDesignPattern(writer, model, name);
             } catch (IllegalActionException e) {
                 throw new InternalErrorException(null, e, "Unable to set " +
                         "attributes for the states.");
@@ -448,6 +449,8 @@ public class FSMGraphFrame extends ExtendedGraphFrame
     /** Finish exporting a design pattern.
      */
     protected void _finishExportDesignPattern() {
+        super._finishExportDesignPattern();
+
         for (IOPort port : _modifiedPorts) {
             try {
                 port.setInput(true);
@@ -462,23 +465,30 @@ public class FSMGraphFrame extends ExtendedGraphFrame
      *  @exception IllegalActionException Thrown if attributes of the ports to
      *   be exported cannot be set.
      */
-    protected void _prepareExportDesignPattern() throws IllegalActionException {
-        FSMActor actor = (FSMActor) getModel();
-        List<IOPort> ports = actor.portList();
-        _modifiedPorts.clear();
-        for (IOPort port : ports) {
-            if (port instanceof RefinementPort && port.isInput()
-                    && port.isOutput()) {
-                List<IOPort> connectedPorts = port.connectedPortList();
-                for (IOPort connectedPort : connectedPorts) {
-                    if (connectedPort instanceof ModalPort
-                            && !connectedPort.isInput()) {
-                        _modifiedPorts.add(port);
-                        port.setInput(false);
-                        break;
+    protected void _prepareExportDesignPattern() {
+        super._prepareExportDesignPattern();
+
+        try {
+            FSMActor actor = (FSMActor) getModel();
+            List<IOPort> ports = actor.portList();
+            _modifiedPorts.clear();
+            for (IOPort port : ports) {
+                if (port instanceof RefinementPort && port.isInput()
+                        && port.isOutput()) {
+                    List<IOPort> connectedPorts = port.connectedPortList();
+                    for (IOPort connectedPort : connectedPorts) {
+                        if (connectedPort instanceof ModalPort
+                                && !connectedPort.isInput()) {
+                            _modifiedPorts.add(port);
+                            port.setInput(false);
+                            break;
+                        }
                     }
                 }
             }
+        } catch (Exception e) {
+            throw new InternalErrorException(null, e, "Fail to prepare for " +
+                    "exporting a design pattern.");
         }
     }
 

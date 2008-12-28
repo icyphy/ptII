@@ -56,6 +56,7 @@ import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -80,7 +81,6 @@ import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
 import javax.swing.JTree;
 import javax.swing.KeyStroke;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import ptolemy.actor.DesignPatternGetMoMLAction;
@@ -88,7 +88,6 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.EditParametersDialog;
-import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.PtolemyPreferences;
 import ptolemy.actor.gui.SizeAttribute;
@@ -100,7 +99,6 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ExpertParameter;
 import ptolemy.data.expr.Parameter;
-import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
@@ -1021,7 +1019,50 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  Save As.
      */
     public void exportDesignPattern() {
-        Query query = new Query();
+        StringAttribute alternateGetMoml = null;
+        DesignPatternIcon icon = null;
+        try {
+            NamedObj model = getModel();
+            try {
+                _exportDesignPattern = true;
+
+                if (model.getAttribute("_alternateGetMomlAction") == null) {
+                    alternateGetMoml = new StringAttribute(model,
+                            "_alternateGetMomlAction");
+                    alternateGetMoml.setExpression(
+                            DesignPatternGetMoMLAction.class.getName());
+                }
+
+                if (model.getAttribute("_designPatternIcon") == null) {
+                    icon = new DesignPatternIcon(model, "_designPatternIcon");
+                }
+            } catch (Exception e) {
+                throw new InternalErrorException(null, e, "Fail to prepare " +
+                        "for exporting a design pattern.");
+            }
+
+            _prepareExportDesignPattern();
+            _saveAs();
+        } finally {
+            _finishExportDesignPattern();
+
+            _exportDesignPattern = false;
+            if (alternateGetMoml != null) {
+                try {
+                    alternateGetMoml.setContainer(null);
+                } catch (KernelException e) {
+                    // Ignore. This shouldn't happen.
+                }
+            }
+            if (icon != null) {
+                try {
+                    icon.setContainer(null);
+                } catch (KernelException e) {
+                    // Ignore. This shouldn't happen.
+                }
+            }
+        }
+        /*Query query = new Query();
         query.setTextWidth(40);
 
         Tableau tableau = getTableau();
@@ -1185,7 +1226,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                     // Ignore.
                 }
             }
-        }
+        }*/
     }
 
     /** Return the center location of the visible part of the pane.
@@ -1976,9 +2017,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  @param name The name of the exported model.
      *  @exception IOException If an I/O error occurs.
      */
-    protected void _exportModel(Writer writer, NamedObj model, String name)
+    protected void _exportDesignPattern(Writer writer, NamedObj model, String name)
             throws IOException {
-        if (_exportSelectedObjectsOnly) {
+        if (_query != null && _query.hasEntry("selected") &&
+                _query.getBooleanValue("selected")) {
             try {
                 model.workspace().getReadAccess();
                 String elementName = model.getElementName();
@@ -2025,12 +2067,18 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 model.workspace().doneReading();
             }
         } else {
+            if (model.getContainer() != null) {
+                writer.write("<?xml version=\"1.0\" standalone=\"no\"?>\n"
+                        + "<!DOCTYPE " + model.getElementName() + " PUBLIC "
+                        + "\"-//UC Berkeley//DTD MoML 1//EN\"\n"
+                        + "    \"http://ptolemy.eecs.berkeley.edu"
+                        + "/xml/dtd/MoML_1.dtd\">\n");
+            }
             model.exportMoML(writer, 0, name);
         }
     }
 
-    /** Finish exporting a design pattern. Nothing is done in this base class.
-     *  Subclasses may override this method to perform extra wrapup operations.
+    /** Finish exporting a design pattern.
      */
     protected void _finishExportDesignPattern() {
     }
@@ -2145,12 +2193,27 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         return namedObjSet;
     }
 
-    /** Prepare to export a design pattern. Nothing is done in this base class.
-     *  Subclasses may override this method to perform extra operations.
-     *
-     *  @exception IllegalActionException Not thrown in this base class.
+    /** Prepare to export a design pattern.
      */
-    protected void _prepareExportDesignPattern() throws IllegalActionException {
+    protected void _prepareExportDesignPattern() {
+    }
+
+    /** Create and return a file dialog for the "Save As" command.
+     *  This overrides the base class to add options to the dialog.
+     *  @return A file dialog for save as.
+     */
+    protected JFileChooser _saveAsFileDialog() {
+        JFileChooser fileDialog = super._saveAsFileDialog();
+
+        if (_exportDesignPattern) {
+            if (!_getSelectionSet().isEmpty()) {
+                _query = new Query();
+                _query.addCheckBox("selected", "Selected objects only", true);
+                fileDialog.setAccessory(_query);
+            }
+        }
+
+        return fileDialog;
     }
 
     /** Set the directory that was last accessed by this window.
@@ -2176,11 +2239,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  class to record the current size and position of the window
      *  in the model.
      *  @param file The file to write to.
-     *  @param submodel Whether to save the submodel only, instead of the
-     *   top-level model.
      *  @exception IOException If the write fails.
      */
-    protected void _writeFile(File file, boolean submodel) throws IOException {
+    protected void _writeFile(File file) throws IOException {
         // First, record size and position.
         try {
             // Record the position of the top-level frame, assuming
@@ -2195,9 +2256,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
             // If there is no parent that is a Frame, do nothing.
             if (parent instanceof Frame) {
-                WindowPropertiesAttribute properties = (WindowPropertiesAttribute) getModel()
-                        .getAttribute("_windowProperties",
-                                WindowPropertiesAttribute.class);
+                WindowPropertiesAttribute properties =
+                    (WindowPropertiesAttribute) getModel().getAttribute(
+                            "_windowProperties",
+                            WindowPropertiesAttribute.class);
 
                 if (properties == null) {
                     properties = new WindowPropertiesAttribute(getModel(),
@@ -2251,7 +2313,28 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // size and location.
         }
 
-        super._writeFile(file, submodel);
+        if (_exportDesignPattern) {
+            FileWriter fileWriter = null;
+
+            try {
+                fileWriter = new FileWriter(file);
+                String name = getModel().getName();
+                String filename = file.getName();
+                int period = filename.indexOf(".");
+                if (period > 0) {
+                    name = filename.substring(0, period);
+                } else {
+                    name = filename;
+                }
+                _exportDesignPattern(fileWriter, getModel(), name);
+            } finally {
+                if (fileWriter != null) {
+                    fileWriter.close();
+                }
+            }
+        } else {
+            super._writeFile(file);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -2269,10 +2352,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /** The action to edit preferences. */
     protected EditPreferencesAction _editPreferencesAction;
 
-    /** Whether {@link #_exportModel(Writer, NamedObj, String)} should only
-     *  export the selected objects.
+    /** Whether the current _saveAs() operation is to export a design pattern or
+     *  is a regular save as operation from the File menu.
      */
-    protected boolean _exportSelectedObjectsOnly = false;
+    protected boolean _exportDesignPattern = false;
 
     /** The panner. */
     protected JCanvasPanner _graphPanner;

@@ -73,14 +73,20 @@ public class DesignPatternGetMoMLAction {
         try {
             buffer.write("<group>\n");
 
-            before = object.getAttribute("_transformationBefore");
+            before = object.getAttribute("Before");
             if (before != null) {
                 new Parameter(before, "_immediate").setToken(BooleanToken.TRUE);
+                buffer.write(StringUtilities.getIndentPrefix(1) + "<group>\n");
+                before.exportMoML(buffer, 2);
+                buffer.write(StringUtilities.getIndentPrefix(1) + "</group>\n");
             }
 
-            after = object.getAttribute("_transformationAfter");
+            after = object.getAttribute("After");
             if (after != null) {
                 new Parameter(after, "_immediate").setToken(BooleanToken.TRUE);
+            }
+            
+            if (after != null || before != null) {
                 extraIndent++;
                 buffer.write(StringUtilities.getIndentPrefix(extraIndent) +
                         "<group>\n");
@@ -89,7 +95,8 @@ public class DesignPatternGetMoMLAction {
             List<Attribute> attributes = group.attributeList();
             for (Attribute attribute : attributes) {
                 if (!_IGNORED_ATTRIBUTES.contains(attribute.getName()) &&
-                        (after == null || attribute != after)) {
+                        (after == null || attribute != after) &&
+                        (before == null || attribute != before)) {
                     attribute.exportMoML(buffer, extraIndent + 1);
                 }
             }
@@ -149,17 +156,18 @@ public class DesignPatternGetMoMLAction {
             buffer.write(group.exportLinks(extraIndent + 2, null));
             buffer.write(StringUtilities.getIndentPrefix(extraIndent + 1) +
                     "</group>\n");
-            buffer.write(StringUtilities.getIndentPrefix(extraIndent) +
-                    "</group>\n");
-
-            if (after != null) {
-                buffer.write(StringUtilities.getIndentPrefix(extraIndent) +
-                        "<group>\n");
-                after.exportMoML(buffer, extraIndent + 1);
+            if (after != null || before != null) {
                 buffer.write(StringUtilities.getIndentPrefix(extraIndent) +
                         "</group>\n");
-                buffer.write("</group>\n");
             }
+
+            if (after != null) {
+                buffer.write(StringUtilities.getIndentPrefix(1) + "<group>\n");
+                after.exportMoML(buffer, 2);
+                buffer.write(StringUtilities.getIndentPrefix(1) + "</group>\n");
+            }
+            
+            buffer.write("</group>\n");
 
             return buffer.toString();
         } catch (Exception e) {

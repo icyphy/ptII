@@ -428,18 +428,17 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      */
     public void exportSubmodel(Writer output, int depth, String name)
             throws IOException {
-        if (depth == 0) {
-            output.write("<?xml version=\"1.0\" standalone=\"no\"?>\n"
-                    + "<!DOCTYPE " + _elementName + " PUBLIC "
-                    + "\"-//UC Berkeley//DTD MoML 1//EN\"\n"
-                    + "    \"http://ptolemy.eecs.berkeley.edu"
-                    + "/xml/dtd/MoML_1.dtd\">\n");
-        }
-
         try {
             List<State> stateList = deepEntityList();
             for (State state : stateList) {
                 state.saveRefinementsInConfigurer.setToken(BooleanToken.TRUE);
+            }
+            if (depth == 0 && getContainer() != null) {
+                output.write("<?xml version=\"1.0\" standalone=\"no\"?>\n"
+                        + "<!DOCTYPE " + _elementName + " PUBLIC "
+                        + "\"-//UC Berkeley//DTD MoML 1//EN\"\n"
+                        + "    \"http://ptolemy.eecs.berkeley.edu"
+                        + "/xml/dtd/MoML_1.dtd\">\n");
             }
             super.exportMoML(output, depth, name);
         } catch (IllegalActionException e) {

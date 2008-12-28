@@ -146,7 +146,7 @@ public class TableauFrame extends Top {
     ////                         public methods                    ////
 
     /** Get the alternative pack() interface for the ptolemy.gui.Top JFrame.
-     * @return the alternative pack() interface if one was set by the
+     * @return the alternative pack() interface if one was set by the 
      * _alternateTopPackClass in the Configuration.  If one there is no TopPack,
      * then return null.
      * @see #pack()
@@ -262,7 +262,7 @@ public class TableauFrame extends Top {
     public void setTableau(Tableau tableau) {
         _tableau = tableau;
     }
-
+    
     /**
      * Optionally invoke an alternative pack() method.  If the
      * _alternateTopPackClass attribute in the Configuration is set to
@@ -311,7 +311,7 @@ public class TableauFrame extends Top {
             }
         }
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
@@ -463,7 +463,7 @@ public class TableauFrame extends Top {
                         // From Daniel Crawl for Kepler
                         item.setAccelerator(
                             KeyStroke.getKeyStroke(
-                                KeyEvent.VK_N,
+                                KeyEvent.VK_N, 
                                 Toolkit.getDefaultToolkit()
                                     .getMenuShortcutKeyMask()));
                     }
@@ -961,7 +961,7 @@ public class TableauFrame extends Top {
      *  @return True if the save succeeds.
      */
     protected boolean _saveAs() {
-        return _saveAs(null, true);
+        return _saveAs(null);
     }
 
     /** Query the user for a filename, save the model to that file,
@@ -970,11 +970,10 @@ public class TableauFrame extends Top {
      *  ModelDirectory and to rename the model to match the file name.
      *  @param extension If non-null, then the extension that is
      *  appended to the file name if there is no extension.
-     *  @param open Whether the saved model should be opened.
      *
      *  @return True if the save succeeds.
      */
-    protected boolean _saveAs(String extension, boolean open) {
+    protected boolean _saveAs(String extension) {
         if (_tableau == null) {
             throw new InternalErrorException(
                     "No associated Tableau! Can't save.");
@@ -1008,25 +1007,23 @@ public class TableauFrame extends Top {
                 _directory = fileDialog.getCurrentDirectory();
                 _writeFile(file);
 
-                if (open) {
-                    // The original file will still be open, and has not
-                    // been saved, so we do not change its modified status.
-                    // setModified(false);
-                    // Open a new window on the model.
-                    getConfiguration().openModel(newURL, newURL, newKey);
+                // The original file will still be open, and has not
+                // been saved, so we do not change its modified status.
+                // setModified(false);
+                // Open a new window on the model.
+                getConfiguration().openModel(newURL, newURL, newKey);
 
-                    // If the tableau was unnamed before, then we need
-                    // to close this window after doing the save.
-                    Effigy effigy = getEffigy();
+                // If the tableau was unnamed before, then we need
+                // to close this window after doing the save.
+                Effigy effigy = getEffigy();
 
-                    if (effigy != null) {
-                        String id = effigy.identifier.getExpression();
+                if (effigy != null) {
+                    String id = effigy.identifier.getExpression();
 
-                        if (id.equals("Unnamed")) {
-                            // This will have the effect of closing all the
-                            // tableaux associated with the unnamed model.
-                            effigy.setContainer(null);
-                        }
+                    if (id.equals("Unnamed")) {
+                        // This will have the effect of closing all the
+                        // tableaux associated with the unnamed model.
+                        effigy.setContainer(null);
                     }
                 }
 
@@ -1155,10 +1152,10 @@ public class TableauFrame extends Top {
 
     /** Associated placeable. */
     private Placeable _placeable;
-
+    
     /** Set to true when the pack() method is called.  Used by TopPack.pack(). */
     private boolean _packCalled = false;
-
+    
     /** Set in pack() if an alternate topPack is used. */
     private TopPack _topPack = null;
 
