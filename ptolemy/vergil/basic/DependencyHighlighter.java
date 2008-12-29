@@ -98,7 +98,7 @@ public class DependencyHighlighter extends NodeControllerFactory {
         EditorIcon _icon = new EditorIcon(this, "_icon");
         RectangleAttribute rectangle = new RectangleAttribute(_icon,
                 "rectangle");
-        rectangle.width.setExpression("155.0");
+        rectangle.width.setExpression("175.0");
         rectangle.height.setExpression("20.0");
         rectangle.fillColor.setExpression("{1.0, 0.7, 0.7, 1.0}");
 
