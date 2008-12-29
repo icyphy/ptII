@@ -13,12 +13,12 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
     <property name="After" class="ptolemy.actor.gt.controller.TransformationAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 95.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 125.0]">
         </property>
         <configure>
             <entity name="ModelUpdater" class="ptolemy.actor.gt.controller.ModelUpdater">
                 <entity name="_Controller" class="ptolemy.domains.erg.kernel.ERGController">
-                    <property name="xOffset" class="ptolemy.data.expr.Parameter" value="10">
+                    <property name="xOffset" class="ptolemy.data.expr.Parameter" value="5">
                         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                         </property>
                         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -34,7 +34,7 @@
                         </property>
                         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                         </property>
-                        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 65.0]">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="{280.0, 65.0}">
                         </property>
                     </property>
                     <property name="yOffset" class="ptolemy.data.expr.Parameter" value="30">
@@ -498,7 +498,7 @@
     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
     </property>
     <property name="Before" class="ptolemy.actor.gt.controller.TransformationAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 65.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 125.0]">
         </property>
         <configure>
             <entity name="ModelUpdater" class="ptolemy.actor.gt.controller.ModelUpdater">
@@ -721,10 +721,6 @@
                         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="!response">
                             <display name="condition"/>
                         </property>
-                        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
-                        </property>
-                        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
-                        </property>
                         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                         </property>
                         <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.08501772930757115">
@@ -737,8 +733,6 @@
                         <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
                         <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
-                        </property>
-                        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                         </property>
                         <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="0.0">
                         </property>
@@ -765,12 +759,18 @@
             </entity>
         </configure>
     </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Synchronize the communication between&#10;left-hand-side actors and right-hand-side&#10;actors in the Rendezvous (CSP) model of&#10;computation.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 25.0]">
+        </property>
+    </property>
     <entity name="Barrier" class="ptolemy.domains.rendezvous.lib.Barrier">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{250.0, 65.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 65.0]">
         </property>
     </entity>
     <entity name="_A1_" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 125.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
@@ -812,7 +812,7 @@
         <link port="output" relation="relation"/>
     </entity>
     <entity name="_B1_" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 125.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
@@ -856,7 +856,7 @@
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[175.0, 125.0]">
+        <vertex name="vertex1" value="[140.0, 125.0]">
         </vertex>
         <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="relation">
         </property>
