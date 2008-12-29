@@ -142,7 +142,8 @@ OPTIONAL_FILES = \
 	'TableauControllerEvent$$1.class' \
 	'TableauParameter$$1.class' \
 	'Transform$$EmbeddedConfigurer.class' \
-	'TransformationAttribute$$1.class'
+	'TransformationAttribute$$1.class' \
+	'TransformationAttribute$$TransformationListener.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

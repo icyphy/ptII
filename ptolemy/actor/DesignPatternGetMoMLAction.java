@@ -32,8 +32,7 @@ import java.io.StringWriter;
 import java.util.HashSet;
 import java.util.List;
 
-import ptolemy.data.BooleanToken;
-import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
@@ -66,26 +65,38 @@ public class DesignPatternGetMoMLAction {
      */
     public String getMoml(NamedObj object, String name) {
         CompositeEntity group = (CompositeEntity) object;
-        Attribute before = null;
-        Attribute after = null;
+        Attribute before = object.getAttribute("Before");
+        Attribute after = object.getAttribute("After");
         StringWriter buffer = new StringWriter();
         int extraIndent = 0;
         try {
             buffer.write("<group>\n");
 
-            before = object.getAttribute("Before");
             if (before != null) {
-                new Parameter(before, "_immediate").setToken(BooleanToken.TRUE);
-                buffer.write(StringUtilities.getIndentPrefix(1) + "<group>\n");
-                before.exportMoML(buffer, 2);
-                buffer.write(StringUtilities.getIndentPrefix(1) + "</group>\n");
+                String oldType = null;
+                StringParameter typeParameter =
+                    (StringParameter) before.getAttribute("_type");
+                if (typeParameter == null) {
+                    typeParameter = new StringParameter(before, "_type");
+                } else {
+                    oldType = typeParameter.getExpression();
+                }
+                typeParameter.setExpression("immediate");
+                try {
+                    buffer.write(StringUtilities.getIndentPrefix(1) +
+                            "<group>\n");
+                    before.exportMoML(buffer, 2);
+                    buffer.write(StringUtilities.getIndentPrefix(1) +
+                            "</group>\n");
+                } finally {
+                    if (oldType == null) {
+                        typeParameter.setContainer(null);
+                    } else {
+                        typeParameter.setExpression(oldType);
+                    }
+                }
             }
 
-            after = object.getAttribute("After");
-            if (after != null) {
-                new Parameter(after, "_immediate").setToken(BooleanToken.TRUE);
-            }
-            
             if (after != null || before != null) {
                 extraIndent++;
                 buffer.write(StringUtilities.getIndentPrefix(extraIndent) +
@@ -162,11 +173,30 @@ public class DesignPatternGetMoMLAction {
             }
 
             if (after != null) {
-                buffer.write(StringUtilities.getIndentPrefix(1) + "<group>\n");
-                after.exportMoML(buffer, 2);
-                buffer.write(StringUtilities.getIndentPrefix(1) + "</group>\n");
+                String oldType = null;
+                StringParameter typeParameter =
+                    (StringParameter) after.getAttribute("_type");
+                if (typeParameter == null) {
+                    typeParameter = new StringParameter(after, "_type");
+                } else {
+                    oldType = typeParameter.getExpression();
+                }
+                typeParameter.setExpression("delayed");
+                try {
+                    buffer.write(StringUtilities.getIndentPrefix(1) +
+                            "<group>\n");
+                    after.exportMoML(buffer, 2);
+                    buffer.write(StringUtilities.getIndentPrefix(1) +
+                            "</group>\n");
+                } finally {
+                    if (oldType == null) {
+                        typeParameter.setContainer(null);
+                    } else {
+                        typeParameter.setExpression(oldType);
+                    }
+                }
             }
-            
+
             buffer.write("</group>\n");
 
             return buffer.toString();
@@ -174,27 +204,6 @@ public class DesignPatternGetMoMLAction {
             // This should not occur.
             throw new InternalErrorException(null, e, "Unable to get the " +
                     "Moml content for group " + group.getName() + ".");
-        } finally {
-            if (before != null) {
-                Attribute attribute = before.getAttribute("_immediate");
-                if (attribute != null) {
-                    try {
-                        attribute.setContainer(null);
-                    } catch (Throwable t) {
-                        // Ignore.
-                    }
-                }
-            }
-            if (after != null) {
-                Attribute attribute = after.getAttribute("_immediate");
-                if (attribute != null) {
-                    try {
-                        attribute.setContainer(null);
-                    } catch (Throwable t) {
-                        // Ignore.
-                    }
-                }
-            }
         }
     }
 
