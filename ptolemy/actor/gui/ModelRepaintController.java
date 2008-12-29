@@ -83,7 +83,7 @@ public class ModelRepaintController extends Attribute {
         // The icon.
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-60\" y=\"-10\" "
-                + "width=\"120\" height=\"20\" "
+                + "width=\"135\" height=\"20\" "
                 + "style=\"fill:#00FFFF\"/>\n"
                 + "<text x=\"-55\" y=\"5\" "
                 + "style=\"font-size:14; font-family:SansSerif; fill:blue\">\n"
