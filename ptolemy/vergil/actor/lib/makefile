@@ -52,6 +52,8 @@ JSRCS = \
 	LEDMatrix.java \
 	ModelDisplay.java \
 	MonitorImage.java \
+	MonitorQueueAttribute.java \
+	MonitorQueueContents.java \
 	VisualModelReference.java
 
 OTHER_FILES_TO_BE_JARED = \
