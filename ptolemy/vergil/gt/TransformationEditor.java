@@ -254,6 +254,10 @@ public class TransformationEditor extends GTFrame implements ActionListener,
     }
 
     public void cancelFullScreen() {
+        if (_screen == null) {
+            return;
+        }
+
         if (!getFrameController().hasTabs()) {
             super.cancelFullScreen();
             return;
@@ -956,7 +960,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
             _portController = new TransformationExternalPortController(this);
             _relationController = new TransformationRelationController(this);
         }
-        
+
         protected void initializeInteraction() {
             super.initializeInteraction();
             Action oldConfigureAction = _configureAction;

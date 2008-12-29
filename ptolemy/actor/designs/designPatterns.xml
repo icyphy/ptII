@@ -7,6 +7,13 @@
       <input source="ptolemy/actor/designs/InputOutputPorts.xml"/>
     ?>
   </configure>
+  <entity name="DiscreteEvent" class="ptolemy.moml.EntityLibrary">
+    <configure>
+      <?moml
+        <input source="ptolemy/actor/designs/DESourceSink.xml"/>
+      ?>
+    </configure>
+  </entity>
   <entity name="DynamicDataFlow" class="ptolemy.moml.EntityLibrary">
     <configure>
       <?moml
@@ -14,10 +21,10 @@
       ?>
     </configure>
   </entity>
-  <entity name="DiscreteEvent" class="ptolemy.moml.EntityLibrary">
+  <entity name="Rendezvous" class="ptolemy.moml.EntityLibrary">
     <configure>
       <?moml
-        <input source="ptolemy/actor/designs/DESourceSink.xml"/>
+        <input source="ptolemy/actor/designs/RendezvousSynchrony.xml"/>
       ?>
     </configure>
   </entity>

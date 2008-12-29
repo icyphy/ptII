@@ -55,6 +55,7 @@ OTHER_FILES_TO_BE_JARED = \
 	DDFRepeatForCount.xml \
 	DESourceSink.xml \
 	InputOutputPorts.xml \
+	RendezvousSynchrony.xml \
 	designPatterns.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)

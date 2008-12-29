@@ -27,6 +27,7 @@
 */
 package ptolemy.actor.gt.controller;
 
+import java.awt.EventQueue;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.Writer;
@@ -123,39 +124,80 @@ implements Configurable {
         return newObject;
     }
 
-    public void configure(final URL base, final String source,
-            final String text) throws Exception {
+    public void configure(URL base, String source, String text)
+            throws Exception {
+        _configureSource = source;
+        if (!text.trim().equals("")) {
+            MoMLParser parser = new MoMLParser(workspace());
+            _configurer.removeAllEntities();
+            parser.setContext(_configurer);
+            parser.parse(base, source, new StringReader(text));
+            _modelUpdater = (ERGModalModel) _configurer.entityList().get(0);
+            _clearURI(_modelUpdater);
+        }
+
         StringParameter typeParameter = (StringParameter) getAttribute("_type");
-        String type = typeParameter == null ? "default" :
+        String type = typeParameter == null ? null :
             typeParameter.getExpression();
-        if (type.equals("delayed") || type.equals("immediate")) {
-            if (type.equals("delayed")) {
-                getContainer().requestChange(new ChangeRequest(this,
-                        "Perform delayed transformation.") {
-                    protected void _execute() throws Exception {
-                        try {
-                            _executeTransformation(base, source, text);
-                        } finally {
-                            setContainer(null);
+        if ("delayed".equals(type)) {
+            EventQueue.invokeLater(new Runnable() {
+                public void run() {
+                    getContainer().requestChange(new ChangeRequest(this,
+                            "Perform delayed transformation.") {
+                        protected void _execute() throws Exception {
+                            try {
+                                executeTransformation();
+                            } finally {
+                                setContainer(null);
+                            }
                         }
-                    }
-                });
-            } else if (type.equals("immediate")) {
-                try {
-                    _executeTransformation(base, source, text);
-                } finally {
-                    setContainer(null);
+                    });
                 }
+            });
+        } else if ("immediate".equals(type)) {
+            try {
+                executeTransformation();
+            } finally {
+                setContainer(null);
             }
-        } else {
-            _configureSource = source;
-            if (!text.trim().equals("")) {
-                MoMLParser parser = new MoMLParser(workspace());
-                _configurer.removeAllEntities();
-                parser.setContext(_configurer);
-                parser.parse(base, source, new StringReader(text));
-                _modelUpdater = (ERGModalModel) _configurer.entityList().get(0);
-                _clearURI(_modelUpdater);
+        }
+    }
+
+    public void executeTransformation() throws Exception {
+        executeTransformation((CompositeEntity) getContainer());
+    }
+
+    public void executeTransformation(CompositeEntity model) throws Exception {
+        Manager manager = getModelUpdater().getManager();
+        manager.addExecutionListener(new TransformationListener(manager,
+                "_transformationListener", model));
+
+        Effigy masterEffigy = Configuration.findEffigy(toplevel());
+        if (masterEffigy != null) {
+            PtolemyEffigy effigy = new PtolemyEffigy(masterEffigy,
+                    masterEffigy.uniqueName("effigy"));
+            effigy.setModel(_modelUpdater);
+        }
+
+        NamedObj container = getContainer();
+        List<ParserAttribute> parsers = container.attributeList(
+                ParserAttribute.class);
+        ParserAttribute parserAttribute = parsers.size() > 0 ?
+                parsers.get(0) :
+                new ParserAttribute(container, container.uniqueName("_parser"));
+        MoMLParser oldParser = parsers.size() > 0 ?
+                parserAttribute.getParser() : null;
+        parserAttribute.setParser(new MoMLParser());
+        manager.enablePrintTimeAndMemory(false);
+
+        try {
+            manager.execute();
+        } finally {
+            manager.enablePrintTimeAndMemory(true);
+            if (oldParser == null) {
+                parserAttribute.setContainer(null);
+            } else {
+                parserAttribute.setParser(oldParser);
             }
         }
     }
@@ -201,40 +243,6 @@ implements Configurable {
         }
     }
 
-    private void _executeTransformation(URL base, String source, String text)
-            throws Exception {
-        Effigy masterEffigy = Configuration.findEffigy(toplevel());
-        PtolemyEffigy effigy = new PtolemyEffigy(masterEffigy,
-                masterEffigy.uniqueName("effigy"));
-        MoMLParser parser = new MoMLParser(workspace());
-        ERGModalModel transformer = (ERGModalModel) parser.parse(base,
-                    source, new StringReader(text));
-        Manager manager = new Manager(transformer.workspace(), "_manager");
-        manager.addExecutionListener(new TransformationListener(manager,
-                "_transformationListener"));
-        NamedObj container = getContainer();
-        effigy.setModel(transformer);
-        transformer.setManager(manager);
-
-        List<ParserAttribute> parsers = container.attributeList(
-                ParserAttribute.class);
-        ParserAttribute parserAttribute = parsers.size() > 0 ?
-                parsers.get(0) : new ParserAttribute(container,
-                        container.uniqueName("_parser"));
-        MoMLParser oldParser = parsers.size() > 0 ?
-                parserAttribute.getParser() : null;
-        parserAttribute.setParser(new MoMLParser());
-        try {
-            manager.execute();
-        } finally {
-            if (oldParser == null) {
-                parserAttribute.setContainer(null);
-            } else {
-                parserAttribute.setParser(oldParser);
-            }
-        }
-    }
-
     private void _init() throws IllegalActionException,
             NameDuplicationException {
         condition = new Parameter(this, "condition");
@@ -273,11 +281,13 @@ implements Configurable {
     private ERGModalModel _modelUpdater;
 
     private class TransformationListener extends Attribute
-    implements ExecutionListener {
+            implements ExecutionListener {
 
-        public TransformationListener(Manager manager, String name)
-                throws IllegalActionException, NameDuplicationException {
+        public TransformationListener(Manager manager, String name,
+                CompositeEntity model) throws IllegalActionException,
+                NameDuplicationException {
             super(manager, name);
+            _model = model;
         }
 
         public void executionError(Manager manager, Throwable throwable) {
@@ -288,14 +298,13 @@ implements Configurable {
 
         public void managerStateChanged(Manager manager) {
             if (manager.getState() == Manager.INITIALIZING) {
-                ERGModalModel transformer =
-                    (ERGModalModel) manager.getContainer();
                 ModelParameter modelAttribute =
-                    (ModelParameter) transformer.getController().getAttribute(
+                    (ModelParameter) _modelUpdater.getController().getAttribute(
                             "Model");
-                modelAttribute.setModel((CompositeEntity)
-                        TransformationAttribute.this.getContainer());
+                modelAttribute.setModel(_model);
             }
         }
+
+        private CompositeEntity _model;
     }
 }

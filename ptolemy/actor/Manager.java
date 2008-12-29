@@ -135,7 +135,7 @@ import ptolemy.util.StringUtilities;
  @Pt.ProposedRating Green (neuendor)
  @Pt.AcceptedRating Yellow (cxh)
  */
-public class Manager extends NamedObj implements Runnable {    
+public class Manager extends NamedObj implements Runnable {
 
     /** Construct a manager in the default workspace with an empty string
      *  as its name. The manager is added to the list of objects in
@@ -187,7 +187,7 @@ public class Manager extends NamedObj implements Runnable {
     /** Indicator that width inference is being done.
      */
     public final static State INFERING_WIDTHS = new State("infering widths");
-    
+
     /** Indicator that the execution is in the initialize phase.
      */
     public final static State INITIALIZING = new State("initializing");
@@ -212,7 +212,7 @@ public class Manager extends NamedObj implements Runnable {
     /** Indicator that type resolution is being done.
      */
     public final static State RESOLVING_TYPES = new State("resolving types");
-    
+
     /** Indicator that the execution is throwing a throwable.
      */
     public final static State THROWING_A_THROWABLE = new State(
@@ -272,6 +272,15 @@ public class Manager extends NamedObj implements Runnable {
         removeExecutionListener(listener);
 
         _executionListeners.add(new WeakReference<ExecutionListener>(listener));
+    }
+
+    /** Enable or disable printing time and memory usage at the end of model
+     *  execution.
+     *
+     *  @param enabled Whether time and memory printing is enabled.
+     */
+    public void enablePrintTimeAndMemory(boolean enabled) {
+        _printTimeAndMemory = enabled;
     }
 
     /** Execute the model.  Begin with the initialization phase, followed
@@ -403,7 +412,9 @@ public class Manager extends NamedObj implements Runnable {
 
                 // Wrapup may throw an exception, so put the following
                 // statement inside the finally block.
-                System.out.println(timeAndMemory(startTime));
+                if (_printTimeAndMemory) {
+                    System.out.println(timeAndMemory(startTime));
+                }
 
                 // Handle throwable with exception handlers,
                 // if there are any.
@@ -567,17 +578,17 @@ public class Manager extends NamedObj implements Runnable {
     public State getState() {
         return _state;
     }
-    
+
     /**
      *  Infer the width of the relations for which no width has been
-     *  specified yet. 
+     *  specified yet.
      *  The specified actor must be the top level container of the model.
      *  @exception IllegalActionException If the widths of the relations at port are not consistent
      *                  or if the width cannot be inferred for a relation.
      */
     public void inferWidths() throws IllegalActionException {
         _relationWidthInference.inferWidths();
-    }    
+    }
 
     /** Initialize the model.  This calls the preinitialize() method of
      *  the container, followed by the resolveTypes() and initialize() methods.
@@ -665,7 +676,7 @@ public class Manager extends NamedObj implements Runnable {
             if (IORelation._USE_NEW_WIDTH_INFERENCE_ALGO) {
                 _inferRelationWidths();
             }
-            
+
             // Pre-initialize actors that have been added.
             for (Actor actor : _actorsToInitialize) {
                 // Do not attempt to preinitialize transparent composite actors.
@@ -713,7 +724,7 @@ public class Manager extends NamedObj implements Runnable {
 
         return result;
     }
-    
+
     /**
      *  Return whether the current widths of the relation in the model
      *  are no longer valid anymore and the widths need to be inferred again.
@@ -722,16 +733,16 @@ public class Manager extends NamedObj implements Runnable {
     public boolean needsWidthInference() {
         return _relationWidthInference.needsWidthInference();
     }
-    
-    
+
+
     /** Notify the manager that the connectivity in the model changed
      *  (width of relation changed, relations added, linked to different ports, ...).
      *  This will invalidate the current width inference.
      */
     public void notifyConnectivityChange() {
-        _relationWidthInference.notifyConnectivityChange();        
+        _relationWidthInference.notifyConnectivityChange();
     }
-    
+
     /** Notify all the execution listeners of an exception.
      *  If there are no listeners, then print the exception information
      *  to the standard error stream. This is intended to be used by threads
@@ -935,7 +946,7 @@ public class Manager extends NamedObj implements Runnable {
                 _nameToAnalysis.clear();
                 _nameToAnalysis = null;
             }
-            
+
             // Initialize the topology.
             // NOTE: Some actors require that parameters be set prior
             // to preinitialize().  Hence, this occurs after the call
@@ -948,13 +959,13 @@ public class Manager extends NamedObj implements Runnable {
             // EAL 5/31/02.
             _container.preinitialize();
 
-            executeChangeRequests();                      
+            executeChangeRequests();
 
             // Infer widths (if not already done)
             if (IORelation._USE_NEW_WIDTH_INFERENCE_ALGO) {
                 _inferRelationWidths();
             }
-            
+
             resolveTypes();
             _typesResolved = true;
             _preinitializeVersion = _workspace.getVersion();
@@ -968,7 +979,7 @@ public class Manager extends NamedObj implements Runnable {
             _workspace.doneReading();
         }
     }
-    
+
     /** If the workspace version has changed since the last invocation
      *  of preinitializeAndResolveTypes(), then invoke it now and set
      *  the state of the Manager to IDLE upon completion. This can be used
@@ -1363,13 +1374,13 @@ public class Manager extends NamedObj implements Runnable {
      *  other classes in Ptolemy will print out statistics if the
      *  amount of time (in milliseconds) named by this variable
      *  elapses during certain steps such as preinitialize().
-     *  The initial default value is 10000, meaning that certain 
-     *  operations can take up to 10 seconds before statistics 
+     *  The initial default value is 10000, meaning that certain
+     *  operations can take up to 10 seconds before statistics
      *  are printed.
      *  @see ptolemy.kernel.CompositeEntity#statistics(String)
      */
     public static int minimumStatisticsTime = 10000;
-       
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -1451,10 +1462,10 @@ public class Manager extends NamedObj implements Runnable {
             notifyAll();
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
    /**
     * Infer the width of the relations for which no width has been
     * specified yet (width equals -1)
@@ -1467,12 +1478,12 @@ public class Manager extends NamedObj implements Runnable {
             try {
                 _setState(INFERING_WIDTHS);
                 _relationWidthInference.inferWidths();
-            } finally {                
+            } finally {
                 _setState(previousState);
             }
-        }       
+        }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // A list of actors with pending initialization.
@@ -1489,7 +1500,7 @@ public class Manager extends NamedObj implements Runnable {
 
     // Flag indicating that finish() has been called.
     private boolean _finishRequested = false;
-    
+
     // Count the number of iterations completed.
     private int _iterationCount;
 
@@ -1498,14 +1509,17 @@ public class Manager extends NamedObj implements Runnable {
 
     // Flag indicating that pause() has been called.
     private boolean _pauseRequested = false;
-    
+
     // Version at which preinitialize last successfully executed.
     private long _preinitializeVersion = -1;
 
 
     // A helper class that does the width inference.
     private RelationWidthInference _relationWidthInference = new RelationWidthInference();
-    
+
+    // Whether time and memory usage are printed at the end of model execution.
+    private boolean _printTimeAndMemory = true;
+
     // Flag for waiting on resume();
     private boolean _resumeNotifyWaiting = false;
 
@@ -1551,5 +1565,5 @@ public class Manager extends NamedObj implements Runnable {
         }
 
         private String _description;
-    }  
+    }
 }
