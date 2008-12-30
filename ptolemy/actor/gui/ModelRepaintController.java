@@ -91,9 +91,9 @@ public class ModelRepaintController extends Attribute {
                 + "</svg>\n");
         
         // Hide the name.
-        SingletonParameter _hideName = new SingletonParameter(this, "_hideName");
-        _hideName.setToken(BooleanToken.TRUE);
-        _hideName.setVisibility(Settable.EXPERT);        
+        SingletonParameter hideName = new SingletonParameter(this, "_hideName");
+        hideName.setToken(BooleanToken.TRUE);
+        hideName.setVisibility(Settable.EXPERT);        
     }
     
 
@@ -225,11 +225,11 @@ public class ModelRepaintController extends Attribute {
     // The inner class will be piggybacked as an executable for the container to
     // execute change request at the appropriate times. These change request will
     // lead to repaints of the GUI.    
-     Executable _executable;
+    private Executable _executable;
     
     // A flag that specifies whether a repaint should happen on wrapup.
-    Parameter _repaintOnWrapUp;
+    private Parameter _repaintOnWrapUp;
     
     // A flag that specifies whether a repaint should happen on post-fire.
-    Parameter _repaintOnPostFire;
+    private Parameter _repaintOnPostFire;
 }

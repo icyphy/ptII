@@ -85,27 +85,27 @@ public class PtolemyPreferences extends ScopeExtendingAttribute {
         // defaults used in the code where these preferences are checked,
         // if there are any.  It's a good idea to provide them in
         // case setAsDefault() is never called.
-        Parameter _relationSize = new Parameter(this, "_relationSize");
-        _relationSize.setTypeEquals(BaseType.DOUBLE);
-        _relationSize.setExpression("12.0");
-        _relationSize.setDisplayName("Relation size");
+        Parameter relationSize = new Parameter(this, "_relationSize");
+        relationSize.setTypeEquals(BaseType.DOUBLE);
+        relationSize.setExpression("12.0");
+        relationSize.setDisplayName("Relation size");
 
-        Parameter _linkBendRadius = new Parameter(this, "_linkBendRadius");
-        _linkBendRadius.setTypeEquals(BaseType.DOUBLE);
-        _linkBendRadius.setExpression("20.0");
-        _linkBendRadius.setDisplayName("Link bend radius");
+        Parameter linkBendRadius = new Parameter(this, "_linkBendRadius");
+        linkBendRadius.setTypeEquals(BaseType.DOUBLE);
+        linkBendRadius.setExpression("20.0");
+        linkBendRadius.setDisplayName("Link bend radius");
 
         backgroundColor = new ColorAttribute(this, "backgroundColor");
         backgroundColor.setExpression("{0.9, 0.9, 0.9, 1.0}");
         backgroundColor.setDisplayName("Background Color");
 
-        StringParameter _showParameters = new StringParameter(this,
+        StringParameter showParameters = new StringParameter(this,
                 "_showParameters");
-        _showParameters.addChoice("None");
-        _showParameters.addChoice("Overridden parameters only");
-        _showParameters.addChoice("All");
-        _showParameters.setExpression("None");
-        _showParameters.setDisplayName("Show parameters");
+        showParameters.addChoice("None");
+        showParameters.addChoice("Overridden parameters only");
+        showParameters.addChoice("All");
+        showParameters.setExpression("None");
+        showParameters.setDisplayName("Show parameters");
 
         // The icon.
         _attachText("_iconDescription", "<svg>\n"
@@ -117,9 +117,9 @@ public class PtolemyPreferences extends ScopeExtendingAttribute {
                 + "LocalPreferences\n" + "</text>\n"
                 + "</svg>\n");
         // Hide the name.
-        SingletonParameter _hideName = new SingletonParameter(this, "_hideName");
-        _hideName.setToken(BooleanToken.TRUE);
-        _hideName.setVisibility(Settable.EXPERT);
+        SingletonParameter hideName = new SingletonParameter(this, "_hideName");
+        hideName.setToken(BooleanToken.TRUE);
+        hideName.setVisibility(Settable.EXPERT);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -200,7 +200,7 @@ public class PtolemyPreferences extends ScopeExtendingAttribute {
                 if (attribute instanceof Variable) {
                     return ((Variable) attribute).getToken();
                 }
-                Iterator preferences = container.attributeList(
+                Iterator<?> preferences = container.attributeList(
                         PtolemyPreferences.class).iterator();
                 while (preferences.hasNext()) {
                     PtolemyPreferences preference = (PtolemyPreferences) preferences
@@ -252,7 +252,7 @@ public class PtolemyPreferences extends ScopeExtendingAttribute {
     public void setAsDefault() throws IllegalActionException {
         // Make the current global variables conform with any
         // overridden preference values.
-        Iterator parameters = attributeList(Variable.class).iterator();
+        Iterator<?> parameters = attributeList(Variable.class).iterator();
 
         while (parameters.hasNext()) {
             Variable parameter = (Variable) parameters.next();
