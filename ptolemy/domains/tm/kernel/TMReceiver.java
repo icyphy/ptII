@@ -28,6 +28,7 @@
 package ptolemy.domains.tm.kernel;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import ptolemy.actor.AbstractReceiver;
 import ptolemy.actor.Actor;
@@ -92,6 +93,14 @@ public class TMReceiver extends AbstractReceiver {
      */
     public void clear() {
         _tokens.clear();
+    }
+
+    /** Return a list with the tokens currently in the receiver, or
+     *  an empty list if there are no such tokens.
+     *  @return A list of instances of Token.
+     */
+    public List<Token> elementList() {
+        return _tokens;
     }
 
     /** Get a token from the receiver.  The token returned is one that

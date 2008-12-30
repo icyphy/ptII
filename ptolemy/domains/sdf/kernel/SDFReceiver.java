@@ -29,6 +29,8 @@
 package ptolemy.domains.sdf.kernel;
 
 import java.util.Enumeration;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import ptolemy.actor.AbstractReceiver;
@@ -106,6 +108,14 @@ public class SDFReceiver extends AbstractReceiver {
     public void clear() {
         _queue.clear();
         _waitingTokens = 0;
+    }
+
+    /** Return a list with the tokens currently in the receiver, or
+     *  an empty list if there are no such tokens.
+     *  @return A list of instances of Token.
+     */
+    public List<Token> elementList() {
+        return _queue.elementList();
     }
 
     /** Remove the first token (the oldest one) from the receiver and

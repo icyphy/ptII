@@ -28,6 +28,9 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.domains.tdl.kernel;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import ptolemy.actor.AbstractReceiver;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
@@ -66,7 +69,7 @@ public class TDLReceiver extends AbstractReceiver implements StateReceiver {
 	}
 
 	///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+	////                         public methods                    ////
 
 	/**
 	 * Clear this receiver of any contained tokens. FIXME. Should rename and
@@ -74,6 +77,18 @@ public class TDLReceiver extends AbstractReceiver implements StateReceiver {
 	 */
 	public void clear() {
 		reset();
+	}
+
+	/** Return a list with the token currently in the receiver, or
+	 *  an empty list if there is no such token.
+	 *  @return A list of instances of Token.
+	 */
+	public List<Token> elementList() {
+	    List<Token> result = new LinkedList<Token>();
+	    if (_token != null) {
+	        result.add(_token);
+	    }
+	    return result;
 	}
 
 	/**
