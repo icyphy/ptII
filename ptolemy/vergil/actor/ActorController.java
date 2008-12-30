@@ -606,15 +606,16 @@ public abstract class ActorController extends AttributeController {
                             && !((Variable) showInfo).isStringMode()) {
                         String value = ((Variable) showInfo).getToken()
                                 .toString();
-                        if (toShow != null) {
+                        if (toShow != null && !value.trim().equals("")) {
                             toShow += " (" + value + ")";
                         } else {
                             toShow = value;
                         }
                     } else if (showInfo instanceof Settable) {
-                        if (toShow != null) {
+                        String value = ((Settable) showInfo).getExpression();
+                        if (toShow != null && !value.trim().equals("")) {
                             toShow += " ("
-                                    + ((Settable) showInfo).getExpression()
+                                    + value
                                     + ")";
                         } else {
                             toShow = ((Settable) showInfo).getExpression();
