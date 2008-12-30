@@ -42,6 +42,7 @@ import ptolemy.actor.util.DFUtilities;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.Director;
 import ptolemy.codegen.kernel.PortCodeGenerator;
+import ptolemy.codegen.kernel.CodeGeneratorHelper.Channel;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.kernel.CompositeEntity;
@@ -170,6 +171,17 @@ public class PNDirector extends Director {
 		return libraries;
 	}
 
+    public String generateCodeForGet(IOPort port, int channel) throws IllegalActionException {
+
+        // getReadOffset()
+        // incrementReadOffset()
+        return "";
+    }
+
+    public String generateCodeForSend(IOPort port, int channel) throws IllegalActionException {
+        return "";
+    }
+
 	/**
 	 * Generate the initialize code for the associated PN director.
 	 * 
@@ -272,7 +284,7 @@ public class PNDirector extends Director {
 		return "";
 	}
 
-	public void generateTransferOutputsCode(IOPort inputPort, StringBuffer code)
+    public void generateTransferOutputsCode(IOPort inputPort, StringBuffer code)
 			throws IllegalActionException {
 		code.append(_codeGenerator.comment("PNDirector: "
 				+ "Transfer tokens to the outside."));
@@ -471,6 +483,11 @@ public class PNDirector extends Director {
 			code.append(_eol + "void* " + _getActorThreadLabel(actor)
 					+ "(void* arg) {" + _eol);
 
+			// Generate debug code for printing the thread ID and actor name.
+            List args = new LinkedList();
+            args.add(CodeGeneratorHelper.generateName((NamedObj) actor));
+            code.append(_codeStream.getCodeBlock("printThreadName", args));
+			
 			// mainLoop
 
 			// Check if the actor is an opague CompositeActor.
@@ -492,19 +509,21 @@ public class PNDirector extends Director {
 
 				String pnPostfireCode = "";
 
-				// if firingCountLimit exists, generate for loop.
+				String loopCode = "while (true) {" + _eol;
+				
+				// Generate a for loop if there is a firing count limit.
 				if (actor instanceof LimitedFiringSource) {
-					int firingCount = ((IntToken) ((LimitedFiringSource) actor).firingCountLimit
-							.getToken()).intValue();
-					functionCode.append("int i = 0;" + _eol);
-					functionCode.append("for (; i < " + firingCount
-							+ "; i++) {" + _eol);
-
+					int firingCount = ((IntToken) ((LimitedFiringSource) actor)
+					        .firingCountLimit.getToken()).intValue();
+					
+					if (firingCount != 0) {
+    					loopCode = "int i = 0;" + _eol +
+    					"for (; i < " + firingCount + "; i++) {" + _eol;
+					}
 					pnPostfireCode = _eol;
-				} else {
-					functionCode.append("while (true) {" + _eol);
-					// code.append("{" + _eol);
-				}
+				} 				
+				
+				functionCode.append(loopCode);
 
 				functionCode.append(helper.generateFireCode());
 
@@ -532,8 +551,6 @@ public class PNDirector extends Director {
 					CodeGeneratorHelper portCGHelper = (CodeGeneratorHelper) portHelper;
 
 					if (portCGHelper.checkRemote(forComposite, port)) {
-						// pnPostfireCode += portHelper.updateOffset(rate,
-						// this);
 						pnPostfireCode += portHelper
 								.updateConnectedPortsOffset(rate, _director);
 					}

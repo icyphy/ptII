@@ -5,7 +5,7 @@
 	// before this code block.
     static pthread_cond_t $name_condition[$numBuffers];
     static pthread_mutex_t $name_conditionMutex[$numBuffers];
-    
+
     static struct directorHeader $name = {
         // Only partial initialization.
         0,                  // writeBlockingThreads
@@ -57,4 +57,11 @@
 
 /*** updateInputOffset ***/
     incrementOffset();
+/**/
+
+
+/*** printThreadName($name) ***/
+	#ifdef DEBUG_PN
+    printf("$name = [%x]\n", pthread_self());
+	#endif
 /**/
