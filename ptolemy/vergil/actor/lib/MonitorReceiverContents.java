@@ -80,7 +80,7 @@ public class MonitorReceiverContents extends SingletonAttribute {
         // The icon.
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-60\" y=\"-10\" "
-                + "width=\"170\" height=\"20\" "
+                + "width=\"180\" height=\"20\" "
                 + "style=\"fill:#00FFFF\"/>\n"
                 + "<text x=\"-55\" y=\"5\" "
                 + "style=\"font-size:14; font-family:SansSerif; fill:blue\">\n"
