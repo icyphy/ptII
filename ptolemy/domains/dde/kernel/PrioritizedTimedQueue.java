@@ -29,6 +29,8 @@
  */
 package ptolemy.domains.dde.kernel;
 
+import java.util.List;
+
 import ptolemy.actor.AbstractReceiver;
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
@@ -149,6 +151,14 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Return a list with the tokens currently in the receiver, or
+     *  an empty list if there is no such token.
+     *  @return A list of instances of Token.
+     */
+    public List<Token> elementList() {
+        return _queue.elementList();
+    }
 
     /** Take the the oldest token off of the queue and return it.
      *  If the queue is empty, throw a NoTokenException. If there are

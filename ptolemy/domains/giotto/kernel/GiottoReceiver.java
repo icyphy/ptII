@@ -26,6 +26,9 @@
  */
 package ptolemy.domains.giotto.kernel;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import ptolemy.actor.AbstractReceiver;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
@@ -77,6 +80,18 @@ public class GiottoReceiver extends AbstractReceiver implements StateReceiver {
      */
     public void clear() {
         reset();
+    }
+
+    /** Return a list with the token currently in the receiver, or
+     *  an empty list if there is no such token.
+     *  @return A list of instances of Token.
+     */
+    public List<Token> elementList() {
+        List<Token> result = new LinkedList<Token>();
+        if (_token != null) {
+            result.add(_token);
+        }
+        return result;
     }
 
     /** Get the contained and available token, i.e., get the last

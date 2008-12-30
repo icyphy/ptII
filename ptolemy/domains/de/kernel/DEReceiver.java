@@ -28,6 +28,7 @@
 package ptolemy.domains.de.kernel;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import ptolemy.actor.AbstractReceiver;
 import ptolemy.actor.Actor;
@@ -82,6 +83,14 @@ public class DEReceiver extends AbstractReceiver {
      */
     public void clear() {
         _tokens.clear();
+    }
+
+    /** Return a list with tokens that are currently in the receiver
+     *  available for get() or getArray(), beginning with the oldest one.
+     *  @return A list of instances of Token.
+     */
+    public List<Token> elementList() {
+        return _tokens;
     }
 
     /** Get the first token from the receiver. The token returned is one that
