@@ -85,7 +85,7 @@ public class QueueReceiver extends AbstractReceiver {
     /** List the tokens in the receiver, beginning with the oldest.
      *  @return An enumeration of tokens.
      */
-    public List elementList() {
+    public List<Token> elementList() {
         return _queue.elementList();
     }
 

@@ -27,6 +27,9 @@
  */
 package ptolemy.actor;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -67,6 +70,18 @@ public class Mailbox extends AbstractReceiver {
      */
     public void clear() throws IllegalActionException {
         _token = null;
+    }
+
+    /** Return a list with the token currently in the receiver, or
+     *  an empty list if there is no such token.
+     *  @return A list of instances of Token.
+     */
+    public List<Token> elementList() {
+        List<Token> result = new LinkedList<Token>();
+        if (_token != null) {
+            result.add(_token);
+        }
+        return result;
     }
 
     /** Get the contained Token.  If there is none, throw an exception.

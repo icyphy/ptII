@@ -28,6 +28,8 @@
  */
 package ptolemy.actor;
 
+import java.util.List;
+
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -74,6 +76,15 @@ public interface Receiver {
      *   the domain.
      */
     public void clear() throws IllegalActionException;
+    
+    /** Return a list with tokens that are currently in the receiver
+     *  available for get() or getArray(). The oldest token (the one
+     *  that was put first) should be listed first in any implementation
+     *  of this method.
+     *  @return A list of instances of Token.
+     *  @exception IllegalActionException If the operation is not supported.
+     */
+    public List<Token> elementList() throws IllegalActionException;
 
     /** Get a token from this receiver.
      *  @return A token read from the receiver.

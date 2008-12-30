@@ -28,6 +28,8 @@
  */
 package ptolemy.actor;
 
+import java.util.List;
+
 import ptolemy.actor.util.Time;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
@@ -77,6 +79,15 @@ public abstract class AbstractReceiver implements Receiver {
     public void clear() throws IllegalActionException {
         throw new IllegalActionException(getContainer(), "Receiver class "
                 + getClass().getName() + " does not support clear().");
+    }
+    
+    /** Return a list with tokens that are currently in the receiver
+     *  available for get() or getArray().
+     *  @return A list of instances of Token.
+     *  @exception IllegalActionException Always thrown in this base class.
+     */
+    public List<Token> elementList() throws IllegalActionException {
+        throw new IllegalActionException(_container, "Receiver does not implement elementList()");
     }
 
     /** Get a token from this receiver.
