@@ -241,6 +241,7 @@ OTHER_FILES_TO_BE_JARED = \
 	BooleanSwitchIcon.xml \
 	CommutatorIcon.xml \
 	ComputeHistogramIcon.xml \
+	DiscardIcon.xml \
 	DistributorIcon.xml \
 	GaussianIcon.xml \
 	TriangularIcon.xml \
