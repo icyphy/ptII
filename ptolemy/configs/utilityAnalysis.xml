@@ -10,8 +10,8 @@
   	                  class="ptolemy.kernel.util.Attribute"/>
                 <property name="DependencyHighlighter"
                           class="ptolemy.vergil.basic.DependencyHighlighter"/>
-                <property name="MonitorQueueContents"
-                          class="ptolemy.vergil.actor.lib.MonitorQueueContents"/>
+                <property name="MonitorReceiverContents"
+                          class="ptolemy.vergil.actor.lib.MonitorReceiverContents"/>
             </group>
         ?>
     </configure>
