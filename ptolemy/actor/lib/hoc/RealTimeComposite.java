@@ -147,6 +147,7 @@ import ptolemy.util.MessageHandler;
  @since Ptolemy II 6.1
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (neuendor)
+ @deprecated Use ThreadedComposite instead.
  */
 public class RealTimeComposite extends MirrorComposite {
     /** Create an actor with a name and a container.
