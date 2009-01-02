@@ -15,35 +15,6 @@
           </property>
         </entity>
         <entity name="ExecutionTime" class="ptolemy.actor.lib.ExecutionTime"/>
-        <entity name="RealTimeComposite" class="ptolemy.actor.lib.hoc.RealTimeComposite">
-        <doc>Iterate a contained actor over input arrays</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.CopyCatIcon"/>
-        <property name="_configurer" class="ptolemy.actor.gui.EditorPaneFactory"/>
-        <property name="_configurer2" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory"/>
-        <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory"/>
-        <entity name="IterateComposite" class="ptolemy.actor.lib.hoc.MirrorComposite$MirrorCompositeContents">
-          <property name="annotation" class="ptolemy.kernel.util.Attribute">
-           <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-           </property>
-           <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-              <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Make sure there is a director here!</text></svg></configure>
-           </property>
-           <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-              <configure>
-                <svg> 
-                    <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-                </svg>
-              </configure>
-           </property>
-           <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-            </property>
-           <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-           </property>
-           <property name="_location" class="ptolemy.kernel.util.Location" value="-5.0, 5.0">
-           </property>
-          </property>
-        </entity>
-      </entity>
         <entity name="RealTimePlotter" class="ptolemy.actor.lib.gui.RealTimePlotter"/>
 	    <entity name="Sleep" class="ptolemy.actor.lib.Sleep">
           <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
