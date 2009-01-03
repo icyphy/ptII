@@ -2,6 +2,6 @@
 <!DOCTYPE property PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <property name="ReadModelIcon" class="ptolemy.vergil.erg.EventIcon">
-  <property name="fill" class="ptolemy.data.expr.Parameter" value="{0.5, 1.0, 0.8, 1.0}"/>
+  <property name="fill" class="ptolemy.data.expr.Parameter" value="{0.9, 0.8, 0.9, 1.0}"/>
   <property name="spacing" value="isFinalEvent ? 3.0 : 0.0"/>
 </property>
