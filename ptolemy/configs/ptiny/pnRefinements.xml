@@ -1,0 +1,27 @@
+  <group>
+   
+  <!-- An entity giving alternative state refinements for modal models. -->
+  <entity name="_stateRefinements" class="ptolemy.kernel.CompositeEntity">
+    <entity name="SDF Refinement"
+            class="ptolemy.domains.fsm.modal.Refinement">
+      <property name="SDF Director"
+                class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 35.0"/>
+      </property>
+    </entity>
+    <entity name="State Machine Refinement"
+            class="ptolemy.domains.fsm.modal.ModalController">
+    </entity>               
+  </entity>
+
+  <!-- An entity giving alternative transition refinements for modal models. -->
+  <entity name="_transitionRefinements" class="ptolemy.kernel.CompositeEntity">
+    <entity name="Default Refinement"
+            class="ptolemy.domains.fsm.modal.Refinement">
+      <property name="SDF Director"
+                class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 35.0"/>
+      </property>
+    </entity>
+  </entity>
+  </group>

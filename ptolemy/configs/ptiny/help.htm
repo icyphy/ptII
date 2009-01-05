@@ -1,0 +1,34 @@
+<html>
+<head>
+<!-- $Id: help.htm 42181 2006-05-01 17:07:57Z cxh $ -->
+<link href="../../../doc/default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1>Help for the Hybrid System Visual Modeler</h1>
+<p>
+A hybrid system is a continuous-time model that contains modal models.
+The top-level continuous time is provided with a <i>director</i>
+(also called a <i>solver</i>),
+represented by a green box, which represents the simulation engine that
+executes the model.  A user constructs a model by dragging in actors
+from the actor library and connecting them.  The model may be run from
+the toolbar or from the View menu.  The duration of a run may be
+specified by double clicking on the director.
+<p>
+To construct a simple
+continuous-time model, try dragging a TimedSinewave actor from the
+sources library and a TimedPlotter from the sinks library
+(both sublibraries of the actor library) and connecting them by clicking
+and dragging from one port to another.
+<p>
+To construct a hybrid system, drag in a Modal Model from the utilities
+library.  The following steps will configure the modal model:
+<ul>
+<li> Right click to configure the ports. Add an input and an output port.
+<li> Right click to look inside the modal model.
+<li> Populate the modal model with a state machine.
+</ul>
+<p>
+For further information, see the <a href="docs.htm">HyVisual Documentation</a>
+</body>
+</html>

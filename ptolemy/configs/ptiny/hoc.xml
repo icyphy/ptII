@@ -1,0 +1,52 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="HigherOrderActors" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+      <doc>Higher-Order Computation Infrastructure.</doc>
+      <entity name="ApplyFunction" class="ptolemy.actor.lib.hoc.ApplyFunction">
+        <doc>The function is applied to its input data.</doc>
+      </entity>
+
+      <entity name="ApplyFunctionOverSequence" class="ptolemy.actor.lib.hoc.ApplyFunctionOverSequence">
+        <doc>The function is applied to its input data.</doc>
+      </entity>      
+
+      <entity name="MultiInstanceComposite" class="ptolemy.actor.lib.hoc.MultiInstanceComposite">
+        <doc>Creates multiple instances of itself</doc>
+        <property name="SDF Director"
+                class="ptolemy.domains.sdf.kernel.SDFDirector">
+          <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 35.0"/>
+        </property>
+      </entity>
+
+      </group>
+    ?>
+  </configure>
+</entity>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,44 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Sinks" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+
+  <!-- Copied from ptolemy/actor/lib/genericsinks.xml-->
+  <!-- Copied from ptolemy/actor/lib/sequencesinks.xml-->
+  <!-- Rearranged to be alphabetical. -->
+
+<entity name="ArrayPlotter" class="ptolemy.actor.lib.gui.ArrayPlotter"/>
+<entity name="ArrayPlotterXY" class="ptolemy.actor.lib.gui.ArrayPlotterXY"/>
+<entity name="BarGraph" class="ptolemy.actor.lib.gui.BarGraph"/>
+<entity name="Discard" class="ptolemy.actor.lib.Discard">
+  <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true"/>
+  <port name="input" class="ptolemy.actor.TypedIOPort">
+    <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH"/>
+  </port>
+</entity>
+<entity name="Display" class="ptolemy.actor.lib.gui.Display"/>
+<entity name="HistogramPlotter" class="ptolemy.actor.lib.gui.HistogramPlotter"/>
+
+<entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
+<doc>Monitor and display values</doc>
+   <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20"/>
+   <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
+      <property name="attributeName" value="value"/>
+      <property name="displayWidth" value="displayWidth"/>
+   </property>
+</entity>
+<entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter"/>
+<entity name="SequenceScope" class="ptolemy.actor.lib.gui.SequenceScope"/>
+<entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter"/>
+<entity name="XYScope" class="ptolemy.actor.lib.gui.XYScope"/>
+
+      </group>
+    ?>
+  </configure>
+</entity>
+ 
+
+
