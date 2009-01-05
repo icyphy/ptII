@@ -1925,7 +1925,7 @@ public class Plot extends PlotBox {
                                     for (int binIndex = 0; binIndex < nbrOfBinsToErase; ++binIndex) {                                    
                                         _eraseFirstBin(i);
                                     }
-                                }                                
+                                }
                             }
                         }
                     }
