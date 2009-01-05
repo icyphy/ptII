@@ -27,7 +27,6 @@
  */
 package ptolemy.domains.fsm.kernel;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Set;
 
@@ -104,7 +103,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
      */
     public ParseTreeEvaluatorForGuardExpression(RelationList relationList,
             double errorTolerance) {
-        _absentDiscreteVariables = new LinkedList();
+        _absentDiscreteVariables = new LinkedList<String>();
         _constructingRelationList = true;
         _errorTolerance = errorTolerance;
         _relationIndex = 0;
@@ -318,12 +317,9 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         // For example, if we have "x_isPresent && x < 10.0", in the
         // visitLeafNode() method, we should know that x is either present or
         // absent. If x is absent, we do not evaluate the "x < 10.0" part here.
-        Set variablesOfNode = _variableCollector.collectFreeVariables(node);
-        Iterator absentDiscreteVariables = _absentDiscreteVariables
-                .listIterator();
+        Set<?> variablesOfNode = _variableCollector.collectFreeVariables(node);
 
-        while (absentDiscreteVariables.hasNext()) {
-            String variableName = (String) absentDiscreteVariables.next();
+        for (String variableName : _absentDiscreteVariables) {
             if (variablesOfNode.contains(variableName)) {
                 // Set the result token to be false token
                 // because the variable is discrete and has no value.
@@ -446,7 +442,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
     ////                         private variables                 ////
 
     // The list of discrete variables without values.
-    private LinkedList _absentDiscreteVariables;
+    private LinkedList<String> _absentDiscreteVariables;
 
     // Flag to indicate the parse tree evaluator in construction mode
     // of update mode.
