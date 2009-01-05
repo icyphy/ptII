@@ -9,6 +9,8 @@
 
 <entity name="NondeterministicMerge" class="ptolemy.domains.pn.kernel.NondeterministicMerge">
 </entity>
+<entity name="OrderedMerge" class="ptolemy.actor.lib.OrderedMerge">
+</entity>
 <entity name="Starver" class="ptolemy.domains.pn.lib.Starver">
 </entity>
       </group>
