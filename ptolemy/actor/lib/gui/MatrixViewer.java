@@ -284,7 +284,7 @@ public class MatrixViewer extends AbstractPlaceableActor {
             Token in = input.get(0);
 
             if (_frame != null) {
-                List tokens = new LinkedList();
+                List<Token> tokens = new LinkedList<Token>();
                 tokens.add(in);
                 _effigy.setTokens(tokens);
             } else if (_pane != null) {
