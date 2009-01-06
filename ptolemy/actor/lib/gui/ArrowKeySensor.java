@@ -40,6 +40,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.KeyStroke;
 
+import ptolemy.actor.Director;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.Tableau;
@@ -433,13 +434,12 @@ public class ArrowKeySensor extends TypedAtomicActor {
         ///////////////////////////////////////////////////////////////////
         ////                     private metods                        ////
 
-        /** This is simply the try-catch clause for the call to the
-         *  director.  It has been pulled out to make the code terser
-         *  and more readable.
+        /** We schedule a fire as soon as possible
          */
         private void _tryCallingFireAtCurrentTime() {
+            Director director = getDirector();
             try {
-                getDirector().fireAtCurrentTime(ArrowKeySensor.this);
+                director.fireAtFirstValidTimeAfter(ArrowKeySensor.this, director.getModelTime());
             } catch (IllegalActionException ex) {
                 System.out.println("--" + ex.toString() + "--");
                 System.out.println(this + "Ex calling fireAtCurrentTime");
