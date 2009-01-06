@@ -69,15 +69,17 @@ import ptolemy.kernel.util.NameDuplicationException;
 
  <p>This actor contains a private inner class which generated the JFrame.
  The frame sets up call-backs which react to the keystrokes.  When called,
- these call the director's fireAtCurrentTime() method.  This causes
- the director to call fire() on the actor.   The actor then broadcasts
+ these call the director's fireAtFirstValidTimeAfter() method with the current
+ time as argument.  This causes the director to call fire() on the actor with
+ the first valid time equal to the current time or later.   The actor then broadcasts
  tokens from one or both outputs depending on which keystroke(s) have
  occurred since the actor was last fired.
 
- <p>NOTE: This actor only works in the DE domain due to its reliance on
- this director's fireAtCurrentTime() method.
+ <p>NOTE: This fireAtFirstValidTimeAfter() might fail currently when fireAt 
+ is also delegated to the Executing Director and the current time of the latter
+ has advanced the time of the director.
 
- @author Winthrop Williams
+ @author Winthrop Williams, Contributor: Bert Rodiers
  @version $Id$
  @since Ptolemy II 2.0
  @Pt.ProposedRating Red (winthrop)
@@ -257,72 +259,72 @@ public class ArrowKeySensor extends TypedAtomicActor {
          *  @param tableau The tableau responsible for this frame.  */
         public MyFrame() {
             // up-arrow call-backs
-            ActionListener myUpPressedListener = new ActionListener() {
+            ActionListener myUpPressedListener = new ActionListenerExceptionCatcher(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     _upKeyPressed = true;
                     _upKeyReleased = false;
-                    _tryCallingFireAtCurrentTime();
+                    _tryCallingFireAtFirstValidTime();
                 }
-            };
+            });
 
-            ActionListener myUpReleasedListener = new ActionListener() {
+            ActionListener myUpReleasedListener = new ActionListenerExceptionCatcher(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     _upKeyReleased = true;
                     _upKeyPressed = false;
-                    _tryCallingFireAtCurrentTime();
+                    _tryCallingFireAtFirstValidTime();
                 }
-            };
+            });
 
             // left-arrow call-backs
-            ActionListener myLeftPressedListener = new ActionListener() {
+            ActionListener myLeftPressedListener = new ActionListenerExceptionCatcher(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     _leftKeyPressed = true;
                     _leftKeyReleased = false;
-                    _tryCallingFireAtCurrentTime();
+                    _tryCallingFireAtFirstValidTime();
                 }
-            };
+            });
 
-            ActionListener myLeftReleasedListener = new ActionListener() {
+            ActionListener myLeftReleasedListener = new ActionListenerExceptionCatcher(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     _leftKeyReleased = true;
                     _leftKeyPressed = false;
-                    _tryCallingFireAtCurrentTime();
+                    _tryCallingFireAtFirstValidTime();
                 }
-            };
+            });
 
             // right-arrow call-backs
-            ActionListener myRightPressedListener = new ActionListener() {
+            ActionListener myRightPressedListener = new ActionListenerExceptionCatcher(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     _rightKeyPressed = true;
                     _rightKeyReleased = false;
-                    _tryCallingFireAtCurrentTime();
+                    _tryCallingFireAtFirstValidTime();
                 }
-            };
+            });
 
-            ActionListener myRightReleasedListener = new ActionListener() {
+            ActionListener myRightReleasedListener = new ActionListenerExceptionCatcher(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     _rightKeyReleased = true;
                     _rightKeyPressed = false;
-                    _tryCallingFireAtCurrentTime();
+                    _tryCallingFireAtFirstValidTime();
                 }
-            };
+            });
 
             // down-arrow call-backs
-            ActionListener myDownPressedListener = new ActionListener() {
+            ActionListener myDownPressedListener = new ActionListenerExceptionCatcher(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     _downKeyPressed = true;
                     _downKeyReleased = false;
-                    _tryCallingFireAtCurrentTime();
+                    _tryCallingFireAtFirstValidTime();
                 }
-            };
+            });
 
-            ActionListener myDownReleasedListener = new ActionListener() {
+            ActionListener myDownReleasedListener = new ActionListenerExceptionCatcher(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     _downKeyReleased = true;
                     _downKeyPressed = false;
-                    _tryCallingFireAtCurrentTime();
+                    _tryCallingFireAtFirstValidTime();
                 }
-            };
+            });
 
             getContentPane().setLayout(new BorderLayout());
 
@@ -432,19 +434,45 @@ public class ArrowKeySensor extends TypedAtomicActor {
 	}
 
         ///////////////////////////////////////////////////////////////////
-        ////                     private metods                        ////
+        ////                     private methods                        ////
 
-        /** We schedule a fire as soon as possible
+        /** We schedule a fire as soon as possible.
          */
-        private void _tryCallingFireAtCurrentTime() {
+        private void _tryCallingFireAtFirstValidTime() {
             Director director = getDirector();
             try {
                 director.fireAtFirstValidTimeAfter(ArrowKeySensor.this, director.getModelTime());
             } catch (IllegalActionException ex) {
-                System.out.println("--" + ex.toString() + "--");
-                System.out.println(this + "Ex calling fireAtCurrentTime");
-                throw new RuntimeException("-fireAt* catch-");
+                throw new RuntimeException(ex);
             }
         }
     }
+
+    private class ActionListenerExceptionCatcher implements ActionListener {
+        ///////////////////////////////////////////////////////////////////
+        ////                         public methods                    ////
+        
+        /** Construct an instance that will wrap an ActionListener,
+         * catch its exceptions and report it to the Ptolemy
+         * Message Handler. 
+         * @param actionListener The actionListener. 
+         */
+        public ActionListenerExceptionCatcher(ActionListener actionListener) {
+            _actionListener = actionListener;           
+        }
+        
+        public void actionPerformed(ActionEvent e) {
+            try {
+                _actionListener.actionPerformed(e);
+            } catch (Throwable ex) {
+                ptolemy.util.MessageHandler.error(ptolemy.util.MessageHandler.shortDescription(ex), ex); 
+            }
+        }
+        ///////////////////////////////////////////////////////////////////
+        ////                         private variables                 ////
+        
+        // The runnable.    
+        private ActionListener _actionListener;       
+    }
+
 }
