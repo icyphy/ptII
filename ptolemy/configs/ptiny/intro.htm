@@ -7,30 +7,39 @@
 <table>
 <tr>
 <td>
+<!-- NOTE: ptIIplanet.gif should be in ../../../doc/img, but Web Start
+           has problems pulling in the gif if the gif is in a different jar
+	   so we include it in this jar -->
 <img vspace="6" align="left" src="../ptIIplanet.gif" alt="Claudius Ptolemy">
 </td>
 <td>
 <h1>
-Ptolemy 7.1.devel, PN Edition
+Ptolemy II Version 6.1.devel, Ptiny Edition
 </h1>
-<i>This is a small subset of Ptolemy II designed for exploring
-the process networks domain only</i>.
+<!-- NOTE: If you update this, be sure to update
+	    ptII/ptolemy/configs/doc/basicHelp.htm
+ As of JDK1.3, the Java HTML facility is insufficient for use
+ with frames and links that have targets (foo.htm#bar), so we
+ have a separate set of htm files that do not have links in them.
+-->
+
 <ul>
-<li><a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2007/EECS-2007-129.html/#in_browser">Tutorial on Vergil</a>
-<li><a href="demonstrations.htm" target="_blank">Demonstrations</a>
-<li><a href="authors.htm" target="_blank">Authors</a>
-<li><a href="about:copyright" target="_blank">Copyright</a>
+<li><a href="../../../doc/mainVergilPtiny.htm" target="_blank">Overview</a></li>
+<li><a href="../../../doc/authors.htm" target="_blank">Authors</a></li>
+ <!-- We don't include What's new
+"../../doc/whatsnewVergil.htm" target="_blank" What's new
+   -->
+ <!-- The first difference between intro.htm and introPtiny.htm is the next
+	line -->
+<li><a href="../doc/demosPtiny.htm" target="_blank">Quick tour</a></li>
+ <!-- The second difference between intro.htm and introPtiny.htm is the next
+	line -->
+
+<li><a href="../doc/docsPtiny.htm" target="_blank">Documentation</a></li>
+<li><a href="about:copyright" target="_blank">Copyright</a></li>
 </ul>
-To start immediately by creating a PN model, select File -&gt; New -&gt;
-Graph Editor from the menu bar.  Select Help from the Help menu for
-instructions on creating a model.
 </td>
 </tr>
 </table>
-<p>
-See the
-<a href="http://ptolemy.eecs.berkeley.edu/#in_browser">Ptolemy Project web
-page</a> for more information about the Ptolemy Project and about
-Ptolemy II.
 </body>
 </html>

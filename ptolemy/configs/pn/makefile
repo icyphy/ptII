@@ -1,8 +1,8 @@
-# Makefile for the Ptolemy Ptiny (common domains) runtime configuration 
+# Makefile for the Ptolemy PN only runtime configuration 
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
-# @Version: $Id$
+# @Version: $Id: makefile 51997 2009-01-05 01:15:24Z eal $
 #
 # @Copyright (c) 2002-2005 The Regents of the University of California.
 # All rights reserved.
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/configs/ptiny
+ME =		ptolemy/configs/pn
 
 # There is no demo directory, put demos in the corresponding domain
 # directory so that we can find them if we are looking at domains.
@@ -47,8 +47,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	ptiny
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
+PTPACKAGE = 	pn
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS =
@@ -58,8 +57,19 @@ DERIVED_FILES =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(DERIVED_FILES) \
+	about.htm \
+	authors.htm \
 	configuration.xml \
+	copyright.htm \
+	demonstrations.htm \
+	help.htm \
+	hoc.xml \
 	intro.htm \
+	io.xml \
+	pnEffigies.xml \
+	pnRefinements.xml \
+	sinks.xml \
+	sources.xml \
 	welcomeWindow.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
