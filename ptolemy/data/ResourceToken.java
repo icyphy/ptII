@@ -29,6 +29,8 @@
 package ptolemy.data;
 
 import ptolemy.actor.Actor;
+import ptolemy.apps.apes.CPUScheduler;
+import ptolemy.apps.apes.CTask;
 import ptolemy.data.type.Type;
 
 /**
@@ -48,10 +50,11 @@ public class ResourceToken extends Token {
      *  @param actorToSchedule The actor to be scheduled.
      *  @param requestedValue The requested execution time.
      */
-    public ResourceToken(Actor actorToSchedule, Object requestedValue) {
+    public ResourceToken(Actor actorToSchedule, Object requestedValue, CPUScheduler.TaskState state) {
         super();
         this.actorToSchedule = actorToSchedule;
         this.requestedValue = requestedValue; 
+        this.state = state;
     }
     
     /** The actor to be scheduled. */
@@ -59,5 +62,7 @@ public class ResourceToken extends Token {
 
     /** The requested execution time. */
     public Object requestedValue; 
+    
+    public CPUScheduler.TaskState state;
     
 }
