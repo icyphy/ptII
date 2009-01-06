@@ -26,11 +26,12 @@
 
 
  */
-package ptolemy.data;
+package ptolemy.apps.apes;
 
 import ptolemy.actor.Actor;
 import ptolemy.apps.apes.CPUScheduler;
 import ptolemy.apps.apes.CTask;
+import ptolemy.data.Token;
 import ptolemy.data.type.Type;
 
 /**

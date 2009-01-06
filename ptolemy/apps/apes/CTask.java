@@ -156,6 +156,7 @@ public class CTask extends ApeActor implements Runnable {
     }
 
     public void run() {
+        Thread.currentThread().setName(this.getName());
         while (!_actorStopped) { 
             _callCMethod(); 
         }
