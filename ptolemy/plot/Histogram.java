@@ -670,6 +670,20 @@ public class Histogram extends PlotBox {
         return false;
     }
 
+    
+    /** Reset a scheduled redraw tasks.
+     */
+    protected void _resetScheduledTasks() {
+        Runnable redraw = new RunnableExceptionCatcher(new Runnable() {
+            public void run() {
+                _scheduledBinsToAdd.clear();
+            }
+        });
+        synchronized(this) {
+            deferIfNecessary(redraw);
+        }
+    }
+    
     /** Perform a scheduled redraw.
      */
     protected void _scheduledRedraw() {
@@ -836,6 +850,7 @@ public class Histogram extends PlotBox {
         _points = new Vector();
         _histogram = new Vector();
         _showing = false;
+        _resetScheduledTasks();
 
         if (format) {
             // Reset format controls

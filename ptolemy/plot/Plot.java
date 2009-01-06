@@ -1882,14 +1882,27 @@ public class Plot extends PlotBox {
 
         return false;
     }
-
+    
+    /** Reset a scheduled redraw tasks.
+     */
+    protected void _resetScheduledTasks() {
+        Runnable redraw = new RunnableExceptionCatcher(new Runnable() {
+            public void run() {
+                _scheduledBinsToAdd.clear();
+                _scheduledBinsToErase.clear();
+            }
+        });
+        synchronized(this) {
+            deferIfNecessary(redraw);
+        }
+    }
+    
     /** Perform a scheduled redraw.
      */
     protected void _scheduledRedraw() {
         if (_needPlotRefill || _needBinRedraw) {
             Runnable redraw = new RunnableExceptionCatcher(new Runnable() {
                 public void run() {
-    
                     ArrayList<Integer> scheduledBinsToAdd = new ArrayList<Integer>();
                     for (int i = 0; i < _scheduledBinsToAdd.size(); ++i) {
                         scheduledBinsToAdd.add(_scheduledBinsToAdd.get(i));
@@ -1934,7 +1947,7 @@ public class Plot extends PlotBox {
             synchronized(this) {
                 deferIfNecessary(redraw);
             }
-        }        
+        }
     }
     
     /** If the graphics argument is an instance of Graphics2D, then set
@@ -2466,6 +2479,7 @@ public class Plot extends PlotBox {
         _firstInSet = true;
         _sawFirstDataSet = false;
         _xyInvalid = true;
+        _resetScheduledTasks();
 
         if (format) {
             _showing = false;

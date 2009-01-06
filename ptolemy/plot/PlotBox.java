@@ -1215,9 +1215,10 @@ public class PlotBox extends JPanel implements Printable {
         if (automaticRescale) {
             _timerTask.addListener(this);
         } else if (!_timedRepaint) {
+            _resetScheduledTasks();
             _timerTask.removeListener(this);
         }
-    }    
+    }
 
     /** Set the background color.
      *  @param background The background color.
@@ -1534,6 +1535,7 @@ public class PlotBox extends JPanel implements Printable {
             _timerTask.addListener(this);
         } else if (!_automaticRescale) {
             _timerTask.removeListener(this);
+            _resetScheduledTasks();
         }
     }    
 
@@ -2788,13 +2790,20 @@ public class PlotBox extends JPanel implements Printable {
         return false;
     }
     
+    /** Reset a scheduled redraw tasks. This base class does nothing.
+     *  Derived classes should define the correct behavior.
+     */
+    protected void _resetScheduledTasks() {
+        // This method should be implemented by the derived classes.        
+    }
+    
     /** Perform a scheduled redraw. This base class does nothing.
      *  Derived classes should define the correct behavior.
      */
     protected void _scheduledRedraw() {
         // Does nothing on this level        
     }
-
+    
     /** Set the visibility of the Fill button.
      *  This is deprecated.  Use setButtons().
      *  @deprecated
