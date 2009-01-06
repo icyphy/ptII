@@ -164,7 +164,7 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
         newObject.shell = null;
         newObject._container = null;
         newObject._frame = null;
-	newObject._outputValues = new LinkedList();
+	newObject._outputValues = new LinkedList<String>();
 
 	try {
 	    Attribute old =  newObject.getAttribute("_windowProperties");
@@ -473,7 +473,7 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
     private TableauFrame _frame;
 
     /** The list of strings to send to the output. */
-    private List _outputValues = new LinkedList();
+    private List<String> _outputValues = new LinkedList<String>();
 
     /** Flag indicating that "exit" or "quit" has been entered. */
     private boolean _returnFalseInPostfire = false;
