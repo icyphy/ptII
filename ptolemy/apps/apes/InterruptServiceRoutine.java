@@ -60,8 +60,8 @@ public class InterruptServiceRoutine extends ApeActor {
     
     @Override
     public void fire() throws IllegalActionException {
-        System.out.println("Time: " + getDirector().getModelTime().toString() + "; Interrupt service routine: " + this.getName());
-        output.send(new ResourceToken(_task, new Time(getDirector(), 0.0)));
+        System.out.println("IRS.fire() - Time: " + getDirector().getModelTime().toString() + " this: " + this.getName());
+        output.send(new ResourceToken(_task, Time.POSITIVE_INFINITY, CPUScheduler.TaskState.ready_running));
     }
     
     @Override

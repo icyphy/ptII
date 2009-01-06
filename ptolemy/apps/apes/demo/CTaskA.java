@@ -25,38 +25,29 @@ public class CTaskA extends CTask {
     
     
     @Override
-    protected void _callCMethod() {
-        //       CMethod();
+    protected void _callCMethod() { 
         long period;
-        System.out.println("Entering CMethod of " + this.getName());
+        System.out.println(this.getName() + ".fire() - Time: " + getDirector().getModelTime());
         try {
             accessPointCallback(-1.0, 1.0, "");
-        } catch (NoRoomException e1) {
-            // TODO Auto-generated catch block
+        } catch (NoRoomException e1) { 
             e1.printStackTrace();
-        } catch (IllegalActionException e1) {
-            // TODO Auto-generated catch block
+        } catch (IllegalActionException e1) { 
             e1.printStackTrace();
         }
         period = System.currentTimeMillis();
-                for (int i=0;i<Integer.MAX_VALUE/6;i++){
-                    double a = Math.PI*Math.PI;
-                }
+        for (int i=0;i<Integer.MAX_VALUE/6;i++){
+            double a = Math.PI*Math.PI;
+        }
         period = System.currentTimeMillis() - period;
         System.out.println("duration of CMethod of " + this.getName() + ": " + Long.toString(period) + " ms.");            
-            try {
-                accessPointCallback(3.0, -1.0,"");
-            } catch (NoRoomException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (IllegalActionException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-//            synchronized(this){
-//                wait(100);            
-//            }
-//            accessPointCallback(-1.0,"");            
+        try {
+            accessPointCallback(3.0, -1.0,"");
+        } catch (NoRoomException e) { 
+            e.printStackTrace();
+        } catch (IllegalActionException e) { 
+            e.printStackTrace();
+        }          
     }
 
     @Override

@@ -88,7 +88,7 @@ public class CPUScheduler extends ApeActor {
     }
 
     public enum TaskState {
-        running, ready, suspended, terminated
+        ready_running, suspended, waiting
     }
 
     // TODO initialize private variables - maps and lists
@@ -101,91 +101,87 @@ public class CPUScheduler extends ApeActor {
      * Schedule actors.
      */
     public void fire() throws IllegalActionException {
-        Time passedTime = getDirector().getModelTime().subtract(
-                _previousModelTime);
+        System.out.println("CPUScheduler.fire() - Time: " + getDirector().getModelTime()); 
+        Time passedTime = getDirector().getModelTime().subtract(_previousModelTime);
         Actor taskInExecution = null;
+        Actor newCurrentlyExecutingTask = null;
 
-        // decrease remaining time of task currently in execution
-        if (_tasksInExecution.size() > 0) {
+        // if time passed, decrease remaining execution time of currently running task
+        if (_tasksInExecution.size() > 0 && passedTime.getDoubleValue() > 0.0) {
             taskInExecution = _tasksInExecution.peek();
-            if (passedTime.getDoubleValue() > 0.0) {
-                Time remainingTimeForTaskInExecution = _taskExecutionTimes
-                        .get(taskInExecution);
-                if (remainingTimeForTaskInExecution
-                        .equals(Time.POSITIVE_INFINITY)) {
-                    _usedExecutionTimes.put(taskInExecution,
-                            _usedExecutionTimes.get(taskInExecution).add(
-                                    passedTime));
-                } else {
-                    remainingTimeForTaskInExecution = remainingTimeForTaskInExecution
-                            .subtract(passedTime);
+                
+            Time remainingTime = _taskExecutionTimes.get(taskInExecution); 
+            if (remainingTime.equals(Time.POSITIVE_INFINITY)) { // task executed but its execution time is not known yet
+                _usedExecutionTimes.put(taskInExecution, _usedExecutionTimes.get(taskInExecution).add(passedTime));
+            } else { // task executed, decrease its execution time
+                remainingTime = remainingTime.subtract(passedTime);
+                _taskExecutionTimes.put(taskInExecution, remainingTime);
+                
+                // take out of the list if remainingTime = 0
+                if (remainingTime.equals(new Time(getDirector(), 0.0))) {
+                    if (_taskStates.get(taskInExecution) == TaskState.waiting || _taskStates.get(taskInExecution) == TaskState.suspended) { // task terminated, remove from tasks in execution
+                        _tasksInExecution.pop(); 
+                        output.send(taskInExecution, new BooleanToken(true)); // just finish the execution of the C-code / the last access point
+                        _sendTaskExecutionEvent(taskInExecution, getDirector().getModelTime().getDoubleValue(), ScheduleEventType.STOP);  
+                    } else { // task can continue execution, execution time is not known and will be sent by access point event 
+                        _taskExecutionTimes.put(taskInExecution, Time.POSITIVE_INFINITY);   
+                        _usedExecutionTimes.put(taskInExecution, new Time(getDirector(), 0.0)); 
+                        newCurrentlyExecutingTask = taskInExecution;
+                    } 
+                    if (_tasksInExecution.size() > 0)
+                        _sendTaskExecutionEvent(_tasksInExecution.peek(), getDirector().getModelTime().getDoubleValue(), ScheduleEventType.START); 
                 }
-                if (remainingTimeForTaskInExecution.equals(new Time(
-                        getDirector(), 0.0))) {
-                    _tasksInExecution.pop();
-                    _sendTaskExecutionEvent(taskInExecution, getDirector()
-                            .getModelTime().getDoubleValue(),
-                            ScheduleEventType.STOP);
-                    if (_tasksInExecution.size() > 0) {
-                        Actor secondTask = _tasksInExecution.peek();
-                        _sendTaskExecutionEvent(secondTask, getDirector()
-                                .getModelTime().getDoubleValue(),
-                                ScheduleEventType.START);
-                    }
-//                    output.send(
-//                            ((Integer) _connectedTasks.get(taskInExecution))
-//                                    .intValue(), new BooleanToken(true));
-                    output.send(taskInExecution, new BooleanToken(true));
-                }
-                _taskExecutionTimes.put(taskInExecution,
-                        remainingTimeForTaskInExecution);
-            }
+            }   
         }
+        
+        
 
- 
+        // schedule tasks according to requests sent via tokens 
         while(input.hasToken(0)){
             ResourceToken token = (ResourceToken) input.get(0);
             Actor actorToSchedule = token.actorToSchedule;
-            Time executionTime = (Time) token.requestedValue;
-
-            // if task is scheduled as a result of a callback
-            if (executionTime.compareTo(new Time(getDirector(), 0.0)) >= 0) {
-                _scheduleTask(actorToSchedule, executionTime);
-            } // else task is scheduled as a result of a trigger
-            // the task is not in execution yet, only after 
+            Time executionTime = (Time) token.requestedValue; 
+            _taskStates.put(actorToSchedule, token.state);  
             
-        }
-        
-
-        // next task in list can be started?
-        if (_tasksInExecution.size() > 0) {
-            taskInExecution = _tasksInExecution.peek();
-            Time remainingTime = _taskExecutionTimes.get(taskInExecution);
-            if (remainingTime.equals(new Time(getDirector(), 0.0))) {
-                _tasksInExecution.pop();
-                _sendTaskExecutionEvent(taskInExecution, getDirector()
-                        .getModelTime().getDoubleValue(),
-                        ScheduleEventType.START);
-                if (_tasksInExecution.size() > 0) {
-                    Actor secondTask = _tasksInExecution.peek();
-                    _sendTaskExecutionEvent(secondTask, getDirector()
-                            .getModelTime().getDoubleValue(),
-                            ScheduleEventType.STOP);
-                }
-//                output.send(_connectedTasks.get(taskInExecution).intValue(),
-//                        new BooleanToken(true));
-                output.send(taskInExecution, new BooleanToken(true));
-                
-                _tasksInExecution.push(taskInExecution);
-                _taskExecutionTimes
-                        .put(taskInExecution, Time.POSITIVE_INFINITY);
-                _usedExecutionTimes.put(taskInExecution, new Time(
-                        getDirector(), 0.0));
+            if (token.state == TaskState.waiting) { // remove from queue if waiting
+                _tasksInExecution.pop(); 
+                _sendTaskExecutionEvent(taskInExecution, getDirector().getModelTime().getDoubleValue(), ScheduleEventType.STOP); 
             } else {
-                getDirector().fireAt(this,
-                        remainingTime.add(getDirector().getModelTime()));
+                taskInExecution = null;
+                if (_tasksInExecution.size() > 0) 
+                    taskInExecution = _tasksInExecution.peek();  
+                
+                if (taskInExecution == null || getPriority(actorToSchedule) > getPriority(taskInExecution)) { // nothing running or preempting, schedule new task
+                    if (taskInExecution != null) { // preempting
+                        _sendTaskExecutionEvent(taskInExecution, getDirector().getModelTime().getDoubleValue(), ScheduleEventType.STOP);
+                    }
+                    _tasksInExecution.push(actorToSchedule); 
+                    newCurrentlyExecutingTask = actorToSchedule; 
+                } else if (_tasksInExecution.contains(actorToSchedule)) { // already in list but execution time was not known
+                    executionTime = executionTime.subtract(_usedExecutionTimes.get(actorToSchedule));  
+                } else { // new actor to schedule does not preempt currently running task
+                    for (int i = 1; i < _tasksInExecution.size(); i++) { 
+                        Actor actor = _tasksInExecution.get(i);
+                        if (getPriority(actor) < getPriority(actorToSchedule)) {
+                            _tasksInExecution.insertElementAt(actorToSchedule, i);
+                            break;
+                        }
+                    }
+                }
+                _usedExecutionTimes.put(actorToSchedule, new Time(getDirector(), 0.0)); 
+                _taskExecutionTimes.put(actorToSchedule, executionTime);
             }
         }
+        if (newCurrentlyExecutingTask != null) {
+            output.send(newCurrentlyExecutingTask, new BooleanToken(true));
+            _sendTaskExecutionEvent(newCurrentlyExecutingTask, getDirector().getModelTime().getDoubleValue(), ScheduleEventType.START);
+        }
+        
+        // schedule next firing of this
+        if (_tasksInExecution.size() > 0) { 
+            getDirector().fireAt(this, getDirector().getModelTime().add(_taskExecutionTimes.get(_tasksInExecution.peek()))); 
+        }
+
         _previousModelTime = getDirector().getModelTime();
     }
 
@@ -273,43 +269,6 @@ public class CPUScheduler extends ApeActor {
         destinationActorList.setExpression("*");
 
      }
-
-    /**
-     * If the actor to schedule is not in the list, add it to the list at the 
-     * correct position (according to the priority) and update the remaining 
-     * execution time of the actor. If the actor is already in the 
-     * list (then it has the execution time Time.POSITIVE_INFINITY) update the 
-     * execution time of the actor.
-     * @param actorToSchedule
-     * @param executionTime
-     * @throws IllegalActionException
-     */
-    private void _scheduleTask(Actor actorToSchedule, Time executionTime)
-            throws IllegalActionException {
-        Actor taskInExecution = null;
-        if (_tasksInExecution.size() > 0)
-            taskInExecution = _tasksInExecution.peek();
-
-        if (taskInExecution == null
-                || getPriority(actorToSchedule) > getPriority(taskInExecution)) {
-            _tasksInExecution.push(actorToSchedule);
-        } else if (_tasksInExecution.contains(actorToSchedule)) {
-            // FIXME don't schedule if already scheduled
-            executionTime = executionTime.subtract(_usedExecutionTimes
-                    .get(actorToSchedule));
-            _usedExecutionTimes.put(actorToSchedule, new Time(getDirector(),
-                    0.0));
-        } else {
-            for (int i = 1; i < _tasksInExecution.size(); i++) { //TODO: more efficient implementation
-                Actor actor = _tasksInExecution.get(i);
-                if (getPriority(actor) < getPriority(actorToSchedule)) {
-                    _tasksInExecution.insertElementAt(actorToSchedule, i);
-                    break;
-                }
-            }
-        }
-        _taskExecutionTimes.put(actorToSchedule, executionTime);
-    }
 
     /** Tasks in execution and their remaining execution time. */
     private Map<Actor, Time> _taskExecutionTimes;

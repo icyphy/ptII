@@ -45,13 +45,12 @@ public class CTask extends ApeActor implements Runnable {
             String syscall) throws NoRoomException, IllegalActionException {
 
         if (!_actorStopped){
-            System.out.println("Time: " + getDirector().getModelTime()
-                    + "; callback of task: " + this.getName() + " params: ("
-                    + extime + "/ " + new Time(getDirector(), extime) + ", "
-                    + minNextTime + ")");
+            System.out.println("CTask.accessPointCallback() - Time: " + getDirector().getModelTime()
+                    + "(" + extime + ", " + minNextTime + ")");
 
+            
             if (extime >= 0) {
-                _sendResourceToken("CPUScheduler", new Time(getDirector(), extime), false);
+                _sendResourceToken("CPUScheduler", new Time(getDirector(), extime), minNextTime < 0.0);
             }
 
             synchronized (this) {
@@ -73,20 +72,13 @@ public class CTask extends ApeActor implements Runnable {
     } //return to the C part  
     
     public void fire() throws IllegalActionException {
-        System.out.println("Time: " + getDirector().getModelTime().toString()
-                + "; Task fired: " + this.getName());
+        System.out.println(this.getName() + ".fire() - Time: " + getDirector().getModelTime().toString());
 
         boolean readInputs = false;
         
-//        for (int i = 0; i < fromResourcePort.getWidth(); i++) {
-//            if (fromResourcePort.hasToken(i)) {
-//                fromResourcePort.get(i);
-//                readInputs = true;
-//            }
-//        }
         while (input.hasToken(0)){
             input.get(0);
-            readInputs=true;
+            readInputs = true;
         }
 
         if (_waitForMinDelay && !readInputs) {
@@ -189,10 +181,14 @@ public class CTask extends ApeActor implements Runnable {
     }
 
     private void _sendResourceToken(String resourceName, Object requestedValue,
-            boolean isMinValue) throws NoRoomException, IllegalActionException {
-
-        ResourceToken token = new ResourceToken(this, requestedValue);
-         output.send(resourceName, token); // send the output
+            boolean isFinished) throws NoRoomException, IllegalActionException {
+        CPUScheduler.TaskState state;
+        if (isFinished)
+            state = CPUScheduler.TaskState.suspended;
+        else
+            state = CPUScheduler.TaskState.ready_running;
+        ResourceToken token = new ResourceToken(this, requestedValue, state);
+        output.send(resourceName, token); // send the output
     }
 
     /** The causality interface, if it has been created. */
