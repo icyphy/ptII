@@ -19,7 +19,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{273.60101010101, 208.1565656565656}">
     </property>
     <entity name="CPUScheduler" class="ptolemy.apps.apes.CPUScheduler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 245.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 240.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -80,21 +80,25 @@
         </property>
     </entity>
     <entity name="CTaskB" class="ptolemy.apps.apes.demo.CTaskB">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 130.0]">
         </property>
         <property name="priority" class="ptolemy.data.expr.Parameter" value="2">
         </property>
     </entity>
     <entity name="CTaskC" class="ptolemy.apps.apes.demo.CTaskC">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 130.0]">
         </property>
         <property name="priority" class="ptolemy.data.expr.Parameter" value="3">
         </property>
     </entity>
     <entity name="CTaskA" class="ptolemy.apps.apes.demo.CTaskA">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 130.0]">
         </property>
         <property name="priority" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </entity>
+    <entity name="OSEK_API" class="ptolemy.apps.apes.OSEKActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 235.0]">
         </property>
     </entity>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
