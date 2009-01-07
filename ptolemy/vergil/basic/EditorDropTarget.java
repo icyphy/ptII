@@ -373,6 +373,8 @@ public class EditorDropTarget extends DropTarget {
                     alternateGetMomlActionAttribute = (StringAttribute) config
                             .getAttribute("_alternateGetMomlAction");
                 }
+                
+                boolean appendGroupAuto = true;
                 if (alternateGetMomlActionAttribute != null) {
                     String alternateGetMomlClassName =
                         alternateGetMomlActionAttribute.getExpression();
@@ -386,6 +388,7 @@ public class EditorDropTarget extends DropTarget {
                                             String.class});
                             result = (String) getMomlMethod.invoke(object,
                                     new Object[] {dropObj, name});
+                            appendGroupAuto = false;
                         } catch (NoSuchMethodException e) {
                             Method getMomlMethod = getMomlClass.getMethod(
                                     "getMoml", new Class[] { NamedObj.class });
@@ -405,26 +408,27 @@ public class EditorDropTarget extends DropTarget {
                             result = result.substring(0, int1 + 1) + name
                                     + result.substring(int2, result.length());
                         }
-                        moml.append("<group name=\"auto\">\n");
                         moml.append(result);
                     } catch (Exception w) {
                         System.out.println("Error creating alternateGetMoml!");
                     }
                 } else { // default method for PtolemyII use
-                    moml.append("<group name=\"auto\">\n");
                     result = dropObj.exportMoML(name);
                     moml.append(result);
                 }
-                moml.append("<" + rootNodeName + " name=\"" + name +
-                            "\">\n");
-                moml.append("<property name=\"_location\" " +
-                            "class=\"ptolemy.kernel.util.Location\" value=\"{");
-                moml.append((int) newPoint.getX());
-                moml.append(", ");
-                moml.append((int) newPoint.getY());
-                moml.append("}\"/>\n</" + rootNodeName + ">\n");
-                moml.append("</group>\n");
                 
+                if (appendGroupAuto) {
+                    moml.insert(0, "<group name=\"auto\">\n");
+                    moml.append("<" + rootNodeName + " name=\"" + name +
+                            "\">\n");
+                    moml.append("<property name=\"_location\" " +
+                            "class=\"ptolemy.kernel.util.Location\" value=\"{");
+                    moml.append((int) newPoint.getX());
+                    moml.append(", ");
+                    moml.append((int) newPoint.getY());
+                    moml.append("}\"/>\n</" + rootNodeName + ">\n");
+                    moml.append("</group>\n");
+                }
             }
 
             if (container instanceof DropTargetHandler) {
