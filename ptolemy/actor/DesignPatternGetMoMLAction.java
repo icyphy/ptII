@@ -143,7 +143,7 @@ public class DesignPatternGetMoMLAction {
                     }
                 }
                 buffer.write(StringUtilities.getIndentPrefix(extraIndent + 1) +
-                        "</port>");
+                        "</port>\n");
             }
 
             buffer.write(StringUtilities.getIndentPrefix(extraIndent + 1) +
