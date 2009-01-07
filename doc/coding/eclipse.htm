@@ -1,4 +1,4 @@
-<d!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
 <html>
 <head>
    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
@@ -8,7 +8,7 @@
 <body>
 <h1>Setting up Ptolemy II and Eclipse</h1>
 <p>
-These instructions assume you are using Eclipse 3.4 under
+These instructions assume you are using Eclipse Ganymede (based on 3.4.1) under 
 Windows or Mac OS X.
 Other ways of setting up and building Ptolemy II are described on the
 <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/install.htm">
@@ -20,8 +20,8 @@ Ptolemy II install page</a>.
 <li><a href="#SettingUp">Set up Eclipse for Ptolemy II</a>
   <ul>
   <li> <a href="#NoSVN">Eclipse is unaware of the version control aspects of the project.</a>
-  <li> <a href="#NoSubclipse">Eclipse is unaware of the version control aspects of the project, use the shell version of Subversion to update the tree.</a>
-  <li> <a href="#Subclipse">Eclipse is aware of the Subversion aspects of the project.</a> 
+  <li> <a href="#NoSubversive">Eclipse is unaware of the version control aspects of the project, use the shell version of Subversion to update the tree.</a>
+  <li> <a href="#Subversive">Eclipse is aware of the Subversion aspects of the project.</a> 
   </ul>
 <li><a href="#simpleDebug">Simple Debugging Session</a></h2>
 <li><a href="#Optional">Optional Extensions</a>
@@ -36,20 +36,35 @@ Other local pages:
 <li>
 Download the latest version of Eclipse from
 <a href="http://www.eclipse.org" target="_top">http://www.eclipse.org</a>.
- <br>In June, 2008, we chose
- <B>Eclipse for RCP/Plug-in Developers</B>, which is 153Mb.
+ <br>In January, 2009, we chose
+ <B>Eclipse for RCP/Plug-in Developers</B>, which is 175Mb.
 The <B>Eclipse for RCP/Plug-in Developers</B> version includes the
-plugin development environment (PDE), which is needed by the backtrack
+plug-in development environment (PDE), which is needed by the backtrack
 facility, which is an optional part of Ptolemy II that allows models to
 restore their old state.  If the version of Eclipse that you install
 does not have the PDE, then there will be build errors, which can be fixed by
 excluding <CODE>ptolemy/backtrack/</CODE> from the build.
 <li> (<i>Windows</i>): 
 Unzip the download file into an appropriate place, such as <code>C:\Program Files</code>, which will create <code>C:\Program Files\eclipse\eclipse.exe</code>.
-<li>
-Finish the installation by running <CODE>eclipse/eclipse.exe</CODE>.
+<br>If <code>eclipse\eclipse.exe</code> is not created, then it could
+be that the security policy on your machine is preventing the creation
+of <code>.exe</code> files.  If this is the case, then try running
+<code>unzip</code> from the command line.
+<li>Finish the installation by running <CODE>eclipse/eclipse.exe</CODE>.
 <br>The first time this is run it will complete the installation process.
+<br>If Eclipse fails to start with the message "Windows cannot access the specified device, path or file. You may not have the appropriate permisions to access the item", then it may be necessary to make 
+<code>eclipse.exe</code> and a dll executable:
+<pre>
+chmod a+x eclipse.exe
+</pre>
+<br>If you get the message "The Eclipse executable launcher was unable to locate its companion shared library", then run the following command
+in the <code>eclipse</code> directory.
+<pre>
+find . -name *.dll -exec chmod a+x {} \;
+</pre>
 <br>After the first run, normal start-up will occur whenever it is started.
+
+
 </ol>
 
 <h2><a name="Preferences">Eclipse Preferences for Ptolemy II</a></h2>
@@ -154,7 +169,7 @@ which require Java 5.0 or later.
  <li> Make sure that Set "Compiler compliance level" is "1.5", "5.0"
  or later.
 <i>Note that Java 1.5 is the same as Java 5.0</i>.  What we don't want
-is "1.4" or "4.0".
+is "1.4" or "4.0". 
  <li> Click Apply. 
 </ol>
 
@@ -214,19 +229,19 @@ the ptII project.  There several ways to set up the ptII project,
 
 <li> <a href="#NoSVN">Eclipse is unaware of the version control aspects of the project.</a>
 <br>If you are downloading the source from major Ptolemy release,
-and don't want to update regularly or ssh and subversion are blocked by
-a firewall, then use this choice.
-<br>(No Eclipse Subversion plugin (Subclipse),
+and don't want to update regularly, then use this choice
+
+<br>(No Eclipse Subversion plug-in (Subversive),
  No Subversion (<code>svn</code>) from the command line)
 
-<li> <a href="#NoSubclipse">Eclipse is unaware of the version control aspects of the project, use the shell version of Subversion to update the tree.</a>
+<li> <a href="#NoSubversive">Eclipse is unaware of the version control aspects of the project, use the shell version of Subversion to update the tree.</a>
 
-<br>(No Eclipse Subversion plugin (Subclipse),
+<br>(No Eclipse Subversion plug-in (Subversive),
  use Subversion (<code>svn</code>) from the command line)
 
-<li> <a href="#Subclipse">Eclipse is aware of the Subversion aspects of the project.</a> 
+<li> <a href="#Subversive">Eclipse is aware of the Subversion aspects of the project.</a> 
 You can use both Eclipse and shell version of Subversion to update the tree.
-<br>(Use both the Eclipse Subversion plugin (Subclipse) and the
+<br>(Use both the Eclipse Subversion plug-in (Subversive) and the
 shell <code>svn</code> command)
 
 
@@ -235,18 +250,16 @@ shell <code>svn</code> command)
 
 </ol>
 
-Without Subclipse, you'll need to manage the Subversion aspects in the
+Without Subversive, you'll need to manage the Subversion aspects in the
 usual way, i.e. with Subversion commands being submitted to a bash
-shell.  With Subclipse, Eclipse will do all sorts of things to "help"
+shell.  With Subversive, Eclipse will do all sorts of things to "help"
 you. Most of these things are good, but there is a learning curve.
 
 <p>Please choose <b>one</b> of the methods below to set up Eclipse for Ptolemy II. 
 
 <h3><a name="NoSVN">1. Eclipse is unaware of the version control aspects of the project.</a> (No Subversion)</h3>
 If you are downloading the source from major Ptolemy release,
-and don't want to update regularly or ssh and subversion are blocked by
-a firewall, then use this choice.
-
+and don't want to update regularly
 <ol>
 
 <li> Download a ptII source tree from
@@ -264,13 +277,13 @@ and browse to the PTII directory. Finish.
 </ul>
 </ol>
 <h3>OR</h3>
-<h3><a name="NoSubclipse">2. Eclipse is unaware of the version control aspects of the project, use the shell version of Subversion to update the tree.</a></h3>
+<h3><a name="NoSubversive">2. Eclipse is unaware of the version control aspects of the project, use the shell version of Subversion to update the tree.</a></h3>
 
 <ol>
 <li>Install Subversion:
    <ul>
    <li> <a href="http://tortoisesvn.tigris.org/" target="_top">Tortoise SVN</a> - Windows GUI Client
-   <br> <i>If you are not installing Subclipse, then choose TortoiseSVN</i>
+   <br> <i>If you are not installing Subversive, then choose TortoiseSVN</i>
    <li> <a href="http://www.cygwin.com" target="_top">Cygwin</a> - Windows command line client
    <br> If you are more comfortable with a command line, then choose Cygwin. Make sure that you also install Cygwin's Subversion package.
 <li> To check out the ptII svn repository with <b>read-only</b> access:
@@ -305,59 +318,49 @@ and browse to the PTII directory. Finish.
 
 <h3>OR</h3>
 
-<h3>3. Setting up Eclipse for use with Subversion: <a name="Subclipse">Installing Subclipse</a></h3>
-<p>The <a href="http://subclipse.tigris.org" target="_top">Subclipse</a>
-Eclipse plugin adds Subversion to Eclipse.  After installation,
+<h3>3. Setting up Eclipse for use with Subversion: <a name="Subversive">Installing Subversive</a></h3>
+<p>The <a href="http://www.eclipse.org/subversive/downloads.php" target="_top">Subversive</a>
+Eclipse plug-in adds Subversion to Eclipse.  After installation,
 you can use either Eclipse to manage your project, or the <code>svn</code>
 from the command line.
 
 <p>
-Follow the <a href="http://subclipse.tigris.org/install.html" target="_top">Subclipse installation instructions</a>.  Upgrade users should see the 
-<a href="http://subclipse.tigris.org/upgrade.html">Subclipse update instruction<a> otherwise the automatic update might not work.
-<p>For your convenience, an abbreviated version of the Subclipse instructions
-are below:
+Follow the <a href="http://www.eclipse.org/subversive/downloads.php" target="_top">Subversive installation instructions</a> or these instructions below
 <ol>
-<li> To download Subclipse, in Eclipse, follow these menus
+<li> To download Subversive, in Eclipse, follow these menus
 <i>Windows</i>:
- <code>Help<code> | <code>Software Updates<code> | <code>Find and Install</code> | <code>Search for new features to install</code> | <code>New Remote Site</code>.  
+ <code>Help<code> | <code>Software Updates<code> | <code>Available Software</code>.  
 
 <br><i>Mac OS X</i>:
  <code>Help<code> | <code>Software Updates<code> | <code>Available
- Software</code> | <code>Add Site</code>.  
+ Software</code> 
 
-<li>Then enter
+<li>Then expand <code>Ganymede Update Site</code> | <code>Collaboration Tools</code> and select
 <pre> 
-Name: Subclipse 1.2.x (Eclipse 3.2+)
-URL:  http://subclipse.tigris.org/update_1.2.x
+Subversive SVN Team Provider (Incubation)
 </pre>
-<li>In the <code>Update sites to visit</code> window, select <code>Subclipse 1.2.x (Eclipse 3.2+)</code>
-<li>Click Finish
+<li>Then click <code>Install</code> and click through the license agreement.  
+<li>When you are prompted to restart, click <code>No</code>, we will restart later
 
-<li>In the "Search Results" window, expand the <code>Subclipse 1.2.x (Eclipse 3.2+)</code> tree and check the box next to <code>Subclipse Plugin</code>.  If you select all of Subclipse, you may need to install other modules.  The <code>Subclipse Plugin</a> is the only Subclipse feature required for accessing the ptII subversion repository.
-<li>Click Next, accept the license agreement, click Finish.
-<li>In the "Verification" window, click <code>Install All</code>
-<li>In the "Install/Update" window, click <code>Yes</code>.
+<li>It is <b>required</b> that a second package, the <code>Subversive SVN Connectors plug-in</code> be installed.  To do this, go back to the "Software Updates and Add-ons" window and select <code>Available Software</code> | <code>Add Site</code> and enter
+<pre>
+http://www.polarion.org/projects/subversive/download/eclipse/2.0/ganymede-site/
+</pre>
+<li><i>Windows</i>: <b>Note: select only one <code>JavaHL</code> Win32 binary</b>.  If both
+JavaHL 1.4.5 and JavaHL 1.5.0 are installed, then Eclipse will have
+problems.  The version of JavaHL is dependent on the version of command line <code>svn</code> that is installed on your machine.
+<br>If <code>svn -version</code> returns 1.4, then install JavaHL 1.4.5.
+<br>If <code>svn -version</code> returns 1.5, then install JavaHL 1.5.
+<p><i>Mac OS X</i>: There is no need to install JavaHL
+<p>Select these packages:
+<pre>
+JavaHL 1.4.5 Win32 Binaries(Optional)
+Native JavaHL 1.4 Implementation (Optional)
+Subversive SVN Connectors
+</pre>
+<li>Click on <code>Install</code> and click through the rest of the installation.
+<li>When prompted to restart Eclipse, do so.
 </ol>
-
-<h3>SSH Configuration.</h3>
-If you will be accessing the ptII repository with <b>read/write</b>
-access, then you will need to do a little more configuration concerning
-passwords.
- <p><B>Note:</B> Most users will <b>not</b> need to do this configuration
- because they will be accessing the tree
- with <B>read-only</B> Subversion access.  Read-only users can 
-skip to <a href="#CheckOutPtII">Check Out Ptolemy II from the Subversion repository</a>
-
-<p>To access the ptII repository with read/write access, you will
-need configure Subclipse to use your password.  If don't do this step
-and you leave the default
-settings, and have Cygwin ssh installed, then
-<code>c:/cygwin/bin/ssh.exe</code> window will pop up each time ssh
-is called.
-
-<p>The fix is to set Subclipse to use SVNKit
-<code>Window</code> | <code>Preferences</code> | <code>Team</code> | <code>SVN</code> | <code>SVN interface</code> | <code>SVNKit (Pure Java)</code>
-| <code>OK</code>
 
 <h3>Setup the Subversion Configuration to Sane setting</h3>
 Sadly, Subversion is by default configured with nonsense initial default 
@@ -566,6 +569,27 @@ makefile = svn:eol-style=native
 svn propset svn:eol-style native <i>filename</i>
 </pre>
 
+<h3>SSH Configuration.</h3>
+If you will be accessing the ptII repository with <b>read/write</b>
+access, then you will need to do a little more configuration concerning
+passwords.
+ <p><B>Note:</B> Most users will <b>not</b> need to do this configuration
+ because they will be accessing the tree
+ with <B>read-only</B> Subversion access.  Read-only users can 
+skip to <a href="#CheckOutPtII">Check Out Ptolemy II from the Subversion repository</a>
+
+<p>To access the ptII repository with read/write access, you will
+need configure Subversive to use your password.  If don't do this step
+and you leave the default
+settings, and have Cygwin ssh installed, then
+<code>c:/cygwin/bin/ssh.exe</code> window will pop up each time ssh
+is called.
+
+<p>The fix is to set Subversive to use SVNKit
+<code>Window</code> | <code>Preferences</code> | <code>Team</code> | <code>SVN</code> | <code>SVN interface</code> | <code>SVNKit (Pure Java)</code>
+| <code>OK</code>
+
+
 <h3><a name="CheckOutPtII">Check Out Ptolemy II</a> from the Subversion repository</h3>
 
 Below we describe how to set up Eclipse so Eclipse
@@ -575,17 +599,23 @@ manages the Subversion interaction.
 Eclipse will manage your ptII code tree as a <em>project</em> called
 the ptII project.  Assuming Eclipse is running:
 <ol>
-<li>Install Subclipse by <a href="#Subclipse">following the instructions above</a>.
+<li>Install Subversive by <a href="#Subversive">following the instructions above</a>.
 
 <li> In Eclipse, add the ptII SVN Repository:
 
-<code>Window</code> | <code>Show View</code> | <code>Other</code> | <code>SVN</code> | <code>SVN Repository</code>
+<code>Window</code> | <code>Show View</code> | <code>Other</code> | <code>SVN</code> | <code>SVN Repositories</code>
 <li>In the SVN Repository view, right click, select <code>New</code> and set the url.
 <br>To check out the ptII svn repository with <b>read-only</b> access:
 <pre>
+https://source.eecs.berkeley.edu/svn/chess/ptII
+</pre>
+or
+<pre>
 svn://source.eecs.berkeley.edu/chess/ptII
 </pre>
- <p><B>Note:</B> Most users will select <CODE>svn://</CODE> because
+
+ <p><B>Note:</B> Most users will select <code>https://</code> or 
+<CODE>svn://</CODE> because
 they will be accessing the tree with <B>read-only</B> Subversion access.
 <br>If you have an 
 <a href="http://chess.eecs.berkeley.edu/ptexternal" target="_top">ssh account</a> on <code>source.eecs.berkeley.edu</code>, then check out ptII with
@@ -601,7 +631,11 @@ svn co svn+ssh://<I>yourID</I>@source.eecs.berkeley.edu/chess/ptII
 Read/write users will be prompted for their source.eecs.berkeley.edu
 username and password. This typically happens more than once since in case the svn+ssh protocol is being used passwords are not cached.
 
-<li>In the SVN Repository view, right click on <code>trunk</code> and select <code>checkout</code>
+<li>If you get a "Certificate Problem" window, then select
+<code>Trust</code> or <code>Trust Always</code>.  For details and
+a workaround, see <a href="http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Subversion#svnCertficateIsNotIssuedByATrustedAuthority">Certificate is not issued by a trusted authority</a>.
+
+<li>In the SVN Repository view, right click on <code>trunk</code> and select <code>Find/Check out As</code>
 
 <blockquote>
  <table border="1">
