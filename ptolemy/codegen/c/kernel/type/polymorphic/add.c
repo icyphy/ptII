@@ -36,7 +36,10 @@ int add_Boolean_Int(boolean a1, int a2) {
 
 /*** add_Boolean_String() ***/
 char* add_Boolean_String(boolean a1, char* a2) {
-    return $add_String_Boolean(a2, a1);
+    char* result = (char*) malloc(sizeof(char) * ((a1 ? 5 : 6) + strlen(a2)));
+    strcpy(result, a2);
+    strcat(result, (a1 ? "true" : "false");
+    return result;
 }
 /**/
 
@@ -66,7 +69,9 @@ double add_Double_Int(double a1, int a2) {
 
 /*** add_Double_String() ***/
 char* add_Double_String(double a1, char* a2) {
-    return $add_String_Double(a2, a1);
+    char* string = (char*) malloc(sizeof(char) * (20 + strlen(a2)));
+    sprintf((char*) string, "%g%s", a1, a2);
+    return string;
 }
 /**/
 
@@ -160,7 +165,9 @@ char* add_String_Double(char* a1, double a2) {
 
 /*** add_String_Int() ***/
 char* add_String_Int(char* a1, int a2) {
-    return $add_Int_String(a2, a1);
+    char* string = (char*) malloc(sizeof(char) * (12 + strlen(a1)));
+    sprintf((char*) string, "%s%d", a1, a2);
+    return string;
 }
 /**/
 
