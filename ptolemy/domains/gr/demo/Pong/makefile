@@ -1,6 +1,6 @@
-# Makefile for Ptolemy II Graphics domain demos
+# Makefile for Ptolemy II GR Pong demo
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks,
+# @Authors: Christopher Hylands (makefile only)
 #
 # @Version: $Id$
 #
@@ -29,14 +29,10 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/gr/demo
+ME =		ptolemy/domains/gr/demo/Pong
 
 # Root of the Java directory
-ROOT =		../../../..
-
-DIRS =		Helen FurutaPendulum Pendulum \
-		SolarSystem StickyMasses Universe \
-		Pong
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,23 +41,18 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	demo
-PTCLASSJAR =
+PTPACKAGE = 	Pong
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	Helen/Helen.jar \
-	FurutaPendulum/FurutaPendulum.jar \
-	Pendulum/Pendulum.jar \
-	SolarSystem/SolarSystem.jar \
-	StickyMasses/StickyMasses.jar \
-	Universe/Universe.jar \
-	Pong/Pong.jar
+JSRCS =
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+OTHER_FILES_TO_BE_JARED = \
+	Pong.xml
 
-# Files that are not compiled, such as .tcl and .itcl files.
-EXTRA_SRCS =	index.htm
+EXTRA_SRCS = \
+	$(JSRCS) \
+	$(OTHER_FILES_TO_BE_JARED) \
+	gameover.gif	
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -69,14 +60,27 @@ MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	doc
 
+JCLASS = $(JSRCS:%.java=%.class)
+
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
 all: jclass
 	@echo "To run all the demos, run 'make demo'"
 
-install: jclass jars
+install: all
 
-demo: subdemo
+demo: demo_applet demo_ptolemy demo_vergil
+demo_applet:
+	CLASSPATH="$(CLASSPATH)" appletviewer Pong.htm
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" Pong.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" Pong.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
