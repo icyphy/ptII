@@ -260,6 +260,9 @@ public class BooleanSelect extends TypedAtomicActor {
             falseInput_tokenConsumptionRate.setToken(_zero);
             control_tokenConsumptionRate.setToken(_one);
         } else {
+            if (_control == null) {
+                _control = ((BooleanToken) control.get(0));
+            }
             if (_control.booleanValue()) {
                 trueInput_tokenConsumptionRate.setToken(_one);
                 falseInput_tokenConsumptionRate.setToken(_zero);
