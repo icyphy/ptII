@@ -1,19 +1,10 @@
 package ptolemy.apps.apes;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
-import ptolemy.actor.Receiver;
 import ptolemy.actor.TimedDirector;
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.BreakCausalityInterface;
 import ptolemy.actor.util.CausalityInterface;
-import ptolemy.actor.util.Time; 
+import ptolemy.actor.util.Time;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
