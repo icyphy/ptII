@@ -78,6 +78,7 @@
         <configure>
             <?moml
                 <group>
+                    <property name="TransformationAttribute" class="ptolemy.actor.gt.controller.TransformationAttribute"/>
                     <input source="ptolemy/configs/basicUtilities.xml"/>
                 </group>
             ?>
