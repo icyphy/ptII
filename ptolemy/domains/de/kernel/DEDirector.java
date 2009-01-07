@@ -733,6 +733,18 @@ public class DEDirector extends Director implements TimedDirector {
             if (time.compareTo(getModelTime()) < 0) {
                 time = getModelTime();
             }
+
+            // FIXME: This is only a temporary solution and  it is not guaranteed to work
+            // since the time of the executive director can still advance.
+            // Furthermore we also should test the executive director of the executive
+            // director...
+            if (_delegateFireAt) {
+                CompositeActor container = (CompositeActor) getContainer();
+                Director director = container.getExecutiveDirector();
+                if (time.compareTo(director.getModelTime()) < 0) {
+                    time = director.getModelTime();
+                }
+            }            
             fireAt(actor, time);
             return time;
         }
