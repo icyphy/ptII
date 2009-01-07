@@ -101,7 +101,7 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
         level = new Parameter(this, "level", new DoubleToken(0.0));
         level.setTypeEquals(BaseType.DOUBLE);
 
-        // By default, this director detects both directions of leve crossings.
+        // By default, this director detects both directions of level crossings.
         direction = new StringParameter(this, "direction");
         direction.setExpression("both");
         _detectRisingCrossing = true;
