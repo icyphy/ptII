@@ -401,6 +401,9 @@ then the file will be checked in with binary settings.  When the
 file is checked on out non-Windows platforms, then the file will have
 <code>\r\n</code> characters, which will break Solaris <code>/usr/ccs/bin/make</code> and cause other problems.
 
+<p>In addition, we would like keyword strings like 
+<code>$Id$</code> to be automatically expanded and updated.
+
 <p>Find the <code>.subversion/config</code> file and uncomment the
 <code>enable-auto-props</code> line so that it looks like:
 <pre>
@@ -565,10 +568,15 @@ makefile = svn:eol-style=native;svn:keywords=Author Date Id Revision
 <p>See <a href="http://svn.haxx.se/users/archive-2003-12/0063.shtml" _target="_top">Subversion Users: Re: Setting svn:eol-style</a>
 and <a href="http://maven.apache.org/developers/svn-eol-style.txt"><code>http://maven.apache.org/developers/svn-eol-style.txt</code></a>
 
-<p>To set the style on already checked in files, run:
+<p>BTW - To set the style on already checked in file, run:
 <pre>
 svn propset svn:eol-style native <i>filename</i>
 </pre>
+To set the keywords on an alredy checked in file, run:
+svn propset svn:keywords "Author Date Id Revision" <i>filename</i>
+</pre>
+
+Then run <code>svn commit</code> to commit the change. 
 
 <h3>SSH Configuration.</h3>
 If you will be accessing the ptII repository with <b>read/write</b>
