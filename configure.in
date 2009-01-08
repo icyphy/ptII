@@ -376,10 +376,29 @@ if test -f "$PTJAVA_DIR/bin/java" -o -f "$PTJAVA_DIR/bin/java.exe"; then
 	JAVA="$PTJAVA_DIR/bin/java"
     fi
 else
-    AC_MSG_ERROR([
-  Cannot find '$PTJAVA_DIR/bin/java'.
+   if test -f "$PTJAVA_DIR/Commands/java"; then
+       PT_MSG_RESULT($PTJAVA_DIR/Commands/java)
+       AC_PATH_PROG(JAVA, java)
+       if test "$PTJAVA_DIR/Commands/java" = "$JAVA"; then
+           PT_MSG_STATUS([    You have the right java in your path,
+    "$PTJAVA_DIR/Commands/java"
+      = "$JAVA"])
+       else
+           AC_MSG_WARN(['$PTJAVA_DIR/Commands/java' is not
+    the same as '$JAVA'.
+    Perhaps '$JAVA' is in your path before
+    '$PTJAVA_DIR/Commands/java'?
+    If you have problems later, be sure that you don't have a mismatch
+    in JDK versions.])
+	JAVA="$PTJAVA_DIR/Commands/java"
+      fi
+   else 
+       AC_MSG_ERROR([
+  Cannot find '$PTJAVA_DIR/bin/java' or '$PTJAVA_DIR/Commands/java'.
   Try --with-java=DIR, or set the PTJAVA_DIR environment variable.
 ])
+   fi
+
 fi
 
 #
@@ -409,9 +428,27 @@ if test -f "$PTJAVA_DIR/bin/javac"; then
 	JAVAC="$PTJAVA_DIR/bin/javac"
     fi
 else
-    AC_MSG_ERROR([
-  Cannot find '$PTJAVA_DIR/bin/javac'.
+   if test -f "$PTJAVA_DIR/Commands/javac"; then
+       PT_MSG_RESULT($PTJAVA_DIR/Commands/javac)
+       AC_PATH_PROG(JAVAC, javac)
+       if test "$PTJAVA_DIR/Commands/javac" = "$JAVAC"; then
+           PT_MSG_STATUS([    You have the right java in your path,
+    "$PTJAVA_DIR/Commands/javac"
+      = "$JAVAC"])
+       else
+           AC_MSG_WARN(['$PTJAVA_DIR/Commands/javac' is not
+    the same as '$JAVAC'.
+    Perhaps '$JAVAC' is in your path before
+    '$PTJAVA_DIR/Commands/javac'?
+    If you have problems later, be sure that you don't have a mismatch
+    in JDK versions.])
+	JAVAC="$PTJAVA_DIR/Commands/javac"
+      fi
+   else 
+       AC_MSG_ERROR([
+  Cannot find '$PTJAVA_DIR/bin/javac' or '$PTJAVA_DIR/Commands/javac'.
   Try --with-java=DIR, or set the PTJAVA_DIR environment variable.])
+   fi 
 fi
 
 #--------------------------------------------------------------------
