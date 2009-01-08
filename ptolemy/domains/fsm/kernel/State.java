@@ -42,6 +42,7 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.fsm.modal.ModalModel;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.CompositeEntity;
@@ -596,14 +597,22 @@ public class State extends ComponentEntity implements ConfigurableEntity,
     }
 
     private void _populateRefinements() throws IllegalActionException {
-        CompositeEntity modalModel = (CompositeEntity) getContainer()
-                .getContainer();
+        CompositeEntity container = (CompositeEntity) getContainer();
+        CompositeEntity modalModel = (CompositeEntity) container.getContainer();
         if (!(modalModel instanceof TypedCompositeActor)) {
-            return;
+            if (modalModel == null) {
+                try {
+                    modalModel = new ModalModel(workspace());
+                    container.setContainer(modalModel);
+                } catch (NameDuplicationException e) {
+                    // This should not happen.
+                }
+            } else {
+                return;
+            }
         }
         List<ComponentEntity> entities = new LinkedList<ComponentEntity>(
                 _configurer.entityList());
-        NamedObj container = getContainer();
         if (container instanceof RefinementActor) {
             RefinementActor actor = (RefinementActor) container;
             for (ComponentEntity entity : entities) {
