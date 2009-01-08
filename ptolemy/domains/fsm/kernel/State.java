@@ -596,6 +596,12 @@ public class State extends ComponentEntity implements ConfigurableEntity,
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+    
+    /** Move the refinements in the configurer of this state to the closest
+     *  modal model above this state in the model hierarchy.
+     */
     private void _populateRefinements() throws IllegalActionException {
         CompositeEntity container = (CompositeEntity) getContainer();
         CompositeEntity modalModel = (CompositeEntity) container.getContainer();
@@ -633,10 +639,9 @@ public class State extends ComponentEntity implements ConfigurableEntity,
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-    // Update the cached transition lists.
-    // This method is read-synchronized on the workspace.
+    /** Update the cached transition lists. This method is read-synchronized on
+     *  the workspace.
+     */
     private void _updateTransitionLists() {
         try {
             workspace().getReadAccess();
