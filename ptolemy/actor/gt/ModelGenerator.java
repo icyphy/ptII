@@ -164,15 +164,19 @@ public class ModelGenerator extends Source {
 
     private URI _getModelURI(String modelName) throws URISyntaxException {
         URI uri = URIAttribute.getModelURI(this);
-        String path = uri.getPath();
-        int pos = path.lastIndexOf('/');
-        if (pos >= 0) {
-            path = path.substring(0, pos + 1) + modelName + ".xml";
+        if (uri == null) {
+            return new URI(modelName);
         } else {
-            path += "/" + modelName + ".xml";
+            String path = uri.getPath();
+            int pos = path.lastIndexOf('/');
+            if (pos >= 0) {
+                path = path.substring(0, pos + 1) + modelName + ".xml";
+            } else {
+                path += "/" + modelName + ".xml";
+            }
+            return new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(),
+                    uri.getPort(), path, uri.getQuery(), uri.getFragment());
         }
-        return new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(),
-                uri.getPort(), path, uri.getQuery(), uri.getFragment());
     }
 
     private Entity _emptyModel;
