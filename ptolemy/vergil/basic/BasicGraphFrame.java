@@ -1024,8 +1024,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         try {
             NamedObj model = getModel();
             try {
-                _exportDesignPattern = true;
-
                 if (model.getAttribute("_alternateGetMomlAction") == null) {
                     alternateGetMoml = new StringAttribute(model,
                             "_alternateGetMomlAction");
@@ -1046,7 +1044,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         } finally {
             _finishExportDesignPattern();
 
-            _exportDesignPattern = false;
             if (alternateGetMoml != null) {
                 try {
                     alternateGetMoml.setContainer(null);
@@ -1062,171 +1059,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 }
             }
         }
-        /*Query query = new Query();
-        query.setTextWidth(40);
-
-        Tableau tableau = getTableau();
-        PtolemyEffigy effigy = (PtolemyEffigy) tableau.getContainer();
-        NamedObj model = effigy.getModel();
-        _initialSaveAsFileName = model.getName() + ".xml";
-        if (_initialSaveAsFileName.length() == 4) {
-            _initialSaveAsFileName = "model.xml";
-        }
-        model = getModel();
-
-        HashSet<NamedObj> namedObjSet = _getSelectionSet();
-        boolean hasSelectedObjects = !namedObjSet.isEmpty();
-        query.addCheckBox("selected", "Selected Objects Only",
-                hasSelectedObjects).setEnabled(hasSelectedObjects);
-        File directory = _getCurrentDirectory();
-        query.addFileChooser("file", "Design Pattern File",
-                _initialSaveAsFileName, null, directory);
-        query.addSeparator();
-        query.addText("Supply the complex transformations to be applied " +
-                "before and after applying the design pattern.", Color.blue,
-                SwingConstants.CENTER);
-        query.addFileChooser("before", "Transformation Before", null, null,
-                directory);
-        query.addFileChooser("after", "Transformation After", null, null,
-                directory);
-
-        File file = null;
-        while (file == null) {
-            ComponentDialog dialog = new ComponentDialog(this,
-                    "Export Design Pattern", query);
-            if (!dialog.buttonPressed().equals("OK")) {
-                return;
-            }
-            String fileName = query.getStringValue("file").trim();
-            if (fileName.equals("")) {
-                MessageHandler.error("Please specify a file name for the " +
-                        "design pattern.");
-            } else {
-                file = new File(fileName);
-                if (file.exists()) {
-                    if (!MessageHandler.yesNoQuestion("File " + file +
-                            " exists. Do you want to overwrite it?")) {
-                        file = null;
-                    }
-                }
-            }
-        }
-
-        NamedObj actor = getModel();
-        StringAttribute alternateGetMoml = null;
-        DesignPatternIcon icon = null;
-        String before = "";
-        String after = "";
-
-        try {
-            alternateGetMoml = new StringAttribute(actor,
-                    "_alternateGetMomlAction");
-            alternateGetMoml.setExpression(
-                    DesignPatternGetMoMLAction.class.getName());
-
-            icon = new DesignPatternIcon(actor, "_designPatternIcon");
-
-            _prepareExportDesignPattern();
-
-            before = query.getStringValue("before").trim();
-            if (!before.equals("")) {
-                MoMLParser parser = new MoMLParser();
-
-                URL base = new File(before).toURI().toURL();
-                NamedObj transformation = parser.parse(base, base);
-
-                StringWriter writer = new StringWriter();
-                writer.write("<property name=\"_transformationBefore\" " +
-                        "class=\"ptolemy.actor.gt.controller." +
-                        "TransformationAttribute\">\n");
-                writer.write("    <configure>\n");
-
-                transformation.setClassName( "ptolemy.actor.gt.controller" +
-                        ".DesignPatternTransformer");
-                transformation.exportMoML(writer, 2,
-                        "DesignPatternTransformer");
-
-                writer.write("    </configure>\n");
-                writer.write("</property>\n");
-
-                parser.reset();
-                parser.setContext(model);
-                parser.parse(writer.toString());
-
-                Attribute attribute = model.getAttribute(
-                        "_transformationBefore");
-                if (attribute != null) {
-                    attribute.moveToFirst();
-                }
-            }
-
-            after = query.getStringValue("after").trim();
-            if (!after.equals("")) {
-                MoMLParser parser = new MoMLParser();
-
-                URL base = new File(after).toURI().toURL();
-                NamedObj transformation = parser.parse(base, base);
-
-                StringWriter writer = new StringWriter();
-                writer.write("<property name=\"_transformationAfter\" " +
-                        "class=\"ptolemy.actor.gt.controller." +
-                        "TransformationAttribute\">\n");
-                writer.write("    <configure>\n");
-
-                transformation.setClassName( "ptolemy.actor.gt.controller" +
-                        ".DesignPatternTransformer");
-                transformation.exportMoML(writer, 2,
-                        "DesignPatternTransformer");
-
-                writer.write("    </configure>\n");
-                writer.write("</property>\n");
-
-                parser.reset();
-                parser.setContext(model);
-                parser.parse(writer.toString());
-            }
-
-            _exportSelectedObjectsOnly = query.getBooleanValue("selected");
-            _useEffigyToSaveModel = false;
-
-            _writeFile(file);
-        } catch (Throwable t) {
-            MessageHandler.error("Unable to export model.", t);
-        } finally {
-            _exportSelectedObjectsOnly = false;
-            _useEffigyToSaveModel = true;
-            if (alternateGetMoml != null) {
-                try {
-                    alternateGetMoml.setContainer(null);
-                } catch (Throwable t) {
-                    // Ignore.
-                }
-            }
-            if (icon != null) {
-                try {
-                    icon.setContainer(null);
-                } catch (Throwable t) {
-                    // Ignore.
-                }
-            }
-            _finishExportDesignPattern();
-            Attribute attribute = model.getAttribute("_transformationBefore");
-            if (attribute != null) {
-                try {
-                    attribute.setContainer(null);
-                } catch (Throwable t) {
-                    // Ignore.
-                }
-            }
-            attribute = model.getAttribute("_transformationAfter");
-            if (attribute != null) {
-                try {
-                    attribute.setContainer(null);
-                } catch (Throwable t) {
-                    // Ignore.
-                }
-            }
-        }*/
     }
 
     /** Return the center location of the visible part of the pane.
@@ -2192,6 +2024,11 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
         return namedObjSet;
     }
+    
+    protected boolean _isDesignPattern() {
+        NamedObj model = getModel();
+        return !model.attributeList(DesignPatternIcon.class).isEmpty();
+    }
 
     /** Prepare to export a design pattern.
      */
@@ -2205,8 +2042,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     protected JFileChooser _saveAsFileDialog() {
         JFileChooser fileDialog = super._saveAsFileDialog();
 
-        if (_exportDesignPattern) {
-            if (!_getSelectionSet().isEmpty()) {
+        if (_isDesignPattern()) {
+            if (_getSelectionSet().isEmpty()) {
+                fileDialog.setAccessory(null);
+            } else {
                 _query = new Query();
                 _query.addCheckBox("selected", "Selected objects only", true);
                 fileDialog.setAccessory(_query);
@@ -2313,7 +2152,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // size and location.
         }
 
-        if (_exportDesignPattern) {
+        if (_isDesignPattern()) {
             FileWriter fileWriter = null;
 
             try {
@@ -2351,11 +2190,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
     /** The action to edit preferences. */
     protected EditPreferencesAction _editPreferencesAction;
-
-    /** Whether the current _saveAs() operation is to export a design pattern or
-     *  is a regular save as operation from the File menu.
-     */
-    protected boolean _exportDesignPattern = false;
 
     /** The panner. */
     protected JCanvasPanner _graphPanner;
