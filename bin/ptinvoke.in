@@ -575,7 +575,15 @@ fi
 
 
 # The Java process to run.
-javac="$JAVAHOME/bin/java"
+javahomebin="$JAVAHOME/bin"
+javac="$javahomebin/java"
+if [ ! -f "$javac" ]; then
+    if [ -f "$JAVAHOME/Commands/java" ]; then
+	# Mac OS X has java in a different place
+	javahomebin="$JAVAHOME/Commands"
+	javac="$javahomebin/java"
+    fi
+fi
 
 # javaflag contains optional flags passed to java that may be
 # set by this script
@@ -887,7 +895,7 @@ and run:
 	javaflag="$TINI_JFLAG"
 	;;
     tinic)
-	javac="$JAVAHOME/bin/javac"
+	javac="$javahomebin/javac"
 	ptflag="" # setting ptII environment variable is not valid under javac
 	help="Tini compiler using embedded libraries"
 	invokeHelp="Usage: $commandname [commonOptions]"
@@ -1094,7 +1102,7 @@ EOF
     fi
     # If -jdb is supplied then run jdb instead of java.
     if [ "$1" = "-jdb" ]; then
-        javac="$JAVAHOME/bin/jdb"
+        javac="$javahomebin/jdb"
         shift
         continue
     fi
@@ -1138,7 +1146,7 @@ fi
 
 if [ "$error" = "none" ]; then
     if [ "$base" = "decompile" -a ! -f "$JODE_JAR" ]; then
-	str="\"$JAVAHOME/bin/javap\" -classpath \"$CLASSPATH\" ${1+"$@"}"
+	str="\"$javahomebin/javap\" -classpath \"$CLASSPATH\" ${1+"$@"}"
 	
     else
     # If JAVAHOME has spaces in it, we need to jump through hoops
