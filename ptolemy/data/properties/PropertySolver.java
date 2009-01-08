@@ -1,4 +1,4 @@
-/*  A property solver that .
+/*  A extended base abstract class for a property solver.
 
  Copyright (c) 1998-2005 The Regents of the University of California.
  All rights reserved.
@@ -71,7 +71,7 @@ import ptolemy.util.StringUtilities;
 ////PropertySolver
 
 /**
-A placeholder token that represents the absence of a token.
+A extended base abstract class for a property solver.
 
 @author Man-Kit Leung
 @version $Id$
@@ -425,7 +425,7 @@ public abstract class PropertySolver extends PropertySolverBase {
      * 
      * @throws KernelException
      */
-    public boolean resolveProperties(ModelAnalyzer analyzer)
+    public boolean resolveProperties(NamedObj analyzer)
             throws KernelException {
         return resolveProperties(analyzer, false);
     }

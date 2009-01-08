@@ -284,7 +284,7 @@ public class PropertyConstraintSolver extends PropertySolver {
      * model analyzer that invokes this.
      * @param analyzer The given model analyzer.
      */
-    protected void _resolveProperties(ModelAnalyzer analyzer) 
+    protected void _resolveProperties(NamedObj analyzer) 
     throws KernelException {
         super._resolveProperties(analyzer);
 

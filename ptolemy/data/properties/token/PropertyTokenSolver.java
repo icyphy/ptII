@@ -86,7 +86,7 @@ public class PropertyTokenSolver extends PropertySolver {
     }
     
 
-    protected void _resolveProperties(ModelAnalyzer analyzer) 
+    protected void _resolveProperties(NamedObj analyzer) 
             throws KernelException {
         PropertyTokenCompositeHelper topLevelHelper = (PropertyTokenCompositeHelper) _getHelper(toplevel());
         super._resolveProperties(analyzer);

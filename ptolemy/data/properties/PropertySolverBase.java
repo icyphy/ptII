@@ -400,11 +400,11 @@ public abstract class PropertySolverBase extends Attribute {
         return getResolvedProperty(object, true);
     }
 
-    /*
-     * Return the resolved property for the specified object.
-     * 
-     * @param object The specified object
-     * @param resolve
+    /**
+     * Return the resolved property for the specified object. The specified
+     * resolve flag indicates whether to force resolution to happen.
+     * @param object The specified object.
+     * @param resolve Whether or not to force resolution.
      * @return The resolved property for the specified object.
      */
     public Property getResolvedProperty(Object object, boolean resolve) {
@@ -494,6 +494,7 @@ public abstract class PropertySolverBase extends Attribute {
 
     /**
      * Set the resolved property of the specified object.
+     * (See {@link #getResolvedProperty(Object)}).
      * 
      * @param object The specified object.
      * @param property The specified property.
@@ -506,10 +507,11 @@ public abstract class PropertySolverBase extends Attribute {
     ////             protected methods                             ////
 
     /**
-     * Return the PropertyHelper for the specified component.
-     * 
+     * Return the PropertyHelper for the specified component. This
+     * instantiates a new PropertyHelper if it does not already exist
+     * for the specified component.
      * @param component The specified component.
-     * @return The PropertyHelper.
+     * @return The PropertyHelper for the specified component. 
      * @exception IllegalActionException Thrown if the PropertyHelper
      * cannot be instantiated.
      */

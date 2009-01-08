@@ -55,9 +55,6 @@ import ptolemy.kernel.util.StringAttribute;
 ////PropertyHelper
 
 /**
- * define property 
- * define component
- * 
 The base abstract class for a property helper. 
 A PropertyHelper defines constraints for a component in the model. 
 The model component can be an object of any Ptolemy class 
@@ -65,10 +62,10 @@ The model component can be an object of any Ptolemy class
 in turn, may have one or multiple property-able objects. Each 
 constraint is relevant to a property-able object. For example, 
 the PropertyHelper associated with an actor may have each of its 
-IOPort as property-able. 
+IOPorts as property-able. 
 
 <p>A property-able object is an object that can be annotated with 
-a Property object. Users can define different Property class as 
+a Property object. Users can define different Property classes as 
 part of their use-case definition. 
 
 <p>Every PropertyHelper is associated a property
@@ -145,7 +142,7 @@ public abstract class PropertyHelper {
      * Return a list of property-able objects that are of the
      * specified Class.
      * 
-     * @param filter The specified Class to filter the return list.
+     * @param filter The specified Class to filter the returned list.
      * @return A list of property-able objects that are of the specified
      * Class.
      * @exception IllegalActionException Thrown if 
@@ -358,7 +355,7 @@ public abstract class PropertyHelper {
      * 
      * @return The ParseTreeAnnotationEvaluator.
      */
-    protected final ParseTreeAnnotationEvaluator _getAnnotationEvaluator() {
+    private ParseTreeAnnotationEvaluator _getAnnotationEvaluator() {
         if (_annotationEvaluator == null) {
             _annotationEvaluator = _annotationEvaluator();
         }
@@ -499,8 +496,8 @@ public abstract class PropertyHelper {
      * 
      * @return The list of receiving ports.
      */
-    protected static List<Port> _getSinkPortList(IOPort port) {
-        List<Port> result = new ArrayList<Port>();
+    protected static List<IOPort> _getSinkPortList(IOPort port) {
+        List<IOPort> result = new ArrayList<IOPort>();
 
         for (IOPort connectedPort : (List<IOPort>) port.connectedPortList()) {
             boolean isInput = connectedPort.isInput();
@@ -525,8 +522,8 @@ public abstract class PropertyHelper {
      * 
      * @return The list of sending ports.
      */
-    protected static List<Port> _getSourcePortList(IOPort port) {
-        List<Port> result = new ArrayList<Port>();
+    protected static List<IOPort> _getSourcePortList(IOPort port) {
+        List<IOPort> result = new ArrayList<IOPort>();
 
         for (IOPort connectedPort : (List<IOPort>) port.connectedPortList()) {
             boolean isInput = connectedPort.isInput();

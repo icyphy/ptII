@@ -84,7 +84,7 @@ public class PropertyCombineSolver extends PropertySolver {
         return _getHelper(object);
     }
 
-    protected void _resolveProperties(ModelAnalyzer analyzer) 
+    protected void _resolveProperties(NamedObj analyzer) 
         throws KernelException {
         
         super._resolveProperties(analyzer);
