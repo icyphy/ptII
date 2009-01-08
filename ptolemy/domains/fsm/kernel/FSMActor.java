@@ -329,7 +329,11 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        List<Initializable> oldInitializables = _initializables;
+        _initializables = null;
         FSMActor newObject = (FSMActor) super.clone(workspace);
+        _initializables = oldInitializables;
+
         newObject._currentState = null;
         newObject._identifierToPort = new HashMap();
         newObject._inputTokenMap = new HashMap();
@@ -355,8 +359,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         newObject._receiversVersion = -1;
         newObject._receiversVersion = -1;
         newObject._tokenListArrays = null;
-
-        newObject._initializables = null;
 
         return newObject;
     }

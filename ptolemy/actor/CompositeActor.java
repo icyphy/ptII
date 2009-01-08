@@ -247,12 +247,15 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *  @return A new CompositeActor.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        List<Initializable> oldInitializables = _initializables;
+        _initializables = null;
         CompositeActor newObject = (CompositeActor) super.clone(workspace);
+        _initializables = oldInitializables;
+
         newObject._inputPortsVersion = -1;
         newObject._outputPortsVersion = -1;
         newObject._causalityInterface = null;
         newObject._causalityInterfaceDirector = null;
-        newObject._initializables = null;
         return newObject;
     }
 
