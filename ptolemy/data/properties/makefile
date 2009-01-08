@@ -47,6 +47,7 @@ PTPACKAGE = 	properties
 PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = \
+	AnalyzeModel.java \
 	AnnotationAttribute.java \
 	ModelAnalyzer.java \
 	ModelWriter.java \
@@ -63,6 +64,8 @@ JSRCS = \
 	SharedUtilities.java
 
 OTHER_FILES_TO_BE_JARED = \
+	AnalyzeModelIcon.xml \
+	EventLibrary.xml \
 	ModelAnalyzerIcon.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)

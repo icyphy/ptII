@@ -1052,8 +1052,9 @@ public class PropertyConstraintSolver extends PropertySolver {
             File constraintFile = new File(filename);
 
             if (constraintFile.exists()) {
-                if (_analyzer != null && _analyzer.overwriteConstraint
-                        .getExpression().equals("false")) {
+                if (_analyzer != null && ((Parameter) _analyzer.getAttribute(
+                        "overwriteConstraint")).getExpression().equals(
+                                "false")) {
                     return;
                 }
                 // Ask user for a decision.

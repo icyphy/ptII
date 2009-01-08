@@ -299,7 +299,7 @@ public abstract class PropertySolver extends PropertySolverBase {
         return invokeSolver(null);
     }
 
-    public boolean invokeSolver(ModelAnalyzer analyzer) {
+    public boolean invokeSolver(NamedObj analyzer) {
         boolean success = false;
 
         try {
@@ -444,7 +444,7 @@ public abstract class PropertySolver extends PropertySolverBase {
      * 
      * @throws IllegalActionException TODO
      */
-    public boolean resolveProperties(ModelAnalyzer analyzer, boolean isInvoked)
+    public boolean resolveProperties(NamedObj analyzer, boolean isInvoked)
             throws KernelException {
 
         boolean success = true;
@@ -655,8 +655,9 @@ public abstract class PropertySolver extends PropertySolverBase {
                                             + "Update this property?");
                         } else {
                             // Suppress the dialog.
-                            userDecision = _analyzer.overwriteDependentProperties
-                                    .getToken() == BooleanToken.TRUE;
+                            userDecision = ((Parameter) _analyzer.getAttribute(
+                                    "overwriteDependentProperties")).getToken()
+                                    == BooleanToken.TRUE;
 
                         }
                         // Remember that we have made a decision.
@@ -817,7 +818,7 @@ public abstract class PropertySolver extends PropertySolverBase {
      * 
      * @throws IllegalActionException Not thrown in this base class.
      */
-    protected void _resolveProperties(ModelAnalyzer analyzer)
+    protected void _resolveProperties(NamedObj analyzer)
             throws KernelException {
         System.out.println("Invoking \"" + getName() + "\" ("
                 + getExtendedUseCaseName() + "):");
@@ -1489,7 +1490,7 @@ public abstract class PropertySolver extends PropertySolverBase {
 
     public Parameter manualAnnotation;
 
-    protected ModelAnalyzer _analyzer = null;
+    protected NamedObj _analyzer = null;
 
     /*
      * The PropertyHighlighter that controls the property visualization.
