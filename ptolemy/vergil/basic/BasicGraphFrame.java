@@ -721,11 +721,14 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                         String portName = "port_" + i;
                         boolean isInput = headProperties.port.isInput();
                         boolean isOutput = headProperties.port.isOutput();
-                        newPorts
-                                .append("<port name=\""
+                        newPorts.append("<port name=\""
                                         + portName
                                         + "\" class=\"ptolemy.actor.TypedIOPort"
                                         + "\">\n");
+
+                        if (headProperties.port.isMultiport()) {
+                            newPorts.append("<property name=\"multiport\"/>\n");
+                        }
 
                         if (namedObjSet.contains(entity)) {
                             // The port is inside the hierarchy.
