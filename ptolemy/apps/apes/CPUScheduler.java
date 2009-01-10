@@ -9,8 +9,7 @@ import java.util.Map;
 import java.util.Stack;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.IOPort;
+import ptolemy.actor.CompositeActor; 
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.util.Time; 
 import ptolemy.apps.apes.TaskExecutionListener.ScheduleEventType;
@@ -176,7 +175,7 @@ public class CPUScheduler extends ApeActor {
             if (_tasksInExecution.size() > 0) 
                 taskInExecution = _tasksInExecution.peek();  
             
-            if (taskInExecution == null || getPriority(actorToSchedule) > getPriority(taskInExecution)) { // nothing running or preempting, schedule new task
+            if (taskInExecution == null || _taskPriorities.get(actorToSchedule) > _taskPriorities.get(taskInExecution)) { // nothing running or preempting, schedule new task
                 if (taskInExecution != null) { // preempting
                     _sendTaskExecutionEvent(taskInExecution, getDirector().getModelTime().getDoubleValue(), ScheduleEventType.STOP);
                 }
@@ -187,7 +186,7 @@ public class CPUScheduler extends ApeActor {
             } else { // new actor to schedule does not preempt currently running task
                 for (int i = 0; i < _tasksInExecution.size(); i++) { 
                     Actor actor = _tasksInExecution.get(i);
-                    if (getPriority(actorToSchedule) < getPriority(actor)) {
+                    if (_taskPriorities.get(actorToSchedule) < _taskPriorities.get(actor)) {
                         _tasksInExecution.insertElementAt(actorToSchedule, i);
                         break;
                     } 
@@ -282,44 +281,38 @@ public class CPUScheduler extends ApeActor {
 
     
     // DeclareTask ??
+    
+    private void reschedule(Actor task, TaskState state) throws IllegalActionException {
+        Actor newCurrentlyExecutingTask = scheduleTask(state, _tasksInExecution.peek(), task, Time.POSITIVE_INFINITY); 
+        if (newCurrentlyExecutingTask != null) {
+            output.send(newCurrentlyExecutingTask, new BooleanToken(true));
+            _sendTaskExecutionEvent(newCurrentlyExecutingTask, getDirector().getModelTime().getDoubleValue(), ScheduleEventType.START);
+        } 
+        if (_tasksInExecution.size() > 0) { 
+            getDirector().fireAt(this, getDirector().getModelTime().add(_taskExecutionTimes.get(_tasksInExecution.peek()))); 
+        }
+    }
 
     public StatusType ActivateTask(int taskId) throws NoRoomException, IllegalActionException {
         Actor task = _tasks.get(taskId);
         if (task == null)
             return StatusType.E_OS_ID;
         //else if (Task.state = TaskState.running) return StatusType.E_OS_LIMIT;
-        Actor newCurrentlyExecutingTask = scheduleTask(TaskState.ready_running, _tasksInExecution.peek(), task, Time.POSITIVE_INFINITY);
-//        output.send(new ResourceToken(task, Time.POSITIVE_INFINITY, TaskState.ready_running));
-//        getDirector().fireAt(this, getDirector().getModelTime());
-        if (newCurrentlyExecutingTask != null) {
-            output.send(newCurrentlyExecutingTask, new BooleanToken(true));
-            _sendTaskExecutionEvent(newCurrentlyExecutingTask, getDirector().getModelTime().getDoubleValue(), ScheduleEventType.START);
-        }
-        
-        // schedule next firing of this
-        if (_tasksInExecution.size() > 0) { 
-            getDirector().fireAt(this, getDirector().getModelTime().add(_taskExecutionTimes.get(_tasksInExecution.peek()))); 
-        }
+        reschedule(task, TaskState.ready_running);
         return StatusType.E_OK;
     }
     
     public StatusType TerminateTask() throws NoRoomException, IllegalActionException {
-        Actor task = _taskNames.get(Thread.currentThread().getName());
-//        if (resourceUser.entrySet().contains(task)) 
-//            return StatusType.E_OS_RESOURCE;
-//        else if (call at interrupt level) 
-//            return StatusType.E_OS_CALLEVEL;
-        output.send(new ResourceToken(task, Time.POSITIVE_INFINITY, TaskState.suspended));
-        getDirector().fireAt(this, getDirector().getModelTime());
+        Actor task = _taskNames.get(Thread.currentThread().getName());  
+        reschedule(task, TaskState.suspended);
         return StatusType.E_OK;
     }
     
     public StatusType ChainTask(int taskId) throws NoRoomException, IllegalActionException {
         Actor task = _tasks.get(taskId);
         Actor currentTask = _taskNames.get(Thread.currentThread().getName());
-        output.send(new ResourceToken(currentTask, Time.POSITIVE_INFINITY, TaskState.suspended));
-        output.send(new ResourceToken(task, Time.POSITIVE_INFINITY, TaskState.ready_running));
-        getDirector().fireAt(this, getDirector().getModelTime());
+        reschedule(currentTask, TaskState.suspended);
+        reschedule(task, TaskState.ready_running); 
         return StatusType.E_OK;
     }
     
@@ -340,7 +333,7 @@ public class CPUScheduler extends ApeActor {
                 if (_tasksInExecution.size() > 0 && 
                         _taskPriorities.get(actor) > _taskPriorities.get(_tasksInExecution.peek()) &&
                         _internalResources.get(actor) == _internalResources.get(_tasksInExecution.peek())) {
-                    output.send(new ResourceToken(task, Time.POSITIVE_INFINITY, TaskState.suspended));
+                    reschedule(task, TaskState.suspended); 
                 }
             }
         }
