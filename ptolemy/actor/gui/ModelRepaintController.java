@@ -70,13 +70,11 @@ public class ModelRepaintController extends Attribute {
         
         super(container, name);
 
-        // Names of the parameters start with underscores by convention to minimize
-        // the probability of conflict with model-specific parameters.
-        _repaintOnWrapUp = new Parameter(this, "_repaintOnWrapUp");
+        _repaintOnWrapUp = new Parameter(this, "repaintOnWrapUp");
         _repaintOnWrapUp.setTypeEquals(BaseType.BOOLEAN);
         _repaintOnWrapUp.setExpression("true");
         
-        _repaintOnPostFire = new Parameter(this, "_repaintOnPostFire");
+        _repaintOnPostFire = new Parameter(this, "repaintOnPostFire");
         _repaintOnPostFire.setTypeEquals(BaseType.BOOLEAN);
         _repaintOnPostFire.setExpression("false");
 
