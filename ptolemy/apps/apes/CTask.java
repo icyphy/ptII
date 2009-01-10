@@ -12,6 +12,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 public class CTask extends ApeActor implements Runnable {
+    
+    public enum Type {
+        BASIC_TASK, EXTENDED_TASK, IRS_1, IRS_2
+    }
 
     public CTask() {
         super();

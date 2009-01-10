@@ -24,6 +24,8 @@ import ptolemy.kernel.util.Workspace;
 //// MulticastIOPort
 
 /**
+ * TODO dependent on the parameters determine if port is an input/output/io port
+ * 
  * This port communicates without wired connections. The port references the
  * destinations and sources by names as specified by the <i>destinationActors</i>
  * or <i>sourceActors</i> parameter.
@@ -214,8 +216,7 @@ public class MulticastIOPort extends TypedIOPort {
     public void broadcast(Token[] tokenArray, int vectorLength)
             throws IllegalActionException, NoRoomException {
         // TODO
-        super.broadcast(tokenArray, vectorLength);
-
+        super.broadcast(tokenArray, vectorLength); 
     }
 
     /**

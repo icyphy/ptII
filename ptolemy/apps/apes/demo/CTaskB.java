@@ -42,7 +42,7 @@ public class CTaskB extends CTask {
         period = System.currentTimeMillis() - period;
         System.out.println("duration of CMethod of " + this.getName() + ": " + Long.toString(period) + " ms.");            
         try { 
-            accessPointCallback(2.0, -1.0,"");            
+            accessPointCallback(1.7, -1.0,"");            
         } catch (Exception e) {
              e.printStackTrace();
         }

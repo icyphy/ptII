@@ -24,7 +24,6 @@ public class CTaskA extends CTask {
     private native void CMethod();
     
     
-    @Override
     protected void _callCMethod() { 
         long period;
         System.out.println(this.getName() + ".fire() - Time: " + getDirector().getModelTime());
@@ -42,7 +41,7 @@ public class CTaskA extends CTask {
         period = System.currentTimeMillis() - period;
         System.out.println("duration of CMethod of " + this.getName() + ": " + Long.toString(period) + " ms.");            
         try {
-            accessPointCallback(3.0, -1.0,"");
+            accessPointCallback(2.2, -1.0,"");
         } catch (NoRoomException e) { 
             e.printStackTrace();
         } catch (IllegalActionException e) { 
@@ -50,7 +49,6 @@ public class CTaskA extends CTask {
         }          
     }
 
-    @Override
     public void accessPointCallback(double extime, double minNextTime, String syscall) throws NoRoomException,
     IllegalActionException {
         // TODO Auto-generated method stub
