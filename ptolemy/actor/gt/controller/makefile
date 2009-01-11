@@ -56,8 +56,8 @@ PTCLASSALLJARS = \
 JSRCS = \
 	Configure.java \
 	DebuggerParameter.java \
+	DesignPatternImporter.java \
 	Execute.java \
-	FileUpdater.java \
 	GTDebugEvent.java \
 	GTErrorEvent.java \
 	GTEvent.java \
@@ -124,7 +124,6 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	'Configure$$Listener.class' \
 	'Configure$$Query.class' \
-	'FileUpdater$$MoMLContentFilter.class' \
 	'ReceiveInput$$InputListener.class' \
 	'Report$$1.class' \
 	'Report$$Mode$$1.class' \

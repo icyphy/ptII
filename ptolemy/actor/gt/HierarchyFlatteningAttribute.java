@@ -39,6 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.EntityLibrary;
 
 /**
@@ -80,6 +81,22 @@ public class HierarchyFlatteningAttribute extends ParameterAttribute {
                         "Cannot get token from the attribute.");
             }
         }
+    }
+
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  The result is an attribute with no container.
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException Not thrown in this base class
+     *  @return The new Attribute.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        HierarchyFlatteningAttribute newObject =
+            (HierarchyFlatteningAttribute) super.clone(workspace);
+        newObject.parameter = (Parameter) newObject.getAttribute(
+                "hierarchyFlattening");
+        return newObject;
     }
 
     public void setContainer(NamedObj container) throws IllegalActionException,

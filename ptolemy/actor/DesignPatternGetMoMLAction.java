@@ -29,9 +29,12 @@
 package ptolemy.actor;
 
 import java.io.StringWriter;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
+import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentRelation;
@@ -109,6 +112,18 @@ public class DesignPatternGetMoMLAction {
                         (after == null || attribute != after) &&
                         (before == null || attribute != before)) {
                     attribute.exportMoML(buffer, extraIndent + 1);
+                    if (attribute instanceof Parameter) {
+                        String parameterName = attribute.getName();
+                        String expression = _overridenParameters.get(parameterName);
+                        if (expression != null) {
+                            buffer.write(StringUtilities.getIndentPrefix(
+                                    extraIndent + 1) + "<property name=\"" +
+                                    parameterName + "\" value=\"" + expression +
+                                    "\">\n");
+                            buffer.write(StringUtilities.getIndentPrefix(
+                                    extraIndent + 1) + "</property>\n");
+                        }
+                    }
                 }
             }
 
@@ -146,17 +161,43 @@ public class DesignPatternGetMoMLAction {
                         "</port>\n");
             }
 
-            buffer.write(StringUtilities.getIndentPrefix(extraIndent + 1) +
-                    "<group name=\"auto\">\n");
-
             List<ComponentEntity> classes = group.classDefinitionList();
             for (ComponentEntity entity : classes) {
-                entity.exportMoML(buffer, extraIndent + 2);
+                Attribute attribute = entity.getAttribute("_noAutonaming");
+                if (attribute != null && ((BooleanToken) ((Parameter) attribute)
+                        .getToken()).booleanValue()) {
+                    entity.exportMoML(buffer, extraIndent + 2);
+                }
             }
 
             List<ComponentEntity> entities = group.entityList();
             for (ComponentEntity entity : entities) {
-                entity.exportMoML(buffer, extraIndent + 2);
+                Attribute attribute = entity.getAttribute("_noAutonaming");
+                if (attribute != null && ((BooleanToken) ((Parameter) attribute)
+                        .getToken()).booleanValue()) {
+                    entity.exportMoML(buffer, extraIndent + 2);
+                }
+            }
+
+            buffer.write(StringUtilities.getIndentPrefix(extraIndent + 1) +
+                    "<group name=\"auto\">\n");
+
+            classes = group.classDefinitionList();
+            for (ComponentEntity entity : classes) {
+                Attribute attribute = entity.getAttribute("_noAutonaming");
+                if (attribute == null || !((BooleanToken) ((Parameter) attribute)
+                        .getToken()).booleanValue()) {
+                    entity.exportMoML(buffer, extraIndent + 2);
+                }
+            }
+
+            entities = group.entityList();
+            for (ComponentEntity entity : entities) {
+                Attribute attribute = entity.getAttribute("_noAutonaming");
+                if (attribute == null || !((BooleanToken) ((Parameter) attribute)
+                        .getToken()).booleanValue()) {
+                    entity.exportMoML(buffer, extraIndent + 2);
+                }
             }
 
             List<ComponentRelation> relations = group.relationList();
@@ -207,11 +248,18 @@ public class DesignPatternGetMoMLAction {
         }
     }
 
+    public void overrideParameter(String name, String expression) {
+        _overridenParameters.put(name, expression);
+    }
+
     /** The set of attribute names that need to be ignored while generating
      *  the Moml.
      */
     private static final HashSet<String> _IGNORED_ATTRIBUTES =
         new HashSet<String>();
+
+    private HashMap<String, String> _overridenParameters =
+        new HashMap<String, String>();
 
     static {
         _IGNORED_ATTRIBUTES.add("GroupIcon");

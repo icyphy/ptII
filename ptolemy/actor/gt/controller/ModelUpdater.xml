@@ -8,8 +8,6 @@
     </property>
     <property name="_ignore" class="ptolemy.actor.gt.IgnoringAttribute">
     </property>
-    <property name="FileUpdater" class="ptolemy.actor.gt.controller.FileUpdater" value="">
-    </property>
     <entity name="_Controller" class="ptolemy.domains.erg.kernel.ERGController">
         <property name="_Director" class="ptolemy.domains.erg.kernel.ERGDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
@@ -102,6 +100,8 @@
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 30.0]">
+            </property>
+            <property name="_noAutonaming" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </entity>
     </entity>

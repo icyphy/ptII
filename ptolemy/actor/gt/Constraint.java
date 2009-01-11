@@ -34,6 +34,7 @@ import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.ParserScope;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
@@ -105,6 +106,20 @@ public class Constraint extends ParameterAttribute {
         } catch (IllegalActionException e) {
             return false;
         }
+    }
+
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  The result is an attribute with no container.
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException Not thrown in this base class
+     *  @return The new Attribute.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Constraint newObject = (Constraint) super.clone(workspace);
+        newObject.parameter = (Parameter) newObject.getAttribute("constraint");
+        return newObject;
     }
 
     /** Set the container of this constraint. This method ensures that the

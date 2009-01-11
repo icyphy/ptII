@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.Writer;
 import java.net.URL;
+import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.actor.ExecutionListener;
@@ -105,6 +106,10 @@ implements Configurable {
         }
     }
 
+    public void addExecutionListener(ExecutionListener listener) {
+        _executionListeners.add(listener);
+    }
+
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         TransformationAttribute newObject =
             (TransformationAttribute) super.clone(workspace);
@@ -172,6 +177,10 @@ implements Configurable {
         manager.addExecutionListener(new TransformationListener(manager,
                 "_transformationListener", model));
 
+        for (ExecutionListener listener : _executionListeners) {
+            manager.addExecutionListener(listener);
+        }
+
         Effigy masterEffigy = Configuration.findEffigy(toplevel());
         if (masterEffigy != null) {
             PtolemyEffigy effigy = new PtolemyEffigy(masterEffigy,
@@ -212,6 +221,10 @@ implements Configurable {
 
     public ERGModalModel getModelUpdater() {
         return _modelUpdater;
+    }
+
+    public void removeExecutionListener(ExecutionListener listener) {
+        _executionListeners.remove(listener);
     }
 
     public Parameter condition;
@@ -277,6 +290,9 @@ implements Configurable {
     private String _configureSource;
 
     private Configurer _configurer;
+
+    private List<ExecutionListener> _executionListeners =
+        new LinkedList<ExecutionListener>();
 
     private ERGModalModel _modelUpdater;
 

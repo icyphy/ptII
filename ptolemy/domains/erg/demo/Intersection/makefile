@@ -48,12 +48,11 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
+	ArrivalRateController.xml \
 	BerkeleyPolicy.xml \
 	CarLight.xml \
 	Intersection.xml \
 	ManhattanPolicy.xml \
-	N1Controller.xml \
-	N2Controller.xml \
 	PedLight.xml \
 	RequestPolicyExecutor.xml
 
