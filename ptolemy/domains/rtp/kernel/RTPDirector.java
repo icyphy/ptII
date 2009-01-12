@@ -172,7 +172,7 @@ public class RTPDirector extends ProcessDirector implements TimedDirector {
 
     /** Sleep for the amount of time specified.
      */
-    public void fireAt(Actor actor, Time time) throws IllegalActionException {
+    public Time fireAt(Actor actor, Time time) throws IllegalActionException {
         Time timeNow = getModelTime();
 
         if (time.compareTo(timeNow) > 0) {
@@ -196,6 +196,7 @@ public class RTPDirector extends ProcessDirector implements TimedDirector {
                 // ignore...
             }
         }
+        return time;
     }
 
     /** Start all actors and set the stop condition.

@@ -52,6 +52,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
@@ -172,18 +173,36 @@ public class GRDirector extends StaticSchedulingDirector {
         // Everything is postponed to the postfire() method.
     }
 
-    /** Advance "time" to the next requested firing time.  The GR domain is
-     *  not a timed domain, so this method is semantically meaningless.
-     *  However, this method is implemented in order to get other timed
-     *  domains to work inside the GR domain. In particular, this method
-     *  will give actors a fake impression of the advancement of time.
-     *
-     *  @param actor The actor to be fired.
-     *  @param time The next time when the actor should be fired.
-     *  @exception IllegalActionException If setting the model time throws it.
+    /** Schedule a firing of the given actor at the given time.
+     *  If there is an executive director, this method delegates to it.
+     *  Otherwise, it sets its own notion of current time to that
+     *  specified in the argument. The reason for this is to enable
+     *  GRDirector to be a top-level director and to support the design pattern
+     *  where a director requests a refiring at the next time it wishes
+     *  to be awakened, just prior to returning from fire(). DEDirector,
+     *  for example, does that, as does the SDFDirector if the period
+     *  parameter is set.
+     *  @param actor The actor scheduled to be fired.
+     *  @param time The scheduled time.
+     *  @return The time returned by the executive director, or
+     *   or the specified time if there isn't one.
+     *  @exception IllegalActionException If by the executive director.
      */
-    public void fireAt(Actor actor, Time time) throws IllegalActionException {
+    public Time fireAt(Actor actor, Time time) throws IllegalActionException {
+        // Note that the actor parameter is ignored, because it does not
+        // matter which actor requests firing.
+        Nameable container = getContainer();
+
+        if (container instanceof Actor) {
+            Actor modalModel = (Actor) container;
+            Director executiveDirector = modalModel.getExecutiveDirector();
+
+            if (executiveDirector != null) {
+                return executiveDirector.fireAt(modalModel, time);
+            }
+        }
         setModelTime(time);
+        return time;
     }
 
     /** Return the current "time". The GR domain is not a timed domain,

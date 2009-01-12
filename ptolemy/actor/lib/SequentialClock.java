@@ -240,7 +240,8 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
     /** Schedule the first firing and initialize local variables.
      *  @exception IllegalActionException If the parent class throws it,
      *   or if the <i>values</i> parameter is not a row vector, or if the
-     *   fireAt() method of the director throws it.
+     *   fireAt() method of the director throws it, or if the director does not
+     *   agree to fire the actor at the specified time.
      */
     public synchronized void initialize() throws IllegalActionException {
         super.initialize();
@@ -258,7 +259,7 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
 
         // NOTE: This must be the last line, because it could result
         // in an immediate iteration.
-        getDirector().fireAt(this, nextFiringTime);
+        _fireAt(nextFiringTime);
     }
 
     /** Update the state of the actor and schedule the next firing,
@@ -293,7 +294,7 @@ public class SequentialClock extends TypedAtomicActor implements SequenceActor {
         }
 
         Time nextIterationTime = _cycleStartTime.add(_offsets[_phase]);
-        getDirector().fireAt(this, nextIterationTime);
+        _fireAt(nextIterationTime);
 
         return true;
     }

@@ -441,7 +441,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
         private void _tryCallingFireAtFirstValidTime() {
             Director director = getDirector();
             try {
-                director.fireAtFirstValidTimeAfter(ArrowKeySensor.this, director.getModelTime());
+                director.fireAt(ArrowKeySensor.this, director.getModelTime());
             } catch (IllegalActionException ex) {
                 throw new RuntimeException(ex);
             }

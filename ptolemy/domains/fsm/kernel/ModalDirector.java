@@ -302,7 +302,7 @@ public class ModalDirector extends FSMDirector {
                             + executiveDirector.getFullName() + " at "
                             + getModelTime());
                 }
-                executiveDirector.fireAt(container, getModelTime());
+                executiveDirector.fireAtCurrentTime(container);
             }
         }
 

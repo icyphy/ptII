@@ -307,7 +307,7 @@ public class PtidesDirector extends TimedPNDirector {
      *                If the operation is not permissible (e.g. the given time
      *                is in the past).
      */
-    public void fireAt(Actor actor, Time newFiringTime)
+    public Time fireAt(Actor actor, Time newFiringTime)
             throws IllegalActionException {
         // We have to do a little song and dance to avoid holding
         // a lock on this while calling worksapce().wait(this).
@@ -346,6 +346,7 @@ public class PtidesDirector extends TimedPNDirector {
         } catch (InterruptedException e) {
             throw new IllegalActionException(this, e.getCause(), e.getMessage());
         }
+        return newFiringTime;
     }
 
     /**

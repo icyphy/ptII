@@ -227,7 +227,8 @@ public class Clock extends TimedSource {
      *  the fire() method.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the offsets array is not
-     *   nondecreasing and nonnegative.
+     *   nondecreasing and nonnegative, or if the director will not
+     *   respect the fireAt() call.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -300,7 +301,7 @@ public class Clock extends TimedSource {
                             }
                         }
                     }
-                    getDirector().fireAt(this, _tentativeNextOutputTime);
+                    _fireAt(_tentativeNextOutputTime);
                 }
             }
             _previousPeriod = periodValue;
@@ -408,7 +409,8 @@ public class Clock extends TimedSource {
     /** Schedule the first firing and initialize local variables.
      *  @exception IllegalActionException If the parent class throws it,
      *   or if the <i>values</i> parameter is not a row vector, or if the
-     *   fireAt() method of the director throws it.
+     *   fireAt() method of the director throws it, or if the director will not
+     *   respect the fireAt() call.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -437,9 +439,7 @@ public class Clock extends TimedSource {
         if (_debugging) {
             _debug("Requesting firing at time " + _nextOutputTime);
         }
-        // This should be the last line, because in threaded domains,
-        // it could execute immediately.
-        getDirector().fireAt(this, _nextOutputTime);
+        _fireAt(_nextOutputTime);
     }
 
     /** Update the state of the actor and schedule the next firing,
@@ -569,7 +569,8 @@ public class Clock extends TimedSource {
 
     /** Update the states and request refiring if necessary.
      *  @exception IllegalActionException If the numberOfCycles parameter does
-     *  not contain a valid parameter or can not request refiring.
+     *  not contain a valid parameter or can not request refiring, or if the director will not
+     *   respect the fireAt() call..
      */
     protected void _updateStates() throws IllegalActionException {
         // Schedule another firing if we are enabled
@@ -603,7 +604,7 @@ public class Clock extends TimedSource {
             if (_debugging) {
                 _debug("Requesting firing at: " + _nextOutputTime + ".");
             }
-            getDirector().fireAt(this, _nextOutputTime);
+            _fireAt(_nextOutputTime);
         }
 
         // This should be computed after the above so that a firing

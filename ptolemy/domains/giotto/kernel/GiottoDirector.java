@@ -79,6 +79,10 @@ import ptolemy.kernel.util.Workspace;
  This ensures that the director does not get ahead of real time,
  but, of course, it does not ensure that the director keeps up with
  real time.
+ <p>
+ FIXME: This director does not implement fireAt(), but it should.
+ In particular, it should return the next time the requesting actor
+ will be fired, which will depend on the period of that actor.
 
  @author  Christoph Meyer Kirsch, Edward A. Lee and Haiyang Zheng
  @version $Id$
@@ -729,10 +733,8 @@ public class GiottoDirector extends StaticSchedulingDirector implements
             _debug("Request refiring of opaque composite actor at "
                     + _expectedNextIterationTime);
         }
-
         // Enqueue a refire for the container of this director.
-        ((CompositeActor) getContainer()).getExecutiveDirector().fireAt(
-                (Actor) getContainer(), _expectedNextIterationTime);
+        _fireAt(_expectedNextIterationTime);
     }
 
     ///////////////////////////////////////////////////////////////////

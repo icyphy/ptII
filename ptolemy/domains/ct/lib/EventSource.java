@@ -224,7 +224,7 @@ public class EventSource extends TypedAtomicActor {
         _nextOutputTime = _cycleStartTime.add(_offsets[0]);
 
         // Schedule the first firing.
-        getDirector().fireAt(this, _nextOutputTime);
+        _fireAt(_nextOutputTime);
     }
 
     /** Return true if this actor is scheduled to fire at the current time.
@@ -244,7 +244,6 @@ public class EventSource extends TypedAtomicActor {
      *   offsets parameters don't match.
      */
     public boolean postfire() throws IllegalActionException {
-        CTDirector director = (CTDirector) getDirector();
         double periodValue = ((DoubleToken) period.getToken()).doubleValue();
 
         // Increment to the next phase.
@@ -263,10 +262,10 @@ public class EventSource extends TypedAtomicActor {
         }
 
         _nextOutputTime = _cycleStartTime.add(_offsets[_phase]);
-        director.fireAt(this, _nextOutputTime);
+        _fireAt(_nextOutputTime);
         return true;
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // The following are all transient because they need not be cloned.

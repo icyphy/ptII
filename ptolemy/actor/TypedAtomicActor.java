@@ -33,6 +33,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import ptolemy.actor.util.Time;
 import ptolemy.data.type.Typeable;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
@@ -294,5 +295,44 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
         }
 
         super._addPort(port);
+    }
+    
+    /** Request a firing of this actor at the specified time
+     *  and throw an exception if the director does not agree to
+     *  do it at the requested time. This is a convenience method
+     *  provided because many actors need it.
+     *  @param time The requested time.
+     *  @exception IllegalActionException If the director does not
+     *   agree to fire the actor at the specified time, or if there
+     *   is no director.
+     */
+    protected void _fireAt(Time time) throws IllegalActionException {
+        Director director = getDirector();
+        if (director == null) {
+            throw new IllegalActionException(this, "No director.");
+        }
+        Time result = director.fireAt(this, time);
+        if (!result.equals(time)) {
+            throw new IllegalActionException(this,
+                    "Director is unable to fire the actor at the requested time: "
+                    + time
+                    + ". It responds it will fire it at: "
+                    + result);
+        }
+    }
+
+    /** Request a firing of this actor at the specified time
+     *  and throw an exception if the director does not agree to
+     *  do it at the requested time. This is a convenience method
+     *  provided because many actors need it.
+     *  @param time The requested time, as a double.
+     *  @exception IllegalActionException If the director does not
+     *   agree to fire the actor at the specified time, or if there is
+     *   no director.
+     */
+    protected void _fireAt(double time) throws IllegalActionException {
+        // Need to use the Time class to ensure we take into account
+        // the time resolution.
+        _fireAt(new Time(getDirector(), time));
     }
 }

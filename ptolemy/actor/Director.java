@@ -24,11 +24,6 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
- Review changeRequest / changeListener code.
- Review container relationship and new parent class.
- Win added methods fireAtCurrentTime(Actor) and
- Semantics of initialize(Actor) have changed.
- Also, review stop() method.
  */
 package ptolemy.actor;
 
@@ -345,94 +340,83 @@ public class Director extends Attribute implements Executable {
         fireAt(actor, new Time(this, time));
     }
 
-    /** Request a firing of the given actor at the given absolute
-     *  time.  This method is only intended to be called from within
-     *  main simulation thread.  Actors that create their own
-     *  asynchronous threads should used the fireAtCurrentTime()
-     *  method to schedule firings.
-     *
-     *  This method unconditionally throws an exception in this base class.
-     *  Derived classes should override this method. 
-     *  <p> Note that this method is not
-     *  made abstract to facilitate the use of the test suite.
+    /** Request a firing of the given actor at the given model
+     *  time.  This base class ignores the request and returns a Time
+     *  with value Double.NEGATIVE_INFINITY, unless this director
+     *  is embedded within a model (and has an executive director),
+     *  in which case, this base class requests that the executive
+     *  director fire the container of this director at the requested
+     *  time.
+     *  <p>
+     *  The intent of this method is to request a firing of the actor
+     *  at the specified time, but this implementation does not assure
+     *  that. In particular, if there is no executive director, it
+     *  completely ignores the request. If there is an executive director,
+     *  then it is not required to do the firing at the specified time.
+     *  In particular, derived classes may override this method
+     *  and modify the time of the firing, for example to prevent
+     *  attempts to fire an actor in the past.
+     *  Such derived classes should always return the value at which
+     *  they will fire the specified actor. It is up to the actor
+     *  to throw an exception if it is not acceptable for the time
+     *  to differ from the requested time.
+     *  <p>
+     *  Note that it is not correct behavior for a director to override
+     *  this method to simply fire the specified actor. The actor needs
+     *  to be fired as part of the regular execution cycle of that director,
+     *  and that needs to occur after this method has returned.
      *  @param actor The actor scheduled to be fired.
-     *  @param time The scheduled time.
-     *  @exception IllegalActionException If the operation is not
-     *    permissible (e.g. the given time is in the past).
+     *  @param time The requested time.
+     *  @return An instance of Time with value NEGATIVE_INFINITY, or
+     *   if there is an executive director, the time at which the
+     *   container of this director will next be fired
+     *   in response to this request.
+     *  @see #fireAtCurrentTime(Actor)
+     *  @exception IllegalActionException If there is an executive director
+     *   and it throws it. Derived classes may choose to throw this
+     *   exception for other reasons.
      */
-    public void fireAt(Actor actor, Time time) throws IllegalActionException {
+    public Time fireAt(Actor actor, Time time) throws IllegalActionException {
+        // If this director is enclosed within another model, then we
+        // pass the request up the chain. If the enclosing executive director
+        // respects fireAt(), this will result in the container of this
+        // director being iterated again at the requested time. This is
+        // reasonable, for example, in FSM, DE, SR, CT, or any domain that
+        // can safely fire actors other than the one that requested the
+        // refiring at the specified time.
+        if (_isEmbedded()) {
+            CompositeActor container = (CompositeActor) getContainer();
+            return container.getExecutiveDirector().fireAt(container, time);
+        }
+        // If we are not embedded, then return a value indicating that the
+        // fireAt() request is being ignored. If the caller is OK with that,
+        // then no problem.
         // All derived classes of Director for which the fireAt() method is
-        // useful, should implement this method themselves. We throw an
-        // exception if the base class implementation of fireAt is called.
-        // Note that, alternatively, this method could have been abstract.
-        // But we didn't do that, because otherwise we wouldn't be able
-        // to run Tcl Blend test script on this class.
-        
-        // FIXME rodiers: Temporarily removed the exception. I launched a
-        //    discussion on ptdevel and depending on the outcome I'll fix
-        //    the code appropriately. 
-        /*
-        throw new InternalErrorException(this, null,
-                "The actor " +  actor.getFullName() + " is incompatible " +
-                		"with the chosen director.");
-        */
+        // useful, should override this behavior.
+        return new Time(this, Double.NEGATIVE_INFINITY);
     }
 
-    /** Request a firing of the given actor as soon as possible.  If
-     *  this method is called from within the main simulation thread,
-     *  then this will result in the actor being fired at the current
-     *  time.  This method may also be invoked from a thread other
-     *  than the main simulation thread, making it useful for actors
-     *  that perform asynchronous processing, such as waiting for data
-     *  in another thread. In these cases, calling fireAt(actor,
-     *  getCurrentTime()) is not sufficient, since there is no way for
-     *  an asynchronous thread to ensure that time does not advance in
-     *  the model.  When invoked from an asynchronous thread, this
-     *  method will attempt to fire the actor at the earliest time
-     *  that this director is fired.
-     *
-     *  This base class checks to see if the director is embedded
-     *  within a hierarchical model and, if so, calls the
-     *  fireAtCurrentTime method of its executive director. Derived
-     *  classes may should extend this behavior to ensure that the
-     *  given actor is fired as soon as possible.  <p> Note that this
-     *  method is not made abstract to facilitate the use of the test
-     *  suite.
+    /** Request a firing of the given actor at the current model time.
+     *  This base class simply calls fireAt(actor, getModelTime())
+     *  and returns whatever that returns. Note that fireAt() will modify
+     *  the requested time if it happens to be in the past by the time
+     *  it is to be posted on the event queue, which is exactly what we
+     *  want. Note that the returned time may not match the value
+     *  returned by getModelTime() prior to this call.
+     *  <p>
+     *  Note that it is not correct behavior for a director to override
+     *  this method to simply fire the specified actor. The actor needs
+     *  to be fired as part of the regular execution cycle of that director,
+     *  and that needs to occur after this method has returned.
      *  @param actor The actor to be fired.
+     *  @return The time at which the specified actor will be fired,
+     *   which in this case is whatever fireAt() returns.
+     *  @see #fireAt(Actor, Time)
      *  @exception IllegalActionException If this method is called
      *  before the model is running.
      */
-    public void fireAtCurrentTime(Actor actor) throws IllegalActionException {
-        fireAt(actor, getModelTime());
-        // FIXME: the following is not necessary and incorrect.
-        // When a controlled actor call this method, this director handles
-        // that actor only. Whether the container of this director needs to
-        // fire at the current time is another issue. In fact, the postfire()
-        // method of this director is responsible to check whether a refiring
-        // at the current time is necessary. Check the DEDirector for example.
-        if (_isEmbedded()) {
-            CompositeActor container = (CompositeActor) getContainer();
-            container.getExecutiveDirector().fireAtCurrentTime(container);
-        }
-    }
-    
-    /** Schedule an actor to be fired at the specified time or the current
-     *  time, whichever is greater. The implementation in this base class
-     *  is not thread safe, but some derived classes make it so (such as
-     *  the DEDirector). Specifically, this base class does not ensure that
-     *  current time does not change between when it checks current time
-     *  and when it calls fireAt().
-     *  @param actor The scheduled actor to fire.
-     *  @param time The scheduled time to fire.
-     *  @return The time at which the firing will occur.
-     *  @exception IllegalActionException If event queue is not ready.
-     */
-    public Time fireAtFirstValidTimeAfter(Actor actor, Time time) throws IllegalActionException {
-        if (time.compareTo(getModelTime()) < 0) {
-            time = getModelTime();
-        }
-        fireAt(actor, time);
-        return time;
+    public Time fireAtCurrentTime(Actor actor) throws IllegalActionException {
+        return fireAt(actor, getModelTime());
     }
 
     /** Return the current time value of the model being executed by this
@@ -1392,6 +1376,38 @@ public class Director extends Attribute implements Executable {
         } finally {
             _workspace.doneReading();
         }
+    }
+
+    /** Request a firing of the container of this director at the specified time
+     *  and throw an exception if the executive director does not agree to
+     *  do it at the requested time. If there is no executive director (this
+     *  director is at the top level), then ignore the request.
+     *  This is a convenience method provided because several directors need it.
+     *  @param time The requested time.
+     *  @return The time that the executive director indicates it will fire this
+     *   director, or an instance of Time with value Double.NEGATIVE_INFINITY
+     *   if there is no executive director.
+     *  @exception IllegalActionException If the director does not
+     *   agree to fire the actor at the specified time, or if there
+     *   is no director.
+     */
+    protected Time _fireAt(Time time) throws IllegalActionException {
+        CompositeActor container = (CompositeActor)getContainer();
+        if (container != null) {
+            Director director = container.getExecutiveDirector();
+            if (director != null) {
+                Time result = director.fireAt(container, time);
+                if (!result.equals(time)) {
+                    throw new IllegalActionException(this,
+                            "Director is unable to fire the actor at the requested time: "
+                            + time
+                            + ". It responds it will fire it at: "
+                            + result);
+                }
+                return result;
+            }
+        }
+        return new Time(this, Double.NEGATIVE_INFINITY);
     }
 
     /** Return true if this director is embedded inside an opaque composite

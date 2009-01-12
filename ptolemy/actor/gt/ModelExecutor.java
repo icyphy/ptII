@@ -285,9 +285,10 @@ public class ModelExecutor extends TypedAtomicActor {
                 }
             }
 
-            public void fireAt(Actor actor, Time time)
+            public Time fireAt(Actor actor, Time time)
             throws IllegalActionException {
                 _eventQueue.add(new TimedEvent(time, actor));
+                return time;
             }
 
             public Time getModelNextIterationTime() {

@@ -46,7 +46,6 @@ import ptolemy.actor.QueueReceiver;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.util.Time;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
@@ -600,34 +599,6 @@ public class IterateOverArray extends MirrorComposite {
                         break;
                     }
                 }
-            }
-        }
-
-        /** Delegate by calling fireAt() on the director of the container's
-         *  container.
-         *  @param actor The actor requesting firing.
-         *  @param time The time at which to fire.
-         */
-        public void fireAt(Actor actor, Time time)
-                throws IllegalActionException {
-            Director director = IterateOverArray.this.getExecutiveDirector();
-
-            if (director != null) {
-                director.fireAt(actor, time);
-            }
-        }
-
-        /** Delegate by calling fireAtCurrentTime() on the director
-         *  of the container's container.
-         *  @param actor The actor requesting firing.
-         *  @param time The time at which to fire.
-         */
-        public void fireAtCurrentTime(Actor actor)
-                throws IllegalActionException {
-            Director director = IterateOverArray.this.getExecutiveDirector();
-
-            if (director != null) {
-                director.fireAtCurrentTime(actor);
             }
         }
 

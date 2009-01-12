@@ -316,7 +316,7 @@ public class SmallWorldRouter extends TypedAtomicActor {
                 double delayTime = ((DoubleToken) delay.getToken())
                         .doubleValue();
                 Time time = director.getModelTime().add(delayTime);
-                director.fireAt(this, time);
+                _fireAt(time);
             } else if (getName().equals(routeTo) || (hops == 0)) {
                 // Change the color of the icon to green.
                 _circle2.fillColor.setToken("{0.0, 1.0, 0.0, 1.0}");
@@ -393,7 +393,7 @@ public class SmallWorldRouter extends TypedAtomicActor {
                 RecordToken result = new RecordToken(labels, values);
                 _receptions.put(timeDouble, result);
 
-                director.fireAt(this, time);
+                _fireAt(time);
 
                 if (multi) {
                     Token[] values2 = { new DoubleToken(data),
@@ -407,7 +407,7 @@ public class SmallWorldRouter extends TypedAtomicActor {
                     RecordToken result2 = new RecordToken(labels, values2);
                     _receptions.put(timeDouble, result2);
 
-                    director.fireAt(this, time.add(delayTime));
+                    _fireAt(time.add(delayTime));
                 }
 
                 //output.send(0, result);

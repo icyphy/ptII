@@ -348,12 +348,8 @@ public class ERGDirector extends Director implements TimedDirector,
         }
     }
 
-    /** Request a firing of the given actor at the given absolute
-     *  time.  This method is only intended to be called from within
-     *  main simulation thread.  Actors that create their own
-     *  asynchronous threads should used the fireAtCurrentTime()
-     *  method to schedule firings.
-     *
+    /** Request a firing of the given actor at the given model
+     *  time.
      *  This method puts the actor in the event queue in time-stamp order. The
      *  actor will be fired later when the model time reaches the scheduled time
      *  in a way similar to events being processed from the event queue.
@@ -361,22 +357,25 @@ public class ERGDirector extends Director implements TimedDirector,
      *  @param actor The actor scheduled to be fired.
      *  @param time The scheduled time.
      *  @exception IllegalActionException If the operation is not
-     *  permissible (e.g. the given time is in the past).
+     *   permissible (e.g. the given time is in the past), or if the executive director
+     *   does not support fireAt() precisely (it does not agree to refire
+     *   this ERG model at the requested time).
      */
-    public void fireAt(Actor actor, Time time) throws IllegalActionException {
+    public Time fireAt(Actor actor, Time time) throws IllegalActionException {
         if (getContainer() instanceof ModalModel &&
                 actor instanceof RefinementActor) {
             Event event = (Event) ((RefinementActor) actor).getRefinedState();
             if (event != null) {
                 event.getController().director._fireAt(actor, time, null, null,
                         null, 0, false);
-                return;
+                return time;
             }
         }
         _fireAt(actor, time, null, null, null, 0, false);
+        return time;
     }
 
-    /** Request to process an event at the given absolute time. This method puts
+    /** Request to process an event at the given model time. This method puts
      *  the event in the event queue in time-stamp order. The event will be
      *  processed later when the model time reaches the scheduled time.
      *
@@ -388,7 +387,9 @@ public class ERGDirector extends Director implements TimedDirector,
      *  @param reset Whether the refinement of the scheduled event should be
      *   (re)initialized when the event is processed.
      *  @exception IllegalActionException If the operation is not
-     *  permissible (e.g. the given time is in the past).
+     *   permissible (e.g. the given time is in the past), or if the executive director
+     *   does not support fireAt() precisely (it does not agree to refire
+     *   this ERG model at the requested time)
      */
     public void fireAt(Event event, Time time, ArrayToken arguments,
             List<NamedObj> triggers, int priority, boolean reset)
@@ -525,7 +526,9 @@ public class ERGDirector extends Director implements TimedDirector,
      *  time stamp of the next event.
      *
      *  @return True to continue execution, and false otherwise.
-     *  @exception IllegalActionException Not thrown in this base class.
+     *  @exception IllegalActionException If the executive director does
+     *   not support fireAt() precisely (that is, it does not agree to
+     *   refire this ERG model at the requested time).
      */
     public boolean postfire() throws IllegalActionException {
         boolean result = super.postfire();
@@ -793,7 +796,8 @@ public class ERGDirector extends Director implements TimedDirector,
      *  director at the higher level, if any.
      *
      *  @exception IllegalActionException If whether an event is initial event
-     *  cannot be checked.
+     *  cannot be checked, or if the executive director does not support fireAt()
+     *  precisely (it does not agree to refire this ERG at the requested time).
      */
     protected void _insertInitialEvents() throws IllegalActionException {
         ERGController controller = getController();
@@ -1058,7 +1062,9 @@ public class ERGDirector extends Director implements TimedDirector,
      *  @param reset Whether the refinement of the scheduled event should be
      *   (re)initialized when the event is processed.
      *  @exception IllegalActionException If the actor or event is to be
-     *   scheduled at a time in the past.
+     *   scheduled at a time in the past, or if the executive director
+     *   does not support fireAt() precisely (it does not agree to refire
+     *   this ERG model at the requested time).
      */
     private void _fireAt(Object object, Time time, ArrayToken arguments,
             List<NamedObj> triggers, RefiringData data, int priority,
@@ -1149,23 +1155,16 @@ public class ERGDirector extends Director implements TimedDirector,
      *  executive director of the container.
      *
      *  @exception IllegalActionException If the invoked fireAt() method throws
-     *   it.
+     *   it, or if the executive director
+     *   does not support fireAt() precisely (it does not agree to refire
+     *   this ERG model at the requested time).
      */
     private void _requestFiring() throws IllegalActionException {
-        NamedObj container = getContainer();
         if (!_eventQueue.isEmpty()) {
             Time time = _eventQueue.get(0).timeStamp;
-            if (_isInController()) {
-                ERGController controller = (ERGController) container;
-                controller.getExecutiveDirector().fireAt(controller, time);
-            } else {
-                CompositeActor composite = (CompositeActor) container;
-                composite.getExecutiveDirector().fireAt(composite, time);
-            }
+            _fireAt(time);
         } else if (!_refinementQueue.isEmpty()) {
-            ERGController controller = (ERGController) container;
-            controller.getExecutiveDirector().fireAt(controller,
-                    Time.POSITIVE_INFINITY);
+            _fireAt(Time.POSITIVE_INFINITY);
         }
     }
 

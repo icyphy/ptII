@@ -90,10 +90,10 @@ public class TestSource extends TypedAtomicActor {
         count++;
 
         if (count >= 5) {
-            director.fireAt(this, time.add(1.0));
+            _fireAt(time.add(1.0));
             count = 0;
         } else {
-            director.fireAt(this, time);
+            _fireAt(time);
         }
     }
 
@@ -102,7 +102,7 @@ public class TestSource extends TypedAtomicActor {
         count = 0;
 
         Director director = getDirector();
-        director.fireAt(this, director.getModelTime());
+        _fireAt(director.getModelTime());
     }
 
     private double value = 0.0;

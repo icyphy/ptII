@@ -131,7 +131,7 @@ public class SmartSender extends TypedAtomicActor {
         double firingPeriodValue = ((DoubleToken) firingPeriod.getToken())
                 .doubleValue();
         Director director = getDirector();
-        director.fireAt(this, director.getModelTime().add(firingPeriodValue));
+        _fireAt(director.getModelTime().add(firingPeriodValue));
 
         if (output.isOutsideConnected()) {
             output.send(0, new IntToken(_count++));

@@ -175,6 +175,12 @@ import ptolemy.kernel.util.Workspace;
  PoissonClock - under investigation
  Clock        - under investigation
  Expression   - under investigation
+ 4.) This director does not implement fireAt(). Instead, it inherits
+ the implementation from SDF, which isn't quite correct. It does not always
+ return the correct next time of firing. As a workaround, this class does not
+ check the values returned by fireAt(). Thus, if it is embedded in a domain
+ that does not respect the calls to fireAt(), then the user could get
+ odd behavior without any error reported.
  </pre>
 
  @see ptolemy.domains.dt.kernel.DTReceiver

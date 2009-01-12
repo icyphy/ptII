@@ -238,7 +238,7 @@ public class DelayChannel extends ErasureChannel {
             reception.properties = properties;
             _receptions.put(timeDouble, reception);
 
-            director.fireAt(this, time);
+            _fireAt(time);
         }
     }
 

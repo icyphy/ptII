@@ -127,6 +127,10 @@ public class TimedSource extends Source implements TimedActor {
                     Time currentTime = director.getModelTime();
 
                     if (newStopTime.compareTo(currentTime) > 0) {
+                        // NOTE: Do not throw an exception if the director ignores this
+                        // stop time request or returns some other value of time.
+                        // postfire() will return false on the next firing after time
+                        // equals the stop time or exceeds it.
                         director.fireAt(this, newStopTime);
                     } else {
                         throw new IllegalActionException(this, "The stop time "
@@ -177,6 +181,10 @@ public class TimedSource extends Source implements TimedActor {
         Time currentTime = director.getModelTime();
 
         if (!_stopTime.isInfinite() && (_stopTime.compareTo(currentTime) > 0)) {
+            // NOTE: Do not throw an exception if the director ignores this
+            // stop time request or returns some other value of time.
+            // postfire() will return false on the next firing after time
+            // equals the stop time or exceeds it.
             director.fireAt(this, _stopTime);
             _executing = true;
         }
@@ -209,7 +217,7 @@ public class TimedSource extends Source implements TimedActor {
         super.wrapup();
         _executing = false;
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // Flag indicating that the model is running.

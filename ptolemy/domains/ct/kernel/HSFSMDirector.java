@@ -785,7 +785,8 @@ public class HSFSMDirector extends FSMDirector implements CTTransparentDirector 
      *  @return True if the mode controller wishes to be scheduled for
      *   another iteration.
      *  @exception IllegalActionException If thrown by any action, or
-     *   there is no controller.
+     *   there is no controller, or if the director does not
+     *   agree to fire the actor at the specified time.
      */
     public boolean postfire() throws IllegalActionException {
         boolean postfireReturns = true;
@@ -793,8 +794,6 @@ public class HSFSMDirector extends FSMDirector implements CTTransparentDirector 
         FSMActor ctrl = getController();
         State currentState = ctrl.currentState();
 
-        CompositeActor container = (CompositeActor) getContainer();
-        Director executiveDirector = container.getExecutiveDirector();
         Iterator refinements = _enabledRefinements.iterator();
 
         while (refinements.hasNext()) {
@@ -846,21 +845,11 @@ public class HSFSMDirector extends FSMDirector implements CTTransparentDirector 
                         .getRelationList();
                 relationList.resetRelationList();
             }
+            
+            // If we are not at the top level of the hierarchy, request a refiring.
+            _fireAt(getModelTime());
 
-            // If the top level of the model is modal model, the director
-            // is null. We do not request to be fired again since no one in
-            // the upper level of hierarchy will do that.
-            if (executiveDirector != null) {
-                if (_debugging) {
-                    _debug(executiveDirector.getFullName()
-                            + " requests refiring at " + getModelTime());
-                }
-
-                // If there is one transition enabled, the HSFSMDirector requests
-                // to be fired again at the same time to see whether the next
-                // state has some outgoing transition enabled.
-                executiveDirector.fireAt(container, getModelTime());
-            }
+            Director executiveDirector = ((CompositeActor) getContainer()).getExecutiveDirector();
 
             // If this iteration will not generate more events, (the
             // current phase of execution is neithter generating-event nor

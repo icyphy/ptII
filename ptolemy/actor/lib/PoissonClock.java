@@ -216,7 +216,8 @@ public class PoissonClock extends TimedSource {
 
     /** Schedule the first firing at time zero and initialize local variables.
      *  @exception IllegalActionException If the fireAt() method of the
-     *   director throws it.
+     *   director throws it, or if the director does not
+     *   agree to fire the actor at the specified time.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -227,21 +228,22 @@ public class PoissonClock extends TimedSource {
         _nextFiringTime = currentTime;
 
         if (((BooleanToken) fireAtStart.getToken()).booleanValue()) {
-            getDirector().fireAt(this, currentTime);
+            _fireAt(currentTime);
         } else {
             double meanTimeValue = ((DoubleToken) meanTime.getToken())
                     .doubleValue();
             double exp = -Math.log((1 - Math.random())) * meanTimeValue;
             Director director = getDirector();
             _nextFiringTime = director.getModelTime().add(exp);
-            director.fireAt(this, _nextFiringTime);
+            _fireAt(_nextFiringTime);
         }
     }
 
     /** Update the state of the actor and schedule the next firing,
      *  if appropriate.
      *  @exception IllegalActionException If the director throws it when
-     *   scheduling the next firing.
+     *   scheduling the next firing, or if the director does not
+     *   agree to fire the actor at the specified time.
      */
     public boolean postfire() throws IllegalActionException {
         _currentOutputIndex = _tentativeCurrentOutputIndex;
@@ -252,7 +254,7 @@ public class PoissonClock extends TimedSource {
             double exp = -Math.log((1 - Math.random())) * meanTimeValue;
             Director director = getDirector();
             _nextFiringTime = director.getModelTime().add(exp);
-            director.fireAt(this, _nextFiringTime);
+            _fireAt(_nextFiringTime);
         }
 
         return super.postfire();

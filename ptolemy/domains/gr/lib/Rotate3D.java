@@ -36,6 +36,7 @@ import javax.vecmath.Quat4d;
 import javax.vecmath.Vector3d;
 
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.DoubleMatrixToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
@@ -84,7 +85,7 @@ public class Rotate3D extends GRTransform {
         axisDirection = new Parameter(this, "axisDirection",
                 new DoubleMatrixToken(new double[][] { { 0.0, 1.0, 0.0 } }));
 
-        pivotLocation = new Parameter(this, "pivotLocation",
+        pivotLocation = new PortParameter(this, "pivotLocation",
                 new DoubleMatrixToken(new double[][] { { 0.0, 0.0, 0.0 } }));
     }
 
@@ -112,7 +113,7 @@ public class Rotate3D extends GRTransform {
      *  This parameter should contain a DoubleMatrixToken
      *  The default value of this parameter is [0.0, 0.0, 0.0]
      */
-    public Parameter pivotLocation;
+    public PortParameter pivotLocation;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -162,6 +163,19 @@ public class Rotate3D extends GRTransform {
                 _rotation.set(quat);
                 _middleRotate.setTransform(_rotation);
             }
+        }
+        if (pivotLocation.getPort().isOutsideConnected()) {
+            pivotLocation.update();
+
+            DoubleMatrixToken pivot = (DoubleMatrixToken) pivotLocation.getToken();
+
+            _baseX = (float) pivot.getElementAt(0, 0);
+            _baseY = (float) pivot.getElementAt(0, 1);
+            _baseZ = (float) pivot.getElementAt(0, 2);
+
+            Transform3D bottomTransform = new Transform3D();
+            bottomTransform.setTranslation(new Vector3d(-_baseX, -_baseY, -_baseZ));
+            _bottomTranslate.setTransform(bottomTransform);
         }
     }
 

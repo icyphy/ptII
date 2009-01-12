@@ -469,10 +469,11 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
                 if (_transferAllInputs()) {
                     continue;
                 }
+                // The following will throw an exception if the executive director does
+                // not exactly respect the request to refire at the given time.
+                _fireAt(nextRealTimeEventTime);
+
                 Director executiveDirector = ((Actor) getContainer()).getExecutiveDirector();
-                executiveDirector.fireAt(
-                        (Actor) this.getContainer(), nextRealTimeEventTime);
-                
                 while (executiveDirector != null && !(executiveDirector instanceof PtidesDirector))
                     executiveDirector = ((Actor)executiveDirector.getContainer()).getExecutiveDirector();
                 if (executiveDirector == null)
@@ -494,19 +495,22 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
      * @exception IllegalActionException
      *                If event queue is not ready.
      */
-    public void fireAt(Actor actor, Time time) throws IllegalActionException {
-        if (((CompositeActor)getContainer()).entityList().contains(actor)) 
+    public Time fireAt(Actor actor, Time time) throws IllegalActionException {
+        if (((CompositeActor)getContainer()).entityList().contains(actor))  {
             _enqueueEvent(actor, time);
-        else {
+        } else {
             Actor containingActor = (Actor)actor.getContainer();
-            while (!((CompositeActor)getContainer()).entityList().contains(actor))
+            while (!((CompositeActor)getContainer()).entityList().contains(actor)) {
                 containingActor = (Actor) containingActor.getContainer();
+            }
             _enqueueEvent(containingActor, time);
         }
         Director executiveDirector = ((Actor)actor.getContainer()).getExecutiveDirector();
         
-        if (!(executiveDirector instanceof PtidesDirector))
-            executiveDirector.fireAt((Actor)actor.getContainer(), time);
+        if (!(executiveDirector instanceof PtidesDirector)) {
+            return executiveDirector.fireAt((Actor)actor.getContainer(), time);
+        }
+        return time;
     }
 
     /**
@@ -619,8 +623,9 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
             if (event != null) 
                 return true;
             if (!nextRealTimeEventTime.equals(Time.POSITIVE_INFINITY))
-                executiveDirector.fireAt(
-                    (Actor) this.getContainer(), nextRealTimeEventTime);
+                // The following will throw an exception if the executive director
+                // does not exactly respect the fireAt() request.
+                _fireAt(nextRealTimeEventTime);
             return false;
         } else
             return super.prefire();

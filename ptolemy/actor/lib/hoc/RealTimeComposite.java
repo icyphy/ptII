@@ -543,8 +543,9 @@ public class RealTimeComposite extends MirrorComposite {
          *  @param actor The actor requesting firing.
          *  @param time The time at which to fire.
          */
-        public void fireAt(Actor actor, Time time)
+        public Time fireAt(Actor actor, Time time)
                 throws IllegalActionException {
+            Time result = time;
             Director director = RealTimeComposite.this.getExecutiveDirector();
             if (director != null) {
                 if (RealTimeComposite.this._debugging) {
@@ -552,7 +553,7 @@ public class RealTimeComposite extends MirrorComposite {
                             ._debug("---- Actor requests firing at time "
                                     + time + ": " + actor.getFullName());
                 }
-                director.fireAt(RealTimeComposite.this, time);
+                result = director.fireAt(RealTimeComposite.this, time);
             }
             if (actor != RealTimeComposite.this) {
                 // The fireAt() request is coming from the inside, so
@@ -561,6 +562,7 @@ public class RealTimeComposite extends MirrorComposite {
                 // the associated thread.
                 _fireAtTimes.add(time);
             }
+            return time;
         }
 
         /** Fire the specified actor at the first opportunity
@@ -577,7 +579,7 @@ public class RealTimeComposite extends MirrorComposite {
          *  @param actor The actor requesting firing (ignored).
          *  @param time The time at which to fire.
          */
-        public void fireAtCurrentTime(Actor actor)
+        public Time fireAtCurrentTime(Actor actor)
                 throws IllegalActionException {
             Time environmentTime = RealTimeComposite.this
                     .getExecutiveDirector().getModelTime();
@@ -602,7 +604,9 @@ public class RealTimeComposite extends MirrorComposite {
                                     + time);
                 }
                 director.fireAt(RealTimeComposite.this, time);
+                return time;
             }
+            return environmentTime;
         }
 
         /** Return the current time of the enclosing actor if the delay

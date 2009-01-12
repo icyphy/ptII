@@ -144,7 +144,7 @@ public class VirtualTinyOS extends TypedAtomicActor {
             // signal a timer interupt here to the application.
             triggerTimerEvent();
             _scheduledTime = _scheduledTime.add(_timerPeriod);
-            director.fireAt(this, _scheduledTime);
+            _fireAt(_scheduledTime);
         } else if (_hasLed) {
             if (_debugging) {
                 _debug("LED Blinking");
@@ -154,7 +154,7 @@ public class VirtualTinyOS extends TypedAtomicActor {
             // Change the color of the icon to red.
             _circle.fillColor.setToken("{1.0, 0.0, 0.1, 0.7}");
             _hasLed = false;
-            director.fireAt(this, director.getModelTime().add(0.5));
+            _fireAt(director.getModelTime().add(0.5));
         } else {
             // Set color back to blue.
             _circle.fillColor.setToken("{0.0, 0.0, 1.0, 0.05}");
@@ -171,7 +171,7 @@ public class VirtualTinyOS extends TypedAtomicActor {
                 _hasLed = true;
 
                 Time currentTime = director.getModelTime();
-                director.fireAt(this, currentTime);
+                _fireAt(currentTime);
 
                 //then change the color of the node in fire();
             } catch (IllegalActionException e) {
@@ -197,7 +197,7 @@ public class VirtualTinyOS extends TypedAtomicActor {
 
         if (period >= 0) {
             try {
-                getDirector().fireAt(this, currentTime);
+                _fireAt(currentTime);
                 _hasTimer = true;
                 _timerPeriod = period;
                 _scheduledTime = currentTime;

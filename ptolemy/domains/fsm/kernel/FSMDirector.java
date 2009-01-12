@@ -326,13 +326,22 @@ public class FSMDirector extends Director implements
      *  If there exists an executive director, this method delegates to
      *  the fireAt() method of the executive director by requesting
      *  a firing of the container of this director at the given time.
+     *  <p>
      *  If there is no executive director, then the request results
      *  in model time of this director being set to the specified time.
+     *  The reason for this latter behavior is to support models
+     *  where FSM is at the top level. A director inside the state
+     *  refinements could be timed, and expects time to advance
+     *  in its environment between firings. It typically makes a call
+     *  to fireAt() at the conclusion of each iteration to specify
+     *  the time value it expects to next see. Such directors can
+     *  thus be used inside top-level FSM models. For example, the
+     *  DEDirector and SDFDirector behave exactly this way.
      *  @param actor The actor scheduled to be fired.
      *  @param time The scheduled time.
      *  @exception IllegalActionException If thrown by the executive director.
      */
-    public void fireAt(Actor actor, Time time) throws IllegalActionException {
+    public Time fireAt(Actor actor, Time time) throws IllegalActionException {
         // Note that the actor parameter is ignored, because it does not
         // matter which actor requests firing.
         Nameable container = getContainer();
@@ -340,12 +349,11 @@ public class FSMDirector extends Director implements
             Actor modalModel = (Actor) container;
             Director executiveDirector = modalModel.getExecutiveDirector();
             if (executiveDirector != null) {
-                executiveDirector.fireAt(modalModel, time);
-            } else {
-                // FIXME: This does not look right!
-                setModelTime(time);
+                return executiveDirector.fireAt(modalModel, time);
             }
         }
+        setModelTime(time);
+        return time;
     }
 
     /** Return the mode controller of this director. The name of the
@@ -676,6 +684,12 @@ public class FSMDirector extends Director implements
      *  state to the destination state of the transition.
      *  This will return false if any refinement that is postfired
      *  returns false.
+     *  <p>
+     *  If any transition was taken in this iteration, and if there
+     *  is an executive director, then this method calls fireAtCurrentTime(Actor)
+     *  on that executive director. This requests a refiring in case the
+     *  there is an enabled transition. If there is, then the current
+     *  state is transient, and we will want to spend zero time in it.
      *  @return True if the mode controller wishes to be scheduled for
      *   another iteration.
      *  @exception IllegalActionException If thrown by any commit action
@@ -717,7 +731,7 @@ public class FSMDirector extends Director implements
                             + executiveDirector.getFullName() + " at "
                             + getModelTime());
                 }
-                executiveDirector.fireAt(container, getModelTime());
+                executiveDirector.fireAtCurrentTime(container);
             }
         }
         return result && !_stopRequested;

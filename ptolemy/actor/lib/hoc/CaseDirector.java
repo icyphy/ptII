@@ -51,7 +51,7 @@ import ptolemy.kernel.util.Nameable;
 //// CaseDirector
 
 /**
- An CaseDirector governs the execution of a case actor.
+ An CaseDirector governs the execution of a Case actor.
  This director simply delegates to the refinement whose name
  matches the value of the current control input.
 
@@ -85,12 +85,20 @@ public class CaseDirector extends Director {
 
     /** Schedule a firing of the given actor at the given time.
      *  If there is an executive director, this method delegates to it.
-     *  Otherwise, this method simply sets the model time to the specified time.
+     *  Otherwise, it sets its own notion of current time to that
+     *  specified in the argument. The reason for this is to enable
+     *  Case to be a top-level actor and to support the design pattern
+     *  where a director requests a refiring at the next time it wishes
+     *  to be awakened, just prior to returning from fire(). DEDirector,
+     *  for example, does that, as does the SDFDirector if the period
+     *  parameter is set.
      *  @param actor The actor scheduled to be fired.
      *  @param time The scheduled time.
+     *  @return The time returned by the executive director, or
+     *   or the specified time if there isn't one.
      *  @exception IllegalActionException If by the executive director.
      */
-    public void fireAt(Actor actor, Time time) throws IllegalActionException {
+    public Time fireAt(Actor actor, Time time) throws IllegalActionException {
         // Note that the actor parameter is ignored, because it does not
         // matter which actor requests firing.
         Nameable container = getContainer();
@@ -100,11 +108,11 @@ public class CaseDirector extends Director {
             Director executiveDirector = modalModel.getExecutiveDirector();
 
             if (executiveDirector != null) {
-                executiveDirector.fireAt(modalModel, time);
-            } else {
-                setModelTime(time);
+                return executiveDirector.fireAt(modalModel, time);
             }
         }
+        setModelTime(time);
+        return time;
     }
 
     /** Fire the current refinement.

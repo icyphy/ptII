@@ -379,7 +379,7 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
      *  @exception IllegalActionException If the time is earlier than
      *  the current time, or the breakpoint table is null.
      */
-    public void fireAt(Actor actor, Time time) throws IllegalActionException {
+    public Time fireAt(Actor actor, Time time) throws IllegalActionException {
         // Check if the request time is earlier than the current time.
         Time currentTime = getModelTime();
 
@@ -402,6 +402,7 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
 
         // insert a new breakpoint into the breakpoint table.
         _breakpoints.insert(time);
+        return time;
     }
 
     /** Return the breakpoint table. The result can be null if the breakpoint
@@ -584,8 +585,9 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
     public boolean postfire() throws IllegalActionException {
         if (!_isTopLevel() && (getBreakPoints().size() > 0)) {
             Time time = (Time) getBreakPoints().first();
-            CompositeActor container = (CompositeActor) getContainer();
-            container.getExecutiveDirector().fireAt(container, time);
+            // The following will throw an exception if the enclosing director
+            // does not respect the fireAt() request exactly.
+            _fireAt(time);
         }
 
         boolean postfireReturns = _postfireReturns && !_stopRequested;

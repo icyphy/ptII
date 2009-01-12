@@ -155,13 +155,7 @@ public class SingleEvent extends TypedAtomicActor {
         double eventTime = ((DoubleToken) time.getToken()).doubleValue();
 
         if (eventTime >= 0.0) {
-            Director director = getDirector();
-
-            if (director != null) {
-                director.fireAt(this, new Time(director, eventTime));
-            } else {
-                throw new IllegalActionException(this, "No director.");
-            }
+            _fireAt(eventTime);
         }
     }
 }

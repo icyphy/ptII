@@ -658,13 +658,40 @@ public class DEDirector extends Director implements TimedDirector {
     }
 
     /** Schedule an actor to be fired at the specified time by posting
-     *  a pure event to the director. If the requested time is in the past
-     *  relative to the current time, an exception is thrown.
+     *  a pure event to the director, and return the time at which
+     *  the specified actor will be fired. If the requested time is in the past
+     *  relative to the current time, then it will be increased to match
+     *  current time. The caller to this method is responsible for throwing
+     *  an exception if it is not acceptable for that time to differ from
+     *  the requested time.
+     *  <p>
+     *  If this director is embedded within another model (the container
+     *  has an executive director), and this method is being called between
+     *  iterations of this director (which can only occur from a thread
+     *  different from the one firing this director), then
+     *  this method also delegates a request to the executive director
+     *  to fire the container of this director at the requested time.
+     *  If the executive director returns a value different from the
+     *  specified time, then this method will use that revised value
+     *  to schedule the firing of the specified actor, and will return
+     *  that value.
+     *  <p>
+     *  A subtle corner case can occur in a multithreaded execution that
+     *  will trigger an exception. In particular, it is possible for this
+     *  director to delegate a request to its executive director, and
+     *  for that request to be honored before it has posted the event
+     *  on its own local event queue. This situation is avoided, for
+     *  example, by putting this director within a ThreadedComposite
+     *  actor. If this situation occurs, an exception will be thrown.
      *  @param actor The scheduled actor to fire.
      *  @param time The scheduled time to fire.
-     *  @exception IllegalActionException If event queue is not ready.
+     *  @return The time at which the actor will be fired, which matches
+     *   the argument.
+     *  @exception IllegalActionException If the event queue is not ready,
+     *   or if a threading error occurs that would result in returning
+     *   a time value that is already in the past.
      */
-    public void fireAt(Actor actor, Time time) throws IllegalActionException {
+    public Time fireAt(Actor actor, Time time) throws IllegalActionException {
         if (_eventQueue == null) {
             throw new IllegalActionException(this,
                     "Calling fireAt() before preinitialize().");
@@ -673,82 +700,78 @@ public class DEDirector extends Director implements TimedDirector {
             _debug("DEDirector: Actor " + actor.getFullName()
                     + " requests refiring at " + time);
         }
-
+        // Normally, we do not need to delegate the request up
+        // the hierarchy. This will be done in postfire.
         // We want to keep event queues at all levels in hierarchy
         // as short as possible. So, this pure event is not reported
         // to the higher level in hierarchy immediately. The postfire
-        // method of this director is responsible to report the next
+        // method of this director will report the next
         // earliest event in the event queue to the higher level.
-        synchronized (_eventQueue) {
-            _enqueueEvent(actor, time);
-            _eventQueue.notifyAll();
-        }
-        // If this is occurring between iterations within
+        // However, if this request is occurring between iterations within
         // an opaque composite actor, then postfire() will not
         // be invoked again to pass this fireAt() request up
         // the hierarchy to the executive director.  We
-        // have to pass it up here.
+        // have to pass it up here. We need to do this before
+        // enqueueing the local event because the enclosing director
+        // may return a different time from the one we specified.
+        // We would like to prevent time from advancing while this request
+        // is passed up the chain. Otherwise, the enclosing executive
+        // director could respond to the fireAt() request before we
+        // get our own request posted on the event queue. This has the
+        // unfortunate cost of resulting in multiple nested synchronized
+        // blocks being possible, which will almost certainly trigger a
+        // deadlock. Hence, we cannot do the following within the synchronized
+        // block. Instead, we have to check for the error after the synchronized
+        // block and throw an exception.
+        Time result = time;
         if (_delegateFireAt) {
+            if (result.compareTo(getModelTime()) < 0) {
+                // NOTE: There is no assurance in a multithreaded situation
+                // that time will not advance prior to the posting of
+                // this returned time on the local event queue, so
+                // an exception can still occur reporting an attempt
+                // to post an event in the past.
+                result = getModelTime();
+            }
             CompositeActor container = (CompositeActor) getContainer();
             if (_debugging) {
                 _debug("DEDirector: Requests refiring of: "
                         + container.getName() + " at time " + time);
             }
             // Enqueue a pure event to fire the container of this director.
-            container.getExecutiveDirector().fireAt(container, time);
+            // Note that if the enclosing director is ignoring fireAt(),
+            // or if it cannot refire at exactly the requested time,
+            // then the following will throw an exception.
+            result = _fireAt(result);
         }
-    }      
-
-    /** Schedule a firing of the given actor at the current time.
-     *  @param actor The actor to be fired.
-     *  @exception IllegalActionException If event queue is not ready.
-     */
-    public void fireAtCurrentTime(Actor actor) throws IllegalActionException {
-        if (_eventQueue == null) {
-            throw new IllegalActionException(this,
-                    "Calling fireAt() before preinitialize().");
-        }
-        // This has to be synchronized at this level to make sure
-        // that time does not advance between getModelTime() and
-        // the enqueueing of the event.
         synchronized (_eventQueue) {
-            fireAt(actor, getModelTime());
+            if (!_delegateFireAt) {
+                // If we have not made a request to the executive director,
+                // then we can modify time here. If we have, then we can't,
+                // but if the time of that request is now in the past,
+                // we will throw an exception with an attempt to post
+                // an event in the past.
+                if (result.compareTo(getModelTime()) < 0) {
+                    // NOTE: There is no assurance in a multithreaded situation
+                    // that time will not advance prior to the posting of
+                    // this returned time on the local event queue, so
+                    // an exception can still occur reporting an attempt
+                    // to post an event in the past.
+                    result = getModelTime();
+                }
+            }
+            _enqueueEvent(actor, result);
+            _eventQueue.notifyAll();
         }
+        return result;
     }
     
-    /** Schedule an actor to be fired at the specified time by posting
-     *  a pure event to the director. If the requested time is in the past
-     *  relative to the current time, the time of the event is increased to
-     *  the first valid fire time.
-     *  @param actor The scheduled actor to fire.
-     *  @param time The scheduled time to fire.
-     *  @return The time at which the firing will occur.
-     *  @exception IllegalActionException If event queue is not ready.
-     */
-    public Time fireAtFirstValidTimeAfter(Actor actor, Time time) throws IllegalActionException {
-        // This has to be synchronized at this level to make sure
-        // that time does not advance between getModelTime() and
-        // the enqueueing of the event.
-        synchronized (_eventQueue) {
-            if (time.compareTo(getModelTime()) < 0) {
-                time = getModelTime();
-            }
-
-            // FIXME: This is only a temporary solution and  it is not guaranteed to work
-            // since the time of the executive director can still advance.
-            // Furthermore we also should test the executive director of the executive
-            // director...
-            if (_delegateFireAt) {
-                CompositeActor container = (CompositeActor) getContainer();
-                Director director = container.getExecutiveDirector();
-                if (time.compareTo(director.getModelTime()) < 0) {
-                    time = director.getModelTime();
-                }
-            }            
-            fireAt(actor, time);
-            return time;
-        }
-    }    
+    // NOTE: We do not need to override fireAtCurrentTime(Actor) because in
+    // the base class it does the right thing. In particular, it attempts
+    // to fire at the time returned by getModelTime(), but if by the time
+    // it enters the synchronized block that time is in the past, it
+    // adjusts the time to match current time. This is exactly what
+    // fireAtCurrentTime(Actor) should do.
 
     /** Schedule an actor to be fired in the specified time relative to
      *  the current model time.
@@ -1873,22 +1896,21 @@ public class DEDirector extends Director implements TimedDirector {
      *  This method is used when the director is embedded inside an opaque
      *  composite actor. If the queue is empty, then throw an
      *  IllegalActionException.
-     *  @exception IllegalActionException If the queue is empty.
+     *  @exception IllegalActionException If the queue is empty, or
+     *   if the executive director does not respect the fireAt() call.
      */
     private void _requestFiring() throws IllegalActionException {
         DEEvent nextEvent = null;
         nextEvent = _eventQueue.get();
 
-        CompositeActor container = (CompositeActor) getContainer();
-
         if (_debugging) {
+            CompositeActor container = (CompositeActor) getContainer();
             _debug("DEDirector: Requests refiring of: " + container.getName()
                     + " at time " + nextEvent.timeStamp());
         }
 
         // Enqueue a pure event to fire the container of this director.
-        container.getExecutiveDirector().fireAt(container,
-                nextEvent.timeStamp());
+        _fireAt(nextEvent.timeStamp());
     }
 
     ///////////////////////////////////////////////////////////////////

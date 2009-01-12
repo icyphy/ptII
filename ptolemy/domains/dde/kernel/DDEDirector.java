@@ -217,7 +217,7 @@ public class DDEDirector extends CompositeProcessDirector implements
      * the past or if the thread calling this method is a DDEThread
      * but the specified actor is not contained by the DDEThread.
      */
-    public void fireAt(Actor actor, Time time) throws IllegalActionException {
+    public Time fireAt(Actor actor, Time time) throws IllegalActionException {
         double ETERNITY = PrioritizedTimedQueue.ETERNITY;
         DDEThread ddeThread;
         Thread thread = Thread.currentThread();
@@ -231,12 +231,12 @@ public class DDEDirector extends CompositeProcessDirector implements
             }
 
             _initialTimeTable.put(actor, Double.valueOf(time.getDoubleValue()));
-            return;
+            return time;
         }
 
         if ((_completionTime.getDoubleValue() != ETERNITY)
                 && (time.compareTo(_completionTime) > 0)) {
-            return;
+            return time;
         }
 
         Actor threadActor = ddeThread.getActor();
@@ -261,6 +261,7 @@ public class DDEDirector extends CompositeProcessDirector implements
             throw new IllegalActionException(((NamedObj) actor).getName()
                     + " - Attempt to " + "set current time in the past.");
         }
+        return time;
     }
 
     /**

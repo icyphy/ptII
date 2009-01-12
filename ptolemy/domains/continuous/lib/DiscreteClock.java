@@ -88,7 +88,8 @@ public class DiscreteClock extends Clock {
     /** Override the base class to initialize the index.
      *  @exception IllegalActionException If the parent class throws it,
      *   or if the <i>values</i> parameter is not a row vector, or if the
-     *   fireAt() method of the director throws it.
+     *   fireAt() method of the director throws it, or if the director does not
+     *   agree to fire the actor at the specified time.
      */
     public synchronized void initialize() throws IllegalActionException {
         super.initialize();

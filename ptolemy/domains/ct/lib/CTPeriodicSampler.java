@@ -204,8 +204,8 @@ public class CTPeriodicSampler extends Transformer implements CTEventGenerator {
             if (_debugging) {
                 _debug("Request refiring at " + _nextSamplingTime);
             }
-
-            getDirector().fireAt(this, _nextSamplingTime);
+            
+            _fireAt(_nextSamplingTime);
         }
 
         return true;

@@ -28,6 +28,7 @@
 package ptolemy.domains.wireless.lib;
 
 import ptolemy.actor.Director;
+import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.SingletonParameter;
@@ -155,8 +156,8 @@ public class GraphicalLocator extends Locator {
 
             // Request refiring one second later to change
             // the icon back to blue.
-            Director director = getDirector();
-            director.fireAt(this, director.getModelTime().add(1.0));
+            Time time = getDirector().getModelTime().add(1.0);
+            _fireAt(time);
         } else {
             // Set color to blue.
             _circle.fillColor.setToken("{0.0, 0.0, 1.0, 0.05}");

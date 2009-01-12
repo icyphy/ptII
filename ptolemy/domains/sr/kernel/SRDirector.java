@@ -27,7 +27,9 @@
 package ptolemy.domains.sr.kernel;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
+import ptolemy.actor.Manager;
 import ptolemy.actor.sched.FixedPointDirector;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
@@ -144,37 +146,60 @@ public class SRDirector extends FixedPointDirector {
 
     /** Request a firing of the given actor at the given absolute
      *  time.  This method delegates to the enclosing director
-     *  if there is one, and otherwise ignores the request.
+     *  if there is one. Otherwise, it checks to see whether the
+     *  requested time is equal to the current time plus an integer
+     *  multiple of the period. If so, it returns requested time.
+     *  If not, it returns current time plus the period,
+     *  even if the period is 0.0, thus indicating to the caller the next
+     *  time at which it will be called.
      *  @param actor The actor scheduled to be fired.
-     *  @param time The scheduled time.
+     *  @param time The requested time.
      *  @exception IllegalActionException If the operation is not
      *    permissible (e.g. the given time is in the past).
      */
-    public void fireAt(Actor actor, Time time) throws IllegalActionException {
+    public Time fireAt(Actor actor, Time time) throws IllegalActionException {
         Actor container = (Actor) getContainer();
         if (container != null) {
             Director executiveDirector = container.getExecutiveDirector();
             if (executiveDirector != null) {
-                executiveDirector.fireAt(container, time);
+                return executiveDirector.fireAt(container, time);
             }
         }
-    }
-
-    /** Request a firing of the given actor at the current
-     *  time.  This method delegates to the enclosing director
-     *  if there is one, and otherwise ignores the request.
-     *  @param actor The actor scheduled to be fired.
-     *  @exception IllegalActionException If the enclosing director
-     *   throws it.
-     */
-    public void fireAtCurrentTime(Actor actor) throws IllegalActionException {
-        Actor container = (Actor) getContainer();
+        // No executive director. Return current time plus the period,
+        // or some multiple of the period.
+        // NOTE: this is potentially very expensive to compute precisely
+        // because the Time class has an infinite range and only supports
+        // precise addition. Determining whether the argument satisfies
+        // the criterion seems difficult. Hence, we check to be sure
+        // that the test is worth doing.
+        Time currentTime = getModelTime();
+        double periodValue = ((DoubleToken)period.getToken()).doubleValue();
+        // Check the most common case first.
+        if (periodValue == 0.0) {
+            // All subsequent firings will be at the current time.
+            return currentTime;
+        }
+        // Now we know the period is not 0.0.
+        // First check to see whether we are in the initialize phase, in
+        // which case, return the start time.
         if (container != null) {
-            Director executiveDirector = container.getExecutiveDirector();
-            if (executiveDirector != null) {
-                executiveDirector.fireAtCurrentTime(container);
+            Manager manager = ((CompositeActor) container).getManager();
+            if (manager.getState().equals(Manager.INITIALIZING)) {
+                return currentTime;
             }
         }
+        if (time.isInfinite() || currentTime.compareTo(time) > 0) {
+            // Either the requested time is infinite or it is in the past.
+            return currentTime.add(periodValue);
+        }
+        Time futureTime = currentTime;
+        while (time.compareTo(futureTime) > 0) {
+            futureTime = futureTime.add(periodValue);
+            if (futureTime.equals(time)) {
+                return time;
+            }
+        }
+        return currentTime.add(periodValue);
     }
     
     /** Return the time value of the next iteration.
@@ -311,8 +336,11 @@ public class SRDirector extends FixedPointDirector {
 
             if (executiveDirector != null) {
                 // Not at the top level.
-                executiveDirector.fireAt(container, currentTime
-                        .add(periodValue));
+                // NOTE: The following throws an exception if the time
+                // requested cannot be honored by the enclosed director
+                // Presumably, if the user set the period, he or she wanted
+                // that behavior.
+                _fireAt(currentTime.add(periodValue));
             } else {
                 // At the top level.
                 setModelTime(currentTime.add(periodValue));

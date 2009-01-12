@@ -384,9 +384,7 @@ public class DiscreteClock extends TimedSource {
                 _debug("Requesting firing at time " + _startTime);
             }
 
-            // This should be the last line, because in threaded domains,
-            // it could execute immediately.
-            getDirector().fireAt(this, _tentativeNextFiringTime);
+            _fireAt(_tentativeNextFiringTime);
         }
     }
 
@@ -494,7 +492,7 @@ public class DiscreteClock extends TimedSource {
         // explicitly indicates no firing with Double.NEGATIVE_INFINITY.
         if (!_done
                 && (_tentativeNextFiringTime.compareTo(Time.NEGATIVE_INFINITY) != 0)) {
-            getDirector().fireAt(this, _tentativeNextFiringTime);
+            _fireAt(_tentativeNextFiringTime);
 
             if (_debugging) {
                 _debug("Requesting firing at: " + _tentativeNextFiringTime

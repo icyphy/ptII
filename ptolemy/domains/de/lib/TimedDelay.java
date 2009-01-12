@@ -276,7 +276,7 @@ public class TimedDelay extends DETransformer {
             Time eventTime = earliestEvent.timeStamp;
 
             if (eventTime.equals(currentTime)) {
-                getDirector().fireAt(this, currentTime);
+                _fireAt(currentTime);
             }
         }
 
@@ -284,7 +284,7 @@ public class TimedDelay extends DETransformer {
         if (_currentInput != null) {
             _delayedOutputTokens
                     .put(new TimedEvent(delayToTime, _currentInput));
-            getDirector().fireAt(this, delayToTime);
+            _fireAt(delayToTime);
         }
 
         return super.postfire();

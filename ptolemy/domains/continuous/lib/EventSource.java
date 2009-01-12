@@ -215,7 +215,8 @@ public class EventSource extends TypedAtomicActor {
     /** Schedule the first firing and initialize local variables.
      *  @exception IllegalActionException If the parent class throws it,
      *   or if the <i>values</i> parameter is not a row vector, or if the
-     *   fireAt() method of the director throws it.
+     *   fireAt() method of the director throws it, or if the director does not
+     *   agree to fire the actor at the specified time.
      */
     public synchronized void initialize() throws IllegalActionException {
         super.initialize();
@@ -229,14 +230,15 @@ public class EventSource extends TypedAtomicActor {
 
         // Schedule the first firing.
         _nextOutputTime = _cycleStartTime.add(_offsets[0]);
-        director.fireAt(this, _nextOutputTime);
+        _fireAt(_nextOutputTime);
     }
 
     /** Update the state of the actor and schedule the next firing,
      *  if the director is in the discrete phase.
      *  @exception IllegalActionException If the director throws it when
      *   scheduling the next firing, or if the length of the values and
-     *   offsets parameters don't match.
+     *   offsets parameters don't match, or if the director does not
+     *   agree to fire the actor at the specified time.
      */
     public boolean postfire() throws IllegalActionException {
         if (!_readyToFire) {
@@ -262,7 +264,7 @@ public class EventSource extends TypedAtomicActor {
         }
 
         _nextOutputTime = _cycleStartTime.add(_offsets[_phase]);
-        director.fireAt(this, _nextOutputTime);
+        _fireAt(_nextOutputTime);
         return true;
     }
 
@@ -277,7 +279,7 @@ public class EventSource extends TypedAtomicActor {
         _readyToFire = rightIndex && rightTime;
         return super.prefire();
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // The following are all transient because they need not be cloned.

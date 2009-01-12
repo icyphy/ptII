@@ -186,24 +186,21 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      *  at the current model time.
      *  @see CTMultiSolverDirector#initialize()
      *  @exception IllegalActionException If thrown by the initialize method
-     *  of super class, or the quest for refiring can not be accepted.
+     *   of super class, or the quest for refiring can not be accepted, or if the director does not
+     *   agree to fire the actor at the specified time.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
         _mutationVersion = -1;
-
-        if (!_isTopLevel()) {
-            TypedCompositeActor container = (TypedCompositeActor) getContainer();
-            Director exe = container.getExecutiveDirector();
-            exe.fireAt(container, getModelTime());
-        }
+        _fireAt(getModelTime());
     }
 
     /** If this is not a top-level director, request a refiring at the current
      *  model time. Otherwise, behave exactly as a CTMultiSolverDirector.
      *  @return True if the simulation is not finished.
      *  @exception IllegalActionException If thrown in the postfire method
-     *  in the super class or the refiring can not be granted.
+     *   in the super class or the refiring can not be granted, or if the director does not
+     *   agree to fire the actor at the specified time.
      */
     public boolean postfire() throws IllegalActionException {
         if (!_isTopLevel()) {
@@ -215,6 +212,8 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             // again at t + h, we insert t + h into the breakpoint table.
             // This will cause the superclass (in its postfire() method)
             // to call fireAt() on the enclosing (executive) director.
+            // Note that we do not want to directly call the superclass
+            // fireAt() here.
             fireAt((CompositeActor) getContainer(), getModelTime());
         }
 

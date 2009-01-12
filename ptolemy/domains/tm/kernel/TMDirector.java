@@ -493,10 +493,11 @@ public class TMDirector extends Director implements TimedDirector {
      *  time of this director reaches the specified time.
      *  @param actor The scheduled actor to fire.
      *  @param time The scheduled time to fire.
+     *  @return The same time argument passed in.
      *  @exception IllegalActionException If requested time is in
      *  the past.
      */
-    public void fireAt(Actor actor, Time time) throws IllegalActionException {
+    public Time fireAt(Actor actor, Time time) throws IllegalActionException {
         // ignore requests that are later than the stop time.
         if (_debugging) {
             _debug("+ requesting firing of " + ((Nameable) actor).getFullName()
@@ -513,6 +514,7 @@ public class TMDirector extends Director implements TimedDirector {
             DEEvent interruptEvent = new DEEvent(actor, time, 0, 0);
             _interruptQueue.put(interruptEvent);
         }
+        return time;
     }
 
     /** Set the starting time of execution and initialize all the
@@ -921,8 +923,9 @@ public class TMDirector extends Director implements TimedDirector {
         }
 
         // Enqueue a refire for the container of this director.
-        ((CompositeActor) getContainer()).getExecutiveDirector().fireAt(
-                (Actor) getContainer(), time);
+        // Note that this will throw an exception if the executive director
+        // cannot honor it precisely.
+        _fireAt(time);
     }
 
     ///////////////////////////////////////////////////////////////////

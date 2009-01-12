@@ -516,7 +516,7 @@ public class PHY extends NetworkActorBase {
 
         // put all timers of this object into a queue
         _timersSet.add(timer);
-        getDirector().fireAt(this, expirationTime);
+        _fireAt(expirationTime);
         return timer;
     }
 

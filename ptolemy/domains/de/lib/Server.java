@@ -227,7 +227,7 @@ public class Server extends DETransformer {
 
         if (_nextTimeFree.equals(Time.NEGATIVE_INFINITY) && _queue.size() > 0) {
             _nextTimeFree = currentTime.add(serviceTimeValue);
-            getDirector().fireAt(this, _nextTimeFree);
+            _fireAt(_nextTimeFree);
         }
         return super.postfire();
     }

@@ -381,7 +381,7 @@ public class CollisionDetector extends TypedAtomicActor {
 
                 // Schedule this actor to be fired at the end of
                 // the duration of the message.
-                getDirector().fireAt(this, time);
+                _fireAt(time);
             }
         }
 

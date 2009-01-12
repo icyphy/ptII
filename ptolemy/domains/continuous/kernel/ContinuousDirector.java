@@ -489,7 +489,7 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  @exception IllegalActionException If the time is earlier than
      *  the current time.
      */
-    public void fireAt(Actor actor, Time time) throws IllegalActionException {
+    public Time fireAt(Actor actor, Time time) throws IllegalActionException {
         if (_debugging) {
             _debug(actor.getName() + " requests refiring at " + time);
         }
@@ -513,6 +513,7 @@ public class ContinuousDirector extends FixedPointDirector implements
             _debug("Inserted breakpoint with time = " + time + ", and index = "
                     + index);
         }
+        return time;
     }
 
     /** Return the current integration step size.
@@ -627,9 +628,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         // following statements, the composite actor has no chance to be fired.
 
         if (_isEmbedded() && (_enclosingContinuousDirector() == null)) {
-            Actor container = (Actor) getContainer();
-            Director director = container.getExecutiveDirector();
-            director.fireAt(container, _startTime);
+            _fireAt(_startTime);
         }
         // Set a breakpoint with index 0 for the stop time.
         // Note that do not use fireAt because that will set index to 1,
@@ -1452,9 +1451,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         // request a refiring at a future time,
         // the current time + suggested step size
         if (_currentStepSize == 0) {
-            Actor container = (Actor) getContainer();
-            Director enclosingDirector = container.getExecutiveDirector();
-            enclosingDirector.fireAt(container, _currentTime);
+            _fireAt(_currentTime);
         }
 
         return postfireResult;
@@ -1476,7 +1473,9 @@ public class ContinuousDirector extends FixedPointDirector implements
             // enclosing director invokes prefire at the local current time.
             // This local current time should not exceed the least time on
             // the breakpoint table.
-            enclosingDirector.fireAt((Actor) getContainer(), _currentTime);
+            // The following will throw an exception if the enclosing director
+            // does not respect the fireAt() request exactly.
+            _fireAt(_currentTime);
             _commitIsPending = true;
             return true;
         } else {
@@ -1492,8 +1491,9 @@ public class ContinuousDirector extends FixedPointDirector implements
             // we will not produce an event. Only when the step size is
             // greater than zero, as we have speculatively executed into
             // the future, can we allow the enclosing director to advance time.
-            enclosingDirector.fireAt((Actor) getContainer(), _currentTime);
-
+            // The following will throw an exception if the enclosing director
+            // does not respect the fireAt() request exactly.
+            _fireAt(_currentTime);
             return _commit();
         }
     }

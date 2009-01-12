@@ -28,6 +28,7 @@
 package ptolemy.domains.de.lib;
 
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.Time;
 import ptolemy.domains.de.kernel.DEActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;

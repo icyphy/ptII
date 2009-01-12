@@ -580,13 +580,18 @@ public class ThreadedComposite extends MirrorComposite {
         }
 
         /** Delegate by calling fireAt() on the director of the container's
-         *  container, and make a local record that a refiring request has
-         *  been made for the specified time.
+         *  container (the executive director), and make a local record that 
+         *  a refiring request has been made for the specified time. Note that the
+         *  executive director may modify the requested time. If it does, the
+         *  modified value is returned. It is up to the calling actor to
+         *  throw an exception if the modified time is not acceptable. 
          *  @param actor The actor requesting firing.
          *  @param time The time at which to fire.
+         *  @exception IllegalActionException If the executive director throws it.
          */
-        public void fireAt(Actor actor, Time time)
+        public Time fireAt(Actor actor, Time time)
                 throws IllegalActionException {
+            Time result = time;
             Director director = ThreadedComposite.this.getExecutiveDirector();
             if (director != null) {
                 if (ThreadedComposite.this._debugging) {
@@ -595,7 +600,7 @@ public class ThreadedComposite extends MirrorComposite {
                             + time + " for actor: " + actor.getFullName());
                 }
                 try {
-                    director.fireAt(ThreadedComposite.this, time);
+                    result = director.fireAt(ThreadedComposite.this, time);
                 } catch (IllegalActionException ex) {
                     throw new IllegalActionException(this, ex,
                             "Actor "
@@ -612,74 +617,9 @@ public class ThreadedComposite extends MirrorComposite {
                 // when the firing occurs, we want to post an input
                 // frame (even if there are no input events) for
                 // the inside thread.
-                _fireAtTimes.add(time);
+                _fireAtTimes.add(result);
             }
-        }
-
-        /** Delegate by calling fireAt() on the director of the container's
-         *  container, and make a local record that a refiring request has
-         *  been made for the specified time.
-         *  @param actor The actor requesting firing.
-         */
-        public void fireAtCurrentTime(Actor actor)
-                throws IllegalActionException {
-            Director director = ThreadedComposite.this.getExecutiveDirector();
-            if (director != null) {
-                if (ThreadedComposite.this._debugging) {
-                    ThreadedComposite.this._debug(
-                            "---- Request refiring at current time "
-                            + " for actor: " + actor.getFullName());
-                }
-                director.fireAtCurrentTime(ThreadedComposite.this);
-            }
-            if (actor != ThreadedComposite.this) {
-                // The fireAt() request is coming from the inside, so
-                // when the firing occurs, we want to post an input
-                // frame (even if there are no input events) for
-                // the inside thread.
-                _fireAtTimes.add(director.getModelTime());
-            }
-        }
-        
-        /** Delegate by calling fireAtFirstValidTimeAfter() on the director of the container's
-         *  container, and make a local record that a refiring request has
-         *  been made for the specified time or a later time, as indicated by
-         *  the other director.
-         *  @param actor The actor requesting firing.
-         *  @param time The time at which to fire.
-         */
-        public Time fireAtFirstValidTimeAfter(Actor actor, Time time)
-                throws IllegalActionException {
-            Director director = ThreadedComposite.this.getExecutiveDirector();
-            if (director != null) {
-                try {
-                    Time modifiedTime = director.fireAtFirstValidTimeAfter(
-                            ThreadedComposite.this, time);
-                    if (ThreadedComposite.this._debugging) {
-                        ThreadedComposite.this._debug(
-                                "---- Request refiring at time "
-                                + modifiedTime + " for actor: " + actor.getFullName());
-                    }
-                    if (actor != ThreadedComposite.this) {
-                        // The fireAt() request is coming from the inside, so
-                        // when the firing occurs, we want to post an input
-                        // frame (even if there are no input events) for
-                        // the inside thread.
-                        _fireAtTimes.add(modifiedTime);
-                    }
-                    return modifiedTime;
-                } catch (IllegalActionException ex) {
-                    throw new IllegalActionException(this, ex,
-                            "Actor "
-                            + actor.getFullName()
-                            + " requests refiring at time "
-                            + time
-                            + ", which fails.\n"
-                            + "Perhaps the delay parameter is too large?\n"
-                            + "Try setting it to 0.");
-                }
-            }
-            throw new IllegalActionException(ThreadedComposite.this, "No enclosing director.");
+            return result;
         }
 
         /** Return the current time, which is the most recent input frame processed
@@ -803,8 +743,18 @@ public class ThreadedComposite extends MirrorComposite {
                     // at current time plus the delay.
                     Time responseTime = environmentTime.add(_delayValue);
                     // Need to be sure to call the executive director's fireAt().
-                    ThreadedComposite.this.getExecutiveDirector().fireAt(
+                    // Make sure to throw an exception if the executive
+                    // director does not exactly respect this request.
+                    Time response = ThreadedComposite.this.getExecutiveDirector().fireAt(
                             ThreadedComposite.this, responseTime);
+
+                    if (!response.equals(responseTime)) {
+                        throw new IllegalActionException(this,
+                                "Director is unable to fire the actor at the requested time: "
+                                + responseTime
+                                + ". It responds it will fire it at: "
+                                + response);
+                    }
 
                     // Queue an indicator to produce outputs in response to that firing.
                     synchronized(this) {
@@ -1098,10 +1048,10 @@ public class ThreadedComposite extends MirrorComposite {
                                 if (_synchronizeToRealTime) {
                                     long realTimeMillis = System.currentTimeMillis() - _realStartTime;
                                     Time realTime = new Time(ThreadedDirector.this, realTimeMillis * 0.001);
-                                    responseTime = ThreadedDirector.this.fireAtFirstValidTimeAfter(
+                                    responseTime = ThreadedDirector.this.fireAt(
                                             ThreadedComposite.this, realTime);
                                 } else {
-                                    responseTime = ThreadedDirector.this.fireAtFirstValidTimeAfter(
+                                    responseTime = ThreadedDirector.this.fireAt(
                                             ThreadedComposite.this, _currentTime);
                                 }
                                 _outputTimes.add(responseTime);
