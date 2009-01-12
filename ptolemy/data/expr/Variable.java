@@ -79,9 +79,9 @@ import ptolemy.kernel.util.Workspace;
  setToken(). To set the value from an expression, call setExpression().
  The expression is not actually evaluated until you call getToken(),
  getType(). By default, it is also evaluated when you call validate(),
- unless you have called setLazyValidation(true), in which case it will only
+ unless you have called setLazy(true), in which case it will only
  be evaluated if there are other variables that depend on it and those
- have not had setLazyValidation(true) called.
+ have not had setLazy(true) called.
  <p>
  Consider for example the sequence:
  <pre>
