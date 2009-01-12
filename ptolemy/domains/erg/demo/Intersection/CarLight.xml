@@ -26,7 +26,7 @@
             </property>
             <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="Light == R ? {1.0, 0.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
+            <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
             </property>
         </property>
         <property name="ellipse2" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
@@ -38,7 +38,7 @@
             </property>
             <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="Light == Y ? {1.0, 1.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
+            <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
             </property>
         </property>
         <property name="ellipse3" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
@@ -50,7 +50,7 @@
             </property>
             <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="Light == G ? {0.0, 1.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
+            <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
             </property>
         </property>
     </property>
@@ -208,7 +208,7 @@
         </property>
     </property>
     <property name="Rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 75.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{365.0, 75.0}">
         </property>
         <property name="width" class="ptolemy.data.expr.Parameter" value="162.0">
         </property>
@@ -235,7 +235,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{380.0, 110.0}">
         </property>
     </property>
     <property name="G" class="ptolemy.data.expr.Parameter" value="2">
@@ -254,7 +254,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{435.0, 110.0}">
         </property>
     </property>
     <property name="Y" class="ptolemy.data.expr.Parameter" value="4">
@@ -273,7 +273,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{490.0, 110.0}">
         </property>
     </property>
     <property name="PedGo" class="ptolemy.data.expr.Parameter" value="1">
@@ -292,7 +292,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 130.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{380.0, 130.0}">
         </property>
     </property>
     <property name="PedStop" class="ptolemy.data.expr.Parameter" value="2">
@@ -311,13 +311,13 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 130.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{450.0, 130.0}">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Constants">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 80.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{410.0, 80.0}">
         </property>
     </property>
     <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
@@ -486,7 +486,7 @@
         </property>
         <property name="insideChannel" class="ptolemy.data.expr.StringParameter" value="">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 155.0]">
         </property>
     </port>
     <port name="PedControl" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
@@ -495,7 +495,7 @@
         </property>
         <property name="insideChannel" class="ptolemy.data.expr.StringParameter" value="">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 200.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{575.0, 200.0}">
         </property>
     </port>
     <port name="Light" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
@@ -520,9 +520,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 235.0]">
         </property>
         <port name="CarTrigger" class="ptolemy.domains.fsm.modal.ModalPort">
-            <property name="output"/>
-        </port>
-        <port name="PedControl" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="output"/>
         </port>
         <port name="CarCount" class="ptolemy.domains.fsm.modal.ModalPort">
@@ -575,12 +572,6 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[750.0, 325.0]">
                 </property>
             </port>
-            <port name="PedControl" class="ptolemy.domains.fsm.modal.RefinementPort">
-                <property name="input"/>
-                <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[750.0, 395.0]">
-                </property>
-            </port>
             <port name="CarCount" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 325.0]">
@@ -605,7 +596,7 @@
             <entity name="Red" class="ptolemy.domains.erg.kernel.Event">
                 <property name="isInitialEvent" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Light = R;&#10;  PedControl = PedGo">
+                <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Light = R">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -613,7 +604,7 @@
                 </property>
             </entity>
             <entity name="Green" class="ptolemy.domains.erg.kernel.Event">
-                <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Light = G;&#10;  PedControl = PedStop;&#10;  CrossScheduled = true">
+                <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Light = G;&#10;  CrossScheduled = true">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -1127,10 +1118,6 @@
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </relation>
-        <relation name="PedControlRelation" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-        </relation>
         <relation name="CarCountRelation" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
@@ -1148,13 +1135,11 @@
             </property>
         </relation>
         <link port="CarTrigger" relation="CarTriggerRelation"/>
-        <link port="PedControl" relation="PedControlRelation"/>
         <link port="CarCount" relation="CarCountRelation"/>
         <link port="PedRequest" relation="PedRequestRelation"/>
         <link port="Light" relation="LightRelation"/>
         <link port="OrthogonalRequest" relation="OrthogonalRequestRelation"/>
         <link port="_Controller.CarTrigger" relation="CarTriggerRelation"/>
-        <link port="_Controller.PedControl" relation="PedControlRelation"/>
         <link port="_Controller.CarCount" relation="CarCountRelation"/>
         <link port="_Controller.PedRequest" relation="PedRequestRelation"/>
         <link port="_Controller.Light" relation="LightRelation"/>
@@ -1218,6 +1203,49 @@
             </property>
         </property>
     </entity>
+    <entity name="ModalModel" class="ptolemy.domains.fsm.modal.ModalModel">
+        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 200.0]">
+        </property>
+        <port name="PedControl" class="ptolemy.domains.fsm.modal.ModalPort">
+            <property name="output"/>
+        </port>
+        <port name="Light" class="ptolemy.domains.fsm.modal.ModalPort">
+            <property name="input"/>
+        </port>
+        <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
+            <property name="DesignPatternImporter" class="ptolemy.actor.gt.controller.DesignPatternImporter">
+                <property name="designPatternFile" class="ptolemy.data.expr.FileParameter" value="CarStateMachine.xml">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                    <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                    </property>
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+        <svg>
+          <text style="font-size:14; font-family:SansSerif; fill:blue">-D-</text>
+        </svg>
+      </configure>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{190.0, 350.0}">
+                </property>
+            </property>
+        </entity>
+        <relation name="PedControlRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <relation name="LightRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <link port="PedControl" relation="PedControlRelation"/>
+        <link port="Light" relation="LightRelation"/>
+        <link port="_Controller.PedControl" relation="PedControlRelation"/>
+        <link port="_Controller.Light" relation="LightRelation"/>
+    </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -1229,10 +1257,6 @@
         </property>
         <vertex name="vertex1" value="[275.0, 155.0]">
         </vertex>
-    </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
@@ -1254,10 +1278,6 @@
         <vertex name="vertex1" value="[215.0, 35.0]">
         </vertex>
     </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-    </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -1274,17 +1294,26 @@
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="[435.0, 245.0]">
+        </vertex>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
     <link port="Request" relation="relation"/>
     <link port="CarWaitingTime" relation="relation12"/>
     <link port="CarCount" relation="relation5"/>
-    <link port="PedControl" relation="relation6"/>
-    <link port="Light" relation="relation7"/>
+    <link port="PedControl" relation="relation7"/>
+    <link port="Light" relation="relation6"/>
     <link port="OrthogonalRequest" relation="relation8"/>
     <link port="CarController.CarTrigger" relation="relation4"/>
-    <link port="CarController.PedControl" relation="relation6"/>
     <link port="CarController.CarCount" relation="relation5"/>
     <link port="CarController.PedRequest" relation="relation2"/>
-    <link port="CarController.Light" relation="relation7"/>
+    <link port="CarController.Light" relation="relation6"/>
     <link port="CarController.OrthogonalRequest" relation="relation9"/>
     <link port="Queue.input" relation="relation11"/>
     <link port="Queue.output" relation="relation3"/>
@@ -1298,5 +1327,7 @@
     <link port="LocalPolicy.output" relation="relation2"/>
     <link port="OrthogonalPolicy.input" relation="relation8"/>
     <link port="OrthogonalPolicy.output" relation="relation9"/>
+    <link port="ModalModel.PedControl" relation="relation7"/>
+    <link port="ModalModel.Light" relation="relation6"/>
     <link relation1="relation11" relation2="relation13"/>
 </class>

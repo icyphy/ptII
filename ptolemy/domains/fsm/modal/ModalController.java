@@ -246,6 +246,8 @@ public class ModalController extends FSMActor implements DropTargetHandler,
         try {
             _workspace.getWriteAccess();
 
+            ModalModel container = (ModalModel) getContainer();
+
             if (_mirrorDisable || (getContainer() == null)) {
                 // Have already called the super class.
                 // This time, process the request.
@@ -257,7 +259,6 @@ public class ModalController extends FSMActor implements DropTargetHandler,
                 // should be harmless.  EAL 12/04.
                 // port._mirrorDisable = false;
                 // Create the appropriate links.
-                ModalModel container = (ModalModel) getContainer();
 
                 if (container != null) {
                     String relationName = name + "Relation";
@@ -275,9 +276,21 @@ public class ModalController extends FSMActor implements DropTargetHandler,
 
                 return port;
             } else {
-                _mirrorDisable = true;
-                ((ModalModel) getContainer()).newPort(name);
-                return getPort(name);
+                ModalPort containerPort = container == null ? null :
+                    (ModalPort) container.getPort(name);
+                if (containerPort == null) {
+                    _mirrorDisable = true;
+                    ((ModalModel) getContainer()).newPort(name);
+                    return getPort(name);
+                } else {
+                    RefinementPort port = new RefinementPort(this, name);
+                    String relationName = name + "Relation";
+                    Relation relation = container.getRelation(relationName);
+                    if (relation != null) {
+                        port.link(relation);
+                    }
+                    return port;
+                }
             }
         } catch (IllegalActionException ex) {
             // This exception should not occur, so we throw a runtime

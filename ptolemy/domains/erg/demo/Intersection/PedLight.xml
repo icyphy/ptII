@@ -2,7 +2,7 @@
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <class name="PedLight" extends="ptolemy.domains.wireless.kernel.WirelessComposite">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
     </property>
     <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 45.0]">
@@ -42,7 +42,7 @@
             </property>
             <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="Light == R ? {1.0, 0.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
+            <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
             </property>
         </property>
         <property name="ellipse3" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
@@ -54,7 +54,7 @@
             </property>
             <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="Light == G ? {0.0, 1.0, 0.0, 1.0} : {1.0, 1.0, 1.0, 1.0}">
+            <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 1.0}">
             </property>
         </property>
     </property>
@@ -327,7 +327,7 @@
         </property>
         <property name="insideChannel" class="ptolemy.data.expr.StringParameter" value="">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 290.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 270.0]">
         </property>
     </port>
     <port name="PedCount" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
@@ -336,7 +336,7 @@
         </property>
         <property name="insideChannel" class="ptolemy.data.expr.StringParameter" value="">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 260.0]">
         </property>
     </port>
     <port name="Request" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
@@ -345,7 +345,7 @@
         </property>
         <property name="insideChannel" class="ptolemy.data.expr.StringParameter" value="">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 320.0]">
         </property>
     </port>
     <port name="Light" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
@@ -354,7 +354,7 @@
         </property>
         <property name="insideChannel" class="ptolemy.data.expr.StringParameter" value="">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 310.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 200.0]">
         </property>
     </port>
     <port name="PedWaitingTime" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
@@ -363,7 +363,7 @@
         </property>
         <property name="insideChannel" class="ptolemy.data.expr.StringParameter" value="">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 360.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 380.0]">
         </property>
     </port>
     <entity name="PedArrival" class="ptolemy.actor.lib.PoissonClock">
@@ -371,13 +371,13 @@
         </property>
         <property name="fireAtStart" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 350.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 370.0]">
         </property>
     </entity>
     <entity name="PedController" class="ptolemy.domains.erg.kernel.ERGModalModel">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 300.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 320.0]">
         </property>
-        <port name="PedControl" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="Light" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="input"/>
         </port>
         <port name="PedCount" class="ptolemy.domains.fsm.modal.ModalPort">
@@ -388,9 +388,6 @@
         </port>
         <port name="PedArrival" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="input"/>
-        </port>
-        <port name="Light" class="ptolemy.domains.fsm.modal.ModalPort">
-            <property name="output"/>
         </port>
         <port name="PedLeave" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="output"/>
@@ -424,7 +421,7 @@
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 135.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 65.0]">
                 </property>
             </property>
             <property name="L" class="ptolemy.data.expr.Parameter" value="R">
@@ -443,10 +440,10 @@
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 155.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 85.0]">
                 </property>
             </property>
-            <port name="PedControl" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="Light" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 180.0]">
                 </property>
@@ -468,46 +465,20 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 220.0]">
                 </property>
             </port>
-            <port name="Light" class="ptolemy.domains.fsm.modal.RefinementPort">
-                <property name="input"/>
-                <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 120.0]">
-                </property>
-            </port>
             <port name="PedLeave" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 160.0]">
                 </property>
             </port>
-            <entity name="InputControl" class="ptolemy.domains.erg.kernel.Event">
-                <property name="isInitialEvent" class="ptolemy.data.expr.Parameter" value="false">
+            <entity name="ReceiveLight" class="ptolemy.domains.erg.kernel.Event">
+                <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="L = Light">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 55.0]">
-                </property>
-            </entity>
-            <entity name="TurnRed" class="ptolemy.domains.erg.kernel.Event">
-                <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="L = R;&#10;  Light = L">
-                </property>
-                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 55.0]">
-                </property>
-            </entity>
-            <entity name="TurnGreen" class="ptolemy.domains.erg.kernel.Event">
-                <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="L = G;&#10;  Light = L">
-                </property>
-                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 55.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 85.0]">
                 </property>
             </entity>
             <entity name="Start" class="ptolemy.domains.erg.kernel.Event">
@@ -519,7 +490,7 @@
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{240.0, 190.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 180.0]">
                 </property>
             </entity>
             <entity name="InputArrival" class="ptolemy.domains.erg.kernel.Event">
@@ -557,7 +528,7 @@
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 210.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 180.0]">
                 </property>
             </entity>
             <entity name="Wait" class="ptolemy.domains.erg.kernel.Event">
@@ -570,140 +541,6 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 340.0]">
                 </property>
             </entity>
-            <relation name="relation" class="ptolemy.domains.erg.kernel.SchedulingRelation">
-                <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
-                </property>
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(PedControl &amp; PedStop) != 0">
-<display name="condition"/>                </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.3656667931660127">
-                </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-3.072495981376316">
-                </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="0.0">
-                </property>
-                <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
-                </property>
-                <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="priority" class="ptolemy.actor.parameters.Priority" value="0">
-                </property>
-                <property name="triggers" class="ptolemy.data.expr.StringParameter" value="">
-                </property>
-            </relation>
-            <relation name="relation2" class="ptolemy.domains.erg.kernel.SchedulingRelation">
-                <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
-                </property>
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(PedControl &amp; PedGo) != 0">
-<display name="condition"/>                </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.30812843809219054">
-                </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.050436904654930836">
-                </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="0.0">
-                </property>
-                <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
-                </property>
-                <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="priority" class="ptolemy.actor.parameters.Priority" value="0">
-                </property>
-                <property name="triggers" class="ptolemy.data.expr.StringParameter" value="">
-                </property>
-            </relation>
-            <relation name="relation3" class="ptolemy.domains.erg.kernel.SchedulingRelation">
-                <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
-                </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.2793274898932628">
-                </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.5611886426873534">
-                </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="Infinity">
-                </property>
-                <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
-                </property>
-                <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="priority" class="ptolemy.actor.parameters.Priority" value="0">
-                </property>
-                <property name="triggers" class="ptolemy.data.expr.StringParameter" value="PedControl">
-                </property>
-            </relation>
-            <relation name="relation4" class="ptolemy.domains.erg.kernel.SchedulingRelation">
-                <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
-                </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.36572645269706827">
-                </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.004329389312715157">
-                </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="Infinity">
-                </property>
-                <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
-                </property>
-                <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="priority" class="ptolemy.actor.parameters.Priority" value="0">
-                </property>
-                <property name="triggers" class="ptolemy.data.expr.StringParameter" value="PedControl">
-                </property>
-            </relation>
-            <relation name="relation5" class="ptolemy.domains.erg.kernel.SchedulingRelation">
-                <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
-                </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.3081284379773844">
-                </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="3.138412993710596">
-                </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="Infinity">
-                </property>
-                <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
-                </property>
-                <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="priority" class="ptolemy.actor.parameters.Priority" value="0">
-                </property>
-                <property name="triggers" class="ptolemy.data.expr.StringParameter" value="PedControl">
-                </property>
-            </relation>
             <relation name="relation6" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
@@ -712,6 +549,7 @@
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.5361502398010445">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="initialize"/>
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -734,12 +572,14 @@
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="C == 1">
-<display name="condition"/>                </property>
+                    <display name="condition"/>
+                </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.4855821146880187">
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.056128556779237435">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="initialize"/>
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -766,6 +606,7 @@
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.056897957008735">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="initialize"/>
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -788,12 +629,14 @@
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="L == G">
-<display name="condition"/>                </property>
+                    <display name="condition"/>
+                </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.5128680024400244">
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="-3.0753248898584626">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="initialize"/>
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -815,13 +658,15 @@
             <relation name="relation12" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="C &gt; 0">
-<display name="condition"/>                </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.3521218592557648">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="L == G &amp;&amp; C &gt; 0">
+                    <display name="condition"/>
                 </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.6427507288811258">
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.3242591334332227">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.8783917260324401">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="initialize"/>
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -843,13 +688,15 @@
             <relation name="relation13" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="C &gt; 0">
-<display name="condition"/>                </property>
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="L == G &amp;&amp; C &gt; 0">
+                    <display name="condition"/>
+                </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.075267426422072">
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.020264993080908452">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="initialize"/>
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -872,12 +719,14 @@
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="L == R">
-<display name="condition"/>                </property>
+                    <display name="condition"/>
+                </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.4348800890411796">
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.36666741800787567">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="initialize"/>
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -896,18 +745,66 @@
                 <property name="triggers" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
             </relation>
-            <link port="InputControl.incomingPort" relation="relation3"/>
-            <link port="InputControl.incomingPort" relation="relation4"/>
-            <link port="InputControl.incomingPort" relation="relation5"/>
-            <link port="InputControl.outgoingPort" relation="relation"/>
-            <link port="InputControl.outgoingPort" relation="relation2"/>
-            <link port="TurnRed.incomingPort" relation="relation"/>
-            <link port="TurnRed.outgoingPort" relation="relation4"/>
-            <link port="TurnGreen.incomingPort" relation="relation2"/>
-            <link port="TurnGreen.outgoingPort" relation="relation5"/>
-            <link port="TurnGreen.outgoingPort" relation="relation12"/>
-            <link port="Start.outgoingPort" relation="relation3"/>
+            <relation name="relation" class="ptolemy.domains.erg.kernel.SchedulingRelation">
+                <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.44784035496283403">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.0306584802901195">
+                </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="initialize"/>
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="Infinity">
+                </property>
+                <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
+                </property>
+                <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="priority" class="ptolemy.actor.parameters.Priority" value="0">
+                </property>
+                <property name="triggers" class="ptolemy.data.expr.StringParameter" value="Light">
+                </property>
+            </relation>
+            <relation name="relation2" class="ptolemy.domains.erg.kernel.SchedulingRelation">
+                <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.1215284971124664">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="4.28889873255486">
+                </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                    <display name="initialize"/>
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="Infinity">
+                </property>
+                <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
+                </property>
+                <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="priority" class="ptolemy.actor.parameters.Priority" value="0">
+                </property>
+                <property name="triggers" class="ptolemy.data.expr.StringParameter" value="Light">
+                </property>
+            </relation>
+            <link port="ReceiveLight.incomingPort" relation="relation"/>
+            <link port="ReceiveLight.incomingPort" relation="relation2"/>
+            <link port="ReceiveLight.outgoingPort" relation="relation12"/>
+            <link port="ReceiveLight.outgoingPort" relation="relation2"/>
             <link port="Start.outgoingPort" relation="relation6"/>
+            <link port="Start.outgoingPort" relation="relation"/>
             <link port="InputArrival.incomingPort" relation="relation6"/>
             <link port="InputArrival.incomingPort" relation="relation8"/>
             <link port="InputArrival.outgoingPort" relation="relation8"/>
@@ -921,7 +818,7 @@
             <link port="Wait.incomingPort" relation="relation14"/>
             <link port="Wait.outgoingPort" relation="relation7"/>
         </entity>
-        <relation name="PedControlRelation" class="ptolemy.actor.TypedIORelation">
+        <relation name="LightRelation" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </relation>
@@ -937,37 +834,70 @@
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </relation>
-        <relation name="LightRelation" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-        </relation>
         <relation name="PedLeaveRelation" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </relation>
-        <link port="PedControl" relation="PedControlRelation"/>
+        <link port="Light" relation="LightRelation"/>
         <link port="PedCount" relation="PedCountRelation"/>
         <link port="Request" relation="RequestRelation"/>
         <link port="PedArrival" relation="PedArrivalRelation"/>
-        <link port="Light" relation="LightRelation"/>
         <link port="PedLeave" relation="PedLeaveRelation"/>
-        <link port="_Controller.PedControl" relation="PedControlRelation"/>
+        <link port="_Controller.Light" relation="LightRelation"/>
         <link port="_Controller.PedCount" relation="PedCountRelation"/>
         <link port="_Controller.Request" relation="RequestRelation"/>
         <link port="_Controller.PedArrival" relation="PedArrivalRelation"/>
-        <link port="_Controller.Light" relation="LightRelation"/>
         <link port="_Controller.PedLeave" relation="PedLeaveRelation"/>
     </entity>
     <entity name="TimeCompare" class="ptolemy.domains.de.lib.TimeCompare">
         <property name="nonnegative" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 360.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 380.0]">
         </property>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+    <entity name="PedStateMachine" class="ptolemy.domains.fsm.modal.ModalModel">
+        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
-    </relation>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 270.0]">
+        </property>
+        <port name="PedControl" class="ptolemy.domains.fsm.modal.ModalPort">
+            <property name="input"/>
+        </port>
+        <port name="Light" class="ptolemy.domains.fsm.modal.ModalPort">
+            <property name="output"/>
+        </port>
+        <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
+            <property name="DesignPatternImporter" class="ptolemy.actor.gt.controller.DesignPatternImporter">
+                <property name="designPatternFile" class="ptolemy.data.expr.FileParameter" value="PedStateMachine.xml">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                    <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                    </property>
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure>
+        <svg>
+          <text style="font-size:14; font-family:SansSerif; fill:blue">-D-</text>
+        </svg>
+      </configure>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 360.0]">
+                </property>
+            </property>
+        </entity>
+        <relation name="PedControlRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <relation name="LightRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <link port="PedControl" relation="PedControlRelation"/>
+        <link port="Light" relation="LightRelation"/>
+        <link port="_Controller.PedControl" relation="PedControlRelation"/>
+        <link port="_Controller.Light" relation="LightRelation"/>
+    </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -975,14 +905,10 @@
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[170.0, 350.0]">
+        <vertex name="vertex1" value="[240.0, 370.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-    </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
@@ -994,19 +920,30 @@
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="[240.0, 270.0]">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
     <link port="PedControl" relation="relation"/>
     <link port="PedCount" relation="relation3"/>
     <link port="Request" relation="relation4"/>
     <link port="Light" relation="relation5"/>
     <link port="PedWaitingTime" relation="relation2"/>
     <link port="PedArrival.output" relation="relation6"/>
-    <link port="PedController.PedControl" relation="relation"/>
+    <link port="PedController.Light" relation="relation5"/>
     <link port="PedController.PedCount" relation="relation3"/>
     <link port="PedController.Request" relation="relation4"/>
     <link port="PedController.PedArrival" relation="relation6"/>
-    <link port="PedController.Light" relation="relation5"/>
     <link port="PedController.PedLeave" relation="relation7"/>
     <link port="TimeCompare.input1" relation="relation6"/>
     <link port="TimeCompare.input2" relation="relation7"/>
     <link port="TimeCompare.output" relation="relation2"/>
+    <link port="PedStateMachine.PedControl" relation="relation"/>
+    <link port="PedStateMachine.Light" relation="relation5"/>
 </class>

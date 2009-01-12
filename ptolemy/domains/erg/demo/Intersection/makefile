@@ -51,9 +51,11 @@ OTHER_FILES_TO_BE_JARED = \
 	ArrivalRateController.xml \
 	BerkeleyPolicy.xml \
 	CarLight.xml \
+	CarStateMachine.xml \
 	Intersection.xml \
 	ManhattanPolicy.xml \
 	PedLight.xml \
+	PedStateMachine.xml \
 	RequestPolicyExecutor.xml
 
 EXTRA_SRCS = \

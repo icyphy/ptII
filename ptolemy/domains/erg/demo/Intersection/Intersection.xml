@@ -2183,8 +2183,6 @@ Edward A. Lee</text></svg></configure>
             </property>
             <property name="PedWaitingTimeChannel" class="ptolemy.data.expr.Parameter" value="&quot;PedWaitingTimeChannelN&quot;">
             </property>
-            <property name="Light" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
             <entity name="PedArrival" class="ptolemy.actor.lib.PoissonClock">
                 <property name="meanTime" class="ptolemy.data.expr.Parameter" value="0.0125">
                 </property>
@@ -2283,8 +2281,6 @@ Edward A. Lee</text></svg></configure>
             </property>
             <property name="PedWaitingTimeChannel" class="ptolemy.data.expr.Parameter" value="&quot;PedWaitingTimeChannelE&quot;">
             </property>
-            <property name="Light" class="ptolemy.data.expr.Parameter" value="2">
-            </property>
             <entity name="PedArrival" class="ptolemy.actor.lib.PoissonClock">
                 <property name="meanTime" class="ptolemy.data.expr.Parameter" value="0.0166666666667">
                 </property>
@@ -2356,8 +2352,6 @@ Edward A. Lee</text></svg></configure>
             <property name="LightChannel" class="ptolemy.data.expr.Parameter" value="&quot;PedLightChannelS&quot;">
             </property>
             <property name="PedWaitingTimeChannel" class="ptolemy.data.expr.Parameter" value="&quot;PedWaitingTimeChannelS&quot;">
-            </property>
-            <property name="Light" class="ptolemy.data.expr.Parameter" value="1">
             </property>
             <entity name="PedArrival" class="ptolemy.actor.lib.PoissonClock">
                 <property name="meanTime" class="ptolemy.data.expr.Parameter" value="0.0125">
@@ -2444,8 +2438,6 @@ Edward A. Lee</text></svg></configure>
             <property name="LightChannel" class="ptolemy.data.expr.Parameter" value="&quot;PedLightChannelW&quot;">
             </property>
             <property name="PedWaitingTimeChannel" class="ptolemy.data.expr.Parameter" value="&quot;PedWaitingTimeChannelW&quot;">
-            </property>
-            <property name="Light" class="ptolemy.data.expr.Parameter" value="2">
             </property>
             <entity name="PedArrival" class="ptolemy.actor.lib.PoissonClock">
                 <property name="meanTime" class="ptolemy.data.expr.Parameter" value="0.0166666666667">
