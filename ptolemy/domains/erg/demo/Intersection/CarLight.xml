@@ -1203,7 +1203,7 @@
             </property>
         </property>
     </entity>
-    <entity name="ModalModel" class="ptolemy.domains.fsm.modal.ModalModel">
+    <entity name="CarStateMachine" class="ptolemy.domains.fsm.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 200.0]">
@@ -1327,7 +1327,7 @@
     <link port="LocalPolicy.output" relation="relation2"/>
     <link port="OrthogonalPolicy.input" relation="relation8"/>
     <link port="OrthogonalPolicy.output" relation="relation9"/>
-    <link port="ModalModel.PedControl" relation="relation7"/>
-    <link port="ModalModel.Light" relation="relation6"/>
+    <link port="CarStateMachine.PedControl" relation="relation7"/>
+    <link port="CarStateMachine.Light" relation="relation6"/>
     <link relation1="relation11" relation2="relation13"/>
 </class>
