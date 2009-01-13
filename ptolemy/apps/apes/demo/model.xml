@@ -2,24 +2,68 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="model" class="ptolemy.actor.TypedCompositeActor">
+    <property name="Rectangle3" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 235.0]">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="546.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="67.0">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.8,1.0,1.0}">
+        </property>
+        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
+    <property name="Rectangle2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 165.0]">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="546.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="67.0">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.9,1.0,1.0}">
+        </property>
+        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
+    <property name="Rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 95.0]">
+        </property>
+        <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="546.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="67.0">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.95,0.975,1.0,1.0}">
+        </property>
+        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="32">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={516, 105, 832, 540}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={256, 94, 1019, 641}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[619, 430]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[806, 531]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{273.60101010101, 208.1565656565656}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{367.10101010101, 258.6565656565656}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="schedules tasks and resources">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 410.0]">
+        </property>
     </property>
     <entity name="CPUScheduler" class="ptolemy.apps.apes.CPUScheduler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 300.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 385.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -34,7 +78,9 @@
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 8.0}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 280.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 135.0]">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
     </entity>
     <entity name="Clock2" class="ptolemy.actor.lib.Clock">
@@ -43,7 +89,9 @@
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{1.0, 9.0}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 320.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 205.0]">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
     </entity>
     <entity name="Clock3" class="ptolemy.actor.lib.Clock">
@@ -52,11 +100,13 @@
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{2.0,6.0}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 360.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 275.0]">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
     </entity>
     <entity name="CTaskB" class="ptolemy.apps.apes.demo.CTaskB">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 130.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 205.0]">
         </property>
         <property name="priority" class="ptolemy.data.expr.Parameter" value="2">
         </property>
@@ -64,7 +114,7 @@
         </property>
     </entity>
     <entity name="CTaskC" class="ptolemy.apps.apes.demo.CTaskC">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 130.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 275.0]">
         </property>
         <property name="priority" class="ptolemy.data.expr.Parameter" value="3">
         </property>
@@ -72,7 +122,7 @@
         </property>
     </entity>
     <entity name="CTaskA" class="ptolemy.apps.apes.demo.CTaskA">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 130.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 135.0]">
         </property>
         <property name="priority" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -82,41 +132,105 @@
         </property>
     </entity>
     <entity name="InterruptServiceController" class="ptolemy.apps.apes.InterruptServiceController">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 290.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 205.0]">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="0.0, 0.0">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="59.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="40.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="rectangle2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="15.0, -1.0">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="12.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="27.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="rectangle3" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="15.0, -1.0">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="12.0">
+                </property>
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10.0">
+                </property>
+                <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                </property>
+            </property>
         </property>
         <port name="trigger_A" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="IRS" class="ptolemy.data.expr.Parameter" value="IRS_A">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
         <port name="trigger_B" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="IRS" class="ptolemy.data.expr.Parameter" value="IRS_B">
             </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
         </port>
         <port name="trigger_C" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="IRS" class="ptolemy.data.expr.Parameter" value="IRS_C">
             </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
         </port>
     </entity>
     <entity name="IRS_A" class="ptolemy.apps.apes.demo.IRS_A">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 190.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 135.0]">
         </property>
         <property name="priority" class="ptolemy.data.expr.Parameter" value="11">
         </property>
     </entity>
     <entity name="IRS_B" class="ptolemy.apps.apes.demo.IRS_B">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 190.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 205.0]">
         </property>
         <property name="priority" class="ptolemy.data.expr.Parameter" value="11">
         </property>
     </entity>
     <entity name="IRS_C" class="ptolemy.apps.apes.demo.IRS_C">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 190.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 275.0]">
         </property>
         <property name="priority" class="ptolemy.data.expr.Parameter" value="11">
         </property>
+    </entity>
+    <entity name="EventManager" class="ptolemy.apps.apes.EventManager">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 385.0]">
+        </property>
+        <port name="input" class="ptolemy.apps.apes.MulticastIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="destinationActors" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+            <property name="sourceActors" class="ptolemy.data.expr.StringParameter" value="*">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.apps.apes.MulticastIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+            <property name="destinationActors" class="ptolemy.data.expr.StringParameter" value="CPUScheduler">
+            </property>
+            <property name="sourceActors" class="ptolemy.data.expr.StringParameter" value="*">
+            </property>
+        </port>
     </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">

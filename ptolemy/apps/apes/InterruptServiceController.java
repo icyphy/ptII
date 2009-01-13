@@ -70,14 +70,33 @@ public class InterruptServiceController extends TypedAtomicActor {
         _initialize();
     }
     
-    
-    public MulticastIOPort suspendOSSystemCalls;
-    public MulticastIOPort resumeOSSystemCalls;
-    
-    public MulticastIOPort disableAllSystemCalls;
-    public MulticastIOPort enableAllSystemCalls;
-    public MulticastIOPort suspendAllSystemCalls;
-    public MulticastIOPort resumeAllSystemCalls;
+    public void suspendOSSystemCalls() {
+        save = true;
+        send = false;
+    }
+    public void resumeOSSystemCalls() {
+        save = false;
+        send = true;
+        // TODO fire saved ones
+    }
+    public void disableAllSystemCalls() {
+        save = false;
+        send = false;
+    }
+    public void enableAllSystemCalls() {
+        send = true;
+        save = false;
+        // TODO fire saved ones ?
+    }
+    public void suspendAllSystemCalls() {
+        save = true;
+        send = false;
+    }
+    public void resumeAllSystemCalls() {
+        save = false;
+        send = true;
+        // TODO fire saved ones
+    }
     
     public MulticastIOPort output;
     
@@ -105,33 +124,17 @@ public class InterruptServiceController extends TypedAtomicActor {
         System.out.println(this.getName() + ".fire() ");
         for (IOPort port : (Collection<IOPort>)inputPortList()) {
             while (port.hasToken(0)){
-                Token token = port.get(0);
-                if (port == suspendOSSystemCalls) {
-                    save = true;
-                    send = false;
-                } else if (port == resumeOSSystemCalls) {
-                    save = false;
-                    send = true;
-                } else if (port == disableAllSystemCalls) {
-                    save = false;
-                    send = false;
-                } else if (port == suspendAllSystemCalls) {
-                    save = true;
-                    send = false;
-                } else if (port == resumeAllSystemCalls) {
-                    save = false;
-                    send = true;
-                } else {        
-                    Actor actor = getIRS(port); 
-                    ResourceToken resourceToken = new ResourceToken(actor, Time.POSITIVE_INFINITY, TaskState.ready_running);
-                    System.out.println("  send: " + actor.getName());
-                    if (send) {
-                        output.send(resourceToken);
-                    } else if (save) {
-                        _savedInterrupts.add(resourceToken);
-                    }
+                Token token = port.get(0);        
+                Actor actor = getIRS(port); 
+                ResourceToken resourceToken = new ResourceToken(actor, Time.POSITIVE_INFINITY, TaskState.ready_running);
+                System.out.println("  send: " + actor.getName());
+                if (send) {
+                    output.send(resourceToken);
+                } else if (save) {
+                    _savedInterrupts.add(resourceToken);
                 }
             }
+            
         }
     }
     
@@ -161,34 +164,10 @@ public class InterruptServiceController extends TypedAtomicActor {
      * @throws IllegalActionException 
      */
     private void _initialize() throws IllegalActionException, NameDuplicationException {
-        _taskNames = new HashMap();
-        
-        suspendOSSystemCalls = new MulticastIOPort(this, "suspendOSSystemCalls", true, false); 
-        resumeOSSystemCalls = new MulticastIOPort(this, "resumeOSSystemCalls", true, false);
-        disableAllSystemCalls = new MulticastIOPort(this, "disableAllSystemCalls", true, false);
-        enableAllSystemCalls = new MulticastIOPort(this, "enableAllSystemCalls", true, false);
-        suspendAllSystemCalls = new MulticastIOPort(this, "suspendAllSystemCalls", true, false);
-        resumeAllSystemCalls = new MulticastIOPort(this, "resumeAllSystemCalls", true, false);
+        _taskNames = new HashMap(); 
         output = new MulticastIOPort(this, "output", false, true);
-        
-        suspendOSSystemCalls.setMultiport(true);
-        resumeOSSystemCalls.setMultiport(true);
-        disableAllSystemCalls.setMultiport(true);
-        enableAllSystemCalls.setMultiport(true);
-        suspendAllSystemCalls.setMultiport(true);
-        resumeAllSystemCalls.setMultiport(true);
-        output.setMultiport(true);
-        
-        ((Parameter) suspendOSSystemCalls.getAttribute("sourceActors")).setExpression("*");
-        ((Parameter) resumeOSSystemCalls.getAttribute("sourceActors")).setExpression("*");
-        ((Parameter) disableAllSystemCalls.getAttribute("sourceActors")).setExpression("*");
-        ((Parameter) enableAllSystemCalls.getAttribute("sourceActors")).setExpression("*");
-        ((Parameter) suspendAllSystemCalls.getAttribute("sourceActors")).setExpression("*");
-        ((Parameter) resumeAllSystemCalls.getAttribute("sourceActors")).setExpression("*");
-          
-        ((Parameter) output.getAttribute("destinationActors")).setExpression("CPUScheduler");
-        
-        
+        output.setMultiport(true); 
+        ((Parameter) output.getAttribute("destinationActors")).setExpression("CPUScheduler"); 
      }
     
     private HashMap<String, Actor> _taskNames;

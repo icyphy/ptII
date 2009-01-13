@@ -1,5 +1,10 @@
 package ptolemy.apps.apes;
 
+import java.util.Iterator;
+import java.util.List;
+
+import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.TimedDirector;
 import ptolemy.actor.util.BreakCausalityInterface;
@@ -35,11 +40,10 @@ public class CTask extends ApeActor implements Runnable {
 
     public Parameter methodName;
 
-    public void accessPointCallback(double extime, double minNextTime,
-            String syscall) throws NoRoomException, IllegalActionException {
+    public void accessPointCallback(double extime, double minNextTime) throws NoRoomException, IllegalActionException {
 
         if (!_actorStopped){
-            System.out.println("CTask.accessPointCallback() - Time: " + getDirector().getModelTime()
+            System.out.println(this.getName() + ".accessPointCallback() - Time: " + getDirector().getModelTime()
                     + "(" + extime + ", " + minNextTime + ")");
 
             
@@ -53,7 +57,7 @@ public class CTask extends ApeActor implements Runnable {
                 this.notifyAll(); // wake up the DEDirector thread
                 while (!_inExecution) {
                     try {
-                        System.out.println(getDirector().getModelTime());
+                        System.out.println(this.getName() + ".wait() at " +  getDirector().getModelTime());
                         this.wait();
                     } catch (InterruptedException e) {
                         if (!_actorStopped){
@@ -93,10 +97,10 @@ public class CTask extends ApeActor implements Runnable {
             _waitForMinDelay = false;
         } else {
             synchronized (this) {
-               if (_minDelay.getDoubleValue() >= 0) {
-                getDirector().fireAt(this, getDirector().getModelTime().add(_minDelay));
-                _waitForMinDelay = true;
-            }
+                if (_minDelay.getDoubleValue() >= 0) {
+                    getDirector().fireAt(this, getDirector().getModelTime().add(_minDelay));
+                    _waitForMinDelay = true;
+                }
                 _inExecution = true; 
                 this.notifyAll();
             }
@@ -147,7 +151,24 @@ public class CTask extends ApeActor implements Runnable {
                 }
             }
         }
+        
+        // just for testing purposes to do system calls
+        CompositeActor compositeActor = (CompositeActor) getContainer();
+        List entities = compositeActor.entityList();
+        for (Iterator it = entities.iterator(); it.hasNext();) {
+            Object entity = it.next();
+            if (entity instanceof Actor) {
+                Actor actor = (Actor) entity;
+                if (actor instanceof CPUScheduler) {
+                    cpuScheduler = (CPUScheduler) actor;
+                    return;
+                }
+            }
+        }
     }
+    
+    // just for testing purposes to do system calls
+    public CPUScheduler cpuScheduler;
 
     public void run() {
         Thread.currentThread().setName(this.getName());

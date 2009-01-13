@@ -26,32 +26,27 @@ public class CTaskA extends CTask {
     
     protected void _callCMethod() { 
         long period;
-        System.out.println(this.getName() + ".fire() - Time: " + getDirector().getModelTime());
+        System.out.println(this.getName() + "._callCMethod()");
         try {
-            accessPointCallback(-1.0, 1.0, "");
-        } catch (NoRoomException e1) { 
-            e1.printStackTrace();
-        } catch (IllegalActionException e1) { 
-            e1.printStackTrace();
-        }
-        period = System.currentTimeMillis();
-        for (int i=0;i<Integer.MAX_VALUE/6;i++){
-            double a = Math.PI*Math.PI;
-        }
-        period = System.currentTimeMillis() - period;
-        System.out.println("duration of CMethod of " + this.getName() + ": " + Long.toString(period) + " ms.");            
-        try {
-            accessPointCallback(2.2, -1.0,"");
+            accessPointCallback(-1.0, 1.0);
+            period = System.currentTimeMillis();
+            for (int i=0;i<Integer.MAX_VALUE/6;i++){
+                double a = Math.PI*Math.PI;
+            }
+            period = System.currentTimeMillis() - period;
+            System.out.println("duration of CMethod of " + this.getName() + ": " + Long.toString(period) + " ms.");            
+            accessPointCallback(2.2, -1.0);
+            cpuScheduler.TerminateTask();
         } catch (NoRoomException e) { 
             e.printStackTrace();
         } catch (IllegalActionException e) { 
             e.printStackTrace();
-        }          
+        }   
     }
 
-    public void accessPointCallback(double extime, double minNextTime, String syscall) throws NoRoomException,
+    public void accessPointCallback(double extime, double minNextTime) throws NoRoomException,
     IllegalActionException {
         // TODO Auto-generated method stub
-        super.accessPointCallback(extime, minNextTime, syscall);
+        super.accessPointCallback(extime, minNextTime);
     }
 }
