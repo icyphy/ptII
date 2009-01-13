@@ -45,12 +45,14 @@ systems? How do we know for sure that one packet sent from a node will reach
 the destination node within a certain amount of time? We should move from
 faster is better to not fast enough is wrong. In multi-core age, communication
 is expensive, computation is free. For most of algorithms, running on 8 cores
-will have a speed up of 1.5 due to communication overhead. We need an explicit
+often has a speed up of 1.5 due to communication overhead. We need an explicit
 communication mechanism between cores running critical task. This mechanism
 needs to be simple yet efficient. We prove that we can achieve that by using
 scheduling analysis and simulation in a cycle accurate platform. The result from
 simulation matches quite well with our analysis. This approach can have a
-significant impact on the design of future network on chip.
+significant impact on the design of future network on chip for multi-core and
+many-core systems. We also provive analysis of deadline-based packet scheduling
+for worm-hole flow control scheme.
 
 \end{abstract}
 
@@ -213,10 +215,11 @@ makes a network on chip difficult to be dynamically reconfigured effectively.
 \end{itemize}
 \section{Formal Definitions}
 \begin{itemize}
-\item $t_f$ is the {\em minimum} packet interval time in cycles between two
-successive packets of a real-time flow $f$.
-\item $l_f$ is the {\em maximum} length of a packet in flits of real-time flow
-$f$.
+\item $t_f$ is the {\em minimum} packet interval time in {\em cycles} between
+two successive packets of a real-time flow $f$.
+\item $l_f$ is the {\em maximum} length of a packet in {\em flits} of real-time
+flow $f$.
+\item $d_f$ is the {\em worst case} delay of a packet of real-time flow $f$.
 \item $s_{f,e}$ is the service time for a packet in a node including header 
 processing, transmission time, and any other operations. $s$ is often a 
 function of $l$: $s=f(l)$. We can set $s=value(l)$, this means that it takes $1$
@@ -268,7 +271,7 @@ y_{f,e} = \left\{ \begin{array}{lrc}
 \end{equation}
 
 \begin{eqnarray}
-\sigmal_{f,e} = \left\{ \begin{array}{lrc}
+\sigma_{f,e} = \left\{ \begin{array}{lrc}
 1 \mbox{ if flow } f \in F \mbox{ has the largest maximum} \\
 \mbox{packet length of all flows on } e \in V \\ 
 0 \mbox{ otherwise} 
@@ -366,7 +369,7 @@ complicated tasks like calculating admission criteria for a new flow at each nod
 and rerouting for finding a new suitable path on a network.
 
 
-One interesting characteristic of this scheme is that the buffer for each 
+One characteristic of this scheme is that the buffer for each 
 real-time flow at each node is bounded \cite{Ferrari90ascheme}, and thus
 real-time packets can be sent {\em asynchronously} resulting in better bandwidth
 since we do not have to send {\em acknowledgement} for each flit sent. So at
@@ -390,65 +393,68 @@ differently.}\label{fig:HeteroComm}
 \subsection{Delay Model Analysis}
 
 The delay model in \cite{Ferrari90ascheme}, \cite{VermaJitter91} is
-for store-forward networks \cite{DallyPrinNetwork} (a packet has to be
-received {\em completely} by a router before it can be forwarded). However, we
-are considering cut-through networks (a packet can be sent while being
-received) since it has better throughput.
+for store-and-forward flow control. However we will use worm-hole flow
+control since it has better throughput.
 
 {\textbf{Definitions:}}
-$q_{f,v}$ is the {\em maximum} delay of a {\em flit} in flow $f$ at
-hop (router) $v$ in cycles.This is the {\em queueing} delay.
 
-The delay at each node of a packet is defined as the duration from the header
-of that  packet is received until the header is started to send, then we do not
-need to include the service time of the packet itself at the node. The {\em
-minimum} local delay of a packet at a node is thus the same as the maximum
-delay of a flit at a node since we do not allow preempting real-time packets. In
-\cite{Ferrari90ascheme}, the delay is :
+$q_{f,v}$ is the {\em maximum} delay in cycles of a {\em flit} in
+flow $f$ at node $v$.This is the {\em queueing} delay. The local delay ({\em
+queueing} delay) at each node of a packet is defined as the duration from the
+{\em header} of that  packet is received until the header is started to send.
+We do not need to include the service time of the packet itself at the node.
+The {\em maximum} local delay of a packet of a flow $f$ at a node is thus the
+same as the maximum delay of a flit of flow $f$ at the same node since we do
+not allow real-time packet pre-emption. % In \cite{Ferrari90ascheme}, the delay is :
 
-\begin{equation}\label{equ:nodedelay1}
-q_{i,n} = \sum_{j=1}^{i-1}s_{j,n}+s_{max} \forall i = 1, ..., K
-\end{equation}
+%\begin{equation}\label{equ:nodedelay1}
+%q_{i,n} = \sum_{j=1}^{i-1}s_{j,n}+s_{max} \forall i = 1, ..., K
+%\end{equation}
 
  
-$p_{f,e}$ is the propagation delay of a {\em flit} of flow f on link $e
-\in E$. In network on chip, $p_e=1 \forall e \in E$.
+$p_{f,e}$ is the {\em propagation} delay of a {\em flit} of flow $f$ on link $e
+\in E$. We assume in our network on chip, $p_e=1 \forall e \in E$.
 
-$r_{v,f,u}$ is the time of flit $u$ of flow $f$ reach node $v$.  
+$r_{v,f,h}$ is the time of flit $h$ of flow $f$ reaches node $v$.  
 
-$d_{f,e}$ is the {\em maximum} delay of flow $f$ on link $e$ measured in
-cycles. This delay is the period between the time a flit reaches one node:
+$d_{f,e}$ is the {\em maximum} delay of a flit of flow $f$ on link $e \in E,
+e=(v,u)$ measured in cycles. This delay is the duration between the time a flit
+reaches the source node $v$ and the time the flit reach the destination node
+$u$ of that link $e$:
+
 \begin{equation}\label{equ:edgeDelay}
-d_{f,e} = q_{f,v}\delta_{f,v} + p_{e} = q_{f,v}\delta_{f,v} + 1 
+d_{f,e} = q_{f,v} + p_{f,e} = q_{f,v} + 1 
 \end{equation}
 
 and
+
 \begin{equation} 
-d_{f,e}y_{f,e} \geq I_{v,e}y_{f,e}r_{v,f,e} + I_{v',e}y_{f,e}r_{v',f,e}
+d_{f,e_{v,u}} \geq r_{u,f,h} - r_{v,f,h}
 \end{equation}
 
-From \cite{Ferrari90ascheme}, for simplicity, if we assume that all $K$ 
-real-time flows going through a node $n$ satisfy the following condition:
+Similarly to \cite{Ferrari90ascheme}, if we assume that all $K$ 
+real-time flows going through link $e$ satisfy the following condition:
 \begin{equation}\label{equ:intervalservice1}
-t_i \geq \sum_{j=1}^Ks_{j,n}, \forall i = 1,...,K
+t_f \geq \sum_{j=1}^Ks_{j,e}, \forall f = 1,...,K
 \end{equation}
-the inequality (\ref{equ:intervalservice1}) can be expressed in the flowing way:
-\begin{equation}
-t_f y_{f,e}\geq \sum_{f^{'} \in F} s_{f^{'}}y_{f^{'},e}, \forall e \in E
-\end{equation}
-or
-\begin{equation}\label{equ:intervalservice3}
-P(f)(2) y_{f,e}\geq \sum_{f^{'} \in F} s_{f^{'}}y_{f^{'},e}, \forall e \in E
-\end{equation}
-This means that no deadlines for subsequent packets of a real-time flow will
-fall within the interval between time $t_0$ and $t_0 + \sum s = t_0 +
-\sum_{j=1}^Ks_{j,n}$.
 
-We define a function $order_{v,e}(f)$ over the set of all real-time flows $F$
-as a function to determine if there are two packets $p_1$ and $p_2$, arriving at
-a node $v$ at the same time of two real-time flows $f1$ and $f2$ respectively
+We assume that one flit will be transmitted over a link $e \in E$ in one cycle
+then $s_{f,e}=value(l_f), \forall f \in F$. So (\ref{equ:intervalservice1})
+becomes:
+
+\begin{equation}\label{equ:intervalservice2}
+t_f \geq \sum_{j=1}^Kvalue(l_j), \forall f = 1,...,K
+\end{equation}
+
+This means that {\em no deadlines} for subsequent packets of a real-time flow
+will fall within the interval between time $t_0$ and $t_0 + \sum s = t_0 +
+\sum_{j=1}^Kvalue(l_j)$.
+
+We define a function $order_{e_{v,u}}(f)$ over the set of all real-time flows
+$F$ as a function to determine if there are two packets $p_1$ and $p_2$, arriving at
+a node $v$ at the same time of two real-time flows $f_1$ and $f_2$ respectively
 and competing for an output link $e$, packet $p_1$ will be sent before $p_2$ if
-$order_{v,e}(f_1) < order_{v,e}(f_2)$. 
+$order_{e_{v,u}}(f_1) < order_{e_{v,u}}(f_2)$. 
 
 \begin{figure}[htbp]
 \centering
@@ -458,93 +464,77 @@ $order_{v,e}(f_1) < order_{v,e}(f_2)$.
 \end{figure}
 
 In worm-hole flow control scheme, the local delay at each node is a little bit
-different from \cite{Ferrari90ascheme} as shown in the below equation:
+different from \cite{Ferrari90ascheme}. For an edge $e = (v,u)$, we have:
 
 \begin{eqnarray}\label{equ:queueDelay}
-q_{f,v}y_{f,e} = \sum_{g \in F:order_v(g) <
-order_v(f)}\delta_{g,v}y_{g,e}s_{g,e} + \notag \\ 
-max(s_{i \in F}y_{i,e})-1, \forall e \in E
+q_{f,v}y_{f,e} \geq \sum_{g \in F:order_{e}(g) <
+order_{e}(f)}s_{g,e}y_{g,e} + \notag \\ 
+max_{order_{e}(i)>order_{e}(f)}(s_{i,e}y_{i,e})-1, \forall e = (v,u)
+\in E
 \end{eqnarray}
 
-The detail analysis of (\ref{equ:queueDelay}) is that: From Figure
-\ref{fig:DelayModel}, if we suppose $p_i$ is a packet of flow $f_i$, and
-$order_{v,e}(f_1) < order_{v,e}(f_2) < order(f_3)$, then we can easily see that
+In the (\ref{equ:queueDelay}), the $y_{f,e}, y_{i,e}, y_{g,e}$ parametters mean
+that flow $f, i, g$ share the same link $e$. The reason for
+(\ref{equ:queueDelay}) is that the maximum local (queueing) delay  that a packet
+$p$ of flow $f$ on a link $e$ is the total time to send all packets of other
+flows of higher priorities plus  the time  to send the {\em biggest
+possible rest} of one packet of flows with {\em lower} priorities since real-t
+ime packets are not pre-emptible.
+
+For example, from Figure \ref{fig:DelayModel}, if we suppose $p_i$ is a packet
+of flow $f_i$, and $order_{e}(f_1) < order_{e}(f_2) < order_{e}(f_3)$, then we can easily see that
 the bounded {\em queueing} delay for packets $p_1$ and $p_2$ are 3 and 5
 respectively as computed by equation (\ref{equ:queueDelay}). However, the
-bounded queueing delay for packet $p_3$ is 5 if it comes at the the same time as $p_1$ and $p_2$. So we
-have the bounded delay for a packet of a real-time flow that has {\em largest
-maximum} packet length is:
+bounded queueing delay for packet $p_3$ is 5 if it comes at the the same time as $p_1$ and $p_2$.
 
-\begin{eqnarray}\label{equ:queueDelayMaxPacketFlow}
-q_{f,v}y_{f,e} = \sum_{g \in F:order_v(g) <
-order_v(f)}\delta_{g,v}y_{f,e}s_{f,e}
-\end{eqnarray}
-
-The local (queueing) delay (\ref{equ:queueDelay}) has to be subtracted one since
-the notion of time in \cite{Ferrari90ascheme} is continuous so that time $0+$ is basically $0$ but in
-our network with the notion of time is discrete, the time $0+$ is $1$ cycle
-latter.
-
-From (\ref{equ:edgeDelay}) and
-(\ref{equ:queueDelay})(\ref{equ:queueDelayMaxPacketFlow}) we then have:
+From (\ref{equ:edgeDelay})(\ref{equ:queueDelay}) and we set delays on
+each edge as small as possible:
 
 \begin{eqnarray}\label{equ:edgeDelay2}
-d_{f,e}y_{f,e} = \sum_{g \in F:order_v(g) < order_v(f)}y_{f,e}s_{f,e} + \notag
-\\ max(s_{i \in F}y_{i,e}), \forall e \in E
+d_{f,e}y_{f,e} = \sum_{g \in F:order_e(g) < order_e(f)}y_{f,e}s_{f,e} +
+\notag\\  
+max_{order_{e}(i)>order_{e}(f)}(s_{i,e}y_{i,e}), \forall e \in E
 \end{eqnarray}
 
-If $f$ is the flow that has largest maximum packet length:
-
-\begin{eqnarray}\label{equ:edgeDelayMaxPacketFlow1}
-d_{f,v}y_{f,e} = \sum_{g \in F:order_v(g) <
-order_v(f)}\delta_{g,v}y_{f,e}s_{f,e} + 1
-\end{eqnarray}
-
-If we set $order_{v,e}(f)=l_f$, the maximum packet length of flow $f$, then
+For different applications, we can choose differnt {\em order} fucntions. In
+this paper, to minimize the total local delay at each node, we choose a
+scheduling scheme that forwards packets of flows that have smallest maximum
+packet length first by setting $order_{v,e}(f)=l_f$, then
 (\ref{equ:edgeDelay2}) becomes:
 
 \begin{eqnarray}\label{equ:edgeDelayPacketLength}
-d_{f,e}y_{f,e}(1-\sigma_{f,e}) = \left(\sum_{g \in F:l_g <
-l_f}y_{g,e}s_{g,e} + max(s_{i \in F}y_{i,e})\right) \notag \\
-(1-\sigma_{f,e}), \forall e \in E
-\end{eqnarray}
-
-and (\ref{equ:edgeDelayMaxPacketFlow1}) becomes:
-
-\begin{eqnarray}\label{equ:edgeDelayMaxPacketFlow2}
-d_{f,v}y_{f,e}\sigma_{f,e} = \left(\sum_{g \in F:l_g <
-l_f}\delta_{g,v}y_{g,e}s_{g,e} + 1\right)\sigma_{f,e}, \forall e \in E
+d_{f,e}y_{f,e} = \sum_{g \in F:l_g <
+l_f}y_{g,e}s_{g,e} +max_{l_i>l_f}(s_{i,e}y_{i,e}), \forall e \in E
 \end{eqnarray}
 
 This means that flows with smaller maximum packet lengths will be given smaller
 delays at this node (thereby smaller deadlines when packets come at the same
-time). This ordering scheme will give the smallest {\em overall} delay at this node.
+time).
 
-However, from (\ref{equ:edgeDelayPacketLength})
-and (\ref{equ:edgeDelayMaxPacketFlow2}), can see that there is a case that, at
-a node, the bounded delay of flow $f$ with largest packet length will be {\em
-smaller} than the bounded delay of some other flow with smaller maximum packet
-length. To still use (\ref{equ:deadline1}), we have to assign a {\em virtual
-delay} for the flow $f$ so that this {\em virtual deadline}, computed from
-(\ref{equ:deadline1}), is greater than the any other delay of other flows to
-make sure that, if all the packets of all flows comes at the same time, the packet
-of the flow $f$. We will prove that, this virtual delay scheme for the flow
-{\em does not} make any packet of the flow miss its deadline and the delay
-bound of a packet is still the same as in (\ref{equ:edgeDelayMaxPacketFlow1}).
+However, from (\ref{equ:edgeDelayPacketLength}), can see that there is some
+case, at a node, the bounded delay of flow $f$ with the largest packet length
+will be {\em smaller} than the bounded delay of some other flow with smaller
+maximum packet length. To still use (\ref{equ:deadline1}), we have to assign a
+{\em virtual delay} for the flow $f$ so that the {\em virtual deadline},
+computed from (\ref{equ:deadline1}), is greater than that of any other flows to
+make sure that, if all the packets of all flows comes at the same time, the
+packet of the flow $f$. We will prove that, this virtual delay scheme for the
+flow {\em does not} make any packet of the flow miss its deadline and the delay
+bound of a packet is still the same as in (\ref{equ:edgeDelayPacketLength}).
 This virtual delay is set to the largest bounded delay of all other flows
 sharing the same link.
 
 {\textbf{Theorem 1:}} {\em  The above virtual delay scheme never makes
 packets of flow $f$ miss their real deadlines computed from
-(\ref{equ:deadline1}) and (\ref{equ:edgeDelayMaxPacketFlow1})}.
+(\ref{equ:deadline1}) and (\ref{equ:edgeDelayPacketLength})}.
 
-{\em Prove:} Suppose that $\mathcal{S}$ is the total maximum service time of all
+{\em Proof:} Suppose that $\mathcal{S}$ is the total maximum service time of all
 other flows except $f$. So the real delay bound of $f$ is $\mathcal{S}+$1.
 Suppose that a packet $p$ of $f$ comes at time $t_0$, then the {\em real}
 deadline for the packet is $t_0+\mathcal{S}+$1. Since from
-(\ref{equ:intervalservice3}), we now that each flow can not have more than 1
-packet between the duration ($t_0, t_0+\mathcal{S}+$1). If between $t_0,
-t_0+\mathcal{S} -$1, there is an any cycle that no flit of other packets is
+(\ref{equ:intervalservice2}), we now that each flow can not have more than 1
+packet deadline between the duration ($t_0, t_0+\mathcal{S}+$1). If between
+$t_0, t_0+\mathcal{S} -$1, there is an any cycle that no flit of other packets is
 sent, then the scheduler will immediately start forwarding packet $p$ of flow $f$.
 Otherwise, at time $t_0+\mathcal{S}$, all the flits of other packets are
 forwarded, then the packet $p$ is started forwarding and its header will reach
@@ -552,16 +542,16 @@ the next node at $t_0+\mathcal{S}+$1. The real delay bound is satisfied.
 
 \subsection{Configuration}
 A valid configuration $\mathcal{C}(F)$ must satisfy (\ref{connectivity1}) 
-(\ref{equ:e2eDelayST}) (\ref{equ:intervalservice3}) (\ref{equ:utilization1})
+(\ref{equ:e2eDelayST}) (\ref{equ:intervalservice2}) (\ref{equ:utilization1})
 
 \begin{equation}\label{connectivity1} Iy_f=b_f,\forall f \in F
 \end{equation}
 
-The total delay at each hop of a real-time flow has to satisfy the delay constraint
-of the real-time flow.
+From ~\cite{Ferrari90ascheme},the total delay at each hop of a real-time flow
+has to satisfy the delay constraint of the real-time flow.
 
 \begin{equation}\label{equ:e2eDelayST}
-\sum_{e \in E}d_{f,e}y_{f,e} \leq P(f)(4), \forall f \in F
+\sum_{e \in E}d_{f,e}y_{f,e} \leq d_f, \forall f \in F
 \end{equation}
 
 When multiple real-time flows share the same link, the following conditions
@@ -569,14 +559,14 @@ When multiple real-time flows share the same link, the following conditions
  \cite{VermaJitter91}:
 
 \begin{equation}\label{equ:utilization1}
-\sum_{f \in F}\frac{s_{f,e}}{P(f)(2)}y_{f,e} \leq 1, \forall e \in E
+\sum_{f \in F}\frac{s_{f,e}}{t_f}y_{f,e} \leq 1, \forall e \in E
 \end{equation}
 
 Since $S$ is a function of the packet length, for a simple (non-pipeline) router
-model, we often have $s=P(f)(3)$, then (\ref{equ:utilization1}) becomes:
+model, we often have $s_g=value(l_g)$, then (\ref{equ:utilization1}) becomes:
 
 \begin{equation}\label{equ:utilization2}
-\sum_{f \in F}\frac{P(f)(3)}{P(f)(2)}y_{f,e} \leq 1, \forall e \in E
+\sum_{f \in F}\frac{l_f}{t_f}y_{f,e} \leq 1, \forall e \in E
 \end{equation}
 
 At each node, we use Earliest Deadline First (EDF) \cite{VermaJitter91} 
@@ -587,42 +577,45 @@ dl_{f,n}=t_0 + \sum_{k=1}^{n}q_{f,k}+P_n
 \end{equation}
 where $t_0$ is the time the packet is sent from the source and $P_n$ is the propagation
 delay from the source till node $n^{th}$ (communication time). We set
-$P_n=n$ since in network on chip, it takes one cycle for a head flit to travel
-between two successive nodes. Thus, (\ref{equ:deadline1}) becomes:
+$P_n=n$ since we assume that our in network on chip, it takes one cycle for a
+head flit to travel between two successive nodes. Thus, (\ref{equ:deadline1}) becomes:
 
 \begin{equation}\label{equ:deadline2}
 dl_{f,n}=t_0 + \sum_{k=1}^{n}d_{i,k}
 \end{equation}
 
-However (\ref{equ:e2eDelayST}) is for a store-forward networks, in a
-cut-through network, it becomes
+However (\ref{equ:e2eDelayST}) is for a store-and-forward flow control, in
+worm-hole flow control, it becomes
 \begin{equation}\label{equ:e2eDelayCT}
-\sum_{e \in E}d_{f,e}y_{f,e} + (s_f - 1) \leq P(f)(4), \forall f \in F
+\sum_{e \in E}d_{f,e}y_{f,e} + (s_f - 1) \leq d_f, \forall f \in F
 \end{equation}
-since we have to include the service time, $s_f-1$, for a packet of flow $f$ at
-the last node to receive {\em remaining} flits in the packet, not only the
-header.
+since we have to include the service time, $s_f-1$, for each
+packet so that the last node can receive the {\em remaining} flits in a
+packet of flow $f$, not only the header of the packet.
 
-For simple router models (non-pipeline), we have $s_f = P(f)(3)$, then
-(\ref{equ:e2eDelayCT}) becomes:
-\begin{equation}\label{equ:e2eDelayCTNonPipeline}
-\sum_{e \in E}d_{f,e}y_{f,e} + P(f)(3) - 1 \leq P(f)(4), \forall f \in F
-\end{equation}
+%\begin{equation}\label{equ:e2eDelayCTNonPipeline}
+%\sum_{e \in E}d_{f,e}y_{f,e} + l_f - 1 \leq d_f, \forall f \in F
+%\end{equation}
 
-From (\ref{equ:edgeDelayPacketLength})(\ref{equ:edgeDelayMaxPacketFlow2})and
-(\ref{equ:e2eDelayCTNonPipeline}) we have:
+From (\ref{equ:edgeDelayPacketLength})(\ref{equ:e2eDelayCT}) we have:
 \begin{eqnarray}\label{equ:e2eDelayCTNonPipeline1}
-\sum_{e \in E} \Biggl((\sum_{\forall g \in F:l_g <
-l_{f}}y_{g,e}s_{g,e}+max(s_{i \in F}.y_{i,e}))(1-\sigma_{f,e}) +
-\notag \\ 
-\sigma_{f,e}(\sum_{g \in F:l_g <
-l_f}\delta_{g,v}y_{g,e}s_{g,e} + 1)\Biggr) y_{f,e} \notag \\ \leq
-P(f)(4)-P(f)(3) + 1, \forall f \in F
+\sum_{e \in E} \Biggl(\sum_{g \in F:l_g <
+l_f}y_{g,e}s_{g,e} +max_{l_i>l_f}(s_{i,e}y_{i,e})\Biggr)\notag \\ \leq
+d_f-s_f + 1, \forall f \in F
+\end{eqnarray}
+
+For simple router models (non-pipeline), we have $s_{f,e} = value(l_f),\forall e
+\in E$, then (\ref{equ:e2eDelayCTNonPipeline1}) becomes:
+
+\begin{eqnarray}\label{equ:e2eDelayCTNonPipeline2}
+\sum_{e \in E} \Biggl(\sum_{g \in F:l_g <
+l_f}y_{g,e}value(l_g) +max_{l_i>l_f}(value(l_i)y_{i,e})\Biggr)\notag \\ \leq
+d_f-value(l_f) + 1, \forall f \in F
 \end{eqnarray}
 
 Now a valid configuration $\mathcal{C}(F)$ has to satisfy (\ref{connectivity1}) 
 (\ref{equ:utilization2})
-(\ref{equ:intervalservice3}) (\ref{equ:e2eDelayCTNonPipeline1})
+(\ref{equ:intervalservice2}) (\ref{equ:e2eDelayCTNonPipeline2})
 
 \subsection{Dynamic Path Establishment and Routing}
 When a new real-time path needs to be set up with some specifications, we have:
@@ -635,26 +628,12 @@ when we know that $\mathcal{C}(F)$ is valid.
 
 For a new configuration $\mathcal{C}(F^{'})$, we find a new flow $f^{'}$ such that
 the conditions (\ref{connectivity1})(\ref{equ:utilization2}) are satisfied. And
-the path delay constraint from (\ref{equ:e2eDelayCTNonPipeline}) is:
-\begin{eqnarray}\label{equ:e2eDelayNewPath}
-\sum_{e \in E} \Biggl((\sum_{\forall g \in F:l_g <
-l_{f'}}y_{g,e}s_{g,e}+max(s_{i \in F}.y_{i,e}))(1-\sigma_{f,e}) +
-\notag \\ 
-\sigma_{f,e}(\sum_{g \in F:l_g <
-l_f'}\delta_{g,v}y_{g,e}s_{g,e} + 1)\Biggr) y_{f',e} \notag \\ \leq
-P(f')(4)-P(f')(3) + 1,  f' \in F
-\end{eqnarray}
+the path delay constraint from (\ref{equ:e2eDelayCTNonPipeline1}) is:
 
-If we assume the maximum service time for one packet on an edge of a flow is the
-same for all edges (which is true for network on chip) and again the router
-model is simple (non-pipeline) then we have:
-\begin{eqnarray}\label{equ:e2eDelayNewPath2}
-\sum_{e \in E} \Biggl((\sum_{\forall g \in F:l_g <
-l_{f}}y_{g,e}s_{g,e}+max(s_{i \in F}.y_{i,e}))(1-\sigma_{f,e}) +
-\notag \\ 
-\sigma_{f,e}(\sum_{g \in F:l_g <
-l_f}\delta_{g,v}y_{g,e}s_{g,e} + 1)\Biggr) y_{f,e} \notag \\ \leq
-P(f)(4)-P(f)(3) + 1,  f' \in F
+\begin{eqnarray}\label{equ:e2eDelayNewPath1}
+\sum_{e \in E} \Biggl(\sum_{g \in F:l_g <
+l_{f'}}y_{g,e}value(l_g) +max_{l_i>l_{f'}}(value(l_i)y_{i,e})\Biggr)\notag \\
+\leq d_{f'}-value(l_f') + 1, \forall f' \in F
 \end{eqnarray}
 
 To add a new real-time flow like this to the network without modifying the paths
@@ -665,12 +644,9 @@ flows exceed the slack of the flows and then recompute new slacks for these
 flows. The slack of a flow $f$ is computed as:
 
 \begin{eqnarray}\label{equ:slack1}
-	slack_f=P(f)(4)-P(f)(3) + 1 - \notag \\ 
-	\sum_{e \in E} \Biggl(\sum_{\forall g \in F:l_g <
-l_{f}}\left(y_{g,e}s_{g,e}+max(s_{i \in F}.y_{i,e})\right)(1-\sigma_{f,e}) +
-\notag \\ 
-\sigma_{f,e}(\sum_{g \in F:l_g <
-l_f}\delta_{g,v}y_{g,e}s_{g,e} + 1)\Biggr) y_{f,e}, \notag \\ 
+	slack_f= d_f-value(l_f) + 1 - \notag \\
+	\sum_{e \in E} \Biggl(\sum_{g \in F:l_g < l_f}y_{g,e}value(l_g)
+	+max_{l_i>l_f}(value(l_i)y_{i,e})\Biggr) \notag \\ 
 	\forall f \in F
 \end{eqnarray}
 
@@ -687,31 +663,30 @@ $\forall f \in F$  that $l_{f'} < l_f$ and $y_{f',e}y_{f,e}=1 \mbox{ for some }
 e \in E$, from (\ref{equ:e2eDelayCTNonPipeline1}) we have:
 
 \begin{eqnarray}\label{equ:e2eDelayModification}
-\sum_{e \in E} \Biggl((\sum_{\forall g \in F:l_g <
-l_{f}}y_{g,e}s_{g,e}+ \notag \\
-max(s_{i \in F}.y_{i,e})+y_{f',e}s_{f',e})(1-\sigma_{f,e})
-+ \notag \\ 
-\sigma_{f,e}(\sum_{g \in F:l_g <
-l_f}\delta_{g,v}y_{g,e}s_{g,e} + 1)\Biggr) y_{f,e} \notag \\ \leq
-P(f)(4)-P(f)(3) + 1, \forall f \in F
+\sum_{e \in E} \Biggl(\sum_{g \in F:l_g <
+l_f}y_{g,e}s_{g,e}+y_{f',e}s_{f',e}+max_{l_i>l_f}(s_{i,e}y_{i,e})\Biggr)\notag
+\\ \leq d_f-s_f + 1, \forall f \in F
 \end{eqnarray}
 
 or
 
 \begin{eqnarray}\label{equ:e2eDelayModificatio2}
-\sum_{\forall e \in E}y_{f',e}s_{f',e} \leq P(f)(4)-P(f)(3) + 1 - \notag \\ 
-	\sum_{e \in E} \Biggl(\sum_{\forall g \in F:l_g <
-l_{f}}\left(y_{g,e}s_{g,e}+max(s_{i \in F}.y_{i,e})\right)(1-\sigma_{f,e}) +
-\notag \\ 
-\sigma_{f,e}(\sum_{g \in F:l_g <
-l_f}\delta_{g,v}y_{g,e}s_{g,e} + 1)\Biggr) y_{f,e}, \notag \\ 
-	\forall f \in F
+\sum_{\forall e \in E}y_{f',e}s_{f',e} \leq d_f-s_f + 1 - \notag \\ 
+\sum_{e \in E} \Biggl(\sum_{g \in F:l_g <
+l_f}y_{g,e}s_{g,e}+y_{f',e}s_{f',e}+max_{l_i>l_f}(s_{i,e}y_{i,e})\Biggr) \notag
+\\ \forall f \in F
 \end{eqnarray}
 
 or
 
 \begin{equation}\label{equ:e2eDelayModificatio3}
 \sum_{\forall e \in E}y_{f',e}s_{f',e} \leq slack_f, \forall f \in F
+\end{equation}
+
+or
+
+\begin{equation}\label{equ:e2eDelayModificatio4}
+\sum_{\forall e \in E}y_{f',e}value(l_{f'}) \leq slack_f, \forall f \in F
 \end{equation}
 
 \section{Specifications}
@@ -727,7 +702,7 @@ structure of a REQ message (this is often a flit) to set up a real-time flow on 
     \hline
 	CTRL & Req Node ID & Master Node ID & \multicolumn{2}{|c|}{REQ} \\ \hline
 	BODY & Source ID & Destination ID & \multicolumn{2}{|c|}{$t_{min}$} \\ \hline 
-	TAIL & \multicolumn{2}{|c|}{Virtual Channel ID} & $l_{max}$ & $d_{max}$ \\
+	TAIL & \multicolumn{2}{|c|}{Flow ID} & $l_{max}$ & $d_{max}$ \\
     \hline
   \end{tabular}
 }
@@ -742,8 +717,8 @@ The SETUP message from the master node to router has the following structure:
 \begin{center}\resizebox{8cm}{!}{
   \begin{tabular}{ | l | l | l | l | l | l | l | l | } 
     \hline 
-	CTRL & Master ID & Router ID & SETUP & Local delay \\ \hline
-	TAIL & \multicolumn{2}{|c|}{Virtual Channel ID} & Input gate & Output gate 	\\
+	CTRL & Master ID & Router ID & SETUP & Virtual delay \\ \hline
+	TAIL & \multicolumn{2}{|c|}{Flow ID} & Input gate & Output gate 	\\
     \hline
   \end{tabular}
 }
@@ -760,7 +735,7 @@ The ACK or ACCEPT message has the following form:
   \begin{tabular}{ | l | l | l | l | l | l | l | l | }
     \hline
 	CTRL & Source ID & Destination ID & (ACK or ACCEPT) \\ \hline
-	TAIL & \multicolumn{2}{|c|}{Virtual Channel ID} &  \\
+	TAIL & \multicolumn{2}{|c|}{Flow ID} &  \\
     \hline
   \end{tabular}
 }
@@ -776,7 +751,7 @@ The structure of a real-time data packet is:
 \begin{center}\resizebox{8cm}{!}{
   \begin{tabular}{ | l | l | l | l | l |}
     \hline
-	HEAD & Virtual Channel ID & jitter & Data \\ \hline 
+	HEAD & Flow ID & jitter & Data \\ \hline 
 	BODY & \multicolumn{3}{|c|}{Data flit} \\ \hline
 	BODY &\multicolumn{3}{|c|}{...} \\ \hline
 	TAIL & \multicolumn{3}{|c|}{Data flit} \\
@@ -802,8 +777,21 @@ tradeoff between the length of a packet and the bounded delay of the packet.
 If the packet is long, then our network is more efficient, however, the bounded 
 delay will probably large.
 
-\subsection{Cut-Through Router Structure}
+\subsection{Worm-hole Router Structure}
+\subsubsection{Packet Indentification}
+In each real-time packet, the heade flit contain a {\em unique flow
+identification} number. Router will use this number to match the packet with
+information of real=time flows it has in a table. If it can successfully find a
+flow identification like that, the information about packets of that flows will
+be loaded  for packet scheduling, including:
+\begin{itemize}
+  \item Input gate
+  \item Ouput gate
+  \item {\em Virtual} delay (for deadline-based packet scheduling)
+  \item Real bounded delay (optional)
+\end{itemize}
 
+\subsubsection{Scheduling}
 Figure \ref{fig:RouterStructure} show the structure of a router. In a router,
 each input has one {\em priority} queue for real-time packets of each output.
 Packets in the priority queue is {\em ordered} by deadline as in
@@ -821,8 +809,9 @@ compared the deadline and forwarded right at the time its header each a node.
 \end{figure}
 
 \subsection{Routing}
-When a reservation path packet reaches a node and the calculated routing link 
-to another router cannot afford the service time and transmission rate or delay 
+%FIXME
+When a reservation algorithm of a path reaches a node and the calculated routing
+link to another router cannot afford the service time and transmission rate or delay 
 bound for that reserving flow. The master node monitors all configurations of
 real-time flows on the network so various routing policy can be employed to
 achieve better performance, delay, power and so on.
@@ -881,11 +870,20 @@ in Figure \ref{fig:3FlowsEx}.
 5 to node 19}\label{fig:PE5PE19}
 \end{figure}
 
-As we can see that the three flows interact with each other yet the delay of a
+As we can see that the three flows interact with one another yet the delay of a
 packet is never greater than the estimated delay bound. And the delay of these
 flows is much more lower than the average delay in a best-effort network like
 this (noxim original implementation), which is about more than {\em 5000}
 cycles.
+
+\section{Future Work}
+\section{Conclusion}
+\begin{itemize}
+  \item MPI
+  \item SDR?
+  \item Lee's routing
+\end{itemize}
+
 
 \bibliography{RTNoC}
 \bibliographystyle{plain}
