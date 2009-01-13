@@ -895,15 +895,16 @@ cycles.
 
 \section{Conclusion and Future Work}
 We have shown a network on chip model for critical applications supposed to be
-suitable for multi-core and many-core architecture. We suppose that, with an
-explicit delay specification scheme, 
-\begin{itemize}
-  \item PRET multi-core
-  \item MPI
-  \item SDR?
-  \item Lee's routing
-\end{itemize}
+suitable for multi-core and many-core architecture. We suppose that message
+passing programming model like MPI can benefit from this explicit message
+delay scheme since we can reduce and predict the synchronization between
+processing cores. Critical applications like air plane control can utilize the
+development of multi-core since we can verify the delay communication between
+processing elements.
 
+In future, we will find different routing algorithms to optimize and balance a
+network and we can incoporate multiple PRET processors ~\cite{LicklyPRET} into
+a real-time multi-core systems.
 
 \bibliography{RTNoC}
 \bibliographystyle{plain}
