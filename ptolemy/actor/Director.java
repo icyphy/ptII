@@ -1392,7 +1392,7 @@ public class Director extends Attribute implements Executable {
      *   is no director.
      */
     protected Time _fireAt(Time time) throws IllegalActionException {
-        CompositeActor container = (CompositeActor)getContainer();
+        Actor container = (Actor) getContainer();
         if (container != null) {
             Director director = container.getExecutiveDirector();
             if (director != null) {
