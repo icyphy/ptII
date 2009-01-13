@@ -32,7 +32,6 @@ package ptolemy.actor.gt;
 
 import java.util.Set;
 
-import ptolemy.data.Token;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 
@@ -62,14 +61,6 @@ public interface GTEntity extends Nameable {
      */
     public String getDefaultIconDescription();
 
-    /** Return a token that contains an ingredient with the given name contained
-     *  by this entity, or <tt>null</tt> if the ingredient cannot be resolved.
-     *
-     *  @param name The name of the ingredient.
-     *  @return The token containing the ingredient object.
-     */
-    public Token getIngredientToken(String name);
-
     /** Return the attribute that stores all the operations for this matcher.
      *
      *  @return The attribute that stores all the operations.
@@ -89,7 +80,6 @@ public interface GTEntity extends Nameable {
      *  be resolved.
      *
      *  @return The set of names.
-     *  @see #getIngredientToken(String)
      */
     public Set<String> labelSet();
 

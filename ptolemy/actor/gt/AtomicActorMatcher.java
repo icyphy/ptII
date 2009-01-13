@@ -40,8 +40,6 @@ import ptolemy.actor.gt.ingredients.criteria.AttributeCriterion;
 import ptolemy.actor.gt.ingredients.criteria.Criterion;
 import ptolemy.actor.gt.ingredients.criteria.PortCriterion;
 import ptolemy.actor.gt.ingredients.operations.Operation;
-import ptolemy.data.ObjectToken;
-import ptolemy.data.Token;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -130,30 +128,6 @@ public class AtomicActorMatcher extends TypedAtomicActor implements GTEntity,
         return _ICON_DESCRIPTION;
     }
 
-    /** Return a token that contains an ingredient with the given name contained
-     *  by this entity, or <tt>null</tt> if the ingredient cannot be resolved.
-     *
-     *  @param name The name of the ingredient.
-     *  @return The token containing the ingredient object.
-     */
-    public Token getIngredientToken(String name) {
-        if (name.startsWith("criterion")) {
-            String indexString = name.substring(9);
-            try {
-                int index = Integer.parseInt(indexString);
-                GTIngredientList list = criteria.getIngredientList();
-                GTIngredient ingredient = list.get(index - 1);
-                if (ingredient instanceof AttributeCriterion) {
-                    return new ObjectToken(ingredient, ingredient.getClass());
-                }
-            } catch (MalformedStringException e) {
-            } catch (IllegalActionException e) {
-            } catch (NumberFormatException e) {
-            }
-        }
-        return null;
-    }
-
     /** Return the attribute that stores all the operations for this matcher.
      *
      *  @return The attribute that stores all the operations.
@@ -177,7 +151,6 @@ public class AtomicActorMatcher extends TypedAtomicActor implements GTEntity,
      *  be resolved.
      *
      *  @return The set of names.
-     *  @see #getIngredientToken(String)
      */
     public Set<String> labelSet() {
         long version = workspace().getVersion();
@@ -254,9 +227,9 @@ public class AtomicActorMatcher extends TypedAtomicActor implements GTEntity,
 
     protected void _exportMoMLContents(Writer output, int depth)
     throws IOException {
-		super._exportMoMLContents(output, depth);
-		GTEntityUtils.exportExtraProperties(this, output, depth);
-	}
+        super._exportMoMLContents(output, depth);
+        GTEntityUtils.exportExtraProperties(this, output, depth);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////

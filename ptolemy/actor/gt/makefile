@@ -60,6 +60,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	AtomicActorMatcher.java \
+	AttributeMatcher.java \
 	Checkable.java \
 	ChoiceParameter.java \
 	CompositeActorMatcher.java \

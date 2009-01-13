@@ -231,7 +231,9 @@ public class GTTools {
         TransformationRule transformer = (TransformationRule) container
                 .getContainer();
         Pattern pattern = transformer.getPattern();
-        if (replacementObject instanceof Entity) {
+        if (replacementObject instanceof Attribute) {
+            return pattern.getAttribute(patternObjectName);
+        } else if (replacementObject instanceof Entity) {
             return pattern.getEntity(patternObjectName);
         } else if (replacementObject instanceof Relation) {
             return pattern.getRelation(patternObjectName);

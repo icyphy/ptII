@@ -36,8 +36,6 @@ import java.util.Set;
 
 import ptolemy.actor.gt.ingredients.criteria.AttributeCriterion;
 import ptolemy.actor.gt.ingredients.criteria.Criterion;
-import ptolemy.data.ObjectToken;
-import ptolemy.data.Token;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
@@ -98,30 +96,6 @@ public class FSMMatcher extends FSMActor implements GTCompositeActor, GTEntity,
         return null;
     }
 
-    /** Return a token that contains an ingredient with the given name contained
-     *  by this entity, or <tt>null</tt> if the ingredient cannot be resolved.
-     *
-     *  @param name The name of the ingredient.
-     *  @return The token containing the ingredient object.
-     */
-    public Token getIngredientToken(String name) {
-        if (name.startsWith("criterion")) {
-            String indexString = name.substring(9);
-            try {
-                int index = Integer.parseInt(indexString);
-                GTIngredientList list = criteria.getIngredientList();
-                GTIngredient ingredient = list.get(index - 1);
-                if (ingredient instanceof AttributeCriterion) {
-                    return new ObjectToken(ingredient, ingredient.getClass());
-                }
-            } catch (MalformedStringException e) {
-            } catch (IllegalActionException e) {
-            } catch (NumberFormatException e) {
-            }
-        }
-        return null;
-    }
-
     /** Return the attribute that stores all the operations for this matcher.
      *
      *  @return The attribute that stores all the operations.
@@ -145,7 +119,6 @@ public class FSMMatcher extends FSMActor implements GTCompositeActor, GTEntity,
      *  be resolved.
      *
      *  @return The set of names.
-     *  @see #getIngredientToken(String)
      */
     public Set<String> labelSet() {
         long version = workspace().getVersion();

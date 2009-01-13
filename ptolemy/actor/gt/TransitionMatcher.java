@@ -33,8 +33,6 @@ import java.util.Set;
 
 import ptolemy.actor.gt.ingredients.criteria.AttributeCriterion;
 import ptolemy.actor.gt.ingredients.criteria.Criterion;
-import ptolemy.data.ObjectToken;
-import ptolemy.data.Token;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.Transition;
 import ptolemy.kernel.util.IllegalActionException;
@@ -90,24 +88,6 @@ ValueListener {
         return null;
     }
 
-    public Token getIngredientToken(String name) {
-        if (name.startsWith("criterion")) {
-            String indexString = name.substring(9);
-            try {
-                int index = Integer.parseInt(indexString);
-                GTIngredientList list = criteria.getIngredientList();
-                GTIngredient ingredient = list.get(index - 1);
-                if (ingredient instanceof AttributeCriterion) {
-                    return new ObjectToken(ingredient, ingredient.getClass());
-                }
-            } catch (MalformedStringException e) {
-            } catch (IllegalActionException e) {
-            } catch (NumberFormatException e) {
-            }
-        }
-        return null;
-    }
-
     /** Return the attribute that stores all the operations for this matcher.
      *
      *  @return The attribute that stores all the operations.
@@ -131,7 +111,6 @@ ValueListener {
      *  be resolved.
      *
      *  @return The set of names.
-     *  @see #getIngredientToken(String)
      */
     public Set<String> labelSet() {
         long version = workspace().getVersion();

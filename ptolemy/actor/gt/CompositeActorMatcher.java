@@ -37,7 +37,6 @@ import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gt.ingredients.criteria.Criterion;
 import ptolemy.actor.gt.ingredients.criteria.PortCriterion;
 import ptolemy.actor.gt.ingredients.operations.Operation;
-import ptolemy.data.Token;
 import ptolemy.domains.fsm.kernel.Configurer;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -126,16 +125,6 @@ public class CompositeActorMatcher extends TypedCompositeActor implements
         return _ICON_DESCRIPTION;
     }
 
-    /** Return a token that contains an ingredient with the given name contained
-     *  by this entity, or <tt>null</tt> if the ingredient cannot be resolved.
-     *
-     *  @param name The name of the ingredient.
-     *  @return The token containing the ingredient object.
-     */
-    public Token getIngredientToken(String name) {
-        return null;
-    }
-
     /** Return the attribute that stores all the operations for this matcher.
      *
      *  @return The attribute that stores all the operations.
@@ -159,7 +148,6 @@ public class CompositeActorMatcher extends TypedCompositeActor implements
      *  be resolved.
      *
      *  @return The set of names.
-     *  @see #getIngredientToken(String)
      */
     public Set<String> labelSet() {
         return null;

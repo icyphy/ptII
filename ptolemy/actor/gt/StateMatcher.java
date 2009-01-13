@@ -47,8 +47,6 @@ import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.DefaultCausalityInterface;
 import ptolemy.actor.util.Dependency;
-import ptolemy.data.ObjectToken;
-import ptolemy.data.Token;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
@@ -122,8 +120,8 @@ ValueListener {
     /** Create receivers for all necessary ports.
      *  In this implementation no receivers will be created
      *  @exception IllegalActionException If any port throws it.
-     */    
-    public void createReceivers() throws IllegalActionException {        
+     */
+    public void createReceivers() throws IllegalActionException {
     }
 
     public void fire() throws IllegalActionException {
@@ -176,30 +174,6 @@ ValueListener {
         return null;
     }
 
-    /** Return a token that contains an ingredient with the given name contained
-     *  by this entity, or <tt>null</tt> if the ingredient cannot be resolved.
-     *
-     *  @param name The name of the ingredient.
-     *  @return The token containing the ingredient object.
-     */
-    public Token getIngredientToken(String name) {
-        if (name.startsWith("criterion")) {
-            String indexString = name.substring(9);
-            try {
-                int index = Integer.parseInt(indexString);
-                GTIngredientList list = criteria.getIngredientList();
-                GTIngredient ingredient = list.get(index - 1);
-                if (ingredient instanceof AttributeCriterion) {
-                    return new ObjectToken(ingredient, ingredient.getClass());
-                }
-            } catch (MalformedStringException e) {
-            } catch (IllegalActionException e) {
-            } catch (NumberFormatException e) {
-            }
-        }
-        return null;
-    }
-
     public Manager getManager() {
         return null;
     }
@@ -246,7 +220,6 @@ ValueListener {
      *  be resolved.
      *
      *  @return The set of names.
-     *  @see #getIngredientToken(String)
      */
     public Set<String> labelSet() {
         long version = workspace().getVersion();

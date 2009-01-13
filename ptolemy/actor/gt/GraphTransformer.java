@@ -41,6 +41,7 @@ import java.util.Map;
 import java.util.Set;
 
 import ptolemy.actor.Director;
+import ptolemy.actor.gt.data.CombinedCollection;
 import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.actor.gt.data.Pair;
 import ptolemy.actor.gt.data.SequentialTwoWayHashMap;
@@ -405,6 +406,8 @@ public class GraphTransformer extends ChangeRequest {
             // Copy entities and relations.
             Collection<?> children = GTTools.getChildren(replacement, false,
                     true, true, true);
+            children = new CombinedCollection<Object>(replacement.attributeList(
+                    AttributeMatcher.class), children);
             for (Object childObject : children) {
                 NamedObj child = (NamedObj) childObject;
                 if (GTTools.isIgnored(child)) {
@@ -588,6 +591,8 @@ public class GraphTransformer extends ChangeRequest {
             Set<NamedObj> objectsChanged = new HashSet<NamedObj>();
             Collection<?> children = GTTools.getChildren(host, false, false,
                     true, true);
+            children = new CombinedCollection<Object>(host.attributeList(
+                    AttributeMatcher.class), children);
             for (Object childObject : children) {
                 NamedObj child = (NamedObj) childObject;
                 if (child.isPersistent()) {
@@ -758,6 +763,10 @@ public class GraphTransformer extends ChangeRequest {
             replacement.workspace().getReadAccess();
             Collection<?> children = GTTools.getChildren(replacement, false,
                     false, true, true);
+            for (Object child
+                    : replacement.attributeList(AttributeMatcher.class)) {
+                _initPatternToReplacement((NamedObj) child);
+            }
             for (Object child : children) {
                 _initPatternToReplacement((NamedObj) child);
             }
@@ -800,7 +809,8 @@ public class GraphTransformer extends ChangeRequest {
 
     private void _initReplacementToHost() throws TransformationException {
         _replacementToHost = new TwoWayHashMap<NamedObj, NamedObj>();
-        for (Map.Entry<NamedObj, NamedObj> entry : _patternToReplacement.entrySet()) {
+        for (Map.Entry<NamedObj, NamedObj> entry
+                : _patternToReplacement.entrySet()) {
             NamedObj pattern = entry.getKey();
             NamedObj replacement = entry.getValue();
             NamedObj host = (NamedObj) _matchResult.get(pattern);
@@ -1169,7 +1179,7 @@ public class GraphTransformer extends ChangeRequest {
                 new HashMap<NamedObj, Boolean>();
             Set<NamedObj> newChildren = new HashSet<NamedObj>();
             host.workspace().getReadAccess();
-            Collection<?> children = GTTools.getChildren(host, false, true,
+            Collection<?> children = GTTools.getChildren(host, true, true,
                     true, true);
             while (!children.isEmpty()) {
                 childrenToRemove.clear();
