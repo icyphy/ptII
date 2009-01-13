@@ -311,7 +311,19 @@ network on chip.
 \caption{Network stack model}
 \label{table:NetworkStack}
 \end{table}
+
 \subsubsection{Configuration: Distributed vs. Centralized}
+Since our purpose is to design a distributed network on chip system, thus the
+configurations of the network can be dynamically changed at {\em run-time}.
+This requirement makes the distributed configuratin scheme unsuitable since,
+for instant, when there are two requests for real-time flows, we maybe have to
+reduce the {\em slack} of other flows, however it is difficult to reduce the
+slack of a flow {\em concurrentl} in a distributed maner by two or more
+requests for real-time flows without making the end-to-end delay of the
+modified flow inviolate its requirement. We choose to use centralized scheme
+since we can reduce the overhead of distributed routing and we can more easily
+implement more complicated routing algorithm to balance and optimize a network
+on chip.
 
 \subsection{Path Setup Protocol}
 When in need of a real-time communication, the processing unit at each node 
@@ -809,7 +821,12 @@ compared the deadline and forwarded right at the time its header each a node.
 \end{figure}
 
 \subsection{Routing}
-%FIXME
+
+Serveral different routing algorithms can be implemented to optimize and balance
+a network on chip like this depending on application requirments. In this
+evaluation, we just implement an exhaustive routing to demonstrate the
+worst case delay estimation and our packet scheduling algorithm.
+
 When a reservation algorithm of a path reaches a node and the calculated routing
 link to another router cannot afford the service time and transmission rate or delay 
 bound for that reserving flow. The master node monitors all configurations of
@@ -838,7 +855,7 @@ has the third flow. The flow 3 then get routed to node 12 then reach the node.
 \end{figure}
 
 \section{Implementation}
-Router micro-architecture can be implemented as in
+Router micro-architecture can be implemented similarly as in
 \cite{Rexford98arouter},\cite{ZhangService} and extend \cite{PehDelayModel},
 \cite{PehSpecPipeR} to have better performance.
 
@@ -864,7 +881,7 @@ in Figure \ref{fig:3FlowsEx}.
 
 \begin{figure}[htp]
 \centering
-\includegraphics[width=8cm]{pics/PE19.png}
+\includegraphics{pics/PE19.png}
 \caption[Three flows example.]
 {Real delay and estimated delay of real-time flow from node
 5 to node 19}\label{fig:PE5PE19}
@@ -876,12 +893,12 @@ flows is much more lower than the average delay in a best-effort network like
 this (noxim original implementation), which is about more than {\em 5000}
 cycles.
 
-\section{Future Work}
+\section{Conclusion and Future Work}
+We have shown a network on chip model for critical applications supposed to be
+suitable for multi-core and many-core architecture. We suppose that, with an
+explicit delay specification scheme, 
 \begin{itemize}
   \item PRET multi-core
-\end{itemize}
-\section{Conclusion}
-\begin{itemize}
   \item MPI
   \item SDR?
   \item Lee's routing
