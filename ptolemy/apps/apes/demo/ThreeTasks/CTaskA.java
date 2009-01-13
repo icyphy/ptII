@@ -1,4 +1,4 @@
-package ptolemy.apps.apes.demo;
+package ptolemy.apps.apes.demo.ThreeTasks;
 
 import ptolemy.actor.NoRoomException;
 import ptolemy.apps.apes.CTask;

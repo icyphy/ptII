@@ -1,4 +1,4 @@
-package ptolemy.apps.apes.demo;
+package ptolemy.apps.apes.demo.ThreeTasks;
 
 import java.util.Iterator;
 import java.util.List;

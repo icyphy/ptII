@@ -1,4 +1,4 @@
-package ptolemy.apps.apes.demo;
+package ptolemy.apps.apes.demo.ThreeTasks;
 
 import ptolemy.actor.NoRoomException;
 import ptolemy.apps.apes.CTask;
@@ -7,16 +7,16 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-public class CTaskC extends CTask {
+public class CTaskB extends CTask {
 
-    public CTaskC() { 
+    public CTaskB() { 
     }
 
-    public CTaskC(Workspace workspace) {
+    public CTaskB(Workspace workspace) {
         super(workspace); 
     }
 
-    public CTaskC(CompositeEntity container, String name)
+    public CTaskB(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name); 
     }
@@ -25,28 +25,27 @@ public class CTaskC extends CTask {
     
     @Override
     protected void _callCMethod() {
- //       CMethod();
         long period;
 
         System.out.println(this.getName() + "._callCMethod()");
         try {
-            accessPointCallback(-1.0, 0.5); 
+            accessPointCallback(-1.0, 1.0);
             period = System.currentTimeMillis();
             for (int i=0;i<Integer.MAX_VALUE/4;i++){
                 double a = Math.PI*Math.PI;
             }
             period = System.currentTimeMillis() - period;
             System.out.println("duration of CMethod of " + this.getName() + ": " + Long.toString(period) + " ms.");            
-            accessPointCallback(1.0, -1.0);         
+            accessPointCallback(1.7, -1.0); 
             cpuScheduler.TerminateTask();
-        } catch (Exception e) { 
-            e.printStackTrace();
+        } catch (Exception e) {
+             e.printStackTrace();
         }
     }
-    
+
     @Override
     public void accessPointCallback(double extime, double minNextTime) throws NoRoomException,
-            IllegalActionException {
+    IllegalActionException {
         // TODO Auto-generated method stub
         super.accessPointCallback(extime, minNextTime);
     }
