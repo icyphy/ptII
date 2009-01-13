@@ -128,17 +128,10 @@ public class EventManager extends ApeActor {
         output.send(new ResourceToken(currentTask, Time.POSITIVE_INFINITY, TaskState.waiting));
         return StatusType.E_OK;
     }
-   
-    
-    private void _initialize() {
-        _tasks = new HashMap();
-         
-        Parameter sourceActorList= (Parameter) input.getAttribute("sourceActors");
-        sourceActorList.setExpression("*");
 
-        Parameter destinationActorList= (Parameter) output.getAttribute("destinationActors");
-        destinationActorList.setExpression("CPUScheduler");
-        
+    @Override
+    public void initialize() throws IllegalActionException { 
+        super.initialize();
         
         CompositeActor compositeActor = (CompositeActor) getContainer();
         List entities = compositeActor.entityList();
@@ -152,6 +145,19 @@ public class EventManager extends ApeActor {
                 }
             }
         }
+    }
+    
+    private void _initialize() {
+        _tasks = new HashMap();
+        _taskNames = new HashMap();
+        
+        Parameter sourceActorList= (Parameter) input.getAttribute("sourceActors");
+        sourceActorList.setExpression("*");
+
+        Parameter destinationActorList= (Parameter) output.getAttribute("destinationActors");
+        destinationActorList.setExpression("CPUScheduler");
+         
+        
      }
 
     
