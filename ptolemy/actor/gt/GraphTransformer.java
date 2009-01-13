@@ -836,7 +836,8 @@ public class GraphTransformer extends ChangeRequest {
 
     private boolean _isAttributeCopied(Attribute attribute) {
         if (!attribute.isPersistent()
-                || attribute instanceof GTAttribute) {
+                || attribute instanceof GTAttribute
+                || attribute instanceof GTEntity) {
             return false;
         }
 
