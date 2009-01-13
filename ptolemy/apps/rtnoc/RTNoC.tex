@@ -263,20 +263,20 @@ y_{f,e} = \left\{ \begin{array}{lrc}
 \end{array}\right.
 \end{equation}
 
-\begin{equation}
-\delta_{f,v} = \left\{ \begin{array}{lrc}
-1 \mbox{ if flow } f \in F \mbox{ going through node } v \in V \\
-0 \mbox{ otherwise} 
-\end{array}\right.
-\end{equation}
+% \begin{equation}
+% \delta_{f,v} = \left\{ \begin{array}{lrc}
+% 1 \mbox{ if flow } f \in F \mbox{ going through node } v \in V \\
+% 0 \mbox{ otherwise} 
+% \end{array}\right.
+% \end{equation}
 
-\begin{eqnarray}
-\sigma_{f,e} = \left\{ \begin{array}{lrc}
-1 \mbox{ if flow } f \in F \mbox{ has the largest maximum} \\
-\mbox{packet length of all flows on } e \in V \\ 
-0 \mbox{ otherwise} 
-\end{array}\right.
-\end{eqnarray}
+% \begin{eqnarray}
+% \sigma_{f,e} = \left\{ \begin{array}{lrc}
+% 1 \mbox{ if flow } f \in F \mbox{ has the largest maximum} \\
+% \mbox{packet length of all flows on } e \in V \\ 
+% 0 \mbox{ otherwise} 
+% \end{array}\right.
+% \end{eqnarray}
 
 \begin{equation}
 I_{v,e} = \left\{ \begin{array}{lrc}
@@ -760,7 +760,7 @@ The ACK or ACCEPT message has the following form:
 The structure of a real-time data packet is:
 
 \begin{table}[htbp]
-\begin{center}\resizebox{8cm}{!}{
+\begin{center}{
   \begin{tabular}{ | l | l | l | l | l |}
     \hline
 	HEAD & Flow ID & jitter & Data \\ \hline 
@@ -775,19 +775,19 @@ The structure of a real-time data packet is:
 \label{table:DataMsg}
 \end{table}
 
-\subsection{Considerations}
+%\subsection{Considerations}
 
-\begin{figure}[htp]
-\centering
-\includegraphics[width=8cm]{pics/OtherArcs.png}
-\caption[Other Spec.]
-{Specification of other network on chip architectures}\label{fig:otherSpec}
-\end{figure}
-
-From this we can consider the format of a data packet since we have the 
-tradeoff between the length of a packet and the bounded delay of the packet. 
-If the packet is long, then our network is more efficient, however, the bounded 
-delay will probably large.
+%\begin{figure}[htp]
+% \centering
+% \includegraphics[width=8cm]{pics/OtherArcs.png}
+% \caption[Other Spec.]
+% {Specification of other network on chip architectures}\label{fig:otherSpec}
+% \end{figure}
+% 
+% From this we can consider the format of a data packet since we have the 
+% tradeoff between the length of a packet and the bounded delay of the packet. 
+% If the packet is long, then our network is more efficient, however, the bounded 
+% delay will probably large.
 
 \subsection{Worm-hole Router Structure}
 \subsubsection{Packet Indentification}
@@ -881,7 +881,7 @@ in Figure \ref{fig:3FlowsEx}.
 
 \begin{figure}[htp]
 \centering
-\includegraphics{pics/PE19.png}
+\includegraphics[width=8cm]{pics/PE19.png}
 \caption[Three flows example.]
 {Real delay and estimated delay of real-time flow from node
 5 to node 19}\label{fig:PE5PE19}
@@ -904,7 +904,7 @@ processing elements.
 
 In future, we will find different routing algorithms to optimize and balance a
 network and we can incoporate multiple PRET processors ~\cite{LicklyPRET} into
-a real-time multi-core systems.
+a real-time multi-core system.
 
 \bibliography{RTNoC}
 \bibliographystyle{plain}
