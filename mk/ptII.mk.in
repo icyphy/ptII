@@ -193,7 +193,7 @@ GC_INCLUDE_DIR = @GC_INCLUDE_DIR@
 GC_LD_DIRECTIVE = @GC_LD_DIRECTIVE@
 
 # The 'javac' compiler.
-JAVAC = 	$(PTJAVA_DIR)/bin/javac
+JAVAC = 	@JAVAC@
 
 # Flags to pass to javac.  Usually something like '-g -depend'
 JDEBUG =	-g

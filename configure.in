@@ -3802,6 +3802,9 @@ AC_SUBST(JAR_INDEX)
 # Soot uses this variable to find java.lang.Object
 AC_SUBST(JAVA_SYSTEM_JAR)
 
+# javac binary
+AC_SUBST(JAVAC)
+
 # javacc binary
 AC_SUBST(JAVACC)
 
