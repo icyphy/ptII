@@ -2506,15 +2506,84 @@ echo "$as_me: WARNING: '$PTJAVA_DIR/bin/java' is not
 	JAVA="$PTJAVA_DIR/bin/java"
     fi
 else
-    { { echo "$as_me:$LINENO: error:
-  Cannot find '$PTJAVA_DIR/bin/java'.
+   if test -f "$PTJAVA_DIR/Commands/java"; then
+       if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $PTJAVA_DIR/Commands/java" >&5
+echo "${ECHO_T}$PTJAVA_DIR/Commands/java" >&6; }; fi
+       # Extract the first word of "java", so it can be a program name with args.
+set dummy java; ac_word=$2
+{ echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6; }
+if test "${ac_cv_path_JAVA+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  case $JAVA in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_JAVA="$JAVA" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_JAVA="$as_dir/$ac_word$ac_exec_ext"
+    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+IFS=$as_save_IFS
+
+  ;;
+esac
+fi
+JAVA=$ac_cv_path_JAVA
+if test -n "$JAVA"; then
+  { echo "$as_me:$LINENO: result: $JAVA" >&5
+echo "${ECHO_T}$JAVA" >&6; }
+else
+  { echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6; }
+fi
+
+
+       if test "$PTJAVA_DIR/Commands/java" = "$JAVA"; then
+           if test "${PTVERBOSE:-none}" != "none"; then { echo "$as_me:$LINENO: result:     You have the right java in your path,
+    \"$PTJAVA_DIR/Commands/java\"
+      = \"$JAVA\"" >&5
+echo "${ECHO_T}    You have the right java in your path,
+    \"$PTJAVA_DIR/Commands/java\"
+      = \"$JAVA\"" >&6; }; fi
+       else
+           { echo "$as_me:$LINENO: WARNING: '$PTJAVA_DIR/Commands/java' is not
+    the same as '$JAVA'.
+    Perhaps '$JAVA' is in your path before
+    '$PTJAVA_DIR/Commands/java'?
+    If you have problems later, be sure that you don't have a mismatch
+    in JDK versions." >&5
+echo "$as_me: WARNING: '$PTJAVA_DIR/Commands/java' is not
+    the same as '$JAVA'.
+    Perhaps '$JAVA' is in your path before
+    '$PTJAVA_DIR/Commands/java'?
+    If you have problems later, be sure that you don't have a mismatch
+    in JDK versions." >&2;}
+	JAVA="$PTJAVA_DIR/Commands/java"
+      fi
+   else
+       { { echo "$as_me:$LINENO: error:
+  Cannot find '$PTJAVA_DIR/bin/java' or '$PTJAVA_DIR/Commands/java'.
   Try --with-java=DIR, or set the PTJAVA_DIR environment variable.
 " >&5
 echo "$as_me: error:
-  Cannot find '$PTJAVA_DIR/bin/java'.
+  Cannot find '$PTJAVA_DIR/bin/java' or '$PTJAVA_DIR/Commands/java'.
   Try --with-java=DIR, or set the PTJAVA_DIR environment variable.
 " >&2;}
    { (exit 1); exit 1; }; }
+   fi
+
 fi
 
 #
@@ -2599,13 +2668,81 @@ echo "$as_me: WARNING: '$PTJAVA_DIR/bin/javac' is not
 	JAVAC="$PTJAVA_DIR/bin/javac"
     fi
 else
-    { { echo "$as_me:$LINENO: error:
-  Cannot find '$PTJAVA_DIR/bin/javac'.
+   if test -f "$PTJAVA_DIR/Commands/javac"; then
+       if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $PTJAVA_DIR/Commands/javac" >&5
+echo "${ECHO_T}$PTJAVA_DIR/Commands/javac" >&6; }; fi
+       # Extract the first word of "javac", so it can be a program name with args.
+set dummy javac; ac_word=$2
+{ echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6; }
+if test "${ac_cv_path_JAVAC+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  case $JAVAC in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_JAVAC="$JAVAC" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_JAVAC="$as_dir/$ac_word$ac_exec_ext"
+    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+IFS=$as_save_IFS
+
+  ;;
+esac
+fi
+JAVAC=$ac_cv_path_JAVAC
+if test -n "$JAVAC"; then
+  { echo "$as_me:$LINENO: result: $JAVAC" >&5
+echo "${ECHO_T}$JAVAC" >&6; }
+else
+  { echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6; }
+fi
+
+
+       if test "$PTJAVA_DIR/Commands/javac" = "$JAVAC"; then
+           if test "${PTVERBOSE:-none}" != "none"; then { echo "$as_me:$LINENO: result:     You have the right java in your path,
+    \"$PTJAVA_DIR/Commands/javac\"
+      = \"$JAVAC\"" >&5
+echo "${ECHO_T}    You have the right java in your path,
+    \"$PTJAVA_DIR/Commands/javac\"
+      = \"$JAVAC\"" >&6; }; fi
+       else
+           { echo "$as_me:$LINENO: WARNING: '$PTJAVA_DIR/Commands/javac' is not
+    the same as '$JAVAC'.
+    Perhaps '$JAVAC' is in your path before
+    '$PTJAVA_DIR/Commands/javac'?
+    If you have problems later, be sure that you don't have a mismatch
+    in JDK versions." >&5
+echo "$as_me: WARNING: '$PTJAVA_DIR/Commands/javac' is not
+    the same as '$JAVAC'.
+    Perhaps '$JAVAC' is in your path before
+    '$PTJAVA_DIR/Commands/javac'?
+    If you have problems later, be sure that you don't have a mismatch
+    in JDK versions." >&2;}
+	JAVAC="$PTJAVA_DIR/Commands/javac"
+      fi
+   else
+       { { echo "$as_me:$LINENO: error:
+  Cannot find '$PTJAVA_DIR/bin/javac' or '$PTJAVA_DIR/Commands/javac'.
   Try --with-java=DIR, or set the PTJAVA_DIR environment variable." >&5
 echo "$as_me: error:
-  Cannot find '$PTJAVA_DIR/bin/javac'.
+  Cannot find '$PTJAVA_DIR/bin/javac' or '$PTJAVA_DIR/Commands/javac'.
   Try --with-java=DIR, or set the PTJAVA_DIR environment variable." >&2;}
    { (exit 1); exit 1; }; }
+   fi
 fi
 
 #--------------------------------------------------------------------
@@ -9812,6 +9949,9 @@ fi
 # Location of rt.jar, usually $(PTJAVA_HOME)/lib/rt.jar
 # However, we have to be careful of backslashes and /cygwin
 # Soot uses this variable to find java.lang.Object
+
+
+# javac binary
 
 
 # javacc binary
