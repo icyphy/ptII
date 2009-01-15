@@ -39,20 +39,22 @@
 
 %\IEEEpeerreviewmaketitle
 \begin{abstract}
-We are moving to multi-core, however, the more cores we have, the more
-communication unpredictability. Can we use multi-core in real-time embedded
-systems? How do we know for sure that one packet sent from a node will reach
-the destination node within a certain amount of time? We should move from
-faster is better to not fast enough is wrong. In multi-core age, communication
-is expensive, computation is free. For most of algorithms, running on 8 cores
-often has a speed up of 1.5 due to communication overhead. We need an explicit
-communication mechanism between cores running critical task. This mechanism
-needs to be simple yet efficient. We prove that we can achieve that by using
-scheduling analysis and simulation in a cycle accurate platform. The result from
-simulation matches quite well with our analysis. This approach can have a
-significant impact on the design of future network on chip for multi-core and
-many-core systems. We also provive analysis of deadline-based packet scheduling
-for worm-hole flow control scheme.
+Multi-core and many-core have become the major trend in processor development.
+However, the more cores, the more communication unpredictability. One
+question is how to use multi-core and many-core in real-time embedded systems?
+How does a critical application know for sure that one packet sent from a node
+will reach the destination node within a certain amount of time? In such a
+case, faster does not always imply better. In multi-core,communication is
+often more expensive than computation. The communication overhead often
+greately reduce the performance of a parallel application. An explicit
+communication mechanism between cores running critical tasks is also a must.
+This mechanism needs to be simple yet efficient and flexible enough for most of
+applications.
+
+In this paper, we provide a detailed delay analysis of multiplexing of real-time
+channels in worm-hole flow control for network on chip then use a cycle
+accurate simulation platform to prove the worst-case delay estimation and
+deadline-based packet scheduling algorithm.
 
 \end{abstract}
 
@@ -78,6 +80,10 @@ so, it requires bounded delay communications between nodes in the network.
 For example, when processing element $0$ wants to send a critical control packet 
 p to processing element $11$, how can it know for sure that the packet will
 reach the destination within a certain amount of time? 
+
+%FIXME
+%Structure of the paper
+
 \section{Background}
 %packet figure
 \subsection{Allocation Units}
@@ -174,9 +180,9 @@ To solve this problem, we need to keep track of the number and specifications of
 real-time flows on a link to make sure that the link is never overloaded.
 
 \section{Our Idea}
-We can achieve the real-time communication between some nodes in a network 
-on a chip by borrowing the resource reservation idea \cite{Zhang93rsvp} from the 
-Internet to the network on chip. In that, all the real-time communications 
+The real-time communication between some nodes in a network 
+on a chip can be achieved by borrowing the resource reservation idea
+\cite{Zhang93rsvp} from the Internet to the network on chip. In that, all the real-time communications 
 have to be previously reserved on the network. 
 
 Real-time flows can be multiplexed \cite{Ferrari90ascheme}, \cite{ZhangService}
@@ -401,7 +407,7 @@ real-time packets is two time faster than best-effort packets.
 differently.}\label{fig:HeteroComm}
 \end{figure}
 
-\section{Theoritical Foundations}
+\section{System Analysis}
 \subsection{Delay Model Analysis}
 
 The delay model in \cite{Ferrari90ascheme}, \cite{VermaJitter91} is
@@ -432,7 +438,7 @@ $r_{v,f,h}$ is the time of flit $h$ of flow $f$ reaches node $v$.
 $d_{f,e}$ is the {\em maximum} delay of a flit of flow $f$ on link $e \in E,
 e=(v,u)$ measured in cycles. This delay is the duration between the time a flit
 reaches the source node $v$ and the time the flit reach the destination node
-$u$ of that link $e$:
+$u$ of that link $e$.
 
 \begin{equation}\label{equ:edgeDelay}
 d_{f,e} = q_{f,v} + p_{f,e} = q_{f,v} + 1 
