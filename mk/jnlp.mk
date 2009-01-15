@@ -466,6 +466,7 @@ ALL_NON_APPLICATION_JNLP_JARS = \
 	$(FULL_ONLY_JNLP_JARS) \
 	$(HYBRID_SYSTEMS_ONLY_JNLP_JARS) \
 	$(HYBRID_SYSTEMS_DEMO_AND_DOC_JARS) \
+	$(SPACE_ONLY_JNLP_JARS) \
 	$(VIPTOS_ONLY_JNLP_JARS) \
 	$(VISUAL_SENSE_ONLY_JNLP_JARS) \
 	$(PTINY_ONLY_JNLP_JARS) \
@@ -995,12 +996,12 @@ sign_jar_dist_update_remote: sign_jar_dist
 MKL4J = $(ROOT)/bin/mkl4j
 
 # Location of Launch4J, see http://launch4j.sourceforge.net/
-#L4J_DIR=c:/Program Files/Launch4j
-L4J_DIR=$(PTII)/vendors/launch4j
+L4J_DIR=c:/Program Files/Launch4j
+#L4J_DIR=$(PTII)/vendors/launch4j
 
 # Cygpath command
-#PTCYGPATH=cygpath --windows -a
-PTCYGPATH=$(ROOT)/bin/ptcygpath
+PTCYGPATH=cygpath --windows -a
+#PTCYGPATH=$(ROOT)/bin/ptcygpath
 
 # Launch4J console application that reads in .xml files and creates .exe files.
 #L4JC=$(L4J_DIR)/launch4jc.exe
@@ -1052,6 +1053,36 @@ designdocv3_l4j.xml:
 	chmod a+x doc/design/ptIIdesign3-domains.pdf
 designdocv3.exe: designdocv3_l4j.xml
 	"$(L4JC)" `$(PTCYGPATH) designdocv3_l4j.xml`
+
+# DOP Center Seating Chart exe
+# See http://embedded.eecs.berkeley.edu/dopcenter/roster/index.htm
+# To build dopseating.ex, run:
+# cd $PTII;
+# make install
+# make jnlp_all
+# # Install launch4j from http://launch4j.sourceforge.net/ 
+# # set L4J_DIR above if you install Launch4j anywhere other than 
+# # ptII/vendors/launch4j
+# make dopseating.exe
+
+# Jar files specific to the space domain
+SPACE_ONLY_JNLP_JARS = \
+	ptolemy/actor/lib/database/database.jar \
+	ptolemy/domains/space/space.jar \
+
+# Jar files used by the DOP Center Seating Chart exe
+DOPSEATING_JNLP_JARS = \
+	$(SPACE_ONLY_JNLP_JARS) \
+	$(CORE_JNLP_JARS) \
+	$(DOC_CODEDOC_JAR)
+
+DOPCenterModel=ptolemy/domains/space/demo/DOPCenter/DOPCenter.xml
+dopseating_l4j.xml:
+	$(MKL4J) dopseating ptolemy.vergil.VergilApplication \
+		doc/img/vergil.ico \
+		"-space $(DOPCenterModel)" $(DOPSEATING_JNLP_JARS) > $@
+dopseating.exe: dopseating_l4j.xml
+	"$(L4JC)" `$(PTCYGPATH) dopseating_l4j.xml`
 
 histogram_l4j.xml:
 	$(MKL4J) histogram ptolemy.plot.plotml.HistogramMLApplication \
