@@ -62,6 +62,8 @@ OTHER_FILES_TO_BE_JARED = \
 	configuration.xml \
 	copyright.htm \
 	demonstrations.htm \
+	docs.htm \
+	gkahn.jpg \
 	help.htm \
 	hoc.xml \
 	intro.htm \
