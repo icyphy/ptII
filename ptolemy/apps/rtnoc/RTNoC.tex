@@ -59,9 +59,10 @@ deadline-based packet scheduling algorithm.
 \end{abstract}
 
 \section{Introduction}
-As a network on chip gets larger, the communication on the network becomes 
-very complicated. Congestions on that network can occur resulting in unpredictable 
-delay in communications between network nodes. This non-deterministic behavior 
+Network on chip has become an important paradigm these days
+~\cite{DallyPacketNotWire}. As a network on chip gets larger, the communication
+on the network becomes very complicated. Congestions on that network can occur
+resulting in unpredictable delay in communications between network nodes. This non-deterministic behavior 
 makes it very difficult to verify the timing semantics of a network on chip 
 system, as a result, network on chip systems become unsuitable for real-time 
 applications, especially critical control applications.
@@ -77,21 +78,31 @@ a packet?}\label{fig:NoCRt}
 Our purpose is to bring the real-time communication to network on chip so that 
 users can always guarantee deterministic behaviors of a critical system. To do 
 so, it requires bounded delay communications between nodes in the network. 
-For example, when processing element $0$ wants to send a critical control packet 
-p to processing element $11$, how can it know for sure that the packet will
-reach the destination within a certain amount of time? 
+For example,in Figure \ref{fig:NoCRt}, when processing element $0$ wants
+to send a critical control packet p to processing element $11$, how can it know
+for sure that the packet will reach the destination within a certain amount of time? 
 
 %FIXME
 %Structure of the paper
 
 \section{Background}
+\subsection{Network on Chip}
+In a system on-chip, instead of connecting modules directly by dedicated wire,
+they are connected by a packet switch network. Our experimental network, as
+in Figure \ref{fig:NoCRt}, is a 2D mesh network. At each node of the mesh, a
+processing element is connected to a router.
+
 %packet figure
 \subsection{Allocation Units}
-A packet is devided into {\em flits} to transmit ~\cite{DallyPrinNetwork}. The
-position of a flit determine if the flit is {\em head, body} or {\em tail}
-flit. Only head flits contain routing information for packets, body and tail
-flits follow head flits on the same path from sources to destinations.
+A packet is further devided into {\em flits} to transmit
+~\cite{DallyPrinNetwork}. The position of a flit determine if the flit is {\em
+head, body} or {\em tail} flit. Only head flits contain routing information for
+packets, body and tail flits follow head flits on the same path from sources to
+destinations.
 \subsection{Flow Control Schemes}
+Networks are classified into several types based on how their resources are
+allocated to packets on the networks. Following are three popular flow control
+schemes:
 \subsubsection{Store-and-Forward}
 In store-and-forward flow control scheme, a packet has to be received entirely
 before being forwarded. This flow control scheme gives longer end-to-end delay
@@ -100,24 +111,24 @@ in comparision with the following flow control schemes.
 In virtual-cut-through scheme, a packet does not need to be received entirely
 before being forwarded, however, receiving nodes is required to have enough
 buffer space for incoming packets.
-\subsubsection{Wormhole}
-In Worm-hole flow control, receiving nodes do not need to have enough buffer
+\subsubsection{Worm-Hole}
+In worm-hole flow control, receiving nodes do not need to have enough buffer
 space for incoming packets. Instead, packets are devided into flits and flits
 are pipelined through networks. We will employ this flow control scheme in our
 design.
 \section{Related Work}
 \subsection{\AE thereal}
-This work \cite{Goossens_chapter4} is from NXP. This architecture tries to avoid
-contention using contention-free routing by {\em delaying} some packets. \AE
+This work ~\cite{Goossens_chapter4} is from NXP. This architecture tries to
+avoid contention using contention-free routing by {\em delaying} some packets. \AE
 thereal design tries to minimize the area of routers by minizing buffer spaces.
 This design purpose makes \AE thereal very suitable for small and less
 complicated systems.
 
 Guaranteed packets are multiplexed using TDMA by {\em global} scheduling of
 packet injection ~\cite{Moonen07SPRINGER} from network interfaces to
-routers. This mechanism makes systems based on this architecture less flexible
-since as the number of components in a network on chip grows larger, it is very
-difficult to find a suitable and efficiecent {global  scheduling} algorithm.
+routers. This mechanism makes systems based on this architecture less
+{\em flexible} and {\em scalable} since as the number of components in a network
+on chip grows larger, it is very difficult to find a suitable and efficiecent {global  scheduling} algorithm.
 Furthermore, the TDMA slot allocation is currently solved at {\em design time}
 to optimize the system ~\cite{Moonen07SPRINGER}, resulting in a number of
 configurations and these configurations are programmed (or loaded) in the
@@ -132,7 +143,7 @@ The above problems make \AE thereal unsuitable for systems requiring
 flexibility like multi-core.
 
 \subsection{SoCBUS}
-SoCBUS architecture \cite{SoCBUS} is from Linkoping University. It seeks to 
+SoCBUS architecture ~\cite{SoCBUS} is from Linkoping University. It seeks to 
 guarantee real-time properties by setting up a path before ending:
 \begin{itemize}
 \item Initiate a path by sending a setting up packet.
@@ -149,8 +160,9 @@ but not good for periodic, non-continuous flows.
 low bandwidth.
 \end{itemize}
 \subsection{QNoC}
-This work is from Technion \cite{QNoC}. Packets are sent synchronously. 
-This architecture supports multi service levels as in table \ref{table:QNoCTable}.
+This work is from Technion ~\cite{QNoC}. Packets are sent synchronously. 
+This architecture supports multi service levels as in Table
+\ref{table:QNoCTable}.
 
 \begin{table}[htbp]
 \begin{center}
@@ -179,13 +191,13 @@ when multiple real-time flows have to share the same link:
 To solve this problem, we need to keep track of the number and specifications of
 real-time flows on a link to make sure that the link is never overloaded.
 
-\section{Our Idea}
+\section{Flexible and Verifiable On-time Network on Chip}
 The real-time communication between some nodes in a network 
 on a chip can be achieved by borrowing the resource reservation idea
-\cite{Zhang93rsvp} from the Internet to the network on chip. In that, all the real-time communications 
-have to be previously reserved on the network. 
+~\cite{Zhang93rsvp} from the Internet to the network on chip. In that, all the
+real-time communications have to be previously reserved on the network. 
 
-Real-time flows can be multiplexed \cite{Ferrari90ascheme}, \cite{ZhangService}
+Real-time flows can be multiplexed ~\cite{Ferrari90ascheme}~\cite{ZhangService}
 on links in networks without violating real-time requirements. Other best-effort
 flows can still use remaining bandwidth on reserved links.
 
@@ -201,45 +213,38 @@ reservations of other real-time flows on the network.
 {Real-time flow multiplexing.}\label{fig:FlowMultiplex}
 \end{figure}
 
-\subsection{Design Goals}
+We set design goals for our network on chip:
 \begin{itemize}
 \item Multiple real-time flows can be multiplexed on one link
-\cite{Ferrari90ascheme} as in Figure \ref{fig:FlowMultiplex}.
+~\cite{Ferrari90ascheme} as in Figure \ref{fig:FlowMultiplex}.
 \item Utilize the spatial data paths between sources and nodes to avoid the 
 conflicts between real-time flows.
 \item Does not block links completely as SoCBUS \cite{SoCBUS}, best-effort flows 
 still can travel links used by real-time flows.
-\item Avoid unpredicted behaviors networks as in QNoC \cite{QNoC}, when there are 
-multiple real-time flows suddenly travelling on the same link and their total bandwidth 
+\item Avoid unpredicted behaviors networks as in QNoC ~\cite{QNoC}, when there
+are multiple real-time flows suddenly travelling on the same link and their total bandwidth 
 exceeds the bandwidth of the link. The admission control in our architecture can 
 prevent that. Senders should always know if their required specifications for 
 their communications can be met or not. 
-\item Provide maximum flexibility to applications, no specific configuration
-is done at {\em design time} as in \AE thereal ~\cite{Moonen07SPRINGER}. The
+\item Provide maximum flexibility and scalability to applications, no specific
+configuration is done at {\em design time} as in \AE thereal ~\cite{Moonen07SPRINGER}. The
 new architecture also needs to avoid {\em global scheduling} problem since this
 makes a network on chip difficult to be dynamically reconfigured effectively.
 \end{itemize}
-\section{Formal Definitions}
-\begin{itemize}
-\item $t_f$ is the {\em minimum} packet interval time in {\em cycles} between
-two successive packets of a real-time flow $f$.
-\item $l_f$ is the {\em maximum} length of a packet in {\em flits} of real-time
-flow $f$.
-\item $d_f$ is the {\em worst case} delay of a packet of real-time flow $f$.
-\item $s_{f,e}$ is the service time for a packet in a node including header 
-processing, transmission time, and any other operations. $s$ is often a 
-function of $l$: $s=f(l)$. We can set $s=value(l)$, this means that it takes $1$
-cycle for a router to process and send one flit over a link. In pipeline router
-model as in \cite{PehDelayModel}, \cite{PehSpecPipeR}, we have to add some
-pipeline stages to $l$ to have $s$.
-\item $T \subseteq \mathbf{N}$ is the set of the minimum interval values between
+
+\section{Definitions}
+$T \subseteq \mathbf{N}$ is the set of the minimum interval values between
 packets of flows.
-\item $L \subseteq \mathbf{N}$ is the set of packet lengths.
-\item $D \subseteq \mathbf{N}$ is the set of packet delays of real-time flows.
-\item $\mathcal{V} \subseteq \mathbf{N}$ is the set of virtual channels between pairs of nodes.
-\item $C$ is the set of {\em cores} on the on-chip network.
-\item $R$ is the set of {\em routers}.
-\end{itemize}
+
+$L \subseteq \mathbf{N}$ is the set of packet lengths.
+
+$D \subseteq \mathbf{N}$ is the set of packet delays of real-time flows.
+
+$\mathcal{V} \subseteq \mathbf{N}$ is the set of virtual channels between pairs of nodes.
+
+$C$ is the set of {\em cores} on the on-chip network.
+
+$R$ is the set of {\em routers}.
 
 Then the set of {\em nodes} on the network is defined as:
 \begin{equation}\label{reio}
@@ -268,6 +273,55 @@ y_{f,e} = \left\{ \begin{array}{lrc}
 0 \mbox{ otherwise} 
 \end{array}\right.
 \end{equation}
+
+$q_{f,v}$ is the {\em maximum} delay in cycles of a {\em flit} in
+flow $f$ at node $v$.This is the {\em queueing} delay. The local delay ({\em
+queueing} delay) at each node of a packet is defined as the duration from the
+{\em header} of that  packet is received until the header is started to send.
+We do not need to include the service time of the packet itself at the node.
+The {\em maximum} local delay of a packet of a flow $f$ at a node is thus the
+same as the maximum delay of a flit of flow $f$ at the same node since we do
+not allow real-time packet pre-emption. % In \cite{Ferrari90ascheme}, the delay is :
+
+%\begin{equation}\label{equ:nodedelay1}
+%q_{i,n} = \sum_{j=1}^{i-1}s_{j,n}+s_{max} \forall i = 1, ..., K
+%\end{equation}
+
+$t_f$ is the {\em minimum} packet interval time in {\em cycles} between
+two successive packets of a real-time flow $f$.
+
+$l_f$ is the {\em maximum} length of a packet in {\em flits} of real-time
+flow $f$.
+
+$d_f$ is the {\em worst case} delay of a packet of real-time flow $f$.
+
+$s_{f,e}$ is the service time for a packet in a node including header 
+processing, transmission time, and any other operations. $s$ is often a 
+function of $l$: $s=f(l)$. We can set $s=value(l)$, this means that it takes $1$
+cycle for a router to process and send one flit over a link. In pipeline router
+model as in ~\cite{PehDelayModel}~\cite{PehSpecPipeR}, we have to add some
+pipeline stages to $l$ to have $s$.
+ 
+$p_{f,e}$ is the {\em propagation} delay of a {\em flit} of flow $f$ on link $e
+\in E$. We assume in our network on chip, $p_e=1 \forall e \in E$.
+
+$r_{v,f,h}$ is the time of flit $h$ of flow $f$ reaches node $v$.  
+
+$d_{f,e}$ is the {\em maximum} delay of a flit of flow $f$ on link $e \in E,
+e=(v,u)$ measured in cycles. This delay is the duration between the time a flit
+reaches the source node $v$ and the time the flit reach the destination node
+$u$ of that link $e$.
+
+\begin{equation}\label{equ:edgeDelay}
+d_{f,e} = q_{f,v} + p_{f,e} = q_{f,v} + 1 
+\end{equation}
+
+and
+
+\begin{equation} 
+d_{f,e_{v,u}} \geq r_{u,f,h} - r_{v,f,h}
+\end{equation}
+
 
 % \begin{equation}
 % \delta_{f,v} = \left\{ \begin{array}{lrc}
@@ -388,7 +442,7 @@ and rerouting for finding a new suitable path on a network.
 
 
 One characteristic of this scheme is that the buffer for each 
-real-time flow at each node is bounded \cite{Ferrari90ascheme}, and thus
+real-time flow at each node is bounded ~\cite{Ferrari90ascheme}, and thus
 real-time packets can be sent {\em asynchronously} resulting in better bandwidth
 since we do not have to send {\em acknowledgement} for each flit sent. So at
 data link layer, we employ heterogeneity communications, {\em synchronous}
@@ -410,47 +464,13 @@ differently.}\label{fig:HeteroComm}
 \section{System Analysis}
 \subsection{Delay Model Analysis}
 
-The delay model in \cite{Ferrari90ascheme}, \cite{VermaJitter91} is
+The delay model in ~\cite{Ferrari90ascheme}~\cite{VermaJitter91} is
 for store-and-forward flow control. However we will use worm-hole flow
 control since it has better throughput.
 
-{\textbf{Definitions:}}
+%{\textbf{Definitions:}}
 
-$q_{f,v}$ is the {\em maximum} delay in cycles of a {\em flit} in
-flow $f$ at node $v$.This is the {\em queueing} delay. The local delay ({\em
-queueing} delay) at each node of a packet is defined as the duration from the
-{\em header} of that  packet is received until the header is started to send.
-We do not need to include the service time of the packet itself at the node.
-The {\em maximum} local delay of a packet of a flow $f$ at a node is thus the
-same as the maximum delay of a flit of flow $f$ at the same node since we do
-not allow real-time packet pre-emption. % In \cite{Ferrari90ascheme}, the delay is :
-
-%\begin{equation}\label{equ:nodedelay1}
-%q_{i,n} = \sum_{j=1}^{i-1}s_{j,n}+s_{max} \forall i = 1, ..., K
-%\end{equation}
-
- 
-$p_{f,e}$ is the {\em propagation} delay of a {\em flit} of flow $f$ on link $e
-\in E$. We assume in our network on chip, $p_e=1 \forall e \in E$.
-
-$r_{v,f,h}$ is the time of flit $h$ of flow $f$ reaches node $v$.  
-
-$d_{f,e}$ is the {\em maximum} delay of a flit of flow $f$ on link $e \in E,
-e=(v,u)$ measured in cycles. This delay is the duration between the time a flit
-reaches the source node $v$ and the time the flit reach the destination node
-$u$ of that link $e$.
-
-\begin{equation}\label{equ:edgeDelay}
-d_{f,e} = q_{f,v} + p_{f,e} = q_{f,v} + 1 
-\end{equation}
-
-and
-
-\begin{equation} 
-d_{f,e_{v,u}} \geq r_{u,f,h} - r_{v,f,h}
-\end{equation}
-
-Similarly to \cite{Ferrari90ascheme}, if we assume that all $K$ 
+Similarly to ~\cite{Ferrari90ascheme}, if we assume that all $K$ 
 real-time flows going through link $e$ satisfy the following condition:
 \begin{equation}\label{equ:intervalservice1}
 t_f \geq \sum_{j=1}^Ks_{j,e}, \forall f = 1,...,K
@@ -465,7 +485,7 @@ t_f \geq \sum_{j=1}^Kvalue(l_j), \forall f = 1,...,K
 \end{equation}
 
 This means that {\em no deadlines} for subsequent packets of a real-time flow
-will fall within the interval between time $t_0$ and $t_0 + \sum s = t_0 +
+will fall within the interval between time $t_0$ and $t_0 + \\sum s = t_0 +
 \sum_{j=1}^Kvalue(l_j)$.
 
 We define a function $order_{e_{v,u}}(f)$ over the set of all real-time flows
@@ -482,7 +502,7 @@ $order_{e_{v,u}}(f_1) < order_{e_{v,u}}(f_2)$.
 \end{figure}
 
 In worm-hole flow control scheme, the local delay at each node is a little bit
-different from \cite{Ferrari90ascheme}. For an edge $e = (v,u)$, we have:
+different from ~\cite{Ferrari90ascheme}. For an edge $e = (v,u)$, we have:
 
 \begin{eqnarray}\label{equ:queueDelay}
 q_{f,v}y_{f,e} \geq \sum_{g \in F:order_{e}(g) <
@@ -505,8 +525,8 @@ the bounded {\em queueing} delay for packets $p_1$ and $p_2$ are 3 and 5
 respectively as computed by equation (\ref{equ:queueDelay}). However, the
 bounded queueing delay for packet $p_3$ is 5 if it comes at the the same time as $p_1$ and $p_2$.
 
-From (\ref{equ:edgeDelay})(\ref{equ:queueDelay}) and we set delays on
-each edge as small as possible:
+From (\ref{equ:edgeDelay})(\ref{equ:queueDelay}) and delays on
+each edge is set as small as possible:
 
 \begin{eqnarray}\label{equ:edgeDelay2}
 d_{f,e}y_{f,e} = \sum_{g \in F:order_e(g) < order_e(f)}y_{f,e}s_{f,e} +
@@ -514,9 +534,9 @@ d_{f,e}y_{f,e} = \sum_{g \in F:order_e(g) < order_e(f)}y_{f,e}s_{f,e} +
 max_{order_{e}(i)>order_{e}(f)}(s_{i,e}y_{i,e}), \forall e \in E
 \end{eqnarray}
 
-For different applications, we can choose differnt {\em order} fucntions. In
-this paper, to minimize the total local delay at each node, we choose a
-scheduling scheme that forwards packets of flows that have smallest maximum
+For different applications, choose different {\em order} functions can be
+choosen. In this paper, to minimize the total local delay at each node, we
+choose a scheduling scheme that forwards packets of flows that have smallest maximum
 packet length first by setting $order_{v,e}(f)=l_f$, then
 (\ref{equ:edgeDelay2}) becomes:
 
@@ -529,8 +549,8 @@ This means that flows with smaller maximum packet lengths will be given smaller
 delays at this node (thereby smaller deadlines when packets come at the same
 time).
 
-However, from (\ref{equ:edgeDelayPacketLength}), can see that there is some
-case, at a node, the bounded delay of flow $f$ with the largest packet length
+However, from (\ref{equ:edgeDelayPacketLength}), it is possible to see that
+there is some case, at a node, the bounded delay of flow $f$ with the largest packet length
 will be {\em smaller} than the bounded delay of some other flow with smaller
 maximum packet length. To still use (\ref{equ:deadline1}), we have to assign a
 {\em virtual delay} for the flow $f$ so that the {\em virtual deadline},
@@ -573,8 +593,7 @@ has to satisfy the delay constraint of the real-time flow.
 \end{equation}
 
 When multiple real-time flows share the same link, the following conditions
- have to be met on each shared link \cite{Ferrari90ascheme},
- \cite{VermaJitter91}:
+ have to be met on each shared link ~\cite{Ferrari90ascheme}~\cite{VermaJitter91}:
 
 \begin{equation}\label{equ:utilization1}
 \sum_{f \in F}\frac{s_{f,e}}{t_f}y_{f,e} \leq 1, \forall e \in E
@@ -587,9 +606,9 @@ model, we often have $s_g=value(l_g)$, then (\ref{equ:utilization1}) becomes:
 \sum_{f \in F}\frac{l_f}{t_f}y_{f,e} \leq 1, \forall e \in E
 \end{equation}
 
-At each node, we use Earliest Deadline First (EDF) \cite{VermaJitter91} 
-to schedule packets, the deadline for each packet of flow $f$ at node $n^{th}$
-is computed as follows: 
+At each node, we use Earliest Due Date (EDD)
+~\cite{VermaJitter91}~\cite{LiuSchedulingRT} to schedule packets, the deadline
+for each packet of flow $f$ at node $n^{th}$ is computed as follows:
 \begin{equation}\label{equ:deadline1}
 dl_{f,n}=t_0 + \sum_{k=1}^{n}q_{f,k}+P_n
 \end{equation}
@@ -605,9 +624,9 @@ dl_{f,n}=t_0 + \sum_{k=1}^{n}d_{i,k}
 However (\ref{equ:e2eDelayST}) is for a store-and-forward flow control, in
 worm-hole flow control, it becomes
 \begin{equation}\label{equ:e2eDelayCT}
-\sum_{e \in E}d_{f,e}y_{f,e} + (s_f - 1) \leq d_f, \forall f \in F
+\sum_{e \in E}d_{f,e}y_{f,e} + (s_{f,last\_edge} - 1) \leq d_f, \forall f \in F
 \end{equation}
-since we have to include the service time, $s_f-1$, for each
+since we have to include the service time, $s_{f,last\_edge}-1$, for each
 packet so that the last node can receive the {\em remaining} flits in a
 packet of flow $f$, not only the header of the packet.
 
@@ -619,7 +638,7 @@ From (\ref{equ:edgeDelayPacketLength})(\ref{equ:e2eDelayCT}) we have:
 \begin{eqnarray}\label{equ:e2eDelayCTNonPipeline1}
 \sum_{e \in E} \Biggl(\sum_{g \in F:l_g <
 l_f}y_{g,e}s_{g,e} +max_{l_i>l_f}(s_{i,e}y_{i,e})\Biggr)\notag \\ \leq
-d_f-s_f + 1, \forall f \in F
+d_f-s_{f,last\_edge} + 1, \forall f \in F
 \end{eqnarray}
 
 For simple router models (non-pipeline), we have $s_{f,e} = value(l_f),\forall e
@@ -683,13 +702,13 @@ e \in E$, from (\ref{equ:e2eDelayCTNonPipeline1}) we have:
 \begin{eqnarray}\label{equ:e2eDelayModification}
 \sum_{e \in E} \Biggl(\sum_{g \in F:l_g <
 l_f}y_{g,e}s_{g,e}+y_{f',e}s_{f',e}+max_{l_i>l_f}(s_{i,e}y_{i,e})\Biggr)\notag
-\\ \leq d_f-s_f + 1, \forall f \in F
+\\ \leq d_f-s_{f, last\_edge} + 1, \forall f \in F
 \end{eqnarray}
 
 or
 
 \begin{eqnarray}\label{equ:e2eDelayModificatio2}
-\sum_{\forall e \in E}y_{f',e}s_{f',e} \leq d_f-s_f + 1 - \notag \\ 
+\sum_{\forall e \in E}y_{f',e}s_{f',e} \leq d_f-s_{f,last\_edge} + 1 - \notag \\ 
 \sum_{e \in E} \Biggl(\sum_{g \in F:l_g <
 l_f}y_{g,e}s_{g,e}+y_{f',e}s_{f',e}+max_{l_i>l_f}(s_{i,e}y_{i,e})\Biggr) \notag
 \\ \forall f \in F
@@ -706,6 +725,10 @@ or
 \begin{equation}\label{equ:e2eDelayModificatio4}
 \sum_{\forall e \in E}y_{f',e}value(l_{f'}) \leq slack_f, \forall f \in F
 \end{equation}
+
+(\ref{equ:e2eDelayModificatio4}) is used as the criteria for any routing
+algorithm to check if a new real-time flow can make any other existing
+real-time flows on its path violate their end-to-end delay.
 
 \section{Specifications}
 \subsection{Message Structures}
@@ -798,8 +821,8 @@ The structure of a real-time data packet is:
 \subsection{Worm-hole Router Structure}
 \subsubsection{Packet Indentification}
 In each real-time packet, the heade flit contain a {\em unique flow
-identification} number. Router will use this number to match the packet with
-information of real=time flows it has in a table. If it can successfully find a
+identification} number. A router will use this number to match the packet with
+information of real-time flows it has in a table. If it can successfully find a
 flow identification like that, the information about packets of that flows will
 be loaded  for packet scheduling, including:
 \begin{itemize}
@@ -810,7 +833,7 @@ be loaded  for packet scheduling, including:
 \end{itemize}
 
 \subsubsection{Scheduling}
-Figure \ref{fig:RouterStructure} show the structure of a router. In a router,
+Figure \ref{fig:RouterStructure} shows the structure of a router. In a router,
 each input has one {\em priority} queue for real-time packets of each output.
 Packets in the priority queue is {\em ordered} by deadline as in
 (\ref{equ:deadline2}). Each output will pick the top packets from priority
@@ -830,8 +853,8 @@ compared the deadline and forwarded right at the time its header each a node.
 
 Serveral different routing algorithms can be implemented to optimize and balance
 a network on chip like this depending on application requirments. In this
-evaluation, we just implement an exhaustive routing to demonstrate the
-worst case delay estimation and our packet scheduling algorithm.
+evaluation, we just implement an exhaustive depth-first search routing algorithm
+to demonstrate the worst case delay estimation and our packet scheduling algorithm.
 
 When a reservation algorithm of a path reaches a node and the calculated routing
 link to another router cannot afford the service time and transmission rate or delay 
@@ -862,10 +885,10 @@ has the third flow. The flow 3 then get routed to node 12 then reach the node.
 
 \section{Implementation}
 Router micro-architecture can be implemented similarly as in
-\cite{Rexford98arouter},\cite{ZhangService} and extend \cite{PehDelayModel},
-\cite{PehSpecPipeR} to have better performance.
+~\cite{Rexford98arouter}~\cite{ZhangService} and extend
+~\cite{PehDelayModel}~\cite{PehSpecPipeR} to have better performance.
 
-Simulation program is written in SystemC based loosely on Noxim \cite{Noxim}.
+Simulation program is written in SystemC based loosely on Noxim ~\cite{Noxim}.
 To test our implementation, we initiate three real-time flows on the network as
 in Figure \ref{fig:3FlowsEx}.
 
