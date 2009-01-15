@@ -70,8 +70,9 @@ public interface TaskExecutionListener {
         START, 
         /** Stopped the execution of an actor. */
         STOP,
-        /** An actors should have been executed at a previous. */
-        MISSEDEXECUTION
+        WAIT,
+        PREEMPTED, 
+        AP
     }
 
 }

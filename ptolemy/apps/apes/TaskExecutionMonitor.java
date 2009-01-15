@@ -33,6 +33,7 @@ import java.awt.Frame;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 
 import ptolemy.actor.Actor;
@@ -102,6 +103,8 @@ public class TaskExecutionMonitor extends TypedAtomicActor implements TaskExecut
 
     /** The plotter. */
     public Plot plot;
+    
+    private HashMap<Actor, Double> _previousY = new HashMap();
 
     // /////////////////////////////////////////////////////////////////
     // // public methods ////
@@ -126,11 +129,31 @@ public class TaskExecutionMonitor extends TypedAtomicActor implements TaskExecut
         }
         double x = time;
         int actorDataset = actors.indexOf(actor);
-        if (scheduleEvent == ScheduleEventType.START
-                || scheduleEvent == ScheduleEventType.STOP) {
-            plot.addPoint(actorDataset, x, actorDataset,
-                    scheduleEvent == ScheduleEventType.STOP); 
-        } 
+        if (scheduleEvent == null) {
+            plot.addPoint(actorDataset, x, actorDataset, true); 
+            _previousY.put(actor, (double) actorDataset);
+        } else if (scheduleEvent == ScheduleEventType.START) { 
+            plot.addPoint(actorDataset, x, _previousY.get(actor), true); 
+            plot.addPoint(actorDataset, x, actorDataset + 0.6, true);
+            _previousY.put(actor, actorDataset + 0.6);
+        } else if (scheduleEvent == ScheduleEventType.STOP) {
+            plot.addPoint(actorDataset, x, actorDataset + 0.6, true); 
+            plot.addPoint(actorDataset, x, actorDataset, true);
+            _previousY.put(actor, (double) actorDataset);
+        } else if (scheduleEvent == ScheduleEventType.WAIT) {
+            plot.addPoint(actorDataset, x, actorDataset + 0.6, true); 
+            plot.addPoint(actorDataset, x, actorDataset + 0.2, true);
+            _previousY.put(actor, actorDataset + 0.2);
+        } else if (scheduleEvent == ScheduleEventType.PREEMPTED) {
+            plot.addPoint(actorDataset, x, actorDataset + 0.6, true); 
+            plot.addPoint(actorDataset, x, actorDataset + 0.4, true);
+            _previousY.put(actor, actorDataset + 0.4);
+        } else if (scheduleEvent == ScheduleEventType.AP) {
+            plot.addPoint(actorDataset, x, actorDataset + 0.6, true); 
+            plot.addPoint(actorDataset, x, actorDataset + 0.5, true);
+            plot.addPoint(actorDataset, x, actorDataset + 0.6, true);
+            _previousY.put(actor, actorDataset + 0.6);
+        }
         plot.fillPlot();
         plot.repaint();
     }
@@ -178,6 +201,7 @@ public class TaskExecutionMonitor extends TypedAtomicActor implements TaskExecut
             for (Actor actor : actors) {
                 plot.addLegend(actors.indexOf(actor), actor
                         .getName()); 
+                event(actor, 0.0, null);
             }
             plot.doLayout();
         }
@@ -244,7 +268,7 @@ public class TaskExecutionMonitor extends TypedAtomicActor implements TaskExecut
                 plot = new Plot();
                 plot.setTitle("Ptides Schedule");
                 plot.setButtons(true);
-                plot.setMarksStyle("dots");
+                plot.setMarksStyle("none");
 
                 // We put the plotter as a sub-effigy of the toplevel effigy,
                 // so that it closes when the model is closed.
