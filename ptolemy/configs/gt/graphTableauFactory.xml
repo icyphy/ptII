@@ -74,7 +74,7 @@
           <property name="preferredSize" class="ptolemy.data.expr.Parameter" value="[130, 25]">
           </property>
           <property name="none" class="ptolemy.actor.gui.properties.ComboBox$Item">
-            <display name="Select Design Pattern...">
+            <display name="Select design pattern...">
             </display>
           </property>
           <property name="DDFRepeatForCount" class="ptolemy.actor.gui.properties.ComboBox$Item">
