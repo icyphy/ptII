@@ -85,12 +85,14 @@ int getWriteOffset(struct pnBufferHeader* header, struct directorHeader* directo
 
 			#ifdef DEBUG_PN
 			printf("[%x] waits to write [%d].\n", pthread_self(), header->waitCondition);
+			fflush(stdout);
 			#endif
 
             pthread_cond_wait(header->waitCondition, header->waitMutex);
 
             #ifdef DEBUG_PN
-				printf("[%x] wakes up.\n", pthread_self());
+			printf("[%x] wakes up.\n", pthread_self());
+			fflush(stdout);
 			#endif
 
             if (directorHeader->terminate) {
@@ -134,7 +136,8 @@ int getAdvancedWriteOffset(int offset, struct pnBufferHeader* header, struct dir
             header->pendingFlag |= 0x2;
 
 			#ifdef DEBUG_PN
-				printf("[%x] waits to write [%d].\n", pthread_self(), header->waitCondition);
+			printf("[%x] waits to write [%d].\n", pthread_self(), header->waitCondition);
+			fflush(stdout);
 			#endif
 
 			// Since this request is for multiple buffer spaces, there
@@ -144,7 +147,8 @@ int getAdvancedWriteOffset(int offset, struct pnBufferHeader* header, struct dir
             } while ((header->writeCount - header->readCount) >= header->capacity - offset && !directorHeader->terminate);
 
             #ifdef DEBUG_PN
-				printf("[%x] wakes up.\n", pthread_self());
+			printf("[%x] wakes up.\n", pthread_self());
+			fflush(stdout);
 			#endif
 
             if (directorHeader->terminate) {
@@ -184,13 +188,15 @@ int getReadOffset(struct pnBufferHeader* header, struct directorHeader* director
             header->pendingFlag |= 0x1;
 
 			#ifdef DEBUG_PN
-				printf("[%x] waits to read [%d].\n", pthread_self(), header->waitCondition);
+			printf("[%x] waits to read [%d].\n", pthread_self(), header->waitCondition);
+			fflush(stdout);
 			#endif
 
             pthread_cond_wait(header->waitCondition, header->waitMutex);
 
 			#ifdef DEBUG_PN
-				printf("[%x] wakes up.\n", pthread_self());
+			printf("[%x] wakes up.\n", pthread_self());
+			fflush(stdout);
 			#endif
             if (directorHeader->terminate) {
                 // FIXME: need to call actor's wrapup()
@@ -232,7 +238,8 @@ int getAdvancedReadOffset(int offset, struct pnBufferHeader* header, struct dire
             header->pendingFlag |= 0x1;
 
 			#ifdef DEBUG_PN
-				printf("[%x] waits to read [%d].\n", pthread_self(), header->waitCondition);
+			printf("[%x] waits to read [%d].\n", pthread_self(), header->waitCondition);
+			fflush(stdout);
 			#endif
 
 			// Since this request is for multiple buffer spaces, there
@@ -242,7 +249,8 @@ int getAdvancedReadOffset(int offset, struct pnBufferHeader* header, struct dire
             } while ((header->writeCount - header->readCount) <= offset && !directorHeader->terminate);
 
 			#ifdef DEBUG_PN
-				printf("[%x] wakes up.\n", pthread_self());
+			printf("[%x] wakes up.\n", pthread_self());
+			fflush(stdout);
 			#endif
             if (directorHeader->terminate) {
 
@@ -281,7 +289,8 @@ inline void incrementReadBlockingThreads(struct directorHeader* directorHeader) 
 
         for (i = 0; i < directorHeader->numBuffers; i++) {
 			#ifdef DEBUG_PN
-				printf("[%x] broadcast [%d].\n", pthread_self(), &directorHeader->allConditions[i]);
+			printf("[%x] broadcast [%d].\n", pthread_self(), &directorHeader->allConditions[i]);
+			fflush(stdout);
 			#endif
             pthread_cond_broadcast(&directorHeader->allConditions[i]);
         }
@@ -320,6 +329,7 @@ inline void incrementWriteBlockingThreads(struct directorHeader* directorHeader)
 void incrementWriteOffset(struct pnBufferHeader* header, struct directorHeader* directorHeader) {
 	#ifdef DEBUG_PN
 	printf("[%x] increments [%d] write offset [%d]->[%d]\n", pthread_self(), header->waitCondition, header->writeOffset, (header->writeOffset + 1) % header->capacity);
+	fflush(stdout);
 	#endif
 
     header->writeOffset = (header->writeOffset + 1) % header->capacity;
@@ -344,6 +354,7 @@ void incrementWriteOffset(struct pnBufferHeader* header, struct directorHeader* 
 
 		#ifdef DEBUG_PN
 		printf("[%x] signals [%d]\n", pthread_self(), header->waitCondition);
+		fflush(stdout);
 		#endif
 
 	    // Signal the consumer thread.
@@ -360,6 +371,7 @@ void incrementWriteOffset(struct pnBufferHeader* header, struct directorHeader* 
 void incrementWriteOffsetBy(int increment, struct pnBufferHeader* header, struct directorHeader* directorHeader) {
 	#ifdef DEBUG_PN
 	printf("[%x] increments [%d] write offset [%d]->[%d]\n", pthread_self(), header->waitCondition, header->writeOffset, (header->writeOffset + increment) % header->capacity);
+	fflush(stdout);
 	#endif
 
 	header->writeOffset = (header->writeOffset + increment) % header->capacity;
@@ -381,6 +393,7 @@ void incrementWriteOffsetBy(int increment, struct pnBufferHeader* header, struct
 
 		#ifdef DEBUG_PN
 		printf("[%x] signals [%d]\n", pthread_self(), header->waitCondition);
+		fflush(stdout);
 		#endif
 
         // Signal the consumer thread.
@@ -397,6 +410,7 @@ void incrementWriteOffsetBy(int increment, struct pnBufferHeader* header, struct
 void incrementReadOffset(struct pnBufferHeader* header, struct directorHeader* directorHeader) {
 	#ifdef DEBUG_PN
 	printf("[%x] increments [%d] read offset [%d]->[%d]\n", pthread_self(), header->waitCondition, header->readOffset, (header->readOffset + 1) % header->capacity);
+	fflush(stdout);
 	#endif
 
     header->readOffset = (header->readOffset + 1) % header->capacity;
@@ -421,6 +435,7 @@ void incrementReadOffset(struct pnBufferHeader* header, struct directorHeader* d
 
 		#ifdef DEBUG_PN
 		printf("[%x] signals [%d]\n", pthread_self(), header->waitCondition);
+		fflush(stdout);
 		#endif
 
         // Signal the consumer thread.
@@ -437,6 +452,7 @@ void incrementReadOffset(struct pnBufferHeader* header, struct directorHeader* d
 void incrementReadOffsetBy(int increment, struct pnBufferHeader* header, struct directorHeader* directorHeader) {
 	#ifdef DEBUG_PN
 	printf("[%x] increment [%d] read offset [%d]->[%d]\n", pthread_self(), header->waitCondition, header->readOffset, (header->readOffset + increment) % header->capacity);
+	fflush(stdout);
 	#endif
 
     header->readOffset = (header->readOffset + increment) % header->capacity;
@@ -458,6 +474,7 @@ void incrementReadOffsetBy(int increment, struct pnBufferHeader* header, struct 
 
 		#ifdef DEBUG_PN
 		printf("[%x] signals [%d]\n", pthread_self(), header->waitCondition);
+		fflush(stdout);
 		#endif
 
         // Signal the consumer thread.
