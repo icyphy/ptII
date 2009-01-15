@@ -1,0 +1,45 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE property PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<property name="factoryERG" class="ptolemy.actor.gui.PtolemyTableauFactory">
+  <property name="Event Relation Graph Editor" class="ptolemy.vergil.erg.ERGGraphTableau$Factory">
+    <property name="_library" class="ptolemy.moml.LibraryAttribute">
+      <configure>
+        <entity name="EventLibrary" class="ptolemy.kernel.CompositeEntity">
+          <property name="TransformationAttribute" class="ptolemy.actor.gt.controller.TransformationAttribute"/>
+          <input source="ptolemy/configs/basicUtilities.xml"/>
+          <input source="ptolemy/domains/erg/lib/ergLibrary.xml"/>
+        </entity>
+      </configure>
+    </property>
+    <configure>
+      <property name="toolbar" class="ptolemy.actor.gui.properties.ToolBar">
+        <property name="separator" class="ptolemy.actor.gui.properties.Separator">
+          <property name="orientation" class="ptolemy.data.expr.StringParameter" value="Vertical">
+          </property>
+          <property name="preferredSize" class="ptolemy.data.expr.Parameter" value="[10, 25]">
+          </property>
+        </property>
+        <property name="selector" class="ptolemy.actor.gui.properties.ComboBox">
+          <property name="preferredSize" class="ptolemy.data.expr.Parameter" value="[150, 25]">
+          </property>
+          <property name="none" class="ptolemy.actor.gui.properties.ComboBox$Item">
+            <display name="Select Design Pattern...">
+            </display>
+          </property>
+          <property name="RepeatForCount" class="ptolemy.actor.gui.properties.ComboBox$Item">
+            <property name="next" class="ptolemy.data.expr.StringParameter" value="none">
+            </property>
+            <property name="parse" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <configure source="ptolemy/domains/erg/lib/RepeatForCount.xml">
+            </configure>
+          </property>
+        </property>
+      </property>
+    </configure>
+  </property>
+  <property name="Tree View" class="ptolemy.vergil.tree.TreeTableau$Factory"/>
+  <property name="XML view" class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
+  <property name="JVM Properties" class="ptolemy.actor.gui.JVMTableau$Factory"/>
+</property>

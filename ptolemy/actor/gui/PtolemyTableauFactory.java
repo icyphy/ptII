@@ -98,6 +98,9 @@ public class PtolemyTableauFactory extends TableauFactory {
         if (factories.hasNext()) {
             TableauFactory factory = (TableauFactory) factories.next();
             tableau = factory.createTableau(effigy);
+            if (tableau != null) {
+                factory._configureTableau(tableau);
+            }
         }
 
         return tableau;

@@ -278,6 +278,10 @@ public class Tableau extends CompositeEntity {
      *  @see #getFrame()
      */
     public void setFrame(JFrame frame) throws IllegalActionException {
+        if (_frame == frame) {
+            return;
+        }
+
         _frame = frame;
 
         size.setSize(frame);

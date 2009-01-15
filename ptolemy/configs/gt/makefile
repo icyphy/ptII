@@ -57,6 +57,10 @@ JSRCS =
 DERIVED_FILES =
 
 OTHER_FILES_TO_BE_JARED = \
+	configuration.xml \
+	ergTableauFactory.xml \
+	graphTableauFactory.xml \
+	graphTableauFactory.xml \
 	gtActorLibrary.xml \
 	gtEffigyFactory.xml \
 	gtLibrary.xml \

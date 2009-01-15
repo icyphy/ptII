@@ -32,6 +32,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Event;
+import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Toolkit;
@@ -94,6 +95,7 @@ import ptolemy.actor.gui.SizeAttribute;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.UserActorLibrary;
 import ptolemy.actor.gui.WindowPropertiesAttribute;
+import ptolemy.actor.gui.properties.ToolBar;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
@@ -409,7 +411,12 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         getContentPane().add(_splitPane, BorderLayout.CENTER);
 
         _toolbar = new JToolBar();
-        getContentPane().add(_toolbar, BorderLayout.NORTH);
+        _toolbar.setLayout(new FlowLayout(FlowLayout.LEADING, 0, 0));
+        try {
+            new ToolBar(getTableau(), "toolbar", _toolbar, BorderLayout.NORTH);
+        } catch (Exception e) {
+            throw new InternalErrorException("Unable to create tool bar.");
+        }
 
         GUIUtilities.addToolBarButton(_toolbar, _saveAction);
 
@@ -2027,7 +2034,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
         return namedObjSet;
     }
-    
+
     protected boolean _isDesignPattern() {
         NamedObj model = getModel();
         return !model.attributeList(DesignPatternIcon.class).isEmpty();

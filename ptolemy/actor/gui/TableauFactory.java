@@ -28,12 +28,17 @@
  */
 package ptolemy.actor.gui;
 
+import java.net.URL;
 import java.util.Iterator;
 
+import javax.swing.SwingUtilities;
+
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.Configurable;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.MoMLChangeRequest;
 
 //////////////////////////////////////////////////////////////////////////
 //// TableauFactory
@@ -75,7 +80,7 @@ import ptolemy.kernel.util.NamedObj;
  @see Effigy
  @see Tableau
  */
-public class TableauFactory extends Attribute {
+public class TableauFactory extends Attribute implements Configurable {
     /** Create a factory with the given name and container.
      *  @param container The container.
      *  @param name The name.
@@ -117,11 +122,80 @@ public class TableauFactory extends Attribute {
         Tableau tableau = null;
         Iterator factories = attributeList(TableauFactory.class).iterator();
 
-        while (factories.hasNext() && (tableau == null)) {
+        while (factories.hasNext() && tableau == null) {
             TableauFactory factory = (TableauFactory) factories.next();
             tableau = factory.createTableau(effigy);
+            if (tableau != null) {
+                factory._configureTableau(tableau);
+            }
         }
 
         return tableau;
     }
+
+    /** Configure the tableau factory with data from the specified input source
+     *  (a URL) and/or textual data.  The data is recorded locally without
+     *  parsing.
+     *  @param base The base relative to which references within the input
+     *   are found, or null if this is not known, or there is none.
+     *  @param source The input source, which specifies a URL, or null
+     *   if none.
+     *  @param text Configuration information given as text, or null if
+     *   none.
+     *  @exception Exception If something goes wrong. No thrown in this class.
+     */
+    public void configure(URL base, String source, String text)
+            throws Exception {
+        _configureSource = source;
+        _configureText = text;
+    }
+
+    /** Return the input source that was specified the last time the configure
+     *  method was called.
+     *  @return The string representation of the input URL, or null if the
+     *  no source has been used to configure this object, or null if no
+     *  external source need be used to configure this object.
+     */
+    public String getConfigureSource() {
+        return _configureSource;
+    }
+
+    /** Return the text string that represents the current configuration of
+     *  this object.  Note that any configuration that was previously
+     *  specified using the source attribute need not be represented here
+     *  as well.
+     *  @return A configuration string, or null if no configuration
+     *  has been used to configure this object, or null if no
+     *  configuration string need be used to configure this object.
+     */
+    public String getConfigureText() {
+        return _configureText;
+    }
+
+    /** Configure the given tableau with the configuration data attached to this
+     *  tableau factory, if any.
+     *
+     *  @param tableau The tableau to be configured.
+     */
+    protected void _configureTableau(final Tableau tableau) {
+        if (_configureText != null) {
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    MoMLChangeRequest request = new MoMLChangeRequest(this,
+                            tableau, _configureText);
+                    tableau.requestChange(request);
+                }
+            });
+        }
+    }
+
+    /** The input source that was specified the last time the configure method
+     *  was called.
+     */
+    private String _configureSource;
+
+    /** The text string that represents the current configuration of this
+     *  object.
+     */
+    private String _configureText;
 }

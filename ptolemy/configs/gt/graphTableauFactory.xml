@@ -1,0 +1,127 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<!-- Factory for graph editing.  -->
+<property name="factory2" class="ptolemy.actor.gui.PtolemyTableauFactory">
+  <!-- These will appear in the View menu of a the graph editor. -->
+  <property name="Graph Editor"
+            class="ptolemy.vergil.actor.ActorGraphTableau$Factory">
+    <configure>
+      <property name="toolbar" class="ptolemy.actor.gui.properties.ToolBar">
+        <property name="separator" class="ptolemy.actor.gui.properties.Separator">
+          <property name="orientation" class="ptolemy.data.expr.StringParameter" value="Vertical">
+          </property>
+          <property name="preferredSize" class="ptolemy.data.expr.Parameter" value="[10, 25]">
+          </property>
+        </property>
+        <property name="selector1" class="ptolemy.actor.gui.properties.ComboBox">
+          <property name="preferredSize" class="ptolemy.data.expr.Parameter" value="[130, 25]">
+          </property>
+          <property name="none" class="ptolemy.actor.gui.properties.ComboBox$Item">
+            <display name="Select object...">
+            </display>
+          </property>
+          <property name="CompositeActor" class="ptolemy.actor.gui.properties.ComboBox$Item">
+            <property name="next" class="ptolemy.data.expr.StringParameter" value="none">
+            </property>
+            <configure>
+              <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
+              </entity>
+            </configure>
+          </property>
+          <property name="Const" class="ptolemy.actor.gui.properties.ComboBox$Item">
+            <property name="next" class="ptolemy.data.expr.StringParameter" value="none">
+            </property>
+            <configure>
+              <entity name="Const" class="ptolemy.actor.lib.Const">
+              </entity>
+            </configure>
+          </property>
+          <property name="DE Director" class="ptolemy.actor.gui.properties.ComboBox$Item">
+            <property name="next" class="ptolemy.data.expr.StringParameter" value="none">
+            </property>
+            <configure>
+              <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+              </property>
+            </configure>
+          </property>
+          <property name="Display" class="ptolemy.actor.gui.properties.ComboBox$Item">
+            <property name="next" class="ptolemy.data.expr.StringParameter" value="none">
+            </property>
+            <configure>
+              <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+              </entity>
+            </configure>
+          </property>
+          <property name="InputOutputPorts" class="ptolemy.actor.gui.properties.ComboBox$Item">
+            <property name="next" class="ptolemy.data.expr.StringParameter" value="none">
+            </property>
+            <property name="parse" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <configure source="ptolemy/actor/designs/InputOutputPorts.xml">
+            </configure>
+          </property>
+          <property name="Ramp" class="ptolemy.actor.gui.properties.ComboBox$Item">
+            <property name="next" class="ptolemy.data.expr.StringParameter" value="none">
+            </property>
+            <configure>
+              <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+              </entity>
+            </configure>
+          </property>
+        </property>
+        <property name="selector2" class="ptolemy.actor.gui.properties.ComboBox">
+          <property name="preferredSize" class="ptolemy.data.expr.Parameter" value="[130, 25]">
+          </property>
+          <property name="none" class="ptolemy.actor.gui.properties.ComboBox$Item">
+            <display name="Select Design Pattern...">
+            </display>
+          </property>
+          <property name="DDFRepeatForCount" class="ptolemy.actor.gui.properties.ComboBox$Item">
+            <property name="next" class="ptolemy.data.expr.StringParameter" value="none">
+            </property>
+            <property name="parse" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <configure source="ptolemy/actor/designs/DDFRepeatForCount.xml">
+            </configure>
+          </property>
+          <property name="DESourceSink" class="ptolemy.actor.gui.properties.ComboBox$Item">
+            <property name="next" class="ptolemy.data.expr.StringParameter" value="none">
+            </property>
+            <property name="parse" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <configure source="ptolemy/actor/designs/DESourceSink.xml">
+            </configure>
+          </property>
+          <property name="RendezvousSynchrony" class="ptolemy.actor.gui.properties.ComboBox$Item">
+            <property name="next" class="ptolemy.data.expr.StringParameter" value="none">
+            </property>
+            <property name="parse" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <configure source="ptolemy/actor/designs/RendezvousSynchrony.xml">
+            </configure>
+          </property>
+        </property>
+      </property>
+    </configure>
+  </property>
+  <property name="Run Window"
+            class="ptolemy.actor.gui.RunTableau$Factory"/>
+  <property name="Interface Window"
+            class="ptolemy.actor.gui.run.InterfaceTableau$Factory"/>
+  <property name="Tree View"
+            class="ptolemy.vergil.tree.TreeTableau$Factory"/>
+  <property name="XML View"
+            class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
+  <!-- No code gen in this basic file. -->
+  <!--property name="Code Generator"
+            class="ptolemy.copernicus.gui.GeneratorTableau$Factory"/-->
+  <!-- FIXME: does this belong in the View menu? -->
+  <property name="JVM Properties"
+            class="ptolemy.actor.gui.JVMTableau$Factory"/>
+  <!-- FIXME: Tcl Shell does not belong in the View menu, nor in basic.
+    Commented out so that Web Start works
+    -->
+  <!--property name="Tcl Shell"
+            class="ptolemy.actor.gui.ptjacl.TclShellTableau$Factory"/-->
+</property>
