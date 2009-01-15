@@ -60,6 +60,7 @@ import ptolemy.moml.Vertex;
 import ptolemy.vergil.basic.AbstractBasicGraphModel;
 import ptolemy.vergil.basic.NamedObjNodeModel;
 import ptolemy.vergil.kernel.Link;
+import ptolemy.vergil.toolbox.SnapConstraint;
 import diva.graph.GraphEvent;
 import diva.graph.GraphUtilities;
 import diva.graph.modular.CompositeModel;
@@ -1118,20 +1119,23 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                         int headRelationIndex = _getRelationIndex((IOPort) oldHeadSemantic,
                                 headIsActorPort, relation);
                         int tailRelationIndex = _getRelationIndex((IOPort) oldTailSemantic,
-                                tailIsActorPort, relation);                    
+                                tailIsActorPort, relation);                        
                         
                         final NamedObj toplevel = getPtolemyModel();
                         String newRelationName = toplevel.uniqueName("relation");
                         final String vertexName = "vertex1";
 
                         double[] headLocation = _getLocation(headIsActorPort ? oldHeadSemantic.getContainer() : oldHeadSemantic).getLocation();
-                        double[] tailLocation = _getLocation(tailIsActorPort ? oldTailSemantic.getContainer() : oldTailSemantic).getLocation();                        
+                        double[] tailLocation = _getLocation(tailIsActorPort ? oldTailSemantic.getContainer() : oldTailSemantic).getLocation();
+                        double[] newLocation = new double[2];
+                        newLocation[0] = (headLocation[0] + tailLocation[0]) / 2.0;
+                        newLocation[1] = (headLocation[1] + tailLocation[1]) / 2.0;
+                        newLocation = SnapConstraint.constrainPoint(newLocation);
                         
                         // Create the relation.
                         moml.append("<relation name=\"" + newRelationName + "\">\n");
                         moml.append("<vertex name=\"" + vertexName + "\" value=\"{");
-                        moml.append(((headLocation[0] + tailLocation[0])/ 2.0) + ", "
-                                + (headLocation[1] + tailLocation[1])/ 2.0);
+                        moml.append(newLocation[0] + ", " + newLocation[1]);
                         moml.append("}\"/>\n");
                         moml.append("</relation>");
                         
