@@ -40,12 +40,16 @@ public class PerimeterTarget extends AbstractConnectorTarget {
      * is not a connector
      */
     public Site getHeadSite(Figure f, double x, double y) {
-        if (!(f instanceof Connector)) {
-            // FIXME: Need to generate unique ID per figure
-            // FIXME: Need to actually return a useful site!
-            return new PerimeterSite(f, 0);
-        } else {
-            return null;
-        }
+        // Removed the test if (!(f instanceof Connector)) {
+        // It is now also possible to connect with other links.
+        // If this existing link has a vertex as head or tail,
+        // we will connect with the vertex, otherwise we will
+        // remove the old link, create a new vertex, link the
+        // head and tail of the existing link with the
+        // vertex and link the new link with the vertex.
+        
+        // FIXME: Need to generate unique ID per figure
+        // FIXME: Need to actually return a useful site!
+        return new PerimeterSite(f, 0);
     }
 }

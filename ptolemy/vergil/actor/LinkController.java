@@ -123,10 +123,10 @@ public class LinkController extends BasicEdgeController {
          * those on links (relations) and on the
          */
 
-        List configsList = Configuration.configurations();
+        List<?> configsList = Configuration.configurations();
 
         Configuration config = null;
-        for (Iterator it = configsList.iterator(); it.hasNext(); ) {
+        for (Iterator<?> it = configsList.iterator(); it.hasNext(); ) {
           config = (Configuration)it.next();
           if (config != null)
             break;
@@ -290,8 +290,19 @@ public class LinkController extends BasicEdgeController {
 
             if (object instanceof Port
                     || object instanceof Vertex
+                    || (object instanceof Link && c != f)
                     || (object instanceof Locatable && ((Locatable) object)
                             .getContainer() instanceof Port)) {
+                
+                // It is possible to link with an existing link.
+                // If this existing link has a vertex as head or tail,
+                // we will connect with the vertex, otherwise we will
+                // remove the old link, create a new vertex, link the
+                // head and tail of the existing link with the
+                // vertex and link the new link with the vertex.
+                // We don't allow connecting with with yourself, hence the
+                // test c != f.
+
                 return super.acceptHead(c, f);
             } else {
                 return false;
