@@ -6,7 +6,7 @@
   <!-- Specify the about file to open. -->
   <property name="_about"
             class="ptolemy.data.expr.FileParameter"
-            value="$CLASSPATH/ptolemy/configs/pn/intro.htm"/>
+            value="$CLASSPATH/ptolemy/configs/space/intro.htm"/>
 
   <!-- Specify the help file to open. -->
   <property name="_help"
@@ -66,7 +66,7 @@
         <?moml
           <group>
              <!-- Libraries are mostly customized to make them spartan. -->
-             <input source="ptolemy/actor/lib/database/database.xml">
+             <input source="ptolemy/actor/lib/database/database.xml"/>
           </group>
         ?>
       </configure>
