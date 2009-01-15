@@ -31,8 +31,8 @@ package ptolemy.apps.apes;
 
 import java.awt.Frame;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Hashtable;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import ptolemy.actor.Actor;
@@ -45,9 +45,8 @@ import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PlotEffigy;
 import ptolemy.actor.gui.TableauFrame;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.expr.SingletonParameter; 
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -130,8 +129,6 @@ public class TaskExecutionMonitor extends TypedAtomicActor implements TaskExecut
         if (scheduleEvent == ScheduleEventType.START
                 || scheduleEvent == ScheduleEventType.STOP) {
             plot.addPoint(actorDataset, x, actorDataset,
-                    scheduleEvent == ScheduleEventType.STOP);
-            plot.addPoint(actorDataset, x, actorDataset,
                     scheduleEvent == ScheduleEventType.STOP); 
         } 
         plot.fillPlot();
@@ -171,6 +168,9 @@ public class TaskExecutionMonitor extends TypedAtomicActor implements TaskExecut
             }
         } 
         
+        Collections.sort(actors, new TaskComparator());
+        
+        
         if (plot != null) {
             plot.clear(false);
             plot.clearLegends();
@@ -181,6 +181,23 @@ public class TaskExecutionMonitor extends TypedAtomicActor implements TaskExecut
             }
             plot.doLayout();
         }
+    }
+    
+    private class TaskComparator implements Comparator {
+
+        public int compare(Object o1, Object o2) {
+            CTask actor1 = (CTask) o1;
+            CTask actor2 = (CTask) o2;
+            int prio1 = CTask.getPriority(actor1);
+            int prio2 = CTask.getPriority(actor2);
+            if (prio1 < prio2)
+                return -1;
+            else if (prio2 < prio1)
+                return 1;
+            else
+                return 0;
+        }
+        
     }
 
     // /////////////////////////////////////////////////////////////////

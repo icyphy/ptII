@@ -10,10 +10,13 @@ import ptolemy.actor.TimedDirector;
 import ptolemy.actor.util.BreakCausalityInterface;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.Time;
+import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.Token;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
 public class CTask extends ApeActor implements Runnable {
@@ -37,6 +40,33 @@ public class CTask extends ApeActor implements Runnable {
         super(container, name);
         _initialize();
     }
+    
+    /**
+     * Returns the priority of the actor. The priority is an int value. The
+     * default return value is 0.
+     * 
+     * @param actor
+     *            Given actor.
+     * @return Priority of the given actor.
+     */
+    public static int getPriority(Actor actor) {
+        try {
+            Parameter parameter = (Parameter) ((NamedObj) actor)
+                    .getAttribute("priority");
+
+            if (parameter != null) {
+                IntToken token = (IntToken) parameter.getToken();
+
+                return token.intValue();
+            } else {
+                return 0;
+            }
+        } catch (ClassCastException ex) {
+            return 0;
+        } catch (IllegalActionException ex) {
+            return 0;
+        }
+    }
 
     public Parameter methodName;
 
@@ -48,7 +78,7 @@ public class CTask extends ApeActor implements Runnable {
 
             
             if (extime >= 0) {
-                _sendResourceToken("CPUScheduler", new Time(getDirector(), extime), minNextTime < 0.0);
+                output.send("CPUScheduler", new ResourceToken(this, new Time(getDirector(), extime), null)); 
             }
 
             synchronized (this) {
@@ -75,7 +105,7 @@ public class CTask extends ApeActor implements Runnable {
         boolean readInputs = false;
         
         while (input.hasToken(0)){
-            input.get(0);
+            ptolemy.data.Token t = input.get(0);
             readInputs = true;
         }
 
@@ -160,8 +190,9 @@ public class CTask extends ApeActor implements Runnable {
             if (entity instanceof Actor) {
                 Actor actor = (Actor) entity;
                 if (actor instanceof CPUScheduler) {
-                    cpuScheduler = (CPUScheduler) actor;
-                    return;
+                    cpuScheduler = (CPUScheduler) actor; 
+                } else if (actor instanceof EventManager) {
+                    eventManager = (EventManager) actor;
                 }
             }
         }
@@ -169,6 +200,7 @@ public class CTask extends ApeActor implements Runnable {
     
     // just for testing purposes to do system calls
     public CPUScheduler cpuScheduler;
+    public EventManager eventManager;
 
     public void run() {
         Thread.currentThread().setName(this.getName());
@@ -194,17 +226,6 @@ public class CTask extends ApeActor implements Runnable {
 
         Parameter destinationActorList= (Parameter) output.getAttribute("destinationActors");
         destinationActorList.setExpression("CPUScheduler");
-    }
-
-    private void _sendResourceToken(String resourceName, Object requestedValue,
-            boolean isFinished) throws NoRoomException, IllegalActionException {
-        CPUScheduler.TaskState state;
-        if (isFinished)
-            state = CPUScheduler.TaskState.suspended;
-        else
-            state = CPUScheduler.TaskState.ready_running;
-        ResourceToken token = new ResourceToken(this, requestedValue, state);
-        output.send(resourceName, token); // send the output
     }
 
     /** The causality interface, if it has been created. */

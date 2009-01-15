@@ -1,13 +1,6 @@
 package ptolemy.apps.apes.demo.ThreeTasks;
 
-import java.util.Iterator;
-import java.util.List;
-
-import ptolemy.actor.Actor;
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.NoRoomException;
-import ptolemy.apps.apes.CPUScheduler;
-import ptolemy.apps.apes.CTask;
 import ptolemy.apps.apes.InterruptServiceRoutine;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -36,7 +29,7 @@ public class IRS_B extends InterruptServiceRoutine {
         try {
             accessPointCallback(-1.0, 0.0);
             cpuScheduler.ActivateTask(2);
-            accessPointCallback(0.2, -1.0);
+            accessPointCallback(0.2, 0.0);
             cpuScheduler.TerminateTask();
         } catch (NoRoomException e) { 
             e.printStackTrace();

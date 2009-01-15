@@ -1,4 +1,4 @@
-package ptolemy.apps.apes.demo.ThreeTasks;
+package ptolemy.apps.apes.demo.TwoTasksCyclicEventDependency;
 
 import ptolemy.actor.NoRoomException;
 import ptolemy.apps.apes.InterruptServiceRoutine;
@@ -7,16 +7,16 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-public class IRS_A extends InterruptServiceRoutine {
+public class IRS_L extends InterruptServiceRoutine {
 
-    public IRS_A() {  
+    public IRS_L() {  
     }
 
-    public IRS_A(Workspace workspace) {
+    public IRS_L(Workspace workspace) {
         super(workspace);  
     }
 
-    public IRS_A(CompositeEntity container, String name)
+    public IRS_L(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);  
     }

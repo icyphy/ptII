@@ -37,7 +37,7 @@ public class CTaskC extends CTask {
             }
             period = System.currentTimeMillis() - period;
             System.out.println("duration of CMethod of " + this.getName() + ": " + Long.toString(period) + " ms.");            
-            accessPointCallback(1.0, -1.0);         
+            accessPointCallback(1.0, 0.0);         
             cpuScheduler.TerminateTask();
         } catch (Exception e) { 
             e.printStackTrace();

@@ -105,13 +105,14 @@ public class EventManager extends ApeActor {
         boolean taskResumes = false;
         Actor task = _tasks.get(taskId);
         for (Integer eventId : newEvents) {
-            if (_actorsWaitingForEvents.get(task).contains(eventId)) {
+            if (_actorsWaitingForEvents.get(task) != null && 
+                    _actorsWaitingForEvents.get(task).contains(eventId)) {
                 taskResumes = true;
                 break;
             }
         }
         if (taskResumes) {
-            output.send(new ResourceToken(task, Time.POSITIVE_INFINITY, TaskState.ready_running));
+            output.send(new ResourceToken(task, null, TaskState.ready_running));
         }
         return StatusType.E_OK;
     }
@@ -125,7 +126,7 @@ public class EventManager extends ApeActor {
     public StatusType WaitEvent(List<Integer> events) throws NoRoomException, IllegalActionException {
         Actor currentTask = _taskNames.get(Thread.currentThread().getName()); 
         _actorsWaitingForEvents.put(currentTask, events);
-        output.send(new ResourceToken(currentTask, Time.POSITIVE_INFINITY, TaskState.waiting));
+        output.send(new ResourceToken(currentTask, null, TaskState.waiting));
         return StatusType.E_OK;
     }
 
@@ -150,6 +151,7 @@ public class EventManager extends ApeActor {
     private void _initialize() {
         _tasks = new HashMap();
         _taskNames = new HashMap();
+        _actorsWaitingForEvents = new HashMap<Actor, List<Integer>>();
         
         Parameter sourceActorList= (Parameter) input.getAttribute("sourceActors");
         sourceActorList.setExpression("*");
