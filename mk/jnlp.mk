@@ -115,10 +115,11 @@ NATIVE_SIGNED_LIB_JARS = \
 	lib/matlabSunOS.jar \
 
 # Not all hosts have matlab
-MATLAB_JARS = \
-	ptolemy/matlab/matlab.jar \
-	ptolemy/matlab/demo/demo.jar \
-	lib/matlab.jar
+MATLAB_JARS =
+#MATLAB_JARS = \
+#	ptolemy/matlab/matlab.jar \
+#	ptolemy/matlab/demo/demo.jar \
+#	lib/matlab.jar
 
 SIGNED_LIB_JARS =	$(NATIVE_SIGNED_LIB_JARS) \
 			lib/diva.jar \
@@ -404,9 +405,39 @@ FULL_JNLP_JARS = \
 	$(FULL_ONLY_JNLP_JARS)
 
 #######
+# Space
+#
+# DOP Center Seating Chart exe
+# See http://embedded.eecs.berkeley.edu/dopcenter/roster/index.htm
+# To build dopseating.ex, run:
+# cd $PTII;
+# make install
+# make jnlp_all
+# # Install launch4j from http://launch4j.sourceforge.net/ 
+# # set L4J_DIR above if you install Launch4j anywhere other than 
+# # ptII/vendors/launch4j
+# make dopseating.exe
+
+# Jar files specific to the space domain
+SPACE_ONLY_JNLP_JARS = \
+	$(PTDATABASE_JNLP_JARS)
+
+SPACE_MAIN_JAR = \
+	ptolemy/actor/gui/jnlp/SpaceApplication.jar
+
+# Jar files used by the DOP Center Seating Chart exe
+SPACE_JNLP_JARS = \
+	$(SPACE_MAIN_JAR) \
+	$(SPACE_ONLY_JNLP_JARS) \
+	$(CORE_JNLP_JARS) \
+	$(DOC_CODEDOC_JAR)
+
+
+
+#######
 # Viptos
 #
-# Jar files that will appear in a VisualSense only JNLP Ptolemy II Runtime.
+# Jar files that will appear in a Viptos only JNLP Ptolemy II Runtime.
 # ct, fsm, de, sdf
 
 # FIXME: experimentalDomains.jar also includes wireless.jar
@@ -420,7 +451,7 @@ VIPTOS_ONLY_JNLP_JARS = \
 #	doc/design/viptos.jar 
 
 VIPTOS_MAIN_JAR = \
-	ptolemy/actor/gui/jnlp/VisualSenseApplication.jar
+	ptolemy/actor/gui/jnlp/ViptosApplication.jar
 
 VIPTOS_JNLP_JARS =	\
 	$(VIPTOS_MAIN_JAR) \
@@ -483,7 +514,8 @@ ALL_JNLP_JARS = \
 	$(PTINY_MAIN_JAR) \
 	$(PTINY_MAIN_JAR) \
 	$(PTINY_SANDBOX_MAIN_JAR) \
-	$(FULL_MAIN_JAR)
+	$(FULL_MAIN_JAR) \
+	$(SPACE_MAIN_JAR)
 
 # Makefile variables used to set up keys for jar signing.
 # To use Web Start, we have to sign the jars.
@@ -508,7 +540,9 @@ KEYALIAS = claudius
 STOREPASSWORD = -storepass this.is.the.storePassword,change.it
 KEYPASSWORD = -keypass this.is.the.keyPassword,change.it
 
-KEYTOOL = $(PTJAVA_DIR)/bin/keytool
+# The keytool binary is found by configure, it will be in $(PTJAVA_DIR)/bin/keytool
+# or $(PTJAVA_DIR)/Commands/keytool
+#KEYTOOL = $(PTJAVA_DIR)/bin/keytool
 
 # Script to update a *.jnlp file with the proper jar files
 MKJNLP =		$(PTII)/bin/mkjnlp
@@ -519,6 +553,7 @@ JNLPS =	vergilDSP.jnlp \
 	vergilPtiny.jnlp \
 	vergilPtinySandbox.jnlp \
 	vergilVisualSense.jnlp \
+	vergilSpace.jnlp \
 	vergil.jnlp 
 
 ##############################
@@ -594,7 +629,7 @@ vergilDSP.jnlp: vergilDSP.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	rm -rf JNLP-INF
 	mkdir -p $(SIGNED_DIR)/`dirname $(DSP_MAIN_JAR)`; \
 	cp -p $(DSP_MAIN_JAR) `dirname $(SIGNED_DIR)/$(DSP_MAIN_JAR)`; \
-	"$(PTJAVA_DIR)/bin/jarsigner" \
+	"$(JARSIGNER)" \
 		-keystore "$(KEYSTORE)" \
 		$(STOREPASSWORD) \
 		$(KEYPASSWORD) \
@@ -632,7 +667,7 @@ vergilHyVisual.jnlp: vergilHyVisual.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	rm -rf JNLP-INF
 	mkdir -p $(SIGNED_DIR)/`dirname $(HYBRID_SYSTEMS_MAIN_JAR)`; \
 	cp -p $(HYBRID_SYSTEMS_MAIN_JAR) `dirname $(SIGNED_DIR)/$(HYBRID_SYSTEMS_MAIN_JAR)`; \
-	"$(PTJAVA_DIR)/bin/jarsigner" \
+	"$(JARSIGNER)" \
 		-keystore "$(KEYSTORE)" \
 		$(STOREPASSWORD) \
 		$(KEYPASSWORD) \
@@ -666,7 +701,7 @@ vergilPtiny.jnlp: vergilPtiny.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	rm -rf JNLP-INF
 	mkdir -p $(SIGNED_DIR)/`dirname $(PTINY_MAIN_JAR)`; \
 	cp -p $(PTINY_MAIN_JAR) `dirname $(SIGNED_DIR)/$(PTINY_MAIN_JAR)`; \
-	"$(PTJAVA_DIR)/bin/jarsigner" \
+	"$(JARSIGNER)" \
 		-keystore "$(KEYSTORE)" \
 		$(STOREPASSWORD) \
 		$(KEYPASSWORD) \
@@ -701,12 +736,49 @@ vergilPtinySandbox.jnlp: vergilPtinySandbox.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	rm -rf JNLP-INF
 	mkdir -p $(SIGNED_DIR)/`dirname $(PTINY_SANDBOX_MAIN_JAR)`; \
 	cp -p $(PTINY_SANDBOX_MAIN_JAR) `dirname $(SIGNED_DIR)/$(PTINY_SANDBOX_MAIN_JAR)`; \
-	"$(PTJAVA_DIR)/bin/jarsigner" \
+	"$(JARSIGNER)" \
 		-keystore "$(KEYSTORE)" \
 		$(STOREPASSWORD) \
 		$(KEYPASSWORD) \
 		"$(SIGNED_DIR)/$(PTINY_SANDBOX_MAIN_JAR)" "$(KEYALIAS)"
 
+
+# Web Start: Space version of Vergil - No sources or build env.
+# In the sed statement, we use # instead of % as a delimiter in case
+# PTII_LOCALURL has spaces in it that get converted to %20
+vergilSpace.jnlp: vergilSpace.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
+	sed 	-e 's#@PTII_LOCALURL@#$(PTII_LOCALURL)#' \
+		-e 's#@PTVERSION@#$(PTVERSION)#' \
+			vergilSpace.jnlp.in > $@
+	if [ ! -f $(SIGNED_DIR)/$(SPACE_MAIN_JAR) ]; then \
+		echo "$(SIGNED_DIR)$(SPACE_MAIN_JAR) does not"; \
+		echo "   exist yet, but we need the size"; \
+		echo "   so we copy it now and sign it later"; \
+		mkdir -p $(SIGNED_DIR)/`dirname $(SPACE_MAIN_JAR)`; \
+		cp -p $(SPACE_MAIN_JAR) \
+			`dirname $(SIGNED_DIR)/$(SPACE_MAIN_JAR)`; \
+	fi
+	@echo "# Adding jar files to $@"
+	-chmod a+x "$(MKJNLP)"
+	"$(MKJNLP)" $@ \
+		$(NUMBER_OF_JARS_TO_LOAD_EAGERLY) \
+		$(SIGNED_DIR) \
+		$(SPACE_MAIN_JAR) \
+		$(SPACE_JNLP_JARS)
+	@echo "# Updating JNLP-INF/APPLICATION.JNLP with $@"
+	rm -rf JNLP-INF
+	mkdir JNLP-INF
+	cp $@ JNLP-INF/APPLICATION.JNLP
+	@echo "# $(SPACE_MAIN_JAR) contains the main class"
+	"$(JAR)" -uf $(SPACE_MAIN_JAR) JNLP-INF/APPLICATION.JNLP
+	rm -rf JNLP-INF
+	mkdir -p $(SIGNED_DIR)/`dirname $(SPACE_MAIN_JAR)`; \
+	cp -p $(SPACE_MAIN_JAR) `dirname $(SIGNED_DIR)/$(SPACE_MAIN_JAR)`; \
+	"$(JARSIGNER)" \
+		-keystore "$(KEYSTORE)" \
+		$(STOREPASSWORD) \
+		$(KEYPASSWORD) \
+		"$(SIGNED_DIR)/$(SPACE_MAIN_JAR)" "$(KEYALIAS)"
 
 # Web Start: VisualSense version of Vergil - No sources or build env.
 # In the sed statement, we use # instead of % as a delimiter in case
@@ -739,7 +811,7 @@ vergilVisualSense.jnlp: vergilVisualSense.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	rm -rf JNLP-INF
 	mkdir -p $(SIGNED_DIR)/`dirname $(VISUAL_SENSE_MAIN_JAR)`; \
 	cp -p $(VISUAL_SENSE_MAIN_JAR) `dirname $(SIGNED_DIR)/$(VISUAL_SENSE_MAIN_JAR)`; \
-	"$(PTJAVA_DIR)/bin/jarsigner" \
+	"$(JARSIGNER)" \
 		-keystore "$(KEYSTORE)" \
 		$(STOREPASSWORD) \
 		$(KEYPASSWORD) \
@@ -777,7 +849,7 @@ vergil.jnlp: vergil.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	mkdir -p $(SIGNED_DIR)/`dirname $(FULL_MAIN_JAR)`; \
 	cp -p $(FULL_MAIN_JAR) `dirname $(SIGNED_DIR)/$(FULL_MAIN_JAR)`; \
 	ls -l $@
-	"$(PTJAVA_DIR)/bin/jarsigner" \
+	"$(JARSIGNER)" \
 		-keystore "$(KEYSTORE)" \
 		$(STOREPASSWORD) \
 		$(KEYPASSWORD) \
@@ -801,7 +873,7 @@ jnlp_sign1: $(SIGNED_DIR) $(NATIVE_SIGNED_LIB_JARS)
 			cp -p $$x `dirname $(SIGNED_DIR)/$$x`; \
 		fi; \
 		echo "# Signing $(SIGNED_DIR)/$$x"; \
-		"$(PTJAVA_DIR)/bin/jarsigner" \
+		"$(JARSIGNER)" \
 			-keystore "$(KEYSTORE)" \
 			$(STOREPASSWORD) \
 			$(KEYPASSWORD) \
@@ -809,7 +881,7 @@ jnlp_sign1: $(SIGNED_DIR) $(NATIVE_SIGNED_LIB_JARS)
 	done;
 
 sign_jar: 
-	"$(PTJAVA_DIR)/bin/jarsigner" \
+	"$(JARSIGNER)" \
 		-keystore "$(KEYSTORE)" \
 		$(STOREPASSWORD) \
 		$(KEYPASSWORD) \
@@ -916,7 +988,7 @@ jnlp_verify:
 	set $(ALL_JNLP_JARS); \
 	for x do \
 		echo "$$x"; \
-		"$(PTJAVA_DIR)/bin/jarsigner" -verify -verbose -certs $$x; \
+		"$(JARSIGNER)" -verify -verbose -certs $$x; \
 	done;
 
 # Use this to verify that the key is ok
@@ -975,7 +1047,7 @@ jnlp_dist_update_remote:
 
 
 sign_jar_dist: 
-	"$(PTJAVA_DIR)/bin/jarsigner" \
+	"$(JARSIGNER)" \
 		-keystore "$(KEYSTORE2)" \
 		"$(JARFILE)" "$(KEYALIAS2)"
 
@@ -1054,33 +1126,11 @@ designdocv3_l4j.xml:
 designdocv3.exe: designdocv3_l4j.xml
 	"$(L4JC)" `$(PTCYGPATH) designdocv3_l4j.xml`
 
-# DOP Center Seating Chart exe
-# See http://embedded.eecs.berkeley.edu/dopcenter/roster/index.htm
-# To build dopseating.ex, run:
-# cd $PTII;
-# make install
-# make jnlp_all
-# # Install launch4j from http://launch4j.sourceforge.net/ 
-# # set L4J_DIR above if you install Launch4j anywhere other than 
-# # ptII/vendors/launch4j
-# make dopseating.exe
-
-# Jar files specific to the space domain
-SPACE_ONLY_JNLP_JARS = \
-	ptolemy/actor/lib/database/database.jar \
-	ptolemy/domains/space/space.jar \
-
-# Jar files used by the DOP Center Seating Chart exe
-DOPSEATING_JNLP_JARS = \
-	$(SPACE_ONLY_JNLP_JARS) \
-	$(CORE_JNLP_JARS) \
-	$(DOC_CODEDOC_JAR)
-
 DOPCenterModel=ptolemy/domains/space/demo/DOPCenter/DOPCenter.xml
 dopseating_l4j.xml:
 	$(MKL4J) dopseating ptolemy.vergil.VergilApplication \
 		doc/img/vergil.ico \
-		"-space $(DOPCenterModel)" $(DOPSEATING_JNLP_JARS) > $@
+		"-space $(DOPCenterModel)" $(SPACE_JNLP_JARS) > $@
 dopseating.exe: dopseating_l4j.xml
 	"$(L4JC)" `$(PTCYGPATH) dopseating_l4j.xml`
 

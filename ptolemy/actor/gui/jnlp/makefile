@@ -57,6 +57,7 @@ JSRCS = \
 	MenuApplication.java \
 	PtinyApplication.java \
 	PtinySandboxApplication.java \
+	SpaceApplication.java \
 	VisualSenseApplication.java
 
 EXTRA_SRCS =	$(JSRCS)
@@ -77,6 +78,7 @@ OTHER_JARS = \
 	HyVisualApplication.jar \
 	PtinyApplication.jar \
 	PtinySandboxApplication.jar \
+	SpaceApplication.jar \
 	VisualSenseApplication.jar
 
 # make clean removes $(KRUFT)
@@ -86,6 +88,7 @@ KRUFT = \
 	HyVisualApplication.jar \
 	PtinyApplication.jar \
 	PtinySandboxApplication.jar \
+	SpaceApplication.jar \
 	VisualSenseApplication.jar
 
 all: jclass $(OTHER_JARS)
@@ -140,6 +143,18 @@ PtinyApplication.jar: PtinyApplication.class MenuApplication.class
 
 
 PtinySandboxApplication.jar: PtinySandboxApplication.class MenuApplication.class
+	rm -rf $(PTJAR_TMPDIR) $@
+	mkdir $(PTJAR_TMPDIR)
+	# Copy Application specific classes from this directory
+	mkdir -p $(PTJAR_TMPDIR)/$(ME)
+	-cp $< MenuApplication.class \
+		$(OTHER_FILES_TO_BE_JARED) $(PTJAR_TMPDIR)/$(ME)
+	@echo "Creating $@"
+	(cd $(PTJAR_TMPDIR); "$(JAR)" -cvf tmp.jar .)
+	mv $(PTJAR_TMPDIR)/tmp.jar $@
+	rm -rf $(PTJAR_TMPDIR)
+
+SpaceApplication.jar: SpaceApplication.class MenuApplication.class
 	rm -rf $(PTJAR_TMPDIR) $@
 	mkdir $(PTJAR_TMPDIR)
 	# Copy Application specific classes from this directory
