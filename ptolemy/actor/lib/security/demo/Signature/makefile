@@ -92,7 +92,8 @@ KEYALIAS = claudius
 STOREPASSWORD = -storepass this.is.the.storePassword,change.it
 KEYPASSWORD = -keypass this.is.the.keyPassword,change.it
 
-KEYTOOL = $(PTJAVA_DIR)/bin/keytool
+# $(KEYTOOL) is set in configure to the keytool binary.  Note that the gcj keytool
+# binary is not likely to work, use the Sun keytool binary instead.
 
 $(KEYSTORE): 
 	"$(KEYTOOL)" -genkey \

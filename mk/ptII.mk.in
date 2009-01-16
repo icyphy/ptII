@@ -236,25 +236,25 @@ JDOCCHECKFLAGS = $(JDOCBREAKITERATOR) $(JDOCMEMORY) $(JDOCSOURCEFLAGS)
 JDOCFLAGS = 	-author -version $(JDOCCHECKFLAGS) $(JDOCTAG) $(JDOCTAGLET)
 
 # The jar command, used to produce jar files, which are similar to tar files
-JAR =		$(PTJAVA_DIR)/bin/jar
+JAR =		@JAR@
 
 # If Jar fails with a message about stack size being too small, 
 # set JAR_FLAGS to -JXss20m
 JAR_FLAGS = 
+
+#The jar signer command is used to create signed jar files for Webstart JNLP files
+JARSIGNER =	@JARSIGNER@
 
 # Command to run that indexes a jar file named tmp.jar
 # Usually it looks like '"$(JAR)" -i $@'
 JAR_INDEX =	@JAR_INDEX@
 
 # The 'java' interpreter.
-JAVA =		$(PTJAVA_DIR)/bin/java
+JAVA =		@JAVA@
 
 # Flags to use with java.  Try 'java -help' or 'java -X'
 # A common value is -Xmx100m to set the maximum stack size
 JAVAFLAGS = 
-
-# The 'rmic' command - The Java Remote Method Invocation (RMI) command
-RMIC =		$(PTJAVA_DIR)/bin/rmic
 
 # Jar files for Java Advanced Imaging (JAI) used by
 # ptolemy/actor/lib/jai/makefile
@@ -297,6 +297,9 @@ JXTA_DIR =	@JXTA_DIR@
 
 # Jar files used by JXTA
 JXTA_JARS = $(JXTA_DIR)/jxta.jar$(CLASSPATHSEPARATOR)$(JXTA_DIR)/log4j.jar$(CLASSPATHSEPARATOR)$(JXTA_DIR)/beepcore.jar$(CLASSPATHSEPARATOR)$(JXTA_DIR)/jxtasecurity.jar$(CLASSPATHSEPARATOR)$(JXTA_DIR)/cryptix-asn1.jar$(CLASSPATHSEPARATOR)$(JXTA_DIR)/cryptix32.jar$(CLASSPATHSEPARATOR)$(JXTA_DIR)/jxtaptls.jar$(CLASSPATHSEPARATOR)$(JXTA_DIR)/minimalBC.jar
+
+# keytool command used to generate a certificate for testing actor.lib.security actors
+KEYTOOL =	@KEYTOOL@
 
 # The major type of OS we are running under.
 # Under all forms Windows, this should be Windows; ynder Linux: Linux, etc.
