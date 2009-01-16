@@ -210,7 +210,6 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
             workspace().getWriteAccess();
 
             TypedIORelation relation = new TypedIORelation(this, name);
-            relation.setWidth(1);
             return relation;
         } catch (IllegalActionException ex) {
             // This exception should not occur, so we throw a runtime

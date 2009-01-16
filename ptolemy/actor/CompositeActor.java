@@ -920,7 +920,6 @@ public class CompositeActor extends CompositeEntity implements Actor,
             _workspace.getWriteAccess();
 
             IORelation relation = new IORelation(this, name);
-            relation.setWidth(1);
             return relation;
         } finally {
             _workspace.doneWriting();
