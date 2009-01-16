@@ -123,6 +123,41 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    
+
+    /** This implementation will delegate to the implementation in the parent
+     *  class and will additionally update the model in case it is necessary.
+     *  This is typically the case when a link is created to another link.
+     *  If this existing link has a vertex as head or tail,
+     *  we will connect with the vertex, otherwise we will
+     *  remove the old link, create a new vertex, link the
+     *  head and tail of the existing link with the
+     *  vertex and link the new link with the vertex.
+     *  It is possible to link with an existing link.
+     *  If this existing link has a vertex as head or tail,
+     *  we will connect with the vertex, otherwise we will
+     *  remove the old link, create a new vertex, link the
+     *  head and tail of the existing link with the
+     *  vertex and link the new link with the vertex.
+     *  In the latter case the parent class won't call _update
+     *  as a result of an optimization, and hence we do it here. 
+     *   
+     *  @param change The change that has been executed.
+     */
+    public void changeExecuted(ChangeRequest change) {
+        super.changeExecuted(change);
+
+        // update the graph model if necessary.
+        if (_forceUpdate && _update()) {
+            _forceUpdate = false;
+            // Notify any graph listeners
+            // that the graph might have
+            // completely changed.
+            dispatchGraphEvent(new GraphEvent(this,
+                    GraphEvent.STRUCTURE_CHANGED, getRoot()));
+        }
+    }
+    
     /** Disconnect an edge from its two enpoints and notify graph
      *  listeners with an EDGE_HEAD_CHANGED and an EDGE_TAIL_CHANGED
      *  event whose source is the given source.
@@ -682,6 +717,9 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 
     /** The models of the different types of nodes and edges. */
     private ExternalPortModel _externalPortModel = new ExternalPortModel();
+    
+    /** A flag to force calling update when a ChangeRequest has been executed. */
+    private boolean _forceUpdate = false;
 
     private IconModel _iconModel = new IconModel();
 
@@ -1220,8 +1258,12 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 
                     if (!(newLinkHead instanceof Link)) {
                         link.setHead(newLinkHead);
-                    } else {
-                        //Set head equal to newly created vertex.
+                    } else {                        
+                        // Make sure that the model is updated. We made structural
+                        // changes that impose an update of this ActorGraphModel.
+                        _forceUpdate = true;
+                        
+                        // Set head equal to newly created vertex.
                         link.setHead(_getLocation(container
                                 .getRelation(relationNameToAdd)));                        
                     }
