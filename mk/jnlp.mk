@@ -998,7 +998,7 @@ key_list:
 		$(STOREPASSWORD)
 
 # Update a location with the files necessary to download
-DIST_BASE = ptolemyII/ptII7.0/jnlp-$(PTVERSION)
+DIST_BASE = ptolemyII/ptII7.2/jnlp-$(PTVERSION)
 DIST_DIR = /export/home/pt0/ptweb/$(DIST_BASE)
 DIST_URL = http://ptolemy.eecs.berkeley.edu/$(DIST_BASE)
 OTHER_FILES_TO_BE_DISTED = doc/img/PtolemyIISmall.gif \
@@ -1021,6 +1021,13 @@ jnlp_dist_update:
 		$(OTHER_FILES_TO_BE_DISTED) | \
 		ssh bennett "cd $(DIST_DIR); gtar -xvpf -"
 	scp doc/webStartHelp.htm bennett:$(DIST_DIR)
+
+jnlp_space_update:
+	tar -cf - `cd signed; ls -1 $(SPACE_JNLP_JARS)` vergilSpace.jnlp \
+		$(OTHER_FILES_TO_BE_DISTED) | \
+		ssh bennett "cd $(DIST_DIR); gtar -xvpf -"
+	scp doc/webStartHelp.htm bennett:$(DIST_DIR)
+
 
 # Used to update gr and codeDoc.jar
 DIST_JAR=/export/home/pt0/ptweb/ptolemyII/ptII7.0/$(PTVERSION)
