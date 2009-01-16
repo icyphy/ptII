@@ -61,8 +61,8 @@ import ptolemy.kernel.util.Workspace;
  one another via message passing. One purpose of this relation is to
  ensure that IOPorts are only connected to IOPorts. A second purpose
  is to support the notion of a <i>width</i> to represent something
- like a bus. By default an IORelation is not a bus, which means that
- its width is one. Calling setWidth() with
+ like a bus. By default an IORelation is a bus for which the width will be
+ inferred, which means that its width is -1. Calling setWidth() with
  an argument larger than one makes the relation a bus of fixed width.
  Calling setWidth() with an argument equal to the value of
  WIDTH_TO_INFER makes the relation
@@ -145,8 +145,7 @@ public class IORelation extends ComponentRelation {
     ////                         parameters                        ////
 
     /** The width of this relation. This is an integer that defaults
-     *  to one. Set it to the value of WIDTH_TO_INFER to infer the width
-     *  from that of ports to which this relation is linked on the inside.
+     *  to WIDTH_TO_INFER, which means that the width will be inferred.
      */
     public Parameter width;
 
