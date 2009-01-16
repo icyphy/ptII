@@ -381,6 +381,7 @@ public class ComboBox extends GUIProperty implements ItemListener {
                             parser.clearTopObjectsList();
                         }
                     };
+                    request.setUndoable(true);
                     model.requestChange(request);
                 } catch (Exception e) {
                     throw new InternalErrorException(e);
