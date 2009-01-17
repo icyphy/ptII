@@ -406,7 +406,7 @@ D);}
 {Real-time flow setup protocol.}\label{fig:ReqSetup}
 \end{figure}
 
-This request will be sent over the network by a REQ message to a specific node
+This request will be sent over the network in a REQ message to a specific node
 in the network, called {\em master node}, as in Figure \ref{fig:ReqSetup}.
 Based on its knowledge about other flows in the network and the demand for the
 new real-time flow, the master node will seek to find a suitable path. If there
@@ -451,13 +451,13 @@ and rerouting for finding a new suitable path on a network.
 One characteristic of this scheme is that the buffer for each 
 real-time flow at each node is bounded ~\cite{Ferrari90ascheme}, and thus
 real-time packets can be sent {\em asynchronously} resulting in better bandwidth
-since we do not have to send {\em acknowledgement} for each flit sent. So at
+since {\em no acknowledgement} is required for each real-time flit sent. So at
 data link layer, we employ heterogeneity communications, {\em synchronous}
 communications for best effort packets and {\em asynchronous} communications
 for real-time packets as in Figure \ref{fig:HeteroComm}. Best-effort packets
 are preemptible by real-time packets. Real-time packets are not preemptible.
 Since real-time flits does not need acknowledgement so the speed of sending
-real-time packets is two time faster than best-effort packets.
+real-time flits is two time faster than best-effort flits.
 
 
 \begin{figure}[htbp]
