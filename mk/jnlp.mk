@@ -1009,9 +1009,10 @@ KEYALIAS2=ptolemy
 # make jnlp_dist STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx"
 # make DIST_DIR=c:/cxh/hyv DIST_URL=file:///c:/cxh/hyv jnlp_dist KEYSTORE2=ptKeystore KEYALIAS2=claudius
 
-jnlp_dist: jnlp_dist_1 jnlp_dist_update
-jnlp_dist_1:
+jnlp_dist: jnlp_dist_clean jnlp_dist_1 jnlp_dist_update
+jnlp_dist_clean:
 	rm -rf $(JNLPS) $(SIGNED_DIR)
+jnlp_dist_1:
 	$(MAKE) KEYSTORE="$(KEYSTORE2)" \
 		KEYALIAS="$(KEYALIAS2)" \
 		PTII_LOCALURL="$(DIST_URL)" jnlp_sign
@@ -1022,12 +1023,8 @@ jnlp_dist_update:
 		ssh bennett "cd $(DIST_DIR); gtar -xvpf -"
 	scp doc/webStartHelp.htm bennett:$(DIST_DIR)
 
-jnlp_space_update:
-	tar -cf - `cd signed; ls -1 $(SPACE_JNLP_JARS)` vergilSpace.jnlp \
-		$(OTHER_FILES_TO_BE_DISTED) | \
-		ssh bennett "cd $(DIST_DIR); gtar -xvpf -"
-	scp doc/webStartHelp.htm bennett:$(DIST_DIR)
-
+jnlp_dist_nightly:
+	gmake STOREPASSWORD="-storepass `cat $(HOME)/.certpw`" KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYPASSWORD="-keypass `cat $(HOME)/.certpw`" KEYSTORE2=/users/ptII/adm/certs/ptkeystore jnlp_dist
 
 # Used to update gr and codeDoc.jar
 DIST_JAR=/export/home/pt0/ptweb/ptolemyII/ptII7.0/$(PTVERSION)
