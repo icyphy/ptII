@@ -171,7 +171,7 @@ public class CTBaseIntegrator extends TypedAtomicActor implements TimedActor,
             _tentativeState = ((DoubleToken) initialState.getToken())
                     .doubleValue();
             _state = _tentativeState;
-            // _storted states are also udpated here because
+            // _storted states are also updated here because
             // a committed transition is guaranteed to be
             // a permanent change and there is no way to roll track.
             _storedState = _state;
@@ -601,7 +601,7 @@ public class CTBaseIntegrator extends TypedAtomicActor implements TimedActor,
          */
         public History(CTBaseIntegrator container) {
             _container = container;
-            _entries = new LinkedList();
+            _entries = new LinkedList<DoubleDouble>();
             _capacity = 0;
             _stepsize = 0.0;
         }
@@ -742,11 +742,11 @@ public class CTBaseIntegrator extends TypedAtomicActor implements TimedActor,
          */
         public double[][] toDoubleArray() {
             double[][] array = new double[_entries.size()][2];
-            Iterator objs = _entries.iterator();
+            Iterator<DoubleDouble> objs = _entries.iterator();
             int i = 0;
 
             while (objs.hasNext()) {
-                DoubleDouble entry = (DoubleDouble) objs.next();
+                DoubleDouble entry = objs.next();
                 array[i++] = entry.toArray();
             }
 
@@ -794,16 +794,16 @@ public class CTBaseIntegrator extends TypedAtomicActor implements TimedActor,
         ///////////////////////////////////////////////////////////////
         ////                        private variables               ////
         // The container.
-        CTBaseIntegrator _container;
+        private CTBaseIntegrator _container;
 
         // The linked list storing the entries
-        LinkedList _entries;
+        private LinkedList<DoubleDouble> _entries;
 
         // The capacity.
-        int _capacity;
+        private int _capacity;
 
         // The step size that the entries are based on.
-        double _stepsize;
+        private double _stepsize;
     }
 
     ///////////////////////////////////////////////////////////////////
