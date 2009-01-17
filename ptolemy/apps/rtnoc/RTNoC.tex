@@ -304,19 +304,21 @@ $f$ on link $e \in E$. We assume in our network on chip, $p_{f,e}=1 \forall e \i
 % $r_{v,f,h}$ is the time of flit $h$ of flow $f$ reaches node $v$.  
 
 $d_{f,e}$ is the {\em maximum} delay of a flit of flow $f$ on link $e \in E,
-e=(v,u)$ measured in cycles. This delay is the duration between the time a flit
-reaches the source node $v$ and the time the flit reach the destination node
+e=(v,u)$ with $v,u \in V$ measured in cycles. This delay is the duration between
+the time a flit reaches the source node $v$ and the time the flit reach the destination node
 $u$ of that link $e$.
 
-\begin{equation}\label{equ:edgeDelay}
-d_{f,e} = q_{f,v} + p_{f,e} = q_{f,v} + 1 
-\end{equation}
-
-% and
-% 
-% \begin{equation} 
+% \begin{equation}
 % d_{f,e_{v,u}} \geq r_{u,f,h} - r_{v,f,h}
 % \end{equation}
+% 
+% so
+
+\begin{equation}\label{equ:edgeDelay}
+d_{f,e_{v,u}} = q_{f,v} + p_{f,e} = q_{f,v} + 1 
+\end{equation}
+
+We also define linking matrices:
 
 \begin{equation}
 y_{f,e} = \left\{ \begin{array}{lrc}
