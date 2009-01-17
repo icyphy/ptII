@@ -3,7 +3,7 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="DOPCenter" class="ptolemy.domains.space.Region">
     <property name="Image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
-        <property name="source" class="ptolemy.data.expr.FileParameter" value="DOPcenter.gif">
+        <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/space/demo/DOPCenter/DOPCenter.gif">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 175.0]">
         </property>
