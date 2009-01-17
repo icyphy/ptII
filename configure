@@ -655,6 +655,9 @@ CMD_PATH
 FIND
 JAVAC
 JAVA
+JAR
+JARSIGNER
+KEYTOOL
 CC
 CFLAGS
 LDFLAGS
@@ -2936,40 +2939,242 @@ cd "$startdir"
 #
 # Check that jar can handle the -i argument
 #
-{ echo "$as_me:$LINENO: checking for the jar command in $PTJAVA_DIR/bin" >&5
-echo $ECHO_N "checking for the jar command in $PTJAVA_DIR/bin... $ECHO_C" >&6; }
+{ echo "$as_me:$LINENO: checking for the jar command" >&5
+echo $ECHO_N "checking for the jar command... $ECHO_C" >&6; }
 if test -f "$PTJAVA_DIR/bin/jar"; then
     if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $PTJAVA_DIR/bin/jar" >&5
 echo "${ECHO_T}$PTJAVA_DIR/bin/jar" >&6; }; fi
-    { echo "$as_me:$LINENO: checking that $PTJAVA_DIR/bin/jar can handle -i" >&5
-echo $ECHO_N "checking that $PTJAVA_DIR/bin/jar can handle -i... $ECHO_C" >&6; }
+    JAR="$PTJAVA_DIR/bin/jar"
+else
+   if test -f "$PTJAVA_DIR/Commands/java"; then
+       if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $PTJAVA_DIR/Commands/java" >&5
+echo "${ECHO_T}$PTJAVA_DIR/Commands/java" >&6; }; fi
+       JAR="$PTJAVA_DIR/Commands/jar"
+   else
+       { echo "$as_me:$LINENO: WARNING: Cannot find '$PTJAVA_DIR/bin/jar'.
+       or '$PTJAVA/Commands/jar', looking in the path.
+       This is usually only a problem if you run 'make install'" >&5
+echo "$as_me: WARNING: Cannot find '$PTJAVA_DIR/bin/jar'.
+       or '$PTJAVA/Commands/jar', looking in the path.
+       This is usually only a problem if you run 'make install'" >&2;}
+       # Extract the first word of "jar", so it can be a program name with args.
+set dummy jar; ac_word=$2
+{ echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6; }
+if test "${ac_cv_path_JAR+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  case $JAR in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_JAR="$JAR" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_JAR="$as_dir/$ac_word$ac_exec_ext"
+    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+IFS=$as_save_IFS
 
+  ;;
+esac
+fi
+JAR=$ac_cv_path_JAR
+if test -n "$JAR"; then
+  { echo "$as_me:$LINENO: result: $JAR" >&5
+echo "${ECHO_T}$JAR" >&6; }
+else
+  { echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6; }
+fi
+
+
+   fi
+fi
+
+{ echo "$as_me:$LINENO: checking that $JAR can handle -i" >&5
+echo $ECHO_N "checking that $JAR can handle -i... $ECHO_C" >&6; }
+if test -x "$JAR"; then
     cd "$srcdir/config"
 
-    "$PTJAVA_DIR/bin/jar" -cf jarTest.jar confTest.class
-    if "$PTJAVA_DIR/bin/jar" -i jarTest.jar; then
+    "$JAR" -cf jarTest.jar confTest.class
+    if "$JAR" -i jarTest.jar; then
         if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $PTJAVA_DIR/bin/jar -i worked" >&5
-echo "${ECHO_T}$PTJAVA_DIR/bin/jar -i worked" >&6; }; fi
+echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $JAR -i worked" >&5
+echo "${ECHO_T}$JAR -i worked" >&6; }; fi
 	# JAR_INDEX now includes the JAR_FLAGS flag so that we can
 	# pass -J-Xss100m for linux
 	JAR_INDEX='"$(JAR)" $(JAR_FLAGS) -i $@'
     else
-        { echo "$as_me:$LINENO: WARNING: $PTJAVA_DIR/bin/jar -i jarTest.jar failed,
+        { echo "$as_me:$LINENO: WARNING: $JAR -i jarTest.jar failed,
     so we will not index the jar files" >&5
-echo "$as_me: WARNING: $PTJAVA_DIR/bin/jar -i jarTest.jar failed,
+echo "$as_me: WARNING: $JAR -i jarTest.jar failed,
     so we will not index the jar files" >&2;}
 	JAR_INDEX=""
     fi
 
     cd "$startdir"
-
 else
-    { echo "$as_me:$LINENO: WARNING: Cannot find '$PTJAVA_DIR/bin/jar'.
-    This is usually only a problem if you run 'make install'" >&5
-echo "$as_me: WARNING: Cannot find '$PTJAVA_DIR/bin/jar'.
-    This is usually only a problem if you run 'make install'" >&2;}
+     { echo "$as_me:$LINENO: WARNING: jar command \"$JAR\" is not executable or not found.
+       This is usually only a problem if you run 'make install'" >&5
+echo "$as_me: WARNING: jar command \"$JAR\" is not executable or not found.
+       This is usually only a problem if you run 'make install'" >&2;}
+fi
+
+#
+# The jarsigner command is used to create signed jar files for Webstart JNLP files
+#
+{ echo "$as_me:$LINENO: checking for the jarsigner command" >&5
+echo $ECHO_N "checking for the jarsigner command... $ECHO_C" >&6; }
+if test -f "$PTJAVA_DIR/bin/jarsigner"; then
+    if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $PTJAVA_DIR/bin/jarsigner" >&5
+echo "${ECHO_T}$PTJAVA_DIR/bin/jarsigner" >&6; }; fi
+    JARSIGNER="$PTJAVA_DIR/bin/jarsigner"
+else
+   if test -f "$PTJAVA_DIR/Commands/java"; then
+       if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $PTJAVA_DIR/Commands/java" >&5
+echo "${ECHO_T}$PTJAVA_DIR/Commands/java" >&6; }; fi
+       JARSIGNER="$PTJAVA_DIR/Commands/jarsigner"
+   else
+       { echo "$as_me:$LINENO: WARNING: Cannot find '$PTJAVA_DIR/bin/jarsigner'.
+       or '$PTJAVA/Commands/jarsigner', looking in the path.
+       This is only a problem when testing the security actors." >&5
+echo "$as_me: WARNING: Cannot find '$PTJAVA_DIR/bin/jarsigner'.
+       or '$PTJAVA/Commands/jarsigner', looking in the path.
+       This is only a problem when testing the security actors." >&2;}
+       # Extract the first word of "jarsigner", so it can be a program name with args.
+set dummy jarsigner; ac_word=$2
+{ echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6; }
+if test "${ac_cv_path_JARSIGNER+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  case $JARSIGNER in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_JARSIGNER="$JARSIGNER" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_JARSIGNER="$as_dir/$ac_word$ac_exec_ext"
+    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+IFS=$as_save_IFS
+
+  ;;
+esac
+fi
+JARSIGNER=$ac_cv_path_JARSIGNER
+if test -n "$JARSIGNER"; then
+  { echo "$as_me:$LINENO: result: $JARSIGNER" >&5
+echo "${ECHO_T}$JARSIGNER" >&6; }
+else
+  { echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6; }
+fi
+
+
+   fi
+fi
+
+if test ! -x "$JARSIGNER"; then
+     { echo "$as_me:$LINENO: WARNING: The jarsigner command \"$JARSIGNER\" is not executable or not found.
+       This is only a problem when testing the security actors." >&5
+echo "$as_me: WARNING: The jarsigner command \"$JARSIGNER\" is not executable or not found.
+       This is only a problem when testing the security actors." >&2;}
+fi
+
+#
+# keytool command used to generate a certificate for testing actor.lib.security actors
+#
+{ echo "$as_me:$LINENO: checking for the keytool command" >&5
+echo $ECHO_N "checking for the keytool command... $ECHO_C" >&6; }
+if test -f "$PTJAVA_DIR/bin/keytool"; then
+    if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $PTJAVA_DIR/bin/keytool" >&5
+echo "${ECHO_T}$PTJAVA_DIR/bin/keytool" >&6; }; fi
+    KEYTOOL="$PTJAVA_DIR/bin/keytool"
+else
+   if test -f "$PTJAVA_DIR/Commands/java"; then
+       if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $PTJAVA_DIR/Commands/java" >&5
+echo "${ECHO_T}$PTJAVA_DIR/Commands/java" >&6; }; fi
+       KEYTOOL="$PTJAVA_DIR/Commands/keytool"
+   else
+       { echo "$as_me:$LINENO: WARNING: Cannot find '$PTJAVA_DIR/bin/keytool'.
+       or '$PTJAVA/Commands/keytool', looking in the path.
+       This is only a problem when testing the security actors." >&5
+echo "$as_me: WARNING: Cannot find '$PTJAVA_DIR/bin/keytool'.
+       or '$PTJAVA/Commands/keytool', looking in the path.
+       This is only a problem when testing the security actors." >&2;}
+       # Extract the first word of "keytool", so it can be a program name with args.
+set dummy keytool; ac_word=$2
+{ echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6; }
+if test "${ac_cv_path_KEYTOOL+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  case $KEYTOOL in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_KEYTOOL="$KEYTOOL" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_KEYTOOL="$as_dir/$ac_word$ac_exec_ext"
+    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+IFS=$as_save_IFS
+
+  ;;
+esac
+fi
+KEYTOOL=$ac_cv_path_KEYTOOL
+if test -n "$KEYTOOL"; then
+  { echo "$as_me:$LINENO: result: $KEYTOOL" >&5
+echo "${ECHO_T}$KEYTOOL" >&6; }
+else
+  { echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6; }
+fi
+
+
+   fi
+fi
+
+if test ! -x "$KEYTOOL"; then
+     { echo "$as_me:$LINENO: WARNING: The keytool command \"$KEYTOOL\" is not executable or not found.
+       This is only a problem when testing the security actors." >&5
+echo "$as_me: WARNING: The keytool command \"$KEYTOOL\" is not executable or not found.
+       This is only a problem when testing the security actors." >&2;}
 fi
 
 
@@ -9942,8 +10147,14 @@ fi
 # Jar files for Java Advanced Imaging (JAI) used by ptolemy/actor/lib/jai/makefile
 
 
+# The jar command
+
+
 # Command to run that indexes a jar file named tmp.jar
 # Usually it looks like '"$(JAR)" -i $@'
+
+
+# The jarsigner command is used to create signed jar files for Webstart JNLP files
 
 
 # Location of rt.jar, usually $(PTJAVA_HOME)/lib/rt.jar
@@ -10016,6 +10227,9 @@ fi
 
 
 # JXTA home directory that contains jxta.jar, see http://www.jxta.org
+
+
+# keytool command used to generate a certificate for testing actor.lib.security actors
 
 
 # kvm/tools/classes.jar file used by the PalmOS KVM
@@ -11121,6 +11335,9 @@ CMD_PATH!$CMD_PATH$ac_delim
 FIND!$FIND$ac_delim
 JAVAC!$JAVAC$ac_delim
 JAVA!$JAVA$ac_delim
+JAR!$JAR$ac_delim
+JARSIGNER!$JARSIGNER$ac_delim
+KEYTOOL!$KEYTOOL$ac_delim
 CC!$CC$ac_delim
 CFLAGS!$CFLAGS$ac_delim
 LDFLAGS!$LDFLAGS$ac_delim
@@ -11174,9 +11391,6 @@ JVERSION!$JVERSION$ac_delim
 JMF_JARS!$JMF_JARS$ac_delim
 JODE_CLASSES!$JODE_CLASSES$ac_delim
 JYTHON_DIR!$JYTHON_DIR$ac_delim
-JXTA_DIR!$JXTA_DIR$ac_delim
-KVM_CLASSES!$KVM_CLASSES$ac_delim
-KVM_DIR!$KVM_DIR$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -11218,6 +11432,9 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+JXTA_DIR!$JXTA_DIR$ac_delim
+KVM_CLASSES!$KVM_CLASSES$ac_delim
+KVM_DIR!$KVM_DIR$ac_delim
 LEJOS_DIR!$LEJOS_DIR$ac_delim
 MAJOR_OS_NAME!$MAJOR_OS_NAME$ac_delim
 MATLAB_DIR!$MATLAB_DIR$ac_delim
@@ -11312,9 +11529,6 @@ PTVR_JAR!$PTVR_JAR$ac_delim
 PTVR_PACKAGES!$PTVR_PACKAGES$ac_delim
 PTWABA_DIR!$PTWABA_DIR$ac_delim
 PTX10_DIR!$PTX10_DIR$ac_delim
-PTX10_PACKAGES!$PTX10_PACKAGES$ac_delim
-PTII_LOCALURL!$PTII_LOCALURL$ac_delim
-QTJAVA_ZIP!$QTJAVA_ZIP$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -11356,6 +11570,9 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+PTX10_PACKAGES!$PTX10_PACKAGES$ac_delim
+PTII_LOCALURL!$PTII_LOCALURL$ac_delim
+QTJAVA_ZIP!$QTJAVA_ZIP$ac_delim
 RXTX_JAR!$RXTX_JAR$ac_delim
 RXTX_PRESENT!$RXTX_PRESENT$ac_delim
 SOOT_CLASSES!$SOOT_CLASSES$ac_delim
@@ -11375,7 +11592,7 @@ LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 17; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 20; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5
