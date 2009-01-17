@@ -98,7 +98,7 @@ DSPApplication.jar: DSPApplication.class MenuApplication.class
 	mkdir $(PTJAR_TMPDIR)
 	# Copy Application specific classes from this directory
 	mkdir -p $(PTJAR_TMPDIR)/$(ME)
-	-cp $< MenuApplication.class \
+	-cp DSPApplication.class MenuApplication.class \
 		$(OTHER_FILES_TO_BE_JARED) $(PTJAR_TMPDIR)/$(ME)
 	@echo "Creating $@"
 	(cd $(PTJAR_TMPDIR); "$(JAR)" -cvf tmp.jar .)
@@ -110,7 +110,7 @@ FullApplication.jar: FullApplication.class MenuApplication.class
 	mkdir $(PTJAR_TMPDIR)
 	# Copy Application specific classes from this directory
 	mkdir -p $(PTJAR_TMPDIR)/$(ME)
-	-cp $< MenuApplication.class \
+	-cp FullApplication.class MenuApplication.class \
 		$(OTHER_FILES_TO_BE_JARED) $(PTJAR_TMPDIR)/$(ME)
 	@echo "Creating $@"
 	(cd $(PTJAR_TMPDIR); "$(JAR)" -cvf tmp.jar .)
@@ -122,7 +122,7 @@ HyVisualApplication.jar: HyVisualApplication.class MenuApplication.class
 	mkdir $(PTJAR_TMPDIR)
 	# Copy Application specific classes from this directory
 	mkdir -p $(PTJAR_TMPDIR)/$(ME)
-	-cp $< MenuApplication.class \
+	-cp HyVisualApplication.class MenuApplication.class \
 		$(OTHER_FILES_TO_BE_JARED) $(PTJAR_TMPDIR)/$(ME)
 	@echo "Creating $@"
 	(cd $(PTJAR_TMPDIR); "$(JAR)" -cvf tmp.jar .)
@@ -134,20 +134,19 @@ PtinyApplication.jar: PtinyApplication.class MenuApplication.class
 	mkdir $(PTJAR_TMPDIR)
 	# Copy Application specific classes from this directory
 	mkdir -p $(PTJAR_TMPDIR)/$(ME)
-	-cp $< MenuApplication.class \
+	-cp PtinyApplication.class MenuApplication.class \
 		$(OTHER_FILES_TO_BE_JARED) $(PTJAR_TMPDIR)/$(ME)
 	@echo "Creating $@"
 	(cd $(PTJAR_TMPDIR); "$(JAR)" -cvf tmp.jar .)
 	mv $(PTJAR_TMPDIR)/tmp.jar $@
 	rm -rf $(PTJAR_TMPDIR)
 
-
 PtinySandboxApplication.jar: PtinySandboxApplication.class MenuApplication.class
 	rm -rf $(PTJAR_TMPDIR) $@
 	mkdir $(PTJAR_TMPDIR)
 	# Copy Application specific classes from this directory
 	mkdir -p $(PTJAR_TMPDIR)/$(ME)
-	-cp $< MenuApplication.class \
+	-cp PtinySandboxApplication.class MenuApplication.class \
 		$(OTHER_FILES_TO_BE_JARED) $(PTJAR_TMPDIR)/$(ME)
 	@echo "Creating $@"
 	(cd $(PTJAR_TMPDIR); "$(JAR)" -cvf tmp.jar .)
@@ -159,7 +158,7 @@ SpaceApplication.jar: SpaceApplication.class MenuApplication.class
 	mkdir $(PTJAR_TMPDIR)
 	# Copy Application specific classes from this directory
 	mkdir -p $(PTJAR_TMPDIR)/$(ME)
-	-cp $< MenuApplication.class \
+	-cp SpaceApplication.class MenuApplication.class \
 		$(OTHER_FILES_TO_BE_JARED) $(PTJAR_TMPDIR)/$(ME)
 	@echo "Creating $@"
 	(cd $(PTJAR_TMPDIR); "$(JAR)" -cvf tmp.jar .)
@@ -171,7 +170,7 @@ VisualSenseApplication.jar: VisualSenseApplication.class MenuApplication.class
 	mkdir $(PTJAR_TMPDIR)
 	# Copy Application specific classes from this directory
 	mkdir -p $(PTJAR_TMPDIR)/$(ME)
-	-cp $< MenuApplication.class \
+	-cp VisualSenseApplication.class MenuApplication.class \
 		$(OTHER_FILES_TO_BE_JARED) $(PTJAR_TMPDIR)/$(ME)
 	@echo "Creating $@"
 	(cd $(PTJAR_TMPDIR); "$(JAR)" -cvf tmp.jar .)
