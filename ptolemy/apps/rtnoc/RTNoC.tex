@@ -140,7 +140,7 @@ guaranteed service packets. \AE also hase some know issues with bursty traffic
 ~\cite{Hansson07ISSS}, which is typical in multi-core.
 
 The above problems make \AE thereal unsuitable for systems requiring
-flexibility like multi-core.
+flexibility and scalability like multi-core.
 
 \subsection{SoCBUS}
 SoCBUS architecture ~\cite{SoCBUS} is from Linkoping University. It seeks to 
@@ -267,12 +267,21 @@ P:F \rightarrow \tau \times T \times L \times D
 \end{equation}
 in which $\tau$ is the set of packet types.
 
-\begin{equation}
-y_{f,e} = \left\{ \begin{array}{lrc}
-1 \mbox{ if flow } f \in F \mbox{ uses link } e \in E \\
-0 \mbox{ otherwise} 
-\end{array}\right.
-\end{equation}
+$t_f$ is the {\em minimum} packet interval time in {\em cycles} between
+two successive packets of a real-time flow $f$.
+
+$l_f$ is the {\em maximum} length of a packet in {\em flits} of real-time
+flow $f$.
+
+$s_{f,e}$ is the service time for a packet in a node including header 
+processing, transmission time, and any other operations. $s$ is often a 
+function of $l$: $s_{g,e}=f(l_g)$. We can set $s_{f,e}=value(l_e)$, this means
+that it takes $1$ cycle for a router to process and send one flit over a link. In pipeline router
+model as in ~\cite{PehDelayModel}~\cite{PehSpecPipeR}, some
+pipeline stages is added to $l$ to form $s$.
+
+$d_f$ is the {\em worst case} end-to-end delay of a packet of real-time flow
+$f$.
 
 $q_{f,v}$ is the {\em maximum} delay in cycles of a {\em flit} in
 flow $f$ at node $v$.This is the {\em queueing} delay. The local delay ({\em
@@ -287,23 +296,9 @@ not allow real-time packet pre-emption. % In \cite{Ferrari90ascheme}, the delay 
 %q_{i,n} = \sum_{j=1}^{i-1}s_{j,n}+s_{max} \forall i = 1, ..., K
 %\end{equation}
 
-$t_f$ is the {\em minimum} packet interval time in {\em cycles} between
-two successive packets of a real-time flow $f$.
-
-$l_f$ is the {\em maximum} length of a packet in {\em flits} of real-time
-flow $f$.
-
-$d_f$ is the {\em worst case} delay of a packet of real-time flow $f$.
-
-$s_{f,e}$ is the service time for a packet in a node including header 
-processing, transmission time, and any other operations. $s$ is often a 
-function of $l$: $s=f(l)$. We can set $s=value(l)$, this means that it takes $1$
-cycle for a router to process and send one flit over a link. In pipeline router
-model as in ~\cite{PehDelayModel}~\cite{PehSpecPipeR}, we have to add some
-pipeline stages to $l$ to have $s$.
- 
-$p_{f,e}$ is the {\em propagation} delay of a {\em flit} of flow $f$ on link $e
-\in E$. We assume in our network on chip, $p_e=1 \forall e \in E$.
+$p_{f,e}$ is the {\em propagation} delay of a {\em flit} or a {\em packet},
+since real-time packets are not preemptible, of flow $f$ on link $e \in E$. We
+assume in our network on chip, $p_{f,e}=1 \forall e \in E$.
 
 $r_{v,f,h}$ is the time of flit $h$ of flow $f$ reaches node $v$.  
 
@@ -320,6 +315,13 @@ and
 
 \begin{equation} 
 d_{f,e_{v,u}} \geq r_{u,f,h} - r_{v,f,h}
+\end{equation}
+
+\begin{equation}
+y_{f,e} = \left\{ \begin{array}{lrc}
+1 \mbox{ if flow } f \in F \mbox{ uses link } e \in E \\
+0 \mbox{ otherwise} 
+\end{array}\right.
 \end{equation}
 
 
@@ -350,7 +352,9 @@ $\forall f=(s, d, id) \in F$  let $b$ be a vector s.t. $b_f(s) = 1$,
 $b_f(d) = -1$ and $b_f(i) = 0, \forall i \in C \mbox{ and } i \neq s, d$,
  then we have $Iy_f=b_f$, this condition is for unique path between $s$ and $d$.
 
-Configuration $\mathcal{C}(F)=(P, \{y_f\}_{f \in F})$.
+%FIXME
+%Configuration $\mathcal{C}(F)=(P, \{ y_{f,e}:f \in F, e \in E \} )$.
+
 \section{Architecture}
 \subsection{Programming Model}
 \subsubsection{Network Stack Model}
@@ -462,6 +466,22 @@ differently.}\label{fig:HeteroComm}
 \end{figure}
 
 \section{System Analysis}
+\subsection{Packet Scheduling}
+At each node, we use Earliest Due Date (EDD)
+~\cite{VermaJitter91}~\cite{LiuSchedulingRT} to schedule packets, the deadline
+for each packet of flow $f$ at node $n^{th}$ is computed as follows:
+\begin{equation}\label{equ:deadline1}
+dl_{f,n}=t_0 + \sum_{k=1}^{n}q_{f,k}+P_n
+\end{equation}
+where $t_0$ is the time the packet is sent from the source and $P_n$ is the propagation
+delay from the source till node $n^{th}$ (communication time). We set
+$P_n=n$ since we assume that our in network on chip, it takes one cycle for a
+head flit to travel between two successive nodes. Thus, (\ref{equ:deadline1}) becomes:
+
+\begin{equation}\label{equ:deadline2}
+dl_{f,n}=t_0 + \sum_{k=1}^{n}d_{i,k}
+\end{equation}
+
 \subsection{Delay Model Analysis}
 
 The delay model in ~\cite{Ferrari90ascheme}~\cite{VermaJitter91} is
@@ -485,7 +505,7 @@ t_f \geq \sum_{j=1}^Kvalue(l_j), \forall f = 1,...,K
 \end{equation}
 
 This means that {\em no deadlines} for subsequent packets of a real-time flow
-will fall within the interval between time $t_0$ and $t_0 + \\sum s = t_0 +
+will fall within the interval between time $t_0$ and $t_0 + \sum s = t_0 +
 \sum_{j=1}^Kvalue(l_j)$.
 
 We define a function $order_{e_{v,u}}(f)$ over the set of all real-time flows
@@ -529,7 +549,7 @@ From (\ref{equ:edgeDelay})(\ref{equ:queueDelay}) and delays on
 each edge is set as small as possible:
 
 \begin{eqnarray}\label{equ:edgeDelay2}
-d_{f,e}y_{f,e} = \sum_{g \in F:order_e(g) < order_e(f)}y_{f,e}s_{f,e} +
+d_{f,e}y_{f,e} = \sum_{g \in F:order_e(g) < order_e(f)}s_{f,e}y_{f,e} +
 \notag\\  
 max_{order_{e}(i)>order_{e}(f)}(s_{i,e}y_{i,e}), \forall e \in E
 \end{eqnarray}
@@ -542,7 +562,7 @@ packet length first by setting $order_{v,e}(f)=l_f$, then
 
 \begin{eqnarray}\label{equ:edgeDelayPacketLength}
 d_{f,e}y_{f,e} = \sum_{g \in F:l_g <
-l_f}y_{g,e}s_{g,e} +max_{l_i>l_f}(s_{i,e}y_{i,e}), \forall e \in E
+l_f}s_{g,e}y_{g,e} +max_{l_i>l_f}(s_{i,e}y_{i,e}), \forall e \in E
 \end{eqnarray}
 
 This means that flows with smaller maximum packet lengths will be given smaller
@@ -599,30 +619,16 @@ When multiple real-time flows share the same link, the following conditions
 \sum_{f \in F}\frac{s_{f,e}}{t_f}y_{f,e} \leq 1, \forall e \in E
 \end{equation}
 
-Since $S$ is a function of the packet length, for a simple (non-pipeline) router
-model, we often have $s_g=value(l_g)$, then (\ref{equ:utilization1}) becomes:
+Since $s$ is a function of the packet length, for a simple (non-pipeline) router
+model, we often have $s_{g,e}=value(l_g) \forall f \in F$, then
+(\ref{equ:utilization1}) becomes:
 
 \begin{equation}\label{equ:utilization2}
-\sum_{f \in F}\frac{l_f}{t_f}y_{f,e} \leq 1, \forall e \in E
-\end{equation}
-
-At each node, we use Earliest Due Date (EDD)
-~\cite{VermaJitter91}~\cite{LiuSchedulingRT} to schedule packets, the deadline
-for each packet of flow $f$ at node $n^{th}$ is computed as follows:
-\begin{equation}\label{equ:deadline1}
-dl_{f,n}=t_0 + \sum_{k=1}^{n}q_{f,k}+P_n
-\end{equation}
-where $t_0$ is the time the packet is sent from the source and $P_n$ is the propagation
-delay from the source till node $n^{th}$ (communication time). We set
-$P_n=n$ since we assume that our in network on chip, it takes one cycle for a
-head flit to travel between two successive nodes. Thus, (\ref{equ:deadline1}) becomes:
-
-\begin{equation}\label{equ:deadline2}
-dl_{f,n}=t_0 + \sum_{k=1}^{n}d_{i,k}
+\sum_{f \in F}\frac{value(l_f)}{t_f}y_{f,e} \leq 1, \forall e \in E
 \end{equation}
 
 However (\ref{equ:e2eDelayST}) is for a store-and-forward flow control, in
-worm-hole flow control, it becomes
+worm-hole flow control, it becomes:
 \begin{equation}\label{equ:e2eDelayCT}
 \sum_{e \in E}d_{f,e}y_{f,e} + (s_{f,last\_edge} - 1) \leq d_f, \forall f \in F
 \end{equation}
@@ -650,9 +656,9 @@ l_f}y_{g,e}value(l_g) +max_{l_i>l_f}(value(l_i)y_{i,e})\Biggr)\notag \\ \leq
 d_f-value(l_f) + 1, \forall f \in F
 \end{eqnarray}
 
-Now a valid configuration $\mathcal{C}(F)$ has to satisfy (\ref{connectivity1}) 
-(\ref{equ:utilization2})
-(\ref{equ:intervalservice2}) (\ref{equ:e2eDelayCTNonPipeline2})
+Now a valid configuration $\mathcal{C}(F)$ has to satisfy
+(\ref{equ:intervalservice2})(\ref{connectivity1}) (\ref{equ:utilization2})
+(\ref{equ:e2eDelayCTNonPipeline2})
 
 \subsection{Dynamic Path Establishment and Routing}
 When a new real-time path needs to be set up with some specifications, we have:
@@ -669,7 +675,7 @@ the path delay constraint from (\ref{equ:e2eDelayCTNonPipeline1}) is:
 
 \begin{eqnarray}\label{equ:e2eDelayNewPath1}
 \sum_{e \in E} \Biggl(\sum_{g \in F:l_g <
-l_{f'}}y_{g,e}value(l_g) +max_{l_i>l_{f'}}(value(l_i)y_{i,e})\Biggr)\notag \\
+l_{f'}}value(l_g)y_{g,e} +max_{l_i>l_{f'}}(value(l_i)y_{i,e})\Biggr)\notag \\
 \leq d_{f'}-value(l_f') + 1, \forall f' \in F
 \end{eqnarray}
 
