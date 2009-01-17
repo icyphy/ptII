@@ -257,7 +257,7 @@ E \subseteq V \times V
 \end{equation}
 is the set of {\em directed edges} between nodes in the network.
 
-The set of {\em flows} on the network is defined as:
+The set of {\em  real-time flows} on the network is defined as:
 \begin{equation}
 F \subseteq C \times C \times \mathcal{V} 
 \end{equation}
@@ -297,9 +297,9 @@ not allow real-time packet pre-emption. % In \cite{Ferrari90ascheme}, the delay 
 %q_{i,n} = \sum_{j=1}^{i-1}s_{j,n}+s_{max} \forall i = 1, ..., K
 %\end{equation}
 
-$p_{f,e}$ is the {\em propagation} delay of a {\em flit} or a {\em packet},
-since real-time packets are not preemptible, of flow $f$ on link $e \in E$. We
-assume in our network on chip, $p_{f,e}=1 \forall e \in E$.
+$p_{f,e}$ is the {\em propagation} delay in cycles of a {\em flit} or
+a {\em packet}, since real-time packets are not preemptible, of real-time flow
+$f$ on link $e \in E$. We assume in our network on chip, $p_{f,e}=1 \forall e \in E$.
 
 % $r_{v,f,h}$ is the time of flit $h$ of flow $f$ reaches node $v$.  
 
