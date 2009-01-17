@@ -232,6 +232,8 @@ makes a network on chip difficult to be dynamically reconfigured effectively.
 \end{itemize}
 
 \section{Definitions}
+$\mathbf{N}$ is the set of interger values.
+
 $T \subseteq \mathbf{N}$ is the set of the minimum interval values between
 packets of flows.
 
@@ -274,7 +276,7 @@ flow $f$.
 
 $s_{f,e}$ is the service time for a packet in a node including header 
 processing, transmission time, and any other operations. $s$ is often a 
-function of $l$: $s_{g,e}=f(l_g)$. We can set $s_{f,e}=value(l_e)$, this means
+function of $l$: $s_{g,e}=f(l_g)$. We can set $s_{f,e}=value(l_f)$, this means
 that it takes $1$ cycle for a router to process and send one flit over a link. In pipeline router
 model as in ~\cite{PehDelayModel}~\cite{PehSpecPipeR}, some
 pipeline stages is added to $l$ to form $s$.
@@ -299,7 +301,7 @@ $p_{f,e}$ is the {\em propagation} delay of a {\em flit} or a {\em packet},
 since real-time packets are not preemptible, of flow $f$ on link $e \in E$. We
 assume in our network on chip, $p_{f,e}=1 \forall e \in E$.
 
-$r_{v,f,h}$ is the time of flit $h$ of flow $f$ reaches node $v$.  
+% $r_{v,f,h}$ is the time of flit $h$ of flow $f$ reaches node $v$.  
 
 $d_{f,e}$ is the {\em maximum} delay of a flit of flow $f$ on link $e \in E,
 e=(v,u)$ measured in cycles. This delay is the duration between the time a flit
@@ -310,11 +312,11 @@ $u$ of that link $e$.
 d_{f,e} = q_{f,v} + p_{f,e} = q_{f,v} + 1 
 \end{equation}
 
-and
-
-\begin{equation} 
-d_{f,e_{v,u}} \geq r_{u,f,h} - r_{v,f,h}
-\end{equation}
+% and
+% 
+% \begin{equation} 
+% d_{f,e_{v,u}} \geq r_{u,f,h} - r_{v,f,h}
+% \end{equation}
 
 \begin{equation}
 y_{f,e} = \left\{ \begin{array}{lrc}
@@ -351,14 +353,14 @@ $\forall f=(s, d, id) \in F$  let $b$ be a vector s.t. $b_f(s) = 1$,
 $b_f(d) = -1$ and $b_f(i) = 0, \forall i \in C \mbox{ and } i \neq s, d$,
  then we have $Iy_f=b_f$, this condition is for unique path between $s$ and $d$.
 
-%FIXME
-%Configuration $\mathcal{C}(F)=(P, \{ y_{f,e}:f \in F, e \in E \} )$.
+A valid configuration ${\mathcal{C}}(F)=(P, \lbrace y_{f,e}:f \in F, e \in E
+\rbrace )$.
 
 \section{Architecture}
 \subsection{Programming Model}
 \subsubsection{Network Stack Model}
 At each node in a router, we employ the Internet stack to each node in the 
-network on chip.
+network on chip as in Table \ref{table:NetworkStack}.
 \begin{table}[h]
 \begin{center}
   \begin{tabular}{ | l | }
@@ -571,9 +573,9 @@ time).
 However, from (\ref{equ:edgeDelayPacketLength}), it is possible to see that
 there is some case, at a node, the bounded delay of flow $f$ with the largest packet length
 will be {\em smaller} than the bounded delay of some other flow with smaller
-maximum packet length. To still use (\ref{equ:deadline1}), we have to assign a
-{\em virtual delay} for the flow $f$ so that the {\em virtual deadline},
-computed from (\ref{equ:deadline1}), is greater than that of any other flows to
+maximum packet length. To still use (\ref{equ:deadline2}) for scheduling, we
+have to assign a {\em virtual delay} for the flow $f$ so that the {\em virtual deadline},
+computed from (\ref{equ:deadline2}), is greater than that of any other flows to
 make sure that, if all the packets of all flows come at the same time, the
 packet of the flow $f$. We will prove that, this virtual delay scheme for the
 flow {\em does not} make any packet of the flow miss its deadline and the delay
@@ -583,23 +585,24 @@ sharing the same link.
 
 {\textbf{Theorem 1:}} {\em  The above virtual delay scheme never makes
 packets of flow $f$ miss their real deadlines computed from
-(\ref{equ:deadline1}) and (\ref{equ:edgeDelayPacketLength})}.
+(\ref{equ:deadline2}) and (\ref{equ:edgeDelayPacketLength})}.
 
 {\em Proof:} Suppose that $\mathcal{S}$ is the total maximum service time of all
-other flows except $f$. So the real delay bound of $f$ is $\mathcal{S}+$1.
+other flows except $f$. So the real delay bound of $f$ is ${\mathcal S}+1$.
 Suppose that a packet $p$ of $f$ comes at time $t_0$, then the {\em real}
-deadline for the packet is $t_0+\mathcal{S}+$1. Since from
-(\ref{equ:intervalservice2}), we now that each flow can not have more than 1
-packet deadline between the duration ($t_0, t_0+\mathcal{S}+$1). If between
-$t_0, t_0+\mathcal{S} -$1, there is any cycle that no flit of other packets is
+deadline for the packet is $t_0+{\mathcal S}+1$. Since from
+(\ref{equ:intervalservice2}), each flow can not have more than 1
+packet deadline in the duration $(t_0, t_0+{\mathcal S}+1)$. If in
+$(t_0, t_0+{\mathcal S}-1)$, there is any cycle that no flit of other packets is
 sent, then the scheduler will immediately start forwarding packet $p$ of flow $f$.
-Otherwise, at time $t_0+\mathcal{S}$, all the flits of other packets are
+Otherwise, at time $t_0+{\mathcal S}$, all the flits of other packets are
 forwarded, then the packet $p$ is started forwarding and its header will reach
-the next node at $t_0+\mathcal{S}+$1. The real delay bound is satisfied.
+the next node at $t_0+{\mathcal S}+1$. The real delay bound is the same as
+estimated by (\ref{equ:edgeDelayPacketLength}).
 
 \subsection{Configuration}
-A valid configuration $\mathcal{C}(F)$ must satisfy (\ref{connectivity1}) 
-(\ref{equ:e2eDelayST}) (\ref{equ:intervalservice2}) (\ref{equ:utilization1})
+A valid configuration ${\mathcal C}(F)$ must satisfy
+(\ref{equ:intervalservice2})(\ref{connectivity1}) (\ref{equ:e2eDelayST})(\ref{equ:utilization1})
 
 \begin{equation}\label{connectivity1} Iy_f=b_f,\forall f \in F
 \end{equation}
@@ -655,7 +658,7 @@ l_f}y_{g,e}value(l_g) +max_{l_i>l_f}(value(l_i)y_{i,e})\Biggr)\notag \\ \leq
 d_f-value(l_f) + 1, \forall f \in F
 \end{eqnarray}
 
-Now a valid configuration $\mathcal{C}(F)$ has to satisfy
+Now a valid configuration ${\mathcal C}(F)$ has to satisfy
 (\ref{equ:intervalservice2})(\ref{connectivity1}) (\ref{equ:utilization2})
 (\ref{equ:e2eDelayCTNonPipeline2})
 
@@ -665,11 +668,11 @@ $F \rightarrow F \cup \{f^{'} \}=F^{'}$
 and $T \rightarrow T^{'}$ s.t. $T^{'} (f)=T(f)\forall f \in F$ and $T^{'}
 (f^{'})=(\tau ^{'}, T^{'}, L^{'}, D^{'})$.
 
-The problem becomes: Find $y_{f^{'}e}$ s.t. $\mathcal{C}(F^{'})$ is valid
-when we know that $\mathcal{C}(F)$ is valid.
+The problem becomes: Find $y_{f^{'}e}$ s.t. ${\mathcalC}(F^{'})$ is valid
+when we know that ${\mathcal C}(F)$ is valid.
 
-For a new configuration $\mathcal{C}(F^{'})$, we find a new flow $f^{'}$ such that
-the conditions (\ref{connectivity1})(\ref{equ:utilization2}) are satisfied. And
+For a new configuration ${\mathcal C}(F^{'})$, we find a new flow $f^{'}$ such
+that the conditions (\ref{connectivity1})(\ref{equ:utilization2}) are satisfied. And
 the path delay constraint from (\ref{equ:e2eDelayCTNonPipeline1}) is:
 
 \begin{eqnarray}\label{equ:e2eDelayNewPath1}
