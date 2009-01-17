@@ -448,27 +448,48 @@ public class DatabaseManager extends TypedAtomicActor {
         if (_connection == null) {
             // Get database connection.
             try {
-                // The following lines explicitly register drivers.
-                // But maybe these aren't necessary if the driver is
-                // in the classpath?  If the model fails to find the
-                // drivers, then try adding the jar files to the
-                // build path in Eclipse.
-                // Oracle driver:
-                // DriverManager.registerDriver(new OracleDriver());
-                // MySQL driver:
-                // DriverManager.registerDriver(new Driver());
                 _connection = DriverManager.getConnection(
                         database.getExpression(),
                         userName.getExpression(),
                         new String(_password));
                 // If updating, use single transaction.
                 _connection.setAutoCommit(false);
-            } catch (SQLException e) {
-                _password = null;
-                throw new IllegalActionException(this, e,
+            } catch (SQLException ex) {
+		try {
+		    // The following blocks explicitly register drivers.
+		    // But maybe these aren't necessary if the driver is
+		    // in the classpath?  If the model fails to find the
+		    // drivers, then try adding the jar files to the
+		    // build path in Eclipse.
+
+		    // Try the mysql driver
+		    DriverManager.registerDriver((java.sql.Driver)Class.forName("com.mysql.jdbc.Driver").newInstance());
+		    _connection = DriverManager.getConnection(
+                        database.getExpression(),
+                        userName.getExpression(),
+                        new String(_password));
+		    // If updating, use single transaction.
+		    _connection.setAutoCommit(false);
+		} catch (Exception ex2) {
+		    // Try the Oracle driver
+		    try {
+		    DriverManager.registerDriver((java.sql.Driver)Class.forName("oracle.jdbc.OracleDriver").newInstance());
+		    _connection = DriverManager.getConnection(
+                        database.getExpression(),
+                        userName.getExpression(),
+                        new String(_password));
+		    // If updating, use single transaction.
+		    _connection.setAutoCommit(false);
+		    } catch (Exception ex3) {
+			_password = null;
+			// Note that we throw the original exception.
+			throw new IllegalActionException(this, ex,
                         "Failed to open connection to the database.");
-            }
+		    }
+		}
+	    }
         }
+
         return _connection;
     }
 
