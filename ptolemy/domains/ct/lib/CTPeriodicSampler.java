@@ -211,6 +211,20 @@ public class CTPeriodicSampler extends Transformer implements CTEventGenerator {
         return true;
     }
 
+
+    /** Make sure the actor runs inside a CT domain.
+     *  @exception IllegalActionException If the director is not
+     *  a CTDirector or the parent class throws it.
+     */
+    public void preinitialize() throws IllegalActionException {
+        if (!(getDirector() instanceof CTDirector)) {
+            throw new IllegalActionException("CTPeriodicSampler can only"
+                    + " be used inside CT domain.");
+        }
+
+        super.preinitialize();
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // flag indicating if there is a current event.
