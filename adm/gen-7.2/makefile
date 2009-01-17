@@ -1574,7 +1574,7 @@ remote1jnlp:
 	@echo "$@ `date`"
 	@echo "`uptime`"
 	(cd $(REMOTE1PTIIDIST);	PTII=$(REMOTE1PTIIDIST) \
-		$(MAKE) -k jnlp_clean jnlp_all PTII_LOCALURL=http://www.gigascale.org/ptolemy/src/ptII)
+		$(MAKE) -k jnlp_dist_nightly)
 
 
 
