@@ -641,7 +641,7 @@ packet of flow $f$, not only the header of the packet.
 From (\ref{equ:edgeDelayPacketLength})(\ref{equ:e2eDelayCT}) we have:
 \begin{eqnarray}\label{equ:e2eDelayCTNonPipeline1}
 \sum_{e \in E} \Biggl(\sum_{g \in F:l_g <
-l_f}y_{g,e}s_{g,e} +max_{l_i>l_f}(s_{i,e}y_{i,e})\Biggr)\notag \\ \leq
+l_f}s_{g,e}y_{g,e} +max_{l_i>l_f}(s_{i,e}y_{i,e})\Biggr)\notag \\ \leq
 d_f-s_{f,last\_edge} + 1, \forall f \in F
 \end{eqnarray}
 
@@ -650,7 +650,7 @@ In our network on chip, $s_{f,e} = value(l_f),\forall e
 
 \begin{eqnarray}\label{equ:e2eDelayCTNonPipeline2}
 \sum_{e \in E} \Biggl(\sum_{g \in F:l_g <
-l_f}y_{g,e}value(l_g) +max_{l_i>l_f}(value(l_i)y_{i,e})\Biggr)\notag \\ \leq
+l_f}value(l_g)y_{g,e} +max_{l_i>l_f}(value(l_i)y_{i,e})\Biggr)\notag \\ \leq
 d_f-value(l_f) + 1, \forall f \in F
 \end{eqnarray}
 
@@ -686,7 +686,7 @@ flows. The slack of a flow $f$ is computed as:
 
 \begin{eqnarray}\label{equ:slack1}
 	slack_f= d_f-value(l_f) + 1 - \notag \\
-	\sum_{e \in E} \Biggl(\sum_{g \in F:l_g < l_f}y_{g,e}value(l_g)
+	\sum_{e \in E} \Biggl(\sum_{g \in F:l_g < l_f}value(l_g)y_{g,e}
 	+max_{l_i>l_f}(value(l_i)y_{i,e})\Biggr) \notag \\ 
 	\forall f \in F
 \end{eqnarray}
@@ -705,29 +705,29 @@ e \in E$, from (\ref{equ:e2eDelayCTNonPipeline1}) we have:
 
 \begin{eqnarray}\label{equ:e2eDelayModification}
 \sum_{e \in E} \Biggl(\sum_{g \in F:l_g <
-l_f}y_{g,e}s_{g,e}+y_{f',e}s_{f',e}+max_{l_i>l_f}(s_{i,e}y_{i,e})\Biggr)\notag
+l_f}s_{g,e}y_{g,e}+s_{f',e}y_{f',e}+max_{l_i>l_f}(s_{i,e}y_{i,e})\Biggr)\notag
 \\ \leq d_f-s_{f, last\_edge} + 1, \forall f \in F
 \end{eqnarray}
 
 or
 
 \begin{eqnarray}\label{equ:e2eDelayModificatio2}
-\sum_{\forall e \in E}y_{f',e}s_{f',e} \leq d_f-s_{f,last\_edge} + 1 - \notag \\ 
+\sum_{\forall e \in E}s_{f',e}y_{f',e} \leq d_f-s_{f,last\_edge} + 1 - \notag \\ 
 \sum_{e \in E} \Biggl(\sum_{g \in F:l_g <
-l_f}y_{g,e}s_{g,e}+y_{f',e}s_{f',e}+max_{l_i>l_f}(s_{i,e}y_{i,e})\Biggr) \notag
+l_f}s_{g,e}y_{g,e}+s_{f',e}y_{f',e}+max_{l_i>l_f}(s_{i,e}y_{i,e})\Biggr) \notag
 \\ \forall f \in F
 \end{eqnarray}
 
 or
 
 \begin{equation}\label{equ:e2eDelayModificatio3}
-\sum_{\forall e \in E}y_{f',e}s_{f',e} \leq slack_f, \forall f \in F
+\sum_{\forall e \in E}s_{f',e}y_{f',e} \leq slack_f, \forall f \in F
 \end{equation}
 
 or
 
 \begin{equation}\label{equ:e2eDelayModificatio4}
-\sum_{\forall e \in E}y_{f',e}value(l_{f'}) \leq slack_f, \forall f \in F
+\sum_{\forall e \in E}value(l_{f'})y_{f',e} \leq slack_f, \forall f \in F
 \end{equation}
 
 (\ref{equ:e2eDelayModificatio4}) is used as the criteria for any routing
