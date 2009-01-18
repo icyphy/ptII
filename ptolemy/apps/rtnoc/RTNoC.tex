@@ -85,37 +85,6 @@ for sure that the packet will reach the destination within a certain amount of t
 %FIXME
 %Structure of the paper
 
-\section{Background}
-\subsection{Network on Chip}
-In a system on-chip, instead of connecting modules directly by dedicated wire,
-they are connected by a packet switch network. Our experimental network, as
-in Figure \ref{fig:NoCRt}, is a 2D mesh network. At each node of the mesh, a
-processing element is connected to a router.
-
-%packet figure
-\subsection{Allocation Units}
-A packet is further divided into {\em flits} to transmit
-~\cite{DallyPrinNetwork}. The position of a flit determines if the flit is {\em
-head, body} or {\em tail} flit. Only head flits contain routing information for
-packets, body and tail flits follow head flits on the same path from sources to
-destinations.
-\subsection{Flow Control Schemes}
-Networks are classified into several types based on how their resources are
-allocated to packets on the networks. Following are three popular flow control
-schemes.
-\subsubsection{Store-and-Forward}
-In store-and-forward flow control scheme, a packet has to be received entirely
-before being forwarded. This flow control scheme gives longer end-to-end delay
-in comparison with the following flow control schemes.
-\subsubsection{Virtual Cut-Through}
-In virtual-cut-through scheme, a packet does not need to be received entirely
-before being forwarded, however, receiving nodes is required to have enough
-buffer space for incoming packets.
-\subsubsection{Worm-Hole}
-In worm-hole flow control, receiving nodes do not need to have enough buffer
-space for incoming packets. Instead, packets are divided into flits and flits
-are pipelined through networks. We will employ this flow control scheme in our
-design.
 \section{Related Work}
 \subsection{\AE thereal}
 This work ~\cite{Goossens_chapter4} is from NXP. This architecture tries to
@@ -233,6 +202,38 @@ configuration is done at {\em design time} as in \AE thereal ~\cite{Moonen07SPRI
 new architecture also needs to avoid {\em global scheduling} problem since this
 makes a network on chip difficult to be dynamically reconfigured effectively.
 \end{itemize}
+
+\section{Background}
+\subsection{Network on Chip}
+In a system on-chip, instead of connecting modules directly by dedicated wire,
+they are connected by a packet switch network. Our experimental network, as
+in Figure \ref{fig:NoCRt}, is a 2D mesh network. At each node of the mesh, a
+processing element is connected to a router.
+
+%packet figure
+\subsection{Allocation Units}
+A packet is further divided into {\em flits} to transmit
+~\cite{DallyPrinNetwork}. The position of a flit determines if the flit is {\em
+head, body} or {\em tail} flit. Only head flits contain routing information for
+packets, body and tail flits follow head flits on the same path from sources to
+destinations.
+\subsection{Flow Control Schemes}
+Networks are classified into several types based on how their resources are
+allocated to packets on the networks. Following are three popular flow control
+schemes.
+\subsubsection{Store-and-Forward}
+In store-and-forward flow control scheme, a packet has to be received entirely
+before being forwarded. This flow control scheme gives longer end-to-end delay
+in comparison with the following flow control schemes.
+\subsubsection{Virtual Cut-Through}
+In virtual-cut-through scheme, a packet does not need to be received entirely
+before being forwarded, however, receiving nodes is required to have enough
+buffer space for incoming packets.
+\subsubsection{Worm-Hole}
+In worm-hole flow control, receiving nodes do not need to have enough buffer
+space for incoming packets. Instead, packets are divided into flits and flits
+are pipelined through networks. We will employ this flow control scheme in our
+design.
 
 \section{Definitions}
 $\mathbf{N}$ is the set of interger values.
@@ -840,8 +841,8 @@ Figure \ref{fig:RouterStructure} shows the structure of a router. In a router,
 each input has one {\em priority} queue for real-time packets of each output.
 Packets in the priority queue are {\em ordered} by deadline as in
 (\ref{equ:deadline2}). Each output will pick the top packets from priority
-queues and compare their deadlines to find the packet with closest deadline and this
-packet is selected to send. Best-effort packets are stored in FIFO queues as in
+queues and compare their deadlines to find the packet with the closest deadline
+and this packet is selected to send. Best-effort packets are stored in FIFO queues as in
 normal routers. The router is a cut-through router so that one packet can be
 compared the deadline and forwarded right at the time its header each a node.
 
@@ -867,8 +868,12 @@ achieve better performance, delay, power and so on.
 
 The routing algorithm is depth first search based on XY routing (try X
 direction first). An example about routing is shown in Figure
-\ref{fig:3FlowsEx} with three real-time flows. $Flow 1: PE7 \rightarrow
-PE23, Flow 2: PE6 \rightarrow PE3, Flow 3: PE5 \rightarrow PE19$.
+\ref{fig:3FlowsEx} with three real-time flows.
+\begin{itemize}
+  \item $Flow \ 1: PE \ 7 \rightarrow PE \ 23$.
+  \item $Flow \ 2: PE \ 6 \rightarrow PE \ 3$.
+  \item $Flow \ 3: PE \ 5 \rightarrow PE \ 19$.
+\end{itemize} 
 
 Flow 1 comes first and gets routed in blue path. Flow 2 comes later and gets
 routed in read path.  When flow 2 gets routed through link from node 7 to node
@@ -936,10 +941,10 @@ development of multi-core since we can verify the delay communication between
 processing elements.
 
 However, several issues remain. Is it possible that the acceptance
-message will be blocked on the network or it reaches the source too late? We should give priority to such kind of control
-message. Real-time flows block other best-effort packets traveling on the link
-when the utilization of all the packets on the link is $1$. We need a mechanism to
-reroute all best-effort packets.
+message will be blocked on the network or it reaches the source too late? We
+should give priority to such kind of control message. Real-time flows block
+other best-effort packets traveling on the link when the utilization of all the
+packets on the link is $1$. We need a mechanism to reroute all best-effort packets.
 
 In future, we will find different routing algorithms to optimize and balance a
 network and we can incorporate multiple PRET processors ~\cite{LicklyPRET} into
