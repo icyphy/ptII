@@ -566,9 +566,9 @@ delays at this node (thereby smaller deadlines when packets come at the same
 time).
 
 However, from (\ref{equ:edgeDelayPacketLength}), it is possible to see that
-there is some case, at a node, the bounded delay of flow $f$ with the largest packet length
-will be {\em smaller} than the bounded delay of some other flow with smaller
-maximum packet length. To still use (\ref{equ:deadline2}) for scheduling, we
+there is some case, at a node, the bounded delay of flow $f$ with the largest
+maximum packet length will be {\em smaller} than the bounded delay of some other
+flow with smaller maximum packet length. To still use (\ref{equ:deadline2}) for scheduling, we
 have to assign a {\em virtual delay} for the flow $f$ so that the {\em virtual deadline},
 computed from (\ref{equ:deadline2}), is greater than that of any other flows to
 make sure that, if all the packets of all flows come at the same time, the
@@ -576,7 +576,7 @@ packet of the flow $f$. We will prove that, this virtual delay scheme for the
 flow {\em does not} make any packet of the flow miss its deadline and the delay
 bound of a packet is still the same as in (\ref{equ:edgeDelayPacketLength}).
 This virtual delay is set to the largest bounded delay of all other flows
-sharing the same link.
+sharing the same link plus 1.
 
 {\textbf{Theorem 1:}} {\em  The above virtual delay scheme never makes
 packets of flow $f$ miss their real deadlines computed from
