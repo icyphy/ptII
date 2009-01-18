@@ -465,13 +465,14 @@ differently.}\label{fig:HeteroComm}
 At each node, we use Earliest Due Date (EDD)
 ~\cite{VermaJitter91}~\cite{LiuSchedulingRT} to schedule packets, the deadline
 for each packet of flow $f$ at node $n^{th}$ is computed as follows:
-\begin{equation}\label{equ:deadline1}
-dl_{f,n}=t_0 + \sum_{k=1}^{n}q_{f,k}+P_n
-\end{equation}
-where $t_0$ is the time the packet is sent from the source and $P_n$ is the propagation
-delay from the source till node $n^{th}$ (communication time). We set
-$P_n=n$ since we assume that our in network on chip, it takes one cycle for a
-head flit to travel between two successive nodes. Thus, (\ref{equ:deadline1}) becomes:
+
+% \begin{equation}\label{equ:deadline1}
+% dl_{f,n}=t_0 + \sum_{k=1}^{n}q_{f,k}+P_n
+% \end{equation}
+% where $t_0$ is the time the packet is sent from the source and $P_n$ is the propagation
+% delay from the source till node $n^{th}$ (communication time). We set
+% $P_n=n$ since we assume that our in network on chip, it takes one cycle for a
+% head flit to travel between two successive nodes. Thus, (\ref{equ:deadline1}) becomes:
 
 \begin{equation}\label{equ:deadline2}
 dl_{f,n}=t_0 + \sum_{k=1}^{n}d_{i,k}
