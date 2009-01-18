@@ -52,9 +52,10 @@ This mechanism needs to be simple yet efficient and flexible enough for most of
 applications.
 
 In this paper, we provide a detailed delay analysis of multiplexing of real-time
-channels in worm-hole flow control for network on chip then use a cycle
-accurate simulation platform to prove the worst-case delay estimation and
-deadline-based packet scheduling algorithm.
+channels in worm-hole flow control for network on chip. A
+architecture with a communication model and a configuration protocol
+implemented on a cycle-accurate simulation platform is used to prove the worst-case delay estimation of a deadline-based
+packet scheduling algorithm.
 
 \end{abstract}
 
@@ -101,12 +102,12 @@ destinations.
 \subsection{Flow Control Schemes}
 Networks are classified into several types based on how their resources are
 allocated to packets on the networks. Following are three popular flow control
-schemes:
+schemes.
 \subsubsection{Store-and-Forward}
 In store-and-forward flow control scheme, a packet has to be received entirely
 before being forwarded. This flow control scheme gives longer end-to-end delay
 in comparison with the following flow control schemes.
-\subsubsection{Virtual-Cut-Through}
+\subsubsection{Virtual Cut-Through}
 In virtual-cut-through scheme, a packet does not need to be received entirely
 before being forwarded, however, receiving nodes is required to have enough
 buffer space for incoming packets.
@@ -132,26 +133,28 @@ Furthermore, the TDMA slot allocation is currently solved at {\em design time}
 to optimize the system ~\cite{Moonen07SPRINGER}, resulting in a number of
 configurations and these configurations are programmed (or loaded) in the
 network on chip. \AE thereal routers are often configured at design-time so
-minimize the size of routers by removing slot tables, which could be very large
-for a large network. This router optimization makes this architecture unable to
+the size of routers is minimized by removing slot tables, which could be very
+large for a large network. This router optimization makes this architecture unable to
 exploit multiple paths from source to destination to avoid conflicts between
 guaranteed service packets. \AE thereal also has some known issues with bursty
-traffic ~\cite{Hansson07ISSS}, which is typical in multi-core.
+traffic ~\cite{Hansson07ISSS}, which is typical in multi-core. The fixed size
+of real-time packet also makes \AE thereal less flexible.
 
-The above problems make \AE thereal unsuitable for systems requiring
+The above issues make \AE thereal unsuitable for systems requiring
 flexibility and scalability like multi-core.
 
 \subsection{SoCBUS}
 SoCBUS architecture ~\cite{SoCBUS} is from Linkoping University. It seeks to 
-guarantee real-time properties by setting up a path before ending:
+guarantee real-time properties by setting up a path before sending:
 \begin{itemize}
 \item Initiate a path by sending a setting up packet.
 \item The path will be {\em blocked} until all data have been sent.
-\item After that the path is unlocked
+\item After that the path is unlocked.
 \end{itemize}
 This approach has the following problems: 
 \begin{itemize}
-\item What happens if we have two real-time paths on the same link?
+\item What happens if we need to have two or more real-time flows sharing the
+same link?
 \item Other traffic sharing a link with this real-time path is blocked while 
 data is sent. This seems to be a good solution when sending a large bulk of data 
 but not good for periodic, non-continuous flows.
@@ -351,9 +354,10 @@ I_{v,e} = \left\{ \begin{array}{lrc}
 \end{array}\right. 
 \end{equation}
 
-$\forall f=(s, d, id) \in F$  let $b$ be a vector s.t. $b_f(s) = 1$, 
-$b_f(d) = -1$ and $b_f(i) = 0, \forall i \in C \mbox{ and } i \neq s, d$,
- then we have $Iy_f=b_f$, this condition is for unique path between $s$ and $d$.
+$\forall f=(source, destination, flow\_id) \in F$  let $b$ be a vector s.t.
+$b_f(source) = 1$, $b_f(destination) = -1$ and $b_f(i) = 0, \forall i \in C
+\mbox{ and } i \neq source, destination$, then $Iy_f=b_f$, this condition is for
+a unique path between $source$ and $destination$.
 
 A valid configuration ${\mathcal{C}}(F)=(P, \lbrace y_{f,e}:f \in F, e \in E
 \rbrace )$.
@@ -381,7 +385,7 @@ network on chip as in Table \ref{table:NetworkStack}.
 
 \subsubsection{Configuration: Distributed vs. Centralized}
 Since our purpose is to design a distributed network on chip system, thus the
-configurations of the network can be dynamically changed at {\em run-time}.
+configurations of the network can be dynamically changed at {\em runtime}.
 This requirement makes the distributed configuration scheme unsuitable since,
 for instant, when there are two requests for real-time flows, we maybe have to
 reduce the {\em slack} of other flows, however it is difficult to reduce the
@@ -431,22 +435,10 @@ So the setting up path response can be: ACCEPT, REJECT
 When a path is not needed, it can be torn using path-tearup protocol, which
 works basically as the path-setup protocol but with reversed commands.
 
-\subsection{Design Questions}
-\begin{itemize}
-\item Should we specify the path directly in this request? Static initialization 
-can be useful in some programming model like Giotto.	
-\item Is it possible that the acceptance message will be blocked on the network 
-or it reaches the source too late? We should give priority to such kind of control
-message.
-\item Real-time flows block other best-effort packets traveling on the link when 
-the utilization of all the packets on the link is $1$. We need a mechanism to
-reroute all best-effort packets.
-\end{itemize}
-
-To reduce the size of each router, we can use processing elements to do 
-complicated tasks like calculating admission criteria for a new flow at each node 
-and rerouting for finding a new suitable path on a network.
-
+\subsection{Communication  Model}
+% To reduce the size of each router, we can use processing elements to do 
+% complicated tasks like calculating admission criteria for a new flow at each node 
+% and rerouting for finding a new suitable path on a network.
 
 One characteristic of this scheme is that the buffer for each 
 real-time flow at each node is bounded ~\cite{Ferrari90ascheme}, and thus
@@ -593,7 +585,7 @@ packets of flow $f$ miss their real deadlines computed from
 other flows except $f$. So the real delay bound of $f$ is ${\mathcal S}+1$.
 Suppose that a packet $p$ of $f$ comes at time $t_0$, then the {\em real}
 deadline for the packet is $t_0+{\mathcal S}+1$. Since from
-(\ref{equ:intervalservice2}), each flow can not have more than 1
+(\ref{equ:intervalservice2}), each flow cannot have more than 1
 packet deadline in the duration $(t_0, t_0+{\mathcal S}+1)$. If in
 $(t_0, t_0+{\mathcal S}-1)$, there is any cycle that no flit of other packets is
 sent, then the scheduler will immediately start forwarding packet $p$ of flow $f$.
@@ -609,7 +601,7 @@ A valid configuration ${\mathcal C}(F)$ must satisfy
 \begin{equation}\label{connectivity1} Iy_f=b_f,\forall f \in F
 \end{equation}
 
-From ~\cite{Ferrari90ascheme},the total delay at each hop of a real-time flow
+From ~\cite{Ferrari90ascheme}, the total delay at each hop of a real-time flow
 has to satisfy the delay constraint of the real-time flow.
 
 \begin{equation}\label{equ:e2eDelayST}
@@ -882,7 +874,7 @@ routed in read path.  When flow 2 gets routed through link from node 7 to node
 8, the delay bound of flow 1 on that edge is modify, however, the total delay
 bound of that flow still does not exceed the requested delay bound.
 
-When flow 3 comes, it gets routed to node 7, however, it can not travel the
+When flow 3 comes, it gets routed to node 7, however, it cannot travel the
 link from node 7 to 8 since the link utilization would exceed 1 if that link
 has the third flow. The flow 3 then gets routed to node 12 then reachs the
 destination node.
@@ -941,6 +933,12 @@ delay scheme since we can reduce and predict the synchronization between
 processing cores. Critical applications like air plane control can utilize the
 development of multi-core since we can verify the delay communication between
 processing elements.
+
+However, several issues remain. Is it possible that the acceptance
+message will be blocked on the network or it reaches the source too late? We should give priority to such kind of control
+message. Real-time flows block other best-effort packets traveling on the link
+when the utilization of all the packets on the link is $1$. We need a mechanism to
+reroute all best-effort packets.
 
 In future, we will find different routing algorithms to optimize and balance a
 network and we can incorporate multiple PRET processors ~\cite{LicklyPRET} into
