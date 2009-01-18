@@ -549,7 +549,7 @@ d_{f,e}y_{f,e} = \sum_{g \in F:order_e(g) < order_e(f)}s_{f,e}y_{f,e} +
 max_{order_{e}(i)>order_{e}(f)}(s_{i,e}y_{i,e}), \forall e \in E
 \end{eqnarray}
 
-For different applications, choose different {\em order} functions can be
+For different applications, different {\em order} functions can be
 chosen. In this paper, to minimize the total local delay at each node, we
 choose a scheduling scheme that forwards packets of flows that have smallest maximum
 packet length first by setting $order_{v,e}(f)=l_f$, then
@@ -643,7 +643,7 @@ l_f}y_{g,e}s_{g,e} +max_{l_i>l_f}(s_{i,e}y_{i,e})\Biggr)\notag \\ \leq
 d_f-s_{f,last\_edge} + 1, \forall f \in F
 \end{eqnarray}
 
-For simple router models (non-pipeline), we have $s_{f,e} = value(l_f),\forall e
+In our network on chip, $s_{f,e} = value(l_f),\forall e
 \in E$, then (\ref{equ:e2eDelayCTNonPipeline1}) becomes:
 
 \begin{eqnarray}\label{equ:e2eDelayCTNonPipeline2}
