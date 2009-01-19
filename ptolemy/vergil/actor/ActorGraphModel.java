@@ -1225,8 +1225,6 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             }
         }
 
-
-        // Link the semanticObject with the relation. 
         /** Append moml to the given buffer that connects a relation with the
          *  given semanticObject. If relationIndex equals -1 it will
          *  be ignored, otherwise the relation will be connected at index relationIndex at
