@@ -104,7 +104,7 @@ import diva.util.NullIterator;
  model.  This mechanism allows a graph visualization of a ptolemy model to
  remain synchronized with the state of a mutating model.
 
- @author Steve Neuendorffer, Contributor: Edward A. Lee
+ @author Steve Neuendorffer, Contributor: Edward A. Lee, Bert Rodiers
  @version $Id$
  @since Ptolemy II 2.0
  @Pt.ProposedRating Yellow (neuendor)
@@ -1087,213 +1087,8 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *  @see #getHead(Object)
          */
         public void setHead(final Object edge, final Object newLinkHead) {
-            final Link link = (Link) edge;
-            final NamedObj linkHead = (NamedObj) link.getHead();
-            final NamedObj linkTail = (NamedObj) link.getTail();
-            Relation linkRelation = link.getRelation();
-
-            // This moml is parsed to execute the change
-            final StringBuffer moml = new StringBuffer();
-
-            // This moml is parsed in case the change fails.
-            final StringBuffer failmoml = new StringBuffer();
-            moml.append("<group>\n");
-            failmoml.append("<group>\n");
-
-            // Make the request in the context of the container.
-            final CompositeEntity container = (CompositeEntity) getPtolemyModel();
-
-            String relationName = "";
-
-            // Flag specifying whether we have actually created any MoML.
-            boolean appendedMoML = false;
-
-            try {
-                // create moml to unlink any existing.
-                appendedMoML = _unlinkMoML(container, moml, linkHead, linkTail,
-                        linkRelation);
-
-                // It is possible to link with an existing link.
-                // If this existing link has a vertex as head or tail,
-                // we will connect with the vertex, otherwise we will
-                // remove the old link, create a new vertex, link the
-                // head and tail of the existing link with the
-                // vertex and link the new link with the vertex.
-                if (newLinkHead instanceof Link) {
-                
-                    Link oldLink = ((Link) newLinkHead);
-                    
-                    NamedObj oldHead = (NamedObj) oldLink.getHead();
-                    NamedObj oldTail = (NamedObj) oldLink.getTail();
-                    if (oldHead instanceof Vertex) {
-                        // Link the new link with oldHead
-                        // create moml to make the new links.
-                        relationName = _linkMoML(container, moml, failmoml,
-                                oldHead, linkTail);                        
-                    } else if (oldTail instanceof Vertex) {
-                        // Link the new link with oldTail
-                        // create moml to make the new links.
-                        relationName = _linkMoML(container, moml, failmoml,
-                                oldTail, linkTail);                        
-                    } else {
-                        // Remove the old link, create a new vertex, link the
-                        // head and tail of the existing link with the
-                        // vertex and link the new link with the vertex.
-
-                        NamedObj oldHeadSemantic = (NamedObj) getSemanticObject(oldHead);
-                        NamedObj oldTailSemantic = (NamedObj) getSemanticObject(oldTail);
-                        
-                        // In case the head is a port of an actor in the current composite
-                        // actor the head will be an IOPort, if it is a port of the current
-                        // composite actor it will be a Locatable 
-                        boolean headIsActorPort = oldLink.getHead() instanceof IOPort;
-                        boolean tailIsActorPort = oldLink.getTail() instanceof IOPort;
-
-                        ComponentRelation relation = oldLink.getRelation();
-
-                        // We will remove the existing link, but before doing that
-                        // we need to retrieve the index to reconnect at the correct index
-                        
-                        int headRelationIndex = _getRelationIndex((IOPort) oldHeadSemantic,
-                                headIsActorPort, relation);
-                        int tailRelationIndex = _getRelationIndex((IOPort) oldTailSemantic,
-                                tailIsActorPort, relation);                        
-                        
-                        final NamedObj toplevel = getPtolemyModel();
-                        String newRelationName = toplevel.uniqueName("relation");
-                        final String vertexName = "vertex1";
-
-                        double[] headLocation = _getLocation(headIsActorPort ? oldHeadSemantic.getContainer() : oldHeadSemantic).getLocation();
-                        double[] tailLocation = _getLocation(tailIsActorPort ? oldTailSemantic.getContainer() : oldTailSemantic).getLocation();
-                        double[] newLocation = new double[2];
-                        newLocation[0] = (headLocation[0] + tailLocation[0]) / 2.0;
-                        newLocation[1] = (headLocation[1] + tailLocation[1]) / 2.0;
-                        newLocation = SnapConstraint.constrainPoint(newLocation);
-                        
-                        // Create the relation.
-                        moml.append("<relation name=\"" + newRelationName + "\">\n");
-                        moml.append("<vertex name=\"" + vertexName + "\" value=\"{");
-                        moml.append(newLocation[0] + ", " + newLocation[1]);
-                        moml.append("}\"/>\n");
-                        moml.append("</relation>");
-                        
-                        relationName = newRelationName;
-                        _unlinkMoML(container, moml, oldHead, oldTail, relation);
-        
-                        moml.append("<link port=\"" + oldTailSemantic.getName(container)
-                                + "\" relation=\"" + newRelationName
-                                + "\" insertAt=\"" + tailRelationIndex
-                                + "\"/>\n");
-                        moml.append("<link port=\"" + oldHeadSemantic.getName(container)
-                                + "\" relation=\"" + newRelationName
-                                + "\" insertAt=\"" + headRelationIndex
-                                + "\"/>\n");
-                        moml.append("<link port=\""
-                                    + ((NamedObj) getSemanticObject(linkTail)).getName(container)
-                                    + "\" relation=\"" + newRelationName
-                                    + "\"/>\n");
-                        
-                        // Record moml so that we can blow away these
-                        // links in case we can't create them
-                        failmoml.append("<unlink port=\""
-                                + oldTailSemantic.getName(container) + "\" relation=\""
-                                + newRelationName + "\"/>\n");
-                        failmoml.append("<unlink port=\""
-                                + oldHeadSemantic.getName(container) + "\" relation=\""
-                                + newRelationName + "\"/>\n");
-                        failmoml.append("<unlink port=\""
-                                + ((NamedObj) getSemanticObject(linkTail)).getName(container) + "\" relation=\""
-                                + newRelationName + "\"/>\n");                        
-                        failmoml.append("<deleteRelation name=\"" + newRelationName
-                                + "\"/>\n");
-                        
-                        appendedMoML = true;
-                    }
-                } else {
-                    // create moml to make the new links.
-                    relationName = _linkMoML(container, moml, failmoml,
-                            (NamedObj) newLinkHead, linkTail);
-                }    
-
-                // FIXME: Above can return an empty name, so the following
-                // test is not quite right.
-                appendedMoML = appendedMoML || (relationName != null);
-            } catch (Exception ex) {
-                // The link is bad... remove it.
-                _linkSet.remove(link);
-                link.setHead(null);
-                link.setTail(null);
-                dispatchGraphEvent(new GraphEvent(ActorGraphModel.this,
-                        GraphEvent.STRUCTURE_CHANGED, getRoot()));
-            }
-
-            moml.append("</group>\n");
-            failmoml.append("</group>\n");
-
-            final String relationNameToAdd = relationName;
-            final boolean nonEmptyMoML = appendedMoML;
-
-            // Here the source IS the graph model, because we need to
-            // handle the event dispatch specially:  An event is only
-            // dispatched if both the head and the tail are attached.
-            // This rather obnoxious hack is here because edge creation
-            // is tricky and we can't rerender the edge while we are dragging
-            // it.
-            MoMLChangeRequest request = new MoMLChangeRequest(
-                    ActorGraphModel.this, container, moml.toString()) {
-                protected void _execute() throws Exception {
-                    // If nonEmptyMoML is false, then the MoML code is empty.
-                    // Do not execute it, as this will put spurious empty
-                    // junk on the undo stack.
-                    if (nonEmptyMoML) {
-                        super._execute();
-                    }
-
-                    // It is possible to link with an existing link.
-                    // If this existing link has a vertex as head or tail,
-                    // we will connect with the vertex, otherwise we will
-                    // remove the old link, create a new vertex, link the
-                    // head and tail of the existing link with the
-                    // vertex and link the new link with the vertex.
-
-                    if (!(newLinkHead instanceof Link)) {
-                        link.setHead(newLinkHead);
-                    } else {                        
-                        // Make sure that the model is updated. We made structural
-                        // changes that impose an update of this ActorGraphModel.
-                        _forceUpdate = true;
-                        
-                        // Set head equal to newly created vertex.
-                        link.setHead(_getLocation(container
-                                .getRelation(relationNameToAdd)));                        
-                    }
-
-                    if (relationNameToAdd != null) {
-                        ComponentRelation relation = container
-                                .getRelation(relationNameToAdd);
-
-                        if (relation == null) {
-                            throw new InternalErrorException(
-                                    "Tried to find relation with name "
-                                            + relationNameToAdd
-                                            + " in context " + container);
-                        }
-
-                        link.setRelation(relation);
-                    } else {
-                        link.setRelation(null);
-                    }
-                }
-            };
-
-            // Handle what happens if the mutation fails.
-            request.addChangeListener(new LinkChangeListener(link, container,
-                    failmoml));
-
-            request.setUndoable(true);
-            container.requestChange(request);
+            _setHeadOrTail(edge, newLinkHead, true);
         }
-
 
         /** Connect the given edge to the given tail node.
          *  This class queues a new change request with the ptolemy model
@@ -1305,97 +1100,11 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *  @see #getTail(Object)
          */
         public void setTail(final Object edge, final Object newLinkTail) {
-            final Link link = (Link) edge;
-            final NamedObj linkHead = (NamedObj) link.getHead();
-            final NamedObj linkTail = (NamedObj) link.getTail();
-            Relation linkRelation = link.getRelation();
-
-            // This moml is parsed to execute the change
-            final StringBuffer moml = new StringBuffer();
-
-            // This moml is parsed in case the change fails.
-            final StringBuffer failmoml = new StringBuffer();
-            moml.append("<group>\n");
-            failmoml.append("<group>\n");
-
-            // Make the request in the context of the container.
-            // JDK1.2.2 fails to compile the next line.
-            final CompositeEntity container = (CompositeEntity) getPtolemyModel();
-
-            String relationName = "";
-
-            // Flag specifying whether we have actually created any MoML.
-            boolean appendedMoML = false;
-
-            try {
-                // create moml to unlink any existing.
-                appendedMoML = _unlinkMoML(container, moml, linkHead, linkTail,
-                        linkRelation);
-
-                // create moml to make the new links.
-                relationName = _linkMoML(container, moml, failmoml, linkHead,
-                        (NamedObj) newLinkTail);
-
-                appendedMoML = appendedMoML || (relationName != null);
-            } catch (Exception ex) {
-                // The link is bad... remove it.
-                _linkSet.remove(link);
-                link.setHead(null);
-                link.setTail(null);
-                dispatchGraphEvent(new GraphEvent(ActorGraphModel.this,
-                        GraphEvent.STRUCTURE_CHANGED, getRoot()));
-            }
-
-            moml.append("</group>\n");
-            failmoml.append("</group>\n");
-
-            final String relationNameToAdd = relationName;
-            final boolean nonEmptyMoML = appendedMoML;
-
-            // Here the source IS the graph model, because we need to
-            // handle the event dispatch specially:  An event is only
-            // dispatched if both the head and the tail are attached.
-            // This rather obnoxious hack is here because edge creation
-            // is tricky and we can't rerender the edge while we are dragging
-            // it.
-            MoMLChangeRequest request = new MoMLChangeRequest(
-                    ActorGraphModel.this, container, moml.toString()) {
-                protected void _execute() throws Exception {
-                    // If nonEmptyMoML is false, then the MoML code is empty.
-                    // Do not execute it, as this will put spurious empty
-                    // junk on the undo stack.
-                    if (nonEmptyMoML) {
-                        super._execute();
-                    }
-
-                    link.setTail(newLinkTail);
-
-                    if (relationNameToAdd != null) {
-                        ComponentRelation relation = container
-                                .getRelation(relationNameToAdd);
-
-                        if (relation == null) {
-                            throw new InternalErrorException(
-                                    "Tried to find relation with name "
-                                            + relationNameToAdd
-                                            + " in context " + container);
-                        }
-
-                        link.setRelation(relation);
-                    } else {
-                        link.setRelation(null);
-                    }
-                }
-            };
-
-            // Handle what happens if the mutation fails.
-            request.addChangeListener(new LinkChangeListener(link, container,
-                    failmoml));
-
-            request.setUndoable(true);
-            container.requestChange(request);
+            _setHeadOrTail(edge, newLinkTail, false);
         }
         
+        ///////////////////////////////////////////////////////////////////
+        ////                         private methods                   ////
 
         /**
          * Retrieve the index of the relation at the port
@@ -1515,6 +1224,289 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                 return null;
             }
         }
+
+
+        // Link the semanticObject with the relation. 
+        /** Append moml to the given buffer that connects a relation with the
+         *  given semanticObject. If relationIndex equals -1 it will
+         *  be ignored, otherwise the relation will be connected at index relationIndex at
+         *  the semanticObject, in case it represents a port.
+         *  @param moml The string buffer to write the MoML to.
+         *  @param failmoml The string buffer to write alternative
+         *   MoML to, to be used if the first MoML fails.
+         *  @param container The container composite actor.
+         *  @param semanticObject The semantic object (relation or port).
+         *  @param relationIndex The index of the relation at the port.
+         *  @param relationName The name of the relation.
+         */
+         private void _linkWithRelation(final StringBuffer moml,
+                 final StringBuffer failmoml, final CompositeEntity container,
+                 NamedObj semanticObject, int relationIndex, String relationName) {
+
+             if (semanticObject instanceof ComponentPort) {
+                 moml.append("<link port=\"" + semanticObject.getName(container)
+                         + "\" relation=\"" + relationName);
+                 if (relationIndex != -1) {
+                     moml.append("\" insertAt=\"" + relationIndex);
+                 }
+                 moml.append("\"/>\n");
+             
+                 // Record moml so that we can blow away these
+                 // links in case we can't create them
+                 failmoml.append("<unlink port=\""
+                         + semanticObject.getName(container) + "\" relation=\""
+                         + relationName + "\"/>\n");
+             } else if (semanticObject instanceof Relation) {
+                 moml.append("<link relation1=\"" + semanticObject.getName(container)
+                         + "\" relation2=\"" + relationName
+                         + "\"/>\n");
+                 failmoml.append("<unlink relation1=\""
+                         + semanticObject.getName(container) + "\" relation2=\""
+                         + relationName + "\"/>\n");
+             } else {
+                 throw new RuntimeException("Link failed: " + "Object = "
+                     + semanticObject + ", Relation = " + relationName);
+             }
+         }
+        
+         /** Connect the given edge to the given head or tail node.
+          *  This class queues a new change request with the ptolemy model
+          *  to make this modification.
+          *  @param edge The edge, which is assumed to be a link.
+          *  @param newLinkHeadOrTail The new head or tail for the edge,
+          *  which is assumed to be a location representing a port,
+          *  a port or a vertex.
+          *  @param isHead True when newLinkHeadOrTail represents the head
+          *  @see #setHead()
+          *  @see #setTail()
+          */
+        private void _setHeadOrTail(final Object edge,
+                final Object newLinkHeadOrTail, final boolean isHead) {
+            final Link link = (Link) edge;
+            final NamedObj linkHead = (NamedObj) link.getHead();
+            final NamedObj linkTail = (NamedObj) link.getTail();
+            Relation linkRelation = link.getRelation();
+
+            // This moml is parsed to execute the change
+            final StringBuffer moml = new StringBuffer();
+
+            // This moml is parsed in case the change fails.
+            final StringBuffer failmoml = new StringBuffer();
+            moml.append("<group>\n");
+            failmoml.append("<group>\n");
+
+            // Make the request in the context of the container.
+            final CompositeEntity container = (CompositeEntity) getPtolemyModel();
+
+            String relationName = "";
+
+            // Flag specifying whether we have actually created any MoML.
+            boolean appendedMoML = false;
+
+            try {
+                // create moml to unlink any existing.
+                appendedMoML = _unlinkMoML(container, moml, linkHead, linkTail,
+                        linkRelation);
+
+                // It is possible to link with an existing link.
+                // If this existing link has a vertex as head or tail,
+                // we will connect with the vertex, otherwise we will
+                // remove the old link, create a new vertex, link the
+                // head and tail of the existing link with the
+                // vertex and link the new link with the vertex.
+                if (newLinkHeadOrTail instanceof Link) {
+                
+                    Link oldLink = ((Link) newLinkHeadOrTail);
+                    
+                    NamedObj oldHead = (NamedObj) oldLink.getHead();
+                    NamedObj oldTail = (NamedObj) oldLink.getTail();
+ 
+                    if (oldHead instanceof Vertex) {
+                        // Link the new link with oldHead
+                        // create moml to make the new links.
+                        if (isHead) {
+                            relationName = _linkMoML(container, moml, failmoml,
+                                    oldHead, linkTail);
+                        } else {
+                            relationName = _linkMoML(container, moml, failmoml,
+                                    linkHead, oldHead);                            
+                        }
+                    } else if (oldTail instanceof Vertex) {
+                        // Link the new link with oldTail
+                        // create moml to make the new links.
+                        if (isHead) {
+                            relationName = _linkMoML(container, moml, failmoml,
+                                    oldTail, linkTail);
+                        } else {
+                            relationName = _linkMoML(container, moml, failmoml,
+                                    linkHead, oldTail);                            
+                        }
+                    } else {
+                        // Remove the old link, create a new vertex, link the
+                        // head and tail of the existing link with the
+                        // vertex and link the new link with the vertex.
+
+                        NamedObj oldHeadSemantic = (NamedObj) getSemanticObject(oldHead);
+                        NamedObj oldTailSemantic = (NamedObj) getSemanticObject(oldTail);
+                        
+                        // In case the head is a port of an actor in the current composite
+                        // actor the head will be an IOPort, if it is a port of the current
+                        // composite actor it will be a Locatable 
+                        boolean headIsActorPort = oldLink.getHead() instanceof IOPort;
+                        boolean tailIsActorPort = oldLink.getTail() instanceof IOPort;
+
+                        ComponentRelation relation = oldLink.getRelation();
+
+                        // We will remove the existing link, but before doing that
+                        // we need to retrieve the index to reconnect at the correct index
+                        
+                        int headRelationIndex = _getRelationIndex((IOPort) oldHeadSemantic,
+                                headIsActorPort, relation);
+                        int tailRelationIndex = _getRelationIndex((IOPort) oldTailSemantic,
+                                tailIsActorPort, relation);                        
+                        
+                        final NamedObj toplevel = getPtolemyModel();
+                        String newRelationName = toplevel.uniqueName("relation");
+                        final String vertexName = "vertex1";
+
+                        double[] headLocation = _getLocation(headIsActorPort ? oldHeadSemantic.getContainer() : oldHeadSemantic).getLocation();
+                        double[] tailLocation = _getLocation(tailIsActorPort ? oldTailSemantic.getContainer() : oldTailSemantic).getLocation();
+                        double[] newLocation = new double[2];
+                        newLocation[0] = (headLocation[0] + tailLocation[0]) / 2.0;
+                        newLocation[1] = (headLocation[1] + tailLocation[1]) / 2.0;
+                        newLocation = SnapConstraint.constrainPoint(newLocation);
+                        
+                        // Create the relation.
+                        moml.append("<relation name=\"" + newRelationName + "\">\n");
+                        moml.append("<vertex name=\"" + vertexName + "\" value=\"{");
+                        moml.append(newLocation[0] + ", " + newLocation[1]);
+                        moml.append("}\"/>\n");
+                        moml.append("</relation>");
+                        
+                        relationName = newRelationName;
+                        _unlinkMoML(container, moml, oldHead, oldTail, relation);
+        
+                        _linkWithRelation(moml, failmoml, container,
+                                oldTailSemantic, tailRelationIndex,
+                                newRelationName);                        
+                        _linkWithRelation(moml, failmoml, container,
+                                oldHeadSemantic, headRelationIndex,
+                                newRelationName);
+                        
+                        if (isHead) {
+                            _linkWithRelation(moml, failmoml, container,
+                                    ((NamedObj) getSemanticObject(linkTail)), -1,
+                                    newRelationName);
+                        } else {
+                            _linkWithRelation(moml, failmoml, container,
+                                    ((NamedObj) getSemanticObject(linkHead)), -1,
+                                    newRelationName);
+                        }                        
+                        
+                        failmoml.append("<deleteRelation name=\"" + newRelationName
+                                + "\"/>\n");
+                        
+                        appendedMoML = true;
+                    }
+                } else {
+                    // create moml to make the new links.
+                    if (isHead) {
+                        relationName = _linkMoML(container, moml, failmoml,
+                                (NamedObj) newLinkHeadOrTail, linkTail);
+                    } else {
+                        relationName = _linkMoML(container, moml, failmoml,
+                                linkHead, (NamedObj) newLinkHeadOrTail);                        
+                    }
+                }    
+
+                // FIXME: Above can return an empty name, so the following
+                // test is not quite right.
+                appendedMoML = appendedMoML || (relationName != null);
+            } catch (Exception ex) {
+                // The link is bad... remove it.
+                _linkSet.remove(link);
+                link.setHead(null);
+                link.setTail(null);
+                dispatchGraphEvent(new GraphEvent(ActorGraphModel.this,
+                        GraphEvent.STRUCTURE_CHANGED, getRoot()));
+            }
+
+            moml.append("</group>\n");
+            failmoml.append("</group>\n");
+
+            final String relationNameToAdd = relationName;
+            final boolean nonEmptyMoML = appendedMoML;
+
+            // Here the source IS the graph model, because we need to
+            // handle the event dispatch specially:  An event is only
+            // dispatched if both the head and the tail are attached.
+            // This rather obnoxious hack is here because edge creation
+            // is tricky and we can't rerender the edge while we are dragging
+            // it.
+            MoMLChangeRequest request = new MoMLChangeRequest(
+                    ActorGraphModel.this, container, moml.toString()) {
+                protected void _execute() throws Exception {
+                    // If nonEmptyMoML is false, then the MoML code is empty.
+                    // Do not execute it, as this will put spurious empty
+                    // junk on the undo stack.
+                    if (nonEmptyMoML) {
+                        super._execute();
+                    }
+
+                    // It is possible to link with an existing link.
+                    // If this existing link has a vertex as head or tail,
+                    // we will connect with the vertex, otherwise we will
+                    // remove the old link, create a new vertex, link the
+                    // head and tail of the existing link with the
+                    // vertex and link the new link with the vertex.
+
+                    if (!(newLinkHeadOrTail instanceof Link)) {
+                        if (isHead) {
+                            link.setHead(newLinkHeadOrTail);
+                        } else {
+                            link.setTail(newLinkHeadOrTail);
+                        }
+                    } else {                        
+                        // Make sure that the model is updated. We made structural
+                        // changes that impose an update of this ActorGraphModel.
+                        _forceUpdate = true;
+                        
+                        // Set head/tail equal to newly created vertex.
+                        if (isHead) {
+                            link.setHead(_getLocation(container
+                                    .getRelation(relationNameToAdd)));
+                        } else {
+                            link.setTail(_getLocation(container
+                                    .getRelation(relationNameToAdd)));
+                        }
+                    }
+
+                    if (relationNameToAdd != null) {
+                        ComponentRelation relation = container
+                                .getRelation(relationNameToAdd);
+
+                        if (relation == null) {
+                            throw new InternalErrorException(
+                                    "Tried to find relation with name "
+                                            + relationNameToAdd
+                                            + " in context " + container);
+                        }
+
+                        link.setRelation(relation);
+                    } else {
+                        link.setRelation(null);
+                    }
+                }
+            };
+
+            // Handle what happens if the mutation fails.
+            request.addChangeListener(new LinkChangeListener(link, container,
+                    failmoml));
+
+            request.setUndoable(true);
+            container.requestChange(request);
+        }
+        
 
         /** Append moml to the given buffer that disconnects a link with the
          *  given head, tail, and relation. Names in the returned moml will be

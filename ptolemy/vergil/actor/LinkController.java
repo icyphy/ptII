@@ -77,7 +77,7 @@ import diva.gui.toolbox.MenuCreator;
  connected between ports and relations.  Standard interaction
  techniques for an undirected edge are allowed.
 
- @author Steve Neuendorffer, Contributor: Edward A. Lee
+ @author Steve Neuendorffer, Contributor: Edward A. Lee, Bert Rodiers
  @version $Id$
  @since Ptolemy II 2.0
  @Pt.ProposedRating Red (eal)
@@ -321,8 +321,19 @@ public class LinkController extends BasicEdgeController {
 
             if (object instanceof Port
                     || object instanceof Vertex
+                    || (object instanceof Link && c != f)
                     || (object instanceof Locatable && ((Locatable) object)
                             .getContainer() instanceof Port)) {
+                
+                // It is possible to link with an existing link.
+                // If this existing link has a vertex as head or tail,
+                // we will connect with the vertex, otherwise we will
+                // remove the old link, create a new vertex, link the
+                // head and tail of the existing link with the
+                // vertex and link the new link with the vertex.
+                // We don't allow connecting with with yourself, hence the
+                // test c != f.
+                
                 return super.acceptTail(c, f);
             } else {
                 return false;
