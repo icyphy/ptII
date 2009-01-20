@@ -494,14 +494,35 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         }
 
         // If not a special function, then reflect the name of the function.
-        ptolemy.data.Token result = _functionCall(node.getFunctionName(),
-                argTypes, argValues);
-        
+        ptolemy.data.Token result = null;
+        try {
+            result = _functionCall(node.getFunctionName(), argTypes, argValues);
+        } catch (IllegalActionException e) {
+            // Try to consider "expression" as "this.expression" and invoke
+            // method again. This allows expressions such as "getContainer()" to
+            // be evaluated on an arbitrary variable without using "this".
+            // -- tfeng (01/19/2009)
+            boolean success = false;
+            if (argValues.length == 0) {
+                ptolemy.data.Token thisToken = _scope.get("this");
+                if (thisToken != null) {
+                    argTypes = new Type[] {thisToken.getType()};
+                    argValues = new ptolemy.data.Token[] {thisToken};
+                    result = _methodCall(node.getFunctionName(), argTypes,
+                            argValues);
+                    success = true;
+                }
+            }
+            if (!success) {
+                throw e;
+            }
+        }
+
         if (result == null && scopedValue instanceof ObjectToken) {
             // If it is ObjectToken, set it here.
             result = scopedValue;
         }
-        
+
         _evaluatedChildToken = (result);
     }
 
@@ -1437,14 +1458,14 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                     }
                 }
             }
-            
+
             if (object == null) {
                 throw new IllegalActionException("The object on which method " +
                         "\"" + methodName + "\" is invoked on is null, but " +
                         "the method is not found or is not static.");
             }
         }
-        
+
         throw new IllegalActionException("No method found matching "
                 + method.toString());
     }
