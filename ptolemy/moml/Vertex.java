@@ -93,7 +93,7 @@ public class Vertex extends Location {
      */
     public void addLinkedPort(Port port) {
         if (_ports == null) {
-            _ports = new LinkedList();
+            _ports = new LinkedList<Port>();
         }
 
         _ports.add(port);
@@ -218,5 +218,5 @@ public class Vertex extends Location {
     private Vertex _linked;
 
     // The list of linked ports.
-    private LinkedList _ports;
+    private LinkedList<Port> _ports;
 }

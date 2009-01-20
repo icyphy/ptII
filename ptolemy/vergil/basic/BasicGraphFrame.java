@@ -2607,9 +2607,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 elementPort = (IOPort) element;
                 elementType =  ElementInLinkType.PORT_IN_ACTOR;                         }
             else if (element instanceof Location) {
-                //FIXME Rodiers: it's weird that these Ports are as Locations in the Link
-                //      and not as IOPort. Is this a bug, or a (weird) design decision?
-
                 //Either a port (not one of an actor) or a relation
                 NamedObj elementContainer = ((Location) element).getContainer();
                 if (elementContainer instanceof IOPort) {

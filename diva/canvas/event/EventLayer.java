@@ -69,7 +69,7 @@ public class EventLayer extends CanvasLayer implements EventAcceptor {
 
     /** The list of attached interactors
      */
-    private ArrayList _interactors = new ArrayList();
+    private ArrayList<Interactor> _interactors = new ArrayList<Interactor>();
 
     /** The layer listeners
      */
@@ -195,9 +195,7 @@ public class EventLayer extends CanvasLayer implements EventAcceptor {
         case MouseEvent.MOUSE_PRESSED:
 
             // Find what interactor will grab the event.
-            for (Iterator i = _interactors.iterator(); i.hasNext();) {
-                Interactor interactor = (Interactor) i.next();
-
+            for (Interactor interactor : _interactors) {
                 if (interactor.accept(event)) {
                     _currentInteractor = interactor;
                     _currentInteractor.mousePressed(event);

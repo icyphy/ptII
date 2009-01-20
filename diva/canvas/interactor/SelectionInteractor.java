@@ -187,7 +187,7 @@ public class SelectionInteractor extends CompositeInteractor {
         if ((_selection.getSelectionCount() > 0)
                 && _selection.containsSelection(figure)) {
             Object[] target = _selection.getSelectionAsArray();
-            Iterator i = interactors();
+            Iterator<?> i = interactors();
 
             while (i.hasNext()) {
                 Interactor interactor = (Interactor) i.next();

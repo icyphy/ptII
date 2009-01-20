@@ -29,7 +29,6 @@ package diva.canvas.connector;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import diva.canvas.CanvasPane;
 import diva.canvas.Figure;
@@ -70,7 +69,7 @@ public class ConnectorInteractor extends DragInteractor {
 
     /** The list of connector listeners
      */
-    private ArrayList _connectorListeners = new ArrayList();
+    private ArrayList<ConnectorListener> _connectorListeners = new ArrayList<ConnectorListener>();
 
     /** Create a new interactor to be used with the given
      * manipulator
@@ -362,9 +361,7 @@ public class ConnectorInteractor extends DragInteractor {
      *  @param id The id of the event (dragged, dropped, etc.).
      */
     protected void _notifyConnectorListeners(ConnectorEvent event, int id) {
-        for (Iterator i = _connectorListeners.iterator(); i.hasNext();) {
-            ConnectorListener l = (ConnectorListener) i.next();
-
+        for (ConnectorListener l : _connectorListeners) {
             switch (id) {
             case ConnectorEvent.CONNECTOR_DRAGGED:
                 l.connectorDragged(event);

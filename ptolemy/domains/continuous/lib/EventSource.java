@@ -245,7 +245,6 @@ public class EventSource extends TypedAtomicActor {
             return true;
         }
 
-        FixedPointDirector director = (FixedPointDirector) getDirector();
         double periodValue = ((DoubleToken) period.getToken()).doubleValue();
 
         // Increment to the next phase.

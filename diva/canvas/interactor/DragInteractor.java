@@ -50,7 +50,7 @@ import diva.util.ArrayIterator;
 public class DragInteractor extends AbstractInteractor {
     /** The set of constraints
      */
-    private ArrayList _constraints;
+    private ArrayList<PointConstraint> _constraints;
 
     /** The target array. This is an array of objects to make it
      * easier to use with SelectionModel.
@@ -87,7 +87,7 @@ public class DragInteractor extends AbstractInteractor {
      */
     public void appendConstraint(PointConstraint constraint) {
         if (_constraints == null) {
-            _constraints = new ArrayList();
+            _constraints = new ArrayList<PointConstraint>();
         }
 
         _constraints.add(constraint);
@@ -102,10 +102,8 @@ public class DragInteractor extends AbstractInteractor {
      */
     public void constrainPoint(Point2D p) {
         if (_constraints != null) {
-            Iterator i = _constraints.iterator();
 
-            while (i.hasNext()) {
-                PointConstraint c = (PointConstraint) i.next();
+            for (PointConstraint c : _constraints) {
                 c.constrain(p);
             }
         }
@@ -264,7 +262,7 @@ public class DragInteractor extends AbstractInteractor {
      */
     public void prependConstraint(PointConstraint constraint) {
         if (_constraints == null) {
-            _constraints = new ArrayList();
+            _constraints = new ArrayList<PointConstraint>();
         }
 
         _constraints.add(0, constraint);
@@ -316,7 +314,7 @@ public class DragInteractor extends AbstractInteractor {
      * multiple figures, and use the targets() method to get them.
      */
     public void translate(LayerEvent e, double x, double y) {
-        Iterator i = targets();
+        Iterator<?> i = targets();
 
         while (i.hasNext()) {
             Figure t = (Figure) i.next();

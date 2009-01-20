@@ -40,7 +40,7 @@ import diva.canvas.event.LayerEvent;
 public class CompositeInteractor extends AbstractInteractor {
     /** The list of attached interactors
      */
-    private ArrayList _interactors = new ArrayList();
+    private ArrayList<Interactor> _interactors = new ArrayList<Interactor>();
 
     /** The current interactor
      */
@@ -60,8 +60,8 @@ public class CompositeInteractor extends AbstractInteractor {
      * Accept an event if any attached interactor will accept it.
      */
     public boolean accept(LayerEvent e) {
-        for (Iterator i = interactors(); i.hasNext();) {
-            if (((Interactor) i.next()).accept(e)) {
+        for (Interactor interactor : _interactors) {
+            if (interactor.accept(e)) {
                 return true;
             }
         }
@@ -88,8 +88,8 @@ public class CompositeInteractor extends AbstractInteractor {
      * Return true if any contained interactor is motion enabled.
      */
     public boolean isMotionEnabled() {
-        for (Iterator i = interactors(); i.hasNext();) {
-            if (((Interactor) i.next()).isMotionEnabled()) {
+        for (Interactor interactor : _interactors) {
+            if (interactor.isMotionEnabled()) {
                 return true;
             }
         }
@@ -126,11 +126,7 @@ public class CompositeInteractor extends AbstractInteractor {
             return;
         }
 
-        Iterator i = _interactors.iterator();
-
-        while (i.hasNext()) {
-            Interactor interactor = (Interactor) i.next();
-
+        for (Interactor interactor : _interactors) {
             if (interactor.accept(event)) {
                 _currentInteractor = interactor;
                 _currentInteractor.mouseEntered(event);
@@ -196,11 +192,7 @@ public class CompositeInteractor extends AbstractInteractor {
             return;
         }
 
-        Iterator i = _interactors.iterator();
-        Interactor interactor;
-
-        while (i.hasNext()) {
-            interactor = (Interactor) i.next();
+        for (Interactor interactor : _interactors) {
 
             if (interactor.accept(event)) {
                 _currentInteractor = interactor;

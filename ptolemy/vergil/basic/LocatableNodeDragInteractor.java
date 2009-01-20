@@ -92,10 +92,11 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
 
     /** When the mouse is released after dragging, mark the frame modified
      *  and update the panner, and generate an undo entry for the move.
-     *  If no movement has occured, then do nothing.
+     *  If no movement has occurred, then do nothing.
      *  @param e The release event.
      */
     public void mouseReleased(LayerEvent e) {
+
         // We should factor out the common code in this method and in
         // transform().
         // Work out the transform the drag performed.
@@ -107,7 +108,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
         if ((transform[0] == 0.0) && (transform[1] == 0.0)) {
             return;
         }
-
+        
         BasicGraphController graphController = (BasicGraphController) _controller
                 .getController();
         BasicGraphFrame frame = graphController.getFrame();
@@ -125,7 +126,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
 
         // First make a set of all the semantic objects as they may
         // appear more than once
-        HashSet namedObjSet = new HashSet();
+        HashSet<NamedObj> namedObjSet = new HashSet<NamedObj>();
 
         for (int i = 0; i < selection.length; i++) {
             if (selection[i] instanceof Figure) {
@@ -162,11 +163,8 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
         moml.append("<group>\n");
         undoMoml.append("<group>\n");
 
-        Iterator elements = namedObjSet.iterator();
-
-        while (elements.hasNext()) {
-            NamedObj element = (NamedObj) elements.next();
-            List locationList = element.attributeList(Locatable.class);
+        for (NamedObj element : namedObjSet) {
+            List<?> locationList = element.attributeList(Locatable.class);
 
             if (locationList.isEmpty()) {
                 // Nothing to do as there was no previous location
@@ -192,7 +190,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
             oldLocation[1] = newLocation[1] + transform[1];
 
             // Create the MoML, wrapping the new location attribute
-            // in an element refering to the container
+            // in an element referring to the container
             String containingElementName = element.getElementName();
             String elementToMove = "<" + containingElementName + " name=\""
                     + element.getName() + "\" >\n";
@@ -275,7 +273,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
         // NOTE: We cannot use the location attribute of the target objects
         // The problem is that the location as set during a drag is a
         // queued mutation.  So the translation we get isn't right.
-        Iterator targets = targets();
+        Iterator<?> targets = targets();
         double[] originalUpperLeft = null;
 
         while (targets.hasNext()) {
@@ -349,7 +347,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
     ////                         private methods                   ////
     // Returns a constrained point from the given event
     private double[] _getConstrainedPoint(LayerEvent e) {
-        Iterator targets = targets();
+        Iterator<?> targets = targets();
         double[] result = new double[2];
 
         if (targets.hasNext()) {
