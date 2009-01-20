@@ -226,6 +226,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         }
 
         _workspace = workspace;
+        _ifElementStack = new Stack();
+        _ifElementStack.push(Integer.valueOf(0));
     }
 
     /** Construct a parser that creates entities in the specified workspace.
@@ -414,14 +416,14 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // the names of ports to handle backward compatibility.
         if (_filterList != null) {
             // FIXME: There is a slight risk of xmlParser being null here.
-	    if (_xmlParser == null) {
-		throw new InternalErrorException("_xmlParser is null? This can occur "
-				       + " when parse(URL, String, Reader)"
-				       + " calls itself because that method"
-				       + " sets _xmlParser to null while exiting. "
-				       + "name: " + name
-				       + " value: " + value);
-	    }
+        if (_xmlParser == null) {
+        throw new InternalErrorException("_xmlParser is null? This can occur "
+                       + " when parse(URL, String, Reader)"
+                       + " calls itself because that method"
+                       + " sets _xmlParser to null while exiting. "
+                       + "name: " + name
+                       + " value: " + value);
+        }
             String currentElement = _xmlParser.getCurrentElement();
             Iterator filters = _filterList.iterator();
             String filteredValue = value;
@@ -586,7 +588,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             UndoAction newEntry = new MoMLUndoEntry(context, undoMoML);
             UndoStackAttribute undoInfo = UndoStackAttribute
                     .getUndoInfo(context);
-            
+
             // If we have additional undo actions that have to execute
             // in a different context, bundle those together with this one
             // before pushing on the undo stack.
@@ -716,12 +718,15 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
             while (filters.hasNext()) {
                 MoMLFilter filter = (MoMLFilter) filters.next();
-                filter.filterEndElement(_current, elementName, 
+                filter.filterEndElement(_current, elementName,
                         _currentCharData);
             }
         }
 
-        if (_skipElement <= 0) {
+        if (((Integer) _ifElementStack.peek()).intValue() > 1) {
+            _ifElementStack.push(((Integer) _ifElementStack.pop()).intValue()
+                    - 1);
+        } else if (_skipElement <= 0) {
             // If we are not skipping an element, then adjust the
             // configuration nesting and doc nesting counts accordingly.
             // This was illustrated by having the RemoveGraphicalClasses
@@ -776,6 +781,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 // close the skipping.
                 _skipElement--;
             }
+        } else if (((Integer) _ifElementStack.peek()).intValue() > 1) {
+        } else if (elementName.equals("if") &&
+                ((Integer) _ifElementStack.peek()).intValue() == 1) {
+            _ifElementStack.pop();
         } else if (elementName.equals("configure")) {
             try {
                 Configurable castCurrent = (Configurable) _current;
@@ -1284,8 +1293,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         throw ex;
                     }
                 }
-		// Pass the input URL in case we need it for an error message.
-		// See test MoMLParser-31.1
+        // Pass the input URL in case we need it for an error message.
+        // See test MoMLParser-31.1
                 NamedObj result = parse(base, input.toString(), inputStream);
                 _imports.put(input, new WeakReference(result));
                 return result;
@@ -1355,7 +1364,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  read.
      */
     public NamedObj parse(URL base, Reader reader) throws Exception {
-	return parse(base, null, reader);
+    return parse(base, null, reader);
     }
 
     /** Parse the given stream, using the specified url as the base
@@ -1675,6 +1684,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         _namespaceTranslations = new Stack();
         _skipRendition = false;
         _skipElementIsNew = false;
+        _ifElementStack.clear();
+        _ifElementStack.add(Integer.valueOf(0));
         _skipElement = 0;
         _toplevel = null;
 
@@ -1921,7 +1932,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         _namespacesPushed = false;
 
         try {
-            if (_skipElement <= 0) {
+            if (((Integer) _ifElementStack.peek()).intValue() > 1) {
+                _ifElementStack.push(((Integer) _ifElementStack.pop())
+                        .intValue() + 1);
+            } else if (_skipElement <= 0) {
                 // If we are not skipping an element, then adjust the
                 // configuration nesting and doc nesting counts accordingly.
                 // This was illustrated by having the RemoveGraphicalClasses
@@ -1966,7 +1980,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 System.out.println("Current start element: " + elementName);
             }
 
-            if (_skipElement > 0) {
+            if (_skipElement > 0 ||
+                    ((Integer) _ifElementStack.peek()).intValue() > 1) {
                 if (elementName.equals(_skipElementName)) {
                     // If attribute() found an element to skip, then
                     // the first time we startElement(), we do not
@@ -3263,6 +3278,38 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     _undoContext.setChildrenUndoable(true);
                     _undoContext.appendClosingUndoMoML("</vertex>\n");
                 }
+
+                //////////////////////////////////////////////////////////////
+                //// if
+            } else if (elementName.equals("if")) {
+                String name = _current.uniqueName("_tempVariable");
+                Class variableClass =
+                    Class.forName("ptolemy.data.expr.Variable");
+                Object[] arguments = new Object[2];
+                arguments[0] = _current;
+                arguments[1] = name;
+                Settable variable = (Settable) _createInstance(variableClass,
+                        arguments);
+
+                String expression = (String) _attributes.get("test");
+                if (expression == null) {
+                    throw new IllegalActionException(_current,
+                            "<if> element must have the \"test\" property " +
+                            "which specifies the expression to test.");
+                }
+                variable.setExpression(expression);
+
+                Object token = variableClass.getMethod("getToken",
+                        new Class[0]).invoke(variable, new Object[0]);
+                Class tokenClass = token.getClass();
+                Boolean value = (Boolean) tokenClass.getMethod("booleanValue",
+                        new Class[0]).invoke(token, new Object[0]);
+
+                ((Attribute) variable).setContainer(null);
+
+                if (!value.booleanValue()) {
+                    _ifElementStack.push(Integer.valueOf(2));
+                }
             } else {
                 // Unrecognized element name.  Collect it.
                 if (_unrecognized == null) {
@@ -3931,7 +3978,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 throw new MissingClassException(
                         "Attempt to extend an entity that "
                                 + "is not a class: " + reference.getFullName()
-                        + " className: " + className + " entityName: " + 
+                        + " className: " + className + " entityName: " +
                         entityName + " source: " + source,
                         reference.getFullName(), _currentExternalEntity(),
                         _getLineNumber(), _getColumnNumber());
@@ -4133,7 +4180,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // (2) that if a failure to delete occurs at any point, then
         // the current undo only represents as far as the failure got.
         StringBuffer undoMoML = new StringBuffer();
-        
+
         // Propagate. The name might be absolute and have
         // nothing to do with the current context.  So
         // we look for its derived objects, not the context's derived objects.
@@ -4185,7 +4232,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 // Have to get this _before_ deleting.
                 String toUndo = _getUndoForDeleteEntity(derived);
                 NamedObj derivedToplevel = derived.toplevel();
-                
+
                 // Remove the derived object.
                 derived.setContainer(null);
 
@@ -4411,7 +4458,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             undoMoML.append(toUndo);
             while (derivedObjects.hasNext()) {
                 Attribute derived = (Attribute) derivedObjects.next();
-                
+
                 // Generate Undo commands.
                 // Note that deleting an attribute inside a class definition
                 // may generate deletions in derived classes or instances.
@@ -4426,7 +4473,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 // Have to get this _before_ deleting.
                 toUndo = _getUndoForDeleteAttribute(derived);
                 NamedObj derivedToplevel = derived.toplevel();
-                
+
                 // Remove the derived object.
                 derived.setContainer(null);
 
@@ -4737,7 +4784,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
         // Finally move back to context if needed
         moml.append(UndoContext.moveContextEnd(_current, toDelete));
-        
+
         // If there is no body, don't return the context either.
         if (buffer.toString().trim().equals("")) {
             return "";
@@ -4823,7 +4870,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
         // Finally move back to context if needed
         moml.append(UndoContext.moveContextEnd(_current, toDelete));
-        
+
         // If there is no body, don't return the context either.
         if (buffer.toString().trim().equals("")
                 && links.trim().equals("")) {
@@ -5594,10 +5641,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     /** Look for a MoML file associated with the specified class
      *  name, and if it exists, parse it in the context of the
      *  specified instance.
-     *  If {@link #setIconLoader(IconLoader) has been called with
+     *  If {@link #setIconLoader(IconLoader)} has been called with
      *  a non-null argument, then invoke the
      *  {@link ptolemy.moml.IconLoader#loadIconForClass(String, NamedObj)}
-     *  method.  If {@link #setIconLoader(IconLoader) has <b>not</b>
+     *  method.  If {@link #setIconLoader(IconLoader)} has <b>not</b>
      *  been called, or was called with a null argument, then
      *  The file name is constructed from
      *  the class name by replacing periods with file separators
@@ -5619,7 +5666,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         if (_iconLoader != null) {
             return _iconLoader.loadIconForClass(className, context);
         } else {
-            // Default behavior if no icon loader has been specified.       
+            // Default behavior if no icon loader has been specified.
             String fileName = className.replace('.', '/') + "Icon.xml";
             return _loadFileInContext(fileName, context);
         }
@@ -6801,6 +6848,14 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     // Status of the deferral of the top-level.
     private boolean _previousDeferStatus = false;
 
+    // The stack of integers that represent the state of <if> elements. The top
+    // integer always represent the state of the last <if> element, or the
+    // initial state if no <if> element has been reached. If it is > 1, then the
+    // elements within the <if> block should be ignored. If it is 1, then the
+    // next input must be </if>, which closes the <if> block. If it is 0, then
+    // all the elements are processed normally.
+    private Stack _ifElementStack;
+
     // If greater than zero, skipping an element.
     private int _skipElement = 0;
 
@@ -6830,7 +6885,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
     // Holds information needed to generate undo MoML at this level
     private Stack _undoContexts = new Stack();
-    
+
     // The current undo context. This contains information about the
     // the current undo environment
     private UndoContext _undoContext = null;
