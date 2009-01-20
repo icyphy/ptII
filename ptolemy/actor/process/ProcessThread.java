@@ -200,9 +200,16 @@ public class ProcessThread extends PtolemyThread {
                         firingsRecordable = (FiringsRecordable) _actor;
                     }
 
+                    if (firingsRecordable != null) {
+                        firingsRecordable
+                            .recordFiring(FiringEvent.BEFORE_PREFIRE);
+                    }
+
                     if (_actor.prefire()) {
 
                         if (firingsRecordable != null) {
+                            firingsRecordable
+                                    .recordFiring(FiringEvent.AFTER_PREFIRE);
                             firingsRecordable
                                     .recordFiring(FiringEvent.BEFORE_FIRE);
                         }
@@ -212,9 +219,19 @@ public class ProcessThread extends PtolemyThread {
                         if (firingsRecordable != null) {
                             firingsRecordable
                                     .recordFiring(FiringEvent.AFTER_FIRE);
+                            firingsRecordable
+                                    .recordFiring(FiringEvent.BEFORE_POSTFIRE);
                         }
 
                         iterate = _actor.postfire();
+                        
+                        if (firingsRecordable != null) {
+                            firingsRecordable
+                                    .recordFiring(FiringEvent.AFTER_POSTFIRE);
+                        }
+                    } else if (firingsRecordable != null) {
+                        firingsRecordable
+                            .recordFiring(FiringEvent.AFTER_PREFIRE);
                     }
                 }
             }
