@@ -1110,6 +1110,31 @@ public class IOPort extends ComponentPort {
             _workspace.doneReading();
         }
     }
+    
+    /**
+     * Retrieve the index of the relation at the port.
+     * In case the relation is not connected with this port -1
+     * will be returned.
+     * @param port The port.
+     * @param relation The relation.
+     * @param isOutsideRelation A flag that specifies that the
+     *          relation is an outside relation of the port.
+     * @return The index of the relation at the port.
+     */
+    @SuppressWarnings("unchecked")
+    static public int getRelationIndex(IOPort port,
+            Relation relation,
+            boolean isOutsideRelation ) {
+        List<Relation> relations = isOutsideRelation ? port.linkedRelationList() : port.insideRelationList();
+        int i = 0;
+        for (Relation relation2 : relations) {
+            if (relation == relation2) {
+                return i;
+            }
+            ++i;
+        }
+        return -1;
+    }    
 
     /** Return the current time associated with a certain channel.
      *  In most domains, this is just the current time of the director.
