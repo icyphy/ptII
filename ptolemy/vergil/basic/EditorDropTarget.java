@@ -145,7 +145,7 @@ public class EditorDropTarget extends DropTarget {
     ////                         private variables                 ////
 
     /** Vector to contain additional listeners. */
-    private Vector _additionalListeners = new Vector();
+    private Vector<DropTargetListener> _additionalListeners = new Vector<DropTargetListener>();
 
     /** Flag indicating whether drop into is enabled. */
     private boolean _dropIntoEnabled = true;
@@ -331,7 +331,7 @@ public class EditorDropTarget extends DropTarget {
                 // Constrain point to snap to grid.
                 Point2D newPoint = SnapConstraint
                         .constrainPoint(transformedPoint);
-                /* At this point we wish to provide for an alternatice way to get the MOML
+                /* At this point we wish to provide for an alternative way to get the MOML
                  * code for the drop object. This is to allow for a drop object that may just
                  * contain a reference (e.g. an LSID) to the complete MOML rather than including
                  * all the information in the tree node object being dragged.
