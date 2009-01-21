@@ -30,6 +30,7 @@ package ptolemy.vergil.icon;
 import java.io.Reader;
 import java.io.StringReader;
 import java.net.URL;
+import java.lang.reflect.Constructor;
 
 import ptolemy.kernel.util.ConfigurableAttribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -40,6 +41,8 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.ValueListener;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.kernel.util.StringAttribute;
+import ptolemy.actor.gui.Configuration;
 import diva.canvas.Figure;
 import diva.canvas.toolbox.PaintedFigure;
 import diva.canvas.toolbox.SVGParser;
@@ -117,7 +120,69 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
         _paintedList = null;
         _description = null;
     }
-
+    
+    /**
+     * this method looks for the _alternateXMLIcon in the configuration
+     * If it is found, it returns an XMLIcon of the class found there, 
+     * if not, it returns an instance of this class
+     * 
+     *  @param container The container for this attribute.
+     *  @param name The name of this attribute.
+     *  @exception NameDuplicationException
+     *  @exception IllegalActionException
+     *  @author Chad Berkley, Kepler
+     */
+    public static XMLIcon getXMLIcon(NamedObj container, String name) 
+      throws NameDuplicationException, IllegalActionException {
+        try {
+          Class XMLIconClass = _getAlternateXMLIcon();
+          if(XMLIconClass == null) {
+             return new XMLIcon(container, name);
+          }
+          
+          Class[] argsClass = new Class[] {NamedObj.class, String.class};
+          Constructor alternateXMLIconConstructor = XMLIconClass.getConstructor(argsClass);
+          XMLIcon xmlIcon = (XMLIcon)alternateXMLIconConstructor.newInstance(new Object[] {container, name});
+          return xmlIcon;
+        } catch(Exception e) {
+            System.out.println("Could not instantiate alternate XMLIcon class. " +
+              "Using default XMLIcon.  : " + e.getMessage());
+            e.printStackTrace();
+            return new XMLIcon(container, name);
+        } 
+    }
+    
+    /**
+     * this method looks for the _alternateXMLIcon in the configuration
+     * If it is found, it returns an XMLIcon of the class found there, 
+     * if not, it returns an instance of this class
+     * 
+     *  @param workspace The workspace that will list the attribute.
+     *  @param name The name of this attribute.
+     *  @exception NameDuplicationException
+     *  @exception IllegalActionException
+     *  @author Chad Berkley, Kepler
+     */
+    public static XMLIcon getXMLIcon(Workspace workspace, String name) 
+      throws NameDuplicationException, IllegalActionException {
+        try {
+            Class XMLIconClass = _getAlternateXMLIcon();
+            if(XMLIconClass == null) {
+               return new XMLIcon(workspace, name);
+            }
+            //get the new object and return it
+            Class[] argsClass = new Class[] {ptolemy.kernel.util.Workspace.class, String.class};
+            Constructor alternateXMLIconConstructor = XMLIconClass.getConstructor(argsClass);
+            XMLIcon xmlIcon = (XMLIcon)alternateXMLIconConstructor.newInstance(new Object[] {workspace, name});
+            return xmlIcon;
+        } catch (Exception e) {
+            System.out.println("Could not instantiate alternate XMLIcon class. " +
+              "Using default XMLIcon.  : " + e.getMessage());
+            e.printStackTrace();
+            return new XMLIcon(workspace, name);
+        }
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -330,6 +395,38 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+    
+    /**
+     * check to see if there is an alternate xmlIcon class in the config.
+     * if there is, return the class, if not, return null.
+     * @author Chad Berkley, Kepler
+     */
+    private static Class _getAlternateXMLIcon() throws Exception {
+        Configuration _config = (Configuration)Configuration.configurations().iterator().next();
+        String _alternateXMLIconClassName = null;
+        if(_config != null) {
+          /*
+           * If _alternateXMLIcon is set in the config, use that
+           * class as the XMLIcon instead of the default 
+           * XMLIcon
+          */
+          StringAttribute _alternateXMLIconAttribute = (StringAttribute)
+            _config.getAttribute("_alternateXMLIcon");
+          if(_alternateXMLIconAttribute != null) {
+              _alternateXMLIconClassName = 
+                _alternateXMLIconAttribute.getExpression();
+          }
+          
+          if(_alternateXMLIconClassName == null) {  //attribute was not found
+              return null;
+          } else {
+              Class _alternateXMLIconClass = Class.forName(_alternateXMLIconClassName);
+              return _alternateXMLIconClass;
+          }
+        }
+        return null;
+    }
+
 
     /** Update the painted list of the icon based on the SVG data
      *  in the associated "_iconDescription" parameter, if there is one.
