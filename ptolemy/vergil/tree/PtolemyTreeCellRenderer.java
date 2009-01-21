@@ -109,7 +109,6 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
 
                     try {
                         if (iconList.size() == 0) {
-                            //icon = new XMLIcon(object, "_icon");
                             icon = XMLIcon.getXMLIcon(object, "_icon");
                             icon.setPersistent(false);
                         } else {
