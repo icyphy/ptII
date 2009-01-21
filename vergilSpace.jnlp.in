@@ -22,12 +22,13 @@
   </security> 
   <resources>
         <!-- Bump maximum heap size to 128Mb, use JVM Props. to confirm -->
-  	<j2se version="1.5+" max-heap-size="128m" />
+  	<j2se version="@JVERSION@" max-heap-size="128m" />
 	<!-- Start Jars -->
 	<!-- End Jars -->
   </resources>
   <application-desc main-class="ptolemy.actor.gui.jnlp.SpaceApplication">
 	<argument>-space</argument>
+	<argument>-run</argument>
 	<argument>ptolemy/domains/space/demo/DOPCenter/DOPCenter.xml</argument>
   </application-desc>
 </jnlp>
