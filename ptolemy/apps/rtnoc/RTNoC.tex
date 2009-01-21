@@ -235,7 +235,7 @@ space for incoming packets. Instead, packets are divided into flits and flits
 are pipelined through networks. We will employ this flow control scheme in our
 design.
 
-\section{Definitions}
+\section{Problem Settings and Definitions}
 $\mathbf{N}$ is the set of natural numbers.
 
 $T \subseteq \mathbf{N}$ is the set of the minimum interval values between
@@ -362,104 +362,6 @@ a unique path between $source$ and $destination$.
 
 A valid configuration ${\mathcal{C}}(F)=(P, \lbrace y_{f,e}:f \in F, e \in E
 \rbrace )$.
-
-\section{Architecture}
-\subsection{Programming Model}
-\subsubsection{Network Stack Model}
-At each node in a router, we employ the Internet stack to each node in the 
-network on chip as in Table \ref{table:NetworkStack}.
-\begin{table}[h]
-\begin{center}
-  \begin{tabular}{ | l | }
-    \hline
-    Application layer at processing units \\ \hline
-    Transport layer at processing units \\ \hline
-    Network layer at routers \\ \hline
-	Data link layer at routers \\ \hline
-	Physical layer \\
-    \hline
-  \end{tabular}
-\end{center}
-\caption{Network stack model}
-\label{table:NetworkStack}
-\end{table}
-
-\subsubsection{Configuration: Distributed vs. Centralized}
-Since our purpose is to design a distributed network on chip system, thus the
-configurations of the network can be dynamically changed at {\em runtime}.
-This requirement makes the distributed configuration scheme unsuitable since,
-for instant, when there are two requests for real-time flows, we maybe have to
-reduce the {\em slack} of other flows, however it is difficult to reduce the
-slack of a flow {\em concurrently} in a distributed manner by two or more
-requests for real-time flows without making the end-to-end delay of the
-modified flow inviolate its requirement. We choose to use centralized scheme
-since we can reduce the overhead of distributed routing and we can more easily
-implement more complicated routing algorithm to balance and optimize a network
-on chip.
-
-\subsection{Path Setup Protocol}
-When in need of a real-time communication, the processing unit at each node 
-will issue a request for setting up a path:
-
-{\em Setuppath.request(source\_id, destination\_id, virtual\_channel\_id T, L,
-D);}
-
-\begin{figure}[htp]
-\centering
-\includegraphics[width=7cm]{pics/Protocol2}
-\caption[Setup request for a real-time flow.]
-{Real-time flow setup protocol.}\label{fig:ReqSetup}
-\end{figure}
-
-This request will be sent over the network in a REQ message to a specific node
-in the network, called {\em master node}, as in Figure \ref{fig:ReqSetup}.
-Based on its knowledge about other flows in the network and the demand for the
-new real-time flow, the master node will seek to find a suitable path. If there
-exists a suitable path, the master node will send SETUP command messages to
-appropriate routers in the network to configure routers' configurations. This
-re-configuration can include adjusting configurations of other flows at the routers.
-
-Routers receiving SETUP command message will adjust their internal
-configurations as specified in the message. After finishing setting up internal
-configurations, routers will send back an acknowledgement ACK message to
-the master node. When the master node have received all its expected ACK
-messages from routers, it sends an ACCEPT message to the requesting node
-(node requested a new real-time flow). The requesting node can start sending
-data after receiving that ACCEPT message.
-
-If the master node cannot find a suitable path, it sends back to the requesting
-node a REJECT message saying that new real-time flow cannot be set up on the
-network.
-
-So the setting up path response can be: ACCEPT, REJECT
-
-When a path is not needed, it can be torn using path-tearup protocol, which
-works basically as the path-setup protocol but with reversed commands.
-
-\subsection{Communication  Model}
-% To reduce the size of each router, we can use processing elements to do 
-% complicated tasks like calculating admission criteria for a new flow at each node 
-% and rerouting for finding a new suitable path on a network.
-
-One characteristic of this scheme is that the buffer for each 
-real-time flow at each node is bounded ~\cite{Ferrari90ascheme}, and thus
-real-time packets can be sent {\em asynchronously} resulting in better bandwidth
-since {\em no acknowledgement} is required for each real-time flit sent. So at
-data link layer, we employ heterogeneity communications, {\em synchronous}
-communications for best effort packets and {\em asynchronous} communications
-for real-time packets as in Figure \ref{fig:HeteroComm}. Best-effort packets
-are preemptible by real-time packets. Real-time packets are not preemptible.
-Since real-time flits does not need acknowledgement so the speed of sending
-real-time flits is two time faster than best-effort flits.
-
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=8cm]{pics/HeteroComm.png}
-\caption[Heterogeneous Communication for Packets.]
-{Real-time packets and best-effort packets are treated
-differently.}\label{fig:HeteroComm}
-\end{figure}
 
 \section{System Analysis}
 \subsection{Packet Scheduling}
@@ -734,7 +636,104 @@ or
 algorithm to check if a new real-time flow can make any other existing
 real-time flows on its path violate their end-to-end delay.
 
-\section{Specifications}
+\section{Architecture and Specifications}
+\subsection{Programming Model}
+\subsubsection{Network Stack Model}
+At each node in a router, we employ the Internet stack to each node in the 
+network on chip as in Table \ref{table:NetworkStack}.
+\begin{table}[h]
+\begin{center}
+  \begin{tabular}{ | l | }
+    \hline
+    Application layer at processing units \\ \hline
+    Transport layer at processing units \\ \hline
+    Network layer at routers \\ \hline
+	Data link layer at routers \\ \hline
+	Physical layer \\
+    \hline
+  \end{tabular}
+\end{center}
+\caption{Network stack model}
+\label{table:NetworkStack}
+\end{table}
+
+\subsubsection{Configuration: Distributed vs. Centralized}
+Since our purpose is to design a distributed network on chip system, thus the
+configurations of the network can be dynamically changed at {\em runtime}.
+This requirement makes the distributed configuration scheme unsuitable since,
+for instant, when there are two requests for real-time flows, we maybe have to
+reduce the {\em slack} of other flows, however it is difficult to reduce the
+slack of a flow {\em concurrently} in a distributed manner by two or more
+requests for real-time flows without making the end-to-end delay of the
+modified flow inviolate its requirement. We choose to use centralized scheme
+since we can reduce the overhead of distributed routing and we can more easily
+implement more complicated routing algorithm to balance and optimize a network
+on chip.
+
+\subsection{Path Setup Protocol}
+When in need of a real-time communication, the processing unit at each node 
+will issue a request for setting up a path:
+
+{\em Setuppath.request(source\_id, destination\_id, virtual\_channel\_id T, L,
+D);}
+
+\begin{figure}[htp]
+\centering
+\includegraphics[width=7cm]{pics/Protocol2}
+\caption[Setup request for a real-time flow.]
+{Real-time flow setup protocol.}\label{fig:ReqSetup}
+\end{figure}
+
+This request will be sent over the network in a REQ message to a specific node
+in the network, called {\em master node}, as in Figure \ref{fig:ReqSetup}.
+Based on its knowledge about other flows in the network and the demand for the
+new real-time flow, the master node will seek to find a suitable path. If there
+exists a suitable path, the master node will send SETUP command messages to
+appropriate routers in the network to configure routers' configurations. This
+re-configuration can include adjusting configurations of other flows at the routers.
+
+Routers receiving SETUP command message will adjust their internal
+configurations as specified in the message. After finishing setting up internal
+configurations, routers will send back an acknowledgement ACK message to
+the master node. When the master node have received all its expected ACK
+messages from routers, it sends an ACCEPT message to the requesting node
+(node requested a new real-time flow). The requesting node can start sending
+data after receiving that ACCEPT message.
+
+If the master node cannot find a suitable path, it sends back to the requesting
+node a REJECT message saying that new real-time flow cannot be set up on the
+network.
+
+So the setting up path response can be: ACCEPT, REJECT
+
+When a path is not needed, it can be torn using path-tearup protocol, which
+works basically as the path-setup protocol but with reversed commands.
+
+\subsection{Communication  Model}
+% To reduce the size of each router, we can use processing elements to do 
+% complicated tasks like calculating admission criteria for a new flow at each node 
+% and rerouting for finding a new suitable path on a network.
+
+One characteristic of this scheme is that the buffer for each 
+real-time flow at each node is bounded ~\cite{Ferrari90ascheme}, and thus
+real-time packets can be sent {\em asynchronously} resulting in better bandwidth
+since {\em no acknowledgement} is required for each real-time flit sent. So at
+data link layer, we employ heterogeneity communications, {\em synchronous}
+communications for best effort packets and {\em asynchronous} communications
+for real-time packets as in Figure \ref{fig:HeteroComm}. Best-effort packets
+are preemptible by real-time packets. Real-time packets are not preemptible.
+Since real-time flits does not need acknowledgement so the speed of sending
+real-time flits is two time faster than best-effort flits.
+
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=8cm]{pics/HeteroComm.png}
+\caption[Heterogeneous Communication for Packets.]
+{Real-time packets and best-effort packets are treated
+differently.}\label{fig:HeteroComm}
+\end{figure}
+
 \subsection{Message Structures}
 
 There are two types of packets in best-effort flow identified by the head flit
@@ -948,7 +947,9 @@ packets on the link is $1$. We need a mechanism to reroute all best-effort packe
 
 In future, we will find different routing algorithms to optimize and balance a
 network and we can incorporate multiple PRET processors ~\cite{LicklyPRET} into
-a real-time multi-core system.
+a real-time multi-core system. Furthermore, if we use PRET, we can make sure
+the minimum interval between two successive packets easily with deadline
+instructions.
 
 \bibliography{RTNoC}
 \bibliographystyle{plain}
