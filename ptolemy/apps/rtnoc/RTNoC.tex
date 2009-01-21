@@ -40,22 +40,24 @@
 %\IEEEpeerreviewmaketitle
 \begin{abstract}
 Multi-core and many-core have become the major trend in processor development.
-However, the more cores, the more communication unpredictability. One
-question is how to use multi-core and many-core in real-time embedded systems?
-How does a critical application know for sure that one packet sent from a node
-will reach the destination node within a certain amount of time? In such a
-case, faster does not always imply better. In multi-core, communication is
-often more expensive than computation. The communication overhead often
-greatly reduces the performance of a parallel application. An explicit
-communication mechanism between cores running critical tasks is also a must.
-This mechanism needs to be simple yet efficient and flexible enough for most of
-applications.
+Their combination with network on chip would be very promissing similarly to
+J-machine. However, the more cores, the more communication unpredictability
+since congestions is a big issues in packet-switch networks today. One question
+is how to use multi-core and many-core in real-time embedded systems? How does
+a critical application know for sure that one packet sent from a node will
+reach the destination node within a certain amount of time? Such type of
+applications always require bounded delay in communications.In such a case,
+faster does not always imply better.In multi-core, communication is often more
+expensive than computation. The communication overhead often greatly reduces
+the performance of a parallel application. An explicit communication mechanism
+between cores running critical tasks is also a must. This mechanism needs to be
+simple yet efficient and flexible enough for most of applications.
 
 In this paper, we provide a detailed delay analysis of multiplexing of real-time
 channels in worm-hole flow control for network on chip. A
 architecture with a communication model and a configuration protocol
-implemented on a cycle-accurate simulation platform is used to prove the worst-case delay estimation of a deadline-based
-packet scheduling algorithm.
+implemented on a cycle-accurate simulation platform is used to prove the
+worst-case delay estimation of a deadline-based packet scheduling algorithm.
 
 \end{abstract}
 
