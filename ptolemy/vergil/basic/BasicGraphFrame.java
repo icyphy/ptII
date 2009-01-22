@@ -1150,6 +1150,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 MoMLParser parser = new MoMLParser();
                 MoMLParser.purgeModelRecord(url);
                 model = parser.parse(url, url);
+                MoMLParser.purgeModelRecord(url);
             } catch (Exception e) {
                 report(new IllegalActionException(null, e,
                         "Error reading input"));
