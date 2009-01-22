@@ -66,7 +66,6 @@ public class RenameDialogAction extends FigureAction {
      */
     public RenameDialogAction(TableauFrame parent) {
       super("");
-      System.out.println("In renamedialogaction");
       if (parent == null) {
         IllegalArgumentException iae = new IllegalArgumentException(
             "ActorDialogAction constructor received NULL argument for TableauFrame");
