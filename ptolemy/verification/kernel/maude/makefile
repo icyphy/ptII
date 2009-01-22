@@ -1,6 +1,6 @@
-# Makefile for the Ptolemy Classic style code generation
+# Makefile for the Ptolemy II Formal Method Verification automatons
 #
-# @Authors: Chihhong Patrick Cheng, Christopher Brooks (makefile only)
+# @Authors: Christopher Brooks (makefile only)
 #
 # @Version: $Id$
 #
@@ -29,35 +29,32 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/verification/kernel
+ME =            ptolemy/verification/kernel/maude
 
-DIRS =		maude
+# Root of the ptII directory
+ROOT =		../../../..
 
-# Root of the Java directory
-ROOT =		../../..
-
-CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Used to build jar files
-PTPACKAGE = 	kernel
-PTCLASSJAR =
+CLASSPATH =	$(ROOT)
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-# Include the .class files from these jars in PTCLASSALLJAR
-# If you change this, change DIRS above
-# Because of size issues, we don't include demo/demo.jar in verification.jar 
-PTCLASSALLJARS = \
-	maude/maude.jar
+# Used to build zip files
+PTPACKAGE = 	maude
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
-	MathematicalModelConverter.java \
-	SMVUtility.java \
-	REDUtility.java
+	RTMExpTranslator.java \
+	RTMFragment.java \
+	RTMList.java \
+	RTMObject.java \
+	RTMOpTerm.java \
+	RTMOpTermGenerator.java \
+	RTMPtExp.java \
+	RTMTerm.java \
+	RTMaudeUtility.java
 
 OTHER_FILES_TO_BE_JARED =
 
@@ -65,23 +62,17 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+MISC_FILES =	
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	doc \
-	'SMVUtility$$VariableInfo.class' \
-	'SMVUtility$$VariableTransitionInfo.class' \
-	'REDUtility$$REDModuleNameInitialBean.class' \
-	'REDUtility$$REDSingleEntityBean.class' \
-	'REDUtility$$REDSingleTransitionBean.class' \
-	'REDUtility$$VariableInfo.class' \ 
+# make distclean removes OPTIONAL_FILES
+OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-install: jclass $(PTCLASSJAR)
+install: all jars
+
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
