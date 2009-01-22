@@ -37,7 +37,6 @@ import java.util.Random;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.fmv.FmvAutomaton;
@@ -51,13 +50,15 @@ import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 import ptolemy.verification.gui.MathematicalModelConverterGUIFactory;
 
+import ptolemy.verification.kernel.maude.RTMaudeUtility;
+
 // ////////////////////////////////////////////////////////////////////////
 // // MathematicalModelConverter
 
 /**
  * 
- * @author Chihhong Patrick Cheng, Contributors: Edward A. Lee , Christopher Brooks
- * @version $Id: MathematicalModelConverter.java,v 1.4 2008/03/06 09:16:22
+ * @author Chihhong Patrick Cheng   (modified by: Kyungmin Bae)   Contributors: Edward A. Lee , Christopher Brooks, 
+ * @version $Id: MathematicalModelConverter.java,v 1.5 2008/03/06 09:16:22
  *          patrickj Exp $
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (patrickj)
@@ -117,351 +118,146 @@ public class MathematicalModelConverter extends Attribute {
         // Perform deep traversal in order to generate .smv files.
         _codeFile = null;
 
-        if (_model instanceof Actor) {
+        if (_model instanceof CompositeActor || _model instanceof FSMActor) {
 
-            if (_model instanceof CompositeActor) {
+            if (REDUtility.isValidModelForVerification((CompositeActor) _model)
+                    || SMVUtility.isValidModelForVerification((CompositeActor) _model)
+                    || _model instanceof FSMActor) {
 
-                if (REDUtility
-                        .isValidModelForVerification((CompositeActor) _model)
-                        || SMVUtility
-                                .isValidModelForVerification((CompositeActor) _model)) {
-
-                    StringBuffer systemDescription = new StringBuffer("");
-
-                    if (modelType
-                            .equalsIgnoreCase("Kripke Structures (Acceptable by NuSMV under SR)")) {
-                        // use _model.clone() to avoid the breaking of the original model
-                        systemDescription.append(SMVUtility
-                                .generateSMVDescription(
-                                        (CompositeActor) _model.clone(),
+                StringBuffer systemDescription = new StringBuffer("");
+                FileWriter smvFileWriter = null;
+                String fileIdentifier; 
+                
+                // Modified : merge all cases (All duplicated codes are deleted)
+                if (modelType.
+                        equalsIgnoreCase("Kripke Structures (Acceptable by NuSMV under SR)")) {
+                    fileIdentifier = ".smv";
+                    if (_model instanceof CompositeActor)
+                        systemDescription.append(
+                                SMVUtility.advancedGenerateSMVDescription(
+                                        (CompositeActor) _model,
                                         inputTemporalFormula, formulaType,
                                         variableSpanSize));
+                    else // FSMActor
+                        systemDescription.append( 
+                                ((FmvAutomaton)_model).convertToSMVFormat(
+                                    inputTemporalFormula, formulaType,
+                                    variableSpanSize));
+                } else if (modelType.
+                        equalsIgnoreCase("Communicating Timed Automata (Acceptable by RED under DE)")){
+                    fileIdentifier = ".d";
+                    systemDescription.append(
+                            REDUtility.generateREDDescription(
+                                    (CompositeActor) _model,
+                                    inputTemporalFormula, formulaType,
+                                    variableSpanSize, FSMBufferSize));
+                } else { // Real-time Maude Translation(under SR or DE)
+                    fileIdentifier = ".maude";
+                    if (_model instanceof CompositeActor)
+                        systemDescription.append(
+                                RTMaudeUtility.generateRTMDescription(
+                                        (CompositeActor) _model,
+                                        inputTemporalFormula
+                                )
+                        );
+                    /*
+                    else // FSMActor
+                        systemDescription.append( 
+                                ((FmvAutomaton)_model).convertToSMVFormat(
+                                    inputTemporalFormula, formulaType,
+                                    variableSpanSize));
+                    */
+                }
+                    
+                
+                if (outputChoice.equalsIgnoreCase("Text Only")) {
+                    JFileChooser fileSaveDialog = new JFileChooser();
+                    fileSaveDialog
+                            .setDialogType(JFileChooser.SAVE_DIALOG);
+                    fileSaveDialog
+                            .setDialogTitle("Convert Ptolemy model into "+ fileIdentifier +" file");
+                    if (_directory != null) {
+                        fileSaveDialog.setCurrentDirectory(_directory);
+                    } else {
+                        String cwd = StringUtilities
+                                .getProperty("user.dir");
 
-                        if (outputChoice.equalsIgnoreCase("Text Only")) {
-                            JFileChooser fileSaveDialog = new JFileChooser();
+                        if (cwd != null) {
                             fileSaveDialog
-                                    .setDialogType(JFileChooser.SAVE_DIALOG);
-                            fileSaveDialog
-                                    .setDialogTitle("Convert Ptolemy model into .smv file");
-                            if (_directory != null) {
-                                fileSaveDialog.setCurrentDirectory(_directory);
-                            } else {
-                                String cwd = StringUtilities
-                                        .getProperty("user.dir");
-
-                                if (cwd != null) {
-                                    fileSaveDialog
-                                            .setCurrentDirectory(new File(cwd));
-                                }
-                            }
-
-                            int returnValue = fileSaveDialog
-                                    .showSaveDialog(null);
-
-                            if (returnValue == JFileChooser.APPROVE_OPTION) {
-                                _directory = fileSaveDialog
-                                        .getCurrentDirectory();
-
-                                FileWriter smvFileWriter = null;
-                                try {
-                                    File smvFile = fileSaveDialog
-                                            .getSelectedFile()
-                                            .getCanonicalFile();
-
-                                    if (smvFile.exists()) {
-                                        String queryString = "Overwrite "
-                                                + smvFile.getName() + "?";
-                                        int selected = JOptionPane
-                                                .showOptionDialog(
-                                                        null,
-                                                        queryString,
-                                                        "Save Changes?",
-                                                        JOptionPane.YES_NO_OPTION,
-                                                        JOptionPane.QUESTION_MESSAGE,
-                                                        null, null, null);
-                                        if (selected == 0) {
-                                            smvFileWriter = new FileWriter(
-                                                    smvFile);
-                                            smvFileWriter
-                                                    .write(systemDescription
-                                                            .toString());
-                                            _codeFile = smvFile;
-                                        }
-                                    } else {
-                                        smvFileWriter = new FileWriter(smvFile);
-                                        smvFileWriter.write(systemDescription
-                                                .toString());
-                                        _codeFile = smvFile;
-                                    }
-
-                                } finally {
-                                    if (smvFileWriter != null) {
-                                        smvFileWriter.close();
-                                    }
-                                }
-                            }
-
-                        } else {
-                            // Invoke NuSMV. Create a temporal file and
-                            // later delete it. We first create a new folder 
-                            // which contains nothing. Then generate the System
-                            // in format .smv, and perform model checking.
-                            // If the system fails, all information would be
-                            // stored in the folder. We can delete everything 
-                            // in the folder then delete the folder.
-                            // The temporal file uses a random number generator
-                            // to generate its name.
-
-                            Random rd = new Random();
-                            String folderName = "SystemGeneratedTempFolder"
-                                    + Integer.toString(rd.nextInt(10000)) + "/";
-                            File smvFolder = new File(folderName);
-                            if (smvFolder.exists()) {
-                                while (smvFolder.exists() == true) {
-                                    folderName = "SystemGeneratedTempFolder"
-                                            + Integer.toString(rd
-                                                    .nextInt(10000)) + "/";
-                                    smvFolder = new File(folderName);
-                                }
-                                // Now create the directory.
-                                boolean isOpened = smvFolder.mkdir();
-                                if (isOpened == false) {
-                                    MessageHandler
-                                            .warning("Failed to invoke NuSMV correctly: \nUnable to open a temp folder.");
-                                }
-                            } else {
-                                boolean isOpened = smvFolder.mkdir();
-                                if (isOpened == false) {
-                                    MessageHandler
-                                            .warning("Failed to invoke NuSMV correctly:\nUnable to open a temp folder.");
-                                }
-
-                            }
-                            // Now establish the file.
-                            File smvFile = new File(folderName + "System.smv");
-                            FileWriter smvFileWriter = null;
-                            String fileAbsolutePath = smvFile.getAbsolutePath();
-
-                            try {
-                                smvFileWriter = new FileWriter(smvFile);
-                                smvFileWriter.write(systemDescription
-                                        .toString());
-
-                            } finally {
-                                if (smvFileWriter != null) {
-                                    smvFileWriter.close();
-                                }
-                            }
-
-                            StringBuffer str = new StringBuffer("");
-                            BufferedReader reader = null;
-                            try {
-                                Runtime rt = Runtime.getRuntime();
-                                Process pr = rt.exec("NuSMV " + "\""
-                                        + fileAbsolutePath + "\"");
-                                InputStreamReader inputStream = new InputStreamReader(
-                                        pr.getInputStream());
-                                reader = new BufferedReader(inputStream);
-                                String line = null;
-                                while ((line = reader.readLine()) != null) {
-                                    str.append(line + "\n");
-                                }
-
-                            } catch (IOException ex) {
-                                MessageHandler
-                                        .warning("Failed to invoke NuSMV correctly: "
-                                                + ex);
-
-                            } finally {
-                                reader.close();
-                            }
-                            returnStringBuffer.append(str);
-                            _deleteFolder(smvFolder);
-                            return returnStringBuffer;
-
-                        }
-                    } else { // Communicating Timed Automata for RED
-
-                        // use _model.clone() to avoid the breaking of the original model
-                        systemDescription.append(REDUtility
-                                .generateREDDescription(
-                                        (CompositeActor) _model.clone(),
-                                        inputTemporalFormula, formulaType,
-                                        variableSpanSize, FSMBufferSize));
-
-                        if (outputChoice.equalsIgnoreCase("Text Only")) {
-                            JFileChooser fileSaveDialog = new JFileChooser();
-                            fileSaveDialog
-                                    .setDialogType(JFileChooser.SAVE_DIALOG);
-                            fileSaveDialog
-                                    .setDialogTitle("Convert Ptolemy model into .d file");
-                            if (_directory != null) {
-                                fileSaveDialog.setCurrentDirectory(_directory);
-                            } else {
-
-                                String cwd = StringUtilities
-                                        .getProperty("user.dir");
-
-                                if (cwd != null) {
-                                    fileSaveDialog
-                                            .setCurrentDirectory(new File(cwd));
-                                }
-                            }
-
-                            int returnValue = fileSaveDialog
-                                    .showSaveDialog(null);
-
-                            if (returnValue == JFileChooser.APPROVE_OPTION) {
-                                _directory = fileSaveDialog
-                                        .getCurrentDirectory();
-
-                                FileWriter smvFileWriter = null;
-                                try {
-                                    File smvFile = fileSaveDialog
-                                            .getSelectedFile()
-                                            .getCanonicalFile();
-
-                                    if (smvFile.exists()) {
-                                        String queryString = "Overwrite "
-                                                + smvFile.getName() + "?";
-                                        int selected = JOptionPane
-                                                .showOptionDialog(
-                                                        null,
-                                                        queryString,
-                                                        "Save Changes?",
-                                                        JOptionPane.YES_NO_OPTION,
-                                                        JOptionPane.QUESTION_MESSAGE,
-                                                        null, null, null);
-                                        if (selected == 0) {
-                                            smvFileWriter = new FileWriter(
-                                                    smvFile);
-                                            smvFileWriter
-                                                    .write(systemDescription
-                                                            .toString());
-                                            _codeFile = smvFile;
-                                        }
-                                    } else {
-                                        smvFileWriter = new FileWriter(smvFile);
-                                        smvFileWriter.write(systemDescription
-                                                .toString());
-                                        _codeFile = smvFile;
-                                    }
-
-                                } finally {
-                                    if (smvFileWriter != null) {
-                                        smvFileWriter.close();
-                                    }
-                                }
-                            }
-                        } else {
-                            MessageHandler
-                                    .error("The functionality for invoking RED is not implemented.\n");
+                                    .setCurrentDirectory(new File(cwd));
                         }
                     }
 
-                } else {
-                    MessageHandler
-                            .error("The execution director is not SR or DE.\nCurrently it is beyond our scope of analysis.");
-                }
+                    int returnValue = fileSaveDialog
+                            .showSaveDialog(null);
 
-            } else if (_model instanceof FSMActor) {
+                    if (returnValue == JFileChooser.APPROVE_OPTION) {
+                        _directory = fileSaveDialog
+                                .getCurrentDirectory();
 
-                // Retrieve the FSMActor and perform strong type conversion 
-                // into FmvAutomaton.
-                FmvAutomaton model = (FmvAutomaton) _model;
-
-                StringBuffer fmvFormat = new StringBuffer("");
-                FileWriter smvFileWriter = null;
-
-                if (modelType
-                        .equalsIgnoreCase("Kripke Structures (Acceptable by NuSMV under SR)")) {
-
-                    if (outputChoice.equalsIgnoreCase("Text Only")) {
-                        fmvFormat.append(model.convertToSMVFormat(
-                                inputTemporalFormula, formulaType,
-                                variableSpanSize));
-                        JFileChooser fileSaveDialog = new JFileChooser();
-
-                        fileSaveDialog.setDialogType(JFileChooser.SAVE_DIALOG);
-                        fileSaveDialog
-                                .setDialogTitle("Convert Ptolemy model into .smv file");
-                        if (_directory != null) {
-                            fileSaveDialog.setCurrentDirectory(_directory);
-                        } else {
-                            String cwd = StringUtilities
-                                    .getProperty("user.dir");
-
-                            if (cwd != null) {
-                                fileSaveDialog
-                                        .setCurrentDirectory(new File(cwd));
-                            }
-                        }
-
-                        int returnValue = fileSaveDialog.showOpenDialog(null);
                         try {
-                            if (returnValue == JFileChooser.APPROVE_OPTION) {
-                                _directory = fileSaveDialog
-                                        .getCurrentDirectory();
+                            File smvFile = fileSaveDialog
+                                    .getSelectedFile()
+                                    .getCanonicalFile();
 
-                                File smvFile = fileSaveDialog.getSelectedFile()
-                                        .getCanonicalFile();
-
-                                if (smvFile.exists()) {
-                                    String queryString = "Overwrite "
-                                            + smvFile.getName() + "?";
-                                    int selected = JOptionPane
-                                            .showOptionDialog(
-                                                    null,
-                                                    queryString,
-                                                    "Overwrite?",
-                                                    JOptionPane.YES_NO_OPTION,
-                                                    JOptionPane.QUESTION_MESSAGE,
-                                                    null, null, null);
-                                    if (selected == 0) {
-                                        smvFileWriter = new FileWriter(smvFile);
-                                        smvFileWriter.write(fmvFormat
-                                                .toString());
-                                        _codeFile = smvFile;
-                                    }
-                                } else {
-                                    smvFileWriter = new FileWriter(smvFile);
-                                    smvFileWriter.write(fmvFormat.toString());
+                            if (smvFile.exists()) {
+                                String queryString = "Overwrite "
+                                        + smvFile.getName() + "?";
+                                int selected = JOptionPane
+                                        .showOptionDialog(
+                                                null,
+                                                queryString,
+                                                "Save Changes?",
+                                                JOptionPane.YES_NO_OPTION,
+                                                JOptionPane.QUESTION_MESSAGE,
+                                                null, null, null);
+                                if (selected == 0) {
+                                    smvFileWriter = new FileWriter(
+                                            smvFile);
+                                    smvFileWriter
+                                            .write(systemDescription
+                                                    .toString());
                                     _codeFile = smvFile;
                                 }
-
+                            } else {
+                                smvFileWriter = new FileWriter(smvFile);
+                                smvFileWriter.write(systemDescription
+                                        .toString());
+                                _codeFile = smvFile;
                             }
-
                         } catch (IOException ex) {
                             MessageHandler
                                     .error("Failed to perform the file closing process:\n"
                                             + ex.getMessage());
                         } finally {
-                            if (smvFileWriter != null)
+                            if (smvFileWriter != null) {
                                 smvFileWriter.close();
+                            }
                         }
+                    }
 
-                    } else {
-                        // Invoke NuSMV
-                        fmvFormat.append(model.convertToSMVFormat(
-                                inputTemporalFormula, formulaType,
-                                variableSpanSize));
-                        // Also invoke NuSMV. Create a temporal file and later
-                        // delete it. We first create a new folder which contains 
-                        // nothing. Then generate the System.smv file, perform model
-                        // checking. If the system fails, all information would be 
-                        // stored in the folder. We can delete everything in the 
-                        // folder then delete the folder. The temporal file uses 
-                        // a random number generator to generate its name.
+                } else {
+                    if (modelType.
+                            equalsIgnoreCase("Kripke Structures (Acceptable by NuSMV under SR)")) {
+                        // Invoke NuSMV. Create a temporal file and
+                        // later delete it. We first create a new folder 
+                        // which contains nothing. Then generate the System
+                        // in format .smv, and perform model checking.
+                        // If the system fails, all information would be
+                        // stored in the folder. We can delete everything 
+                        // in the folder then delete the folder.
+                        // The temporal file uses a random number generator
+                        // to generate its name.
+
                         Random rd = new Random();
                         String folderName = "SystemGeneratedTempFolder"
                                 + Integer.toString(rd.nextInt(10000)) + "/";
                         File smvFolder = new File(folderName);
                         if (smvFolder.exists()) {
                             while (smvFolder.exists() == true) {
-
                                 folderName = "SystemGeneratedTempFolder"
-                                        + Integer.toString(rd.nextInt(10000))
-                                        + "/";
+                                        + Integer.toString(rd
+                                                .nextInt(10000)) + "/";
                                 smvFolder = new File(folderName);
                             }
                             // Now create the directory.
@@ -474,8 +270,9 @@ public class MathematicalModelConverter extends Attribute {
                             boolean isOpened = smvFolder.mkdir();
                             if (isOpened == false) {
                                 MessageHandler
-                                        .warning("Failed to invoke NuSMV correctly: \nUnable to open a temp folder.");
+                                        .warning("Failed to invoke NuSMV correctly:\nUnable to open a temp folder.");
                             }
+
                         }
                         // Now establish the file.
                         File smvFile = new File(folderName + "System.smv");
@@ -483,7 +280,8 @@ public class MathematicalModelConverter extends Attribute {
 
                         try {
                             smvFileWriter = new FileWriter(smvFile);
-                            smvFileWriter.write(fmvFormat.toString());
+                            smvFileWriter.write(systemDescription
+                                    .toString());
 
                         } finally {
                             if (smvFileWriter != null) {
@@ -491,7 +289,6 @@ public class MathematicalModelConverter extends Attribute {
                             }
                         }
 
-                        //StringBuffer str = new StringBuffer("");
                         BufferedReader reader = null;
                         try {
                             Runtime rt = Runtime.getRuntime();
@@ -502,7 +299,6 @@ public class MathematicalModelConverter extends Attribute {
                             reader = new BufferedReader(inputStream);
                             String line = null;
                             while ((line = reader.readLine()) != null) {
-                                //str.append(line + "\n");
                                 returnStringBuffer.append(line + "\n");
                             }
 
@@ -514,13 +310,16 @@ public class MathematicalModelConverter extends Attribute {
                         } finally {
                             reader.close();
                         }
-                        //returnStringBuffer.append(str);
                         _deleteFolder(smvFolder);
-
                         return returnStringBuffer;
-                    }
+                    } else
+                        MessageHandler
+                        .error("The functionality for invoking RED is not implemented.\n");
                 }
-
+                
+            } else {
+                MessageHandler
+                        .error("The execution director is not SR or DE.\nCurrently it is beyond our scope of analysis.");
             }
 
         }

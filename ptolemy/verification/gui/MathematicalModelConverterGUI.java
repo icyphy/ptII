@@ -168,8 +168,10 @@ public class MathematicalModelConverterGUI extends PtolemyFrame {
         controlPanel1.add(new JLabel("Model Type"));
 
         String[] modelTypes = {
+                "Real-time Maude Translation(under SR or DE)",
                 "Kripke Structures (Acceptable by NuSMV under SR)",
-                "Communicating Timed Automata (Acceptable by RED under DE)" };
+                "Communicating Timed Automata (Acceptable by RED under DE)"
+                };
         modelTypeList = new JComboBox(modelTypes);
         modelTypeList.setSelectedIndex(0);
         controlPanel1.add(modelTypeList);

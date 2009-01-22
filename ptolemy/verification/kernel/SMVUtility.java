@@ -49,22 +49,19 @@ import ptolemy.domains.fsm.modal.ModalModel;
 import ptolemy.domains.sr.kernel.SRDirector;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.verification.lib.SMVLegacyCodeActor;
 
 // ////////////////////////////////////////////////////////////////////////
 // //SMVUtility
 
 /**
  * This is an utility function for Ptolemy II models. It performs a systematic
- * traversal of the system and generate NuSMV (or Cadence SMV) acceptable files
- * for model checking.
+ * traversal of the system and generate NuSMV (or Cadence SMV) acceptable files for
+ * model checking.
  * 
- * @author Chihhong Patrick Cheng, Contributor: Edward A. Lee, Christopher
- *         Brooks
+ * @author Chihhong Patrick Cheng, Contributor: Edward A. Lee, Christopher Brooks
  * @version $Id$
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (patrickj)
@@ -75,124 +72,80 @@ public class SMVUtility {
     /**
      * Return a StringBuffer that contains the converted .smv format of the
      * system. Note that in this version we use modular approach instead of
-     * direct-dependency checking. Also the current algorithm enables us to deal with
-     * hierarchical systems. The up-to-date implementation also enables 
-     * the recognition of Boolean tokens. Nevertheless, modular approach would generate a
-     * bigger state space.
-     * 
-     * <p>For previous implementation, now matter what token is sent through the 
-     * channel, the receiver only senses the existence of the token by the
-     * guard expression XX_isPresent. We now support Boolean token recognition.
-     * In order to introduce this mechanism,
-     * for each signal XX, two boolean variables would be introduced: 
-     * <br>1) <code>XX_isPresent</code>: indicating whether the signal is present or not.
-     * <br>2) <code>XX_value</code>: indicating the value of the signal. 
-     * 
-     * <p>Therefore, now in the guard expression, it may be possible to have 
-     * <br>1) <code>XX_isPresent</code> (in Ptolemy) ==>  <code>XX_isPresent</code> (in SMV)
-     * <br>2) <code>XX == 0</code> (in Ptolemy) ==>  <code>XX_isPresent && XX_value == 0</code> (in SMV)
-     * <br>3) <code>XX == 1</code> (in Ptolemy) ==>  <code>XX_isPresent && XX_value == 1</code> (in SMV)
-     * 
-     * <p> If XX_isPresent is false, then the value of XX_value is not valid.
-     * 
-     * <p> In SMV, there is no distinguishing between boolean T, F and numerical 
-     * values 1, 0. So for the sender side, we only need to check if a sender
-     * sends a token whose value is not 0 or 1. 
+     * direct dependency checking detection. Modular approach would generate 
+     * a bigger state space. Also the current algorithm enables us to deal with
+     * hierarchical systems.
      * 
      * @param model The system under analysis.
      * @param pattern The temporal formula used to be attached in the .smv file.
      * @param choice The type of the formula. It may be either a CTL or LTL
-     *               formula. 
+     *               formula.
      * @param span A constant used to expand the size of the rough domain.
      * @return The converted .smv format of the system.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      * @throws NameDuplicationException
      */
-    public static StringBuffer generateSMVDescription(CompositeActor model,
-            String pattern, String choice, String span)
+    public static StringBuffer advancedGenerateSMVDescription(
+            CompositeActor model, String pattern, String choice, String span)
             throws IllegalActionException, NameDuplicationException {
 
         // Initialization of some global variable storages.
-        // See definition for description of these variables.
+        // See description for these variables at their variable definition.
         _globalSignalDistributionInfo = new HashMap<String, ArrayList<String>>();
         _globalSignalRetrivalInfo = new HashMap<String, HashSet<String>>();
         _globalSignalNestedRetrivalInfo = new HashMap<String, HashSet<String>>();
         _variableInfo = new HashMap<String, VariableInfo>();
 
-        // returnSMVFormat: a string storing the system description in SMV
-        // format.
+        // returnSMVFormat: a string storing the system description in SMV format.
         StringBuffer returnSMVFormat = new StringBuffer("");
 
         // Perform a scan of the whole system in order to retrieve signals
         // used in the system and their locations/visibilities for later
         // analysis.
-        _prescanSystemSignal(model, span);
+        _advancedSystemSignalPreScan(model, span);
 
         // List out all FSMs/ModalModels(with refinements) with their
         // states and transitions.
-
-        for (Iterator actors = ((model).entityList())
+        //
+        // FIXME: Theoretically here we should also be able to deal with
+        // CompositeActors inwith SR; this can be modified easily.
+        //
+        for (Iterator actors = (((CompositeActor) model).entityList())
                 .iterator(); actors.hasNext();) {
             Entity innerEntity = (Entity) actors.next();
             if (innerEntity instanceof FSMActor) {
                 // Directly generate the whole description of the system.
                 returnSMVFormat.append(_translateSingleFSMActor(
-                        (FSMActor) innerEntity, span, false, ""));
+                        (FSMActor) innerEntity, span, false, "", ""));
             } else if (innerEntity instanceof ModalModel) {
                 // We need to generate the description of the subsystem,
                 // and also implement the finite state controller.
                 // By calling the function, we are able to deal with it.
-                ArrayList<StringBuffer> subSystemDescription = _generateSMVDescriptionModalModelWithRefinement(
+                ArrayList<StringBuffer> subSystemDescription = _generateSMVFormatModalModelWithRefinement(
                         (ModalModel) innerEntity, span, "");
                 for (int i = 0; i < subSystemDescription.size(); i++) {
                     returnSMVFormat.append(subSystemDescription.get(i));
                 }
-            } else if (innerEntity instanceof SMVLegacyCodeActor) {
-                // First generate the module description and input parameter.
-                returnSMVFormat.append("\nMODULE " + innerEntity.getName()
-                        + " (");
-                Iterator<Port> itInPortList = ((SMVLegacyCodeActor) innerEntity)
-                        .inputPortList().iterator();
-                while (itInPortList.hasNext()) {
-                    String portName = itInPortList.next().getName();
-                    returnSMVFormat.append(portName.trim() + "_isPresent, "
-                            + portName.trim() + "_value ");
-                    if (itInPortList.hasNext() == true) {
-                        returnSMVFormat.append(",");
-                    }
-                }
-                returnSMVFormat.append(")\n");
-                // Secondly append user designed module application logic
-                // within.
-                returnSMVFormat
-                        .append(((SMVLegacyCodeActor) innerEntity).embeddedSMVCode
-                                .getExpression());
-            } else if (innerEntity instanceof CompositeActor) {
-                // FIXME: Need to add functionalities for dealing with
-                // CompositeActors.
-                //
-                // For composite actors, currently we assume the subsystem
-                // should be an SR system. If not, an exception will be thrown
-                // out for indication.
-                //
-                // Potential challenges lie in the visibility of signals.
             }
+            //else if (innerEntity instanceof CompositeActor) {
+            // FIXME: Need to add functionalities for dealing with CompositeActors.
+            //}
         }
 
         StringBuffer mainModuleDescription = new StringBuffer("");
-        mainModuleDescription.append("\n\nMODULE main \n");
+        mainModuleDescription.append("MODULE main \n");
         mainModuleDescription.append("\tVAR \n");
 
-        for (Iterator actors = ((model).entityList())
+        for (Iterator actors = (((CompositeActor) model).entityList())
                 .iterator(); actors.hasNext();) {
             Entity innerEntity = (Entity) actors.next();
+            // Entity innerModel = innerEntity;
             if ((innerEntity instanceof FSMActor)
                     || (innerEntity instanceof ModalModel)) {
                 mainModuleDescription.append("\t\t" + innerEntity.getName()
                         + ": " + innerEntity.getName() + "(");
-
                 // Check if the variable has variable outside (invisible
-                // in the whole system); where is its location.
+                // in the whole system); where is the location.
                 ArrayList<String> signalInfo = _globalSignalDistributionInfo
                         .get(innerEntity.getName());
                 if (signalInfo != null) {
@@ -212,6 +165,7 @@ public class SMVUtility {
                                     break;
                                 }
                             }
+
                         }
                         if (contain == true) {
                             if (i == signalInfo.size() - 1) {
@@ -222,7 +176,7 @@ public class SMVUtility {
                                         + "." + signalName + ", ");
                             }
                         } else {
-                            // Outside scope; use 1 to represent the signal
+                            // use 1 to represent the signal
                             if (i == signalInfo.size() - 1) {
                                 mainModuleDescription.append(" 1");
                             } else {
@@ -233,76 +187,8 @@ public class SMVUtility {
                 }
                 mainModuleDescription.append(");\n");
 
-            } else if (innerEntity instanceof SMVLegacyCodeActor) {
-                mainModuleDescription.append("\t\t" + innerEntity.getName()
-                        + ": " + innerEntity.getName() + "(");
-                // Check if the variable has variable outside (invisible
-                // in the whole system); where is the location.
-
-                Iterator<Port> inputPortInfo = ((SMVLegacyCodeActor) innerEntity)
-                        .inputPortList().iterator();
-                while (inputPortInfo.hasNext()) {
-                    String signal = inputPortInfo.next().getName().trim();
-                    String signalPresent = signal + "_isPresent";
-                    boolean containPresent = false;
-                    String locationPresent = "";
-                    Iterator<String> itPresent = _globalSignalRetrivalInfo
-                            .keySet().iterator();
-                    while (itPresent.hasNext()) {
-                        String place = itPresent.next();
-                        if (_globalSignalRetrivalInfo.get(place) != null) {
-                            if (_globalSignalRetrivalInfo.get(place).contains(
-                                    signalPresent)) {
-                                locationPresent = place;
-                                containPresent = true;
-                                break;
-                            }
-                        }
-                    }
-                    if (containPresent == true) {
-                        mainModuleDescription.append(locationPresent.trim()
-                                + "." + signalPresent + ", ");
-                    } else {
-                        // use 1 to represent the signal
-                        mainModuleDescription.append(" 1,");
-                    }
-
-                    String signalValue = signal + "_value";
-                    boolean containValue = false;
-                    String locationValue = "";
-                    Iterator<String> itValue = _globalSignalRetrivalInfo
-                            .keySet().iterator();
-                    while (itValue.hasNext()) {
-                        String place = itValue.next();
-                        if (_globalSignalRetrivalInfo.get(place) != null) {
-                            if (_globalSignalRetrivalInfo.get(place).contains(
-                                    signalValue)) {
-                                locationValue = place;
-                                containValue = true;
-                                break;
-                            }
-                        }
-                    }
-                    if (containValue == true) {
-                        if (inputPortInfo.hasNext() == false) {
-                            mainModuleDescription.append(locationValue.trim()
-                                    + "." + signalValue + " ");
-                        } else {
-                            mainModuleDescription.append(locationValue.trim()
-                                    + "." + signalValue + ", ");
-                        }
-                    } else {
-                        // use 1 to represent the signal
-                        if (inputPortInfo.hasNext() == false) {
-                            mainModuleDescription.append(" 1");
-                        } else {
-                            mainModuleDescription.append(" 1,");
-                        }
-                    }
-
-                }
-                mainModuleDescription.append(");\n");
             }
+
         }
 
         // Lastly, attach the specification into the file.
@@ -318,17 +204,16 @@ public class SMVUtility {
         return returnSMVFormat;
     }
 
-    /**
-     * This function tries to generate the reachability/risk specification of a
-     * system by scanning through the subsystem, and extract states which have
-     * special risk or reachability labels.
+    /** 
+     * This function tries to generate the reachability/risk specification of
+     * a system by scanning through the subsystem, and extract states which 
+     * have special risk or reachability labels.
      * 
      * @param model The system model under analysis.
      * @param specType The type of the graphical specification, it may be either
-     *                "Risk" or "Reachability"
-     * @return A string indicating the CTL formula for risk/reachability
-     *         analysis. 
-     * @throws IllegalActionException 
+     *                 "Risk" or "Reachability" 
+     * @return A string indicating the CTL formula for risk/reachability analysis.
+     * @throws IllegalActionException
      */
     public static String generateGraphicalSpecification(CompositeActor model,
             String specType) throws IllegalActionException {
@@ -351,6 +236,7 @@ public class SMVUtility {
         } else {
             return " EF(" + returnSpecStringBuffer.toString() + ")";
         }
+
     }
 
     /**
@@ -362,7 +248,7 @@ public class SMVUtility {
      * @return a boolean value indicating if the director is SR.
      */
     public static boolean isValidModelForVerification(CompositeActor model) {
-        Director director = (model).getDirector();
+        Director director = ((CompositeActor) model).getDirector();
         if (!(director instanceof SRDirector)) {
             return false;
         } else {
@@ -370,36 +256,373 @@ public class SMVUtility {
         }
     }
 
-    /**
-     * This private function first decides signals used in the guard expression
-     * of an actor. Those signals should be of the format XX_isPresent. If it is
-     * of the format XX == const, we need to check if XX is in the initial 
-     * parameter list. If yes, then it is a state variable; if not, then it is a
-     * signal variable, then use "X_isPresent" or "X_value" to represent it.
+    /** Perform a systematic pre-scan to obtain information regarding the 
+     *  visibility of a signal. See the description in the source code for
+     *  technical details. 
      * 
-     * @param actor The actor under analysis.
-     * @return The set of signals used in the guard expression of the actor.
+     * @param model The whole system under analysis
+     * @param span The number to expand the domain of a variable. Note that it is 
+     *             in fact irrelevant to the signal generation. It is only used for
+     *             the reuse of existing functions. 
+     * @return
+     * @throws IllegalActionException
+     * @throws NameDuplicationException
+     */
+    private static ArrayList<String> _advancedSystemSignalPreScan(
+            CompositeActor model, String span) throws IllegalActionException,
+            NameDuplicationException {
+
+        // This utility function performs a system pre-scanning and stores
+        // all signal information in three global variables:
+        //
+        // (1) HashMap<String, ArrayList<String>> _globalSignalDistributionInfo:
+        // It tells you for a certain component, the set of signals emitted
+        // from that component.
+        //
+        // (2)HashMap<String, HashSet<String>> _globalSignalRetrivalInfo:
+        // It tells you for a certain component, the set of signals
+        // used in its guard expression.
+        // 
+        // (3) HashMap<String, HashSet<String>> _globalSignalNestedRetrivalInfo:
+        // It tells you for a certain component, the set of signals emitted
+        // from that component and from subsystems below that component in
+        // the overall hierarchy.
+        //
+        // Thus if these three are established, we are able to retrieve
+        // the location of the signal.
+        //
+
+        ArrayList<String> subSystemNameList = new ArrayList<String>();
+
+        for (Iterator actors = (((CompositeActor) model).entityList())
+                .iterator(); actors.hasNext();) {
+            Entity innerEntity = (Entity) actors.next();
+            if (innerEntity instanceof FSMActor) {
+                FSMActor innerFSMActor = (FSMActor) innerEntity;
+                HashSet<String> variableSet = null;
+
+                // Enumerate all variables used in the Kripke structure
+                int numSpan = Integer.parseInt(span);
+                variableSet = _decideVariableSet(innerFSMActor, numSpan);
+
+                // Decide variables encoded in the Kripke Structure.
+                // Note that here the variable only contains Signal Variables.
+                // For example, PGo_isPresent
+                HashSet<String> signalVariableSet = null;
+
+                // Enumerate all variables used in the Kripke structure
+                signalVariableSet = _decideSignalVariableSet(innerFSMActor);
+
+                // Meanwhile, place elements in signalVariableSet into
+                // variableSet;
+                Iterator<String> itSignalVariableSet = signalVariableSet
+                        .iterator();
+                while (itSignalVariableSet.hasNext()) {
+                    String valName = (String) itSignalVariableSet.next();
+                    variableSet.add(valName);
+                }
+                HashSet<String> signalOfferedSet = new HashSet<String>();
+                Iterator<String> newItVariableSet = variableSet.iterator();
+                while (newItVariableSet.hasNext()) {
+                    String valName = (String) newItVariableSet.next();
+                    boolean b1 = Pattern.matches(".*_isPresent", valName);
+                    if (b1 == true) {
+                        signalOfferedSet.add(valName);
+                    }
+
+                }
+
+                _globalSignalRetrivalInfo.put(innerFSMActor.getName(),
+                        signalOfferedSet);
+                _globalSignalNestedRetrivalInfo.put(innerFSMActor.getName(),
+                        signalOfferedSet);
+                subSystemNameList.add(innerFSMActor.getName());
+
+                HashSet<String> guardSignalVariableSet = null;
+                // Enumerate all variables used in the Kripke structure
+                guardSignalVariableSet = _decideGuardSignalVariableSet(innerFSMActor);
+
+                ArrayList<String> guardSignalVariableInfo = new ArrayList<String>();
+
+                Iterator<String> itGuardSignalVariableSet = guardSignalVariableSet
+                        .iterator();
+                while (itGuardSignalVariableSet.hasNext()) {
+                    String valName = (String) itGuardSignalVariableSet.next();
+                    guardSignalVariableInfo.add(valName);
+
+                }
+
+                _globalSignalDistributionInfo.put(innerFSMActor.getName(),
+                        guardSignalVariableInfo);
+
+            } else if (innerEntity instanceof ModalModel) {
+
+                ArrayList<String> subsubSystemNameList = new ArrayList<String>();
+
+                // If innerEntity is an instance of a ModalModel,
+                // we need to perform a recursive scan of the
+                // signal in the lower level.
+                //
+                // This includes the controller, and all rest FSMActors
+                // or ModalModels in the state refinement.
+
+                FSMActor controller = ((ModalModel) innerEntity)
+                        .getController();
+                controller.setName(innerEntity.getName());
+                Iterator states = controller.entityList().iterator();
+
+                while (states.hasNext()) {
+                    NamedObj state = (NamedObj) states.next();
+                    if (state instanceof State) {
+                        String refinementList = ((State) state).refinementName
+                                .getExpression();
+                        if ((refinementList == null)
+                                || (refinementList.equalsIgnoreCase(""))) {
+                        } else {
+                            // There is refinement in this state
+                            TypedActor[] refinementSystemActors = ((State) state)
+                                    .getRefinement();
+                            if (refinementSystemActors != null) {
+                                if (refinementSystemActors.length == 1) {
+                                    // It would only have the case where
+                                    // actor.length == 1.
+                                    // If we encounter cases > 1, report error
+                                    // for further bug fix.
+                                    TypedActor innerActor = refinementSystemActors[0];
+                                    if (innerActor instanceof FSMActor) {
+                                        FSMActor innerFSMActor = (FSMActor) innerActor;
+                                        HashSet<String> variableSet = null;
+
+                                        // Enumerate all variables used in the
+                                        // Kripke structure
+                                        int numSpan = Integer.parseInt(span);
+                                        variableSet = _decideVariableSet(
+                                                innerFSMActor, numSpan);
+
+                                        // Decide variables encoded in the
+                                        // Kripke Structure.
+                                        // Note that here the variable only
+                                        // contains Signal Variables.
+                                        // For example, PGo_isPresent
+                                        HashSet<String> signalVariableSet = null;
+                                        signalVariableSet = _decideSignalVariableSet(innerFSMActor);
+
+                                        // Meanwhile, place elements in
+                                        // signalVariableSet into variableSet;
+                                        Iterator<String> itSignalVariableSet = signalVariableSet
+                                                .iterator();
+                                        while (itSignalVariableSet.hasNext()) {
+                                            String valName = (String) itSignalVariableSet
+                                                    .next();
+                                            variableSet.add(valName);
+                                        }
+                                        HashSet<String> signalOfferedSet = new HashSet<String>();
+                                        if (variableSet != null) {
+                                            Iterator<String> newItVariableSet = variableSet
+                                                    .iterator();
+                                            while (newItVariableSet.hasNext()) {
+                                                String valName = (String) newItVariableSet
+                                                        .next();
+                                                boolean b = Pattern
+                                                        .matches(
+                                                                ".*_isPresent",
+                                                                valName);
+                                                if (b == true) {
+                                                    signalOfferedSet
+                                                            .add(valName);
+                                                }
+
+                                            }
+                                        }
+
+                                        _globalSignalRetrivalInfo.put(
+                                                innerFSMActor.getName().trim(),
+                                                signalOfferedSet);
+                                        _globalSignalNestedRetrivalInfo.put(
+                                                innerFSMActor.getName().trim(),
+                                                signalOfferedSet);
+                                        subsubSystemNameList.add(innerFSMActor
+                                                .getName().trim());
+
+                                        HashSet<String> guardSignalVariableSet = null;
+                                        // Enumerate all variables used in the
+                                        // Kripke structure
+                                        guardSignalVariableSet = _decideGuardSignalVariableSet(innerFSMActor);
+
+                                        ArrayList<String> guardSignalVariableInfo = new ArrayList<String>();
+
+                                        Iterator<String> itGuardSignalVariableSet = guardSignalVariableSet
+                                                .iterator();
+                                        while (itGuardSignalVariableSet
+                                                .hasNext()) {
+                                            String valName = (String) itGuardSignalVariableSet
+                                                    .next();
+                                            guardSignalVariableInfo
+                                                    .add(valName);
+
+                                        }
+
+                                        _globalSignalDistributionInfo.put(
+                                                innerFSMActor.getName(),
+                                                guardSignalVariableInfo);
+
+                                    } else if (innerActor instanceof CompositeActor) {
+                                        // First see if its director is SR.
+                                        // If not, then it is beyond our current
+                                        // processing scope.
+                                        Director director = ((CompositeActor) innerActor)
+                                                .getDirector();
+                                        if (!(director instanceof SRDirector)) {
+                                            // This is not what we can process.
+                                            throw new IllegalActionException(
+                                                    "SMVUtility._advancedSystemPreScan() clashes:\n"
+                                                            + "Inner director not SR.");
+                                        } else {
+                                            // This is OK for our analysis
+                                            // Generate system description
+                                            // for these two.
+
+                                            ArrayList<String> subsubsubSystemNameList = _advancedSystemSignalPreScan(
+                                                    (CompositeActor) innerActor,
+                                                    span);
+                                            for (int j = 0; j < subsubsubSystemNameList
+                                                    .size(); j++) {
+                                                subsubSystemNameList
+                                                        .add(subsubsubSystemNameList
+                                                                .get(j));
+                                            }
+
+                                        }
+                                    } else {
+                                        // We are not able to deal with it.
+                                        // Simply omit those cases.
+                                    }
+
+                                } else {
+                                    // Theoretically this should not happen.
+                                    // Once this happens, report an error to
+                                    // notify the author the situation.
+                                    throw new IllegalActionException(
+                                            "SMVUtility._advancedSystemPreScan() clashes: \n"
+                                                    + "Refinement has two or more inner actors.");
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Lastly, store the signal information for the controller.
+
+                HashSet<String> variableSet = null;
+                // Enumerate all variables used in the Kripke structure
+                int numSpan = Integer.parseInt(span);
+                variableSet = _decideVariableSet(controller, numSpan);
+
+                // Decide variables encoded in the Kripke Structure.
+                // Note that here the variable only contains Signal Variables.
+                // For example, PGo_isPresent
+                HashSet<String> signalVariableSet = null;
+                signalVariableSet = _decideSignalVariableSet(controller);
+
+                // Meanwhile, place elements in signalVariableSet into
+                // variableSet;
+                Iterator<String> itSignalVariableSet = signalVariableSet
+                        .iterator();
+                while (itSignalVariableSet.hasNext()) {
+
+                    String valName = (String) itSignalVariableSet.next();
+                    variableSet.add(valName);
+                }
+                HashSet<String> signalOfferedSet = new HashSet<String>();
+                Iterator<String> newItVariableSet = variableSet.iterator();
+                while (newItVariableSet.hasNext()) {
+                    String valName = (String) newItVariableSet.next();
+                    boolean b1 = Pattern.matches(".*_isPresent", valName);
+                    if (b1 == true) {
+                        signalOfferedSet.add(valName);
+                    }
+
+                }
+
+                // Use a new HashSet and copy all contents to avoid later
+                // modification.
+                HashSet<String> newSignalOfferedSet = new HashSet<String>();
+                if (signalOfferedSet != null)
+                    newSignalOfferedSet.addAll(signalOfferedSet);
+                _globalSignalRetrivalInfo.put(controller.getName(),
+                        newSignalOfferedSet);
+
+                // Now retrieve every subComponent s' of s from
+                // subsubSystemNameList,
+                // retrieve the signal from _globalSignalRetrivalInfo(s')
+                // and add them to _globalSignalNestedRetrivalInfo(s)
+                for (int i = 0; i < subsubSystemNameList.size(); i++) {
+                    String component = subsubSystemNameList.get(i);
+                    HashSet<String> componentSignalSet = _globalSignalNestedRetrivalInfo
+                            .get(component);
+                    //if (componentSignalSet == null) {
+                    //    System.out.println("The component :" + component
+                    //            + " is null");
+                    //}
+                    if (componentSignalSet != null) {
+                        signalOfferedSet.addAll(componentSignalSet);
+                    }
+                    subSystemNameList.add(component);
+                }
+
+                if (_globalSignalNestedRetrivalInfo.get(controller.getName()) != null) {
+                    //if (signalOfferedSet != null) {
+                    _globalSignalNestedRetrivalInfo.get(controller.getName())
+                            .addAll(signalOfferedSet);
+                    //}
+                } else {
+                    //if (signalOfferedSet != null) {
+                    _globalSignalNestedRetrivalInfo.put(controller.getName(),
+                            signalOfferedSet);
+                    //}
+                }
+
+                HashSet<String> guardSignalVariableSet = null;
+                guardSignalVariableSet = _decideGuardSignalVariableSet(controller);
+
+                ArrayList<String> guardSignalVariableInfo = new ArrayList<String>();
+
+                Iterator<String> itGuardSignalVariableSet = guardSignalVariableSet
+                        .iterator();
+                while (itGuardSignalVariableSet.hasNext()) {
+                    String valName = (String) itGuardSignalVariableSet.next();
+                    guardSignalVariableInfo.add(valName);
+
+                }
+
+                _globalSignalDistributionInfo.put(controller.getName(),
+                        guardSignalVariableInfo);
+
+                subSystemNameList.add(controller.getName());
+
+            } //else if (innerEntity instanceof CompositeActor) {
+            // FIXME: No implementation here; this corresponds to
+            //        the first fix-me statement.
+            //}
+
+        }
+        return subSystemNameList;
+
+    }
+
+    /**
+     * This private function first decides signal variables that is emitted 
+     * from the actor. Note that signal variables only appears in outputActions. 
+     * In order to keep the signal "X" compatible with the appearance
+     * in the guard expression "X_isPresent" shown in other actors, we need to 
+     * attach "_isPresent" with the signal.   
+     * 
+     * @param actor The actor under analysis
+     * @return A set containing names of the signal
      * @throws IllegalActionException
      */
-    private static HashSet<String> _decideGuardSignalVariableSet(FSMActor actor)
+    private static HashSet<String> _decideSignalVariableSet(FSMActor actor)
             throws IllegalActionException {
-
-        // MODIFICATION 2008.07.21
-        // Since this private function first decides signals used in the guard
-        // expression of an actor. Those signals should be more than of the
-        // format XX_isPresent. It can also have the format like XX == 0 or
-        // XX == 1.
-        //
-        // However, we need to have a mechanism to distinguish between the inner
-        // variable and the signal variable, since these are all having the
-        // format XX == const.
-        //
-        // The proposed method is to check from the parameter list.
-        // If variable XX is not in the parameter list, then it can be of two
-        // choices: 1) XX is the signal variable 2) XX is the state variable,
-        // but the user just forgets to place the state variable XX with initial
-        // parameter. In this way, later the program would indicate with
-        // exceptions.
 
         HashSet<String> returnVariableSet = new HashSet<String>();
         HashSet<State> stateSet = new HashSet<State>();
@@ -418,8 +641,104 @@ public class SMVUtility {
             // easy way to pick an arbitrary entry from a HashMap, except
             // through Iterator
             Iterator<String> iterator = frontier.keySet().iterator();
-            name = iterator.next();
-            stateInThis = frontier.remove(name);
+            name = (String) iterator.next();
+            stateInThis = (State) frontier.remove(name);
+            if (stateInThis == null) {
+                throw new IllegalActionException("Internal error, removing \""
+                        + name + "\" returned null?");
+            }
+            ComponentPort outPort = stateInThis.outgoingPort;
+            Iterator transitions = outPort.linkedRelationList().iterator();
+
+            while (transitions.hasNext()) {
+                Transition transition = (Transition) transitions.next();
+
+                State destinationInThis = transition.destinationState();
+
+                if (!stateSet.contains(destinationInThis)) {
+                    frontier
+                            .put(destinationInThis.getName(), destinationInThis);
+                    stateSet.add(destinationInThis);
+                }
+
+                // get transitionLabel, transitionName and relation
+                // name for later use. Retrieve the transition
+
+                boolean hasAnnotation = false;
+                String text;
+                try {
+                    text = transition.annotation.stringValue();
+                } catch (IllegalActionException e) {
+                    text = "Exception evaluating annotation: " + e.getMessage();
+                }
+                if (!text.trim().equals("")) {
+                    hasAnnotation = true;
+                    // buffer.append(text);
+                }
+
+                String expression = transition.outputActions.getExpression();
+                if ((expression != null) && !expression.trim().equals("")) {
+                    // Retrieve possible value of the variable
+                    String[] splitExpression = expression.split(";");
+                    for (int i = 0; i < splitExpression.length; i++) {
+                        String[] characters = splitExpression[i].split("=");
+                        String lValue_isPresent = characters[0].trim()
+                                + "_isPresent";
+
+                        // add it into the _variableInfo 
+                        // see if it exists
+                        if (_variableInfo.get(lValue_isPresent) == null) {
+                            // Create a new one and insert all info.
+                            VariableInfo newVariable = new VariableInfo("1",
+                                    "0");
+                            _variableInfo.put(lValue_isPresent, newVariable);
+                            if (returnVariableSet.contains(lValue_isPresent) == false)
+                                returnVariableSet.add(lValue_isPresent);
+                        } else {
+                            if (returnVariableSet.contains(lValue_isPresent) == false)
+                                returnVariableSet.add(lValue_isPresent);
+                        }
+
+                    }
+                }
+
+            }
+
+        }
+
+        return returnVariableSet;
+    }
+
+    /**
+     * This private function first decides signals used in the guard expression 
+     * of an actor. Those signals should be of the format XX_isPresent.
+     * 
+     * @param actor The actor under analysis.
+     * @return The set of signals used in the guard expression of the actor.
+     * @throws IllegalActionException
+     */
+    private static HashSet<String> _decideGuardSignalVariableSet(FSMActor actor)
+            throws IllegalActionException {
+
+        HashSet<String> returnVariableSet = new HashSet<String>();
+        HashSet<State> stateSet = new HashSet<State>();
+
+        // initialize
+        HashMap<String, State> frontier = new HashMap<String, State>();
+
+        // create initial state
+        State stateInThis = actor.getInitialState();
+        String name = stateInThis.getName();
+        frontier.put(name, stateInThis);
+
+        // iterate
+        while (!frontier.isEmpty()) {
+            // pick a state from frontier. It seems that there isn't an
+            // easy way to pick an arbitrary entry from a HashMap, except
+            // through Iterator
+            Iterator<String> iterator = frontier.keySet().iterator();
+            name = (String) iterator.next();
+            stateInThis = (State) frontier.remove(name);
             if (stateInThis == null) {
                 throw new IllegalActionException("Internal error, removing \""
                         + name + "\" returned null?");
@@ -459,6 +778,7 @@ public class SMVUtility {
                     if (hasAnnotation) {
                         // do nothing
                     } else {
+
                         // Separate each guard expression into substring
                         String[] guardSplitExpression = guard.split("(&&)");
                         if (guardSplitExpression.length != 0) {
@@ -468,156 +788,22 @@ public class SMVUtility {
                                 // Retrieve the left value of the inequality.
                                 String[] characterOfSubGuard = subGuardCondition
                                         .split("(>=)|(<=)|(==)|(!=)|[><]");
-                                if (characterOfSubGuard.length > 1) {
-                                    // make the judgment whether it is a state
-                                    // variable or signal variable.
-
-                                    String attribute = characterOfSubGuard[0]
-                                            .trim();
-                                    if (actor.getAttribute(attribute) == null) {
-                                        // It should "look like" a signal
-                                        // variable.
+                                boolean b = Pattern.matches(".*_isPresent",
+                                        characterOfSubGuard[0].trim());
+                                if (b == true) {
+                                    if (returnVariableSet
+                                            .contains(characterOfSubGuard[0]
+                                                    .trim()) == false)
                                         returnVariableSet
                                                 .add(characterOfSubGuard[0]
-                                                        .trim()
-                                                        + "_isPresent");
-                                        returnVariableSet
-                                                .add(characterOfSubGuard[0]
-                                                        .trim()
-                                                        + "_value");
-                                    }
-
-                                } else {
-                                    boolean b = Pattern.matches(".*_isPresent",
-                                            characterOfSubGuard[0].trim());
-                                    if (b == true) {
-                                        if (returnVariableSet
-                                                .contains(characterOfSubGuard[0]
-                                                        .trim()) == false)
-                                            returnVariableSet
-                                                    .add(characterOfSubGuard[0]
-                                                            .trim());
-                                    }
+                                                        .trim());
                                 }
+
                             }
+
                         }
                     }
-                }
-            }
-        }
 
-        return returnVariableSet;
-    }
-
-    /**
-     * This private function first decides signal variables that is emitted from
-     * the actor. Note that signal variables only appears in outputActions. In
-     * order to keep the signal "X" compatible with the appearance in the guard
-     * expression "X_isPresent" shown in other actors, we need to attach
-     * "_isPresent" with the signal.
-     * 
-     * <p>MODIFICATION 2008.07.21: We need to have "X_isPresent" and "X_value" 
-     * to represent a variable for new features (supporting boolean tokens).
-     * 
-     * @param actor The actor under analysis
-     * @return A set containing names of the signal
-     * @throws IllegalActionException
-     */
-    private static HashSet<String> _decideSignalVariableSet(FSMActor actor)
-            throws IllegalActionException {
-
-        HashSet<String> returnVariableSet = new HashSet<String>();
-        HashSet<State> stateSet = new HashSet<State>();
-
-        // initialize
-        HashMap<String, State> frontier = new HashMap<String, State>();
-
-        // create initial state
-        State stateInThis = actor.getInitialState();
-        String name = stateInThis.getName();
-        frontier.put(name, stateInThis);
-
-        // iterate
-        while (!frontier.isEmpty()) {
-            // pick a state from frontier. It seems that there isn't an
-            // easy way to pick an arbitrary entry from a HashMap, except
-            // through Iterator
-            Iterator<String> iterator = frontier.keySet().iterator();
-            name = iterator.next();
-            stateInThis = frontier.remove(name);
-            if (stateInThis == null) {
-                throw new IllegalActionException("Internal error, removing \""
-                        + name + "\" returned null?");
-            }
-            ComponentPort outPort = stateInThis.outgoingPort;
-            Iterator transitions = outPort.linkedRelationList().iterator();
-
-            while (transitions.hasNext()) {
-                Transition transition = (Transition) transitions.next();
-
-                State destinationInThis = transition.destinationState();
-
-                if (!stateSet.contains(destinationInThis)) {
-                    frontier
-                            .put(destinationInThis.getName(), destinationInThis);
-                    stateSet.add(destinationInThis);
-                }
-
-                // get transitionLabel, transitionName and relation
-                // name for later use. Retrieve the transition
-
-                //boolean hasAnnotation = false;
-//                String text;
-//                try {
-//                    text = transition.annotation.stringValue();
-//                } catch (IllegalActionException e) {
-//                    text = "Exception evaluating annotation: " + e.getMessage();
-//                }
-//                if (!text.trim().equals("")) {
-//                    hasAnnotation = true;
-//                    // buffer.append(text);
-//                }
-
-                String expression = transition.outputActions.getExpression();
-                if ((expression != null) && !expression.trim().equals("")) {
-                    // Retrieve possible value of the variable
-                    String[] splitExpression = expression.split(";");
-                    for (int i = 0; i < splitExpression.length; i++) {
-                        String[] characters = splitExpression[i].split("=");
-                        String lValue_isPresent = characters[0].trim()
-                                + "_isPresent";
-
-                        // add it into the _variableInfo
-                        // see if it exists
-                        if (_variableInfo.get(lValue_isPresent) == null) {
-                            // Create a new one and insert all info.
-                            VariableInfo newVariable = new VariableInfo("1",
-                                    "0");
-                            _variableInfo.put(lValue_isPresent, newVariable);
-                            if (returnVariableSet.contains(lValue_isPresent) == false)
-                                returnVariableSet.add(lValue_isPresent);
-                        } else {
-                            if (returnVariableSet.contains(lValue_isPresent) == false)
-                                returnVariableSet.add(lValue_isPresent);
-                        }
-
-                        // MODIFICATION 2008.07.21 Add up "lValue_value" for the
-                        // variable for lvalue's value.
-                        String lValue_value = characters[0].trim() + "_value";
-                        // add it into the _variableInfo
-                        // see if it exists
-                        if (_variableInfo.get(lValue_value) == null) {
-                            // Create a new one and insert all info.
-                            VariableInfo newVariable = new VariableInfo("1",
-                                    "0");
-                            _variableInfo.put(lValue_value, newVariable);
-                            if (returnVariableSet.contains(lValue_value) == false)
-                                returnVariableSet.add(lValue_value);
-                        } else {
-                            if (returnVariableSet.contains(lValue_value) == false)
-                                returnVariableSet.add(lValue_value);
-                        }
-                    }
                 }
 
             }
@@ -627,20 +813,21 @@ public class SMVUtility {
         return returnVariableSet;
     }
 
-    /**
-     * This private function first decides state variables (or called inner variables) 
-     * that would be used in the Kripke structure. It would first perform a system 
-     * prescan to have a rough domain for each variable. Then it tries to expand the 
-     * domain by using the constant span.
+    /**  
+     * This private function first decides variables that would be used in the
+     * Kripke structure. It would first perform a system prescan to have a rough
+     * domain for each variable. Then it tries to expand the domain by using the
+     * constant span. 
      * 
      * @param actor The actor under analysis
-     * @param numSpan The size to expand the original domain
-     * @return
+     * @param numSpan The size to expand the original domain 
+     * @return 
      * @throws IllegalActionException
      */
-    private static HashSet<String> _decideStateVariableSet(FSMActor actor,
+    private static HashSet<String> _decideVariableSet(FSMActor actor,
             int numSpan) throws IllegalActionException {
-
+        // FIXME: The initial value stored in the parameter should also
+        //        be retrieved for the domain calculation.
         HashSet<String> returnVariableSet = new HashSet<String>();
         HashSet<State> stateSet = new HashSet<State>();
 
@@ -658,8 +845,8 @@ public class SMVUtility {
             // easy way to pick an arbitrary entry from a HashMap, except
             // through Iterator
             Iterator<String> iterator = frontier.keySet().iterator();
-            name = iterator.next();
-            stateInThis = frontier.remove(name);
+            name = (String) iterator.next();
+            stateInThis = (State) frontier.remove(name);
             if (stateInThis == null) {
                 throw new IllegalActionException("Internal error, removing \""
                         + name + "\" returned null?");
@@ -721,95 +908,74 @@ public class SMVUtility {
                                         characterOfSubGuard[0].trim());
                                 if (b == true) {
                                     // First case, synchronize usage.
-                                    // Currently do nothing.
+                                    // Currently do nothing for single
+                                    // FmvAutomaton case.
                                 } else {
-                                    // MODIFICATION 2008.07.21
-                                    // Now we have to detect whether this is the
-                                    // state variable or the signal variable.
-                                    // Here we also apply the methodology of
-                                    // checking the initial parameter for the
-                                    // decision.
+                                    // Second case, place this variable into
+                                    // usage set. Retrieve the rvalue
 
-                                    // make the judgment whether it is a state
-                                    // variable or signal variable.
+                                    // Check if the right value exists. We
+                                    // need to ward off cases like "true".
 
-                                    String attribute = characterOfSubGuard[0]
-                                            .trim();
-                                    if (actor.getAttribute(attribute) != null) {
-                                        // It "looks like" a state (inner)
-                                        // variable .
-                                        //
-                                        // Second case, place this variable into
-                                        // usage set. Retrieve the rvalue
-                                        //
-                                        // Check if the right value exists. We
-                                        // need to ward off cases like "true".
+                                    String rValue = null;
+                                    boolean isTrue = false;
+                                    try {
+                                        rValue = characterOfSubGuard[1].trim();
+                                    } catch (Exception ex) {
+                                        isTrue = true;
+                                    }
+                                    if (isTrue == false) {
+                                        if (Pattern.matches("^-?\\d+$", rValue) == true) {
+                                            int numberRetrival = Integer
+                                                    .parseInt(rValue);
+                                            // add it into the _variableInfo
+                                            returnVariableSet
+                                                    .add(characterOfSubGuard[0]
+                                                            .trim());
 
-                                        String rValue = null;
-                                        boolean isTrue = false;
-                                        try {
-                                            rValue = characterOfSubGuard[1]
-                                                    .trim();
-                                        } catch (Exception ex) {
-                                            isTrue = true;
-                                        }
-                                        if (isTrue == false) {
-                                            if (Pattern.matches("^-?\\d+$",
-                                                    rValue) == true) {
-                                                int numberRetrival = Integer
-                                                        .parseInt(rValue);
-                                                // add it into the _variableInfo
-                                                returnVariableSet
-                                                        .add(characterOfSubGuard[0]
-                                                                .trim());
-
-                                                VariableInfo variable = _variableInfo
-                                                        .get(characterOfSubGuard[0]
-                                                                .trim());
-                                                if (variable != null) {
-                                                    if (variable._maxValue != null
-                                                            && variable._minValue != null) {
-                                                        // modify the existing
-                                                        // one
-                                                        if (Integer
-                                                                .parseInt(variable._maxValue) < numberRetrival) {
-                                                            variable._maxValue = Integer
-                                                                    .toString(numberRetrival);
-                                                        }
-                                                        if (Integer
-                                                                .parseInt(variable._minValue) > numberRetrival) {
-                                                            variable._minValue = Integer
-                                                                    .toString(numberRetrival);
-                                                        }
-                                                        _variableInfo
-                                                                .remove(characterOfSubGuard[0]
-                                                                        .trim());
-                                                        _variableInfo
-                                                                .put(
-                                                                        characterOfSubGuard[0]
-                                                                                .trim(),
-                                                                        variable);
+                                            VariableInfo variable = (VariableInfo) _variableInfo
+                                                    .get(characterOfSubGuard[0]
+                                                            .trim());
+                                            if (variable != null) {
+                                                if (variable._maxValue != null
+                                                        && variable._minValue != null) {
+                                                    // modify the existing one
+                                                    if (Integer
+                                                            .parseInt(variable._maxValue) < numberRetrival) {
+                                                        variable._maxValue = Integer
+                                                                .toString(numberRetrival);
                                                     }
-                                                } else {
-                                                    // Create a new one and
-                                                    // insert all info.
-                                                    VariableInfo newVariable = new VariableInfo(
-
-                                                            Integer
-                                                                    .toString(numberRetrival),
-                                                            Integer
-                                                                    .toString(numberRetrival));
+                                                    if (Integer
+                                                            .parseInt(variable._minValue) > numberRetrival) {
+                                                        variable._minValue = Integer
+                                                                .toString(numberRetrival);
+                                                    }
+                                                    _variableInfo
+                                                            .remove(characterOfSubGuard[0]
+                                                                    .trim());
                                                     _variableInfo
                                                             .put(
                                                                     characterOfSubGuard[0]
                                                                             .trim(),
-                                                                    newVariable);
-
+                                                                    variable);
                                                 }
+                                            } else {
+                                                // Create a new one and
+                                                // insert all info.
+                                                VariableInfo newVariable = new VariableInfo(
+
+                                                        Integer
+                                                                .toString(numberRetrival),
+                                                        Integer
+                                                                .toString(numberRetrival));
+                                                _variableInfo.put(
+                                                        characterOfSubGuard[0]
+                                                                .trim(),
+                                                        newVariable);
+
                                             }
                                         }
                                     }
-
                                 }
 
                             }
@@ -832,7 +998,7 @@ public class SMVUtility {
                                 int numberRetrival = Integer
                                         .parseInt(characters[1].trim());
                                 // add it into the _variableInfo
-                                VariableInfo variable = _variableInfo
+                                VariableInfo variable = (VariableInfo) _variableInfo
                                         .get(lValue);
                                 if (variable == null) {
                                     // Create a new one and insert all info.
@@ -865,63 +1031,21 @@ public class SMVUtility {
 
         }
 
-        Iterator<String> initialValueIterator = _variableInfo.keySet()
-                .iterator();
-        while (initialValueIterator.hasNext()) {
-            String variableName = initialValueIterator.next();
-            if (Pattern.matches(".*_isPresent", variableName)) {
-                continue;
-            }
-            String property = null;
-            boolean initialValueExist = true;
-            String[] propertyList = null;
-            try {
-                propertyList = actor.getAttribute(variableName).description()
-                        .split(" ");
-            } catch (Exception ex) {
-                initialValueExist = false;
-            }
-            if (initialValueExist == true) {
-                // Retrieve the value of the variable. Property contains
-                // a huge trunk of string content, and only the last variable is
-                // useful.
-                property = propertyList[propertyList.length - 1];
-            } else {
-                property = "";
-            }
-
-            VariableInfo variableInfo = _variableInfo
-                    .get(variableName);
-
-            if (Pattern.matches("^-?\\d+$", property) == true) {
-                if (variableInfo != null) {
-                    if (variableInfo._minValue != null
-                            && variableInfo._maxValue != null) {
-                        int lowerBound = Integer
-                                .parseInt(variableInfo._minValue);
-                        int upperBound = Integer
-                                .parseInt(variableInfo._maxValue);
-                        // modify the existing one
-                        if (upperBound < Integer.parseInt(property)) {
-                            variableInfo._maxValue = property;
-                        }
-                        if (lowerBound > Integer.parseInt(property)) {
-                            variableInfo._minValue = property;
-                        }
-                    }
-                }
-            }
-        }
+        // } catch (Exception exception) {
+        // throw new InternalErrorException(
+        // "FmvAutomaton._DecideVariableSet() clashes: "
+        // + exception.getMessage());
+        // }
 
         // Expend based on the domain
         Iterator<String> itVariableSet = returnVariableSet.iterator();
         while (itVariableSet.hasNext()) {
 
-            String valName = itVariableSet.next();
+            String valName = (String) itVariableSet.next();
 
             // Retrieve the lower bound and upper bound of the variable used in
             // the system based on inequalities or assignments
-            VariableInfo individual = _variableInfo
+            VariableInfo individual = (VariableInfo) _variableInfo
                     .remove(valName);
             if (individual != null) {
                 try {
@@ -946,7 +1070,7 @@ public class SMVUtility {
         return returnVariableSet;
     }
 
-    /**
+    /** 
      * Perform an enumeration of the state in this FmvAutomaton and return a
      * HashSet of states.
      * 
@@ -973,8 +1097,8 @@ public class SMVUtility {
                 // easy way to pick an arbitrary entry from a HashMap, except
                 // through Iterator
                 Iterator<String> iterator = frontier.keySet().iterator();
-                name = iterator.next();
-                stateInThis = frontier.remove(name);
+                name = (String) iterator.next();
+                stateInThis = (State) frontier.remove(name);
                 if (stateInThis != null) {
                     ComponentPort outPort = stateInThis.outgoingPort;
                     Iterator transitions = outPort.linkedRelationList()
@@ -994,21 +1118,21 @@ public class SMVUtility {
             }
         } catch (Exception exception) {
             throw new IllegalActionException(
-                    "SMVUtility._enumerateStateSet() clashes: "
+                    "SMVUtility._EnumerateStateSet() clashes: "
                             + exception.getMessage());
 
         }
         return returnStateSet;
     }
 
-    /**
-     * Generate all premise-action pairs regarding this automaton. For
-     * example, this method may generate (state=red)&&(count=1):{grn}. The
-     * premise is "(state=red)&&(count=1)", and the action is "{grn}" This can
-     * only be applied when the domain of variable is decided.
+    /** 
+     * Generate all premise-action pairs regarding this FmvAutomaton. For
+     * example, this method may generate (state=red)&&(count=1):{grn}. 
+     * The premise is "(state=red)&&(count=1)", and the action is "{grn}"
+     * This can only be applied when the domain of variable is decided.
      * 
      * @param actor The actor under analysis
-     * @param variableSet The set of variables used
+     * @param variableSet The set of variables used 
      * @throws IllegalActionException
      */
     private static void _generateAllVariableTransitions(FSMActor actor,
@@ -1042,8 +1166,8 @@ public class SMVUtility {
             // through Iterator
 
             Iterator<String> iterator = frontier.keySet().iterator();
-            name = iterator.next();
-            stateInThis = frontier.remove(name);
+            name = (String) iterator.next();
+            stateInThis = (State) frontier.remove(name);
             if (stateInThis == null) {
                 throw new IllegalActionException("Internal error, removing \""
                         + name + "\" returned null?");
@@ -1105,11 +1229,15 @@ public class SMVUtility {
                 // variables in precondition and should be stored in the
                 // set "variableUsedInTransitionSet".
 
+                // FIXME: (2008/01/22) Also, variables used in setAction should
+                // be stored in the set "variableUsedInTransitionSet".
                 HashSet<String> variableUsedInTransitionSet = new HashSet<String>();
 
                 if ((guard != null) && !guard.trim().equals("")) {
                     if (hasAnnotation) {
-
+                        // FIXME: (2007/12/14 Patrick.Cheng) Currently I
+                        // don't know the meaning of annotation. Do nothing
+                        // currently.
                     } else {
 
                         // Rule II. For all variables that are used as
@@ -1138,7 +1266,11 @@ public class SMVUtility {
                                 boolean b = Pattern.matches(".*_isPresent",
                                         characterOfSubGuard[0].trim());
                                 if (b == true) {
+                                    // FIXME: (2008/02/07 Patrick.Cheng)
+                                    // First case, synchronize usage.
+                                    // Pgo_isPresent
                                     // We add it into the list for transition.
+                                  
                                     signalPremise.append(characterOfSubGuard[0]
                                             .trim()
                                             + " & ");
@@ -1148,34 +1280,14 @@ public class SMVUtility {
                                     // capture cases when single "true"
                                     // exists.
                                     boolean isTrue = false;
+                                    String rValue = null;
                                     try {
-                                        characterOfSubGuard[1].trim();
+                                        rValue = characterOfSubGuard[1].trim();
                                     } catch (Exception ex) {
                                         isTrue = true;
                                     }
                                     if (isTrue == false) {
-                                        // Examine if the variable is a signal
-                                        // variable.
-                                        String attribute = characterOfSubGuard[0]
-                                                .trim();
-                                        if (actor.getAttribute(attribute) == null) {
-                                            // It "looks like" a signal
-                                            // variable. The format is
-                                            // XX == 1
-                                            // We thus need to append XX_value
-                                            // and XX_isPresent
-                                            variableUsedInTransitionSet
-                                                    .add(lValue.trim()
-                                                            + "_isPresent");
-                                            variableUsedInTransitionSet
-                                                    .add(lValue.trim()
-                                                            + "_value");
-                                        } else {
-                                            // It "looks like" a state variable
-                                            variableUsedInTransitionSet
-                                                    .add(lValue);
-                                        }
-
+                                        variableUsedInTransitionSet.add(lValue);
                                     }
 
                                 }
@@ -1198,6 +1310,7 @@ public class SMVUtility {
                                     .split("(=)");
 
                             String lValue = characterOfSubSetAction[0].trim();
+
                             variableUsedInTransitionSet.add(lValue);
 
                         }
@@ -1222,7 +1335,6 @@ public class SMVUtility {
 
                             variableUsedInTransitionSet.add(lValue
                                     + "_isPresent");
-                            variableUsedInTransitionSet.add(lValue + "_value");
 
                         }
                     }
@@ -1237,10 +1349,9 @@ public class SMVUtility {
                 HashMap<String, ArrayList<Integer>> valueDomain = new HashMap<String, ArrayList<Integer>>();
                 Iterator<String> it = variableUsedInTransitionSet.iterator();
                 while (it.hasNext()) {
-                    String val = it.next();
-                    boolean b1 = Pattern.matches(".*_isPresent", val);
-                    boolean b2 = Pattern.matches(".*_value", val);
-                    if (b1 == true || b2 == true) {
+                    String val = (String) it.next();
+                    boolean b = Pattern.matches(".*_isPresent", val);
+                    if (b == true) {
                         // For those variables, they only have true (1)
                         // and false (0) value.
 
@@ -1261,7 +1372,8 @@ public class SMVUtility {
 
                                 for (int number = lowerBound; number <= upperBound; number++) {
                                     // Place each possible value within boundary
-                                    // into the list.
+                                    // into
+                                    // the list.
                                     variableDomainForTransition.add(Integer
                                             .valueOf(number));
                                 }
@@ -1283,16 +1395,15 @@ public class SMVUtility {
                                         .parseInt(variableInfo._minValue);
                                 int upperBound = Integer
                                         .parseInt(variableInfo._maxValue);
-                                // Now perform the add up of new value:
-                                // DOMAIN_GT and DOMAIN_LS into each of the
-                                // variableDomainForTransition set.
-                                // We make it a sorted list to facilitate
-                                // further processing.
+                                // Now perform the add up of new value: DOMAIN_GT and
+                                // DOMAIN_LS into each of the
+                                // variableDomainForTransition set. We make it a sorted
+                                // list to facilitate further processing.
                                 ArrayList<Integer> variableDomainForTransition = new ArrayList<Integer>();
                                 variableDomainForTransition.add(DOMAIN_LS);
                                 for (int number = lowerBound; number <= upperBound; number++) {
-                                    // Place each possible value within boundary
-                                    // into the list.
+                                    // Place each possible value within boundary into
+                                    // the list.
                                     variableDomainForTransition.add(Integer
                                             .valueOf(number));
                                 }
@@ -1336,7 +1447,27 @@ public class SMVUtility {
                                 boolean b = Pattern.matches(".*_isPresent",
                                         characterOfSubGuard[0].trim());
                                 if (b == true) {
+                                    // FIXME: (2007/12/14 Patrick.Cheng)
+                                    // First case, synchronize usage.
+                                    // Currently not implementing...
 
+                                    /*
+                                    ArrayList<Integer> domain = valueDomain
+                                            .remove(lValue);
+
+                                    if (domain == null) {
+                                        throw new IllegalActionException(
+                                                "Internal error, removing \""
+                                                        + lValue
+                                                        + "\" returned null?");
+                                    }
+                                    for (int j = domain.size() - 1; j >= 0; j--) {
+                                        if (domain.get(j).intValue() == 0) {
+                                            domain.remove(j);
+                                        }
+                                    }
+                                    valueDomain.put(lValue, domain);
+                                     */
                                 } else {
                                     // Check if the right value exists. We
                                     // need to ward off cases like "true".
@@ -1351,23 +1482,9 @@ public class SMVUtility {
                                         parse = false;
                                     }
                                     if (parse == true) {
-                                        // MODIFICATION: Examine first whether
-                                        // this is a signal variable. For signal
-                                        // variable XX, we need to restrict
-                                        // XX_isPresent to 1 and XX_value based
-                                        // on the constraint.
-
-                                        boolean isSignalVariable = false;
-
-                                        String attribute = characterOfSubGuard[0]
-                                                .trim();
-                                        if (actor.getAttribute(attribute) == null) {
-                                            isSignalVariable = true;
-                                        }
                                         if (Pattern.matches("^-?\\d+$", rValue) == true) {
                                             int numberRetrival = Integer
                                                     .parseInt(rValue);
-
                                             // We need to understand what is
                                             // the operator of the value in
                                             // order to reason the bound of
@@ -1381,402 +1498,18 @@ public class SMVUtility {
                                                 // values in the domain into
                                                 // one single value.
 
-                                                if (isSignalVariable == true) {
-                                                    ArrayList<Integer> domainIsPresent = valueDomain
-                                                            .remove(lValue
-                                                                    .trim()
-                                                                    + "_isPresent");
+                                                ArrayList<Integer> domain = valueDomain
+                                                        .remove(lValue);
 
-                                                    if (domainIsPresent == null) {
-                                                        throw new IllegalActionException(
-                                                                "Internal error, removing \""
-                                                                        + lValue
-                                                                        + "\" returned null?");
-                                                    } else {
-                                                        for (int j = domainIsPresent
-                                                                .size() - 1; j >= 0; j--) {
-                                                            if (domainIsPresent
-                                                                    .get(j)
-                                                                    .intValue() != numberRetrival) {
-                                                                domainIsPresent
-                                                                        .remove(j);
-                                                            }
-                                                        }
-                                                        valueDomain
-                                                                .put(
-                                                                        lValue
-                                                                                .trim()
-                                                                                + "_isPresent",
-                                                                        domainIsPresent);
-                                                    }
-                                                    ArrayList<Integer> domainValue = valueDomain
-                                                            .remove(lValue
-                                                                    .trim()
-                                                                    + "_value");
-
-                                                    if (domainValue == null) {
-                                                        throw new IllegalActionException(
-                                                                "Internal error, removing \""
-                                                                        + lValue
-                                                                        + "\" returned null?");
-                                                    } else {
-                                                        for (int j = domainValue
-                                                                .size() - 1; j >= 0; j--) {
-                                                            if (domainValue
-                                                                    .get(j)
-                                                                    .intValue() != numberRetrival) {
-                                                                domainValue
-                                                                        .remove(j);
-                                                            }
-                                                        }
-                                                        valueDomain.put(lValue
-                                                                .trim()
-                                                                + "_value",
-                                                                domainValue);
-                                                    }
+                                                if (domain == null) {
+                                                    throw new IllegalActionException(
+                                                            "Internal error, removing \""
+                                                                    + lValue
+                                                                    + "\" returned null?");
                                                 } else {
-                                                    ArrayList<Integer> domain = valueDomain
-                                                            .remove(lValue);
-
-                                                    if (domain == null) {
-                                                        throw new IllegalActionException(
-                                                                "Internal error, removing \""
-                                                                        + lValue
-                                                                        + "\" returned null?");
-                                                    } else {
-                                                        for (int j = domain
-                                                                .size() - 1; j >= 0; j--) {
-                                                            if (domain.get(j)
-                                                                    .intValue() != numberRetrival) {
-                                                                domain
-                                                                        .remove(j);
-                                                            }
-                                                        }
-                                                        valueDomain.put(lValue,
-                                                                domain);
-                                                    }
-                                                }
-
-                                            } else if (Pattern
-                                                    .matches(".*!=.*",
-                                                            subGuardCondition)) {
-                                                // not equal
-
-                                                if (isSignalVariable == true) {
-                                                    ArrayList<Integer> domainIsPresent = valueDomain
-                                                            .remove(lValue
-                                                                    .trim()
-                                                                    + "_isPresent");
-
-                                                    if (domainIsPresent == null) {
-                                                        throw new IllegalActionException(
-                                                                "Internal error, removing \""
-                                                                        + lValue
-                                                                        + "\" returned null?");
-                                                    } else {
-                                                        for (int j = domainIsPresent
-                                                                .size() - 1; j >= 0; j--) {
-                                                            if (domainIsPresent
-                                                                    .get(j)
-                                                                    .intValue() == numberRetrival) {
-                                                                domainIsPresent
-                                                                        .remove(j);
-                                                            }
-                                                        }
-                                                        valueDomain
-                                                                .put(
-                                                                        lValue
-                                                                                .trim()
-                                                                                + "_isPresent",
-                                                                        domainIsPresent);
-                                                    }
-                                                    ArrayList<Integer> domainValue = valueDomain
-                                                            .remove(lValue
-                                                                    .trim()
-                                                                    + "_value");
-
-                                                    if (domainValue == null) {
-                                                        throw new IllegalActionException(
-                                                                "Internal error, removing \""
-                                                                        + lValue
-                                                                        + "\" returned null?");
-                                                    } else {
-                                                        for (int j = domainValue
-                                                                .size() - 1; j >= 0; j--) {
-                                                            if (domainValue
-                                                                    .get(j)
-                                                                    .intValue() == numberRetrival) {
-                                                                domainValue
-                                                                        .remove(j);
-                                                            }
-                                                        }
-                                                        valueDomain.put(lValue
-                                                                .trim()
-                                                                + "_value",
-                                                                domainValue);
-                                                    }
-                                                } else {
-                                                    ArrayList<Integer> domain = valueDomain
-                                                            .remove(lValue);
-
-                                                    if (domain == null) {
-                                                        throw new IllegalActionException(
-                                                                "Internal error, removing \""
-                                                                        + lValue
-                                                                        + "\" returned null?");
-                                                    } else {
-                                                        for (int j = domain
-                                                                .size() - 1; j >= 0; j--) {
-                                                            if (domain.get(j)
-                                                                    .intValue() == numberRetrival) {
-                                                                domain
-                                                                        .remove(j);
-                                                            }
-                                                        }
-                                                        valueDomain.put(lValue,
-                                                                domain);
-                                                    }
-                                                }
-
-                                            } else if (Pattern
-                                                    .matches(".*<=.*",
-                                                            subGuardCondition)) {
-                                                // less or equal than
-
-                                                if (isSignalVariable == true) {
-                                                    ArrayList<Integer> domainIsPresent = valueDomain
-                                                            .remove(lValue
-                                                                    .trim()
-                                                                    + "_isPresent");
-
-                                                    if (domainIsPresent == null) {
-                                                        throw new IllegalActionException(
-                                                                "Internal error, removing \""
-                                                                        + lValue
-                                                                        + "\" returned null?");
-                                                    } else {
-                                                        for (int j = domainIsPresent
-                                                                .size() - 1; j >= 0; j--) {
-                                                            if (domainIsPresent
-                                                                    .get(j)
-                                                                    .intValue() > numberRetrival) {
-                                                                domainIsPresent
-                                                                        .remove(j);
-                                                            }
-                                                        }
-                                                        valueDomain
-                                                                .put(
-                                                                        lValue
-                                                                                .trim()
-                                                                                + "_isPresent",
-                                                                        domainIsPresent);
-                                                    }
-                                                    ArrayList<Integer> domainValue = valueDomain
-                                                            .remove(lValue
-                                                                    .trim()
-                                                                    + "_value");
-
-                                                    if (domainValue == null) {
-                                                        throw new IllegalActionException(
-                                                                "Internal error, removing \""
-                                                                        + lValue
-                                                                        + "\" returned null?");
-                                                    } else {
-                                                        for (int j = domainValue
-                                                                .size() - 1; j >= 0; j--) {
-                                                            if (domainValue
-                                                                    .get(j)
-                                                                    .intValue() > numberRetrival) {
-                                                                domainValue
-                                                                        .remove(j);
-                                                            }
-                                                        }
-                                                        valueDomain.put(lValue
-                                                                .trim()
-                                                                + "_value",
-                                                                domainValue);
-                                                    }
-                                                } else {
-                                                    ArrayList<Integer> domain = valueDomain
-                                                            .remove(lValue);
-
-                                                    if (domain == null) {
-                                                        throw new IllegalActionException(
-                                                                "Internal error, removing \""
-                                                                        + lValue
-                                                                        + "\" returned null?");
-                                                    } else {
-                                                        for (int j = domain
-                                                                .size() - 1; j >= 0; j--) {
-                                                            if (domain.get(j)
-                                                                    .intValue() > numberRetrival) {
-                                                                domain
-                                                                        .remove(j);
-                                                            }
-                                                        }
-                                                        valueDomain.put(lValue,
-                                                                domain);
-                                                    }
-
-                                                }
-
-                                            } else if (Pattern
-                                                    .matches(".*>=.*",
-                                                            subGuardCondition)) {
-                                                // greater or equal than
-
-                                                if (isSignalVariable == true) {
-                                                    // Deal cases for
-                                                    // XX_isPresent
-                                                    // and XX_value
-
-                                                    ArrayList<Integer> domainIsPresent = valueDomain
-                                                            .remove(lValue
-                                                                    .trim()
-                                                                    + "_isPresent");
-
-                                                    if (domainIsPresent == null) {
-                                                        throw new IllegalActionException(
-                                                                "Internal error, removing \""
-                                                                        + lValue
-                                                                        + "\" returned null?");
-                                                    } else {
-                                                        for (int j = domainIsPresent
-                                                                .size() - 1; j >= 0; j--) {
-                                                            if (domainIsPresent
-                                                                    .get(j)
-                                                                    .intValue() < numberRetrival) {
-                                                                domainIsPresent
-                                                                        .remove(j);
-                                                            }
-                                                        }
-                                                        valueDomain
-                                                                .put(
-                                                                        lValue
-                                                                                .trim()
-                                                                                + "_isPresent",
-                                                                        domainIsPresent);
-                                                    }
-                                                    ArrayList<Integer> domainValue = valueDomain
-                                                            .remove(lValue
-                                                                    .trim()
-                                                                    + "_value");
-
-                                                    if (domainValue == null) {
-                                                        throw new IllegalActionException(
-                                                                "Internal error, removing \""
-                                                                        + lValue
-                                                                        + "\" returned null?");
-                                                    } else {
-                                                        for (int j = domainValue
-                                                                .size() - 1; j >= 0; j--) {
-                                                            if (domainValue
-                                                                    .get(j)
-                                                                    .intValue() < numberRetrival) {
-                                                                domainValue
-                                                                        .remove(j);
-                                                            }
-                                                        }
-                                                        valueDomain.put(lValue
-                                                                .trim()
-                                                                + "_value",
-                                                                domainValue);
-                                                    }
-                                                } else {
-                                                    ArrayList<Integer> domain = valueDomain
-                                                            .remove(lValue);
-
-                                                    if (domain == null) {
-                                                        throw new IllegalActionException(
-                                                                "Internal error, removing \""
-                                                                        + lValue
-                                                                        + "\" returned null?");
-                                                    } else {
-                                                        for (int j = domain
-                                                                .size() - 1; j >= 0; j--) {
-                                                            if (domain.get(j)
-                                                                    .intValue() < numberRetrival) {
-                                                                domain
-                                                                        .remove(j);
-                                                            }
-                                                        }
-                                                        valueDomain.put(lValue,
-                                                                domain);
-                                                    }
-                                                }
-
-                                            } else if (Pattern.matches(".*>.*",
-                                                    subGuardCondition)) {
-
-                                                // greater than
-                                                if (isSignalVariable == true) {
-                                                    // Deal cases for
-                                                    // XX_isPresent
-                                                    // and XX_value
-                                                    ArrayList<Integer> domainIsPresent = valueDomain
-                                                            .remove(lValue
-                                                                    .trim()
-                                                                    + "_isPresent");
-
-                                                    if (domainIsPresent == null) {
-                                                        throw new IllegalActionException(
-                                                                "Internal error, removing \""
-                                                                        + lValue
-                                                                        + "\" returned null?");
-                                                    }
-
-                                                    for (int j = domainIsPresent
-                                                            .size() - 1; j >= 0; j--) {
-                                                        if (domainIsPresent
-                                                                .get(j)
-                                                                .intValue() <= numberRetrival) {
-                                                            domainIsPresent
-                                                                    .remove(j);
-                                                        }
-                                                    }
-                                                    valueDomain.put(lValue
-                                                            .trim()
-                                                            + "_isPresent",
-                                                            domainIsPresent);
-
-                                                    ArrayList<Integer> domainValue = valueDomain
-                                                            .remove(lValue
-                                                                    .trim()
-                                                                    + "_value");
-
-                                                    if (domainValue == null) {
-                                                        throw new IllegalActionException(
-                                                                "Internal error, removing \""
-                                                                        + lValue
-                                                                        + "\" returned null?");
-                                                    }
-
-                                                    for (int j = domainValue
-                                                            .size() - 1; j >= 0; j--) {
-                                                        if (domainValue.get(j)
-                                                                .intValue() <= numberRetrival) {
-                                                            domainValue
-                                                                    .remove(j);
-                                                        }
-                                                    }
-                                                    valueDomain.put(lValue
-                                                            .trim()
-                                                            + "_value",
-                                                            domainValue);
-                                                } else {
-                                                    ArrayList<Integer> domain = valueDomain
-                                                            .remove(lValue);
-
-                                                    if (domain == null) {
-                                                        throw new IllegalActionException(
-                                                                "Internal error, removing \""
-                                                                        + lValue
-                                                                        + "\" returned null?");
-                                                    }
-
                                                     for (int j = domain.size() - 1; j >= 0; j--) {
                                                         if (domain.get(j)
-                                                                .intValue() <= numberRetrival) {
+                                                                .intValue() != numberRetrival) {
                                                             domain.remove(j);
                                                         }
                                                     }
@@ -1784,87 +1517,116 @@ public class SMVUtility {
                                                             domain);
                                                 }
 
+                                            } else if (Pattern
+                                                    .matches(".*!=.*",
+                                                            subGuardCondition)) {
+                                                // not equal
+                                                ArrayList<Integer> domain = valueDomain
+                                                        .remove(lValue);
+
+                                                if (domain == null) {
+                                                    throw new IllegalActionException(
+                                                            "Internal error, removing \""
+                                                                    + lValue
+                                                                    + "\" returned null?");
+                                                } else {
+                                                    for (int j = domain.size() - 1; j >= 0; j--) {
+                                                        if (domain.get(j)
+                                                                .intValue() == numberRetrival) {
+                                                            domain.remove(j);
+                                                        }
+                                                    }
+                                                    valueDomain.put(lValue,
+                                                            domain);
+                                                }
+
+                                            } else if (Pattern
+                                                    .matches(".*<=.*",
+                                                            subGuardCondition)) {
+                                                // less or equal than
+                                                ArrayList<Integer> domain = valueDomain
+                                                        .remove(lValue);
+
+                                                if (domain == null) {
+                                                    throw new IllegalActionException(
+                                                            "Internal error, removing \""
+                                                                    + lValue
+                                                                    + "\" returned null?");
+                                                } else {
+                                                    for (int j = domain.size() - 1; j >= 0; j--) {
+                                                        if (domain.get(j)
+                                                                .intValue() > numberRetrival) {
+                                                            domain.remove(j);
+                                                        }
+                                                    }
+                                                    valueDomain.put(lValue,
+                                                            domain);
+                                                }
+
+                                            } else if (Pattern
+                                                    .matches(".*>=.*",
+                                                            subGuardCondition)) {
+                                                // greater or equal than
+                                                ArrayList<Integer> domain = valueDomain
+                                                        .remove(lValue);
+
+                                                if (domain == null) {
+                                                    throw new IllegalActionException(
+                                                            "Internal error, removing \""
+                                                                    + lValue
+                                                                    + "\" returned null?");
+                                                } else {
+                                                    for (int j = domain.size() - 1; j >= 0; j--) {
+                                                        if (domain.get(j)
+                                                                .intValue() < numberRetrival) {
+                                                            domain.remove(j);
+                                                        }
+                                                    }
+                                                    valueDomain.put(lValue,
+                                                            domain);
+                                                }
+
+                                            } else if (Pattern.matches(".*>.*",
+                                                    subGuardCondition)) {
+                                                // greater than
+                                                ArrayList<Integer> domain = valueDomain
+                                                        .remove(lValue);
+
+                                                if (domain == null) {
+                                                    throw new IllegalActionException(
+                                                            "Internal error, removing \""
+                                                                    + lValue
+                                                                    + "\" returned null?");
+                                                }
+
+                                                for (int j = domain.size() - 1; j >= 0; j--) {
+                                                    if (domain.get(j)
+                                                            .intValue() <= numberRetrival) {
+                                                        domain.remove(j);
+                                                    }
+                                                }
+                                                valueDomain.put(lValue, domain);
+
                                             } else if (Pattern.matches(".*<.*",
                                                     subGuardCondition)) {
                                                 // less than
-                                                if (isSignalVariable == true) {
-                                                    // Deal cases for
-                                                    // XX_isPresent
-                                                    // and XX_value
-                                                    ArrayList<Integer> domainIsPresent = valueDomain
-                                                            .remove(lValue
-                                                                    .trim()
-                                                                    + "_isPresent");
+                                                ArrayList<Integer> domain = valueDomain
+                                                        .remove(lValue);
 
-                                                    if (domainIsPresent == null) {
-                                                        throw new IllegalActionException(
-                                                                "Internal error, removing \""
-                                                                        + lValue
-                                                                        + "\" returned null?");
-                                                    } else {
-                                                        for (int j = domainIsPresent
-                                                                .size() - 1; j >= 0; j--) {
-                                                            if (domainIsPresent
-                                                                    .get(j)
-                                                                    .intValue() >= numberRetrival) {
-                                                                domainIsPresent
-                                                                        .remove(j);
-                                                            }
-                                                        }
-                                                        valueDomain
-                                                                .put(
-                                                                        lValue
-                                                                                .trim()
-                                                                                + "_isPresent",
-                                                                        domainIsPresent);
-                                                    }
-                                                    ArrayList<Integer> domainValue = valueDomain
-                                                            .remove(lValue
-                                                                    .trim()
-                                                                    + "_value");
-
-                                                    if (domainValue == null) {
-                                                        throw new IllegalActionException(
-                                                                "Internal error, removing \""
-                                                                        + lValue
-                                                                        + "\" returned null?");
-                                                    } else {
-                                                        for (int j = domainValue
-                                                                .size() - 1; j >= 0; j--) {
-                                                            if (domainValue
-                                                                    .get(j)
-                                                                    .intValue() >= numberRetrival) {
-                                                                domainValue
-                                                                        .remove(j);
-                                                            }
-                                                        }
-                                                        valueDomain.put(lValue
-                                                                .trim()
-                                                                + "_value",
-                                                                domainValue);
-                                                    }
+                                                if (domain == null) {
+                                                    throw new IllegalActionException(
+                                                            "Internal error, removing \""
+                                                                    + lValue
+                                                                    + "\" returned null?");
                                                 } else {
-
-                                                    ArrayList<Integer> domain = valueDomain
-                                                            .remove(lValue);
-
-                                                    if (domain == null) {
-                                                        throw new IllegalActionException(
-                                                                "Internal error, removing \""
-                                                                        + lValue
-                                                                        + "\" returned null?");
-                                                    } else {
-                                                        for (int j = domain
-                                                                .size() - 1; j >= 0; j--) {
-                                                            if (domain.get(j)
-                                                                    .intValue() >= numberRetrival) {
-                                                                domain
-                                                                        .remove(j);
-                                                            }
+                                                    for (int j = domain.size() - 1; j >= 0; j--) {
+                                                        if (domain.get(j)
+                                                                .intValue() >= numberRetrival) {
+                                                            domain.remove(j);
                                                         }
-                                                        valueDomain.put(lValue,
-                                                                domain);
                                                     }
+                                                    valueDomain.put(lValue,
+                                                            domain);
                                                 }
 
                                             }
@@ -1927,6 +1689,7 @@ public class SMVUtility {
                                 // a = a op constInt; or a = constInt;
 
                                 if (Pattern.matches(".*\\*.*", rValue)) {
+                                    
 
                                     String[] rValueOperends = rValue
                                             .split("\\*");
@@ -1934,7 +1697,7 @@ public class SMVUtility {
                                     String offset = rValueOperends[1].trim();
 
                                     try {
-                                        Integer
+                                        int value = Integer
                                                 .parseInt(rValueOperends[1]
                                                         .trim());
                                     } catch (Exception ex) {
@@ -1990,7 +1753,7 @@ public class SMVUtility {
                                     String offset = rValueOperends[1].trim();
 
                                     try {
-                                        Integer
+                                        int value = Integer
                                                 .parseInt(rValueOperends[1]
                                                         .trim());
                                     } catch (Exception ex) {
@@ -2045,7 +1808,7 @@ public class SMVUtility {
                                     String offset = rValueOperends[1].trim();
 
                                     try {
-                                        Integer
+                                        int value = Integer
                                                 .parseInt(rValueOperends[1]
                                                         .trim());
                                     } catch (Exception ex) {
@@ -2067,9 +1830,8 @@ public class SMVUtility {
                                             } catch (Exception exInner) {
                                                 // Return the format is not
                                                 // supported by the system.
-                                                throw new IllegalActionException(
-                                                        "SMVUtility.generateAllVariableTransition() clashes:\n"
-                                                                + "Format not supported by the system.");
+                                                throw new IllegalActionException("SMVUtility.generateAllVariableTransition() clashes:\n"
+                                                        + "Format not supported by the system.");
                                             }
 
                                         }
@@ -2104,7 +1866,7 @@ public class SMVUtility {
                                     String offset = rValueOperends[1].trim();
 
                                     try {
-                                        Integer
+                                        int value = Integer
                                                 .parseInt(rValueOperends[1]
                                                         .trim());
                                     } catch (Exception ex) {
@@ -2185,29 +1947,6 @@ public class SMVUtility {
                                 + statePrecondition, valueDomain, lValue
                                 + "_isPresent", "1", "N");
 
-                        // MODIFICATION 2008.07.22:
-                        // Now we also need to consider the value
-                        // of the token. Fortunately, it can be only of two
-                        // values: 0 or 1. We throw an exception when the
-                        // sending token is not in these two numbers. For the
-                        // rest, we can copy the existing code used in the
-                        // setAction.
-
-                        if (characters.length >= 1) {
-                            String rValue = characters[1].trim();
-                            if (Pattern.matches("^-?\\d+$", characters[1]
-                                    .trim()) == true) {
-                                // Generate all possible conditions that leads
-                                // to this change.
-
-                                _generatePremiseAndResultEachTransition(
-                                        signalPremise.toString()
-                                                + statePrecondition,
-                                        valueDomain, lValue + "_value", rValue,
-                                        "N");
-                            }
-                        }
-
                     }
                 }
             }
@@ -2221,15 +1960,14 @@ public class SMVUtility {
             StringBuffer upperLevelStatement) throws IllegalActionException {
 
         HashSet<String> returnSpecificationStateSet = new HashSet<String>();
-        // Based on specType, decide the type of the spec we are going to
-        // generate.
+        // Based on specType, decide the type of the spec we are going to generate.
         boolean isRiskSpec = false;
         if (specType.equalsIgnoreCase("Risk")) {
             isRiskSpec = true;
         }
 
         // List out all FSMs with their states.
-        for (Iterator actors = (model.entityList())
+        for (Iterator actors = (((CompositeActor) model).entityList())
                 .iterator(); actors.hasNext();) {
             Entity innerEntity = (Entity) actors.next();
             if (innerEntity instanceof FmvAutomaton) {
@@ -2282,9 +2020,9 @@ public class SMVUtility {
                     }
                 }
             } else if (innerEntity instanceof ModalModel) {
-                // We know that it is impossible for a ModalModel to have a
+                // We know that it is impossible for a ModalModel to have a 
                 // state with label. Also it is impossible to have a state
-                // machine refinement with label. Thus we may simply traverse
+                // machine refinement with label. Thus we may simply traverse 
                 // the system to see if a state has general refinement.
 
                 FSMActor controller = ((ModalModel) innerEntity)
@@ -2335,8 +2073,8 @@ public class SMVUtility {
                                     }
                                 } else {
                                     throw new IllegalActionException(
-                                            "SMVUtility._generateGraphicalSpecificationRecursiveStep() clashes: "
-                                                    + "number of inner actors greater than 1 ");
+                                            "SMVUtility._decideVariableSet() clashes: "
+                                                    + "number of actor greater than 1 ");
                                 }
                             }
                         }
@@ -2355,81 +2093,92 @@ public class SMVUtility {
      * modular approach is applied to eliminate complexity of the conversion
      * process.
      * 
-     * @param span The size to expand the original domain
+     * @param span The size to expand the original domain 
      * 
      */
-    private static ArrayList<StringBuffer> _generateSMVDescriptionModalModelWithRefinement(
+    private static ArrayList<StringBuffer> _generateSMVFormatModalModelWithRefinement(
             ModalModel modalmodel, String span, String upperStateName)
             throws IllegalActionException, NameDuplicationException {
-        /* The sketch of the algorithm is roughly as follows:
-         * 
-         * (Step 0) All signals has been detected prior to execute this function.
-         * First scan from top, for each FSMActor generate the modular description.
-         * If an actor is a ModalModel, we try to scan through each state.
-         * In a ModalModel, the transition may consist of two different types:
-         * 
-         * (1)reset = true: This means that after this transition, the state of 
-         *         refinement machine the would be reset to initial state. 
-         *    Two views exist:
-         *    [i] In a global view, states in the destination-state refinement machine 
-         *        and those in the source-state refinement machine are exclusive,
-         *        To represent the state space, we may simply use the union of 
-         *        each refinement state machine as the total state space.
-         *    [ii] The FSM goes back to initial state. Thus we view the whole 
-         *         ModalModel as the composition of state system where at any 
-         *         instant, there is one state existing in each refinement.
-         *         To represent the state space, we may simply use the product of 
-         *         each refinement state machine as the total state space.
-         *     
-         *   (2)reset = false: This means that after this transition, state of 
-         *          refinement machine the would not be reset to initial state. 
-         *          To represent the state space, we may simply use the product of 
-         *          each refinement state machine as the total state space.
-         *          (similar to [ii])
-         *       
-         *   To sum up, for systems with "history transitions", the representation 
-         *   requires more state variables to encode.      
-         *   
-         *   
-         * Also for ModalModels, it may have two kinds of state refinements:  
-         * (a)StateMachineRefinement: The inner refinement is a state machine.
-         * (b)GeneralRefinement: This means that the inner refinement is another
-         *                       system. (it should also be SR, otherwise is 
-         *                       beyond our scope for implementation)
-         * (c)No refinement
-         * 
-         * Now we list out all possible combinations:
-         * (1a): This can be done easily by a whole rewriting of the system into
-         *       a bigger FSM consisting all sub-states and possible connections.
-         * (1b): This case is extremely complicated: thus we do not allow end
-         *       user to operate in this way.
-         * (1ab): Same as (1b)
-         * (1*c): apply similar concept as (1a,1b,1ab)
-         * (2a*): This is contradictory; it is impossible to have a bigger FSM
-         *        having two states existing simultaneously.
-         * (2b): In this case we build up different submodules for each
-         *       refinement, and construct the another FSMcontroller to send 
-         *       signals accepted by ModalModel to it.
-         *       
-         * FIXME: We only implement cases where transition reset is false;      
-         * we are currently implementing the case for (2b) and (2a[ii])    
-         * We may extend the functionality later on.
-         *   
-         * When writing the description of a module, one challenging problem is  
-         * to understand the location of the signal. For a certain signal required 
-         * in the transition in the subsystem S'' in S, it may be passed from
-         * another system S'. However, because the subsystem S'' is an instance
-         * of the system S, S'' can not access the signal of S'. 
-         * 
-         * Instead, we need to pass the signal from S' to S, then assign the signal 
-         * to S'' during the instantiation process of S''.
-         * 
-         * In the description of _globalSignalDistributionInfo and
-         *  _globalSignalRetrivalInfo, it only tells you the signal needed for
-         * this component, and the signal generated by this component. Thus
-         * additional work must be done.
-         * 
-         */
+        // The sketch of the algorithm is roughly as follows:
+        // (Step 0) All signals has been detected prior to execute this
+        // function.
+        //
+        // First scan from top, for each FSMActor generate the modular
+        // description.
+        // If an actor is a ModalModel, we try to scan through each state. In a
+        // ModalModel, the transition may consist of two different types:
+        // (1)reset = true: This means that after this transition, the status
+        // of the source state would be reset. Two view exist:
+        // [i] Therefore in a global view, the destination and
+        // the source are exclusive.
+        // [ii]The FSM goes back to initial state. Thus we view
+        // the whole ModalModel as the composition of state
+        // system where at any instant, there is one state
+        // existing in each refinement.
+        //               
+        // (2)reset = false: This means that after this transition, the status
+        // of the source state would not be reset. Therefore
+        // in a global view, the destination and the source
+        // exist simultaneously (correspond to [ii]). For a
+        // ModalModel having all its transitions to be this
+        // type, it means that each state are executed
+        // asynchronously based on the indication of
+        // the transition.
+        //  
+        // An arbitrary combination of these two kinds of transition
+        // leads to extremely complicated behavior of the system. In fact
+        // the semantic should be contradictory when a state has two outgoing
+        // transition with two different type. Thus in our verification
+        // context, we do not allow a single state to have two different kind
+        // of transitions.
+        // 
+        // Also for ModalModels, it may have two kinds of state refinements:
+        // (a)StateMachineRefinement: This means that the inner refinement is
+        // a state machine. We may use existing
+        // techniques to deal with it.
+        // (b)GeneralRefinement: This means that the inner refinement is another
+        // system (it should also be SR, otherwise is beyond)
+        // our scope for manipulation.
+        // (c)No refinement
+        // 
+        // Now we list out all possible combinations:
+        // (1a): This can be done easily by a whole rewriting of the system into
+        // a bigger FSM consisting all substates and possible connections.
+        // (1b): This case is extremely complicated: thus we do not allow end
+        // user
+        // to operate in this way.
+        // (1ab): Same as (1b)
+        // (1*c): apply similar concept as (1a,1b,1ab)
+        // (2a*): This is contradictory; it is impossible to have a bigger FSM
+        // having
+        // two states existing simultaneously.
+        // (2b): In this case we build up different submodules for each
+        // refinement,
+        // and construct the another FSMcontroller to send signals accepted
+        // by ModalModel to it.
+        //
+        // FIXME: We only implement cases where transition reset is false;
+        // we are currently implementing the case for (2b) and (2a[ii])
+        // We may extend the functionality later on.
+        //
+        // When writing the description of a module, one challenging problem is
+        // to
+        // understand the location of the signal. For a certain signal required
+        // in the transition in the subsystem S'' in S, it may be passed from
+        // another system S'. However, because the subsystem S'' is an instance
+        // of
+        // the system S, S'' can not access the signal of S'. Instead, we need
+        // to
+        // pass the signal from S' to S, then assign the signal to S'' during
+        // the instantiation process of S''.
+        //
+        // In the description of _globalSignalDistributionInfo and
+        // _globalSignalRetrivalInfo, it only tells you the signal needed for
+        // this
+        // component, and the signal generated by this component. Thus
+        // additional
+        // work must be done.
+
         ArrayList<StringBuffer> modularDescription = new ArrayList<StringBuffer>();
         FSMActor controller = modalmodel.getController();
         controller.setName(modalmodel.getName());
@@ -2458,8 +2207,8 @@ public class SMVUtility {
                             }
                         } else {
                             throw new IllegalActionException(
-                                    "SMVUtility._generateSMVFormatModalModelWithRefinement clashes: "
-                                            + "number of actors in refinement greater than 1 ");
+                                    "FmvAutomaton._decideVariableSet() clashes: "
+                                            + "number of actor greater than 1 ");
                         }
                     }
                 }
@@ -2469,10 +2218,9 @@ public class SMVUtility {
                 && (isGeneralRefinementInLayer == false)) {
             // This means that there is no refinement in this ModalModel
             // We simply take out the controller to perform the generation
-            // process (the controller is an FSMActor).
-            // 
+            // process.
             modularDescription.add(_translateSingleFSMActor(controller, span,
-                    false, upperStateName));
+                    false, "", upperStateName));
 
         } else {
             // This means that it uses general refinement.
@@ -2492,7 +2240,8 @@ public class SMVUtility {
                                 // It would only have the case where
                                 // actor.length == 1.
                                 // If we encounter cases > 1, report error for
-                                // further bug fix.
+                                // further
+                                // bug fix.
                                 TypedActor innerActor = actors[0];
                                 if (innerActor instanceof FSMActor) {
                                     // Here we also need to feed in
@@ -2502,7 +2251,8 @@ public class SMVUtility {
                                     modularDescription
                                             .add(_translateSingleFSMActor(
                                                     (FSMActor) innerActor,
-                                                    span, false, state
+                                                    span, false, controller
+                                                            .getName(), state
                                                             .getName()));
                                 } else if (innerActor instanceof CompositeActor) {
                                     // First see if its director is SR.
@@ -2513,14 +2263,14 @@ public class SMVUtility {
                                     if (!(director instanceof SRDirector)) {
                                         // This is not what we can process.
                                         throw new IllegalActionException(
-                                                "SMVUtility._generateSMVFormatModalModelWithRefinement(): "
+                                                "SMVUtility._rewriteModalModelWithGeneralRefinementToFSMActor(): "
                                                         + "Inner director not SR.");
                                     } else {
                                         // This is OK for our analysis
                                         // Generate system description for these
                                         // two.
                                         modularDescription
-                                                .add(_generateSMVDescriptionSubSystem(
+                                                .add(_generateSubSystemSMVDescription(
                                                         (CompositeActor) innerActor,
                                                         span, state.getName()));
 
@@ -2528,12 +2278,13 @@ public class SMVUtility {
                                 } else {
                                     // We are not able to deal with it.
                                 }
+
                             } else {
                                 // Theoretically this should not happen.
                                 // Once this happens, report an error to
                                 // notify the author the situation.
                                 throw new IllegalActionException(
-                                        "SMVUtility._generateSMVFormatModalModelWithRefinement(): "
+                                        "SMVUtility._rewriteModalModelWithGeneralRefinementToFSMActor(): "
                                                 + "Refinement has two or more inner actors.");
                             }
                         }
@@ -2552,7 +2303,7 @@ public class SMVUtility {
             // variable is true or not in its transition.
 
             StringBuffer controllerDescription = _translateSingleFSMActor(
-                    controller, span, true, "");
+                    controller, span, true, controller.getName(), "");
             if (controllerDescription != null) {
                 modularDescription.add(controllerDescription);
             }
@@ -2563,36 +2314,37 @@ public class SMVUtility {
 
     }
 
-    /**
-     * This private function tries to generate the system description of a
-     * subsystem which has a ModalModel controller as its upper-layer.
+    /** This private function tries to generate the system description of a subsystem
+     * which has a ModalModel controller as its upperlayer.
      * 
      * @param model The subsystem which is the refinement of a state.
      * @param span The size of span to expand the domain of variable.
-     * @param upperStateName The name of the upper level model name. This upper 
-     *        state has the model as refinement.
-     * @return The StringBuffer description of the subsystem acceptable by the
+     * @param upperStateName The name of the upper level model name. This 
+     *                       upper state has the model as refinement.
+     * @return The StringBuffer description of the subsystem acceptable by the 
      *         model checker.
      * @throws IllegalActionException
      * @throws NameDuplicationException
      */
-    private static StringBuffer _generateSMVDescriptionSubSystem(
+    private static StringBuffer _generateSubSystemSMVDescription(
             CompositeActor model, String span, String upperStateName)
             throws IllegalActionException, NameDuplicationException {
 
         StringBuffer returnFmvFormat = new StringBuffer("");
 
         // List out all FSMs with their states.
-        for (Iterator actors = (model.entityList())
+        for (Iterator actors = (((CompositeActor) model).entityList())
                 .iterator(); actors.hasNext();) {
             Entity innerEntity = (Entity) actors.next();
             if (innerEntity instanceof FSMActor) {
                 // Directly generate the whole description of the system.
-                returnFmvFormat.append(_translateSingleFSMActor(
-                        (FSMActor) innerEntity, span, false, upperStateName));
+                returnFmvFormat
+                        .append(_translateSingleFSMActor(
+                                (FSMActor) innerEntity, span, false, "",
+                                upperStateName));
             } else if (innerEntity instanceof ModalModel) {
                 // Perform analysis of the ModalModel
-                ArrayList<StringBuffer> subSystemDescription = _generateSMVDescriptionModalModelWithRefinement(
+                ArrayList<StringBuffer> subSystemDescription = _generateSMVFormatModalModelWithRefinement(
                         (ModalModel) innerEntity, span, upperStateName);
                 for (int i = 0; i < subSystemDescription.size(); i++) {
                     returnFmvFormat.append(subSystemDescription.get(i));
@@ -2622,408 +2374,12 @@ public class SMVUtility {
 
         // String[] keySetArray = (String[]) valueDomain.keySet().toArray(
         // new String[0]);
-        String[] keySetArray = valueDomain.keySet().toArray(
+        String[] keySetArray = (String[]) valueDomain.keySet().toArray(
                 new String[valueDomain.keySet().size()]);
 
         _recursiveStepGeneratePremiseAndResultEachTransition(statePrecondition,
                 0, keySetArray.length, keySetArray, valueDomain, lValue,
                 offset, operatingSign);
-
-    }
-
-    /**
-     * Perform a systematic pre-scan to obtain information regarding the
-     * visibility of a signal. See the description in the source code for
-     * technical details.
-     * 
-     * @param model The whole system under analysis
-     * @param span The number to expand the domain of a variable. Note that
-     *                it is in fact irrelevant to the signal generation. It is
-     *                only used for the reuse of existing functions.
-     * @return
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
-     */
-    private static ArrayList<String> _prescanSystemSignal(CompositeActor model,
-            String span) throws IllegalActionException,
-            NameDuplicationException {
-
-        // This utility function performs a system pre-scanning and stores
-        // all signal information in three global variables:
-        //
-        // (1) HashMap<String, ArrayList<String>> _globalSignalDistributionInfo:
-        // It tells you for a certain component, the set of signals
-        // used in its guard expression.
-        //
-        // (2)HashMap<String, HashSet<String>> _globalSignalRetrivalInfo:
-        // It tells you for a certain component, the set of signals emitted
-        // from that component.
-        // 
-        // (3) HashMap<String, HashSet<String>> _globalSignalNestedRetrivalInfo:
-        // It tells you for a certain component, the set of signals emitted
-        // from that component and from subsystems below that component in
-        // the overall hierarchy.
-        //
-        // Thus if these three are established, we are able to retrieve
-        // the location of the signal.
-        //
-
-        ArrayList<String> subSystemNameList = new ArrayList<String>();
-
-        for (Iterator actors = (model.entityList())
-                .iterator(); actors.hasNext();) {
-            Entity innerEntity = (Entity) actors.next();
-            if (innerEntity instanceof FSMActor) {
-                FSMActor innerFSMActor = (FSMActor) innerEntity;
-
-                // Enumerate all variables used in the Kripke structure
-                int numSpan = Integer.parseInt(span);
-                HashSet<String> variableSet = null;
-                variableSet = _decideStateVariableSet(innerFSMActor, numSpan);
-
-                // Decide variables encoded in the Kripke Structure.
-                // Note that here the variable only contains Signal Variables.
-                // For example, PGo_isPresent
-                //
-                // MODIFICATION 2008.07.21:
-                // Now we also contain variables like PGo_value for representing
-                // the value of the signal variable.
-                HashSet<String> signalVariableSet = null;
-
-                // Enumerate all variables used in the Kripke structure
-                signalVariableSet = _decideSignalVariableSet(innerFSMActor);
-
-                // Meanwhile, place elements in signalVariableSet into
-                // variableSet;
-                Iterator<String> itSignalVariableSet = signalVariableSet
-                        .iterator();
-                while (itSignalVariableSet.hasNext()) {
-                    String valName = itSignalVariableSet.next();
-                    variableSet.add(valName);
-                }
-                HashSet<String> signalOfferedSet = new HashSet<String>();
-                Iterator<String> newItVariableSet = variableSet.iterator();
-                while (newItVariableSet.hasNext()) {
-                    String valName = newItVariableSet.next();
-                    boolean b1 = Pattern.matches(".*_isPresent", valName);
-                    if (b1 == true) {
-                        signalOfferedSet.add(valName);
-                    }
-                    boolean b2 = Pattern.matches(".*_value", valName);
-                    if (b2 == true) {
-                        signalOfferedSet.add(valName);
-                    }
-                }
-
-                _globalSignalRetrivalInfo.put(innerFSMActor.getName(),
-                        signalOfferedSet);
-                _globalSignalNestedRetrivalInfo.put(innerFSMActor.getName(),
-                        signalOfferedSet);
-                subSystemNameList.add(innerFSMActor.getName());
-
-                HashSet<String> guardSignalVariableSet = null;
-                // Enumerate all variables used in the Kripke structure
-                guardSignalVariableSet = _decideGuardSignalVariableSet(innerFSMActor);
-
-                ArrayList<String> guardSignalVariableInfo = new ArrayList<String>();
-
-                Iterator<String> itGuardSignalVariableSet = guardSignalVariableSet
-                        .iterator();
-                while (itGuardSignalVariableSet.hasNext()) {
-                    String valName = itGuardSignalVariableSet.next();
-                    guardSignalVariableInfo.add(valName);
-                }
-
-                _globalSignalDistributionInfo.put(innerFSMActor.getName(),
-                        guardSignalVariableInfo);
-
-            } else if (innerEntity instanceof ModalModel) {
-
-                ArrayList<String> subsubSystemNameList = new ArrayList<String>();
-
-                // If innerEntity is an instance of a ModalModel,
-                // we need to perform a recursive scan of the
-                // signal in the lower level.
-                //
-                // This includes the controller, and all rest FSMActors
-                // or ModalModels in the state refinement.
-
-                FSMActor controller = ((ModalModel) innerEntity)
-                        .getController();
-                controller.setName(innerEntity.getName());
-                Iterator states = controller.entityList().iterator();
-
-                while (states.hasNext()) {
-                    NamedObj state = (NamedObj) states.next();
-                    if (state instanceof State) {
-                        String refinementList = ((State) state).refinementName
-                                .getExpression();
-                        if ((refinementList == null)
-                                || (refinementList.equalsIgnoreCase(""))) {
-                        } else {
-                            // There is refinement in this state
-                            TypedActor[] refinementSystemActors = ((State) state)
-                                    .getRefinement();
-                            if (refinementSystemActors != null) {
-                                if (refinementSystemActors.length == 1) {
-                                    // It would only have the case where
-                                    // actor.length == 1.
-                                    // If we encounter cases > 1, report error
-                                    // for further bug fix.
-                                    TypedActor innerActor = refinementSystemActors[0];
-                                    if (innerActor instanceof FSMActor) {
-                                        FSMActor innerFSMActor = (FSMActor) innerActor;
-                                        HashSet<String> variableSet = null;
-
-                                        // Enumerate all variables used in the
-                                        // Kripke structure
-                                        int numSpan = Integer.parseInt(span);
-                                        variableSet = _decideStateVariableSet(
-                                                innerFSMActor, numSpan);
-
-                                        // Decide signal variables encoded in
-                                        // the Kripke structure
-                                        // For example, PGo_isPresent, PGo_value
-                                        HashSet<String> signalVariableSet = null;
-                                        signalVariableSet = _decideSignalVariableSet(innerFSMActor);
-
-                                        // Meanwhile, place elements in
-                                        // signalVariableSet into variableSet;
-                                        Iterator<String> itSignalVariableSet = signalVariableSet
-                                                .iterator();
-                                        while (itSignalVariableSet.hasNext()) {
-                                            String valName = itSignalVariableSet
-                                                    .next();
-                                            variableSet.add(valName);
-                                        }
-                                        HashSet<String> signalOfferedSet = new HashSet<String>();
-                                        if (variableSet != null) {
-                                            Iterator<String> newItVariableSet = variableSet
-                                                    .iterator();
-                                            while (newItVariableSet.hasNext()) {
-                                                String valName = newItVariableSet
-                                                        .next();
-                                                boolean b1 = Pattern
-                                                        .matches(
-                                                                ".*_isPresent",
-                                                                valName);
-                                                if (b1 == true) {
-                                                    signalOfferedSet
-                                                            .add(valName);
-                                                }
-                                                boolean b2 = Pattern.matches(
-                                                        ".*_value", valName);
-                                                if (b2 == true) {
-                                                    signalOfferedSet
-                                                            .add(valName);
-                                                }
-
-                                            }
-                                        }
-
-                                        _globalSignalRetrivalInfo.put(
-                                                innerFSMActor.getName().trim(),
-                                                signalOfferedSet);
-                                        _globalSignalNestedRetrivalInfo.put(
-                                                innerFSMActor.getName().trim(),
-                                                signalOfferedSet);
-                                        subsubSystemNameList.add(innerFSMActor
-                                                .getName().trim());
-
-                                        HashSet<String> guardSignalVariableSet = null;
-                                        // Enumerate all variables used in the
-                                        // Kripke structure
-                                        guardSignalVariableSet = _decideGuardSignalVariableSet(innerFSMActor);
-
-                                        ArrayList<String> guardSignalVariableInfo = new ArrayList<String>();
-
-                                        Iterator<String> itGuardSignalVariableSet = guardSignalVariableSet
-                                                .iterator();
-                                        while (itGuardSignalVariableSet
-                                                .hasNext()) {
-                                            String valName = itGuardSignalVariableSet
-                                                    .next();
-                                            guardSignalVariableInfo
-                                                    .add(valName);
-
-                                        }
-
-                                        _globalSignalDistributionInfo.put(
-                                                innerFSMActor.getName(),
-                                                guardSignalVariableInfo);
-
-                                    } else if (innerActor instanceof CompositeActor) {
-                                        // First see if its director is SR.
-                                        // If not, then it is beyond our current
-                                        // processing scope.
-                                        Director director = ((CompositeActor) innerActor)
-                                                .getDirector();
-                                        if (!(director instanceof SRDirector)) {
-                                            // This is not what we can process.
-                                            throw new IllegalActionException(
-                                                    "SMVUtility._prescanSystemSignal() clashes:\n"
-                                                            + "Inner director not SR.");
-                                        } else {
-                                            // This is OK for our analysis
-                                            // Generate system description
-                                            // for these two.
-
-                                            ArrayList<String> subsubsubSystemNameList = _prescanSystemSignal(
-                                                    (CompositeActor) innerActor,
-                                                    span);
-                                            for (int j = 0; j < subsubsubSystemNameList
-                                                    .size(); j++) {
-                                                subsubSystemNameList
-                                                        .add(subsubsubSystemNameList
-                                                                .get(j));
-                                            }
-
-                                        }
-                                    } else {
-                                        // We are not able to deal with it.
-                                        // Simply omit those cases.
-                                    }
-
-                                } else {
-                                    // Theoretically this should not happen.
-                                    // Once this happens, report an error to
-                                    // notify the author the situation.
-                                    throw new IllegalActionException(
-                                            "SMVUtility._prescanSystemSignal() clashes: \n"
-                                                    + "Refinement has two or more inner actors.");
-                                }
-                            }
-                        }
-                    }
-                }
-
-                // Lastly, store the signal information for the controller.
-
-                HashSet<String> variableSet = null;
-                // Enumerate all variables used in the Kripke structure
-                int numSpan = Integer.parseInt(span);
-                variableSet = _decideStateVariableSet(controller, numSpan);
-
-                // Decide variables encoded in the Kripke Structure.
-                // Note that here the variable only contains Signal Variables.
-                // For example, PGo_isPresent
-                HashSet<String> signalVariableSet = null;
-                signalVariableSet = _decideSignalVariableSet(controller);
-
-                // Meanwhile, place elements in signalVariableSet into
-                // variableSet;
-                Iterator<String> itSignalVariableSet = signalVariableSet
-                        .iterator();
-                while (itSignalVariableSet.hasNext()) {
-
-                    String valName = itSignalVariableSet.next();
-                    variableSet.add(valName);
-                }
-                HashSet<String> signalOfferedSet = new HashSet<String>();
-                Iterator<String> newItVariableSet = variableSet.iterator();
-                while (newItVariableSet.hasNext()) {
-                    String valName = newItVariableSet.next();
-                    boolean b1 = Pattern.matches(".*_isPresent", valName);
-                    if (b1 == true) {
-                        signalOfferedSet.add(valName);
-                    }
-                    boolean b2 = Pattern.matches(".*_value", valName);
-                    if (b2 == true) {
-                        signalOfferedSet.add(valName);
-                    }
-
-                }
-
-                // Use a new HashSet and copy all contents to avoid later
-                // modification.
-                HashSet<String> newSignalOfferedSet = new HashSet<String>();
-                if (signalOfferedSet != null)
-                    newSignalOfferedSet.addAll(signalOfferedSet);
-                _globalSignalRetrivalInfo.put(controller.getName(),
-                        newSignalOfferedSet);
-
-                // Now retrieve every subComponent s' of s from
-                // subsubSystemNameList,
-                // retrieve the signal from _globalSignalRetrivalInfo(s')
-                // and add them to _globalSignalNestedRetrivalInfo(s)
-                for (int i = 0; i < subsubSystemNameList.size(); i++) {
-                    String component = subsubSystemNameList.get(i);
-                    HashSet<String> componentSignalSet = _globalSignalNestedRetrivalInfo
-                            .get(component);
-
-                    if (componentSignalSet != null) {
-                        signalOfferedSet.addAll(componentSignalSet);
-                    }
-                    subSystemNameList.add(component);
-                }
-
-                if (_globalSignalNestedRetrivalInfo.get(controller.getName()) != null) {
-                    _globalSignalNestedRetrivalInfo.get(controller.getName())
-                            .addAll(signalOfferedSet);
-
-                } else {
-                    _globalSignalNestedRetrivalInfo.put(controller.getName(),
-                            signalOfferedSet);
-
-                }
-
-                HashSet<String> guardSignalVariableSet = null;
-                guardSignalVariableSet = _decideGuardSignalVariableSet(controller);
-
-                ArrayList<String> guardSignalVariableInfo = new ArrayList<String>();
-
-                Iterator<String> itGuardSignalVariableSet = guardSignalVariableSet
-                        .iterator();
-                while (itGuardSignalVariableSet.hasNext()) {
-                    String valName = itGuardSignalVariableSet.next();
-                    guardSignalVariableInfo.add(valName);
-                }
-
-                _globalSignalDistributionInfo.put(controller.getName(),
-                        guardSignalVariableInfo);
-
-                subSystemNameList.add(controller.getName());
-
-            } else if (innerEntity instanceof SMVLegacyCodeActor) {
-                HashSet<String> signalOfferedSet = new HashSet<String>();
-                // Retrieve the port from the actor.
-                Iterator<Port> itOutPortList = ((SMVLegacyCodeActor) innerEntity)
-                        .outputPortList().iterator();
-                while (itOutPortList.hasNext()) {
-                    String portName = itOutPortList.next().getName();
-                    signalOfferedSet.add(portName.trim() + "_isPresent");
-                    signalOfferedSet.add(portName.trim() + "_value");
-                }
-
-                if (_globalSignalNestedRetrivalInfo.get(innerEntity.getName()) != null) {
-                    _globalSignalNestedRetrivalInfo.get(innerEntity.getName())
-                            .addAll(signalOfferedSet);
-                } else {
-                    _globalSignalNestedRetrivalInfo.put(innerEntity.getName(),
-                            signalOfferedSet);
-                }
-
-                ArrayList<String> guardSignalVariableInfo = new ArrayList<String>();
-                Iterator<Port> itInPortList = ((SMVLegacyCodeActor) innerEntity)
-                        .inputPortList().iterator();
-
-                while (itInPortList.hasNext()) {
-                    String portName = itInPortList.next().getName();
-                    guardSignalVariableInfo.add(portName.trim() + "_isPresent");
-                    guardSignalVariableInfo.add(portName.trim() + "_value");
-
-                }
-
-                _globalSignalDistributionInfo.put(innerEntity.getName(),
-                        guardSignalVariableInfo);
-
-            } else if (innerEntity instanceof CompositeActor) {
-                // FIXME: No implementation here; this corresponds to
-                // the first fix-me statement.
-            }
-
-        }
-        return subSystemNameList;
 
     }
 
@@ -3072,45 +2428,20 @@ public class SMVUtility {
             throws IllegalActionException {
 
         if (index >= maxIndex) {
-            // MODIFICATION 2008.07.22:
-            // if the variable lValue is equal to the type XX_value,
-            // check if the new value is 0.
-            // if the new value is zero, then we should append a negation to the
-            // premise
-            boolean b2 = Pattern.matches(".*_value", lValue);
-            if ((b2 == true) && (newVariableValue.trim().equalsIgnoreCase("0"))) {
-                // Store in the array with !(currentPremise)
-                VariableTransitionInfo newTransitionInfo = new VariableTransitionInfo();
-                newTransitionInfo._preCondition = " !(" + currentPremise + ") ";
-                // newTransitionInfo._variableName = lValue;
-                newTransitionInfo._varibleNewValue = newVariableValue;
-                LinkedList<VariableTransitionInfo> temp = _variableTransitionInfo
-                        .remove(lValue);
-                if (temp == null) {
-                    throw new IllegalActionException(
-                            "Internal error, removing \"" + lValue
-                                    + "\" returned null?");
-                } else {
-                    temp.add(newTransitionInfo);
-                    _variableTransitionInfo.put(lValue, temp);
-                }
-            } else {
-                // Store in the array
+            // Store in the array
 
-                VariableTransitionInfo newTransitionInfo = new VariableTransitionInfo();
-                newTransitionInfo._preCondition = currentPremise;
-                // newTransitionInfo._variableName = lValue;
-                newTransitionInfo._varibleNewValue = newVariableValue;
-                LinkedList<VariableTransitionInfo> temp = _variableTransitionInfo
-                        .remove(lValue);
-                if (temp == null) {
-                    throw new IllegalActionException(
-                            "Internal error, removing \"" + lValue
-                                    + "\" returned null?");
-                } else {
-                    temp.add(newTransitionInfo);
-                    _variableTransitionInfo.put(lValue, temp);
-                }
+            VariableTransitionInfo newTransitionInfo = new VariableTransitionInfo();
+            newTransitionInfo._preCondition = currentPremise;
+            // newTransitionInfo._variableName = lValue;
+            newTransitionInfo._varibleNewValue = newVariableValue;
+            LinkedList<VariableTransitionInfo> temp = _variableTransitionInfo
+                    .remove(lValue);
+            if (temp == null) {
+                throw new IllegalActionException("Internal error, removing \""
+                        + lValue + "\" returned null?");
+            } else {
+                temp.add(newTransitionInfo);
+                _variableTransitionInfo.put(lValue, temp);
             }
 
         } else {
@@ -3184,14 +2515,10 @@ public class SMVUtility {
                                             for (int j = 0; j < (Integer
                                                     .parseInt(newVariableValue)); j++) {
 
-                                                // We need to make sure that it
-                                                // would
-                                                // never exceeds upper bound. If
-                                                // it
-                                                // is below lower bound, we must
-                                                // stop it
-                                                // and use GT to replace the
-                                                // value.
+                                                // We need to make sure that it would
+                                                // never exceeds upper bound. If it
+                                                // is below lower bound, we must stop it
+                                                // and use GT to replace the value.
 
                                                 if ((minimumInBoundary + j) > Integer
                                                         .parseInt(variableInfo._maxValue)) {
@@ -3223,11 +2550,10 @@ public class SMVUtility {
                                             .get(lValue);
                                     if (variableInfo != null) {
                                         if (variableInfo._maxValue != null) {
-                                            // For ordinary cases, we only need
-                                            // to check if the new value
-                                            // would exceeds the upper
-                                            // bound. If so, then use DOMAIN_GT
-                                            // to replace the value.
+                                            // For ordinary cases, we only need to check
+                                            // if the new value would exceeds the upper
+                                            // bound. If so, then use DOMAIN_GT to
+                                            // replace the value.
 
                                             String newPremise = currentPremise
                                                     + " & "
@@ -3246,8 +2572,7 @@ public class SMVUtility {
                                                     + (Integer
                                                             .parseInt(newVariableValue)) > Integer
                                                     .parseInt(variableInfo._maxValue)) {
-                                                // Use DOMAIN_GT to replace the
-                                                // value.
+                                                // Use DOMAIN_GT to replace the value.
                                                 updatedVariableValue = "gt";
                                             }
 
@@ -3305,18 +2630,13 @@ public class SMVUtility {
                                                     .parseInt(variableInfo._maxValue);
                                             for (int j = 0; j > (Integer
                                                     .parseInt(newVariableValue)); j--) {
-                                                // here j-- because
-                                                // newVariableValue is
+                                                // here j-- because newVariableValue is
                                                 // negative
 
-                                                // We need to make sure that it
-                                                // would
-                                                // never exceeds upper bound. If
-                                                // it
-                                                // is below lower bound, we must
-                                                // stop it
-                                                // and use LS to replace the
-                                                // value.
+                                                // We need to make sure that it would
+                                                // never exceeds upper bound. If it
+                                                // is below lower bound, we must stop it
+                                                // and use LS to replace the value.
 
                                                 if ((maximumInBoundary + j) < Integer
                                                         .parseInt(variableInfo._minValue)) {
@@ -3348,12 +2668,9 @@ public class SMVUtility {
                                             .get(lValue);
                                     if (variableInfo != null) {
                                         if (variableInfo._minValue != null) {
-                                            // For ordinary cases, we only need
-                                            // to check
-                                            // if the new value would exceeds
-                                            // the lower
-                                            // bound. If so, then use DOMAIN_LS
-                                            // to
+                                            // For ordinary cases, we only need to check
+                                            // if the new value would exceeds the lower
+                                            // bound. If so, then use DOMAIN_LS to
                                             // replace the value.
 
                                             String newPremise = currentPremise
@@ -3373,8 +2690,7 @@ public class SMVUtility {
                                                     + (Integer
                                                             .parseInt(newVariableValue)) < Integer
                                                     .parseInt(variableInfo._minValue)) {
-                                                // Use DOMAIN_LS to replace the
-                                                // value.
+                                                // Use DOMAIN_LS to replace the value.
                                                 updatedVariableValue = "ls";
                                             }
 
@@ -3431,12 +2747,9 @@ public class SMVUtility {
                                     if (variableInfo != null) {
                                         if ((variableInfo._minValue != null)
                                                 && (variableInfo._maxValue != null)) {
-                                            // If original variable value is GT,
-                                            // we
-                                            // place conservative analysis and
-                                            // assert
-                                            // that it might lead to all its
-                                            // possible
+                                            // If original variable value is GT, we
+                                            // place conservative analysis and assert
+                                            // that it might lead to all its possible
                                             // values.
 
                                             String newPremise = currentPremise
@@ -3456,14 +2769,10 @@ public class SMVUtility {
                                             for (int j = 0; j < (Integer
                                                     .parseInt(newVariableValue)); j++) {
 
-                                                // We need to make sure that it
-                                                // would
-                                                // never exceeds upper bound. If
-                                                // it
-                                                // is below lower bound, we must
-                                                // stop it
-                                                // and use LS to replace the
-                                                // value.
+                                                // We need to make sure that it would
+                                                // never exceeds upper bound. If it
+                                                // is below lower bound, we must stop it
+                                                // and use LS to replace the value.
 
                                                 if ((maximumInBoundary - j) < Integer
                                                         .parseInt(variableInfo._minValue)) {
@@ -3516,8 +2825,7 @@ public class SMVUtility {
                                                     - (Integer
                                                             .parseInt(newVariableValue)) < Integer
                                                     .parseInt(variableInfo._minValue)) {
-                                                // Use DOMAIN_LS to replace the
-                                                // value.
+                                                // Use DOMAIN_LS to replace the value.
                                                 updatedVariableValue = "ls";
                                             }
                                         }
@@ -3574,14 +2882,10 @@ public class SMVUtility {
                                             for (int j = 0; j > (Integer
                                                     .parseInt(newVariableValue)); j--) {
 
-                                                // We need to make sure that it
-                                                // would
-                                                // never exceeds upper bound. If
-                                                // it
-                                                // exceeds upper bound, we must
-                                                // stop it
-                                                // and use GT to replace the
-                                                // value.
+                                                // We need to make sure that it would
+                                                // never exceeds upper bound. If it
+                                                // exceeds upper bound, we must stop it
+                                                // and use GT to replace the value.
 
                                                 if ((minimumInBoundary - j) < Integer
                                                         .parseInt(variableInfo._maxValue)) {
@@ -3621,12 +2925,9 @@ public class SMVUtility {
                                     } else {
                                         if (variableInfo._minValue != null
                                                 && variableInfo._maxValue != null) {
-                                            // For ordinary part, we only need
-                                            // to check
-                                            // if the new value would exceeds
-                                            // the upper
-                                            // bound. If so, then use DOMAIN_GT
-                                            // to
+                                            // For ordinary part, we only need to check
+                                            // if the new value would exceeds the upper
+                                            // bound. If so, then use DOMAIN_GT to
                                             // replace the value.
 
                                             String newPremise = currentPremise
@@ -3646,8 +2947,7 @@ public class SMVUtility {
                                                     - (Integer
                                                             .parseInt(newVariableValue)) > Integer
                                                     .parseInt(variableInfo._maxValue)) {
-                                                // Use DOMAIN_LS to replace the
-                                                // value.
+                                                // Use DOMAIN_LS to replace the value.
                                                 updatedVariableValue = "gt";
                                             }
 
@@ -3701,10 +3001,8 @@ public class SMVUtility {
                                                 && variableInfo._maxValue != null) {
                                             if (Integer
                                                     .parseInt(variableInfo._maxValue) >= 0) {
-                                                // when max>=0, GT *
-                                                // positive_const = GT
-                                                // Hence the updated value
-                                                // remains the
+                                                // when max>=0, GT * positive_const = GT
+                                                // Hence the updated value remains the
                                                 // same.
                                                 _recursiveStepGeneratePremiseAndResultEachTransition(
                                                         newPremise, index + 1,
@@ -3716,38 +3014,24 @@ public class SMVUtility {
                                                 // _variableInfo.get(lValue))._maxValue)
                                                 // < 0
                                                 //  
-                                                // Starting from the upper bound
-                                                // + 1,
-                                                // +2, +3, +4 ... calculate all
-                                                // possible
-                                                // values until the new
-                                                // set-value is
+                                                // Starting from the upper bound + 1,
+                                                // +2, +3, +4 ... calculate all possible
+                                                // values until the new set-value is
                                                 // greater than GT.
                                                 // 
-                                                // For example, if upper bound
-                                                // is -5,
-                                                // and if the offset is 2, then
-                                                // for
-                                                // values in GT that is greater
-                                                // or equal
-                                                // to -2, the new variable would
-                                                // be in
-                                                // GT. But if the lower bound is
-                                                // -7,
-                                                // then we need to replace cases
-                                                // that is
-                                                // lower to -7. For example,
-                                                // -4*2=-8. We
-                                                // should use LS to represent
-                                                // this
+                                                // For example, if upper bound is -5,
+                                                // and if the offset is 2, then for
+                                                // values in GT that is greater or equal
+                                                // to -2, the new variable would be in
+                                                // GT. But if the lower bound is -7,
+                                                // then we need to replace cases that is
+                                                // lower to -7. For example, -4*2=-8. We
+                                                // should use LS to represent this
                                                 // value.
                                                 //
-                                                // Also we expect to record one
-                                                // LS as
-                                                // the new value only. So there
-                                                // are
-                                                // tricks that needs to be
-                                                // applied.
+                                                // Also we expect to record one LS as
+                                                // the new value only. So there are
+                                                // tricks that needs to be applied.
 
                                                 int starter = Integer
                                                         .parseInt(variableInfo._maxValue) + 1;
@@ -3764,10 +3048,8 @@ public class SMVUtility {
                                                                     * Integer
                                                                             .parseInt(newVariableValue) >= Integer
                                                                     .parseInt(variableInfo._minValue))) {
-                                                        // This IF statement
-                                                        // represents
-                                                        // tricks mentioned
-                                                        // above.
+                                                        // This IF statement represents
+                                                        // tricks mentioned above.
                                                         _recursiveStepGeneratePremiseAndResultEachTransition(
                                                                 newPremise,
                                                                 index + 1,
@@ -3830,10 +3112,8 @@ public class SMVUtility {
                                                 && variableInfo._maxValue != null) {
                                             if (Integer
                                                     .parseInt(variableInfo._minValue) <= 0) {
-                                                // when min<=0, LS *
-                                                // positive_const = LS
-                                                // Hence the updated value
-                                                // remains the
+                                                // when min<=0, LS * positive_const = LS
+                                                // Hence the updated value remains the
                                                 // same.
                                                 _recursiveStepGeneratePremiseAndResultEachTransition(
                                                         newPremise, index + 1,
@@ -3841,11 +3121,9 @@ public class SMVUtility {
                                                         valueDomain, lValue,
                                                         "ls", operatingSign);
                                             } else {
-                                                // Starting from the lower bound
-                                                // -1,
+                                                // Starting from the lower bound -1,
                                                 // -2, -3, -4 ...
-                                                // calculate all possible values
-                                                // until
+                                                // calculate all possible values until
                                                 // the value is greater than LS.
 
                                                 int starter = Integer
@@ -3938,8 +3216,7 @@ public class SMVUtility {
                                                     * (Integer
                                                             .parseInt(newVariableValue)) < Integer
                                                     .parseInt(variableInfo._minValue)) {
-                                                // Use DOMAIN_LS to replace the
-                                                // value.
+                                                // Use DOMAIN_LS to replace the value.
                                                 updatedVariableValue = "ls";
 
                                             } else if (vList.get(i).intValue()
@@ -3979,19 +3256,14 @@ public class SMVUtility {
 
                                             if (Integer
                                                     .parseInt(variableInfo._maxValue) >= 0) {
-                                                // Starting from the upper bound
-                                                // + 1,
+                                                // Starting from the upper bound + 1,
                                                 // +2, +3, +4 ...
-                                                // calculate all possible values
-                                                // until
+                                                // calculate all possible values until
                                                 // the value is less than LS.
                                                 // 
-                                                // For example, if upper bound =
-                                                // 1,
-                                                // lower bound = -7, and offset
-                                                // = -2,
-                                                // then we might have possible
-                                                // new
+                                                // For example, if upper bound = 1,
+                                                // lower bound = -7, and offset = -2,
+                                                // then we might have possible new
                                                 // set-values -4, -6, LS
 
                                                 int starter = Integer
@@ -4027,12 +3299,9 @@ public class SMVUtility {
 
                                             } else if (Integer
                                                     .parseInt(variableInfo._maxValue) < 0) {
-                                                // One important thing is that
-                                                // we may
-                                                // have cases where 0 * const =
-                                                // 0.
-                                                // Because 0 is in GT, so we
-                                                // would have
+                                                // One important thing is that we may
+                                                // have cases where 0 * const = 0.
+                                                // Because 0 is in GT, so we would have
                                                 // new value GT as a choice.
 
                                                 int starter = Integer
@@ -4091,8 +3360,7 @@ public class SMVUtility {
                                                         valueDomain, lValue,
                                                         "ls", operatingSign);
 
-                                                // Special case where 0 * const
-                                                // = 0
+                                                // Special case where 0 * const = 0
                                                 _recursiveStepGeneratePremiseAndResultEachTransition(
                                                         newPremise, index + 1,
                                                         maxIndex, keySetArray,
@@ -4121,19 +3389,14 @@ public class SMVUtility {
                                                 && variableInfo._maxValue != null) {
                                             if (Integer
                                                     .parseInt(variableInfo._minValue) <= 0) {
-                                                // Starting from the lower bound
-                                                // -1,
+                                                // Starting from the lower bound -1,
                                                 // -2, -3, -4 ...
-                                                // calculate all possible values
-                                                // until
+                                                // calculate all possible values until
                                                 // the value is less than GT.
                                                 // 
-                                                // For example, if upper bound =
-                                                // 7,
-                                                // lower bound = -1, and offset
-                                                // = -2,
-                                                // then we might have possible
-                                                // new
+                                                // For example, if upper bound = 7,
+                                                // lower bound = -1, and offset = -2,
+                                                // then we might have possible new
                                                 // set-values 4, 6, GT
 
                                                 int starter = Integer
@@ -4169,12 +3432,9 @@ public class SMVUtility {
 
                                             } else if (Integer
                                                     .parseInt(variableInfo._minValue) > 0) {
-                                                // One important thing is that
-                                                // we may
-                                                // have cases where 0 * const =
-                                                // 0.
-                                                // Because 0 is in LS, so we
-                                                // would have
+                                                // One important thing is that we may
+                                                // have cases where 0 * const = 0.
+                                                // Because 0 is in LS, so we would have
                                                 // new value LS as a choice.
 
                                                 int starter = Integer
@@ -4233,8 +3493,7 @@ public class SMVUtility {
                                                         valueDomain, lValue,
                                                         "gt", operatingSign);
 
-                                                // Special case where 0 * const
-                                                // = 0
+                                                // Special case where 0 * const = 0
                                                 _recursiveStepGeneratePremiseAndResultEachTransition(
                                                         newPremise, index + 1,
                                                         maxIndex, keySetArray,
@@ -4255,12 +3514,9 @@ public class SMVUtility {
                                     } else {
                                         if (variableInfo._minValue != null
                                                 && variableInfo._maxValue != null) {
-                                            // For ordinary part, we only need
-                                            // to check
-                                            // if the new value would exceeds
-                                            // the upper
-                                            // bound. If so, then use DOMAIN_GT
-                                            // to
+                                            // For ordinary part, we only need to check
+                                            // if the new value would exceeds the upper
+                                            // bound. If so, then use DOMAIN_GT to
                                             // replace the value.
 
                                             String newPremise = currentPremise
@@ -4280,8 +3536,7 @@ public class SMVUtility {
                                                     - (Integer
                                                             .parseInt(newVariableValue)) > Integer
                                                     .parseInt(variableInfo._maxValue)) {
-                                                // Use DOMAIN_LS to replace the
-                                                // value.
+                                                // Use DOMAIN_LS to replace the value.
                                                 updatedVariableValue = "gt";
                                             }
 
@@ -4331,8 +3586,7 @@ public class SMVUtility {
                                             && variableInfo._maxValue != null) {
                                         if (0 > Integer
                                                 .parseInt(variableInfo._maxValue)) {
-                                            // Use DOMAIN_LS to replace the
-                                            // value.
+                                            // Use DOMAIN_LS to replace the value.
                                             updatedVariableValue = "gt";
                                         } else if (0 < Integer
                                                 .parseInt(variableInfo._minValue)) {
@@ -4363,8 +3617,6 @@ public class SMVUtility {
 
                     ArrayList<Integer> vList = valueDomain
                             .get(keySetArray[index]);
-
-                    // Do as usual
                     if ((vList != null) && (vList.size() != 0)) {
                         for (int i = 0; i < vList.size(); i++) {
                             String updatedVariableValue = String.valueOf(vList
@@ -4400,10 +3652,11 @@ public class SMVUtility {
                     ArrayList<Integer> vList = valueDomain
                             .get(keySetArray[index]);
                     if ((vList != null) && (vList.size() != 0)) {
-                        boolean b1 = Pattern.matches(".*_isPresent",
+                        boolean b = Pattern.matches(".*_isPresent",
                                 keySetArray[index].trim());
-                        if (b1 == true) {
+                        if (b == true) {
                             String updatedVariableValue = newVariableValue;
+
                             String newPremise = currentPremise;
 
                             _recursiveStepGeneratePremiseAndResultEachTransition(
@@ -4411,161 +3664,8 @@ public class SMVUtility {
                                     keySetArray, valueDomain, lValue,
                                     updatedVariableValue, operatingSign);
                         } else {
-                            boolean b2 = Pattern.matches(".*_value",
-                                    keySetArray[index].trim());
-                            if ((b2 == true) && (vList.size() == 2)) {
-                                // See if vList.size() == 2, if so simply
-                                // attach XX_isPresent to the value.
-                                String[] variable = keySetArray[index].trim()
-                                        .split("_value");
-
-                                if (currentPremise.trim().equalsIgnoreCase("")) {
-                                    _recursiveStepGeneratePremiseAndResultEachTransition(
-                                            currentPremise + variable[0].trim()
-                                                    + "_isPresent ", index + 1,
-                                            maxIndex, keySetArray, valueDomain,
-                                            lValue, newVariableValue,
-                                            operatingSign);
-                                } else {
-                                    _recursiveStepGeneratePremiseAndResultEachTransition(
-                                            currentPremise + " & "
-                                                    + variable[0].trim()
-                                                    + "_isPresent ", index + 1,
-                                            maxIndex, keySetArray, valueDomain,
-                                            lValue, newVariableValue,
-                                            operatingSign);
-                                }
-                            } else if (b2 == true) {
-                                // Since now we have XX_value, we should
-                                // also attach the premise XX_isPresent
-                                String[] variable = keySetArray[index].trim()
-                                        .split("_value");
-
-                                for (int i = 0; i < vList.size(); i++) {
-                                    String updatedVariableValue = newVariableValue;
-                                    // retrieve the string and concatenate
-                                    String newPremise = currentPremise
-                                            + "&"
-                                            + keySetArray[index]
-                                            + "="
-                                            + String.valueOf(vList.get(i)
-                                                    .intValue()) + "&"
-                                            + variable[0].trim()
-                                            + "_isPresent ";
-
-                                    if (vList.get(i).intValue() == DOMAIN_LS) {
-                                        newPremise = currentPremise + " & "
-                                                + keySetArray[index] + "="
-                                                + "ls" + "&"
-                                                + variable[0].trim()
-                                                + "_isPresent ";
-                                    } else if (vList.get(i).intValue() == DOMAIN_GT) {
-                                        newPremise = currentPremise + " & "
-                                                + keySetArray[index] + "="
-                                                + "gt" + "&"
-                                                + variable[0].trim()
-                                                + "_isPresent ";
-                                    }
-                                    _recursiveStepGeneratePremiseAndResultEachTransition(
-                                            newPremise, index + 1, maxIndex,
-                                            keySetArray, valueDomain, lValue,
-                                            updatedVariableValue, operatingSign);
-                                }
-                            } else {
-                                for (int i = 0; i < vList.size(); i++) {
-                                    String updatedVariableValue = newVariableValue;
-                                    // retrieve the string and concatenate
-                                    String newPremise = currentPremise
-                                            + " & "
-                                            + keySetArray[index]
-                                            + "="
-                                            + String.valueOf(vList.get(i)
-                                                    .intValue());
-
-                                    if (vList.get(i).intValue() == DOMAIN_LS) {
-                                        newPremise = currentPremise + " & "
-                                                + keySetArray[index] + "="
-                                                + "ls";
-                                    } else if (vList.get(i).intValue() == DOMAIN_GT) {
-                                        newPremise = currentPremise + " & "
-                                                + keySetArray[index] + "="
-                                                + "gt";
-                                    }
-                                    _recursiveStepGeneratePremiseAndResultEachTransition(
-                                            newPremise, index + 1, maxIndex,
-                                            keySetArray, valueDomain, lValue,
-                                            updatedVariableValue, operatingSign);
-                                }
-                            }
-
-                        }
-
-                    } else {
-                        _recursiveStepGeneratePremiseAndResultEachTransition(
-                                currentPremise, index + 1, maxIndex,
-                                keySetArray, valueDomain, lValue,
-                                newVariableValue, operatingSign);
-                    }
-
-                }
-
-            } else {
-                // meaning: if
-                // (keySetArray[index].equalsIgnoreCase(lValue)==false)
-
-                ArrayList<Integer> vList = valueDomain.get(keySetArray[index]);
-
-                if ((vList != null) && (vList.size() != 0)) {
-                    // if the keySetArray[index] is similar to "XX_isPresent",
-                    // skip the update of premise.
-                    boolean b = Pattern.matches(".*_isPresent",
-                            keySetArray[index].trim());
-                    if (b == true) {
-                        _recursiveStepGeneratePremiseAndResultEachTransition(
-                                currentPremise, index + 1, maxIndex,
-                                keySetArray, valueDomain, lValue,
-                                newVariableValue, operatingSign);
-                    } else {
-                        boolean b2 = Pattern.matches(".*_value",
-                                keySetArray[index].trim());
-                        if ((b2 == true) && (vList.size() == 2)) {
-
-                            _recursiveStepGeneratePremiseAndResultEachTransition(
-                                    currentPremise, index + 1, maxIndex,
-                                    keySetArray, valueDomain, lValue,
-                                    newVariableValue, operatingSign);
-
-                        } else if (b2 == true) {
-                            String[] variable = keySetArray[index].trim()
-                                    .split("_value");
                             for (int i = 0; i < vList.size(); i++) {
-                                // retrieve the string and concatenate
-                                String newPremise = currentPremise
-                                        + " & "
-                                        + keySetArray[index]
-                                        + "="
-                                        + String.valueOf(vList.get(i)
-                                                .intValue()) + " & "
-                                        + variable[0].trim() + "_isPresent ";
-
-                                if (vList.get(i).intValue() == DOMAIN_LS) {
-                                    newPremise = currentPremise + " & "
-                                            + keySetArray[index] + "=" + "ls"
-                                            + " & " + variable[0].trim()
-                                            + "_isPresent ";
-                                } else if (vList.get(i).intValue() == DOMAIN_GT) {
-                                    newPremise = currentPremise + " & "
-                                            + keySetArray[index] + "=" + "gt"
-                                            + " & " + variable[0].trim()
-                                            + "_isPresent ";
-                                }
-                                _recursiveStepGeneratePremiseAndResultEachTransition(
-                                        newPremise, index + 1, maxIndex,
-                                        keySetArray, valueDomain, lValue,
-                                        newVariableValue, operatingSign);
-                            }
-                        } else {
-                            for (int i = 0; i < vList.size(); i++) {
+                                String updatedVariableValue = newVariableValue;
                                 // retrieve the string and concatenate
                                 String newPremise = currentPremise
                                         + " & "
@@ -4584,11 +3684,54 @@ public class SMVUtility {
                                 _recursiveStepGeneratePremiseAndResultEachTransition(
                                         newPremise, index + 1, maxIndex,
                                         keySetArray, valueDomain, lValue,
-                                        newVariableValue, operatingSign);
+                                        updatedVariableValue, operatingSign);
                             }
-
                         }
 
+                    } else {
+                        _recursiveStepGeneratePremiseAndResultEachTransition(
+                                currentPremise, index + 1, maxIndex,
+                                keySetArray, valueDomain, lValue,
+                                newVariableValue, operatingSign);
+                    }
+
+                }
+
+            } else {
+                // meaning: if
+                // (keySetArray[index].equalsIgnoreCase(lValue)==false)
+                ArrayList<Integer> vList = valueDomain.get(keySetArray[index]);
+
+                if ((vList != null) && (vList.size() != 0)) {
+                    // if the keySetArray[index] is similar to "XX_isPresent",
+                    // skip the update of premise.
+                    boolean b = Pattern.matches(".*_isPresent",
+                            keySetArray[index].trim());
+                    if (b == true) {
+                        _recursiveStepGeneratePremiseAndResultEachTransition(
+                                currentPremise, index + 1, maxIndex,
+                                keySetArray, valueDomain, lValue,
+                                newVariableValue, operatingSign);
+                    } else {
+                        for (int i = 0; i < vList.size(); i++) {
+
+                            // retrieve the string and concatenate
+                            String newPremise = currentPremise + " & "
+                                    + keySetArray[index] + "="
+                                    + String.valueOf(vList.get(i).intValue());
+
+                            if (vList.get(i).intValue() == DOMAIN_LS) {
+                                newPremise = currentPremise + " & "
+                                        + keySetArray[index] + "=" + "ls";
+                            } else if (vList.get(i).intValue() == DOMAIN_GT) {
+                                newPremise = currentPremise + " & "
+                                        + keySetArray[index] + "=" + "gt";
+                            }
+                            _recursiveStepGeneratePremiseAndResultEachTransition(
+                                    newPremise, index + 1, maxIndex,
+                                    keySetArray, valueDomain, lValue,
+                                    newVariableValue, operatingSign);
+                        }
                     }
 
                 } else {
@@ -4605,21 +3748,27 @@ public class SMVUtility {
 
     /**
      * A private function used as to generate variable initial values for the
-     * initial variable set. The current approach is to retrieve from the
-     * parameter specified in the actor.
+     * initial variable set. This is achieved using a scan on all transitions in
+     * edges (equalities/ inequalities) and retrieve all integer values in the
+     * system. Currently the span is not taken into consideration.
      * 
-     * @param actor The actor under analysis
-     * @param variableSet Set of variables that expect to find initial values.
+     * @param actor
+     *                The actor under analysis
+     * @param variableSet
+     *                Set of variables that expect to find initial values.
      * @return A HashMap indicating the pair (variable name, initial value).
      */
     private static HashMap<String, String> _retrieveVariableInitialValue(
-            FSMActor actor, HashSet<String> variableSet)
-            throws IllegalActionException {
+            FSMActor actor, HashSet<String> variableSet) {
 
         // One problem regarding the initial value retrieval from parameters
         // is that when retrieving parameters, the return value would consist
-        // of some undesirable information. We need to use "split" to do further
+        // of some undesirable infomation. We need to use split to do further
         // analysis.
+
+        // FIXME: One potential problem happens when a user forgets
+        // to specify the parameter. We need to establish a
+        // mechanism to report this case (it is not difficult).
 
         HashMap<String, String> returnMap = new HashMap<String, String>();
         Iterator<String> it = variableSet.iterator();
@@ -4637,16 +3786,7 @@ public class SMVUtility {
             if (initialValueExist == true) {
                 property = propertyList[propertyList.length - 1];
             } else {
-                // See if the property is of the format "XX_isPresent".
-                // If so, then
-                boolean b1 = Pattern.matches(".*_isPresent", attribute.trim());
-                // See if it is the case of XX_value
-                boolean b2 = Pattern.matches(".*_value", attribute.trim());
-                if (b1 == false && b2 == false) {
-                    throw new IllegalActionException(
-                            "The initial value of the variable \"" + attribute
-                                    + " is unspecified in the parameter.");
-                }
+                property = "";
             }
 
             // Retrieve the value of the variable. Property contains
@@ -4659,26 +3799,26 @@ public class SMVUtility {
 
     }
 
-    /**
-     * This function tries to translate an single FSMActor into the format
-     * acceptable by model checker. New functionalities for supporting 
-     * boolean-token recognition are added.
-     *
-     * @param actor The FSMActor under analysis.
-     * @param span The constant span for expanding the integer domain for state (inner) variables
-     * @param isController Whether the FSMActor is the controller of a ModalModel
-     * @param refinementStateName The name of the refinement state
+    /** This function tries to translate an single FSMActor into the 
+     *  format acceptable by model checker. 
+     * 
+     * @param actor
+     * @param span
+     * @param isController 
+     * @param controllerName
+     * @param refinementStateName
      * @return
      * @throws IllegalActionException
      */
     private static StringBuffer _translateSingleFSMActor(FSMActor actor,
-            String span, boolean isController, String refinementStateName)
-            throws IllegalActionException {
+            String span, boolean isController, String controllerName,
+            String refinementStateName) throws IllegalActionException {
 
-        // The utility function tries to translate a single
+        // This new version of utility function tries to translate a single
         // FSMActor into formats acceptable by model checker NuSMV.
+        // The main change lies in two parts:
         //
-        // (1) A single FSMActor can be the controller of the ModalModel,
+        // (1) Now a single FSMActor can be the controller of the ModalModel,
         // then in the description we need to instantiate each of the
         // sub-models (which is generated by state refinement) contained
         // within.
@@ -4688,11 +3828,10 @@ public class SMVUtility {
         // add up information whether the current state in the upper
         // controller is the state holding this FSMActor.
         //
-        // If refinementStateName is not an empty string, then we know that
+        // If refinementStateName is not empty string, then we know that
         // we need to be sure that the upper state must be in the state
         // "refinementStateName", otherwise, it is not allowed to perform
         // any transition.
-        // 
 
         String refinementStateActivePremise = "UpperState = "
                 + refinementStateName.trim();
@@ -4700,6 +3839,8 @@ public class SMVUtility {
         StringBuffer returnSmvFormat = new StringBuffer("");
         returnSmvFormat.append("\tVAR \n");
 
+        // MODIFICATION FOR THE ACTOR WHICH IS PART OF THE SUBSYSTEM
+        // UNDER A REFINEMENT OF A STATE.
         if (isController == true) {
             // For a controller, it also needs to instantiate all of the
             // inner modules existed below. Thus we use a function
@@ -4714,14 +3855,18 @@ public class SMVUtility {
 
         returnSmvFormat.append("\t\tstate : {");
 
-        // Enumerate all states in the automaton
+        // Enumerate all states in the FmvAutomaton
         HashSet<State> frontier = null;
+        // try {
         frontier = _enumerateStateSet(actor);
+        // } catch (Exception exception) {
+
+        // }
 
         // Print out all these states
         Iterator<State> it = frontier.iterator();
         while (it.hasNext()) {
-            State val = it.next();
+            State val = (State) it.next();
             returnSmvFormat.append(val.getDisplayName());
             if (it.hasNext()) {
                 returnSmvFormat.append(",");
@@ -4731,21 +3876,25 @@ public class SMVUtility {
 
         // Decide variables encoded in the Kripke Structure.
         // Note that here the variable only contains inner variables.
+        // 
         HashSet<String> variableSet = null;
-
+        // try {
         // Enumerate all variables used in the Kripke structure
         int numSpan = Integer.parseInt(span);
-        variableSet = _decideStateVariableSet(actor, numSpan);
+        variableSet = _decideVariableSet(actor, numSpan);
+        // } catch (Exception exception) {
+
+        // }
 
         Iterator<String> itVariableSet = variableSet.iterator();
         while (itVariableSet.hasNext()) {
 
-            String valName = itVariableSet.next();
+            String valName = (String) itVariableSet.next();
             returnSmvFormat.append("\t\t" + valName + " : {");
             // Retrieve the lower bound and upper bound of the variable used in
             // the system based on inequalities or assignments
             // Also, add up symbols "ls" and "gt" within the variable domain.
-            VariableInfo individual = _variableInfo.get(valName);
+            VariableInfo individual = (VariableInfo) _variableInfo.get(valName);
             if (individual == null) {
                 throw new IllegalActionException(
                         "Error in SMVUtility.translateSingleFSMActor(): \n_variableInfo.get(valName) == null?");
@@ -4762,12 +3911,14 @@ public class SMVUtility {
                     }
                     returnSmvFormat.append("gt };\n");
                 }
+
             }
+
         }
 
         // Decide variables encoded in the Kripke Structure.
         // Note that here the variable only contains Signal Variables.
-        // For example, PGo_isPresent and PGo_value
+        // For example, PGo_isPresent
 
         HashSet<String> signalVariableSet = null;
         signalVariableSet = _decideSignalVariableSet(actor);
@@ -4776,7 +3927,7 @@ public class SMVUtility {
         if (signalVariableSet != null) {
             Iterator<String> itSignalVariableSet = signalVariableSet.iterator();
             while (itSignalVariableSet.hasNext()) {
-                String valName = itSignalVariableSet.next();
+                String valName = (String) itSignalVariableSet.next();
                 variableSet.add(valName);
             }
         }
@@ -4812,13 +3963,18 @@ public class SMVUtility {
                             + info._preCondition + " :{ "
                             + info._varibleNewValue + " };\n");
                 }
+
             }
         }
+
         returnSmvFormat.append("\t\t\t\t1             : state;\n");
         returnSmvFormat.append("\t\t\tesac;\n\n");
 
+        // HashSet<String> signalOfferedSet = new HashSet<String>();
+
         // Find out initial values for those variables.
-        HashMap<String, String> variableInitialValue;
+        HashMap<String, String> variableInitialValue; // = new HashMap<String,
+        // String>();
         variableInitialValue = _retrieveVariableInitialValue(actor, variableSet);
 
         // Generate all transitions; run for every variable used in
@@ -4826,10 +3982,9 @@ public class SMVUtility {
         Iterator<String> newItVariableSet = variableSet.iterator();
         while (newItVariableSet.hasNext()) {
 
-            String valName = newItVariableSet.next();
-            boolean b1 = Pattern.matches(".*_isPresent", valName);
-            boolean b2 = Pattern.matches(".*_value", valName);
-            if ((b1 == true) || (b2 == true)) {
+            String valName = (String) newItVariableSet.next();
+            boolean b = Pattern.matches(".*_isPresent", valName);
+            if (b == true) {
 
             } else {
                 returnSmvFormat.append("\t\tinit(" + valName + ") := "
@@ -4843,8 +3998,8 @@ public class SMVUtility {
                 if (innerInfoList != null) {
                     for (int i = 0; i < innerInfoList.size(); i++) {
                         VariableTransitionInfo info = innerInfoList.get(i);
-                        // MODIFICATION FOR THE ACTOR WHICH IS PART OF THE
-                        // SUBSYSTEM UNDER A REFINEMENT OF A STATE.
+                        // MODIFICATION FOR THE ACTOR WHICH IS PART OF THE SUBSYSTEM
+                        // UNDER A REFINEMENT OF A STATE.
                         if (refinementStateName.equalsIgnoreCase("")) {
                             returnSmvFormat.append("\t\t\t\t"
                                     + info._preCondition + " :{ "
@@ -4858,12 +4013,17 @@ public class SMVUtility {
 
                     }
                 }
+
                 returnSmvFormat.append("\t\t\t\t1             : " + valName
                         + ";\n");
 
                 returnSmvFormat.append("\t\t\tesac;\n\n");
             }
+
         }
+
+        // MARK OUT THIS LINE BECAUSE THIS SHOULD HAVE BEEN DONE EARLIER.
+        // _globalSignalRetrivalInfo.put(actor.getName(), signalOfferedSet);
 
         // Lastly, attach the name and parameter required to use in the system.
         // In our current implementation, it corresponds to those variables
@@ -4873,9 +4033,24 @@ public class SMVUtility {
         // Note that here the variable only contains Signal Variables.
         // For example, PGo_isPresent
 
-        StringBuffer frontAttachment = new StringBuffer("\nMODULE "
+        StringBuffer frontAttachment = new StringBuffer("MODULE "
                 + actor.getName() + "( ");
 
+        // ArrayList<String> guardSignalVariableInfo = new ArrayList<String>();
+        // Meanwhile, place elements in signalVariableSet into variableSet;
+        /*
+        Iterator<String> itGuardSignalVariableSet = guardSignalVariableSet
+                .iterator();
+        while (itGuardSignalVariableSet.hasNext()) {
+            String valName = (String) itGuardSignalVariableSet.next();
+            guardSignalVariableInfo.add(valName);
+            if (itGuardSignalVariableSet.hasNext() == true) {
+                frontAttachment.append(valName + ",");
+            } else {
+                frontAttachment.append(valName);
+            }
+        }
+        */
         ArrayList<String> guardSignalVariableInfo = _globalSignalDistributionInfo
                 .get(actor.getName());
         if (guardSignalVariableInfo == null) {
@@ -4886,7 +4061,7 @@ public class SMVUtility {
             Iterator<String> itGuardSignalVariableSet = guardSignalVariableSet
                     .iterator();
             while (itGuardSignalVariableSet.hasNext()) {
-                String valName = itGuardSignalVariableSet.next();
+                String valName = (String) itGuardSignalVariableSet.next();
                 // guardSignalVariableInfo.add(valName);
                 if (itGuardSignalVariableSet.hasNext() == true) {
                     frontAttachment.append(valName + ",");
@@ -4927,7 +4102,7 @@ public class SMVUtility {
                 Iterator<String> newItSignalVariableSet = signalVariableSet
                         .iterator();
                 while (newItSignalVariableSet.hasNext()) {
-                    String valName = newItSignalVariableSet.next();
+                    String valName = (String) newItSignalVariableSet.next();
                     frontAttachment.append("\t\t" + valName + " := ");
 
                     List<VariableTransitionInfo> innerInfoList = _variableTransitionInfo
@@ -4937,81 +4112,29 @@ public class SMVUtility {
                             VariableTransitionInfo info = innerInfoList.get(i);
                             // MODIFICATION FOR THE ACTOR WHICH IS PART OF THE
                             // SUBSYSTEM UNDER A REFINEMENT OF A STATE.
-                            if (i == 0) {
-                                if (i == innerInfoList.size() - 1) {
-                                    if (refinementStateName.equalsIgnoreCase("")) {
-                                        frontAttachment.append(" ( "
-                                                + info._preCondition + " ) ;\n\n  ");
-                                    } else {
-                                        frontAttachment.append(" ("
-                                                + refinementStateActivePremise
-                                                + " & " + info._preCondition
-                                                + " ) ;\n\n  ");
-                                    }
-                                } else {
+                            if (i == innerInfoList.size() - 1) {
                                 if (refinementStateName.equalsIgnoreCase("")) {
                                     frontAttachment.append(" ( "
-                                            + info._preCondition + " )  ");
+                                            + info._preCondition + " ) ;\n\n ");
                                 } else {
-                                    frontAttachment.append(" ("
+                                    
+                                    frontAttachment.append("("
                                             + refinementStateActivePremise
                                             + " & " + info._preCondition
-                                            + " )  ");
-                                }
-                                }
-
-
-                            } else if (i == innerInfoList.size() - 1) {
-                                if (info._preCondition.contains("!")) {
-                                    if (refinementStateName
-                                            .equalsIgnoreCase("")) {
-                                        frontAttachment.append(" & ( "
-                                                + info._preCondition
-                                                + " ) ;\n\n ");
-                                    } else {
-                                        frontAttachment.append(" & ("
-                                                + refinementStateActivePremise
-                                                + " & " + info._preCondition
-                                                + " ) ;\n\n ");
-                                    }
-                                } else {
-                                    if (refinementStateName
-                                            .equalsIgnoreCase("")) {
-                                        frontAttachment.append(" | ( "
-                                                + info._preCondition
-                                                + " ) ;\n\n ");
-                                    } else {
-                                        frontAttachment.append(" | ("
-                                                + refinementStateActivePremise
-                                                + " & " + info._preCondition
-                                                + " ) ;\n\n ");
-                                    }
+                                            + " ) ;\n\n ");
                                 }
                             } else {
-                                if (info._preCondition.contains("!")) {
-                                    if (refinementStateName
-                                            .equalsIgnoreCase("")) {
-                                        frontAttachment.append(" & ( "
-                                                + info._preCondition + " )  ");
-                                    } else {
-                                        frontAttachment.append(" & ("
-                                                + refinementStateActivePremise
-                                                + " & " + info._preCondition
-                                                + " ) ");
-                                    }
+                             // FIXME: I modify from & to |
+                                if (refinementStateName.equalsIgnoreCase("")) {
+                                    frontAttachment.append(" ( "
+                                            + info._preCondition + " ) | ");
                                 } else {
-                                    if (refinementStateName
-                                            .equalsIgnoreCase("")) {
-                                        frontAttachment.append(" | ( "
-                                                + info._preCondition + " )  ");
-                                    } else {
-                                        frontAttachment.append(" | ("
-                                                + refinementStateActivePremise
-                                                + " & " + info._preCondition
-                                                + " ) ");
-                                    }
+                                 // FIXME: I modify from & to |
+                                    frontAttachment.append("("
+                                            + refinementStateActivePremise
+                                            + " & " + info._preCondition
+                                            + " ) | ");
                                 }
-
                             }
 
                         }
@@ -5035,9 +4158,11 @@ public class SMVUtility {
      * we know that this signal is only passed between modules of the
      * controller. We can list out the location of the signal.
      * 
-     * @param controller The controller which contains those modules
+     * @param controller
+     *                The controller which contains those modules
      * @return An ArrayList containing all submodule definitions
-     * @throws IllegalActionException Undefined behavior happens.
+     * @throws IllegalActionException
+     *                 Undefined behavior happens.
      */
     private static ArrayList<StringBuffer> _retrieveSubSystemModuleNameParameterInfo(
             FSMActor controller) throws IllegalActionException {
@@ -5047,7 +4172,7 @@ public class SMVUtility {
         // Because a subsystem can not see the signal outside the system,
         // thus if a subsystem really uses a signal from outside, we
         // need to add up the signal name (without the position) as an invoker
-        // for example subModule (Sec_isPresent)
+        // for example subModule(Sec_isPresent)
         // 
 
         ArrayList<StringBuffer> returnList = new ArrayList<StringBuffer>();
@@ -5064,10 +4189,11 @@ public class SMVUtility {
                     TypedActor[] actors = ((State) state).getRefinement();
                     if (actors != null) {
                         if (actors.length == 1) {
-                            // It would only have the case where
-                            // actor.length == 1.
+                            // It would only have the case where actor.length ==
+                            // 1.
                             // If we encounter cases > 1, report error for
-                            // further bug fix.
+                            // further
+                            // bug fix.
                             TypedActor innerActor = actors[0];
                             if (innerActor instanceof FSMActor) {
                                 StringBuffer moduleDescription = new StringBuffer(
@@ -5484,7 +4610,7 @@ public class SMVUtility {
                             // Once this happens, report an error to
                             // notify the author the situation.
                             throw new IllegalActionException(
-                                    "SMVUtility._retrieveSubSystemModuleNameParameterInfo(): "
+                                    "SMVUtility._rewriteModalModelWithGeneralRefinementToFSMActor(): "
                                             + "Refinement has two or more inner actors.");
                         }
                     }
@@ -5497,16 +4623,16 @@ public class SMVUtility {
 
     // Used to store information regarding the position of the variable.
     // (1) HashMap<String, ArrayList<String>> _globalSignalDistributionInfo:
-    // It tells you for a certain component, the set of signals
-    // used in its guard expression.
-    //
-    // (2)HashMap<String, HashSet<String>> _globalSignalRetrivalInfo:
     // It tells you for a certain component, the set of signals emitted
     // from that component.
     //
+    // (2)HashMap<String, HashSet<String>> _globalSignalRetrivalInfo:
+    // It tells you for a certain component, the set of signals
+    // used in its guard expression.
+    //
     // (3)HashMap<String, HashSet<String>> _globalSignalNestedRetrivalInfo:
     // It tells you for a certain component, the set of all signals
-    // that is emitted from that component (including it subsystems/refinements)
+    // that is emitted (including it subsystems/refinements)
 
     private static HashMap<String, ArrayList<String>> _globalSignalDistributionInfo;
     private static HashMap<String, HashSet<String>> _globalSignalRetrivalInfo;
@@ -5535,11 +4661,13 @@ public class SMVUtility {
     // // inner class ////
     private static class VariableTransitionInfo {
         private VariableTransitionInfo() {
+
         }
 
         private String _preCondition;
         // Record set of conditions that leads to the change of variable.
         private String _varibleNewValue = null;
+
     }
 
 }
