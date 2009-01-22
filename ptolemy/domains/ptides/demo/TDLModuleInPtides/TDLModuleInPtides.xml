@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="TDLModuleInPtides" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={451, 139, 813, 506}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={451, 139, 813, 510}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -19,11 +19,12 @@
         </property>
     </property>
     <property name="SchedulePlotter" class="ptolemy.domains.ptides.lib.SchedulePlotter">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{410.0, 45.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 45.0]">
         </property>
     </property>
     <entity name="P" class="ptolemy.actor.TypedCompositeActor">
-<display name="Plaform 1"/>        <property name="_location" class="ptolemy.kernel.util.Location" value="{255.0, 190.0}">
+        <display name="Plaform 1"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{250.0, 190.0}">
         </property>
         <property name="PtidesEmbeddedDirector" class="ptolemy.domains.ptides.kernel.PtidesEmbeddedDirector">
             <property name="executionStrategy" class="ptolemy.data.expr.StringParameter" value="basic preemptive">
@@ -31,7 +32,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{95.0, 55.0}">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={248, 330, 961, 504}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-44, 156, 961, 508}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[748, 398]">
         </property>
@@ -130,7 +131,7 @@
                 <relation name="relation" class="ptolemy.domains.tdl.kernel.TDLTransition">
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
-                    <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="inc_in &gt; 3">
+                    <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="inc_in_isPresent &amp;&amp; inc_in &gt; 3.0">
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                     </property>
@@ -150,7 +151,7 @@
                 <relation name="relation2" class="ptolemy.domains.tdl.kernel.TDLTransition">
                     <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                     </property>
-                    <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="inc_in &lt; 3">
+                    <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="inc_in_isPresent &amp;&amp; inc_in &lt; 3.0">
                     </property>
                     <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                     </property>
@@ -450,7 +451,7 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[700.0, 185.0]">
             </property>
-            <property name="isActuator" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="isActuator" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -459,8 +460,8 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="1.0" max="30.0"/>
-<yRange min="-4.0" max="7.0"/>
+<xRange min="1.0" max="2.0"/>
+<yRange min="-4.0" max="0.0"/>
 <default marks="various"/>
 </plot>?>
             </configure>
@@ -492,7 +493,7 @@
             </property>
         </entity>
         <entity name="Sequence" class="ptolemy.actor.lib.Sequence">
-            <property name="values" class="ptolemy.data.expr.Parameter" value="{3.0, 2.0, 1.0, 0.0, 3.0, 5.0, 4.0, 3.0, 0.5, 1.0, 6.0, 7.0, 6.0, 6.0, 6.0, 5.0, 4.0, 3.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0}">
+            <property name="values" class="ptolemy.data.expr.Parameter" value="{3, 2, 1, 0, 3, 5, 4, 3, 0, 1, 6, 7, 6, 6, 6, 5, 4, 3, 2, 3, 4, 5, 6, 7, 8}">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 145.0]">
             </property>
