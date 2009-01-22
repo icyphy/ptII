@@ -94,7 +94,7 @@ public class ArrayLevelCrossing extends TypedAtomicActor {
         forwards.setExpression("true");
         forwards.setTypeEquals(BaseType.BOOLEAN);
 
-        threshold = new Parameter(this, "threshold");
+        threshold = new PortParameter(this, "threshold");
         threshold.setExpression("0.0");
         threshold.setTypeEquals(BaseType.DOUBLE);
 
@@ -166,7 +166,7 @@ public class ArrayLevelCrossing extends TypedAtomicActor {
      *  on a linear or decibel scale, depending on the <i>scale</i>
      *  parameter. It defaults to 0.0.
      */
-    public Parameter threshold;
+    public PortParameter threshold;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -178,6 +178,7 @@ public class ArrayLevelCrossing extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         super.fire();
         start.update();
+        threshold.update();
 
         if (array.hasToken(0)) {
             ArrayToken inputArray = (ArrayToken) array.get(0);
