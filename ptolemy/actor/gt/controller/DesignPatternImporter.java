@@ -84,6 +84,25 @@ public class DesignPatternImporter extends ParameterAttribute
         return newObject;
     }
 
+    public void setContainer(NamedObj container) throws IllegalActionException,
+            NameDuplicationException {
+        NamedObj oldContainer = getContainer();
+        try {
+            if (oldContainer != null && _lastUndoStack != null) {
+                _lastUndoStack.undo();
+            }
+        } catch (Exception e) {
+            throw new InternalErrorException(this, e,
+                    "Unable to undo previous updates.");
+        } finally {
+            _lastUndoStack = null;
+        }
+        super.setContainer(container);
+        if (container != null) {
+            update();
+        }
+    }
+
     public void update() {
         List<Parameter> parameters = attributeList(Parameter.class);
         HashMap<String, Token> table = new HashMap<String, Token>();
@@ -121,7 +140,7 @@ public class DesignPatternImporter extends ParameterAttribute
             }
         }
 
-        if (value.equals("")) {
+        if (value == null || value.equals("")) {
             return;
         }
 
