@@ -93,6 +93,10 @@ public class ModelParameter extends Parameter implements Initializable {
         output.write(_getIndentPrefix(depth) + "</" + _elementName + ">\n");
     }
 
+    public String getExpression() {
+        return "";
+    }
+
     public CompositeEntity getModel() {
         return _model;
     }
@@ -164,6 +168,9 @@ public class ModelParameter extends Parameter implements Initializable {
         if (container instanceof Initializable) {
             ((Initializable) container).addInitializable(this);
         }
+    }
+
+    public void setExpression(String expression) {
     }
 
     public void setModel(CompositeEntity model) {
