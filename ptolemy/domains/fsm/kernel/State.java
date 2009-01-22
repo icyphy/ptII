@@ -58,6 +58,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLChangeRequest;
@@ -598,21 +599,29 @@ public class State extends ComponentEntity implements ConfigurableEntity,
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Move the refinements in the configurer of this state to the closest
      *  modal model above this state in the model hierarchy.
      */
     private void _populateRefinements() throws IllegalActionException {
         CompositeEntity container = (CompositeEntity) getContainer();
         CompositeEntity modalModel = (CompositeEntity) container.getContainer();
-        if (!(modalModel instanceof TypedCompositeActor)) {
-            if (modalModel == null) {
+        boolean isModalModelInvisible = modalModel != null &&
+                !modalModel.attributeList(InvisibleModalModel.class).isEmpty();
+        if (!(modalModel instanceof TypedCompositeActor) ||
+                isModalModelInvisible) {
+            if (modalModel == null || isModalModelInvisible) {
                 try {
-                    modalModel = new ModalModel(workspace());
-                    container.setContainer(modalModel);
+                    if (modalModel == null) {
+                        modalModel = new ModalModel(workspace());
+                        new InvisibleModalModel(modalModel,
+                                modalModel.uniqueName("_invisibleModalModel"));
+                        container.setContainer(modalModel);
+                    }
                 } catch (NameDuplicationException e) {
                     // This should not happen.
                 }
+                saveRefinementsInConfigurer.setToken(BooleanToken.TRUE);
             } else {
                 return;
             }
@@ -622,19 +631,41 @@ public class State extends ComponentEntity implements ConfigurableEntity,
         if (container instanceof RefinementActor) {
             RefinementActor actor = (RefinementActor) container;
             for (ComponentEntity entity : entities) {
-                String name = modalModel.uniqueName(entity.getName());
-                actor.addRefinement(this, name, null, entity.getClassName(),
+                String oldName = entity.getName();
+                String newName = modalModel.uniqueName(oldName);
+
+                String refinements = refinementName.getExpression();
+                String[] names = refinements.split("\\s*,\\s*");
+                boolean changed = false;
+                StringBuffer newRefinements = new StringBuffer();
+                for (String part : names) {
+                    if (newRefinements.length() > 0) {
+                        newRefinements.append(", ");
+                    }
+                    if (part.equals(oldName)) {
+                        changed = true;
+                    } else {
+                        newRefinements.append(part);
+                    }
+                }
+                if (changed) {
+                    refinementName.setExpression(newRefinements.toString());
+                }
+
+                actor.addRefinement(this, newName, null, entity.getClassName(),
                         null);
+
                 String moml = new DesignPatternGetMoMLAction().getMoml(entity,
-                        name);
-                UpdateContentsRequest request = new UpdateContentsRequest(this,
-                        modalModel, name, moml);
-                modalModel.requestChange(request);
+                        newName);
                 try {
                     entity.setContainer(null);
                 } catch (NameDuplicationException e) {
                     // Ignore.
                 }
+
+                UpdateContentsRequest request = new UpdateContentsRequest(this,
+                        modalModel, newName, moml);
+                modalModel.requestChange(request);
             }
         }
     }
@@ -690,27 +721,90 @@ public class State extends ComponentEntity implements ConfigurableEntity,
     // Flag indicating whether this state has been visited.
     private boolean _visited = false;
 
+    //////////////////////////////////////////////////////////////////////////
+    //// InvisibleModalModel
+
+    /**
+     An attribute that marks a modal model is created because the designer opens
+     a design pattern whose top-level is an FSMActor. In that case, a modal
+     model is automatically created to contain the FSMActor, and this attribute
+     is associated with the created (invisible) modal model.
+
+     @author Thomas Huining Feng
+     @version $Id$
+     @since Ptolemy II 7.1
+     @Pt.ProposedRating Red (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
+     */
+    private static class InvisibleModalModel extends SingletonAttribute {
+
+        /** Construct an attribute with the given container and name.
+         *  If an attribute already exists with the same name as the one
+         *  specified here, that is an instance of class
+         *  SingletonAttribute (or a derived class), then that
+         *  attribute is removed before this one is inserted in the container.
+         *  @param container The container.
+         *  @param name The name of this attribute.
+         *  @exception IllegalActionException If the attribute cannot be contained
+         *   by the proposed container.
+         *  @exception NameDuplicationException If the container already has an
+         *   attribute with this name, and the class of that container is not
+         *   SingletonAttribute.
+         */
+        InvisibleModalModel(CompositeEntity container, String name)
+                throws NameDuplicationException, IllegalActionException {
+            super(container, name);
+        }
+    }
+
+    //////////////////////////////////////////////////////////////////////////
+    //// UpdateContentsRequest
+
+    /**
+     A change request the updates the refinements of a state if it contains a
+     configure element.
+
+     @author Thomas Huining Feng
+     @version $Id$
+     @since Ptolemy II 7.1
+     @Pt.ProposedRating Red (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
+     */
     private static class UpdateContentsRequest extends ChangeRequest {
 
-        public UpdateContentsRequest(Object source, CompositeEntity modalModel,
-                String entityName, String moml) {
-            super(source, "Update contents of refinement " + entityName + ".");
+        /** Construct a request.
+         *
+         *  @param source The state that originates the request.
+         *  @param modalModel The closest modal model that the source state is
+         *   contained in.
+         *  @param name The name of the refinement.
+         *  @param moml The moml of the refinement.
+         */
+        public UpdateContentsRequest(State source, CompositeEntity modalModel,
+                String name, String moml) {
+            super(source, "Update contents of refinement " + name + ".");
             _modalModel = modalModel;
-            _entityName = entityName;
+            _name = name;
             _moml = moml;
         }
 
+        /** Execute the change.
+         *  @exception Exception If the change fails.
+         */
         protected void _execute() throws Exception {
-            ComponentEntity entity = _modalModel.getEntity(_entityName);
+            ComponentEntity entity = _modalModel.getEntity(_name);
             MoMLChangeRequest request = new MoMLChangeRequest(this, entity,
                     _moml);
             request.execute();
         }
 
-        private String _entityName;
+        // The name of the refinement.
+        private String _name;
 
+        // The closest modal model that the source state is ontained in.
         private CompositeEntity _modalModel;
 
+        // The moml of the refinement.
         private String _moml;
     }
 }
