@@ -130,7 +130,9 @@ public class TaskExecutionMonitor extends TypedAtomicActor implements TaskExecut
         double x = time;
         int actorDataset = actors.indexOf(actor);
         if (scheduleEvent == null) {
-            plot.addPoint(actorDataset, x, actorDataset, true); 
+            if (_previousY.get(actor) == null)
+                _previousY.put(actor, (double) actorDataset);
+            plot.addPoint(actorDataset, x, _previousY.get(actor), true); 
             _previousY.put(actor, (double) actorDataset);
         } else if (scheduleEvent == ScheduleEventType.START) { 
             plot.addPoint(actorDataset, x, _previousY.get(actor), true); 
@@ -266,7 +268,7 @@ public class TaskExecutionMonitor extends TypedAtomicActor implements TaskExecut
                 NamedObj container = object.getContainer();
 
                 plot = new Plot();
-                plot.setTitle("Ptides Schedule");
+                plot.setTitle("Task Execution Monitor");
                 plot.setButtons(true);
                 plot.setMarksStyle("none");
 

@@ -27,10 +27,8 @@ public class HighPriorityTask extends CTask {
     
     public static int ID = 2;
     public static int EVENT_ID = 2;
-    
-    @Override
-    protected void _callCMethod() {
-        long period;
+
+    protected void _callCMethod() { 
 
         System.out.println(this.getName() + "._callCMethod()");
         try {
@@ -48,7 +46,7 @@ public class HighPriorityTask extends CTask {
             
             accessPointCallback(1.0, 0.0); 
             eventManager.ClearEvent();
-            cpuScheduler.TerminateTask();
+            cpuScheduler.terminateTask();
         } catch (Exception e) {
              e.printStackTrace();
         }

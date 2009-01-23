@@ -133,6 +133,9 @@ public class CPUScheduler extends ApeActor {
                     _sendTaskExecutionEvent(taskInExecution, ScheduleEventType.AP);   
                     newCurrentlyExecutingTask = taskInExecution; 
                 }
+                if (remainingTime.compareTo(new Time(getDirector(), 0.0)) < 0) {
+                    throw new IllegalActionException("negative remaining execution time");
+                }
             }   
         }
         
@@ -161,11 +164,11 @@ public class CPUScheduler extends ApeActor {
         
         // schedule next firing of this
         if (_tasksInExecution.size() > 0) { 
-            getDirector().fireAt(this, getDirector().getModelTime().add(_remainingExecutionTime.get(_tasksInExecution.peek()))); 
+            getDirector().fireAt(this, getDirector().getModelTime().add(_remainingExecutionTime.get(_tasksInExecution.peek())));
+            System.out.println("----- fireAt " + getDirector().getModelTime().add(_remainingExecutionTime.get(_tasksInExecution.peek())));
         }
 
-        _previousModelTime = getDirector().getModelTime();
-        System.out.println(this.getName() + "...end" + _tasksInExecution);
+        _previousModelTime = getDirector().getModelTime(); 
     }
     
 
@@ -225,22 +228,22 @@ public class CPUScheduler extends ApeActor {
     
     // DeclareTask ??
     
-    public StatusType ActivateTask(int taskId) throws NoRoomException, IllegalActionException {
+    public int activateTask(int taskId) throws NoRoomException, IllegalActionException {
         Actor task = _tasks.get(taskId);
         if (task == null)
-            return StatusType.E_OS_ID;
+            return 1;
         //else if (Task.state = TaskState.running) return StatusType.E_OS_LIMIT; 
         Actor newCurrentlyExecutingTask = scheduleTask(TaskState.ready_running, task, null); 
         reschedule(newCurrentlyExecutingTask);
-        return StatusType.E_OK;
+        return 0;
     }
 
-    public StatusType TerminateTask() throws NoRoomException, IllegalActionException {
-            Actor task = _taskNames.get(Thread.currentThread().getName());  
-            Actor newCurrentlyExecutingTask = scheduleTask(TaskState.suspended, task, null); 
-            reschedule(newCurrentlyExecutingTask); 
-            return StatusType.E_OK;
-        }
+    public void terminateTask() throws NoRoomException, IllegalActionException {
+        Actor task = _taskNames.get(Thread.currentThread().getName());  
+        Actor newCurrentlyExecutingTask = scheduleTask(TaskState.suspended, task, null); 
+        reschedule(newCurrentlyExecutingTask); 
+
+    }
 
     public StatusType ChainTask(int taskId) throws NoRoomException, IllegalActionException {
         Actor task = _tasks.get(taskId);
@@ -250,6 +253,14 @@ public class CPUScheduler extends ApeActor {
         Actor newCurrentlyExecutingTask = newCurrentlyExecutingTask2 != null ? newCurrentlyExecutingTask2 : newCurrentlyExecutingTask1;
         reschedule(newCurrentlyExecutingTask); 
         return StatusType.E_OK;
+    }
+    
+    @Override
+    public void wrapup() throws IllegalActionException {
+        for (Integer taskId : _tasks.keySet()) {
+            Actor task = _tasks.get(taskId);
+            _sendTaskExecutionEvent(task, null); 
+        }
     }
 
     private Actor scheduleTask(TaskState state, Actor actorToSchedule, Time executionTime) throws IllegalActionException { 
@@ -403,7 +414,7 @@ public class CPUScheduler extends ApeActor {
      * Set private variables.
      */
     public void initialize() throws IllegalActionException {
-        super.initialize();
+        super.initialize(); 
         try {
             _previousModelTime = new Time(getDirector(), 0.0);
         } catch (IllegalActionException e) {
@@ -430,6 +441,7 @@ public class CPUScheduler extends ApeActor {
             }
         }
     }
+    
     /**
      * Register task execution listener.
      * @param taskExecutionListener
@@ -459,10 +471,13 @@ public class CPUScheduler extends ApeActor {
         }
     }
 
+    public native void InitializeC();
+    
     /**
      * Initialize private variables.
      */
     private void _initialize() {
+        
         _remainingExecutionTime = new HashMap<Actor, Time>();
         _usedExecutionTimes = new HashMap<Actor, Time>();
         _tasksInExecution = new Stack<Actor>();

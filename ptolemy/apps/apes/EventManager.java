@@ -132,8 +132,7 @@ public class EventManager extends ApeActor {
 
     @Override
     public void initialize() throws IllegalActionException { 
-        super.initialize();
-        
+        super.initialize(); 
         CompositeActor compositeActor = (CompositeActor) getContainer();
         List entities = compositeActor.entityList();
         for (Iterator it = entities.iterator(); it.hasNext();) {
@@ -148,7 +147,10 @@ public class EventManager extends ApeActor {
         }
     }
     
+    public native void InitializeC();
+    
     private void _initialize() {
+        
         _tasks = new HashMap();
         _taskNames = new HashMap();
         _actorsWaitingForEvents = new HashMap<Actor, List<Integer>>();

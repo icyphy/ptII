@@ -45,7 +45,7 @@ public class LowPriorityTask extends CTask {
             
             accessPointCallback(1.0, 0.0);
             eventManager.ClearEvent();
-            cpuScheduler.TerminateTask();
+            cpuScheduler.terminateTask();
         } catch (NoRoomException e) { 
             e.printStackTrace();
         } catch (IllegalActionException e) { 

@@ -1,4 +1,4 @@
-package ptolemy.apps.apes.demo.ThreeTasks;
+package ptolemy.apps.apes.demo.ThreeCTasks;
 
 import ptolemy.actor.NoRoomException;
 import ptolemy.apps.apes.CTask;
@@ -21,27 +21,15 @@ public class CTaskC extends CTask {
         super(container, name); 
     }
     
+    public int activateTask(int taskId) throws NoRoomException, IllegalActionException {
+        return cpuScheduler.activateTask(taskId);
+    }
+    
     private native void CMethod();
     
-    @Override
-    protected void _callCMethod() {
- //       CMethod();
-        long period;
-
+    protected void _callCMethod() {  
         System.out.println(this.getName() + "._callCMethod()");
-        try {
-            accessPointCallback(-1.0, 0.5); 
-            period = System.currentTimeMillis();
-            for (int i=0;i<Integer.MAX_VALUE/4;i++){
-                double a = Math.PI*Math.PI;
-            }
-            period = System.currentTimeMillis() - period;
-            System.out.println("duration of CMethod of " + this.getName() + ": " + Long.toString(period) + " ms.");            
-            accessPointCallback(1.0, 0.0);         
-            cpuScheduler.terminateTask();
-        } catch (Exception e) { 
-            e.printStackTrace();
-        }
+        CMethod();   
     }
     
     @Override
@@ -50,4 +38,10 @@ public class CTaskC extends CTask {
         // TODO Auto-generated method stub
         super.accessPointCallback(extime, minNextTime);
     }
+    
+    public void terminateTask() throws NoRoomException, IllegalActionException {
+        cpuScheduler.terminateTask();
+    }
+    
+  
 }

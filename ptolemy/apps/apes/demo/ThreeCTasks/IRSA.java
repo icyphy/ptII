@@ -1,47 +1,50 @@
-package ptolemy.apps.apes.demo.ThreeTasks;
+package ptolemy.apps.apes.demo.ThreeCTasks;
 
+import ptolemy.actor.Actor;
 import ptolemy.actor.NoRoomException;
 import ptolemy.apps.apes.InterruptServiceRoutine;
+import ptolemy.apps.apes.CPUScheduler.TaskState;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-public class IRS_C extends InterruptServiceRoutine {
+public class IRSA extends InterruptServiceRoutine {
 
-    public IRS_C() {  
+    public IRSA() {  
     }
 
-    public IRS_C(Workspace workspace) {
+    public IRSA(Workspace workspace) {
         super(workspace);  
     }
 
-    public IRS_C(CompositeEntity container, String name)
+    public IRSA(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);  
     }
      
-    
+    private native void CMethod(); 
     
     protected void _callCMethod() {  
-        System.out.println(this.getName() + ".fire() - Time: " + getDirector().getModelTime());
-        try {
-            accessPointCallback(-1.0, 0.0);
-            cpuScheduler.activateTask(3);
-            accessPointCallback(0.2, 0.0);
-            cpuScheduler.terminateTask();
-        } catch (NoRoomException e) { 
-            e.printStackTrace();
-        } catch (IllegalActionException e) { 
-            e.printStackTrace();
-        }          
+        System.out.println(this.getName() + "._callCMethod()");
+        CMethod();   
     }
 
     public void accessPointCallback(double extime, double minNextTime) throws NoRoomException,
     IllegalActionException {
         // TODO Auto-generated method stub
         super.accessPointCallback(extime, minNextTime);
+        int i = 1;
     }
+    
+    public int activateTask(int taskId) throws NoRoomException, IllegalActionException {
+        return cpuScheduler.activateTask(taskId);
+    }
+    
+    public void terminateTask() throws NoRoomException, IllegalActionException {
+        cpuScheduler.terminateTask();
+    }
+    
     
 
  

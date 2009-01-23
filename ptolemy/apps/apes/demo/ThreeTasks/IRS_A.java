@@ -27,9 +27,9 @@ public class IRS_A extends InterruptServiceRoutine {
         System.out.println(this.getName() + ".fire() - Time: " + getDirector().getModelTime());
         try {
             accessPointCallback(-1.0, 0.0);
-            cpuScheduler.ActivateTask(1);
+            cpuScheduler.activateTask(1);
             accessPointCallback(0.2, 0.0);
-            cpuScheduler.TerminateTask();
+            cpuScheduler.terminateTask();
         } catch (NoRoomException e) { 
             e.printStackTrace();
         } catch (IllegalActionException e) { 

@@ -1,7 +1,9 @@
 package ptolemy.apps.apes;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -11,7 +13,9 @@ import ptolemy.actor.util.BreakCausalityInterface;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.Time;
 import ptolemy.data.IntToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Token;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -69,6 +73,11 @@ public class CTask extends ApeActor implements Runnable {
     }
 
     public Parameter methodName;
+    
+    /** Buffers the token produced in the accessPointCallback if the DE Director thread running to 
+     * avoid concurrent modification of the eventQueue in the DE Director.
+     */
+    private ResourceToken _buffer;
 
     public void accessPointCallback(double extime, double minNextTime) throws NoRoomException, IllegalActionException {
 
@@ -78,7 +87,11 @@ public class CTask extends ApeActor implements Runnable {
 
             
             if (extime >= 0) {
-                output.send("CPUScheduler", new ResourceToken(this, new Time(getDirector(), extime), null)); 
+                ResourceToken token = new ResourceToken(this, new Time(getDirector(), extime), null);
+                if (_inExecution)
+                    _buffer = token;
+                else 
+                    output.send("CPUScheduler", token); 
             }
 
             synchronized (this) {
@@ -124,6 +137,10 @@ public class CTask extends ApeActor implements Runnable {
                     }
                 }
             }
+            if (_buffer != null) {
+                output.send("CPUScheduler", _buffer);
+                _buffer = null;
+            }
             _waitForMinDelay = false;
         } else {
             synchronized (this) {
@@ -159,29 +176,7 @@ public class CTask extends ApeActor implements Runnable {
             throw new IllegalActionException(this,
                     "Enclosing director must be a TimedDirector.");
         }
-
-        // parse resources
-//        for (int channelId = 0; channelId < toResourcePort.getWidth(); channelId++) {
-//            Receiver[] receivers = toResourcePort.getRemoteReceivers()[channelId];
-//            if (receivers.length > 0) {
-//                Receiver receiver = receivers[0];
-//                _resources.put(((ApeActor) receiver.getContainer()
-//                        .getContainer()), channelId);
-//            }
-//        }
-        _waitForMinDelay = false;
-        _thread = new Thread(this);
-        _thread.start();
-        synchronized(this) {
-            while (_inExecution) {
-                try {
-                    this.wait();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
-        }
-        
+ 
         // just for testing purposes to do system calls
         CompositeActor compositeActor = (CompositeActor) getContainer();
         List entities = compositeActor.entityList();
@@ -193,6 +188,32 @@ public class CTask extends ApeActor implements Runnable {
                     cpuScheduler = (CPUScheduler) actor; 
                 } else if (actor instanceof EventManager) {
                     eventManager = (EventManager) actor;
+                }
+            }
+        }
+        if (dispatcher == null) {
+            dispatcher = new AccessPointCallbackDispatcher(); 
+            try {
+                String libName = ((StringToken)((StringParameter)((NamedObj)getContainer()).getAttribute("CCodeLibrary")).getToken()).stringValue();
+                System.loadLibrary(libName); 
+                dispatcher.InitializeC();
+                cpuScheduler.InitializeC();
+                eventManager.InitializeC();
+            } catch (Exception ex) {
+                
+            }
+        }
+        dispatcher.addTask(this);
+        
+        _waitForMinDelay = false;
+        _thread = new Thread(this);
+        _thread.start();
+        synchronized(this) {
+            while (_inExecution) {
+                try {
+                    this.wait();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
                 }
             }
         }
@@ -226,6 +247,8 @@ public class CTask extends ApeActor implements Runnable {
 
         Parameter destinationActorList= (Parameter) output.getAttribute("destinationActors");
         destinationActorList.setExpression("CPUScheduler");
+        
+       
     }
 
     /** The causality interface, if it has been created. */
@@ -240,5 +263,9 @@ public class CTask extends ApeActor implements Runnable {
     private boolean _waitForMinDelay;
     
     private boolean _actorStopped = false;
-
+    
+    public static AccessPointCallbackDispatcher dispatcher; 
+        
+ 
+    
 }
