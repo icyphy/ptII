@@ -43,7 +43,7 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="32">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="16">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 40.0]">
         </property>
@@ -57,13 +57,27 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{367.10101010101, 258.6565656565656}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="schedules tasks and resources">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 410.0]">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="OSEK Implementation">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 325.0]">
+        </property>
+    </property>
+    <property name="Rectangle4" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 320.0]">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="546.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="76.0">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.8,0.4,1.0}">
+        </property>
+        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
     <entity name="CPUScheduler" class="ptolemy.apps.apes.CPUScheduler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 385.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 370.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -206,7 +220,7 @@
         </property>
     </entity>
     <entity name="CTaskB" class="ptolemy.apps.apes.demo.ThreeTasks.CTaskB">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 205.0]">
         </property>
         <property name="priority" class="ptolemy.data.expr.Parameter" value="2">
         </property>
@@ -214,7 +228,7 @@
         </property>
     </entity>
     <entity name="CTaskC" class="ptolemy.apps.apes.demo.ThreeTasks.CTaskC">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 275.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 275.0]">
         </property>
         <property name="priority" class="ptolemy.data.expr.Parameter" value="3">
         </property>
@@ -222,7 +236,7 @@
         </property>
     </entity>
     <entity name="CTaskA" class="ptolemy.apps.apes.demo.ThreeTasks.CTaskA">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 135.0]">
         </property>
         <property name="priority" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -347,25 +361,31 @@
         </port>
     </entity>
     <entity name="IRS_A" class="ptolemy.apps.apes.demo.ThreeTasks.IRS_A">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 135.0]">
         </property>
         <property name="priority" class="ptolemy.data.expr.Parameter" value="11">
+        </property>
+        <property name="ID" class="ptolemy.data.expr.Parameter" value="11">
         </property>
     </entity>
     <entity name="IRS_B" class="ptolemy.apps.apes.demo.ThreeTasks.IRS_B">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 205.0]">
         </property>
         <property name="priority" class="ptolemy.data.expr.Parameter" value="11">
+        </property>
+        <property name="ID" class="ptolemy.data.expr.Parameter" value="12">
         </property>
     </entity>
     <entity name="IRS_C" class="ptolemy.apps.apes.demo.ThreeTasks.IRS_C">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 275.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 275.0]">
         </property>
         <property name="priority" class="ptolemy.data.expr.Parameter" value="11">
         </property>
+        <property name="ID" class="ptolemy.data.expr.Parameter" value="13">
+        </property>
     </entity>
     <entity name="EventManager" class="ptolemy.apps.apes.EventManager">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 385.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 370.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
