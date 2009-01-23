@@ -105,6 +105,9 @@ test AddSubtract-3.1 {test with string type} {
     enumToTokenValues [$rec getRecord 0]
 } {{"atrue"} {"abtrue"} {"abbtrue"}}
 
+######################################################################
+#### Test with run-time type error
+#
 test AddSubtract-3.2 {test with run-time type error} {
     $plus unlink $r2
     $minus link $r2
@@ -112,7 +115,23 @@ test AddSubtract-3.2 {test with run-time type error} {
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: subtract operation not supported between ptolemy.data.StringToken '"a"' and ptolemy.data.BooleanToken 'true'
 Because:
+subtract operation not supported between ptolemy.data.StringToken '"a"' and ptolemy.data.StringToken '"true"'
+  in .top.addsub
+Because:
+subtract operation not supported between ptolemy.data.StringToken '"a"' and ptolemy.data.BooleanToken 'true'
+Because:
 subtract operation not supported between ptolemy.data.StringToken '"a"' and ptolemy.data.StringToken '"true"'}}
 
-
-
+######################################################################
+#### Test with run-time type error
+#
+test AddSubtract-3.3 {test with run-time type error: double and a long } {
+    $init setExpression {1L}
+    $step setExpression {3L}
+    $value setExpression {42.0}
+    catch {[$e0 getManager] execute} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: subtract method not supported between ptolemy.data.LongToken '1L' and ptolemy.data.DoubleToken '42.0' because the types are incomparable.
+  in .top.addsub
+Because:
+subtract method not supported between ptolemy.data.LongToken '1L' and ptolemy.data.DoubleToken '42.0' because the types are incomparable.}}

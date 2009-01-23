@@ -417,49 +417,66 @@ public class AtomicActor extends ComponentEntity implements Actor,
 
         int n = 0;
 
-        while ((n++ < count) && !_stopRequested) {
-            if (_notifyingActorFiring) {
-                _actorFiring(FiringEvent.BEFORE_PREFIRE, n);
-            }
+	try {
+	    while ((n++ < count) && !_stopRequested) {
+		if (_notifyingActorFiring) {
+		    _actorFiring(FiringEvent.BEFORE_PREFIRE, n);
+		}
 
-            if (prefire()) {
+		if (prefire()) {
 
-                if (_notifyingActorFiring) {
-                    _actorFiring(FiringEvent.AFTER_PREFIRE, n);
-                    _actorFiring(FiringEvent.BEFORE_FIRE, n);
-                }
+		    if (_notifyingActorFiring) {
+			_actorFiring(FiringEvent.AFTER_PREFIRE, n);
+			_actorFiring(FiringEvent.BEFORE_FIRE, n);
+		    }
 
-                fire();
+		    fire();
+		    if (_notifyingActorFiring) {
+			_actorFiring(FiringEvent.AFTER_FIRE, n);
+			_actorFiring(FiringEvent.BEFORE_POSTFIRE, n);
+		    }
 
-                if (_notifyingActorFiring) {
-                    _actorFiring(FiringEvent.AFTER_FIRE, n);
-                    _actorFiring(FiringEvent.BEFORE_POSTFIRE, n);
-                }
+		    boolean pfire = postfire();
 
-                boolean pfire = postfire();
+		    if (_notifyingActorFiring) {
+			_actorFiring(FiringEvent.AFTER_POSTFIRE, n);
+		    }
 
-                if (_notifyingActorFiring) {
-                    _actorFiring(FiringEvent.AFTER_POSTFIRE, n);
-                }
+		    if (!pfire) {
+			return Executable.STOP_ITERATING;
+		    }
 
-                if (!pfire) {
-                    return Executable.STOP_ITERATING;
-                }
+		} else {
 
-            } else {
+		    if (_notifyingActorFiring) {
+			_actorFiring(FiringEvent.AFTER_PREFIRE, n);
+		    }
+		    return Executable.NOT_READY;
+		}
+	    }
 
-                if (_notifyingActorFiring) {
-                    _actorFiring(FiringEvent.AFTER_PREFIRE, n);
-                }
-                return Executable.NOT_READY;
-            }
-        }
+	    if (_stopRequested) {
+		return Executable.STOP_ITERATING;
+	    } else {
+		return Executable.COMPLETED;
+	    }
+	} catch (IllegalActionException ex) {
+	    // When fire() calls certain Token methods such as
+	    // add() or multiply() and the method throws an
+	    // exception, the exception will not include the
+	    // associated Nameable.  So, we catch exceptions
+	    // here and if the associated Nameable is null,
+	    // we rethrow with this as the Nameable.
 
-        if (_stopRequested) {
-            return Executable.STOP_ITERATING;
-        } else {
-            return Executable.COMPLETED;
-        }
+	    if (ex.getNameable1() == null) {
+		throw new IllegalActionException(this, ex,
+						 ex.getMessage());
+	    } else {
+		throw ex;
+	    }
+	    
+	}
+
     }
 
     /** Create a new IOPort with the specified name.
