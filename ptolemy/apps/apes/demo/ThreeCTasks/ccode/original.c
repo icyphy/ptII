@@ -27,12 +27,13 @@ l2:	g2=temp;
 
 /*****************************************************************************/
 
-void top8ms_offset4(){
-fprintf(stderr, "CTaskB - top8ms_offset4 b4 1st callback\n");
-	callback(-1, 0.7);
-	fprintf(stderr, "CTaskB - top8ms_offset4 b4 2nd callback\n");
-	callback(1.5, 0.1);
-l3:	g3=g2*2;
+void top8ms_offset4(){ 
+    int i = 0;
+	callback(-1, 0.1); 
+	for (i = 0; i < 10; i++) {
+		callback(0.2, 0.1);
+l3:		g3=g2*2;
+	}
 	callback(0.2, 0);
 	terminateTask();
 }

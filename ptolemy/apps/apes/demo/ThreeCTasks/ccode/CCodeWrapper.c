@@ -20,6 +20,8 @@ JAVAENV currentEnv; // assuming only one thread is active in this piece of C-Cod
  jclass cpus, apcd;
  jmethodID accessPointCallbackMethod, activateTaskMethod, terminateTaskMethod;
  JNIEXPORT jint JNICALL
+ 
+ 
  JNI_OnLoad(JavaVM *jvm, void *reserved)
  {
      JNIEnv *env;
