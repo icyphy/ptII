@@ -1,9 +1,7 @@
 package ptolemy.apps.apes;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -16,13 +14,27 @@ import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.data.expr.Token;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
+/**
+ * The CTask executes legacy C-Code in a separate thread. The thread is started 
+ * in the initialize method. The C-Code run in the thread executes and calls back 
+ * to the JAVA code via callbacks. These callbacks are either system calls or access
+ * point callbacks (@see: AccessPointCallbackDispatcher). At some point, the 
+ * accessPointCallback method of this class is called and the thread is stalled in 
+ * there. In the fire, the thread is resumed. 
+ * In order to maximize concurrency, the thread executing the fire of this actor
+ * and the thread created in this actor can run in parallel for a minimum delay time provided
+ * in the accesspointCallback method. After this minimum delay, the thread executing the
+ * executive director and thus the fire of this actor is blocked until the thread created
+ * in this actor returns to the accessPointCallbackMethod. This is done by scheduling
+ * a refiring of this actor after the minimum delay after resuming the thread.
+ * @author Patricia Derler and Stefan Resmerita
+ */
 public class CTask extends ApeActor implements Runnable {
     
     public enum Type {
