@@ -43,7 +43,7 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="32">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="100">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 40.0]">
         </property>
@@ -370,17 +370,23 @@
         </property>
         <property name="priority" class="ptolemy.data.expr.Parameter" value="11">
         </property>
+        <property name="ID" class="ptolemy.data.expr.Parameter" value="11">
+        </property>
     </entity>
     <entity name="IRSB" class="ptolemy.apps.apes.demo.ThreeCTasks.IRSB">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 205.0]">
         </property>
         <property name="priority" class="ptolemy.data.expr.Parameter" value="11">
         </property>
+        <property name="ID" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
     </entity>
     <entity name="IRSC" class="ptolemy.apps.apes.demo.ThreeCTasks.IRSC">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 275.0]">
         </property>
         <property name="priority" class="ptolemy.data.expr.Parameter" value="11">
+        </property>
+        <property name="ID" class="ptolemy.data.expr.Parameter" value="13">
         </property>
     </entity>
     <entity name="EventManager" class="ptolemy.apps.apes.EventManager">
