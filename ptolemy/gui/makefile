@@ -65,6 +65,7 @@ JSRCS = \
 	StatusBar.java \
 	SwingWorker.java \
 	Top.java \
+	UndeferredGraphicalMessageHandler.java \
 	UndoListener.java
 
 EXTRA_SRCS =	$(JSRCS)

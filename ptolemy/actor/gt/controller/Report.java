@@ -42,12 +42,13 @@ import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.gui.GraphicalMessageHandler;
+import ptolemy.gui.UndeferredGraphicalMessageHandler;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.util.CancelException;
+import ptolemy.util.MessageHandler;
 
 //////////////////////////////////////////////////////////////////////////
 //// Report
@@ -103,12 +104,25 @@ public class Report extends TableauControllerEvent {
 
         Mode choice = (Mode) mode.getChosenValue();
         String text = message.stringValue();
+        MessageHandler oldHandler;
         switch (choice) {
         case ERROR:
-            GraphicalMessageHandler.error(text);
+            oldHandler = MessageHandler.getMessageHandler();
+            try {
+                MessageHandler.setMessageHandler(_MESSAGE_HANDLER);
+                MessageHandler.error(text);
+            } finally {
+                MessageHandler.setMessageHandler(oldHandler);
+            }
             break;
         case MESSAGE:
-            GraphicalMessageHandler.message(text);
+            oldHandler = MessageHandler.getMessageHandler();
+            try {
+                MessageHandler.setMessageHandler(_MESSAGE_HANDLER);
+                MessageHandler.message(text);
+            } finally {
+                MessageHandler.setMessageHandler(oldHandler);
+            }
             break;
         case EXCEPTION:
             throw new RuntimeException(text);
@@ -185,15 +199,32 @@ public class Report extends TableauControllerEvent {
             break;
         case WARNING:
             try {
-                GraphicalMessageHandler.warning(text);
+                oldHandler = MessageHandler.getMessageHandler();
+                try {
+                    MessageHandler.setMessageHandler(_MESSAGE_HANDLER);
+                    MessageHandler.warning(text);
+                } finally {
+                    MessageHandler.setMessageHandler(oldHandler);
+                }
                 response.setToken(BooleanToken.TRUE);
             } catch (CancelException e) {
                 response.setToken(BooleanToken.FALSE);
             }
             break;
         case YES_OR_NO:
-            response.setToken(BooleanToken.getInstance(GraphicalMessageHandler
-                    .yesNoQuestion(text)));
+            oldHandler = MessageHandler.getMessageHandler();
+            boolean success = false;
+            boolean answer;
+            try {
+                MessageHandler.setMessageHandler(_MESSAGE_HANDLER);
+                answer = MessageHandler.yesNoQuestion(text);
+                success = true;
+            } finally {
+                MessageHandler.setMessageHandler(oldHandler);
+            }
+            if (success) {
+                response.setToken(BooleanToken.getInstance(answer));
+            }
             break;
         default:
             throw new IllegalActionException("Unrecognized mode choice \"" +
@@ -226,14 +257,14 @@ public class Report extends TableauControllerEvent {
                 return "error";
             }
         },
-        MESSAGE {
-            public String toString() {
-                return "message";
-            }
-        },
         EXCEPTION {
             public String toString() {
                 return "runtime exception";
+            }
+        },
+        MESSAGE {
+            public String toString() {
+                return "message";
             }
         },
         TABLEAU {
@@ -256,4 +287,7 @@ public class Report extends TableauControllerEvent {
     protected TableauParameter _getDefaultTableau() {
         return tableau;
     }
+
+    private static final MessageHandler _MESSAGE_HANDLER =
+        new UndeferredGraphicalMessageHandler();
 }
