@@ -35,7 +35,9 @@ import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.IOPort;
+import ptolemy.actor.IORelation;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.ComponentEntity;
@@ -1039,12 +1041,29 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                 double x, double y) {
             
             final String vertexName = "vertex1";
+            ComponentRelation relation = oldLink.getRelation();
+            int width = -1;
+            if (relation instanceof IORelation) {
+                Parameter widthPar = ((IORelation) relation).width;
+                try {
+                    IntToken t = (IntToken) widthPar.getToken();
+                    if (t != null) {
+                        width = t.intValue();
+                    }
+                } catch (IllegalActionException e) {
+                    // ignore the exception. If we can't request the
+                    // width, we'll use -1
+                }
+            }
             
             // Create the relation.
             moml.append("<relation name=\"" + newRelationName + "\">\n");
+            moml.append("<property name=\"width\" class=\"ptolemy.data.expr.Parameter\"" +
+            		" value=\"" + width + "\"></property>");            
             moml.append("<vertex name=\"" + vertexName + "\" value=\"{");
             moml.append(x + ", " + y);
             moml.append("}\"/>\n");
+            
             moml.append("</relation>");
             
             // We will remove the existing link, but before doing that
@@ -1055,9 +1074,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 
             NamedObj oldHead = (NamedObj) oldLink.getHead();
             NamedObj oldTail = (NamedObj) oldLink.getTail();
-            
-            ComponentRelation relation = oldLink.getRelation();
-            
+                        
             NamedObj oldHeadSemantic = (NamedObj) getSemanticObject(oldHead);
             NamedObj oldTailSemantic = (NamedObj) getSemanticObject(oldTail);
             

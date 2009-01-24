@@ -694,7 +694,9 @@ public class IORelation extends ComponentRelation {
                     "IORelation can only link to an IORelation.");
         }
 
-        if (((IORelation) relation)._width != _width) {
+        if (!((IORelation) relation).width.getExpression().equals(width.getExpression())) {
+            // Width might not yet be validated => use parameter value i.s.o. cached one.
+            
             throw new IllegalActionException(this, relation,
                     "Relations have different widths: " + _width + " != "
                             + ((IORelation) relation)._width);
