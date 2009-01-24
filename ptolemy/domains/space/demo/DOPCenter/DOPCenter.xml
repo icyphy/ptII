@@ -33,7 +33,39 @@
         </property>
     </property>
     <property name="RepaintController" class="ptolemy.actor.gui.ModelRepaintController">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 110.0]">
+        </property>
+    </property>
+    <property name="DocViewerAttribute" class="ptolemy.kernel.util.SingletonAttribute">
+        <property name="DocAttribute" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.data.expr.StringParameter" value="Instructions &lt;a href=&quot;http://embedded.eecs.berkeley.edu/dopcenter/faq/122.html&quot;&gt;UC Berkeley Only&lt;/a&gt;.">
+            </property>
+        </property>
+        <property name="viewer" class="ptolemy.vergil.basic.DocViewerFactory">
+        </property>
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <rect x="-50" y="-20" width="100" height="20" style="fill:yellow"></rect>
+        <text x="-40" y="-5" style="font-size:12; font-family:SansSerif; fill:black">Documentation</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 635.0]">
+        </property>
+    </property>
+    <property name="DocAttribute" class="ptolemy.vergil.basic.DocAttribute">
+        <property name="description" class="ptolemy.data.expr.StringParameter" value="&lt;a href=&quot;http://embedded.eecs.berkeley.edu/dopcenter/faq/122.html#in_browser&quot;&gt;UC Berkeley Only Documentation&lt;/a&gt;">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Space Cadet - Office Space Management - Ptolemy Style&#10;This is a model of the DOP Center Office space.&#10;When the model is run, it connects to a database &#10;and updates the view of who sits where.&#10;To run the model, you must know the database password.&#10;Click on the &quot;Documentation&quot; icon below for details.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 535.0]">
         </property>
     </property>
     <entity name="DatabaseManager" class="ptolemy.actor.lib.database.DatabaseManager">
@@ -41,7 +73,7 @@
         </property>
         <property name="userName" class="ptolemy.data.expr.StringParameter" value="spacecadet">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{700.0, 55.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[700.0, 50.0]">
         </property>
     </entity>
     <entity name="Room" class="ptolemy.domains.space.Room">
@@ -75,7 +107,7 @@
         </property>
         <property name="contents" class="ptolemy.data.expr.StringParameter" value="1: Yi&#10;2: Moskewicz&#10;3: Catanzaro&#10;4: Lee&#10;5: Chong&#10;6: Hedayati&#10;7: Sundaram&#10;8: Satish&#10;9: Mazzi&#10;10: VACANT">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[750.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[755.0, 190.0]">
         </property>
         <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="-90">
         </property>
@@ -553,7 +585,7 @@
         </property>
         <property name="contents" class="ptolemy.data.expr.StringParameter" value="1: Lickly&#10;2: VACANT&#10;2: VACANT&#10;3: Liu&#10;4: Zou&#10;5: Forbes&#10;6: VACANT&#10;7: Oh">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 580.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 580.0]">
         </property>
         <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="0">
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
