@@ -31,10 +31,14 @@ import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
+import javax.swing.Action;
+import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 
 import ptolemy.actor.gui.RenameDialog;
+import ptolemy.actor.gui.TableauFrame;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.StaticResources;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.toolbox.FigureAction;
 import diva.gui.GUIUtilities;
@@ -52,6 +56,34 @@ import diva.gui.GUIUtilities;
  @Pt.AcceptedRating Red (johnr)
  */
 public class RenameDialogAction extends FigureAction {
+  
+    /**
+     * Construct a rename dialog action with the specified parent, which will
+     * appear in the menu that uses this action.
+     * 
+     * @param parent
+     *            The parent TableauFrame
+     */
+    public RenameDialogAction(TableauFrame parent) {
+      super("");
+      if (parent == null) {
+        IllegalArgumentException iae = new IllegalArgumentException(
+            "ActorDialogAction constructor received NULL argument for TableauFrame");
+        iae.fillInStackTrace();
+        throw iae;
+      }
+      this.parent = parent;
+  
+      this.putValue(Action.NAME, DISPLAY_NAME);
+      this.putValue(GUIUtilities.LARGE_ICON, LARGE_ICON);
+      this.putValue("tooltip", TOOLTIP);
+      this.putValue(GUIUtilities.ACCELERATOR_KEY, ACCELERATOR_KEY);
+      
+      DISPLAY_NAME = StaticResources.getDisplayString(
+        "actions.actor.displayName", "Configure");
+      TOOLTIP = StaticResources.getDisplayString(
+        "actions.actor.tooltip", "Change Settings for Actor");
+    }
 
     /** Construct a rename dialog action with the specified name,
      *  which will appear in the menu that uses this action.
@@ -90,4 +122,10 @@ public class RenameDialogAction extends FigureAction {
                     "Failed to open a dialog to rename the target.", throwable);
         }
     }
+    
+    private TableauFrame parent;
+    private static String DISPLAY_NAME = null;
+    private static String TOOLTIP = null;
+    private static ImageIcon LARGE_ICON = null;
+    private static KeyStroke ACCELERATOR_KEY = null;
 }
