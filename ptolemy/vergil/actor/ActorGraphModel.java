@@ -1042,7 +1042,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             
             final String vertexName = "vertex1";
             ComponentRelation relation = oldLink.getRelation();
-            int width = -1;
+            int width = IORelation.WIDTH_TO_INFER;
             if (relation instanceof IORelation) {
                 Parameter widthPar = ((IORelation) relation).width;
                 try {
@@ -1052,7 +1052,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                     }
                 } catch (IllegalActionException e) {
                     // ignore the exception. If we can't request the
-                    // width, we'll use -1
+                    // width, we'll use WIDTH_TO_INFER
                 }
             }
             
