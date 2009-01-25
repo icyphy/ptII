@@ -35,6 +35,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.print.PageFormat;
+import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.File;
 import java.io.FileInputStream;
@@ -44,8 +45,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
+import javax.print.DocFlavor;
+import javax.print.PrintService;
+import javax.print.attribute.standard.Destination;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
+import javax.print.attribute.PrintServiceAttributeSet;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -460,6 +465,46 @@ public class PlotFrame extends JFrame {
         }
     }
 
+    /** If a PDF printer is available print to it.
+     *  @exception PrinterException If a printer with the string "PDF"
+     * cannot be found or if the job cannot be set to the PDF print
+     * service or if there is another problem printing.
+     */
+    protected void _printPDF() throws PrinterException {
+	// Find something that will print to PDF
+	boolean foundPDFPrinter = false;
+
+	PrintService pdfPrintService = null;
+	PrintService printServices[] = PrinterJob.lookupPrintServices();
+	for (int i = 0; i < printServices.length; i++) {
+	    if (printServices[i].getName().indexOf("PDF") != -1) {
+		foundPDFPrinter = true;
+		pdfPrintService = printServices[i];
+	    }
+	}
+
+	if (pdfPrintService == null) {
+	    throw new PrinterException("Could not find a printer with the "
+				       + "string \"PDF\" in its name.");
+	}
+
+	PrinterJob job = PrinterJob.getPrinterJob();
+	job.setPrintService(pdfPrintService);
+	job.setPrintable(plot, job.defaultPage());
+
+	PrintRequestAttributeSet aset = new HashPrintRequestAttributeSet();
+	// This gets ignored, but let's try it anyway
+	Destination destination = new Destination(new File("plot.pdf").toURI());
+	aset.add(destination);
+
+	job.print(aset);
+	if (foundPDFPrinter) {
+	    System.out.println("Plot printed from command line. "
+			       + "Under MacOSX, look for "
+			       + "~/Desktop/Java Printing.pdf");
+	}
+    }
+
     /** Print using the native dialog.
      */
     protected void _printNative() {
@@ -719,3 +764,4 @@ public class PlotFrame extends JFrame {
         }
     }
 }
+

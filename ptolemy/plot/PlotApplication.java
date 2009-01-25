@@ -156,6 +156,10 @@ public class PlotApplication extends PlotFrame {
         }
 
         setVisible(true);
+
+	if (_printPDF) {
+	    _printPDF();
+	}
     }
 
     /** Display the given plot.  Unlike the two argument constructor,
@@ -285,6 +289,9 @@ public class PlotApplication extends PlotFrame {
                 System.out.println(_usage());
                 StringUtilities.exit(0);
                 continue;
+            } else if (arg.equals("-printPDF")) {
+                _printPDF = true;
+                continue;
             } else if (arg.equals("-test")) {
                 _test = true;
                 continue;
@@ -361,7 +368,8 @@ public class PlotApplication extends PlotFrame {
         String[][] commandOptions = { { "-height", "<pixels>" },
                 { "-width", "<pixels>" }, };
 
-        String[] commandFlags = { "-help", "-test", "-version", "-", };
+        String[] commandFlags = { "-help", "-printPDF", 
+				  "-test", "-version", "-", };
         StringBuffer result = new StringBuffer(
                 "Usage: ptplot [ options ] [file ...]\n\n"
                         + "Options that take values:\n");
@@ -384,6 +392,9 @@ public class PlotApplication extends PlotFrame {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
+
+    /** If true, then print to PDF. */
+    protected static boolean _printPDF = false;
 
     /** If true, then auto exit after a few seconds. */
     protected static boolean _test = false;
