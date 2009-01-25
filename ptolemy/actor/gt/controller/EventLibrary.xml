@@ -103,6 +103,8 @@
         </entity>
     </entity>
     <entity name="IO" class="ptolemy.moml.EntityLibrary">
+        <entity name="Clone" class="ptolemy.actor.gt.controller.Clone">
+        </entity>
         <entity name="ListDirectory" class="ptolemy.actor.gt.controller.ListDirectory">
         </entity>
         <entity name="ReadModel" class="ptolemy.actor.gt.controller.ReadModel">

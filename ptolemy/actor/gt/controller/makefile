@@ -54,6 +54,7 @@ PTCLASSALLJARS = \
 
 # Keep this list alphabetized.
 JSRCS = \
+	Clone.java \
 	Configure.java \
 	DebuggerParameter.java \
 	DesignPatternImporter.java \
@@ -85,6 +86,7 @@ JSRCS = \
 	WriteModel.java
 
 OTHER_FILES_TO_BE_JARED = \
+	CloneIcon.xml \
 	ComplexTransformation.xml \
 	ConfigureIcon.xml \
 	DesignPatternTransformer.xml \
