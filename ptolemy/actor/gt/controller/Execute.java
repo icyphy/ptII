@@ -32,7 +32,7 @@ import java.util.List;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
-import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gt.GTEntityUtils;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.data.ArrayToken;
@@ -85,7 +85,8 @@ public class Execute extends GTEvent {
 
                 CompositeActor actor = (CompositeActor) toplevel;
                 if (_effigy == null || _effigy.getContainer() == null) {
-                    Effigy parentEffigy = Configuration.findEffigy(toplevel());
+                    Effigy parentEffigy = GTEntityUtils.findToplevelEffigy(
+                            this);
                     try {
                         _effigy = new PtolemyEffigy(parentEffigy,
                                 parentEffigy.uniqueName("_executeEffigy"));

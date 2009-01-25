@@ -38,9 +38,6 @@ import java.util.List;
 import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.Manager;
 import ptolemy.actor.gt.GTAttribute;
-import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.Effigy;
-import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.domains.de.kernel.DEDirector;
@@ -179,13 +176,6 @@ implements Configurable {
 
         for (ExecutionListener listener : _executionListeners) {
             manager.addExecutionListener(listener);
-        }
-
-        Effigy masterEffigy = Configuration.findEffigy(toplevel());
-        if (masterEffigy != null) {
-            PtolemyEffigy effigy = new PtolemyEffigy(masterEffigy,
-                    masterEffigy.uniqueName("effigy"));
-            effigy.setModel(_modelUpdater);
         }
 
         NamedObj container = getContainer();

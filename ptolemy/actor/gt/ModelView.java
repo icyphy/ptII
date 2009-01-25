@@ -150,7 +150,7 @@ public class ModelView extends TypedAtomicActor implements WindowListener {
                                 "Unable to reparse model.");
                     }
 
-                    Effigy effigy = Configuration.findEffigy(toplevel());
+                    Effigy effigy = GTEntityUtils.findToplevelEffigy(this);
                     if (effigy == null) {
                         // The effigy may be null if the model is closed.
                         return;

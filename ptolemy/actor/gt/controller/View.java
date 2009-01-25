@@ -34,6 +34,7 @@ import java.net.URI;
 
 import javax.swing.JFrame;
 
+import ptolemy.actor.gt.GTEntityUtils;
 import ptolemy.actor.gt.GTTools;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
@@ -96,7 +97,7 @@ public class View extends TableauControllerEvent {
     public RefiringData fire(ArrayToken arguments) throws IllegalActionException {
         RefiringData data = super.fire(arguments);
 
-        Effigy effigy = Configuration.findEffigy(toplevel());
+        Effigy effigy = GTEntityUtils.findToplevelEffigy(this);
         if (effigy == null) {
             // The effigy may be null if the model is closed.
             return data;

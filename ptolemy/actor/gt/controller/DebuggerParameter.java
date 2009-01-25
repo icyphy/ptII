@@ -28,12 +28,11 @@
 package ptolemy.actor.gt.controller;
 
 import java.util.LinkedList;
-import java.util.List;
 
 import javax.swing.text.BadLocationException;
 
 import ptolemy.actor.TypedActor;
-import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gt.GTEntityUtils;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TextEditor;
@@ -44,7 +43,6 @@ import ptolemy.data.ObjectToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.erg.kernel.ERGController;
-import ptolemy.domains.fsm.kernel.Configurer;
 import ptolemy.kernel.util.DebugEvent;
 import ptolemy.kernel.util.DebugListener;
 import ptolemy.kernel.util.IllegalActionException;
@@ -146,22 +144,7 @@ public class DebuggerParameter extends TableauParameter
     public Parameter rowsDisplayed;
 
     private Tableau _createTableau() throws IllegalActionException {
-        NamedObj toplevel = toplevel();
-        Effigy effigy = null;
-        if (toplevel instanceof Configurer) {
-            Configurer configurer = (Configurer) toplevel;
-            List<?> list = configurer.entityList();
-            if (list.size() == 1) {
-                effigy = Configuration.findEffigy((NamedObj) list.get(0));
-            }
-        }
-        if (effigy == null) {
-            effigy = Configuration.findEffigy(toplevel);
-        }
-        if (effigy == null) {
-            return null;
-        }
-
+        Effigy effigy = GTEntityUtils.findToplevelEffigy(this);
         TextEffigy textEffigy;
         try {
             textEffigy = TextEffigy.newTextEffigy(effigy, "");

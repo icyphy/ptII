@@ -47,7 +47,6 @@ import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
-import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.util.Time;
@@ -116,7 +115,7 @@ public class ModelExecutor extends TypedAtomicActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
 
-        Effigy parentEffigy = Configuration.findEffigy(toplevel());
+        Effigy parentEffigy = GTEntityUtils.findToplevelEffigy(this);
         try {
             _wrapperEffigy = new PtolemyEffigy(parentEffigy,
                     parentEffigy.uniqueName("_wrapperEffigy"));

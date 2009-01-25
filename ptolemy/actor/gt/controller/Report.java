@@ -31,7 +31,7 @@ import javax.swing.JFrame;
 import javax.swing.text.BadLocationException;
 
 import ptolemy.actor.gt.ChoiceParameter;
-import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gt.GTEntityUtils;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TextEditor;
@@ -127,7 +127,7 @@ public class Report extends TableauControllerEvent {
         case EXCEPTION:
             throw new RuntimeException(text);
         case TABLEAU:
-            Effigy effigy = Configuration.findEffigy(toplevel());
+            Effigy effigy = GTEntityUtils.findToplevelEffigy(this);
             if (effigy == null) {
                 // The effigy may be null if the model is closed.
                 return data;
