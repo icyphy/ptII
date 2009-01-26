@@ -201,9 +201,12 @@ public class PNDirector extends Director {
 
 		List args = new LinkedList();
 		args.add(generateDirectorHeader());
+        args.add(_generateActorNameFileForDebugging());
 
 		// Initialize the director head variable.
 		code.append(_codeStream.getCodeBlock("initBlock", args));
+
+		args.remove(1);
 
 		// Initialize each buffer variables.
 		for (String bufferVariable : _buffers) {
@@ -268,6 +271,7 @@ public class PNDirector extends Director {
 				.size());
 
 		args.add(_buffers.size());
+		args.add(_generateActorNameFileForDebugging());
 		code.append(_codeStream.getCodeBlock("preinitBlock", args));
 
 		code.append(bufferCode);
@@ -368,6 +372,7 @@ public class PNDirector extends Director {
 
 		List args = new LinkedList();
 		args.add(generateDirectorHeader());
+        args.add(_generateActorNameFileForDebugging());
 
 		code.append(_codeStream.getCodeBlock("wrapupBlock", args));
 
@@ -485,7 +490,8 @@ public class PNDirector extends Director {
 
 			// Generate debug code for printing the thread ID and actor name.
             List args = new LinkedList();
-            args.add(CodeGeneratorHelper.generateName((NamedObj) actor));
+            args.add(_generateActorNameFileForDebugging());
+            args.add(actor.getDisplayName());
             code.append(_codeStream.getCodeBlock("printThreadName", args));
 			
 			// mainLoop
@@ -586,6 +592,11 @@ public class PNDirector extends Director {
 			code.append(functionCode);
 		}
 	}
+
+    private String _generateActorNameFileForDebugging() {
+        return CodeGeneratorHelper.generateName((NamedObj) _director) +
+        "_nameMapFile";
+    }
 
 	/**
 	 * Generate the thread function name for a given actor.

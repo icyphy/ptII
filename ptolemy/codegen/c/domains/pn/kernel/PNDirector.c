@@ -1,4 +1,4 @@
-/*** preinitBlock($name, $numThreads, $numBuffers) ***/
+/*** preinitBlock($name, $numThreads, $numBuffers, $actorNameFile) ***/
 	// generate $declarePNDirectorStruct()
 	// The above comment is necessary in this code block
 	// to ensure the "declarePNDirectorStruct" code block is generated
@@ -17,6 +17,10 @@
                             // writeBlockMutex (init by pthread_mutex_init());
                             // readBlockMutex (init by pthread_mutex_init());
     };
+
+    #ifdef DEBUG_PN
+    FILE *$actorNameFile;
+	#endif
 /**/
 
 /*** declareBufferHeader($name, $dirHeader, $capacity, $index) ***/
@@ -34,9 +38,13 @@
 /**/
 
 
-/*** initBlock($directorHeader) ***/
+/*** initBlock($directorHeader, $actorNameFile) ***/
     pthread_mutex_init(&$directorHeader.writeBlockMutex, NULL);
     pthread_mutex_init(&$directorHeader.readBlockMutex, NULL);
+
+	#ifdef DEBUG_PN
+    $actorNameFile = fopen("$actorNameFile.txt", "w");
+	#endif
 /**/
 
 /*** initBuffer($buffer) ***/
@@ -45,9 +53,13 @@
 /**/
 
 
-/*** wrapupBlock($directorHeader) ***/
+/*** wrapupBlock($directorHeader, $actorNameFile) ***/
     pthread_mutex_destroy(&$directorHeader.writeBlockMutex);
     pthread_mutex_destroy(&$directorHeader.readBlockMutex);
+
+	#ifdef DEBUG_PN
+	fclose($actorNameFile);
+	#endif
 /**/
 
 /*** destroyBuffer($buffer) ***/
@@ -60,8 +72,9 @@
 /**/
 
 
-/*** printThreadName($name) ***/
+/*** printThreadName($actorNameFile, $name) ***/
 	#ifdef DEBUG_PN
-    printf("$name = [%x]\n", pthread_self());
+	fprintf($actorNameFile, "$name,%x\n", pthread_self());
+	fflush($actorNameFile);
 	#endif
 /**/
