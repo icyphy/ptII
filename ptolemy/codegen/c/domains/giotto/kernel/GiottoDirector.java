@@ -61,7 +61,7 @@ import ptolemy.kernel.util.NamedObj;
  is also associated with a code generator.
 
  @author Ben Lickly (based on SDFDirector)
- @version $Id:$
+ @version $Id$
  @since Ptolemy II 7.1
  @Pt.ProposedRating Red (blickly)
  @Pt.AcceptedRating Red (blickly)
@@ -100,7 +100,10 @@ public class GiottoDirector extends StaticSchedulingDirector {
      */
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
+        
         code.append(super.generateInitializeCode());
+        code.append("// should have initialize code here");
+       
 
         ptolemy.actor.CompositeActor container = (ptolemy.actor.CompositeActor) getComponent()
                 .getContainer();
