@@ -427,8 +427,8 @@ test IORelation-3.19 {Resolve width through three levels} {
     $r1 setWidth [java::field ptolemy.actor.IORelation WIDTH_TO_INFER]
  # the outcome is not deterministic from the user point of view
     catch {$manager inferWidths} msg
-	  set widthInferenceNotDeterministic2 "ptolemy.kernel.util.IllegalActionException: The inside and outside widths of port * are not consistent.
-Can't determine a uniquely defined width for the connected relations.
+    set widthInferenceNotDeterministic2 "ptolemy.kernel.util.IllegalActionException: The inside width (*) and the outside width (*) of port * are not either equal to 0 or not equal to each other and are therefore inconsistent.
+Can't determine a uniquely defined width for the connected relations. A possible fix is to right clicking on either the inside or outside relation and set the width -1.
   in *"
   string match $widthInferenceNotDeterministic2 $msg
 } {1}
