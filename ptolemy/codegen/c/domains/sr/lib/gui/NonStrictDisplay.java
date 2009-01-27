@@ -30,7 +30,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import ptolemy.codegen.c.actor.lib.gui.Display;
-import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**

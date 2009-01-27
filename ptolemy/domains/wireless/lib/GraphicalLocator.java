@@ -27,7 +27,6 @@
  */
 package ptolemy.domains.wireless.lib;
 
-import ptolemy.actor.Director;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;

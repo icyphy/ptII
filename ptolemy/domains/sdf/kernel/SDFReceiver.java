@@ -29,7 +29,6 @@
 package ptolemy.domains.sdf.kernel;
 
 import java.util.Enumeration;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 

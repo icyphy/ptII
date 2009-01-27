@@ -2,6 +2,7 @@ package ptolemy.verification.kernel.maude;
 
 import java.util.Iterator;
 import java.util.LinkedList;
+
 import ptolemy.kernel.util.IllegalActionException;
 
 public class RTMList extends RTMTerm {

@@ -29,9 +29,10 @@ package ptolemy.vergil.icon;
 
 import java.io.Reader;
 import java.io.StringReader;
-import java.net.URL;
 import java.lang.reflect.Constructor;
+import java.net.URL;
 
+import ptolemy.actor.gui.Configuration;
 import ptolemy.kernel.util.ConfigurableAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -39,10 +40,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.ValueListener;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.kernel.util.StringAttribute;
-import ptolemy.actor.gui.Configuration;
 import diva.canvas.Figure;
 import diva.canvas.toolbox.PaintedFigure;
 import diva.canvas.toolbox.SVGParser;

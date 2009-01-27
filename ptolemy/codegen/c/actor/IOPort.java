@@ -44,7 +44,6 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.pn.kernel.PNQueueReceiver;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 
 //////////////////////////////////////////////////////////////////////////
 ////IOPort

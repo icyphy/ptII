@@ -28,8 +28,6 @@
  */
 package ptolemy.data.properties.lattice;
 
-import java.util.LinkedList;
-
 import ptolemy.data.properties.Property;
 import ptolemy.graph.CPO;
 import ptolemy.graph.InequalityTerm;

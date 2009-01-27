@@ -37,7 +37,6 @@ import java.util.Set;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.util.Time;
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.NameParameter;

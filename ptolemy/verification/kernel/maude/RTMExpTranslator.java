@@ -4,8 +4,8 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.List;
-import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import ptolemy.data.expr.ASTPtArrayConstructNode;
 import ptolemy.data.expr.ASTPtBitwiseNode;
@@ -20,12 +20,12 @@ import ptolemy.data.expr.ASTPtPowerNode;
 import ptolemy.data.expr.ASTPtProductNode;
 import ptolemy.data.expr.ASTPtRecordConstructNode;
 import ptolemy.data.expr.ASTPtRelationalNode;
+import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ASTPtShiftNode;
 import ptolemy.data.expr.ASTPtSumNode;
 import ptolemy.data.expr.ASTPtUnaryNode;
-import ptolemy.data.expr.PtParser;
-import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.AbstractParseTreeVisitor;
+import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.Token;
 import ptolemy.kernel.util.IllegalActionException;
 

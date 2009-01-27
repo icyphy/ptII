@@ -26,12 +26,7 @@
  */
 package ptolemy.codegen.c.domains.sr.lib;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import ptolemy.codegen.c.actor.lib.logic.LogicFunction;
-import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
-import ptolemy.kernel.util.IllegalActionException;
 
 /**
  A code generation helper class for ptolemy.domains.sr.lib.logic.NonStrictLogicFunction. 

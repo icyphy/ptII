@@ -13,7 +13,6 @@ import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.data.properties.ModelAnalyzer;
 import ptolemy.data.properties.Property;
 import ptolemy.data.properties.PropertyHelper;
 import ptolemy.data.properties.PropertySolver;

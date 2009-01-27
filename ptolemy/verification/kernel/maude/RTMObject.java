@@ -2,6 +2,7 @@ package ptolemy.verification.kernel.maude;
 
 import java.util.HashMap;
 import java.util.Iterator;
+
 import ptolemy.kernel.util.IllegalActionException;
 
 public class RTMObject extends RTMTerm {

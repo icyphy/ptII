@@ -1,7 +1,6 @@
 package ptolemy.verification.kernel.maude;
 
 import ptolemy.data.expr.ASTPtRootNode;
-
 import ptolemy.kernel.util.IllegalActionException;
 
 public class RTMPtExp extends RTMFragment {

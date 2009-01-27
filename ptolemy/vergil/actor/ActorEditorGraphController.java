@@ -35,9 +35,8 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.util.Iterator;
-
 import java.lang.reflect.Constructor;
+import java.util.Iterator;
 
 import javax.swing.Action;
 import javax.swing.JMenu;

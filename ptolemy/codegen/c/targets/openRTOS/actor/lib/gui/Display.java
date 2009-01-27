@@ -27,7 +27,6 @@
  */
 package ptolemy.codegen.c.targets.openRTOS.actor.lib.gui;
 
-import java.util.ArrayList;
 import java.util.Set;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;

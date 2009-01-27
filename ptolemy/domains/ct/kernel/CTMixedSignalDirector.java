@@ -30,7 +30,6 @@ import java.util.Iterator;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
-import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;

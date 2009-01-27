@@ -28,29 +28,26 @@
 
 package ptolemy.verification.kernel.maude;
 
-import java.util.List;
 import java.util.HashSet;
+import java.util.List;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.IOPort;
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.IOPort;
 import ptolemy.actor.lib.Clock;
-
+import ptolemy.data.expr.Variable;
+import ptolemy.domains.de.lib.TimedDelay;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.domains.fsm.kernel.Transition;
 import ptolemy.domains.fsm.modal.ModalModel;
-import ptolemy.domains.de.lib.TimedDelay;
-
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.verification.lib.BoundedBufferNondeterministicDelay;
-import ptolemy.data.expr.Variable;
 
 // ////////////////////////////////////////////////////////////////////////
 // //RTMaudeUtility
