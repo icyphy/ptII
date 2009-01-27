@@ -37,15 +37,15 @@ public class HighPriorityTask extends CTask {
             accessPointCallback(0.7, 0.0); 
             ArrayList<Integer> list = new ArrayList();
             list.add(LowPriorityTask.EVENT_ID); 
-            eventManager.SetEvent(LowPriorityTask.ID, list);
+            eventManager.setEvent(LowPriorityTask.ID, list);
             accessPointCallback(1.0, 0.0);
             // wait for event 1
             list.clear();
             list.add(HighPriorityTask.EVENT_ID); 
-            eventManager.WaitEvent(list);
+            eventManager.waitEvent(list);
             
             accessPointCallback(1.0, 0.0); 
-            eventManager.ClearEvent();
+            eventManager.clearEvent();
             cpuScheduler.terminateTask();
         } catch (Exception e) {
              e.printStackTrace();

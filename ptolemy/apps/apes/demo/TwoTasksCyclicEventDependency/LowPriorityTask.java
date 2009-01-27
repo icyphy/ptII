@@ -32,19 +32,19 @@ public class LowPriorityTask extends CTask {
         System.out.println(this.getName() + "._callCMethod()");
         try {
             accessPointCallback(-1.0, 1.0); 
-            eventManager.ClearEvent();
+            eventManager.clearEvent();
             accessPointCallback(2.2, 0.0);
             ArrayList<Integer> list = new ArrayList();
             list.add(HighPriorityTask.EVENT_ID); 
-            eventManager.SetEvent(HighPriorityTask.ID, list);
+            eventManager.setEvent(HighPriorityTask.ID, list);
             
             accessPointCallback(1.0, 0.0);
             list.clear();
             list.add(LowPriorityTask.EVENT_ID); 
-            eventManager.WaitEvent(list);
+            eventManager.waitEvent(list);
             
             accessPointCallback(1.0, 0.0);
-            eventManager.ClearEvent();
+            eventManager.clearEvent();
             cpuScheduler.terminateTask();
         } catch (NoRoomException e) { 
             e.printStackTrace();

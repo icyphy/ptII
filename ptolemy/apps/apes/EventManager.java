@@ -120,6 +120,25 @@ public class EventManager extends ApeActor {
         return StatusType.E_OK;
     }
     
+    public StatusType setEvent(int taskId, List<Integer> newEvents) throws NoRoomException, IllegalActionException {
+        boolean taskResumes = false;
+        Actor task = _tasks.get(taskId);
+        
+        List<Integer> events = newEvents;
+        
+        for (Integer eventId : events) {
+            if (_actorsWaitingForEvents.get(task) != null && 
+                    _actorsWaitingForEvents.get(task).contains(eventId)) {
+                taskResumes = true;
+                break;
+            }
+        }
+        if (taskResumes) {
+            output.send(new ResourceToken(task, null, TaskState.ready_running));
+        }
+        return StatusType.E_OK;
+    }
+    
     
     private List<Integer> _getEvents(byte newEvents) { 
         ArrayList<Integer> events = new ArrayList();
@@ -149,6 +168,14 @@ public class EventManager extends ApeActor {
     public StatusType waitEvent(byte events) throws NoRoomException, IllegalActionException {
         Actor currentTask = _taskNames.get(Thread.currentThread().getName());
         List<Integer> eventList = _getEvents(events);
+        _actorsWaitingForEvents.put(currentTask, eventList);
+        output.send(new ResourceToken(currentTask, null, TaskState.waiting));
+        return StatusType.E_OK;
+    }
+    
+    public StatusType waitEvent(List<Integer> events) throws NoRoomException, IllegalActionException {
+        Actor currentTask = _taskNames.get(Thread.currentThread().getName());
+        List<Integer> eventList = events;
         _actorsWaitingForEvents.put(currentTask, eventList);
         output.send(new ResourceToken(currentTask, null, TaskState.waiting));
         return StatusType.E_OK;
