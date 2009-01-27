@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.data.properties;
+package ptolemy.data.properties.gui;
 
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
@@ -38,6 +38,8 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.data.properties.Property;
+import ptolemy.data.properties.PropertySolver;
 import ptolemy.data.properties.token.PropertyTokenSolver;
 import ptolemy.data.type.BaseType;
 import ptolemy.gui.ComponentDialog;

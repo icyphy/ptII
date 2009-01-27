@@ -25,18 +25,18 @@
  PT_COPYRIGHT_VERSION 2
  COPYRIGHTENDKEY
  */
-package ptolemy.data.properties;
+package ptolemy.data.properties.actor.lib;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.ActorToken;
 import ptolemy.data.StringToken;
+import ptolemy.data.properties.AnalyzerAttribute;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// ModelGenerator
@@ -85,20 +85,6 @@ public class ModelAnalyzer extends Transformer {
         super.attributeChanged(attribute);
     }
     
-    /** Clone the object into the specified workspace. The new object is
-     *  <i>not</i> added to the directory of that workspace (you must do this
-     *  yourself if you want it there).
-     *  The result is an attribute with no container.
-     *  @param workspace The workspace for the cloned object.
-     *  @exception CloneNotSupportedException Not thrown in this base class
-     *  @return The new Attribute.
-     */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ModelAnalyzer newObject = (ModelAnalyzer) super.clone(workspace);
-        newObject._analyzerWrapper = (AnalyzerAttribute)newObject._analyzerWrapper.getAttribute("_analyzerWrapper");
-        return newObject;
-    }
-
     public void fire() throws IllegalActionException {
         
         ActorToken token = (ActorToken) input.get(0);
