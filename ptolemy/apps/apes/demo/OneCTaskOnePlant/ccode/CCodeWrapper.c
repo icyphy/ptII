@@ -18,7 +18,7 @@ JAVAENV currentEnv; // assuming only one thread is active in this piece of C-Cod
  JavaVM *cached_jvm; 
  jobject dispatcher, cpuScheduler, eventManager;
  jclass cpus, apcd;
- jmethodID accessPointCallbackMethod, activateTaskMethod, terminateTaskMethod;
+ jmethodID accessPointCallbackMethod, activateTaskMethod, terminateTaskMethod, accessPointCallbackReturnValuesMethod;
  JNIEXPORT jint JNICALL
  
  
@@ -41,6 +41,10 @@ JAVAENV currentEnv; // assuming only one thread is active in this piece of C-Cod
          return JNI_ERR;
      }
      accessPointCallbackMethod = (*env)->GetMethodID(env, cls, "accessPointCallback", "(DD)V");
+     if (accessPointCallbackMethod == NULL) {
+         return JNI_ERR;
+     }
+	 accessPointCallbackReturnValuesMethod = (*env)->GetMethodID(env, cls, "accessPointCallback", "(DDLjava/lang/String;D)V");
      if (accessPointCallbackMethod == NULL) {
          return JNI_ERR;
      }
@@ -75,6 +79,7 @@ JAVAENV currentEnv; // assuming only one thread is active in this piece of C-Cod
      return env;
  }
 
+
  JNIEXPORT void JNICALL 
 Java_ptolemy_apps_apes_AccessPointCallbackDispatcher_InitializeC(JNIEnv *env, jobject obj)
  {
@@ -103,6 +108,16 @@ Java_ptolemy_apps_apes_EventManager_InitializeC(JNIEnv *env, jobject obj)
 
 /*****************************************************************************/
 
+JNIEXPORT void JNICALL 
+Java_ptolemy_apps_apes_demo_OneCTaskOnePlant_Task_setLower(JNIEnv *env, jobject obj, double l) {
+	setLower(l);
+}
+
+JNIEXPORT void JNICALL 
+Java_ptolemy_apps_apes_demo_OneCTaskOnePlant_Task_setUpper(JNIEnv *env, jobject obj, double u) {
+	setUpper(u);
+}
+
  JNIEXPORT void JNICALL 
 Java_ptolemy_apps_apes_demo_OneCTaskOnePlant_Task_CMethod(JNIEnv *env, jobject obj)
  {
@@ -111,15 +126,6 @@ Java_ptolemy_apps_apes_demo_OneCTaskOnePlant_Task_CMethod(JNIEnv *env, jobject o
      return;
  }
 
-/*****************************************************************************/
-
- JNIEXPORT void JNICALL 
-Java_ptolemy_apps_apes_demo_OneCTaskOnePlant_Plant_CMethod(JNIEnv *env, jobject obj)
- {
-	 fprintf(stderr, "Plant "); 
-     plant();
-     return;
- }
 
  /*****************************************************************************/
   
@@ -158,6 +164,20 @@ Java_ptolemy_apps_apes_demo_OneCTaskOnePlant_IRSPlant_CMethod(JNIEnv *env, jobje
 	 fprintf(stderr, "after callback ");
  }
  
+  void callbackV(float exectime, float mindelay, char* varName, double value) {
+	 jmethodID method;
+	 char buf[128];
+	 jclass cls; 
+	 JNIEnv *env = JNU_GetEnv();
+	 fprintf(stderr, "callback ");  
+	 
+	 jstring string = (*env)->NewStringUTF(env, varName);  
+	 
+	 
+	 (*(env))->CallVoidMethod(env, dispatcher, accessPointCallbackReturnValuesMethod, exectime, mindelay, string, value);   
+	 fprintf(stderr, "after callback ");
+ }
+ 
  void activateTask(int taskId) {
 	 jmethodID method;
 	 jclass cls;
@@ -175,5 +195,6 @@ Java_ptolemy_apps_apes_demo_OneCTaskOnePlant_IRSPlant_CMethod(JNIEnv *env, jobje
 	 (*(env))->CallVoidMethod(env, cpuScheduler, terminateTaskMethod);  
 	 fprintf(stderr, "terminate done ");
  }
+ 
 
  /*****************************************************************************/
