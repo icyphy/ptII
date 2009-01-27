@@ -275,13 +275,16 @@ public class CPUScheduler extends ApeActor {
             _sendTaskExecutionEvent(actorToSchedule, ScheduleEventType.WAIT);   
             newTaskInExecution = getNewTaskInExecution(newTaskInExecution);
         } else if (state == TaskState.suspended) {
-            _tasksInExecution.pop(); 
+            if (_tasksInExecution.contains(actorToSchedule))
+                _tasksInExecution.pop(); 
             _tasksThatStartedExecuting.remove(actorToSchedule);
             _sendTaskExecutionEvent(actorToSchedule, ScheduleEventType.STOP); 
             newTaskInExecution = getNewTaskInExecution(newTaskInExecution);
         } else {
             Actor taskInExecution = null;
-            
+            if (executionTime != null && 
+                    executionTime.compareTo(new Time(getDirector(), 0.0)) == 0)
+                return null;
             // if task needs an internal resource which is occupied now
             // the state should be set to waiting
             if (_internalResources.get(actorToSchedule) != null) {
@@ -413,8 +416,8 @@ public class CPUScheduler extends ApeActor {
     /**
      * Set private variables.
      */
-    public void initialize() throws IllegalActionException {
-        super.initialize(); 
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize(); 
         try {
             _previousModelTime = new Time(getDirector(), 0.0);
         } catch (IllegalActionException e) {

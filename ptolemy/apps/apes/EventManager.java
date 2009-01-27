@@ -101,10 +101,13 @@ public class EventManager extends ApeActor {
     /** <taskId, List of Events registered for the task> */
     public HashMap<Actor, List<Integer>> _actorsWaitingForEvents; 
     
-    public StatusType SetEvent(int taskId, List<Integer> newEvents) throws NoRoomException, IllegalActionException {
+    public StatusType setEvent(int taskId, byte newEvents) throws NoRoomException, IllegalActionException {
         boolean taskResumes = false;
         Actor task = _tasks.get(taskId);
-        for (Integer eventId : newEvents) {
+        
+        List<Integer> events = _getEvents(newEvents);
+        
+        for (Integer eventId : events) {
             if (_actorsWaitingForEvents.get(task) != null && 
                     _actorsWaitingForEvents.get(task).contains(eventId)) {
                 taskResumes = true;
@@ -117,15 +120,36 @@ public class EventManager extends ApeActor {
         return StatusType.E_OK;
     }
     
-    public StatusType ClearEvent() {
+    
+    private List<Integer> _getEvents(byte newEvents) { 
+        ArrayList<Integer> events = new ArrayList();
+        if ((newEvents & 1) == newEvents)
+            events.add(1);
+        if ((newEvents & 10) == newEvents)
+            events.add(2);
+        if ((newEvents & 100) == newEvents)
+            events.add(3);
+        if ((newEvents & 1000) == newEvents)
+            events.add(4);
+        if ((newEvents & 10000) == newEvents)
+            events.add(5);
+        if ((newEvents & 100000) == newEvents)
+            events.add(6);
+        if ((newEvents & 1000000) == newEvents)
+            events.add(7); 
+        return events;
+    }
+
+    public StatusType clearEvent() {
         Actor currentTask = _taskNames.get(Thread.currentThread().getName());
         _actorsWaitingForEvents.remove(currentTask);
         return StatusType.E_OK;
     }
     
-    public StatusType WaitEvent(List<Integer> events) throws NoRoomException, IllegalActionException {
-        Actor currentTask = _taskNames.get(Thread.currentThread().getName()); 
-        _actorsWaitingForEvents.put(currentTask, events);
+    public StatusType waitEvent(byte events) throws NoRoomException, IllegalActionException {
+        Actor currentTask = _taskNames.get(Thread.currentThread().getName());
+        List<Integer> eventList = _getEvents(events);
+        _actorsWaitingForEvents.put(currentTask, eventList);
         output.send(new ResourceToken(currentTask, null, TaskState.waiting));
         return StatusType.E_OK;
     }

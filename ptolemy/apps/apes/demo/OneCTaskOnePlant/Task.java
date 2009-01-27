@@ -1,7 +1,13 @@
 package ptolemy.apps.apes.demo.OneCTaskOnePlant;
 
+import java.util.List;
+
+import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
 import ptolemy.apps.apes.CTask;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.Token;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -9,23 +15,41 @@ import ptolemy.kernel.util.Workspace;
 
 public class Task extends CTask {
 
-    public Task() { 
-        _initialize();
+    public Task() {  
     }
 
     public Task(Workspace workspace) {
-        super(workspace); 
-        _initialize();
+        super(workspace);  
     }
 
     public Task(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(container, name); 
-        _initialize();
+        super(container, name);  
     }
     
-    private void _initialize() {
-        
+    public native void setLower(double lower);
+    public native void setUpper(double upper);
+    
+    @Override
+    public boolean prefire() throws IllegalActionException { 
+        for (IOPort port : (List<IOPort>)inputPortList()) {
+            if (port.getName().equals("lower")) {
+                for (int i = 0; i < port.getWidth(); i++) {
+                    while (port.hasToken(i)) {
+                        IntToken t = (IntToken) port.get(0); 
+                        setLower(t.doubleValue());
+                    }
+                }
+            } else if (port.getName().equals("upper")) {
+                for (int i = 0; i < port.getWidth(); i++) {
+                    while (port.hasToken(i)) {
+                        DoubleToken t = (DoubleToken) port.get(0); 
+                        setUpper(t.doubleValue());
+                    }
+                }
+            }
+        }
+        return super.prefire();
     }
     
     
@@ -50,5 +74,8 @@ public class Task extends CTask {
         cpuScheduler.terminateTask();
     }
     
+    public void setOutputPort(String varName, double value) throws NoRoomException, IllegalActionException {
+        ((IOPort)outputPortList().get(1)).send(0, new DoubleToken(value));
+    } 
 
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.TimedDirector;
 import ptolemy.actor.util.BreakCausalityInterface;
@@ -12,6 +13,7 @@ import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.Time;
 import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
@@ -57,40 +59,11 @@ public class CTask extends ApeActor implements Runnable {
         _initialize();
     }
     
-    /**
-     * Returns the priority of the actor. The priority is an int value. The
-     * default return value is 0.
-     * 
-     * @param actor
-     *            Given actor.
-     * @return Priority of the given actor.
-     */
-    public static int getPriority(Actor actor) {
-        try {
-            Parameter parameter = (Parameter) ((NamedObj) actor)
-                    .getAttribute("priority");
-
-            if (parameter != null) {
-                IntToken token = (IntToken) parameter.getToken();
-
-                return token.intValue();
-            } else {
-                return 0;
-            }
-        } catch (ClassCastException ex) {
-            return 0;
-        } catch (IllegalActionException ex) {
-            return 0;
-        }
-    }
-
+    public CPUScheduler cpuScheduler;
+    public EventManager eventManager;
+    public static AccessPointCallbackDispatcher dispatcher; 
     public Parameter methodName;
     
-    /** Buffers the token produced in the accessPointCallback if the DE Director thread running to 
-     * avoid concurrent modification of the eventQueue in the DE Director.
-     */
-    private ResourceToken _buffer;
-
     public void accessPointCallback(double extime, double minNextTime) throws NoRoomException, IllegalActionException {
 
         if (!_actorStopped){
@@ -124,17 +97,70 @@ public class CTask extends ApeActor implements Runnable {
         }
     } //return to the C part  
     
+    /**
+     * Break the dependency between input and output ports such that there is no infinite loop.
+     */
+    public CausalityInterface getCausalityInterface()
+            throws IllegalActionException {
+        if (_causalityInterface == null) {
+            _causalityInterface = new BreakCausalityInterface(this,
+                    getDirector().defaultDependency());
+        }
+        return _causalityInterface;
+    }
+
+    /**
+     * Returns the priority of the actor. The priority is an int value. The
+     * default return value is 0.
+     * 
+     * @param actor
+     *            Given actor.
+     * @return Priority of the given actor.
+     */
+    public static int getPriority(Actor actor) {
+        try {
+            Parameter parameter = (Parameter) ((NamedObj) actor)
+                    .getAttribute("priority");
+    
+            if (parameter != null) {
+                IntToken token = (IntToken) parameter.getToken();
+    
+                return token.intValue();
+            } else {
+                return 0;
+            }
+        } catch (ClassCastException ex) {
+            return 0;
+        } catch (IllegalActionException ex) {
+            return 0;
+        }
+    }
+
     public void fire() throws IllegalActionException {
         System.out.println(this.getName() + ".fire() - Time: " + getDirector().getModelTime().toString());
 
         boolean readInputs = false;
         
         while (input.hasToken(0)){
-            ptolemy.data.Token t = input.get(0);
-            readInputs = true;
+            input.get(0);
+            readInputs = true; 
+        } 
+        
+        // consume all values on ports - if port values should be read and used, 
+        // this has to be done in the prefire or in the overriden fire before 
+        // calling this fire method
+        for (IOPort port : (List<IOPort>)inputPortList()) {
+            if (port != input) {
+                for (int i = 0; i < port.getWidth(); i++) {
+                    while (port.hasToken(i)) {
+                        port.get(0);
+                    }
+                }
+            }
         }
 
-        if (_waitForMinDelay && !readInputs) {
+        // fired as a result of the fireAt
+        if (_waitForMinDelay && !readInputs) { 
             synchronized (this) {
                 while (_inExecution) {
                     try {
@@ -154,7 +180,7 @@ public class CTask extends ApeActor implements Runnable {
                 _buffer = null;
             }
             _waitForMinDelay = false;
-        } else {
+        } else if (readInputs) { // fired by the CPUScheduler
             synchronized (this) {
                 if (_minDelay.getDoubleValue() >= 0) {
                     getDirector().fireAt(this, getDirector().getModelTime().add(_minDelay));
@@ -166,24 +192,15 @@ public class CTask extends ApeActor implements Runnable {
         }
 
     }
-
-    /**
-     * Break the dependency between input and output ports such that there is no infinite loop.
-     */
-    public CausalityInterface getCausalityInterface()
-            throws IllegalActionException {
-        if (_causalityInterface == null) {
-            _causalityInterface = new BreakCausalityInterface(this,
-                    getDirector().defaultDependency());
-        }
-        return _causalityInterface;
-    }
+    
+    
+    
 
     /**
      * resolve resourceActors and start the thread.
      */
-    public void initialize() throws IllegalActionException {
-        super.initialize(); 
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize(); 
         if (!(super.getDirector() instanceof TimedDirector)) {
             throw new IllegalActionException(this,
                     "Enclosing director must be a TimedDirector.");
@@ -230,11 +247,12 @@ public class CTask extends ApeActor implements Runnable {
             }
         }
     }
+     
+    public void initialize() throws IllegalActionException { 
+        super.initialize();
+        // TODO call startup function
+    }
     
-    // just for testing purposes to do system calls
-    public CPUScheduler cpuScheduler;
-    public EventManager eventManager;
-
     public void run() {
         Thread.currentThread().setName(this.getName());
         while (!_actorStopped) { 
@@ -263,6 +281,11 @@ public class CTask extends ApeActor implements Runnable {
        
     }
 
+    /**
+     * Buffers the token produced in the accessPointCallback if the DE Director thread running to  avoid concurrent modification of the eventQueue in the DE Director.
+     */
+    private ResourceToken _buffer;
+
     /** The causality interface, if it has been created. */
     private CausalityInterface _causalityInterface;
 
@@ -275,8 +298,11 @@ public class CTask extends ApeActor implements Runnable {
     private boolean _waitForMinDelay;
     
     private boolean _actorStopped = false;
-    
-    public static AccessPointCallbackDispatcher dispatcher; 
+
+    public void setOutputPort(String varName, double value) throws NoRoomException, IllegalActionException {
+        // TODO Auto-generated method stub
+        
+    } 
         
  
     
