@@ -65,7 +65,7 @@ String UnsignedBytetoString(byte b) {
 /*** unsupportedTypeFunction ***/
 /* We share one method between all types so as to reduce code size. */
 Token unsupportedTypeFunction(Token token, Token... tokens) {
-    System.err.println"Attempted to call unsupported method on a type");
+    System.err.println("Attempted to call unsupported method on a type");
     System.exit(1);
     return emptyToken;
 }

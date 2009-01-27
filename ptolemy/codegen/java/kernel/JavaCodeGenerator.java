@@ -1314,12 +1314,12 @@ public class JavaCodeGenerator extends CodeGenerator {
             String functionCode = _overloadedFunctions.getCodeBlock(name);
 
             if (!_overloadedFunctionSet.contains(name)) {
+                _overloadedFunctionSet.add(name);
 
                 String code = helper.processCode(functionCode);
 
                 _overloadedFunctions.append(code);
 
-                _overloadedFunctionSet.add(name);
             }
             if (name.startsWith("Array_")) {
                 // Array_xxx might need to have xxx added.

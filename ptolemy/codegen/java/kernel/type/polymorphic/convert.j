@@ -7,7 +7,7 @@
 /**/
 
 /*** convert_Boolean_Integer() ***/
-inline int convert_Boolean_Integer(boolean a) {
+/*inline*/ int convert_Boolean_Integer(boolean a) {
     return a ? 1 : 0;
 }
 /**/
@@ -28,19 +28,19 @@ char* convert_Boolean_String(boolean a) {
 /**/
 
 /*** convert_Double_Array() ***/
-inline Token convert_Double_Array(double a) {
+/*inline*/ Token convert_Double_Array(double a) {
     return $new(Array(1, 1, $new(Double(a))));
 }
 /**/
 
 /*** convert_Double_Double() ***/
-inline double convert_Double_Double(double a) {
+/*inline*/ double convert_Double_Double(double a) {
     return a;
 }
 /**/
 
 /*** convert_Double_Integer() ***/
-inline int convert_Double_Integer(double a) {
+/*inline*/ int convert_Double_Integer(double a) {
     return (int) a;
 }
 /**/
@@ -66,7 +66,7 @@ char* convert_Double_String(double a) {
 /**/
 
 /*** convert_Double_Token() ***/
-inline Token convert_Double_Token(double a) {
+/*inline*/ Token convert_Double_Token(double a) {
     return $new(Double(a));
 }
 /**/
@@ -78,13 +78,13 @@ Token convert_Integer_Array(int a) {
 /**/
 
 /*** convert_Integer_Boolean() ***/
-inline boolean convert_Integer_Boolean(int a) {
+/*inline*/ boolean convert_Integer_Boolean(int a) {
     return (a != 0) ? true : false;
 }
 /**/
 
 /*** convert_Integer_Double() ***/
-inline double convert_Integer_Double(int a) {
+/*inline*/ double convert_Integer_Double(int a) {
     return (double) a;
 }
 /**/
@@ -104,7 +104,7 @@ char* convert_Integer_String(int a) {
 /**/
 
 /*** convert_Integer_Token() ***/
-inline Token convert_Integer_Token(int a) {
+/*inline*/ Token convert_Integer_Token(int a) {
     return $new(Integer(a));
 }
 /**/
@@ -120,13 +120,13 @@ Token convert_Long_Array(long long a) {
 /**/
 
 /*** convert_Long_Token() ***/
-inline Token convert_Long_Token(long long a) {
+/*inline*/ Token convert_Long_Token(long long a) {
     return $new(Long(a));
 }
 /**/
 
 /*** convert_Matrix_Matrix() ***/
-inline Token convert_Matrix_Matrix(Token a1) {
+/*inline*/ Token convert_Matrix_Matrix(Token a1) {
     return a1;
 }
 /**/
