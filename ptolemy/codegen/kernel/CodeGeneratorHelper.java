@@ -613,7 +613,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      */
     public int getBufferSize(IOPort port, int channelNumber)
     throws IllegalActionException {
-        return ((ptolemy.codegen.c.actor.IOPort) _getHelper(port))
+        return ((PortCodeGenerator) _getHelper(port))
         .getBufferSize(channelNumber);
     }
 
@@ -1109,7 +1109,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     public Object getReadOffset(IOPort inputPort, int channelNumber)
     throws IllegalActionException {
         
-        return ((ptolemy.codegen.c.actor.IOPort) _getHelper(inputPort))
+        return ((PortCodeGenerator) _getHelper(inputPort))
         .getReadOffset(channelNumber);
     }
 
@@ -1211,7 +1211,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     public Object getWriteOffset(IOPort port, int channelNumber)
     throws IllegalActionException {
         
-        return ((ptolemy.codegen.c.actor.IOPort) _getHelper(port))
+        return ((PortCodeGenerator) _getHelper(port))
         .getWriteOffset(channelNumber);
     }
 
@@ -1339,7 +1339,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      */
     public void setBufferSize(IOPort port, int channelNumber, 
             int bufferSize) throws IllegalActionException {
-        ((ptolemy.codegen.c.actor.IOPort) _getHelper(port))
+        ((PortCodeGenerator) _getHelper(port))
         .setBufferSize(channelNumber, bufferSize);
     }
 
@@ -1363,7 +1363,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      */
     public void setReadOffset(IOPort port, int channelNumber,
             Object readOffset) throws IllegalActionException {
-        ((ptolemy.codegen.c.actor.IOPort) _getHelper(port))
+        ((PortCodeGenerator) _getHelper(port))
         .setReadOffset(channelNumber, readOffset);
     }
 
@@ -1378,8 +1378,8 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      */
     public void setWriteOffset(IOPort port, int channelNumber,
             Object writeOffset) throws IllegalActionException {
-        ((ptolemy.codegen.c.actor.IOPort) _getHelper(port))
-        .setWriteOffset(channelNumber, writeOffset);
+        ((PortCodeGenerator) _getHelper(port))
+	    .setWriteOffset(channelNumber, writeOffset);
     }
 
     /**

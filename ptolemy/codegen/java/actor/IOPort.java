@@ -27,6 +27,7 @@
  */
 package ptolemy.codegen.java.actor;
 
+import java.util.HashMap;
 import java.util.List;
 
 import ptolemy.actor.Actor;
@@ -658,4 +659,104 @@ public class IOPort extends JavaCodeGeneratorHelper implements PortCodeGenerator
         PNDirector.generatePortHeader(port, channelNumber) + ", &" +
         pnDirector.generateDirectorHeader() + ");" + _eol;
     }
+
+    /** Get the buffer size of channel of the port.
+     *  @param channelNumber The number of the channel that is being set.
+     *  @return return The size of the buffer.
+     *  @see #setBufferSize(int, int);
+     */
+    public int getBufferSize(int channelNumber)
+	throws IllegalActionException {
+        Channel channel = _getChannel(channelNumber);
+        
+        if (_bufferSizes.get(channel) == null) {
+            // This should be a special case for doing
+            // codegen for a sub-part of a model.
+            return channel.port.getWidth();            
+        }
+        
+        return _bufferSizes.get(channel);
+    }
+
+    
+    /** Get the read offset of a channel of the port.
+     *  @param channelNumber The number of the channel.
+     *  @return The read offset.
+     *  @exception IllegalActionException If thrown while getting the channel.
+     *  @see #setReadOffset(int, Object)
+     */
+    public Object getReadOffset(int channelNumber)
+	throws IllegalActionException {
+        Channel channel = _getChannel(channelNumber);
+        return _readOffsets.get(channel);
+        
+    }
+    
+    /** Get the write offset of a channel of the port.
+     *  @param channelNumber The number of the channel.
+     *  @param writeOffset The offset.
+     *  @return The write offset.
+     *  @exception IllegalActionException If thrown while getting the channel.
+     *  @see #setWriteOffset(int, Object)
+     */
+    public Object getWriteOffset(int channelNumber)
+    throws IllegalActionException {
+        Channel channel = _getChannel(channelNumber);
+        return _writeOffsets.get(channel);
+        
+    }
+
+    /** Set the buffer size of channel of the port.
+     *  @param channelNumber The number of the channel that is being set.
+     *  @param bufferSize The size of the buffer.
+     *  @see #getBufferSize(int)
+     */
+    public void setBufferSize(int channelNumber, int bufferSize) {
+        Channel channel = _getChannel(channelNumber);
+        _bufferSizes.put(channel, bufferSize);
+    }
+    
+    /** Set the read offset of a channel of the port.
+     *  @param channelNumber The number of the channel that is being set.
+     *  @param readOffset The offset.
+     *  @see #getReadOffset(int)
+     */
+    public void setReadOffset(int channelNumber, Object readOffset) {
+        Channel channel = _getChannel(channelNumber);
+        _readOffsets.put(channel, readOffset);
+    }
+
+    /** Set the write offset of a channel of the port.
+     *  @param channelNumber The number of the channel that is being set.
+     *  @param writeOffset The offset.
+     *  @see #getWriteOffset(int)
+     */
+    public void setWriteOffset(int channelNumber, Object writeOffset) {
+        Channel channel = _getChannel(channelNumber);
+        _writeOffsets.put(channel, writeOffset);
+    }
+    
+    /** A HashMap that keeps track of the bufferSizes of each channel
+     *  of the actor.
+     */
+    protected HashMap<Channel, Integer> _bufferSizes = 
+        new HashMap<Channel, Integer>();
+
+    /** A HashMap that keeps track of the read offsets of each input channel of
+     *  the actor.
+     */
+    protected HashMap<Channel, Object> _readOffsets = 
+        new HashMap<Channel, Object>();
+    
+    /** A HashMap that keeps track of the write offsets of each input channel of
+     *  the actor.
+     */
+    protected HashMap<Channel, Object> _writeOffsets = 
+        new HashMap<Channel, Object>();    
+    
+    private Channel _getChannel(int channelNumber) {
+        return new Channel((ptolemy.actor.IOPort) 
+                getComponent(), channelNumber);
+    }
+
 }

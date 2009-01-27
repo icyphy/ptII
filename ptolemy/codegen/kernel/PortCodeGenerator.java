@@ -65,6 +65,52 @@ public interface PortCodeGenerator extends ComponentCodeGenerator {
     public String generateCodeForSend(String channel, String dataToken)     
 	throws IllegalActionException;
 
+    /** Get the buffer size of channel of the port.
+     *  @param channelNumber The number of the channel that is being set.
+     *  @return return The size of the buffer.
+     *  @see #setBufferSize(int, int);
+     */
+    public int getBufferSize(int channelNumber) throws IllegalActionException;
+
+    /** Get the read offset of a channel of the port.
+     *  @param channelNumber The number of the channel.
+     *  @return The read offset.
+     *  @see #setReadOffset(int, Object)
+     */
+    public Object getReadOffset(int channelNumber)
+	throws IllegalActionException;
+
+    /** Get the write offset of a channel of the port.
+     *  @param channelNumber The number of the channel.
+     *  @param writeOffset The offset.
+     *  @return The write offset.
+     *  @exception IllegalActionException If thrown while getting the channel.
+     *  @see #setWriteOffset(int, Object)
+     */
+    public Object getWriteOffset(int channelNumber)
+	throws IllegalActionException;
+;
+
+    /** Set the buffer size of channel of the port.
+     *  @param channelNumber The number of the channel that is being set.
+     *  @param bufferSize The size of the buffer.
+     *  @see #getBufferSize(int)
+     */
+    public void setBufferSize(int channelNumber, int bufferSize);
+
+    /** Set the read offset of a channel of the port.
+     *  @param channelNumber The number of the channel that is being set.
+     *  @param readOffset The offset.
+     *  @see #getReadOffset(int)
+     */
+    public void setReadOffset(int channelNumber, Object readOffset);
+
+    /** Set the write offset of a channel of the port.
+     *  @param channelNumber The number of the channel that is being set.
+     *  @param writeOffset The offset.
+     */
+    public void setWriteOffset(int channelNumber, Object writeOffset); 
+
     /** Update the read offset.
      *  @param rate  The rate of the channels.
      *  @param directorHelper The Director helper

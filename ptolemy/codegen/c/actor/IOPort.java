@@ -661,7 +661,13 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
         pnDirector.generateDirectorHeader() + ");" + _eol;
     }
     
-    public int getBufferSize(int channelNumber) throws IllegalActionException {
+    /** Get the buffer size of channel of the port.
+     *  @param channelNumber The number of the channel that is being set.
+     *  @return return The size of the buffer.
+     *  @see #setBufferSize(int, int);
+     */
+    public int getBufferSize(int channelNumber)
+	throws IllegalActionException {
         Channel channel = _getChannel(channelNumber);
         
         if (_bufferSizes.get(channel) == null) {
@@ -674,31 +680,61 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
     }
 
     
+    /** Get the read offset of a channel of the port.
+     *  @param channelNumber The number of the channel.
+     *  @return The read offset.
+     *  @exception IllegalActionException If thrown while getting the channel.
+     *  @see #setReadOffset(int, Object)
+     */
     public Object getReadOffset(int channelNumber)
-    throws IllegalActionException {
+	throws IllegalActionException {
         Channel channel = _getChannel(channelNumber);
         return _readOffsets.get(channel);
         
     }
     
+    /** Get the write offset of a channel of the port.
+     *  @param channelNumber The number of the channel.
+     *  @param writeOffset The offset.
+     *  @return The write offset.
+     *  @exception IllegalActionException If thrown while getting the channel.
+     *  @see #setWriteOffset(int, Object)
+     */
     public Object getWriteOffset(int channelNumber)
     throws IllegalActionException {
         Channel channel = _getChannel(channelNumber);
         return _writeOffsets.get(channel);
         
     }
+
+    /** Set the buffer size of channel of the port.
+     *  @param channelNumber The number of the channel that is being set.
+     *  @param bufferSize The size of the buffer.
+     *  @see #getBufferSize(int)
+     */
+    public void setBufferSize(int channelNumber, int bufferSize) {
+        Channel channel = _getChannel(channelNumber);
+        _bufferSizes.put(channel, bufferSize);
+    }
+    
+    /** Set the read offset of a channel of the port.
+     *  @param channelNumber The number of the channel that is being set.
+     *  @param readOffset The offset.
+     *  @see #getReadOffset(int)
+     */
     public void setReadOffset(int channelNumber, Object readOffset) {
         Channel channel = _getChannel(channelNumber);
         _readOffsets.put(channel, readOffset);
     }
+
+    /** Set the write offset of a channel of the port.
+     *  @param channelNumber The number of the channel that is being set.
+     *  @param writeOffset The offset.
+     *  @see #getWriteOffset(int)
+     */
     public void setWriteOffset(int channelNumber, Object writeOffset) {
         Channel channel = _getChannel(channelNumber);
         _writeOffsets.put(channel, writeOffset);
-    }
-    
-    public void setBufferSize(int channelNumber, int bufferSize) {
-        Channel channel = _getChannel(channelNumber);
-        _bufferSizes.put(channel, bufferSize);
     }
     
     /** A HashMap that keeps track of the bufferSizes of each channel
