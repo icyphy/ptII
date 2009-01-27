@@ -44,7 +44,7 @@ void Array_insert(Token array, Token token) {
 
 /***Array_new***/
 
-/* Array_new: Create a new array with the specified elements.
+// Array_new: Create a new array with the specified elements.
 //  The "size" argument specifies the size of the array, and
 // the "given" argument specifies the number of provided elements
 // (which will typically be <= size).
