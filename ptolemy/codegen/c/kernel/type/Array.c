@@ -44,13 +44,15 @@ void Array_insert(Token array, Token token) {
 
 /***Array_new***/
 
-// Array_new: Create a new array with the specified elements.
-// The "size" argument specifies the size of the array, and
+/* Array_new: Create a new array with the specified elements.
+//  The "size" argument specifies the size of the array, and
 // the "given" argument specifies the number of provided elements
 // (which will typically be <= size).
 // The rest of the arguments are the provided elements (there
 // should be "given" of them). The given elements
 // should be of type Token *.
+// If the "given" argument is greater than 0, then the last
+// argument is expected to be the type that of the elements.
 Token Array_new(int size, int given, ...) {
     va_list argp;
     int i;
