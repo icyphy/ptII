@@ -617,7 +617,7 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
 
     	if (result != null) {
     		if (macro.equals("cgType")) {
-    			return result.replace("Int", "Integer");
+		    return result.replace("Int", "Integer").replace("Integereger", "Integer");
     		}
     		return result;
     	}
