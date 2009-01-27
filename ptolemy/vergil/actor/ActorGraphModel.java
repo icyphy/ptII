@@ -1025,8 +1025,6 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 
         /** Generate the moml to add a vertex to an exist link.
          *  @param moml The moml to add the vertex to the link.
-         *  @param moml The moml to undo these changed when something
-         *              goes wrong.
          *  @param container The container.
          *  @param oldLink The link that will be replace by two new once
          *      and a vertex in between.

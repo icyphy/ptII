@@ -622,7 +622,6 @@ public class UtilityFunctions {
     }
 
     /** Get a variable from the environment.
-     *  @param variableName The name of the environment variable to get
      *  @return the environment variable, or null if the variable is not defined.
      */
     public static RecordToken getenv() throws IllegalActionException {

@@ -73,7 +73,7 @@ import diva.util.xml.XmlReader;
  attributes is SVG (scalable vector graphics), although currently Diva
  only supports a small subset of SVG.
 
- @author Steve Neuendorffer, John Reekie, Contributor: Edward A. Lee
+ @author Steve Neuendorffer, John Reekie, Contributors: Edward A. Lee, Chad Berkley (Kepler)
  @version $Id$
  @since Ptolemy II 2.0
  @Pt.ProposedRating Yellow (neuendor)
@@ -130,7 +130,6 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
      *  @param name The name of this attribute.
      *  @exception NameDuplicationException
      *  @exception IllegalActionException
-     *  @author Chad Berkley, Kepler
      */
     public static XMLIcon getXMLIcon(NamedObj container, String name) 
       throws NameDuplicationException, IllegalActionException {
@@ -161,7 +160,6 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
      *  @param name The name of this attribute.
      *  @exception NameDuplicationException
      *  @exception IllegalActionException
-     *  @author Chad Berkley, Kepler
      */
     public static XMLIcon getXMLIcon(Workspace workspace, String name) 
       throws NameDuplicationException, IllegalActionException {
