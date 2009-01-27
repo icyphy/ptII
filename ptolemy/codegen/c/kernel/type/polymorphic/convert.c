@@ -29,7 +29,7 @@ char* convert_Boolean_String(boolean a) {
 
 /*** convert_Double_Array() ***/
 inline Token convert_Double_Array(double a) {
-    return $new(Array(1, 1, $new(Double(a))));
+  return $new(Array(1, 1, $new(Double(a)), TYPE_Double));
 }
 /**/
 
@@ -73,7 +73,7 @@ inline Token convert_Double_Token(double a) {
 
 /*** convert_Int_Array() ***/
 Token convert_Int_Array(int a) {
-    return $new(Array(1, 1, $new(Int(a))));
+  return $new(Array(1, 1, $new(Int(a)), TYPE_Int));
 }
 /**/
 
@@ -109,7 +109,7 @@ inline Token convert_Int_Token(int a) {
 
 /*** convert_Long_Array() ***/
 Token convert_Long_Array(long long a) {
-    return $new(Array(1, 1, $new(Long(a))));
+  return $new(Array(1, 1, $new(Long(a)), TYPE_Long));
 }
 /**/
 
