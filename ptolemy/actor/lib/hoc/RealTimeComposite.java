@@ -562,7 +562,7 @@ public class RealTimeComposite extends MirrorComposite {
                 // the associated thread.
                 _fireAtTimes.add(time);
             }
-            return time;
+            return result;
         }
 
         /** Fire the specified actor at the first opportunity

@@ -220,7 +220,7 @@ public class CCodeGenerator extends CodeGenerator {
         if (isTopLevel()) {
             mainEntryCode.append(_eol + _eol
                     + "int main(int argc, char *argv[]) {" + _eol);
-            String targetValue = target.getExpression();
+            //String targetValue = target.getExpression();
 
             // FIXME: why do we need this?
 //            if (!targetValue.equals(_DEFAULT_TARGET)) {

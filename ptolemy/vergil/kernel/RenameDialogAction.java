@@ -72,7 +72,7 @@ public class RenameDialogAction extends FigureAction {
         iae.fillInStackTrace();
         throw iae;
       }
-      this.parent = parent;
+      //this.parent = parent;
   
       this.putValue(Action.NAME, DISPLAY_NAME);
       this.putValue(GUIUtilities.LARGE_ICON, LARGE_ICON);
@@ -123,7 +123,7 @@ public class RenameDialogAction extends FigureAction {
         }
     }
     
-    private TableauFrame parent;
+    //private TableauFrame parent;
     private static String DISPLAY_NAME = null;
     private static String TOOLTIP = null;
     private static ImageIcon LARGE_ICON = null;
