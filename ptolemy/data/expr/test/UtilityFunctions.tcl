@@ -216,7 +216,7 @@ test UtilityFunctions-6.1 {Test getenv(String)} {
     set tree [$parser generateParseTree "getenv(\"PTII\")"]
     set results [$tree evaluateParseTree]
     set stringResults [java::cast ptolemy.data.StringToken $results]
-    set ptIIFromEnvironmentAsURL [[java::new java.io.File [$stringResults stringValue]] toURL]
+    set ptIIFromEnvironmentAsURL [[[java::new java.io.File [$stringResults stringValue]] getCanonicalFile] toURL]
     $ptIIAsURL sameFile $ptIIFromEnvironmentAsURL
 } {1}
 
