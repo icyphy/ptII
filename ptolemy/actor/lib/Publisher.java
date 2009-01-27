@@ -403,44 +403,6 @@ public class Publisher extends TypedAtomicActor {
     protected boolean _updatedLinks = false;
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /** Return a channel name of the form "channelX", where X is an integer
-     *  that ensures that this channel name is not already in use.
-     *  @return A unique channel name.
-     */
-    private String _uniqueChannelName() {
-        int suffix = 1;
-        // Find the nearest opaque container above in the hierarchy.
-        CompositeEntity container = (CompositeEntity) getContainer();
-        while (container != null && !container.isOpaque()) {
-            container = (CompositeEntity) container.getContainer();
-        }
-        if (container != null) {
-            Iterator actors = container.deepOpaqueEntityList().iterator();
-            while (actors.hasNext()) {
-                Object actor = actors.next();
-                if (actor instanceof Publisher && actor != this) {
-                    String nameInUse = ((Publisher) actor)._channel;
-                    if (nameInUse != null && nameInUse.startsWith("channel")) {
-                        String suffixInUse = nameInUse.substring(7);
-                        try {
-                            int suffixAsInt = Integer.parseInt(suffixInUse);
-                            if (suffix <= suffixAsInt) {
-                                suffix = suffixAsInt + 1;
-                            }
-                        } catch (NumberFormatException ex) {
-                            // Not a number suffix, so it can't collide.
-                            continue;
-                        }
-                    }
-                }
-            }
-        }
-       return "channel" + suffix;
-    }
-
-    ///////////////////////////////////////////////////////////////////
     ////                       private variables                   ////
 
     /** An indicator that connectionsChanged() has been called. */
