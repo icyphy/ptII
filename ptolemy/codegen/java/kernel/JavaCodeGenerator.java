@@ -479,7 +479,7 @@ public class JavaCodeGenerator extends CodeGenerator {
             typeStreams[i].appendCodeBlock(typesArray[i] + "_new");
 
             for (int j = 0; j < functionsArray.length; j++) {
-		System.out.println("JavaCodeGenerator: functionsArray: " + typesArray[i] + "_" + functionsArray[i]);
+		System.out.println("JavaCodeGenerator: functionsArray: " + typesArray[i] + "_" + functionsArray[j]);
                 // The code block declaration has to follow this convention:
                 // /*** [function name]Block ***/
                 //     .....
