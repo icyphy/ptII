@@ -5,13 +5,11 @@ import java.util.Map;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.NoRoomException;
-import ptolemy.apps.apes.CPUScheduler.TaskState;
 import ptolemy.kernel.util.IllegalActionException;
 
 public class AccessPointCallbackDispatcher {  
         
-        public native void InitializeC();
-        private boolean initialized = false;
+        public native void InitializeC(); 
         
         public AccessPointCallbackDispatcher() { 
         }

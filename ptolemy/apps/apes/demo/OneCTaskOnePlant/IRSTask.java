@@ -1,9 +1,7 @@
 package ptolemy.apps.apes.demo.OneCTaskOnePlant;
 
-import ptolemy.actor.Actor;
 import ptolemy.actor.NoRoomException;
 import ptolemy.apps.apes.InterruptServiceRoutine;
-import ptolemy.apps.apes.CPUScheduler.TaskState;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
