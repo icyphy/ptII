@@ -15,6 +15,7 @@ public class OSEKEntryPoint {
     public EventManager eventManager;
     
     public native void InitializeC();
+    public native int appStartup();
     
     
     public int activateTask(int taskId) throws NoRoomException, IllegalActionException {

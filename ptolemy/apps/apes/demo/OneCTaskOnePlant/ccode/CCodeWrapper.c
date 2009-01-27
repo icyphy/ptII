@@ -16,7 +16,7 @@ JAVAENV currentEnv; // assuming only one thread is active in this piece of C-Cod
 
 
  JavaVM *cached_jvm; 
- jobject dispatcher, cpuScheduler, eventManager;
+ jobject dispatcher, cpuScheduler, eventManager, osekEntryPoint;
  jclass cpus, apcd;
  jmethodID accessPointCallbackMethod, activateTaskMethod, terminateTaskMethod, accessPointCallbackReturnValuesMethod;
  JNIEXPORT jint JNICALL
@@ -103,6 +103,13 @@ Java_ptolemy_apps_apes_EventManager_InitializeC(JNIEnv *env, jobject obj)
  {
 	 fprintf(stderr, "EventManager_Initialize ");
 	 eventManager = (*env)->NewWeakGlobalRef(env, obj);  
+     return;
+ }
+   JNIEXPORT void JNICALL 
+Java_ptolemy_apps_apes_OSEKEntryPoint_InitializeC(JNIEnv *env, jobject obj)
+ {
+	 fprintf(stderr, "OSEKEntryPoint_Initialize ");
+	 osekEntryPoint = (*env)->NewWeakGlobalRef(env, obj);  
      return;
  }
 

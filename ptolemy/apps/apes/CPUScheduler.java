@@ -17,7 +17,9 @@ import ptolemy.actor.util.Time;
 import ptolemy.apps.apes.TaskExecutionListener.ScheduleEventType;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -411,7 +413,8 @@ public class CPUScheduler extends ApeActor {
         return StatusType.E_OK;
     }
     
-    
+    public static OSEKEntryPoint osekEntryPoint; 
+    public EventManager eventManager;
 
     /**
      * Set private variables.
@@ -440,9 +443,25 @@ public class CPUScheduler extends ApeActor {
                     _taskPriorities.put(actor, CTask.getPriority(actor));
                     if (getInternalResource(actor) != -1)
                         _internalResources.put(actor, getInternalResource(actor));
+                } else if (actor instanceof EventManager) {
+                    eventManager = (EventManager) actor;
                 }
             }
-        }
+        } 
+    }
+    
+    @Override
+    public void initialize() throws IllegalActionException { 
+        super.initialize();
+        if (osekEntryPoint == null) {
+            osekEntryPoint = new OSEKEntryPoint(this, eventManager); 
+            try {
+                osekEntryPoint.InitializeC(); 
+                osekEntryPoint.appStartup();
+            } catch (Exception ex) {
+                
+            }
+        } 
     }
     
     /**
