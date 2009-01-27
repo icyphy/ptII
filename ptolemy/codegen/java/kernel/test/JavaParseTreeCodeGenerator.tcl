@@ -147,7 +147,7 @@ test JavaParseTreeCodeGenerator-14.1 {visitPowerNode} {
   Entering node ptolemy.data.expr.ASTPtLeafNode
   Node ptolemy.data.expr.ASTPtLeafNode evaluated to 3
 Node ptolemy.data.expr.ASTPtPowerNode evaluated to 2
-} {(pow(2, 3))}}
+} {(Math.pow(2, 3))}}
 
 
 test JavaParseTreeCodeGenerator-15.1 {visitShiftNode} {
