@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="HTVQ" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
     </property>
     <property name="SDFDirector" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="100">
@@ -71,7 +71,7 @@ integer matrices</text>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1, 2, 887, 485}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={53, 60, 887, 474}, maximized=false}">
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -144,7 +144,7 @@ integer matrices</text>
         </port>
     </entity>
     <entity name="Encoder" class="ptolemy.domains.sdf.lib.vq.HTVQEncode">
-        <property name="codeBook" class="ptolemy.data.expr.Parameter" value="&quot;/ptolemy/domains/sdf/lib/vq/data/usc_hvq_s5.dat&quot;">
+        <property name="codeBook" class="ptolemy.data.expr.Parameter" value="&quot;$CLASSPATH/ptolemy/domains/sdf/lib/vq/data/usc_hvq_s5.dat&quot;">
         </property>
         <property name="blockCount" class="ptolemy.data.expr.Parameter" value="8">
         </property>
@@ -170,7 +170,7 @@ integer matrices</text>
         </port>
     </entity>
     <entity name="Decoder" class="ptolemy.domains.sdf.lib.vq.VQDecode">
-        <property name="codeBook" class="ptolemy.data.expr.Parameter" value="&quot;/ptolemy/domains/sdf/lib/vq/data/usc_hvq_s5.dat&quot;">
+        <property name="codeBook" class="ptolemy.data.expr.Parameter" value="&quot;$CLASSPATH/ptolemy/domains/sdf/lib/vq/data/usc_hvq_s5.dat&quot;">
         </property>
         <property name="blockCount" class="ptolemy.data.expr.Parameter" value="8">
         </property>
@@ -224,7 +224,7 @@ integer matrices</text>
         </port>
     </entity>
     <entity name="Compressed" class="ptolemy.domains.sdf.lib.vq.ImageDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={703, 417, 184, 196}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={703, 417, 184, 192}, maximized=false}">
         </property>
         <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
@@ -232,7 +232,7 @@ integer matrices</text>
         </property>
     </entity>
     <entity name="Original" class="ptolemy.domains.sdf.lib.vq.ImageDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 414, 184, 199}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 414, 184, 192}, maximized=false}">
         </property>
         <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
@@ -242,7 +242,7 @@ integer matrices</text>
     <entity name="Signal To Noise Ratio" class="ptolemy.actor.lib.gui.SequencePlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="PSNR">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={184, 413, 519, 200}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={184, 413, 519, 153}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[511, 105]">
         </property>
@@ -253,34 +253,46 @@ integer matrices</text>
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Power Signal to Noise Ratio (PSNR)</title>
+<xLabel>Frame #</xLabel>
+<yLabel>PSNR</yLabel>
 <xRange min="0.0" max="99.0"/>
-<xTicks> 
+<yRange min="21.572860280838203" max="22.009860108312406"/>
+<xTicks>
   <tick label="20" position="20.0"/>
   <tick label="40" position="40.0"/>
   <tick label="60" position="60.0"/>
   <tick label="80" position="80.0"/>
 </xTicks>
-<yRange min="21.572860280838203" max="22.009860108312406"/>
-<xLabel>Frame #</xLabel>
-<yLabel>PSNR</yLabel>
 </plot>?>
         </configure>
     </entity>
     <relation name="R1" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
         <vertex name="vertex0" value="95.0, 95.0">
         </vertex>
     </relation>
     <relation name="R2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="R3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="R4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="R5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
         <vertex name="vertex0" value="440.0, 200.0">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <link port="Source.output" relation="R1"/>
     <link port="PSNR.output" relation="relation"/>
