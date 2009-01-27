@@ -1,0 +1,146 @@
+ #include <jni.h>
+ #include <stdio.h>
+ #include "CCodeWrapper.h"
+#include"original.h"
+
+
+/*****************************************************************************/
+
+typedef struct AA{
+	JNIEnv *env;
+	jobject obj;
+} JAVAENV;
+ 
+
+JAVAENV envAccessPointDispatcher, envCPUScheduler, envEventManager;
+JAVAENV envA, envB, envC;
+
+ JNIEXPORT void JNICALL 
+Java_ptolemy_apps_apes_AccessPointCallbackDispatcher_Initialize(JNIEnv *env, jobject obj)
+ {
+	 fprintf(stderr, "AccessPointDispatcher_Initialize ");
+	 envAccessPointDispatcher.env=env;
+	 envAccessPointDispatcher.obj=obj; 
+     return;
+ }
+  JNIEXPORT void JNICALL 
+Java_ptolemy_apps_apes_CPUScheduler_Initialize(JNIEnv *env, jobject obj)
+ {
+	 fprintf(stderr, "CPUScheduler_Initialize ");
+	 envCPUScheduler.env=env;
+	 envCPUScheduler.obj=obj; 
+     return;
+ }
+  JNIEXPORT void JNICALL 
+Java_ptolemy_apps_apes_EventManager_Initialize(JNIEnv *env, jobject obj)
+ {
+	 fprintf(stderr, "EventManager_Initialize ");
+	 envEventManager.env=env;
+	 envEventManager.obj=obj; 
+     return;
+ }
+
+/*****************************************************************************/
+
+ JNIEXPORT void JNICALL 
+Java_ptolemy_apps_apes_demo_ThreeCTasks_CTaskA_CMethod(JNIEnv *env, jobject obj)
+ {
+	 fprintf(stderr, "CTaskA ");
+	 envA.env=env;
+	 envA.obj=obj;
+     top8ms_offset0();
+     return;
+ }
+
+/*****************************************************************************/
+
+ JNIEXPORT void JNICALL 
+Java_ptolemy_apps_apes_demo_ThreeCTasks_CTaskB_CMethod(JNIEnv *env, jobject obj)
+ {
+	 fprintf(stderr, "CTaskB ");
+	 envB.env=env;
+	 envB.obj=obj;
+     top8ms_offset4();
+     return;
+ }
+
+ /*****************************************************************************/
+
+ JNIEXPORT void JNICALL 
+Java_ptolemy_apps_apes_demo_ThreeCTasks_CTaskC_CMethod(JNIEnv *env, jobject obj)
+ {
+	 fprintf(stderr, "CTaskC ");
+	 envC.env=env;
+	 envC.obj=obj;
+     eventf();
+     return;
+ }
+
+ /*****************************************************************************/
+  
+  JNIEXPORT void JNICALL 
+Java_ptolemy_apps_apes_demo_ThreeCTasks_IRS_A_CMethod(JNIEnv *env, jobject obj)
+ { 
+	 fprintf(stderr, "IRSA ");
+	 callback(-1, 0);
+	 activateTask(1);
+	 callback(0.2, 0);
+     return;
+ }
+ 
+  JNIEXPORT void JNICALL 
+Java_ptolemy_apps_apes_demo_ThreeCTasks_IRS_B_CMethod(JNIEnv *env, jobject obj)
+ { 
+	 fprintf(stderr, "IRSB ");
+	 callback(-1, 0);
+	 activateTask(2);
+	 callback(0.2, 0);
+     return;
+ }
+ 
+  JNIEXPORT void JNICALL 
+Java_ptolemy_apps_apes_demo_ThreeCTasks_IRS_C_CMethod(JNIEnv *env, jobject obj)
+ { 
+	 fprintf(stderr, "IRSC ");
+	 callback(-1, 0);
+	 activateTask(3);
+	 callback(0.2, 0);
+     return;
+ }
+
+
+ /*****************************************************************************/
+
+ void callback(float exectime, float mindelay) {
+
+	 jclass cls=NULL;
+	 jmethodID mid=NULL;
+	 
+	 JAVAENV jenv = envAccessPointDispatcher;
+
+	 fprintf(stderr, "accessPointCallback ");
+	cls=(*(jenv.env))->GetObjectClass(jenv.env,jenv.obj);
+	mid=(*(jenv.env))->GetMethodID(jenv.env, cls, "accessPointCallback", "()V");
+	if (mid == NULL)
+		return;
+	(*(jenv.env))->CallVoidMethod(jenv.env, jenv.obj, mid, exectime, mindelay);
+ }
+ 
+ void activateTask(int taskId) {
+ 
+  jclass cls=NULL;
+	 jmethodID mid=NULL;
+	
+	JAVAENV jenv = envCPUScheduler;
+
+	 fprintf(stderr, "activateTask ");
+	cls=(*(jenv.env))->GetObjectClass(jenv.env,jenv.obj);
+	mid=(*(jenv.env))->GetMethodID(jenv.env, cls, "activateTask", "()V");
+	if (mid == NULL)
+		return;
+	(*(jenv.env))->CallVoidMethod(jenv.env, jenv.obj, mid, taskId);
+
+	
+ }
+
+ /*****************************************************************************/
