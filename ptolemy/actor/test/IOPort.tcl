@@ -917,13 +917,11 @@ test IOPort-10.7 {Construct a simple system, then call description} {
         {ptolemy.actor.TypedIOPort {..source.output} attributes {
         } links {
             {ptolemy.actor.TypedIORelation {..edge0} attributes {
-                {ptolemy.data.expr.Parameter {..edge0.width} 1}
-            } configuration {width 1 fixed}}
+                {ptolemy.data.expr.Parameter {..edge0.width} -1}
+            } configuration {width 0}}
         } insidelinks {
-        } configuration {output opaque {width 1}} receivers {
+        } configuration {output opaque {width 0}} receivers {
         } remotereceivers {
-            {
-            }
         } type {declared unknown resolved unknown}}
     }}
     {ptolemy.actor.TypedAtomicActor {..dest} attributes {
@@ -933,32 +931,26 @@ test IOPort-10.7 {Construct a simple system, then call description} {
         {ptolemy.actor.TypedIOPort {..dest.input} attributes {
         } links {
             {ptolemy.actor.TypedIORelation {..edge0} attributes {
-                {ptolemy.data.expr.Parameter {..edge0.width} 1}
-            } configuration {width 1 fixed}}
+                {ptolemy.data.expr.Parameter {..edge0.width} -1}
+            } configuration {width 0}}
         } insidelinks {
-        } configuration {input opaque {width 1}} receivers {
-            {
-            }
+        } configuration {input opaque {width 0}} receivers {
         } remotereceivers {
         } type {declared unknown resolved unknown}}
     }}
 } relations {
     {ptolemy.actor.TypedIORelation {..edge0} attributes {
-        {ptolemy.data.expr.Parameter {..edge0.width} 1}
+        {ptolemy.data.expr.Parameter {..edge0.width} -1}
     } links {
         {ptolemy.actor.TypedIOPort {..source.output} attributes {
-        } configuration {output opaque {width 1}} receivers {
+        } configuration {output opaque {width 0}} receivers {
         } remotereceivers {
-            {
-            }
         } type {declared unknown resolved unknown}}
         {ptolemy.actor.TypedIOPort {..dest.input} attributes {
-        } configuration {input opaque {width 1}} receivers {
-            {
-            }
+        } configuration {input opaque {width 0}} receivers {
         } remotereceivers {
         } type {declared unknown resolved unknown}}
-    } configuration {width 1 fixed}}
+    } configuration {width 0}}
 }}
 
 
