@@ -226,8 +226,8 @@ public class CTask extends ApeActor implements Runnable {
                 String libName = ((StringToken)((StringParameter)((NamedObj)getContainer()).getAttribute("CCodeLibrary")).getToken()).stringValue();
                 System.loadLibrary(libName); 
                 dispatcher.InitializeC();
-                cpuScheduler.InitializeC();
-                eventManager.InitializeC();
+//                cpuScheduler.InitializeC();
+//                eventManager.InitializeC();
             } catch (Exception ex) {
                 
             }

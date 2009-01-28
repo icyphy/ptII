@@ -456,8 +456,7 @@ public class CPUScheduler extends ApeActor {
         if (osekEntryPoint == null) {
             osekEntryPoint = new OSEKEntryPoint(this, eventManager); 
             try {
-                osekEntryPoint.InitializeC(); 
-                osekEntryPoint.appStartup();
+                osekEntryPoint.InitializeC();  
             } catch (Exception ex) {
                 
             }

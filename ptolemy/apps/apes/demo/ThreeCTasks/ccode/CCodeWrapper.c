@@ -16,7 +16,7 @@ JAVAENV currentEnv; // assuming only one thread is active in this piece of C-Cod
 
 
  JavaVM *cached_jvm; 
- jobject dispatcher, cpuScheduler, eventManager;
+ jobject dispatcher, osekEntryPoint;
  jclass cpus, apcd;
  jmethodID accessPointCallbackMethod, activateTaskMethod, terminateTaskMethod;
  JNIEXPORT jint JNICALL
@@ -45,7 +45,7 @@ JAVAENV currentEnv; // assuming only one thread is active in this piece of C-Cod
          return JNI_ERR;
      }
 	 
-	 cls = (*env)->FindClass(env, "ptolemy/apps/apes/CPUScheduler");
+	 cls = (*env)->FindClass(env, "ptolemy/apps/apes/OSEKEntryPoint");
      if (cls == NULL) {
          return JNI_ERR;
      } 
@@ -84,23 +84,14 @@ Java_ptolemy_apps_apes_AccessPointCallbackDispatcher_InitializeC(JNIEnv *env, jo
 	 
      return;
  }
-  JNIEXPORT void JNICALL 
-Java_ptolemy_apps_apes_CPUScheduler_InitializeC(JNIEnv *env, jobject obj)
- {
-	 jclass cls;
-	 fprintf(stderr, "CPUScheduler_Initialize "); 
-	 cpuScheduler = (*env)->NewWeakGlobalRef(env, obj); 
 
+   JNIEXPORT void JNICALL 
+Java_ptolemy_apps_apes_OSEKEntryPoint_InitializeC(JNIEnv *env, jobject obj)
+ {
+	 fprintf(stderr, "OSEKEntryPoint_Initialize ");
+	 osekEntryPoint = (*env)->NewWeakGlobalRef(env, obj);  
      return;
  }
-  JNIEXPORT void JNICALL 
-Java_ptolemy_apps_apes_EventManager_InitializeC(JNIEnv *env, jobject obj)
- {
-	 fprintf(stderr, "EventManager_Initialize ");
-	 eventManager = (*env)->NewWeakGlobalRef(env, obj);  
-     return;
- }
-
 /*****************************************************************************/
 
  JNIEXPORT void JNICALL 
@@ -189,7 +180,7 @@ Java_ptolemy_apps_apes_demo_ThreeCTasks_IRSC_CMethod(JNIEnv *env, jobject obj)
 	 jclass cls;
 	 JNIEnv *env = JNU_GetEnv();
 	 fprintf(stderr, "activateTask ");   
-	 (*(env))->CallIntMethod(env, cpuScheduler, activateTaskMethod, taskId);   
+	 (*(env))->CallIntMethod(env, osekEntryPoint, activateTaskMethod, taskId);   
 	 fprintf(stderr, "activateTask done ");
  }
  
@@ -198,7 +189,7 @@ Java_ptolemy_apps_apes_demo_ThreeCTasks_IRSC_CMethod(JNIEnv *env, jobject obj)
 	 jclass cls;
 	 JNIEnv *env = JNU_GetEnv();
 	 fprintf(stderr, "terminateTask ");   
-	 (*(env))->CallVoidMethod(env, cpuScheduler, terminateTaskMethod);  
+	 (*(env))->CallVoidMethod(env, osekEntryPoint, terminateTaskMethod);  
 	 fprintf(stderr, "terminate done ");
  }
 

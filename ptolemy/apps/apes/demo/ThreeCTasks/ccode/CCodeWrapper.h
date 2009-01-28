@@ -11,6 +11,7 @@ extern "C" {
 JNIEXPORT void JNICALL Java_ptolemy_apps_apes_AccessPointCallbackDispatcher_InitializeC(JNIEnv *env, jobject obj);
 JNIEXPORT void JNICALL Java_ptolemy_apps_apes_CPUScheduler_InitializeC(JNIEnv *env, jobject obj);
 JNIEXPORT void JNICALL Java_ptolemy_apps_apes_EventManager_InitializeC(JNIEnv *env, jobject obj);
+JNIEXPORT void JNICALL Java_ptolemy_apps_apes_OSEKEntryPoint_InitializeC(JNIEnv *env, jobject obj);
 
 JNIEXPORT void JNICALL Java_ptolemy_apps_apes_demo_ThreeCTasks_CTaskA_Cmethod(JNIEnv *, jobject);
 JNIEXPORT void JNICALL Java_ptolemy_apps_apes_demo_ThreeCTasks_CTaskB_Cmethod(JNIEnv *, jobject);
