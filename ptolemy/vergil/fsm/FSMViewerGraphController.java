@@ -47,7 +47,6 @@ import diva.graph.EdgeController;
 import diva.graph.GraphPane;
 import diva.graph.JGraph;
 import diva.graph.NodeController;
-import diva.gui.GUIUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// FSMViewerGraphController
@@ -179,7 +178,7 @@ public class FSMViewerGraphController extends RunnableGraphController {
         // NOTE: The transition controller's LookInsideAction is designed
         // to handle both State and Transition.  We can't associate more
         // than one with the hot key, so that one handles both.
-        GUIUtilities.addHotKey(jgraph, _transitionController._lookInsideAction);
+        _transitionController.addHotKeys(jgraph);        
     }
 
     /** Create the controllers for nodes in this graph.

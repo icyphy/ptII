@@ -360,16 +360,9 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
      */
     protected void _addHotKeys(JGraph jgraph) {
         super._addHotKeys(jgraph);
+        
+        _classDefinitionController.addHotKeys(getFrame().getJGraph());
 
-        // Add hot key for create instance action.
-        diva.gui.GUIUtilities.addHotKey(getFrame().getJGraph(),
-                ((ClassDefinitionController) _classDefinitionController)
-                ._createInstanceAction);
-
-        // Add hot key for create subclass action.
-        diva.gui.GUIUtilities.addHotKey(getFrame().getJGraph(),
-                ((ClassDefinitionController) _classDefinitionController)
-                ._createSubclassAction);
     }
 
     /** Create the controllers for nodes in this graph.

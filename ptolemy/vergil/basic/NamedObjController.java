@@ -29,6 +29,7 @@ package ptolemy.vergil.basic;
 
 import ptolemy.actor.gui.Configuration;
 import diva.graph.GraphController;
+import diva.graph.JGraph;
 
 //////////////////////////////////////////////////////////////////////////
 //// NamedObjController
@@ -58,6 +59,14 @@ public class NamedObjController extends LocatableNodeController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Add hot keys to the actions in the given JGraph.
+     *   It would be better that this method was added higher in the hierarchy. Now
+     *   most controllers 
+     *  @param jgraph The JGraph to which hot keys are to be added.
+     */
+    public void addHotKeys(JGraph jgraph) {
+    }
 
     /** Set the configuration.  This is used in derived classes to
      *  to open files (such as documentation).  The configuration is

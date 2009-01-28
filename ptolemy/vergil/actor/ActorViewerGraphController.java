@@ -252,9 +252,9 @@ public class ActorViewerGraphController extends RunnableGraphController {
      */
     protected void _addHotKeys(JGraph jgraph) {
         super._addHotKeys(jgraph);
-        GUIUtilities.addHotKey(jgraph, _entityController._lookInsideAction);
-        GUIUtilities.addHotKey(jgraph,
-                _classDefinitionController._lookInsideAction);
+        _entityController.addHotKeys(jgraph);
+        _classDefinitionController.addHotKeys(jgraph);
+        _attributeController.addHotKeys(jgraph);
     }
 
     /** Create the controllers for nodes in this graph.

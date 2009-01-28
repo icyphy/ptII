@@ -86,6 +86,7 @@ import diva.canvas.Figure;
 import diva.canvas.toolbox.LabelFigure;
 import diva.graph.GraphController;
 import diva.graph.GraphModel;
+import diva.graph.JGraph;
 import diva.graph.basic.BasicLayoutTarget;
 import diva.graph.layout.AbstractGlobalLayout;
 import diva.gui.GUIUtilities;
@@ -212,6 +213,16 @@ public abstract class ActorController extends AttributeController {
             _menuFactory.addMenuItemFactory(menuItemFactory);
         }
     }
+
+    /** Add hot keys to the actions in the given JGraph.
+    *   It would be better that this method was added higher in the hierarchy. Now
+    *   most controllers 
+    *  @param jgraph The JGraph to which hot keys are to be added.
+    */
+   public void addHotKeys(JGraph jgraph) {
+       super.addHotKeys(jgraph);
+       GUIUtilities.addHotKey(jgraph, _lookInsideAction);
+   }
 
     /** Set the configuration.  This is used to open documentation files.
      *  @param configuration The configuration.

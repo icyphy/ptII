@@ -37,6 +37,8 @@ import ptolemy.vergil.basic.RemoveCustomDocumentationAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.MoveAction;
 import diva.graph.GraphController;
+import diva.graph.JGraph;
+import diva.gui.GUIUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// AttributeController
@@ -75,7 +77,8 @@ public class AttributeController extends IconController {
 
         if (access == FULL) {
             // Add to the context menu, configure submenu.
-            _configureMenuFactory.addAction(new RenameDialogAction("Rename"),
+            _renameAction = new RenameDialogAction("Rename");
+            _configureMenuFactory.addAction(_renameAction,
                     "Customize");
 
             Action[] actions = { _getDocumentationAction,
@@ -98,6 +101,16 @@ public class AttributeController extends IconController {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Add hot keys to the actions in the given JGraph.
+    *   It would be better that this method was added higher in the hierarchy. Now
+    *   most controllers 
+    *  @param jgraph The JGraph to which hot keys are to be added.
+    */
+   public void addHotKeys(JGraph jgraph) {
+       super.addHotKeys(jgraph);
+       GUIUtilities.addHotKey(jgraph, _renameAction);       
+   }
+   
     /** Set the configuration.  This is used in derived classes to
      *  to open files (such as documentation).  The configuration is
      *  is important because it keeps track of which files are already
@@ -124,6 +137,9 @@ public class AttributeController extends IconController {
 
     /** The appearance menu factory. */
     protected MenuActionFactory _appearanceMenuActionFactory;
+    
+    /** Action to launch rename dialog*/
+    protected RenameDialogAction _renameAction;
 
     ///////////////////////////////////////////////////////////////////
     ////                     private members                       ////
