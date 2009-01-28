@@ -48,6 +48,7 @@ import java.util.TreeMap;
 import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.properties.gui.PropertyHighlighter;
 import ptolemy.data.properties.lattice.PropertyConstraintAttribute;
 import ptolemy.data.properties.token.PropertyTokenAttribute;
 import ptolemy.data.type.BaseType;
