@@ -26,21 +26,9 @@
  */
 package ptolemy.data.properties;
 
-import java.io.BufferedWriter;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintStream;
-import java.net.URL;
-import java.sql.Date;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -52,8 +40,6 @@ import ptolemy.data.properties.gui.PropertyHighlighter;
 import ptolemy.data.properties.lattice.PropertyConstraintAttribute;
 import ptolemy.data.properties.token.PropertyTokenAttribute;
 import ptolemy.data.type.BaseType;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
@@ -62,9 +48,6 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
-import ptolemy.moml.MoMLParser;
-import ptolemy.moml.filter.BackwardCompatibility;
-import ptolemy.moml.filter.RemoveGraphicalClasses;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
@@ -79,7 +62,7 @@ A extended base abstract class for a property solver.
 @since Ptolemy II 7.0
 @Pt.ProposedRating Red (mankit)
 @Pt.AcceptedRating Red (mankit)
-*/
+ */
 public abstract class PropertySolver extends PropertySolverBase {
 
     /*
@@ -93,7 +76,7 @@ public abstract class PropertySolver extends PropertySolverBase {
      * @throws NameDuplicationException
      */
     public PropertySolver(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+    throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         action = new SharedParameter(this, "action", PropertySolver.class,
@@ -201,7 +184,7 @@ public abstract class PropertySolver extends PropertySolverBase {
                     NamedObj namedObj = (NamedObj) propertyable;
 
                     PropertyAttribute attribute = (PropertyAttribute) namedObj
-                            .getAttribute(getExtendedUseCaseName());
+                    .getAttribute(getExtendedUseCaseName());
 
                     if (attribute != null) {
                         attribute.setContainer(null);
@@ -293,8 +276,17 @@ public abstract class PropertySolver extends PropertySolverBase {
      * @param increment The given number to increment by.
      */
     public void incrementStats(Object field, long increment) {
-        _incrementStats(_stats, field, increment);
+        incrementStats(_stats, field, increment);
     }
+
+    public static void incrementStats(Map map, Object field, Number increment) {
+        Number current = (Number) map.get(field);
+        if (current == null) {
+            current = 0;
+        }
+        map.put(field, current.longValue() + increment.longValue());
+    }
+
 
     public boolean invokeSolver() {
         return invokeSolver(null);
@@ -339,7 +331,7 @@ public abstract class PropertySolver extends PropertySolverBase {
      */
     public boolean isIdentifiable(String usecase) {
         return usecase.equals(getName()) || usecase.equals(getUseCaseName())
-                || usecase.equals(getExtendedUseCaseName());
+        || usecase.equals(getExtendedUseCaseName());
     }
 
     public boolean isManualAnnotate() {
@@ -348,9 +340,9 @@ public abstract class PropertySolver extends PropertySolverBase {
 
     public boolean isResolve() {
         return ((action.getExpression().equals(ANNOTATE)) ||
-        // (action.getExpression().equals(ANNOTATE_ALL)) ||
-        // (action.getExpression().equals(MANUAL_ANNOTATE)) ||
-        (action.getExpression().equals(TRAINING)));
+                // (action.getExpression().equals(ANNOTATE_ALL)) ||
+                // (action.getExpression().equals(MANUAL_ANNOTATE)) ||
+                (action.getExpression().equals(TRAINING)));
     }
 
     public boolean isSettable(Object object) {
@@ -386,7 +378,7 @@ public abstract class PropertySolver extends PropertySolverBase {
      * @throws IllegalActionException
      */
     public void recordTrainedException(String exceptionMessage)
-            throws IllegalActionException {
+    throws IllegalActionException {
         StringAttribute attribute = (StringAttribute) getAttribute(_TRAINED_EXCEPTION_ATTRIBUTE_NAME);
         if (attribute == null) {
 
@@ -427,7 +419,7 @@ public abstract class PropertySolver extends PropertySolverBase {
      * @throws KernelException
      */
     public boolean resolveProperties(NamedObj analyzer)
-            throws KernelException {
+    throws KernelException {
         return resolveProperties(analyzer, false);
     }
 
@@ -446,7 +438,7 @@ public abstract class PropertySolver extends PropertySolverBase {
      * @throws IllegalActionException TODO
      */
     public boolean resolveProperties(NamedObj analyzer, boolean isInvoked)
-            throws KernelException {
+    throws KernelException {
 
         boolean success = true;
 
@@ -501,9 +493,9 @@ public abstract class PropertySolver extends PropertySolverBase {
                 // If we are in TRAINING mode, then keep
                 // all the intermediate results.
                 boolean keepIntermediates =
-                // actionValue.equals(ANNOTATE_ALL) ||
-                ((BooleanToken) all.getToken()).booleanValue()
-                        || actionValue.equals(TRAINING);
+                    // actionValue.equals(ANNOTATE_ALL) ||
+                    ((BooleanToken) all.getToken()).booleanValue()
+                    || actionValue.equals(TRAINING);
 
                 for (String solverName : _dependentUseCases) {
                     PropertySolver dependentSolver = findSolver(solverName);
@@ -534,7 +526,7 @@ public abstract class PropertySolver extends PropertySolverBase {
 
             // Remove '\r' characters to make Windows-Linux comparable strings.
             String trainedException = failedSolver.getTrainedException()
-                    .replaceAll("\r", "");
+            .replaceAll("\r", "");
             String exception = ex.getMessage().replaceAll("\r", "");
             if (isTesting()) {
                 if (!exception.equals(trainedException)) {
@@ -547,9 +539,9 @@ public abstract class PropertySolver extends PropertySolverBase {
 
                     // ask the user if this is expected,
                     boolean doRecord = MessageHandler
-                            .yesNoQuestion(PropertySolver
-                                    .getTrainedExceptionMismatchMessage(
-                                            exception, trainedException)
+                    .yesNoQuestion(PropertySolver
+                            .getTrainedExceptionMismatchMessage(
+                                    exception, trainedException)
                                     + "Do you want to record it?");
 
                     if (doRecord) {
@@ -650,15 +642,15 @@ public abstract class PropertySolver extends PropertySolverBase {
                         if (_analyzer == null) {
                             // Get user's decision.
                             userDecision = MessageHandler
-                                    .yesNoQuestion("Resolved auxilary property for \""
-                                            + getExtendedUseCaseName()
-                                            + "\" is different from previous. "
-                                            + "Update this property?");
+                            .yesNoQuestion("Resolved auxilary property for \""
+                                    + getExtendedUseCaseName()
+                                    + "\" is different from previous. "
+                                    + "Update this property?");
                         } else {
                             // Suppress the dialog.
                             userDecision = ((Parameter) _analyzer.getAttribute(
-                                    "overwriteDependentProperties")).getToken()
-                                    == BooleanToken.TRUE;
+                            "overwriteDependentProperties")).getToken()
+                            == BooleanToken.TRUE;
 
                         }
                         // Remember that we have made a decision.
@@ -682,6 +674,7 @@ public abstract class PropertySolver extends PropertySolverBase {
         }
 
         System.out.println(_getStatsAsString(": "));
+
     }
 
     /*
@@ -709,13 +702,13 @@ public abstract class PropertySolver extends PropertySolverBase {
      * @throws IllegalActionException
      */
     protected PropertyAttribute _getPropertyAttribute(NamedObj propertyable)
-            throws IllegalActionException {
+    throws IllegalActionException {
         PropertyAttribute attribute = null;
 
         // write results to attribute
         if (getExtendedUseCaseName().startsWith("lattice")) {
             attribute = (PropertyConstraintAttribute) propertyable
-                    .getAttribute(getExtendedUseCaseName());
+            .getAttribute(getExtendedUseCaseName());
 
             if (attribute == null) {
                 try {
@@ -729,7 +722,7 @@ public abstract class PropertySolver extends PropertySolverBase {
             }
         } else if (getExtendedUseCaseName().startsWith("token")) {
             attribute = (PropertyTokenAttribute) propertyable
-                    .getAttribute(getExtendedUseCaseName());
+            .getAttribute(getExtendedUseCaseName());
             if (attribute == null) {
                 try {
                     attribute = new PropertyTokenAttribute(propertyable,
@@ -742,7 +735,7 @@ public abstract class PropertySolver extends PropertySolverBase {
         } else {
             // FIXME: Error checking?
             throw new PropertyResolutionException(this, propertyable,
-                    "Failed to get the PropertyAttribute.");
+            "Failed to get the PropertyAttribute.");
         }
         return attribute;
     }
@@ -765,7 +758,7 @@ public abstract class PropertySolver extends PropertySolverBase {
     /*
      * Prepare for automatic testing. In this base class, do nothing.
      */
-    protected void _prepareForTesting(Map options) {
+    public void setOptions(Map options) {
         return;
     }
 
@@ -782,7 +775,7 @@ public abstract class PropertySolver extends PropertySolverBase {
      * the trained property.
      */
     protected void _regressionTest(NamedObj namedObj, Property property)
-            throws PropertyResolutionException {
+    throws PropertyResolutionException {
 
         Property previousProperty = getPreviousProperty(namedObj);
 
@@ -820,9 +813,11 @@ public abstract class PropertySolver extends PropertySolverBase {
      * @throws IllegalActionException Not thrown in this base class.
      */
     protected void _resolveProperties(NamedObj analyzer)
-            throws KernelException {
+    throws KernelException {
+
         System.out.println("Invoking \"" + getName() + "\" ("
                 + getExtendedUseCaseName() + "):");
+
     }
 
     private void _recordUnacceptableSolution(Object propertyable,
@@ -879,195 +874,16 @@ public abstract class PropertySolver extends PropertySolverBase {
     public static String getTrainedExceptionMismatchMessage(String exception,
             String trainedException) {
         return "The generated exception:" + _eol
-                + "-------------------------------------------------------"
-                + _eol + exception + _eol
-                + "-------------------------------------------------------"
-                + _eol + " does not match the trained exception:" + _eol
-                + "-------------------------------------------------------"
-                + _eol + trainedException + _eol
-                + "-------------------------------------------------------"
-                + _eol;
+        + "-------------------------------------------------------"
+        + _eol + exception + _eol
+        + "-------------------------------------------------------"
+        + _eol + " does not match the trained exception:" + _eol
+        + "-------------------------------------------------------"
+        + _eol + trainedException + _eol
+        + "-------------------------------------------------------"
+        + _eol;
     }
 
-    public static void main(String[] args) throws Exception {
-        // testProperties(args);
-        testPropertiesAndGenerateReports(args[0]);
-    }
-
-    /*
-     * Parse a command-line argument. This method recognized -help and -version
-     * command-line arguments, and prints usage or version information. No other
-     * command-line arguments are recognized.
-     * 
-     * @param arg The command-line argument to be parsed.
-     * 
-     * @return True if the argument is understood, false otherwise.
-     * 
-     * @exception Exception If something goes wrong.
-     */
-    public static boolean parseArg(String arg) throws Exception {
-        if (arg.equals("-help")) {
-            // TODO: _usage()??
-            // System.out.println(_usage());
-
-            StringUtilities.exit(0);
-            // If we are testing, and ptolemy.ptII.exitAfterWrapup is set
-            // then StringUtilities.exit(0) might not actually exit.
-            return true;
-        } else if (arg.equals("-version")) {
-            System.out
-                    .println("Version "
-                            + VersionAttribute.CURRENT_VERSION.getExpression()
-                            + ", Build $Id$");
-
-            StringUtilities.exit(0);
-            // If we are testing, and ptolemy.ptII.exitAfterWrapup is set
-            // then StringUtilities.exit(0) might not actually exit.
-            return true;
-        }
-        // Argument not recognized.
-        return false;
-    }
-
-    /*
-     * Resolve properties for a model.
-     * 
-     * @param args An array of Strings, each element names a MoML file
-     * containing a model.
-     * 
-     * @return The return value of the last subprocess that was run to compile
-     * or run the model. Return -1 if called with no arguments.
-     * 
-     * @exception Exception If any error occurs.
-     */
-    public static int testProperties(String[] args) throws Exception {
-
-        HashMap options = new HashMap();
-
-        if (args.length == 0) {
-            System.err.println("Usage: java -classpath $PTII "
-                    + "ptolemy.data.properties.PropertySolver model.xml "
-                    + "[model.xml . . .]" + _eol
-                    + "  The arguments name MoML files containing models");
-            return -1;
-        }
-
-        // See MoMLSimpleApplication for similar code
-        MoMLParser parser = new MoMLParser();
-        MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
-        MoMLParser.addMoMLFilter(new RemoveGraphicalClasses());
-
-        for (int i = 0; i < args.length; i++) {
-
-            if (parseArg(args[i])) {
-                continue;
-            }
-
-            if (args[i].equals(NONDEEP_TEST_OPTION)) {
-                options.put(NONDEEP_TEST_OPTION, true);
-                continue;
-            }
-            if (args[i].trim().startsWith("-")) {
-                if (i >= (args.length - 1)) {
-                    throw new IllegalActionException("Cannot set "
-                            + "parameter " + args[i] + " when no value is "
-                            + "given.");
-                }
-
-                // Save in case this is a parameter name and value.
-                // _parameterNames.add(args[i].substring(1));
-                // _parameterValues.add(args[i + 1]);
-                // i++;
-                continue;
-            }
-
-            CompositeEntity toplevel = null;
-            boolean isDone = false;
-            int numberOfSolverTested = 0;
-
-            while (!isDone) {
-                long memStart, memEnd;
-                PropertySolver solver = null;
-
-                System.gc();
-                memStart = Runtime.getRuntime().totalMemory();
-                parser.reset();
-                MoMLParser.purgeModelRecord(args[i]);
-                toplevel = _getModel(args[i], parser);
-
-                // Get all instances of PropertySolver contained in the model.
-                // FIXME: This only gets solvers in the top-level.
-                List solvers = toplevel.attributeList(PropertySolver.class);
-
-                if (solvers.size() == 0) {
-                    // There is no PropertySolver in the model.
-                    System.err.println("The model does not contain a solver.");
-
-                } else if (numberOfSolverTested < solvers.size()) {
-                    // Get the last PropertySolver in the list, maybe
-                    // it was added last?
-                    solver = (PropertySolver) solvers
-                            .get(numberOfSolverTested++);
-
-                    if (solver.isTesting()) {
-                        solver._prepareForTesting(options);
-                        solver.invokeSolver();
-                        solver.resetAll();
-
-                    } else {
-                        System.err
-                                .println("Warning: regression test not performed. "
-                                        + solver.getDisplayName()
-                                        + " in "
-                                        + args[i]
-                                        + " is set to ["
-                                        + solver.action.getExpression()
-                                        + "] mode.");
-                    }
-                } else {
-                    isDone = true;
-                }
-
-                // Destroy the top level so that we avoid
-                // problems with running the model after generating code
-                if (toplevel != null) {
-                    toplevel.setContainer(null);
-                    toplevel = null;
-                }
-
-                // ==========================================================
-                System.gc();
-                memEnd = Runtime.getRuntime().totalMemory();
-                if ((memEnd - memStart) != 0) {
-                    // FIXME: throw some sort of memory leak exception?
-                    // System.out.println("Memory Usage Before PS: " +
-                    // memStart);
-                    // System.out.println("Memory Usage After PS: " + memEnd);
-                    // System.out.println("Memory diff = : " + (memEnd -
-                    // memStart));
-                    // ==========================================================
-
-                }
-            }
-
-        }
-        return 0;
-    }
-
-    public static void testPropertiesAndGenerateReports(String directoryPath) {
-        try {
-
-            Map[] stats;
-            stats = _testPropertiesDirectory(directoryPath);
-            _printGlobalStats(stats[0]);
-            _printLocalStats(stats[1]);
-
-        } catch (Exception ex) {
-            // Force the error to show up on console.
-            // We may want to direct this an error file.
-            ex.printStackTrace(System.out);
-        }
-    }
 
     /*
      * 
@@ -1082,407 +898,8 @@ public abstract class PropertySolver extends PropertySolverBase {
         actionParameter.addChoice(CLEAR_ANNOTATION);
     }
 
-    /*
-     * 
-     * @param stats
-     * 
-     * @param key
-     * 
-     * @param entryHeader
-     * 
-     * @param entryValue
-     */
-    private static void _addLocalStatsEntry(Map<Object, Map> stats, Object key,
-            String entryHeader, Object entryValue) {
-        _modelStatsHeaders.add(entryHeader);
-
-        Map entry;
-        if (stats.containsKey(key)) {
-            entry = stats.get(key);
-        } else {
-            entry = new HashMap();
-            stats.put(key, entry);
-        }
-        entry.put(entryHeader, entryValue);
-    }
-
-    private static void _composeOutputs(Map summary, Map intermediateOutputs) {
-        for (Object field : intermediateOutputs.keySet()) {
-            Object value = intermediateOutputs.get(field);
-            if (value instanceof Number) {
-                _incrementStats(summary, field, (Number) value);
-            } else if (value instanceof Map) {
-                summary.put(field, value);
-            }
-        }
-    }
-
-    private static Object _createKey(String filePath, PropertySolver solver,
-            PropertySolver invokedSolver) {
-        String key = filePath + _separator;
-
-        if (solver != null) {
-            key += solver.getName();
-        }
-
-        key += _separator;
-
-        if (solver == null && invokedSolver == null) {
-            // no solver is invoked.
-        } else if (solver == invokedSolver || invokedSolver == null) {
-            key += "directly invoked";
-        } else {
-            key += "dependent for (" + invokedSolver + ")";
-        }
-        return key;
-    }
-
-    /*
-     * Get the exception log file for the given test model. The exception log
-     * filename reflects whether the test has failed or not. For example, a test
-     * model named "model.xml" may have a corresponding exception file named
-     * "Failed_errors_model.log". If a file with the same name already existed,
-     * a suffix number is attached. This occurs when logs generated by previous
-     * runs of the test script are not removed, or there are multiple model
-     * files with the same name with under different directories.
-     * 
-     * @param modelFile The given test model file.
-     * 
-     * @param failed Indicate whether the test had failed or not.
-     * 
-     * @return The exception log file that did not previously exist.
-     */
-    private static File _getExceptionLogFile(File modelFile, boolean failed) {
-        int suffixId = 0;
-
-        File errorFile;
-
-        do {
-            String exceptionLogFilename = _exceptionLogsDirectory + "/"
-                    + (failed ? "Failed_errors_" : "Passed_errors_")
-                    + modelFile.getName();
-
-            // Replace the extension.
-            exceptionLogFilename = exceptionLogFilename.substring(0,
-                    exceptionLogFilename.length() - 4);
-
-            // Duplicate filenames (under different directories) are handled by
-            // appending a serial suffix. We assume the file content would
-            // specify the path to the model file.
-            if (suffixId == 0) {
-                errorFile = new File(exceptionLogFilename + ".log");
-            } else {
-                errorFile = new File(exceptionLogFilename + suffixId + ".log");
-            }
-
-            suffixId++;
-        } while (errorFile.exists());
-
-        return errorFile;
-    }
-
-    /*
-     * @param path
-     * 
-     * @param parser
-     * 
-     * @return
-     * 
-     * @throws IllegalActionException
-     */
-    private static CompositeEntity _getModel(String path, MoMLParser parser)
-            throws IllegalActionException {
-        // Note: the code below uses explicit try catch blocks
-        // so we can provide very clear error messages about what
-        // failed to the end user. The alternative is to wrap the
-        // entire body in one try/catch block and say
-        // "Code generation failed for foo", which is not clear.
-        URL modelURL;
-
-        try {
-            modelURL = new File(path).toURI().toURL();
-        } catch (Exception ex) {
-            throw new IllegalActionException(null, ex, "Could not open \""
-                    + path + "\"");
-        }
-
-        CompositeEntity toplevel = null;
-
-        try {
-            toplevel = (CompositeEntity) parser.parse(null, modelURL);
-        } catch (Exception ex) {
-            throw new IllegalActionException(null, ex, "Failed to parse \""
-                    + path + "\"");
-        }
-        return toplevel;
-    }
-
-    private static void _incrementStats(Map map, Object field, Number increment) {
-        Number current = (Number) map.get(field);
-        if (current == null) {
-            current = 0;
-        }
-        map.put(field, current.longValue() + increment.longValue());
-    }
-
-    private static boolean _isTestableDirectory(File file) {
-        if (!file.isDirectory()) {
-            return false;
-        }
-
-        List directoryPath = Arrays.asList(file.getAbsolutePath().split(
-                File.separator.replace("\\", "\\\\")));
-
-        return directoryPath.contains("test") || directoryPath.contains("demo");
-    }
-
-    private static boolean _isTestableFile(File file) {
-        if (!file.getName().endsWith(".xml")) {
-            return false;
-        }
-        return _isTestableDirectory(file.getParentFile());
-    }
-
-    private static void _printGlobalStats(Map stats) throws IOException {
-        BufferedWriter writer = new BufferedWriter(new FileWriter(new File(
-                _statsFilename)));
-        for (Object field : stats.keySet()) {
-            writer.append(field + _separator + stats.get(field));
-            writer.newLine();
-        }
-        writer.close();
-    }
-
-    private static void _printLocalStats(Map<Object, Map> stats)
-            throws IOException {
-        BufferedWriter writer = new BufferedWriter(new FileWriter(new File(
-                _statsFilename), true));
-
-        // Give ordering to the header fields.
-        List headers = new LinkedList(_modelStatsHeaders);
-        headers.addAll(_solverStatsHeaders);
-
-        // Print the header row.
-        writer.append("Filename" + _separator);
-        writer.append("Solver" + _separator);
-        writer.append("Invocation");
-        for (Object header : headers) {
-            writer.append(_separator + header.toString());
-        }
-        writer.newLine();
-
-        // Iterate using triplet keys {testFile, solver, isInvoked}.
-        for (Object key : stats.keySet()) {
-            Map entry = stats.get(key);
-            writer.append(key.toString());
-
-            for (Object header : headers) {
-                writer.append(_separator);
-                if (entry.containsKey(header)) {
-                    writer.append(entry.get(header).toString());
-                }
-            }
-            writer.newLine();
-        }
-        writer.close();
-    }
-
-    /*
-     * 
-     * @param directoryPath
-     * 
-     * @return
-     * 
-     * @throws IOException
-     */
-    private static Map[] _testPropertiesDirectory(String directoryPath)
-            throws IOException {
-        // Create the log directories.
-        new File(_statsDirectory).mkdirs();
-        new File(_exceptionLogsDirectory).mkdirs();
-
-        // See MoMLSimpleApplication for similar code
-        MoMLParser parser = new MoMLParser();
-        MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
-        MoMLParser.addMoMLFilter(new RemoveGraphicalClasses());
-
-        // FIXME: get "stdout", "nondeep" options
-
-        HashMap<Object, Map> localStats = new LinkedHashMap<Object, Map>();
-        HashMap globalStats = new LinkedHashMap();
-
-        Map[] summary = new Map[] { globalStats, localStats };
-
-        File directory = new File(directoryPath);
-
-        for (File file : directory.listFiles()) {
-
-            if (file.isDirectory()) {
-                Map[] directoryOutputs = _testPropertiesDirectory(file
-                        .getAbsolutePath());
-
-                _composeOutputs(summary[0], directoryOutputs[0]);
-                _composeOutputs(summary[1], directoryOutputs[1]);
-
-            } else if (_isTestableFile(file)) {
-                System.out.println("***isTestable: " + file.getAbsolutePath());
-
-                // Redirect System.err to a byteArrayStream.
-                ByteArrayOutputStream byteArrayStream = new ByteArrayOutputStream();
-                PrintStream errorStream = new PrintStream(byteArrayStream);
-                System.setErr(errorStream);
-
-                // FIXME: Implement option to redirect System.out to a file.
-                // String outputFilename =
-                // StringUtilities.getProperty("ptolemy.ptII.dir")
-                // + "/BOSCH_Logfiles/" + file.getName();
-                //                
-                // outputFilename = outputFilename.replace(".xml",
-                // "_output.txt");
-                // File outputFile = new File(outputFilename);
-                // outputFile.createNewFile();
-                //                
-                // FileOutputStream fos2 = new FileOutputStream(outputFilename);
-                // PrintStream ps2 = new PrintStream(fos2);
-                // System.setOut(ps2);
-
-                boolean failed = false;
-
-                String filePath = file.getAbsolutePath();
-
-                // ==========================================================
-                // Record timestamp and memory usage (per testcase).
-                System.gc();
-                long startTime = System.currentTimeMillis();
-
-                // Format the current time.
-                SimpleDateFormat formatter = new SimpleDateFormat(
-                        "yyyy.MM.dd G 'at' hh:mm:ss a zzz");
-                Date currentTime_1 = new Date(startTime);
-                String startTimeString = formatter.format(currentTime_1);
-
-                _addLocalStatsEntry(localStats,
-                        _createKey(filePath, null, null), "Start time ",
-                        startTimeString);
-                _addLocalStatsEntry(localStats,
-                        _createKey(filePath, null, null),
-                        "Memory usage before", Runtime.getRuntime()
-                                .totalMemory());
-
-                // ==========================================================
-
-                try {
-                    parser.reset();
-                    MoMLParser.purgeModelRecord(filePath);
-                    CompositeEntity toplevel = _getModel(filePath, parser);
-
-                    // Get all instances of PropertySolver contained in the
-                    // model.
-                    // FIXME: This only gets solvers in the top-level.
-                    List<PropertySolver> solvers = toplevel
-                            .attributeList(PropertySolver.class);
-
-                    // There is no PropertySolver in the model.
-                    if (solvers.size() == 0) {
-                        System.err
-                                .println("The model does not contain a solver.");
-                    }
-
-                    for (PropertySolver solver : solvers) {
-                        if (solver.isTesting()) {
-                            // FIXME:
-                            // solver._prepareForTesting(options);
-                            failed &= solver.invokeSolver();
-
-                            localStats.put(
-                                    _createKey(filePath, solver, solver),
-                                    solver._stats);
-                            _solverStatsHeaders.addAll(solver._stats.keySet());
-
-                            for (String solverName : solver
-                                    .getDependentSolvers()) {
-                                PropertySolver dependentSolver = solver
-                                        .findSolver(solverName);
-
-                                localStats.put(_createKey(filePath,
-                                        dependentSolver, solver),
-                                        dependentSolver._stats);
-                                _solverStatsHeaders
-                                        .addAll(dependentSolver._stats.keySet());
-                            }
-
-                            solver.resetAll();
-
-                        } else {
-                            System.err
-                                    .println("Warning: regression test not performed. "
-                                            + solver.getDisplayName()
-                                            + " in "
-                                            + filePath
-                                            + " is set to ["
-                                            + solver.action.getExpression()
-                                            + "] mode.");
-
-                            failed = true;
-                        }
-                    }
-                } catch (Exception ex) {
-                    failed = true;
-                    ex.printStackTrace(System.err);
-                }
-
-                // ==========================================================
-                // Record timestamp and memory usage (per testcase).
-                long finishTime = System.currentTimeMillis();
-                System.gc();
-                _addLocalStatsEntry(localStats,
-                        _createKey(filePath, null, null), "Time used (ms)",
-                        finishTime - startTime);
-                _addLocalStatsEntry(localStats,
-                        _createKey(filePath, null, null), "Memory usage after",
-                        Runtime.getRuntime().totalMemory());
-                _addLocalStatsEntry(localStats,
-                        _createKey(filePath, null, null), "Failed?", failed);
-
-                _incrementStats(globalStats, "#Total tests", 1);
-
-                String errors = byteArrayStream.toString();
-
-                if (!failed) {
-                    // Should not succeed with errors.
-                    assert errors.length() == 0;
-
-                    _incrementStats(globalStats, "#Passed", 1);
-
-                } else {
-                    // Should not have a failure without error message.
-                    assert errors.length() > 0;
-
-                    _incrementStats(globalStats, "#Failed", 1);
-
-                    File errorFile = _getExceptionLogFile(file, failed);
-                    BufferedWriter writer = new BufferedWriter(new FileWriter(
-                            errorFile));
-                    writer.write(errors);
-                    writer.close();
-                }
-                // ==========================================================
-            }
-
-            // statistics log (global, **this is the compare file)
-            // comprehensive overview (#failure, #success, #knownFailure,
-            // global)
-            // - on top
-            // stats field identifier (one headline)
-            // testcase id (name, no timestamp, per model)
-            // - each stats info (separated by [tab])
-
-            // multiple invocations of (intermediate) solver are mapped to the
-            // same id
-            // - create separate entries for these invocations
-
-        }
-        return summary;
+    public Map<Object, Object> getStats() {
+        return _stats;
     }
 
     public Parameter action;
@@ -1490,6 +907,8 @@ public abstract class PropertySolver extends PropertySolverBase {
     public Parameter all;
 
     public Parameter manualAnnotation;
+
+    public static final String NONDEEP_TEST_OPTION = "-nondeep";
 
     protected NamedObj _analyzer = null;
 
@@ -1500,16 +919,12 @@ public abstract class PropertySolver extends PropertySolverBase {
 
     protected boolean _isInvoked;
 
-    protected Map<Object, Object> _stats = new LinkedHashMap<Object, Object>();
+    private Map<Object, Object> _stats = new LinkedHashMap<Object, Object>();
 
     HashMap<Object, Property> _previousProperties = new HashMap<Object, Property>();
 
-    public static final String NONDEEP_TEST_OPTION = "-nondeep";
-
     protected static String _eol = StringUtilities
-            .getProperty("line.separator");
-
-    protected static String _separator = "\t";
+    .getProperty("line.separator");
 
     /* The display label for "annotate" in the action choices */
     protected static final String ANNOTATE = "ANNOTATE";
@@ -1529,23 +944,5 @@ public abstract class PropertySolver extends PropertySolverBase {
     /* The display label for "view" in the action choices */
     protected static final String VIEW = "VIEW";
 
-    /* The directory path to store the test statistics reports. */
-    private static String _statsDirectory = StringUtilities
-            .getProperty("ptolemy.ptII.dir")
-            + "/propertiesLogfiles";
-
-    /* The directory path to store the exception log files. */
-    private static String _exceptionLogsDirectory = _statsDirectory
-            + "/exceptionLogs";
-
-    private static LinkedHashSet _modelStatsHeaders = new LinkedHashSet();
-
-    private static LinkedHashSet _solverStatsHeaders = new LinkedHashSet();
-
-    /* The file path for the overview report file. */
-    private static String _statsFilename = _statsDirectory
-            + "/propertyTestReports.tsv";
-
     private static String _TRAINED_EXCEPTION_ATTRIBUTE_NAME = "PropertyResolutionExceptionMessage";
-
 }
