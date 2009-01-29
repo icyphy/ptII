@@ -38,6 +38,8 @@ mailmsg=$ADMDIR/logs/ptIInightly_mail.txt
 
 echo "`date`" > $mailmsg
 echo "The Ptolemy II nightly build is run from a bldmaster cronjob" >> $mailmsg
+echo "See the failed tests summary at: " >> $mailmsg
+echo "http://chess.eecs.berkeley.edu/ptexternal/nightly/builds/ptIInightly-latest.htm" >> $mailmsg 
 echo "See http://embedded.eecs.berkeley.edu/buildmaster" >> $mailmsg
 
 #(cd /users/ptII/logs; rm -f javalastnight; ln -s java`date  '+%m%d'` javalastnight)
