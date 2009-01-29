@@ -62,7 +62,7 @@ if [ file isdirectory auto/knownFailedTests ] {
 
 	    set returnValue 0
 		if [catch {set returnValue \
-			       [java::call ptolemy.data.properties.PropertySolver \
+			       [java::call ptolemy.data.properties.test.PropertySolverTester \
 				    testProperties $args]} errMsg] {
 
 	        $watchDog cancel
@@ -95,7 +95,7 @@ foreach file [glob auto/*.xml] {
 
 	set returnValue 0
 	if [catch {set returnValue \
-		       [java::call ptolemy.data.properties.PropertySolver \
+		       [java::call ptolemy.data.properties.test.PropertySolverTester \
 			    testProperties $args]} errMsg] {
 	    
 	    $watchDog cancel
