@@ -694,12 +694,13 @@ public class IORelation extends ComponentRelation {
                     "IORelation can only link to an IORelation.");
         }
 
-        if (!((IORelation) relation).width.getExpression().equals(width.getExpression())) {
+        if (!((IORelation) relation).width.getToken().equals(width.getToken())) {
             // Width might not yet be validated => use parameter value i.s.o. cached one.
             
             throw new IllegalActionException(this, relation,
-                    "Relations have different widths: " + _width + " != "
-                            + ((IORelation) relation)._width);
+                    "Relations have different widths: " + width.getToken().toString() + " != "
+                            + ((IORelation) relation).width.getToken().toString());
+                            
         }
 
         super._checkRelation(relation, symmetric);
