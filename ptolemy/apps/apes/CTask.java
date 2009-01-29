@@ -11,6 +11,7 @@ import ptolemy.actor.TimedDirector;
 import ptolemy.actor.util.BreakCausalityInterface;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.Time;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
@@ -134,6 +135,39 @@ public class CTask extends ApeActor implements Runnable {
         } catch (IllegalActionException ex) {
             return 0;
         }
+    }
+    
+    public void setOutputValue(String varName, double value) throws NoRoomException, IllegalActionException {
+        for (IOPort port : (List<IOPort>)outputPortList()) {
+            if (port != output) {
+                if (port.getName().equals(varName)) {
+                    for (int i = 0; i < port.getWidth(); i++)
+                        port.send(i, new DoubleToken(value));
+                }
+            }
+        } 
+    }
+    
+    private native void setGlobalVariable(String name, double value);
+    
+    public boolean prefire() throws IllegalActionException { 
+        for (IOPort port : (List<IOPort>)inputPortList()) {
+            if (port != input) {
+                for (int i = 0; i < port.getWidth(); i++) {
+                    while (port.hasToken(i)) {
+                        Token token = port.get(i);
+                        double value = 0.0;
+                        if (token instanceof DoubleToken) {
+                            value = ((DoubleToken)token).doubleValue();
+                        } else if (token instanceof IntToken) {
+                            value = ((IntToken)token).doubleValue();
+                        } // TODO add other token types
+                        setGlobalVariable(port.getName(), value);
+                    }
+                }
+            } 
+        }
+        return super.prefire();
     }
 
     public void fire() throws IllegalActionException {
@@ -267,8 +301,11 @@ public class CTask extends ApeActor implements Runnable {
     }
 
     protected void _callCMethod() {
-
+        System.out.println(this.getName() + "._callCMethod()");
+        CMethod(this.getName());
     }
+    
+    private native void CMethod(String taskName); 
 
     private void _initialize() {
 
