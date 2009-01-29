@@ -18,9 +18,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-525.0, -1035.0]">
         </property>
     </property>
-    <property name="CCodeGenerator" class="ptolemy.codegen.c.kernel.CCodeGenerator">
-        <property name="generateJNI" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
+    <property name="JavaCodeGenerator" class="ptolemy.codegen.java.kernel.JavaCodeGenerator">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-60.0, -1030.0}">
         </property>
     </property>

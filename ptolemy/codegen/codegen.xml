@@ -14,6 +14,7 @@
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="embeddedCCode"/>
             </property>
         </entity>
+        <property name="JavaCodeGenerator" class="ptolemy.codegen.java.kernel.JavaCodeGenerator"/>
         <entity name="CodegenActor" class="ptolemy.actor.lib.jni.CodegenActor">
             <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="embeddedCCode"/>

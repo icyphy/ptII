@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="TokenToExpression" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
@@ -10,17 +10,17 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{110, 55}">
         </property>
     </property>
-    <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{270, 55}">
-        </property>
-    </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={90, 38, 815, 699}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={90, 38, 813, 691}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 581]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 290.5}">
+    </property>
+    <property name="JavaCodeGenerator" class="ptolemy.codegen.java.kernel.JavaCodeGenerator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{350, 45}">
+        </property>
     </property>
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{&quot;{1, 2, 3}&quot;, &quot;1.3&quot;, &quot;true&quot;, &quot;{{1}, {2, 3}, {4, 5, 4, 3, 3}}&quot;}, {&quot;{1, 2, 3}&quot;, &quot;1.3&quot;, &quot;true&quot;, &quot;{{1}, {2, 3}, {4, 5, 4, 3, 3}}&quot;}, {&quot;{1, 2, 3}&quot;, &quot;1.3&quot;, &quot;true&quot;, &quot;{{1}, {2, 3}, {4, 5, 4, 3, 3}}&quot;}, {&quot;{1, 2, 3}&quot;, &quot;1.3&quot;, &quot;true&quot;, &quot;{{1}, {2, 3}, {4, 5, 4, 3, 3}}&quot;}, {&quot;{1, 2, 3}&quot;, &quot;1.3&quot;, &quot;true&quot;, &quot;{{1}, {2, 3}, {4, 5, 4, 3, 3}}&quot;}, {&quot;{1, 2, 3}&quot;, &quot;1.3&quot;, &quot;true&quot;, &quot;{{1}, {2, 3}, {4, 5, 4, 3, 3}}&quot;}, {&quot;{1, 2, 3}&quot;, &quot;1.3&quot;, &quot;true&quot;, &quot;{{1}, {2, 3}, {4, 5, 4, 3, 3}}&quot;}, {&quot;{1, 2, 3}&quot;, &quot;1.3&quot;, &quot;true&quot;, &quot;{{1}, {2, 3}, {4, 5, 4, 3, 3}}&quot;}, {&quot;{1, 2, 3}&quot;, &quot;1.3&quot;, &quot;true&quot;, &quot;{{1}, {2, 3}, {4, 5, 4, 3, 3}}&quot;}, {&quot;{1, 2, 3}&quot;, &quot;1.3&quot;, &quot;true&quot;, &quot;{{1}, {2, 3}, {4, 5, 4, 3, 3}}&quot;}}">
