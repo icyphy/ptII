@@ -81,8 +81,7 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	AnalyzeModelIcon.xml \
-	EventLibrary.xml \
-	ModelAnalyzerIcon.xml
+	EventLibrary.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

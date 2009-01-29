@@ -49,7 +49,8 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 JSRCS = \
 	ModelAnalyzer.java
 
-OTHER_FILES_TO_BE_JARED =
+OTHER_FILES_TO_BE_JARED = \
+	ModelAnalyzerIcon.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
