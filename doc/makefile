@@ -221,7 +221,7 @@ DATAPROPERTIESPACKAGES = \
 	ptolemy.data.properties.lattice.exampleSetLattice.actor.lib \
 	ptolemy.data.properties.lattice.exampleSetLattice.data.expr \
 	ptolemy.data.properties.lattice.exampleSetLattice.kernel \
-	ptolemy.data.properties.lattice.loogicalAND \
+	ptolemy.data.properties.lattice.logicalAND \
 	ptolemy.data.properties.lattice.logicalAND.actor \
 	ptolemy.data.properties.lattice.logicalAND.actor.lib \
 	ptolemy.data.properties.lattice.logicalAND.data.expr \
