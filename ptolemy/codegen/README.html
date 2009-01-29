@@ -76,7 +76,7 @@ as opposed to plotting the data after the model completes.
 The JNI facility requires that a Java Development Kit (JDK)
 be installed instead of a Java Runtime Environment (JRE).
 The Ptolemy II Windows installer includes a JRE which is optionally
-installed.  If the Windows installer is installed with the bunded
+installed.  If the Windows installer is installed with the bundled
 JRE, then models that use the plotter will probably fail to compile
 with message like:
 <pre>
@@ -130,11 +130,11 @@ CodeGeneratorHelper.isPrimitive() method is what is used to determine
 if a type is primitive.  Also, a good example to look at is the
 codegen/c/actor/lib/ArrayElement helper.
 
-
-<dt> How do I get timing data from the C output
+<br>
+<dt> How do I get timing data from the C output?
 <dd> At the top of the generated C file, insert
 <pre>
-#include <sys/time.h>
+#include &#60;sys/time.h&#62;
 </pre>
 At the beginning of <code>main()</code> method, insert:
 <pre>
