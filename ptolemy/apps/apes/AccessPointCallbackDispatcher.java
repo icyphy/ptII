@@ -36,7 +36,7 @@ public class AccessPointCallbackDispatcher {
             CTask task = (CTask) _taskNames.get(Thread.currentThread().getName());
             try { 
                 task.accessPointCallback(extime, minNextTime);
-                task.setOutputPort(varName, value);
+                task.setOutputValue(varName, value);
             } catch (NoRoomException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

@@ -335,11 +335,6 @@ public class CTask extends ApeActor implements Runnable {
     private boolean _waitForMinDelay;
     
     private boolean _actorStopped = false;
-
-    public void setOutputPort(String varName, double value) throws NoRoomException, IllegalActionException {
-        // TODO Auto-generated method stub
-        
-    } 
         
  
     
