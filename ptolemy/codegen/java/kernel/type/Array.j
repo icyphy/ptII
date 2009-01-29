@@ -81,11 +81,11 @@ Token Array_new(int size, int given, Object... elements) {
         // elementType is given as the last argument.
         elementType = (Short)elements[i];
 
-	if (elementType >=0) {
+	if (elementType >= 0) {
            // convert the elements if needed.
-	   for (i = 0; i < given; i++) {
-              if (Array_get(result, i).type != elementType) {
-                //Array_set(result, i, functionTable[(int)elementType][FUNC_convert](Array_get(result, i)));
+	   for (int j = 0; j < given; j++) {
+              if (Array_get(result, j).type != elementType) {
+                //Array_set(result, j, functionTable[(int)elementType][FUNC_convert](Array_get(result, j)));
 		switch(elementType) {
 		    case TYPE_Array:
 		        System.out.println("Array_new on an array of arrays, possible problem");
@@ -94,12 +94,12 @@ Token Array_new(int size, int given, Object... elements) {
 		        ;;
 #ifdef PTCG_TYPE_Double
 		    case TYPE_Double:
-		        Array_set(result, i, Double_convert(Array_get(result,i)));
+		        Array_set(result, j, Double_convert(Array_get(result,j)));
 			;;
 #endif
 #ifdef PTCG_TYPE_Integer
 		    case TYPE_Integer:
-		        Array_set(result, i, Integer_convert(Array_get(result,i)));
+		        Array_set(result, j, Integer_convert(Array_get(result,j)));
 			;;
 #endif
 		    default:
@@ -111,6 +111,8 @@ Token Array_new(int size, int given, Object... elements) {
             }
         }
     } 
+    System.out.println("End of Array_new");
+    Array_print2(result);
     return result;
 }
 /**/
@@ -217,14 +219,21 @@ Token Array_toString(Token thisToken, Token... ignored) {
             result.append(", ");
         }
 	// Arrays elements could have different types?
-        short elementType = ((array)(thisToken.payload)).elements[i].type;
-	switch(elementType) {
-	    case TYPE_Array:
-  	        result.append(Array_toString(((array)(thisToken.payload)).elements[i]).payload);
-		break;		
-  	    default: 
-                result.append(((array)(thisToken.payload)).elements[i].payload.toString());
-		break;		
+	if (((array)(thisToken.payload)).elements == null) {
+	    result.append("elements == null");
+	} else if (((array)(thisToken.payload)).elements[i] == null) {
+	    result.append("elements[" + i + "] == null");
+	    throw new RuntimeException("elements[] is null");
+        } else {
+            short elementType = ((array)(thisToken.payload)).elements[i].type;
+   	    switch(elementType) {
+	        case TYPE_Array:
+  	            result.append(Array_toString(((array)(thisToken.payload)).elements[i]).payload);
+		    break;		
+  	        default: 
+                    result.append(((array)(thisToken.payload)).elements[i].payload.toString());
+		    break;		
+            }
         } 
     }
     result.append("}");
@@ -256,7 +265,7 @@ Token Array_add(Token thisToken, Token... tokens) {
 
     for (i = 0; i < resultSize; i++) {
         if (size1 == 1) {
-            //Array_set(result, i, $tokenFunc(Array_get(thisToken, 0)::add(Array_get(otherToken, i))));
+            Array_set(result, i, $tokenFunc(Array_get(thisToken, 0)::add(Array_get(otherToken, i))));
         } else if (size2 == 1) {
             //result.payload.Array->elements[i] = functionTable[(int)Array_get(otherToken, 0).type][FUNC_add](Array_get(thisToken, i), Array_get(otherToken, 0));
             //Array_set(result, i, $tokenFunc(Array_get(thisToken, i)::add(Array_get(otherToken, 0))));
@@ -340,7 +349,7 @@ Token Array_multiply(Token thisToken, Token... elements) {
     result = Array_new(resultSize, 0);
 
     for (i = 0; i < resultSize; i++) {
-    	System.out.println("Array_new: convert needs work");
+    	System.out.println("Array_multiply: convert needs work");
 
         //if (size1 == 1) {
         //      result.payload.Array->elements[i] = functionTable[(int)Array_get(thisToken, 0).type][FUNC_multiply](Array_get(thisToken, 0), Array_get(otherToken, i));
@@ -503,6 +512,35 @@ Token arrayRepeat(int number, Token value) {
 
 /***Array_convert***/
 
+void Array_print2(Token thisToken) {
+    StringBuffer results = new StringBuffer("{");
+    for (int i = 0; i < ((array)(thisToken.payload)).size; i++) {
+        if (i != 0) {
+            results.append(", ");
+        }
+	// Arrays elements could have different types?
+	if (((array)(thisToken.payload)).elements == null) {
+	    results.append("elements == null");
+	} else if (((array)(thisToken.payload)).elements[i] == null) {
+	    results.append("elements[" + i + "] == null");
+        } else {
+            short elementType = ((array)(thisToken.payload)).elements[i].type;
+   	    switch(elementType) {
+	        case TYPE_Array:
+		    System.out.println("Array_print2: calling "
+		    		    + "Array_ToString");
+  	            results.append(Array_toString(((array)(thisToken.payload)).elements[i]).payload);
+		    break;		
+  	        default: 
+                    results.append(((array)(thisToken.payload)).elements[i].payload.toString());
+		    break;		
+            }
+        } 
+    }
+    results.append("}");
+
+    System.out.println(results.toString());
+}
 // Array_convert: Convert the first argument array
 // into the type specified by the second argument.
 // @param token The token to be converted.
@@ -515,6 +553,8 @@ Token Array_convert(Token token, Short... targetTypes) {
 
     targetType = targetTypes[0];
 
+    System.out.println("Array_convert(" + token + ", " + targetType + ")");
+    Array_print2(token);
 
     result = Array_new(((array)token.payload).size, 0);
 
@@ -522,12 +562,28 @@ Token Array_convert(Token token, Short... targetTypes) {
         element = Array_get(token, i);
         if (targetType != element.type) {
             //result.payload.Array->elements[i] = functionTable[(int)targetType][FUNC_convert](element);
-	    System.out.println("Array_conver: convert needs work");
+	    switch (element.type) {
+                case TYPE_Integer:
+		    element = Integer_convert(element);
+	    break;
+                case TYPE_Double:
+		    element = Double_convert(element);
+	    break;
+            case TYPE_Array:
+		element = Array_convert(element, element.type);
+	    break;
+
+           default:
+        throw new RuntimeException("Array_convert(): Conversion from an unsupported type.: " + token.type);
+            }
+            ((array)(result.payload)).elements[i] = element;
         } else {
             ((array)(result.payload)).elements[i] = element;
         }
     }
 
+    System.out.println("Array_convert: about to return:");
+    Array_print2(result);
     return result;
 }
 /**/

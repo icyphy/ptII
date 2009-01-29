@@ -192,10 +192,27 @@ Token add_Token_Token(Token a1, Token a2) {
 	    	result = Double_new((Double)a1.payload + (Double)a2.payload);
 		break;
 	    default:
+	        System.out.println("add_Token_Token(): a1 is a Double, "
+			+ "a2 is a " + a2.type);
 	        result = null;
 
-        };;
+        }
+	break;
 #endif
+    case TYPE_Integer:
+        switch (a2.type) {
+	    case TYPE_Integer:
+	    	result = Integer_new((Integer)a1.payload + (Integer)a2.payload);
+		break;
+	    default:
+	        System.out.println("add_Token_Token(): a1 is a Double, "
+			+ "a2 is a " + a2.type);
+
+	        result = null;
+
+        }
+	break;
+
     case TYPE_Array:
         switch (a2.type) {
 	    case TYPE_Array:
@@ -208,6 +225,9 @@ Token add_Token_Token(Token a1, Token a2) {
         }
 	break;
     default:
+        System.out.println("add_Token_Token(): a1 is a " + a1.type
+			+ "a2 is a " + a2.type);
+
         result = null;
     }
 

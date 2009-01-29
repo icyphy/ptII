@@ -136,6 +136,8 @@ Token Integer_convert(Token token, Token... elements) {
         return token;
 
 #endif
+    case TYPE_Integer:
+        return token;
 
         // FIXME: not finished
     default:
