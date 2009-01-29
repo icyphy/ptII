@@ -1666,7 +1666,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             // See MoMLSimpleApplication for similar code
             MoMLParser parser = new MoMLParser();
             MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
-            MoMLParser.addMoMLFilter(new RemoveGraphicalClasses());
+	    // Don't remove graphical classes here, it means
+	    // we can't generate code for plotters etc using $PTII/bin/ptcg
+            //MoMLParser.addMoMLFilter(new RemoveGraphicalClasses());
 
             // Reset the list each time we parse a parameter set.
             // Otherwise two calls to this method will share params!
