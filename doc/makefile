@@ -197,10 +197,9 @@ COPERNICUSPACKAGES = \
 
 # Packages used by data/properties
 # Use this command:
-# cd $PTII/data/properties; find . -name "*.java" | xargs -n 1 dirname | sort | uniq | awk '{dir=substr($0, 2, length($0)-1) ; print "ptolemy/data/properties" dir}' | sed 's@/@.@g'
+# cd $PTII/ptolemy/data/properties; find . -name "*.java" | xargs -n 1 dirname | sort | uniq | awk '{dir=substr($0, 2, length($0)-1) ; print "ptolemy/data/properties" dir}' | sed 's@/@.@g'
 DATAPROPERTIESPACKAGES = \
 	ptolemy.data.properties \
-	ptolemy.data.properties.actor \
 	ptolemy.data.properties.actor.lib \
 	ptolemy.data.properties.configuredSolvers.lattice \
 	ptolemy.data.properties.configuredSolvers.token \
@@ -234,6 +233,8 @@ DATAPROPERTIESPACKAGES = \
 	ptolemy.data.properties.lattice.logicalOrBackward.data.expr \
 	ptolemy.data.properties.lattice.logicalOrBackward.domains.fsm.kernel \
 	ptolemy.data.properties.lattice.logicalOrBackward.kernel \
+	ptolemy.data.properties.lattice.namingSetLattice \
+	ptolemy.data.properties.lattice.namingSetLattice.actor \
 	ptolemy.data.properties.lattice.typeSystem_C \
 	ptolemy.data.properties.lattice.typeSystem_C.actor \
 	ptolemy.data.properties.lattice.typeSystem_C.actor.lib \
@@ -241,6 +242,7 @@ DATAPROPERTIESPACKAGES = \
 	ptolemy.data.properties.lattice.typeSystem_C.data.expr \
 	ptolemy.data.properties.lattice.typeSystem_C.domains.fsm.kernel \
 	ptolemy.data.properties.lattice.typeSystem_C.kernel \
+	ptolemy.data.properties.test \
 	ptolemy.data.properties.token \
 	ptolemy.data.properties.token.combinedValueToken.actor \
 	ptolemy.data.properties.token.combinedValueToken.domains.fsm.kernel \
