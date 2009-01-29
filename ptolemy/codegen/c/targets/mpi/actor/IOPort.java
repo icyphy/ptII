@@ -36,7 +36,6 @@ import ptolemy.actor.Receiver;
 import ptolemy.actor.lib.jni.EmbeddedCActor;
 import ptolemy.codegen.c.domains.pn.kernel.MpiPNDirector;
 import ptolemy.codegen.c.domains.pn.kernel.PNDirector;
-import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.PortCodeGenerator;
 import ptolemy.data.BooleanToken;
@@ -57,7 +56,7 @@ Code generator helper for IOPort.
 @Pt.AcceptedRating Red (mankit)
  */
 
-public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
+public class IOPort extends ptolemy.codegen.c.actor.IOPort implements PortCodeGenerator {
 
     /** Construct the code generator helper associated
      *  with the given IOPort.
@@ -654,4 +653,5 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
         PNDirector.generatePortHeader(port, channelNumber) + ", &" +
         pnDirector.generateDirectorHeader() + ");" + _eol;
     }
+
 }
