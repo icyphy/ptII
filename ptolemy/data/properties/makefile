@@ -49,7 +49,6 @@ PTCLASSJAR = $(PTPACKAGE).jar
 JSRCS = \
 	AnalyzeModel.java \
 	AnnotationAttribute.java \
-	ModelAnalyzer.java \
 	ModelWriter.java \
 	ParseTreeAnnotationEvaluator.java \
 	ParseTreeASTNodeHelperCollector.java \
@@ -57,7 +56,6 @@ JSRCS = \
 	PropertyAttribute.java \
 	PropertyFailedRegressionTestException.java \
 	PropertyHelper.java \
-	PropertyHighlighter.java \
 	PropertyRemover.java \
 	PropertyResolutionException.java \
 	PropertySolver.java \
