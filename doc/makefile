@@ -200,6 +200,8 @@ COPERNICUSPACKAGES = \
 # cd $PTII/data/properties; find . -name "*.java" | xargs -n 1 dirname | sort | uniq | awk '{dir=substr($0, 2, length($0)-1) ; print "ptolemy/data/properties" dir}' | sed 's@/@.@g'
 DATAPROPERTIESPACKAGES = \
 	ptolemy.data.properties \
+	ptolemy.data.properties.actor \
+	ptolemy.data.properties.actor.lib \
 	ptolemy.data.properties.configuredSolvers.lattice \
 	ptolemy.data.properties.configuredSolvers.token \
 	ptolemy.data.properties.gui \
@@ -219,7 +221,7 @@ DATAPROPERTIESPACKAGES = \
 	ptolemy.data.properties.lattice.exampleSetLattice.actor.lib \
 	ptolemy.data.properties.lattice.exampleSetLattice.data.expr \
 	ptolemy.data.properties.lattice.exampleSetLattice.kernel \
-	ptolemy.data.properties.lattice.logicalAND \
+	ptolemy.data.properties.lattice.loogicalAND \
 	ptolemy.data.properties.lattice.logicalAND.actor \
 	ptolemy.data.properties.lattice.logicalAND.actor.lib \
 	ptolemy.data.properties.lattice.logicalAND.data.expr \
