@@ -1300,7 +1300,8 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             } catch (Throwable throwable) {
                 throw new IllegalActionException(this, throwable,
                         "Failed to replace the parameter \"" + name
-                        + "\" in the macro \"" + macro + "\"");
+                        + "\" in the macro \"" + macro
+		        + "\".\nInitial code was:\n" + code);
             }
 
             String string = code.substring(closeParenIndex + 1, nextPos);
