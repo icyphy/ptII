@@ -70,7 +70,7 @@ Token String_add(Token thisToken, Token... tokens) {
 /** String_divide is not supported. */
 /**/
 
-/***String_neg1ate***/
+/***String_negate***/
 Token String_negate(Token thisToken, Token... tokens) {
     return emptyToken;
 }

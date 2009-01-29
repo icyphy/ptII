@@ -81,7 +81,6 @@ Token Double_add(Token thisToken, Token... tokens) {
 /**/
 
 /***Double_subtract***/
-Token subtract_Double_Array(double a1, Token a2);
 Token Double_subtract(Token thisToken, Token... tokens) {
     Token result;
     Token otherToken = tokens[0];
@@ -144,7 +143,7 @@ Token Double_divide(Token thisToken, Token... tokens) {
 
 /***Double_negate***/
 Token Double_negate(Token thisToken, Token... tokens) {
-    return Double_new(-(Double)(thisToken.payload);
+    return Double_new(-(Double)(thisToken.payload));
 }
 /**/
 

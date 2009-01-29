@@ -147,7 +147,7 @@ $actorSymbol(inputToken) = $ref(input#$channel);
 $actorSymbol(numberOfTokensSeen)++;
 if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
         && !$ref(correctValues, $actorSymbol(numberOfTokensSeen))
-	            .equals($actorSymbol(inputToken))) ) {
+	            .equals($actorSymbol(inputToken))) {
     System.out.printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was a String: \"%s\". Should have been a String: \"%s\"\n",
             $actorSymbol(numberOfTokensSeen),
             $actorSymbol(inputToken),

@@ -101,7 +101,7 @@ Token Integer_divide(Token thisToken, Token... tokens) {
 
 /***Integer_negate***/
 Token Integer_negate(Token thisToken, Token... tokens) {
-    return Integer_new(-(Integer)(thisToken.payload);
+    return Integer_new(-(Integer)(thisToken.payload));
 }
 /**/
 

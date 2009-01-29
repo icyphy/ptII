@@ -7,9 +7,9 @@ inline Token divide_Array_Array(Token a1, Token a2) {
 /*** divide_Array_Double() ***/
 inline Token divide_Array_Double(Token a1, double a2) {
     int i;
-    Token result = $new(Array(a1.payload.Array->size, 0));
+    Token result = $new(Array(((array)(a1.payload)).size, 0));
 
-    for (i = 0; i < a1.payload.Array->size; i++) {
+    for (i = 0; i < ((array)(a1.payload)).size; i++) {
         Array_set(result, i, $divide_Token_Double(Array_get(a1, i), a2));
     }
     return result;
@@ -17,11 +17,11 @@ inline Token divide_Array_Double(Token a1, double a2) {
 /**/
 
 /*** divide_Array_Int() ***/
-Token divide_Int_Array(Token a1, int a2) {
+Token divide_Array_Int(Token a1, int a2) {
     int i;
-    Token result = $new(Array(a1.payload.Array->size, 0));
+    Token result = $new(Array(((array)(a1.payload)).size, 0));
 
-    for (i = 0; i < a1.payload.Array->size; i++) {
+    for (i = 0; i < ((array)(a1.payload)).size; i++) {
         Array_set(result, i, $divide_Token_Int(Array_get(a1, i), a2));
     }
     return result;
@@ -29,11 +29,11 @@ Token divide_Int_Array(Token a1, int a2) {
 /**/
 
 /*** divide_Array_Long() ***/
-inline Token divide_Long_Array(Token a1, long long a2) {
+inline Token divide_Array_Long(Token a1, long long a2) {
     int i;
-    Token result = $new(Array(a1.payload.Array->size, 0));
+    Token result = $new(Array(((array)(a1.payload)).size, 0));
 
-    for (i = 0; i < a1.payload.Array->size; i++) {
+    for (i = 0; i < ((array)(a1.payload)).size; i++) {
         Array_set(result, i, $divide_Token_Long(Array_get(a1, i), a2));
     }
     return result;
@@ -53,9 +53,9 @@ inline boolean divide_Boolean_Boolean(boolean a1, boolean a2) {
 /*** divide_Double_Array() ***/
 Token divide_Double_Array(double a1, Token a2) {
     int i;
-    Token result = $new(Array(a2.payload.Array->size, 0));
+    Token result = $new(Array(((array)(a2.payload)).size, 0));
 
-    for (i = 0; i < a2.payload.Array->size; i++) {
+    for (i = 0; i < ((array)(a2.payload)).size; i++) {
         Array_set(result, i, $divide_Double_Token(a1, Array_get(a2, i)));
     }
     return result;
@@ -84,9 +84,9 @@ Token divide_Double_Token(double a1, Token a2) {
 /*** divide_Int_Array() ***/
 Token divide_Int_Array(int a1, Token a2) {
     int i;
-    Token result = $new(Array(a2.payload.Array->size, 0));
+    Token result = $new(Array(((array)(a2.payload)).size, 0));
 
-    for (i = 0; i < a2.payload.Array->size; i++) {
+    for (i = 0; i < ((array)(a2.payload)).size; i++) {
         Array_set(result, i, $divide_Int_Token(a1, Array_get(a2, i)));
     }
     return result;
@@ -115,9 +115,9 @@ int divide_Int_Token(int a1, Token a2) {
 /*** divide_Long_Array() ***/
 Token divide_Long_Array(long long a1, Token a2) {
     int i;
-    Token result = $new(Array(a2.payload.Array->size, 0));
+    Token result = $new(Array(((array)(a2.payload)).size, 0));
 
-    for (i = 0; i < a2.payload.Array->size; i++) {
+    for (i = 0; i < ((array)(a2.payload)).size; i++) {
         Array_set(result, i, $divide_Long_Token(a1, Array_get(a2, i)));
     }
     return result;

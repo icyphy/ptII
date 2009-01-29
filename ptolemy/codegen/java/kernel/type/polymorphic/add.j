@@ -35,7 +35,7 @@ int add_Boolean_Integer(boolean a1, int a2) {
 /**/
 
 /*** add_Boolean_String() ***/
-char* add_Boolean_String(boolean a1, char* a2) {
+String add_Boolean_String(boolean a1, String a2) {
     return $add_String_Boolean(a2, a1);
 }
 /**/
@@ -138,34 +138,26 @@ Token add_Long_Token(long long a1, Token a2) {
 /**/
 
 /*** add_String_Boolean() ***/
-char* add_String_Boolean(char* a1, boolean a2) {
-    char* result = (char*) malloc(sizeof(char) * ((a2 ? 5 : 6) + strlen(a1)));
-    strcpy(result, a1);
-    strcat(result, (a2 ? "true" : "false");
-    return result;
+String add_String_Boolean(String a1, boolean a2) {
+    return a1 + a2;
 }
 /**/
 
 /*** add_String_Double() ***/
-char* add_String_Double(char* a1, double a2) {
-    char* string = (char*) malloc(sizeof(char) * (20 + strlen(a1)));
-    sprintf((char*) string, "%s%g", a1, a2);
-    return string;
+String add_String_Double(String a1, double a2) {
+    return a1 + a2;
 }
 /**/
 
 /*** add_String_Integer() ***/
-char* add_String_Integer(char* a1, int a2) {
+String add_Strng_Integer(String a1, int a2) {
     return $add_Integer_String(a2, a1);
 }
 /**/
 
 /*** add_String_String() ***/
-char* add_String_String(char* a1, char* a2) {
-    char* result = (char*) malloc(sizeof(char) * (1 + strlen(a1) + strlen(a2)));
-    strcpy(result, a1);
-    strcat(result, a2);
-    return result;
+String add_String_String(String a1, String a2) {
+    return a1 + a2;
 }
 /**/
 

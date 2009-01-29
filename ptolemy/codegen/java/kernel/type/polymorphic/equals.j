@@ -44,9 +44,9 @@ inline boolean equals_Boolean_String(boolean a1, char* a2) {
 /*** equals_Double_Array() ***/
 boolean equals_Double_Array(double a1, Token a2) {
     int i;
-    Token result = $new(Array(a2.payload.Array->size, 0));
+    Token result = $new(Array(((array)(a1.payload)).size, 0));
 
-    for (i = 0; i < a2.payload.Array->size; i++) {
+    for (i = 0; i < ((array)(otherToken.payload)).size; i++) {
         Array_set(result, i, $equals_Double_Token(a1, Array_get(a2, i)));
     }
     return result;
@@ -81,9 +81,9 @@ boolean equals_Double_Token(double a1, Token a2) {
 /*** equals_Int_Array() ***/
 boolean equals_Int_Array(int a1, Token a2) {
     int i;
-    Token result = $new(Array(a2.payload.Array->size, 0));
+    Token result = $new(Array(((array)(a1.payload)).size, 0));
 
-    for (i = 0; i < a2.payload.Array->size; i++) {
+    for (i = 0; i < ((array)(otherToken.payload)).size; i++) {
         Array_set(result, i, $equals_Int_Token(a1, Array_get(a2, i)));
     }
     return result;
@@ -118,9 +118,9 @@ boolean equals_Int_Token(int a1, Token a2) {
 /*** equals_Long_Array() ***/
 boolean equals_Long_Array(long long a1, Token a2) {
     int i;
-    Token result = $new(Array(a2.payload.Array->size, 0));
+    Token result = $new(Array(((array)(a1.payload)).size, 0));
 
-    for (i = 0; i < a2.payload.Array->size; i++) {
+    for (i = 0; i < ((array)(otherToken.payload)).size; i++) {
         Array_set(result, i, $equals_Long_Token(a1, Array_get(a2, i)));
     }
     return result;

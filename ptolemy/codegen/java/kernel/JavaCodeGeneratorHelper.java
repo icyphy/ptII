@@ -601,9 +601,14 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
 	        if (cgType.equals("integer")) {
 		    cgType = "int";
 	        }
+		String operator = "Value()";
+	        if (cgType.equals("string")) {
+		    cgType = "";
+		    operator = "toString()";
+	        }
                 result.append(".payload/*jcgh2*/))."
 			      + cgType
-			      + "Value()");
+			      + operator);
 	    } else {
 		result.append(")");
 	    }

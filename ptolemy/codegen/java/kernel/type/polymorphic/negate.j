@@ -1,24 +1,43 @@
 /*** negate_Array() ***/
-#define negate_Array(a) $Array_negate(a)
+array negate_Array(array a) {
+     return $Array_negate(a)
+}
 /**/
 
 /*** negate_Boolean() ***/
-#define negate_Boolean(a) !a
+boolean negate_Boolean(boolean a) {
+     return !a;
+}
 /**/
 
 /*** negate_Double() ***/
-#define negate_Double(a) -a
+double negate_Double(double a) {
+     return -a;
+}
 /**/
 
 /*** negate_Int() ***/
-#define negate_Int(a) -a
+int negate_Int(int a) {
+     return -a;
+}
 /**/
 
 /*** negate_Long() ***/
-#define negate_Long(a) -a
+long negate_Long(long a) {
+     return -a;
+}
 /**/
 
 /*** negate_Token() ***/
-#define negate_Token(a) $tokenFunc(a::negate())
+Token negate_Token(Token a) {
+      return $tokenFunc(a::negate());
+}
 /**/
+
+/*** negate_Token_Token() ***/
+Token negate_Token_Token(Token a) {
+      return $tokenFunc(a::negate());
+}
+/**/
+
 
