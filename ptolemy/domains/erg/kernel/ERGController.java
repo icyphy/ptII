@@ -32,7 +32,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.domains.erg.kernel;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
@@ -43,7 +42,6 @@ import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.BreakCausalityInterface;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.HasTypeConstraints;
@@ -54,7 +52,6 @@ import ptolemy.graph.Inequality;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -238,33 +235,6 @@ public class ERGController extends ModalController {
      */
     public State getInitialState() {
         return null;
-    }
-
-    /** Test whether new input tokens have been received at the input ports.
-     *
-     *  @return true if new input tokens have been received.
-     */
-    public boolean hasInput() {
-        Iterator<?> inPorts = ((ERGModalModel) getContainer()).inputPortList()
-                .iterator();
-        while (inPorts.hasNext() && !_stopRequested) {
-            Port port = (Port) inPorts.next();
-            if (hasInput(port)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /** Test whether new input tokens have been received at the given input
-     *  port.
-     *
-     *  @param port The input port.
-     *  @return true if new input tokens have been received.
-     */
-    public boolean hasInput(Port port) {
-        Token token = (Token) _inputTokenMap.get(port.getName() + "_isPresent");
-        return token != null && BooleanToken.TRUE.equals(token);
     }
 
     /** Initialize this controller by initializing the director that it

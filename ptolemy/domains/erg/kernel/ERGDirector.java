@@ -166,7 +166,6 @@ public class ERGDirector extends Director implements TimedDirector,
         TimedEvent timedEvent = findFirst(event, true);
         if (timedEvent != null) {
             timedEvent.canceled = true;
-            _refinementQueue.remove(timedEvent);
             Object contents = timedEvent.contents;
             if (contents instanceof TypedActor) {
                 _initializedRefinements.remove(contents);
@@ -203,7 +202,6 @@ public class ERGDirector extends Director implements TimedDirector,
         newObject._eventsListeningToVariables = new HashMap<Variable,
                 Set<TimedEvent>>();
         newObject._initializedRefinements = new HashSet<TypedActor>();
-        newObject._refinementQueue = new LinkedList<TimedEvent>();
         return newObject;
     }
 
@@ -266,8 +264,8 @@ public class ERGDirector extends Director implements TimedDirector,
     public void fire() throws IllegalActionException {
         if (!_isInController()) {
             ERGModalModel modalModel = (ERGModalModel) getContainer();
-            List<?> ergControllers = modalModel.entityList(ERGController.class);
-            for (Object controllerObject : ergControllers) {
+            List<?> controllers = modalModel.entityList(ERGController.class);
+            for (Object controllerObject : controllers) {
                 ((ERGController) controllerObject).readInputs();
             }
         }
@@ -287,17 +285,12 @@ public class ERGDirector extends Director implements TimedDirector,
             }
         }
         List<TimedEvent> eventQueue = new LinkedList<TimedEvent>(_eventQueue);
-        List<TimedEvent> refinementQueue = new LinkedList<TimedEvent>(
-                _refinementQueue);
         Set<TimedEvent> firedEvents = new HashSet<TimedEvent>();
 
         if (hasInput) {
             // Fire the refinements of all input events.
-            for (TimedEvent event : refinementQueue) {
-                if (!event.canceled) {
-                    firedEvents.add(event);
-                    _fire(event);
-                }
+            for (TypedActor refinement : _initializedRefinements) {
+                _fireActor(refinement, null);
             }
 
             Set<TimedEvent> timedEvents = new LinkedHashSet<TimedEvent>();
@@ -822,6 +815,7 @@ public class ERGDirector extends Director implements TimedDirector,
             TimedEvent newEvent = new TimedEvent(_currentTime, controller,
                     null, null, 0, false);
             _addEvent(newEvent);
+            _initializedRefinements.add(controller);
             if (_isEmbedded()) {
                 _requestFiring();
             }
@@ -885,9 +879,6 @@ public class ERGDirector extends Director implements TimedDirector,
      */
     private void _addEvent(TimedEvent event) throws IllegalActionException {
         _addEvent(_eventQueue, event);
-        if (event.contents instanceof Actor) {
-            _addEvent(_refinementQueue, event);
-        }
     }
 
     /** Clear the state of this ERG director and the ERG directors of the
@@ -904,7 +895,6 @@ public class ERGDirector extends Director implements TimedDirector,
         _eventsListeningToPorts.clear();
         _eventsListeningToVariables.clear();
         _initializedRefinements.clear();
-        _refinementQueue.clear();
         _delegateFireAt = false;
     }
 
@@ -924,7 +914,6 @@ public class ERGDirector extends Director implements TimedDirector,
      */
     private boolean _fire(TimedEvent timedEvent) throws IllegalActionException {
         _eventQueue.remove(timedEvent);
-        _refinementQueue.remove(timedEvent);
 
         ERGController controller = getController();
         Object contents = timedEvent.contents;
@@ -966,24 +955,8 @@ public class ERGDirector extends Director implements TimedDirector,
                                 !_initializedRefinements.contains(refinement)) {
                             refinement.initialize();
                             _initializedRefinements.add(refinement);
-                            TimedEvent eventToFire = null;
-                            for (TimedEvent refinementEvent
-                                    : _refinementQueue) {
-                                if (refinementEvent.contents == refinement &&
-                                        refinementEvent.timeStamp.equals(
-                                                getModelTime())) {
-                                    eventToFire = refinementEvent;
-                                    break;
-                                }
-                            }
-                            if (eventToFire == null) {
-                                _fireActor(refinement, null);
-                            } else {
-                                _fire(eventToFire);
-                            }
-                        } else {
-                            _fireActor(refinement, null);
                         }
+                        _fireActor(refinement, null);
                         scheduled = true;
                     }
                 }
@@ -995,7 +968,6 @@ public class ERGDirector extends Director implements TimedDirector,
                     for (TimedEvent eventToCancel : _eventQueue) {
                         eventToCancel.canceled = true;
                     }
-                    _refinementQueue.clear();
                 } else {
                     event.scheduleEvents();
                 }
@@ -1024,7 +996,6 @@ public class ERGDirector extends Director implements TimedDirector,
         if (actor.prefire()) {
             if (timedEvent != null) {
                 _eventQueue.remove(timedEvent);
-                _refinementQueue.remove(timedEvent);
             }
 
             actor.fire();
@@ -1037,7 +1008,6 @@ public class ERGDirector extends Director implements TimedDirector,
                         for (TimedEvent eventToCancel : _eventQueue) {
                             eventToCancel.canceled = true;
                         }
-                        _refinementQueue.clear();
                     } else {
                         event.scheduleEvents();
                     }
@@ -1163,8 +1133,6 @@ public class ERGDirector extends Director implements TimedDirector,
         if (!_eventQueue.isEmpty()) {
             Time time = _eventQueue.get(0).timeStamp;
             _fireAt(time);
-        } else if (!_refinementQueue.isEmpty()) {
-            _fireAt(Time.POSITIVE_INFINITY);
         }
     }
 
@@ -1223,7 +1191,4 @@ public class ERGDirector extends Director implements TimedDirector,
 
     /** The real time at which the execution started. */
     private long _realStartTime;
-
-    /** The event queue that contains only events that can react to inputs. */
-    private List<TimedEvent> _refinementQueue = new LinkedList<TimedEvent>();
 }

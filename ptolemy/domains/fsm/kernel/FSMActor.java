@@ -69,6 +69,7 @@ import ptolemy.data.type.HasTypeConstraints;
 import ptolemy.data.type.ObjectType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.Typeable;
+import ptolemy.domains.erg.kernel.ERGModalModel;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.ComponentEntity;
@@ -693,6 +694,33 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     public ParserScope getPortScope() {
         // FIXME: this could be cached.
         return new PortScope();
+    }
+
+    /** Test whether new input tokens have been received at the input ports.
+     *
+     *  @return true if new input tokens have been received.
+     */
+    public boolean hasInput() {
+        Iterator<?> inPorts = ((ERGModalModel) getContainer()).inputPortList()
+                .iterator();
+        while (inPorts.hasNext() && !_stopRequested) {
+            Port port = (Port) inPorts.next();
+            if (hasInput(port)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /** Test whether new input tokens have been received at the given input
+     *  port.
+     *
+     *  @param port The input port.
+     *  @return true if new input tokens have been received.
+     */
+    public boolean hasInput(Port port) {
+        Token token = (Token) _inputTokenMap.get(port.getName() + "_isPresent");
+        return token != null && BooleanToken.TRUE.equals(token);
     }
 
     /** Initialize this actor by setting the current state to the
