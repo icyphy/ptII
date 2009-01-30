@@ -218,6 +218,7 @@ Token Array_print(Token thisToken, Token... tokens) {
     results.append("}");
 
     System.out.println(results.toString());
+    return null;
 }
 /**/
 
@@ -281,11 +282,10 @@ Token Array_add(Token thisToken, Token... tokens) {
             Array_set(result, i, $tokenFunc(Array_get(thisToken, 0)::add(Array_get(otherToken, i))));
         } else if (size2 == 1) {
             //result.payload.Array->elements[i] = functionTable[(int)Array_get(otherToken, 0).type][FUNC_add](Array_get(thisToken, i), Array_get(otherToken, 0));
-            //Array_set(result, i, $tokenFunc(Array_get(thisToken, i)::add(Array_get(otherToken, 0))));
-        } else 
-{
+            Array_set(result, i, $tokenFunc(Array_get(thisToken, i)::add(Array_get(otherToken, 0))));
+        } else {
             //result.payload.Array->elements[i] = functionTable[(int)Array_get(thisToken, i).type][FUNC_add](Array_get(thisToken, i), Array_get(otherToken, i));
-            //Array_set(result, i, $tokenFunc(Array_get(thisToken, i)::add(Array_get(otherToken, i))));
+            Array_set(result, i, $tokenFunc(Array_get(thisToken, i)::add(Array_get(otherToken, i))));
         }
     }
 
@@ -318,7 +318,6 @@ Token Array_subtract(Token thisToken, Token... tokens) {
     resultSize = (size1 > size2) ? size1 : size2;
 
     result = Array_new(resultSize, 0);
-
     for (i = 0; i < resultSize; i++) {
         if (size1 == 1) {
             Array_set(result, i, $tokenFunc(Array_get(thisToken, 0)::subtract(Array_get(otherToken, i))));
@@ -327,6 +326,7 @@ Token Array_subtract(Token thisToken, Token... tokens) {
             Array_set(result, i, $tokenFunc(Array_get(thisToken, i)::subtract(Array_get(otherToken, 0))));
         } else {
             //result.payload.Array->elements[i] = functionTable[(int)Array_get(thisToken, i).type][FUNC_add](Array_get(thisToken, i), Array_get(otherToken, i));
+
             Array_set(result, i, $tokenFunc(Array_get(thisToken, i)::subtract(Array_get(otherToken, i))));
         }
     }
@@ -360,15 +360,13 @@ Token Array_multiply(Token thisToken, Token... elements) {
     result = Array_new(resultSize, 0);
 
     for (i = 0; i < resultSize; i++) {
-    	System.out.println("Array_multiply: convert needs work");
-
-        //if (size1 == 1) {
-        //      result.payload.Array->elements[i] = functionTable[(int)Array_get(thisToken, 0).type][FUNC_multiply](Array_get(thisToken, 0), Array_get(otherToken, i));
-        //} else if (size2 == 1) {
-        //    result.payload.Array->elements[i] = functionTable[(int)Array_get(otherToken, 0).type][FUNC_multiply](Array_get(thisToken, i), Array_get(otherToken, 0));
-        //} else {
-        //    result.payload.Array->elements[i] = functionTable[(int)Array_get(thisToken, i).type][FUNC_multiply](Array_get(thisToken, i), Array_get(otherToken, i));
-        //}
+        if (size1 == 1) {
+            Array_set(result, i, $tokenFunc(Array_get(thisToken, 0)::multiply(Array_get(otherToken, i))));
+        } else if (size2 == 1) {
+            Array_set(result, i, $tokenFunc(Array_get(thisToken, i)::multiply(Array_get(otherToken, 0))));
+        } else {
+            Array_set(result, i, $tokenFunc(Array_get(thisToken, i)::multiply(Array_get(otherToken, i))));
+        }
     }
 
     return result;
@@ -398,14 +396,14 @@ Token Array_divide(Token thisToken, Token... elements) {
     result = Array_new(resultSize, 0);
 
     for (i = 0; i < resultSize; i++) {
-    	System.out.println("Array_divide: convert needs work");
-//         if (size1 == 1) {
-//             result.payload.Array->elements[i] = functionTable[(int)Array_get(thisToken, 0).type][FUNC_divide](Array_get(thisToken, 0), Array_get(otherToken, i));
-//         } else if (size2 == 1) {
-//             result.payload.Array->elements[i] = functionTable[(int)Array_get(otherToken, 0).type][FUNC_divide](Array_get(thisToken, i), Array_get(otherToken, 0));
-//         } else {
-//             result.payload.Array->elements[i] = functionTable[(int)Array_get(thisToken, i).type][FUNC_divide](Array_get(thisToken, i), Array_get(otherToken, i));
-//         }
+    for (i = 0; i < resultSize; i++) {
+        if (size1 == 1) {
+            Array_set(result, i, $tokenFunc(Array_get(thisToken, 0)::divide(Array_get(otherToken, i))));
+        } else if (size2 == 1) {
+            Array_set(result, i, $tokenFunc(Array_get(thisToken, i)::divide(Array_get(otherToken, 0))));
+        } else {
+            Array_set(result, i, $tokenFunc(Array_get(thisToken, i)::divide(Array_get(otherToken, i))));
+        }
     }
 
     return result;

@@ -46,6 +46,7 @@ Token Double_isCloseTo(Token thisToken, Token... tokens) {
 /***Double_print***/
 Token Double_print(Token thisToken, Token... tokens) {
     System.out.println((Double)thisToken.payload);
+    return null;
 }
 /**/
 
@@ -67,7 +68,7 @@ Token Double_add(Token thisToken, Token... tokens) {
     	
 #ifdef PTCG_TYPE_Array
     case TYPE_Array:
-        result = $add_Double_Array(Double)thisToken.payload, otherToken);
+        result = $add_Double_Array((Double)thisToken.payload, otherToken);
         break;
 #endif
     

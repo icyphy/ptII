@@ -6,7 +6,7 @@ Array convert_Array_Array(Array a) {
 
 /*** convert_Boolean_Boolean() ***/
 boolean convert_Boolean_Boolean(boolean a) {
-	return a
+	return a;
 }
 /**/
 

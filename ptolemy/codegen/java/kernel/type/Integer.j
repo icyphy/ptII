@@ -42,6 +42,7 @@ Token Integer_isCloseTo(Token thisToken, Token... tokens) {
 /***Integer_print***/
 Token Integer_print(Token thisToken, Token... tokens) {
     System.out.println((Integer)thisToken.payload);
+    return null;
 }
 /**/
 

@@ -2,7 +2,7 @@
 // FIXME: is this the proper way to free the allocated space?
 //free($ref(output));
 
-$ref(output) = ($Array_toString($ref(input)).payload);
+$ref(output) = (String)($Array_toString($ref(input)).payload);
 
 /**/
 

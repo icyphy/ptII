@@ -136,9 +136,61 @@ Token multiply_Long_Token(long long a1, Token a2) {
 
 /*** multiply_Token_Token() ***/
 /*inline*/  Token multiply_Token_Token(Token a1, Token a2) {
-    System.out.println("multiply_Token_Token");
-    return a1;
-    //return $tokenFunc(a1::multiply(a2));
+    Token result = null;
+    switch (a1.type) {
+#ifdef PTCG_TYPE_Double
+    case TYPE_Double:
+        switch (a2.type) {
+	    case TYPE_Double:
+	    	result = Double_new((Double)a1.payload * (Double)a2.payload);
+		break;
+	    default:
+	        System.out.println("multiply_Token_Token(): a1 is a Double, "
+			+ "a2 is a " + a2.type);
+	        result = null;
+
+        }
+	break;
+#endif
+#ifdef PTCG_TYPE_Integer
+    case TYPE_Integer:
+        switch (a2.type) {
+	    case TYPE_Integer:
+	    	result = Integer_new((Integer)a1.payload * (Integer)a2.payload);
+		break;
+	    default:
+	        System.out.println("multiply_Token_Token(): a1 is a Integer, "
+			+ "a2 is a " + a2.type);
+
+	        result = null;
+
+        }
+	break;
+#endif
+    case TYPE_Array:
+        switch (a2.type) {
+	    case TYPE_Array:
+	    	result = $Array_multiply(a1, a2);
+		System.out.println("multiply_Token_Token: " + a1.type + " " + a2.type + " " + result);
+		break;
+	    default:
+	        result = null;
+
+        }
+	break;
+    default:
+        System.out.println("multiply_Token_Token(): a1 is a " + a1.type
+			+ "a2 is a " + a2.type);
+
+        result = null;
+    }
+
+    if (result == null) {
+        throw new InternalError("multiply_Token_Token_(): multiply with an unsupported type. "
+	    + a1.type + " or " + a2.type);
+
+    }
+    return result;
 }
 /**/
 

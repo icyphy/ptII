@@ -37,6 +37,7 @@ Token Boolean_equals(Token thisToken, Token... tokens) {
 /***Boolean_print***/
 Token Boolean_print(Token thisToken, Token... tokens) {
     System.out.println((Boolean)thisToken.payload);
+    return null;
 }
 /**/
 

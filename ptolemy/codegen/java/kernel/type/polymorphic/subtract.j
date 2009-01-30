@@ -155,7 +155,60 @@ int subtract_Token_Integer(Token a1, int a2) {
 
 /*** subtract_Token_Token() ***/
 Token subtract_Token_Token(Token a1, Token a2) {
-    return $tokenFunc(a1::subtract(a2));
+    Token result = null;
+    switch (a1.type) {
+#ifdef PTCG_TYPE_Double
+    case TYPE_Double:
+        switch (a2.type) {
+	    case TYPE_Double:
+	    	result = Double_new((Double)a1.payload - (Double)a2.payload);
+		break;
+	    default:
+	        System.out.println("subtract_Token_Token(): a1 is a Double, "
+			+ "a2 is a " + a2.type);
+	        result = null;
+
+        }
+	break;
+#endif
+#ifdef PTCG_TYPE_Integer
+    case TYPE_Integer:
+        switch (a2.type) {
+	    case TYPE_Integer:
+	    	result = Integer_new((Integer)a1.payload - (Integer)a2.payload);
+		break;
+	    default:
+	        System.out.println("subtract_Token_Token(): a1 is a Integer, "
+			+ "a2 is a " + a2.type);
+
+	        result = null;
+
+        }
+	break;
+#endif
+    case TYPE_Array:
+        switch (a2.type) {
+	    case TYPE_Array:
+	    	result = $Array_subtract(a1, a2);
+		break;
+	    default:
+	        result = null;
+
+        }
+	break;
+    default:
+        System.out.println("subtract_Token_Token(): a1 is a " + a1.type
+			+ "a2 is a " + a2.type);
+
+        result = null;
+    }
+
+    if (result == null) {
+        throw new InternalError("subtract_Token_Token_(): Subtract with an unsupported type. "
+	    + a1.type + " or " + a2.type);
+
+    }
+    return result;
 }
 /**/
 

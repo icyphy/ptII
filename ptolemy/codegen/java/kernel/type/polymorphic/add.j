@@ -191,25 +191,25 @@ Token add_Token_Token(Token a1, Token a2) {
         }
 	break;
 #endif
+#ifdef PTCG_TYPE_Integer
     case TYPE_Integer:
         switch (a2.type) {
 	    case TYPE_Integer:
 	    	result = Integer_new((Integer)a1.payload + (Integer)a2.payload);
 		break;
 	    default:
-	        System.out.println("add_Token_Token(): a1 is a Double, "
+	        System.out.println("add_Token_Token(): a1 is a Integer, "
 			+ "a2 is a " + a2.type);
 
 	        result = null;
 
         }
 	break;
-
+#endif
     case TYPE_Array:
         switch (a2.type) {
 	    case TYPE_Array:
-	    	result = Array_add(a1, a2);
-		System.out.println("add_Token_Token: " + a1.type + " " + a2.type + " " + result);
+	    	result = $Array_add(a1, a2);
 		break;
 	    default:
 	        result = null;
@@ -228,7 +228,21 @@ Token add_Token_Token(Token a1, Token a2) {
 	    + a1.type + " or " + a2.type);
 
     }
-    return result;
+   return result;
+}
+
+void print_Token2(Token token) {
+    switch (token.type) {
+	case TYPE_Integer: 
+	    System.out.println((Integer) token.payload);
+	    break;
+	case TYPE_Array: 
+	    $Array_print(token);
+	    break;
+        default:
+	    System.out.println(token);
+	    break;
+    }		   
 }
 /**/
 
