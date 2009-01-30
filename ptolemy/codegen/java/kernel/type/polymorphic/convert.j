@@ -1,5 +1,5 @@
 /*** convert_Array_Array() ***/
-Array convert_Array_Array(Array a) {
+Token convert_Array_Array(Token a) {
        return a;
 }
 /**/

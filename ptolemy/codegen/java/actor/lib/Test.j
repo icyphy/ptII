@@ -44,10 +44,9 @@ if ($channel == 0) {
 	$actorSymbol(numberOfTokensSeen)++;
 }
 
-/* $channel of $actorSymbol() */
+/* IBMC $channel of $actorSymbol() */
 $actorSymbol(correctValuesThisFiring_$channel) =
-$ref(correctValues, $actorSymbol(numberOfTokensSeen));
-
+ $ref(correctValues, $actorSymbol(numberOfTokensSeen));
 if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
         && Math.abs($actorSymbol(inputToken)
                 - (($cgType(input))(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload)).$lcCgType(input)Value())
@@ -176,9 +175,9 @@ $actorSymbol(numberOfTokensSeen)++;
 /* If the type of the input is an array, then cast the input to
  * the type of the elements of the elements of correctValues. */
 if (($type(input) != TYPE_Array
-            && equals_Token_Token($actorSymbol(inputToken), Array_get($ref(correctValues), $actorSymbol(numberOfTokensSeen))))
-       || ($type(input) == TYPE_Array
-	    && !$isCloseTo_Token_Token($actorSymbol(inputToken), Array_get($ref(correctValues), $actorSymbol(numberOfTokensSeen)), $actorSymbol(toleranceToken)))) {
+     && equals_Token_Token($actorSymbol(inputToken), Array_get($ref(correctValues), $actorSymbol(numberOfTokensSeen))))
+    || ($type(input) == TYPE_Array
+	&& !$isCloseTo_Token_Token($actorSymbol(inputToken), Array_get(Array_get($ref(correctValues), $actorSymbol(numberOfTokensSeen)), 0), $actorSymbol(toleranceToken)))) {
     throw new RuntimeException(String.format("\nTest $actorSymbol($channel) fails in iteration "
     			     + $actorSymbol(numberOfTokensSeen)
 			     + ".\n Value was:"
@@ -195,8 +194,7 @@ if ($channel == 0) {
 	$actorSymbol(numberOfTokensSeen)++;
 }
 /* $channel of $actorSymbol() */
-$actorSymbol(correctValuesThisFiring_$channel) =
-Array_get($ref(correctValues), $actorSymbol(numberOfTokensSeen));
+$actorSymbol(correctValuesThisFiring_$channel) = Array_get($ref(correctValues), $actorSymbol(numberOfTokensSeen));
 if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
         && !$tokenFunc($actorSymbol(inputToken)::equals(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel))).payload.Boolean) {
     throw new RuntimeException("Test $actorSymbol($channel) fails in iteration "

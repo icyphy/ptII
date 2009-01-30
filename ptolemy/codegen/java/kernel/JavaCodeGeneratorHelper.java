@@ -105,8 +105,8 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
 	if (ptolemyType == null) {
 	    return null;
 	}
-	//return ptolemyType.replace("Int", "Integer").replace("Integerger", "Integer");
-	return ptolemyType.replace("Int", "Integer").replace("Integerger", "Integer").replace("Array", "Token");
+	return ptolemyType.replace("Int", "Integer").replace("Integerger", "Integer");
+	//return ptolemyType.replace("Int", "Integer").replace("Integerger", "Integer").replace("Array", "Token");
     }
 
     /** Return a new parse tree code generator to use with expressions.
@@ -588,8 +588,8 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
 
             //result.append("[" + channelAndOffset[1] + "]");
             result.insert(0, "(" 
-			  + codeGenType(elementType)
-			  + ")(Array_get(");
+			  + codeGenType(elementType).replace("Array", "Token")
+			  + ")(/*JCGH44*/Array_get(");
             if (isPrimitive(elementType)) {
 		result.insert(0, "("); 
 	    }
