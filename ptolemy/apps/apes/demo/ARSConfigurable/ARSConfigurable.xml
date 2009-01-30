@@ -4,13 +4,13 @@
 <entity name="ARSConfigurable" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1703, 105, 995, 603}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={451, 116, 782, 512}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[780, 485]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[567, 394]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{389.9999999999999, 242.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{283.4999999999999, 197.0}">
     </property>
     <property name="CCodeLibrary" class="ptolemy.data.expr.StringParameter" value="ars_dll">
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -36,7 +36,7 @@
         </property>
     </property>
     <entity name="DispatcherTask" class="ptolemy.apps.apes.CTask">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 195.0]">
         </property>
         <property name="priority" class="ptolemy.data.expr.Parameter" value="10">
         </property>
@@ -45,7 +45,7 @@
     </entity>
     <entity name="DynamicsControllerTask" class="ptolemy.apps.apes.CTask">
         <display name="DynamicsController"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 180.0]">
         </property>
         <property name="priority" class="ptolemy.data.expr.Parameter" value="4">
         </property>
@@ -54,15 +54,22 @@
     </entity>
     <entity name="MotorControllerTask" class="ptolemy.apps.apes.CTask">
         <display name="MotorController"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 280.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 265.0]">
         </property>
         <property name="priority" class="ptolemy.data.expr.Parameter" value="6">
         </property>
         <property name="ID" class="ptolemy.data.expr.Parameter" value="2">
         </property>
+        <port name="rearAngle" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+        </port>
     </entity>
     <entity name="DispatcherIRS" class="ptolemy.apps.apes.CTask">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 195.0]">
         </property>
         <property name="priority" class="ptolemy.data.expr.Parameter" value="11">
         </property>
@@ -81,28 +88,53 @@
     <entity name="Clock" class="ptolemy.actor.lib.Clock">
         <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1.0">
         </property>
-        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 0.5}">
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1}">
         </property>
         <doc>Create periodic timed events.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{65, 115}">
         </property>
     </entity>
     <entity name="CPUScheduler" class="ptolemy.apps.apes.CPUScheduler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 365.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 320.0]">
         </property>
     </entity>
     <entity name="EventManager" class="ptolemy.apps.apes.EventManager">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 365.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 340.0]">
         </property>
     </entity>
     <entity name="TaskExecutionMonitor" class="ptolemy.apps.apes.TaskExecutionMonitor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 375.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 335.0]">
         </property>
+    </entity>
+    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[448, 400]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 240.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+</plot>?>
+        </configure>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
     </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+    </relation>
+    <link port="MotorControllerTask.rearAngle" relation="relation2"/>
     <link port="InterruptServiceController.input1" relation="relation"/>
     <link port="Clock.output" relation="relation"/>
+    <link port="TimedPlotter.input" relation="relation2"/>
 </entity>
