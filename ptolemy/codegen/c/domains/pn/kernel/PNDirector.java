@@ -532,11 +532,12 @@ public class PNDirector extends Director {
 
 				functionCode.append(helper.generateFireCode());
 
+				// FIXME: Doesn't look like the following comment is correct.
 				// If not inline, generateFireCode() would be a call
 				// to the fire function which already includes the
 				// type conversion code.
 //				if (inline) {
-//					functionCode.append(helper.generateTypeConvertFireCode());
+                functionCode.append(helper.generateTypeConvertFireCode());
 //				}
 
 				functionCode.append(helper.generatePostfireCode());
