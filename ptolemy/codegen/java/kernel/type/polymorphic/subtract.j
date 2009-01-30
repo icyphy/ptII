@@ -7,7 +7,7 @@ Token subtract_Array_Array(Token a1, Token a2) {
 /*** subtract_Array_Double() ***/
 Token subtract_Array_Double(Token a1, double a2) {
     int i;
-    Token result = $new(Array(((array)(a2.payload)).size, 0));
+    Token result = $new(Array(((array)(a1.payload)).size, 0));
 
     for (i = 0; i < ((array)(a2.payload)).size; i++) {
         Array_set(result, i, $subtract_Token_Double(Array_get(a1, i), a2));
@@ -19,7 +19,7 @@ Token subtract_Array_Double(Token a1, double a2) {
 /*** subtract_Array_Integer() ***/
 Token subtract_Integer_Array(Token a1, int a2) {
     int i;
-    Token result = $new(Array(((array)(a2.payload)).size, 0));
+    Token result = $new(Array(((array)(a1.payload)).size, 0));
 
     for (i = 0; i < ((array)(a2.payload)).size; i++) {
         Array_set(result, i, $subtract_Token_Integer(Array_get(a1, i), a2));
@@ -31,7 +31,7 @@ Token subtract_Integer_Array(Token a1, int a2) {
 /*** subtract_Array_Long() ***/
 Token subtract_Long_Array(Token a1, long long a2) {
     int i;
-    Token result = $new(Array(((array)(a2.payload)).size, 0));
+    Token result = $new(Array(((array)(a1.payload)).size, 0));
 
     for (i = 0; i < ((array)(a2.payload)).size; i++) {
         Array_set(result, i, $subtract_Token_Long(Array_get(a1, i), a2));
@@ -174,8 +174,12 @@ Token subtract_Token_Token(Token a1, Token a2) {
 #ifdef PTCG_TYPE_Integer
     case TYPE_Integer:
         switch (a2.type) {
+	    case TYPE_Double:
+	        //FIXME: is this cast safe?
+	    	result = Integer_new((Integer)(a1.payload) - ((Double)a2.payload).intValue());
+		break;
 	    case TYPE_Integer:
-	    	result = Integer_new((Integer)a1.payload - (Integer)a2.payload);
+	    	result = Integer_new((Integer)(a1.payload) - (Integer)a2.payload);
 		break;
 	    default:
 	        System.out.println("subtract_Token_Token(): a1 is a Integer, "
@@ -209,6 +213,19 @@ Token subtract_Token_Token(Token a1, Token a2) {
 
     }
     return result;
+}
+void print_Token3(Token token) {
+    switch (token.type) {
+	case TYPE_Integer: 
+	    System.out.println((Integer) token.payload);
+	    break;
+	case TYPE_Array: 
+	    $Array_print(token);
+	    break;
+        default:
+	    System.out.println(token);
+	    break;
+    }		   
 }
 /**/
 

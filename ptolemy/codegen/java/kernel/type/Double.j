@@ -188,6 +188,8 @@ Token Double_convert(Token token, Token... elements) {
 	return token;
 #endif
 
+    case TYPE_Double:
+	return token;
         // FIXME: not finished
     default:
         throw new RuntimeException("Double_convert(): Conversion from an unsupported type.: " + token.type);

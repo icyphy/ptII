@@ -148,7 +148,7 @@ Token convert_Token_Token2(Short type1, Token token, Short type2) {
       switch (type1) {
 #ifdef PTCG_TYPE_Array
     case TYPE_Array:
-        token.payload = BooleantoString((Boolean)(token.payload));
+        token.payload = ArraytoString((Boolean)(token.payload));
         return token;
 #endif
 

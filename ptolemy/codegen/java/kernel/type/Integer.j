@@ -139,8 +139,7 @@ Token Integer_convert(Token token, Token... elements) {
 #endif
     case TYPE_Integer:
         return token;
-
-        // FIXME: not finished
+	// FIXME: not finished
     default:
         throw new RuntimeException("Integer_convert(): Conversion from an unsupported type: "
 	 + token.type);

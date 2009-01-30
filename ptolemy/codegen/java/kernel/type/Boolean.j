@@ -95,7 +95,12 @@ Token Boolean_clone(Token thisToken, Token... tokens) {
 --------------------- static functions ------------------------------
 /***Boolean_convert***/
 Token Boolean_convert(Token token, Token... tokens) {
-        throw new RuntimeException("Double_convert(): Conversion from an unsupported type.: " + token.type);
+    switch (token.type) {
+    case TYPE_Boolean:
+	return token;
+    default:
+        throw new RuntimeException("Boolean_convert(): Conversion from an unsupported type.: " + token.type);
+    }
 }
 /**/
 

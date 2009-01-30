@@ -1,28 +1,30 @@
 /*** print_Array() ***/
-#define print_Array(a) $Array_print(a)
-/**/
-
-/*** print_Boolean() ***/
-inline void print_Double(boolean b) {
-    printf(b ? "true" : "false");
+void print_Array(Array a) {
+     $Array_print(a);
 }
 /**/
 
-/*** print_Double() ***/
-inline void print_Double(double d) {
-    printf("%g", d);
+/*** print_Boolean() ***/
+void print_Double(boolean b) {
+     System.out.println(b);
+}
+/**/
+
+*** print_Double() ***/
+void print_Double(double d) {
+     System.out.println(d);
 }
 /**/
 
 /*** print_Int() ***/
-inline void print_Int(int i) {
-    printf("%d", i);
+void print_Int(int i) {
+     System.out.println(i);
 }
 /**/
 
 /*** print_Long() ***/
-inline void print_Int(long long l) {
-    printf("%d", l);
+void print_Int(long l) {
+    System.out.println(l);
 }
 /**/
 
@@ -30,6 +32,9 @@ inline void print_Int(long long l) {
 void print_Token(Token a) {
      //$tokenFunc(a::print());
     switch (token.type) {
+	case TYPE_Double: 
+	    $Double_print(token);
+	    break;
 	case TYPE_Integer: 
 	    $Integer_print(token);
 	    break;

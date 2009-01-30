@@ -150,6 +150,8 @@ Token Long_convert(Token token, ...) {
         token.payload.Long = DoubletoLong(token.payload.Double);
         break;
 #endif
+    case TYPE_Long:
+        return token;
 
         // FIXME: not finished
     default:

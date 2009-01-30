@@ -105,7 +105,8 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
 	if (ptolemyType == null) {
 	    return null;
 	}
-	return ptolemyType.replace("Int", "Integer").replace("Array", "Token");
+	//return ptolemyType.replace("Int", "Integer").replace("Integerger", "Integer");
+	return ptolemyType.replace("Int", "Integer").replace("Integerger", "Integer").replace("Array", "Token");
     }
 
     /** Return a new parse tree code generator to use with expressions.

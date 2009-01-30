@@ -27,14 +27,13 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
         && Math.abs($actorSymbol(inputToken)
                 - $ref(correctValues, $actorSymbol(numberOfTokensSeen)))
                 > $ref(tolerance)) {
-    System.out.printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %d. Should have been between: %10.30g and %10.30g\n",
+    throw new RuntimeException(String.format("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %d. Should have been between: %10.30g and %10.30g\n",
             $actorSymbol(numberOfTokensSeen),
             $actorSymbol(inputToken),
             $ref(correctValues, $actorSymbol(numberOfTokensSeen)) -
                     $ref(tolerance),
             $ref(correctValues, $actorSymbol(numberOfTokensSeen)) +
-                    $ref(tolerance));
-    System.exit(-1);
+                    $ref(tolerance)));
 }
 /**/
 
@@ -53,12 +52,11 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
         && Math.abs($actorSymbol(inputToken)
                 - (($cgType(input))(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload)).$lcCgType(input)Value())
         > $ref(tolerance)) {
-    System.out.printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %d. Should have been within %10.30g of: %d\n",
+    throw new RuntimeException(String.format("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %d. Should have been within %10.30g of: %d\n",
             $actorSymbol(numberOfTokensSeen),
             $actorSymbol(inputToken),
             $ref(tolerance),
-            (Integer)(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload));
-    System.exit(-1);
+            (Integer)(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload)));
 }
 /**/
 
@@ -72,14 +70,13 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
         && Math.abs($actorSymbol(inputToken)
                 - $ref(correctValues, $actorSymbol(numberOfTokensSeen)))
                 > $ref(tolerance)) {
-    System.out.printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %10.30g. Should have been between: %10.30g and %10.30g\n",
+    throw new RuntimeException(String.format("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %10.30g. Should have been between: %10.30g and %10.30g\n",
             $actorSymbol(numberOfTokensSeen),
             $actorSymbol(inputToken),
             $ref(correctValues, $actorSymbol(numberOfTokensSeen)) -
                     $ref(tolerance),
             $ref(correctValues, $actorSymbol(numberOfTokensSeen)) +
-                    $ref(tolerance));
-    System.exit(-1);
+                    $ref(tolerance)));
 }
 /**/
 
@@ -96,12 +93,11 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
         && Math.abs($actorSymbol(inputToken)
                 - Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.$cgType(input))
         > $ref(tolerance)) {
-    System.out.printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %10.30g. Should have been within %10.30g of: %10.30g\n",
+    throw new RuntimeException(String.format("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %10.30g. Should have been within %10.30g of: %10.30g\n",
             $actorSymbol(numberOfTokensSeen),
             $actorSymbol(inputToken),
             $ref(tolerance),
-            Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.$cgType(input));
-    System.exit(-1);
+            Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.$cgType(input)));
 }
 /**/
 
@@ -113,11 +109,10 @@ if (($actorSymbol(numberOfTokensSeen) < $size(correctValues)
                 && $actorSymbol(inputToken)))
         || ($ref(correctValues, $actorSymbol(numberOfTokensSeen))
                 && !$actorSymbol(inputToken)) ) {
-    System.out.printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was a boolean of value: %s. Should have been a boolean of value: %s\n",
+    throw new RuntimeException(String.format("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was a boolean of value: %s. Should have been a boolean of value: %s\n",
             $actorSymbol(numberOfTokensSeen),
             BooleantoString($actorSymbol(inputToken)),
-            BooleantoString($ref(correctValues, $actorSymbol(numberOfTokensSeen))));
-    System.exit(-1);
+            BooleantoString($ref(correctValues, $actorSymbol(numberOfTokensSeen)))));
 }
 /**/
 
@@ -134,11 +129,10 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
       && $actorSymbol(inputToken)))
     || (Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.Boolean
         && !$actorSymbol(inputToken)))) {
-    System.out.printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was a boolean of value: %s. Should have been a boolean of value: %s\n",
+    throw new RuntimeException(String.format("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was a boolean of value: %s. Should have been a boolean of value: %s\n",
             $actorSymbol(numberOfTokensSeen),
             BooleantoString($actorSymbol(inputToken)),
-            BooleantoString(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.Boolean));
-    System.exit(-1);
+            BooleantoString(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.Boolean)));
 }
 /**/
 
@@ -148,11 +142,10 @@ $actorSymbol(numberOfTokensSeen)++;
 if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
         && !$ref(correctValues, $actorSymbol(numberOfTokensSeen))
 	            .equals($actorSymbol(inputToken))) {
-    System.out.printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was a String: \"%s\". Should have been a String: \"%s\"\n",
+    throw new RuntimeException(String.format("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was a String: \"%s\". Should have been a String: \"%s\"\n",
             $actorSymbol(numberOfTokensSeen),
             $actorSymbol(inputToken),
-            $ref(correctValues, $actorSymbol(numberOfTokensSeen)));
-    System.exit(-1);
+            $ref(correctValues, $actorSymbol(numberOfTokensSeen))));
 }
 /**/
 
@@ -185,15 +178,14 @@ $actorSymbol(numberOfTokensSeen)++;
 if (($type(input) != TYPE_Array
             && equals_Token_Token($actorSymbol(inputToken), Array_get($ref(correctValues), $actorSymbol(numberOfTokensSeen))))
        || ($type(input) == TYPE_Array
-	    && !isCloseTo_Token_Token($actorSymbol(inputToken), Array_get($ref(correctValues), $actorSymbol(numberOfTokensSeen)), $actorSymbol(toleranceToken)))) {
-    System.out.print("\nTest $actorSymbol($channel) fails in iteration "
+	    && !$isCloseTo_Token_Token($actorSymbol(inputToken), Array_get($ref(correctValues), $actorSymbol(numberOfTokensSeen)), $actorSymbol(toleranceToken)))) {
+    throw new RuntimeException(String.format("\nTest $actorSymbol($channel) fails in iteration "
     			     + $actorSymbol(numberOfTokensSeen)
 			     + ".\n Value was:"
 			     + $actorSymbol(inputToken)
 			     + "Should have been within " + $ref(tolerance) + " of: "
 			     + Array_get($ref(correctValues), $actorSymbol(numberOfTokensSeen))
-			     + ".\n");
-    System.exit(-1);
+			     + ".\n"));
 }
 /**/
 
@@ -219,7 +211,6 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
 
 /*** wrapupBlock ***/
 if (($actorSymbol(numberOfTokensSeen) + 1) < $size(correctValues)) {
-    System.out.printf("\nTest produced only %d tokens, yet the correctValues parameter was expecting %d tokens.\n", $actorSymbol(numberOfTokensSeen), $size(correctValues));
-    System.exit(-2);
+    throw new RuntimeException(String.format("\nTest produced only %d tokens, yet the correctValues parameter was expecting %d tokens.\n", $actorSymbol(numberOfTokensSeen), $size(correctValues)));
 }
 /**/

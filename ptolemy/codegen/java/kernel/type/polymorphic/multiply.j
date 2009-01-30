@@ -1,29 +1,29 @@
 /*** multiply_Array_Array() ***/
-/*inline*/  Token multiply_Array_Array(Token a1, Token a2) {
+Token multiply_Array_Array(Token a1, Token a2) {
     return $Array_multiply(a1, a2);
 }
 /**/
 
 /*** multiply_Array_Double() ***/
-/*inline*/  Token multiply_Array_Double(Token a1, double a2) {
+Token multiply_Array_Double(Token a1, double a2) {
     return $multiply_Double_Array(a2, a1);
 }
 /**/
 
 /*** multiply_Array_Int() ***/
-/*inline*/  Token multiply_Int_Array(Token a1, int a2) {
+Token multiply_Int_Array(Token a1, int a2) {
     return $multiply_Array_Int(a2, a1);
 }
 /**/
 
 /*** multiply_Array_Long() ***/
-/*inline*/  Token multiply_Long_Array(Token a1, long long a2) {
+Token multiply_Long_Array(Token a1, long a2) {
     return $multiply_Array_Long(a2, a1);
 }
 /**/
 
 /*** multiply_Boolean_Boolean() ***/
-/*inline*/  boolean multiply_Boolean_Boolean(boolean a1, boolean a2) {
+boolean multiply_Boolean_Boolean(boolean a1, boolean a2) {
     return a1 & a2;
 }
 /**/
@@ -41,13 +41,13 @@ Token multiply_Double_Array(double a1, Token a2) {
 /**/
 
 /*** multiply_Double_Double() ***/
-/*inline*/  double multiply_Double_Double(double a1, double a2) {
+double multiply_Double_Double(double a1, double a2) {
     return a1 * a2;
 }
 /**/
 
 /*** multiply_Double_Int() ***/
-/*inline*/  double multiply_Double_Int(double a1, int a2) {
+double multiply_Double_Int(double a1, int a2) {
     return a1 * a2;
 }
 /**/
@@ -72,14 +72,14 @@ Token multiply_Int_Array(int a1, Token a2) {
 /**/
 
 /*** multiply_Int_Double() ***/
-/*inline*/  double multiply_Int_Double(int a1, double a2) {
+double multiply_Int_Double(int a1, double a2) {
     return a1 * a2;
 }
 /**/
 
 
 /*** multiply_Int_Int() ***/
-/*inline*/  int multiply_Int_Int(int a1, int a2) {
+int multiply_Int_Int(int a1, int a2) {
     return a1 * a2;
 }
 /**/
@@ -92,7 +92,7 @@ int multiply_Int_Token(int a1, Token a2) {
 /**/
 
 /*** multiply_Long_Array() ***/
-Token multiply_Long_Array(long long a1, Token a2) {
+Token multiply_Long_Array(long a1, Token a2) {
     int i;
     Token result = $new(Array(((array)(a1.payload)).size, 0));
 
@@ -104,38 +104,38 @@ Token multiply_Long_Array(long long a1, Token a2) {
 /**/
 
 /*** multiply_Long_Long() ***/
-/*inline*/  long long multiply_Long_Long(long long a1, long long a2) {
+long multiply_Long_Long(long a1, long a2) {
     return a1 * a2;
 }
 /**/
 
 /*** multiply_Long_Token() ***/
-Token multiply_Long_Token(long long a1, Token a2) {
+Token multiply_Long_Token(long a1, Token a2) {
     Token token = $new(Long(a1));
     return $multiply_Token_Token(token, a2);
 }
 /**/
 
 /*** multiply_Matrix_Matrix() ***/
-/*inline*/  Token multiply_Matrix_Matrix(Token a1, Token a2) {
+Token multiply_Matrix_Matrix(Token a1, Token a2) {
     return Matrix_multiply(a1, a2);
 }
 /**/
 
 /*** multiply_Token_Double() ***/
-/*inline*/  Token multiply_Token_Double(Token a1, double a2) {
+Token multiply_Token_Double(Token a1, double a2) {
     return $multiply_Double_Token(a2, a1);
 }
 /**/
 
 /*** multiply_Token_Int() ***/
-/*inline*/  int multiply_Token_Int(Token a1, int a2) {
+int multiply_Token_Int(Token a1, int a2) {
     return $multiply_Int_Token(a2, a1);
 }
 /**/
 
 /*** multiply_Token_Token() ***/
-/*inline*/  Token multiply_Token_Token(Token a1, Token a2) {
+Token multiply_Token_Token(Token a1, Token a2) {
     Token result = null;
     switch (a1.type) {
 #ifdef PTCG_TYPE_Double
