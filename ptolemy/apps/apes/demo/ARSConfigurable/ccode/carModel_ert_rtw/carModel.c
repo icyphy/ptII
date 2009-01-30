@@ -16,6 +16,7 @@
 #include "carModel_private.h"
 #include "../ARSmain.h"
 #include "../motorController_ert_rtw/motorController.h"
+#include "../APESCodeWrapper.h"
 
 /* Block states (auto storage) */
 D_Work_carModel carModel_DWork;
@@ -107,6 +108,7 @@ void carModel_step(void)
 
   /* Outport: '<Root>/rear angle' */
   carModel_Y.rearangle = rtb_phi;
+  callbackV(0.001,0,"rearAngle",carModel_Y.rearangle);
 
   /* DiscreteTransferFcn: '<S8>/speed sensor' */
   rtb_temp12 = carModel_P.speedsensor_D*rtb_motormechanical;
@@ -236,6 +238,7 @@ void carModel_initialize(boolean_T firstTime)
   carModel_DWork.Internal_DSTATE[2] = 0.0;
   carModel_DWork.Internal_DSTATE[3] = 0.0;
 }
+
 
 /* Model terminate function */
 void carModel_terminate(void)

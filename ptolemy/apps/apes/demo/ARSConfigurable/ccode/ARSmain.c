@@ -19,6 +19,7 @@
 #include "motorController_ert_rtw/motorController.h" 
 #include "rtwtypes.h"                   /* MathWorks types */
 #include "OSEKCodeWrapper.h"
+#include "APESCodeWrapper.h"
 #include "ARS_OSEK.h"
 #include "ARSmain.h"
 
@@ -95,23 +96,29 @@ int appStartup(){
 	FILE *inf;
 
 
-  printf("Reading model inputs...\n");
-  fflush(NULL);
+  fprintf(stderr,"Running application startup...\n");
+  fflush(stderr);
 
-  inf = fopen("input_data.txt","r");
+  fprintf(stderr,"Reading model inputs...\n");
+  fflush(stderr);
+
+  inf = fopen("C:\\eclipse_workspace\\ptII\\ptolemy\\apps\\apes\\demo\\ARSConfigurable\\input_data.txt","r");
   if (inf == NULL){
-	  printf("Error opening the input file. Exiting... \n");
+	  fprintf(stderr,"Error opening the input file. Exiting... \n");
+	  fflush(stderr);
 	  return 1;
   }
   fscanf(inf,"%d", &inputSize);
-  printf("Input size: %d\n",inputSize);
+  fprintf(stderr,"Input size: %d\n",inputSize);
+  fflush(stderr);
   speed = (double *)malloc(inputSize*sizeof(double));
   front_angle = (double *)malloc(inputSize*sizeof(double));
   rear_angle = (double *)malloc(inputSize*sizeof(double));
 
   if((speed == NULL)||(front_angle==NULL)||(rear_angle==NULL)){
-	  printf("Memory allocation error. Exiting... \n");
-	  return 1;
+	  fprintf(stderr, "Memory allocation error. Exiting... \n");
+	  fflush(stderr);
+      return 1;
   }
 
   for(i=0;i<inputSize;i++){
@@ -132,6 +139,9 @@ int appStartup(){
 	  ActivateTask(motorControllerTask);
 	  ActivateTask(appDispatcherTask);
   }
+  fprintf(stderr,"Application startup done!\n");
+  fflush(stderr);
+  
   return 0;
 }
 /*****************************************************************************/
@@ -139,32 +149,51 @@ int appStartup(){
 /* This should be connected to a trigger with the base rate */
 /* OSEK task activated at startup */
 void appDispatcher(){
-
+	callback(-1,0);
 	while (appRunning){
+		callback(0.1,0);
 		WaitEvent(appDispatcherEvent);
-
-	  if(simStep%5 == 0){
-		  ActivateTask(dynamicsControllerTask);
-	  }
-
-	  SetEvent(motorControllerTask, motorControllerEvent);
-	  carModel_step();
-	  simStep++;
+		callback(0.01,0);
+		ClearEvent(appDispatcherEvent);
+		
+		if(simStep%5 == 0){
+			callback(0.1,0);
+			ActivateTask(dynamicsControllerTask);
+		}
+		
+		callback(0.1,0);
+		SetEvent(motorControllerTask, motorControllerEvent);
+		carModel_step();
+		simStep++;
 	}
-
-	  TerminateTask();
+	
+	callback(1,0);
+	TerminateTask();
 
 }
 /*****************************************************************************/
 
-/* OSEK task activated at startup */
+void dynaController(){
+		callback(-1,0);
+	dynamicsControll_step();
+		callback(1,0);
+	TerminateTask();
+}
+/*****************************************************************************/
 
 void motorController(){
 
+			callback(-1,0);
+
 	while (appRunning){
-		WaitEvent(motorControllerEvent);
-		motorController_step();
+			callback(0.1,0);
+			WaitEvent(motorControllerEvent);
+			callback(0.01,0);
+			ClearEvent(motorControllerEvent);
+			motorController_step();
 	}
+			callback(1,0);
+
 	TerminateTask();	
 }
 /*****************************************************************************/
@@ -173,9 +202,13 @@ void motorController(){
 
 void dispatcherIRS(){
 
+		callback(-1,0);
+
 	if (appRunning){
+		callback(0.1,0);
 		SetEvent(appDispatcherTask, appDispatcherEvent);
 	}
+		callback(0.1,0);
 	TerminateTask();
 }
 /*****************************************************************************/

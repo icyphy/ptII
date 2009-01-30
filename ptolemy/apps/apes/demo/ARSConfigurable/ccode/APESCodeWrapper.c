@@ -8,7 +8,7 @@
 
  JavaVM *cached_jvm; 
  jobject dispatcher;
- jmethodID accessPointCallbackMethod;
+ jmethodID accessPointCallbackMethod, accessPointCallbackReturnValuesMethod;
 
 /*****************************************************************************/
  JNIEXPORT jint JNICALL
@@ -18,24 +18,35 @@
      jclass cls;
      cached_jvm = jvm;  /* cache the JavaVM pointer */
  
-     if ((*jvm)->GetEnv(jvm, (void **)&env, JNI_VERSION_1_2)) {
+ 	 fprintf(stderr, "!!!!!!!\n");
+	 fflush(stderr);
+	 if ((*jvm)->GetEnv(jvm, (void **)&env, JNI_VERSION_1_2)) {
          return JNI_ERR; /* JNI version not supported */
      }
 	 
-     cls = (*env)->FindClass(env, "ptolemy/apps/apes/AccessPointCallbackDispatcher");
+ 	 fprintf(stderr, "!!!!!!!\n");
+	 fflush(stderr);
+	 cls = (*env)->FindClass(env, "ptolemy/apps/apes/AccessPointCallbackDispatcher");
      if (cls == NULL) {
          return JNI_ERR;
      } 
+	 fprintf(stderr, "!!!!!!!\n");
+	 fflush(stderr);
      accessPointCallbackMethod = (*env)->GetMethodID(env, cls, "accessPointCallback", "(DD)V");
      if (accessPointCallbackMethod == NULL) {
          return JNI_ERR;
      }
 	 
-	 if(!OS_JNI_OnLoad(env)){
+	 accessPointCallbackReturnValuesMethod = (*env)->GetMethodID(env, cls, "accessPointCallback", "(DDLjava/lang/String;D)V");
+     if (accessPointCallbackMethod == NULL) {
+         return JNI_ERR;
+     }
+
+	 if(OS_JNI_OnLoad(env)){
          return JNI_ERR;
      } 
  
-	 fprintf(stderr, "!!!!!!!\n");
+
      return JNI_VERSION_1_2;
  }
 /*****************************************************************************/
@@ -64,9 +75,25 @@ Java_ptolemy_apps_apes_AccessPointCallbackDispatcher_InitializeC(JNIEnv *env, jo
 
  void callback(float exectime, float mindelay) {
 	 JNIEnv *env = JNU_GetEnv();
-	 fprintf(stderr, "callback ");  
+	 fprintf(stderr, "Callback with parameters %f and %f ...\n", exectime, mindelay);  
+	 fflush(stderr);
 	 (*(env))->CallVoidMethod(env, dispatcher, accessPointCallbackMethod, exectime, mindelay);   
-	 fprintf(stderr, "after callback ");
+	 fprintf(stderr, "Callback finished!\n");
+	 fflush(stderr);
  }
  
+ /*****************************************************************************/
+  void callbackV(float exectime, float mindelay, char* varName, double value) {
+	 jmethodID method;
+	 char buf[128];
+	 jclass cls; 
+	 JNIEnv *env = JNU_GetEnv();
+	 
+	 jstring string = (*env)->NewStringUTF(env, varName);  
+	 
+	 
+	 (*(env))->CallVoidMethod(env, dispatcher, accessPointCallbackReturnValuesMethod, exectime, mindelay, string, value);   
+
+ }
+ /*****************************************************************************/
  /*****************************************************************************/
