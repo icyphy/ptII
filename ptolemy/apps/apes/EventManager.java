@@ -102,7 +102,7 @@ public class EventManager extends ApeActor {
    public HashMap<Actor, Integer> _actorsWaitingForEvents; 
    public HashMap<Actor, Integer> _actorsWithEvents; 
    
-   public StatusType setEvent(int taskId, int newEvents) throws NoRoomException, IllegalActionException {
+   public int setEvent(int taskId, int newEvents) throws NoRoomException, IllegalActionException {
 
        Actor task = _tasks.get(taskId);
        if(_actorsWithEvents.get(task) == null){
@@ -115,24 +115,24 @@ public class EventManager extends ApeActor {
                ((_actorsWaitingForEvents.get(task).intValue() & newEvents) != 0)) {
        output.send(new ResourceToken(task, null, TaskState.ready_running));
        }
-       return StatusType.E_OK;
+       return 0;
    }
    
-   public StatusType clearEvent(int eventMask) {
+   public int clearEvent(int eventMask) {
        int clearMask = ~eventMask;
        Actor currentTask = _taskNames.get(Thread.currentThread().getName());
        _actorsWithEvents.put(currentTask,_actorsWithEvents.get(currentTask).intValue() & clearMask);
-       return StatusType.E_OK;
+       return 0;
    }
    
-   public StatusType waitEvent(int eventMask) throws NoRoomException, IllegalActionException {
+   public int waitEvent(int eventMask) throws NoRoomException, IllegalActionException {
        Actor currentTask = _taskNames.get(Thread.currentThread().getName());
        if ((_actorsWithEvents.get(currentTask) != null) && ((_actorsWithEvents.get(currentTask).intValue() & eventMask) != 0)){
-           return StatusType.E_OK;
+           return 0;
        }
        _actorsWaitingForEvents.put(currentTask, eventMask);
        output.send(new ResourceToken(currentTask, null, TaskState.waiting));
-       return StatusType.E_OK;
+       return 0;
    }
    
    @Override

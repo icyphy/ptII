@@ -264,7 +264,7 @@ public class CTask extends ApeActor implements Runnable {
 //                cpuScheduler.InitializeC();
 //                eventManager.InitializeC();
             } catch (Exception ex) {
-                
+                ex.printStackTrace();
             }
         }
         dispatcher.addTask(this);
@@ -302,10 +302,11 @@ public class CTask extends ApeActor implements Runnable {
     }
 
     protected void _callCMethod() {
-        System.out.println(this.getName() + "._callCMethod()");
+        System.out.println("Before " + this.getName() + "._callCMethod()");
         CMethod(this.getName());
+        System.out.println("After " + this.getName() + "._callCMethod()");
     }
-    
+
     private native void CMethod(String taskName); 
 
     private void _initialize() throws IllegalActionException, NameDuplicationException {

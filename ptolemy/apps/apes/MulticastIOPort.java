@@ -215,7 +215,7 @@ public class MulticastIOPort extends TypedIOPort {
      */
     public void broadcast(Token[] tokenArray, int vectorLength)
             throws IllegalActionException, NoRoomException {
-        // TODO
+        // TODO change to take into account the destination list
         super.broadcast(tokenArray, vectorLength); 
     }
 
@@ -238,9 +238,7 @@ public class MulticastIOPort extends TypedIOPort {
     }
 
     /**
-     * Override the base class to create receivers for WirelessIOPort. If there
-     * is an outside channel, create a receiver for outside communication. If
-     * there is an inside channel, create a receiver for inside communication.
+     * Override the base class to create receivers for MulticastIOPort. 
      * 
      * @exception IllegalActionException
      *                If this port is not an opaque input port or if there is no
