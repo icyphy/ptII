@@ -783,7 +783,6 @@ ParseTreeCodeGenerator {
             _evaluatedChildToken = value;
 
             String label = value.toString();
-	    System.out.println("JPTCG: label: " + label);
             if (label.startsWith("object(")) {
                 // If this is an ObjectToken, we only wants the label.
                 //_fireCode.append(label.substring(7, label.length() - 1));
@@ -1096,7 +1095,7 @@ ParseTreeCodeGenerator {
             //ptolemy.data.Token token = tokens[i];
             /*ptolemy.data.Token token =*/ _evaluateChild(node, i);
 
-            result = "Math.pow(" + result + ", " + _childCode;
+            result = "Math.pow((double)" + result + ", (double)" + _childCode;
 
             // Note that we check for ScalarTokens because anything
             // that has a meaningful intValue() method, such as

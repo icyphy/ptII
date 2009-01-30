@@ -90,9 +90,9 @@ public class Expression extends JavaCodeGeneratorHelper {
         //        }
 
         //code.append(processCode("    $ref(output)." + portType + "Port = ("
-        //        + _cParseTreeCodeGenerator.generateFireCode()) + ");" + _eol);
+        //        + _javaParseTreeCodeGenerator.generateFireCode()) + ");" + _eol);
         code.append(processCode("    $ref(output) = "
-                + _cParseTreeCodeGenerator.generateFireCode())
+                + _javaParseTreeCodeGenerator.generateFireCode())
                 + ";" + _eol);
         return code.toString();
     }
@@ -108,7 +108,7 @@ public class Expression extends JavaCodeGeneratorHelper {
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super.generateInitializeCode());
-        code.append(processCode(_cParseTreeCodeGenerator
+        code.append(processCode(_javaParseTreeCodeGenerator
                 .generateInitializeCode()));
         return code.toString();
     }
@@ -125,9 +125,9 @@ public class Expression extends JavaCodeGeneratorHelper {
         StringBuffer code = new StringBuffer();
         code.append(super.generatePreinitializeCode());
 
-        if (_cParseTreeCodeGenerator == null) {
+        if (_javaParseTreeCodeGenerator == null) {
             // FIXME: why does this need to be done here?
-            _cParseTreeCodeGenerator = new JavaParseTreeCodeGenerator();
+            _javaParseTreeCodeGenerator = new JavaParseTreeCodeGenerator();
         }
         ptolemy.actor.lib.Expression actor = (ptolemy.actor.lib.Expression) getComponent();
 
@@ -135,11 +135,21 @@ public class Expression extends JavaCodeGeneratorHelper {
             // Note that the parser is NOT retained, since in most
             // cases the expression doesn't change, and the parser
             // requires a large amount of memory.
+	    if (1 == 0) {
+		// Debugging
+		PtParser parser = new PtParser();
+		ASTPtRootNode parseTree = parser.generateParseTree(actor.expression
+								   .getExpression());
+
+		System.out.println("Expression trace:\n" 
+				   + _javaParseTreeCodeGenerator.traceParseTreeEvaluation(parseTree,
+											  new VariableScope(actor)));
+	    }
             PtParser parser = new PtParser();
             ASTPtRootNode parseTree = parser.generateParseTree(actor.expression
                     .getExpression());
 
-            _cParseTreeCodeGenerator.evaluateParseTree(parseTree,
+            _javaParseTreeCodeGenerator.evaluateParseTree(parseTree,
                     new VariableScope(actor));
         } catch (IllegalActionException ex) {
             // Chain exceptions to get the actor that threw the exception.
@@ -147,7 +157,7 @@ public class Expression extends JavaCodeGeneratorHelper {
                     + actor.expression.getExpression() + "\" invalid.");
         }
 
-        code.append(processCode(_cParseTreeCodeGenerator
+        code.append(processCode(_javaParseTreeCodeGenerator
                 .generatePreinitializeCode()));
         return code.toString();
     }
@@ -163,10 +173,10 @@ public class Expression extends JavaCodeGeneratorHelper {
      */
     public Set getSharedCode() throws IllegalActionException {
 
-        _cParseTreeCodeGenerator = new JavaParseTreeCodeGenerator();
+        _javaParseTreeCodeGenerator = new JavaParseTreeCodeGenerator();
 
         Set codeBlocks = super.getSharedCode();
-        codeBlocks.add(processCode(_cParseTreeCodeGenerator
+        codeBlocks.add(processCode(_javaParseTreeCodeGenerator
                 .generateSharedCode()));
         return codeBlocks;
     }
@@ -184,15 +194,15 @@ public class Expression extends JavaCodeGeneratorHelper {
     public String generateWrapupCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super.generateWrapupCode());
-        code.append(processCode(_cParseTreeCodeGenerator.generateWrapupCode()));
+        code.append(processCode(_javaParseTreeCodeGenerator.generateWrapupCode()));
 
         // Free up memory
-        _cParseTreeCodeGenerator = null;
+        _javaParseTreeCodeGenerator = null;
         return code.toString();
     }
 
     /** The parse tree code generator. */
-    protected JavaParseTreeCodeGenerator _cParseTreeCodeGenerator;
+    protected JavaParseTreeCodeGenerator _javaParseTreeCodeGenerator;
 
     /**
      * Variable scope class customized for the JavaParseTreeCodeGenerator.

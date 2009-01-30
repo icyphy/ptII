@@ -27,7 +27,7 @@ $actorSymbol(sum) |= $ref(($cgType(output)) input#$channel);
 /**/
 
 /***StringFireBlock($channel)***/
-$actorSymbol(sum) += $actorSymbol(sum);
+$actorSymbol(sum) += $ref(($cgType(output)) input#$channel);
 /**/
 
 /***TokenFireBlock($channel)***/

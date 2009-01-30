@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Accumulator" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={124, 239, 815, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={327, 22, 813, 510}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -83,7 +83,7 @@
         <property name="iterationsParameter" class="ptolemy.data.expr.StringParameter" value=",iterations:$iterations">
             <doc>Defaults to &quot;iterations:&quot; + iterations.  Set this to the empty string if the model has the number of iterations built in.</doc>
         </property>
-        <property name="compileOptions" class="ptolemy.data.expr.StringParameter">
+        <property name="compileOptions" class="ptolemy.data.expr.StringParameter" value="">
             <doc>User supplied arguments to be passed to the code generator.  Defaults to the empty string.</doc>
         </property>
         <property name="javaClassPath" class="ptolemy.data.expr.Parameter" value="property(&quot;java.class.path&quot;)">
@@ -121,7 +121,7 @@
         <property name="runCommandTemplateFile" class="ptolemy.data.expr.StringParameter" value="ptolemy/copernicus/$codeGenerator/runCommandTemplate.txt">
             <doc>The template file that contains the command to run the generated code.</doc>
         </property>
-        <property name="runOptions" class="ptolemy.data.expr.StringParameter">
+        <property name="runOptions" class="ptolemy.data.expr.StringParameter" value="">
             <doc>User supplied arguments to be passed to the command that will run the generated code. Defaults to the empty string.</doc>
         </property>
         <property name="sootDir" class="ptolemy.data.expr.StringParameter" value="$ptII/lib">
@@ -136,7 +136,7 @@
         <property name="watchDogTimeout" class="ptolemy.data.expr.StringParameter" value="720000">
             <doc>The number of milliseconds that code generation will run for. Defaults to 720000, which is 12 minutes.</doc>
         </property>
-        <property name="output" class="ptolemy.data.expr.StringParameter">
+        <property name="output" class="ptolemy.data.expr.StringParameter" value="">
             <doc>The filename to redirect the standard output stream of the code generator to.  This is used, for example, in the nightly build to provide easily parseable error messages.  If the value is not set, then the output will not be redirected. </doc>
         </property>
     </property>
@@ -159,11 +159,11 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{&quot;0.0&quot;, &quot;0abc&quot;, &quot;{2}&quot;}, {&quot;0.9&quot;, &quot;0abcabc&quot;, &quot;{3}&quot;}, {&quot;2.7&quot;, &quot;0abcabcabc&quot;, &quot;{4}&quot;}, {&quot;5.4&quot;, &quot;0abcabcabcabc&quot;, &quot;{5}&quot;}, {&quot;9.0&quot;, &quot;0abcabcabcabcabc&quot;, &quot;{6}&quot;}, {&quot;13.5&quot;, &quot;0abcabcabcabcabcabc&quot;, &quot;{7}&quot;}, {&quot;18.9&quot;, &quot;0abcabcabcabcabcabcabc&quot;, &quot;{8}&quot;}, {&quot;25.2&quot;, &quot;0abcabcabcabcabcabcabcabc&quot;, &quot;{9}&quot;}, {&quot;32.4&quot;, &quot;0abcabcabcabcabcabcabcabcabc&quot;, &quot;{10}&quot;}, {&quot;40.5&quot;, &quot;0abcabcabcabcabcabcabcabcabcabc&quot;, &quot;{11}&quot;}}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{&quot;0abc&quot;, &quot;{2}&quot;, &quot;0&quot;}, {&quot;0abcabc&quot;, &quot;{3}&quot;, &quot;1&quot;}, {&quot;0abcabcabc&quot;, &quot;{4}&quot;, &quot;3&quot;}, {&quot;0abcabcabcabc&quot;, &quot;{5}&quot;, &quot;5&quot;}, {&quot;0abcabcabcabcabc&quot;, &quot;{6}&quot;, &quot;9&quot;}, {&quot;0abcabcabcabcabcabc&quot;, &quot;{7}&quot;, &quot;14&quot;}, {&quot;0abcabcabcabcabcabcabc&quot;, &quot;{8}&quot;, &quot;19&quot;}, {&quot;0abcabcabcabcabcabcabcabc&quot;, &quot;{9}&quot;, &quot;25&quot;}, {&quot;0abcabcabcabcabcabcabcabcabc&quot;, &quot;{10}&quot;, &quot;32&quot;}, {&quot;0abcabcabcabcabcabcabcabcabcabc&quot;, &quot;{11}&quot;, &quot;41&quot;}}">
         </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 290.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 285.0]">
         </property>
     </entity>
     <entity name="Accumulator" class="ptolemy.actor.lib.Accumulator">
@@ -210,19 +210,27 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 350.0]">
         </property>
     </entity>
+    <entity name="Round" class="ptolemy.actor.lib.conversions.Round">
+        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="round">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="ceil" class="ptolemy.kernel.util.StringAttribute" value="ceil">
+                </property>
+                <property name="floor" class="ptolemy.kernel.util.StringAttribute" value="floor">
+                </property>
+                <property name="round" class="ptolemy.kernel.util.StringAttribute" value="round">
+                </property>
+                <property name="truncate" class="ptolemy.kernel.util.StringAttribute" value="truncate">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{415, 160}">
+        </property>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-    </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
@@ -242,20 +250,36 @@
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="{390.0, 290.0}">
+        </vertex>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+    </relation>
     <link port="Ramp.output" relation="relation"/>
     <link port="Ramp2.output" relation="relation2"/>
     <link port="Test.input" relation="relation3"/>
-    <link port="Test.input" relation="relation4"/>
     <link port="Test.input" relation="relation8"/>
+    <link port="Test.input" relation="relation4"/>
     <link port="Accumulator.input" relation="relation"/>
     <link port="Accumulator.input" relation="relation2"/>
-    <link port="Accumulator.output" relation="relation3"/>
+    <link port="Accumulator.output" relation="relation9"/>
     <link port="Accumulator2.input" relation="relation5"/>
-    <link port="Accumulator2.output" relation="relation4"/>
+    <link port="Accumulator2.output" relation="relation3"/>
     <link port="Const.output" relation="relation5"/>
     <link port="Accumulator3.input" relation="relation6"/>
     <link port="Accumulator3.output" relation="relation7"/>
     <link port="Const2.output" relation="relation6"/>
     <link port="TokenToExpression.input" relation="relation7"/>
     <link port="TokenToExpression.output" relation="relation8"/>
+    <link port="Round.input" relation="relation9"/>
+    <link port="Round.output" relation="relation4"/>
 </entity>
