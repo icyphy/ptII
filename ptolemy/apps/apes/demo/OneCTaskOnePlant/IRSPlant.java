@@ -9,10 +9,11 @@ import ptolemy.kernel.util.Workspace;
 
 public class IRSPlant extends InterruptServiceRoutine {
 
-    public IRSPlant() {  
+    public IRSPlant() throws IllegalActionException, NameDuplicationException {  
+        super();
     }
 
-    public IRSPlant(Workspace workspace) {
+    public IRSPlant(Workspace workspace) throws IllegalActionException, NameDuplicationException {
         super(workspace);  
     }
 

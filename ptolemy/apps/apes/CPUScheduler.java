@@ -18,6 +18,7 @@ import ptolemy.apps.apes.TaskExecutionListener.ScheduleEventType;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
@@ -190,6 +191,7 @@ public class CPUScheduler extends ApeActor {
                     .getAttribute("ID");
 
             if (parameter != null) {
+                Token t = parameter.getToken();
                 IntToken token = (IntToken) parameter.getToken();
 
                 return token.intValue();

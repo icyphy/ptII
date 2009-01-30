@@ -11,10 +11,11 @@ import ptolemy.kernel.util.Workspace;
 
 public class HighPriorityTask extends CTask {
 
-    public HighPriorityTask() { 
+    public HighPriorityTask() throws IllegalActionException, NameDuplicationException { 
+        super();
     }
 
-    public HighPriorityTask(Workspace workspace) {
+    public HighPriorityTask(Workspace workspace) throws IllegalActionException, NameDuplicationException {
         super(workspace); 
     }
 
@@ -35,17 +36,12 @@ public class HighPriorityTask extends CTask {
             accessPointCallback(-1.0, 0.5); 
             
             accessPointCallback(0.7, 0.0); 
-            ArrayList<Integer> list = new ArrayList();
-            list.add(LowPriorityTask.EVENT_ID); 
-            eventManager.setEvent(LowPriorityTask.ID, list);
-            accessPointCallback(1.0, 0.0);
-            // wait for event 1
-            list.clear();
-            list.add(HighPriorityTask.EVENT_ID); 
-            eventManager.waitEvent(list);
+            eventManager.setEvent(LowPriorityTask.ID, LowPriorityTask.EVENT_ID);
+            accessPointCallback(1.0, 0.0); 
+            eventManager.waitEvent(HighPriorityTask.EVENT_ID);
             
             accessPointCallback(1.0, 0.0); 
-            eventManager.clearEvent();
+            eventManager.clearEvent(0);
             cpuScheduler.terminateTask();
         } catch (Exception e) {
              e.printStackTrace();

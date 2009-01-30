@@ -17,6 +17,7 @@ import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -44,12 +45,12 @@ public class CTask extends ApeActor implements Runnable {
         BASIC_TASK, EXTENDED_TASK, IRS_1, IRS_2
     }
 
-    public CTask() {
+    public CTask() throws IllegalActionException, NameDuplicationException {
         super();
         _initialize();
     }
 
-    public CTask(Workspace workspace) {
+    public CTask(Workspace workspace) throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _initialize();
     }
@@ -307,7 +308,7 @@ public class CTask extends ApeActor implements Runnable {
     
     private native void CMethod(String taskName); 
 
-    private void _initialize() {
+    private void _initialize() throws IllegalActionException, NameDuplicationException {
 
         Parameter sourceActorList= (Parameter) input.getAttribute("sourceActors");
         sourceActorList.setExpression("*");
@@ -315,8 +316,17 @@ public class CTask extends ApeActor implements Runnable {
         Parameter destinationActorList= (Parameter) output.getAttribute("destinationActors");
         destinationActorList.setExpression("CPUScheduler");
         
-       
+//        priority = new Parameter(this, "priority");
+//        priority.setExpression("0");
+//        priority.setTypeEquals(BaseType.INT);
+//        
+//        ID = new Parameter(this, "ID");
+//        ID.setExpression("0");
+//        ID.setTypeEquals(BaseType.INT);
     }
+    
+//    public Parameter priority;
+//    public Parameter ID;
 
     /**
      * Buffers the token produced in the accessPointCallback if the DE Director thread running to  avoid concurrent modification of the eventQueue in the DE Director.

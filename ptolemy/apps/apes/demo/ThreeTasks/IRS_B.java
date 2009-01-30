@@ -9,10 +9,11 @@ import ptolemy.kernel.util.Workspace;
 
 public class IRS_B extends InterruptServiceRoutine {
 
-    public IRS_B() {  
+    public IRS_B() throws IllegalActionException, NameDuplicationException { 
+        super();
     }
 
-    public IRS_B(Workspace workspace) {
+    public IRS_B(Workspace workspace) throws IllegalActionException, NameDuplicationException {
         super(workspace);  
     }
 

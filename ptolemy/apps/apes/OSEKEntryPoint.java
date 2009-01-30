@@ -26,15 +26,15 @@ public class OSEKEntryPoint {
         cpuScheduler.terminateTask();
     }
     
-    public StatusType setEvent(int taskId, byte newEvents) throws NoRoomException, IllegalActionException {
+    public StatusType setEvent(int taskId, int newEvents) throws NoRoomException, IllegalActionException {
         return eventManager.setEvent(taskId, newEvents);
     }
     
-    public StatusType clearEvent() { 
-        return eventManager.clearEvent();
+    public StatusType clearEvent(int events) { 
+        return eventManager.clearEvent(events);
     }
     
-    public StatusType waitEvent(byte events) throws NoRoomException, IllegalActionException {
+    public StatusType waitEvent(int events) throws NoRoomException, IllegalActionException {
         return eventManager.waitEvent(events);
     }
     

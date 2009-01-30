@@ -19,8 +19,10 @@ public class InterruptServiceRoutine extends CTask {
     /** Construct an actor in the default workspace with an empty string
      *  as its name.  The object is added to the workspace directory.
      *  Increment the version number of the workspace.
+     * @throws NameDuplicationException 
+     * @throws IllegalActionException 
      */
-    public InterruptServiceRoutine() {
+    public InterruptServiceRoutine() throws IllegalActionException, NameDuplicationException {
         super(); 
     }
 
@@ -30,8 +32,10 @@ public class InterruptServiceRoutine extends CTask {
      *  The object is added to the workspace directory.
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the entity.
+     * @throws NameDuplicationException 
+     * @throws IllegalActionException 
      */
-    public InterruptServiceRoutine(Workspace workspace) {
+    public InterruptServiceRoutine(Workspace workspace) throws IllegalActionException, NameDuplicationException {
         super(workspace); 
     }
 

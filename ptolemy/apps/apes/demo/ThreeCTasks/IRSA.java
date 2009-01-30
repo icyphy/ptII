@@ -9,10 +9,11 @@ import ptolemy.kernel.util.Workspace;
 
 public class IRSA extends InterruptServiceRoutine {
 
-    public IRSA() {  
+    public IRSA() throws IllegalActionException, NameDuplicationException {  
+        super();
     }
 
-    public IRSA(Workspace workspace) {
+    public IRSA(Workspace workspace) throws IllegalActionException, NameDuplicationException {
         super(workspace);  
     }
 

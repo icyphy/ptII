@@ -9,10 +9,11 @@ import ptolemy.kernel.util.Workspace;
 
 public class IRSTask extends InterruptServiceRoutine {
 
-    public IRSTask() {  
+    public IRSTask() throws IllegalActionException, NameDuplicationException {  
+        super();
     }
 
-    public IRSTask(Workspace workspace) {
+    public IRSTask(Workspace workspace) throws IllegalActionException, NameDuplicationException {
         super(workspace);  
     }
 

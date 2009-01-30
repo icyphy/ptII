@@ -10,9 +10,6 @@ typedef struct AA{
 	JNIEnv *env; // corresponds to one particular java thread
 	jobject obj;
 } JAVAENV;
- 
-
-JAVAENV currentEnv; // assuming only one thread is active in this piece of C-Code at a time
 
 
  JavaVM *cached_jvm; 
@@ -49,7 +46,7 @@ JAVAENV currentEnv; // assuming only one thread is active in this piece of C-Cod
          return JNI_ERR;
      }
 	 
-	 cls = (*env)->FindClass(env, "ptolemy/apps/apes/CPUScheduler");
+	 cls = (*env)->FindClass(env, "ptolemy/apps/apes/OSEKEntryPoint");
      if (cls == NULL) {
          return JNI_ERR;
      } 
@@ -89,22 +86,6 @@ Java_ptolemy_apps_apes_AccessPointCallbackDispatcher_InitializeC(JNIEnv *env, jo
 	 
      return;
  }
-  JNIEXPORT void JNICALL 
-Java_ptolemy_apps_apes_CPUScheduler_InitializeC(JNIEnv *env, jobject obj)
- {
-	 jclass cls;
-	 fprintf(stderr, "CPUScheduler_Initialize "); 
-	 cpuScheduler = (*env)->NewWeakGlobalRef(env, obj); 
-
-     return;
- }
-  JNIEXPORT void JNICALL 
-Java_ptolemy_apps_apes_EventManager_InitializeC(JNIEnv *env, jobject obj)
- {
-	 fprintf(stderr, "EventManager_Initialize ");
-	 eventManager = (*env)->NewWeakGlobalRef(env, obj);  
-     return;
- }
    JNIEXPORT void JNICALL 
 Java_ptolemy_apps_apes_OSEKEntryPoint_InitializeC(JNIEnv *env, jobject obj)
  {
@@ -112,55 +93,28 @@ Java_ptolemy_apps_apes_OSEKEntryPoint_InitializeC(JNIEnv *env, jobject obj)
 	 osekEntryPoint = (*env)->NewWeakGlobalRef(env, obj);  
      return;
  }
+ 
+ JNIEXPORT void JNICALL Java_ptolemy_apps_apes_CTask_setGlobalVariable(JNIEnv *env, jobject obj, jstring string, double value) {
+	char *varName = (*env)->GetStringUTFChars(env, string, 0);
 
-/*****************************************************************************/
-
-JNIEXPORT void JNICALL 
-Java_ptolemy_apps_apes_demo_OneCTaskOnePlant_Task_setLower(JNIEnv *env, jobject obj, double l) {
-	setLower(l);
-}
-
-JNIEXPORT void JNICALL 
-Java_ptolemy_apps_apes_demo_OneCTaskOnePlant_Task_setUpper(JNIEnv *env, jobject obj, double u) {
-	setUpper(u);
-}
+	setGlobalVariable(varName, value);
+ }  
 
  JNIEXPORT void JNICALL 
-Java_ptolemy_apps_apes_demo_OneCTaskOnePlant_Task_CMethod(JNIEnv *env, jobject obj)
+Java_ptolemy_apps_apes_CTask_CMethod(JNIEnv *env, jobject obj, jstring taskName)
  {
-	 fprintf(stderr, "Task "); 
-     task();
-     return;
- }
-
-
- /*****************************************************************************/
-  
-  JNIEXPORT void JNICALL 
-Java_ptolemy_apps_apes_demo_OneCTaskOnePlant_IRSTask_CMethod(JNIEnv *env, jobject obj)
- { 
-	 fprintf(stderr, "IRS Task "); 
-	 callback(-1, 0);
-	 activateTask(1);
-	 callback(0.2, 0);
-	 terminateTask();
-     return;
- }
- 
-  JNIEXPORT void JNICALL 
-Java_ptolemy_apps_apes_demo_OneCTaskOnePlant_IRSPlant_CMethod(JNIEnv *env, jobject obj)
- { 
-	 fprintf(stderr, "IRS Plant "); 
-	 callback(-1, 0);
-	 activateTask(2);
-	 callback(0.2, 0);
-	 terminateTask();
-     return;
+	 fprintf(stderr, "CTask /// ");
+	 const char *taskN = (*env)->GetStringUTFChars(env, taskName, 0);
+	 fprintf(stderr, taskN);
+	 if (strcmp(taskN, "Task") == 0) 
+		task();
+	 else if (strcmp(taskN, "IRST") == 0) 
+		irs();
+		
  }
 
 
 
- /*****************************************************************************/
 
  void callback(float exectime, float mindelay) {
 	 jmethodID method;
@@ -190,7 +144,7 @@ Java_ptolemy_apps_apes_demo_OneCTaskOnePlant_IRSPlant_CMethod(JNIEnv *env, jobje
 	 jclass cls;
 	 JNIEnv *env = JNU_GetEnv();
 	 fprintf(stderr, "activateTask ");   
-	 (*(env))->CallIntMethod(env, cpuScheduler, activateTaskMethod, taskId);   
+	 (*(env))->CallIntMethod(env, osekEntryPoint, activateTaskMethod, taskId);   
 	 fprintf(stderr, "activateTask done ");
  }
  
@@ -199,7 +153,7 @@ Java_ptolemy_apps_apes_demo_OneCTaskOnePlant_IRSPlant_CMethod(JNIEnv *env, jobje
 	 jclass cls;
 	 JNIEnv *env = JNU_GetEnv();
 	 fprintf(stderr, "terminateTask ");   
-	 (*(env))->CallVoidMethod(env, cpuScheduler, terminateTaskMethod);  
+	 (*(env))->CallVoidMethod(env, osekEntryPoint, terminateTaskMethod);  
 	 fprintf(stderr, "terminate done ");
  }
  

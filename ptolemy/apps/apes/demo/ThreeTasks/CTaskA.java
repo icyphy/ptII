@@ -9,10 +9,11 @@ import ptolemy.kernel.util.Workspace;
 
 public class CTaskA extends CTask {
 
-    public CTaskA() { 
+    public CTaskA() throws IllegalActionException, NameDuplicationException { 
+        super();
     }
 
-    public CTaskA(Workspace workspace) {
+    public CTaskA(Workspace workspace) throws IllegalActionException, NameDuplicationException {
         super(workspace); 
     }
 

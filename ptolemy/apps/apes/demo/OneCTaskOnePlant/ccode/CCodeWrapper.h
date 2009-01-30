@@ -13,12 +13,9 @@ JNIEXPORT void JNICALL Java_ptolemy_apps_apes_CPUScheduler_InitializeC(JNIEnv *e
 JNIEXPORT void JNICALL Java_ptolemy_apps_apes_EventManager_InitializeC(JNIEnv *env, jobject obj);
 JNIEXPORT void JNICALL Java_ptolemy_apps_apes_OSEKEntryPoint_InitializeC(JNIEnv *env, jobject obj);
 
-JNIEXPORT void JNICALL Java_ptolemy_apps_apes_demo_OneCTaskOnePlant_Task_Cmethod(JNIEnv *, jobject);
-JNIEXPORT void JNICALL Java_ptolemy_apps_apes_demo_OneCTaskOnePlant_Plant_Cmethod(JNIEnv *, jobject); 
-JNIEXPORT void JNICALL Java_ptolemy_apps_apes_demo_OneCTaskOnePlant_IRSTask_Cmethod(JNIEnv *, jobject);  
+JNIEXPORT void JNICALL Java_ptolemy_apps_apes_CTask_Cmethod(JNIEnv *, jobject, jstring taskName); 
 
-JNIEXPORT void JNICALL Java_ptolemy_apps_apes_demo_OneCTaskOnePlant_Task_setLower(JNIEnv *, jobject, double); 
-JNIEXPORT void JNICALL Java_ptolemy_apps_apes_demo_OneCTaskOnePlant_Task_setUpper(JNIEnv *, jobject, double); 
+JNIEXPORT void JNICALL Java_ptolemy_apps_apes_CTask_setGlobalVariable(JNIEnv *, jobject, jstring, double);  
 
 void callback(float , float);
 void callbackV(float , float, char*, double);
