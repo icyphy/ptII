@@ -11,16 +11,13 @@ import java.util.Set;
 import java.util.Stack;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.CompositeActor; 
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.NoRoomException;
-import ptolemy.actor.util.Time; 
+import ptolemy.actor.util.Time;
 import ptolemy.apps.apes.TaskExecutionListener.ScheduleEventType;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.IntToken;
-import ptolemy.data.StringToken;
-import ptolemy.data.Token;
+import ptolemy.data.IntToken; 
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -190,8 +187,7 @@ public class CPUScheduler extends ApeActor {
             Parameter parameter = (Parameter) ((NamedObj) actor)
                     .getAttribute("ID");
 
-            if (parameter != null) {
-                Token t = parameter.getToken();
+            if (parameter != null) { 
                 IntToken token = (IntToken) parameter.getToken();
 
                 return token.intValue();
