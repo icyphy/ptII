@@ -8,14 +8,12 @@ Token toString_Token_Token(Token thisToken) {
        	result = Double_toString(thisToken);
 	result.type = TYPE_String;
 	return result;
-	break;
 #endif
 #ifdef PTCG_TYPE_Integer
     case TYPE_Integer:
        	result = Integer_toString(thisToken);
 	result.type = TYPE_String;
 	return result;
-	break;
 #endif
      case TYPE_Array:
        	result = Array_toString(thisToken);

@@ -896,11 +896,19 @@ public class JavaCodeGenerator extends CodeGenerator {
 		line = line.trim();
 		int defineIndex = line.indexOf("#define");
 		if (defineIndex > -1) {
-		    defines.add(line.substring(defineIndex + 8));
+		    String define = line.substring(defineIndex + 8);
+		    if (define.indexOf(" ") != -1) {
+			define = define.substring(0, define.indexOf(" "));
+		    }
+		    defines.add(define);
 		}
 		int ifIndex = line.indexOf("#ifdef");
 		if (ifIndex > -1) {
-		    if (defines.contains(line.substring(ifIndex + 7))) {
+		    String define = line.substring(ifIndex + 7);
+		    if (define.indexOf(" ") != -1) {
+			define = define.substring(0, define.indexOf(" "));
+		    }
+		    if (defines.contains(define)) {
 			okToPrint = true;
 		    } else {
 			okToPrint = false;

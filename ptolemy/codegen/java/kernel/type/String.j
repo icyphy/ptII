@@ -108,7 +108,7 @@ Token String_convert(Token token, Token... ignored) {
 
 #ifdef PTCG_TYPE_Integer
     case TYPE_Integer:
-        token.payload = IntegertoString((Integer(token.payload));
+        token.payload = IntegertoString((Integer)(token.payload));
         return token;
 #endif
 

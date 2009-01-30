@@ -559,7 +559,7 @@ Token Array_convert(Token token, Short... targetTypes) {
 	    break;
 
            default:
-        throw new RuntimeException("Array_convert(): Conversion from an unsupported type.: " + token.type);
+	       throw new RuntimeException("Array_convert(): Conversion from an unsupported type: " + element.type);
             }
             ((array)(result.payload)).elements[i] = element;
         } else {

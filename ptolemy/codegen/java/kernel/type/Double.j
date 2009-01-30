@@ -177,16 +177,14 @@ Token Double_convert(Token token, Token... elements) {
     case TYPE_String:
         // FIXME: Is this safe?
         token.type = TYPE_Double;
-	token.payload = (Double)(token.payload).toString();
+	token.payload = ((Double)(token.payload)).toString();
 	return token;
-        break;
 #endif
 #ifdef PTCG_TYPE_Integer
     case TYPE_Integer:
         token.type = TYPE_Double;
         token.payload = IntegertoDouble((Integer)(token.payload));
 	return token;
-        break;
 #endif
 
         // FIXME: not finished
