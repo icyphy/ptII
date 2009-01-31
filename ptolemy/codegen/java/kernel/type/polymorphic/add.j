@@ -232,6 +232,11 @@ Token add_Token_Token(Token a1, Token a2) {
 }
 
 void print_Token2(Token token) {
+    if (token == null) {
+	System.out.println("Token is null");
+	return;
+    }
+
     switch (token.type) {
 	case TYPE_Integer: 
 	    System.out.println((Integer) token.payload);

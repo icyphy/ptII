@@ -544,7 +544,7 @@ Token Array_convert(Token token, Short... targetTypes) {
         element = Array_get(token, i);
         if (targetType != element.type) {
             //result.payload.Array->elements[i] = functionTable[(int)targetType][FUNC_convert](element);
-	    switch (element.type) {
+	    switch (targetType) {
 #ifdef PTCG_TYPE_Integer
 	    case TYPE_Integer:
 		    element = Integer_convert(element);
