@@ -105,6 +105,7 @@ public class EventManager extends ApeActor {
    public int setEvent(int taskId, int newEvents) throws NoRoomException, IllegalActionException {
 
        Actor task = _tasks.get(taskId);
+       Actor currentTask = _taskNames.get(Thread.currentThread().getName());
        if(_actorsWithEvents.get(task) == null){
            _actorsWithEvents.put(task, newEvents);
        }
@@ -113,7 +114,7 @@ public class EventManager extends ApeActor {
        }
        if ((_actorsWaitingForEvents.get(task) != null) && 
                ((_actorsWaitingForEvents.get(task).intValue() & newEvents) != 0)) {
-       output.send(new ResourceToken(task, null, TaskState.ready_running));
+           ((CTask)currentTask).bufferOutput(new ResourceToken(task, null, TaskState.ready_running));
        }
        return 0;
    }
@@ -131,7 +132,7 @@ public class EventManager extends ApeActor {
            return 0;
        }
        _actorsWaitingForEvents.put(currentTask, eventMask);
-       output.send(new ResourceToken(currentTask, null, TaskState.waiting));
+       ((CTask)currentTask).bufferOutput(new ResourceToken(currentTask, null, TaskState.waiting));
        return 0;
    }
    

@@ -230,18 +230,19 @@ public class CPUScheduler extends ApeActor {
     
     public int activateTask(int taskId) throws NoRoomException, IllegalActionException {
         Actor task = _tasks.get(taskId);
+        Actor caller = _taskNames.get(Thread.currentThread().getName());  
         if (task == null)
             return 1;
         //else if (Task.state = TaskState.running) return StatusType.E_OS_LIMIT; 
         Actor newCurrentlyExecutingTask = scheduleTask(TaskState.ready_running, task, null); 
-        reschedule(newCurrentlyExecutingTask);
+        reschedule(newCurrentlyExecutingTask, (CTask) caller);
         return 0;
     }
 
     public void terminateTask() throws NoRoomException, IllegalActionException {
         Actor task = _taskNames.get(Thread.currentThread().getName());  
         Actor newCurrentlyExecutingTask = scheduleTask(TaskState.suspended, task, null); 
-        reschedule(newCurrentlyExecutingTask); 
+        reschedule(newCurrentlyExecutingTask, (CTask) task); 
 
     }
 
@@ -251,7 +252,7 @@ public class CPUScheduler extends ApeActor {
         Actor newCurrentlyExecutingTask1 = scheduleTask(TaskState.suspended, currentTask, null);
         Actor newCurrentlyExecutingTask2 = scheduleTask(TaskState.ready_running, task, null); 
         Actor newCurrentlyExecutingTask = newCurrentlyExecutingTask2 != null ? newCurrentlyExecutingTask2 : newCurrentlyExecutingTask1;
-        reschedule(newCurrentlyExecutingTask); 
+        reschedule(newCurrentlyExecutingTask, (CTask) currentTask); 
         return StatusType.E_OK;
     }
     
@@ -332,9 +333,12 @@ public class CPUScheduler extends ApeActor {
         return newTaskInExecution;
     }
 
-    private void reschedule(Actor newTaskInExecution) throws IllegalActionException {
+    private void reschedule(Actor newTaskInExecution, CTask callingTask) throws IllegalActionException {
         if (newTaskInExecution != null) {
-            output.send(newTaskInExecution, new BooleanToken(true));
+            if (callingTask != null)
+                callingTask.bufferOutput(newTaskInExecution, new BooleanToken(true));
+            else 
+                output.send(newTaskInExecution, new BooleanToken(true));
             _tasksThatStartedExecuting.add(newTaskInExecution);
             _sendTaskExecutionEvent(newTaskInExecution, ScheduleEventType.START);
         } 
@@ -361,7 +365,7 @@ public class CPUScheduler extends ApeActor {
                         _taskPriorities.get(actor) > _taskPriorities.get(_tasksInExecution.peek()) &&
                         _internalResources.get(actor) == _internalResources.get(_tasksInExecution.peek())) {
                     Actor newCurrentlyExecutingTask = scheduleTask(TaskState.suspended, task, null); 
-                    reschedule(newCurrentlyExecutingTask);  
+                    reschedule(newCurrentlyExecutingTask, (CTask) task);  
                 }
             }
         }

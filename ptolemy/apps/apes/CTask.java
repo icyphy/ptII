@@ -1,5 +1,6 @@
 package ptolemy.apps.apes;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import ptolemy.actor.TimedDirector;
 import ptolemy.actor.util.BreakCausalityInterface;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.Time;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
@@ -138,12 +140,13 @@ public class CTask extends ApeActor implements Runnable {
         }
     }
     
+    private ArrayList<Object[]> _bufferOutputValue = new ArrayList();
+    
     public void setOutputValue(String varName, double value) throws NoRoomException, IllegalActionException {
         for (IOPort port : (List<IOPort>)outputPortList()) {
             if (port != output) {
                 if (port.getName().equals(varName)) {
-                    for (int i = 0; i < port.getWidth(); i++)
-                        port.send(i, new DoubleToken(value));
+                    _bufferOutputValue.add(new Object[]{port, new DoubleToken(value)});
                 }
             }
         } 
@@ -214,6 +217,25 @@ public class CTask extends ApeActor implements Runnable {
                 output.send("CPUScheduler", _buffer);
                 _buffer = null;
             }
+            for (Object[] entry : bufferedTokens) {
+                CTask task = (CTask) entry[0];
+                Token token = (Token) entry[1];
+                output.send(task, token);
+            }
+            bufferedTokens.clear();
+            for (Object[] entry : _bufferOutputValue) {
+                IOPort port = (IOPort) entry[0]; 
+                Token token = (Token) entry[1];
+                for (int i = 0; i < port.getWidth(); i++) {
+                    port.send(i, token);
+                }
+            }
+            bufferedTokens.clear();
+            for (ResourceToken token : bufferedResourceTokens) {
+                output.send(token);
+            }
+            bufferedResourceTokens.clear();
+            
             _waitForMinDelay = false;
         } else if (readInputs) { // fired by the CPUScheduler
             synchronized (this) {
@@ -346,6 +368,17 @@ public class CTask extends ApeActor implements Runnable {
     private boolean _waitForMinDelay;
     
     private boolean _actorStopped = false;
+    
+    private ArrayList<Object[]> bufferedTokens = new ArrayList();
+    private ArrayList<ResourceToken> bufferedResourceTokens = new ArrayList();
+
+    public void bufferOutput(Actor task, BooleanToken token) { 
+        bufferedTokens.add(new Object[]{task, token});
+    }
+
+    public void bufferOutput(ResourceToken resourceToken) { 
+        bufferedResourceTokens.add(resourceToken);
+    }
         
  
     
