@@ -247,6 +247,9 @@ Token Array_toString(Token thisToken, Token... ignored) {
 	        case TYPE_Array:
   	            result.append(Array_toString(((array)(thisToken.payload)).elements[i]).payload);
 		    break;		
+	        case TYPE_String:
+                    result.append("\"" + ((array)(thisToken.payload)).elements[i].payload.toString() + "\"");
+		    break;
   	        default: 
                     result.append(((array)(thisToken.payload)).elements[i].payload.toString());
 		    break;		
@@ -545,6 +548,11 @@ Token Array_convert(Token token, Short... targetTypes) {
         if (targetType != element.type) {
             //result.payload.Array->elements[i] = functionTable[(int)targetType][FUNC_convert](element);
 	    switch (targetType) {
+#ifdef PTCG_TYPE_String
+	    case TYPE_String:
+		    element = String_convert(element);
+	    break;
+#endif
 #ifdef PTCG_TYPE_Integer
 	    case TYPE_Integer:
 		    element = Integer_convert(element);
@@ -556,11 +564,11 @@ Token Array_convert(Token token, Short... targetTypes) {
 	    break;
 #endif
             case TYPE_Array:
-		element = Array_convert(element, element.type);
+		element = Array_convert(element, targetType);
 	    break;
 
            default:
-	       throw new RuntimeException("Array_convert(): Conversion from an unsupported type: " + element.type);
+	       throw new RuntimeException("Array_convert(): Conversion from an unsupported type: " + targetType);
             }
             ((array)(result.payload)).elements[i] = element;
         } else {

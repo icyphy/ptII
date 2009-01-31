@@ -45,7 +45,7 @@ Token String_print(Token thisToken, Token... tokens) {
 
 /***String_toString***/
 Token String_toString(Token thisToken, Token... ignored) {
-    return String_new((String)(thisToken.payload));
+    return String_new("\"" + (String)(thisToken.payload) + "\"");
 }
 /**/
 
@@ -98,23 +98,25 @@ o
 
 /***String_convert***/
 Token String_convert(Token token, Token... ignored) {
-    token.type = TYPE_String;
     switch (token.type) {
 #ifdef PTCG_TYPE_Boolean
     case TYPE_Boolean:
         token.payload = BooleantoString((Boolean)(token.payload));
+        token.type = TYPE_String;
         return token;
 #endif
 
 #ifdef PTCG_TYPE_Integer
     case TYPE_Integer:
         token.payload = IntegertoString((Integer)(token.payload));
+        token.type = TYPE_String;
         return token;
 #endif
 
 #ifdef PTCG_TYPE_Double
     case TYPE_Double:
         token.payload = DoubletoString((Double)(token.payload));
+        token.type = TYPE_String;
         return token;
 #endif
     case TYPE_String:
