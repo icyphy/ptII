@@ -22,7 +22,7 @@ $actorSymbol(toleranceToken) = $new(Double($ref(tolerance)));
 $actorSymbol(inputToken) = $ref(input#$channel);
 $actorSymbol(numberOfTokensSeen)++;
 
-/* $actorSymbol(), IntegerBlock($channel) which has only one channel */
+/* IB $actorSymbol(), IntegerBlock($channel) which has only one channel */
 if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
         && Math.abs($actorSymbol(inputToken)
                 - $ref(correctValues, $actorSymbol(numberOfTokensSeen)))
@@ -85,18 +85,21 @@ if ($channel == 0) {
 	$actorSymbol(numberOfTokensSeen)++;
 }
 
-/* $channel of $actorSymbol() */
+/* DBMC $channel of $actorSymbol() */
 $actorSymbol(correctValuesThisFiring_$channel) =
 $ref(correctValues, $actorSymbol(numberOfTokensSeen));
 if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
         && Math.abs($actorSymbol(inputToken)
-                - Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.$cgType(input))
+                - (($cgType(input))(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload)).$lcCgType(input)Value())
+
+    /*- Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.$cgType(input))*/
         > $ref(tolerance)) {
     throw new RuntimeException(String.format("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %10.30g. Should have been within %10.30g of: %10.30g\n",
             $actorSymbol(numberOfTokensSeen),
             $actorSymbol(inputToken),
             $ref(tolerance),
-            Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.$cgType(input)));
+            (Integer)(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload)));
+    /*Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.$cgType(input)));*/
 }
 /**/
 

@@ -7,7 +7,7 @@ $ref(output#$channel) = $new($type, $ref(input));
 /**/
 
 /*** IntToStringBlock($channel, $type) ***/
-$ref(output#$channel) = InttoString($ref(input));
+$ref(output#$channel) = IntegertoString($ref(input));
 /**/
 
 /*** DoubleToStringBlock($channel, $type) ***/
