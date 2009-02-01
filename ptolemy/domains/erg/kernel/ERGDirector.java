@@ -570,7 +570,9 @@ public class ERGDirector extends Director implements TimedDirector,
         boolean result = super.prefire();
 
         if (!_hasInput()) {
-            if (!_eventQueue.isEmpty()) {
+            if (_eventQueue.isEmpty()) {
+                result = false;
+            } else {
                 Time modelTime = getModelTime();
                 Time nextEventTime = (_eventQueue.get(0)).timeStamp;
                 while (modelTime.compareTo(nextEventTime) > 0) {
