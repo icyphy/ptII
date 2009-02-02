@@ -120,14 +120,12 @@ public class InterruptServiceController extends TypedAtomicActor {
     }
     
     @Override
-    public void fire() throws IllegalActionException {
-        System.out.println(this.getName() + ".fire() ");
+    public void fire() throws IllegalActionException { 
         for (IOPort port : (Collection<IOPort>)inputPortList()) {
             while (port.hasToken(0)){
                 Token token = port.get(0);        
                 Actor actor = getIRS(port); 
                 ResourceToken resourceToken = new ResourceToken(actor, Time.POSITIVE_INFINITY, TaskState.ready_running);
-                System.out.println("  send: " + actor.getName());
                 if (send) {
                     output.send(resourceToken);
                 } else if (save) {

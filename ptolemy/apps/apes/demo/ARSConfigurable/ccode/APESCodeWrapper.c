@@ -64,8 +64,7 @@
 
  JNIEXPORT void JNICALL 
 Java_ptolemy_apps_apes_AccessPointCallbackDispatcher_InitializeC(JNIEnv *env, jobject obj)
- {
-	 fprintf(stderr, "AccessPointDispatcher_Initialize ");  
+ {  
 	 dispatcher = (*env)->NewWeakGlobalRef(env, obj); 
 	 
      return;
@@ -74,12 +73,8 @@ Java_ptolemy_apps_apes_AccessPointCallbackDispatcher_InitializeC(JNIEnv *env, jo
 /*****************************************************************************/
 
  void callback(float exectime, float mindelay) {
-	 JNIEnv *env = JNU_GetEnv();
-	 fprintf(stderr, "Callback with parameters %f and %f ...\n", exectime, mindelay);  
-	 fflush(stderr);
-	 (*(env))->CallVoidMethod(env, dispatcher, accessPointCallbackMethod, exectime, mindelay);   
-	 fprintf(stderr, "Callback finished!\n");
-	 fflush(stderr);
+	 JNIEnv *env = JNU_GetEnv();  
+	 (*(env))->CallVoidMethod(env, dispatcher, accessPointCallbackMethod, exectime, mindelay);    
  }
  
  /*****************************************************************************/

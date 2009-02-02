@@ -102,7 +102,7 @@ int appStartup(){
   fprintf(stderr,"Reading model inputs...\n");
   fflush(stderr);
 
-  inf = fopen("C:\\eclipse_workspace\\ptII\\ptolemy\\apps\\apes\\demo\\ARSConfigurable\\input_data.txt","r");
+  inf = fopen("/Users/derler/Documents/workspace/ptII_svn/ptolemy/apps/apes/demo/ARSConfigurable/input_data.txt","r");
   if (inf == NULL){
 	  fprintf(stderr,"Error opening the input file. Exiting... \n");
 	  fflush(stderr);

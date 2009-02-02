@@ -50,12 +50,8 @@
   JNIEXPORT void JNICALL 
 Java_ptolemy_apps_apes_OSEKEntryPoint_InitializeC(JNIEnv *env, jobject obj)
  {
-	 fprintf(stderr, "OSEKEntryPoint_Initialize.\n");
-	 fflush(stderr);
 	 osekEntryPoint = (*env)->NewWeakGlobalRef(env, obj); 
-	 if (appStartup()){
-		 fprintf(stderr,"Startup failure!\n");
-		 fflush(stderr);
+	 if (appStartup()){ 
 	 }
  }
 /*****************************************************************************/
@@ -64,52 +60,33 @@ Java_ptolemy_apps_apes_OSEKEntryPoint_InitializeC(JNIEnv *env, jobject obj)
 /*****************************************************************************/
 
  void ActivateTask(TaskType taskId) {
-	 JNIEnv *env = JNU_GetEnv();
-	 fprintf(stderr, "ActivateTask with ID: %d\n", taskId); 
-	 fflush(stderr);
-	 (*(env))->CallIntMethod(env, osekEntryPoint, activateTaskMethod, taskId);   
-	 fprintf(stderr, "ActivateTask done!\n");
-	 fflush(stderr);
+	 JNIEnv *env = JNU_GetEnv(); 
+	 (*(env))->CallIntMethod(env, osekEntryPoint, activateTaskMethod, taskId);    
  }
  
 /*****************************************************************************/
 
   void TerminateTask() {
-	 JNIEnv *env = JNU_GetEnv();
-	 fprintf(stderr, "TerminateTask call...\n");   
+	 JNIEnv *env = JNU_GetEnv();  
 	 (*(env))->CallVoidMethod(env, osekEntryPoint, terminateTaskMethod);  
-	 fprintf(stderr, "TerminateTask done!\n");
- 	 fflush(stderr);
   }
 
 /*****************************************************************************/
  void SetEvent(TaskType taskId, EventMaskType eventMask) {
-	 JNIEnv *env = JNU_GetEnv();
-	 fprintf(stderr, "SetEvent for task ID %d with mask %x\n", taskId, eventMask);   
- 	 fflush(stderr);
-	 (*(env))->CallIntMethod(env, osekEntryPoint, setEventMethod, taskId, eventMask);  
-	 fprintf(stderr, "SetEvent done! \n");
- 	 fflush(stderr);
+	 JNIEnv *env = JNU_GetEnv(); 
+	 (*(env))->CallIntMethod(env, osekEntryPoint, setEventMethod, taskId, eventMask);   
  }
 
 /*****************************************************************************/
  void WaitEvent(EventMaskType eventMask) {
-	 JNIEnv *env = JNU_GetEnv();
-	 fprintf(stderr, "WaitEvent on mask %x\n", eventMask);   
- 	 fflush(stderr);
-	 (*(env))->CallIntMethod(env, osekEntryPoint, waitEventMethod, eventMask);  
-	 fprintf(stderr, "WaitEvent done! \n");
-  	 fflush(stderr);
+	 JNIEnv *env = JNU_GetEnv(); 
+	 (*(env))->CallIntMethod(env, osekEntryPoint, waitEventMethod, eventMask);   
 }
 
 /*****************************************************************************/
  void ClearEvent(EventMaskType eventMask) {
-	 JNIEnv *env = JNU_GetEnv();
-	 fprintf(stderr, "ClearEvent with mask %x\n", eventMask);   
- 	 fflush(stderr);
-	 (*(env))->CallIntMethod(env, osekEntryPoint, clearEventMethod, eventMask);  
-	 fprintf(stderr, "clearEvent done! \n");
- 	 fflush(stderr);
+	 JNIEnv *env = JNU_GetEnv(); 
+	 (*(env))->CallIntMethod(env, osekEntryPoint, clearEventMethod, eventMask);   
  }
 
 /*****************************************************************************/

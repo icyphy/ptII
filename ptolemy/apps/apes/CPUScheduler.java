@@ -106,16 +106,13 @@ public class CPUScheduler extends ApeActor {
      * Schedule actors.
      */
     public void fire() throws IllegalActionException {
-        System.out.println("CPUScheduler.fire() - Time: " + getDirector().getModelTime()); 
-        System.out.println(_tasksInExecution);
-        System.out.println(_remainingExecutionTime);
-        System.out.println(_tasksThatStartedExecuting);
         Time passedTime = getDirector().getModelTime().subtract(_previousModelTime);
+        Time timeZero = new Time(getDirector(), 0.0);
         Actor taskInExecution = null;
         Actor newCurrentlyExecutingTask = null;
 
         // if time passed, decrease remaining execution time of currently running task
-        if (_tasksInExecution.size() > 0 && passedTime.getDoubleValue() > 0.0) {
+        if (_tasksInExecution.size() > 0 && passedTime.compareTo(timeZero) > 0) {
             taskInExecution = _tasksInExecution.peek(); 
             Time remainingTime = _remainingExecutionTime.get(taskInExecution); 
             if (remainingTime.equals(Time.POSITIVE_INFINITY)) { // task executed but its execution time is not known yet
@@ -126,15 +123,15 @@ public class CPUScheduler extends ApeActor {
                 
                 // take out of the list if remainingTime = 0
                 // task can continue execution, execution time is not known and will be sent by access point event 
-                if (remainingTime.equals(new Time(getDirector(), 0.0))) {
+                if (remainingTime.equals(timeZero)) {
                     _tasksThatStartedExecuting.remove(taskInExecution); 
                     _remainingExecutionTime.put(taskInExecution, Time.POSITIVE_INFINITY);   
-                    _usedExecutionTimes.put(taskInExecution, new Time(getDirector(), 0.0)); 
+                    _usedExecutionTimes.put(taskInExecution, timeZero); 
                     _sendTaskExecutionEvent(taskInExecution, ScheduleEventType.AP);   
                     newCurrentlyExecutingTask = taskInExecution; 
                 }
-                if (remainingTime.compareTo(new Time(getDirector(), 0.0)) < 0) {
-                    throw new IllegalActionException("negative remaining execution time");
+                if (remainingTime.compareTo(timeZero) < 0) {
+                    throw new IllegalActionException("negative remaining execution time " + remainingTime +  " in task " + taskInExecution);
                 }
             }   
         }
@@ -148,8 +145,7 @@ public class CPUScheduler extends ApeActor {
             Time executionTime = (Time) token.requestedValue; 
             TaskState state = token.state;
             if (state == null)
-                state = _taskStates.get(actorToSchedule);
-            System.out.println("  -. " + actorToSchedule); 
+                state = _taskStates.get(actorToSchedule); 
             Actor actor = scheduleTask(state, actorToSchedule, executionTime);
             if (actor != null)
                 newCurrentlyExecutingTask = actor;
@@ -165,7 +161,6 @@ public class CPUScheduler extends ApeActor {
         // schedule next firing of this
         if (_tasksInExecution.size() > 0) { 
             getDirector().fireAt(this, getDirector().getModelTime().add(_remainingExecutionTime.get(_tasksInExecution.peek())));
-            System.out.println("----- fireAt " + getDirector().getModelTime().add(_remainingExecutionTime.get(_tasksInExecution.peek())));
         }
 
         _previousModelTime = getDirector().getModelTime(); 

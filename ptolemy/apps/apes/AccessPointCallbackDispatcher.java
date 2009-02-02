@@ -17,8 +17,7 @@ public class AccessPointCallbackDispatcher {
         /** Map of taskNames and tasks. */
         private Map<String, Actor> _taskNames = new HashMap();
         
-        public void accessPointCallback(double extime, double minNextTime) {
-            System.out.println("APD.callback");
+        public void accessPointCallback(double extime, double minNextTime) { 
             CTask task = (CTask) _taskNames.get(Thread.currentThread().getName());
             try {
                 task.accessPointCallback(extime, minNextTime);
@@ -32,7 +31,6 @@ public class AccessPointCallbackDispatcher {
         }
         
         public void accessPointCallback(double extime, double minNextTime, String varName, double value) {
-            System.out.println("APD.callback + values");
             CTask task = (CTask) _taskNames.get(Thread.currentThread().getName());
             try { 
                 task.accessPointCallback(extime, minNextTime);

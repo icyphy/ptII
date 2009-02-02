@@ -11,12 +11,8 @@
 Java_ptolemy_apps_apes_CTask_CMethod(JNIEnv *env, jobject obj, jstring taskName)
  {
 	 const char *task;
-
-	 fprintf(stderr, "CMethod1 ");
-	 fflush(stderr);
-	 task = (*env)->GetStringUTFChars(env, taskName, 0);
-	 fprintf(stderr, "%s ",task);
-	 fflush(stderr);
+ 
+	 task = (*env)->GetStringUTFChars(env, taskName, 0); 
 
 	 if (strcmp(task, "DispatcherTask") == 0) 
 		appDispatcher();
@@ -26,14 +22,14 @@ Java_ptolemy_apps_apes_CTask_CMethod(JNIEnv *env, jobject obj, jstring taskName)
 		motorController();
 	 else if (strcmp(task, "DispatcherIRS") == 0) 
 		dispatcherIRS();
+	(*env)->ReleaseStringUTFChars(env, taskName, task);
  }
 
  /*****************************************************************************/
 
  JNIEXPORT void JNICALL 
 Java_ptolemy_apps_apes_demo_ARS_DynamicsControllerTask_CMethod(JNIEnv *env, jobject obj)
- {
-	 fprintf(stderr, "DynamicsControllerTask ");
+ { 
      dynamicsControll_step();
      return;
  }
@@ -42,8 +38,7 @@ Java_ptolemy_apps_apes_demo_ARS_DynamicsControllerTask_CMethod(JNIEnv *env, jobj
 
  JNIEXPORT void JNICALL 
 Java_ptolemy_apps_apes_demo_ARS_MotorControllerTask_CMethod(JNIEnv *env, jobject obj)
- {
-	 fprintf(stderr, "MotorControllerTask ");
+ { 
      motorController();
      return;
  }
@@ -52,8 +47,7 @@ Java_ptolemy_apps_apes_demo_ARS_MotorControllerTask_CMethod(JNIEnv *env, jobject
 
  JNIEXPORT void JNICALL 
 Java_ptolemy_apps_apes_demo_ARS_DispatcherTask_CMethod(JNIEnv *env, jobject obj)
- {
-	 fprintf(stderr, "DispatcherTask ");
+ { 
      appDispatcher();
      return;
  }
@@ -62,8 +56,7 @@ Java_ptolemy_apps_apes_demo_ARS_DispatcherTask_CMethod(JNIEnv *env, jobject obj)
   
   JNIEXPORT void JNICALL 
 Java_ptolemy_apps_apes_demo_ARS_DispatcherIRS_CMethod(JNIEnv *env, jobject obj)
- { 
-	 fprintf(stderr, "ARS_DispatcherIRS ");
+ {  
 	 dispatcherIRS();
      return;
  }

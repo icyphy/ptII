@@ -71,10 +71,6 @@ public class CTask extends ApeActor implements Runnable {
     public void accessPointCallback(double extime, double minNextTime) throws NoRoomException, IllegalActionException {
 
         if (!_actorStopped){
-            System.out.println(this.getName() + ".accessPointCallback() - Time: " + getDirector().getModelTime()
-                    + "(" + extime + ", " + minNextTime + ")");
-
-            
             if (extime >= 0) {
                 ResourceToken token = new ResourceToken(this, new Time(getDirector(), extime), null);
                 if (_inExecution)
@@ -89,7 +85,6 @@ public class CTask extends ApeActor implements Runnable {
                 this.notifyAll(); // wake up the DEDirector thread
                 while (!_inExecution) {
                     try {
-                        System.out.println(this.getName() + ".wait() at " +  getDirector().getModelTime());
                         this.wait();
                     } catch (InterruptedException e) {
                         if (!_actorStopped){
@@ -175,8 +170,6 @@ public class CTask extends ApeActor implements Runnable {
     }
 
     public void fire() throws IllegalActionException {
-        System.out.println(this.getName() + ".fire() - Time: " + getDirector().getModelTime().toString());
-
         boolean readInputs = false;
         
         while (input.hasToken(0)){
@@ -230,7 +223,7 @@ public class CTask extends ApeActor implements Runnable {
                     port.send(i, token);
                 }
             }
-            bufferedTokens.clear();
+            _bufferOutputValue.clear();
             for (ResourceToken token : bufferedResourceTokens) {
                 output.send(token);
             }
@@ -324,9 +317,7 @@ public class CTask extends ApeActor implements Runnable {
     }
 
     protected void _callCMethod() {
-        System.out.println("Before " + this.getName() + "._callCMethod()");
-        CMethod(this.getName());
-        System.out.println("After " + this.getName() + "._callCMethod()");
+        CMethod(this.getName()); 
     }
 
     private native void CMethod(String taskName); 
