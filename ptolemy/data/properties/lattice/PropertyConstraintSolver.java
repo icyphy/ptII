@@ -281,14 +281,14 @@ public class PropertyConstraintSolver extends PropertySolver {
         _trainedConstraints.clear();
     }
 
-    /**
-     * Return the property value associated with the given property lattice
-     * and the given port.  
-     * @param object The given port.
-     * @param lattice The given lattice.
-     * @return The property value of the given port. 
-     * @throws IllegalActionException 
-     */
+//    /**
+//     * Return the property value associated with the given property lattice
+//     * and the given port.  
+//     * @param object The given port.
+//     * @param lattice The given lattice.
+//     * @return The property value of the given port. 
+//     * @throws IllegalActionException 
+//     */
 //  public Property getProperty(Object object) {
 //  PropertyTerm term = (PropertyTerm) getPropertyTerm(object);
 //  return (Property) term.getValue();
