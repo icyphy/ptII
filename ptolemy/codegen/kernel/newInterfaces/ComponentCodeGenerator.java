@@ -46,7 +46,7 @@ import ptolemy.kernel.util.NamedObj;
  *  @Pt.ProposedRating Yellow (eal)
  *  @Pt.AcceptedRating Yellow (eal)
  */
-public interface NewComponentCodeGenerator {
+public interface ComponentCodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

@@ -38,7 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public interface IOPortCodeGenerator extends NewComponentCodeGenerator {
+public interface IOPortCodeGenerator extends ComponentCodeGenerator {
 
     public PartialResult get(PartialResult channel);
     public PartialResult get(PartialResult channel, PartialResult vectorLength);

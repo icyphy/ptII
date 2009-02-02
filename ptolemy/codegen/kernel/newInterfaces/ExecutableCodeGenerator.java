@@ -41,7 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *  @Pt.ProposedRating Yellow (eal)
  *  @Pt.AcceptedRating Yellow (eal)
  */
-public interface ExecutableCodeGenerator extends NewComponentCodeGenerator {
+public interface ExecutableCodeGenerator extends ComponentCodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
