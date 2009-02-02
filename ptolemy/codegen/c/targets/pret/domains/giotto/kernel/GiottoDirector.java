@@ -30,6 +30,7 @@ package ptolemy.codegen.c.targets.pret.domains.giotto.kernel;
 import java.util.List;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.Director;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.codegen.kernel.ActorCodeGenerator;
 import ptolemy.data.DoubleToken;
@@ -119,6 +120,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
     public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         double period = _getPeriod();
+        int processorID = 0;
         for (Actor actor : (List<Actor>) 
                 ((TypedCompositeActor) _director.getContainer()).deepEntityList()) {
             ActorCodeGenerator helper = (ActorCodeGenerator) _getHelper(actor);
@@ -134,10 +136,13 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             // period/frequency * 250,000,000 cycles/second.
             
             int cycles = (int)(250000000 * period / _getFrequency(actor));
+            code.append("#ifdef PROCESSOR_" + processorID + "\n");
             code.append("DEAD(" + cycles  + ");" + _eol);
 
-            helper.generateFireCode();
-            helper.generatePostfireCode();
+            code.append(helper.generateFireCode());
+            code.append(helper.generatePostfireCode());
+            code.append("#endif /* PROCESSOR_" + processorID + "*/\n");
+            processorID++;
         }
         return code.toString();
     }
@@ -152,17 +157,44 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
     }
 
     private double _getPeriod() throws IllegalActionException {
-        Attribute period = _director.getAttribute("period");
-        double periodValue;
-        if (period != null) {
-            // FIXME: If this is not the top level director, this value will be
-            // incorrect!
-            periodValue = ((DoubleToken) ((Variable) period).getToken())
-            .doubleValue();
-        } else {
-            // throw exception.
+
+        /*
+         * Director = _director.container.director
+         * while (!director instanceof giottodirector) {
+         *   if (director.container.director exists)
+         *     director = director.container.director
+         *   else return periodValue attribute
+         * }
+         * return director._getPeriod() * director.container."frequency"
+         */
+        
+        Director director = ((TypedCompositeActor)
+                _director.getContainer()).getExecutiveDirector();
+        
+        while (director != null &&
+               !(director instanceof ptolemy.domains.giotto.kernel.GiottoDirector)) {
+                director = ((TypedCompositeActor)
+                        director.getContainer()).getExecutiveDirector();
         }
-        return periodValue;
+        if (director == null) {
+            // This is the case for the outer-most Giotto director.
+            Attribute period = _director.getAttribute("period");
+            double periodValue;
+
+            if (period != null) {
+                periodValue = ((DoubleToken) ((Variable) period).getToken())
+                .doubleValue();
+            } else {
+                throw new IllegalActionException(this, "There is no period" +
+                            "specified in the outer-most Giotto director");
+            }
+            return periodValue;            
+        }
+
+        // Get the frequency.
+        int frequency = _getFrequency((Actor)_director.getContainer());
+        return ((GiottoDirector) _getHelper(director))._getPeriod() / frequency;
+        
     }
 
  

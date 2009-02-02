@@ -31,12 +31,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/codegen/c/domains/giotto
+ME =		ptolemy/codegen/c/targets/pret/domains/giotto
 
 DIRS =		kernel 
 
 # Root of the Java directory
-ROOT =		../../../../..
+ROOT =		../../../../../../..
 
 CLASSPATH =	$(ROOT)
 

@@ -31,12 +31,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/codegen/c/domains
+ME =		ptolemy/codegen/c/targets/pret/domains
 
-DIRS =		fsm hdf pn sdf giotto
+DIRS =		giotto
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -53,11 +53,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
 PTCLASSALLJARS = \
-	fsm/fsm.jar \
-	hdf/hdf.jar \
-	pn/pn.jar \
-	giotto/giotto.jar \
-	sdf/sdf.jar
+	giotto/giotto.jar
 
 # Keep this list alphabetized.
 JSRCS =
@@ -69,7 +65,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	fsm hdf pn sdf giotto
+MISC_FILES =	giotto
 
 
 # make checkjunk will not report OPTIONAL_FILES as trash

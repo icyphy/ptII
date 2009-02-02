@@ -687,9 +687,7 @@ public class Director extends CodeGeneratorHelper {
     ////////////////////////////////////////////////////////////////////
     ////                     protected variables                    ////
 
-    /** The code generator containing this director helper.
-     */
-    protected CodeGenerator _codeGenerator;
+
 
     /** End of line character.  Under Unix: "\n", under Windows: "\n\r".
      *  We use a end of line charactor so that the files we generate
