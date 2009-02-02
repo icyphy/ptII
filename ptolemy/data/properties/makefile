@@ -53,15 +53,16 @@ PTCLASSALLJARS = \
 	actor/actor.jar \
 	configuredSolvers/configuredSolvers.jar \
 	demo/demo.jar \
-	gui/properties.jar \
-	lattice/properties.jar \
-	token/properties.jar \
+	gui/gui.jar \
+	lattice/lattice.jar \
+	token/token.jar \
 	util/properties.jar
 
 JSRCS = \
 	AnalyzerAttribute.java \
 	AnalyzeModel.java \
 	AnnotationAttribute.java \
+        ModelAnalyzer.java \
 	ModelWriter.java \
 	ParseTreeAnnotationEvaluator.java \
 	ParseTreeASTNodeHelperCollector.java \

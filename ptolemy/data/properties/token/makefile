@@ -1,4 +1,4 @@
-# Makefile for Java Ptolemy Data Properties
+# Makefile for Java Ptolemy Data Properties tokens
 #
 # @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
@@ -43,9 +43,15 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	properties
-PTCLASSJAR = $(PTPACKAGE).jar
+PTPACKAGE = 	token
+PTCLASSJAR =
 
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	combinedValueToken/combinedValueToken.jar \
+	firstValueToken/firstValueToken.jar
 JSRCS = \
 	ParseTreeTokenAnnotationEvaluator.java \
 	PropertyCombineCompositeHelper.java \

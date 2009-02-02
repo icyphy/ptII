@@ -43,14 +43,25 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	properties
+PTPACKAGE = 	gui
 PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	PropertySolverGUIFactory.java \
-	PropertyDisplayGUIFactory.java
+	PropertyDisplayGUIFactory.java \
+	PropertyHighlighter.java \
+	PropertySolverGUIFactory.java
 
-EXTRA_SRCS =	$(JSRCS)
+EXTRA_SRCS =	$(JSRCS) \
+	'PropertyHighlighter$$1.class' \
+	'PropertyHighlighter$$ClearDisplay.class' \
+	'PropertyHighlighter$$ClearProperty.class' \
+	'PropertyHighlighter$$ConfigureHighlightAction.class' \
+	'PropertyHighlighter$$EditHighlightDialog.class' \
+	'PropertyHighlighter$$HighlightProperty$$1.class' \
+	'PropertyHighlighter$$HighlightProperty.class' \
+	'PropertyHighlighter$$HighlighterController.class' \
+	'PropertyHighlighter$$ShowProperty$$1.class' \
+	'PropertyHighlighter$$ShowProperty.class'
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

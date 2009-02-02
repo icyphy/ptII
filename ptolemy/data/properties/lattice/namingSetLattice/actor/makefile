@@ -31,7 +31,7 @@
 
 ME =        ptolemy/data/properties/lattice/namingSetLattice/actor
 
-DIRS =      lib
+DIRS =
 
 # Root of the Ptolemy II directory
 ROOT =      ../../../../../..
@@ -43,11 +43,12 @@ CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     properties
+PTPACKAGE =     actor
 PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = \
 	AtomicActor.java
+
 EXTRA_SRCS =    $(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't

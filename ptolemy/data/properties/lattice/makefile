@@ -37,6 +37,7 @@ DIRS = \
 	exampleSetLattice \
 	logicalAND \
 	logicalOrBackward \
+	namingSetLattice \
 	typeSystem_C
 
 # Root of the Ptolemy II directory
@@ -49,8 +50,20 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	properties
-PTCLASSJAR = $(PTPACKAGE).jar
+PTPACKAGE = 	lattice
+PTCLASSJAR =
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	academicFalseTrueEqualPriority/properties.jar \
+	academicFalseTrueSet/properties.jar \
+	exampleSetLattice/properties.jar \
+	logicalAND/properties.jar \
+	logicalOrBackward/properties.jar \
+	namingSetLattice/namingSetLattice.jar \
+	typeSystem_C/properties.jar
 
 JSRCS = \
 	ConstraintManager.java \
