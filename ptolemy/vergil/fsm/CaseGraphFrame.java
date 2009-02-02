@@ -40,6 +40,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import ptolemy.actor.IOPort;
+import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.lib.hoc.Case;
 import ptolemy.actor.lib.hoc.Refinement;
@@ -123,6 +124,24 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    
+
+    /** Open the container, if any, of the entity.
+     *  If this entity has no container, then do nothing.
+     */
+    public void openContainer() {
+        // Method overridden since the parent will go from the refinement to
+        // the case, which is where we were in the first place.
+        if (_case != _case.toplevel()) {
+            try {
+                Configuration configuration = getConfiguration();
+                // FIXME: do what with the return value?
+                configuration.openInstance(_case.getContainer());
+            } catch (Throwable throwable) {
+                MessageHandler.error("Failed to open container", throwable);
+            }
+        }
+    }    
     /** React to a change in the state of the tabbed pane.
      *  @param event The event.
      */
@@ -190,7 +209,7 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
         }
         _tabbedPane = new JTabbedPane();
         _tabbedPane.addChangeListener(this);
-        Iterator cases = ((Case) entity).entityList(Refinement.class)
+        Iterator<?> cases = ((Case) entity).entityList(Refinement.class)
                 .iterator();
         boolean first = true;
         while (cases.hasNext()) {
@@ -316,7 +335,7 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
                                 .getEntity(pattern);
 
                         // Get the initial port configuration from the container.
-                        Iterator ports = _case.portList().iterator();
+                        Iterator<?> ports = _case.portList().iterator();
 
                         while (ports.hasNext()) {
                             Port port = (Port) ports.next();
@@ -411,12 +430,12 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
             super.actionPerformed(e);
             // Dialog to ask for a case name.
             Query query = new Query();
-            List refinements = _case.entityList(Refinement.class);
+            List<?> refinements = _case.entityList(Refinement.class);
             if (refinements.size() < 2) {
                 MessageHandler.error("No cases to remove.");
             } else {
                 String[] caseNames = new String[refinements.size() - 1];
-                Iterator cases = refinements.iterator();
+                Iterator<?> cases = refinements.iterator();
                 int i = 0;
                 while (cases.hasNext()) {
                     String name = ((Nameable) cases.next()).getName();
