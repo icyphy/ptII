@@ -28,6 +28,7 @@
 package ptolemy.codegen.kernel.newInterfaces;
 
 import ptolemy.codegen.kernel.CodeGenerator;
+import ptolemy.codegen.util.PartialResult;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -55,14 +56,14 @@ public interface ComponentCodeGenerator {
      *  @exception IllegalActionException If something goes wrong.
      *  @return The initialize code of the component.
      */
-    public String intialize() throws IllegalActionException;
+    public PartialResult intialize() throws IllegalActionException;
 
     /** Generate and return the code associated
      *  with wrapping up the component.
      *  @exception IllegalActionException If something goes wrong.
      *  @return The wrapup code of the component.
      */
-    public String wrapup() throws IllegalActionException;
+    public PartialResult wrapup() throws IllegalActionException;
 
     /** Return the associated component.
      *  @return The component for which this is a helper to generate code.
