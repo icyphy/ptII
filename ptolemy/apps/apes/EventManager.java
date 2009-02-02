@@ -127,7 +127,7 @@ public class EventManager extends ApeActor {
    }
    
    public int waitEvent(int eventMask) throws NoRoomException, IllegalActionException {
-       Actor currentTask = _taskNames.get(Thread.currentThread().getName());
+       Actor currentTask = _taskNames.get(Thread.currentThread().getName()); 
        if ((_actorsWithEvents.get(currentTask) != null) && ((_actorsWithEvents.get(currentTask).intValue() & eventMask) != 0)){
            return 0;
        }
