@@ -71,7 +71,6 @@ JSRCS = \
 	PropertyFailedRegressionTestException.java \
 	PropertyHelper.java \
 	PropertyableNamedObj.java \
-	PropertyNamedObj.java \
 	PropertyableObject.java \
 	PropertyRemover.java \
 	PropertyResolutionException.java \
