@@ -103,16 +103,9 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         }
          */
        
-        code.append(generatePostfireCode());
-        
-        Attribute period = _director.getAttribute("period");
-        if (period != null) {
-            Double periodValue = ((DoubleToken) ((Variable) period).getToken())
-                    .doubleValue();
-           
-            
-            code.append("}" + _eol);
-        }
+        code.append(generatePostfireCode());        
+
+        code.append("}" + _eol);
 
         return code.toString();
     }
