@@ -32,7 +32,7 @@ import ptolemy.actor.Director;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- * @author Man-kit Leungoe
+ * @author Man-kit Leung
  * @version $Id$
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (cxh)
@@ -89,7 +89,6 @@ public interface PortCodeGenerator extends ComponentCodeGenerator {
      */
     public Object getWriteOffset(int channelNumber)
 	throws IllegalActionException;
-;
 
     /** Set the buffer size of channel of the port.
      *  @param channelNumber The number of the channel that is being set.
