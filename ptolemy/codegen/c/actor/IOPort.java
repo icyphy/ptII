@@ -203,8 +203,8 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
 
         ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
         StringBuffer code = new StringBuffer();
-        code.append(getCodeGenerator().comment(_eol + "....Begin updateConnectedPortsOffset...."
-					       + CodeGeneratorHelper.generateName(port)));
+//        code.append(getCodeGenerator().comment(_eol + "....Begin updateConnectedPortsOffset...."
+//					       + CodeGeneratorHelper.generateName(port)));
 
         if (rate == 0) {
             return "";
@@ -276,8 +276,8 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
                 }
             }
         }
-        code.append(getCodeGenerator().comment(_eol + "....End updateConnectedPortsOffset...."
-					       + CodeGeneratorHelper.generateName(port)));
+//        code.append(getCodeGenerator().comment(_eol + "....End updateConnectedPortsOffset...."
+//					       + CodeGeneratorHelper.generateName(port)));
         return code.toString();
     }
 
@@ -290,8 +290,9 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
             (ptolemy.actor.IOPort) getComponent();
         Receiver receiver = _getReceiver(null, 0, port);
 
-        String code = getCodeGenerator().comment(_eol + "....Begin updateOffset...." 
-						 + CodeGeneratorHelper.generateName(port));
+        String code = "";
+//        code += getCodeGenerator().comment(_eol + "....Begin updateOffset...." 
+//						 + CodeGeneratorHelper.generateName(port));
 
         //        int width = 0;
         //        if (port.isInput()) {
@@ -315,13 +316,13 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
                     code += _updatePNOffset(rate, channel.port, 
                             channel.channelNumber, directorHelper, false);
                 }
-                code += getCodeGenerator().comment(_eol + "....End updateOffset (PN)...."
-						   + CodeGeneratorHelper.generateName(port));
+//                code += getCodeGenerator().comment(_eol + "....End updateOffset (PN)...."
+//						   + CodeGeneratorHelper.generateName(port));
 
             } else {
                 code += _updateOffset(i, rate);
-                code += getCodeGenerator().comment(_eol + "\n....End updateOffset...."
-						   + CodeGeneratorHelper.generateName(port));
+//                code += getCodeGenerator().comment(_eol + "\n....End updateOffset...."
+//						   + CodeGeneratorHelper.generateName(port));
             }
         }
         return code;
@@ -695,7 +696,6 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
     
     /** Get the write offset of a channel of the port.
      *  @param channelNumber The number of the channel.
-     *  @param writeOffset The offset.
      *  @return The write offset.
      *  @exception IllegalActionException If thrown while getting the channel.
      *  @see #setWriteOffset(int, Object)
