@@ -69,7 +69,6 @@ public class CTask extends ApeActor implements Runnable {
     public Parameter methodName;
     
     public void accessPointCallback(double extime, double minNextTime) throws NoRoomException, IllegalActionException {
-
         if (!_actorStopped){
             if (extime >= 0) {
                 ResourceToken token = new ResourceToken(this, new Time(getDirector(), extime), null);
@@ -190,57 +189,63 @@ public class CTask extends ApeActor implements Runnable {
             }
         }
 
-        // fired as a result of the fireAt
-        if (_waitForMinDelay && !readInputs) { 
-            synchronized (this) {
-                while (_inExecution) {
-                    try {
-                        this.wait();
-                    } catch (InterruptedException e) {
-                        if (_stopRequested){
-                            break;
-                        }
-                        else{
-                            e.printStackTrace();
+        boolean continueExecution = true;
+        while (continueExecution) {
+            continueExecution = false;
+            // fired as a result of the fireAt
+            if (_waitForMinDelay && !readInputs) { 
+                synchronized (this) {
+                    while (_inExecution) {
+                        try {
+                            this.wait();
+                        } catch (InterruptedException e) {
+                            if (_stopRequested){
+                                break;
+                            }
+                            else{
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }
-            }
-            if (_buffer != null) {
-                output.send("CPUScheduler", _buffer);
-                _buffer = null;
-            }
-            for (Object[] entry : bufferedTokens) {
-                CTask task = (CTask) entry[0];
-                Token token = (Token) entry[1];
-                output.send(task, token);
-            }
-            bufferedTokens.clear();
-            for (Object[] entry : _bufferOutputValue) {
-                IOPort port = (IOPort) entry[0]; 
-                Token token = (Token) entry[1];
-                for (int i = 0; i < port.getWidth(); i++) {
-                    port.send(i, token);
+                if (_buffer != null) {
+                    output.send("CPUScheduler", _buffer);
+                    _buffer = null;
                 }
-            }
-            _bufferOutputValue.clear();
-            for (ResourceToken token : bufferedResourceTokens) {
-                output.send(token);
-            }
-            bufferedResourceTokens.clear();
-            
-            _waitForMinDelay = false;
-        } else if (readInputs) { // fired by the CPUScheduler
-            synchronized (this) {
-                if (_minDelay.getDoubleValue() >= 0) {
-                    getDirector().fireAt(this, getDirector().getModelTime().add(_minDelay));
-                    _waitForMinDelay = true;
+                for (Object[] entry : bufferedTokens) {
+                    CTask task = (CTask) entry[0];
+                    Token token = (Token) entry[1];
+                    output.send(task, token);
                 }
-                _inExecution = true; 
-                this.notifyAll();
+                bufferedTokens.clear();
+                for (Object[] entry : _bufferOutputValue) {
+                    IOPort port = (IOPort) entry[0]; 
+                    Token token = (Token) entry[1];
+                    for (int i = 0; i < port.getWidth(); i++) {
+                        port.send(i, token);
+                    }
+                }
+                _bufferOutputValue.clear();
+                for (ResourceToken token : bufferedResourceTokens) {
+                    output.send(token);
+                }
+                bufferedResourceTokens.clear();
+                
+                _waitForMinDelay = false;
+            } else if (readInputs) { // fired by the CPUScheduler
+                synchronized (this) {
+                    if (_minDelay.getDoubleValue() > 0) { 
+                        _waitForMinDelay = true;
+                    } else if (_minDelay.getDoubleValue() == 0) {
+                        _waitForMinDelay = true;
+                        continueExecution = true;
+                    }
+                    _inExecution = true; 
+                    this.notifyAll();
+                }
+                readInputs = false;
             }
         }
-
     }
     
     

@@ -105,7 +105,7 @@ public class CPUScheduler extends ApeActor {
     /**
      * Schedule actors.
      */
-    public void fire() throws IllegalActionException {
+    public void fire() throws IllegalActionException { 
         Time passedTime = getDirector().getModelTime().subtract(_previousModelTime);
         Time timeZero = new Time(getDirector(), 0.0);
         Actor taskInExecution = null;
@@ -131,9 +131,14 @@ public class CPUScheduler extends ApeActor {
                     newCurrentlyExecutingTask = taskInExecution; 
                 }
                 if (remainingTime.compareTo(timeZero) < 0) {
-                    throw new IllegalActionException("negative remaining execution time " + remainingTime +  " in task " + taskInExecution);
+                    throw new IllegalActionException("negative remaining execution time " 
+                            + remainingTime +  " in task " + taskInExecution + 
+                            "\npassed time " + passedTime + 
+                            "\ncurrent time " + getDirector().getModelTime()
+                            );
                 }
-            }   
+            }  
+            
         }
         
         
@@ -160,10 +165,11 @@ public class CPUScheduler extends ApeActor {
         
         // schedule next firing of this
         if (_tasksInExecution.size() > 0) { 
-            getDirector().fireAt(this, getDirector().getModelTime().add(_remainingExecutionTime.get(_tasksInExecution.peek())));
+            Time nextTime = getDirector().getModelTime().add(_remainingExecutionTime.get(_tasksInExecution.peek()));
+            Time time = getDirector().fireAt(this, nextTime);
         }
 
-        _previousModelTime = getDirector().getModelTime(); 
+        _previousModelTime = getDirector().getModelTime();  
     }
     
 
@@ -337,8 +343,10 @@ public class CPUScheduler extends ApeActor {
             _tasksThatStartedExecuting.add(newTaskInExecution);
             _sendTaskExecutionEvent(newTaskInExecution, ScheduleEventType.START);
         } 
+        // schedule next firing of this
         if (_tasksInExecution.size() > 0) { 
-            getDirector().fireAt(this, getDirector().getModelTime().add(_remainingExecutionTime.get(_tasksInExecution.peek()))); 
+            Time nextTime = getDirector().getModelTime().add(_remainingExecutionTime.get(_tasksInExecution.peek()));
+            Time time = getDirector().fireAt(this, nextTime);
         }
     }
 
