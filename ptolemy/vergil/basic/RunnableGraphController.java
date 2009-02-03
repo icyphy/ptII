@@ -115,7 +115,7 @@ public abstract class RunnableGraphController extends WithIconGraphController
 
             // Type conflict errors need to be handled specially.
             if (throwable instanceof TypeConflictException) {
-                Iterator inequalities = ((TypeConflictException) throwable)
+                Iterator<?> inequalities = ((TypeConflictException) throwable)
                         .inequalityList().iterator();
                 while (inequalities.hasNext()) {
                     Inequality inequality = (Inequality) inequalities.next();
@@ -138,7 +138,7 @@ public abstract class RunnableGraphController extends WithIconGraphController
                 }
             }
         } else if (throwable instanceof KernelRuntimeException) {
-            Iterator causes = ((KernelRuntimeException) throwable)
+            Iterator<?> causes = ((KernelRuntimeException) throwable)
                     .getNameables().iterator();
             while (causes.hasNext()) {
                 _highlightError((Nameable) causes.next());
@@ -161,12 +161,17 @@ public abstract class RunnableGraphController extends WithIconGraphController
         Manager.State newState = manager.getState();
 
         if (newState != _previousState) {
-            // Clear any error reporting highlights that may be present.
+            // In case there were errors, we  
+            // clear any error reporting highlights that may be present.
             // Do this only if there are actually error highlights because
             // it triggers a repaint.
-            if (_errorHighlights.size() > 0) {
+            // We also request the extra repaint when the new state becomes
+            // idle (and the previous one was something else), since we want
+            // to update visual effects that might have changed by running the
+            // model.            
+            if (newState == Manager.IDLE || _errorHighlights.size() > 0) {
                 ChangeRequest request = new ChangeRequest(this,
-                        "Error Highlight Clearer") {
+                        "Error Highlight Clearer", true) {
                     protected void _execute() throws Exception {
                         for (Attribute highlight : _errorHighlights) {
                             highlight.setContainer(null);
