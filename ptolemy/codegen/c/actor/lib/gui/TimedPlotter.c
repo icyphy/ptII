@@ -6,32 +6,7 @@ printf("preinit code should go here");
 
 /***initBlock***/
 //init code should be here
-printf("init code should go here");
-
-{
-     int mlc,i;
-     mlc = 0;
-
-     RIT128x96x4Init(1000000);
-     RIT128x96x4StringDraw("TimedPlotterTest",25,  0, 15);
-
-     for(i = 0; i < 128; i+= 5)
-     {
-       RIT128x96x4StringDraw("_",   i,89,5);
-     }
-
-     for(i = 0; i < 96; i +=8)
-     {
-       RIT128x96x4StringDraw("|",   0,i,5);
-     }
-     
-     for(i = 0; i < 128; i+= 5)
-     {
-       RIT128x96x4StringDraw("_",   i,41,5);
-     }
-}
-
-
+ 
 /**/
 
 /***configureBlock($text)***/
@@ -41,8 +16,7 @@ printf("configure code should go here");
 
 /***plotBlock($channel)***/
 
-printf("plotBlock code should go here for %d",$ref(input#$channel),$actorSymbol(),$channel);
-PlotPoint(x,$ref(input#$channel));
+//printf("plotBlock code should go here for %d",$ref(input#$channel),$actorSymbol(),$channel);
 
 /**/
 
