@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.codegen.c.targets.luminary.domains.giotto.kernel;
+package ptolemy.codegen.c.targets.openRTOS.domains.giotto.kernel;
 
 import java.util.List;
 
