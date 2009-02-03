@@ -16,13 +16,13 @@ Token divide_Array_Double(Token a1, double a2) {
 }
 /**/
 
-/*** divide_Array_Int() ***/
-Token divide_Array_Int(Token a1, int a2) {
+/*** divide_Array_Integer() ***/
+Token divide_Array_Integer(Token a1, int a2) {
     int i;
     Token result = $new(Array(((array)(a1.payload)).size, 0));
 
     for (i = 0; i < ((array)(a1.payload)).size; i++) {
-        Array_set(result, i, $divide_Token_Int(Array_get(a1, i), a2));
+        Array_set(result, i, $divide_Token_Integer(Array_get(a1, i), a2));
     }
     return result;
 }
@@ -68,8 +68,8 @@ double divide_Double_Double(double a1, double a2) {
 }
 /**/
 
-/*** divide_Double_Int() ***/
-double divide_Double_Int(double a1, int a2) {
+/*** divide_Double_Integer() ***/
+double divide_Double_Integer(double a1, int a2) {
     return a1 / a2;
 }
 /**/
@@ -81,32 +81,32 @@ Token divide_Double_Token(double a1, Token a2) {
 }
 /**/
 
-/*** divide_Int_Array() ***/
-Token divide_Int_Array(int a1, Token a2) {
+/*** divide_Integer_Array() ***/
+Token divide_Integer_Array(int a1, Token a2) {
     int i;
     Token result = $new(Array(((array)(a2.payload)).size, 0));
 
     for (i = 0; i < ((array)(a2.payload)).size; i++) {
-        Array_set(result, i, $divide_Int_Token(a1, Array_get(a2, i)));
+        Array_set(result, i, $divide_Integer_Token(a1, Array_get(a2, i)));
     }
     return result;
 }
 /**/
 
-/*** divide_Int_Double() ***/
-int divide_Int_Double(int a1, double a2) {
+/*** divide_Integer_Double() ***/
+int divide_Integer_Double(int a1, double a2) {
     return a1 / a2;
 }
 /**/
 
-/*** divide_Int_Int() ***/
-int divide_Int_Int(int a1, int a2) {
+/*** divide_Integer_Integer() ***/
+int divide_Integer_Integer(int a1, int a2) {
     return a1 / a2;
 }
 /**/
 
-/*** divide_Int_Token() ***/
-int divide_Int_Token(int a1, Token a2) {
+/*** divide_Integer_Token() ***/
+int divide_Integer_Token(int a1, Token a2) {
     Token token = $new(Int, a1);
     return $typeFunc(TYPE_Int::divide(token, a2));
 }
@@ -160,9 +160,9 @@ Token divide_Token_Double(Token a1, double a2) {
 }
 /**/
 
-/*** divide_Token_Int() ***/
-int divide_Token_Int(Token a1, int a2) {
-    Token token = $new(Int(a2));
+/*** divide_Token_Integer() ***/
+int divide_Token_Integer(Token a1, int a2) {
+    Token token = $new(Integer(a2));
     return $divide_Token_Token(a1, token);
 }
 /**/
@@ -194,7 +194,7 @@ double divide_one_Double(double d, ...) {
 /**/
 
 /*** divide_one_Int ***/
-int divide_one_Int(int i, ...) {
+int divide_one_Integer(int i, ...) {
     return 1/i;
 }
 /**/

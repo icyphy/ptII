@@ -16,14 +16,14 @@ void print_Double(double d) {
 }
 /**/
 
-/*** print_Int() ***/
-void print_Int(int i) {
+/*** print_Integer() ***/
+void print_Integer(int i) {
      System.out.println(i);
 }
 /**/
 
 /*** print_Long() ***/
-void print_Int(long l) {
+void print_Integer(long l) {
     System.out.println(l);
 }
 /**/

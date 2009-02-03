@@ -85,6 +85,7 @@ JSRCS = \
 	MovingAverage.java \
 	MultiplyDivide.java \
 	Publisher.java \
+	PublisherTest.java \
 	Pulse.java \
 	Ramp.java \
 	RandomSource.java \
@@ -140,7 +141,6 @@ OLDJSRCS = \
 	MovingAverage.java \
 	MultiplyDivide.java \
 	OrderedMerge.java \
-	PublisherTest.java \
 	Pulse.java \
 	Quantizer.java \
 	Ramp.java \

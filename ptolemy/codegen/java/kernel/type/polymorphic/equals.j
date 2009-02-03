@@ -10,9 +10,9 @@ boolean equals_Array_Double(Token a1, double a2) {
 }
 /**/
 
-/*** equals_Array_Int() ***/
+/*** equals_Array_Integer() ***/
 boolean equals_Int_Array(Token a1, int a2) {
-    return $equals_Array_Int(a2, a1);
+    return $equals_Array_Integer(a2, a1);
 }
 /**/
 
@@ -29,8 +29,8 @@ boolean equals_Boolean_Boolean(boolean a1, boolean a2) {
 }
 /**/
 
-/*** equals_Boolean_Int() ***/
-boolean equals_Boolean_Int(boolean a1, int a2) {
+/*** equals_Boolean_Integer() ***/
+boolean equals_Boolean_Integer(boolean a1, int a2) {
     return $equals_Int_Boolean(a2, a1);
 }
 /**/
@@ -59,8 +59,8 @@ boolean equals_Double_Double(double a1, double a2) {
 }
 /**/
 
-/*** equals_Double_Int() ***/
-boolean equals_Double_Int(double a1, int a2) {
+/*** equals_Double_Integer() ***/
+boolean equals_Double_Integer(double a1, int a2) {
     return a1 == (double) a2;
 }
 /**/
@@ -92,12 +92,12 @@ boolean equals_Int_Array(int a1, Token a2) {
 
 /*** equals_Int_Boolean() ***/
 boolean equals_Int_Boolean(int a1, boolean a2) {
-    return $equals_String_Int(a2, a1);
+    return $equals_String_Integer(a2, a1);
 }
 /**/
 
-/*** equals_Int_Int() ***/
-boolean equals_Int_Int(int a1, int a2) {
+/*** equals_Int_Integer() ***/
+boolean equals_Int_Integer(int a1, int a2) {
     return a1 == a2;
 }
 /**/
@@ -153,8 +153,8 @@ boolean equals_String_Double(char* a1, double a2) {
 }
 /**/
 
-/*** equals_String_Int() ***/
-boolean char* equals_String_Int(char* a1, int a2) {
+/*** equals_String_Integer() ***/
+boolean char* equals_String_Integer(char* a1, int a2) {
 	return atoi(a1) == a2;
 }
 /**/
@@ -171,9 +171,9 @@ boolean equals_Token_Double(Token a1, double a2) {
 }
 /**/
 
-/*** equals_Token_Int() ***/
-boolean equals_Token_Int(Token a1, int a2) {
-    return $equals_Int_Token(a2, a1);
+/*** equals_Token_Integer() ***/
+boolean equals_Token_Integer(Token a1, int a2) {
+    return $equals_Integer_Token(a2, a1);
 }
 /**/
 
@@ -181,11 +181,11 @@ boolean equals_Token_Int(Token a1, int a2) {
 boolean equals_Token_Token(Token a1, Token a2) {
     boolean result = false;
     if (a1.payload instanceof Number && a2.payload instanceof Number) {
-        result = ((Number)(a1.payload)).equals((Number)(a2.payload));
+        result = (((Number)(a1.payload)).doubleValue() == ((Number)(a2.payload)).doubleValue());
     } else if (a1.payload instanceof array && a2.payload instanceof array) {
         result = $Array_equals(a1, a2);
     } else {
-        throw new InternalError("equals_Token_Token_(): equalswith an unsupported type. " + a1.type + " " + a2.type);
+        throw new InternalError("equals_Token_Token_(): equals with an unsupported type. " + a1.type + " " + a2.type);
     }
     return result;
 }

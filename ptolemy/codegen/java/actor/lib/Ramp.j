@@ -43,5 +43,5 @@ strcat($actorSymbol(state),  $ref((String)step));
 
 /***TokenFireBlock***/
 $ref(output) = $actorSymbol(state);
-$actorSymbol(state) = add_Token_Token($ref(output), $ref(step));
+$actorSymbol(state) = $add_Token_Token($ref(output), $ref(step));
 /**/

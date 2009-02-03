@@ -3,14 +3,14 @@ int $actorSymbol(count);
 double $actorSymbol(factor);
 int $actorSymbol(mostRecent);
 $type $actorSymbol(sum);
-$type* $actorSymbol(data);
-int $actorSymbol(typeSize) = sizeof($type);
+$type [] $actorSymbol(data) = new $type[$val(maxPastInputsToAverage)];
+//int $actorSymbol(typeSize) = sizeof($type);
 /**/
 
 /*** initBlock ***/
 $actorSymbol(count) = 0;
 $actorSymbol(mostRecent) = $val(maxPastInputsToAverage);
-$actorSymbol(data) = malloc($val(maxPastInputsToAverage) * $actorSymbol(typeSize));
+//$actorSymbol(data) = malloc($val(maxPastInputsToAverage) * $actorSymbol(typeSize));
 /**/
 
 /***fireBlock***/

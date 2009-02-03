@@ -2228,7 +2228,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                             + codeGenType(sinkType)
                             + "::convert("
                             + result
-                            + ", TYPE_"
+                            + ", /*CGH*/ TYPE_"
                             + codeGenType(((ArrayType) sinkType)
                                     .getElementType()) + "))";
                     }
@@ -2368,7 +2368,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
         if (!channelAndOffset[1].equals("")) {
             //result.append("[" + channelAndOffset[1] + "]");
-            result.insert(0, "Array_get(");
+            result.insert(0, "/*CGH77*/Array_get(");
             result.append(" ," + channelAndOffset[1] + ")");
 
             Type elementType = ((ArrayType) ((Parameter) attribute)

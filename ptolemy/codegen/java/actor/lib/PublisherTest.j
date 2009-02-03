@@ -18,6 +18,10 @@ static Token $actorSymbol(toleranceToken);
 $actorSymbol(toleranceToken) = $new(Double($ref(tolerance)));
 /**/
 
+/***fireBlock($channel)***/
+$ref(output#$channel) = $ref(($cgType(output)) input#$channel);
+/**/
+
 /***IntegerBlock($channel)***/
 $actorSymbol(inputToken) = $ref(input#$channel);
 $actorSymbol(numberOfTokensSeen)++;
@@ -196,28 +200,17 @@ $actorSymbol(inputToken) = $ref(input#$channel);
 if ($channel == 0) {
 	$actorSymbol(numberOfTokensSeen)++;
 }
-/* TBMC $channel of $actorSymbol() */
+/* $channel of $actorSymbol() */
 $actorSymbol(correctValuesThisFiring_$channel) = Array_get($ref(correctValues), $actorSymbol(numberOfTokensSeen));
-if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)) {
-    //if ($type(input) != TYPE_Array) {
-      if (!$tokenFunc($actorSymbol(inputToken)::equals(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel)))) {
-//     throw new RuntimeException("Test $actorSymbol($channel) fails in iteration "
-//             + $actorSymbol(numberOfTokensSeen)
-// 	    + ".\n Value was: \""
-// 	    + $actorSymbol(inputToken)
-// 	    + "\". Should have been: \""
-// 	    + Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel)
-// 	    + "\"");
-//       }
-//    } else {
+if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
+        && !$tokenFunc($actorSymbol(inputToken)::equals(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel))).payload.Boolean) {
     throw new RuntimeException("Test $actorSymbol($channel) fails in iteration "
             + $actorSymbol(numberOfTokensSeen)
-	    + ".\n Value was: '"
-            + $tokenFunc($actorSymbol(inputToken)::toString()).payload
-	    + "'. Should have been: \""
-            + Array_toString(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel)).payload
+	    + ".\n Value was a String: \""
+	    + $actorSymbol(inputToken)
+	    + "\". Should have been a String: \""
+	    + (String)(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload)
 	    + "\"");
-      }
 }
 /**/
 

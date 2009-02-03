@@ -16,8 +16,8 @@ double negate_Double(double a) {
 }
 /**/
 
-/*** negate_Int() ***/
-int negate_Int(int a) {
+/*** negate_Integer() ***/
+int negate_Integer(int a) {
      return -a;
 }
 /**/

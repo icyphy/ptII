@@ -25,9 +25,7 @@ Token Scale_scaleOnLeft(Token input, double factor) {
 
         return result;
     } else {
-        System.out.println("Scale_scaleOnLeft problem");
-        //return $tokenFunc($new(Double(factor))::multiply(input));
-	return result;
+        return $tokenFunc($new(Double(factor))::multiply(input));
     }
 }
 /**/
@@ -46,9 +44,7 @@ Token Scale_scaleOnRight(Token input, double factor) {
 
         return result;
     } else {
-        System.out.println("Scale_scaleOnLeft problem");
-	return result;
-	//return $tokenFunc(input::multiply($new(Double(factor))));
+	return $tokenFunc(input::multiply($new(Double(factor))));
     }
 }
 /**/
