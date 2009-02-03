@@ -41,7 +41,7 @@ struct token {         // Base type for tokens.
 #define StringtoInt atoi
 #define StringtoDouble atof
 #define StringtoLong atol
-#define DoubletoInt floor
+#define DoubletoInt (int)
 #define InttoDouble (double)
 #define InttoLong (long)
 

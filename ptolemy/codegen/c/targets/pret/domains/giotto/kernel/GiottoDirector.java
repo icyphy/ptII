@@ -27,18 +27,22 @@
  */
 package ptolemy.codegen.c.targets.pret.domains.giotto.kernel;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.codegen.kernel.ActorCodeGenerator;
+import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
 
 
 //////////////////////////////////////////////////////////////////
@@ -109,7 +113,12 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
 
         return code.toString();
     }
-    
+    public Set getHeaderFiles() throws IllegalActionException {
+        HashSet files = new HashSet();
+        files.add("\"deadline.h\"");
+        return files;
+    }
+
     public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         double period = _getPeriod();
@@ -117,9 +126,9 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         for (Actor actor : (List<Actor>) 
                 ((TypedCompositeActor) _director.getContainer()).deepEntityList()) {
             ActorCodeGenerator helper = (ActorCodeGenerator) _getHelper(actor);
-            
+
             // FIXME: generate deadline instruction w/ period
-            
+
             // Note: Currently, the deadline instruction takes the number 
             // of cycle as argument. In the future, this should be changed
             // to use time unit, which is platform-independent. 
@@ -128,13 +137,21 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             // for each actor, we will need to wait for 
             // period/frequency * 250,000,000 cycles/second.
             
+            //int cycles = (int)(250000000 * period / _getFrequency(actor));
             int cycles = (int)(250000000 * period / _getFrequency(actor));
-            code.append("#ifdef PROCESSOR_" + processorID + "\n");
+            code.append("#ifdef PROC_" + processorID + "\n");
+            // for
+            String index = CodeGeneratorHelper.generateName((NamedObj) actor) + "_frequency";
+            code.append("for (int " + index + " = 0; " + index + " < " +
+                    _getFrequency(actor) + "; ++" + index + ") {" + _eol);
             code.append("DEAD(" + cycles  + ");" + _eol);
 
             code.append(helper.generateFireCode());
             code.append(helper.generatePostfireCode());
-            code.append("#endif /* PROCESSOR_" + processorID + "*/\n");
+
+            code.append("}" + _eol); // end of for loop
+
+            code.append("#endif /* PROC_" + processorID + "*/\n");
             processorID++;
         }
         return code.toString();
