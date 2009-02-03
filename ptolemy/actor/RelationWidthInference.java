@@ -285,12 +285,15 @@ public class RelationWidthInference {
          }
      }
 
-    /**
-     * Filter the relations for which the width still has to be inferred.
-     * @param  relationList The relations that need to be filtered.
-     * @return The relations for which the width still has to return. 
+    /** Filter the relations for which the width still has to be inferred.
+     *  @param  relationList The relations that need to be filtered.
+     *  @return The relations for which the width still has to return. 
+     *  @exception IllegalActionException If the expression for the width cannot
+     *   be parsed or cannot be evaluated, or if the result of evaluation
+     *   violates type constraints, or if the result of evaluation is null
+     *   and there are variables that depend on this one.
      */
-    static private Set<IORelation> _relationsWithUnspecifiedWidths(List<?> relationList) {
+    static private Set<IORelation> _relationsWithUnspecifiedWidths(List<?> relationList) throws IllegalActionException {
         Set<IORelation> result = new HashSet<IORelation>();
         for (Object relation : relationList) {
             if (relation != null && ((IORelation) relation).needsWidthInference()) {
