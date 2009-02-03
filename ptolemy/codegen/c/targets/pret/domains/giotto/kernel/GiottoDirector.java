@@ -122,7 +122,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
     public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         double period = _getPeriod();
-        int processorID = 0;
+        int threadID = 0;
         for (Actor actor : (List<Actor>) 
                 ((TypedCompositeActor) _director.getContainer()).deepEntityList()) {
             ActorCodeGenerator helper = (ActorCodeGenerator) _getHelper(actor);
@@ -139,7 +139,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             
             //int cycles = (int)(250000000 * period / _getFrequency(actor));
             int cycles = (int)(250000000 * period / _getFrequency(actor));
-            code.append("#ifdef PROC_" + processorID + "\n");
+            code.append("#ifdef THREAD_" + threadID + "\n");
             // for
             String index = CodeGeneratorHelper.generateName((NamedObj) actor) + "_frequency";
             code.append("for (int " + index + " = 0; " + index + " < " +
@@ -151,8 +151,8 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
 
             code.append("}" + _eol); // end of for loop
 
-            code.append("#endif /* PROC_" + processorID + "*/\n");
-            processorID++;
+            code.append("#endif /* THREAD_" + threadID + "*/\n");
+            threadID++;
         }
         return code.toString();
     }
