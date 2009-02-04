@@ -1233,6 +1233,7 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                         String relationName = _actor.uniqueName("relation");
                         TypedIORelation rel = new TypedIORelation(_actor,
                                 relationName);
+                        rel.setWidth(1); // Set explicitly to 1 (the old default) to not break existing models
                         if (port == null) {
                             port = new TypedIOPort(actor, actor
                                     .uniqueName(portName));
@@ -1291,6 +1292,7 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                     String relationName = _actor.uniqueName("relation");
                     TypedIORelation relation = new TypedIORelation(_actor,
                             relationName);
+                    relation.setWidth(1); // Set explicitly to 1 (the old default) to not break existing models
                     port.link(relation);
                     containerPort.link(relation);
                 }
@@ -1322,6 +1324,7 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                         String relationName = _actor.uniqueName("relation");
                         TypedIORelation relation = new TypedIORelation(_actor,
                                 relationName);
+                        relation.setWidth(1); // Set explicitly to 1 (the old default) to not break existing models
                         port.link(relation);
                         containerPort.link(relation);
                     } else if (_getType(name).equals("relation")) {
@@ -1366,6 +1369,7 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                             String relationName = _actor.uniqueName("relation");
                             TypedIORelation rel = new TypedIORelation(_actor,
                                     relationName);
+                            rel.setWidth(1); // Set explicitly to 1 (the old default) to not break existing models
                             if (port == null) {
                                 port = new TypedIOPort(actor, actor
                                         .uniqueName(portName));
@@ -1425,6 +1429,7 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                             String rel = container.uniqueName("relation");
                             TypedIORelation relation = new TypedIORelation(
                                     container, rel);
+                            relation.setWidth(1); // Set explicitly to 1 (the old default) to not break existing models
                             if (ioport.isMultiport()) {
                                 relation.setWidth(ioport.getWidth());
                                 newPort.setMultiport(true);
@@ -1486,6 +1491,7 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                         String relationName = _actor.uniqueName("relation");
                         TypedIORelation rel = new TypedIORelation(_actor,
                                 relationName);
+                        rel.setWidth(1); // Set explicitly to 1 (the old default) to not break existing models
                         if (port == null) {
                             if (_transparentRelations.containsKey(portName)) {
                                 port = _transparentRelations.get(portName);
@@ -1517,6 +1523,7 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                     String relationName = _actor.uniqueName("relation");
                     TypedIORelation relation = new TypedIORelation(_actor,
                             relationName);
+                    relation.setWidth(1); // Set explicitly to 1 (the old default) to not break existing models
                     port.link(relation);
                     containerPort.link(relation);
                 }
@@ -1542,6 +1549,7 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                         String relationName = _actor.uniqueName("relation");
                         TypedIORelation relation = new TypedIORelation(_actor,
                                 relationName);
+                        relation.setWidth(1); // Set explicitly to 1 (the old default) to not break existing models
                         port.link(relation);
                         containerPort.link(relation);
                     } else if (_getType(name).equals("relation")) {
@@ -1568,6 +1576,7 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                             String relationName = _actor.uniqueName("relation");
                             TypedIORelation rel = new TypedIORelation(_actor,
                                     relationName);
+                            rel.setWidth(1); // Set explicitly to 1 (the old default) to not break existing models
                             if (port == null) {
                                 if (_transparentRelations.containsKey(portName)) {
                                     port = _transparentRelations.get(portName);
