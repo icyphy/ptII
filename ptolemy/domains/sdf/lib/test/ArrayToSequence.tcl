@@ -84,9 +84,9 @@ test ArrayToSequence-2.1 {test double array} {
     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
     set recIn [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
 
-    $e0 connect $rampOut $s2aIn
-    $e0 connect $s2aOut $a2sIn
-    $e0 connect $a2sOut $recIn
+    [java::cast ptolemy.actor.IORelation [$e0 connect $rampOut $s2aIn]] setWidth 1
+    [java::cast ptolemy.actor.IORelation [$e0 connect $s2aOut $a2sIn]] setWidth 1
+    [java::cast ptolemy.actor.IORelation [$e0 connect $a2sOut $recIn]] setWidth 1
 # FIXME: Why is this needed?
 # $e0 validateSettables
     [$e0 getManager] execute
@@ -144,9 +144,9 @@ test ArrayToSequence-2.5 {test cascading SequenceToArray and ArrayToSequence} {
     # insert the new SequenceToArray before the Recorder
     $s2aOut unlinkAll
     $a2sIn unlinkAll
-    $e0 connect $s2aOut $s2a2In
-    $e0 connect $s2a2Out $a2s2In
-    $e0 connect $a2s2Out $a2sIn
+    [java::cast ptolemy.actor.IORelation [$e0 connect $s2aOut $s2a2In]] setWidth 1
+    [java::cast ptolemy.actor.IORelation [$e0 connect $s2a2Out $a2s2In]] setWidth 1
+    [java::cast ptolemy.actor.IORelation [$e0 connect $a2s2Out $a2sIn]] setWidth 1
 
     $init setExpression {0}
     $step setExpression {1}

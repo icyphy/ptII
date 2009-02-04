@@ -60,6 +60,8 @@ test CIReceiver-1.1 {Check constructor and initial state} {
 #
 test CIReceiver-2.1 {Check put and get tokens} {
     set e [java::new ptolemy.actor.TypedCompositeActor]
+    set manager [java::new ptolemy.actor.Manager]
+    $e setManager $manager    
     set d [java::new ptolemy.domains.ci.kernel.CIDirector $e "d"]
     set a1 [java::new ptolemy.actor.lib.Ramp $e "ramp"]
     set a2 [java::new ptolemy.actor.lib.Discard $e "display"]

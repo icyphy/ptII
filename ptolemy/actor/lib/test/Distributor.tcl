@@ -63,13 +63,13 @@ test Distributor-2.1 {run with a single output} {
             $distributor] output]
     set in1 [java::field [java::cast ptolemy.actor.lib.Transformer \
             $distributor] input]
-    $e0 connect \
+    [java::cast ptolemy.actor.IORelation [$e0 connect \
             [java::field [java::cast ptolemy.actor.lib.Source $ramp1] output] \
-            $in1
-    set r1 [$e0 connect \
+            $in1]] setWidth 1
+    [java::cast ptolemy.actor.IORelation [$e0 connect \
             $out1 \
             [java::field [java::cast ptolemy.actor.lib.Sink $rec1] input] \
-            {r1}]
+            {r1}]] setWidth 1
     set m [$e0 getManager]
     $m execute
     enumToTokenValues [$rec1 getRecord 0]
@@ -80,10 +80,10 @@ test Distributor-3.1 {run with two outputs} {
     #$dir addDebugListener \
     #        [java::new ptolemy.kernel.util.StreamListener]
     set rec2 [java::new ptolemy.actor.lib.Recorder $e0 rec2]   
-    set r2 [$e0 connect \
+    [java::cast ptolemy.actor.IORelation [$e0 connect \
             $out1 \
             [java::field [java::cast ptolemy.actor.lib.Sink $rec2] input] \
-            {r2}]
+            {r2}]] setWidth 1
     $m execute
     list [enumToTokenValues [$rec1 getRecord 0]] \
             [enumToTokenValues [$rec2 getRecord 0]]
@@ -118,15 +118,15 @@ test Distributor-5.1 {test under DE} {
             $distributor] output]
     set in1 [java::field [java::cast ptolemy.actor.lib.Transformer \
             $distributor] input]
-    $e0 connect \
+    [java::cast ptolemy.actor.IORelation [$e0 connect \
             [java::field [java::cast ptolemy.actor.lib.Source $clock] output] \
-            $in1
-    set r1 [$e0 connect \
+            $in1 ]] setWidth 1
+    [java::cast ptolemy.actor.IORelation [$e0 connect \
             $out1 \
-            [java::field [java::cast ptolemy.actor.lib.Sink $rec1] input]]
-    set r2 [$e0 connect \
+            [java::field [java::cast ptolemy.actor.lib.Sink $rec1] input]]] setWidth 1
+    [java::cast ptolemy.actor.IORelation [$e0 connect \
             $out1 \
-            [java::field [java::cast ptolemy.actor.lib.Sink $rec2] input]]
+            [java::field [java::cast ptolemy.actor.lib.Sink $rec2] input]]] setWidth 1
     set m [$e0 getManager]
     $m execute
     list [enumToObjects [$rec1 getTimeRecord]] \

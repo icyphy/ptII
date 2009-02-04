@@ -52,6 +52,8 @@ test Branch-2.1 {Test BranchController constructors and pre-activation state} {
     # Instantiate Directors and Composite Actors
     set topLevel [java::new ptolemy.actor.CompositeActor]
     $topLevel setName "topLevel"
+    set manager [java::new ptolemy.actor.Manager]
+    $topLevel setManager $manager
     set compAct [java::new ptolemy.actor.CompositeActor $topLevel "compAct"]
     set outerDir [java::new ptolemy.actor.process.CompositeProcessDirector $topLevel "outerDir"]
     set innerDir [java::new ptolemy.actor.process.CompositeProcessDirector $compAct "innerDir"]

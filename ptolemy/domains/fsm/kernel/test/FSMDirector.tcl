@@ -253,6 +253,7 @@ test FSMDirector-5.1 {test fireAt} {
 #
 test FSMDirector-6.1 {test transferInputs} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
+    $e0 setManager [java::new ptolemy.actor.Manager]    
     set d0 [java::new ptolemy.domains.de.kernel.DEDirector $e0 d0]
     set e1 [java::new ptolemy.actor.TypedCompositeActor $e0 e1]
     set dir [java::new ptolemy.domains.fsm.kernel.FSMDirector $e1 dir]

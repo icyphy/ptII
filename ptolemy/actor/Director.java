@@ -623,7 +623,7 @@ public class Director extends Attribute implements Executable {
             }
         }
         if (!foundManager) { 
-            throw new IllegalActionException(this, "Can't infer the widths" +
+            throw new IllegalActionException(this, "Can't infer the widths " +
             "of the relations since no manager present.");
         }        
     }    
@@ -830,14 +830,18 @@ public class Director extends Attribute implements Executable {
      *  Return whether the current widths of the relation in the model
      *  are no longer valid anymore and the widths need to be inferred again.
      *  @return True when width inference needs to be executed again.
+     *  @exception IllegalActionException If no manager present.
      */    
-    public boolean needsWidthInference() {
+    public boolean needsWidthInference() throws IllegalActionException {
         boolean needsWidthInference = false;
         Nameable container = getContainer();
         if (container instanceof CompositeActor) {
             Manager manager = ((CompositeActor) container).getManager();
             if (manager != null) {
                 needsWidthInference = manager.needsWidthInference();
+            } else {
+                throw new IllegalActionException(this, "Can't infer the widths " +
+                "of the relations since no manager present.");
             }
         }
         return needsWidthInference;

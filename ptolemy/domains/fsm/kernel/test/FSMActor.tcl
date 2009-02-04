@@ -139,6 +139,7 @@ test FSMActor-4.1 {test setting initial state} {
 #
 test FSMActor-5.2 {test handling port name change} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
+    $e0 setManager $mag    
     set dir [java::new ptolemy.actor.Director $e0 dir]
     set ramp [java::new ptolemy.actor.lib.Ramp $e0 ramp]
     set fsm [java::new ptolemy.domains.fsm.kernel.FSMActor $e0 fsm]

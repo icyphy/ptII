@@ -68,13 +68,14 @@ test SampleDelay-2.2 {test with the default parameter values} {
     set gain [getParameter $sampleDelay gain]
     # Use clone of SampleDelay to make sure that is ok.
     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
-    $e0 connect \
+    [java::cast ptolemy.actor.IORelation [$e0 connect \
        [java::field [java::cast ptolemy.actor.lib.Source $ramp] output] \
-       [java::field [java::cast ptolemy.domains.sdf.lib.SDFTransformer $sampleDelay] input]
+       [java::field [java::cast ptolemy.domains.sdf.lib.SDFTransformer $sampleDelay] input]]] setWidth 1
     set relation [$e0 connect \
        [java::field \
        [java::cast ptolemy.domains.sdf.lib.SDFTransformer $sampleDelay] output] \
        [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]]
+    [java::cast ptolemy.actor.IORelation $relation] setWidth 1
 
 #set debugger [java::new ptolemy.kernel.util.StreamListener]
 #set director [java::cast ptolemy.domains.sdf.kernel.SDFDirector [$e0 getDirector]]

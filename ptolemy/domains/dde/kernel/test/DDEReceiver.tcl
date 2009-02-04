@@ -116,7 +116,8 @@ test DDEReceiver-2.1 {Send three tokens between two actors} {
 
     set ioprcvr [$actorReceiver getPort "input"]
     set iopsend [$actorSend getPort "output"]
-    set rel [$toplevel connect $ioprcvr $iopsend "rel"]
+    set rel [java::cast ptolemy.actor.IORelation [$toplevel connect $ioprcvr $iopsend "rel"]]
+    $rel setWidth 1
 
     $mgr run
 
@@ -149,7 +150,8 @@ test DDEReceiver-2.2 {Send a real token, an ignore token and a real token.} {
 
     set ioprcvr [$actorReceiver getPort "input"]
     set iopsend [$actorSend getPort "output"]
-    set rel [$toplevel connect $ioprcvr $iopsend "rel"]
+    set rel [java::cast ptolemy.actor.IORelation [$toplevel connect $ioprcvr $iopsend "rel"]]
+    $rel setWidth 1
 
     $mgr run
 
@@ -189,8 +191,11 @@ test DDEReceiver-2.3 {Send NullTokens through FlowThrough.} {
     set thruInPort [$actorThru getPort "input"]
     set thruOutPort [$actorThru getPort "output"]
 
-    $toplevel connect $sendOutPort $thruInPort "rel1"
-    $toplevel connect $thruOutPort $rcvrInPort "rel2"
+    set rel1 [java::cast ptolemy.actor.IORelation [$toplevel connect $sendOutPort $thruInPort "rel1"]]
+    $rel1 setWidth 1
+       
+    set rel2 [java::cast ptolemy.actor.IORelation [$toplevel connect $thruOutPort $rcvrInPort "rel2"]]
+    $rel2 setWidth 1
 
     $mgr run
 
@@ -234,10 +239,14 @@ test DDEReceiver-2.4 {Send Ignore and Real through multiport.} {
     set thruInPort [$actorThru getPort "input"]
     set thruOutPort [$actorThru getPort "output"]
 
-    $toplevel connect $sendOutPort1 $thruInPort
-    $toplevel connect $sendOutPort2 $thruInPort
-    $toplevel connect $thruOutPort $rcvrInPort
-
+    
+    set rel1 [java::cast ptolemy.actor.IORelation [$toplevel connect $sendOutPort1 $thruInPort]]
+    $rel1 setWidth 1
+    set rel2 [java::cast ptolemy.actor.IORelation [$toplevel connect $sendOutPort2 $thruInPort]]
+    $rel2 setWidth 1
+    set rel3 [java::cast ptolemy.actor.IORelation [$toplevel connect $thruOutPort $rcvrInPort]]
+    $rel3 setWidth 1
+    
     $mgr run
 
     set time0 [$actorReceiver getAfterTime 0]

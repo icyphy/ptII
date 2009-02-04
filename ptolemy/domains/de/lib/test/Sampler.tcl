@@ -65,17 +65,17 @@ test Sampler-2.1 {test with the default output values} {
     set offsets [java::field $clock2 offsets]
     $offsets setExpression {{0.0, 0.5}}
     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
-    set r0 [$e0 connect \
+    [java::cast ptolemy.actor.IORelation [$e0 connect \
        [java::field [java::cast ptolemy.actor.lib.Source $clock1] output] \
        [java::field [java::cast ptolemy.domains.de.lib.DETransformer $sampler] \
-       input]]
-    $e0 connect \
+       input]]] setWidth 1
+    [java::cast ptolemy.actor.IORelation [$e0 connect \
        [java::field \
        [java::cast ptolemy.domains.de.lib.DETransformer $sampler] output] \
-       [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
-    $e0 connect \
+       [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]]] setWidth 1
+    [java::cast ptolemy.actor.IORelation [$e0 connect \
        [java::field [java::cast ptolemy.actor.lib.Source $clock2] output] \
-       [java::field $sampler trigger]
+       [java::field $sampler trigger]]] setWidth 1
     [$e0 getManager] execute
     list [enumToTokenValues [$rec getRecord 0]] \
             [enumToObjects [$rec getTimeRecord]]

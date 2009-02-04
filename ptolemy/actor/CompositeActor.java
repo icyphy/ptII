@@ -308,6 +308,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
                         && (getDirector() != null)
                         && (manager != null)
                         && (manager.getState() != Manager.IDLE)
+                        && (manager.getState() != Manager.INFERING_WIDTHS)
                         && (manager.getState() != Manager.PREINITIALIZING)) {
                     // Note that even if castPort is opaque, we still have to
                     // check for director above.
@@ -324,6 +325,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
                         && (getExecutiveDirector() != null)
                         && (manager != null)
                         && (manager.getState() != Manager.IDLE)
+                        && (manager.getState() != Manager.INFERING_WIDTHS)
                         && (manager.getState() != Manager.PREINITIALIZING)) {
                     try {
                         castPort.createReceivers();

@@ -30,6 +30,7 @@ package ptolemy.kernel.util.test;
 import java.util.Collections;
 import java.util.Enumeration;
 
+import ptolemy.actor.IORelation;
 import ptolemy.actor.Manager;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.lib.Clock;
@@ -70,7 +71,8 @@ public class TestDE {
         _clock.offsets.setExpression("{0.0}");
         _clock.period.setExpression("1.0");
         _rec = new Recorder(_top, "rec");
-        _top.connect(_clock.output, _rec.input);
+        IORelation relation = (IORelation) _top.connect(_clock.output, _rec.input);
+        relation.setWidth(1);
     }
 
     ///////////////////////////////////////////////////////////////////

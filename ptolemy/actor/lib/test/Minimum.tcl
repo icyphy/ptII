@@ -66,15 +66,15 @@ test Minimum-2.1 {test Minimum} {
     $value setExpression {0.0}
     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
     set input [java::field $minimum input]
-    set r1 [$e0 connect \
+    [java::cast ptolemy.actor.IORelation [$e0 connect \
        [java::field [java::cast ptolemy.actor.lib.Source $pulse] output] \
-       $input]
-    set r2 [$e0 connect \
+       $input]] setWidth 1
+    [java::cast ptolemy.actor.IORelation [$e0 connect \
        [java::field [java::cast ptolemy.actor.lib.Source $const] output] \
-       $input]
-    $e0 connect \
+       $input]] setWidth 1
+    [java::cast ptolemy.actor.IORelation [$e0 connect \
        [java::field $minimum minimumValue] \
-       [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
+       [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]]] setWidth 1
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
 } {-2.0 -1.0 0.0 0.0 0.0}

@@ -78,10 +78,10 @@ test SubscriptionAggregator-2.0 {No Publisher} {
     set e0 [sdfModel 5]
     set subAgg [java::new ptolemy.actor.lib.SubscriptionAggregator $e0 subagg]
     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
-    $e0 connect \
+    [java::cast ptolemy.actor.IORelation [$e0 connect \
             [java::field [java::cast ptolemy.actor.lib.Subscriber $subAgg] \
 		 output] \
-            [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
+            [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]]] setWidth 1
     catch {[$e0 getManager] execute} errMsg
     list $errMsg
 } {{ptolemy.kernel.util.IllegalActionException: Subscriber has no matching Publisher, channel was "channel1" which evaluated to "channel1".
@@ -96,10 +96,10 @@ test SubscriptionAggregator-3.0 {Debugging messages} {
     $channelP setExpression "channel42"
     $publisher attributeChanged $channelP
 
-    $e3 connect \
+    [java::cast ptolemy.actor.IORelation [$e3 connect \
 	[java::field [java::cast ptolemy.actor.lib.Source $const] \
 	     output] \
-	[java::field $publisher input]
+	[java::field $publisher input]]] setWidth 1
 
     set subAgg [java::new ptolemy.actor.lib.SubscriptionAggregator $e3 subagg]
     set channelS [getParameter $subAgg channel]
@@ -107,10 +107,10 @@ test SubscriptionAggregator-3.0 {Debugging messages} {
     $subAgg attributeChanged $channelS
 
     set rec [java::new ptolemy.actor.lib.Recorder $e3 rec]
-    $e3 connect \
+    [java::cast ptolemy.actor.IORelation [$e3 connect \
 	[java::field [java::cast ptolemy.actor.lib.Subscriber $subAgg] \
 	     output] \
-	[java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
+	[java::field [java::cast ptolemy.actor.lib.Sink $rec] input]]] setWidth 1
 
     set stream [java::new java.io.ByteArrayOutputStream]
     set printStream [java::new \
@@ -164,10 +164,10 @@ test SubscriptionAggregator-4.0 {7*9*11 SubscriptionAggregators} {
     $channelP setExpression "channel42"
     $publisher attributeChanged $channelP
 
-    $e3 connect \
+    [java::cast ptolemy.actor.IORelation [$e3 connect \
 	[java::field [java::cast ptolemy.actor.lib.Source $ramp] \
 	     output] \
-	[java::field $publisher input]
+	[java::field $publisher input]]] setWidth 1
 
     set rec [java::new ptolemy.actor.lib.Recorder $e3 rec]
 
@@ -197,19 +197,19 @@ test SubscriptionAggregator-4.0 {7*9*11 SubscriptionAggregators} {
 		$operation setExpression "multiply"
 		$subAgg attributeChanged $operation
 
-		$ej connect \
+		[java::cast ptolemy.actor.IORelation [$ej connect \
 		    [java::field [java::cast ptolemy.actor.lib.Subscriber $subAgg] \
 			 output] \
-		    $pj
+		    $pj]] setWidth 1
 
 	    }
-	    $ek connect \
+	    [java::cast ptolemy.actor.IORelation [$ek connect \
 		$pj \
-		$pk
+		$pk]] setWidth 1
 	}
-	$e3 connect \
+	[java::cast ptolemy.actor.IORelation [$e3 connect \
 		$pk \
-		[java::field [java::cast ptolemy.actor.lib.Sink $rec] input] 
+		[java::field [java::cast ptolemy.actor.lib.Sink $rec] input]]] setWidth 1
     }
 
     [$e3 getManager] execute

@@ -82,6 +82,7 @@ test IORelation-3.1 {Test getWidth} {
     $e1 setManager $manager
     $e1 setName E1
     set r1 [java::new ptolemy.actor.IORelation $e1 R1]
+    $r1 setWidth 1
     $manager inferWidths
     $r1 getWidth
 } {1}
@@ -242,6 +243,7 @@ test IORelation-3.9 {Test getWidth of a port with inferred relation width} {
 test IORelation-3.10 {Test getWidth of a port with inferred relation width} {
     # NOTE: Append to previous design
     set r3 [java::new ptolemy.actor.IORelation $e1 R3]
+    $r3 setWidth 1
     $p2 link $r3
     $manager inferWidths
     list [$p1 getWidth] [$r1 getWidth] [$p2 getWidth] [$r2 getWidth] [$r3 getWidth]
@@ -478,6 +480,7 @@ test IORelation-4.1 {Elaborate test system} {
     set r2 [java::new ptolemy.actor.IORelation $e0 R2]
     $r2 setWidth 3
     set r3 [java::new ptolemy.actor.IORelation $e0 R3]
+    $r3 setWidth 1
     set r4 [java::new ptolemy.actor.IORelation $e0 R4]
     $r4 setWidth 4
 
@@ -513,7 +516,9 @@ test IORelation-4.1 {Elaborate test system} {
     set r5 [java::new ptolemy.actor.IORelation $e3 R5]
     $r5 setWidth [java::field ptolemy.actor.IORelation WIDTH_TO_INFER]
     set r6 [java::new ptolemy.actor.IORelation $e3 R6]
+    $r6 setWidth 1
     set r7 [java::new ptolemy.actor.IORelation $e3 R7]
+    $r7 setWidth 1
     $p5 link $r5
     $p5 link $r6
     $p6 link $r7

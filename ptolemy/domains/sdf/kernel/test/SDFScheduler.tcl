@@ -131,7 +131,7 @@ test SDFScheduler-5.1 {Scheduling tests} {
 
     set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $toplevel Ramp]
     set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $toplevel Consumer]
-    $toplevel connect [java::field $a1 output] [java::field $a2 input] R1
+    [java::cast ptolemy.actor.IORelation [$toplevel connect [java::field $a1 output] [java::field $a2 input] R1]] setWidth 1
     $scheduler setValid false
 
 #set debugger [java::new ptolemy.kernel.util.StreamListener]
@@ -157,8 +157,8 @@ test SDFScheduler-5.2 {Scheduling tests} {
     set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $toplevel Ramp]
     set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestDelay $toplevel Delay]
     set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $toplevel Consumer]
-    $toplevel connect [java::field $a1 output] [java::field $a2 input] R1
-    $toplevel connect [java::field $a2 output] [java::field $a3 input] R2
+    [java::cast ptolemy.actor.IORelation [$toplevel connect [java::field $a1 output] [java::field $a2 input] R1]] setWidth 1
+    [java::cast ptolemy.actor.IORelation [$toplevel connect [java::field $a2 output] [java::field $a3 input] R2]] setWidth 1
     $scheduler setValid false
 
     _initialize $toplevel
@@ -182,9 +182,9 @@ test SDFScheduler-5.3 {Scheduling tests} {
     set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestSplit $toplevel Dist]
     set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $toplevel Consumer1]
     set a4 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $toplevel Consumer2]
-    $toplevel connect [java::field $a1 output] [java::field $a2 input] R1
-    $toplevel connect [java::field $a2 output1] [java::field $a3 input] R2
-    $toplevel connect [java::field $a2 output2] [java::field $a4 input] R3
+    [java::cast ptolemy.actor.IORelation [$toplevel connect [java::field $a1 output] [java::field $a2 input] R1]] setWidth 1
+    [java::cast ptolemy.actor.IORelation [$toplevel connect [java::field $a2 output1] [java::field $a3 input] R2]] setWidth 1
+    [java::cast ptolemy.actor.IORelation [$toplevel connect [java::field $a2 output2] [java::field $a4 input] R3]] setWidth 1
     $scheduler setValid false
 
     _initialize $toplevel
@@ -208,10 +208,10 @@ test SDFScheduler-5.4 {Scheduling tests} {
     set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestSplit $toplevel Dist]
     set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFTestJoin $toplevel Comm]
     set a4 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $toplevel Consumer1]
-    $toplevel connect [java::field $a1 output] [java::field $a2 input] R1
-    $toplevel connect [java::field $a2 output1] [java::field $a3 input1] R2a
-    $toplevel connect [java::field $a2 output2] [java::field $a3 input2] R2d
-    $toplevel connect [java::field $a3 output] [java::field $a4 input] R3
+    [java::cast ptolemy.actor.IORelation [$toplevel connect [java::field $a1 output] [java::field $a2 input] R1]] setWidth 1
+    [java::cast ptolemy.actor.IORelation [$toplevel connect [java::field $a2 output1] [java::field $a3 input1] R2a]] setWidth 1
+    [java::cast ptolemy.actor.IORelation [$toplevel connect [java::field $a2 output2] [java::field $a3 input2] R2d]] setWidth 1
+    [java::cast ptolemy.actor.IORelation [$toplevel connect [java::field $a3 output] [java::field $a4 input] R3]] setWidth 1
     $scheduler setValid false
 
     _initialize $toplevel
@@ -235,8 +235,8 @@ test SDFScheduler-6.1 {Multirate Scheduling tests} {
     set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $toplevel Ramp]
     set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestDelay $toplevel Delay]
     set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $toplevel Consumer]
-    $toplevel connect [java::field $a1 output] [java::field $a2 input] R1
-    $toplevel connect [java::field $a2 output] [java::field $a3 input] R4
+    [java::cast ptolemy.actor.IORelation [$toplevel connect [java::field $a1 output] [java::field $a2 input] R1]] setWidth 1
+    [java::cast ptolemy.actor.IORelation [$toplevel connect [java::field $a2 output] [java::field $a3 input] R4]] setWidth 1
 
     $scheduler setValid false
 
@@ -313,10 +313,10 @@ test SDFScheduler-7.1 {Multirate and Hierarchy Scheduling tests} {
     set s5 [$d5 getScheduler]
     set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestDelay $c1 Delay]
     set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $toplevel Consumer]
-    $toplevel connect [java::field $a1 output] $p1 R1
-    $c1 connect $p1 [java::field $a2 input] R2
-    $c1 connect [java::field $a2 output] $p2 R3
-    $toplevel connect $p2 [java::field $a3 input] R4
+    [java::cast ptolemy.actor.IORelation [$toplevel connect [java::field $a1 output] $p1 R1]] setWidth 1
+    [java::cast ptolemy.actor.IORelation [$c1 connect $p1 [java::field $a2 input] R2]] setWidth 1
+    [java::cast ptolemy.actor.IORelation [$c1 connect [java::field $a2 output] $p2 R3]] setWidth 1
+    [java::cast ptolemy.actor.IORelation [$toplevel connect $p2 [java::field $a3 input] R4]] setWidth 1
 
     $scheduler setValid false
     $s5 setValid false
@@ -418,8 +418,8 @@ test SDFScheduler-8.1 {input Multiport, Multirate Scheduling tests} {
     set port [java::field $a3 input]
     $port setMultiport true
 
-    $toplevel connect [java::field $a1 output] [java::field $a3 input] R1
-    $toplevel connect [java::field $a2 output] [java::field $a3 input] R2
+    [java::cast ptolemy.actor.IORelation [$toplevel connect [java::field $a1 output] [java::field $a3 input] R1]] setWidth 1
+    [java::cast ptolemy.actor.IORelation [$toplevel connect [java::field $a2 output] [java::field $a3 input] R2]] setWidth 1
 
     $scheduler setValid false
 
@@ -608,8 +608,8 @@ test SDFScheduler-8.11 {output Multiport, Multirate Scheduling tests} {
     set port [java::field $a1 output]
     $port setMultiport true
 
-    $toplevel connect [java::field $a1 output] [java::field $a2 input] R1
-    $toplevel connect [java::field $a1 output] [java::field $a3 input] R2
+    [java::cast ptolemy.actor.IORelation [$toplevel connect [java::field $a1 output] [java::field $a2 input] R1]] setWidth 1
+    [java::cast ptolemy.actor.IORelation [$toplevel connect [java::field $a1 output] [java::field $a3 input] R2]] setWidth 1
 
     $scheduler setValid false
 
@@ -723,8 +723,8 @@ test SDFScheduler-9.1 {Input Multirate and Hierarchy Scheduling tests} {
     set port [java::field $a3 input]
     $port setMultiport true
 
-    $toplevel connect [java::field $a1 output] $p1 R1
-    $toplevel connect [java::field $a2 output] $p1 R2
+    [java::cast ptolemy.actor.IORelation [$toplevel connect [java::field $a1 output] $p1 R1]] setWidth 1
+    [java::cast ptolemy.actor.IORelation [$toplevel connect [java::field $a2 output] $p1 R2]] setWidth 1
     $c1 connect $p1 [java::field $a3 input] R3
     set r3 [$c1 getRelation R3]
     [java::cast ptolemy.actor.IORelation $r3] setWidth 2
@@ -821,8 +821,8 @@ test SDFScheduler-9.11 {Output Multirate and Hierarchy Scheduling tests} {
     $c1 connect [java::field $Ramp output] $p1 R1
     set r1 [$c1 getRelation R1]
     [java::cast ptolemy.actor.IORelation $r1] setWidth 2
-    $toplevel connect $p1 [java::field $Consumer1 input] R2
-    $toplevel connect $p1 [java::field $Consumer2 input] R3
+    [java::cast ptolemy.actor.IORelation [$toplevel connect $p1 [java::field $Consumer1 input] R2]] setWidth 1
+    [java::cast ptolemy.actor.IORelation [$toplevel connect $p1 [java::field $Consumer2 input] R3]] setWidth 1
 
     $scheduler setValid false
     $s5 setValid false
@@ -909,6 +909,7 @@ test SDFScheduler-10.1 {input Broadcast Multirate Scheduling tests} {
     set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $toplevel Consumer]
 
     set r1 [$toplevel connect [java::field $a1 output] [java::field $a3 input] R1]
+    [java::cast ptolemy.actor.IORelation $r1] setWidth 1
     [java::field $a2 output] link $r1
 
     $scheduler setValid false
@@ -931,6 +932,7 @@ test SDFScheduler-10.11 {output Broadcast Multirate Scheduling tests} {
     set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $toplevel Consumer2]
 
     set r1 [$toplevel connect [java::field $a1 output] [java::field $a2 input] R1]
+    [java::cast ptolemy.actor.IORelation $r1] setWidth 1
     [java::field $a3 input] link $r1
 
     $scheduler setValid false
@@ -1020,10 +1022,10 @@ test SDFScheduler-11.1 {Multirate and transparent hierarchy Scheduling tests} {
     $p2 setOutput 1
     set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestDelay $c1 Delay]
     set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $toplevel Consumer]
-    $toplevel connect [java::field $a1 output] $p1 R1
-    $c1 connect $p1 [java::field $a2 input] R2
-    $c1 connect [java::field $a2 output] $p2 R3
-    $toplevel connect $p2 [java::field $a3 input] R4
+    [java::cast ptolemy.actor.IORelation [$toplevel connect [java::field $a1 output] $p1 R1]] setWidth 1
+    [java::cast ptolemy.actor.IORelation [$c1 connect $p1 [java::field $a2 input] R2]] setWidth 1
+    [java::cast ptolemy.actor.IORelation [$c1 connect [java::field $a2 output] $p2 R3]] setWidth 1
+    [java::cast ptolemy.actor.IORelation [$toplevel connect $p2 [java::field $a3 input] R4]] setWidth 1
 
     $scheduler setValid false
 
@@ -1112,9 +1114,9 @@ test SDFScheduler-12.1 {Input Multirate and transparent hierarchy Scheduling tes
     set port [java::field $a3 input]
     $port setMultiport true
 
-    $toplevel connect [java::field $a1 output] $p1 R1
-    $toplevel connect [java::field $a2 output] $p1 R2
-    $c1 connect $p1 [java::field $a3 input] R3
+    [java::cast ptolemy.actor.IORelation [$toplevel connect [java::field $a1 output] $p1 R1]] setWidth 1
+    [java::cast ptolemy.actor.IORelation [$toplevel connect [java::field $a2 output] $p1 R2]] setWidth 1
+    [java::cast ptolemy.actor.IORelation [$c1 connect $p1 [java::field $a3 input] R3]] setWidth 1
 
     $scheduler setValid false
      _initialize $toplevel
@@ -1194,8 +1196,8 @@ test SDFScheduler-12.11 {Output Multirate and hierarch Scheduling tests} {
     $c1 connect [java::field $a1 output] $p1 R1
     set r1 [$c1 getRelation R1]
     [java::cast ptolemy.actor.IORelation $r1] setWidth 2
-    $toplevel connect $p1 [java::field $a2 input] R2
-    $toplevel connect $p1 [java::field $a3 input] R3
+    [java::cast ptolemy.actor.IORelation [$toplevel connect $p1 [java::field $a2 input] R2]] setWidth 1
+    [java::cast ptolemy.actor.IORelation [$toplevel connect $p1 [java::field $a3 input] R3]] setWidth 1
 
     $scheduler setValid false
      _initialize $toplevel
@@ -1272,8 +1274,9 @@ test SDFScheduler-13.1 {connected graph, disconnected relation} {
     $port setMultiport true
 
     set r1 [java::new ptolemy.actor.TypedIORelation $toplevel R1]
+    $r1 setWidth 1
     [java::field $a3 input] link $r1
-    $toplevel connect [java::field $a2 output] [java::field $a3 input] R2
+    [java::cast ptolemy.actor.IORelation [$toplevel connect [java::field $a2 output] [java::field $a3 input] R2]] setWidth 1
 
     $scheduler setValid false
 
@@ -1318,8 +1321,8 @@ test SDFScheduler-13.2 {Output External port connected } {
     set port [java::field $a3 input]
     $port setMultiport true
 
-    $toplevel connect [java::field $a1 output] $p1 R1
-    $toplevel connect [java::field $a2 output] $p1 R2
+    [java::cast ptolemy.actor.IORelation [$toplevel connect [java::field $a1 output] $p1 R1]] setWidth 1
+    [java::cast ptolemy.actor.IORelation [$toplevel connect [java::field $a2 output] $p1 R2]] setWidth 1
     $c1 connect $p1 [java::field $a3 input] R3
     set r3 [$c1 getRelation R3]
     [java::cast ptolemy.actor.IORelation $r3] setWidth 2
@@ -1353,10 +1356,10 @@ test SDFScheduler-13.3 {_debugging code coverage} {
     set s5 [$d5 getScheduler]
     set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestDelay $c1 Delay]
     set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $toplevel Consumer]
-    $toplevel connect [java::field $a1 output] $p1 R1
-    $c1 connect $p1 [java::field $a2 input] R2
-    $c1 connect [java::field $a2 output] $p2 R3
-    $toplevel connect $p2 [java::field $a3 input] R4
+    [java::cast ptolemy.actor.IORelation [$toplevel connect [java::field $a1 output] $p1 R1]] setWidth 1
+    [java::cast ptolemy.actor.IORelation [$c1 connect $p1 [java::field $a2 input] R2]] setWidth 1
+    [java::cast ptolemy.actor.IORelation [$c1 connect [java::field $a2 output] $p2 R3]] setWidth 1
+    [java::cast ptolemy.actor.IORelation [$toplevel connect $p2 [java::field $a3 input] R4]] setWidth 1
 
     $scheduler setValid false
     $s5 setValid false
@@ -1392,10 +1395,10 @@ test SDFScheduler-13.4 {Error message for transparent hierarchy multiport discon
     set a4 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $c1 Consumer2]
     set a4input [java::field $a4 input]
 
-    $toplevel connect [java::field $a1 output] $p1 R1
+    [java::cast ptolemy.actor.IORelation [$toplevel connect [java::field $a1 output] $p1 R1]] setWidth 1
 
-    $c1 connect $p1 $a3input R3
-    $c1 connect $p1 $a4input R4
+    [java::cast ptolemy.actor.IORelation [$c1 connect $p1 $a3input R3]] setWidth 1
+    [java::cast ptolemy.actor.IORelation [$c1 connect $p1 $a4input R4]] setWidth 1
 
     $scheduler setValid false
   
@@ -1439,10 +1442,10 @@ test SDFScheduler-13.5 {Error message for opaque hierarchy multiport disconnecte
     set a4 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $c1 Consumer2]
     set a4input [java::field $a4 input]
 
-    $toplevel connect [java::field $a1 output] $p1 R1
+    [java::cast ptolemy.actor.IORelation [$toplevel connect [java::field $a1 output] $p1 R1]] setWidth 1
 
-    $c1 connect $p1 $a3input R3
-    $c1 connect $p1 $a4input R4
+    [java::cast ptolemy.actor.IORelation [$c1 connect $p1 $a3input R3]] setWidth 1
+    [java::cast ptolemy.actor.IORelation [$c1 connect $p1 $a4input R4]] setWidth 1
 
     $scheduler setValid false
   
@@ -1480,12 +1483,13 @@ test SDFScheduler-14.1 {Multirate Scheduling tests} {
     set a5 [java::new ptolemy.domains.sdf.kernel.test.SDFTestDelay $toplevel Delay4]
     set a6 [java::new ptolemy.domains.sdf.kernel.test.SDFTestDelay $toplevel Delay5]
     set a7 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $toplevel Consumer]
-    $toplevel connect [java::field $a1 output] [java::field $a2 input] R1
-    $toplevel connect [java::field $a2 output] [java::field $a3 input] R2
+    [java::cast ptolemy.actor.IORelation [$toplevel connect [java::field $a1 output] [java::field $a2 input] R1]] setWidth 1
+    [java::cast ptolemy.actor.IORelation [$toplevel connect [java::field $a2 output] [java::field $a3 input] R2]] setWidth 1
     set r3 [$toplevel connect [java::field $a3 output] [java::field $a4 input] R3]
-    $toplevel connect [java::field $a4 output] [java::field $a5 input] R4
-    $toplevel connect [java::field $a5 output] [java::field $a6 input] R5
-    $toplevel connect [java::field $a6 output] [java::field $a7 input] R6
+    [java::cast ptolemy.actor.IORelation $r3] setWidth 1
+    [java::cast ptolemy.actor.IORelation [$toplevel connect [java::field $a4 output] [java::field $a5 input] R4]] setWidth 1
+    [java::cast ptolemy.actor.IORelation [$toplevel connect [java::field $a5 output] [java::field $a6 input] R5]] setWidth 1
+    [java::cast ptolemy.actor.IORelation [$toplevel connect [java::field $a6 output] [java::field $a7 input] R6]] setWidth 1
     
     setTokenProductionRate [java::field $a4 output] 0
 
@@ -1540,7 +1544,7 @@ test SDFScheduler-14.4 {Multirate Scheduling tests} {
     setTokenProductionRate [java::field $a4 output] 1
     [java::field $a4 input] setMultiport true
     set b1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $toplevel Ramp2]
-    $toplevel connect [java::field $b1 output] [java::field $a4 input] R7
+    [java::cast ptolemy.actor.IORelation [$toplevel connect [java::field $b1 output] [java::field $a4 input] R7]] setWidth 1
 
     $scheduler setValid false
 

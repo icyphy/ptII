@@ -110,6 +110,8 @@ set up reference to attribute "script" as "script"
 set up reference to attribute "_iconDescription" as "_iconDescription"
 set up reference to port "input" as "input"
 set up reference to port "output" as "output"
+Connections changed on port: input
+Connections changed on port: output
 Called stopFire()
 Added attribute firingsPerIteration to .top.PythonScript
 Called initialize()

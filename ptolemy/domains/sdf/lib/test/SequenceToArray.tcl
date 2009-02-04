@@ -76,8 +76,8 @@ test SequenceToArray-2.1 {test double array, test prefire} {
     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
     set recIn [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
 
-    $e0 connect $rampOut $s2aIn
-    $e0 connect $s2aOut $recIn
+    [java::cast ptolemy.actor.IORelation [$e0 connect $rampOut $s2aIn]] setWidth 1
+    [java::cast ptolemy.actor.IORelation [$e0 connect $s2aOut $recIn]] setWidth 1
 
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
@@ -123,8 +123,8 @@ test SequenceToArray-2.6 {test cascading SequenceToArray} {
     # insert the new SequenceToArray before the Recorder
     $s2aOut unlinkAll
     $recIn unlinkAll
-    $e0 connect $s2aOut $s2a2In
-    $e0 connect $s2a2Out $recIn
+    [java::cast ptolemy.actor.IORelation [$e0 connect $s2aOut $s2a2In]] setWidth 1
+    [java::cast ptolemy.actor.IORelation [$e0 connect $s2a2Out $recIn]] setWidth 1
 
     $init setExpression {0}
     $step setExpression {1}

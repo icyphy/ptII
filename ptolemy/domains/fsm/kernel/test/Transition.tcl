@@ -114,6 +114,7 @@ test Transition-2.4 {test tracking source and destination state} {
 #
 test Transition-3.1 {test scope of guard and trigger expressions} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
+    $e0 setManager [java::new ptolemy.actor.Manager]
     set dir [java::new ptolemy.actor.Director $e0 dir]
     set fsm [java::new ptolemy.domains.fsm.kernel.FSMActor $e0 fsm]
     set s0 [java::new ptolemy.domains.fsm.kernel.State $fsm s0]

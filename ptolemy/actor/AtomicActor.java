@@ -190,6 +190,7 @@ public class AtomicActor extends ComponentEntity implements Actor,
                     && (getDirector() != null) 
                     && (manager != null)
                     && (manager.getState() != Manager.IDLE)
+                    && (manager.getState() != Manager.INFERING_WIDTHS)
                     && (manager.getState() != Manager.PREINITIALIZING)) {
                 try {
                     workspace().getWriteAccess();

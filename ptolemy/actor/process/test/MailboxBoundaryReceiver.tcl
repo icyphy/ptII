@@ -51,6 +51,8 @@ test MailboxBoundaryReceiver-2.2 {Unlimited get(Branch) and put(Token,Branch) wi
     # Instantiate Directors and Composite Actors
     set tL [java::new ptolemy.actor.CompositeActor]
     $tL setName "tL"
+    set manager [java::new ptolemy.actor.Manager]
+    $tL setManager $manager    
     set compAct [java::new ptolemy.actor.CompositeActor $tL "compAct"]
     set outDir [java::new ptolemy.actor.process.CompositeProcessDirector $tL "outDir"]
     set inDir [java::new ptolemy.actor.process.CompositeProcessDirector $compAct "inDir"]

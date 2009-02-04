@@ -169,6 +169,7 @@ test IOPort-5.1 {Test getWidth} {
     set e1 [java::new ptolemy.actor.AtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.IOPort $e1 P1 true false]
     set r1 [java::new ptolemy.actor.IORelation $e0 R1]
+    $r1 setWidth 1
     $manager inferWidths
     set temp [$p1 getWidth]
     $p1 liberalLink $r1
@@ -183,7 +184,9 @@ test IOPort-5.2 {Test getWidth} {
     set e1 [java::new ptolemy.actor.AtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.IOPort $e1 P1 true true]
     set r1 [java::new ptolemy.actor.IORelation $e0 R1]
+    $r1 setWidth 1
     set r2 [java::new ptolemy.actor.IORelation $e0 R2]
+    $r2 setWidth 1
     $p1 setMultiport true
     $p1 liberalLink $r1
     $p1 liberalLink $r2
@@ -200,6 +203,7 @@ test IOPort-5.3 {Test getWidth} {
     set r1 [java::new ptolemy.actor.IORelation $e0 R1]
     $r1 setWidth 2
     set r2 [java::new ptolemy.actor.IORelation $e0 R2]
+    $r2 setWidth 1
     $p1 setMultiport true
     $p1 liberalLink $r1
     $p1 liberalLink $r2
@@ -831,6 +835,7 @@ test IOPort-10.6 {Check description use the example (that used to be) in design 
     $p2 link $r2
     $p5 link $r2
     set r3 [java::new ptolemy.actor.IORelation $e0 R3]
+    $r3 setWidth 1
     $p2 link $r3
     $p5 link $r3
     $p6 link $r3
@@ -844,9 +849,11 @@ test IOPort-10.6 {Check description use the example (that used to be) in design 
     $p5 link $r5
     $p8 link $r5
     set r6 [java::new ptolemy.actor.IORelation $e3 R6]
+    $r6 setWidth 1
     $p5 link $r6
     $p9 link $r6
     set r7 [java::new ptolemy.actor.IORelation $e3 R7]
+    $r7 setWidth 1
     $p6 link $r7
     $p9 link $r7
 

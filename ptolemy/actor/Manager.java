@@ -582,12 +582,19 @@ public class Manager extends NamedObj implements Runnable {
     /**
      *  Infer the width of the relations for which no width has been
      *  specified yet.
-     *  The specified actor must be the top level container of the model.
      *  @exception IllegalActionException If the widths of the relations at port are not consistent
      *                  or if the width cannot be inferred for a relation.
      */
     public void inferWidths() throws IllegalActionException {
-        _relationWidthInference.inferWidths();
+        if (_relationWidthInference.needsWidthInference()) {
+            State previousState = _state;
+            try {
+                _setState(INFERING_WIDTHS);
+                _relationWidthInference.inferWidths();
+            } finally {
+                _setState(previousState);
+            }
+        }
     }
 
     /** Initialize the model.  This calls the preinitialize() method of
@@ -674,7 +681,7 @@ public class Manager extends NamedObj implements Runnable {
             // We should infer the widths before preinitializing the container, since the latter
             // will create the receivers for which it needs the widths of the relations.
             if (IORelation._USE_NEW_WIDTH_INFERENCE_ALGO) {
-                _inferRelationWidths();
+                inferWidths();
             }
 
             // Pre-initialize actors that have been added.
@@ -740,7 +747,9 @@ public class Manager extends NamedObj implements Runnable {
      *  This will invalidate the current width inference.
      */
     public void notifyConnectivityChange() {
-        _relationWidthInference.notifyConnectivityChange();
+        if (getState() != INFERING_WIDTHS) {
+            _relationWidthInference.notifyConnectivityChange();
+        }
     }
 
     /** Notify all the execution listeners of an exception.
@@ -963,7 +972,7 @@ public class Manager extends NamedObj implements Runnable {
 
             // Infer widths (if not already done)
             if (IORelation._USE_NEW_WIDTH_INFERENCE_ALGO) {
-                _inferRelationWidths();
+                inferWidths();
             }
 
             resolveTypes();
@@ -1465,24 +1474,6 @@ public class Manager extends NamedObj implements Runnable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
-   /**
-    * Infer the width of the relations for which no width has been
-    * specified yet (width equals -1)
-    * @exception IllegalActionException If the widths of the relations at port are not consistent
-    *                  or if the width cannot be inferred for a relation.
-    */
-    private void _inferRelationWidths() throws IllegalActionException {
-        if (_relationWidthInference.needsWidthInference()) {
-            State previousState = _state;
-            try {
-                _setState(INFERING_WIDTHS);
-                _relationWidthInference.inferWidths();
-            } finally {
-                _setState(previousState);
-            }
-        }
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

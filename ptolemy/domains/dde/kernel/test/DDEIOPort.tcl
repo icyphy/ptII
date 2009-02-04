@@ -118,7 +118,9 @@ test DDEIOPort-4.0 {Check send()} {
 
     set outPort [java::new ptolemy.domains.dde.kernel.DDEIOPort $act1 "output" false true]
     set inPort [java::new ptolemy.domains.dde.kernel.DDEIOPort $act2 "input" true false]
-    set rel [$topLevel connect $outPort $inPort "rel"]
+    set rel [java::cast ptolemy.actor.IORelation [$topLevel connect $outPort $inPort "rel"]]
+    $rel setWidth 1
+    
 
     set tok [java::new ptolemy.data.Token]
     set tokType [$tok getType]
@@ -161,8 +163,10 @@ test DDEIOPort-3.1 {Broadcast tokens to two different actors.} {
     set inPort3 [java::new ptolemy.domains.dde.kernel.DDEIOPort $act3 "input" true false]
     $outPort setMultiport true
 
-    set rel2 [$topLevel connect $outPort $inPort2 "rel2"]
-    set rel3 [$topLevel connect $outPort $inPort3 "rel3"]
+    set rel2 [java::cast ptolemy.actor.IORelation [$topLevel connect $outPort $inPort2 "rel2"]]
+    $rel2 setWidth 1
+    set rel3 [java::cast ptolemy.actor.IORelation [$topLevel connect $outPort $inPort3 "rel3"]]
+		$rel3 setWidth 1
 
     set tok [java::new ptolemy.data.Token]
     set tokType [$tok getType]

@@ -326,7 +326,7 @@ public class IORelation extends ComponentRelation {
                         }
                     }
                     if (!foundDirector) { 
-                        throw new IllegalActionException(this, "Can't infer the widths" +
+                        throw new IllegalActionException(this, "Can't infer the widths " +
                         "of the relations since no director present.");
                     }
                     
@@ -1077,7 +1077,7 @@ public class IORelation extends ComponentRelation {
                     }
                 }
             } finally {
-                _workspace.doneWriting();
+                _workspace.doneTemporaryWriting();                
             }
         } else {
             if (width == _cachedWidth) {

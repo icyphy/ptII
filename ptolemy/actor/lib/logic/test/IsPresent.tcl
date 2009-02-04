@@ -64,13 +64,13 @@ test IsPresent-2.0 {Truth Table: True, True} {
     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
     set input [java::field [java::cast ptolemy.actor.lib.Transformer \
             $isPresent] input]
-    set r1 [$e0 connect \
+    [java::cast ptolemy.actor.IORelation [$e0 connect \
        [java::field [java::cast ptolemy.actor.lib.Source $in1] output] \
-       $input]
-    $e0 connect \
+       $input]] setWidth 1
+    [java::cast ptolemy.actor.IORelation [connect \
 	    [java::field [java::cast ptolemy.actor.lib.Transformer \
             $isPresent] output] \
-	    [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
+	    [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]]] setWidth 1
     # Success here is just not throwing an exception.
     list {}
 } {{}}

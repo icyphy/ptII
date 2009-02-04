@@ -270,6 +270,7 @@ test CompositeActor-9.1 {Test setContainer tolerance} {
 test CompositeActor-10.1 {Test wormhole data transfers} {
     set e0 [java::new ptolemy.actor.CompositeActor]
     $e0 setDirector $director
+    $e0 setManager $manager
     $e0 setName E0
     # top-level actors
     set e1 [java::new ptolemy.actor.AtomicActor $e0 E1]
