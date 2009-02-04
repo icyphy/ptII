@@ -2,10 +2,11 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <!-- Factory for graph rewriting rule editor.  -->
-<property name="gtTableauFactory" class="ptolemy.actor.gui.PtolemyTableauFactory">
+<property name="latticeTableauFactory" class="ptolemy.actor.gui.PtolemyTableauFactory">
   <!-- These will appear in the View menu of a graph rewriting rule tableau. -->
-  <property name="Transformation Editor"
-            class="ptolemy.vergil.gt.GTTableau$Factory">
+  <property name="Property Lattice Editor"
+            class="ptolemy.vergil.properties.LatticeGraphTableau$Factory">
+
     <property name="_library" class="ptolemy.moml.LibraryAttribute">
       <configure>
         <entity name="library" class="ptolemy.kernel.CompositeEntity">
@@ -13,6 +14,8 @@
         </entity>
       </configure>
     </property>
+
+
     <property name="state" class="ptolemy.moml.LibraryAttribute">
       <configure>
         <entity name="stateLibrary" class="ptolemy.kernel.CompositeEntity">

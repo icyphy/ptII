@@ -25,7 +25,7 @@
  PT_COPYRIGHT_VERSION 2
  COPYRIGHTENDKEY
  */
-package ptolemy.data.properties.actor.lib;
+package ptolemy.domains.properties.lib;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Transformer;

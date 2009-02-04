@@ -1,10 +1,9 @@
-# Makefile for Java Ptolemy Data Properties actor lib
+# Makefile for the Java classes used in property annotation.
 #
-# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
+# @Version: $Id: makefile 37543 2005-04-12 02:12:09Z cxh $
+# @Author: Man-Kit Leung
 #
-# $Id: makefile 52231 2009-01-29 05:46:09Z cxh $
-#
-# @Copyright (c) 2009 The Regents of the University of California.
+# @Copyright (c) 2008-2009 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -28,43 +27,47 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
+##########################################################################
 
-ME =		ptolemy/domains/properties/lib
+ME =		ptolemy/domains/properties
 
-DIRS =
+DIRS =		lib
 
-# Root of the Ptolemy II directory
-ROOT =		../../../..
-
-CLASSPATH =	$(ROOT)
+# Root of Ptolemy II directory
+ROOT =		../../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	lib
-PTCLASSJAR =	$(PTPACKAGE).jar
+PTPACKAGE = 	pn
+PTDIST =	$(PTPACKAGE)$(PTVERSION)
+PTCLASSJAR =
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	lib/lib.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	ModelAnalyzer.java
+	LatticeElement.java \
+	PropertyLatticeComposite.java
 
 OTHER_FILES_TO_BE_JARED = \
-	ModelAnalyzerIcon.xml
+	LatticeElementIcon.xml 
 
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)
 
-
-# Sources that may or may not be present, but if they are present, we don't
-# want make checkjunk to barf on them.
-# Don't include demo here, otherwise make sources tries to run demos
-MISC_FILES =
+# Files or directories that are present, but that 'make checkjunk'
+# should not complain about
+# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
+MISC_FILES =	lib
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = doc
-
-JCLASS = $(JSRCS:%.java=%.class)
+OPTIONAL_FILES =
 
 all: jclass
 install: jclass jars
