@@ -68,7 +68,7 @@ public interface PortCodeGenerator extends ComponentCodeGenerator {
     /** Get the buffer size of channel of the port.
      *  @param channelNumber The number of the channel that is being set.
      *  @return return The size of the buffer.
-     *  @see #setBufferSize(int, int);
+     *  @see #setBufferSize(int, int)
      */
     public int getBufferSize(int channelNumber) throws IllegalActionException;
 
