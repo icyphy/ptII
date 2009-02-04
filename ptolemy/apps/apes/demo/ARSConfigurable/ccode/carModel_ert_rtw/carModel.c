@@ -108,7 +108,7 @@ void carModel_step(void)
 
   /* Outport: '<Root>/rear angle' */
   carModel_Y.rearangle = rtb_phi;
-  callbackV(0.001,0,"rearAngle",carModel_Y.rearangle);
+  callbackO(0.001,0,"rearAngle",carModel_Y.rearangle);
 
   /* DiscreteTransferFcn: '<S8>/speed sensor' */
   rtb_temp12 = carModel_P.speedsensor_D*rtb_motormechanical;

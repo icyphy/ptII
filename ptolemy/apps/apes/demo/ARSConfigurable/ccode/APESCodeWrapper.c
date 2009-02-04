@@ -8,7 +8,7 @@
 
  JavaVM *cached_jvm; 
  jobject dispatcher;
- jmethodID accessPointCallbackMethod, accessPointCallbackReturnValuesMethod;
+ jmethodID accessPointCallbackMethod, accessPointCallbackReturnValuesMethod, accessPointCallbackInputValuesMethod;
 
 /*****************************************************************************/
  JNIEXPORT jint JNICALL
@@ -38,7 +38,12 @@
      }
 	 
 	 accessPointCallbackReturnValuesMethod = (*env)->GetMethodID(env, cls, "accessPointCallback", "(DDLjava/lang/String;D)V");
-     if (accessPointCallbackMethod == NULL) {
+     if (accessPointCallbackReturnValuesMethod == NULL) {
+         return JNI_ERR;
+     }
+	 
+	 accessPointCallbackInputValuesMethod = (*env)->GetMethodID(env, cls, "accessPointCallback", "(DDLjava/lang/String;)V");
+     if (accessPointCallbackInputValuesMethod == NULL) {
          return JNI_ERR;
      }
 
@@ -78,7 +83,7 @@ Java_ptolemy_apps_apes_AccessPointCallbackDispatcher_InitializeC(JNIEnv *env, jo
  }
  
  /*****************************************************************************/
-  void callbackV(float exectime, float mindelay, char* varName, double value) {
+  void callbackO(float exectime, float mindelay, char* varName, double value) {
 	 jmethodID method;
 	 char buf[128];
 	 jclass cls; 
@@ -91,4 +96,16 @@ Java_ptolemy_apps_apes_AccessPointCallbackDispatcher_InitializeC(JNIEnv *env, jo
 
  }
  /*****************************************************************************/
+   void callbackI(float exectime, float mindelay, char* varName) {
+	 jmethodID method;
+	 char buf[128];
+	 jclass cls; 
+	 JNIEnv *env = JNU_GetEnv();
+	 
+	 jstring string = (*env)->NewStringUTF(env, varName);  
+	 
+	 
+	 (*(env))->CallVoidMethod(env, dispatcher, accessPointCallbackInputValuesMethod, exectime, mindelay, string);   
+
+ }
  /*****************************************************************************/

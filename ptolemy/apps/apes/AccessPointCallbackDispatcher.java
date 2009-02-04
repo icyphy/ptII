@@ -30,6 +30,21 @@ public class AccessPointCallbackDispatcher {
             }
         }
         
+        public void accessPointCallback(double extime, double minNextTime, String varName) {
+            CTask task = (CTask) _taskNames.get(Thread.currentThread().getName());
+            try { 
+                task.accessPointCallback(extime, minNextTime);
+                task.setGlobalVariable(varName);
+            } catch (NoRoomException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IllegalActionException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        
+        
         public void accessPointCallback(double extime, double minNextTime, String varName, double value) {
             CTask task = (CTask) _taskNames.get(Thread.currentThread().getName());
             try { 

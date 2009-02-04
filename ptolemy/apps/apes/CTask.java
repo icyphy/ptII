@@ -1,6 +1,7 @@
 package ptolemy.apps.apes;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -148,6 +149,10 @@ public class CTask extends ApeActor implements Runnable {
     
     private native void setGlobalVariable(String name, double value);
     
+    public void setGlobalVariable(String varName) {
+        setGlobalVariable(varName, _inputPortValues.get(varName));
+    }
+    
     public boolean prefire() throws IllegalActionException { 
         for (IOPort port : (List<IOPort>)inputPortList()) {
             if (port != input) {
@@ -160,18 +165,20 @@ public class CTask extends ApeActor implements Runnable {
                         } else if (token instanceof IntToken) {
                             value = ((IntToken)token).doubleValue();
                         } // TODO add other token types
-                        setGlobalVariable(port.getName(), value);
+                        _inputPortValues.put(port.getName(), value); 
                     }
                 }
             } 
         }
         return super.prefire();
     }
+    
+    private HashMap<String, Double> _inputPortValues;
 
     public void fire() throws IllegalActionException {
         boolean readInputs = false;
         
-        while (input.hasToken(0)){
+        while (input.hasToken(0)) {
             input.get(0);
             readInputs = true; 
         } 
@@ -236,6 +243,7 @@ public class CTask extends ApeActor implements Runnable {
                 synchronized (this) {
                     if (_minDelay.getDoubleValue() > 0) { 
                         _waitForMinDelay = true;
+                        getDirector().fireAt(this, getDirector().getModelTime().add(_minDelay));
                     } else if (_minDelay.getDoubleValue() == 0) {
                         _waitForMinDelay = true;
                         continueExecution = true;
@@ -279,7 +287,7 @@ public class CTask extends ApeActor implements Runnable {
             dispatcher = new AccessPointCallbackDispatcher(); 
             try {
                 String libName = ((StringToken)((StringParameter)((NamedObj)getContainer()).getAttribute("CCodeLibrary")).getToken()).stringValue();
-                System.loadLibrary(libName); 
+                System.loadLibrary(libName);  
                 dispatcher.InitializeC();
 //                cpuScheduler.InitializeC();
 //                eventManager.InitializeC();
@@ -328,6 +336,8 @@ public class CTask extends ApeActor implements Runnable {
     private native void CMethod(String taskName); 
 
     private void _initialize() throws IllegalActionException, NameDuplicationException {
+        
+        _inputPortValues = new HashMap();
 
         Parameter sourceActorList= (Parameter) input.getAttribute("sourceActors");
         sourceActorList.setExpression("*");
@@ -375,6 +385,8 @@ public class CTask extends ApeActor implements Runnable {
     public void bufferOutput(ResourceToken resourceToken) { 
         bufferedResourceTokens.add(resourceToken);
     }
+
+    
         
  
     

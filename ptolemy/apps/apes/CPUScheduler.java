@@ -17,7 +17,9 @@ import ptolemy.actor.util.Time;
 import ptolemy.apps.apes.TaskExecutionListener.ScheduleEventType;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken; 
+import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -224,10 +226,7 @@ public class CPUScheduler extends ApeActor {
     //////////////////////
     /// Task management
     
-    
 
-    
-    // DeclareTask ??
     
     public int activateTask(int taskId) throws NoRoomException, IllegalActionException {
         Actor task = _tasks.get(taskId);
@@ -304,6 +303,8 @@ public class CPUScheduler extends ApeActor {
                 if (!_tasksThatStartedExecuting.contains(actorToSchedule))
                     newTaskInExecution = actorToSchedule; 
             } else if (_tasksInExecution.contains(actorToSchedule)) { // already in list but execution time was not known
+                if (_usedExecutionTimes.get(actorToSchedule) != null &&
+                        executionTime != null)
                 executionTime = executionTime.subtract(_usedExecutionTimes.get(actorToSchedule));  
             } else { // new actor to schedule does not preempt currently running task
                 for (int i = 0; i < _tasksInExecution.size(); i++) { 
@@ -336,9 +337,9 @@ public class CPUScheduler extends ApeActor {
 
     private void reschedule(Actor newTaskInExecution, CTask callingTask) throws IllegalActionException {
         if (newTaskInExecution != null) {
-            if (callingTask != null)
-                callingTask.bufferOutput(newTaskInExecution, new BooleanToken(true));
-            else 
+//            if (callingTask != null) TODO check
+//                callingTask.bufferOutput(newTaskInExecution, new BooleanToken(true));
+//            else 
                 output.send(newTaskInExecution, new BooleanToken(true));
             _tasksThatStartedExecuting.add(newTaskInExecution);
             _sendTaskExecutionEvent(newTaskInExecution, ScheduleEventType.START);
@@ -461,6 +462,7 @@ public class CPUScheduler extends ApeActor {
         if (osekEntryPoint == null) {
             osekEntryPoint = new OSEKEntryPoint(this, eventManager); 
             try {
+                String libName = ((StringToken)((StringParameter)((NamedObj)getContainer()).getAttribute("CCodeLibrary")).getToken()).stringValue();
                 osekEntryPoint.InitializeC();  
             } catch (Exception ex) {
                 

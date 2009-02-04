@@ -32,12 +32,7 @@ public class CTaskC extends CTask {
         System.out.println(this.getName() + "._callCMethod()");
         try {
             accessPointCallback(-1.0, 0.5); 
-            period = System.currentTimeMillis();
-            for (int i=0;i<Integer.MAX_VALUE/4;i++){
-                double a = Math.PI*Math.PI;
-            }
-            period = System.currentTimeMillis() - period;
-            System.out.println("duration of CMethod of " + this.getName() + ": " + Long.toString(period) + " ms.");            
+            System.out.println("!!!!!!!!");
             accessPointCallback(1.0, 0.0);         
             cpuScheduler.terminateTask();
         } catch (Exception e) { 
