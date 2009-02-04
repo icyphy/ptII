@@ -1310,16 +1310,17 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/fsm \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/hdf \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/sdf \
+	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/kernel \
+	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/actor \
+	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/actor/parameters \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/actor/lib/colt \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/actor/lib/conversions \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/actor/lib/logic \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/actor/lib/string \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/actor/lib \
-	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/actor/parameters \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/domains/sdf/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/domains/sdf/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/domains/sdf \
-	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/kernel/test \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/vhdl/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/vhdl/actor/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/vhdl/actor/lib/vhdl \
