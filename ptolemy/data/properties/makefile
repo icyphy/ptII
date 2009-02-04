@@ -62,7 +62,6 @@ JSRCS = \
 	AnalyzerAttribute.java \
 	AnalyzeModel.java \
 	AnnotationAttribute.java \
-        ModelAnalyzer.java \
 	ModelWriter.java \
 	ParseTreeAnnotationEvaluator.java \
 	ParseTreeASTNodeHelperCollector.java \
