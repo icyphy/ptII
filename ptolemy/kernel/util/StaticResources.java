@@ -416,7 +416,7 @@ public class StaticResources {
     /**
      * Path to resource bundle containing basic default settings for SVG icons.
      * 
-     * @see #RESOURCEBUNDLE_DIR
+     * @see ptolemy.kernel.util.StaticResources#RESOURCEBUNDLE_DIR
      */
     public static final String UI_SETTINGS_BUNDLE = RESOURCEBUNDLE_DIR
             + "/uiSettings";
@@ -424,7 +424,7 @@ public class StaticResources {
     /**
      * Path to resource bundle containing UI Display Text.
      * 
-     * @see #RESOURCEBUNDLE_DIR
+     * @see ptolemy.kernel.util.StaticResources#RESOURCEBUNDLE_DIR
      */
     public static final String UI_DISPLAY_TEXT_BUNDLE = RESOURCEBUNDLE_DIR
             + "/uiDisplayText";
