@@ -16,9 +16,9 @@ JNIEXPORT void JNICALL Java_ptolemy_apps_apes_CTask_Cmethod(JNIEnv *, jobject, j
 
 JNIEnv *JNU_GetEnv(void);
 
-void callback(float , float );
-void callbackO(float exectime, float mindelay, char* varName, double value);
-void callbackI(float exectime, float mindelay, char* varName);
+void callback(double , double );
+void callbackO(double exectime, double mindelay, char* varName, double value);
+void callbackI(double exectime, double mindelay, char* varName);
 
 #ifdef __cplusplus
 }

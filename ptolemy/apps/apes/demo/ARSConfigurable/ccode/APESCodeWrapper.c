@@ -77,13 +77,13 @@ Java_ptolemy_apps_apes_AccessPointCallbackDispatcher_InitializeC(JNIEnv *env, jo
   
 /*****************************************************************************/
 
- void callback(float exectime, float mindelay) {
+ void callback(double exectime, double mindelay) {
 	 JNIEnv *env = JNU_GetEnv();  
 	 (*(env))->CallVoidMethod(env, dispatcher, accessPointCallbackMethod, exectime, mindelay);    
  }
  
  /*****************************************************************************/
-  void callbackO(float exectime, float mindelay, char* varName, double value) {
+  void callbackO(double exectime, double mindelay, char* varName, double value) {
 	 jmethodID method;
 	 char buf[128];
 	 jclass cls; 
@@ -96,7 +96,7 @@ Java_ptolemy_apps_apes_AccessPointCallbackDispatcher_InitializeC(JNIEnv *env, jo
 
  }
  /*****************************************************************************/
-   void callbackI(float exectime, float mindelay, char* varName) {
+   void callbackI(double exectime, double mindelay, char* varName) {
 	 jmethodID method;
 	 char buf[128];
 	 jclass cls; 

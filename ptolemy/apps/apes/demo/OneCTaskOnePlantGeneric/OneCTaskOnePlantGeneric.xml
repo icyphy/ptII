@@ -29,7 +29,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 50.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={81, 99, 1175, 698}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={34, 22, 1175, 698}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[962, 588]">
     </property>
@@ -73,7 +73,7 @@
         </port>
     </entity>
     <entity name="InterruptServiceController" class="ptolemy.apps.apes.InterruptServiceController">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.716552734375, 147.78106689453125]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 145.0]">
         </property>
         <port name="trigger_A" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

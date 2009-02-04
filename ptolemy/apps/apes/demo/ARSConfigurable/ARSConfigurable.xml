@@ -4,13 +4,13 @@
 <entity name="ARSConfigurable" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={209, 191, 780, 504}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={209, 191, 948, 542}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[567, 394]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[735, 432]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{283.4999999999999, 197.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{367.4999999999999, 216.0}">
     </property>
     <property name="CCodeLibrary" class="ptolemy.data.expr.StringParameter" value="ars">
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -30,9 +30,9 @@
         </property>
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="500">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="22000">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 45.0]">
         </property>
     </property>
     <entity name="DispatcherTask" class="ptolemy.apps.apes.CTask">
@@ -109,9 +109,11 @@
         </property>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={818, 324, 448, 444}, maximized=false}">
+        <property name="automaticRescale" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[448, 400]">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={27, 200, 1309, 639}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[1309, 595]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 125.0]">
         </property>
@@ -120,8 +122,10 @@
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>TimedPlotter</title>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.5110000073000001" max="21999.3110000043"/>
+<yRange min="-0.0017453290442456684" max="0.01822896676548582"/>
 </plot>?>
         </configure>
     </entity>

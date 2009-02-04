@@ -8,19 +8,19 @@ double middle, upper, lower;
 /*****************************************************************************/
 
 void task(){
-    double tmpUpper, tmpLower;fprintf(stderr, "0 ");
+    double tmpUpper, tmpLower;
 
-	callback(-1, 0.1);fprintf(stderr, "1");
+	callbackI(-1.0, 0.1, "upper");
 
-	tmpUpper = upper;fprintf(stderr, "2 ");
+	tmpUpper = upper;
 
-	callback(0.2, 0.1);fprintf(stderr, "3 ");
+	callbackI(0.2, 0.1, "lower");
 
-	tmpLower = lower;fprintf(stderr, "4 ");
+	tmpLower = lower;
 
 	callback(0.2, 0.3);
 	middle = (tmpUpper + tmpLower) / 2;
-	callbackV(1, 0, "middle", middle);
+	callbackO(1.0, 0.0, "middle", middle);
 	terminateTask();
 }
 
@@ -34,10 +34,10 @@ void setGlobalVariable(char * name, double d) {
 }
 
 void irs() {
-	fprintf(stderr, "IRS Task "); 
-	 callback(-1, 0);
+	 fprintf(stderr, "IRS Task "); 
+	 callback(-1.0, 0.0);
 	 activateTask(1);
-	 callback(0.2, 0);
+	 callback(0.2, 0.0);
 	 terminateTask();
 }
 

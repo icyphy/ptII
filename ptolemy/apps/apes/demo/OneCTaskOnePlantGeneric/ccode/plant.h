@@ -12,4 +12,4 @@ double step(double lower) {
 	if (lower == 5)
 		lower = 0; 
 	return lower;
-}
+} 

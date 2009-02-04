@@ -15,7 +15,7 @@ typedef struct AA{
  JavaVM *cached_jvm; 
  jobject dispatcher, cpuScheduler, eventManager, osekEntryPoint;
  jclass cpus, apcd;
- jmethodID accessPointCallbackMethod, activateTaskMethod, terminateTaskMethod, accessPointCallbackReturnValuesMethod;
+ jmethodID accessPointCallbackMethod, activateTaskMethod, terminateTaskMethod, accessPointCallbackReturnValuesMethod, accessPointCallbackInputValuesMethod;
  JNIEXPORT jint JNICALL
  
  
@@ -42,7 +42,12 @@ typedef struct AA{
          return JNI_ERR;
      }
 	 accessPointCallbackReturnValuesMethod = (*env)->GetMethodID(env, cls, "accessPointCallback", "(DDLjava/lang/String;D)V");
-     if (accessPointCallbackMethod == NULL) {
+     if (accessPointCallbackReturnValuesMethod == NULL) {
+         return JNI_ERR;
+     }
+	 
+	 accessPointCallbackInputValuesMethod = (*env)->GetMethodID(env, cls, "accessPointCallback", "(DDLjava/lang/String;)V");
+     if (accessPointCallbackInputValuesMethod == NULL) {
          return JNI_ERR;
      }
 	 
@@ -116,16 +121,18 @@ Java_ptolemy_apps_apes_CTask_CMethod(JNIEnv *env, jobject obj, jstring taskName)
 
 
 
- void callback(float exectime, float mindelay) {
+ void callback(double exectime, double mindelay) {
 	 jmethodID method;
 	 jclass cls; 
 	 JNIEnv *env = JNU_GetEnv();
 	 fprintf(stderr, "callback ");  
+	 fprintf(stderr, "%f ", exectime);  
+	 fprintf(stderr, "%f ", mindelay); 
 	 (*(env))->CallVoidMethod(env, dispatcher, accessPointCallbackMethod, exectime, mindelay);   
 	 fprintf(stderr, "after callback ");
  }
  
-  void callbackV(float exectime, float mindelay, char* varName, double value) {
+  void callbackO(double exectime, double mindelay, char* varName, double value) {
 	 jmethodID method;
 	 char buf[128];
 	 jclass cls; 
@@ -137,6 +144,19 @@ Java_ptolemy_apps_apes_CTask_CMethod(JNIEnv *env, jobject obj, jstring taskName)
 	 
 	 (*(env))->CallVoidMethod(env, dispatcher, accessPointCallbackReturnValuesMethod, exectime, mindelay, string, value);   
 	 fprintf(stderr, "after callback ");
+ }
+ 
+    void callbackI(double exectime, double mindelay, char* varName) {
+	 jmethodID method;
+	 char buf[128];
+	 jclass cls; 
+	 JNIEnv *env = JNU_GetEnv();
+	 
+	 jstring string = (*env)->NewStringUTF(env, varName);  
+	 
+	 
+	 (*(env))->CallVoidMethod(env, dispatcher, accessPointCallbackInputValuesMethod, exectime, mindelay, string);   
+
  }
  
  void activateTask(int taskId) {
