@@ -82,7 +82,6 @@ public interface PortCodeGenerator extends ComponentCodeGenerator {
 
     /** Get the write offset of a channel of the port.
      *  @param channelNumber The number of the channel.
-     *  @param writeOffset The offset.
      *  @return The write offset.
      *  @exception IllegalActionException If thrown while getting the channel.
      *  @see #setWriteOffset(int, Object)
