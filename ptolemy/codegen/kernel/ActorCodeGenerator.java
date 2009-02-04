@@ -72,6 +72,8 @@ public interface ActorCodeGenerator extends ComponentCodeGenerator {
      */
     public String generateFireFunctionCode() throws IllegalActionException;
 
+    public String generateIterationCode(String countExpression) throws IllegalActionException;
+    
     /** Generate the main entry point.
      *  @return Return the definition of the main entry point for a program.
      *  In C, this would be defining main().
@@ -99,11 +101,20 @@ public interface ActorCodeGenerator extends ComponentCodeGenerator {
      *
      *  @return The postfire code of the associated composite actor.
      *  @exception IllegalActionException If the helper associated with
-     *   an actor throws it while generating postfire code for the actor
-     *   or while creating buffer size and offset map.
+     *   an actor throws it while generating the postfire code for the actor.
      */
     public String generatePostfireCode() throws IllegalActionException;
 
+    
+    /** Generate the prefire code of the associated composite actor.
+    *
+    *  @return The prefire code of the associated composite actor.
+    *  @exception IllegalActionException If the helper associated with
+    *   an actor throws it while generating the prefire code for the actor.
+    */
+    public String generatePrefireCode() throws IllegalActionException;
+
+    
     /** Generate the preinitialize code of the associated composite actor.
      *  It first creates buffer size and offset map for its input ports and
      *  output ports. It then gets the result of generatePreinitializeCode()

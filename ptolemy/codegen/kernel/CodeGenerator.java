@@ -2126,6 +2126,10 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     protected static class Code implements Comparable {        
         public Code (String string, int order) {
             this.string = string;
+            
+            // Reverse the sign so that higher order value
+            // will be first in the sorted list.
+            this.order = -order;
         }
 
         public int compareTo(Object object) {

@@ -3120,4 +3120,16 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         _eol = StringUtilities.getProperty("line.separator");
     }
 
+
+    public String generateIterationCode(String countExpression)
+            throws IllegalActionException {
+        // FIXME: This is to be used in future re-structuring.
+        return "";
+    }
+
+    public String generatePrefireCode() throws IllegalActionException {
+        // FIXME: This is to be used in future re-structuring.
+        return "";
+    }
+
 }
