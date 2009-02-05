@@ -67,7 +67,7 @@ test IsPresent-2.0 {Truth Table: True, True} {
     [java::cast ptolemy.actor.IORelation [$e0 connect \
        [java::field [java::cast ptolemy.actor.lib.Source $in1] output] \
        $input]] setWidth 1
-    [java::cast ptolemy.actor.IORelation [connect \
+    [java::cast ptolemy.actor.IORelation [$e0 connect \
 	    [java::field [java::cast ptolemy.actor.lib.Transformer \
             $isPresent] output] \
 	    [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]]] setWidth 1
