@@ -1072,12 +1072,12 @@ sign_jar_dist_update_remote: sign_jar_dist
 MKL4J = $(ROOT)/bin/mkl4j
 
 # Location of Launch4J, see http://launch4j.sourceforge.net/
-L4J_DIR=c:/Program Files/Launch4j
-#L4J_DIR=$(PTII)/vendors/launch4j
+#L4J_DIR=c:/Program Files/Launch4j
+L4J_DIR=$(PTII)/vendors/launch4j
 
 # Cygpath command
-PTCYGPATH=cygpath --windows -a
-#PTCYGPATH=$(ROOT)/bin/ptcygpath
+#PTCYGPATH=cygpath --windows -a
+PTCYGPATH=$(ROOT)/bin/ptcygpath
 
 # Launch4J console application that reads in .xml files and creates .exe files.
 #L4JC=$(L4J_DIR)/launch4jc.exe
