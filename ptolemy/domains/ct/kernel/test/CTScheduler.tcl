@@ -80,6 +80,7 @@ test CTScheduler-1.3 {scheduler and its container} {
 test CTScheduler-2.1 {schedule a chain of actors} {
     set ca [java::new ptolemy.domains.ct.kernel.CTCompositeActor]
     $ca setName CA
+    $ca setManager [java::new ptolemy.actor.Manager]
     set dir [java::new ptolemy.domains.ct.kernel.CTMultiSolverDirector $ca Dir]
     set sch [java::cast ptolemy.domains.ct.kernel.CTScheduler \
 	    [$dir getScheduler]]
