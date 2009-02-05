@@ -878,6 +878,28 @@ public class IORelation extends ComponentRelation {
         return _cachedWidth;
     }
     
+    /** Determine whether widths are currently being inferred or not.
+     *  @return True When widths are currently being inferred.
+     */
+    private boolean _inferringWidths() {
+        Nameable container = getContainer();
+        
+        if (container instanceof CompositeActor) {
+            Director director = ((CompositeActor) container).getDirector();
+
+            if (director != null) {
+                Nameable directorContainer = director.getContainer();
+                if (directorContainer instanceof CompositeActor) {
+                    Manager manager = ((CompositeActor) container).getManager();
+                    if (manager != null) {
+                        return manager.getState() == Manager.INFERING_WIDTHS;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    
     /** Infer the width of the port from how it is connected.
      *  Throw a runtime exception if this cannot be done (normally,
      *  the methods that construct a topology ensure that it can be
@@ -1077,7 +1099,30 @@ public class IORelation extends ComponentRelation {
                     }
                 }
             } finally {
-                _workspace.doneTemporaryWriting();                
+                // About conditionally executing doneWriting:
+                //      When the user updates the width we want to increase
+                //      the workspace version to invalidate widths that are being
+                //      cached by IOPort.
+                //      Parameters however have in some sense a strange behavior,
+                //      when the user sets a Parameter (such as width) this typically
+                //      happens with setToken, which - in case the Parameter is not 
+                //      lazy - immediately results in the call attributedChanged, which
+                //      will call _setWidth. However when the project is opened, setExpression
+                //      is used. In the case the expression in not immediately evaluated, but
+                //      only when it is necessary. When you call getToken, the expression is evaluated
+                //      which results in the call of attributedChanged, which again results
+                //      in the call _setWidth. In this case however the model didn't change this
+                //      time, but earlier. Typically this happens after opening the model, of creating
+                //      a new relation. This already increased the version of the model, and hence
+                //      cached values or refreshed. Triggering of the width then happens when doing
+                //      width inference. Then we don't want to increase the version number since it would
+                //      invalidate all widths immediately.
+                //      Probably this construct works in practise, but it remains a dangerous one...
+                if (_inferringWidths()) {
+                    _workspace.doneTemporaryWriting();
+                } else {
+                    _workspace.doneWriting();
+                }
             }
         } else {
             if (width == _cachedWidth) {
