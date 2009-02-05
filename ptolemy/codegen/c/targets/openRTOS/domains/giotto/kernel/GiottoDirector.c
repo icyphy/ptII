@@ -3,6 +3,9 @@
  RIT128x96x4Init(1000000);
 /**/
 
+/***preinitBlock***/
+ xTaskHandle schedulerhandle;
+/**/
 /***declareTaskHandle($name)***/
     xTaskHandle $actorSymbol($name_handle);
 /**/

@@ -73,7 +73,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
     }
 
     public String generateInitializeCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
+        StringBuffer code = new StringBuffer(super.generateInitializeCode());
         // to call the c codeblocks in *.c
         code.append(this._generateBlockCode("initLCD"));
 
@@ -102,7 +102,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             // priority.
             args.set(0, currentPriorityLevel); 
 
-            code.append(_generateBlockCode("declareTaskHandle", args));
+            code.append(_generateBlockCode("createTask", args));
             currentPriorityLevel++;
             
             // We did minus 1 because we reserved the max
@@ -118,9 +118,9 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         StringBuffer tempcode = new StringBuffer();
         StringBuffer frequencyTCode= new StringBuffer();
     
-        code.append("RIT128x96x4Init(1000000);"+_eol);
-        code.append("xTaskHandle schedulerhandle;"+_eol);
-        tempcode.append("xTaskCreate(scheduler,"+"\"scheduler\""+",100,NULL,10,schedulerhandle);"+_eol);
+//        code.append("RIT128x96x4Init(1000000);"+_eol);
+//        code.append("xTaskHandle schedulerhandle;"+_eol);
+//        tempcode.append("xTaskCreate(scheduler,"+"\"scheduler\""+",100,NULL,10,schedulerhandle);"+_eol);
     
     
     
@@ -153,8 +153,8 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             frequencyTCode.append(generateFrequencyThreadCode(frequencyValue));
     
             //come back and create handlers for each of these frequency threads
-            code.append("xTaskHandle "+"frequency"+frequencyValue+"handle;"+_eol);
-            tempcode.append("xTaskCreate(frequency"+frequencyValue+",\"frequency"+frequencyValue+"\" "+",100,NULL,"+currentPriorityLevel+",frequency"+frequencyValue+"handle);"+_eol);
+            //code.append("xTaskHandle "+"frequency"+frequencyValue+"handle;"+_eol);
+            //tempcode.append("xTaskCreate(frequency"+frequencyValue+",\"frequency"+frequencyValue+"\" "+",100,NULL,"+currentPriorityLevel+",frequency"+frequencyValue+"handle);"+_eol);
             currentPriorityLevel++;
             currentPriorityLevel %=9;
     
