@@ -1313,13 +1313,13 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/actor \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/actor/parameters \
+	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/domains/sdf/kernel \
+	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/domains/sdf/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/actor/lib/colt \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/actor/lib/conversions \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/actor/lib/logic \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/actor/lib/string \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/actor/lib \
-	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/domains/sdf/kernel \
-	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/domains/sdf/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/domains/sdf \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/vhdl/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/vhdl/actor/lib \
@@ -1369,7 +1369,10 @@ NONJSALLDIRS = \
 	ptolemy/copernicus/actor \
 	ptolemy/copernicus/interpreted \
 	ptolemy/copernicus/java \
-	ptolemy/copernicus/shallow
+	ptolemy/copernicus/shallow \
+	ptolemy/kernel \
+	ptolemy/moml \
+	ptolemy/util
 
 #	ptolemy/copernicus/c
 #	
