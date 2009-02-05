@@ -555,23 +555,20 @@ public class IORelation extends ComponentRelation {
         int width = _getUserWidth();
         boolean widthInferenceValid = width != WIDTH_TO_INFER || _inferredWidthVersion == _workspace.getVersion();
         if (!widthInferenceValid) {
-            boolean directorPresent = false;
-            Nameable container = getContainer();
-            if (container instanceof CompositeActor) {
-                Director director = ((CompositeActor) container).getDirector();
-                if (director != null) { 
-                    widthInferenceValid = !director.needsWidthInference();
-                    if (widthInferenceValid) {
-                        _inferredWidthVersion = _workspace.getVersion(); 
-                    }
-                    directorPresent = true;
-                }                
-            }
-            if (!directorPresent) {
-                // If we don't have a director we can't determine the inferred width.
+            Manager manager = _getManager();
+            if (manager != null) { 
+                widthInferenceValid = !manager.needsWidthInference();
+                if (widthInferenceValid) {
+                    _inferredWidthVersion = _workspace.getVersion(); 
+                }
+            } else {
+                // If we don't have a director or manager we can't determine the inferred width.
                 // You could argue it is wrong to set the _inferredWidth = 0, however
-                // the user can't run the model anyway and hence needs to add a directory
-                // to ran it, at which time the width inference will be executed again.
+                // the user can't run the model anyway and hence needs to add a director
+                // to run it, at which time the width inference will be executed again.
+                // If there is no manager but a director it means the user has not run
+                // the model. Since we don't update the version we make sure that the 
+                // width is updated when the model is initialized.
                 _inferredWidth = 0;
                 widthInferenceValid = true;                
             }
@@ -878,10 +875,10 @@ public class IORelation extends ComponentRelation {
         return _cachedWidth;
     }
     
-    /** Determine whether widths are currently being inferred or not.
-     *  @return True When widths are currently being inferred.
+    /** Return the manager. If there is no Manager null is returned.
+     * @return The Manager.
      */
-    private boolean _inferringWidths() {
+    private Manager _getManager() {
         Nameable container = getContainer();
         
         if (container instanceof CompositeActor) {
@@ -890,12 +887,20 @@ public class IORelation extends ComponentRelation {
             if (director != null) {
                 Nameable directorContainer = director.getContainer();
                 if (directorContainer instanceof CompositeActor) {
-                    Manager manager = ((CompositeActor) container).getManager();
-                    if (manager != null) {
-                        return manager.getState() == Manager.INFERING_WIDTHS;
-                    }
+                    return ((CompositeActor) container).getManager();
                 }
             }
+        }
+        return null;
+    }
+    
+    /** Determine whether widths are currently being inferred or not.
+     *  @return True When widths are currently being inferred.
+     */
+    private boolean _inferringWidths() {
+        Manager manager = _getManager();
+        if (manager != null) {
+            return manager.getState() == Manager.INFERING_WIDTHS;
         }
         return false;
     }
