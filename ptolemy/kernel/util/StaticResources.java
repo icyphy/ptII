@@ -458,7 +458,7 @@ public class StaticResources {
      * Name of resource bundle containing mappings from fully-qualified
      * classnames => SVG icon paths. All paths are relative to classpath
      * 
-     * @see RESOURCEBUNDLE_DIR
+     * @see ptolemy.kernel.util.StaticResources#RESOURCEBUNDLE_DIR
      */
     protected static final String SVG_ICON_MAPPINGS_BYCLASS_BUNDLE = RESOURCEBUNDLE_DIR
             + "/uiSVGIconMappingsByClass";
@@ -467,7 +467,7 @@ public class StaticResources {
      * Path to resource bundle containing mappings from actor LSIDs => SVG icon
      * paths. All paths are relative to classpath
      * 
-     * @see RESOURCEBUNDLE_DIR
+     * @see ptolemy.kernel.util.StaticResources#RESOURCEBUNDLE_DIR
      */
     protected static final String SVG_ICON_MAPPINGS_BYLSID_BUNDLE = RESOURCEBUNDLE_DIR
             + "/uiSVGIconMappingsByLSID";
