@@ -38,14 +38,13 @@
   <!-- named "blank", then the effigy will initially refer to a clone -->
   <!-- of that blank entity. -->
   <entity name="effigyFactory" class="ptolemy.actor.gui.EffigyFactory">
-    <input source="ptolemy/configs/properties/latticeEffigyFactory.xml"/>
     <input source="ptolemy/configs/graphEffigyFactory.xml"/>
     <input source="ptolemy/configs/fsmEffigyFactories.xml"/>
     <input source="ptolemy/configs/ergEffigyFactory.xml"/>
     <input source="ptolemy/configs/gt/gtEffigyFactory.xml"/>
     <input source="ptolemy/configs/iaEffigyFactory.xml"/>
     <input source="ptolemy/configs/fmvEffigyFactory.xml"/>
-    <!--input source="ptolemy/configs/extendedEffigyFactories.xml"/-->
+    <input source="ptolemy/configs/extendedEffigyFactories.xml"/>
   </entity>
 
   <!-- The list of tableau factories, which defines the visual   -->
@@ -54,7 +53,6 @@
   <!-- is willing to open the model. Each editor contains a list -->
   <!-- of other editors that appear in the View menu.            -->
   <property name="tableauFactory" class="ptolemy.actor.gui.TableauFactory">
-    <input source="ptolemy/configs/properties/latticeTableauFactory.xml"/>  
     <input source="ptolemy/configs/gt/gtTableauFactory.xml"/>
     <input source="ptolemy/configs/gt/ergTableauFactory.xml"/>
     <input source="ptolemy/configs/iaTableauFactory.xml"/>
