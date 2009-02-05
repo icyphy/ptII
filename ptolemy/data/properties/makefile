@@ -31,7 +31,7 @@
 
 ME =		ptolemy/data/properties
 
-DIRS =      actor configuredSolvers demo gui lattice test token util 
+DIRS =      configuredSolvers demo gui lattice test token util 
 
 # Root of the Ptolemy II directory
 ROOT =		../../..
@@ -50,7 +50,6 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	actor/actor.jar \
 	configuredSolvers/configuredSolvers.jar \
 	demo/demo.jar \
 	gui/gui.jar \
@@ -88,7 +87,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo here, otherwise make sources tries to run demos
-MISC_FILES =	actor configuredSolvers gui lattice test token util 
+MISC_FILES =	configuredSolvers gui lattice test token util 
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
