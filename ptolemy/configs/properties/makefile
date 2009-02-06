@@ -1,6 +1,6 @@
 # Makefile for the Ptolemy with all domains runtime configuration 
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Man-Kit Leung
 #
 # @Version: $Id: makefile 52077 2009-01-15 21:06:31Z tfeng $
 #
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/configs/gt
+ME =		ptolemy/configs/properties
 
 # There is no demo directory, put demos in the corresponding domain
 # directory so that we can find them if we are looking at domains.
@@ -47,7 +47,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	gt
+PTPACKAGE = 	properties
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =	$(PTPACKAGE).jar
 
@@ -58,15 +58,9 @@ DERIVED_FILES =
 
 OTHER_FILES_TO_BE_JARED = \
 	configuration.xml \
-	ergTableauFactory.xml \
-	graphTableauFactory.xml \
-	graphTableauFactory.xml \
-	gtActorLibrary.xml \
-	gtEffigyFactory.xml \
-	gtLibrary.xml \
-	gtStateLibrary.xml \
-	gtTableauFactory.xml \
 	intro.htm \
+	latticeEffigyFactory.xml \
+	latticeTableauFactory.xml \
 	welcomeWindow.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
