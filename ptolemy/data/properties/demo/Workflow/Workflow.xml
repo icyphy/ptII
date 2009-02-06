@@ -63,7 +63,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{485.0, 295.0}">
         </property>
     </entity>
-    <entity name="ModelAnalyzer" class="ptolemy.data.properties.ModelAnalyzer">
+    <entity name="ModelAnalyzer" class="ptolemy.domains.properties.lib.ModelAnalyzer">
         <property name="property" class="ptolemy.data.expr.StringParameter" value="FirstValuePTS">
         </property>
         <property name="action" class="ptolemy.data.expr.StringParameter" value="ANNOTATE">
@@ -448,7 +448,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 300.0]">
         </property>
     </entity>
-    <entity name="ModelAnalyzer2" class="ptolemy.data.properties.ModelAnalyzer">
+    <entity name="ModelAnalyzer2" class="ptolemy.domains.properties.lib.ModelAnalyzer">
         <property name="property" class="ptolemy.data.expr.StringParameter" value="TypeSystemCCS">
         </property>
         <property name="action" class="ptolemy.data.expr.StringParameter" value="ANNOTATE">
