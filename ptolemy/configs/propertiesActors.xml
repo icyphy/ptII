@@ -5,7 +5,7 @@
   <configure>
     <?moml
       <group>
-        <entity name="ModelAnalyzer" class="ptolemy.data.properties.actor.lib.ModelAnalyzer"/>
+        <entity name="ModelAnalyzer" class="ptolemy.domains.properties.lib.ModelAnalyzer"/>
       </group>
     ?>
   </configure>
