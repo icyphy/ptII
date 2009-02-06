@@ -13,8 +13,7 @@
  */
 
 #include <stdio.h>                      /* This ert_main.c example uses printf/fflush */
-#include <stdlib.h>
-#include "carModel_ert_rtw/carModel.h"                   /* Model's header file */
+#include <stdlib.h> 
 #include "dynamicsControll_ert_rtw/dynamicsControll.h" 
 #include "motorController_ert_rtw/motorController.h" 
 #include "rtwtypes.h"                   /* MathWorks types */
@@ -46,46 +45,6 @@ bool appRunning=FALSE;
 
 int_T main(int_T argc, const char_T *argv[])
 {
-
-FILE *outf;
-int i;
-
-isExe=TRUE;
-if (appStartup()!=0){
-	exit(1);
-}
-
-  for(simStep=0; simStep < inputSize; simStep++){
-//	  printf("Step %d ...\n",step_cnt);
-
-	  if(simStep%5 == 0){
-		  dynamicsControll_step();
-	  }
-	  motorController_step();
-	  carModel_step();
-	  rear_angle[simStep]=carModel_Y.rearangle;
-  }
-
-
-  /* Terminate model */
-  carModel_terminate();
-  motorController_terminate();
-  dynamicsControll_terminate();
-
-  outf = fopen("output_data.txt","wt");
-  if (fopen == NULL){
-	  printf("Error opening the output file. Exiting... \n");
-	  exit(1);
-  }
-  
-  for (i=0;i<inputSize;i++){
-	  fprintf(outf,"%lf\n",rear_angle[i]);
-  }
-
-  fclose(outf);
-
-  printf("Done!\n");
-
   return 0;
 }
 /*****************************************************************************/
@@ -132,8 +91,7 @@ int appStartup(){
 
   /* Initialize model */
   dynamicsControll_initialize(1);
-  motorController_initialize(1);
-  carModel_initialize(1);
+  motorController_initialize(1); 
   appRunning=TRUE;
   if(!isExe){
 	  ActivateTask(motorControllerTask);
@@ -148,10 +106,12 @@ int appStartup(){
 
 /* This should be connected to a trigger with the base rate */
 /* OSEK task activated at startup */
-void appDispatcher(){
+void appDispatcher(){ 
 	callback(-1,0);
-	while (appRunning){
-		callback(0.1,0);
+	while (appRunning){ 
+		callbackO(0.01, 0, "frontAngle", front_angle[simStep]);
+		callbackO(0.01, 0, "speedProfile", speed[simStep]);
+		callback(0.08,0);
 		WaitEvent(appDispatcherEvent);
 		callback(0.01,0);
 		ClearEvent(appDispatcherEvent);
@@ -163,8 +123,9 @@ void appDispatcher(){
 		
 		callback(0.1,0);
 		SetEvent(motorControllerTask, motorControllerEvent);
-		carModel_step();
+		//carModel_step();
 		simStep++;
+		
 	}
 	
 	callback(1,0);

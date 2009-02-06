@@ -73,10 +73,7 @@ public class CTask extends ApeActor implements Runnable {
         if (!_actorStopped){
             if (extime >= 0) {
                 ResourceToken token = new ResourceToken(this, new Time(getDirector(), extime), null);
-                if (_inExecution)
-                    _buffer = token;
-                else 
-                    output.send("CPUScheduler", token); 
+                _buffer = token;
             }
 
             synchronized (this) {
@@ -165,7 +162,8 @@ public class CTask extends ApeActor implements Runnable {
                         } else if (token instanceof IntToken) {
                             value = ((IntToken)token).doubleValue();
                         } // TODO add other token types
-                        _inputPortValues.put(port.getName(), value); 
+                        //_inputPortValues.put(port.getName(), value);
+                        setGlobalVariable(port.getName(), value);
                     }
                 }
             } 
@@ -338,7 +336,7 @@ public class CTask extends ApeActor implements Runnable {
     private void _initialize() throws IllegalActionException, NameDuplicationException {
         
         _inputPortValues = new HashMap();
-
+        
         Parameter sourceActorList= (Parameter) input.getAttribute("sourceActors");
         sourceActorList.setExpression("*");
 

@@ -168,13 +168,33 @@ extern D_Work_carModel carModel_DWork;
 extern ExternalInputs_carModel carModel_U;
 
 /* External outputs (root outports fed by signals with auto storage) */
-extern ExternalOutputs_carModel carModel_Y;
+ ExternalOutputs_carModel carModel_Y;
 
 /* Model entry point functions */
+double front_angle, voltage;
 
-extern void carModel_initialize(boolean_T firstTime);
-extern void carModel_step(void);
-extern void carModel_terminate(void);
+void setInputs(double u, double fa) {
+	voltage = u;
+	front_angle = fa;
+} 
+
+double getYawRate() {
+	return carModel_Y.yawrate;
+}
+double getRearAngle() {
+	return carModel_Y.rearangle;
+}
+double getAngleRate() {
+	return carModel_Y.anglerate;
+}
+double getMotorCurrent() {
+	return carModel_Y.motorcurrent;
+}
+
+void carModel_initialize(boolean firstTime);
+void carModel_step();
+
+extern void carModel_terminate();
 
 /* Real-time Model object */
 extern RT_MODEL_carModel *carModel_M;

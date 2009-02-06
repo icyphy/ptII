@@ -10,10 +10,7 @@
  JNIEXPORT void JNICALL 
 Java_ptolemy_apps_apes_CTask_CMethod(JNIEnv *env, jobject obj, jstring taskName)
  {
-	 const char *task;
- 
-	 task = (*env)->GetStringUTFChars(env, taskName, 0); 
-
+	 const char *task = (*env)->GetStringUTFChars(env, taskName, 0);  
 	 if (strcmp(task, "DispatcherTask") == 0) 
 		appDispatcher();
 	 else if (strcmp(task, "DynamicsControllerTask") == 0)

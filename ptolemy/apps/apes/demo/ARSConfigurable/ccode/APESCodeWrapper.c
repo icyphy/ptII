@@ -10,6 +10,9 @@
  jobject dispatcher;
  jmethodID accessPointCallbackMethod, accessPointCallbackReturnValuesMethod, accessPointCallbackInputValuesMethod;
 
+double delta_f, speedProfile, yawrate, rearangle, anglerate, motorcurrent;
+
+
 /*****************************************************************************/
  JNIEXPORT jint JNICALL
  JNI_OnLoad(JavaVM *jvm, void *reserved)
@@ -74,19 +77,34 @@ Java_ptolemy_apps_apes_AccessPointCallbackDispatcher_InitializeC(JNIEnv *env, jo
 	 
      return;
  }
+ 
+  JNIEXPORT void JNICALL Java_ptolemy_apps_apes_CTask_setGlobalVariable(JNIEnv *env, jobject obj, jstring string, double value) {
+ 
+	const char *name = (*env)->GetStringUTFChars(env, string, 0);
+ 
+	if (strcmp(name, "delta_f") == 0)
+		delta_f = value;
+	else if (strcmp(name, "speed") == 0)
+		speedProfile = value;
+	else if (strcmp(name, "yawrate") == 0)
+		yawrate = value;
+	else if (strcmp(name, "rearangle") == 0)
+		rearangle = value;
+	else if (strcmp(name, "anglerate") == 0)
+		anglerate = value;
+	else if (strcmp(name, "motorcurrent") == 0)
+		motorcurrent = value;
+ }
   
 /*****************************************************************************/
 
- void callback(double exectime, double mindelay) {
+ void callback(double exectime, double mindelay) { 
 	 JNIEnv *env = JNU_GetEnv();  
 	 (*(env))->CallVoidMethod(env, dispatcher, accessPointCallbackMethod, exectime, mindelay);    
  }
  
  /*****************************************************************************/
-  void callbackO(double exectime, double mindelay, char* varName, double value) {
-	 jmethodID method;
-	 char buf[128];
-	 jclass cls; 
+  void callbackO(double exectime, double mindelay, char* varName, double value) { 
 	 JNIEnv *env = JNU_GetEnv();
 	 
 	 jstring string = (*env)->NewStringUTF(env, varName);  
@@ -96,10 +114,8 @@ Java_ptolemy_apps_apes_AccessPointCallbackDispatcher_InitializeC(JNIEnv *env, jo
 
  }
  /*****************************************************************************/
-   void callbackI(double exectime, double mindelay, char* varName) {
-	 jmethodID method;
-	 char buf[128];
-	 jclass cls; 
+ 
+   void callbackI(double exectime, double mindelay, char* varName) { 
 	 JNIEnv *env = JNU_GetEnv();
 	 
 	 jstring string = (*env)->NewStringUTF(env, varName);  
@@ -109,3 +125,5 @@ Java_ptolemy_apps_apes_AccessPointCallbackDispatcher_InitializeC(JNIEnv *env, jo
 
  }
  /*****************************************************************************/
+
+

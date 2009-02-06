@@ -12,11 +12,13 @@
  * You can customize this banner by specifying a different template.
  */
 
+#include <stdio.h>
 #include "dynamicsControll.h"
 #include "dynamicsControll_private.h"
-#include "../motorController_ert_rtw/motorController.h"
-#include "../carModel_ert_rtw/carModel.h"
+#include "../motorController_ert_rtw/motorController.h" 
 #include "../ARSmain.h"
+
+extern double delta_f, speedProfile, yawrate, rearangle, anglerate, motorcurrent;
 
 /* Block signals (auto storage) */
 BlockIO_dynamicsControll dynamicsControll_B;
@@ -219,14 +221,18 @@ void dynamicsControll_initialize(boolean_T firstTime)
   }
 }
 
-
 /*update inputs*/
 void dynamicsControll_updateInput(void)
 {
-    dynamicsControll_U.delta_f = front_angle[simStep];
-    dynamicsControll_U.vms = speed[simStep];
-    dynamicsControll_U.yawd_acts = carModel_Y.yawrate;
-    dynamicsControll_U.delta_rrad = carModel_Y.rearangle;
+	callbackI(0.01, 0.0, "delta_f");
+    dynamicsControll_U.delta_f = delta_f;
+	callbackI(0.01, 0.0, "speed");
+    dynamicsControll_U.vms = speedProfile;
+	callbackI(0.01, 0.0, "yawrate");
+    dynamicsControll_U.yawd_acts = yawrate;
+	callbackI(0.01, 0.0, "rearangle");
+    dynamicsControll_U.delta_rrad = rearangle;
+	
 }
 
 /* Model terminate function */

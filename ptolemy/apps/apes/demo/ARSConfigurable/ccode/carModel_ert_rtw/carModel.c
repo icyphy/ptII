@@ -13,10 +13,7 @@
  */
 
 #include "carModel.h"
-#include "carModel_private.h"
-#include "../ARSmain.h"
-#include "../motorController_ert_rtw/motorController.h"
-#include "../APESCodeWrapper.h"
+#include "carModel_private.h" 
 
 /* Block states (auto storage) */
 D_Work_carModel carModel_DWork;
@@ -31,8 +28,9 @@ ExternalOutputs_carModel carModel_Y;
 RT_MODEL_carModel carModel_M_;
 RT_MODEL_carModel *carModel_M = &carModel_M_;
 
+
 /* Model step function */
-void carModel_step(void)
+void carModel_step()
 {
 
   /* local block i/o variables */
@@ -55,7 +53,7 @@ void carModel_step(void)
 */
 
 /* carModel_U.delta_f connected to one model input */
-  rtb_grad2rad1 = front_angle[simStep] * carModel_P.i_v_Gain *
+  rtb_grad2rad1 = front_angle * carModel_P.i_v_Gain *
     carModel_P.grad2rad1_Gain;
 
   /* UnitDelay: '<S1>/Unit Delay' */
@@ -107,8 +105,7 @@ void carModel_step(void)
   carModel_Y.yawrate = rtb_Internal[1] * carModel_P.rad2grad_Gain;
 
   /* Outport: '<Root>/rear angle' */
-  carModel_Y.rearangle = rtb_phi;
-  callbackO(0.001,0,"rearAngle",carModel_Y.rearangle);
+  carModel_Y.rearangle = rtb_phi; 
 
   /* DiscreteTransferFcn: '<S8>/speed sensor' */
   rtb_temp12 = carModel_P.speedsensor_D*rtb_motormechanical;
@@ -129,7 +126,7 @@ void carModel_step(void)
 
   /* Update for UnitDelay: '<S1>/Unit Delay' */
 //carModel_DWork.UnitDelay_DSTATE_l = carModel_U.U;
-carModel_DWork.UnitDelay_DSTATE_l = motorController_Y.voltage;
+carModel_DWork.UnitDelay_DSTATE_l = voltage;
 
   /* DiscreteTransferFcn Block: <S8>/voltage converter */
   {
@@ -196,7 +193,7 @@ carModel_DWork.UnitDelay_DSTATE_l = motorController_Y.voltage;
 }
 
 /* Model initialize function */
-void carModel_initialize(boolean_T firstTime)
+void carModel_initialize(boolean firstTime)
 {
 
   if (firstTime) {
