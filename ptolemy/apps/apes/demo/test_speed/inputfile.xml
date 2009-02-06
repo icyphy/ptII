@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{65, 60}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1939, 153, 815, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={423, 404, 815, 518}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -21,11 +21,13 @@
     <entity name="FormattedLineReader" class="ptolemy.apps.apes.FormattedLineReader">
         <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="C:\eclipse_workspace\ptII\ptolemy\apps\apes\demo\test_speed\input_data_pt.txt">
         </property>
-        <property name="onEOF" class="ptolemy.data.expr.StringParameter" value="stop">
+        <property name="Buffered" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="onEOF" class="ptolemy.data.expr.StringParameter" value="hold">
         </property>
         <property name="headerLine" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{210.0, 170.0}">
         </property>
         <port name="endOfFile" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -49,42 +51,69 @@
     </entity>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 170.0]">
         </property>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={374, 198, 508, 355}, maximized=false}">
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Speed profile">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={49, 36, 508, 355}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 170.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>TimedPlotter</title>
-<xRange min="0.0" max="22000.0"/>
+<xRange min="0.0" max="40000.0"/>
 <yRange min="1.4" max="13.4"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="TimedPlotter2" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={439, 613, 508, 355}, maximized=false}">
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Front angle profile">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={544, 11, 508, 355}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 250.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 240.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>TimedPlotter</title>
-<xRange min="0.0" max="22000.0"/>
+<xRange min="0.0" max="40000.0"/>
 <yRange min="0.0" max="60.0"/>
 </plot>?>
         </configure>
+    </entity>
+    <entity name="TimedPlotter3" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="EOF indicator">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1045, 162, 508, 354}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 299]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 60.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xRange min="0.0" max="40000.0"/>
+<yRange min="0.0" max="1.0"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="BooleanToAnything" class="ptolemy.actor.lib.conversions.BooleanToAnything">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 60.0]">
+        </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
@@ -98,10 +127,22 @@
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
     </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+    </relation>
     <link port="FormattedLineReader.trigger" relation="relation"/>
+    <link port="FormattedLineReader.endOfFile" relation="relation4"/>
     <link port="FormattedLineReader.speed" relation="relation2"/>
     <link port="FormattedLineReader.frontAngle" relation="relation3"/>
     <link port="Clock.output" relation="relation"/>
     <link port="TimedPlotter.input" relation="relation2"/>
     <link port="TimedPlotter2.input" relation="relation3"/>
+    <link port="TimedPlotter3.input" relation="relation5"/>
+    <link port="BooleanToAnything.input" relation="relation4"/>
+    <link port="BooleanToAnything.output" relation="relation5"/>
 </entity>
