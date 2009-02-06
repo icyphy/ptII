@@ -58,25 +58,36 @@ import ptolemy.kernel.util.Workspace;
 //// FormattedLineReader
 
 /**
- <p>This actor reads a file or URL, and outputs the contents of each line at a time.
-  The file or URL is specified using any form acceptable
- to FileParameter. Before an end of file is reached, the <i>endOfFile</i>
- output produces <i>false</i>.  In the iteration where the last line
- of the file is read and produced on the output ports (the eof iteration), this actor
- produces <i>true</i> on the <i>endOfFile</i> port. 
+ <p>This actor reads a file or URL, and outputs formatted data from the file. 
+ The file or URL is specified using any form acceptable to FileParameter. The standard usage
+ of this actor is reading data samples represented in textual tabular format, where a column contains 
+ all samples of a signal and a line contains the values of all signals at the same sampling time.  
+ </p>
+ <p> 
+ A correspondence is established between output ports of the actor and columns of the input file.
+ This can be implicit, where columns are taken from left to right and ports are considered in the 
+ order in which they have been added by the user (i.e., the order in which they are given by the 
+ outputPortList() of the actor), such that the leftmost column is associated to the port added first.
+ An explicit association is obtained by using port names in the actor and signal names in the file, 
+ given in a header line with a name for each column. In this case, data in a named column will be sent to 
+ the output port with the same name (case insensitive). The order of columns does not matter.
+ Data in a column with no associated output port is ignored. An output port with no corresponding 
+ column will issue no token.
+ </p>
+ <p> 
+ In each iteration, tokens from one line of the file are sent to the corresponding outputs.
+ Before the last line in the file is reached, the <i>endOfFile</i>  output produces <i>false</i>.  
+ In the iteration where the last line of the file is produced on the output ports (the eof iteration),
+ this actor produces <i>true</i> on the <i>endOfFile</i> port. 
  The behavior of the actor in that iteration and in subsequent iterations is defined by the value
  of the OnEOF attribute, as follows. 
-</p>
+ </p>
  <p> 
- If OnEOF is set to "Stop", then the behavior is the same as that of the LineReader 
+ If OnEOF is set to "Stop", then the behavior is similar to that of the LineReader 
  actor: In the eof iteration the postfire() returns false, then in subsequent iterations
- prefire() and postfire() will both return false, <i>output</i>
- will produce the string "EOF", and <i>endOfFile</i> will produce <i>true</i>. 
- In some domains (such as SDF), returning false in postfire()
- causes the model to cease executing.
- In other domains (such as DE), this causes the director to avoid
- further firings of this actor.  So usually, the actor will not be
- invoked again after the end of file is reached.
+ prefire() and postfire() will both return false, no token is send through data output ports
+ and <i>endOfFile</i> will produce <i>true</i>. This is the implicit behavior, applied when this 
+ parameter is not set. 
  </p>
  <p>
  If OnEOF is set to "Repeat", then the values produced in the outputs are repeated from the 
@@ -85,46 +96,37 @@ import ptolemy.kernel.util.Workspace;
  <p>
  If OnEOF is set to "Hold", then the outputs in the iterations following the eof iteration
  are the same as in the eof iteration (including the <i>true</i> on the <i>endOfFile</i> port).
- beginning.
 </p> 
  <p>
- This actor reads each line from the file or URL and converts the string tokens
- according to the types of the actor's data output ports.  
- 
- This actor has one output port for each format specifier in the format string, with matching types,
- where the top output port corresponds to the leftmost format specifier.
- The format string is applied to each line. A separator attribute indicates how the line
- is to be split into tokens. The default separator is the space. 
- Format conversion is applied to input tokens until either the format 
- string is finished, or there are no tokens in the input. An exception is thrown if conversion fails.
- If the number of tokens in a line is smaller than the number of format specifiers,
- no tokens are placed in the corresponding outputs.
- </p> 
+ This actor can skip some lines at the beginning of the file or URL, and can be reset during 
+ the run of the model, in the same way as the LineReader actor.
+ </p>
+ If the <i>Header Line</i> parameter is on, then the explicit correspondence output port - input column 
+ is used. This assumes that the file has a header line, with a name for each column.
+ Otherwise, the implicit correspondence applies. 
+</p> 
  <p>
- The buffer size attribute specifies the number of lines that are read and converted when the model
- is loaded or when an attribute is changed. If the header attribute is on, then the first line is 
- regarded as a table header. Each output port receives as name the string value of its corresponding 
- header token. 
- 
- This actor reads ahead in the file so that it can produce an output
- <i>true</i> on <i>endOfFile</i> in the same iteration where it outputs
- the last line.  It reads the first line in preinitialize(), and
- subsequently reads a new line in each invocation of postfire().  The
- line read is produced on the <i>output</i> in the next iteration
- after it is read.</p>
+The <i>Buffered</i> parameter specifies if output tokens are to be buffered. When this is on,
+all the contents of the file is parsed at the beginning, and all output tokens are created and
+stored in an internal matrix. When the value of the parameter is false, one input line is read 
+and parsed at each iteration.
+</p> 
  <p>
- This actor can skip some lines at the beginning of the file or URL, with
- the number specified by the <i>numberOfLinesToSkip</i> parameter. The
- default value of this parameter is 0.</p>
- <p>
- If you need to reset this line reader to start again at the beginning
- of the file, the way to do this is to call initialize() during the run
- of the model.  This can be done, for example, using a modal model
- with a transition where reset is enabled.</p>
+The <i>Delimiter</i> parameter contains all delimiters used to split up input lines. If this is empty,
+white space is considered as column delimiter by default.
+</p> 
+<p>
+For now, input cannot be repeated if the buffered parameter is off. The current behavior is the same as 
+in the "Stop" case. 
+TODO: The repeat behavior can be easily achieved if access to _openAndReadFirstLine of the base class
+is provided. 
+</p> 
+
 
  @author  Stefan Resmerita
 
  */
+
 public class FormattedLineReader extends LineReader {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -143,15 +145,15 @@ public class FormattedLineReader extends LineReader {
         // remove the output port, because it cannot be renamed by the user
         this.output.setContainer(null);
 
-        bufferSize = new Parameter(this, "bufferSize");
-        bufferSize.setExpression("100000");
-        bufferSize.setTypeEquals(BaseType.LONG);
+        buffered = new Parameter(this, "Buffered");
+        buffered.setExpression("true");
+        buffered.setTypeEquals(BaseType.BOOLEAN);
 
         onEOF = new StringParameter(this, "onEOF");
         onEOF.setExpression("");
         onEOF.setTypeEquals(BaseType.STRING);
         
-        headerLine = new Parameter(this, "headerLine");
+        headerLine = new Parameter(this, "Header Line");
         headerLine.setExpression("true");
         headerLine.setTypeEquals(BaseType.BOOLEAN);
 
@@ -164,7 +166,7 @@ public class FormattedLineReader extends LineReader {
     ///////////////////////////////////////////////////////////////////
     ////                      parameters                           ////
 
-    public Parameter bufferSize;
+    public Parameter buffered;
     public Parameter headerLine;
     public StringParameter onEOF;
     public StringParameter separator;
@@ -185,8 +187,8 @@ public class FormattedLineReader extends LineReader {
         }
 
             for (int i=0;i<portArray.size();i++){
-                if (dataMatrix.get(i).get(currentIteration) != null){
-                    Token tk = dataMatrix.get(i).get(currentIteration);
+                Token tk = dataMatrix.get(i).get(lineIndex);
+                if (tk != null){
                     portArray.get(i).broadcast(tk);
                 }
             }
@@ -195,9 +197,14 @@ public class FormattedLineReader extends LineReader {
     /** Rewind to first data line
      */
     public void initialize() throws IllegalActionException {
-        currentIteration = 0;
+        lineIndex = 0;
+        __reachedEOF = false;
         //eofAction = ((StringToken)onEOF.getToken()).toString();
         eofAction = onEOF.stringValue();
+        
+        if (!isBuffered){ //must close the file and read again the first line of data
+            _resetReader();
+        }
     }
 
     /** Read the next line from the file. If there is no next line,
@@ -207,58 +214,96 @@ public class FormattedLineReader extends LineReader {
      */
     public boolean postfire() throws IllegalActionException {
         
-        currentIteration++;
-        
-        if (currentIteration >= dataSize){
-            currentIteration = dataSize;
-            output.broadcast(BooleanToken.TRUE);
-            if (eofAction.equalsIgnoreCase("stop")){
-                return false;
-            }             
-        } 
-        else{
-            output.broadcast(BooleanToken.FALSE);           
+        if (isBuffered){
+            lineIndex++;
+            if (lineIndex >= dataSize){
+                    if (eofAction.equalsIgnoreCase("repeat")){
+                        lineIndex = 0;
+                    }else if (eofAction.equalsIgnoreCase("hold")){
+                        lineIndex = dataSize - 1;
+                    }
+                __reachedEOF = true;
+                endOfFile.broadcast(BooleanToken.TRUE);
+                if (eofAction.equalsIgnoreCase("stop")){
+                    return false;
+                }             
+            } 
+            else{
+                __reachedEOF = false;
+                endOfFile.broadcast(BooleanToken.FALSE);           
+            }
         }
-        return true;
+        else{
+            lineIndex = 0;
+            if (super.postfire()){ //the next line from the file is read here, no eof
+                _placeCurrentLineTokens();
+            }
+            else{
+                if (_currentLine.equals("EOF")){
+                    if (eofAction.equalsIgnoreCase("repeat")){
+                        _resetReader();
+                        return false; //Remove this after implementing resetReader
+                    }else if (eofAction.equalsIgnoreCase("stop")){
+                        return false;
+                        }
+                }
+                else {
+                    return false;
+                }
+            }
+        }
+    return true;        
     }
+
+    private void _resetReader() {
+        // TODO need access to _openAndReadFirstLine();
+ /*       fileOrURL.close();
+        _reader = null;
+        _openAndReadFirstLine();
+        if (isHeader){
+            try {
+                _currentLine = _reader.readLine();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        _placeCurrentLineTokens();
+ */
+        }
 
     /** The action depends on the value of the onEOF parameter
      *  @exception IllegalActionException If the superclass throws it.
      */
     public boolean prefire() throws IllegalActionException {
         
-        if (currentIteration >= dataSize) {
-            if (eofAction.equalsIgnoreCase("repeat")){
-                currentIteration = 0;
-            }else if (eofAction.equalsIgnoreCase("hold")){
-                currentIteration = dataSize - 1;
-            }else if (eofAction.equalsIgnoreCase("stop")){
-                return false;
-            } 
+        if (isBuffered){
+            if (__reachedEOF && (eofAction.equalsIgnoreCase("stop"))) {
+                    return false;
+            }
+        }
+        else {
+            if (eofAction.equalsIgnoreCase("stop")){
+                return super.prefire();
+            }
         }
         return true;
     }
 
     /** Open the file or URL, skip the number of lines specified by the
-     *  <i>numberOfLinesToSkip</i> parameter, and read the first line to
-     *  be sent out in the fire() method.
-     *  This is done in preinitialize() so
-     *  that derived classes can extract information from the file
-     *  that affects information used in type resolution or scheduling.
+     *  <i>numberOfLinesToSkip</i> parameter, and read the first line.
+     *  If needed, read all the file, create all tokens and store them up.
      *  @exception IllegalActionException If the file or URL cannot be
      *   opened, or if the lines to be skipped and the first line to be
      *   sent out in the fire() method cannot be read.
      *  
      */
     public void preinitialize() throws IllegalActionException {
-        String currentLine, delimiter;
-        boolean header = false;
-        Vector<IOPort> orderedPorts;
-        
+       
         super.preinitialize(); // this opens the file and reads the first line
-        currentLine = _currentLine;
+        isHeader = false;
         if (((BooleanToken)headerLine.getToken())!= null){
-            header = ((BooleanToken)headerLine.getToken()).booleanValue();
+            isHeader = ((BooleanToken)headerLine.getToken()).booleanValue();
         }
         
 //        String header = ((StringToken)headerLine.getToken()).toString();
@@ -270,12 +315,12 @@ public class FormattedLineReader extends LineReader {
         if (((StringToken)separator.getToken()) != null){
             delimiter = separator.stringValue();
         }
-        if (header){
+        if (isHeader){
             StringTokenizer st;
             if ((delimiter != null) && (delimiter.length() > 0)){
-                st = new StringTokenizer(currentLine, delimiter);
+                st = new StringTokenizer(_currentLine, delimiter);
             }else{
-                st = new StringTokenizer(currentLine);
+                st = new StringTokenizer(_currentLine);
             }
             while (st.hasMoreTokens()){
                 String dataName = st.nextToken();               
@@ -293,7 +338,7 @@ public class FormattedLineReader extends LineReader {
             }
             
             try {
-                currentLine = _reader.readLine();
+                _currentLine = _reader.readLine();
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -301,7 +346,7 @@ public class FormattedLineReader extends LineReader {
         }
         else {
             for (int j=0;j<dataPorts.size();j++){
-                     orderedPorts.add((IOPort)dataPorts.get(j));
+                    orderedPorts.add((IOPort)dataPorts.get(j));
             }
         }
         
@@ -311,65 +356,136 @@ public class FormattedLineReader extends LineReader {
                 portArray.add(orderedPorts.get(i));
             }
         }
+        isBuffered = false;
+        if (((BooleanToken)buffered.getToken())!= null){
+            isBuffered = ((BooleanToken)buffered.getToken()).booleanValue();
+        }
+
+
         dataMatrix = new Vector<Vector<Token>>(portArray.size());
-        for (int i=0;i<portArray.size();i++){
+        for (int i = 0; i < portArray.size(); i++) {
             dataMatrix.add(new Vector<Token>());
         }
-        dataSize = 0;
-        while (currentLine != null){
-            StringTokenizer st;
-            if ((delimiter != null) && (delimiter.length() > 0)){
-                st = new StringTokenizer(currentLine, delimiter);
-            }else{
-                st = new StringTokenizer(currentLine);
-            }
-            int tokenNr = 0;
-            int portIndex = 0;
-            while (st.hasMoreTokens()){
-                String dataValue = st.nextToken();
-                if (orderedPorts.get(tokenNr) != null){
-                    Token tok = null;
-                    if(((TypedIOPort)portArray.get(portIndex)).getType().equals(BaseType.DOUBLE)){
-                        tok = new DoubleToken(Double.parseDouble(dataValue));
-                    }
-                    if(((TypedIOPort)portArray.get(portIndex)).getType().equals(BaseType.INT)){
-                        tok = new IntToken(Integer.parseInt(dataValue));
-                    }
-                    if(((TypedIOPort)portArray.get(portIndex)).getType().equals(BaseType.BOOLEAN)){
-                        tok = new BooleanToken(Boolean.parseBoolean(dataValue));
-                    }
-                    dataMatrix.get(portIndex).add(tok);
-                    portIndex++;
-                }
-                tokenNr++;
-            }
-            // If in this row there are less columns than ports 
-            if (portIndex < portArray.size()){
-                for (int j=portIndex;j<portArray.size();j++){
-                    dataMatrix.get(j).add(null);
-                }
-            }
-            dataSize++;
+        // Process the first line
+        lineIndex = 0;
+        _placeCurrentLineTokens();
+        lineIndex++;
+
+        if (isBuffered) {
             try {
-                currentLine = _reader.readLine();
+                _currentLine = _reader.readLine();
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
-            }          
+            }
+            while (_currentLine != null) {
+                 _placeCurrentLineTokens();
+                lineIndex++;
+                try {
+                    _currentLine = _reader.readLine();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
+            }
+            try {
+                _reader.close();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            System.out.println("data size: " + String.valueOf(dataSize));
         }
-        try {
-            _reader.close();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        System.out.println("data size: " + String.valueOf(dataSize));
+        dataSize = lineIndex;
+        
     }
-protected Vector<IOPort> portArray;
-protected Vector<Vector<Token>> dataMatrix;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected members                 ////
+
+    /** Array of all data output ports. It does not include the endOfFile port*/
+    protected Vector<IOPort> portArray;
+
+    /** Matrix with all tokens, in case the input is buffered*/
+    protected Vector<Vector<Token>> dataMatrix;
 
 //TODO: These should be long, but Vector does not allow a long index.
 //Perhaps we should transform vectors to arrays?
-protected int dataSize, currentIteration;
-protected String eofAction;
+    /** Number of lines stored*/
+    protected int dataSize;
+    
+    /** The line index in the data matrix.This is equal to 0 if no buffering is used*/
+    protected int lineIndex;
+    
+    /** Value of the OnEOF parameter*/
+    protected String eofAction;
+    
+    /** Value of the Buffered parameter*/
+    protected boolean isBuffered;
+ 
+    /** Value of the Delimiter parameter*/
+    protected String delimiter;
+ 
+    /** Value of the HeaderLine parameter*/
+    protected boolean isHeader;
+    
+    /** Indicate if EOF has been reached
+     * This duplicates the private parameter _reachedEOF of the base class 
+     * */
+    protected boolean __reachedEOF;
+     
+    /** This array contains references to the output ports
+     * One element in the array corresponds to each column in the input,
+     * hence the size of the array is equal to the number of columns.
+     * If a column has no corresponding port, then its array element is null.
+     * */
+    protected Vector<IOPort> orderedPorts;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    protected Vector<Token> _parseCurrentLine(){
+        
+        Vector<Token> tokenArray = new Vector<Token>(portArray.size());
+        StringTokenizer st;
+        if ((delimiter != null) && (delimiter.length() > 0)){
+            st = new StringTokenizer(_currentLine, delimiter);
+        }else{
+            st = new StringTokenizer(_currentLine);
+        }
+        int tokenNr = 0;
+        int portIndex = 0;
+        while (st.hasMoreTokens()){
+            String dataValue = st.nextToken();
+            if (orderedPorts.get(tokenNr) != null){
+                Token tok = null;
+                if(((TypedIOPort)portArray.get(portIndex)).getType().equals(BaseType.DOUBLE)){
+                    tok = new DoubleToken(Double.parseDouble(dataValue));
+                }
+                if(((TypedIOPort)portArray.get(portIndex)).getType().equals(BaseType.INT)){
+                    tok = new IntToken(Integer.parseInt(dataValue));
+                }
+                if(((TypedIOPort)portArray.get(portIndex)).getType().equals(BaseType.BOOLEAN)){
+                    tok = new BooleanToken(Boolean.parseBoolean(dataValue));
+                }
+                tokenArray.add(tok);
+                portIndex++;
+            }
+            tokenNr++;
+        }
+        // If in this row there are less columns than ports 
+            for (int j=portIndex;j<portArray.size();j++){
+                tokenArray.add(null);
+            }
+        return tokenArray;
+    }
+    
+    protected void _placeCurrentLineTokens(){
+        Vector<Token> tokens = _parseCurrentLine();
+        for (int i = 0; i < tokens.size(); i++) {
+            dataMatrix.get(i).add(lineIndex, tokens.get(i));
+        }
+        
+    }
 }
