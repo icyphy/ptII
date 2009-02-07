@@ -1351,6 +1351,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/distributed/domains/sdf/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/properties \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/properties/lib \
+	$(REMOTE1PTIIDIST)/ptolemy/vergil/properties \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/ptalon \
 	$(REMOTE1PTIIDIST)/ptolemy/gui \
 	$(REMOTE1PTIIDIST)/ptolemy/hsif \
