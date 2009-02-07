@@ -36,13 +36,14 @@ DIRS =		lib
 # Root of Ptolemy II directory
 ROOT =		../../..
 
+CLASSPATH =	$(ROOT)
+
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	pn
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
+PTPACKAGE = 	properties
 PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
@@ -68,6 +69,8 @@ MISC_FILES =	lib
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES =
+
+JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
 install: jclass jars

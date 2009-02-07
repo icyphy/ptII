@@ -250,7 +250,9 @@ DATAPROPERTIESPACKAGES = \
 	ptolemy.data.properties.token.firstValueToken.actor \
 	ptolemy.data.properties.token.firstValueToken.domains.fsm.kernel \
 	ptolemy.data.properties.token.firstValueToken.kernel \
-	ptolemy.data.properties.util
+	ptolemy.data.properties.util \
+	ptolemy.domains.properties \
+	ptolemy.domains.properties.lib
 
 # Packages used by Diva
 DIVAPACKAGES = \

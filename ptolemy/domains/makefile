@@ -48,7 +48,7 @@ EXPERIMENTAL_DOMAINS = \
 PTCONTINUOUS_DIR = continuous
 DOMAINS =	ci $(PTCONTINUOUS_DIR) csp ct curriculum \
 	        dde ddf de fsm erg hdf pn sdf dt \
-	        giotto petrinet rendezvous \
+	        giotto petrinet rendezvous properties \
 		$(PTPSDF_DIR) ptides ptinyos $(PTSPACE_DIR) \
 		sr tm $(PTJAVA3D_DIR) wireless
 
@@ -85,6 +85,7 @@ PTAUXALLJARS = \
 		giotto/giotto.jar \
 		$(PTGRDOMAIN_JAR) \
 		petrinet/petrinet.jar \
+		properties/properties.jar \
 		ptides/ptides.jar \
 		$(PTSPACEDOMAIN_JAR) \
 		tm/tm.jar \
