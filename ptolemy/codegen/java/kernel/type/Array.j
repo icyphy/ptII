@@ -15,8 +15,6 @@ private class array {
 
 /***funcDeclareBlock***/
 
-//Token Array_new(int size, int given, Token... tokens);
-
 // Array_get: get an element of an array.
 Token Array_get(Token array, int i) {
     //return array.payload.Array->elements[i];
@@ -58,7 +56,7 @@ int Array_length(Token array) {
 // (which will typically be <= size).
 // The rest of the arguments are the provided elements (there
 // should be "given" of them). The given elements
-// should be of type Token *.
+// should be of type Token.
 // The last element is the type, which is why this takes Object...
 // and not Token...
 Token Array_new(int size, int given, Object... elements) {
@@ -163,10 +161,8 @@ boolean Array_equals(Token thisToken, Token... tokens) {
 // Array_isCloseTo: Test an array to see whether it is close in value to another.
 Token Array_isCloseTo(Token thisToken, Token... elements) {
     int i;
-    Token otherToken;
-    Token tolerance;
-    otherToken = elements[0];
-    tolerance = elements[1];
+    Token otherToken = elements[0];
+    Token tolerance = elements[1];
 
     if ( ((array)(thisToken.payload)).size != ((array)(otherToken.payload)).size) {
 	//System.out.println("Array_isCloseTo sizes different:" + ((array)(thisToken.payload)).size + " "

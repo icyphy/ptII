@@ -177,10 +177,12 @@ $actorSymbol(inputToken) = $ref(input#$channel);
 $actorSymbol(numberOfTokensSeen)++;
 /* If the type of the input is an array, then cast the input to
  * the type of the elements of the elements of correctValues. */
-if (($type(input) != TYPE_Array
-     && equals_Token_Token($actorSymbol(inputToken), Array_get($ref(correctValues), $actorSymbol(numberOfTokensSeen))))
+if (($type(input) != TYPE_Array && $type(input) != TYPE_Matrix
+     && !equals_Token_Token($actorSymbol(inputToken), Array_get($ref(correctValues), $actorSymbol(numberOfTokensSeen))))
     || ($type(input) == TYPE_Array
-	&& !$isCloseTo_Token_Token($actorSymbol(inputToken), Array_get(Array_get($ref(correctValues), $actorSymbol(numberOfTokensSeen)), 0), $actorSymbol(toleranceToken)))) {
+	&& !$isCloseTo_Token_Token($actorSymbol(inputToken), Array_get(Array_get($ref(correctValues), $actorSymbol(numberOfTokensSeen)), 0), $actorSymbol(toleranceToken)))
+    || ($type(input) == TYPE_Matrix
+	&& !$isCloseTo_Token_Token(Matrix_get($actorSymbol(inputToken), 0, 0), Matrix_get(Array_get($ref(correctValues), $actorSymbol(numberOfTokensSeen)), 0, 0), $actorSymbol(toleranceToken)))) {
     throw new RuntimeException(String.format("\nTest $actorSymbol($channel) fails in iteration "
     			     + $actorSymbol(numberOfTokensSeen)
 			     + ".\n Value was:"

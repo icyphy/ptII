@@ -588,7 +588,7 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
 
             //result.append("[" + channelAndOffset[1] + "]");
             result.insert(0, "(" 
-			  + codeGenType(elementType).replace("Array", "Token")
+			  + codeGenType(elementType).replace("Array", "Token").replace("Matrix", "Token")
 			  + ")(/*JCGH44*/Array_get(");
             if (isPrimitive(elementType)) {
 		result.insert(0, "("); 
