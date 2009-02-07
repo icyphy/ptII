@@ -45,13 +45,12 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	properties
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	LatticeElementController.java \
 	LatticeGraphFrame.java \
-	LatticeGraphFrameController.java \ 
+	LatticeGraphFrameController.java \
 	LatticeGraphTableau.java 
 
 OTHER_FILES_TO_BE_JARED = 

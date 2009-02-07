@@ -32,7 +32,7 @@
 ME =		ptolemy/vergil
 
 DIRS = 		toolbox basic actor kernel fsm erg gt debugger \
-		icon lib tree tdl unit test
+		icon lib properties tree tdl unit test
 
 # Root of the Java directory
 ROOT =		../..
@@ -64,7 +64,7 @@ PTAUXALLJARS = \
 #		erg/erg.jar
 #		gt/gt.jar
 #		tdl/tdl.jar 
-
+#		properties/properties.jar
 
 # All the .class files necessary to run a Vergil applet
 PTAUXALLJAR =	vergilApplet.jar
