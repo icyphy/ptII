@@ -184,8 +184,10 @@ boolean equals_Token_Token(Token a1, Token a2) {
         result = (((Number)(a1.payload)).doubleValue() == ((Number)(a2.payload)).doubleValue());
     } else if (a1.payload instanceof array && a2.payload instanceof array) {
         result = $Array_equals(a1, a2);
+#ifdef PTCG_TYPE_Matrix
     } else if (a1.payload instanceof matrix && a2.payload instanceof matrix) {
         result = $Matrix_equals(a1, a2);
+#endif
     } else {
         throw new InternalError("equals_Token_Token_(): equals with an unsupported type. " + a1.type + " " + a2.type);
     }
@@ -204,9 +206,11 @@ boolean isCloseTo_Token_Token(Token thisToken, Token otherToken, Token tolerance
     } else if (thisToken.type == TYPE_Array
 	       && otherToken.type == TYPE_Array) {
 	return ((Boolean)(Array_isCloseTo(thisToken, otherToken, tolerance).payload)).booleanValue();
+#ifdef PTCG_TYPE_Matrix
     } else if (thisToken.type == TYPE_Matrix
 	       && otherToken.type == TYPE_Matrix) {
 	return ((Boolean)(Matrix_isCloseTo(thisToken, otherToken, tolerance).payload)).booleanValue();
+#endif
     } else { 
             
         throw new InternalError("equals_Token_Token_(): iscloseTo with an unsupported type. " + thisToken.type + " " + otherToken.type + " " + tolerance.type);

@@ -130,6 +130,8 @@ Token Matrix_new(int row, int column, int given, Object... elements) {
 /**/
 
 /***Matrix_equals***/
+// FIXME: should not need to if def for Matrix here.
+#ifdef PTCG_TYPE_Matrix
 boolean Matrix_equals(Token thisToken, Token... tokens) {
     int i, j;
     Token otherToken = tokens[0];
@@ -148,6 +150,7 @@ boolean Matrix_equals(Token thisToken, Token... tokens) {
     }
     return true;
 }
+#endif
 /**/
 
 
