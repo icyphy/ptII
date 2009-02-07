@@ -2205,7 +2205,7 @@ public class Plot extends PlotBox {
             while (numToDelete < nbrOfBins) {
                 Bin old = bins.get(numToDelete);
 
-                if ((x - points.get(old.firstPointIndex()- _pointInBinOffset).originalx) <= _xPersistence) {
+                if ((x - points.get(old.firstPointIndex()).originalx) <= _xPersistence) {
                     break;
                 }
 
@@ -2443,7 +2443,7 @@ public class Plot extends PlotBox {
         int nbrOfBins = bins.size(); 
             //Cached since it came out in JProfiler (everything becomes costly if you
             //  do it a lot of times)
-        
+                
         Bin lastBin = nbrOfBins > 0 ? bins.get(nbrOfBins - 1) : null;
             //Cached since it came out in JProfiler (everything becomes costly if you do
             //  it a lot of times)
@@ -2454,7 +2454,7 @@ public class Plot extends PlotBox {
             lastBin = new Bin(xpos);
             bins.add(lastBin);                                       
         }
-        lastBin.addPoint(point, pointIndex, ypos);        
+        lastBin.addPoint(point, pointIndex, ypos);
     }    
 
     /* Clear the plot of all data points.  If the argument is true, then
@@ -2846,7 +2846,7 @@ public class Plot extends PlotBox {
                 //      => the first point in the first bin (once this one has deleted) has to be the first point of all points
             
         }                
-        bins.remove(0);            
+        bins.remove(0);
     }
 
     
