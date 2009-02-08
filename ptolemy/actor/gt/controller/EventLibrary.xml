@@ -97,6 +97,8 @@
     <entity name="ExecutionControl" class="ptolemy.moml.EntityLibrary">
         <entity name="Execute" class="ptolemy.actor.gt.controller.Execute">
         </entity>
+        <entity name="Sleep" class="ptolemy.actor.gt.controller.Sleep">
+        </entity>
         <entity name="Stop" class="ptolemy.actor.gt.controller.Stop">
         </entity>
         <entity name="Test" class="ptolemy.actor.gt.controller.Test">

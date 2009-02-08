@@ -53,7 +53,8 @@ OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	BaseModel.xml \
 	ConstOptimization.xml \
-	ConstOptimizationDDF.xml
+	ConstOptimizationDDF.xml \
+	ConstOptimizationDE.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)

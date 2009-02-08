@@ -76,6 +76,7 @@ JSRCS = \
 	RefinementSuggestion.java \
 	Report.java \
 	SetTableau.java \
+	Sleep.java \
 	Stop.java \
 	TableauControllerEvent.java \
 	TableauParameter.java \
@@ -107,6 +108,7 @@ OTHER_FILES_TO_BE_JARED = \
 	ReceiveInputIcon.xml \
 	ReportIcon.xml \
 	SetTableauIcon.xml \
+	SleepIcon.xml \
 	StopIcon.xml \
 	TestIcon.xml \
 	TransformIcon.xml \
