@@ -28,9 +28,13 @@
 package ptolemy.actor.gt.controller;
 
 import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.moml.MoMLParser;
 
 //////////////////////////////////////////////////////////////////////////
 //// Clone
@@ -55,6 +59,10 @@ public class Clone extends GTEvent {
     public Clone(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+
+        useMoml = new Parameter(this, "useMoml");
+        useMoml.setTypeEquals(BaseType.BOOLEAN);
+        useMoml.setToken(BooleanToken.FALSE);
     }
 
     public RefiringData fire(ArrayToken arguments) throws IllegalActionException {
@@ -62,15 +70,30 @@ public class Clone extends GTEvent {
 
         ModelParameter modelParameter = getModelParameter();
         CompositeEntity oldModel = modelParameter.getModel();
-        try {
-            modelParameter.setModel((CompositeEntity) oldModel.clone(
-                    oldModel.workspace()));
-        } catch (CloneNotSupportedException e) {
-            throw new IllegalActionException(this, e, "Unable to clone the " +
-                    "model.");
+        boolean useMoml =
+            ((BooleanToken) this.useMoml.getToken()).booleanValue();
+        CompositeEntity model;
+        if (useMoml) {
+            String moml = oldModel.exportMoML();
+            MoMLParser parser = new MoMLParser();
+            try {
+                model = (CompositeEntity) parser.parse(moml);
+            } catch (Exception e) {
+                throw new IllegalActionException(this, e,
+                        "Unable to parse moml.");
+            }
+        } else {
+            try {
+                model = (CompositeEntity) oldModel.clone(oldModel.workspace());
+            } catch (CloneNotSupportedException e) {
+                throw new IllegalActionException(this, e,
+                        "Unable to clone the model.");
+            }
         }
+        modelParameter.setModel(model);
 
         return data;
     }
 
+    public Parameter useMoml;
 }
