@@ -1,7 +1,9 @@
+// Uniform has its own preinitBlock, so we include what is in the parent preinitBlock
+/***preinitBlock***/
+long $actorSymbol(seed);
+Random $actorSymbol(_random);
+/**/
+
 /*** randomBlock ***/
-#ifdef PT_NO_RANDOM_JAVA
-$ref(output) = random() % ($ref(upperBound) - $ref(lowerBound)) + $ref(lowerBound);
-#else
-$ref(output) = (RandomSource_nextDouble(&$actorSymbol(seed)) * ($ref(upperBound) - $ref(lowerBound))) + $ref(lowerBound);
-#endif
+$ref(output) = $actorSymbol(_random).nextDouble() * ($ref(upperBound) - $ref(lowerBound)) + $ref(lowerBound);
 /**/

@@ -242,12 +242,7 @@ Token Matrix_toString(Token thisToken, Token... tokens) {
 // Return a new Array token.
 Token Matrix_add(Token thisToken, Token... tokens) {
     int i, j;
-    va_list argp;
-    Token result;
-    Token otherToken;
-
-    va_start(argp, thisToken);
-    otherToken = va_arg(argp, Token);
+    Token otherToken = tokens[0];
 
     result = Matrix_new(((matrix)(thisToken.payload)).row, ((matrix)(thisToken.payload)).column, 0);
 
@@ -257,7 +252,6 @@ Token Matrix_add(Token thisToken, Token... tokens) {
         }
     }
 
-    va_end(argp);
     return result;
 }
 /**/
@@ -268,12 +262,8 @@ Token Matrix_add(Token thisToken, Token... tokens) {
 // Return a new Array token.
 Token Matrix_subtract(Token thisToken, Token... tokens) {
     int i, j;
-    va_list argp;
     Token result;
-    Token otherToken;
-
-    va_start(argp, thisToken);
-    otherToken = va_arg(argp, Token);
+    Token otherToken = tokens[0];
 
     result = Matrix_new(((matrix)(thisToken.payload)).row, ((matrix)(thisToken.payload)).column, 0);
 
@@ -283,7 +273,6 @@ Token Matrix_subtract(Token thisToken, Token... tokens) {
         }
     }
 
-    va_end(argp);
     return result;
 }
 /**/
@@ -296,12 +285,10 @@ Token Matrix_subtract(Token thisToken, Token... tokens) {
 // Return a new Array token.
 Token Matrix_multiply(Token thisToken, Token... tokens) {
     int i, j;
-    va_list argp;
     Token result;
-    Token element, otherToken;
+    Token element;
+    Token otherToken = tokens[0];
 
-    va_start(argp, thisToken);
-    otherToken = va_arg(argp, Token);
     if (otherToken.type == TYPE_Matrix
 	&& ((matrix)(otherToken.payload)).row == 1
             && ((matrix)(otherToken.payload)).column == 1) {
@@ -343,7 +330,6 @@ Token Matrix_multiply(Token thisToken, Token... tokens) {
             }
         }
     }
-    va_end(argp);
     return result;
 }
 /**/
@@ -353,12 +339,9 @@ Token Matrix_multiply(Token thisToken, Token... tokens) {
 // Return a new Array token.
 Token Matrix_divide(Token thisToken, Token... tokens) {
     int i, j, index;
-    va_list argp;
-    Token result;
-    Token element, otherToken;
-
-    va_start(argp, thisToken);
-    otherToken = va_arg(argp, Token);
+    Token result = null;
+    Token element;
+    Token otherToken = tokens[0];
 
     switch (otherToken.type) {
         case TYPE_Matrix:
@@ -375,7 +358,8 @@ Token Matrix_divide(Token thisToken, Token... tokens) {
         result = Array_new(otherToken.payload.Array.size, 0);
         for (i = 0; i < otherToken.payload.Array.size; i++) {
             element = Array_get(thisToken, i);
-            result.payload.Array.elements[i] = functionTable[TYPE_Matrix][FUNC_divide](thisToken, element);
+            //result.payload.Array.elements[i] = functionTable[TYPE_Matrix][FUNC_divide](thisToken, element);
+            result.payload.Array.elements[i] = $tokenFunc(thisToken::divide(element));
         }
 
         break;
@@ -386,11 +370,11 @@ Token Matrix_divide(Token thisToken, Token... tokens) {
         for (i = 0, index = 0; i < ((matrix)(thisToken.payload)).column; i++) {
             for (j = 0; j < ((matrix)(thisToken.payload)).row; j++, index++) {
                 element = Matrix_get(thisToken, j, i);
-                result.payload.Matrix.elements[index] = functionTable[(int)element.type][FUNC_divide](element, otherToken);
+                //((matrix)(result.payload)).elements[index] = functionTable[(int)element.type][FUNC_divide](element, otherToken);
+                ((matrix)(result.payload)).elements[index] = $tokenFunc(element::divide(otherToken));
             }
         }
     }
-    va_end(argp);
     return result;
 }
 /**/

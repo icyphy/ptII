@@ -1,29 +1,29 @@
 /***sinBlock***/
-$ref(output) = sin($ref(input));
+$ref(output) = Math.sin($ref(input));
 /**/
 
 
 /***asinBlock***/
-$ref(output) = asin($ref(input));
+$ref(output) = Math.asin($ref(input));
 /**/
 
 
 /***cosBlock***/
-$ref(output) = cos($ref(input));
+$ref(output) = Math.cos($ref(input));
 /**/
 
 
 /***acosBlock***/
-$ref(output) = acos($ref(input));
+$ref(output) = Math.acos($ref(input));
 /**/
 
 
 /***tanBlock***/
-$ref(output) = tan($ref(input));
+$ref(output) = Math.tan($ref(input));
 /**/
 
 
 /***atanBlock***/
-$ref(output) = atan($ref(input));
+$ref(output) = Math.atan($ref(input));
 /**/
 

@@ -98,7 +98,7 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
             $actorSymbol(numberOfTokensSeen),
             $actorSymbol(inputToken),
             $ref(tolerance),
-            (Integer)(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload)));
+	     (Number)(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload)));
     /*Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.$cgType(input)));*/
 }
 /**/

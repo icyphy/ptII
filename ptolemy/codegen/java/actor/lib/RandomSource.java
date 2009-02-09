@@ -77,11 +77,9 @@ public abstract class RandomSource extends JavaCodeGeneratorHelper {
      */
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
-
         ptolemy.actor.lib.RandomSource actor = (ptolemy.actor.lib.RandomSource) getComponent();
 
         long seedValue = ((LongToken) (actor.seed.getToken())).longValue();
-
         ArrayList args = new ArrayList();
 
         if (seedValue == 0) {
@@ -105,8 +103,7 @@ public abstract class RandomSource extends JavaCodeGeneratorHelper {
      */
     public Set getHeaderFiles() throws IllegalActionException {
         Set files = super.getHeaderFiles();
-        files.add("<stdlib.h>");
-        files.add("<time.h>");
+        files.add("java.util.Random;");
         return files;
     }
 

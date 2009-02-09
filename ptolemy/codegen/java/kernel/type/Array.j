@@ -398,7 +398,6 @@ Token Array_divide(Token thisToken, Token... elements) {
     result = Array_new(resultSize, 0);
 
     for (i = 0; i < resultSize; i++) {
-    for (i = 0; i < resultSize; i++) {
         if (size1 == 1) {
             Array_set(result, i, $tokenFunc(Array_get(thisToken, 0)::divide(Array_get(otherToken, i))));
         } else if (size2 == 1) {

@@ -140,11 +140,11 @@ Token divide_Long_Token(long long a1, Token a2) {
 /*** divide_Matrix_Double() ***/
 Token divide_Matrix_Double(Token a1, double a2) {
     int i, j;
-    Token result = $new(Matrix(a1.payload.Matrix->row,
-                    a1.payload.Matrix->column, 0));
+    Token result = $new(Matrix(((matrix)(a1.payload)).row,
+                    ((matrix)(a1.payload)).column, 0));
 
-    for (i = 0; i < a1.payload.Matrix->row; i++) {
-        for (j = 0; j < a1.payload.Matrix->column; j++) {
+    for (i = 0; i < ((matrix)(a1.payload)).row; i++) {
+        for (j = 0; j < ((matrix)(a1.payload)).column; j++) {
             Matrix_set(result, i, j,
                     $divide_Token_Double(Matrix_get(a1, i, j), a2));
         }
@@ -169,7 +169,69 @@ int divide_Token_Integer(Token a1, int a2) {
 
 /*** divide_Token_Token() ***/
 Token divide_Token_Token(Token a1, Token a2) {
-    return $tokenFunc(a1::divide(a2));
+    Token result = null;
+    switch (a1.type) {
+#ifdef PTCG_TYPE_Double
+    case TYPE_Double:
+        switch (a2.type) {
+	    case TYPE_Double:
+	    	result = Double_new((Double)a1.payload / (Double)a2.payload);
+		break;
+#endif
+// FIXME: this is wrong because if Double is not defined, but Integer is, we are hosed.
+#ifdef PTCG_TYPE_Integer
+	    case TYPE_Integer:
+	    	result = Double_new((Double)a1.payload / (Integer)a2.payload);
+		break;
+#endif
+#ifdef PTCG_TYPE_Double
+	    default:
+	        System.out.println("divide_Token_Token(): a1 is a Double, "
+			+ "a2 is a " + a2.type);
+	        result = null;
+
+        }
+	break;
+#endif
+#ifdef PTCG_TYPE_Integer
+    case TYPE_Integer:
+        switch (a2.type) {
+	    case TYPE_Integer:
+	    	result = Integer_new((Integer)a1.payload / (Integer)a2.payload);
+		break;
+	    default:
+	        System.out.println("divide_Token_Token(): a1 is a Integer, "
+			+ "a2 is a " + a2.type);
+
+	        result = null;
+
+        }
+	break;
+#endif
+    case TYPE_Array:
+        switch (a2.type) {
+	    case TYPE_Array:
+	    	result = $Array_divide(a1, a2);
+		System.out.println("divide_Token_Token: " + a1.type + " " + a2.type + " " + result);
+		break;
+	    default:
+	        result = null;
+
+        }
+	break;
+    default:
+        System.out.println("divide_Token_Token(): a1 is a " + a1.type
+			+ "a2 is a " + a2.type);
+
+        result = null;
+    }
+
+    if (result == null) {
+        throw new InternalError("divide_Token_Token_(): divide with an unsupported type. "
+	    + a1.type + " or " + a2.type);
+
+    }
+    return result;
 }
 /**/
 

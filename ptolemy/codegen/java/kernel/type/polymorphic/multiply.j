@@ -144,9 +144,14 @@ Token multiply_Token_Token(Token a1, Token a2) {
 	    case TYPE_Double:
 	    	result = Double_new((Double)a1.payload * (Double)a2.payload);
 		break;
+#endif
+// FIXME: this is wrong because if Double is not defined, but Integer is, we are hosed.
+#ifdef PTCG_TYPE_Integer
 	    case TYPE_Integer:
 	    	result = Double_new((Double)a1.payload * (Integer)a2.payload);
 		break;
+#endif
+#ifdef PTCG_TYPE_Double
 	    default:
 	        System.out.println("multiply_Token_Token(): a1 is a Double, "
 			+ "a2 is a " + a2.type);
