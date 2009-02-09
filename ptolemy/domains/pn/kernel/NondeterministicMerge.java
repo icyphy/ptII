@@ -138,65 +138,55 @@ public class NondeterministicMerge extends TypedCompositeActor {
         super.connectionsChanged(port);
 
         if (port == input) {
-            List<?> containedActors = entityList();
-            int numberOfContainedActors = containedActors.size();
-
-            // Create the contained actors to handle the inputs.
-            int inputWidth;
-            try {
-                inputWidth = input.getWidth();
-            } catch (IllegalActionException ex) {
-                throw new InternalErrorException(this, ex,
-                        "At this time IllegalActionExceptions are not allowed to happen.\n" +
-                        "Width inference should already have been done.");
-            }
-
-            for (int i = 0; i < inputWidth; i++) {
-                if (i < numberOfContainedActors) {
-                    // Local actor already exists for this channel.
-                    // Just wake it up.
-                    Object localActor = containedActors.get(i);
-
-                    synchronized (localActor) {
-                        localActor.notifyAll();
-                    }
-
-                    // ProcessThread associated with the actor might
-                    // be blocked on a wait on the director.
-                    // So we need to notify on the director also.
-                    Director director = getExecutiveDirector();
-
-                    // If there is no director, then the model cannot be running,
-                    // so there is no need to notify.
-                    if (director != null) {
-                        synchronized (director) {
-                            director.notifyAll();
-                        }
-                    }
-                } else {
-                    try {
-                        Actor localActor = new ChannelActor(i, this);
-
-                        // Tell the manager to initialize the actor.
-                        // NOTE: If the manager is null, then we can't
-                        // possibly be executing, so we don't need to do
-                        // this.
-                        Manager manager = getManager();
-
-                        if ((manager != null)
-                                && (manager.getState() != Manager.IDLE)) {
-                            manager.requestInitialization(localActor);
-                        }
-
-                        // NOTE: Probably don't want this overhead.
-                        // ((NamedObj)localActor).addDebugListener(this);
-                    } catch (KernelException e) {
-                        throw new InternalErrorException(e);
-                    }
-                }
+            /* The reason why we delay the execution of _reinitializeInnerActors:
+             *          What happens is that the NondeterministicMerge will call
+             *          getWidth in its connectionsChanged method, this will cause
+             *          IORelation to request a token from the width Parameter,
+             *          which will trigger IORelation.attributeChanged (expressions
+             *          are always lazy, which gives unexpected behavior with the
+             *          attributeChanged mechanism).
+             *          (Before the cached version of the width was being used at
+             *          this moment, which resulted in the wrong value being used
+             *          (this was a very old bug).)
+             *          The call of IORelation.attributeChanged will set the
+             *          cached width, which results in IOPort.attributeChanged
+             *          being called, which calls NondeterministicMerge.connectionsChanged
+             *          (again!). This one sees that the component has not added yet
+             *          and does so. Finally the functions all return and we end up
+             *          in the first NondeterministicMerge.connectionsChanged
+             *          again. At the time it called getWidth it knew it had to add
+             *          the component and does so, but in between this was already
+             *          done by the second NondeterministicMerge.connectionsChanged,
+             *          which results in the exception.
+             *          When I move the code that triggers the width and
+             *          adds to new actors to the initialize method of the
+             *          NondeterministicMerge the model
+             *          (ptolemy/domains/pn/demo/BrockAckerman/BrockAckerman.xml) runs
+             *          again, but I'm reluctant to do so, since it might mess up the
+             *          initialization process.
+             *          Moving the code to preinitialize has the disadvantage however
+             *          that width inference might happen multiple times (and definitely
+             *          will for certain type of models).
+             */
+            
+            Manager manager = getManager();
+            if ((manager != null)
+                    && (manager.getState() != Manager.IDLE)
+                    && (manager.getState() != Manager.INFERING_WIDTHS)
+                    && (manager.getState() != Manager.PREINITIALIZING)) {
+                _reinitializeInnerActors();
             }
         }
     }
+    
+    /** Initialize this actor.     
+     *  @exception IllegalActionException If the parent class throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        _reinitializeInnerActors();
+        super.initialize();
+    }
+    
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -226,6 +216,70 @@ public class NondeterministicMerge extends TypedCompositeActor {
 
         /*PNDirector director = */new MergeDirector(this, "director");
     }
+    
+
+    /** Create the contained actors to handle the inputs.
+     */
+    private void _reinitializeInnerActors() {
+        List<?> containedActors = entityList();
+        int numberOfContainedActors = containedActors.size();
+
+        // Create the contained actors to handle the inputs.
+        int inputWidth;
+        try {
+            inputWidth = input.getWidth();
+        } catch (IllegalActionException ex) {
+            throw new InternalErrorException(this, ex,
+                    "At this time IllegalActionExceptions are not allowed to happen.\n" +
+                    "Width inference should already have been done.");
+        }
+
+        for (int i = 0; i < inputWidth; i++) {
+            if (i < numberOfContainedActors) {
+                // Local actor already exists for this channel.
+                // Just wake it up.
+                Object localActor = containedActors.get(i);
+
+                synchronized (localActor) {
+                    localActor.notifyAll();
+                }
+
+                // ProcessThread associated with the actor might
+                // be blocked on a wait on the director.
+                // So we need to notify on the director also.
+                Director director = getExecutiveDirector();
+
+                // If there is no director, then the model cannot be running,
+                // so there is no need to notify.
+                if (director != null) {
+                    synchronized (director) {
+                        director.notifyAll();
+                    }
+                }
+            } else {
+                try {
+                    Actor localActor = new ChannelActor(i, this);
+
+                    // Tell the manager to initialize the actor.
+                    // NOTE: If the manager is null, then we can't
+                    // possibly be executing, so we don't need to do
+                    // this.
+                    Manager manager = getManager();
+
+                    if ((manager != null)
+                            && (manager.getState() != Manager.IDLE)) {
+                        manager.requestInitialization(localActor);
+                    }
+
+                    // NOTE: Probably don't want this overhead.
+                    // ((NamedObj)localActor).addDebugListener(this);
+                } catch (KernelException e) {
+                    throw new InternalErrorException(e);
+                }
+            }
+        }
+    }
+    
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
