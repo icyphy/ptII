@@ -478,6 +478,18 @@ ALL1_4PACKAGES = \
 	ptolemy.codegen.c.domains.sdf.lib \
 	ptolemy.codegen.c.kernel \
 	ptolemy.codegen.gui \
+	ptolemy.codegen.java.kernel \
+	ptolemy.codegen.java.actor \
+	ptolemy.codegen.java.actor.parameters \
+	ptolemy.codegen.java.domains.sdf.kernel \
+	ptolemy.codegen.java.domains.sdf.lib \
+	ptolemy.codegen.java.actor.lib.colt \
+	ptolemy.codegen.java.actor.lib.conversions \
+	ptolemy.codegen.java.actor.lib.hoc \
+	ptolemy.codegen.java.actor.lib.logic \
+	ptolemy.codegen.java.actor.lib.string \
+	ptolemy.codegen.java.actor.lib \
+	ptolemy.codegen.java.domains.sdf \
 	ptolemy.codegen.kernel \
 	ptolemy.codegen.vhdl.actor.lib.vhdl \
 	ptolemy.codegen.vhdl.kernel \
@@ -727,6 +739,18 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/codegen/c/domains/sdf/lib/*.java \
 			../ptolemy/codegen/c/kernel/*.java \
 			../ptolemy/codegen/gui/*.java \
+			../ptolemy/codegen/java/kernel/*.java \
+			../ptolemy/codegen/java/actor/*.java \
+			../ptolemy/codegen/java/actor/parameters/*.java \
+			../ptolemy/codegen/java/domains/sdf/kernel/*.java \
+			../ptolemy/codegen/java/domains/sdf/lib/*.java \
+			../ptolemy/codegen/java/actor/lib/colt/*.java \
+			../ptolemy/codegen/java/actor/lib/conversions/*.java \
+			../ptolemy/codegen/java/actor/lib/hoc/*.java \
+			../ptolemy/codegen/java/actor/lib/logic/*.java \
+			../ptolemy/codegen/java/actor/lib/string/*.java \
+			../ptolemy/codegen/java/actor/lib/*.java \
+			../ptolemy/codegen/java/domains/sdf/*.java \
 			../ptolemy/codegen/kernel/*.java \
 			../ptolemy/codegen/vhdl/actor/lib/vhdl/*.java \
 			../ptolemy/codegen/vhdl/kernel/*.java \
