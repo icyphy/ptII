@@ -1459,7 +1459,6 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
 
         /** Make all connections for this nested actor.
          *
-         *  @param actor The actor for to connect to others.
          *  @exception PtalonRuntimeException If thrown trying to
          *  access the parameter, or if unable to set the token for
          *  the corresponding parameter.
