@@ -413,7 +413,7 @@ conditional_statement!
     {
         trueTree.addChild(#i1);
     }
-    )* RCURLY! ELSE! LCURLY! (a2:atomic_statement 
+    )* RCURLY! (ELSE! LCURLY! (a2:atomic_statement 
     {
         falseTree.addChild(#a2);
     }
@@ -425,7 +425,7 @@ conditional_statement!
     {
         falseTree.addChild(#i2);
     }
-    )* RCURLY!
+    )* RCURLY!)?
     {
         #conditional_statement.addChild(trueTree);
         #conditional_statement.addChild(falseTree);

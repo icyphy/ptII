@@ -57,7 +57,7 @@ import antlr.collections.impl.BitSet;
   @Pt.ProposedRating Red (celaine)
   @Pt.AcceptedRating Red (celaine)
 */
-@SuppressWarnings({"unused"})
+
 public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes, TokenStream
  {
 public PtalonLexer(InputStream in) {
@@ -268,9 +268,7 @@ tryAgain:
 	}
 }
 
-
-   
-    public final void mASSIGN(boolean _createToken) throws RecognitionException, CharStreamException, TokenStreamException {
+	public final void mASSIGN(boolean _createToken) throws RecognitionException, CharStreamException, TokenStreamException {
 		int _ttype; Token _token=null; int _begin=text.length();
 		_ttype = ASSIGN;
 		int _saveIndex;
@@ -554,7 +552,7 @@ tryAgain:
 		}
 		}
 		{
-		_loop88:
+		_loop89:
 		do {
 			switch ( LA(1)) {
 			case 'a':  case 'b':  case 'c':  case 'd':
@@ -593,7 +591,7 @@ tryAgain:
 			}
 			default:
 			{
-				break _loop88;
+				break _loop89;
 			}
 			}
 		} while (true);
@@ -612,34 +610,34 @@ tryAgain:
 		int _saveIndex;
 		
 		{
-		int _cnt91=0;
-		_loop91:
+		int _cnt92=0;
+		_loop92:
 		do {
 			if (((LA(1) >= '0' && LA(1) <= '9'))) {
 				matchRange('0','9');
 			}
 			else {
-				if ( _cnt91>=1 ) { break _loop91; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
+				if ( _cnt92>=1 ) { break _loop92; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
 			}
 			
-			_cnt91++;
+			_cnt92++;
 		} while (true);
 		}
 		{
 		if ((LA(1)=='.')) {
 			match('.');
 			{
-			int _cnt94=0;
-			_loop94:
+			int _cnt95=0;
+			_loop95:
 			do {
 				if (((LA(1) >= '0' && LA(1) <= '9'))) {
 					matchRange('0','9');
 				}
 				else {
-					if ( _cnt94>=1 ) { break _loop94; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
+					if ( _cnt95>=1 ) { break _loop95; } else {throw new NoViableAltForCharException((char)LA(1), getFilename(), getLine(), getColumn());}
 				}
 				
-				_cnt94++;
+				_cnt95++;
 			} while (true);
 			}
 		}
@@ -661,7 +659,7 @@ tryAgain:
 		
 		match('"');
 		{
-		_loop98:
+		_loop99:
 		do {
 			switch ( LA(1)) {
 			case '\\':
@@ -708,7 +706,7 @@ tryAgain:
 			}
 			default:
 			{
-				break _loop98;
+				break _loop99;
 			}
 			}
 		} while (true);
@@ -778,15 +776,14 @@ tryAgain:
 		_returnToken = _token;
 	}
 	
-
-    public final void mLINE_COMMENT(boolean _createToken) throws RecognitionException, CharStreamException, TokenStreamException {
+	public final void mLINE_COMMENT(boolean _createToken) throws RecognitionException, CharStreamException, TokenStreamException {
 		int _ttype; Token _token=null; int _begin=text.length();
 		_ttype = LINE_COMMENT;
 		int _saveIndex;
 		
 		match("//");
 		{
-		_loop105:
+		_loop106:
 		do {
 			if ((_tokenSet_1.member(LA(1)))) {
 				{
@@ -794,7 +791,7 @@ tryAgain:
 				}
 			}
 			else {
-				break _loop105;
+				break _loop106;
 			}
 			
 		} while (true);
@@ -843,15 +840,15 @@ tryAgain:
 		match('[');
 		match('[');
 		{
-		_loop111:
+		_loop112:
 		do {
 			// nongreedy exit test
-			if ((LA(1)==']') && (LA(2)==']') && (true)) break _loop111;
+			if ((LA(1)==']') && (LA(2)==']') && (true)) break _loop112;
 			if (((LA(1) >= '\u0000' && LA(1) <= '\u007f')) && ((LA(2) >= '\u0000' && LA(2) <= '\u007f')) && ((LA(3) >= '\u0000' && LA(3) <= '\u007f'))) {
 				matchNot(EOF_CHAR);
 			}
 			else {
-				break _loop111;
+				break _loop112;
 			}
 			
 		} while (true);
@@ -873,15 +870,15 @@ tryAgain:
 		match('/');
 		match('*');
 		{
-		_loop114:
+		_loop115:
 		do {
 			// nongreedy exit test
-			if ((LA(1)=='*') && (LA(2)=='/') && (true)) break _loop114;
+			if ((LA(1)=='*') && (LA(2)=='/') && (true)) break _loop115;
 			if (((LA(1) >= '\u0000' && LA(1) <= '\u007f')) && ((LA(2) >= '\u0000' && LA(2) <= '\u007f')) && ((LA(3) >= '\u0000' && LA(3) <= '\u007f'))) {
 				matchNot(EOF_CHAR);
 			}
 			else {
-				break _loop114;
+				break _loop115;
 			}
 			
 		} while (true);

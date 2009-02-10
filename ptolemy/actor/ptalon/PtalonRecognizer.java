@@ -28,19 +28,24 @@
  */
 package ptolemy.actor.ptalon;
 
+import antlr.TokenBuffer;
+import antlr.TokenStreamException;
+import antlr.TokenStreamIOException;
+import antlr.ANTLRException;
+import antlr.LLkParser;
+import antlr.Token;
+import antlr.TokenStream;
+import antlr.RecognitionException;
+import antlr.NoViableAltException;
+import antlr.MismatchedTokenException;
+import antlr.SemanticException;
+import antlr.ParserSharedInputState;
+import antlr.collections.impl.BitSet;
+import antlr.collections.AST;
+import java.util.Hashtable;
 import antlr.ASTFactory;
 import antlr.ASTPair;
-import antlr.NoViableAltException;
-import antlr.ParserSharedInputState;
-import antlr.RecognitionException;
-import antlr.SemanticException;
-import antlr.Token;
-import antlr.TokenBuffer;
-import antlr.TokenStream;
-import antlr.TokenStreamException;
-import antlr.collections.AST;
 import antlr.collections.impl.ASTArray;
-import antlr.collections.impl.BitSet;
 
 /** 
   PtalonRecognizer.java generated from populator.g by ANTLR.
@@ -1660,65 +1665,96 @@ inputState.guessing--;
 		} while (true);
 		}
 		match(RCURLY);
-		match(ELSE);
-		match(LCURLY);
 		{
-		_loop53:
-		do {
-			switch ( LA(1)) {
-			case PORT:
-			case INPORT:
-			case OUTPORT:
-			case ID:
-			case PARAMETER:
-			case ACTOR:
-			case ACTORPARAM:
-			case RELATION:
-			case TRANSPARENT:
-			case NEGATE:
-			case OPTIONAL:
-			case REMOVE:
-			case PRESERVE:
+		switch ( LA(1)) {
+		case ELSE:
+		{
+			match(ELSE);
+			match(LCURLY);
 			{
-				atomic_statement();
-				a2_AST = (PtalonAST)returnAST;
-				if ( inputState.guessing==0 ) {
-					
-					falseTree.addChild(a2_AST);
-					
+			_loop54:
+			do {
+				switch ( LA(1)) {
+				case PORT:
+				case INPORT:
+				case OUTPORT:
+				case ID:
+				case PARAMETER:
+				case ACTOR:
+				case ACTORPARAM:
+				case RELATION:
+				case TRANSPARENT:
+				case NEGATE:
+				case OPTIONAL:
+				case REMOVE:
+				case PRESERVE:
+				{
+					atomic_statement();
+					a2_AST = (PtalonAST)returnAST;
+					if ( inputState.guessing==0 ) {
+						
+						falseTree.addChild(a2_AST);
+						
+					}
+					break;
 				}
-				break;
-			}
-			case IF:
-			{
-				conditional_statement();
-				c2_AST = (PtalonAST)returnAST;
-				if ( inputState.guessing==0 ) {
-					
-					falseTree.addChild(c2_AST);
-					
+				case IF:
+				{
+					conditional_statement();
+					c2_AST = (PtalonAST)returnAST;
+					if ( inputState.guessing==0 ) {
+						
+						falseTree.addChild(c2_AST);
+						
+					}
+					break;
 				}
-				break;
-			}
-			case FOR:
-			{
-				iterative_statement();
-				i2_AST = (PtalonAST)returnAST;
-				if ( inputState.guessing==0 ) {
-					
-					falseTree.addChild(i2_AST);
-					
+				case FOR:
+				{
+					iterative_statement();
+					i2_AST = (PtalonAST)returnAST;
+					if ( inputState.guessing==0 ) {
+						
+						falseTree.addChild(i2_AST);
+						
+					}
+					break;
 				}
-				break;
+				default:
+				{
+					break _loop54;
+				}
+				}
+			} while (true);
 			}
-			default:
-			{
-				break _loop53;
-			}
-			}
-		} while (true);
+			match(RCURLY);
+			break;
 		}
-		match(RCURLY);
+		case PORT:
+		case INPORT:
+		case OUTPORT:
+		case ID:
+		case PARAMETER:
+		case ACTOR:
+		case ACTORPARAM:
+		case RELATION:
+		case TRANSPARENT:
+		case IF:
+		case FOR:
+		case NEGATE:
+		case OPTIONAL:
+		case REMOVE:
+		case PRESERVE:
+		case RCURLY:
+		{
+			break;
+		}
+		default:
+		{
+			throw new NoViableAltException(LT(1), getFilename());
+		}
+		}
+		}
 		if ( inputState.guessing==0 ) {
 			conditional_statement_AST = (PtalonAST)currentAST.root;
 			
@@ -1776,7 +1812,7 @@ inputState.guessing--;
 			currentAST.advanceChildToEnd();
 		}
 		{
-		_loop56:
+		_loop57:
 		do {
 			switch ( LA(1)) {
 			case FOR:
@@ -1829,7 +1865,7 @@ inputState.guessing--;
 			}
 			default:
 			{
-				break _loop56;
+				break _loop57;
 			}
 			}
 		} while (true);
@@ -1945,7 +1981,7 @@ inputState.guessing--;
 		match(IS);
 		match(LCURLY);
 		{
-		_loop61:
+		_loop62:
 		do {
 			switch ( LA(1)) {
 			case PORT:
@@ -1998,7 +2034,7 @@ inputState.guessing--;
 			}
 			default:
 			{
-				break _loop61;
+				break _loop62;
 			}
 			}
 		} while (true);
@@ -2107,7 +2143,7 @@ inputState.guessing--;
 		}
 		match(LCURLY);
 		{
-		_loop66:
+		_loop67:
 		do {
 			switch ( LA(1)) {
 			case PORT:
@@ -2160,7 +2196,7 @@ inputState.guessing--;
 			}
 			default:
 			{
-				break _loop66;
+				break _loop67;
 			}
 			}
 		} while (true);
