@@ -36,6 +36,7 @@ import java.util.Set;
 
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
 ////RelationWidthInference
@@ -68,16 +69,17 @@ public class RelationWidthInference {
             final boolean logTimings = false;
             final boolean checkConsistency = true;
             long startTime = (new Date()).getTime();
-                        
+
             try {
                 _topLevel.workspace().getWriteAccess();
 
                 Set<ComponentRelation> relationList = _topLevel.deepRelationSet();
-                Set<IORelation> workingSet = new HashSet<IORelation>();
+                Set<IORelation> workingRelationSet = new HashSet<IORelation>();
+                Set<IOPort> workingPortSet = new HashSet<IOPort>();
                 HashSet<IORelation> unspecifiedSet = new HashSet<IORelation>();
                 HashSet<IOPort> portsToCheckConsistency = new HashSet<IOPort>();
                 HashSet<IOPort> portsThatCanBeIngnoredForConsistencyCheck = new HashSet<IOPort>();
-                                
+
                 for (ComponentRelation componentRelation : relationList) {
                     if (componentRelation instanceof IORelation) {
                         IORelation relation = (IORelation) componentRelation;
@@ -85,7 +87,7 @@ public class RelationWidthInference {
                             if (relation.needsWidthInference()) {
                                 unspecifiedSet.add(relation);
                             }
-                            if (!relation.isWidthFixed()) {
+                            if (!relation.isWidthFixed() && relation.needsWidthInference()) {
                                 // If connected to non-multiports => the relation should be 1                        
                                 for (Object object : relation.linkedObjectsList()) {
                                     if (object instanceof IOPort) {
@@ -96,22 +98,25 @@ public class RelationWidthInference {
                                                 //FIXME: Can be zero in the case that this relation
                                                 //      has no other port connected to it
                                             
-                                            workingSet.add(relation);
+                                            workingRelationSet.add(relation);
                                             break; //Break the for loop.
-                                        } else /*if (!port.isOpaque())*/{
+                                        } else {
                                             //Add known outside relations
                                             for (Object connectedRelationObject : port.linkedRelationList()) {
                                                 IORelation connectedRelation = (IORelation) connectedRelationObject;
                                                 if (connectedRelation != null && connectedRelation.isWidthFixed()) {
-                                                    workingSet.add(connectedRelation);
+                                                    workingRelationSet.add(connectedRelation);
                                                 }
                                             }
                                             //Add known inside relations
                                             for (Object connectedRelationObject : port.insideRelationList()) {
                                                 IORelation connectedRelation = (IORelation) connectedRelationObject;
                                                 if (connectedRelation != null && connectedRelation.isWidthFixed()) {
-                                                    workingSet.add(connectedRelation);
+                                                    workingRelationSet.add(connectedRelation);
                                                 }
+                                            }
+                                            if (port.hasWidthConstraints()) {
+                                                workingPortSet.add(port);
                                             }
                                         }
                                     }
@@ -121,7 +126,8 @@ public class RelationWidthInference {
                     }
                 }
 
-                LinkedList<IORelation> workingSet2 = new LinkedList<IORelation>(workingSet);
+                LinkedList<IORelation> workingRelationList = new LinkedList<IORelation>(workingRelationSet);
+                workingRelationSet = null;                               
 
                 if (logTimings) {
                     System.out.println("Width inference - initialization: " +                
@@ -131,56 +137,87 @@ public class RelationWidthInference {
                                 
                 long afterinit = (new Date()).getTime();
                 
-                while (!workingSet2.isEmpty() && !unspecifiedSet.isEmpty()) {
-                    //IORelation relation = workingSet2.pop();
-                    // pop has been added to LinkedList in Java 1.6
-                    // (cfr. http://java.sun.com/javase/6/docs/api/java/util/LinkedList.html#pop() ).
-                    // Hence we use get an remove for the time being...
+                boolean continueInference = true;
+                
+                while (continueInference && !unspecifiedSet.isEmpty() &&
+                        (!workingPortSet.isEmpty() || !workingRelationList.isEmpty())) {
                     
-                    IORelation relation = workingSet2.get(0);
-                    workingSet2.remove(0);
-                    
-                    unspecifiedSet.remove(relation);
-                    assert  !relation.needsWidthInference(); 
-                    int width = relation.getWidth();            
-                    assert  width >= 0;
-                    
-                    // All relations in the same relation group need to have the same width
-                    for (Object otherRelationObject : relation.relationGroupList()) {
-                        IORelation otherRelation = (IORelation) otherRelationObject;
-                        if (relation != otherRelation && otherRelation.needsWidthInference()) {
-                            relation._setInferredWidth(width);
-                            unspecifiedSet.remove(otherRelation);
-                            // We don't need to add otherRelation to unspecifiedSet since
-                            // we will process all ports linked to the complete relationGroup
-                            // all at once.
-                        }
-                    }
-                    
-                    // Now we see whether we can determine the widths of relations directly connected
-                    // at the multiports linked to this relation.
-                    
-                    // linkedPortList() can contain a port more than once. We only want
-                    // them once. We will also only add multiports
-                    HashSet<IOPort> multiports = new HashSet<IOPort>();
-                    for (Object port : relation.linkedPortList()) {
-                        if (((IOPort) port).isMultiport()) {                            
-                            multiports.add((IOPort) port);
-                        }
-                    }
-                    for (IOPort port : multiports) {
-                        List<IORelation> updatedRelations = _relationsWithUpdatedWidthForMultiport(port);
-                        if (checkConsistency && !updatedRelations.isEmpty()) {
-                            // If we have updated relations for this port, it means that it is consistent
-                            // and hence we don't need to check consistency anymore.
-                            portsThatCanBeIngnoredForConsistencyCheck.add(port);
-                            for(IORelation updatedRelation : updatedRelations) {
-                                portsToCheckConsistency.addAll(updatedRelation.linkedPortList(port));             
+                    while (!workingRelationList.isEmpty() && !unspecifiedSet.isEmpty()) {
+                        
+                        //IORelation relation = workingSet2.pop();
+                        // pop has been added to LinkedList in Java 1.6
+                        // (cfr. http://java.sun.com/javase/6/docs/api/java/util/LinkedList.html#pop() ).
+                        // Hence we use get an remove for the time being...                        
+                        IORelation relation = workingRelationList.get(0);
+                        workingRelationList.remove(0);
+                        
+                        unspecifiedSet.remove(relation);
+                        assert  !relation.needsWidthInference(); 
+                        int width = relation.getWidth();            
+                        assert  width >= 0;
+                        
+                        // All relations in the same relation group need to have the same width
+                        for (Object otherRelationObject : relation.relationGroupList()) {
+                            IORelation otherRelation = (IORelation) otherRelationObject;
+                            if (relation != otherRelation && otherRelation.needsWidthInference()) {
+                                otherRelation._setInferredWidth(width);
+                                unspecifiedSet.remove(otherRelation);
+                                // We don't need to add otherRelation to unspecifiedSet since
+                                // we will process all ports linked to the complete relationGroup
+                                // all at once.
                             }
                         }
-                        workingSet2.addAll(updatedRelations);
+                        
+                        // Now we see whether we can determine the widths of relations directly connected
+                        // at the multiports linked to this relation.
+                        
+                        // linkedPortList() can contain a port more than once. We only want
+                        // them once. We will also only add multiports
+                        HashSet<IOPort> multiports = new HashSet<IOPort>();
+                        for (Object port : relation.linkedPortList()) {
+                            if (((IOPort) port).isMultiport()) {                            
+                                multiports.add((IOPort) port);
+                            }
+                        }
+                        for (IOPort port : multiports) {
+                            List<IORelation> updatedRelations = _relationsWithUpdatedWidthForMultiport(port);
+                            if (checkConsistency && !updatedRelations.isEmpty()) {
+                                // If we have updated relations for this port, it means that it is consistent
+                                // and hence we don't need to check consistency anymore.
+                                portsThatCanBeIngnoredForConsistencyCheck.add(port);
+                                for(IORelation updatedRelation : updatedRelations) {
+                                    portsToCheckConsistency.addAll(updatedRelation.linkedPortList(port));             
+                                }
+                            }
+                            workingRelationList.addAll(updatedRelations);
+                        }
+                    }
+                    if (!workingPortSet.isEmpty() && !unspecifiedSet.isEmpty()) {
+                        continueInference = false;
+                        LinkedList<IOPort> workingPortList = new LinkedList<IOPort>(workingPortSet);
+                        // TODO: here we only extract width from the ports with constraints,
+                        //      we should also check whether all constraints match.
+                        for (IOPort port : workingPortList) {                            
+                            List<IORelation> updatedRelations = _relationsWithUpdatedWidthForMultiport(port);
+                            if (!updatedRelations.isEmpty()) {
+                                workingPortSet.remove(port);
+                                continueInference = true;
+                                    // We found new information, so we can try to infer
+                                    // new relations.
+                            }
+                            if (checkConsistency && !updatedRelations.isEmpty()) {
+                                // If we have updated relations for this port, it means that it is consistent
+                                // and hence we don't need to check consistency anymore.
+                                portsThatCanBeIngnoredForConsistencyCheck.add(port);
+                                for(IORelation updatedRelation : updatedRelations) {
+                                    portsToCheckConsistency.addAll(updatedRelation.linkedPortList(port));             
+                                }
+                            }
+                            workingRelationList.addAll(updatedRelations);
+                        }                        
                     }
                 }
+                
                 if (logTimings) {
                     System.out.println("Actual algorithm: " +                
                             (System.currentTimeMillis() - afterinit)
@@ -199,6 +236,7 @@ public class RelationWidthInference {
                 
                 //Consistency check
                 if (checkConsistency) {
+                    // TODO: also check the constraints.
                     portsToCheckConsistency.removeAll(portsThatCanBeIngnoredForConsistencyCheck);
                     for (IOPort port : portsToCheckConsistency) {
                         _checkConsistency(port);
@@ -256,6 +294,27 @@ public class RelationWidthInference {
          _topLevel = topLevel;       
      }
      
+     ///////////////////////////////////////////////////////////////////
+     ////                         protected methods                 ////
+     
+     /** Filter the relations for which the width still has to be inferred.
+      *  @param  relationList The relations that need to be filtered.
+      *  @return The relations for which the width still has to return. 
+      *  @exception IllegalActionException If the expression for the width cannot
+      *   be parsed or cannot be evaluated, or if the result of evaluation
+      *   violates type constraints, or if the result of evaluation is null
+      *   and there are variables that depend on this one.
+      */
+     static protected Set<IORelation> _relationsWithUnspecifiedWidths(List<?> relationList) throws IllegalActionException {
+         Set<IORelation> result = new HashSet<IORelation>();
+         for (Object relation : relationList) {
+             if (relation != null && ((IORelation) relation).needsWidthInference()) {
+                 result.add((IORelation) relation);                
+             }
+         }
+         return result;
+     }
+     
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////   
 
@@ -284,25 +343,6 @@ public class RelationWidthInference {
 	             + " inside or outside relation and set the width -1.");
          }
      }
-
-    /** Filter the relations for which the width still has to be inferred.
-     *  @param  relationList The relations that need to be filtered.
-     *  @return The relations for which the width still has to return. 
-     *  @exception IllegalActionException If the expression for the width cannot
-     *   be parsed or cannot be evaluated, or if the result of evaluation
-     *   violates type constraints, or if the result of evaluation is null
-     *   and there are variables that depend on this one.
-     */
-    static private Set<IORelation> _relationsWithUnspecifiedWidths(List<?> relationList) throws IllegalActionException {
-        Set<IORelation> result = new HashSet<IORelation>();
-        for (Object relation : relationList) {
-            if (relation != null && ((IORelation) relation).needsWidthInference()) {
-                result.add((IORelation) relation);                
-            }
-        }
-        return result;
-    }
-
     
     /**
      * Infer the width for the relations connected to the port. If the width can be
@@ -315,52 +355,74 @@ public class RelationWidthInference {
     static private List<IORelation> _relationsWithUpdatedWidthForMultiport(IOPort port) throws IllegalActionException {              
         List<IORelation> result = new LinkedList<IORelation>();        
         
-        Set<IORelation> insideUnspecifiedWidths = _relationsWithUnspecifiedWidths(port.insideRelationList());
-        int insideUnspecifiedWidthsSize = insideUnspecifiedWidths.size(); 
-
         Set<IORelation> outsideUnspecifiedWidths = _relationsWithUnspecifiedWidths(port.linkedRelationList());
                 //port.linkedRelationList() returns the outside relations
         
         int outsideUnspecifiedWidthsSize = outsideUnspecifiedWidths.size();
         
-        if ((insideUnspecifiedWidthsSize > 0 && outsideUnspecifiedWidthsSize > 0) 
-                || (insideUnspecifiedWidthsSize == 0 && outsideUnspecifiedWidthsSize == 0)) {
+        NamedObj namedObject = port.getContainer();
+        if (namedObject == null) {
+            assert false; // not expected
             return result;
         }
-
-        int insideWidth = port._getInsideWidth(null);
-        int outsideWidth = port._getOutsideWidth(null);
-        
-        Set<IORelation> unspecifiedWidths = null;
         int difference = -1;
-        
-        if (insideUnspecifiedWidthsSize > 0) {
-            unspecifiedWidths = insideUnspecifiedWidths;
-            difference = outsideWidth - insideWidth;
+        Set<IORelation> unspecifiedWidths = null;
+        if (namedObject instanceof AtomicActor) {
+            assert outsideUnspecifiedWidthsSize >= 0;
+            if (outsideUnspecifiedWidthsSize > 0 && port.hasWidthConstraints()) {
+                difference = port.getWidthFromConstraints();
+                unspecifiedWidths = outsideUnspecifiedWidths;
+                if (difference < 0) {
+                    return result; // Constraints still unknown
+                }
+            } else {
+                return result;
+            }
         } else {
-            assert outsideUnspecifiedWidthsSize > 0;
-            unspecifiedWidths = outsideUnspecifiedWidths;
-            difference = insideWidth - outsideWidth;            
-        }
-        
-        // For opaque ports we want not always want the same behavior.
-        // For example at an add-subtract actor we only have information
-        // about the outside, and hence we can't infer any widths at this port.
-        // In this case difference < 0.
-        // However in the case of a multimodel, you often have relations on the
-        // inside and width inference needs to happen. In this case difference >=0 
-        if (port.isOpaque() && difference < 0) {
-            assert insideWidth == 0;
-            return result; // No width inference possible and necessary at this port.            
-        }
-        if (difference < 0) {
-            throw new IllegalActionException(port, 
-                    "The inside and outside widths of port " + port.getFullName()
-                    + " are not consistent.\nThe inferred width of relation "
-                    + unspecifiedWidths.iterator().next().getFullName()
-                    + " would be negative.");            
+            
+            Set<IORelation> insideUnspecifiedWidths = _relationsWithUnspecifiedWidths(port.insideRelationList());
+            int insideUnspecifiedWidthsSize = insideUnspecifiedWidths.size(); 
+            
+            if ((insideUnspecifiedWidthsSize > 0 && outsideUnspecifiedWidthsSize > 0) 
+                    || (insideUnspecifiedWidthsSize == 0 && outsideUnspecifiedWidthsSize == 0)) {
+                return result;
+            }
+    
+            int insideWidth = port._getInsideWidth(null);
+            int outsideWidth = port._getOutsideWidth(null);
+            
+            if (insideUnspecifiedWidthsSize > 0) {
+                unspecifiedWidths = insideUnspecifiedWidths;
+                difference = outsideWidth - insideWidth;
+            } else {
+                assert outsideUnspecifiedWidthsSize > 0;
+                unspecifiedWidths = outsideUnspecifiedWidths;
+                difference = insideWidth - outsideWidth;            
+            }
+            
+            // We expect that the following case does not exist anymore since atomic
+            // actors are handled separately. Hence the assert...
+            // For opaque ports we not always want the same behavior.
+            // For example at an add-subtract actor we only have information
+            // about the outside, and hence we can't infer any widths at this port.
+            // In this case difference < 0.
+            // However in the case of a multimodel, you often have relations on the
+            // inside and width inference needs to happen. In this case difference >=0 
+            if (port.isOpaque() && difference < 0) {
+                assert false; // We don't expect to come in this case
+                assert insideWidth == 0;
+                return result; // No width inference possible and necessary at this port.            
+            }
+            if (difference < 0) {
+                throw new IllegalActionException(port, 
+                        "The inside and outside widths of port " + port.getFullName()
+                        + " are not consistent.\nThe inferred width of relation "
+                        + unspecifiedWidths.iterator().next().getFullName()
+                        + " would be negative.");            
+            }
         }
 
+        assert unspecifiedWidths != null;
         int unspecifiedWidthsSize = unspecifiedWidths.size();
         
         // Put the next test in comments since the condition
@@ -382,7 +444,7 @@ public class RelationWidthInference {
                 result.add(relation);
             }
         }
-        return result;               
+        return result;
     }
 
 

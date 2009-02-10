@@ -109,6 +109,8 @@ public class BooleanSelect extends TypedAtomicActor {
         output.setTypeAtLeast(trueInput);
         output.setTypeAtLeast(falseInput);
         output.setMultiport(true);
+        output.setWidthEquals(trueInput);
+        output.setWidthEquals(falseInput);
 
         // Put the control input on the bottom of the actor.
         StringAttribute controlCardinal = new StringAttribute(control,
@@ -201,6 +203,11 @@ public class BooleanSelect extends TypedAtomicActor {
         BooleanSelect newObject = (BooleanSelect) super.clone(workspace);
         newObject._control = null;
         newObject._controlUsed = false;
+        newObject.output.setTypeAtLeast(newObject.trueInput);
+        newObject.output.setTypeAtLeast(newObject.falseInput);        
+        newObject.output.setWidthEquals(newObject.trueInput);
+        newObject.output.setWidthEquals(newObject.falseInput);
+        
         return newObject;
     }
 

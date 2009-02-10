@@ -41,12 +41,16 @@ import java.io.Writer;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import ptolemy.actor.util.Time;
+import ptolemy.data.IntToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
@@ -421,6 +425,10 @@ public class IOPort extends ComponentPort {
 
         newObject._hasPortEventListeners = false;
         newObject._portEventListeners = null;
+        
+        newObject._widthEqualToParameter = new HashSet<Parameter>();
+        newObject._widthEqualToPort = new HashSet<IOPort>();
+        
 
         return newObject;
     }
@@ -1574,6 +1582,51 @@ public class IOPort extends ComponentPort {
             _workspace.doneReading();
         }
     }
+    
+
+    /** Get the width from the constraints put on the width
+     *  of this port if the width is fully determined yet.
+     *  If it is not possible to determine the width yet
+     *  (for example because dependent relations also don't have
+     *  there width inferred), -1 is returned
+     *  @return The width.
+     */
+    public int getWidthFromConstraints() {
+        for (Parameter parameter : _widthEqualToParameter) {
+            try {
+                IntToken t = (IntToken) parameter.getToken();
+        
+                if (t != null) {
+                    return t.intValue();
+                }
+            }
+            catch (Exception e) {
+                // It it throws, it means we can't evaluate the
+                // parameter yet.
+                continue;
+            }                
+        }
+        
+        for (IOPort port : _widthEqualToPort) {
+            try {
+                Set<IORelation> outsideUnspecifiedWidths = RelationWidthInference._relationsWithUnspecifiedWidths(port.linkedRelationList());
+                // It there is still a outsideUnspecifiedWidths, the width
+                // is not yet completely specified.
+                if (outsideUnspecifiedWidths.isEmpty()) {
+                    int outsideWidth = port._getOutsideWidth(null);
+                    return outsideWidth;
+                }
+            }
+            catch (Exception e) {
+                // It it throws, it means we can't evaluate the
+                // width yet.
+                continue;
+            }
+        }
+        
+        // No information available yet
+        return -1;
+    }
 
     /** Return the inside width of this port.  The inside width is the
      *  sum of the widths of the relations that the port is linked to
@@ -1845,6 +1898,16 @@ public class IOPort extends ComponentPort {
 
         return result;
     }
+    
+    /** Return whether there are constraints on the width of
+     *  this port. There are constraints in case the method
+     *  setWidthEquals has been called.
+     *  @return True when there are constraints on the width.
+     *  @see #setWidthEquals()
+     */
+    public boolean hasWidthConstraints() {
+        return !_widthEqualToParameter.isEmpty() || !_widthEqualToPort.isEmpty();
+    }    
 
     /** Override the base class to invalidate the schedule and resolved
      *  types of the director of the container, if there is one, in addition
@@ -2824,6 +2887,30 @@ public class IOPort extends ComponentPort {
         _invalidate();
         _workspace.doneWriting();
     }
+
+    /** Constrain the width of this port to be equal to the parameter.
+     *  <p>Actors that call this method should have a clone() method that
+     *  repeats the width constraints that were specified in
+     *  the constructor.
+     *  @param parameter A parameter.
+     */
+    public void setWidthEquals(Parameter parameter) {
+        _widthEqualToParameter.add(parameter);
+    }
+    
+    /** Constrain the width of this port to be equal to the width of
+     *  the IOPort port.
+     *  <p>Actors that call this method should have a clone() method that
+     *  repeats the width constraints that were specified in
+     *  the constructor.
+     *  @param port A port.
+     */    
+    public void setWidthEquals(IOPort port) {
+        if (!_widthEqualToPort.contains(port)) {
+            _widthEqualToPort.add(port);
+            port.setWidthEquals(this);
+        }
+    }    
 
     /** Return a list of the ports that may accept data from this port when
      *  it sends on the outside.  This includes
@@ -4187,6 +4274,12 @@ public class IOPort extends ComponentPort {
     // linked relations.  It is set or updated when getWidth() is called.
     // 'transient' means that the variable will not be serialized.
     private transient int _width = 0;
+    
+    // Constrains on the width of this port (it has to be equal to the parameters).
+    private Set<Parameter> _widthEqualToParameter = new HashSet<Parameter>();
+    
+    // Constrains on the width of this port (it has to be equal to the width of the port).
+    private Set<IOPort> _widthEqualToPort = new HashSet<IOPort>();
 
     // The workspace version number on the last update of the _width.
     // 'transient' means that the variable will not be serialized.

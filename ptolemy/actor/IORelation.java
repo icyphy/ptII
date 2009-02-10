@@ -188,6 +188,7 @@ public class IORelation extends ComponentRelation {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         IORelation newObject = (IORelation) super.clone(workspace);
         newObject._inferredWidthVersion = -1;
+        newObject._cachedWidth = -2;
         return newObject;
     }
 

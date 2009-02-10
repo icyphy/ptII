@@ -37,6 +37,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// BooleanSwitch
@@ -97,6 +98,8 @@ public class BooleanSwitch extends TypedAtomicActor {
         falseOutput.setTypeAtLeast(input);
         trueOutput.setMultiport(true);
         falseOutput.setMultiport(true);
+        trueOutput.setWidthEquals(input);
+        falseOutput.setWidthEquals(input);
 
         // Put the control input on the bottom of the actor.
         StringAttribute controlCardinal = new StringAttribute(control,
@@ -131,6 +134,28 @@ public class BooleanSwitch extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Clone this actor into the specified workspace. The new actor is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  The result is a new actor with the same ports as the original, but
+     *  no connections and no container.  A container must be set before
+     *  much can be done with this actor.
+     *
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException If cloned ports cannot have
+     *   as their container the cloned entity (this should not occur), or
+     *   if one of the attributes cannot be cloned.
+     *  @return A new ComponentEntity.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        BooleanSwitch newObject = (BooleanSwitch) super.clone(workspace);
+        newObject.trueOutput.setTypeAtLeast(newObject.input);
+        newObject.falseOutput.setTypeAtLeast(newObject.input);        
+        newObject.trueOutput.setWidthEquals(newObject.input);
+        newObject.falseOutput.setWidthEquals(newObject.input);
+
+        return newObject;
+    }
     /** Read a token from each input port.  If the token from the
      *  <i>control</i> input is true, then output the token consumed from the
      *  <i>input</i> port on the <i>trueOutput</i> port,

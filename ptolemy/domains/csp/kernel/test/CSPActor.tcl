@@ -68,9 +68,11 @@ test CSPActor-2.1 {ConditionalReceive() } {
     $actorB setToken $tokenB 0 
     $actorC setTruth 0 true
 
-    set rel [$topLevel connect $portC $portA]
-    set rel [$topLevel connect $portC $portB]
-
+    set rel [java::cast ptolemy.actor.IORelation [$topLevel connect $portC $portA]]
+    $rel setWidth 1
+    set rel [java::cast ptolemy.actor.IORelation [$topLevel connect $portC $portB]]
+		$rel setWidth 1
+		
     $manager run
 
     set winner [$actorC isWinner 0]
@@ -101,8 +103,10 @@ test CSPActor-2.2 {ConditionalSend() } {
     $actorA setToken $token 0 
     $actorA setTruth 1 true
 
-    set rel [$topLevel connect $portA $portB]
-    set rel [$topLevel connect $portA $portC]
+    set rel [java::cast ptolemy.actor.IORelation [$topLevel connect $portA $portB]]
+    $rel setWidth 1
+    set rel [java::cast ptolemy.actor.IORelation [$topLevel connect $portA $portC]]
+    $rel setWidth 1
 
     $manager run
 

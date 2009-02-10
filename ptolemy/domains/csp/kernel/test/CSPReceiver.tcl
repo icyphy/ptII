@@ -81,7 +81,8 @@ test CSPReceiver-3.1 {get(), put(), No tokens - deadlock!} {
     set portA [$actorA getPort "output"]
     set portB [$actorB getPort "input"]
 
-    set rel [$topLevel connect $portB $portA "rel"]
+    set rel [java::cast ptolemy.actor.IORelation [$topLevel connect $portB $portA "rel"]]
+    $rel setWidth 1
 
     $manager run
 
@@ -108,7 +109,8 @@ test CSPReceiver-3.2 {get(), put(), One token} {
     set portA [$actorA getPort "output"]
     set portB [$actorB getPort "input"]
 
-    set rel [$topLevel connect $portB $portA "rel"]
+    set rel [java::cast ptolemy.actor.IORelation [$topLevel connect $portB $portA "rel"]]
+    $rel setWidth 1
 
     $manager run
 
@@ -137,7 +139,8 @@ test CSPReceiver-3.3 {get(), put(), Two tokens and then deadlock!} {
     set portA [$actorA getPort "output"]
     set portB [$actorB getPort "input"]
 
-    set rel [$topLevel connect $portB $portA "rel"]
+    set rel [java::cast ptolemy.actor.IORelation [$topLevel connect $portB $portA "rel"]]
+    $rel setWidth 1
 
     $manager run
 
@@ -168,7 +171,8 @@ test CSPReceiver-3.4 {hasToken()} {
     set portA [$actorA getPort "output"]
     set portB [$actorB getPort "input"]
 
-    set rel [$topLevel connect $portB $portA "rel"]
+    set rel [java::cast ptolemy.actor.IORelation [$topLevel connect $portB $portA "rel"]]
+    $rel setWidth 1
 
     $manager run
 
@@ -191,7 +195,8 @@ test CSPReceiver-3.5 {hasRoom()} {
     set portA [$actorA getPort "output"]
     set portB [$actorB getPort "input"]
 
-    set rel [$topLevel connect $portB $portA "rel"]
+    set rel [java::cast ptolemy.actor.IORelation [$topLevel connect $portB $portA "rel"]]
+    $rel setWidth 1
 
     $manager run
 
