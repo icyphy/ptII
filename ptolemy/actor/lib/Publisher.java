@@ -181,7 +181,7 @@ public class Publisher extends TypedAtomicActor {
             exception.initCause(throwable);
             throw exception;
         }
-        output.setWidthEquals(input);
+        newObject.output.setWidthEquals(newObject.input);
         return newObject;
     }
 
