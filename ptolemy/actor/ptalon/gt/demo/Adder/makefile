@@ -1,10 +1,10 @@
-# Makefile for Ptolemy graph transformation data
+# Makefile for Ptolemy II Adder demo
 #
-# @Authors: Thomas Huining Feng, based on a file by Thomas M. Parks
+# @Authors: Christopher Hylands (makefile only)
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2008 The Regents of the University of California.
+# @Copyright (c) 2007 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -28,52 +28,62 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-#
-#
 
-ME =		ptolemy/actor/ptalon/gt
+ME =		ptolemy/actor/ptalon/gt/demo/Adder
 
-DIRS =		demo
+# Root of the Java directory
+ROOT =		../../../../../..
 
-# Root of the Ptolemy II directory
-ROOT =		../../../..
-
-CLASSPATH = $(ROOT)${CLASSPATHSEPARATOR}${ROOT}/ptolemy/actor/ptalon/antlr/antlr.jar
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	gt
-PTCLASSJAR =	$(PTPACKAGE).jar
+PTPACKAGE = 	Adder
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Keep this list alphabetized.
-JSRCS = \
-	PtalonMatcher.java \
-	TransformationEvaluator.java
+JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	ptalon.png \
-	PtalonMatcherIcon.xml
+	$(JSRCS) \
+	Adder.htm \
+	Adder.xml \
+	AdderPtalon.ptln \
+	BaseModel.xml
 
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
+# make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	'PtalonMatcher$$HashKey.class' \
-	'PtalonMatcher$$NestedPtalonActor.class'
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
 all: jclass
-install: jclass jars
+	@echo "To run all the demos, run 'make demo'"
 
+install: all $(PTCLASSJAR)
+
+demo: demo_applet demo_ptolemy demo_vergil
+
+demo_applet:
+	CLASSPATH="$(CLASSPATH)" appletviewer Adder.htm
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" Adder.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" Adder.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

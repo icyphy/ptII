@@ -1,10 +1,9 @@
-# Makefile for Ptolemy graph transformation data
-#
-# @Authors: Thomas Huining Feng, based on a file by Thomas M. Parks
+# Makefile for PtolemyII Ptalon demonstrations
 #
 # @Version: $Id$
+# @Author: Christopher Brooks (makefile only)
 #
-# @Copyright (c) 1998-2008 The Regents of the University of California.
+# @Copyright (c) 2007-2008 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -28,52 +27,44 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-#
-#
 
-ME =		ptolemy/actor/ptalon/gt
+ME =		ptolemy/actor/ptalon/gt/demo
 
-DIRS =		demo
+# Keep these alphabetical please.
+DIRS = 		Adder
 
-# Root of the Ptolemy II directory
-ROOT =		../../../..
-
-CLASSPATH = $(ROOT)${CLASSPATHSEPARATOR}${ROOT}/ptolemy/actor/ptalon/antlr/antlr.jar
+# Root of Ptolemy II directory
+ROOT =		../../../../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	gt
-PTCLASSJAR =	$(PTPACKAGE).jar
+PTPACKAGE = 	demo
+PTCLASSJAR =
 
-# Keep this list alphabetized.
-JSRCS = \
-	PtalonMatcher.java \
-	TransformationEvaluator.java
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	Adder/Adder.jar
 
-OTHER_FILES_TO_BE_JARED = \
-	ptalon.png \
-	PtalonMatcherIcon.xml
-
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+MISC_FILES = 	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
+# make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	'PtalonMatcher$$HashKey.class' \
-	'PtalonMatcher$$NestedPtalonActor.class'
-
-JCLASS = $(JSRCS:%.java=%.class)
+	doc
 
 all: jclass
+	@echo "To run all the demos, run 'make demo'"
+
 install: jclass jars
 
+demo: subdemo
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
