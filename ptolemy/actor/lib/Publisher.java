@@ -102,6 +102,7 @@ public class Publisher extends TypedAtomicActor {
         input.setMultiport(true);
         output = new TypedIOPort(this, "output", false, true);
         output.setMultiport(true);
+        output.setWidthEquals(input);
 
         Parameter hide = new SingletonParameter(output, "_hide");
         hide.setToken(BooleanToken.TRUE);
@@ -180,6 +181,7 @@ public class Publisher extends TypedAtomicActor {
             exception.initCause(throwable);
             throw exception;
         }
+        output.setWidthEquals(input);
         return newObject;
     }
 
@@ -339,28 +341,9 @@ public class Publisher extends TypedAtomicActor {
             // If the container is not a typed composite actor, then don't create
             // a relation. Probably the container is a library.
             try {
-                // In case _USE_NEW_WIDTH_INFERENCE_ALGO == true
-                // we will use a special type of IORelation between
-                // publisher and subscriber that will get the width from the
-                // input port of the publisher. For this relation the width
-                // does not to be inferred.
-                if (IORelation._USE_NEW_WIDTH_INFERENCE_ALGO) {
-                    _relation = new TypedIORelation(
-                            (TypedCompositeActor) container, container
-                                    .uniqueName("publisherRelation"))
-                    {
-                        public int getWidth() throws IllegalActionException {
-                            return input.getWidth();
-                        }
-                        protected boolean _skipWidthInference() {
-                            return true;
-                        }
-                    };                    
-                } else {
-                    _relation = new TypedIORelation(
-                            (TypedCompositeActor) container, container
-                                    .uniqueName("publisherRelation"));
-                }
+                _relation = new TypedIORelation(
+                        (TypedCompositeActor) container, container
+                                .uniqueName("publisherRelation"));
                 // Prevent the relation and its links from being exported.
                 _relation.setPersistent(false);
                 // Prevent the relation from showing up in vergil.

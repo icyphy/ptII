@@ -94,6 +94,7 @@ public class Subscriber extends TypedAtomicActor {
         input.setMultiport(true);
         output = new TypedIOPort(this, "output", false, true);
         output.setMultiport(true);
+        output.setWidthEquals(input);
 
         new Parameter(input, "_hide", BooleanToken.TRUE);
     }
@@ -196,6 +197,7 @@ public class Subscriber extends TypedAtomicActor {
             exception.initCause(throwable);
             throw exception;
         }
+        newObject.output.setWidthEquals(newObject.input);
         return newObject;
     }
 
@@ -345,7 +347,7 @@ public class Subscriber extends TypedAtomicActor {
             }
             _relation = publisher._relation;
 
-            input.liberalLink(_relation);
+            // input.liberalLink(_relation); This is already done in the Publisher
         }
         Director director = getDirector();
         if (director != null) {
