@@ -192,6 +192,7 @@ public class Subscriber extends TypedAtomicActor {
         try {
             newObject._updatedLinks = false;
             //newObject._updateLinks();
+            newObject._channel = _channel;
         } catch (Throwable throwable) {
             CloneNotSupportedException exception = new CloneNotSupportedException();
             exception.initCause(throwable);
@@ -347,7 +348,10 @@ public class Subscriber extends TypedAtomicActor {
             }
             _relation = publisher._relation;
 
-            // input.liberalLink(_relation); This is already done in the Publisher
+            if (!input.isLinked(_relation)) {
+                // The Publisher._updateLinks() may have already linked us.
+                input.liberalLink(_relation);
+            }
         }
         Director director = getDirector();
         if (director != null) {

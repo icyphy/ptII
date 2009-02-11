@@ -181,10 +181,10 @@ public class SubscriptionAggregator extends Subscriber {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         SubscriptionAggregator newObject = (SubscriptionAggregator) super.clone(workspace);
-
-	newObject._channelDoesNotMatch = new HashSet();
-	newObject._channelMatches = new HashSet();
-	newObject._relations = new LinkedList();
+        newObject._channelDoesNotMatch = new HashSet();
+        newObject._channelMatches = new HashSet();
+        newObject._relations = new LinkedList();
+        newObject._channel = _channel;
         return newObject;
     }
 

@@ -176,6 +176,7 @@ public class Publisher extends TypedAtomicActor {
         try {
             newObject._updatedLinks = false;
             //newObject._updateLinks();
+            newObject._channel = _channel;
         } catch (Throwable throwable) {
             CloneNotSupportedException exception = new CloneNotSupportedException();
             exception.initCause(throwable);
