@@ -66,15 +66,15 @@
         <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={31, 65, 974, 607}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 746}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[759, 490]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 639]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{345.8181818181818, 232.1273674242424}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{374.8181818181818, 306.6273674242424}">
     </property>
     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
     </property>
@@ -214,7 +214,7 @@
         <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
-    <property name="Gopen" class="ptolemy.data.expr.Parameter" value="1">
+    <property name="Gopen" class="ptolemy.data.expr.Parameter" value="0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -233,7 +233,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[645.0, 455.0]">
         </property>
     </property>
-    <property name="Tin" class="ptolemy.data.expr.Parameter" value="0">
+    <property name="Tin" class="ptolemy.data.expr.Parameter" value="1">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -271,7 +271,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 455.0]">
         </property>
     </property>
-    <property name="Tapproaching" class="ptolemy.data.expr.Parameter" value="0">
+    <property name="Tapproaching" class="ptolemy.data.expr.Parameter" value="1">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -316,7 +316,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 120.0]">
         </property>
-        <property name="distance" class="ptolemy.data.expr.Parameter" value="-10">
+        <property name="distance" class="ptolemy.data.expr.Parameter" value="2">
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                 <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                 </property>
@@ -362,6 +362,8 @@
             </property>
         </port>
         <entity name="Tinit" class="ptolemy.domains.fsm.kernel.State">
+            <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[261.9159235777115, 72.47087415586111]">
@@ -420,7 +422,7 @@
             </property>
             <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="Tin = 0; Tleave = 0; Tapproaching = 0">
             </property>
-            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="distance = -6">
+            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="distance = -10">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.6573693516317907">
             </property>
@@ -506,7 +508,7 @@
             </property>
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Sec_isPresent &amp;&amp; distance&lt;-3">
             </property>
-            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="distance = distance - 2">
+            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="distance = distance + 2">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.474017772583677">
             </property>
@@ -637,6 +639,8 @@
             </property>
         </port>
         <entity name="Ginit" class="ptolemy.domains.fsm.kernel.State">
+            <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{155.0, 115.0}">
@@ -822,7 +826,7 @@
         </property>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="100">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 120.0]">
