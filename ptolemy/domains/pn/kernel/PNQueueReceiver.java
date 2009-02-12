@@ -380,7 +380,11 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  @param token The token to be put in the receiver.
      */
     public void put(Token token) {
-        Workspace workspace = getContainer().workspace();
+        IOPort port = getContainer();
+        if (port == null) {
+            return; // Nothing to do.
+        }
+        Workspace workspace = port.workspace();
         while (!_terminate) {
             int depth = 0;
             try {
