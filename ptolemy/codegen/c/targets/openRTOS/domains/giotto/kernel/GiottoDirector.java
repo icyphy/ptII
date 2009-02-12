@@ -28,6 +28,8 @@
 package ptolemy.codegen.c.targets.openRTOS.domains.giotto.kernel;
 
 import java.util.*;
+import java.util.ArrayList;
+import java.util.Hashtable;
 
 
 import ptolemy.actor.Actor;
@@ -77,13 +79,14 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         // to call the c codeblocks in *.c
         code.append(this._generateBlockCode("initLCD"));
 
-        HashSet<Integer> frequencies = _getAllFrequencies();
-
-        StringBuffer frequencyTCode = new StringBuffer();
+       HashSet<Integer> frequencies = _getAllFrequencies();
+             //  StringBuffer frequencyTCode = new StringBuffer();
+        
 
         int currentPriorityLevel = 1;
 
         ArrayList args = new ArrayList();
+        
         args.add("");
         args.add("");
         args.add("");
@@ -91,39 +94,106 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         for(int frequencyValue : frequencies) {
             
             // assign the low frequency task the lower priority, doesn't handle wrap around at the moment
-            frequencyTCode.append(generateFrequencyThreadCode(frequencyValue));
+            //frequencyTCode.append(generateFrequencyThreadCode(frequencyValue));
 
             //come back and create handlers for each of these frequency threads
 
             // name for the thread.
             args.set(0, _getThreadName(frequencyValue)); 
             // stack size.
-            args.set(0, _getStackSize(_getActors(frequencyValue))); 
+            args.set(1, _getStackSize(_getActors(frequencyValue))); 
             // priority.
-            args.set(0, currentPriorityLevel); 
+            args.set(2, currentPriorityLevel); 
 
-            code.append(_generateBlockCode("createTask", args));
+            code.append(_generateBlockCode("createTask", args)); // need to figure out how to pass the method names to fire as an argument
             currentPriorityLevel++;
             
             // We did minus 1 because we reserved the max
             // priority level for the scheduling thread.
             currentPriorityLevel %= _MAX_PRIORITY_LEVEL - 1;
         }
-
+        code.append("}"+_eol);
+        //create thread methods here
+        code.append(generateThreads());
+                
+        return processCode(code.toString());   
+        
+    }
+    
+    public String generateThreads()throws IllegalActionException{
+        StringBuffer code = new StringBuffer(super.generateInitializeCode());
+        ArrayList args1 = new ArrayList();
+        args1.add("");
+        if(_isTopGiottoDirector())
+        {
+        args1.set(0,_getPeriod()); 
+        code.append(_generateBlockCode("createSchedulerThread", args1));
+        }
+        
+        ArrayList<String> ActorFrequencies[] = _getActorFrequencyTable();
+        code.append("}"+_eol);
+        code.append("//I should append the frequencethread stuff here"+_eol);
+       for(int i = 1; i <= _getAllFrequencies().size();i++){
+        code.append("static void $actorSymbol()frequency"+i+"(void * pvParameters){"+_eol);
+        code.append("portTickType xLastWakeTime;"+_eol);
+        code.append("const portTickType xFrequency =("+ _getPeriod()+"*1000)/"+i+ "/portTICK_RATE_MS;"+_eol);
+        code.append("xLastWakeTime = xTaskGetTickCount();"+_eol);
+        code.append("   for(;;){"+_eol);
+        code.append("vTaskDealUntil(&xLastWakeTime,xFrequency);"+_eol);
+        code.append("  //call the methods for the tasks at this frequency of "+ i+_eol);
+        for(int j = 0; j<ActorFrequencies[i].size();j++)
+        {
+            code.append(ActorFrequencies[i].get(j)+"();"+_eol);
+        }
+        
+        
+        code.append("}"+_eol);// close the for loop
+        if(i < _getAllFrequencies().size())
+            code.append("}"+_eol);// close the method loop
+ 
+    }
+        
+        
         return processCode(code.toString());
+    }
+    
+   /* public String generateFireFunctionCode()throws IllegalActionException{
+        StringBuffer code = new StringBuffer();
+        code.append("// fire function code should be here"+_eol);
+        return code.toString();
+    }*/
+    
+    ArrayList<String>[] _getActorFrequencyTable()throws IllegalActionException{
+        //Hashtable<Integer,String> actorsPerFrequency= new Hashtable<Integer,String>();
+        //actorsPerFrequency.
+        int frequencyCount=_getAllFrequencies().size();
+        //ArrayList<String> actorsPerFrequencey[]= new ArrayList<String>(100);
+         ArrayList<String> actorNamesPerFrequency[] =  new ArrayList[frequencyCount+1];
+         for( int i=0; i<frequencyCount+1;i++)
+         {
+             actorNamesPerFrequency[i]=new ArrayList<String>();
+             
+         }
+
+        
+        for (Actor actor : (List<Actor>) 
+                ((TypedCompositeActor) _director.getContainer()).deepEntityList()) {
+          
+           // actorNamesPerFrequency[_getFrequency(actor)].add(actor.getDisplayName());
+            String temp =actor.getFullName();
+            temp=temp.substring(1,temp.length());
+            temp=temp.replace('.', '_');
+                
+            actorNamesPerFrequency[_getFrequency(actor)].add(temp);
+          
+            
+          }     
+        return actorNamesPerFrequency;
     }
 
     public String generateMainLoop() throws IllegalActionException{
         StringBuffer code = new StringBuffer();
-        StringBuffer tempcode = new StringBuffer();
-        StringBuffer frequencyTCode= new StringBuffer();
-    
-//        code.append("RIT128x96x4Init(1000000);"+_eol);
-//        code.append("xTaskHandle schedulerhandle;"+_eol);
-//        tempcode.append("xTaskCreate(scheduler,"+"\"scheduler\""+",100,NULL,10,schedulerhandle);"+_eol);
-    
-    
-    
+   
         HashSet frequencies= new HashSet();
         int  attributueValue;
         // go through all the actors and get their frequencies
@@ -133,15 +203,9 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             attributueValue =_getFrequency(actor);
     
             frequencies.add(attributueValue);
-    
-    
-            //come back and figure out how to keep a list of all 
-            //the actors at each of the frequencies so you can call the right
-            //methods from the threads
-            // frequencies.add(_getFrequency(actor));
         }
     
-    
+    /*
         Iterator frequencyIterator = frequencies.iterator();
     
         int frequencyValue;
@@ -150,7 +214,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         for(int i = 0; i < frequencies.size();i++)
         {// assign the low frequency task the lower priority, doesn't handle wrap around at the moment
             frequencyValue = (Integer)frequencyIterator.next();
-            frequencyTCode.append(generateFrequencyThreadCode(frequencyValue));
+           // frequencyTCode.append(generateFrequencyThreadCode(frequencyValue));
     
             //come back and create handlers for each of these frequency threads
             //code.append("xTaskHandle "+"frequency"+frequencyValue+"handle;"+_eol);
@@ -159,48 +223,15 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             currentPriorityLevel %=9;
     
         }
-    
-        code.append(tempcode);
+    */
+       // code.append(tempcode);
     
     
         Attribute iterations = _director.getAttribute("iterations");
-        /*    
-        if (iterations == null) {
-            code.append(_eol + "while (true) {" + _eol);
-        }
-        else {
-            int iterationCount = ((IntToken) ((Variable) iterations).getToken())
-                    .intValue();
-            if (iterationCount <= 0) {
-                code.append(_eol + "while (true) {" + _eol);
-            } else {
-                // Declare iteration outside of the loop to avoid
-                // mode" with gcc-3.3.3
-                code.append(_eol + "int iteration;" + _eol);
-                code.append("for (iteration = 0; iteration < "
-                        + iterationCount + "; iteration ++) {" + _eol);
-            }
-        }
-         */
+       
         if (_isTopGiottoDirector()) {
             code.append("vTaskStartScheduler();"+_eol);
         }
-        code.append("/* Will only get here if there is insufficient memory to create the idle"+_eol);
-        code.append("task. */");
-    
-        code.append("return 0;"+_eol);
-        code.append("}");
-    
-        code.append("\\now call fireetc here"+_eol);
-    
-        // when should I call generate fire code etc??
-        code.append(generateFireCode());
-        // not sure where to do mode transition code
-        code.append("//now for the postfire code"+_eol);
-        code.append(generatePostFireCode());     
-        // code.append("}"+_eol);
-    
-        code.append(frequencyTCode);
         return code.toString();
     
     }
@@ -220,12 +251,15 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
     private List<Actor> _getActors(int frequencyValue) {
         ArrayList<Actor> actors = new ArrayList<Actor>();
         // TODO:
+        //should call _getActorFrequencyTable() and return the correct set of actors
         return actors;
     }
 
     private String _getThreadName(int frequencyValue) {
         return "$actorSymbol(frequency)" + frequencyValue;
     }
+    
+       
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         // Declare the thread handles.
@@ -237,6 +271,11 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         args.add("");
 
         int currentPriorityLevel = 1;
+        if(_isTopGiottoDirector())
+        {
+            args.set(0, "scheduler");
+            code.append(_generateBlockCode("declareTaskHandle", args));
+        }
         for(int frequencyValue : frequencies) {
             // assign the low frequency task the lower priority, doesn't handle wrap around at the moment
             frequencyTCode.append(generateFrequencyThreadCode(frequencyValue));
@@ -256,11 +295,12 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
     
     private HashSet<Integer> _getAllFrequencies() throws IllegalActionException {
         HashSet frequencies= new HashSet();
+        int i = 0;
         for (Actor actor : (List<Actor>) 
                 ((TypedCompositeActor) _director.getContainer()).deepEntityList()) {
 
             int attributueValue =_getFrequency(actor);
-
+            i++;
             frequencies.add(attributueValue);
 
             //come back and figure out how to keep a list of all 
@@ -268,33 +308,27 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             //methods from the threads
             // frequencies.add(_getFrequency(actor));
         }
+        
         return frequencies;
     }
 
     private boolean _isTopGiottoDirector() {
         // TODO Auto-generated method stub
-        return false;
+        return true;
     }
+    
 
     public String generateFireCode() throws IllegalActionException{
         StringBuffer code = new StringBuffer();
         code.append("//fire code should be here. I'm from the openRTOS GiottoDirector "+_eol);
-
-        code.append("static void scheduler(void * pvParameters){"+_eol);
-        code.append("portTickType xLastWakeTime;"+_eol);
-        code.append("const portTickType xFrequency = ("+_getPeriod()+"*1000)/portTICK_RATE_MS;"+_eol);
-        code.append("xLastWakeTime xTaskGetTickCount();"+_eol);
-        code.append("for(;;){"+_eol);
-        code.append("vTaskDealUntil(&xLastWakeTime,xFrequency);"+_eol);
-        code.append("//handle updates, mode switches, and switching the double buffer pointers"+_eol);
-        code.append("}"+_eol);
-
+        //code.append("scheduler()");
+        
         return code.toString();
     }
 
-    public String generateFrequencyThreadCode(int i) throws IllegalActionException{
+  public String generateFrequencyThreadCode(int i) throws IllegalActionException{
         StringBuffer code = new StringBuffer();
-        code.append("static void frequency"+i+"(void * pvParameters){"+_eol);
+        code.append("static void $actorSymbol($+ frequency"+i+") (void * pvParameters){"+_eol);
         code.append("portTickType xLastWakeTime;"+_eol);
         code.append("const portTickType xFrequency = ("+_getPeriod()+"/"+i+"*1000)/portTICK_RATE_MS;"+_eol);
         code.append("xLastWakeTime xTaskGetTickCount();"+_eol);
