@@ -2,6 +2,12 @@
 /* Standard includes. */
 #include <stdio.h>
 
+/* Scheduler includes. */
+#include "FreeRTOS.h"
+#include "Task.h"
+#include "queue.h"
+#include "semphr.h"
+
 /* Hardware library includes. */
 #include "hw_memmap.h"
 #include "hw_types.h"
