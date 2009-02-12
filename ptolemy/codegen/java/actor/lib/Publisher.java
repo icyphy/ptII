@@ -34,7 +34,7 @@ import ptolemy.codegen.java.kernel.JavaCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- * Generate C code for an actor that publishes tokens on a named channel.
+ * Generate Java code for an actor that publishes tokens on a named channel.
  *
  * @see ptolemy.actor.lib.Publisher
  * @author Christopher Brooks
@@ -69,8 +69,14 @@ public class Publisher extends JavaCodeGeneratorHelper {
 
         ArrayList args = new ArrayList();
         args.add(Integer.valueOf(0));
-        for (int i = 0; i < actor.input.getWidth(); i++) {
-            if (actor.output.numberOfSinks() > 0) {
+        
+        // FIXME: we are getting the minimum of the input and output 
+        // width for now. But we still have to prove that this is
+        // sufficient.
+        int width = Math.min(actor.output.getWidth(), actor.input.getWidth());
+        
+        if (actor.output.numberOfSinks() > 0) {
+            for (int i = 0; i < width; i++) {
                 args.set(0, Integer.valueOf(i));
                 _codeStream.appendCodeBlock("fireBlock", args);
             }
