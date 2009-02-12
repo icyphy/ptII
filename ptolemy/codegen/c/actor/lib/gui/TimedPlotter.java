@@ -90,7 +90,7 @@ public class TimedPlotter extends CCodeGeneratorHelper{//PlotterBase{  //CCodeGe
         for (int i = width - 1; i >= 0; i--) {
             args.clear();
             args.add(Integer.valueOf(i));
-            if(id == 1){
+           if(id == 1){
                 code.append(_generateBlockCode("plotBlock1", args));
             }
             else if(id == 2){

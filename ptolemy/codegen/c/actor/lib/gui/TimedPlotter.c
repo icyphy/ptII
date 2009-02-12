@@ -16,21 +16,19 @@ printf("configure code should go here");
 
 /***plotBlock($channel)***/
 
-//printf("plotBlock code should go here for %d",$ref(input#$channel),$actorSymbol(),$channel);
+//printf("plotBlock code should go here for %d",$ref(input#$channel));
 
 /**/
 
 
 /***plotBlock1($channel)***/
 
-printf("plotBlock code should go here for %d",$ref(input#$channel),$actorSymbol(),$channel);
-PlotPoint1(x,$ref(input#$channel));
+PlotPoint1(8,$ref(input#$channel));
 
 /**/
 
 /***plotBlock2($channel)***/
 
-printf("plotBlock code should go here for %d",$ref(input#$channel),$actorSymbol(),$channel);
 PlotPoint2(x,$ref(input#$channel));
 
 /**/
