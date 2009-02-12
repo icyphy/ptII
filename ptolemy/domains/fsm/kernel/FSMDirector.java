@@ -595,7 +595,11 @@ public class FSMDirector extends Director implements
                 if (refinements != null) {
                     for (int i = 0; i < refinements.length; i++) {
                         Director director = refinements[i].getDirector();
-                        if (director != null && !director.implementsStrictActorSemantics()) {
+                        // Added director != this since it might be possible that the refinement
+                        // is a Modal Model without its own director. In this case director == this,
+                        // and the call director.implementsStrictActorSemantics() would lead to a infinite
+                        // loop.
+                        if (director != null && director != this && !director.implementsStrictActorSemantics()) {
                             return false;
                         }
                     }
