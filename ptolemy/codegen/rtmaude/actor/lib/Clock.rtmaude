@@ -1,0 +1,31 @@
+/***sharedBlock***/
+	(tomod CLOCK is inc ACTORS .
+    class Clock | period : NzTime .
+        subclass Clock < Actor .
+
+    vars REST PORTS : Configuration .  vars O : Oid .  vars PI : PortId . 
+    var NZT : NzTime .  vars EQ  : EventQueue .  var SCP : Scope .
+
+
+    eq portFixPoints(
+       < O : Clock | ports : < PI : OutPort | status : unknown > PORTS > REST)
+     = portFixPoints(
+       < O : Clock | ports : < PI : OutPort | status : absent > PORTS > REST) .
+
+    --- When should clock generate "next" event?? Maybe when it has something
+    --- in its current output port??? Assumed exactly ONE outport per clock!
+
+    eq executeStep2(EQ, SCP,
+        < O : Clock |
+            ports : (< PI : OutPort | status : present >  PORTS),
+            period : NZT >
+        REST)
+     = < O : Clock | >
+       executeStep2(addEvent(event(SCP . (O . PI), #r(0)), NZT,  EQ), SCP, REST) .
+    eq executeStep2(EQ, SCP,
+        < O : Clock | ports : (< PI : OutPort | status : absent >  PORTS) > REST) 
+     = < O : Clock | > executeStep2(EQ, SCP, REST) .
+
+endtom)
+/**/
+

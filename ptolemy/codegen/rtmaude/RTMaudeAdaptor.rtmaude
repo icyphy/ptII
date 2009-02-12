@@ -1,0 +1,14 @@
+/***fireBlock ($parameters, $ports)***/
+   < '$actorSymbol(name) : Clock |
+        innerVariables : ($parameters),        
+		ports: ($ports),        
+
+        store : emptyMap >
+/**/
+
+/***parameterBlock($parameter)***/
+	$parameter |-> $val($parameter)/**/
+
+
+/***portBlock($port, $InOrOut, $status)***/
+	< $port : $InOrOut | value : #r(0), status : $status >/**/
