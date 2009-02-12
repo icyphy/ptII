@@ -102,7 +102,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
         StringBuffer code = new StringBuffer();
         
         code.append(super.generateInitializeCode());
-        code.append("// should have initialize code here");
+        code.append("// should have initialize code here"+_eol);
        
 
         ptolemy.actor.CompositeActor container = (ptolemy.actor.CompositeActor) getComponent()
