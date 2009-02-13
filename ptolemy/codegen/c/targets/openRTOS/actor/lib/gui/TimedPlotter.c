@@ -29,7 +29,7 @@ PlotPoint1(8,$ref(input#$channel));
 
 /***plotBlock2($channel)***/
 
-PlotPoint2(x,$ref(input#$channel));
+PlotPoint2(15,$ref(input#$channel));
 
 /**/
 
