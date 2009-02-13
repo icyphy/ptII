@@ -37,6 +37,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.fsm.StateIcon;
 
 /**
+An icon specialized for states of a state machine with reachability and risk analysis.
 
 @author Chihhong Patrick Cheng
 @version $Id$ 
@@ -46,11 +47,15 @@ import ptolemy.vergil.fsm.StateIcon;
 */
 public class FmvStateIcon extends StateIcon {
     
-    /**
-     * @param container
-     * @param name
-     * @throws NameDuplicationException
-     * @throws IllegalActionException
+    /** Create a new icon with the given name in the given container.
+     *  The container is required to implement Settable, or an exception
+     *  will be thrown.
+     *  @param container The container for this attribute.
+     *  @param name The name of this attribute.
+     *  @exception IllegalActionException If thrown by the parent
+     *  class or while setting an attribute.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
      */
     public FmvStateIcon(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {
