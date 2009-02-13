@@ -1,6 +1,6 @@
 package ptolemy.codegen.rtmaude.actor.lib;
 
-import ptolemy.codegen.rtmaude.RTMaudeAdaptor;
+import ptolemy.codegen.rtmaude.kernel.RTMaudeAdaptor;
 
 public class Clock extends RTMaudeAdaptor {
 

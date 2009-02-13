@@ -1,10 +1,10 @@
 package ptolemy.codegen.rtmaude.actor.lib;
 
-import ptolemy.codegen.kernel.CodeGeneratorHelper;
+import ptolemy.codegen.rtmaude.kernel.RTMaudeAdaptor;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
-public class Ramp extends CodeGeneratorHelper {
+public class Ramp extends RTMaudeAdaptor {
 
     public Ramp(ptolemy.actor.lib.Ramp component) {
         super(component);

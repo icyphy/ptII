@@ -1,4 +1,4 @@
-package ptolemy.codegen.rtmaude;
+package ptolemy.codegen.rtmaude.kernel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,7 @@ import ptolemy.kernel.util.NamedObj;
 
 public class RTMaudeAdaptor extends CodeGeneratorHelper {
 
-    public RTMaudeAdaptor(ptolemy.actor.lib.Clock component) {
+    public RTMaudeAdaptor(NamedObj component) {
         super(component);
     }
     
@@ -64,7 +64,7 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
         return code.toString();
     }
 
-    private List<IOPort> _getPorts() {
+    protected List<IOPort> _getPorts() {
         Entity actor = (Entity) getComponent();
         return actor.portList();
     }
