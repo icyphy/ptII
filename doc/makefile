@@ -750,7 +750,6 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/codegen/java/actor/lib/logic/*.java \
 			../ptolemy/codegen/java/actor/lib/string/*.java \
 			../ptolemy/codegen/java/actor/lib/*.java \
-			../ptolemy/codegen/java/domains/sdf/*.java \
 			../ptolemy/codegen/kernel/*.java \
 			../ptolemy/codegen/vhdl/actor/lib/vhdl/*.java \
 			../ptolemy/codegen/vhdl/kernel/*.java \
