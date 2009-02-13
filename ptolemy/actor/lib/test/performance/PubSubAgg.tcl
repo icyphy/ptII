@@ -37,95 +37,95 @@ if {[string compare test [info procs pubSubAggModel]] == 1} then {
     source PublisherCommon.tcl
 } {}
 
-test PubSubAgg-1.2.1 {Use Hierarchy} {
+test PubSubAgg-1.2.1 {Use PubSub} {
     pubSubAggModel 2 1
 } {{0.0 3.5 7.0 10.5 14.0}}
 
-test PubSubAgg-1.2.2 {Use Hierarchy} {
+test PubSubAgg-1.2.2 {Use PubSub} {
     pubSubAggModel 2 2
 } {{0.0 3.5 7.0 10.5 14.0}}
 
-test PubSubAgg-1.2.7 {Use Hierarchy} {
+test PubSubAgg-1.2.7 {Use PubSub} {
     pubSubAggModel 2 7
 } {{0.0 3.5 7.0 10.5 14.0}}
 
-test PubSubAgg-1.2.8 {Use Hierarchy} {
+test PubSubAgg-1.2.8 {Use PubSub} {
     pubSubAggModel 2 8
 } {{0.0 3.5 7.0 10.5 14.0}}
 
-test PubSubAgg-1.2.10 {Use Hierarchy} {
+test PubSubAgg-1.2.10 {Use PubSub} {
     pubSubAggModel 2 10
 } {{0.0 3.5 7.0 10.5 14.0}}
 
-test PubSubAgg-1.2.11 {Use Hierarchy} {
+test PubSubAgg-1.2.11 {Use PubSub} {
     pubSubAggModel 2 11
 } {{0.0 3.5 7.0 10.5 14.0}}
 
-test PubSubAgg-1.3.1 {Use Hierarchy} {
+test PubSubAgg-1.3.1 {Use PubSub} {
     pubSubAggModel 3 1
 } {{0.0 5.0 10.0 15.0 20.0}}
 
-test PubSubAgg-1.3.2 {Use Hierarchy} {
+test PubSubAgg-1.3.2 {Use PubSub} {
     pubSubAggModel 3 2
 } {{0.0 5.0 10.0 15.0 20.0}}
 
-test PubSubAgg-1.3.3 {Use Hierarchy} {
+test PubSubAgg-1.3.3 {Use PubSub} {
     pubSubAggModel 3 3
 } {{0.0 5.0 10.0 15.0 20.0}}
 
-test PubSubAgg-1.3.4 {Use Hierarchy} {
+test PubSubAgg-1.3.4 {Use PubSub} {
     pubSubAggModel 3 4
 } {{0.0 5.0 10.0 15.0 20.0}}
 
-test PubSubAgg-1.3.5 {Use Hierarchy} {
+test PubSubAgg-1.3.5 {Use PubSub} {
     pubSubAggModel 3 5
 } {{0.0 5.0 10.0 15.0 20.0}}
 
-test PubSubAgg-1.3.6 {Use Hierarchy} {
+test PubSubAgg-1.3.6 {Use PubSub} {
     pubSubAggModel 3 6
 } {{0.0 5.0 10.0 15.0 20.0}}
 
-test PubSubAgg-1.3.7 {Use Hierarchy} {
+test PubSubAgg-1.3.7 {Use PubSub} {
     pubSubAggModel 3 7
 } {{0.0 5.0 10.0 15.0 20.0}}
 
-test PubSubAgg-1.4.4 {Use Hierarchy} {
+test PubSubAgg-1.4.4 {Use PubSub} {
     pubSubAggModel 4 4
 } {{0.0 6.5 13.0 19.5 26.0}}
 
-test PubSubAgg-1.4.5 {Use Hierarchy} {
+test PubSubAgg-1.4.5 {Use PubSub} {
     pubSubAggModel 4 5
 } {{0.0 6.5 13.0 19.5 26.0}}
 
-test PubSubAgg-1.4.6 {Use Hierarchy} {
+test PubSubAgg-1.4.6 {Use PubSub} {
     pubSubAggModel 4 6
 } {{0.0 5.0 10.0 15.0 20.0}}
 
-test PubSubAgg-1.5.1 {Use Hierarchy} {
+test PubSubAgg-1.5.1 {Use PubSub} {
     pubSubAggModel 5 1
 } {{0.0 5.0 10.0 15.0 20.0}}
 
-test PubSubAgg-1.5.2 {Use Hierarchy} {
+test PubSubAgg-1.5.2 {Use PubSub} {
     pubSubAggModel 5 2
 } {{0.0 8.0 16.0 24.0 32.0}}
 
-test PubSubAgg-1.5.3 {Use Hierarchy} {
+test PubSubAgg-1.5.3 {Use PubSub} {
     pubSubAggModel 5 3
 } {{0.0 8.0 16.0 24.0 32.0}}
 
-test PubSubAgg-1.5.4 {Use Hierarchy} {
+test PubSubAgg-1.5.4 {Use PubSub} {
     pubSubAggModel 5 4
 } {{0.0 8.0 16.0 24.0 32.0}}
 
-test PubSubAgg-1.6.3 {Use Hierarchy} {
+test PubSubAgg-1.6.3 {Use PubSub} {
     pubSubAggModel 6 3
 } {{0.0 9.5 19.0 28.5 38.0}}
 
-test PubSubAgg-1.6.5 {Use Hierarchy} {
+test PubSubAgg-1.6.5 {Use PubSub} {
     pubSubAggModel 6 4
 } {{0.0 9.5 19.0 28.5 38.0}}
 
-#test PubSubAgg-1.6.5 {Use Hierarchy} {
+#test PubSubAgg-1.6.5 {Use PubSub} {
 #    pubSubAggModel 6 5
 #} {{0.0 9.5 19.0 28.5 38.0}}
 
