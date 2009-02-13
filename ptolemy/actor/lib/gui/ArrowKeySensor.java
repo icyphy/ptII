@@ -69,15 +69,12 @@ import ptolemy.kernel.util.NameDuplicationException;
 
  <p>This actor contains a private inner class which generated the JFrame.
  The frame sets up call-backs which react to the keystrokes.  When called,
- these call the director's fireAtFirstValidTimeAfter() method with the current
+ these call the director's fireAt() method with the current
  time as argument.  This causes the director to call fire() on the actor with
  the first valid time equal to the current time or later.   The actor then broadcasts
  tokens from one or both outputs depending on which keystroke(s) have
- occurred since the actor was last fired.
-
- <p>NOTE: This fireAtFirstValidTimeAfter() might fail currently when fireAt 
- is also delegated to the Executing Director and the current time of the latter
- has advanced the time of the director.
+ occurred since the actor was last fired. On key pressed a one will be send, on key release
+ a zero will be send.
 
  @author Winthrop Williams, Contributor: Bert Rodiers
  @version $Id$
