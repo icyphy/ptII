@@ -102,8 +102,12 @@ public class Publisher extends TypedAtomicActor {
         input.setMultiport(true);
         output = new TypedIOPort(this, "output", false, true);
         output.setMultiport(true);
-        output.setWidthEquals(input);
 
+        // We only have constraints from the publisher on the subscriber
+        // and the output of the subscriber and not the other way around
+        // to not break any existing models.        
+        output.setWidthEquals(input, false);
+        
         Parameter hide = new SingletonParameter(output, "_hide");
         hide.setToken(BooleanToken.TRUE);
         // hide = new SingletonParameter(this, "_hideName");
@@ -182,7 +186,12 @@ public class Publisher extends TypedAtomicActor {
             exception.initCause(throwable);
             throw exception;
         }
-        newObject.output.setWidthEquals(newObject.input);
+        
+        // We only have constraints from the publisher on the subscriber
+        // and the output of the subscriber and not the other way around
+        // to not break any existing models. 
+        newObject.output.setWidthEquals(newObject.input, false);
+        
         return newObject;
     }
 

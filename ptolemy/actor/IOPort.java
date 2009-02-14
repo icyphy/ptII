@@ -2899,16 +2899,21 @@ public class IOPort extends ComponentPort {
     }
     
     /** Constrain the width of this port to be equal to the width of
-     *  the IOPort port.
+     *  the IOPort port. If bidirectional equals true, the width of port
+     *  can also be inferred from the width of this.
      *  <p>Actors that call this method should have a clone() method that
      *  repeats the width constraints that were specified in
      *  the constructor.
      *  @param port A port.
+     *  @param bidirectional A flag that specifies whether the constraint
+     *  work in two directions. 
      */    
-    public void setWidthEquals(IOPort port) {
+    public void setWidthEquals(IOPort port, boolean bidirectional) {
         if (!_widthEqualToPort.contains(port)) {
             _widthEqualToPort.add(port);
-            port.setWidthEquals(this);
+            if (bidirectional) {
+                port.setWidthEquals(this, false);
+            }
         }
     }    
 

@@ -98,8 +98,8 @@ public class BooleanSwitch extends TypedAtomicActor {
         falseOutput.setTypeAtLeast(input);
         trueOutput.setMultiport(true);
         falseOutput.setMultiport(true);
-        trueOutput.setWidthEquals(input);
-        falseOutput.setWidthEquals(input);
+        trueOutput.setWidthEquals(input, true);
+        falseOutput.setWidthEquals(input, true);
 
         // Put the control input on the bottom of the actor.
         StringAttribute controlCardinal = new StringAttribute(control,
@@ -151,8 +151,8 @@ public class BooleanSwitch extends TypedAtomicActor {
         BooleanSwitch newObject = (BooleanSwitch) super.clone(workspace);
         newObject.trueOutput.setTypeAtLeast(newObject.input);
         newObject.falseOutput.setTypeAtLeast(newObject.input);        
-        newObject.trueOutput.setWidthEquals(newObject.input);
-        newObject.falseOutput.setWidthEquals(newObject.input);
+        newObject.trueOutput.setWidthEquals(newObject.input, true);
+        newObject.falseOutput.setWidthEquals(newObject.input, true);
 
         return newObject;
     }

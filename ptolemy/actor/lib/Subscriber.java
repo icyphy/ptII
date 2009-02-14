@@ -94,10 +94,11 @@ public class Subscriber extends TypedAtomicActor {
         input.setMultiport(true);
         output = new TypedIOPort(this, "output", false, true);
         output.setMultiport(true);
-        // output.setWidthEquals(input);
-        //      We now only add constraints in the Publisher because adding them
-        //      also here breaks existing models. It would be useful if we could have
-        //      the constraints optionally combined with a consistency check.
+        
+        // We only have constraints from the publisher on the subscriber
+        // and the output of the subscriber and not the other way around
+        // to not break any existing models.
+        output.setWidthEquals(input, false);
 
         new Parameter(input, "_hide", BooleanToken.TRUE);
     }
@@ -201,11 +202,11 @@ public class Subscriber extends TypedAtomicActor {
             exception.initCause(throwable);
             throw exception;
         }
-        
-        // newObject.output.setWidthEquals(newObject.input);
-        //      We now only add constraints in the Publisher because adding them
-        //      also here breaks existing models. It would be useful if we could have
-        //      the constraints optionally combined with a consistency check.
+
+        // We only have constraints from the publisher on the subscriber
+        // and the output of the subscriber and not the other way around
+        // to not break any existing models.        
+        newObject.output.setWidthEquals(newObject.input, false);
         
         return newObject;
     }
