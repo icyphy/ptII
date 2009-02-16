@@ -495,13 +495,13 @@ public class ComponentRelation extends Relation {
      *  its version number.
      */
     public void unlinkAll() {
+        // NOTE: Do not just use _portList.unlinkAll() because then the
+        // containers of the ports are not notified of the change.
+        // Also, have to first copy the ports references, then remove
+        // them, to avoid a corrupted enumeration exception.
+        // Unlink the outside links of linked ports.
+        super.unlinkAll();        
         try {
-            // NOTE: Do not just use _portList.unlinkAll() because then the
-            // containers of the ports are not notified of the change.
-            // Also, have to first copy the ports references, then remove
-            // them, to avoid a corrupted enumeration exception.
-            // Unlink the outside links of linked ports.
-            super.unlinkAll();
 
             // Next, remove the links that are inside links of ports.
             _workspace.getWriteAccess();
