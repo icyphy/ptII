@@ -72,6 +72,7 @@ public class RelationWidthInference {
 
             try {
                 _topLevel.workspace().getWriteAccess();
+                _inferringWidths = true;
 
                 Set<ComponentRelation> relationList = _topLevel.deepRelationSet();
                 Set<IORelation> workingRelationSet = new HashSet<IORelation>();
@@ -197,7 +198,7 @@ public class RelationWidthInference {
                         LinkedList<IOPort> workingPortList = new LinkedList<IOPort>(workingPortSet);
                         // TODO: here we only extract width from the ports with constraints,
                         //      we should also check whether all constraints match.
-                        for (IOPort port : workingPortList) {                            
+                        for (IOPort port : workingPortList) {
                             List<IORelation> updatedRelations = _relationsWithUpdatedWidthForMultiport(port);
                             if (!updatedRelations.isEmpty()) {
                                 workingPortSet.remove(port);
@@ -242,13 +243,14 @@ public class RelationWidthInference {
                         _checkConsistency(port);
                     }
                 }   
-            } finally {   
+            } finally {
+                _inferringWidths = false;
                 _topLevel.workspace().doneTemporaryWriting();
                 if (logTimings) {
                     System.out.println("Time to do width inference: " +                
                             (System.currentTimeMillis() - startTime)
                                     + " ms.");
-                }
+                }                
             }
             _needsWidthInference = false;
         }
@@ -271,7 +273,19 @@ public class RelationWidthInference {
      *  This will invalidate the current width inference.
      */
     public void notifyConnectivityChange() {
-        _needsWidthInference = true;        
+        if (!_inferringWidths) {
+            _needsWidthInference = true;
+        }
+            // If we are currently inferring widths we ignore connectivity changes,
+            // since evaluating expressions can cause a call of attributesChanged,
+            // which results in notifyConnectivityChange. In this case we aren't
+            // changing the model, but just getting all parameters.
+            // Notice that we use the boolean _inferringWidths without any locking
+            // This is to avoid deadlocks... In case we are inferring widths notifyConnectivityChange
+            // should only be called from the same thread as the one that is inferring
+            // widths and hence there is no issue. When the user is actually changing he model
+            // we shouldn't be doing width inference and hence the parameter should not be
+            // changing.
     }    
 
     /**
@@ -367,7 +381,8 @@ public class RelationWidthInference {
         }
         int difference = -1;
         Set<IORelation> unspecifiedWidths = null;
-        if (namedObject instanceof AtomicActor) {
+        if (namedObject instanceof AtomicActor) {            
+            
             assert outsideUnspecifiedWidthsSize >= 0;
             if (outsideUnspecifiedWidthsSize > 0 && port.hasWidthConstraints()) {
                 difference = port.getWidthFromConstraints();
@@ -451,11 +466,12 @@ public class RelationWidthInference {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
+    //True when we are inferring widths
+    private boolean _inferringWidths = false;
+    
     //True when width inference needs to happen again
     private boolean _needsWidthInference = true;
     
-    //The top level of the model.    
-    private CompositeActor _topLevel = null;
-
-       
+    //The top level of the model.
+    private CompositeActor _topLevel = null;    
 }

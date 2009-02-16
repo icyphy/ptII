@@ -130,7 +130,6 @@ import ptolemy.util.StringUtilities;
  annotation to the model.
 
  @author Steve Neuendorffer, Lukito Muliadi, Edward A. Lee, Elaine Cheong, Contributor: Mudit Goel, John S. Davis II, Bert Rodiers
- @version $Id$
  @since Ptolemy II 0.2
  @Pt.ProposedRating Green (neuendor)
  @Pt.AcceptedRating Yellow (cxh)
@@ -741,9 +740,7 @@ public class Manager extends NamedObj implements Runnable {
      *  This will invalidate the current width inference.
      */
     public void notifyConnectivityChange() {
-        if (getState() != INFERING_WIDTHS) {
-            _relationWidthInference.notifyConnectivityChange();
-        }
+        _relationWidthInference.notifyConnectivityChange();
     }
 
     /** Notify all the execution listeners of an exception.
