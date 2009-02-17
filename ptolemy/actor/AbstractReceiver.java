@@ -352,7 +352,8 @@ public abstract class AbstractReceiver implements Receiver {
      *  with syntax "className {fullName}".
      *  @return The class name and the full name. */
     public String toString() {
-        return getClass().getName() + " {" + getContainer().getFullName()
+        IOPort container = getContainer();
+        return getClass().getName() + " {" + ( container != null ? container.getFullName() : "")
                 + ".receiver }";
     }
 
