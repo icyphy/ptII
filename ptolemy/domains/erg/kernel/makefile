@@ -53,6 +53,7 @@ JSRCS = \
 	ERGDirector.java \
 	ERGModalModel.java \
 	Event.java \
+	EventDebugEvent.java \
 	ParametersAttribute.java \
 	SchedulingRelation.java \
 	TimeAdvanceEvent.java \

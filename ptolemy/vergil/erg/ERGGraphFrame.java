@@ -78,6 +78,15 @@ public class ERGGraphFrame extends FSMGraphFrame {
         return new FSMGraphPane(_controller, graphModel, entity);
     }
 
+    /** Return the text to be used in the animation menu item. In this class,
+     *  always return "Animate Events".
+     *
+     *  @return The text for the menu item.
+     */
+    protected String getAnimationMenuText() {
+        return "Animate Events";
+    }
+
     protected String _getDefaultEventMoML() {
         NamedObj child = GTTools.getChild(_topLibrary, "Event", false, false,
                 true, false);

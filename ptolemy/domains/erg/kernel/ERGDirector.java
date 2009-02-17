@@ -933,6 +933,7 @@ public class ERGDirector extends Director implements TimedDirector,
             controller._setCurrentEvent(event);
             RefiringData data;
             if (timedEvent.data == null) {
+                controller.event(new EventDebugEvent(controller, event, false));
                 data = event.fire(timedEvent.arguments);
             } else {
                 data = event.refire(timedEvent.arguments, timedEvent.data);
@@ -966,6 +967,8 @@ public class ERGDirector extends Director implements TimedDirector,
 
             boolean scheduleNext = !scheduled && data == null;
             if (scheduleNext) {
+                controller.event(new EventDebugEvent(controller, event, true));
+
                 if (event.isFinalEvent()) {
                     for (TimedEvent eventToCancel : _eventQueue) {
                         eventToCancel.canceled = true;
@@ -1006,6 +1009,10 @@ public class ERGDirector extends Director implements TimedDirector,
                 Event event = (Event) ((RefinementActor) actor)
                         .getRefinedState();
                 if (event != null) {
+                    ERGController controller = getController();
+                    controller.event(new EventDebugEvent(controller, event,
+                            true));
+
                     if (event.isFinalEvent()) {
                         for (TimedEvent eventToCancel : _eventQueue) {
                             eventToCancel.canceled = true;

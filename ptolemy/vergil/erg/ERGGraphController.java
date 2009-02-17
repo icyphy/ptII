@@ -41,7 +41,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JToolBar;
 
 import ptolemy.domains.erg.kernel.Event;
+import ptolemy.domains.erg.kernel.EventDebugEvent;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.DebugEvent;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
@@ -52,6 +54,7 @@ import ptolemy.moml.MoMLParser;
 import ptolemy.vergil.fsm.FSMGraphController;
 import ptolemy.vergil.fsm.FSMGraphModel;
 import ptolemy.vergil.fsm.StateController;
+import ptolemy.vergil.kernel.AnimationRenderer;
 import ptolemy.vergil.toolbox.FigureAction;
 import diva.canvas.Figure;
 import diva.graph.GraphException;
@@ -71,6 +74,44 @@ import diva.gui.toolbox.FigureIcon;
 public class ERGGraphController extends FSMGraphController {
 
     public ERGGraphController() {
+    }
+
+    /** React to an event by highlighting the new state.
+     *  @param debugEvent The debug event.
+     */
+    public void event(DebugEvent debugEvent) {
+        if (debugEvent instanceof EventDebugEvent) {
+            Event event = ((EventDebugEvent) debugEvent).getEvent();
+            boolean isProcessed = ((EventDebugEvent) debugEvent).isProcessed();
+
+            if (event != null) {
+                Object location = event.getAttribute("_location");
+
+                if (location != null) {
+                    Figure figure = getFigure(location);
+
+                    if (figure != null) {
+                        if (_animationRenderer == null) {
+                            _animationRenderer = new AnimationRenderer();
+                        }
+
+                        if (isProcessed) {
+                            long animationDelay = getAnimationDelay();
+                            if (animationDelay > 0 && isProcessed) {
+                                try {
+                                    Thread.sleep(animationDelay);
+                                } catch (InterruptedException ex) {
+                                }
+                            }
+
+                            _animationRenderer.renderDeselected(figure);
+                        } else {
+                            _animationRenderer.renderSelected(figure);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public void addToMenuAndToolbar(JMenu menu, JToolBar toolbar) {

@@ -197,7 +197,7 @@ public class FSMGraphFrame extends ExtendedGraphFrame
                     DebugListenerTableau tableau = new DebugListenerTableau(
                             textEffigy, textEffigy.uniqueName("debugListener"));
                     tableau.setDebuggable(getModel());
-                } else if (actionCommand.equals("Animate States")) {
+                } else if (actionCommand.equals(getAnimationMenuText())) {
                     // Dialog to ask for a delay time.
                     Query query = new Query();
                     query.addLine("delay", "Time (in ms) to hold highlight",
@@ -321,7 +321,7 @@ public class FSMGraphFrame extends ExtendedGraphFrame
         JMenuItem[] debugMenuItems = {
                 new JMenuItem("Listen to Director", KeyEvent.VK_D),
                 new JMenuItem("Listen to State Machine", KeyEvent.VK_L),
-                new JMenuItem("Animate States", KeyEvent.VK_A),
+                new JMenuItem(getAnimationMenuText(), KeyEvent.VK_A),
                 new JMenuItem("Stop Animating", KeyEvent.VK_S), };
 
         // NOTE: This has to be initialized here rather than
@@ -458,6 +458,15 @@ public class FSMGraphFrame extends ExtendedGraphFrame
                 // Ignore.
             }
         }
+    }
+
+    /** Return the text to be used in the animation menu item. In this base
+     *  class, always return "Animate States".
+     *
+     *  @return The text for the menu item.
+     */
+    protected String getAnimationMenuText() {
+        return "Animate States";
     }
 
     /** Prepare to export a design pattern.
