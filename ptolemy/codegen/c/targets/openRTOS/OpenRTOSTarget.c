@@ -34,6 +34,16 @@
 #define BUTTON         (UP | DOWN | LEFT | RIGHT)
 #define malloc(X) NULL
 #define realloc(X, Y) NULL
+
+/*-----------------------------------------------------------*/
+
+/* The queue used to send messages to the OLED task. */
+xQueueHandle xOLEDQueue;
+
+/* The welcome text. */
+const portCHAR * const pcWelcomeMessage = "   www.FreeRTOS.org";
+
+/*-----------------------------------------------------------*/
 void prvSetupHardware( void )
 {
     /* If running on Rev A2 silicon, turn the LDO voltage up to 2.75V.  This is
@@ -82,13 +92,13 @@ void vApplicationStackOverflowHook( xTaskHandle *pxTask, signed portCHAR *pcTask
     ( void ) pcTaskName;
     for( ;; );
 }
-void vApplicationProcessFormInput( portCHAR *pcInputString, portBASE_TYPE xInputLength ) {
-}
+/*void vApplicationProcessFormInput( portCHAR *pcInputString, portBASE_TYPE xInputLength ) {
+}*/
 
 /* Define clock functions here to avoid header file name clash between uIP
 and the Luminary Micro driver library. */
-clock_time_t clock_time( void )
+/*clock_time_t clock_time( void )
 {
     return xTaskGetTickCount();
-}
+}*/
 /**/
