@@ -28,7 +28,7 @@
  COPYRIGHTENDKEY
  */
 
-package ptolemy.codegen.c.actor.lib.gui;
+package ptolemy.codegen.c.targets.openRTOS.actor.lib.gui;
 
 import java.util.ArrayList;
 
