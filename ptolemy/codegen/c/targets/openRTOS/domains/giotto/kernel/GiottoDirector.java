@@ -75,7 +75,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
     }
 
     public String generateInitializeCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer(super.generateInitializeCode());
+        StringBuffer code = new StringBuffer();
         // to call the c codeblocks in *.c
         code.append(this._generateBlockCode("initLCD"));
 
@@ -112,10 +112,8 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             // priority level for the scheduling thread.
             currentPriorityLevel %= _MAX_PRIORITY_LEVEL - 1;
         }
-        code.append("}"+_eol);
-        //create thread methods here
-        code.append(generateThreads());
-                
+     
+        code.append(super.generateInitializeCode());
         return processCode(code.toString());   
         
     }
@@ -123,23 +121,50 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
     public String generateThreads()throws IllegalActionException{
         StringBuffer code = new StringBuffer(super.generateInitializeCode());
         ArrayList args1 = new ArrayList();
+        
+        double period = _getPeriod();
+        String periodString =Double.toString(period);
+        int dotIndex = periodString.indexOf('.');
+        if(dotIndex == -1){
+            // no decimal just multiply by 1000
+            periodString = Double.toString(period*1000);
+        }
+        else{
+          char temp[]= periodString.toCharArray();
+          int count = 0;
+          int i;
+          for(i = dotIndex; i < periodString.length()-1; i++){
+              temp[i]=temp[i+1];
+              count++;
+          }
+          temp[i]='0';  //terminate the string
+          count++;
+          periodString=new String(temp);
+          System.out.println("before padding with zeros: "+periodString);
+          while(count < 3){
+              periodString+='0';
+              count++;
+          }
+        }
         args1.add("");
         if(_isTopGiottoDirector())
         {
-        args1.set(0,_getPeriod()); 
+        args1.set(0,periodString); 
         code.append(_generateBlockCode("createSchedulerThread", args1));
         }
         
         ArrayList<String> ActorFrequencies[] = _getActorFrequencyTable();
-        code.append("}"+_eol);
+        //code.append("}"+_eol);
+     
+        System.out.println("period string is "+periodString);
         code.append("//I should append the frequencethread stuff here"+_eol);
        for(int i = 1; i <= _getAllFrequencies().size();i++){
-        code.append("static void $actorSymbol()frequency"+i+"(void * pvParameters){"+_eol);
+        code.append("static void $actorSymbol()_frequency"+i+"(void * pvParameters){"+_eol);
         code.append("portTickType xLastWakeTime;"+_eol);
-        code.append("const portTickType xFrequency =("+ _getPeriod()+"*1000)/"+i+ "/portTICK_RATE_MS;"+_eol);
+        code.append("const portTickType xFrequency =("+ periodString+")/"+i+ "/portTICK_RATE_MS;"+_eol);
         code.append("xLastWakeTime = xTaskGetTickCount();"+_eol);
         code.append("   for(;;){"+_eol);
-        code.append("vTaskDealUntil(&xLastWakeTime,xFrequency);"+_eol);
+        code.append("vTaskDelayUntil(&xLastWakeTime,xFrequency);"+_eol);
         code.append("  //call the methods for the tasks at this frequency of "+ i+_eol);
         for(int j = 0; j<ActorFrequencies[i].size();j++)
         {
@@ -261,8 +286,10 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
     
        
     public String generatePreinitializeCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
+        StringBuffer code = new StringBuffer(super.generatePreinitializeCode());
         // Declare the thread handles.
+        
+        code.append(_generateBlockCode("preinitBlock"));
         HashSet<Integer> frequencies = _getAllFrequencies();
 
         StringBuffer frequencyTCode = new StringBuffer();
@@ -283,7 +310,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             args.set(0, _getThreadName(frequencyValue));
             code.append(_generateBlockCode("declareTaskHandle", args));
         }
-
+       
         return processCode(code.toString());
     }
     
@@ -322,6 +349,9 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         StringBuffer code = new StringBuffer();
         code.append("//fire code should be here. I'm from the openRTOS GiottoDirector "+_eol);
         //code.append("scheduler()");
+        code.append("}"+_eol);
+        //create thread methods here
+        code.append(generateThreads());
         
         return code.toString();
     }
@@ -333,7 +363,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         code.append("const portTickType xFrequency = ("+_getPeriod()+"/"+i+"*1000)/portTICK_RATE_MS;"+_eol);
         code.append("xLastWakeTime xTaskGetTickCount();"+_eol);
         code.append("for(;;){"+_eol);
-        code.append("vTaskDealUntil(&xLastWakeTime,xFrequency);"+_eol);
+        code.append("vTaskDealyUntil(&xLastWakeTime,xFrequency);"+_eol);
         code.append("//call the methods for the tasks at this frequency"+_eol);
         code.append("}"+_eol);
 
@@ -402,6 +432,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             }
             return periodValue;            
         }
+   
 
         // Get the frequency.  
         // Ben I'm not sure why you originally called get frequency here
