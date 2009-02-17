@@ -43,6 +43,8 @@ import ptolemy.vergil.fsm.StateController;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import diva.graph.GraphController;
+import diva.graph.GraphEvent;
+import diva.graph.JGraph;
 import diva.gui.GUIUtilities;
 
 public class LatticeElementController extends StateController {
@@ -64,9 +66,19 @@ public class LatticeElementController extends StateController {
                 new MenuActionFactory(_toggleAcceptabilityAction));
     }
 
+    /** Add hot keys to the actions in the given JGraph.
+     *   It would be better that this method was added higher in the hierarchy. Now
+     *   most controllers 
+     *  @param jgraph The JGraph to which hot keys are to be added.
+     */
+    public void addHotKeys(JGraph jgraph) {
+        super.addHotKeys(jgraph);
+        GUIUtilities.addHotKey(jgraph, _toggleAcceptabilityAction);       
+    }
+    
     /** The edit custom icon action. */
-    protected toggleAcceptabilityAction _toggleAcceptabilityAction = 
-        new toggleAcceptabilityAction();
+    protected ToggleAcceptabilityAction _toggleAcceptabilityAction = 
+        new ToggleAcceptabilityAction();
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -75,11 +87,10 @@ public class LatticeElementController extends StateController {
      *  NOTE: This requires that the configuration be non null, or it
      *  will report an error with a fairly cryptic message.
      */
-    protected class toggleAcceptabilityAction extends FigureAction {
-        public toggleAcceptabilityAction() {
+    protected class ToggleAcceptabilityAction extends FigureAction {
+        public ToggleAcceptabilityAction() {
             super("Toggle Acceptability");
 
-            // FIXME: the hot key doesn't work.
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_A, Toolkit.getDefaultToolkit()
                             .getMenuShortcutKeyMask()));
@@ -101,7 +112,7 @@ public class LatticeElementController extends StateController {
                     target.attributeChanged(parameter);
                     
                     // FIXME: how do we force a repaint immediately?
-                    
+
                 } catch (IllegalActionException ex) {
                     MessageHandler.error("Toggle acceptability failed: ", ex);
                 }
