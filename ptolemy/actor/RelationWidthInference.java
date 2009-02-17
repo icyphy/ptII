@@ -55,7 +55,13 @@ relations in a composite actor.
 public class RelationWidthInference {
    ///////////////////////////////////////////////////////////////////
    ////                         public methods                    ////
-
+    
+    /** Determine whether widths are currently being inferred or not.
+     *  @return True When widths are currently being inferred.
+     */
+    public boolean inferringWidths() {
+        return _inferringWidths;
+    }
 
     /**
      *  Infer the width of the relations for which no width has been

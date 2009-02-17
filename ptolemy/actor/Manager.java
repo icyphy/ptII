@@ -130,6 +130,7 @@ import ptolemy.util.StringUtilities;
  annotation to the model.
 
  @author Steve Neuendorffer, Lukito Muliadi, Edward A. Lee, Elaine Cheong, Contributor: Mudit Goel, John S. Davis II, Bert Rodiers
+ @version $Id$
  @since Ptolemy II 0.2
  @Pt.ProposedRating Green (neuendor)
  @Pt.AcceptedRating Yellow (cxh)
@@ -576,6 +577,13 @@ public class Manager extends NamedObj implements Runnable {
      */
     public State getState() {
         return _state;
+    }
+    
+    /** Determine whether widths are currently being inferred or not.
+     *  @return True When widths are currently being inferred.
+     */
+    public boolean inferringWidths() {
+        return _relationWidthInference.inferringWidths();
     }
 
     /**

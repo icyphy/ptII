@@ -901,7 +901,7 @@ public class IORelation extends ComponentRelation {
     private boolean _inferringWidths() {
         Manager manager = _getManager();
         if (manager != null) {
-            return manager.getState() == Manager.INFERING_WIDTHS;
+            return manager.inferringWidths();
         }
         return false;
     }
