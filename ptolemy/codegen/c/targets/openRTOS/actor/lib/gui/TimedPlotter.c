@@ -1,17 +1,37 @@
 /***preinitBlock***/
-//preinit code should be here
-printf("preinit code should go here");
+//Timed Plotter preinit code should be here
+//printf("preinit code should go here");
+static int $actorSymbol(xvalue);
 /**/
 
 
 /***initBlock***/
 //init code should be here
+$actorSymbol(xvalue) = 0;
+//printf("init code should go here");
+{
+     int mlc,i;
+     mlc = 0;
+     //RIT128x96x4StringDraw("TimedPlotterTest",25,  0, 15);
+     for(i = 0; i < 128; i+= 5)
+     {
+       RIT128x96x4StringDraw("_",   i,89,5);
+     }
+     for(i = 0; i < 96; i +=8)
+     {
+       RIT128x96x4StringDraw("|",   0,i,5);
+     }
+     for(i = 0; i < 128; i+= 5)
+     {
+       RIT128x96x4StringDraw("_",   i,41,5);
+     }
+}
  
 /**/
 
 /***configureBlock($text)***/
 //configure code should be here
-printf("configure code should go here");
+//printf("configure code should go here");
 /**/
 
 /***plotBlock($channel)***/
@@ -23,13 +43,15 @@ printf("configure code should go here");
 
 /***plotBlock1($channel)***/
 
-PlotPoint1(8,$ref(input#$channel));
+PlotPoint1($actorSymbol(xvalue),$ref(input#$channel));
+$actorSymbol(xvalue)++;
 
 /**/
 
 /***plotBlock2($channel)***/
 
-PlotPoint2(15,$ref(input#$channel));
+PlotPoint2($actorSymbol(xvalue),$ref(input#$channel));
+$actorSymbol(xvalue)++;
 
 /**/
 
