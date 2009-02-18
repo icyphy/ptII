@@ -340,7 +340,7 @@ public class SRDirector extends FixedPointDirector {
                 // requested cannot be honored by the enclosed director
                 // Presumably, if the user set the period, he or she wanted
                 // that behavior.
-                _fireAt(currentTime.add(periodValue));
+                _fireContainerAt(currentTime.add(periodValue));
             } else {
                 // At the top level.
                 setModelTime(currentTime.add(periodValue));

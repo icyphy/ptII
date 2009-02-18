@@ -734,7 +734,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
                     + _expectedNextIterationTime);
         }
         // Enqueue a refire for the container of this director.
-        _fireAt(_expectedNextIterationTime);
+        _fireContainerAt(_expectedNextIterationTime);
     }
 
     ///////////////////////////////////////////////////////////////////

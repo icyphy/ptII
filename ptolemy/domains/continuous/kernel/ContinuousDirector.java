@@ -628,7 +628,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         // following statements, the composite actor has no chance to be fired.
 
         if (_isEmbedded() && (_enclosingContinuousDirector() == null)) {
-            _fireAt(_startTime);
+            _fireContainerAt(_startTime);
         }
         // Set a breakpoint with index 0 for the stop time.
         // Note that do not use fireAt because that will set index to 1,
@@ -1451,7 +1451,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         // request a refiring at a future time,
         // the current time + suggested step size
         if (_currentStepSize == 0) {
-            _fireAt(_currentTime);
+            _fireContainerAt(_currentTime);
         }
 
         return postfireResult;
@@ -1475,7 +1475,7 @@ public class ContinuousDirector extends FixedPointDirector implements
             // the breakpoint table.
             // The following will throw an exception if the enclosing director
             // does not respect the fireAt() request exactly.
-            _fireAt(_currentTime);
+            _fireContainerAt(_currentTime);
             _commitIsPending = true;
             return true;
         } else {
@@ -1493,7 +1493,7 @@ public class ContinuousDirector extends FixedPointDirector implements
             // the future, can we allow the enclosing director to advance time.
             // The following will throw an exception if the enclosing director
             // does not respect the fireAt() request exactly.
-            _fireAt(_currentTime);
+            _fireContainerAt(_currentTime);
             return _commit();
         }
     }

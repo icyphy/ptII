@@ -847,7 +847,7 @@ public class HSFSMDirector extends FSMDirector implements CTTransparentDirector 
             }
             
             // If we are not at the top level of the hierarchy, request a refiring.
-            _fireAt(getModelTime());
+            _fireContainerAt(getModelTime());
 
             Director executiveDirector = ((CompositeActor) getContainer()).getExecutiveDirector();
 

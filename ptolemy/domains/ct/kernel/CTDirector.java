@@ -587,7 +587,7 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
             Time time = (Time) getBreakPoints().first();
             // The following will throw an exception if the enclosing director
             // does not respect the fireAt() request exactly.
-            _fireAt(time);
+            _fireContainerAt(time);
         }
 
         boolean postfireReturns = _postfireReturns && !_stopRequested;

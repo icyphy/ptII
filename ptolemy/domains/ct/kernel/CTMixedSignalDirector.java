@@ -191,7 +191,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _mutationVersion = -1;
-        _fireAt(getModelTime());
+        _fireContainerAt(getModelTime());
     }
 
     /** If this is not a top-level director, request a refiring at the current

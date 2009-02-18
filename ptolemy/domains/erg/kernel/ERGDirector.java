@@ -1141,7 +1141,7 @@ public class ERGDirector extends Director implements TimedDirector,
     private void _requestFiring() throws IllegalActionException {
         if (!_eventQueue.isEmpty()) {
             Time time = _eventQueue.get(0).timeStamp;
-            _fireAt(time);
+            _fireContainerAt(time);
         }
     }
 

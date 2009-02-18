@@ -1395,7 +1395,7 @@ public class Director extends Attribute implements Executable {
      *   agree to fire the actor at the specified time, or if there
      *   is no director.
      */
-    protected Time _fireAt(Time time) throws IllegalActionException {
+    protected Time _fireContainerAt(Time time) throws IllegalActionException {
         Actor container = (Actor) getContainer();
         if (container != null) {
             Director director = container.getExecutiveDirector();

@@ -742,7 +742,7 @@ public class DEDirector extends Director implements TimedDirector {
             // Note that if the enclosing director is ignoring fireAt(),
             // or if it cannot refire at exactly the requested time,
             // then the following will throw an exception.
-            result = _fireAt(result);
+            result = _fireContainerAt(result);
         }
         synchronized (_eventQueue) {
             if (!_delegateFireAt) {
@@ -1910,7 +1910,7 @@ public class DEDirector extends Director implements TimedDirector {
         }
 
         // Enqueue a pure event to fire the container of this director.
-        _fireAt(nextEvent.timeStamp());
+        _fireContainerAt(nextEvent.timeStamp());
     }
 
     ///////////////////////////////////////////////////////////////////
