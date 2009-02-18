@@ -273,6 +273,22 @@ public class ArrayToken extends AbstractNotConvertibleToken {
         return result;
     }
 
+    /** Return a Boolean token that identifies whether the given token is an
+     *  element of this array.
+     *
+     *  @param element A token to test whether it is an element of this array.
+     *  @return A true Boolean token if the element is found, or false
+     *   otherwise.
+     */
+    public BooleanToken contains(Token element) {
+        for (int i = 0; i < _value.length; i++) {
+            if (_value[i].equals(element)) {
+                return BooleanToken.TRUE;
+            }
+        }
+        return BooleanToken.FALSE;
+    }
+
     /** Divide this array token by the specified argument.
      *  If the argument is an array token and it has
      *  the same length as this array token, and the division is elementwise.
