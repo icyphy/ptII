@@ -21,14 +21,6 @@
             <display name="Select object...">
             </display>
           </property>
-          <property name="Move" class="ptolemy.actor.gui.properties.ComboBox$Item">
-            <property name="next" class="ptolemy.data.expr.StringParameter" value="none">
-            </property>
-            <property name="parse" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <configure source="/E:/Desktop/pattern.xml">
-            </configure>
-          </property>
           <property name="CompositeActor" class="ptolemy.actor.gui.properties.ComboBox$Item">
             <property name="next" class="ptolemy.data.expr.StringParameter" value="none">
             </property>
