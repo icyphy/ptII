@@ -432,7 +432,8 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                 links.remove();
 
                 if (headObj instanceof Port && tailObj instanceof Port
-                        && (relation.getContainer() != null)) {
+                        && relation.getContainer() != null
+                        && relation.linkedPortList().size() < 2) {
                     NamedObj container = getPtolemyModel();
 
                     // remove the relation  This should trigger removing the
