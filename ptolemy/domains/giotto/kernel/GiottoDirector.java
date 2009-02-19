@@ -80,10 +80,6 @@ import ptolemy.kernel.util.Workspace;
  but, of course, it does not ensure that the director keeps up with
  real time.
  <p>
- FIXME: This director does not implement fireAt(), but it should.
- In particular, it should return the next time the requesting actor
- will be fired, which will depend on the period of that actor.
-
  @author  Christoph Meyer Kirsch, Edward A. Lee and Haiyang Zheng
  @version $Id$
  @since Ptolemy II 1.0
@@ -311,6 +307,20 @@ public class GiottoDirector extends StaticSchedulingDirector implements
 
             _iterationCount++;
         }
+    }
+    
+    /** This implementation returns the the next time the
+     *  requesting actor will be fired,
+     *  which will depend on the period.
+     */    
+    public Time fireAt(Actor actor, Time time) throws IllegalActionException {
+        // We will find the time stamp this director will fire equal
+        // to or larger than the argument time.
+        Time resultTime = getModelTime();        
+        while (time.compareTo(resultTime) > 0) {
+            resultTime = resultTime.add(_unitTimeIncrement);
+        }        
+        return resultTime;
     }
 
     /** Get the period of the giotto director in ms.
