@@ -326,7 +326,7 @@ public class ShortToken extends ScalarToken {
             // FIXME: what about units?
             return super.toString();
         }
-        return Short.toString(_value) + unitString;
+        return Short.toString(_value) + "s" + unitString;
     }
 
     /** Returns an ShortToken with value 0.
