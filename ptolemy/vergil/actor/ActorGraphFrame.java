@@ -130,16 +130,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame
     public ActorGraphFrame(CompositeEntity entity, Tableau tableau,
             LibraryAttribute defaultLibrary) {
         super(entity, tableau, defaultLibrary);
-
-        // Override the default help file.
-        helpFile = "ptolemy/configs/doc/vergilGraphEditorHelp.htm";
-
-        _createHierarchyAction = new CreateHierarchyAction();
-        _layoutAction = new LayoutAction();
-        _saveInLibraryAction = new SaveInLibraryAction();
-        _importLibraryAction = new ImportLibraryAction();
-        _instantiateAttributeAction = new InstantiateAttributeAction();
-        _instantiateEntityAction = new InstantiateEntityAction();
+        _initActorGraphFrame();
     }
 
     /** React to the actions specific to this actor graph frame.
@@ -159,6 +150,24 @@ public class ActorGraphFrame extends ExtendedGraphFrame
     /////////////////////////////////////////////////////////////////
     ////                        protected methods                ////
 
+
+	/**
+	 * ActorGraphFrame Initializer method
+	 */
+    protected void _initActorGraphFrame() {
+
+        // Override the default help file.
+        helpFile = "ptolemy/configs/doc/vergilGraphEditorHelp.htm";
+
+        _createHierarchyAction = new CreateHierarchyAction();
+        _layoutAction = new LayoutAction();
+        _saveInLibraryAction = new SaveInLibraryAction();
+        _importLibraryAction = new ImportLibraryAction();
+        _instantiateAttributeAction = new InstantiateAttributeAction();
+        _instantiateEntityAction = new InstantiateEntityAction();
+    	
+    }
+    
     /**
      * Create the menus that are used by this frame. It is essential that
      * _createGraphPane() be called before this.

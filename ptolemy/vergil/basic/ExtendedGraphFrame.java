@@ -93,7 +93,7 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
     public ExtendedGraphFrame(CompositeEntity entity, Tableau tableau,
             LibraryAttribute defaultLibrary) {
         super(entity, tableau, defaultLibrary);
-        GUIUtilities.addToolBarButton(_toolbar, _fullScreenAction);
+        _initExtendedGraphFrame();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -187,6 +187,14 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+
+	/**
+	 * ExtendedGraphFrame Initializer method
+	 */
+    protected void _initExtendedGraphFrame() {
+        GUIUtilities.addToolBarButton(_toolbar, _fullScreenAction);
+    }
+    
     /** Create the menus that are used by this frame.
      */
     protected void _addMenus() {

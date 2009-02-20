@@ -178,6 +178,7 @@ import diva.util.java2d.ShapeUtilities;
 public abstract class BasicGraphFrame extends PtolemyFrame implements
         Printable, ClipboardOwner, ChangeListener, MouseWheelListener,
         MouseListener, MouseMotionListener {
+    
     /** Construct a frame associated with the specified Ptolemy II model
      *  or object. After constructing this, it is necessary
      *  to call setVisible(true) to make the frame appear.
@@ -192,7 +193,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     public BasicGraphFrame(NamedObj entity, Tableau tableau) {
         this(entity, tableau, null);
     }
-
+    
     /** Construct a frame associated with the specified Ptolemy II model.
      *  After constructing this, it is necessary
      *  to call setVisible(true) to make the frame appear.
@@ -210,246 +211,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     public BasicGraphFrame(NamedObj entity, Tableau tableau,
             LibraryAttribute defaultLibrary) {
         super(entity, tableau);
-
-        entity.addChangeListener(this);
-
-        getContentPane().setLayout(new BorderLayout());
-
-        _rightComponent = _createRightComponent(entity);
-
-        ActionListener deletionListener = new ActionListener() {
-            /** Delete any nodes or edges from the graph that are
-             *  currently selected.  In addition, delete any edges
-             *  that are connected to any deleted nodes.
-             */
-            public void actionPerformed(ActionEvent e) {
-                delete();
-            }
-        };
-
-        _rightComponent.registerKeyboardAction(deletionListener, "Delete",
-                KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),
-                JComponent.WHEN_IN_FOCUSED_WINDOW);
-        _rightComponent.registerKeyboardAction(deletionListener, "BackSpace",
-                KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0),
-                JComponent.WHEN_IN_FOCUSED_WINDOW);
-
-        _rightComponent.setRequestFocusEnabled(true);
-
-        // We used to do this, but it would result in context menus
-        // getting lost on the mac.
-        // _jgraph.addMouseListener(new FocusMouseListener());
-        _rightComponent.setAlignmentX(1);
-        _rightComponent.setAlignmentY(1);
-        // Background color is parameterizable by preferences.
-        Configuration configuration = getConfiguration();
-        _rightComponent.setBackground(BACKGROUND_COLOR);
-        if (configuration != null) {
-            try {
-                PtolemyPreferences preferences = PtolemyPreferences
-                        .getPtolemyPreferencesWithinConfiguration(configuration);
-                if (preferences != null) {
-                    _rightComponent.setBackground(preferences.backgroundColor
-                            .asColor());
-                }
-            } catch (IllegalActionException e1) {
-                // Ignore the exception and use the default color.
-            }
-        }
-
-        try {
-            // The SizeAttribute property is used to specify the size
-            // of the JGraph component. Unfortunately, with Swing's
-            // mysterious and undocumented handling of component sizes,
-            // there appears to be no way to control the size of the
-            // JGraph from the size of the Frame, which is specified
-            // by the WindowPropertiesAttribute.
-            SizeAttribute size = (SizeAttribute) getModel().getAttribute(
-                    "_vergilSize", SizeAttribute.class);
-
-            if (size != null) {
-                size.setSize(_rightComponent);
-            } else {
-                // Set the default size.
-                // Note that the location is of the frame, while the size
-                // is of the scrollpane.
-                _rightComponent.setMinimumSize(new Dimension(200, 200));
-                _rightComponent.setPreferredSize(new Dimension(600, 400));
-                _rightComponent.setSize(600, 400);
-            }
-
-            // Set the zoom factor.
-            Parameter zoom = (Parameter) getModel().getAttribute(
-                    "_vergilZoomFactor", Parameter.class);
-
-            if (zoom != null) {
-                zoom(((DoubleToken) zoom.getToken()).doubleValue());
-
-                // Make sure the visibility is only expert.
-                zoom.setVisibility(Settable.EXPERT);
-            }
-
-            // Set the pan position.
-            Parameter pan = (Parameter) getModel().getAttribute(
-                    "_vergilCenter", Parameter.class);
-
-            if (pan != null) {
-                ArrayToken panToken = (ArrayToken) pan.getToken();
-                Point2D center = new Point2D.Double(((DoubleToken) panToken
-                        .getElement(0)).doubleValue(), ((DoubleToken) panToken
-                        .getElement(1)).doubleValue());
-                setCenter(center);
-
-                // Make sure the visibility is only expert.
-                pan.setVisibility(Settable.EXPERT);
-            }
-        } catch (Throwable throwable) {
-            // Ignore problems here.  Errors simply result in a default
-            // size and location.
-        }
-
-        _rightComponent.addMouseWheelListener(this);
-        _rightComponent.addMouseMotionListener(this);
-        _rightComponent.addMouseListener(this);
-
-        // Create the panner.
-        _graphPanner = new JCanvasPanner(getJGraph());
-        _graphPanner.setPreferredSize(new Dimension(200, 150));
-        _graphPanner.setMaximumSize(new Dimension(200, 150));
-        _graphPanner.setSize(200, 150);
-
-        // NOTE: Border causes all kinds of problems!
-        // _graphPanner.setBorder(BorderFactory.createEtchedBorder());
-        // Create the library of actors, or use the one in the entity,
-        // if there is one.
-        // FIXME: How do we make changes to the library persistent?
-        boolean gotLibrary = false;
-
-        try {
-            LibraryAttribute libraryAttribute = (LibraryAttribute) entity
-                    .getAttribute("_library", LibraryAttribute.class);
-
-            if (libraryAttribute != null) {
-                // The model contains a library.
-                try {
-                    _topLibrary = libraryAttribute.getLibrary();
-                    gotLibrary = true;
-                } catch (SecurityException ex) {
-                    System.out.println("Warning: failed to parse "
-                            + "_library attribute (running in an applet "
-                            + "or sandbox always causes this)");
-                }
-            }
-        } catch (Exception ex) {
-            try {
-                MessageHandler.warning("Invalid library in the model.", ex);
-            } catch (CancelException e) {
-            }
-        }
-
-        if (!gotLibrary) {
-            try {
-                if (defaultLibrary != null) {
-                    // A default library has been specified.
-                    _topLibrary = defaultLibrary.getLibrary();
-                    gotLibrary = true;
-                }
-            } catch (SecurityException ex) {
-                // Ignore, we are in an applet or sandbox.
-                // We already printed a message, why print it again?
-            } catch (Exception ex) {
-                try {
-                    MessageHandler.warning(
-                            "Invalid default library for the frame.", ex);
-                } catch (CancelException e) {
-                }
-            }
-        }
-
-        if (!gotLibrary) {
-            // Neither the model nor the argument have specified a library.
-            // See if there is a default library in the configuration.
-            _topLibrary = _createDefaultLibrary(entity.workspace());
-        }
-
-        _libraryModel = new VisibleTreeModel(_topLibrary);
-        _library = new PTree(_libraryModel);
-        _library.setRootVisible(false);
-        _library.setBackground(BACKGROUND_COLOR);
-
-        // If you want to expand the top-level libraries, uncomment this.
-        // Object[] path = new Object[2];
-        // path[0] = _topLibrary;
-        // Iterator libraries = _topLibrary.entityList().iterator();
-        // while (libraries.hasNext()) {
-        //     path[1] = libraries.next();
-        //     _library.expandPath(new javax.swing.tree.TreePath(path));
-        // }
-
-        _libraryContextMenuCreator = new PTreeMenuCreator();
-        _libraryContextMenuCreator
-                .addMenuItemFactory(new OpenLibraryMenuItemFactory());
-        _libraryContextMenuCreator
-                .addMenuItemFactory(new DocumentationMenuItemFactory());
-        _library.addMouseListener(_libraryContextMenuCreator);
-
-        _libraryScrollPane = new JScrollPane(_library);
-        _libraryScrollPane.setMinimumSize(new Dimension(200, 200));
-        _libraryScrollPane.setPreferredSize(new Dimension(200, 200));
-
-        // create the palette on the left.
-        _palettePane = new JPanel();
-        _palettePane.setBorder(null);
-        _palettePane.setLayout(new BoxLayout(_palettePane, BoxLayout.Y_AXIS));
-
-        _palettePane.add(_libraryScrollPane, BorderLayout.CENTER);
-        _palettePane.add(_graphPanner, BorderLayout.SOUTH);
-
-        _splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true);
-        _splitPane.setLeftComponent(_palettePane);
-        _splitPane.setRightComponent(_rightComponent);
-        getContentPane().add(_splitPane, BorderLayout.CENTER);
-
-        _toolbar = new JToolBar();
-        _toolbar.setLayout(new FlowLayout(FlowLayout.LEADING, 0, 0));
-        try {
-            new ToolBar(getTableau(), "toolbar", _toolbar, BorderLayout.NORTH);
-        } catch (Exception e) {
-            throw new InternalErrorException("Unable to create tool bar.");
-        }
-
-        GUIUtilities.addToolBarButton(_toolbar, _saveAction);
-
-        // Note that in Top we disable Print unless the class implements
-        // the Printable or Pageable interfaces.  By definition, this class
-        // implements the Printable interface
-        GUIUtilities.addToolBarButton(_toolbar, _printAction);
-
-        GUIUtilities.addToolBarButton(_toolbar, _zoomInAction);
-        GUIUtilities.addToolBarButton(_toolbar, _zoomResetAction);
-        GUIUtilities.addToolBarButton(_toolbar, _zoomFitAction);
-        GUIUtilities.addToolBarButton(_toolbar, _zoomOutAction);
-
-        GUIUtilities.addToolBarButton(_toolbar, _openContainerAction);
-        if (entity == entity.toplevel()) {
-            // If we are at the top level, disable
-            _openContainerAction.setEnabled(false);
-        }
-
-        _cutAction = new CutAction();
-        _copyAction = new CopyAction();
-        _pasteAction = new PasteAction();
-
-        // FIXME: vergil.kernel.AttributeController also defines context
-        // menu choices that do the same thing.
-        _moveToFrontAction = new MoveToFrontAction();
-        _moveToBackAction = new MoveToBackAction();
-
-        _editPreferencesAction = new EditPreferencesAction();
-
-        // Add a weak reference to this to keep track of all
-        // the graph frames that have been created.
-        _openGraphFrames.add(this);
+        _defaultLibrary = defaultLibrary;
+        _initBasicGraphFrame();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1013,6 +776,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         // collected
         _libraryModel.setRoot(null);
         _openGraphFrames.remove(this);
+        disposeSuper();
+    }
+    
+    public void disposeSuper() {
         super.dispose();
     }
 
@@ -1649,6 +1416,252 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+	/**
+	 * BasicGraphFrame Initializer method
+	 */
+    protected void _initBasicGraphFrame() {
+
+        getModel().addChangeListener(this);
+
+        getContentPane().setLayout(new BorderLayout());
+
+        _rightComponent = _createRightComponent(getModel());
+
+        ActionListener deletionListener = new ActionListener() {
+            /** Delete any nodes or edges from the graph that are
+             *  currently selected.  In addition, delete any edges
+             *  that are connected to any deleted nodes.
+             */
+            public void actionPerformed(ActionEvent e) {
+                delete();
+            }
+        };
+
+        _rightComponent.registerKeyboardAction(deletionListener, "Delete",
+                KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),
+                JComponent.WHEN_IN_FOCUSED_WINDOW);
+        _rightComponent.registerKeyboardAction(deletionListener, "BackSpace",
+                KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0),
+                JComponent.WHEN_IN_FOCUSED_WINDOW);
+
+        _rightComponent.setRequestFocusEnabled(true);
+
+        // We used to do this, but it would result in context menus
+        // getting lost on the mac.
+        // _jgraph.addMouseListener(new FocusMouseListener());
+        _rightComponent.setAlignmentX(1);
+        _rightComponent.setAlignmentY(1);
+        // Background color is parameterizable by preferences.
+        Configuration configuration = getConfiguration();
+        _rightComponent.setBackground(BACKGROUND_COLOR);
+        if (configuration != null) {
+            try {
+                PtolemyPreferences preferences = PtolemyPreferences
+                        .getPtolemyPreferencesWithinConfiguration(configuration);
+                if (preferences != null) {
+                    _rightComponent.setBackground(preferences.backgroundColor
+                            .asColor());
+                }
+            } catch (IllegalActionException e1) {
+                // Ignore the exception and use the default color.
+            }
+        }
+
+        try {
+            // The SizeAttribute property is used to specify the size
+            // of the JGraph component. Unfortunately, with Swing's
+            // mysterious and undocumented handling of component sizes,
+            // there appears to be no way to control the size of the
+            // JGraph from the size of the Frame, which is specified
+            // by the WindowPropertiesAttribute.
+            SizeAttribute size = (SizeAttribute) getModel().getAttribute(
+                    "_vergilSize", SizeAttribute.class);
+
+            if (size != null) {
+                size.setSize(_rightComponent);
+            } else {
+                // Set the default size.
+                // Note that the location is of the frame, while the size
+                // is of the scrollpane.
+                _rightComponent.setMinimumSize(new Dimension(200, 200));
+                _rightComponent.setPreferredSize(new Dimension(600, 400));
+                _rightComponent.setSize(600, 400);
+            }
+
+            // Set the zoom factor.
+            Parameter zoom = (Parameter) getModel().getAttribute(
+                    "_vergilZoomFactor", Parameter.class);
+
+            if (zoom != null) {
+                zoom(((DoubleToken) zoom.getToken()).doubleValue());
+
+                // Make sure the visibility is only expert.
+                zoom.setVisibility(Settable.EXPERT);
+            }
+
+            // Set the pan position.
+            Parameter pan = (Parameter) getModel().getAttribute(
+                    "_vergilCenter", Parameter.class);
+
+            if (pan != null) {
+                ArrayToken panToken = (ArrayToken) pan.getToken();
+                Point2D center = new Point2D.Double(((DoubleToken) panToken
+                        .getElement(0)).doubleValue(), ((DoubleToken) panToken
+                        .getElement(1)).doubleValue());
+                setCenter(center);
+
+                // Make sure the visibility is only expert.
+                pan.setVisibility(Settable.EXPERT);
+            }
+        } catch (Throwable throwable) {
+            // Ignore problems here.  Errors simply result in a default
+            // size and location.
+        }
+
+        _rightComponent.addMouseWheelListener(this);
+        _rightComponent.addMouseMotionListener(this);
+        _rightComponent.addMouseListener(this);
+
+        // Create the panner.
+        _graphPanner = new JCanvasPanner(getJGraph());
+        _graphPanner.setPreferredSize(new Dimension(200, 150));
+        _graphPanner.setMaximumSize(new Dimension(200, 150));
+        _graphPanner.setSize(200, 150);
+
+        // NOTE: Border causes all kinds of problems!
+        // _graphPanner.setBorder(BorderFactory.createEtchedBorder());
+        // Create the library of actors, or use the one in the entity,
+        // if there is one.
+        // FIXME: How do we make changes to the library persistent?
+        boolean gotLibrary = false;
+
+        try {
+            LibraryAttribute libraryAttribute = (LibraryAttribute) getModel()
+                    .getAttribute("_library", LibraryAttribute.class);
+
+            if (libraryAttribute != null) {
+                // The model contains a library.
+                try {
+                    _topLibrary = libraryAttribute.getLibrary();
+                    gotLibrary = true;
+                } catch (SecurityException ex) {
+                    System.out.println("Warning: failed to parse "
+                            + "_library attribute (running in an applet "
+                            + "or sandbox always causes this)");
+                }
+            }
+        } catch (Exception ex) {
+            try {
+                MessageHandler.warning("Invalid library in the model.", ex);
+            } catch (CancelException e) {
+            }
+        }
+
+        if (!gotLibrary) {
+            try {
+                if (_defaultLibrary != null) {
+                    // A default library has been specified.
+                    _topLibrary = _defaultLibrary.getLibrary();
+                    gotLibrary = true;
+                }
+            } catch (SecurityException ex) {
+                // Ignore, we are in an applet or sandbox.
+                // We already printed a message, why print it again?
+            } catch (Exception ex) {
+                try {
+                    MessageHandler.warning(
+                            "Invalid default library for the frame.", ex);
+                } catch (CancelException e) {
+                }
+            }
+        }
+
+        if (!gotLibrary) {
+            // Neither the model nor the argument have specified a library.
+            // See if there is a default library in the configuration.
+            _topLibrary = _createDefaultLibrary(getModel().workspace());
+        }
+
+        _libraryModel = new VisibleTreeModel(_topLibrary);
+        _library = new PTree(_libraryModel);
+        _library.setRootVisible(false);
+        _library.setBackground(BACKGROUND_COLOR);
+
+        // If you want to expand the top-level libraries, uncomment this.
+        // Object[] path = new Object[2];
+        // path[0] = _topLibrary;
+        // Iterator libraries = _topLibrary.entityList().iterator();
+        // while (libraries.hasNext()) {
+        //     path[1] = libraries.next();
+        //     _library.expandPath(new javax.swing.tree.TreePath(path));
+        // }
+
+        _libraryContextMenuCreator = new PTreeMenuCreator();
+        _libraryContextMenuCreator
+                .addMenuItemFactory(new OpenLibraryMenuItemFactory());
+        _libraryContextMenuCreator
+                .addMenuItemFactory(new DocumentationMenuItemFactory());
+        _library.addMouseListener(_libraryContextMenuCreator);
+
+        _libraryScrollPane = new JScrollPane(_library);
+        _libraryScrollPane.setMinimumSize(new Dimension(200, 200));
+        _libraryScrollPane.setPreferredSize(new Dimension(200, 200));
+
+        // create the palette on the left.
+        _palettePane = new JPanel();
+        _palettePane.setBorder(null);
+        _palettePane.setLayout(new BoxLayout(_palettePane, BoxLayout.Y_AXIS));
+
+        _palettePane.add(_libraryScrollPane, BorderLayout.CENTER);
+        _palettePane.add(_graphPanner, BorderLayout.SOUTH);
+
+        _splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true);
+        _splitPane.setLeftComponent(_palettePane);
+        _splitPane.setRightComponent(_rightComponent);
+        getContentPane().add(_splitPane, BorderLayout.CENTER);
+
+        _toolbar = new JToolBar();
+        _toolbar.setLayout(new FlowLayout(FlowLayout.LEADING, 0, 0));
+        try {
+            new ToolBar(getTableau(), "toolbar", _toolbar, BorderLayout.NORTH);
+        } catch (Exception e) {
+            throw new InternalErrorException("Unable to create tool bar.");
+        }
+
+        GUIUtilities.addToolBarButton(_toolbar, _saveAction);
+
+        // Note that in Top we disable Print unless the class implements
+        // the Printable or Pageable interfaces.  By definition, this class
+        // implements the Printable interface
+        GUIUtilities.addToolBarButton(_toolbar, _printAction);
+
+        GUIUtilities.addToolBarButton(_toolbar, _zoomInAction);
+        GUIUtilities.addToolBarButton(_toolbar, _zoomResetAction);
+        GUIUtilities.addToolBarButton(_toolbar, _zoomFitAction);
+        GUIUtilities.addToolBarButton(_toolbar, _zoomOutAction);
+
+        GUIUtilities.addToolBarButton(_toolbar, _openContainerAction);
+        if (getModel() == getModel().toplevel()) {
+            // If we are at the top level, disable
+            _openContainerAction.setEnabled(false);
+        }
+
+        _cutAction = new CutAction();
+        _copyAction = new CopyAction();
+        _pasteAction = new PasteAction();
+
+        // FIXME: vergil.kernel.AttributeController also defines context
+        // menu choices that do the same thing.
+        _moveToFrontAction = new MoveToFrontAction();
+        _moveToBackAction = new MoveToBackAction();
+
+        _editPreferencesAction = new EditPreferencesAction();
+
+        // Add a weak reference to this to keep track of all
+        // the graph frames that have been created.
+        _openGraphFrames.add(this);
+    }
+
     /** Create the menus that are used by this frame.
      */
     protected void _addMenus() {
@@ -2190,6 +2203,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
+	/** The default Library **/
+    protected LibraryAttribute _defaultLibrary;
+    
     /** The cut action. */
     protected Action _cutAction;
 
@@ -2348,17 +2364,17 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     ////                         private variables                 ////
 
     /** The instance of EditorDropTarget associated with the JGraph. */
-    private EditorDropTarget _dropTarget;
+    protected EditorDropTarget _dropTarget;
 
     /** The instance of JGraph for this editor. */
-    private JGraph _jgraph;
+    protected JGraph _jgraph;
 
     /** Action for opening the container, moving uplevel. */
     private Action _openContainerAction = new OpenContainerAction(
             "Open the container");
 
     /** List of references to graph frames that are open. */
-    private static LinkedList<BasicGraphFrame> _openGraphFrames = new LinkedList<BasicGraphFrame>();
+    protected static LinkedList<BasicGraphFrame> _openGraphFrames = new LinkedList<BasicGraphFrame>();
 
     /** X coordinate of where we last processed a press or drag of the
      *  middle mouse button.
@@ -2377,7 +2393,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     private Action _redoAction = new RedoAction();
 
     /** The right component for this editor. */
-    private JComponent _rightComponent;
+    protected JComponent _rightComponent;
 
     /**  Action to save the model. */
     private Action _saveAction = new SaveAction("Save");
@@ -2386,16 +2402,16 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     private Action _undoAction = new UndoAction();
 
     /** Action for zooming in. */
-    private Action _zoomInAction = new ZoomInAction("Zoom In");
+    protected Action _zoomInAction = new ZoomInAction("Zoom In");
 
     /** Action for zoom reset. */
-    private Action _zoomResetAction = new ZoomResetAction("Zoom Reset");
+    protected Action _zoomResetAction = new ZoomResetAction("Zoom Reset");
 
     /** Action for zoom fitting. */
-    private Action _zoomFitAction = new ZoomFitAction("Zoom Fit");
+    protected Action _zoomFitAction = new ZoomFitAction("Zoom Fit");
 
     /** Action for zooming out. */
-    private Action _zoomOutAction = new ZoomOutAction("Zoom Out");
+    protected Action _zoomOutAction = new ZoomOutAction("Zoom Out");
 
     ///////////////////////////////////////////////////////////////////
     ////                     private inner classes                 ////
@@ -2405,7 +2421,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     //// CopyAction
 
     /** Action to copy the current selection. */
-    private class CopyAction extends AbstractAction {
+    protected class CopyAction extends AbstractAction {
         /** Create a new action to copy the current selection. */
         public CopyAction() {
             super("Copy");
@@ -2427,7 +2443,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     //// CutAction
 
     /** Action to copy and delete the current selection. */
-    private class CutAction extends AbstractAction {
+    protected class CutAction extends AbstractAction {
         /** Create a new action to copy and delete the current selection. */
         public CutAction() {
             super("Cut");
@@ -2476,7 +2492,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
     /** Action to edit the preferences.
      */
-    private class EditPreferencesAction extends AbstractAction {
+    protected class EditPreferencesAction extends AbstractAction {
         public EditPreferencesAction() {
             super("Edit Preferences");
             putValue("tooltip", "Change the Vergil preferences");
@@ -2633,7 +2649,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /** Action to move the current selection to the back (which corresponds
      *  to first in the ordered list).
      */
-    private class MoveToBackAction extends AbstractAction {
+    protected class MoveToBackAction extends AbstractAction {
         public MoveToBackAction() {
             // Note that we also have "Send to Back" in
             // vergil/kernel/AttributeController.java
@@ -2675,7 +2691,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /** Action to move the current selection to the back (which corresponds
      *  to first in the ordered list).
      */
-    private class MoveToFrontAction extends AbstractAction {
+    protected class MoveToFrontAction extends AbstractAction {
         public MoveToFrontAction() {
             // Note that we also have "Bring to Front" in
             // vergil/kernel/AttributeController.java
@@ -2716,7 +2732,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     //// PasteAction
 
     /** Paste the current contents of the clipboard into the current model. */
-    private class PasteAction extends AbstractAction {
+    protected class PasteAction extends AbstractAction {
         /** Create a new action to paste the current contents of the
          *  clipboard into the current model.
          */
