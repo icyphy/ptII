@@ -88,9 +88,10 @@ public class TestWorkspace2 extends Thread {
                 }
             }
 
-            // NOTE: Must not hold lock on _workspace when calling
-            // _workspace.wait(obj).
-            // synchronized (_notif) {
+            // NOTE: we must synchronize with _notif to not miss notifications
+            // (we make sure that the other thread only starts once we have
+            // called wait.
+            synchronized (_notif) {
                 _notif.getWriteAccess = true;
 
                 try {
@@ -100,7 +101,7 @@ public class TestWorkspace2 extends Thread {
                 }
 
                 _notif.done = true;
-            // }
+            }
         } finally {
             for (int j = i; j > 0; j--) {
                 _workspace.doneReading();
