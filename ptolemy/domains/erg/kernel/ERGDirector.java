@@ -65,6 +65,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.DebugListener;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -276,13 +277,17 @@ public class ERGDirector extends Director implements TimedDirector,
         Time modelTime = getModelTime();
 
         Iterator<TimedEvent> eventQueueIterator = _eventQueue.iterator();
+        int position = 0;
         while (eventQueueIterator.hasNext()) {
             TimedEvent event = eventQueueIterator.next();
             if (event.canceled) {
                 eventQueueIterator.remove();
+                _notifyEventQueueDebugListeners(false, true, position, null,
+                        null, null);
             } else {
                 break;
             }
+            position++;
         }
         List<TimedEvent> eventQueue = new LinkedList<TimedEvent>(_eventQueue);
         Set<TimedEvent> firedEvents = new HashSet<TimedEvent>();
@@ -527,13 +532,17 @@ public class ERGDirector extends Director implements TimedDirector,
         boolean result = super.postfire();
 
         Iterator<TimedEvent> eventQueueIterator = _eventQueue.iterator();
+        int position = 0;
         while (eventQueueIterator.hasNext()) {
             TimedEvent event = eventQueueIterator.next();
             if (event.canceled) {
                 eventQueueIterator.remove();
+                _notifyEventQueueDebugListeners(false, true, position, null,
+                        null, null);
             } else {
                 break;
             }
+            position++;
         }
 
         if (result) {
@@ -577,6 +586,8 @@ public class ERGDirector extends Director implements TimedDirector,
                 Time nextEventTime = (_eventQueue.get(0)).timeStamp;
                 while (modelTime.compareTo(nextEventTime) > 0) {
                     _eventQueue.remove(0);
+                    _notifyEventQueueDebugListeners(false, true, 0, null, null,
+                            null);
 
                     if (!_eventQueue.isEmpty()) {
                         TimedEvent event = _eventQueue.get(0);
@@ -849,9 +860,11 @@ public class ERGDirector extends Director implements TimedDirector,
     private void _addEvent(List<TimedEvent> eventQueue, TimedEvent event)
             throws IllegalActionException {
         ListIterator<TimedEvent> iterator = eventQueue.listIterator();
+        Object contents = event.contents;
         Time time1 = event.timeStamp;
         int priority1 = event.priority;
         boolean lifo = ((BooleanToken) LIFO.getToken()).booleanValue();
+        int position = 0;
         while (true) {
             if (iterator.hasNext()) {
                 TimedEvent next = iterator.next();
@@ -863,12 +876,21 @@ public class ERGDirector extends Director implements TimedDirector,
                         priority1 == priority2 && lifo)) {
                     iterator.previous();
                     iterator.add(event);
+
+                    _notifyEventQueueDebugListeners(true, false, position,
+                            time1, contents, event.arguments);
+
                     break;
                 }
             } else {
                 iterator.add(event);
+
+                _notifyEventQueueDebugListeners(true, false, position, time1,
+                        contents, event.arguments);
+
                 break;
             }
+            position++;
         }
     }
 
@@ -915,7 +937,12 @@ public class ERGDirector extends Director implements TimedDirector,
      *  recognized.
      */
     private boolean _fire(TimedEvent timedEvent) throws IllegalActionException {
-        _eventQueue.remove(timedEvent);
+        int position = _eventQueue.indexOf(timedEvent);
+        if (position >= 0) {
+            _eventQueue.remove(position);
+            _notifyEventQueueDebugListeners(false, false, position, null, null,
+                    null);
+        }
 
         ERGController controller = getController();
         Object contents = timedEvent.contents;
@@ -1000,7 +1027,12 @@ public class ERGDirector extends Director implements TimedDirector,
             throws IllegalActionException {
         if (actor.prefire()) {
             if (timedEvent != null) {
-                _eventQueue.remove(timedEvent);
+                int position = _eventQueue.indexOf(timedEvent);
+                if (position >= 0) {
+                    _eventQueue.remove(position);
+                    _notifyEventQueueDebugListeners(false, false, position,
+                            null, null, null);
+                }
             }
 
             actor.fire();
@@ -1128,6 +1160,48 @@ public class ERGDirector extends Director implements TimedDirector,
      */
     private boolean _isInController() {
         return getContainer() instanceof ERGController;
+    }
+
+    /** Notify all the EventQueueDebugListeners in the list of DebugListeners of
+     *  either an event/actor has been inserted into event queue, or it has been
+     *  removed from the event queue.
+     *
+     *  @param isInsert Whether an event/actor has been inserted or removed.
+     *  @param isCancelled If it is removed, whether it is because of canceling
+     *   or it is because of event being processed. Not used if
+     *   isInsert is true.
+     *  @param position The position of the event/actor in the event queue.
+     *  @param time The time at which the event/actor is scheduled. Null if
+     *   isInserted is false.
+     *  @param contents The event or actor. Null if isInserted is false.
+     *  @param arguments Arguments to the event or actor. Null if isInserted is
+     *   false.
+     */
+    private void _notifyEventQueueDebugListeners(boolean isInsert,
+            boolean isCancelled, int position, Time time, Object contents,
+            ArrayToken arguments) {
+        List<DebugListener> listeners = _debugListeners;
+        if (listeners == null) {
+            return;
+        }
+
+        for (DebugListener listener : listeners) {
+            if (listener instanceof EventQueueDebugListener) {
+                EventQueueDebugListener eventListener =
+                    (EventQueueDebugListener) listener;
+                if (isInsert) {
+                    if (contents instanceof Event) {
+                        eventListener.insertEvent(position, time,
+                                (Event) contents, arguments);
+                    } else if (contents instanceof Actor) {
+                        eventListener.insertActor(position, time,
+                                (Actor) contents, arguments);
+                    }
+                } else {
+                    eventListener.removeEvent(position, isCancelled);
+                }
+            }
+        }
     }
 
     /** Request to fire this director by invoking the fireAt() method of the

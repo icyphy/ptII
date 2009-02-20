@@ -48,4 +48,7 @@
     <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
     </property>
   </property>
+  <property name="EventQueueDebugger" class="ptolemy.domains.erg.lib.EventQueueDebugger">
+    
+  </property>
 </group>

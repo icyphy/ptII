@@ -54,6 +54,7 @@ JSRCS = \
 	ERGModalModel.java \
 	Event.java \
 	EventDebugEvent.java \
+	EventQueueDebugListener.java \
 	ParametersAttribute.java \
 	SchedulingRelation.java \
 	TimeAdvanceEvent.java \
