@@ -1123,7 +1123,7 @@ test PtParser-21.1 {Test the smallest short token 32767s} {
     set root [ $p {generateParseTree String} "32767s"]
     set res [ $root evaluateParseTree ]
     $res toString
-} {32767}
+} {32767s}
 
 test PtParser-21.2 {Test the smallest short token 32768s} {
     set p [java::new ptolemy.data.expr.PtParser]
@@ -1139,21 +1139,21 @@ test PtParser-21.3 {Test the smallest short token -32767s} {
     set root [ $p {generateParseTree String} "-32767s"]
     set res [ $root evaluateParseTree ]
     $res toString
-} {-32767}
+} {-32767s}
 
 test PtParser-21.4 {Test the smallest short token -(32767)s} {
     set p [java::new ptolemy.data.expr.PtParser]
     set root [ $p {generateParseTree String} "-(32767s)"]
     set res [ $root evaluateParseTree ]
     $res toString
-} {-32767}
+} {-32767s}
 
 test PtParser-21.5 {Test the smallest short token -32768s} {
     set p [java::new ptolemy.data.expr.PtParser]
     set root [ $p {generateParseTree String} "-32768s"]
     set res [ $root evaluateParseTree ]
     $res toString
-} {-32768}
+} {-32768s}
 
 test PtParser-21.6 {Test the smallest short token -(32768s)} {
     set p [java::new ptolemy.data.expr.PtParser]
