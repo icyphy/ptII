@@ -331,7 +331,7 @@ test UnsignedByteToken-13.6.5 {Test convert from ShortToken} {
     set result {}
     catch {set result [[java::call ptolemy.data.UnsignedByteToken convert $t] toString]} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.ShortToken '1' to the type byte because the type of the token is higher or incomparable with the given type.}}
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.ShortToken '1s' to the type byte because the type of the token is higher or incomparable with the given type.}}
 
 test UnsignedByteToken-13.7 {Test convert from StringToken} {
     set t [java::new {ptolemy.data.StringToken java.lang.String} "One"]

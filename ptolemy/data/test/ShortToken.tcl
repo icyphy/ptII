@@ -49,7 +49,7 @@ if {[string compare test [info procs test]] == 1} then {
 test ShortToken-1.0 {Create an empty instance} {
     set p [java::new ptolemy.data.ShortToken]
     $p toString
-} {0}
+} {0s}
 
 ######################################################################
 ####
@@ -57,7 +57,7 @@ test ShortToken-1.0 {Create an empty instance} {
 test ShortToken-1.1 {Create a non-empty instance from an short} {
     set p [java::new {ptolemy.data.ShortToken short} 5]
     $p toString
-} {5}
+} {5s}
 
 ######################################################################
 ####
@@ -65,7 +65,7 @@ test ShortToken-1.1 {Create a non-empty instance from an short} {
 test ShortToken-1.2 {Create a non-empty instance from an String} {
     set p [java::new {ptolemy.data.ShortToken String} "7"]
     $p toString
-} {7}
+} {7s}
 
 ######################################################################
 ####
@@ -144,7 +144,7 @@ test ShortToken-2.2 {Create a non-empty instance and query its value as a long} 
 test ShortToken-2.3 {Create a non-empty instance and query its value as a string} {
     set p [java::new {ptolemy.data.ShortToken short} 12]
     $p toString
-} {12}
+} {12s}
 
 ######################################################################
 ####
@@ -162,7 +162,7 @@ test ShortToken-2.5 {Test additive identity} {
     set token [$p zero]
 
     list [$token toString]
-} {0}
+} {0s}
 ######################################################################
 ####
 # 
@@ -171,7 +171,7 @@ test ShortToken-2.6 {Test multiplicative identity} {
     set token [$p one]
 
     list [$token toString]
-} {1}
+} {1s}
 
 ######################################################################
 ####
@@ -183,7 +183,7 @@ test ShortToken-3.0 {Test adding shorts.} {
     set res2 [$p addReverse $p]
 
     list [$res1 toString] [$res2 toString]
-} {14 14}
+} {14s 14s}
 
 ######################################################################
 ####
@@ -201,7 +201,7 @@ test ShortToken-4.0 {Test dividing shorts.} {
     set res4 [$tok1 divideReverse $tok2]
 
     list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString]
-} {1 1 0 2}
+} {1s 1s 0s 2s}
 
 ######################################################################
 ####
@@ -228,7 +228,7 @@ test ShortToken-6.0 {Test modulo between shorts.} {
     set res2 [$tok1 moduloReverse $tok2]
 
     list [$res1 toString] [$res2 toString]
-} {1 2}
+} {1s 2s}
 
 ######################################################################
 ####
@@ -241,7 +241,7 @@ test ShortToken-7.0 {Test multiply operator between shorts.} {
     set res2 [$tok1 multiplyReverse $tok2]
 
     list [$res1 toString] [$res2 toString]
-} {14 14}
+} {14s 14s}
 
 ######################################################################
 ####
@@ -254,7 +254,7 @@ test ShortToken-8.0 {Test subtract operator between shorts.} {
     set res2 [$tok1 subtractReverse $tok2]
 
     list [$res1 toString] [$res2 toString]
-} {5 -5}
+} {5s -5s}
 
 ######################################################################
 ####
@@ -271,7 +271,7 @@ test ShortToken-8.1 {Test shift operator between shorts.} {
     set res6 [$tok2 logicalRightShift 1]
 
     list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString] [$res5 toString] [$res6 toString]
-} {14 -14 3 -4 3 32764}
+} {14s -14s 3s -4s 3s 32764s}
 
 ######################################################################
 ####
@@ -301,7 +301,7 @@ test ShortToken-9.0 {Create an non-empty instance and add it to Strings} {
     set token6 [$token4 add $token5]
 
     list [$token6 toString]
-} {{"value is 2323....."}}
+} {{"value is 23s23s....."}}
 
 ######################################################################
 ####
@@ -417,7 +417,7 @@ test ShortToken-13.1 {Test convert from UnsignedByteToken} {
     set result {}
     catch {set result [[java::call ptolemy.data.ShortToken convert $t] toString]} msg
     list $msg
-} {1}
+} {1s}
 
 ######################################################################
 ####
@@ -475,7 +475,7 @@ test ShortToken-13.5 {Test convert from ShortToken} {
     set result {}
     catch {set result [[java::call ptolemy.data.ShortToken convert $t] toString]} msg
     list $msg
-} {1}
+} {1s}
 
 
 ######################################################################
@@ -507,7 +507,7 @@ test ShortToken-14.0 {call byteValue and get coverage in the parent class} {
     set p [java::new {ptolemy.data.ShortToken short} 5]
     catch {$p byteValue} errMsg
     list $errMsg
-} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.ShortToken '5' to the type byte.}}
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.ShortToken '5s' to the type byte.}}
 
 
 ######################################################################
