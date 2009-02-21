@@ -28,20 +28,21 @@
 package ptolemy.codegen.c.targets.openRTOS.domains.giotto.kernel;
 
 import java.util.*;
-import java.util.ArrayList;
-import java.util.Hashtable;
 
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.codegen.kernel.ActorCodeGenerator;
+import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
 
 
 
@@ -75,6 +76,8 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
     }
 
     public String generateInitializeCode() throws IllegalActionException {
+        System.out.println("generateInitializeCode from openRTOS giotto director called here");
+        
         StringBuffer code = new StringBuffer();
         // to call the c codeblocks in *.c
         code.append(this._generateBlockCode("initLCD"));
@@ -117,6 +120,28 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         return processCode(code.toString());   
         
     }
+    public String generateSchedulerThread(String period) throws IllegalActionException{
+    StringBuffer code = new StringBuffer();
+    
+    code.append("static void scheduler(void * pvParameters){"+_eol);
+    code.append("portTickType xLastWakeTime;");
+    code.append("const portTickType xFrequency = ($period)/portTICK_RATE_MS;"+_eol);
+    code.append("xLastWakeTime = xTaskGetTickCount();"+_eol);
+    code.append("    for(;;){"+_eol);
+    code.append("     vTaskDelayUntil(&xLastWakeTime,xFrequency);"+_eol);
+    code.append("//run driver code here"+_eol);
+    //sync outputs to ports, sync inputs to ports
+    code.append("//handle updates, mode switches, and switching the double buffer pointers"+_eol);
+    code.append("    }"+_eol);
+    code.append("      }"+_eol);
+    
+    
+    
+    
+    
+    
+    return processCode(code.toString());
+    }
     
     public String generateThreads()throws IllegalActionException{
         StringBuffer code = new StringBuffer(super.generateInitializeCode());
@@ -150,7 +175,9 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         if(_isTopGiottoDirector())
         {
         args1.set(0,periodString); 
-        code.append(_generateBlockCode("createSchedulerThread", args1));
+//        code.append("\\run driver code here"+_eol);
+        //code.append(_generateBlockCode("createSchedulerThread", args1));
+        code.append(generateSchedulerThread(periodString));
         }
         
         ArrayList<String> ActorFrequencies[] = _getActorFrequencyTable();
@@ -165,9 +192,11 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         code.append("xLastWakeTime = xTaskGetTickCount();"+_eol);
         code.append("   for(;;){"+_eol);
         code.append("vTaskDelayUntil(&xLastWakeTime,xFrequency);"+_eol);
+        code.append("// here I should call generate driver code method for each of the actors"+_eol);
         code.append("  //call the methods for the tasks at this frequency of "+ i+_eol);
         for(int j = 0; j<ActorFrequencies[i].size();j++)
         {
+            //call generate driver code for each of the actors
             code.append(ActorFrequencies[i].get(j)+"();"+_eol);
         }
         
@@ -218,7 +247,8 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
 
     public String generateMainLoop() throws IllegalActionException{
         StringBuffer code = new StringBuffer();
-   
+        System.out.println("generate main loop from openRTOS giotto director called here");
+        
         HashSet frequencies= new HashSet();
         int  attributueValue;
         // go through all the actors and get their frequencies
@@ -262,6 +292,8 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
     }
 
     public Set getHeaderFiles()throws IllegalActionException{
+        System.out.println("generateheader files openRTOS giotto director called here");
+        
         HashSet files = new HashSet();
         files.add("<stdio.h>");
         return files;
@@ -288,6 +320,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer(super.generatePreinitializeCode());
         // Declare the thread handles.
+        System.out.println("generatePreinitializeCode from openRTOS giotto director called here");
         
         code.append(_generateBlockCode("preinitBlock"));
         HashSet<Integer> frequencies = _getAllFrequencies();
@@ -348,6 +381,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
     public String generateFireCode() throws IllegalActionException{
         StringBuffer code = new StringBuffer();
         code.append("//fire code should be here. I'm from the openRTOS GiottoDirector "+_eol);
+        System.out.println("generateFireCode from openRTOS giotto director called here");
         //code.append("scheduler()");
         code.append("}"+_eol);
         //create thread methods here
@@ -375,7 +409,8 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
 
     public String generatePostFireCode() throws IllegalActionException{
         StringBuffer code = new StringBuffer();
-
+        System.out.println("generatePostFireCode from openRTOS giotto director called here");
+        
 
         for (Actor actor : (List<Actor>) 
                 ((TypedCompositeActor) _director.getContainer()).deepEntityList()) {
@@ -441,6 +476,30 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
 
     }
 
+    
+    /**
+     * Generate the thread function name for a given actor.
+     * 
+     * @param actor
+     *            The given actor.
+     * @return A unique label for the actor thread function.
+     */
+    private String _getActorThreadLabel(Actor actor) {
+            return CodeGeneratorHelper.generateName((NamedObj) actor)
+                            + "_ThreadFunction";
+    }
+    public String getReference(TypedIOPort port, String[] channelAndOffset,
+            boolean forComposite, boolean isWrite, CodeGeneratorHelper helper)
+    throws IllegalActionException {
+        if(port.isOutput()&&isWrite)
+        {// do own thing here}
+        // will need to take care of the case of where the output is for a composite actor
+            //return CodeGeneartorHelper.generateName((port)+"_"+channelAndOffset[1];
+            return "dummy";
+        }else
+            
+               return super.getReference(port, channelAndOffset, forComposite, isWrite,helper);
+    }
 
-
+    
 }
