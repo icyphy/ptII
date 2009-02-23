@@ -36,6 +36,7 @@ import javax.swing.KeyStroke;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.properties.LatticeElement;
+import ptolemy.domains.properties.PropertyLatticeComposite;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
@@ -64,6 +65,10 @@ public class LatticeElementController extends StateController {
         super(controller, access);
         _menuFactory.addMenuItemFactory(
                 new MenuActionFactory(_toggleAcceptabilityAction));
+        
+        // FIXME: Having this action is only temporary.
+        _menuFactory.addMenuItemFactory(
+                new MenuActionFactory(_checkIsLatticeAction));
     }
 
     /** Add hot keys to the actions in the given JGraph.
@@ -80,6 +85,9 @@ public class LatticeElementController extends StateController {
     protected ToggleAcceptabilityAction _toggleAcceptabilityAction = 
         new ToggleAcceptabilityAction();
 
+    protected checkIsLatticeAction _checkIsLatticeAction = 
+        new checkIsLatticeAction();
+    
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
@@ -121,4 +129,22 @@ public class LatticeElementController extends StateController {
         }
     }
 
+    protected class checkIsLatticeAction extends FigureAction {
+        public checkIsLatticeAction() {
+            super("Listen to Lattice Checking");
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+
+            NamedObj target = getTarget();
+            
+            boolean isLattice = ((PropertyLatticeComposite) 
+                    target.getContainer()).isLattice();
+            
+            if (isLattice) {
+                MessageHandler.message("This is good.");
+            }
+        }
+    }
 }

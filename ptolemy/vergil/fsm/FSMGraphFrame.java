@@ -317,12 +317,7 @@ public class FSMGraphFrame extends ExtendedGraphFrame
         _graphMenu.addSeparator();
         _controller.addToMenuAndToolbar(_graphMenu, _toolbar);
 
-        // Add debug menu.
-        JMenuItem[] debugMenuItems = {
-                new JMenuItem("Listen to Director", KeyEvent.VK_D),
-                new JMenuItem("Listen to State Machine", KeyEvent.VK_L),
-                new JMenuItem(getAnimationMenuText(), KeyEvent.VK_A),
-                new JMenuItem("Stop Animating", KeyEvent.VK_S), };
+        JMenuItem[] debugMenuItems = _debugMenuItems();
 
         // NOTE: This has to be initialized here rather than
         // statically because this method is called by the constructor
@@ -331,7 +326,7 @@ public class FSMGraphFrame extends ExtendedGraphFrame
         _debugMenu = new JMenu("Debug");
         _debugMenu.setMnemonic(KeyEvent.VK_D);
 
-        DebugMenuListener debugMenuListener = new DebugMenuListener();
+        ActionListener debugMenuListener = _getDebugMenuListener();
 
         // Set the action command and listener for each menu item.
         for (int i = 0; i < debugMenuItems.length; i++) {
@@ -341,6 +336,21 @@ public class FSMGraphFrame extends ExtendedGraphFrame
         }
 
         _menubar.add(_debugMenu);
+    }
+
+    protected ActionListener _getDebugMenuListener() {
+        DebugMenuListener debugMenuListener = new DebugMenuListener();
+        return debugMenuListener;
+    }
+
+    protected JMenuItem[] _debugMenuItems() {
+        // Add debug menu.
+        JMenuItem[] debugMenuItems = {
+                new JMenuItem("Listen to Director", KeyEvent.VK_D),
+                new JMenuItem("Listen to State Machine", KeyEvent.VK_L),
+                new JMenuItem(getAnimationMenuText(), KeyEvent.VK_A),
+                new JMenuItem("Stop Animating", KeyEvent.VK_S), };
+        return debugMenuItems;
     }
 
     /** Close the window.  Override the base class to remove the debug

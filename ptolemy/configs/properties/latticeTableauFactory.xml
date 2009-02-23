@@ -4,26 +4,23 @@
 <!-- Factory for graph rewriting rule editor.  -->
 <property name="latticeTableauFactory" class="ptolemy.actor.gui.PtolemyTableauFactory">
   <!-- These will appear in the View menu of a graph rewriting rule tableau. -->
+
+
+
+
+
   <property name="Property Lattice Editor"
             class="ptolemy.vergil.properties.LatticeGraphTableau$Factory">
 
     <property name="_library" class="ptolemy.moml.LibraryAttribute">
       <configure>
         <entity name="library" class="ptolemy.kernel.CompositeEntity">
-          <input source="ptolemy/configs/gt/gtLibrary.xml"/>
-        </entity>
-      </configure>
-    </property>
-
-
-    <property name="state" class="ptolemy.moml.LibraryAttribute">
-      <configure>
-        <entity name="stateLibrary" class="ptolemy.kernel.CompositeEntity">
-          <input source="ptolemy/configs/gt/gtStateLibrary.xml"/>
+          <input source="ptolemy/configs/properties/latticeLibrary.xml"/>
         </entity>
       </configure>
     </property>
   </property>
+   
   <property name="Tree View"
             class="ptolemy.vergil.tree.TreeTableau$Factory"/>
   <property name="XML view"

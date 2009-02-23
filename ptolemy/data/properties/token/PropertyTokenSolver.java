@@ -87,7 +87,8 @@ public class PropertyTokenSolver extends PropertySolver {
 
     protected void _resolveProperties(NamedObj analyzer) 
             throws KernelException {
-        PropertyTokenCompositeHelper topLevelHelper = (PropertyTokenCompositeHelper) _getHelper(toplevel());
+        NamedObj toplevel = _toplevel();
+        PropertyTokenCompositeHelper topLevelHelper = (PropertyTokenCompositeHelper) _getHelper(toplevel);
         super._resolveProperties(analyzer);
         
         topLevelHelper.reinitialize();
@@ -98,36 +99,35 @@ public class PropertyTokenSolver extends PropertySolver {
             topLevelHelper.addListener(getListening().contains("Input"), 
                                        getListening().contains("Output"));
             
-            NamedObj topLevel = toplevel();
             
             // run simulation
-            Manager manager = new Manager(topLevel.workspace(), "PortValueManager");
+            Manager manager = new Manager(toplevel.workspace(), "PortValueManager");
 
-            if (topLevel instanceof TypedCompositeActor) {
+            if (toplevel instanceof TypedCompositeActor) {
 
-                ((TypedCompositeActor) topLevel).setManager(manager);
+                ((TypedCompositeActor) toplevel).setManager(manager);
                 
-            } else if (topLevel instanceof FSMActor) {
+            } else if (toplevel instanceof FSMActor) {
 
                 TypedCompositeActor compositeActor = new TypedCompositeActor(this.workspace());
                 FSMDirector fsmDirector = new FSMDirector(this.workspace());
                 
                 compositeActor.setDirector(fsmDirector);
-                ((FSMActor)topLevel).setContainer(compositeActor);
+                ((FSMActor)toplevel).setContainer(compositeActor);
                
                 compositeActor.setManager(manager);
 
-                ((FSMActor)topLevel).setContainer(null);
+                ((FSMActor)toplevel).setContainer(null);
             } else {
                 throw new IllegalActionException(
-                        "Not able to fire this type of toplevel actor (" + topLevel + ").");
+                        "Not able to fire this type of toplevel actor (" + toplevel + ").");
             }
             
             
             manager.preinitializeAndResolveTypes();
-            ((Actor) topLevel).initialize();
-            ((Actor) topLevel).iterate(((IntToken)(numberIterations.getToken())).intValue());
-            ((Actor) topLevel).wrapup();
+            ((Actor) toplevel).initialize();
+            ((Actor) toplevel).iterate(((IntToken)(numberIterations.getToken())).intValue());
+            ((Actor) toplevel).wrapup();
 //FIXME: stoping the manager conflicts with extendedFirstListener. No iterations can be done there.                 
 //            ((Actor) topLevel).stop();
 

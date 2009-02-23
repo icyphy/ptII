@@ -26,6 +26,10 @@
  */
 package ptolemy.data.properties;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -42,6 +46,9 @@ import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.Node;
 import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.Variable;
+import ptolemy.domains.fsm.kernel.Configurer;
+import ptolemy.domains.properties.kernel.OntologyAttribute.OntologyComposite;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -49,6 +56,9 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.StringAttribute;
+import ptolemy.util.FileUtilities;
+import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 ////PropertySolverBase
@@ -88,8 +98,9 @@ into a constraint solver.
 @since Ptolemy II 7.1
 @Pt.ProposedRating Red (mankit)
 @Pt.AcceptedRating Red (mankit)
-*/
+ */
 public abstract class PropertySolverBase extends Attribute {
+
 
     /*
      * Construct a PropertySolverBase with the specified container and
@@ -104,7 +115,7 @@ public abstract class PropertySolverBase extends Attribute {
      * attribute already in the container.
      */
     public PropertySolverBase(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+    throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         sharedUtilitiesWrapper = new SharedParameter(this,
@@ -120,7 +131,7 @@ public abstract class PropertySolverBase extends Attribute {
         }
 
         Collection<SharedParameter> parameters = sharedUtilitiesWrapper
-                .sharedParameterSet();
+        .sharedParameterSet();
         for (SharedParameter parameter : parameters) {
             parameters = parameter.sharedParameterSet();
         }
@@ -178,7 +189,7 @@ public abstract class PropertySolverBase extends Attribute {
      * is found.
      */
     public PropertySolver findSolver(String identifier)
-            throws PropertyResolutionException {
+    throws PropertyResolutionException {
 
         for (PropertySolver solver : getAllSolvers(sharedUtilitiesWrapper)) {
             if (solver.getUseCaseName().equals(identifier)) {
@@ -202,22 +213,18 @@ public abstract class PropertySolverBase extends Attribute {
      * 
      * @return The list of PropertyHelpers.
      */
-    public List<PropertyHelper> getAllHelpers() {
-        NamedObj topLevel = toplevel();
+    public List<PropertyHelper> getAllHelpers() throws IllegalActionException {
+        NamedObj topLevel = _toplevel();
         List<PropertyHelper> result = new LinkedList<PropertyHelper>();
         List<PropertyHelper> subHelpers = new LinkedList<PropertyHelper>();
 
-        try {
-            result.add(getHelper(topLevel));
-            subHelpers.add(getHelper(topLevel));
+        result.add(getHelper(topLevel));
+        subHelpers.add(getHelper(topLevel));
 
-            while (!subHelpers.isEmpty()) {
-                PropertyHelper helper = subHelpers.remove(0);
-                subHelpers.addAll(helper._getSubHelpers());
-                result.add(helper);
-            }
-        } catch (IllegalActionException e) {
-            assert false;
+        while (!subHelpers.isEmpty()) {
+            PropertyHelper helper = subHelpers.remove(0);
+            subHelpers.addAll(helper._getSubHelpers());
+            result.add(helper);
         }
 
         return result;
@@ -276,7 +283,7 @@ public abstract class PropertySolverBase extends Attribute {
     public Attribute getAttribute(ASTPtRootNode node) {
         Node root = node;
         Map<ASTPtRootNode, Attribute> attributes = getSharedUtilities()
-                .getAttributes();
+        .getAttributes();
 
         while (root.jjtGetParent() != null) {
             if (attributes.containsKey(root)) {
@@ -320,7 +327,7 @@ public abstract class PropertySolverBase extends Attribute {
      * be found or instantiated.
      */
     public PropertyHelper getHelper(Object object)
-            throws IllegalActionException {
+    throws IllegalActionException {
         return _getHelper(object);
     }
 
@@ -346,9 +353,9 @@ public abstract class PropertySolverBase extends Attribute {
      * @exception IllegalActionException
      */
     public ASTPtRootNode getParseTree(Attribute attribute)
-            throws IllegalActionException {
+    throws IllegalActionException {
         Map<Attribute, ASTPtRootNode> parseTrees = getSharedUtilities()
-                .getParseTrees();
+        .getParseTrees();
 
         if (!parseTrees.containsKey(attribute)) {
 
@@ -418,7 +425,7 @@ public abstract class PropertySolverBase extends Attribute {
         // Get from the PropertyAttribute in the model.
         if (object instanceof NamedObj) {
             PropertyAttribute attribute = (PropertyAttribute) ((NamedObj) object)
-                    .getAttribute(getExtendedUseCaseName());
+            .getAttribute(getExtendedUseCaseName());
 
             if ((attribute != null) && (attribute.getProperty() != null)) {
                 return attribute.getProperty();
@@ -516,15 +523,21 @@ public abstract class PropertySolverBase extends Attribute {
      * cannot be instantiated.
      */
     protected PropertyHelper _getHelper(Object component)
-            throws IllegalActionException {
+    throws IllegalActionException {
+
         if (_helperStore.containsKey(component)) {
             return _helperStore.get(component);
         }
 
+        
         if ((component instanceof IOPort) || (component instanceof Attribute)) {
             return _getHelper(((NamedObj) component).getContainer());
         }
 
+        if (getContainer() instanceof OntologyComposite) {
+            _compileHelperClasses();
+        }
+        
         String packageName = _getPackageName();
 
         Class componentClass = component.getClass();
@@ -541,7 +554,7 @@ public abstract class PropertySolverBase extends Attribute {
 
                 helperClass = Class.forName((componentClass.getName()
                         .replaceFirst("ptolemy", packageName)).replaceFirst(
-                        ".configuredSolvers.", "."));
+                                ".configuredSolvers.", "."));
 
             } catch (ClassNotFoundException e) {
                 // If helper class cannot be found, search the helper class
@@ -565,7 +578,7 @@ public abstract class PropertySolverBase extends Attribute {
         if (constructor == null) {
             throw new IllegalActionException(
                     "Cannot find constructor method in "
-                            + helperClass.getName());
+                    + helperClass.getName());
         }
 
         Object helperObject = null;
@@ -576,18 +589,96 @@ public abstract class PropertySolverBase extends Attribute {
 
         } catch (Exception ex) {
             throw new IllegalActionException(null, ex,
-                    "Failed to create the helper class for property constraints.");
+            "Failed to create the helper class for property constraints.");
         }
 
         if (!(helperObject instanceof PropertyHelper)) {
             throw new IllegalActionException(
                     "Cannot resolve property for this component: " + component
-                            + ". Its helper class does not"
-                            + " implement PropertyHelper.");
+                    + ". Its helper class does not"
+                    + " implement PropertyHelper.");
         }
         _helperStore.put(component, (PropertyHelper) helperObject);
 
         return (PropertyHelper) helperObject;
+    }
+
+
+
+
+
+    private void _compileHelperClasses() throws IllegalActionException {
+
+        OntologyComposite container = (OntologyComposite) getContainer();
+        for (Entity entity : (List<Entity>) container.entityList()) {
+            StringAttribute attribute = (StringAttribute)
+            ((Entity) entity).getAttribute(OntologyComposite.RULES);
+
+            String userCode = attribute.getExpression();
+
+            _compileUserCode(entity, userCode);
+        }
+    }
+
+    private void _compileUserCode(Entity entity, String userCode) throws IllegalActionException {
+        
+        String ptRoot = StringUtilities.getProperty("ptolemy.ptII.dir");
+
+        String classname = _getPackageName() + entity.getClass()
+        .getName().replaceFirst("ptolemy", "");
+        
+        String packageName = _getPackageName() + entity.getClass()
+        .getPackage().getName().replaceFirst("ptolemy", "");
+        
+        String directoryPath = (ptRoot + "/" + packageName).replace(".", "/");
+        
+        try {
+            File file;
+            File directory = FileUtilities.nameToFile(directoryPath, null);
+            directory.mkdirs();
+            file = new File(directory, entity.getClass().getSimpleName() + ".java");
+            
+            // Set the file to delete on exit
+//            directory.deleteOnExit();
+//            file.deleteOnExit();
+
+            // Get the file name and extract a class name from it
+            String filename = file.getCanonicalPath();
+
+            PrintWriter out = new PrintWriter(new FileOutputStream(file));
+            out.println(userCode);
+            // Flush and close the stream
+            out.flush();
+            out.close();
+
+            String[] args = new String[] {
+                    "-classpath", ptRoot,
+                    //"-d", directoryPath,
+                    filename
+            };
+            
+            int status = com.sun.tools.javac.Main.compile(args);
+
+            switch (status) {
+            case 0:  // OK
+                // Make the class file temporary as well
+                //new File(file.getParent(), classname + ".class").deleteOnExit();
+                try {
+                    // Try to access the class and run its main method
+                    Class clazz = Class.forName(classname);
+                } catch (Exception ex) {
+                    throw new IllegalActionException(null, ex, 
+                    "Cannot load the class file for: " + classname);
+                }
+                break;
+            default:
+                throw new IllegalActionException(
+                        "Cannot compile user code for " + entity.getName());
+            }
+        } catch (IOException ex) {
+            throw new IllegalActionException(
+                    null, ex, "Error occurs when compiling the user code for " + entity.getName());
+        }
     }
 
     /**
@@ -597,6 +688,23 @@ public abstract class PropertySolverBase extends Attribute {
      */
     protected String _getPackageName() {
         return getClass().getPackage().getName() + "." + getUseCaseName();
+    }
+
+    protected NamedObj _toplevel() {
+        NamedObj toplevel = toplevel();
+
+        // If the solver is in an OntologyAttribute, we
+        // want to analyze the outside model.
+        while (toplevel instanceof Configurer) {
+            NamedObj configuredObject = ((Configurer) 
+                    toplevel).getConfiguredObject();
+
+            if (configuredObject == null) {
+                return toplevel;
+            }
+            toplevel = configuredObject.toplevel();
+        }
+        return toplevel;
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -27,51 +27,22 @@ public class LatticeElement extends State {
         isFinalState.setPersistent(false);
         
         isAcceptableSolution = new Parameter(this, "isAcceptableSolution", BooleanToken.TRUE);
-        
         isAcceptableSolution.setTypeEquals(BaseType.BOOLEAN);
+
+        solutionColor = new ColorAttribute(this, "solutionColor");
+        solutionColor.setToken("{1.0, 1.0, 1.0, 1.0}");
+        
+        _icon = new LatticeElementIcon(this, "LatticeElementIcon");
+        
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    public void attributeChanged(Attribute attribute)
-    throws IllegalActionException {
-        super.attributeChanged(attribute);
+      
+    private LatticeElementIcon _icon;
 
-        if (attribute == isAcceptableSolution) {
-            Attribute icon = getAttribute("LatticeElementIcon");            
-            Attribute color = icon.getAttribute("fill");
-
-            if (((BooleanToken) ((Parameter) attribute)
-                    .getToken()).booleanValue()) {
-                
-                // remove highlight color
-                if (color != null) {
-                    try {
-                        color.setContainer(null);
-                    } catch (NameDuplicationException ex) {
-                        // This shouldn't happen.
-                        assert false;
-                    }
-                }
-            } else {
-                // Color the element.
-                if (color != null) {
-                    ((ColorAttribute) color).setToken(_unacceptableElementColor);
-                } else {
-                    try {
-                        new ColorAttribute(icon, "fill");
-                    } catch (NameDuplicationException e) {
-                        // This shouldn't happen.
-                        assert false;
-                    }
-                }
-            }
-        }
-        
-    }        
+    public ColorAttribute solutionColor;
     
-
     public Parameter isAcceptableSolution;
 
-    private String _unacceptableElementColor = "{1.0, 0.0, 0.0, 1.0}";
 }

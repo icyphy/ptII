@@ -1,11 +1,22 @@
 package ptolemy.vergil.properties;
 
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
+import javax.swing.JMenuItem;
+
+import ptolemy.actor.gui.DebugListenerTableau;
+import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
+import ptolemy.actor.gui.TextEffigy;
+import ptolemy.domains.properties.PropertyLatticeComposite;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
+import ptolemy.util.CancelException;
+import ptolemy.util.MessageHandler;
 import ptolemy.vergil.fsm.FSMGraphFrame;
 import ptolemy.vergil.fsm.FSMGraphModel;
 import diva.graph.GraphPane;
@@ -13,6 +24,8 @@ import diva.graph.GraphPane;
 
 public class LatticeGraphFrame extends FSMGraphFrame
         implements ActionListener {
+
+    private static final String CHECK_LATTICE = "Check Lattice";
 
     /** Construct a frame associated with the specified FSM model.
      *  After constructing this, it is necessary
@@ -58,5 +71,54 @@ public class LatticeGraphFrame extends FSMGraphFrame
         final FSMGraphModel graphModel = new FSMGraphModel(
                 (CompositeEntity) entity);
         return new FSMGraphPane(_controller, graphModel, entity);
+    }
+
+    protected JMenuItem[] _debugMenuItems() {
+        // Add debug menu.
+        JMenuItem[] debugMenuItems = {
+                new JMenuItem(CHECK_LATTICE, KeyEvent.VK_D)
+        };
+        return debugMenuItems;
+    }
+
+    protected ActionListener _getDebugMenuListener() {
+        DebugMenuListener debugMenuListener = new DebugMenuListener();
+        return debugMenuListener;
+    }
+
+    /** Listener for debug menu commands. */
+    public class DebugMenuListener implements ActionListener {
+        /** React to a menu command. */
+        public void actionPerformed(ActionEvent e) {
+            JMenuItem target = (JMenuItem) e.getSource();
+            String actionCommand = target.getActionCommand();
+
+            // there is only one command, which is to check lattice
+            try {
+                if (actionCommand.equals(CHECK_LATTICE)) {
+                    Effigy effigy = (Effigy) getTableau().getContainer();
+
+                    // Create a new text effigy inside this one.
+                    Effigy textEffigy = new TextEffigy(effigy, effigy
+                            .uniqueName("debug listener"));
+                    DebugListenerTableau tableau = new DebugListenerTableau(
+                            textEffigy, textEffigy.uniqueName("debugListener"));
+
+                    PropertyLatticeComposite lattice = 
+                        (PropertyLatticeComposite) getModel();
+                    
+                    tableau.setDebuggable(lattice);
+                    
+                    lattice.isLattice();
+                }
+            } catch (KernelException ex) {
+                try {
+                    MessageHandler.warning("Failed to create debug listener: "
+                            + ex);
+                } catch (CancelException exception) {
+                }
+            }
+        }
+
     }
 }

@@ -89,7 +89,7 @@ public class PropertyCombineSolver extends PropertySolver {
         super._resolveProperties(analyzer);
         
         PropertyCombineCompositeHelper topLevelHelper = 
-            (PropertyCombineCompositeHelper) _getHelper(toplevel());
+            (PropertyCombineCompositeHelper) _getHelper(_toplevel());
         
         topLevelHelper.reinitialize();
 

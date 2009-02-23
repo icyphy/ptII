@@ -59,7 +59,13 @@ public class LatticeProperty extends Property implements PropertyTerm {
     public LatticeProperty(PropertyLattice lattice) {
         _lattice = lattice;
     }
+    
+    public LatticeProperty(PropertyLattice lattice, String name) {
+        super(name);
+        _lattice = lattice;
+    }
 
+    
     /** Test if the argument property is compatible with this property.
      *  @param property An instance of Property.
      *  @return True if the argument is compatible with this property.
@@ -112,7 +118,10 @@ public class LatticeProperty extends Property implements PropertyTerm {
      * base class returns the simple class name of the lattice property. 
      */
     public String toString() {
-        return this.getClass().getSimpleName();
+        if (_name.length() > 0) {
+            return _name;
+        }
+        return getClass().getSimpleName();
     }
     
     ///////////////////////////////////////////////////////////////////

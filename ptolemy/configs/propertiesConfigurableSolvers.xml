@@ -6,6 +6,9 @@
   <configure>
     <?moml
       <group>
+	    <property name="OntologyAttribute" class="ptolemy.domains.properties.kernel.OntologyAttribute"/>
+	    <property name="PropertyLatticeAttribute" class="ptolemy.domains.properties.kernel.PropertyLatticeAttribute"/>
+	    
 	    <property name="AnnotationAttribute" class="ptolemy.data.properties.AnnotationAttribute">
 		  <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute"/>
 	      <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">

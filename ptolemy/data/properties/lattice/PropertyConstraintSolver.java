@@ -33,8 +33,12 @@ import ptolemy.data.properties.gui.PropertySolverGUIFactory;
 import ptolemy.data.properties.lattice.PropertyConstraintHelper.Inequality;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.MonotonicFunction;
+import ptolemy.domains.fsm.kernel.Configurer;
+import ptolemy.domains.properties.PropertyLatticeComposite;
+import ptolemy.domains.properties.kernel.PropertyLatticeAttribute;
 import ptolemy.graph.CPO;
 import ptolemy.graph.InequalityTerm;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -51,6 +55,8 @@ import ptolemy.util.FileUtilities;
  @Pt.AcceptedRating Red (mankit)
  */
 public class PropertyConstraintSolver extends PropertySolver {
+    protected static final String _USER_DEFINED_LATTICE = "Actor::";
+
     /**
      *
      */
@@ -141,6 +147,9 @@ public class PropertyConstraintSolver extends PropertySolver {
      */
     public void attributeChanged(Attribute attribute)
     throws IllegalActionException {
+        if (attribute == propertyLattice) {
+            _lattice = null;
+        }
         if (attribute == logMode) {
             _logMode = logMode.getToken() == BooleanToken.TRUE;
         }
@@ -203,10 +212,27 @@ public class PropertyConstraintSolver extends PropertySolver {
      * @return The property lattice for this constraint solver.
      */
     public PropertyLattice getLattice() {
-        if (_lattice == null) {
-            _lattice = PropertyLattice.getPropertyLattice(
-                    propertyLattice.getExpression());                
+        
+        String propertyLatticeValue = propertyLattice.getExpression();
+
+        _lattice = PropertyLattice.getPropertyLattice(
+                propertyLatticeValue);
+
+        // FIXME: is this a good way to access the property lattice.
+        if (_lattice == null && propertyLatticeValue.startsWith(_USER_DEFINED_LATTICE)) {
+            String latticeName = propertyLatticeValue.replace(_USER_DEFINED_LATTICE, "");
+            
+            // FIXME: need to handle the case if we cannot find
+            // the specified PropertyLatticeAttribute.
+            // Otherwise, this code throws a null pointer exception.
+            
+            PropertyLatticeAttribute latticeAttribute = (PropertyLatticeAttribute)
+            ((CompositeEntity) getContainer()).getAttribute(latticeName);
+            
+            _lattice = latticeAttribute.getPropertyLattice();    
+            PropertyLattice.storeLattice(_lattice, latticeName);
         }
+        
         return _lattice;
     }
 
@@ -279,6 +305,7 @@ public class PropertyConstraintSolver extends PropertySolver {
         super.reset();
         _propertyTermManager = null;
         _trainedConstraints.clear();
+        _lattice = null;
     }
 
 //    /**
@@ -327,7 +354,7 @@ public class PropertyConstraintSolver extends PropertySolver {
 
         // Only need to look at the constraints of the top level helper.
         PropertyHelper helper;
-        helper = getHelper(toplevel());
+        helper = getHelper(_toplevel());
 
         if (isLogMode()) {
             String constraintFilename = _getTrainedConstraintFilename() + "_resolved.txt";
@@ -377,8 +404,9 @@ public class PropertyConstraintSolver extends PropertySolver {
     throws KernelException {
         super._resolveProperties(analyzer);
 
+        NamedObj toplevel = _toplevel();
         PropertyConstraintHelper toplevelHelper = 
-            (PropertyConstraintHelper) getHelper(toplevel());
+            (PropertyConstraintHelper) getHelper(toplevel);
 
         toplevelHelper.reinitialize();
 
@@ -574,13 +602,13 @@ public class PropertyConstraintSolver extends PropertySolver {
                 if (conflicts.size() > 0) {
                     throw new TypeConflictException(conflicts,
                             "Properties conflicts occurred in "
-                            + toplevel().getFullName()
+                            + toplevel.getFullName()
                             + " on the following inequalities:");
                 }
                 if (unacceptable.size() > 0) {
                     throw new TypeConflictException(unacceptable,
                             "Properties resolved to unacceptable types in "
-                            + toplevel().getFullName()
+                            + toplevel.getFullName()
                             + " due to the following inequalities:");
                 }
             }                        
@@ -588,13 +616,13 @@ public class PropertyConstraintSolver extends PropertySolver {
             // This should not happen. The exception means that
             // _checkDeclaredProperty or constraintList is called on a
             // transparent actor.
-            throw new PropertyResolutionException(this, toplevel(), ex,
+            throw new PropertyResolutionException(this, toplevel, ex,
                     "Property resolution failed because of an error "
                     + "during property inference");
-        }        
-
+        }
     }
 
+   
     private void _addChoices() {
         File file = null;
 
@@ -851,7 +879,7 @@ public class PropertyConstraintSolver extends PropertySolver {
     private String _getTrainedConstraintFilename() throws IllegalActionException {
         // Make an unique file name from the toplevel container.
         String constraintFilename = 
-            toplevel().getName() + "__" + getUseCaseName();
+            _toplevel().getName() + "__" + getUseCaseName();
 
         String directoryPath = trainedConstraintDirectory.getExpression();
         directoryPath = directoryPath.replace("\\", "/");

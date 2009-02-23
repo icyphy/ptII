@@ -1,0 +1,217 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<property name="PropertyLatticeCompositeIcon" class="ptolemy.vergil.icon.EditorIcon">
+    <property name="line4" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-16.0, 5.0]">
+        </property>
+        <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="3.0">
+        </property>
+        <property name="x" class="ptolemy.data.expr.Parameter" value="10.0">
+        </property>
+        <property name="y" class="ptolemy.data.expr.Parameter" value="15.0">
+        </property>
+        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
+    <property name="line2" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[3.0, 20.0]">
+        </property>
+        <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="3.0">
+        </property>
+        <property name="x" class="ptolemy.data.expr.Parameter" value="10.0">
+        </property>
+        <property name="y" class="ptolemy.data.expr.Parameter" value="-15.0">
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+        </property>
+        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
+    <property name="line3" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-16.0, -10.0]">
+        </property>
+        <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="3.0">
+        </property>
+        <property name="x" class="ptolemy.data.expr.Parameter" value="10.0">
+        </property>
+        <property name="y" class="ptolemy.data.expr.Parameter" value="-15.0">
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+        </property>
+        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
+    <property name="line" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[4.0, -24.0]">
+        </property>
+        <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="3.0">
+        </property>
+        <property name="x" class="ptolemy.data.expr.Parameter" value="10.0">
+        </property>
+        <property name="y" class="ptolemy.data.expr.Parameter" value="15.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 192, 815, 497}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 379]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, -2.625}">
+    </property>
+    <property name="ellipse4" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[17.0, -2.0]">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="16.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="15.0">
+        </property>
+        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+        </property>
+    </property>
+    <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1.0, -30.0]">
+        </property>
+        <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="16.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="15.0">
+        </property>
+        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,1.0,1.0}">
+        </property>
+        <property name="_renderLast" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
+    <property name="ellipse2" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1.0, 26.0]">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="16.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="15.0">
+        </property>
+        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="_renderLast" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
+    <property name="ellipse3" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-19.0, -2.0]">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="16.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="15.0">
+        </property>
+        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+        </property>
+        <property name="_renderLast" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
+    <property name="ellipse5" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1.0, -2.0]">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="16.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="15.0">
+        </property>
+        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+        </property>
+        <property name="_renderLast" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
+    <property name="line5" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1.0, -21.0]">
+        </property>
+        <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="3.0">
+        </property>
+        <property name="x" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="y" class="ptolemy.data.expr.Parameter" value="10.0">
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+        </property>
+        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
+    <property name="line6" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1.0, 7.0]">
+        </property>
+        <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="3.0">
+        </property>
+        <property name="x" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="y" class="ptolemy.data.expr.Parameter" value="10.0">
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+        </property>
+        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
+    <property name="line7" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[9.0, 36.0]">
+        </property>
+        <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="2.0">
+        </property>
+        <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.0,1.0,1.0}">
+        </property>
+        <property name="x" class="ptolemy.data.expr.Parameter" value="8.0">
+        </property>
+        <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="_renderLast" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
+    <property name="line8" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[13.0, 28.0]">
+        </property>
+        <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="2.0">
+        </property>
+        <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.0,1.0,1.0}">
+        </property>
+        <property name="x" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="y" class="ptolemy.data.expr.Parameter" value="8">
+        </property>
+        <property name="_renderLast" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
+    <property name="line9" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, -40.0]">
+        </property>
+        <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="2.0">
+        </property>
+        <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.0,1.0,1.0}">
+        </property>
+        <property name="x" class="ptolemy.data.expr.Parameter" value="8.0">
+        </property>
+        <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="_renderLast" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
+    <property name="line10" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-16.0, -40.0]">
+        </property>
+        <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="2.0">
+        </property>
+        <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.0,1.0,1.0}">
+        </property>
+        <property name="x" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="y" class="ptolemy.data.expr.Parameter" value="8">
+        </property>
+        <property name="_renderLast" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
+</property>

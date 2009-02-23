@@ -58,7 +58,7 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class PropertyLattice extends DirectedAcyclicGraph {
 
-    protected PropertyLattice() {
+    public PropertyLattice() {
     }
 
 //  protected class ThePropertyLattice implements CPO {
@@ -321,12 +321,24 @@ public class PropertyLattice extends DirectedAcyclicGraph {
      * @return The property lattice described by the given file.
      */
     public static PropertyLattice getPropertyLattice(String latticeName) {
+
+        if (latticeName.startsWith(PropertyConstraintSolver._USER_DEFINED_LATTICE)) {
+            // In this case, we don't want to look 
+            // in the predefined lattices.
+            latticeName = latticeName.replace(
+                    PropertyConstraintSolver._USER_DEFINED_LATTICE, "");
+            return _lattices.get(latticeName);
+        }
+        
         if (!_lattices.containsKey(latticeName)) {
 
             try {
-                Class latticeClass = Class.forName("ptolemy.data.properties.lattice." + latticeName + ".Lattice");
+                
+                Class latticeClass = Class.forName(
+                        "ptolemy.data.properties.lattice." + 
+                        latticeName + ".Lattice");
+                
                 // Create a new instance of PropertyLattice.
-                //PropertyLattice newLattice = new PropertyLattice();
                 PropertyLattice newLattice = (PropertyLattice)
                 latticeClass.getConstructor(new Class[0]).newInstance(new Object[0]);                
 
@@ -403,5 +415,10 @@ public class PropertyLattice extends DirectedAcyclicGraph {
 
     public String getName() {
         return toString();
+    }
+
+    public static void storeLattice(PropertyLattice lattice,
+            String name) {
+        _lattices.put(name, lattice);
     }
 }

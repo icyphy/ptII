@@ -1,11 +1,16 @@
 package ptolemy.vergil.properties;
 
+import java.awt.event.ActionEvent;
+
+import ptolemy.domains.properties.PropertyLatticeComposite;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.MessageHandler;
 import ptolemy.vergil.actor.ExternalIOPortController;
 import ptolemy.vergil.fsm.FSMGraphController;
 import ptolemy.vergil.fsm.TransitionController;
 import ptolemy.vergil.kernel.AttributeController;
+import ptolemy.vergil.toolbox.FigureAction;
 import diva.graph.JGraph;
-import diva.graph.basic.BasicEdgeRenderer;
 
 
 
@@ -15,6 +20,10 @@ public class LatticeGraphFrameController extends FSMGraphController {
      */
     public LatticeGraphFrameController() {
         super();
+
+        // FIXME: Having this action is only temporary.
+//        _menuFactory.addMenuItemFactory(
+//                new MenuActionFactory(_checkIsLatticeAction));
     }
 
     /** Add hot keys to the actions in the given JGraph.
@@ -35,6 +44,31 @@ public class LatticeGraphFrameController extends FSMGraphController {
         _stateController = new LatticeElementController(this, AttributeController.FULL);
         _transitionController = new TransitionController(this);
         _modalTransitionController = _transitionController;
-        _transitionController.setEdgeRenderer(new BasicEdgeRenderer());
+        //_transitionController.setEdgeRenderer(new BasicEdgeRenderer());
     }
+
+    protected checkIsLatticeAction _checkIsLatticeAction = 
+        new checkIsLatticeAction();
+
+    protected class checkIsLatticeAction extends FigureAction {
+        public checkIsLatticeAction() {
+            super("Check Lattice");
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+
+            NamedObj target = getTarget();
+            
+            boolean isLattice = ((PropertyLatticeComposite) 
+                    target).isLattice();
+            
+            if (isLattice) {
+                MessageHandler.message("This is good.");
+            } else {
+                MessageHandler.error("This is not a Lattice.");                
+            }
+        }
+    }
+
 }
