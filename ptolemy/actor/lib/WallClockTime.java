@@ -77,6 +77,7 @@ public class WallClockTime extends Source {
         passThrough = new TypedIOPort(this, "passThrough", false, true);
         passThrough.setTypeAtLeast(trigger);
         passThrough.setMultiport(true);
+        passThrough.setWidthEquals(trigger, true);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -100,6 +101,7 @@ public class WallClockTime extends Source {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         WallClockTime newObject = (WallClockTime) super.clone(workspace);
         newObject.passThrough.setTypeAtLeast(newObject.trigger);
+        newObject.passThrough.setWidthEquals(newObject.trigger, true);
         return newObject;
     }
 

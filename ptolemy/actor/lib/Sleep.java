@@ -93,6 +93,7 @@ public class Sleep extends Transformer {
         input.setMultiport(true);
         output.setMultiport(true);
         output.setTypeAtLeast(input);
+        output.setWidthEquals(input, true);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -116,6 +117,7 @@ public class Sleep extends Transformer {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Sleep newObject = (Sleep) super.clone(workspace);
         newObject.output.setTypeAtLeast(newObject.input);
+        newObject.output.setWidthEquals(newObject.input, true);
         return newObject;
     }
 
