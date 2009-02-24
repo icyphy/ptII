@@ -155,7 +155,7 @@ public class CCodeGenerator extends CodeGenerator {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generateInitializeEntryCode() throws IllegalActionException {
-
+        System.out.println("generateInitalizeEntryCode in CodeGenerator.java called");
         // If the container is in the top level, we are generating code
         // for the whole model.
         if (isTopLevel()) {
@@ -178,6 +178,7 @@ public class CCodeGenerator extends CodeGenerator {
      */
     public String generateInitializeExitCode() throws IllegalActionException {
 
+        System.out.println("generate Initialize Exit Code called in CCodeGenerator.java");
         return "}" + _eol;
     }
 
@@ -212,7 +213,7 @@ public class CCodeGenerator extends CodeGenerator {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generateMainEntryCode() throws IllegalActionException {
-
+        System.out.println("generateMainEntryCode called from CCodeGeneratorHelper");
         StringBuffer mainEntryCode = new StringBuffer();
 
         // If the container is in the top level, we are generating code
@@ -252,7 +253,7 @@ public class CCodeGenerator extends CodeGenerator {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generateMainExitCode() throws IllegalActionException {
-
+        System.out.println("generate mainExitCode called from CCodeGenerator.java");
         if (isTopLevel()) {
             return _INDENT1 + "exit(0);" + _eol + "}" + _eol;
         } else {
@@ -266,7 +267,7 @@ public class CCodeGenerator extends CodeGenerator {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generatePostfireEntryCode() throws IllegalActionException {
-
+        System.out.println("generate postfireEntryCode called from CCodeGenerator.java");
         // If the container is in the top level, we are generating code
         // for the whole model.
         if (isTopLevel()) {
@@ -590,6 +591,7 @@ public class CCodeGenerator extends CodeGenerator {
      */
     public String generateVariableDeclaration() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
+        System.out.println("generate variable declaration called from ccodegenerator.java");
         code.append(super.generateVariableDeclaration());
 
         // Generate variable declarations for modified variables.

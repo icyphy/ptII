@@ -186,6 +186,7 @@ ParseTreeCodeGenerator {
      *  @return The generated code.
      */
     public String generateFireCode() {
+        System.out.println("generateFireCode from CParseTreeCodeGenerator.java");
         return _childCode;
     }
 

@@ -150,6 +150,26 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
         return processCode(code.toString());
     }
 
+    
+    public String generatePortVariableDeclarations() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+
+        String name = CodeGeneratorHelper.generateName(getComponent());
+        
+      
+        // Generate PORT declarations for output ports.
+        String portVariableDeclaration = _generatePortVariableDeclarations();
+        if (portVariableDeclaration.length() > 1) {
+            code.append(_eol
+                    + _codeGenerator.comment(name + "'s PORT variable declarations."));
+            code.append(portVariableDeclaration);
+        }
+
+           return processCode(code.toString());    
+    
+     
+    }
+    
     /** Get the code generator associated with this helper class.
      *  @return The code generator associated with this helper class.
      *  @see #setCodeGenerator(CodeGenerator)
@@ -335,6 +355,46 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    public String _generatePortVariableDeclarations() throws IllegalActionException {
+        
+        System.out.println("get Port Variable Declarations called");
+        StringBuffer code = new StringBuffer();
+    
+        Iterator outputPorts = ((Actor) getComponent()).outputPortList()
+                .iterator();
+    
+        while (outputPorts.hasNext()) {
+            TypedIOPort outputPort = (TypedIOPort) outputPorts.next();
+    
+            // If either the output port is a dangling port or
+            // the output port has inside receivers.
+           //if (!outputPort.isOutsideConnected() || outputPort.isInsideConnected()) {
+            if(true){
+                code.append("static " + targetType(outputPort.getType()) + " "
+                        + generateName(outputPort)+"_PORT");
+    
+                if (outputPort.isMultiport()) {
+                    code.append("[" + outputPort.getWidthInside() + "]");
+                }
+    
+                int bufferSize = getBufferSize(outputPort);
+    
+                if (bufferSize > 1) {
+                    code.append("[" + bufferSize + "]");
+                }
+                code.append(";" + _eol);
+            }
+            else
+            {
+                System.out.println("didn't match if");
+            }
+           
+       // return "should define port here from CCodeGEneratorHelper";
+        }
+        //System.out.println("about to return: "+code.toString());
+        return code.toString();
+       }
+
     /** Generate input variable declarations.
      *  @return a String that declares input variables.
      *  @exception IllegalActionException If thrown while
@@ -517,9 +577,6 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
 
         return result;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private fields                    ////
 
     /** The set of header files that needed to be included. */
     private Set _includeFiles = new HashSet();
