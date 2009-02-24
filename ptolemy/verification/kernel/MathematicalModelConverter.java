@@ -55,8 +55,8 @@ import ptolemy.verification.kernel.maude.RTMaudeUtility;
 // // MathematicalModelConverter
 
 /**
- * 
- * @author Chihhong Patrick Cheng   (modified by: Kyungmin Bae)   Contributors: Edward A. Lee , Christopher Brooks, 
+ *
+ * @author Chihhong Patrick Cheng   (modified by: Kyungmin Bae)   Contributors: Edward A. Lee , Christopher Brooks,
  * @version $Id: MathematicalModelConverter.java,v 1.5 2008/03/06 09:16:22
  *          patrickj Exp $
  * @since Ptolemy II 7.1
@@ -66,7 +66,7 @@ import ptolemy.verification.kernel.maude.RTMaudeUtility;
 public class MathematicalModelConverter extends Attribute {
     /**
      * Create a new instance of the code generator.
-     * 
+     *
      * @param container The container.
      * @param name The name of the code generator.
      * @exception IllegalActionException
@@ -93,23 +93,71 @@ public class MathematicalModelConverter extends Attribute {
 
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // parameters ////
+    /////////////////////////////////////////////////////////////////
+    // parameters ////
 
-    // /////////////////////////////////////////////////////////////////
-    // // public methods ////
+    /////////////////////////////////////////////////////////////////
+    // public methods ////
+
+    public StringBuffer generateCode(ModelType modelType,
+            String inputTemporalFormula, String formulaType,
+            String variableSpanSize, String FSMBufferSize)
+            throws IllegalActionException, NameDuplicationException,
+            CloneNotSupportedException {
+        StringBuffer systemDescription = new StringBuffer("");
+
+        switch (modelType) {
+        case Kripke:
+            if (_model instanceof CompositeActor)
+                systemDescription.append(
+                        SMVUtility.advancedGenerateSMVDescription(
+                                (CompositeActor) _model,
+                                inputTemporalFormula, formulaType,
+                                variableSpanSize));
+            else // FSMActor
+                systemDescription.append(
+                        ((FmvAutomaton)_model).convertToSMVFormat(
+                            inputTemporalFormula, formulaType,
+                            variableSpanSize));
+            break;
+        case CTA:
+            systemDescription.append(
+                    REDUtility.generateREDDescription(
+                            (CompositeActor) _model,
+                            inputTemporalFormula, formulaType,
+                            variableSpanSize, FSMBufferSize));
+            break;
+        case Maude:
+            if (_model instanceof CompositeActor)
+                systemDescription.append(
+                        RTMaudeUtility.generateRTMDescription(
+                                (CompositeActor) _model,
+                                inputTemporalFormula
+                        )
+                );
+            /*
+            else // FSMActor
+                systemDescription.append(
+                        ((FmvAutomaton)_model).convertToSMVFormat(
+                            inputTemporalFormula, formulaType,
+                            variableSpanSize));
+            */
+            break;
+        }
+
+        return systemDescription;
+    }
 
     /**
-     * Generate the model description for the system. This is the main entry 
+     * Generate the model description for the system. This is the main entry
      * point.
-     * 
-     * @param code The code buffer into which to generate the code.
-     * @return Textual format of the converted model based on the specification 
-     *         given. 
+     *
+     * @return Textual format of the converted model based on the specification
+     *         given.
      * @exception KernelException
      *                    If a type conflict occurs or the model is running.
      */
-    public StringBuffer generateCode(String modelType,
+    public StringBuffer generateFile(ModelType modelType,
             String inputTemporalFormula, String formulaType,
             String variableSpanSize, String outputChoice, String FSMBufferSize)
             throws Exception {
@@ -123,52 +171,25 @@ public class MathematicalModelConverter extends Attribute {
                     || SMVUtility.isValidModelForVerification((CompositeActor) _model)
                     || _model instanceof FSMActor) {
 
-                StringBuffer systemDescription = new StringBuffer("");
+                StringBuffer systemDescription = generateCode(modelType,
+                        inputTemporalFormula, formulaType, variableSpanSize,
+                        FSMBufferSize);
                 FileWriter smvFileWriter = null;
-                String fileIdentifier; 
-                
-                // Modified : merge all cases (All duplicated codes are deleted)
-                if (modelType.
-                        equalsIgnoreCase("Kripke Structures (Acceptable by NuSMV under SR)")) {
+                String fileIdentifier = "";
+
+                switch (modelType) {
+                case Kripke:
                     fileIdentifier = ".smv";
-                    if (_model instanceof CompositeActor)
-                        systemDescription.append(
-                                SMVUtility.advancedGenerateSMVDescription(
-                                        (CompositeActor) _model,
-                                        inputTemporalFormula, formulaType,
-                                        variableSpanSize));
-                    else // FSMActor
-                        systemDescription.append( 
-                                ((FmvAutomaton)_model).convertToSMVFormat(
-                                    inputTemporalFormula, formulaType,
-                                    variableSpanSize));
-                } else if (modelType.
-                        equalsIgnoreCase("Communicating Timed Automata (Acceptable by RED under DE)")){
+                    break;
+                case CTA:
                     fileIdentifier = ".d";
-                    systemDescription.append(
-                            REDUtility.generateREDDescription(
-                                    (CompositeActor) _model,
-                                    inputTemporalFormula, formulaType,
-                                    variableSpanSize, FSMBufferSize));
-                } else { // Real-time Maude Translation(under SR or DE)
+                    break;
+                case Maude:
                     fileIdentifier = ".maude";
-                    if (_model instanceof CompositeActor)
-                        systemDescription.append(
-                                RTMaudeUtility.generateRTMDescription(
-                                        (CompositeActor) _model,
-                                        inputTemporalFormula
-                                )
-                        );
-                    /*
-                    else // FSMActor
-                        systemDescription.append( 
-                                ((FmvAutomaton)_model).convertToSMVFormat(
-                                    inputTemporalFormula, formulaType,
-                                    variableSpanSize));
-                    */
+                    break;
                 }
-                    
-                
+
+
                 if (outputChoice.equalsIgnoreCase("Text Only")) {
                     JFileChooser fileSaveDialog = new JFileChooser();
                     fileSaveDialog
@@ -236,14 +257,13 @@ public class MathematicalModelConverter extends Attribute {
                     }
 
                 } else {
-                    if (modelType.
-                            equalsIgnoreCase("Kripke Structures (Acceptable by NuSMV under SR)")) {
+                    if (modelType == ModelType.Kripke) {
                         // Invoke NuSMV. Create a temporal file and
-                        // later delete it. We first create a new folder 
+                        // later delete it. We first create a new folder
                         // which contains nothing. Then generate the System
                         // in format .smv, and perform model checking.
                         // If the system fails, all information would be
-                        // stored in the folder. We can delete everything 
+                        // stored in the folder. We can delete everything
                         // in the folder then delete the folder.
                         // The temporal file uses a random number generator
                         // to generate its name.
@@ -315,7 +335,7 @@ public class MathematicalModelConverter extends Attribute {
                         MessageHandler
                         .error("The functionality for invoking RED is not implemented.\n");
                 }
-                
+
             } else {
                 MessageHandler
                         .error("The execution director is not SR or DE.\nCurrently it is beyond our scope of analysis.");
@@ -326,11 +346,11 @@ public class MathematicalModelConverter extends Attribute {
         return returnStringBuffer;
     }
 
-    /** 
+    /**
      * This is the main entry point to generate the graphical spec of the system.
      * It would invoke SMVUtility.generateGraphicalSpecification and return
      * the spec.
-     * 
+     *
      * @param formulaType The type of the graphical spec. It may be either "Risk"
      *                    or "Reachability".
      * @return The textual format of the graphical spec.
@@ -355,6 +375,22 @@ public class MathematicalModelConverter extends Attribute {
     // /////////////////////////////////////////////////////////////////
     // // protected variables ////
 
+    public enum ModelType {
+        CTA {
+            public String toString() {
+                return "Communicating Timed Automata (Acceptable by RED under DE)";
+            }
+        }, Kripke {
+            public String toString() {
+                return "Kripke Structures (Acceptable by NuSMV under SR)";
+            }
+        }, Maude {
+            public String toString() {
+                return "Real-time Maude Translation(under SR or DE)";
+            }
+        }
+    }
+
     /** The name of the file that was written. If no file was written, then the
      * value is null.
      */
@@ -362,11 +398,11 @@ public class MathematicalModelConverter extends Attribute {
 
     protected File _directory;
 
-    /** The model we for which we are generating code. */
-    protected CompositeEntity _model;
-
     // /////////////////////////////////////////////////////////////////
     // // private methods ////
+
+    /** The model we for which we are generating code. */
+    protected CompositeEntity _model;
 
     /** This is used to delete recursively the folder and files within.
      */
@@ -402,5 +438,4 @@ public class MathematicalModelConverter extends Attribute {
         }
 
     }
-
 }

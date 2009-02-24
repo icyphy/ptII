@@ -32,11 +32,11 @@ import java.awt.Point;
 
 import javax.swing.JFrame;
 
-import ptolemy.actor.gt.ChoiceParameter;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntMatrixToken;
+import ptolemy.data.expr.ChoiceParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;

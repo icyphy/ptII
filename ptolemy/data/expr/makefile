@@ -76,6 +76,7 @@ JSRCS = \
 	ASTPtUnaryNode.java \
 	ASTPtUnionConstructNode.java \
 	CachedMethod.java \
+	ChoiceParameter.java \
 	ConcreteMatrixToken.java \
 	ConcreteScalarToken.java \
 	Constants.java \

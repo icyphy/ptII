@@ -30,7 +30,6 @@ package ptolemy.actor.gt.controller;
 import javax.swing.JFrame;
 import javax.swing.text.BadLocationException;
 
-import ptolemy.actor.gt.ChoiceParameter;
 import ptolemy.actor.gt.GTEntityUtils;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
@@ -39,6 +38,7 @@ import ptolemy.actor.gui.TextEffigy;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.expr.ChoiceParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;

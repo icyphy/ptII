@@ -62,7 +62,6 @@ JSRCS = \
 	AtomicActorMatcher.java \
 	AttributeMatcher.java \
 	Checkable.java \
-	ChoiceParameter.java \
 	CompositeActorMatcher.java \
 	Constraint.java \
 	ContainerIgnoringAttribute.java \

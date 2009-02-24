@@ -6,6 +6,7 @@ import java.util.Random;
 import java.util.Set;
 
 import ptolemy.actor.gt.data.MatchResult;
+import ptolemy.data.expr.ChoiceParameter;
 import ptolemy.data.expr.ScopeExtender;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.CompositeEntity;
@@ -74,12 +75,7 @@ implements MatchCallback {
     }
 
     public boolean isMatchOnly() {
-        try {
-            return getChosenValue() == Mode.MATCH_ONLY;
-        } catch (IllegalActionException e) {
-            // If the expression cannot be recognized, just return false.
-            return false;
-        }
+        return getChosenValue() == Mode.MATCH_ONLY;
     }
 
     public boolean transform(TransformationRule workingCopy,

@@ -54,6 +54,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.util.MessageHandler;
 import ptolemy.verification.kernel.MathematicalModelConverter;
+import ptolemy.verification.kernel.MathematicalModelConverter.ModelType;
 
 //////////////////////////////////////////////////////////////////////////
 //// MathematicalModelConverter
@@ -167,13 +168,9 @@ public class MathematicalModelConverterGUI extends PtolemyFrame {
         controlPanel1.setSize(400, 30);
         controlPanel1.add(new JLabel("Model Type"));
 
-        String[] modelTypes = {
-                "Real-time Maude Translation(under SR or DE)",
-                "Kripke Structures (Acceptable by NuSMV under SR)",
-                "Communicating Timed Automata (Acceptable by RED under DE)"
-                };
+        final ModelType[] modelTypes = ModelType.values();
         modelTypeList = new JComboBox(modelTypes);
-        modelTypeList.setSelectedIndex(0);
+        modelTypeList.setSelectedItem(ModelType.Maude);
         controlPanel1.add(modelTypeList);
         controlPanel.add(controlPanel1);
 
@@ -245,7 +242,8 @@ public class MathematicalModelConverterGUI extends PtolemyFrame {
                     exec.updateStatusBar("// Starting " + modelConverter
                             + "model converting process.");
 
-                    String modelType = (String) modelTypeList.getSelectedItem();
+                    ModelType modelType = (ModelType) modelTypeList.getSelectedItem();
+
                     String inputTemporalFormula = formula.getText() == null ? ""
                             : formula.getText().trim();
                     String formulaType = (String) formulaTypeList
@@ -260,12 +258,12 @@ public class MathematicalModelConverterGUI extends PtolemyFrame {
                         inputTemporalFormula = modelConverter.generateGraphicalSpec(formulaType);
                         formulaType = "CTL";
                     }
-                    
+
                     StringBuffer code = new StringBuffer("");
-                    code.append(modelConverter.generateCode(modelType,
+                    code.append(modelConverter.generateFile(modelType,
                             inputTemporalFormula, formulaType, varSpanSize,
                             outputChoice, FSMBufferSize));
-                    
+
                     File codeFileNameWritten = modelConverter.getCodeFile();
 
                     if (codeFileNameWritten != null) {
@@ -278,7 +276,7 @@ public class MathematicalModelConverterGUI extends PtolemyFrame {
                                 .toExternalForm());
 
                     }
-                    
+
                     exec.updateStatusBar(code.toString());
                     exec.updateStatusBar("// Model conversion " + "complete.");
                 } catch (Exception ex) {
@@ -288,7 +286,7 @@ public class MathematicalModelConverterGUI extends PtolemyFrame {
         });
     }
 
-    // Private variable for GUI components 
+    // Private variable for GUI components
     private JTextField bufferSize;
     private JPanel buttonPanel;
     private JPanel caveatsPanel;
