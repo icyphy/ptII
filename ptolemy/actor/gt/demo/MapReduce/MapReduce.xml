@@ -1888,7 +1888,7 @@
                         </property>
                         <property name="message" class="ptolemy.data.expr.StringParameter" value="$(text)">
                         </property>
-                        <property name="mode" class="ptolemy.actor.gt.ChoiceParameter" value="error">
+                        <property name="mode" class="ptolemy.data.expr.ChoiceParameter" value="error">
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
@@ -1898,7 +1898,7 @@
                     <entity name="ReportOK" class="ptolemy.actor.gt.controller.Report">
                         <property name="message" class="ptolemy.data.expr.StringParameter" value="The model is consistent.">
                         </property>
-                        <property name="mode" class="ptolemy.actor.gt.ChoiceParameter" value="message">
+                        <property name="mode" class="ptolemy.data.expr.ChoiceParameter" value="message">
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>

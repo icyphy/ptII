@@ -537,7 +537,7 @@
                     <entity name="Report" class="ptolemy.actor.gt.controller.Report">
                         <property name="message" class="ptolemy.data.expr.StringParameter" value="Your model contains entities with name collisions. Automatic renaming can be performed. Continue?">
                         </property>
-                        <property name="mode" class="ptolemy.actor.gt.ChoiceParameter" value="yes or no">
+                        <property name="mode" class="ptolemy.data.expr.ChoiceParameter" value="yes or no">
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
@@ -591,7 +591,7 @@
                     <entity name="Exception" class="ptolemy.actor.gt.controller.Report">
                         <property name="message" class="ptolemy.data.expr.StringParameter" value="User operation cancelled.">
                         </property>
-                        <property name="mode" class="ptolemy.actor.gt.ChoiceParameter" value="runtime exception">
+                        <property name="mode" class="ptolemy.data.expr.ChoiceParameter" value="runtime exception">
                         </property>
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
