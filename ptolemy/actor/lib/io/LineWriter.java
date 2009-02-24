@@ -202,7 +202,14 @@ public class LineWriter extends Sink {
                 boolean appendValue = ((BooleanToken) append.getToken())
                         .booleanValue();
 
-                if (!fileName.stringValue().equals("System.out")) {
+                String fileNameValue = fileName.stringValue();
+                
+                // If previousFileName is null, we have never opened a file.
+                if (_previousFileName == null) {
+                    _previousFileName = fileNameValue;
+                }
+
+                if (!fileNameValue.equals("System.out")) {
                     // Only check for append and overwrite if the
                     // fileName is not "System.out"
                     // Open the file.
