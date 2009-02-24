@@ -483,6 +483,10 @@ public class PropertyConstraintHelper extends PropertyHelper {
      */
     protected List<PropertyHelper> _getSubHelpers() 
             throws IllegalActionException {
+        PropertyConstraintSolver solver = getSolver();
+        if (solver.expressionASTNodeConstraintType.getExpression().equals("NONE")) {
+            return new LinkedList();
+        }
         return _getASTNodeHelpers();
     }
     
