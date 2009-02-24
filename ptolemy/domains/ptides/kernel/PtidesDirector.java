@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
  */
@@ -307,41 +307,25 @@ public class PtidesDirector extends TimedPNDirector {
      *                If the operation is not permissible (e.g. the given time
      *                is in the past).
      */
-    public Time fireAt(Actor actor, Time newFiringTime)
+    public synchronized Time fireAt(Actor actor, Time newFiringTime)
             throws IllegalActionException {
-        // We have to do a little song and dance to avoid holding
-        // a lock on this while calling worksapce().wait(this).
-        boolean condition = false;
-        synchronized(this) {
-            if (newFiringTime.compareTo(getModelTime()) < 0) {
-                throw new IllegalActionException(this, "The process wants to "
-                        + " get fired in the past! (current time: " + getModelTime() + ", " +
-                        		"requestedFiring: " + newFiringTime + ")");
-            }
-    
-            _eventQueue.put(new TimedEvent(newFiringTime, actor));
-            _informOfDelayBlock();
-            
-            condition = !_stopRequested 
-                    && getModelTime().compareTo(newFiringTime) < 0;
-            if (condition && _platformsToUnblock.remove(actor)) {
-                _informOfDelayUnblock();
-                condition = false;
-            }
+        if (newFiringTime.compareTo(getModelTime()) < 0) {
+            throw new IllegalActionException(this, "The process wants to "
+                    + " get fired in the past! (current time: " + getModelTime() + ", " +
+                                "requestedFiring: " + newFiringTime + ")");
         }
+
+        _eventQueue.put(new TimedEvent(newFiringTime, actor));
+        _informOfDelayBlock();
+
         try {
-            while (condition) {
-                // Cannot hold a lock on this during the following call.
-                workspace().wait(this);
-                // Reacquire the lock.
-                synchronized(this) {
-                    condition = !_stopRequested 
-                            && getModelTime().compareTo(newFiringTime) < 0;
-                    if (condition && _platformsToUnblock.remove(actor)) { 
-                        _informOfDelayUnblock();
-                        break;
-                    }
+            while (!_stopRequested 
+                    && getModelTime().compareTo(newFiringTime) < 0) {
+                if (_platformsToUnblock.remove(actor)) { 
+                    _informOfDelayUnblock();
+                    break;
                 }
+                workspace().wait(this);
             }
         } catch (InterruptedException e) {
             throw new IllegalActionException(this, e.getCause(), e.getMessage());
@@ -530,24 +514,24 @@ public class PtidesDirector extends TimedPNDirector {
             } else {
                 // Artificial deadlock due to delayed processes.
                 // Advance time to next possible time.
-                int depth = 0;
-                try {
-                    synchronized (this) {
-                        // There could be multiple events for the same
-                        // actor for the same time (e.g. by sending events
-                        // to this actor with same time stamps on different
-                        // input ports. Thus, only _informOfDelayUnblock() 
-                        // for events with the same time stamp but different
-                        // actors. 7/15/08 Patricia Derler
-                        List unblockedActors = new ArrayList();
-                        if (!_eventQueue.isEmpty()) {
-                            //Take the first time-blocked process from the queue.
-                            TimedEvent event = (TimedEvent) _eventQueue.take();
-                            unblockedActors.add(event.contents);
-                            //Advance time to the resumption time of this process.
-                            if (_synchronizeToRealTime) {
-                                // If synchronized to the real time.
-                                Time currentTime;
+                synchronized (this) {
+                    // There could be multiple events for the same
+                    // actor for the same time (e.g. by sending events
+                    // to this actor with same time stamps on different
+                    // input ports. Thus, only _informOfDelayUnblock() 
+                    // for events with the same time stamp but different
+                    // actors. 7/15/08 Patricia Derler
+                    List unblockedActors = new ArrayList();
+                    if (!_eventQueue.isEmpty()) {
+                        //Take the first time-blocked process from the queue.
+                        TimedEvent event = (TimedEvent) _eventQueue.take();
+                        unblockedActors.add(event.contents);
+                        //Advance time to the resumption time of this process.
+                        if (_synchronizeToRealTime) {
+                            // If synchronized to the real time.
+                            Time currentTime;
+                            //synchronized (this)
+                            {
                                 while (!_stopRequested && !_stopFireRequested) {
                                     currentTime = getModelTime();
 
@@ -568,7 +552,6 @@ public class PtidesDirector extends TimedPNDirector {
                                                     + timeToWait);
                                         }
 
-                                        depth = _workspace.releaseReadPermission();
                                         try {
                                             _workspace.wait(this, timeToWait);
                                         } catch (InterruptedException ex) {
@@ -578,59 +561,56 @@ public class PtidesDirector extends TimedPNDirector {
                                         }
                                     }
                                 } // while
-                            } // if (_synchronizeToRealTime)
-                            setModelTime(event.timeStamp);
-                            _informOfDelayUnblock();
-                        } else {
-                            throw new InternalErrorException("Inconsistency"
-                                    + " in number of actors blocked on delays count"
-                                    + " and the entries in the CalendarQueue");
-                        }
+                            } // sync
+                        } // if (_synchronizeToRealTime)
+                        setModelTime(event.timeStamp);
+                        _informOfDelayUnblock();
+                    } else {
+                        throw new InternalErrorException("Inconsistency"
+                                + " in number of actors blocked on delays count"
+                                + " and the entries in the CalendarQueue");
+                    }
 
-                        //Remove any other process waiting to be resumed at the new
-                        //advanced time (the new currentTime).
-                        boolean sameTime = true;
-    
-                        while (sameTime) {
-                            //If queue is not empty, then determine the resumption
-                            //time of the next process.
-                            if (!_eventQueue.isEmpty()) {
-                                //Remove the first process from the queue.
-                                TimedEvent event = (TimedEvent) _eventQueue.take();
-                                Actor actor = (Actor) event.contents;
-    
-                                //Get the resumption time of the newly removed
-                                //process.
-                                Time newTime = event.timeStamp;
-    
-                                //If the resumption time of the newly removed
-                                //process is the same as the newly advanced time
-                                //then unblock it. Else put the newly removed
-                                //process back on the event queue.
-                                if (newTime.equals(getModelTime())) {
-                                    if (unblockedActors.contains(actor))
-                                        continue;
-                                    else 
-                                        unblockedActors.add(actor);
-                                    _informOfDelayUnblock();
-                                } else {
-                                    _eventQueue.put(new TimedEvent(newTime, actor));
-                                    sameTime = false;
-                                }
+                    //Remove any other process waiting to be resumed at the new
+                    //advanced time (the new currentTime).
+                    boolean sameTime = true;
+
+                    while (sameTime) {
+                        //If queue is not empty, then determine the resumption
+                        //time of the next process.
+                        if (!_eventQueue.isEmpty()) {
+                            //Remove the first process from the queue.
+                            TimedEvent event = (TimedEvent) _eventQueue.take();
+                            Actor actor = (Actor) event.contents;
+
+                            //Get the resumption time of the newly removed
+                            //process.
+                            Time newTime = event.timeStamp;
+
+                            //If the resumption time of the newly removed
+                            //process is the same as the newly advanced time
+                            //then unblock it. Else put the newly removed
+                            //process back on the event queue.
+                            if (newTime.equals(getModelTime())) {
+                                if (unblockedActors.contains(actor))
+                                    continue;
+                                else 
+                                    unblockedActors.add(actor);
+                                _informOfDelayUnblock();
                             } else {
+                                _eventQueue.put(new TimedEvent(newTime, actor));
                                 sameTime = false;
                             }
+                        } else {
+                            sameTime = false;
                         }
-    
-                        //Wake up all delayed actors
-                        notifyAll();
                     }
-                } finally {
-                    if (depth > 0) {
-                        _workspace.reacquireReadPermission(depth);
-                    }
+
+                    //Wake up all delayed actors
+                    notifyAll();
                 }
             }
+
             return true;
         }
     }
