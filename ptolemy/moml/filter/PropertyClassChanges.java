@@ -98,11 +98,12 @@ public class PropertyClassChanges implements MoMLFilter {
      *  @param element The XML element name.
      *  @param attributeName The name of the attribute.
      *  @param attributeValue The value of the attribute.
+     *  @param xmlFile The file currently being parsed.
      *  @return The value of the attributeValue argument or
      *   a new value if the value has changed.
      */
     public String filterAttributeValue(NamedObj container, String element,
-            String attributeName, String attributeValue) {
+            String attributeName, String attributeValue, String xmlFile) {
         // If you change this class, you should run before and after
         // timing tests on large moml files, a good command to run
         // is:
@@ -239,12 +240,13 @@ public class PropertyClassChanges implements MoMLFilter {
      *  @param container The object created by this element.
      *  @param elementName The element name.
      *  @param currentCharData The character data, which appears
-     *  only in the doc and configure elements
+     *   only in the doc and configure elements
+     *  @param xmlFile The file currently being parsed.
      *  @exception Exception if there is a problem substituting
      *  in the new value.
      */
     public void filterEndElement(NamedObj container, String elementName,
-            StringBuffer currentCharData) throws Exception {
+            StringBuffer currentCharData, String xmlFile) throws Exception {
 //            System.out.println("<---filterEndElement: "
 //                    + ((container == null) ? "null" : container.getFullName())
 //                    +  "\t" + elementName + "\t" + currentCharData);

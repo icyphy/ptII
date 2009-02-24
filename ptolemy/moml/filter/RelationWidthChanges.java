@@ -28,8 +28,12 @@
  */
 package ptolemy.moml.filter;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import ptolemy.actor.IORelation;
 import ptolemy.kernel.attributes.VersionAttribute;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLFilter;
@@ -56,6 +60,7 @@ import ptolemy.moml.MoMLParser;
  @Pt.AcceptedRating Red (rodiers)
  */
 public class RelationWidthChanges implements MoMLFilter {
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -64,13 +69,14 @@ public class RelationWidthChanges implements MoMLFilter {
      *  @param element The XML element name.
      *  @param attributeName The name of the attribute.
      *  @param attributeValue The value of the attribute.
+     *  @param xmlFile The file currently being parsed.
      *  @return A new value for the attribute, or the same value
      *   to leave it unchanged, or null to cause the current element
      *   to be ignored (unless the attributeValue argument is null).
      */
     public String filterAttributeValue(NamedObj container, String element,
-            String attributeName, String attributeValue) {
-        
+            String attributeName, String attributeValue, String xmlFile) {
+
         // This method gets called many times by the MoMLParser,
         // so we try to be smart about the number of comparisons
         // and we try to group comparisons together so that we
@@ -81,8 +87,11 @@ public class RelationWidthChanges implements MoMLFilter {
             return null;
         }
         
-        if (!_changesNeeded) {
-            return attributeValue;
+        if (xmlFile != null) {
+            Boolean changedNeeded = _changesNeededForXmlFile.get(xmlFile);
+            if (changedNeeded != null && !changedNeeded) {
+                return attributeValue;
+            }
         }
         
         if (_currentlyProcessingRelation) {
@@ -90,8 +99,8 @@ public class RelationWidthChanges implements MoMLFilter {
                 if (attributeName.equals("value")) {
                     _currentlyProcessingRelation = false;
                     _currentlyProcessingWidth = false;
-                    
-                    if (_changesNeeded && attributeValue.equals("0")) {
+                         
+                    if (_changedNeeded(container, xmlFile) && attributeValue.equals("0")) {
                             MoMLParser.setModified(true);
                             return Integer.toString(IORelation.WIDTH_TO_INFER);
                     }
@@ -124,18 +133,20 @@ public class RelationWidthChanges implements MoMLFilter {
      *   is the end of.
      *  @param elementName The element name.
      *  @param currentCharData The character data, which appears
-     *  only in the doc and configure elements
+     *   only in the doc and configure elements
+     *  @param xmlFile The file currently being parsed.  
      *  @exception Exception If there is a problem modifying the
      *  specified container.
      */
     public void filterEndElement(NamedObj container, String elementName,
-            StringBuffer currentCharData) throws Exception {
+            StringBuffer currentCharData, String xmlFile) throws Exception {
         if (container instanceof VersionAttribute) {
             VersionAttribute version = (VersionAttribute) container;
             try {
-                _changesNeeded = version != null && version.isLessThan(new VersionAttribute("7.2.devel"));
-                // FIXME: what to do when version equals null? throw an exception, but then
-                // this model can't be opened anymore. Or not change anything?
+                if (xmlFile != null) {
+                    _changesNeededForXmlFile.put(xmlFile,
+                            version != null && version.isLessThan(new VersionAttribute("7.2.devel")));
+                }
             } catch (IllegalActionException e) {
                 // We don't expect that this fails.                            
                 throw new IllegalStateException(e);
@@ -149,7 +160,7 @@ public class RelationWidthChanges implements MoMLFilter {
                 // a Ptolemy model before 7.2 we need to update the width of
                 // the relation to 1 to not change the user's model.
 
-                if (_changesNeeded) {
+                if (_changedNeeded(container, xmlFile)) {
                     IORelation relation = (IORelation) container;
                     relation.setWidth(1);
                     relation.width.propagateValue();
@@ -165,10 +176,42 @@ public class RelationWidthChanges implements MoMLFilter {
      *  @return A description of the filter (ending with a newline).
      */
     public String toString() {
-        StringBuffer results = new StringBuffer(getClass().getName()
-                + ": Update width of a relation with the following changes:\n");
-        results.append("\t0 --> -1");
-        return results.toString();
+        return Integer.toHexString(hashCode());
+    }
+    
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                    ////
+
+    /** Return whether changes are necessary.
+     * This is only the case for models older than version 7.2.devel
+     * @param container The container.
+     * @param xmlFile The xmlFile
+     * @return True when changes are necessary.
+     */
+    private boolean _changedNeeded(NamedObj container, String xmlFile) {
+        // First Check whether we already have the version
+        Boolean changesNeeded = xmlFile != null ? _changesNeededForXmlFile.get(xmlFile) : null;        
+        if (changesNeeded != null && changesNeeded) {
+            return _changesNeededForXmlFile.get(xmlFile);
+        } else {
+            // Retrieve the version number. This is only available on the toplevel.
+            NamedObj toplevel = container;
+            NamedObj parent = toplevel.getContainer();
+            
+            while (parent != null) {
+                toplevel = parent;
+                parent = toplevel.getContainer();
+            }
+            Attribute version = toplevel.getAttribute("_createdBy");
+            if (version != null) {
+                try {
+                    return ((VersionAttribute) version).isLessThan(new VersionAttribute("7.2.devel"));
+                } catch (IllegalActionException e) {
+                }    
+            }
+        }
+        return true;
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -180,8 +223,8 @@ public class RelationWidthChanges implements MoMLFilter {
     /**A flag that specifies whether we are currently processing the width of a relation*/
     private boolean _currentlyProcessingWidth = false;
     
-    /**A flag that specifies whether changes might be needed for this model.
+    /**A flag that specifies whether changes might be needed for the model with a certain xmlPath.
      * This is only the case for models older than version 7.2.devel
-     */
-    private boolean _changesNeeded = true;
+     */   
+    private Map<String, Boolean> _changesNeededForXmlFile = new HashMap<String, Boolean>();
 }

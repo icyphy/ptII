@@ -60,10 +60,11 @@ public class PortClassChanges implements MoMLFilter {
      *  @param element The XML element name.
      *  @param attributeName The name of the attribute.
      *  @param attributeValue The value of the attribute.
+     *  @param xmlFile The file currently being parsed.
      *  @return the value of the attributeValue argument.
      */
     public String filterAttributeValue(NamedObj container, String element,
-            String attributeName, String attributeValue) {
+            String attributeName, String attributeValue, String xmlFile) {
         // This method gets called many times by the MoMLParser,
         // so we try to be smart about the number of comparisons
         // and we try to group comparisons together so that we
@@ -125,12 +126,13 @@ public class PortClassChanges implements MoMLFilter {
      *  @param container The object created by this element.
      *  @param elementName The element name.
      *  @param currentCharData The character data, which appears
-     *  only in the doc and configure elements
+     *   only in the doc and configure elements
+     *  @param xmlFile The file currently being parsed.
      *  @exception Exception if there is a problem substituting
      *  in the new value.
      */
     public void filterEndElement(NamedObj container, String elementName,
-            StringBuffer currentCharData) throws Exception {
+            StringBuffer currentCharData, String xmlFile) throws Exception {
         _foundPort = false;
     }
 

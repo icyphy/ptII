@@ -63,10 +63,11 @@ public class HideAnnotationNames implements MoMLFilter {
      *  @param element The XML element name.
      *  @param attributeName The name of the attribute.
      *  @param attributeValue The value of the attribute.
+     *  @param xmlFile The file currently being parsed.
      *  @return the value of the attributeValue argument.
      */
     public String filterAttributeValue(NamedObj container, String element,
-            String attributeName, String attributeValue) {
+            String attributeName, String attributeValue, String xmlFile) {
         if (attributeValue == null) {
             // attributeValue == null is fairly common, so we check for
             // that first
@@ -111,12 +112,13 @@ public class HideAnnotationNames implements MoMLFilter {
      *  @param container The object created by this element.
      *  @param elementName The element name.
      *  @param currentCharData The character data, which appears
-     *  only in the doc and configure elements
+     *   only in the doc and configure elements
+     *  @param xmlFile The file currently being parsed.
      *  @exception Exception if there is a problem substituting
      *  in the new value.
      */
     public void filterEndElement(NamedObj container, String elementName,
-            StringBuffer currentCharData) throws Exception {
+            StringBuffer currentCharData, String xmlFile) throws Exception {
         if (!elementName.equals("property")) {
             return;
         }

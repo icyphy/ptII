@@ -59,12 +59,13 @@ public class GRColorChanges implements MoMLFilter {
      *  @param element The XML element name.
      *  @param attributeName The name of the attribute.
      *  @param attributeValue The value of the attribute.
+     *  @param xmlFile The file currently being parsed.
      *  @return A new value for the attribute, or the same value
      *   to leave it unchanged, or null to cause the current element
      *   to be ignored (unless the attributeValue argument is null).
      */
     public String filterAttributeValue(NamedObj container, String element,
-            String attributeName, String attributeValue) {
+            String attributeName, String attributeValue, String xmlFile) {
         if ((attributeValue != null) && (attributeName != null)) {
             if (attributeValue.equals("RGB color")
                     && attributeName.equals("name")
@@ -90,15 +91,16 @@ public class GRColorChanges implements MoMLFilter {
      *  of PolyCylinder3D, perform a similar change from matrix
      *  to array.
      *  @param container The object defined by the element that this
-     *  is the end of.
+     *   is the end of.
      *  @param elementName The element name.
      *  @param currentCharData The character data, which appears
-     *  only in the doc and configure elements
+     *   only in the doc and configure elements
+     *  @param xmlFile The file currently being parsed.
      *  @exception Exception if there is a problem substituting
      *  in the new value.
      */
     public void filterEndElement(NamedObj container, String elementName,
-            StringBuffer currentCharData) throws Exception {
+            StringBuffer currentCharData, String xmlFile) throws Exception {
         if (_foundOne) {
             _foundOne = false;
 

@@ -76,12 +76,13 @@ public class RemoveGraphicalClasses implements MoMLFilter {
      *  in this method.
      *  @param element The XML element name.
      *  @param attributeName The name of the attribute, ignored
-     *  in this method.
+     *   in this method.
      *  @param attributeValue The value of the attribute.
+     *  @param xmlFile The file currently being parsed.
      *  @return the filtered attributeValue.
      */
     public String filterAttributeValue(NamedObj container, String element,
-            String attributeName, String attributeValue) {
+            String attributeName, String attributeValue, String xmlFile) {
         // If the nightly build is failing with messages like:
         // " X connection to foo:0 broken (explicit kill or server shutdown)."
         // Try uncommenting the next lines to see what is being
@@ -105,11 +106,12 @@ public class RemoveGraphicalClasses implements MoMLFilter {
      *  @param container The object created by this element.
      *  @param elementName The element name.
      *  @param currentCharData The character data, which appears
-     *  only in the doc and configure elements
+     *   only in the doc and configure elements
+     *  @param xmlFile The file currently being parsed.
      *  @exception Exception Not thrown in this base class.
      */
     public void filterEndElement(NamedObj container, String elementName,
-            StringBuffer currentCharData) throws Exception {
+            StringBuffer currentCharData, String xmlFile) throws Exception {
     }
 
     /** Read in a MoML file, remove graphical classes and

@@ -250,12 +250,12 @@ public class DesignPatternImporter extends ParameterAttribute
     private class MoMLContentFilter implements MoMLFilter {
 
         public String filterAttributeValue(NamedObj container, String element,
-                String attributeName, String attributeValue) {
+                String attributeName, String attributeValue, String xmlFile) {
             return attributeValue;
         }
 
         public void filterEndElement(NamedObj container, String elementName,
-                StringBuffer currentCharData) throws Exception {
+                StringBuffer currentCharData, String xmlFile) throws Exception {
             if (container != null && !"group".equals(elementName)) {
                 NamedObj context = getContainer();
                 NamedObj parent = container;

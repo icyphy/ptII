@@ -93,10 +93,11 @@ public class RemoveProperties implements MoMLFilter {
      *  @param element The XML element name.
      *  @param attributeName The name of the attribute.
      *  @param attributeValue The value of the attribute.
+     *  @param xmlFile The file currently being parsed.
      *  @return The value of the attributeValue argument.
      */
     public String filterAttributeValue(NamedObj container, String element,
-            String attributeName, String attributeValue) {
+            String attributeName, String attributeValue, String xmlFile) {
         //System.out.println("RemoveProperties.filterAttributeValue: " + container + "\t"
         //   +  attributeName + "\t" + attributeValue);
         if (attributeValue == null) {
@@ -149,12 +150,13 @@ public class RemoveProperties implements MoMLFilter {
      *  @param container The object created by this element.
      *  @param elementName The element name.
      *  @param currentCharData The character data, which appears
-     *  only in the doc and configure elements
+     *   only in the doc and configure elements
+     *  @param xmlFile The file currently being parsed.
      *  @exception Exception if there is a problem substituting
      *  in the new value.
      */
     public void filterEndElement(NamedObj container, String elementName,
-            StringBuffer currentCharData) throws Exception {
+            StringBuffer currentCharData, String xmlFile) throws Exception {
         _foundPropertyToBeRemoved = false;
         _propertyToBeRemovedConfirmed = false;
     }

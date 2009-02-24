@@ -84,12 +84,13 @@ public interface MoMLFilter {
      *  @param element The XML element name.
      *  @param attributeName The name of the attribute.
      *  @param attributeValue The value of the attribute.
+     *  @param xmlFile The file currently being parsed.
      *  @return A new value for the attribute, or the same value
      *   to leave it unchanged, or null to cause the current element
      *   to be ignored (unless the attributeValue argument is null).
      */
     public String filterAttributeValue(NamedObj container, String element,
-            String attributeName, String attributeValue);
+            String attributeName, String attributeValue, String xmlFile);
 
     /** Make modifications to the specified container, which is
      *  defined in a MoML element with the specified name.
@@ -107,12 +108,13 @@ public interface MoMLFilter {
      *   is the end of.
      *  @param elementName The element name.
      *  @param currentCharData The character data, which appears
-     *  only in the doc and configure elements
+     *   only in the doc and configure elements
+     *  @param xmlFile The file currently being parsed.
      *  @exception Exception If there is a problem modifying the
      *  specified container.
      */
     public void filterEndElement(NamedObj container, String elementName,
-            StringBuffer currentCharData) throws Exception;
+            StringBuffer currentCharData, String xmlFile) throws Exception;
 
     /** Return a string that describes what the filter does.
      *  @return A description of the filter (ending with a newline).

@@ -431,7 +431,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             while (filters.hasNext()) {
                 MoMLFilter filter = (MoMLFilter) filters.next();
                 filteredValue = filter.filterAttributeValue(_current,
-                        currentElement, name, filteredValue);
+                        currentElement, name, filteredValue,
+                        _xmlFile != null ? _xmlFile.toString() : null);
             }
 
             // Sometimes the value we pass in is null, so we only
@@ -719,7 +720,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             while (filters.hasNext()) {
                 MoMLFilter filter = (MoMLFilter) filters.next();
                 filter.filterEndElement(_current, elementName,
-                        _currentCharData);
+                        _currentCharData, _xmlFile != null ? _xmlFile.toString() : null);
             }
         }
 

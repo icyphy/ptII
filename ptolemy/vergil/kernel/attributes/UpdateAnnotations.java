@@ -83,14 +83,15 @@ public class UpdateAnnotations implements MoMLFilter {
      *  property with a TextAttribute
      *
      *  @param container  The container for this attribute.
-     *  in this method.
+     *   in this method.
      *  @param element The XML element name.
      *  @param attributeName The name of the attribute.
      *  @param attributeValue The value of the attribute.
+     *  @param xmlFile The file currently being parsed.
      *  @return the value of the attributeValue argument.
      */
     public String filterAttributeValue(NamedObj container, String element,
-            String attributeName, String attributeValue) {
+            String attributeName, String attributeValue, String xmlFile) {
         //System.out.println("filterAttributeValue: " + container + "\t"
         //       +  attributeName + "\t" + attributeValue);
 
@@ -159,12 +160,13 @@ public class UpdateAnnotations implements MoMLFilter {
      *  @param container The object created by this element.
      *  @param elementName The element name.
      *  @param currentCharData The character data, which appears
-     *  only in the doc and configure elements
+     *   only in the doc and configure elements
+     *  @param xmlFile The file currently being parsed.
      *  @exception Exception if there is a problem substituting
      *  in the new value.
      */
     public void filterEndElement(NamedObj container, String elementName,
-            StringBuffer currentCharData) throws Exception {
+            StringBuffer currentCharData, String xmlFile) throws Exception {
 
         if (!_currentlyProcessingAnnotation) {
             return;
