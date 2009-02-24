@@ -31,11 +31,18 @@ import java.util.*;
 
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
+import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.lib.LimitedFiringSource;
+import ptolemy.actor.util.DFUtilities;
+import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.codegen.kernel.ActorCodeGenerator;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
+import ptolemy.codegen.kernel.PortCodeGenerator;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Variable;
@@ -74,7 +81,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
     public GiottoDirector(ptolemy.domains.giotto.kernel.GiottoDirector giottoDirector) {
         super(giottoDirector);
     }
-
+    
     public String generateInitializeCode() throws IllegalActionException {
         System.out.println("generateInitializeCode from openRTOS giotto director called here");
         
@@ -117,6 +124,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         }
      
         code.append(super.generateInitializeCode());
+      
         return processCode(code.toString());   
         
     }
@@ -124,8 +132,8 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
     StringBuffer code = new StringBuffer();
     
     code.append("static void scheduler(void * pvParameters){"+_eol);
-    code.append("portTickType xLastWakeTime;");
-    code.append("const portTickType xFrequency = ($period)/portTICK_RATE_MS;"+_eol);
+    code.append("portTickType xLastWakeTime;"+_eol);
+    code.append("const portTickType xFrequency = "+period+"/portTICK_RATE_MS;"+_eol);
     code.append("xLastWakeTime = xTaskGetTickCount();"+_eol);
     code.append("    for(;;){"+_eol);
     code.append("     vTaskDelayUntil(&xLastWakeTime,xFrequency);"+_eol);
@@ -134,17 +142,12 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
     code.append("//handle updates, mode switches, and switching the double buffer pointers"+_eol);
     code.append("    }"+_eol);
     code.append("      }"+_eol);
-    
-    
-    
-    
-    
-    
+           
     return processCode(code.toString());
     }
     
-    public String generateThreads()throws IllegalActionException{
-        StringBuffer code = new StringBuffer(super.generateInitializeCode());
+    public String generateMyThreads()throws IllegalActionException{
+        StringBuffer code = new StringBuffer();
         ArrayList args1 = new ArrayList();
         
         double period = _getPeriod();
@@ -170,6 +173,11 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
               periodString+='0';
               count++;
           }
+        }
+        if(periodString.charAt(0)=='0')  // leading zero so remove it
+        {
+            periodString = periodString.substring(1,periodString.length());
+            
         }
         args1.add("");
         if(_isTopGiottoDirector())
@@ -211,12 +219,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         return processCode(code.toString());
     }
     
-   /* public String generateFireFunctionCode()throws IllegalActionException{
-        StringBuffer code = new StringBuffer();
-        code.append("// fire function code should be here"+_eol);
-        return code.toString();
-    }*/
-    
+       
     ArrayList<String>[] _getActorFrequencyTable()throws IllegalActionException{
         //Hashtable<Integer,String> actorsPerFrequency= new Hashtable<Integer,String>();
         //actorsPerFrequency.
@@ -282,7 +285,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
        // code.append(tempcode);
     
     
-        Attribute iterations = _director.getAttribute("iterations");
+        //Attribute iterations = _director.getAttribute("iterations");
        
         if (_isTopGiottoDirector()) {
             code.append("vTaskStartScheduler();"+_eol);
@@ -380,12 +383,12 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
 
     public String generateFireCode() throws IllegalActionException{
         StringBuffer code = new StringBuffer();
-        code.append("//fire code should be here. I'm from the openRTOS GiottoDirector "+_eol);
+        //code.append("//fire code should be here. I'm from the openRTOS GiottoDirector "+_eol);
         System.out.println("generateFireCode from openRTOS giotto director called here");
         //code.append("scheduler()");
         code.append("}"+_eol);
         //create thread methods here
-        code.append(generateThreads());
+        code.append(generateMyThreads());
         
         return code.toString();
     }
@@ -400,7 +403,6 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         code.append("vTaskDealyUntil(&xLastWakeTime,xFrequency);"+_eol);
         code.append("//call the methods for the tasks at this frequency"+_eol);
         code.append("}"+_eol);
-
 
         return code.toString();   
     }
@@ -491,15 +493,293 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
     public String getReference(TypedIOPort port, String[] channelAndOffset,
             boolean forComposite, boolean isWrite, CodeGeneratorHelper helper)
     throws IllegalActionException {
+        System.out.println("getReference from Giotto Director under OpenRTOS called ");
         if(port.isOutput()&&isWrite)
         {// do own thing here}
         // will need to take care of the case of where the output is for a composite actor
-            //return CodeGeneartorHelper.generateName((port)+"_"+channelAndOffset[1];
-            return "dummy";
-        }else
+            return CodeGeneratorHelper.generateName(port)+"_"+channelAndOffset[1]+"PORT";
+            //return "//dummy for write port";
+        }
+      /* else if(port.isOutput())
+        {
             
+            return  "//dummy 2";
+        }
+       /* else if(port.isInput())
+        {
+            return "//dummy 3";
+            
+        }*/
+        else
+            //return "//from else";
                return super.getReference(port, channelAndOffset, forComposite, isWrite,helper);
     }
+    
+    
+ /*   private void _generateThreadFunctionCode(StringBuffer code)
+    throws IllegalActionException {
 
+        List actorList = ((CompositeActor) _director.getContainer())
+        .deepEntityList();
+
+//      Generate the function for each actor thread.
+        for (Actor actor : (List<Actor>) actorList) {
+            StringBuffer functionCode = new StringBuffer();
+
+            CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+
+            code.append(_eol + "void* " + _getActorThreadLabel(actor)
+                    + "(void* arg) {" + _eol);
+
+            // Generate debug code for printing the thread ID and actor name.
+            List args = new LinkedList();
+            args.add(_generateActorNameFileForDebugging());
+            args.add(actor.getDisplayName());
+            code.append(_codeStream.getCodeBlock("printThreadName", args));
+
+            // mainLoop
+
+            // Check if the actor is an opague CompositeActor.
+            // The actor is guaranteed to be opague from calling
+            // deepEntityList(),
+            // so all we need to check whether or not it is a CompositeActor.
+            if (actor instanceof CompositeActor) {
+                Director directorHelper = (Director) _getHelper(actor
+                        .getDirector());
+
+                // If so, it should contain a different Director.
+                assert (directorHelper != this);
+
+                functionCode.append(directorHelper.generateMainLoop());
+
+                functionCode.append("$incrementReadBlockingThreads(&"
+                        + generateDirectorHeader() + ");" + _eol);
+            } else {
+
+                String pnPostfireCode = "";
+
+                String loopCode = "while (true) {" + _eol;
+
+                // Generate a for loop if there is a firing count limit.
+                if (actor instanceof LimitedFiringSource) {
+                    int firingCount = ((IntToken) ((LimitedFiringSource) actor)
+                            .firingCountLimit.getToken()).intValue();
+
+                    if (firingCount != 0) {
+                        loopCode = "int i = 0;" + _eol +
+                        "for (; i < " + firingCount + "; i++) {" + _eol;
+                    }
+                    pnPostfireCode = _eol;
+                }                               
+
+                functionCode.append(loopCode);
+
+                functionCode.append(helper.generateFireCode());
+
+                // FIXME: Doesn't look like the following comment is correct.
+                // If not inline, generateFireCode() would be a call
+                // to the fire function which already includes the
+                // type conversion code.
+//              if (inline) {
+                functionCode.append(helper.generateTypeConvertFireCode());
+//              }
+
+                functionCode.append(helper.generatePostfireCode());
+
+                boolean forComposite = actor instanceof CompositeActor;
+
+                // Increment port offset.
+                for (IOPort port : (List<IOPort>) ((Entity) actor).portList()) {
+                    // Determine the amount to increment.
+                    int rate = 0;
+                    try {
+                        rate = DFUtilities.getRate(port);
+                    } catch (NullPointerException ex) {
+                        // int i = 0;
+                    }
+                    PortCodeGenerator portHelper = (PortCodeGenerator) _getHelper(port);
+                    CodeGeneratorHelper portCGHelper = (CodeGeneratorHelper) portHelper;
+
+                    if (portCGHelper.checkRemote(forComposite, port)) {
+                        pnPostfireCode += portHelper
+                        .updateConnectedPortsOffset(rate, _director);
+                    }
+                    if (port.isInput()) {
+                        pnPostfireCode += portHelper.updateOffset(rate,
+                                _director);
+                    }
+                }
+
+                // Code for incrementing buffer offsets.
+                functionCode.append(pnPostfireCode);
+
+                functionCode.append("}" + _eol);
+                functionCode.append("$incrementReadBlockingThreads(&"
+                        + generateDirectorHeader() + ");" + _eol);
+            }
+
+            // wrapup
+            functionCode.append(helper.generateWrapupCode());
+
+            functionCode.append("return NULL;" + _eol);
+            functionCode.append("}" + _eol);
+
+            // init
+            // This needs to be called last because all references
+            // need to be collected before generating their initialization.
+            String initializeCode = helper.generateInitializeCode();
+            String variableInitializeCode = helper
+            .generateVariableInitialization();
+            code.append(variableInitializeCode);
+            code.append(initializeCode);
+
+            code.append(functionCode);
+        }
+    }
+   */ 
+    
+    
+   
+    /** Generate a variable declaration for the <i>period</i> parameter,
+     *  if there is one.
+     *  @return code The generated code.
+     *  @exception IllegalActionException If the helper class for the model
+     *   director cannot be found.
+     */
+    public String generateVariableDeclaration() throws IllegalActionException {
+        StringBuffer variableDeclarations = new StringBuffer();
+        Iterator actors = ((CompositeActor) _director.getContainer())
+        .deepEntityList().iterator();
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+
+           CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+           variableDeclarations.append(helperObject.generateVariableDeclaration());
+           variableDeclarations.append(helperObject.generatePortVariableDeclarations());
+           //variableDeclarations.append("//should attempt to append port here"+_eol);
+           // variableDeclarations.append(helperObject.);
+        }
+        
+       return variableDeclarations.toString();
+    }
+    
+    /** Generate mode transition code. The mode transition code
+     *  generated in this method is executed after each global
+     *  iteration, e.g., in HDF model.  Do nothing in this base class.
+     *
+     *  @param code The string buffer that the generated code is appended to.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public void generateModeTransitionCode(StringBuffer code)
+    throws IllegalActionException {
+        System.out.println("I shoudl generate mode transition code here");
+    }
+    
+  // I'm not sure if this is the right place to add these methods, I'll try something and see  
+    
+///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Generate input variable declarations.
+     *  @return a String that declares input variables.
+     *  @exception IllegalActionException If thrown while
+     *  getting port information.
+     */
+    protected String _generateInputVariableDeclaration()
+            throws IllegalActionException {
+        System.out.println("_generateInputVariableDeclaration called form OpenRTOS Giotto Director");
+        boolean dynamicReferencesAllowed = ((BooleanToken) _codeGenerator.allowDynamicMultiportReference
+                .getToken()).booleanValue();
+
+        StringBuffer code = new StringBuffer();
+
+        Iterator inputPorts = ((Actor) getComponent()).inputPortList()
+                .iterator();
+
+        while (inputPorts.hasNext()) {
+            TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
+
+            if (!inputPort.isOutsideConnected()) {
+                continue;
+            }
+
+            code.append("static " + targetType(inputPort.getType()) + " "
+                    + generateName(inputPort));
+
+            int bufferSize = getBufferSize(inputPort);
+            if (inputPort.isMultiport()) {
+                code.append("[" + inputPort.getWidth() + "]");
+                if (bufferSize > 1 || dynamicReferencesAllowed) {
+                    code.append("[" + bufferSize + "]");
+                }
+            } else {
+                if (bufferSize > 1) {
+                    code.append("[" + bufferSize + "]");
+                }
+            }
+
+            code.append(";" + _eol);
+        }
+
+        return code.toString();
+    }
+
+    /** Generate output variable declarations.
+     *  @return a String that declares output variables.
+     *  @exception IllegalActionException If thrown while
+     *  getting port information.
+     */
+    protected String _generateOutputVariableDeclaration()
+            throws IllegalActionException {
+        System.out.println("_gneerateOutputVariableDeclaration called form OpenRTOS Giotto Director");
+        StringBuffer code = new StringBuffer();
+
+        Iterator outputPorts = ((Actor) getComponent()).outputPortList()
+                .iterator();
+
+        while (outputPorts.hasNext()) {
+            TypedIOPort outputPort = (TypedIOPort) outputPorts.next();
+
+            // If either the output port is a dangling port or
+            // the output port has inside receivers.
+            if (!outputPort.isOutsideConnected() || outputPort.isInsideConnected()) {
+                code.append("static " + targetType(outputPort.getType()) + " "
+                        + generateName(outputPort));
+
+                if (outputPort.isMultiport()) {
+                    code.append("[" + outputPort.getWidthInside() + "]");
+                }
+
+                int bufferSize = getBufferSize(outputPort);
+
+                if (bufferSize > 1) {
+                    code.append("[" + bufferSize + "]");
+                }
+                code.append(";" + _eol);
+            }
+        }
+
+        return code.toString();
+    }
+
+    public String getPortVariableDeclarations()  throws IllegalActionException {
+        return "getPortVariableDeclaration from Giotto Director Called";
+    }
+    
+    public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
+    throws IllegalActionException {
+        System.out.println("\\generate transferInputsCode inside OpenRTOS Giotto director called.");
+    code.append("\\generate transferInputsCode inside OpenRTOS Giotto director called.");
+    
+    }
+    
+    public void generateTransferOutputsCode(IOPort inputPort, StringBuffer code)
+    throws IllegalActionException {
+        System.out.println("\\generate transferOutputsCode inside OpenRTOS Giotto director called.");
+    code.append("\\generate transferOutputsCode inside OpenRTOS Giotto director called.");
+    
+    }
+    
+   
     
 }
