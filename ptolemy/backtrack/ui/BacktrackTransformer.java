@@ -159,9 +159,10 @@ public class BacktrackTransformer {
          *  @param element The XML element.
          *  @param attributeName The attribute name.
          *  @param attributeValue The attribute value.
+         *  @param xmlFile The file currently being parsed.
          */
         public String filterAttributeValue(NamedObj container, String element,
-                String attributeName, String attributeValue) {
+                String attributeName, String attributeValue, String xmlFile) {
             if (attributeValue == null) {
                 return null;
             }
@@ -209,12 +210,13 @@ public class BacktrackTransformer {
          *  @param container The container of the element.
          *  @param elementName The XML element to be closed.
          *  @param currentCharData The character data, which appears
-         *  only in the doc and configure elements
+         *   only in the doc and configure elements
+         *  @param xmlFile The file currently being parsed.
          *  @exception IllegalActionException If the MoML of the original
          *   actor's icon cannot be read and inserted into the new model.
          */
         public void filterEndElement(NamedObj container, String elementName,
-                StringBuffer currentCharData) throws IllegalActionException {
+                StringBuffer currentCharData, String xmlFile) throws IllegalActionException {
             if ((elementName.equals("entity") || elementName.equals("property"))
                     && container != null && container.getClassName() != null) {
                 if (_classStack.peek() != null
