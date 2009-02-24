@@ -3132,4 +3132,9 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return "";
     }
 
+    public String generatePortVariableDeclarations() throws IllegalActionException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }

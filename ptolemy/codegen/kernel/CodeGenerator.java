@@ -319,12 +319,17 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         code.append(includeFiles);
         code.append(typeResolutionCode);
         code.append(sharedCode);
+        code.append("//end shared code ******************************"+_eol);
         code.append(variableDeclareCode);
         code.append(preinitializeCode);
-        code.append(globalCode);
+        code.append("//end preinitialize code************************"+_eol);
+        //code.append(globalCode);
 
         if (!inlineValue) {
+            
+            code.append("//before appending fireFunctionCode **********************"+_eol);
             code.append(fireFunctionCode);
+            code.append("//after appending fireFunctionCode  **********************"+_eol);
         }
 
         //if (containsCode(variableInitCode)
@@ -333,7 +338,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         String[] splitVariableInitCode = _splitBody("_varinit_",
                 variableInitCode);
         code.append(splitVariableInitCode[0]);
-
+//begin Shanna's comments out
         String[] splitInitializeCode = _splitBody("_initialize_",
                 initializeCode);
         code.append(splitInitializeCode[0]);
@@ -342,6 +347,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         code.append(splitVariableInitCode[1]);
         code.append(splitInitializeCode[1]);
         code.append(initializeExitCode);
+        //end Shanna's comments out
         //}
 
         /* FIXME: Postfire code should be invisible to the code generator.
@@ -1143,7 +1149,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     protected String _generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-
+System.out.println("_generatePreinitializeCode called");
         ActorCodeGenerator helper = _getHelper(getContainer());
 
         try {
@@ -1161,6 +1167,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             throw new IllegalActionException(helper.getComponent(), throwable,
             "Failed to generate preinitialize code");
         }
+        System.out.println("going to return "+code.toString());
         return code.toString();
     }
 
