@@ -37,6 +37,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.Manager;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TimedDirector;
@@ -309,18 +310,55 @@ public class GiottoDirector extends StaticSchedulingDirector implements
         }
     }
     
-    /** This implementation returns the the next time the
-     *  requesting actor will be fired,
-     *  which will depend on the period.
-     */    
+    /** Request a firing of the given actor at the given absolute
+     *  time.  This method calculates the period of invocation of
+     *  the specified actor (which is the period of this director
+     *  divided by the actor's frequency), and if the requested time
+     *  is ahead of current time by some multiple of the actor's period,
+     *  then return the requested time.
+     *  @param actor The actor scheduled to be fired.
+     *  @param time The requested time.
+     *  @exception IllegalActionException If the operation is not
+     *    permissible (e.g. the given time is in the past).
+     */
     public Time fireAt(Actor actor, Time time) throws IllegalActionException {
-        // We will find the time stamp this director will fire equal
-        // to or larger than the argument time.
-        Time resultTime = getModelTime();        
-        while (time.compareTo(resultTime) > 0) {
-            resultTime = resultTime.add(_unitTimeIncrement);
-        }        
-        return resultTime;
+        // No executive director. Return current time plus the period divided
+        // by the frequency of the specified actor,
+        // or some multiple of that number.
+        // NOTE: this is potentially very expensive to compute precisely
+        // because the Time class has an infinite range and only supports
+        // precise addition. Determining whether the argument satisfies
+        // the criterion seems difficult. Hence, we check to be sure
+        // that the test is worth doing.
+        Time currentTime = getModelTime();
+        int frequencyValue = _getActorFrequency((NamedObj)actor);
+        double actorPeriod = _periodValue/frequencyValue;
+        Time nextFiringTime = currentTime.add(actorPeriod);
+        // First check to see whether we are in the initialize phase, in
+        // which case, return the start time.
+        NamedObj container = getContainer();
+        if (container != null) {
+            Manager manager = ((CompositeActor) container).getManager();
+            if (manager.getState().equals(Manager.INITIALIZING)) {
+                return currentTime;
+            }
+        }
+        // Check the most common cases next.
+        if (time.equals(currentTime) || time.equals(nextFiringTime)) {
+            return nextFiringTime;
+        }
+        if (time.isInfinite() || currentTime.compareTo(time) > 0) {
+            // Either the requested time is infinite or it is in the past.
+            return currentTime.add(nextFiringTime);
+        }
+        Time futureTime = currentTime;
+        while (time.compareTo(futureTime) > 0) {
+            futureTime = futureTime.add(actorPeriod);
+            if (futureTime.equals(time)) {
+                return time;
+            }
+        }
+        return currentTime.add(nextFiringTime);
     }
 
     /** Get the period of the giotto director in ms.
@@ -541,15 +579,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
             if (executiveDirector instanceof GiottoDirector) {
                 double periodValue = ((GiottoDirector) executiveDirector)
                         .getPeriod();
-                Attribute frequency = compositeActor.getAttribute("frequency");
-                int frequencyValue;
-
-                if (frequency != null) {
-                    frequencyValue = ((IntToken) (((Parameter) frequency)
-                            .getToken())).intValue();
-                } else {
-                    frequencyValue = 1;
-                }
+                int frequencyValue = _getActorFrequency(compositeActor);
 
                 _periodValue = periodValue / frequencyValue;
                 period.setExpression(Double.toString(_periodValue));
@@ -679,7 +709,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
 
         return wasTransferred;
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
@@ -713,6 +743,24 @@ public class GiottoDirector extends StaticSchedulingDirector implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+
+    /** Return the frequency of the specified actor by accessing a
+     *  parameter named "frequency". If there is no such parameter,
+     *  return 1.
+     */
+    private int _getActorFrequency(NamedObj actor)
+            throws IllegalActionException {
+        int frequencyValue = 1;
+        Attribute frequency = actor.getAttribute("frequency");
+        if (frequency instanceof Parameter) {
+            Token result = ((Parameter)frequency).getToken();
+            if (result instanceof IntToken) {
+                frequencyValue = ((IntToken) result).intValue();
+            }
+        }
+        return frequencyValue;
+    }
+
     // Initialize the director by creating a scheduler and parameters.
     private void _init() {
         try {
@@ -736,7 +784,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
     // Request that the container of this director be refired in the future.
     // This method is used when the director is embedded inside an opaque
     // composite actor. If the outside director is a Giotto director, this
-    // method has no effect. if the outside director is a DE director, this
+    // method has no effect. If the outside director is a DE director, this
     // method will cause the container of this director to be fired again.
     private void _requestFiring() throws IllegalActionException {
         if (_debugging) {
