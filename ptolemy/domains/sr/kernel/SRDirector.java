@@ -148,7 +148,7 @@ public class SRDirector extends FixedPointDirector {
      *  time.  This method delegates to the enclosing director
      *  if there is one. Otherwise, it checks to see whether the
      *  requested time is equal to the current time plus an integer
-     *  multiple of the period. If so, it returns requested time.
+     *  multiple of the period. If so, it returns the requested time.
      *  If not, it returns current time plus the period,
      *  even if the period is 0.0, thus indicating to the caller the next
      *  time at which it will be called.
