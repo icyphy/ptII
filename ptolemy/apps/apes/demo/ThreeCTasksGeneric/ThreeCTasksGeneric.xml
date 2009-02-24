@@ -4,13 +4,13 @@
 <entity name="ThreeCTasksGeneric" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={559, 85, 813, 510}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={148, 77, 811, 586}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[598, 476]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{299.0, 238.0}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="100">
@@ -37,8 +37,18 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{195.0, 50.0}">
         </property>
     </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.6,0.6,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Instructions for running this example: &#10;1. Compile the c code located in the directory of this demo in the subfolder &#10;   &quot;ccode&quot; into a library.&#10;2. Set the parameter of &quot;CCodeLibrary&quot; to the name of the library.&#10;3. Run this example with the updated library path">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 340.0]">
+        </property>
+    </property>
     <entity name="CPUScheduler" class="ptolemy.apps.apes.CPUScheduler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 355.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 255.0]">
         </property>
     </entity>
     <entity name="CTaskA" class="ptolemy.apps.apes.CTask">
@@ -90,7 +100,7 @@
         </property>
     </entity>
     <entity name="InterruptServiceController" class="ptolemy.apps.apes.InterruptServiceController">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 190.0]">
         </property>
         <port name="trigger_A" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -120,7 +130,7 @@
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 8.0}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 150.0]">
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
@@ -131,7 +141,7 @@
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{1.0, 9.0}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 190.0]">
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
@@ -142,7 +152,7 @@
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{2.0,6.0}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 260.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 230.0]">
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>

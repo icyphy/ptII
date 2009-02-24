@@ -95,6 +95,16 @@
         <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.6,0.6,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Instructions for running this example: &#10;1. Compile the c code located in the directory of this demo in the subfolder &#10;   &quot;ccode&quot; into a library.&#10;2. Set the parameter of &quot;CCodeLibrary&quot; to the name of the library.&#10;3. Run this example with the updated library path">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 425.0]">
+        </property>
+    </property>
     <entity name="CPUScheduler" class="ptolemy.apps.apes.CPUScheduler">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 385.0]">
         </property>

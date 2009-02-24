@@ -76,8 +76,18 @@
         <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.6,0.6,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This is a pure java example, no compilation of c code is required">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 75.0]">
+        </property>
+    </property>
     <entity name="CPUScheduler" class="ptolemy.apps.apes.CPUScheduler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 370.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 365.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -183,7 +193,7 @@
         </property>
     </entity>
     <entity name="TaskExecutionMonitor" class="ptolemy.apps.apes.TaskExecutionMonitor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 45.0]">
         </property>
     </entity>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">
@@ -385,7 +395,7 @@
         </property>
     </entity>
     <entity name="EventManager" class="ptolemy.apps.apes.EventManager">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 370.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 365.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
