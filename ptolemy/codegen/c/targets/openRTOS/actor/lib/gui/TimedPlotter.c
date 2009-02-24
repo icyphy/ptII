@@ -1,12 +1,9 @@
 /***preinitBlock***/
-//Timed Plotter preinit code should be here
-//printf("preinit code should go here");
 static int $actorSymbol(xvalue);
 /**/
 
 
 /***initBlock***/
-//init code should be here
 $actorSymbol(xvalue) = 0;
 //printf("init code should go here");
 {
@@ -31,11 +28,9 @@ $actorSymbol(xvalue) = 0;
 
 /***configureBlock($text)***/
 //configure code should be here
-//printf("configure code should go here");
 /**/
 
 /***plotBlock($channel)***/
-
 //printf("plotBlock code should go here for %d",$ref(input#$channel));
 
 /**/
@@ -45,7 +40,6 @@ $actorSymbol(xvalue) = 0;
 
 PlotPoint1($actorSymbol(xvalue),$ref(input#$channel));
 $actorSymbol(xvalue)++;
-
 /**/
 
 /***plotBlock2($channel)***/
