@@ -131,7 +131,9 @@ public class ProcessDirector extends Director {
      *  @see #removeThread(Thread)
      */
     public synchronized void addThread(Thread thread) {
+        assert !_activeThreads.contains(thread);
         _activeThreads.add(thread);
+        assert _activeThreads.contains(thread);
 
         if (_debugging) {
             _debug("Adding a thread: " + thread.getName());
@@ -276,7 +278,7 @@ public class ProcessDirector extends Director {
      *  @exception IllegalActionException If the actor is not
      *  acceptable to the domain.  Not thrown in this base class.
      */
-    public void initialize(Actor actor) throws IllegalActionException {
+    public synchronized void initialize(Actor actor) throws IllegalActionException {
         if (_debugging) {
             _debug("Initializing actor: " + ((NamedObj) actor).getFullName());
         }
@@ -297,7 +299,9 @@ public class ProcessDirector extends Director {
 
         // Create threads.
         ProcessThread processThread = _newProcessThread(actor, this);
-        _activeThreads.add(processThread);
+         _activeThreads.add(processThread);
+        assert _activeThreads.contains(processThread);
+        
         _newActorThreadList.addFirst(processThread);
     }
 
@@ -419,8 +423,12 @@ public class ProcessDirector extends Director {
         if (_debugging) {
             _debug("Thread " + thread.getName() + " is exiting.");
         }
-
+        
+        assert _activeThreads.contains(thread);
+        
         _activeThreads.remove(thread);
+        
+        assert !_activeThreads.contains(thread);
         _pausedThreads.remove(thread);
         _blockedThreads.remove(thread);
         notifyAll();
