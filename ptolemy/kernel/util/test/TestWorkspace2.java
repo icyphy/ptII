@@ -94,10 +94,19 @@ public class TestWorkspace2 extends Thread {
             synchronized (_notif) {
                 _notif.getWriteAccess = true;
 
-                try {
-                    _workspace.wait(_notif);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                // Remark:
+                //      The while (_notif.getWriteAccess) is not
+                //      necessary in the current implementation (with
+                //      only two threads using _notif), but makes it
+                //      more robust when changes are made.
+                //      This problem was detected by Findbugs:
+                //        UW: Unconditional wait (UW_UNCOND_WAIT)
+                while (_notif.getWriteAccess) {
+                    try {
+                        _workspace.wait(_notif);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
 
                 _notif.done = true;
