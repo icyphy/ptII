@@ -57,7 +57,8 @@ JSRCS = \
 	PropertyLatticeComposite.java
 
 OTHER_FILES_TO_BE_JARED = \
-	LatticeElementIcon.xml 
+	LatticeElementIcon.xml \
+	PropertyLatticeCompositeIcon.xml 
 
 EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)
 

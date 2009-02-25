@@ -1,10 +1,10 @@
-# Makefile for the Vergil/properties package
+# Makefile for Java Ptolemy Domains Properties Kernel
 #
-# @Authors: Man-Kit Leung, based on a file by Christopher Brooks.
+# @Authors: Man-Kit Leung, based on a file by Christopher Brooks
 #
-# @Version: $Id: makefile 36425 2005-02-28 20:51:43Z cxh $
+# $Id: makefile,v 1.2 2008/01/30 01:45:00 cxh Exp $
 #
-# @Copyright (c) 2000-2009 The Regents of the University of California.
+# @Copyright (c) 2009 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -26,51 +26,51 @@
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
 #
-# 						PT_COPYRIGHT_VERSION_2
-# 						COPYRIGHTENDKEY
+#                       PT_COPYRIGHT_VERSION_2
+#                       COPYRIGHTENDKEY
 
+ME =        ptolemy/domains/properties/kernel
 
-ME =		ptolemy/vergil/properties
+DIRS =      
 
-DIRS =
+# Root of the Ptolemy II directory
+ROOT =      ../../../..
 
-# Root of the Java directory
-ROOT =		../../../
-
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
+CLASSPATH = $(ROOT)
 
 # Get configuration info
-CONFIG =	$(ROOT)/mk/ptII.mk
+CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	properties
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTPACKAGE =     kernel
+
+PTCLASSJAR = $(PTPACKAGE).jar
+
+PTCLASSALLJARS =
 
 JSRCS = \
-	LatticeElementController.java \
-	LatticeGraphFrame.java \
-	LatticeGraphFrameController.java \
-	LatticeGraphTableau.java \
-	ModelAttributeController.java
-
-OTHER_FILES_TO_BE_JARED = 
-
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+	ModelAttribute.java \
+	OntologyAttribute.java \
+	PropertyLatticeAttribute.java
+	
+EXTRA_SRCS =    $(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+MISC_FILES =    $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make realclean removes OPTIONAL_FILES
+# make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	$(PTCLASSJAR)
+    doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
+
 all: jclass
-install: jclass $(PTCLASSJAR)
+install: jclass jars
+
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
