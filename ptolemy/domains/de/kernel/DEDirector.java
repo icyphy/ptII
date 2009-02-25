@@ -761,6 +761,16 @@ public class DEDirector extends Director implements TimedDirector {
                 }
             }
             _enqueueEvent(actor, result);
+            
+            // Findbugs: Multithreaded correctness,
+            // [M M MWN] Mismatched notify() [MWN_MISMATCHED_NOTIFY]
+            //    This method calls Object.notify() or Object.notifyAll()
+            //    without obviously holding a lock on the object.
+            //    Calling notify() or notifyAll() without a lock
+            //    held will result in an IllegalMonitorStateException
+            //    being thrown.
+            // Actually, this seems to be Find Bugs error since the
+            // statement is within a synchronized (_eventQueue) block.
             _eventQueue.notifyAll();
         }
         return result;
