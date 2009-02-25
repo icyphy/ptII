@@ -184,6 +184,10 @@ public class NondeterministicMerge extends TypedCompositeActor {
      */
     public void initialize() throws IllegalActionException {
         _reinitializeInnerActors();
+        
+        // super.initialize(); will initialize the director of this
+        // composite actor (the MergeDirector), which will initialize the
+        // newly created actors
         super.initialize();
     }
     
@@ -259,17 +263,6 @@ public class NondeterministicMerge extends TypedCompositeActor {
             } else {
                 try {
                     Actor localActor = new ChannelActor(i, this);
-
-                    // Tell the manager to initialize the actor.
-                    // NOTE: If the manager is null, then we can't
-                    // possibly be executing, so we don't need to do
-                    // this.
-                    Manager manager = getManager();
-
-                    if ((manager != null)
-                            && (manager.getState() != Manager.IDLE)) {
-                        manager.requestInitialization(localActor);
-                    }
 
                     // NOTE: Probably don't want this overhead.
                     // ((NamedObj)localActor).addDebugListener(this);
@@ -382,6 +375,27 @@ public class NondeterministicMerge extends TypedCompositeActor {
         public MergeDirector(CompositeEntity container, String name)
                 throws IllegalActionException, NameDuplicationException {
             super(container, name);
+        }
+        
+        /** Queue an initialization request with the manager.
+         *  The specified actor will be initialized at an appropriate time,
+         *  between iterations, by calling its preinitialize() and initialize()
+         *  methods. This method is called by CompositeActor when an actor
+         *  sets its container to that composite actor.  Typically, that
+         *  will occur when a model is first constructed, and during the
+         *  execute() method of a ChangeRequest.
+         *  We do nothing here in this implementation:
+         *  When these actors are added during the initialization phase
+         *  setContainer results in the call of this method, which will
+         *  requestInitialization, which will normally delegate the action
+         *  to the Manager.
+         *  super.initialize() in NondeterministicMerge will however
+         *  initialize the director of this
+         *  composite actor (the MergeDirector), which will initialize the
+         *  newly created actors. Hence we don't need to do it again here.
+         *  @param actor The actor to initialize.
+         */        
+        public void requestInitialization(Actor actor) {
         }
 
         /** Override the base class to delegate to the executive director.
