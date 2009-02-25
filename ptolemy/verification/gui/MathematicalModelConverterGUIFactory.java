@@ -83,24 +83,26 @@ public class MathematicalModelConverterGUIFactory extends EditorFactory {
         // This is always used to configure the container, so
         // we just use that.
         
-        MathematicalModelConverter modelConverter = (MathematicalModelConverter) getContainer();
+        MathematicalModelConverter modelConverter =
+            (MathematicalModelConverter) getContainer();
 
-        if (!(parent instanceof TableauFrame)) {
-            throw new InternalErrorException(
-                    "Can't create a CodeGeneratorGUI without a tableau!");
-        }
+        Effigy effigy = parent == null ? null :
+            ((TableauFrame) parent).getEffigy();
 
-        Effigy effigy = ((TableauFrame) parent).getEffigy();
-
-        // FIXME: Is the cast safe?
-        Tableau tableau = (Tableau) effigy.getEntity("codeGeneratorGUI");
-
-        if (tableau == null) {
-            try {
-                tableau = new Tableau(effigy, "codeGeneratorGUI");
-            } catch (KernelException e) {
-                throw new InternalErrorException(e);
+        Tableau tableau;
+        try {
+            if (effigy == null) {
+                tableau = new Tableau(workspace());
+                tableau.setName("codeGeneratorGUI");
+                tableau.setTitle("codeGeneratorGUI");
+            } else {
+                tableau = (Tableau) effigy.getEntity("codeGeneratorGUI");
+                if (tableau == null) {
+                    tableau = new Tableau(effigy, "codeGeneratorGUI");
+                }
             }
+        } catch (KernelException e) {
+            throw new InternalErrorException(e);
         }
 
         Frame frame = tableau.getFrame();

@@ -46,7 +46,8 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
 	Connector.java \
-	NaomiParameter.java
+	NaomiParameter.java \
+	TransformationParameter.java
 
 EXTRA_SRCS = 	$(JSRCS)
 

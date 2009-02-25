@@ -94,15 +94,6 @@ public class MathematicalModelConverterGUI extends PtolemyFrame {
 
         setTitle(modelConverter.getName());
 
-        // FIXME: The following is pretty lame.  If the model hasn't been saved,
-        // then we throw an exception as below, but why can't we just make
-        // it work?
-        if ((getEffigy() == null) || (getEffigy().uri == null)
-                || (getEffigy().uri.getURI() == null)) {
-            throw new IllegalActionException(
-                    "No effigy: Please save the model to a file before generating code.");
-        }
-
         // Caveats panel.
         caveatsPanel = new JPanel();
         caveatsPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
@@ -272,9 +263,10 @@ public class MathematicalModelConverterGUI extends PtolemyFrame {
                         URL codeURL = codeFileNameWritten.toURI().toURL();
                         // Use Thread.currentThread() so that this code will
                         // work under WebStart.
-                        configuration.openModel(null, codeURL, codeURL
-                                .toExternalForm());
-
+                        if (configuration != null) {
+                            configuration.openModel(null, codeURL, codeURL
+                                    .toExternalForm());
+                        }
                     }
 
                     exec.updateStatusBar(code.toString());

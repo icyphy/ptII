@@ -77,6 +77,8 @@ import org.xml.sax.SAXException;
 
 import ptolemy.actor.Manager;
 import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.EditParametersDialog;
+import ptolemy.actor.gui.EditorFactory;
 import ptolemy.actor.gui.EffigyFactory;
 import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.actor.gui.ModelDirectory;
@@ -121,7 +123,8 @@ public class Connector extends MoMLApplication {
         super(args);
     }
 
-    public synchronized void executionError(Manager manager, Throwable throwable) {
+    public synchronized void executionError(Manager manager,
+            Throwable throwable) {
         super.executionError(manager, throwable);
 
         System.out.println("Execution error: " + throwable.getMessage());
@@ -236,6 +239,12 @@ public class Connector extends MoMLApplication {
             _outputModel(_inModel);
             _saveInterface();
             break;
+
+        case TRANSFORM:
+            _loadAttributes(_inModel, _attributesPath, true);
+            _transform(_inModel);
+            //_saveInterface();
+            break;
         }
     }
 
@@ -247,6 +256,7 @@ public class Connector extends MoMLApplication {
         {"    ", "load (load NAOMI attributes (irregard of modification time)"},
         {"    ", "save (save NAOMI attributes (irregard of modification time)"},
         {"    ", "sync (synchronize NAOMI attributes)"},
+        {"    ", "transform (transform the model)"},
         {"-in", "<input model>"},
         {"-out", "<output model>"},
         {"-owner", "<owner>"},
@@ -628,7 +638,7 @@ public class Connector extends MoMLApplication {
 
     public enum Command {
         EXECUTE("execute"), LIST("list"), LOAD("load"), SAVE("save"),
-        SYNC("sync");
+        SYNC("sync"), TRANSFORM("transform");
 
         public String toString() {
             return _name;
@@ -766,8 +776,7 @@ public class Connector extends MoMLApplication {
     }
 
     protected void _loadAttributes(NamedObj model, File attributesPath,
-            boolean force)
-    throws IllegalActionException {
+            boolean force) throws IllegalActionException {
         for (Object attrObject : model.attributeList(Variable.class)) {
             Attribute attr = (Attribute) attrObject;
             for (Object paramObject
@@ -849,7 +858,7 @@ public class Connector extends MoMLApplication {
     }
 
     protected void _loadInterfaceFromSVN(File file)
-    throws IllegalActionException {
+            throws IllegalActionException {
         Document document = _parseXML(file);
 
         XPathFactory xpathFactory = XPathFactory.newInstance();
@@ -878,7 +887,7 @@ public class Connector extends MoMLApplication {
     }
 
     protected Tableau _openModel(NamedObj entity) throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         Tableau tableau = super._openModel(entity);
         JFrame frame = tableau.getFrame();
         if (frame instanceof PtolemyFrame) {
@@ -888,26 +897,13 @@ public class Connector extends MoMLApplication {
     }
 
     protected Tableau _openModel(URL base, URL in, String identifier)
-    throws Exception {
+            throws Exception {
         Tableau tableau = super._openModel(base, in, identifier);
         JFrame frame = tableau.getFrame();
         if (frame instanceof PtolemyFrame) {
             _addMenus((PtolemyFrame) frame);
         }
         return tableau;
-    }
-
-    protected void _saveInterface() throws IllegalActionException {
-        File interfaceFile = _getInterfaceFile();
-        System.out.println("Output interface: " + interfaceFile.getPath());
-        Document interfaceDocument = _generateInterface();
-        try {
-            _serializeXML(interfaceDocument, new FileOutputStream(
-                    interfaceFile));
-        } catch (FileNotFoundException e) {
-            throw new IllegalActionException(null, e,
-                    "Cannot output interface.");
-        }
     }
 
     protected void _outputModel(NamedObj model) throws IllegalActionException {
@@ -927,8 +923,7 @@ public class Connector extends MoMLApplication {
         }
     }
 
-    protected boolean _parseArg(String arg)
-    throws Exception {
+    protected boolean _parseArg(String arg) throws Exception {
         if (arg.startsWith("-")) {
             arg = arg.toLowerCase();
             if (_isExpectingValue()) {
@@ -994,8 +989,7 @@ public class Connector extends MoMLApplication {
     }
 
     protected void _saveAttributes(NamedObj model, File attributesPath,
-            boolean force)
-    throws IllegalActionException {
+            boolean force) throws IllegalActionException {
 
         for (Object attrObject : model.attributeList(Variable.class)) {
             Variable attr = (Variable) attrObject;
@@ -1087,6 +1081,73 @@ public class Connector extends MoMLApplication {
                             "Cannot create attribute file: "
                             + attributeFile.getPath());
                 }
+            }
+        }
+    }
+
+    protected void _saveInterface() throws IllegalActionException {
+        File interfaceFile = _getInterfaceFile();
+        System.out.println("Output interface: " + interfaceFile.getPath());
+        Document interfaceDocument = _generateInterface();
+        try {
+            _serializeXML(interfaceDocument, new FileOutputStream(
+                    interfaceFile));
+        } catch (FileNotFoundException e) {
+            throw new IllegalActionException(null, e,
+                    "Cannot output interface.");
+        }
+    }
+
+    protected void _transform(NamedObj model) throws IllegalActionException {
+        List<Attribute> attributes = model.attributeList();
+        List<Attribute> transformations = new LinkedList<Attribute>();
+        for (Attribute attribute : attributes) {
+            List<TransformationParameter> transformationParams =
+                attribute.attributeList(TransformationParameter.class);
+            if (!transformationParams.isEmpty()) {
+                transformations.add(attribute);
+            }
+        }
+
+        Attribute transformation = null;
+        if (transformations.size() == 0) {
+            throw new IllegalActionException("No attribute exists in the " +
+                    "model that specifies a transformation.");
+        } else if (transformations.size() == 1) {
+            transformation = transformations.get(0);
+        } else {
+            Query query = new Query();
+            String[] choices = new String[transformations.size()];
+            int i = 0;
+            for (Attribute attribute : transformations) {
+                choices[i++] = attribute.getDisplayName();
+            }
+            query.addChoice("transformation", "Transformation", choices,
+                    choices[0]);
+
+            ComponentDialog dialog = new ComponentDialog(null,
+                    "Choose Transformation", query);
+            if (dialog.buttonPressed().equals("OK")) {
+                String value = query.getStringValue("transformation");
+                i = 0;
+                for (String choice : choices) {
+                    if (value.equals(choice)) {
+                        transformation = transformations.get(i);
+                    }
+                    i++;
+                }
+            }
+            dialog.dispose();
+        }
+
+        if (transformation != null) {
+            List<EditorFactory> factories = transformation.attributeList(
+                    EditorFactory.class);
+            if (factories.size() > 0) {
+                EditorFactory factory = (EditorFactory) factories.get(0);
+                factory.createEditor(transformation, null);
+            } else {
+                new EditParametersDialog(null, transformation);
             }
         }
     }
@@ -1210,7 +1271,7 @@ public class Connector extends MoMLApplication {
     }
 
     private void _serializeXML(Document document, OutputStream stream)
-    throws IllegalActionException {
+            throws IllegalActionException {
         try {
             DOMSource domSource = new DOMSource(document);
             StreamResult streamResult = new StreamResult(stream);
