@@ -1903,7 +1903,8 @@ public class IOPort extends ComponentPort {
      *  this port. There are constraints in case the method
      *  setWidthEquals has been called.
      *  @return True when there are constraints on the width.
-     *  @see #setWidthEquals()
+     *  @see #setWidthEquals(Parameter)
+     *  @see #setWidthEquals(IOPort, boolean)
      */
     public boolean hasWidthConstraints() {
         return !_widthEqualToParameter.isEmpty() || !_widthEqualToPort.isEmpty();
