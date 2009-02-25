@@ -542,6 +542,8 @@ public class RealTimeComposite extends MirrorComposite {
          *  container.
          *  @param actor The actor requesting firing.
          *  @param time The time at which to fire.
+         *  @return The time at which the actor passed as an argument
+         *   will be fired.
          */
         public Time fireAt(Actor actor, Time time)
                 throws IllegalActionException {

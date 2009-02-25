@@ -318,6 +318,8 @@ public class GiottoDirector extends StaticSchedulingDirector implements
      *  then return the requested time.
      *  @param actor The actor scheduled to be fired.
      *  @param time The requested time.
+     *  @return The time at which the actor passed as an argument
+     *   will be fired.
      *  @exception IllegalActionException If the operation is not
      *    permissible (e.g. the given time is in the past).
      */

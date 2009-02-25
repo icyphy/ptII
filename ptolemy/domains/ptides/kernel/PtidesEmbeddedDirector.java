@@ -491,7 +491,9 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
      * @param actor
      *            The scheduled actor to fire.
      * @param time
-     *            The scheduled time to fire. 
+     *            The scheduled time to fire.
+     *  @return The time at which the actor passed as an argument
+     *   will be fired. 
      * @exception IllegalActionException
      *                If event queue is not ready.
      */

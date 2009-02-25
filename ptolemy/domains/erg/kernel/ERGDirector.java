@@ -354,6 +354,8 @@ public class ERGDirector extends Director implements TimedDirector,
      *
      *  @param actor The actor scheduled to be fired.
      *  @param time The scheduled time.
+     *  @return The time at which the actor passed as an argument
+     *   will be fired.
      *  @exception IllegalActionException If the operation is not
      *   permissible (e.g. the given time is in the past), or if the executive director
      *   does not support fireAt() precisely (it does not agree to refire

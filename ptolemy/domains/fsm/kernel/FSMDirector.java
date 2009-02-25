@@ -339,6 +339,8 @@ public class FSMDirector extends Director implements
      *  DEDirector and SDFDirector behave exactly this way.
      *  @param actor The actor scheduled to be fired.
      *  @param time The scheduled time.
+     *  @return The time at which the actor passed as an argument
+     *   will be fired.
      *  @exception IllegalActionException If thrown by the executive director.
      */
     public Time fireAt(Actor actor, Time time) throws IllegalActionException {

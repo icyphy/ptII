@@ -213,6 +213,8 @@ public class DDEDirector extends CompositeProcessDirector implements
      *
      * @param actor The actor scheduled to fire.
      * @param time The scheduled time to fire.
+     *  @return The time at which the actor passed as an argument
+     *   will be fired.
      * @exception IllegalActionException If the specified time is in
      * the past or if the thread calling this method is a DDEThread
      * but the specified actor is not contained by the DDEThread.

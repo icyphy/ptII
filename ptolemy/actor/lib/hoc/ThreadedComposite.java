@@ -587,6 +587,8 @@ public class ThreadedComposite extends MirrorComposite {
          *  throw an exception if the modified time is not acceptable. 
          *  @param actor The actor requesting firing.
          *  @param time The time at which to fire.
+         *  @return The time at which the actor passed as an argument
+         *   will be fired.  
          *  @exception IllegalActionException If the executive director throws it.
          */
         public Time fireAt(Actor actor, Time time)

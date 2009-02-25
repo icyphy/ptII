@@ -486,6 +486,8 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  breakpoint table.
      *  @param actor The actor that requests the firing.
      *  @param time The requested firing time.
+     *  @return The time at which the actor passed as an argument
+     *   will be fired.  
      *  @exception IllegalActionException If the time is earlier than
      *  the current time.
      */
