@@ -92,16 +92,15 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
     /** Awake the thread running this actor.
      */
     public void fire() {
-        // Set the flag to false, to make sure only this actor wakes up.
-        _isWaiting = false;
 
         synchronized (_monitor) {
-            _monitor.notifyAll();
-        }
+            // Set the flag to false, to make sure only this actor wakes up.
+            _isWaiting = false;
+            
+            _monitor.notifyAll();        
 
-        // then wait until this actor go to wait.
-        while (!_isWaiting) {
-            synchronized (_monitor) {
+            // then wait until this actor go to wait.
+            while (!_isWaiting) {
                 try {
                     _monitor.wait();
                 } catch (InterruptedException e) {
@@ -129,16 +128,14 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
      */
     public void waitForNewInputs() {
         _emptyPorts();
-
-        // Set the flag to true, so the director can wake up.
-        _isWaiting = true;
-
+        
         synchronized (_monitor) {
+            // Set the flag to true, so the director can wake up.
+            _isWaiting = true;
+        
             _monitor.notifyAll();
-        }
 
-        while (_isWaiting) {
-            synchronized (_monitor) {
+            while (_isWaiting) {
                 try {
                     _monitor.wait();
                 } catch (InterruptedException e) {
