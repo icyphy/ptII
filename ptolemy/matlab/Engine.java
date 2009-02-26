@@ -180,7 +180,7 @@ public class Engine {
     static int engOutputBufferSize = 2048;
 
     /** Used for synchronization. */
-    public static final Object semaphore = Integer.valueOf(0);
+    public static final Object semaphore = new Object();
 
     // semaphore is public so that javadoc works.
     // ptolemy.matlab.Expression also uses this semaphore

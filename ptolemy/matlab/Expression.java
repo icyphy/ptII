@@ -389,7 +389,7 @@ public class Expression extends TypedAtomicActor {
         engine = null;
     }
 
-    private Engine matlabEngine = null;
+    private transient Engine matlabEngine = null;
 
     long[] engine = null;
 
@@ -401,5 +401,5 @@ public class Expression extends TypedAtomicActor {
 
     private Token _previousPath = null;
 
-    private ConversionParameters _dataParameters;
+    private transient ConversionParameters _dataParameters;
 }
