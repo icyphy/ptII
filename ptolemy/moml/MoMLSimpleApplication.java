@@ -220,14 +220,14 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-    private Manager _manager = null;
+    ////                         protected variables                 ////
+    protected Manager _manager = null;
 
     // executionError() sets _sawThrowable to the exception.
-    private Throwable _sawThrowable = null;
+    protected Throwable _sawThrowable = null;
 
     // Wait until executionFinished() or executionError() is called.
     // If true and _sawThrowable is null then executionFinished() was called.
     // If true and _sawThrowable is non-null then executionError() was called.
-    private boolean _executionFinishedOrError = false;
+    protected boolean _executionFinishedOrError = false;
 }
