@@ -489,7 +489,6 @@ ALL1_4PACKAGES = \
 	ptolemy.codegen.java.actor.lib.logic \
 	ptolemy.codegen.java.actor.lib.string \
 	ptolemy.codegen.java.actor.lib \
-	ptolemy.codegen.java.domains.sdf \
 	ptolemy.codegen.kernel \
 	ptolemy.codegen.vhdl.actor.lib.vhdl \
 	ptolemy.codegen.vhdl.kernel \
@@ -818,6 +817,14 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 	@echo 'make JDOCFLAGS="-author -version -J-Xmx512m $(JDOCBREAKITERATOR)"'
 	-(cd ..; CLASSPATH="$(CLASSPATH)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDoc $(ALLPACKAGES) )
 
+# Rule to check that ALLPACKAGES names directories that exist
+chkallpackages:
+	(cd ..; ls -dl `echo "$(ALLPACKAGES)" | sed 's/\*.java//g' | sed 's@\.@/@g'`) > /dev/null
+
+# Command to check to see if package.html exists
+# Try "make chkpackagehtml | $PTII/adm/bin/mkpackagehtml"
+chkpackagehtml:
+	@(cd ..; $(PTII)/adm/bin/chkpackagehtml `echo "$(ALLPACKAGES)" | sed 's/\*.java//g'`)
 
 # PtDoc, the XML format
 PTDOCPACKAGES = $(ALL1_4PACKAGES)
@@ -1030,7 +1037,7 @@ doccheck/index.html:
 #
 
 # Location of the FindBugs sources
-FINDBUGS=../vendors/findbugs-1.3.6
+FINDBUGS=../vendors/findbugs-1.3.7
 
 # findbugs.xml is special to findbugs, if we use findbugs.xml, we get:
 # Warning: could not load plugin file:/c:/cxh/ptII/vendors/findbugs-1.3.1/plugin/coreplugin.jar: java.security.PrivilegedActionException: edu.umd.cs.findbugs.PluginException: Couldn't parse "findbugs.xml"
