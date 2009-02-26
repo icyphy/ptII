@@ -224,7 +224,7 @@ public class StaticResources {
 
         boolean val = defaultVal;
         try {
-            val = new Boolean(getString(key, getUISettingsBundle()))
+            val = Boolean.valueOf(getString(key, getUISettingsBundle()))
                     .booleanValue();
         } catch (Exception ex) {
             if (isDebugging) {
@@ -433,9 +433,9 @@ public class StaticResources {
     public static final short SVG_DIVA_RENDERING = 1;
     public static final short SVG_BATIK_RENDERING = 2;
 
-    public static int WINDOWS = 1;
-    public static int MAC_OSX = 2;
-    public static int LINUX = 3;
+    public static final int WINDOWS = 1;
+    public static final int MAC_OSX = 2;
+    public static final int LINUX = 3;
 
     static {
         try {
