@@ -30,6 +30,10 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.Graphics;
+import java.awt.print.PageFormat;
+import java.awt.print.PrinterException;
+import java.awt.print.Printable;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -122,7 +126,7 @@ public class RunTableau extends Tableau {
 
     /** The frame that is created by an instance of RunTableau.
      */
-    public class RunFrame extends ModelFrame {
+    public class RunFrame extends ModelFrame implements Printable {
         /** Construct a frame to control the specified Ptolemy II model.
          *  After constructing this, it is necessary
          *  to call setVisible(true) to make the frame appear.
@@ -134,6 +138,31 @@ public class RunTableau extends Tableau {
         public RunFrame(CompositeActor model, Tableau tableau) {
             super(model, tableau);
         }
+
+	/** Print the plot to a printer, represented by the specified graphics
+	 *  object.
+	 *  @param graphics The context into which the page is drawn.
+	 *  @param format The size and orientation of the page being drawn.
+	 *  @param index The zero based index of the page to be drawn.
+	 *  @return PAGE_EXISTS if the page is rendered successfully, or
+	 *   NO_SUCH_PAGE if pageIndex specifies a non-existent page.
+	 *  @exception PrinterException If the print job is terminated.
+	 */
+	public synchronized int print(Graphics graphics, PageFormat format,
+				      int index) throws PrinterException {
+	    if (graphics == null) {
+		return Printable.NO_SUCH_PAGE;
+	    }
+
+	    // We only print on one page.
+	    // FIXME: we should allow printing to multiple pages
+	    if (index >= 1) {
+		return Printable.NO_SUCH_PAGE;
+	    }
+
+	    paint(graphics);
+	    return Printable.PAGE_EXISTS;
+	}
 
         ///////////////////////////////////////////////////////////////////
         ////                         protected methods                 ////

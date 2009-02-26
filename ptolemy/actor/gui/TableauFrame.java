@@ -32,6 +32,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.print.PrinterException;
 import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -324,6 +325,15 @@ public class TableauFrame extends Top {
                 super.pack();
             }
         }
+    }
+
+    /** If a PDF printer is available print to it.
+     *  @exception PrinterException If a printer with the string "PDF"
+     * cannot be found or if the job cannot be set to the PDF print
+     * service or if there is another problem printing.
+     */
+    public void printPDF() throws PrinterException {
+	_printPDF();
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -201,12 +201,16 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  This constructor results in a graph frame that obtains its library
      *  either from the model (if it has one), or the <i>defaultLibrary</i>
      *  argument (if it is non-null), or the default library defined
-     *  in the configuration.
+     *  in the configuration.  
      *  @see Tableau#show()
      *  @param entity The model or object to put in this frame.
      *  @param tableau The tableau responsible for this frame.
      *  @param defaultLibrary An attribute specifying the default library
-     *   to use if the model does not have a library.
+     *   to use if the model does not have a library.   The <i>defaultLibrary</i>
+     *  attribute is only read if the model does not have a 
+     *  @{link ptolemy.moml.LibraryAttribute} with the name
+     *  "<code>_library</code>", or if the LibraryAttribute cannot be
+     *  read.
      */
     public BasicGraphFrame(NamedObj entity, Tableau tableau,
             LibraryAttribute defaultLibrary) {
@@ -767,8 +771,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 GraphEvent.STRUCTURE_CHANGED, graphModel.getRoot()));
     }
 
-    /** Override the dispose method to unattach any listeners that may keep
-     *  this model from getting garbage collected.
+    /** Dispose of this frame.
+     * 	Override this dispose() method to unattach any listeners that may keep
+     *  this model from getting garbage collected.  This method calls
+     *  @{link #disposeSuper()}.
      */
     public void dispose() {
         // Remove the association with the library. This is necessary to allow
@@ -779,7 +785,11 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         disposeSuper();
     }
     
+    /** Invoke the dispose() method of the superclass, 
+     *  @{link ptolemy.actor.gui.PtolemyFrame}.
+     */
     public void disposeSuper() {
+	// This method is used by Kepler for the tabbed pane interface.
         super.dispose();
     }
 
@@ -1569,6 +1579,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 // We already printed a message, why print it again?
             } catch (Exception ex) {
                 try {
+		    // FIXME: It seems wrong to call MessageHandler here,
+		    // instead, we should throw an IllegalActionException?
                     MessageHandler.warning(
                             "Invalid default library for the frame.", ex);
                 } catch (CancelException e) {
@@ -2049,12 +2061,17 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         return namedObjSet;
     }
 
+    /** Return true if this is a design pattern.
+     *  @return true if the model corresponding to this object
+     *  has a DesignPatternIcon attribute.
+     */
     protected boolean _isDesignPattern() {
         NamedObj model = getModel();
         return !model.attributeList(DesignPatternIcon.class).isEmpty();
     }
 
     /** Prepare to export a design pattern.
+     *  In this base class, do nothing.	
      */
     protected void _prepareExportDesignPattern() {
     }
@@ -2203,7 +2220,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-	/** The default Library **/
+    /** The default Library. **/
     protected LibraryAttribute _defaultLibrary;
     
     /** The cut action. */

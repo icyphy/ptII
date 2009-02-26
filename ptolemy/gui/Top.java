@@ -39,6 +39,7 @@ import java.awt.event.WindowEvent;
 import java.awt.print.PageFormat;
 import java.awt.print.Pageable;
 import java.awt.print.Printable;
+import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.File;
 import java.io.IOException;
@@ -47,6 +48,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.print.PrintService;
+import javax.print.attribute.standard.Destination;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.swing.JFileChooser;
@@ -657,6 +660,12 @@ public abstract class Top extends JFrame {
         }
     }
 
+    /** Return the current directory.
+     * If {@link #setDirectory(File)} or
+     * {@link #_open()}, then the value of the "user.dir"
+     * property is returned.
+     * @return The current directory.
+     */
     protected File _getCurrentDirectory() {
         if (_directory != null) {
             return _directory;
@@ -824,6 +833,8 @@ public abstract class Top extends JFrame {
         PrintRequestAttributeSet aset = new HashPrintRequestAttributeSet();
         PrinterJob job = PrinterJob.getPrinterJob();
 
+	_macCheck();
+
         if (this instanceof Pageable) {
             job.setPageable((Pageable) this);
         } else if (this instanceof Printable) {
@@ -845,6 +856,72 @@ public abstract class Top extends JFrame {
         }
     }
 
+    /** If a PDF printer is available print to it.
+     *  @exception PrinterException If a printer with the string "PDF"
+     * cannot be found or if the job cannot be set to the PDF print
+     * service or if there is another problem printing.
+     */
+    protected void _printPDF() throws PrinterException {
+	// Find something that will print to PDF
+	boolean foundPDFPrinter = false;
+
+	PrintService pdfPrintService = null;
+	PrintService printServices[] = PrinterJob.lookupPrintServices();
+	for (int i = 0; i < printServices.length; i++) {
+	    if (printServices[i].getName().indexOf("PDF") != -1) {
+		foundPDFPrinter = true;
+		pdfPrintService = printServices[i];
+	    }
+	}
+
+	if (pdfPrintService == null) {
+	    throw new PrinterException("Could not find a printer with the "
+				       + "string \"PDF\" in its name.");
+	}
+
+	PrinterJob job = PrinterJob.getPrinterJob();
+        PageFormat pageFormat = job.defaultPage();
+	job.setPrintService(pdfPrintService);
+
+	PrintRequestAttributeSet aset = new HashPrintRequestAttributeSet();
+
+	_macCheck();
+
+	if (this instanceof Pageable) {
+	    // FIXME: what about the page format?
+	    job.setPageable((Pageable) this);
+	    job.validatePage(pageFormat);
+	} else if (this instanceof Printable) {
+	    job.setPrintable((Printable)this, pageFormat);
+	} else {
+	    System.out.println("Can't print a " + this
+				   + ", it must be either Pageable or Printable");
+	    // Can't print it.
+	    return;
+	}
+	if (foundPDFPrinter) {
+	    // This gets ignored, but let's try it anyway
+	    Destination destination = new Destination(new File("ptolemy.pdf").toURI());
+	    aset.add(destination);
+
+	    // On the Mac, calling job.setJobName() will set the file name,
+	    // but not the directory.
+	    System.out.println("Top._printPDF(): Print Job information, much of which is ignored?\n"
+			       + "JobName: " + job.getJobName() + "\nUserName: " + job.getUserName());
+	    javax.print.attribute.Attribute [] attributes = aset.toArray();
+	    for (int i = 0; i < attributes.length; i++) {
+		System.out.println(attributes[i].getName() + " "
+				   + attributes[i].getCategory() + " "
+				   + attributes[i]);
+	    }
+
+	    job.print(aset);
+	    System.out.println("Window printed from command line. "
+			       + "Under MacOSX, look for "
+			       + "~/Desktop/Java Printing.pdf");
+	}
+    }
+
     /** Print using the native dialog.
      */
     protected void _printNative() {
@@ -860,6 +937,8 @@ public abstract class Top extends JFrame {
         if (defaultFormat == pageFormat) {
             return;
         }
+
+	_macCheck();
 
         if (this instanceof Pageable) {
             // FIXME: what about the page format?
@@ -1136,6 +1215,15 @@ public abstract class Top extends JFrame {
                 _deferredActions.clear();
             }
         }
+    }
+
+    private static void _macCheck() {
+	if ( PtGUIUtilities.macOSLookAndFeel() && System.getProperty("java.version").startsWith("1.5")) {
+	    System.out.println("Warning, under Mac OS X with Java 1.5, printing might "
+			       + "not work.  Try recompiling with Java 1.6 or setting a property:\n"
+			       + "export JAVAFLAGS=-Dptolemy.ptII.print.platform=CrossPlatform\n"
+			       + "and restarting vergil: $PTII/bin/vergil");
+	}
     }
 
     ///////////////////////////////////////////////////////////////////

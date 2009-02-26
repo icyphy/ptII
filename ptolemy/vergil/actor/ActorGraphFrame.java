@@ -58,6 +58,8 @@ import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NamedObj;
@@ -151,9 +153,11 @@ public class ActorGraphFrame extends ExtendedGraphFrame
     ////                        protected methods                ////
 
 
-	/**
-	 * ActorGraphFrame Initializer method
-	 */
+    /**
+     * Initialize this class.
+     * In this base class, the help file is set, and various
+     * actions are instantiated.
+     */
     protected void _initActorGraphFrame() {
 
         // Override the default help file.
@@ -381,15 +385,21 @@ public class ActorGraphFrame extends ExtendedGraphFrame
         }
 
         private void _setBackground() {
+	    // FIXME: It seems kind of expensive to call this each time on repaint.
+	    // Maybe we should get the background color and cache it?
             if (_entity != null) {
-                List list = _entity.attributeList(PtolemyPreferences.class);
-                if (list.size() > 0) {
-                    // Use the last preferences.
-                    PtolemyPreferences preferences = (PtolemyPreferences) list
-                            .get(list.size() - 1);
+		Effigy effigy = Configuration.findEffigy(_entity.toplevel());
+		Configuration configuration = (Configuration)effigy.toplevel();
+		try {
+		    PtolemyPreferences preferences = PtolemyPreferences
+			.getPtolemyPreferencesWithinConfiguration(configuration);
                     getCanvas().setBackground(
                             preferences.backgroundColor.asColor());
-                }
+		} catch (IllegalActionException ex) {
+		    System.err.println("Warning, failed to find Ptolemy Preferences "
+				       + "or set the background, using default.");
+		    ex.printStackTrace();
+		}
             }
         }
 
