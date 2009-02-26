@@ -85,8 +85,8 @@ public class LatticeElementController extends StateController {
     protected ToggleAcceptabilityAction _toggleAcceptabilityAction = 
         new ToggleAcceptabilityAction();
 
-    protected checkIsLatticeAction _checkIsLatticeAction = 
-        new checkIsLatticeAction();
+    protected CheckIsLatticeAction _checkIsLatticeAction = 
+        new CheckIsLatticeAction();
     
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -129,8 +129,8 @@ public class LatticeElementController extends StateController {
         }
     }
 
-    protected class checkIsLatticeAction extends FigureAction {
-        public checkIsLatticeAction() {
+    protected class CheckIsLatticeAction extends FigureAction {
+        public CheckIsLatticeAction() {
             super("Listen to Lattice Checking");
         }
 

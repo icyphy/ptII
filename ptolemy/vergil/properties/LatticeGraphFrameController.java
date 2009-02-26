@@ -47,11 +47,11 @@ public class LatticeGraphFrameController extends FSMGraphController {
         //_transitionController.setEdgeRenderer(new BasicEdgeRenderer());
     }
 
-    protected checkIsLatticeAction _checkIsLatticeAction = 
-        new checkIsLatticeAction();
+    protected CheckIsLatticeAction _checkIsLatticeAction = 
+        new CheckIsLatticeAction();
 
-    protected class checkIsLatticeAction extends FigureAction {
-        public checkIsLatticeAction() {
+    protected class CheckIsLatticeAction extends FigureAction {
+        public CheckIsLatticeAction() {
             super("Check Lattice");
         }
 
