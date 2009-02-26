@@ -684,7 +684,7 @@ public class PtidesDirector extends TimedPNDirector {
     /**
      * The stop time of the model.
      */
-    private Time _stopTime;
+    private transient Time _stopTime;
     
     /** Specify whether the director should wait for elapsed real time to
      *  catch up with model time.
