@@ -384,7 +384,12 @@ public class ArrowKeySensor extends TypedAtomicActor {
 	/* A mouse listener that requests focus for the source of any
 	 * mouse event it receives.
 	 */
-	private static class FocusMouseListener implements MouseListener {
+	private /*static*/ class FocusMouseListener implements MouseListener {
+	        // FindBugs suggests making this class static so as to decrease
+	        // the size of instances and avoid dangling references.
+	        // However, Java does allow inner classes of inner classes to be
+	        // static.	    
+	    
 	    // This is a copy of diva/gui/toolbox/FocusMouseListener.java
 	    // because we don't want the dependency on diva.
 
