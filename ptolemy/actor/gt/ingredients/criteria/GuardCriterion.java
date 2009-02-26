@@ -32,6 +32,7 @@ import ptolemy.actor.gt.ValidationException;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Variable;
 import ptolemy.domains.fsm.kernel.Transition;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
@@ -97,6 +98,8 @@ public class GuardCriterion extends Criterion {
         		try {
 					guardVariable.setContainer(null);
 				} catch (Exception e) {
+			    throw new InternalErrorException("Failed to set container of "
+							     + guardVariable + " to null");
 				}
         	}
         }
