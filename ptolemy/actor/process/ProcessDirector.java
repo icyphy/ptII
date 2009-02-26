@@ -157,8 +157,14 @@ public class ProcessDirector extends Director {
         ProcessDirector newObject = (ProcessDirector) super.clone(workspace);
 
         // Is it really necessary to do this?
+
+        // Findbugs:
+        //  [M M IS] Inconsistent synchronization [IS2_INCONSISTENT_SYNC]
+        // Actually this is not a problem since the object is
+        // being created and hence nobody else has access to it.
+        
         newObject._blockedThreads = new HashSet();
-        newObject._pausedThreads = new HashSet();
+        newObject._pausedThreads = new HashSet();        
         newObject._activeThreads = new HashSet();
         newObject._notDone = true;
         return newObject;

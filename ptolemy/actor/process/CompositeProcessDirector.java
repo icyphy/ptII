@@ -178,6 +178,12 @@ public class CompositeProcessDirector extends ProcessDirector {
         newObj._onFirstIteration = true;
         newObj._inputBranchController = null;
         newObj._outputBranchController = null;
+        
+        // Findbugs:
+        //  [M M IS] Inconsistent synchronization [IS2_INCONSISTENT_SYNC]
+        // Actually this is not a problem since the object is
+        // being created and hence nobody else has access to it.
+        
         newObj._blockedReceivers = new HashSet();
         newObj._branchControllerLock = new Object();
         return newObj;

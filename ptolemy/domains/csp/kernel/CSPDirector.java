@@ -177,7 +177,13 @@ public class CSPDirector extends CompositeProcessDirector implements
         CSPDirector newObject = (CSPDirector) super.clone(workspace);
 
         // newObject._actorsBlocked = 0;
-        newObject._actorsDelayed = 0;
+        
+        // Findbugs:
+        //  [M M IS] Inconsistent synchronization [IS2_INCONSISTENT_SYNC]
+        // Actually this is not a problem since the object is
+        // being created and hence nobody else has access to it.
+                
+        newObject._actorsDelayed = 0;        
         newObject._delayedActorList = new LinkedList();
         return newObject;
     }
