@@ -311,7 +311,7 @@ public class BranchController implements Runnable {
      *  @param active The indicator of whether this branch controller
      *   will be set active or inactive.
      */
-    public void setActive(boolean active) {
+    public synchronized void setActive(boolean active) {
         _isActive = active;
     }
 
