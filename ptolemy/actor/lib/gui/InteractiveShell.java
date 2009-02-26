@@ -164,6 +164,11 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
         newObject.shell = null;
         newObject._container = null;
         newObject._frame = null;
+        
+        // Findbugs:
+        //  [M M IS] Inconsistent synchronization [IS2_INCONSISTENT_SYNC]
+        // Actually this is not a problem since the object is
+        // being created and hence nobody else has access to it.
 	newObject._outputValues = new LinkedList<String>();
 
 	try {
@@ -249,21 +254,21 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
      *  @return The output string to be sent.
      *  @see #setOutput(String)
      */
-    public String getOutput() {
+    public synchronized String getOutput() {
+        // Added synchronized again to not miss
+        // notifications. Wait will release the lock and
+        // retake it after it is notified.
         while ((_outputValues.size() < 1) && !_stopRequested) {
             try {
                 // NOTE: Do not call wait on this object directly!
                 // If another thread tries to get write access to the
                 // workspace, it will deadlock!  This method releases
                 // all read accesses on the workspace before doing the
-                // wait. Note that this cannot be called from within
-                // a synchronized(this) block without additional
-                // risk of deadlock.
+                // wait.
                 workspace().wait(this);
             } catch (InterruptedException ex) {
             }
         }
-
         if (_stopRequested) {
             return ("");
         } else {
@@ -417,9 +422,8 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
      *  any waiting.
      */
     public void stop() {
-        super.stop();
-
         synchronized (this) {
+            super.stop();        
             notifyAll();
         }
     }
