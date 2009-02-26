@@ -183,7 +183,7 @@ public class Transform extends GTEvent implements ConfigurableEntity {
 
     public TransformationMode mode;
 
-    public class EmbeddedConfigurer extends Configurer {
+    public static class EmbeddedConfigurer extends Configurer {
 
         public EmbeddedConfigurer(Workspace workspace)
                 throws IllegalActionException, NameDuplicationException {

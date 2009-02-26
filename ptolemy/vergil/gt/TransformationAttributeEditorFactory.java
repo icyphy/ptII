@@ -123,7 +123,7 @@ public class TransformationAttributeEditorFactory extends EditorFactory {
         }
     }
 
-    private class ExecutionThread extends Thread {
+    private static class ExecutionThread extends Thread {
 
         public void run() {
             Manager manager = _attribute.getModelUpdater().getManager();

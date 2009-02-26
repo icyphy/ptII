@@ -262,7 +262,7 @@ public class HierarchicalModeController extends StateController {
     }
 
     /** Action to remove refinements. */
-    private class RemoveRefinementAction extends FigureAction {
+    private static class RemoveRefinementAction extends FigureAction {
         public RemoveRefinementAction() {
             super("Remove Refinement");
         }

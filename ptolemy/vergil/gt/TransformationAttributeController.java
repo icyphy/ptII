@@ -184,7 +184,7 @@ public class TransformationAttributeController extends AttributeController {
         private BasicGraphFrame _parent;
     }
 
-    private class LookInsideAction extends FigureAction {
+    private static class LookInsideAction extends FigureAction {
 
         public LookInsideAction() {
             super("Open Transformation Controller");

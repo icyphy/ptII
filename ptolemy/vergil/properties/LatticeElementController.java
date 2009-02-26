@@ -95,7 +95,7 @@ public class LatticeElementController extends StateController {
      *  NOTE: This requires that the configuration be non null, or it
      *  will report an error with a fairly cryptic message.
      */
-    protected class ToggleAcceptabilityAction extends FigureAction {
+    protected static class ToggleAcceptabilityAction extends FigureAction {
         public ToggleAcceptabilityAction() {
             super("Toggle Acceptability");
 
@@ -129,7 +129,7 @@ public class LatticeElementController extends StateController {
         }
     }
 
-    protected class CheckIsLatticeAction extends FigureAction {
+    protected static class CheckIsLatticeAction extends FigureAction {
         public CheckIsLatticeAction() {
             super("Listen to Lattice Checking");
         }

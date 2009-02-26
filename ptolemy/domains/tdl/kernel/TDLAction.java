@@ -147,7 +147,7 @@ public class TDLAction {
      * This class compares two TDL actions.
      * @author Patricia Derler
      */
-    public class TDLActionComparator implements Comparator  {
+    public static class TDLActionComparator implements Comparator  {
 
         /**
          * Compare two TDLEvents. Two TDL Events are the same if all

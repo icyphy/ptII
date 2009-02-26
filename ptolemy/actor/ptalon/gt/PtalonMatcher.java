@@ -145,7 +145,7 @@ public class PtalonMatcher extends TypedCompositeActor
 
     public FileParameter ptalonCodeLocation;
 
-    public class NestedPtalonActor extends PtalonActor
+    public static class NestedPtalonActor extends PtalonActor
             implements GTCompositeActor {
 
         public NestedPtalonActor(CompositeEntity container, String name)

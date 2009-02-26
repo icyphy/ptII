@@ -384,7 +384,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
 	/* A mouse listener that requests focus for the source of any
 	 * mouse event it receives.
 	 */
-	private class FocusMouseListener implements MouseListener {
+	private static class FocusMouseListener implements MouseListener {
 	    // This is a copy of diva/gui/toolbox/FocusMouseListener.java
 	    // because we don't want the dependency on diva.
 
@@ -445,7 +445,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
         }
     }
 
-    private class ActionListenerExceptionCatcher implements ActionListener {
+    private static class ActionListenerExceptionCatcher implements ActionListener {
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
         

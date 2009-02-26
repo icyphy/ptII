@@ -50,7 +50,7 @@ public class LatticeGraphFrameController extends FSMGraphController {
     protected CheckIsLatticeAction _checkIsLatticeAction = 
         new CheckIsLatticeAction();
 
-    protected class CheckIsLatticeAction extends FigureAction {
+    protected static class CheckIsLatticeAction extends FigureAction {
         public CheckIsLatticeAction() {
             super("Check Lattice");
         }

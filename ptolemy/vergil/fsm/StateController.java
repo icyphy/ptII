@@ -348,7 +348,7 @@ public class StateController extends AttributeController {
 
     @version $Id$
    */
-   private class RemoveIconAction extends FigureAction {
+   private static class RemoveIconAction extends FigureAction {
       public RemoveIconAction() {
           super("Remove Custom Icon");
       }

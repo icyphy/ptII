@@ -333,7 +333,7 @@ public class ArrayOfRecordsPane extends JPanel {
     }
     
     /** Table panel. */
-    private class SimpleTable extends JTable {
+    private static class SimpleTable extends JTable {
         public SimpleTable() {
             super();
             // Adjust column widths automatically.

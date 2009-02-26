@@ -2323,7 +2323,7 @@ public class CacheAwareScheduler extends SDFScheduler {
      *  No of firings already done,
      *  No of times its fireable at an instant.
      */
-    private class ActorRecord {
+    private static class ActorRecord {
         /** Construct an ActorRecord
          */
         public ActorRecord() {

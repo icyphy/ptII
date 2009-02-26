@@ -305,7 +305,7 @@ public class PropertyHighlighter extends NodeControllerFactory {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
     
-    private class EditHighlightDialog extends EditParametersDialog  {
+    private static class EditHighlightDialog extends EditParametersDialog  {
         
         /** Construct a dialog with the specified owner and target.
          *  A "Commit" and a "Cancel" button are added to the dialog.

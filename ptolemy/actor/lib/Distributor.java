@@ -230,7 +230,7 @@ public class Distributor extends Transformer implements SequenceActor {
      * of the parameter, but will only do it when the token is requested to
      * delay the triggering of the width.
      */
-    private class WidthDependentParameter extends Parameter {
+    private static class WidthDependentParameter extends Parameter {
         public WidthDependentParameter(NamedObj container, String name, Token token,
                 IOPort port) throws IllegalActionException, NameDuplicationException {
             super(container, name, token);

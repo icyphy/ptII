@@ -409,7 +409,7 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
     // /////////////////////////////////////////////////////////////////
     // // SMVFileFilter
     /** A file filter that accepts files that end with ".smv". */
-    protected class SMVFileFilter extends javax.swing.filechooser.FileFilter {
+    protected static class SMVFileFilter extends javax.swing.filechooser.FileFilter {
 
         /**
          * Return true if the file name ends with ".smv".

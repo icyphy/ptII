@@ -31,12 +31,10 @@ package ptolemy.vergil.properties;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.net.URL;
 
 import javax.swing.KeyStroke;
 
 import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.TableauFrame;
 import ptolemy.domains.properties.kernel.ModelAttribute;
 import ptolemy.kernel.CompositeEntity;
@@ -97,7 +95,7 @@ public class ModelAttributeController extends AttributeController {
         
     }
 
-    private class LookInsideAction extends FigureAction {
+    private static class LookInsideAction extends FigureAction {
 
         public LookInsideAction() {
             super("Open Model");

@@ -71,7 +71,7 @@ public class PreemptivePlatformExecutionStrategy extends
      * @author Patricia Derler
      * 
      */
-    private class WCETComparator implements Comparator {
+    private static class WCETComparator implements Comparator {
         
         protected WCETComparator(Time physicalTime) { 
         } 
