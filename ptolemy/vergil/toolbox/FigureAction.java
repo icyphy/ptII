@@ -446,7 +446,7 @@ public class FigureAction extends AbstractAction {
     ////                         protected variables               ////
 
     /** Offset used when pasting objects. See also OffsetMoMLChangeRequest. */
-    protected static int _PASTE_OFFSET = 20;
+    protected static final int _PASTE_OFFSET = 20;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////

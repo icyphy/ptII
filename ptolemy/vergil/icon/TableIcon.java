@@ -288,13 +288,13 @@ public class TableIcon extends DynamicEditorIcon {
     ////                         protected members                 ////
 
     /** The font used. */
-    protected static Font _labelFont = new Font("SansSerif", Font.PLAIN, 12);
+    protected static final Font _labelFont = new Font("SansSerif", Font.PLAIN, 12);
     
     /** The amount of padding to use around the edges. */
-    protected static double _HORIZONTAL_PADDING = 5.0;
+    protected static final double _HORIZONTAL_PADDING = 5.0;
 
     /** The amount of padding to use around the edges. */
-    protected static double _VERTICAL_PADDING = 3.0;
+    protected static final double _VERTICAL_PADDING = 3.0;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////

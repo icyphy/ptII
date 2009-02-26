@@ -412,10 +412,10 @@ public class PNDirector extends CompositeProcessDirector {
     ////                         public variables                  ////
 
     /** Indicator that a thread is read blocked. */
-    public static boolean READ_BLOCKED = true;
+    public static final boolean READ_BLOCKED = true;
 
     /** Indicator that a thread is write blocked. */
-    public static boolean WRITE_BLOCKED = false;
+    public static final boolean WRITE_BLOCKED = false;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////

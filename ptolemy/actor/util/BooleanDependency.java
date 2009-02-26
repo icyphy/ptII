@@ -192,13 +192,13 @@ public class BooleanDependency implements Dependency {
     /** The additive identity, which has value false and indicates
      *  that there is no dependency.
      */
-    public static BooleanDependency OPLUS_IDENTITY = new BooleanDependency(
+    public static final BooleanDependency OPLUS_IDENTITY = new BooleanDependency(
             false);
 
     /** The multiplicative identity, which has value true and
      *  indicates that there is a dependency.
      */
-    public static BooleanDependency OTIMES_IDENTITY = new BooleanDependency(
+    public static final BooleanDependency OTIMES_IDENTITY = new BooleanDependency(
             true);
 
     ///////////////////////////////////////////////////////////////////

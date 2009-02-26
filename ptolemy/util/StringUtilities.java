@@ -1084,7 +1084,7 @@ public class StringUtilities {
      *  set it to a different directory.
      *  @see #preferencesDirectory()
      */
-    public static String PREFERENCES_DIRECTORY = ".ptolemyII";
+    public static final String PREFERENCES_DIRECTORY = ".ptolemyII";
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

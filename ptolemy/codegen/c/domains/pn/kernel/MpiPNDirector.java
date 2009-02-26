@@ -73,7 +73,7 @@ import ptolemy.kernel.util.StringAttribute;
  */
 public class MpiPNDirector extends Director {
 
-	public static boolean _DEBUG = false;
+	public static final boolean _DEBUG = false;
 
 	/**
 	 * Construct the code generator helper associated with the given PNDirector.

@@ -1170,7 +1170,7 @@ public class Complex {
      *  public so that it can be changed on platforms with different
      *  precisions.
      */
-    public static double EPSILON = 1.0e-9;
+    public static final double EPSILON = 1.0e-9;
 
     /** A Complex number representing negative infinity, by which we mean
      *  that both the real and imaginary parts are equal to

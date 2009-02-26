@@ -196,5 +196,5 @@ public class AttributeValueIcon extends XMLIcon {
     ////                         protected members                 ////
 
     /** The font used. */
-    protected static Font _labelFont = new Font("SansSerif", Font.PLAIN, 12);
+    protected static final Font _labelFont = new Font("SansSerif", Font.PLAIN, 12);
 }

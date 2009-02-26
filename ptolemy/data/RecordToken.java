@@ -427,7 +427,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
     ////                         public variables                  ////
     
     /** Empty Record. */
-    public static RecordToken EMPTY_RECORD = new RecordToken();
+    public static final RecordToken EMPTY_RECORD = new RecordToken();
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////

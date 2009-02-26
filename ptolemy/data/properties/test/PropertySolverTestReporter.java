@@ -468,7 +468,7 @@ public class PropertySolverTestReporter {
     private static String _statsFilename = _statsDirectory
             + "/propertyTestReports.tsv";
 
-    protected static String _separator = "\t";
+    protected static final String _separator = "\t";
 
 
 }

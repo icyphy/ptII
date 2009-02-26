@@ -203,7 +203,7 @@ public class LocatableNodeController extends BasicNodeController {
      *  PDF to rasterize, which significantly degrades the quality of the
      *  graphic output. Used to have value 200.
      */
-    public static Color CLASS_ELEMENT_HIGHLIGHT_COLOR = new Color(255, 128, 128);
+    public static final Color CLASS_ELEMENT_HIGHLIGHT_COLOR = new Color(255, 128, 128);
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////

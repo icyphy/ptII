@@ -185,11 +185,11 @@ public class RealDependency implements Dependency {
     // this vulnerability."
 
     /** The additive identity. */
-    public static RealDependency OPLUS_IDENTITY = new RealDependency(
+    public static final RealDependency OPLUS_IDENTITY = new RealDependency(
             Double.POSITIVE_INFINITY);
 
     /** The multiplicative identity. */
-    public static RealDependency OTIMES_IDENTITY = new RealDependency(0.0);
+    public static final RealDependency OTIMES_IDENTITY = new RealDependency(0.0);
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

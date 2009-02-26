@@ -730,7 +730,7 @@ public abstract class BaseType implements Type, Serializable {
      *  value, but to allow its type to resolve to the specific record
      *  specified.
      */
-    static public RecordType RECORD = RecordType.EMPTY_RECORD;
+    static public final RecordType RECORD = RecordType.EMPTY_RECORD;
 
     ///////////////////////////////////////////////////////////////////
     ////                      private constructor                  ////

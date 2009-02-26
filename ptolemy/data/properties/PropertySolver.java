@@ -923,7 +923,7 @@ public abstract class PropertySolver extends PropertySolverBase {
 
     HashMap<Object, Property> _previousProperties = new HashMap<Object, Property>();
 
-    protected static String _eol = StringUtilities
+    protected static final String _eol = StringUtilities
     .getProperty("line.separator");
 
     /* The display label for "annotate" in the action choices */

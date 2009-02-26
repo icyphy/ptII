@@ -349,8 +349,8 @@ public class PtolemyPreferences extends ScopeExtendingAttribute {
     ////                       public variables                    ////
 
     /** The file name where user-defined preferences are stored. */
-    public static String PREFERENCES_FILE_NAME = "PtolemyPreferences.xml";
+    public static final String PREFERENCES_FILE_NAME = "PtolemyPreferences.xml";
 
     /** The location with the configuration of the preferences attribute. */
-    public static String PREFERENCES_WITHIN_CONFIGURATION = "actor library.Utilities.LocalPreferences";
+    public static final String PREFERENCES_WITHIN_CONFIGURATION = "actor library.Utilities.LocalPreferences";
 }

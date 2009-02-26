@@ -330,7 +330,7 @@ public class CommandLineTemplate {
     protected int _openCount = 0;
 
     /** Are we testing? */
-    protected static boolean _test = false;
+    protected static final boolean _test = false;
 
     /** The time that creating the model started */
     protected static long _parseStartTime;

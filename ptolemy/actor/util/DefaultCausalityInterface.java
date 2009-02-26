@@ -405,14 +405,8 @@ public class DefaultCausalityInterface implements CausalityInterface {
     /** A record of removed dependencies from output to input, if any. */
     protected Map<IOPort, Set<IOPort>> _backwardPrunedDependencies;
 
-    // FIXME: FindBugs suggests that _EMPTY_COLLECTION should be final
-    // "MS: Field isn't final but should be (MS_SHOULD_BE_FINAL)
-    // A mutable static field could be changed by malicious code or by
-    // accident from another package. The field could be made final to avoid
-    // this vulnerability."
-
     /** Empty collection for use by dependentPort(). */
-    protected static Collection<IOPort> _EMPTY_COLLECTION = new LinkedList<IOPort>();
+    protected static final Collection<IOPort> _EMPTY_COLLECTION = new LinkedList<IOPort>();
 
     /** The default dependency of an output port on an input port. */
     protected Dependency _defaultDependency;

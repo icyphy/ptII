@@ -132,13 +132,13 @@ public abstract class WithIconGraphController extends BasicGraphController {
     ////                         protected variables               ////
 
     /** The edit custom icon action. */
-    protected static EditIconAction _editIconAction = new EditIconAction();
+    protected static final EditIconAction _editIconAction = new EditIconAction();
 
     /** The port controller. */
     protected NamedObjController _portController;
 
     /** The remove custom icon action. */
-    protected static RemoveIconAction _removeIconAction = new RemoveIconAction();
+    protected static final RemoveIconAction _removeIconAction = new RemoveIconAction();
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

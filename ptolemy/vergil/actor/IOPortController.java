@@ -135,7 +135,7 @@ public class IOPortController extends AttributeController {
     ////                         public variables                  ////
 
     /** The spacing between individual connections to a multiport. */
-    public static double MULTIPORT_CONNECTION_SPACING = 5.0;
+    public static final double MULTIPORT_CONNECTION_SPACING = 5.0;
 
     ///////////////////////////////////////////////////////////////////
     ////                      protected methods                    ////

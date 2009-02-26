@@ -336,7 +336,7 @@ public class UserActorLibrary {
      *  "UserLibrary".  The value of this variable is what appears
      *  in the Vergil left hand tree menu.
      */
-    public static String USER_LIBRARY_NAME = "UserLibrary";
+    public static final String USER_LIBRARY_NAME = "UserLibrary";
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////

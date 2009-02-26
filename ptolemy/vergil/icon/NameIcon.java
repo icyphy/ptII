@@ -306,7 +306,7 @@ public class NameIcon extends EditorIcon {
     ////                         protected members                 ////
 
     /** The font used. */
-    protected static Font _labelFont = new Font("SansSerif", Font.PLAIN, 12);
+    protected static final Font _labelFont = new Font("SansSerif", Font.PLAIN, 12);
 
     /** Most recent value of the rounding parameter. */
     protected double _roundingValue = 0.0;

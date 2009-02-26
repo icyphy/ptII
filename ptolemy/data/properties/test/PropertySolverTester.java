@@ -254,7 +254,7 @@ public class PropertySolverTester {
         return toplevel;
     }
 
-    protected static String _eol = StringUtilities
+    protected static final String _eol = StringUtilities
             .getProperty("line.separator");
 
     private static HashMap _options = new HashMap();

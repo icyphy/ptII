@@ -258,7 +258,7 @@ public class PortConfigurerDialog extends PtolemyDialog implements
     ////                         public variables                  ////
 
     /** The background color of an uneditable cell. */
-    public static Color UNEDITABLE_CELL_COLOR = new Color(255, 128, 128);
+    public static final Color UNEDITABLE_CELL_COLOR = new Color(255, 128, 128);
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

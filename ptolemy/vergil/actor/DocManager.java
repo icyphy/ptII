@@ -1137,7 +1137,7 @@ public class DocManager extends HandlerBase {
     /** The standard DocML DTD, represented as a string.  This is used
      *  to parse DocML data when a compatible PUBLIC DTD is specified.
      */
-    public static String DocML_DTD_1 = "<!ELEMENT doc (author | description | port | property | Pt.AcceptedRating | Pt.ProposedRating | since | version)*><!ATTLIST doc name CDATA #REQUIRED class CDATA #REQUIRED><!ELEMENT author (#PCDATA)><!ELEMENT description (#PCDATA)><!ELEMENT port (#PCDATA)><!ATTLIST port name CDATA #REQUIRED><!ELEMENT property (#PCDATA)><!ATTLIST property name CDATA #REQUIRED><!ELEMENT Pt.acceptedRating (#PCDATA)><!ELEMENT Pt.proposedRating (#PCDATA)><!ELEMENT since (#PCDATA)><!ELEMENT version (#PCDATA)>";
+    public static final String DocML_DTD_1 = "<!ELEMENT doc (author | description | port | property | Pt.AcceptedRating | Pt.ProposedRating | since | version)*><!ATTLIST doc name CDATA #REQUIRED class CDATA #REQUIRED><!ELEMENT author (#PCDATA)><!ELEMENT description (#PCDATA)><!ELEMENT port (#PCDATA)><!ATTLIST port name CDATA #REQUIRED><!ELEMENT property (#PCDATA)><!ATTLIST property name CDATA #REQUIRED><!ELEMENT Pt.acceptedRating (#PCDATA)><!ELEMENT Pt.proposedRating (#PCDATA)><!ELEMENT since (#PCDATA)><!ELEMENT version (#PCDATA)>";
 
     // NOTE: The master file for the above DTD is at
     // $PTII/ptolemy/vergil/basic/DocML_1.dtd.  If modified, it needs to be also
