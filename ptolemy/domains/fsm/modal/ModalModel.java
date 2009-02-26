@@ -346,8 +346,8 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
         return result;
     }
 
-    /** Override the base class so that if the controller has
-     *  FIXME
+    /** Get representation of dependencies between input ports and
+     *  output ports.
      *  @return A representation of the dependencies between input ports
      *   and output ports.
      */

@@ -52,7 +52,7 @@ import ptolemy.moml.filter.BackwardCompatibility;
  *  <pre>
  *     java -classpath $PTII ptolemy.moml.ConvertToLazy inputMoML.xml <i>numberOfEntities</i> &gt; outputMoML.xml
  *  </pre>
- *  If the <i>numberOfEntities<i> argument is not supplied, then it
+ *  If the <i>numberOfEntities</i> argument is not supplied, then it
  *  defaults to 100.
  
  @author Edward A. Lee

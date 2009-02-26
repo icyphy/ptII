@@ -138,7 +138,7 @@ public class AttributeController extends IconController {
     /** The appearance menu factory. */
     protected MenuActionFactory _appearanceMenuActionFactory;
     
-    /** Action to launch rename dialog*/
+    /** Action to launch rename dialog. */
     protected RenameDialogAction _renameAction;
 
     ///////////////////////////////////////////////////////////////////

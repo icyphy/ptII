@@ -365,8 +365,8 @@ public class KeplerDocumentationAttribute extends Attribute implements
 
     }
 
-    /** return the document class
-     * @return the document class
+    /** Return the document class.
+     *  @return the document class or the empty string.
      *  @see #setDocClass(String)
      */
     public String getDocClass() {
@@ -397,8 +397,8 @@ public class KeplerDocumentationAttribute extends Attribute implements
         return (String) _portHash.get(name);
     }
 
-    /** return the port hash
-     *  @return the port has
+    /** Return the port hash.
+     *  @return the port hash
      *  @see #setPortHash(Hashtable)
      */
     public Hashtable getPortHash() {

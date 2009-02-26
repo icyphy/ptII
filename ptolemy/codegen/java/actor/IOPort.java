@@ -49,11 +49,11 @@ import ptolemy.kernel.util.IllegalActionException;
 ////IOPort
 
 /**
-Code generator helper for IOPort.
+Code generator helper for {@link ptolemy.actor.IOPort}.
 
 @author Man-Kit Leung
 @version $Id$
-@since Ptolemy II 7.0
+@since Ptolemy II 7.2
 @Pt.ProposedRating Red (mankit)
 @Pt.AcceptedRating Red (mankit)
  */
@@ -115,6 +115,7 @@ public class IOPort extends JavaCodeGeneratorHelper implements PortCodeGenerator
                 result += offset + ", ";
             }
 
+	    // FIXME: why does this depend on PN?
             PNDirector pnDirector = (PNDirector) _getHelper(director);
             result += "&" + PNDirector.generatePortHeader(port, channel) + ", ";
             result += "&" + pnDirector.generateDirectorHeader() + ")";
@@ -595,6 +596,13 @@ public class IOPort extends JavaCodeGeneratorHelper implements PortCodeGenerator
     }
 
 
+    /** Update the offset of the channel.
+     *  @param channel The channel number of the channel to be offset.
+     *  @param rate The firing rate of the port.
+     *  @return The code that represents the offset to the channel, 
+     *  @exception IllegalActionException If thrown while getting a token,
+     *  helper, read offset or buffer size.
+     */
     protected String _updateOffset(int channel, int rate) throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         boolean padBuffers = ((BooleanToken) _codeGenerator.padBuffers
@@ -663,7 +671,9 @@ public class IOPort extends JavaCodeGeneratorHelper implements PortCodeGenerator
     /** Get the buffer size of channel of the port.
      *  @param channelNumber The number of the channel that is being set.
      *  @return return The size of the buffer.
-     *  @see #setBufferSize(int, int);
+     *  @see #setBufferSize(int, int)
+     *  @exception IllegalActionException If thrown while getting the width
+     *  of the channel.
      */
     public int getBufferSize(int channelNumber)
 	throws IllegalActionException {
@@ -694,7 +704,6 @@ public class IOPort extends JavaCodeGeneratorHelper implements PortCodeGenerator
     
     /** Get the write offset of a channel of the port.
      *  @param channelNumber The number of the channel.
-     *  @param writeOffset The offset.
      *  @return The write offset.
      *  @exception IllegalActionException If thrown while getting the channel.
      *  @see #setWriteOffset(int, Object)
@@ -710,6 +719,7 @@ public class IOPort extends JavaCodeGeneratorHelper implements PortCodeGenerator
      *  @param channelNumber The number of the channel that is being set.
      *  @param bufferSize The size of the buffer.
      *  @see #getBufferSize(int)
+     * 
      */
     public void setBufferSize(int channelNumber, int bufferSize) {
         Channel channel = _getChannel(channelNumber);

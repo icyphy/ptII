@@ -248,6 +248,11 @@ public class DesignPatternGetMoMLAction {
         }
     }
 
+    /** Add a parameter and expression to the map of parameters
+     *  to override.
+     *  @param name The name of the parameter.
+     *  @param expression The expression of the parameter.
+     */	
     public void overrideParameter(String name, String expression) {
         _overridenParameters.put(name, expression);
     }

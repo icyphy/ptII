@@ -188,9 +188,11 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
     ////                         protected methods                 ////
 
 
-	/**
-	 * ExtendedGraphFrame Initializer method
-	 */
+    /**
+     * Initialize this class.
+     * In this base class, a button for the full screen action
+     * is added to the toolbar.
+     */
     protected void _initExtendedGraphFrame() {
         GUIUtilities.addToolBarButton(_toolbar, _fullScreenAction);
     }

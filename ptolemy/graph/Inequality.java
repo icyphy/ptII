@@ -75,10 +75,15 @@ public class Inequality {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     
-    /** Override to return true if the greater and lesser terms of
+    /** Return true if object named by the argument is equal to
+     *  this Inequality object.
+     *  <p>Override to return true if the greater and lesser terms of
      *  this object are the same as the greater and lesser terms of
      *  the specified object.
      *  @param object Object to compare against.
+     *  @return true If the object is an Inequality and both the
+     *  greater term and lesser term are equal to the corresponding
+     *  terms of this object.
      */
     public boolean equals(Object object) {
         if(object instanceof Inequality) {
@@ -102,7 +107,8 @@ public class Inequality {
         return _lesserTerm;
     }
     
-    /** Override to return the exclusive OR of the hashcodes
+    /** Return the hashCode of this object.
+     *  <p>Override to return the exclusive OR of the hashcodes
      *  of the greater and lesser terms. This ensures that two
      *  objects that return true to equals() have the same
      *  hashcode.

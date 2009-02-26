@@ -93,6 +93,7 @@ public class Configurer extends CompositeActor {
     /** Get the object that this configurer configures.
      *
      *  @return The object that this configurer configures.
+     *  @see #setConfiguredObject(NamedObj)
      */
     public NamedObj getConfiguredObject() {
         return _configured;
@@ -101,6 +102,7 @@ public class Configurer extends CompositeActor {
     /** Set the object that this configurer configures.
      *
      *  @param configured The object that this configurer configures.
+     *  @see #getConfiguredObject()
      */
     public void setConfiguredObject(NamedObj configured) {
         _configured = configured;

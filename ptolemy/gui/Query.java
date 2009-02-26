@@ -1789,6 +1789,11 @@ public class Query extends JPanel {
     /** Panel containing an entry box and color chooser.
      */
     public static class QueryColorChooser extends Box implements ActionListener {
+	/** Create a panel containing an entry box and a color chooser.
+	 *  @param owner The owner query
+	 *  @param name The name of the query
+	 *  @param defaultColor  The initial default color of the color chooser.
+	 */   
         public QueryColorChooser(Query owner, String name, String defaultColor) {
             super(BoxLayout.X_AXIS);
             _owner = owner;
@@ -2078,6 +2083,10 @@ public class Query extends JPanel {
     /** Listener for "CheckBox" and "Choice" entries.
      */
     public static class QueryItemListener implements ItemListener {
+	/** Create a listener for the CheckBox and Choice entries.
+	 *  @param owner The owner query
+	 *  @param name The name of the query
+	 */   
         public QueryItemListener(Query owner, String name) {
             _name = name;
             _owner = owner;

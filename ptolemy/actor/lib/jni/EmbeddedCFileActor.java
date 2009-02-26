@@ -80,10 +80,10 @@ public class EmbeddedCFileActor extends EmbeddedCActor {
     /**
      * Set the embeddedCCode parameter in the EmbeddedCActor to
      * contain the contents of the file specifed by codeBlockFile.
-     * @exception IllegaActionException If there is a problem reading
+     * @exception IllegalActionException If there is a problem reading
      * the code block file.
      */
-    public void changeEmbeddedCCode() throws IllegalActionException{
+    public void changeEmbeddedCCode() throws IllegalActionException {
         BufferedReader reader = null;
 
         try {

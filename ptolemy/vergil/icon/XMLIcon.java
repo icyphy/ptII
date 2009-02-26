@@ -122,20 +122,25 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
     }
     
     /**
-     * this method looks for the _alternateXMLIcon in the configuration
-     * If it is found, it returns an XMLIcon of the class found there, 
-     * if not, it returns an instance of this class
+     * Instantiate an XMLIcon in a NamedObj.  
+     *
+     * <p>This method looks for the _alternateXMLIcon attribute in the
+     * configuration. If it is found, it returns an XMLIcon of the
+     * class found there, if not, it returns an instance of this class.
      * 
      *  @param container The container for this attribute.
      *  @param name The name of this attribute.
-     *  @exception NameDuplicationException
-     *  @exception IllegalActionException
+     *  @return an instance of the XMLIcon class.
+     *  @exception NameDuplicationException  If an object with
+     *  that name already exists in the container.
+     *  @exception IllegalActionException If the specified name contains
+     *   a period.
      */
     public static XMLIcon getXMLIcon(NamedObj container, String name) 
-      throws NameDuplicationException, IllegalActionException {
+	throws NameDuplicationException, IllegalActionException {
         try {
           Class XMLIconClass = _getAlternateXMLIcon();
-          if(XMLIconClass == null) {
+          if (XMLIconClass == null) {
              return new XMLIcon(container, name);
           }
           
@@ -143,40 +148,45 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
           Constructor alternateXMLIconConstructor = XMLIconClass.getConstructor(argsClass);
           XMLIcon xmlIcon = (XMLIcon)alternateXMLIconConstructor.newInstance(new Object[] {container, name});
           return xmlIcon;
-        } catch(Exception e) {
-            System.out.println("Could not instantiate alternate XMLIcon class. " +
-              "Using default XMLIcon.  : " + e.getMessage());
-            e.printStackTrace();
+        } catch(Exception ex) {
+            System.out.println("Warning: could not instantiate alternate XMLIcon class. " +
+              "Using default XMLIcon.  : " + ex.getMessage());
+            ex.printStackTrace();
             return new XMLIcon(container, name);
         } 
     }
     
     /**
-     * this method looks for the _alternateXMLIcon in the configuration
-     * If it is found, it returns an XMLIcon of the class found there, 
-     * if not, it returns an instance of this class
+     * Instantiate an XMLIcon in a Workspace.
+     *
+     * <p>This method looks for the _alternateXMLIcon attribute in the
+     * configuration. If it is found, it returns an XMLIcon of the
+     * class found there, if not, it returns an instance of this class.
      * 
      *  @param workspace The workspace that will list the attribute.
      *  @param name The name of this attribute.
-     *  @exception NameDuplicationException
-     *  @exception IllegalActionException
+     *  @return an instance of the XMLIcon class.
+     *  @exception NameDuplicationException  If an object with
+     *  that name already exists in the container.
+     *  @exception IllegalActionException If the specified name contains
+     *   a period.
      */
     public static XMLIcon getXMLIcon(Workspace workspace, String name) 
       throws NameDuplicationException, IllegalActionException {
         try {
             Class XMLIconClass = _getAlternateXMLIcon();
-            if(XMLIconClass == null) {
+            if (XMLIconClass == null) {
                return new XMLIcon(workspace, name);
             }
-            //get the new object and return it
+            // Get the new object and return it
             Class[] argsClass = new Class[] {ptolemy.kernel.util.Workspace.class, String.class};
             Constructor alternateXMLIconConstructor = XMLIconClass.getConstructor(argsClass);
             XMLIcon xmlIcon = (XMLIcon)alternateXMLIconConstructor.newInstance(new Object[] {workspace, name});
             return xmlIcon;
-        } catch (Exception e) {
-            System.out.println("Could not instantiate alternate XMLIcon class. " +
-              "Using default XMLIcon.  : " + e.getMessage());
-            e.printStackTrace();
+        } catch (Exception ex) {
+            System.out.println("Warning: could not instantiate alternate XMLIcon class. " +
+              "Using default XMLIcon.  : " + ex.getMessage());
+            ex.printStackTrace();
             return new XMLIcon(workspace, name);
         }
     }
@@ -395,27 +405,26 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
     ////                         private methods                   ////
     
     /**
-     * check to see if there is an alternate xmlIcon class in the config.
-     * if there is, return the class, if not, return null.
-     * @author Chad Berkley, Kepler
+     * Check to see if there is an _alternatXMLIcon attribute in the
+     * configuration.  This attribute should name a class that
+     * is an alternative to XMLIcon.  
+     * If the attribute is present, return the class, if not, return null.
      */
     private static Class _getAlternateXMLIcon() throws Exception {
         Configuration _config = (Configuration)Configuration.configurations().iterator().next();
         String _alternateXMLIconClassName = null;
-        if(_config != null) {
-          /*
-           * If _alternateXMLIcon is set in the config, use that
-           * class as the XMLIcon instead of the default 
-           * XMLIcon
-          */
+        if (_config != null) {
+	    // If _alternateXMLIcon is set in the config, use that
+	    // class as the XMLIcon instead of the default
+
           StringAttribute _alternateXMLIconAttribute = (StringAttribute)
             _config.getAttribute("_alternateXMLIcon");
-          if(_alternateXMLIconAttribute != null) {
+          if (_alternateXMLIconAttribute != null) {
               _alternateXMLIconClassName = 
                 _alternateXMLIconAttribute.getExpression();
           }
           
-          if(_alternateXMLIconClassName == null) {  //attribute was not found
+          if (_alternateXMLIconClassName == null) {  //attribute was not found
               return null;
           } else {
               Class _alternateXMLIconClass = Class.forName(_alternateXMLIconClassName);

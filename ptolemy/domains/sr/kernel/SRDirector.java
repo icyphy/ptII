@@ -158,6 +158,8 @@ public class SRDirector extends FixedPointDirector {
      *   will be fired.
      *  @exception IllegalActionException If the operation is not
      *    permissible (e.g. the given time is in the past).
+     *  @return Either the requested time or the current time plus the
+     *  period.
      */
     public Time fireAt(Actor actor, Time time) throws IllegalActionException {
         Actor container = (Actor) getContainer();
