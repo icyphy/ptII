@@ -13,7 +13,7 @@ public class RTMList extends RTMTerm {
     
     public RTMList(String saperator, String emptyrepr) {
         super();
-        if (saperator.trim() == "")
+        if (saperator.trim().equals(""))
             this.saperator = " ";
         else
             this.saperator = " " + saperator.trim() + " ";

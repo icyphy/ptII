@@ -898,7 +898,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
         // Note that copying parameters that have _displayName set need
         // to export _displayName.  
         // See: http://bugzilla.ecoinformatics.org/show_bug.cgi?id=3361
-        if (_displayName != getName()) {
+        if (!_displayName.equals(getName())) {
             output.write("<display name=\"");
             output.write(StringUtilities.escapeForXML(_displayName));
             output.write("\"/>");

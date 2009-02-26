@@ -64,7 +64,7 @@ public class RTMExpTranslator extends AbstractParseTreeVisitor {
                 }
             } 
             catch (NumberFormatException e) {
-                if (res == "true" || res == "false")
+                if (res.equals("true") || res.equals("false"))
                     _writer.print("#b(" + res + ")");
                 else 
                     _writer.print(res);
