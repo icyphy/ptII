@@ -247,9 +247,9 @@ public class RTMExpTranslator extends AbstractParseTreeVisitor {
     }
     
     private static String _transformOp(String op) {
-        if (op == "<") return "lessThan";
-        else if (op == ">") return "greaterThan";
-        else if (op == "==") return "equals";
+        if (op.equals("<")) return "lessThan";
+        else if (op.equals(">")) return "greaterThan";
+        else if (op.equals("==")) return "equals";
         else return op;
         // && ||
         // & | # 
