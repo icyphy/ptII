@@ -214,6 +214,7 @@ test StringUtilities-3.8.4 {getProperty: ptolemy.ptII.dirAsURL} {
     set dirAsURL2 [[[java::new java.io.File [$dirAsURL getFile]] getCanonicalFile] toURL]
 
     set ptIIURL [[[java::new java.io.File $PTII] getCanonicalFile] toURL]
+    # If this test fails, then maybe $PTII was not set properly?
     $dirAsURL2 sameFile $ptIIURL
 } {1}
 
