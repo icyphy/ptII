@@ -1960,13 +1960,13 @@ public class DEDirector extends Director implements TimedDirector {
     private long _realStartTime = 0;
     
     /** Start time. */
-    private Time _startTime;
+    private transient Time _startTime;
 
     /** Flag that stopFire() has been called. */
     private boolean _stopFireRequested = false;
 
     /** Stop time. */
-    private Time _stopTime;
+    private transient Time _stopTime;
 
     /** Decide whether the simulation should be stopped when there's no more
      *  events in the global event queue. By default, its value is 'true',
