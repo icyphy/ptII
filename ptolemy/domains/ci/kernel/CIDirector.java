@@ -347,6 +347,11 @@ public class CIDirector extends Director {
     public void stop() {
         super.stop();
 
+        // FindBugs: [M M NN] Naked notify [NN_NAKED_NOTIFY]
+        // Actually FindBugs in not completely correct
+        // since super.stop() will change the state.
+        // I however don't want to put super.stop() within
+        // the synchronized(this) to avoid deadlocks.
         synchronized (this) {
             notifyAll();
         }
@@ -368,6 +373,12 @@ public class CIDirector extends Director {
             _pauseRequested = true;
         }
 
+        // FindBugs: [M M NN] Naked notify [NN_NAKED_NOTIFY]
+        // Actually FindBugs in not completely correct
+        // since super.stop() will change the state.
+        // I however don't want to put super.stopFire() within
+        // the synchronized(this) to avoid deadlocks.
+        
         synchronized (this) {
             notifyAll();
         }

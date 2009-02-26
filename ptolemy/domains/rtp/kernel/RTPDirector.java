@@ -250,6 +250,12 @@ public class RTPDirector extends ProcessDirector implements TimedDirector {
     public void wrapup() throws IllegalActionException {
         stop();
 
+        // FindBugs: [M M NN] Naked notify [NN_NAKED_NOTIFY]
+        // Actually FindBugs in not completely correct
+        // since stop() will change the state.
+        // I however don't want to put stop() within
+        // the synchronized(this) to avoid deadlocks.
+        
         synchronized (this) {
             notifyAll();
         }
