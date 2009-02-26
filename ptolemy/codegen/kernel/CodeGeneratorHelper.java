@@ -249,7 +249,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * @exception IllegalActionException Thrown if the given ptolemy cannot
      *  be resolved.
      */
-    public /*static*/ String codeGenType(Type ptType) {
+    public static String codeGenType(Type ptType) {
         // FIXME: We may need to add more types.
         // FIXME: We have to create separate type for different matrix types.
         String result = ptType == BaseType.INT ? "Int"
@@ -263,8 +263,8 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
         if (result == null) {
             if (ptType instanceof ArrayType) {
-                //result = codeGenType(((ArrayType) ptType).getElementType()) + "Array";
-                result = "Array";
+                result = codeGenType(((ArrayType) ptType).getElementType()) + "Array";
+                //result = "Array";
             } else if (ptType instanceof MatrixType) {
                 //result = ptType.getClass().getSimpleName().replace("Type", "");
                 result = "Matrix";
@@ -406,32 +406,13 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * the block or processing the macros.
      */
     public String generatePostfireCode() throws IllegalActionException {
-        return _generateBlockByName(_defaultBlocks[3]);
-    }
-
-    /** Generate the main entry point.
-     *  @return In this base class, return a comment.  Subclasses
-     *  should return the definition of the main entry point for a program.
-     *  In C, this would be defining main().
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-
-    public String generatePostFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
+        code.append(_generateBlockByName(_defaultBlocks[3]));
+        
         Actor actor = (Actor) getComponent();
         for (IOPort port : (List<IOPort>) actor.outputPortList()) {
             CodeGeneratorHelper portHelper = (CodeGeneratorHelper) _getHelper(port);
-            code.append(portHelper.generatePostFireCode());
-        }
-        return code.toString();
-    }
-
-    public String generatePreFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        Actor actor = (Actor) getComponent();
-        for (IOPort port : (List<IOPort>) actor.inputPortList()) {
-            CodeGeneratorHelper portHelper = (CodeGeneratorHelper) _getHelper(port);
-            code.append(portHelper.generatePreFireCode());
+            code.append(portHelper.generatePostfireCode());
         }
         return code.toString();
     }
@@ -869,7 +850,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                 || (closeFuncParenIndex != (constructorString.length() - 1))) {
             throw new IllegalActionException(
                     "Bad Syntax with the $new() macro. "
-                    + "[i.e. -- $new(Array(8, 8, arg1, arg2, ...))]");
+                    + "[i.e. -- $new([elementType]Array(8, 8, arg1, arg2, ...))]");
         }
 
         String typeName = constructorString.substring(0, openFuncParenIndex)
@@ -1186,7 +1167,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                         if (((ArrayType) type).hasKnownLength()) {
                             return String.valueOf(((ArrayType) type).length());
                         } else {
-                            return getReference(name) + ".payload.Array->size";
+                            return getReference(name) + ".payload." + codeGenType(type) + "->size";
                         }
                     }
                 }
@@ -1220,7 +1201,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * @param cgType The given codegen type.
      * @return true if the given type is primitive, otherwise false.
      */
-    public boolean isPrimitive(String cgType) {
+    public static boolean isPrimitive(String cgType) {
         return _primitiveTypes.contains(cgType);
     }
 
@@ -1229,8 +1210,12 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * @param ptType The given ptolemy type.
      * @return true if the given type is primitive, otherwise false.
      */
-    public boolean isPrimitive(Type ptType) {
+    public static boolean isPrimitive(Type ptType) {
         return _primitiveTypes.contains(codeGenType(ptType));
+    }
+
+    public static List<String> primitiveTypes() {
+        return new ArrayList(_primitiveTypes);
     }
 
     /** Process the specified code, replacing macros with their values.
@@ -2211,7 +2196,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                     && !isPrimitive(sinkType)) {
                 if (sinkType instanceof ArrayType) {
                     if (isPrimitive(sourceType)) {
-                        result = "$new(Array(1, 1, " + result + ", TYPE_"
+                        result = "$new(" + codeGenType(sinkType) + "(1, 1, " + result + ", TYPE_"
                         + codeGenType(sourceType) + "))";
                     }
 
@@ -2368,11 +2353,12 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
         if (!channelAndOffset[1].equals("")) {
             //result.append("[" + channelAndOffset[1] + "]");
-            result.insert(0, "/*CGH77*/Array_get(");
-            result.append(" ," + channelAndOffset[1] + ")");
-
             Type elementType = ((ArrayType) ((Parameter) attribute)
                     .getType()).getElementType();
+            
+            result.insert(0, "/*CGH77*/" + codeGenType(elementType) + "Array_get(");
+            result.append(" ," + channelAndOffset[1] + ")");
+
 
             if (isPrimitive(elementType)) {
                 result.append(".payload." + codeGenType(elementType));
@@ -2787,7 +2773,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
     /** A list of the primitive types supported by the code generator.
      */
-    protected List _primitiveTypes = Arrays.asList(new String[] {
+    protected static List _primitiveTypes = Arrays.asList(new String[] {
             "Int", "Double", "String", "Long", "Boolean", "UnsignedByte",
     "Pointer" });
 
@@ -3129,7 +3115,13 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
     public String generatePrefireCode() throws IllegalActionException {
         // FIXME: This is to be used in future re-structuring.
-        return "";
+        StringBuffer code = new StringBuffer();
+        Actor actor = (Actor) getComponent();
+        for (IOPort port : (List<IOPort>) actor.inputPortList()) {
+            CodeGeneratorHelper portHelper = (CodeGeneratorHelper) _getHelper(port);
+            code.append(portHelper.generatePrefireCode());
+        }
+        return code.toString();
     }
 
     public String generatePortVariableDeclarations() throws IllegalActionException {
