@@ -104,6 +104,10 @@ public class LineWriter extends Sink {
         endOfLineCharacter.setTypeEquals(BaseType.STRING);
         // Default value is null.
 
+        alwaysFlush = new Parameter(this, "alwaysFlush");
+        alwaysFlush.setTypeEquals(BaseType.BOOLEAN);
+        alwaysFlush.setToken(BooleanToken.FALSE);
+
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-25\" y=\"-20\" " + "width=\"50\" height=\"40\" "
                 + "style=\"fill:white\"/>\n"
@@ -142,6 +146,12 @@ public class LineWriter extends Sink {
      *  output written to the file.
      */
     public Parameter endOfLineCharacter;
+
+    /** If <i>true</i>, flush output after each line is written. If
+     *  <i>false</i> (the default), the output may not be written until the
+     *  stream is closed during wrapup().
+     */
+    public Parameter alwaysFlush;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -183,7 +193,7 @@ public class LineWriter extends Sink {
         newObject._writer = null;
         return newObject;
     }
-
+   
     /** Read an input string token and write it to the file.
      *  If there is no input, do nothing.
      *  If the file is not open for writing then open it. If the file
@@ -241,6 +251,15 @@ public class LineWriter extends Sink {
         return super.postfire();
     }
 
+    /** Read the value of alwaysFlush parameter. 
+     *  @exception IllegalActionException If there is an error reading the
+     *  alwaysFlush parameter.
+     */
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
+        _flushValue = ((BooleanToken) alwaysFlush.getToken()).booleanValue();
+    }
+
     /** Close the writer if there is one.
      *  @exception IllegalActionException If an IO error occurs.
      */
@@ -276,10 +295,18 @@ public class LineWriter extends Sink {
         }
         // In this base class, the cast is safe.
         _writer.print(((StringToken) token).stringValue() + eol);
+
+        if (_flushValue) {
+            _writer.flush();
+        }
+
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected members                 ////
+
+    /** If true, flush the writer after every write. */
+    protected boolean _flushValue;
 
     /** The current writer. */
     protected PrintWriter _writer;
