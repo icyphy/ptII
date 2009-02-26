@@ -50,7 +50,7 @@ DOMAINS =	ci $(PTCONTINUOUS_DIR) csp ct curriculum \
 	        dde ddf de fsm erg hdf pn sdf dt \
 	        giotto petrinet rendezvous properties \
 		$(PTPSDF_DIR) ptides ptinyos $(PTSPACE_DIR) \
-		sr tm $(PTJAVA3D_DIR) wireless
+		sr tdl tm $(PTJAVA3D_DIR) wireless
 
 DIRS =		$(DOMAINS) $(EXPERIMENTAL_DOMAINS)
 
