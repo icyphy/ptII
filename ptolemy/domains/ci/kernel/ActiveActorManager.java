@@ -90,8 +90,8 @@ public class ActiveActorManager extends PtolemyThread {
 
         try {
             while (iterate && !_director._isStopRequested()) {
-                while (_director._pauseRequested) {
-                    synchronized (_director) {
+                synchronized (_director) {
+                    while (_director._pauseRequested) {                    
                         _director.wait();
                     }
                 }
