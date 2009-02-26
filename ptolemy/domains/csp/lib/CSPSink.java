@@ -97,6 +97,9 @@ public class CSPSink extends Sink {
         try {
             int limit = ((IntToken) tokenLimit.getToken()).intValue();
 
+            // FindBugs: [H C IL] An apparent infinite loop [IL_INFINITE_LOOP]
+            // If limit < 0 you indeed have an infinite loop,
+            // but that's the intend.
             while (count < limit || limit < 0) {
                 Token t = input.get(0);
                 System.out.println(getName() + " received Token: "
