@@ -36,7 +36,8 @@ DIRS =
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
 
-CLASSPATH =	$(ROOT)
+# data/properties/PropertySolverBase.java calls com.sun.tools.javac
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(TOOLS_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
