@@ -64,6 +64,7 @@ JSIMPLE_TESTS = \
 	Location.tcl \
 	MoMLAttribute.tcl \
 	MoMLChangeRequest.tcl \
+	MoMLCommandLineApplication.tcl \
 	MoMLParser.tcl \
 	MoMLUndoEntry.tcl \
 	MoMLUndoChangeRequest.tcl \
@@ -98,6 +99,7 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
 	CompositeCopyAndPasteTest.xml \
 	ConvertToLazyTest.xml \
 	ConstClassDefinition.xml \
+	MoMLCommandLineApplicationTest.xml \
 	NoPackageActor.java.in \
 	NonexistantDirectorTest.xml \
 	NoPackageActors.xml \
