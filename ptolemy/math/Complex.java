@@ -1169,8 +1169,9 @@ public class Complex {
      *  detect whether a double is close to zero.  This value is
      *  public so that it can be changed on platforms with different
      *  precisions.
+     *  This variable is not final so that users may set it as necessary.
      */
-    public static final double EPSILON = 1.0e-9;
+    public static /*final*/ double EPSILON = 1.0e-9;
 
     /** A Complex number representing negative infinity, by which we mean
      *  that both the real and imaginary parts are equal to
