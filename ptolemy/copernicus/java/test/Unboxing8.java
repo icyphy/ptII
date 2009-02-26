@@ -13,8 +13,6 @@ public class Unboxing8 {
 
     static Token token;
 
-    static Token castToken;
-
     public static void main(String[] args) throws IllegalActionException {
         tokens = new Token[1];
         tokens2 = tokens;

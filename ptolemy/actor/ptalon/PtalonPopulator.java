@@ -60,9 +60,7 @@ public class PtalonPopulator extends antlr.TreeParser       implements PtalonPop
     public PtalonEvaluator getCodeManager() {
         return info;
     }
-    
-    private String scopeName;
-    
+
 public PtalonPopulator() {
 	tokenNames = _tokenNames;
 }

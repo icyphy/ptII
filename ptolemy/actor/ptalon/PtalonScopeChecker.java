@@ -60,10 +60,9 @@ public class PtalonScopeChecker extends antlr.TreeParser       implements Ptalon
         return info;
     }
 
-    private String scopeName;
-public PtalonScopeChecker() {
-	tokenNames = _tokenNames;
-}
+    public PtalonScopeChecker() {
+    	tokenNames = _tokenNames;
+    }
 
 	public final void port_declaration(AST _t) throws RecognitionException, PtalonScopeException {
 		

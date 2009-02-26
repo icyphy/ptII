@@ -495,7 +495,6 @@ String tidied, x;
   private Token jj_scanpos, jj_lastpos;
   private int jj_la;
   public boolean lookingAhead = false;
-  private boolean jj_semLA;
   private int jj_gen;
   final private int[] jj_la1 = new int[7];
   static private int[] jj_la1_0;
