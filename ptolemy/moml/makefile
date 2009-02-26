@@ -67,6 +67,7 @@ JSRCS =	Documentation.java \
 	MissingClassException.java \
 	MoMLAttribute.java \
 	MoMLChangeRequest.java \
+	MoMLCommandLineApplication.java \
 	MoMLFilter.java \
 	MoMLParser.java \
 	MoMLSimpleApplication.java \
