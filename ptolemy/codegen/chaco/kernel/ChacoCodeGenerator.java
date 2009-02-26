@@ -164,9 +164,9 @@ public class ChacoCodeGenerator extends CodeGenerator {
         bIndex = 0;
 
         for (int i = 0; i < colors.length; i++) {
-            colors[i] = new String("{" + colorValues[rIndex] + ", " +
+            colors[i] = "{" + colorValues[rIndex] + ", " +
                     colorValues[gIndex] + ", " + 
-                    colorValues[bIndex] + ", 1.0}");
+                    colorValues[bIndex] + ", 1.0}";
 
             // Now go to the next color values.
             bIndex++;

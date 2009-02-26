@@ -537,7 +537,7 @@ public class PNDirector extends Director {
                     int firingCount = ((IntToken) ((LimitedFiringSource) actor)
                             .firingCountLimit.getToken()).intValue();
                     
-                    loopCountDeclare = new String("int i = 0;" + _eol);
+                    loopCountDeclare = "int i = 0;" + _eol;
                     functionCode.append("for (; i < " + firingCount 
                             + "; i++) {" + _eol);
 

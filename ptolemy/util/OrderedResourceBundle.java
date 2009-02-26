@@ -202,7 +202,7 @@ public class OrderedResourceBundle {
 						}
 						nextLine = nextLine.substring(startIndex, nextLine
 								.length());
-						readLine = new String(choppedLine + nextLine);
+						readLine = choppedLine + nextLine;
 						lineLen = readLine.length();
 					}
 
