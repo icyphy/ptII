@@ -522,7 +522,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
         _exception = null;
         _terminateException = null;
 
-        List threads = null;
+        List<Thread> threads = null;
         final CSPDirector director = _getDirector();
         synchronized (director) {
             if (receivers.length == 1) {
@@ -530,7 +530,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
             } else {
                 // Create a thread for each destination.
                 // List to keep track of created threads.
-                threads = new LinkedList();
+                threads = new LinkedList<Thread>();
                 final Thread putToAllThread = Thread.currentThread();
                 // NOTE: Use _threadCount to determine when the last
                 // thread exits.  This assumes that we do not have
@@ -589,9 +589,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                 // First notify the director that this actor is blocked.
                 // The last thread to complete will unblock it.
                 director.threadBlocked(Thread.currentThread(), this);
-                Iterator threadsIterator = threads.iterator();
-                while (threadsIterator.hasNext()) {
-                    Thread thread = (Thread) threadsIterator.next();
+                for (Thread thread : threads) {
                     try {
                         // NOTE: Cannot use Thread.join() here because we
                         // have to be in a synchronized block to prevent
@@ -669,6 +667,8 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  apply to whatever process this method was invoked from.
      *  <p>
      *  This method is internally synchronized on the director.
+     *  To avoid missing events you should the callers also need
+     *  to be synchronized on the director (this is currently the case).
      *  @exception TerminateProcessException If the actor to
      *   which this receiver belongs has been terminated while still
      *   running i.e it was not allowed to run to completion.
@@ -677,8 +677,21 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      */
     protected void _checkFlagsAndWait() throws TerminateProcessException,
             InterruptedException {
+        // Actually you should already have a lock before calling this
+        // method. Otherwise you will miss notifies and cause deadlocks.
         Object lock = _getDirector();
         synchronized (lock) {
+            // FindBugs: Multithreaded correctness 
+            //  [M M Wa] Wait not in loop [WA_NOT_IN_LOOP]
+            // Actually this wait does not need to be in a 
+            // loop since callers of this method will put this method
+            // in a loop.
+                
+            // FindBugs: Multithreaded correctness 
+            // [M M UW] Unconditional wait [UW_UNCOND_WAIT]
+            // Actually this wait does not to have a conditional
+            // wait since the callers of this method are doing this.
+                
             _checkFlags();
             lock.wait();
             _checkFlags();
