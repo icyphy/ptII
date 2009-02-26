@@ -7,6 +7,8 @@
 # One way to find the packages:
 # grep package `find . -name "*.java" -print`  | awk '{print $NF}' | sort | uniq 
 
+# See also the chkpackagehtml rule in $PTII/doc
+
 packages=$@
 for package in $packages
 do 
@@ -20,9 +22,11 @@ do
 	  echo "$0: $packagefile exists, skipping"
       else 
 
+	  since="@since Ptolemy II 7.2" 
 	  if [ "$since" = "" ]; then 
 	      since=`grep -h @since */*.java | sort | uniq | head -1`
 	  fi    
+
 cat > $packagefile << EoF
 <!-- \$Id\$ -->
 <html>
@@ -37,8 +41,8 @@ $since
 </html>
 EoF
          echo "$packagefile"
-	 cvs add $packagefile
-	 cvs commit -m "Added package.html" $packagefile 
+	 #svn add $packagefile
+	 #svn commit -m "Added package.html" $packagefile 
       fi 
 
 
@@ -51,8 +55,8 @@ cat > $READMEfile << EoF2
 See package.html
 EoF2
          echo "$READMEfile"
-	 cvs add $READMEfile
-	 cvs commit -m "Added README.html" $READMEfile 
+	 #svn add $READMEfile
+	 #svn commit -m "Added README.html" $READMEfile 
       fi
 
 
