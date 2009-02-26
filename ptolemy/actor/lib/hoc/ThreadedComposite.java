@@ -523,7 +523,7 @@ public class ThreadedComposite extends MirrorComposite {
             if (environmentTime.equals(nextOutputTime)) {
                 // There is an output to be produced.
                 // First, remove that time from the pending outputs queue.
-                nextOutputTime = _outputTimes.poll();
+                _outputTimes.poll();
                 // First, wait (if necessary) for output
                 // to be produced.
                 // We already know that the environment time matches
@@ -783,6 +783,13 @@ public class ThreadedComposite extends MirrorComposite {
                         + environmentTime);
             }
             _inputFrames.add(new TokenFrame(environmentTime, null, TokenFrame.STOP));
+            
+            // FindBugs: [M M NN] Naked notify [NN_NAKED_NOTIFY]
+            // Actually FindBugs is wrong, since _inputFrames was modified
+            // and hence the state did change. It is not necessary to
+            // do this change within the synchronized(this) block since
+            // _inputFrames is a thread-safe container.
+            
             synchronized(this) {
                 notifyAll();
             }
@@ -903,7 +910,8 @@ public class ThreadedComposite extends MirrorComposite {
         /** Queue of unprocessed input events. This is a blocking
          *  queue, which blocks the calling thread if the queue is empty.
          *  This is accessed by both the director thread and the inside
-         *  thread, so it has to be thread safe.
+         *  thread, so it has to be thread safe (LinkedBlockingQueue is a
+         *  thread-safe container).
          */
         private LinkedBlockingQueue<TokenFrame> _inputFrames 
                 = new LinkedBlockingQueue<TokenFrame>();
