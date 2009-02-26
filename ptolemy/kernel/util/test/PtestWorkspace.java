@@ -63,6 +63,9 @@ public class PtestWorkspace extends PtolemyThread {
                 _profile += (_name + ".getReadAccess()\n");
 
                 try {
+                    // FindBugs:
+                    // [M M SWL] Method calls Thread.sleep() with a lock held [SWL_SLEEP_WITH_LOCK_HELD]
+                    // In this test program however this is not a problem.                    
                     Thread.sleep(100);
                 } catch (InterruptedException ex) {
                 }
@@ -77,6 +80,9 @@ public class PtestWorkspace extends PtolemyThread {
             _profile += (_name + ".getWriteAccess()\n");
 
             try {
+                // FindBugs:
+                // [M M SWL] Method calls Thread.sleep() with a lock held [SWL_SLEEP_WITH_LOCK_HELD]
+                // In this test program however this is not a problem.                
                 Thread.sleep(100);
             } catch (InterruptedException ex) {
             }
