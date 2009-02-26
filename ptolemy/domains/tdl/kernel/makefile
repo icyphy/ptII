@@ -47,14 +47,14 @@ include $(CONFIG)
 PTPACKAGE = 	kernel
 PTCLASSJAR =	$(PTPACKAGE).jar
 
-JSRCS = \ 
+JSRCS = \
 	TDLAction.java \
 	TDLActionsGraph.java \
 	TDLActor.java  \
 	TDLCodeGenerator.java \
 	TDLCodeGeneratorUtilities.java \
 	TDLController.java \
-	TDLMode.java \ 
+	TDLMode.java \
 	TDLModule.java \
 	TDLModuleDirector.java \
 	TDLReceiver.java \
