@@ -123,6 +123,15 @@ public class TDLAction {
         return false;
     }
     
+    /** Return a hash code value for this action.
+     *  @return A hash code value for this token.
+     */
+    public int hashCode() {
+	// See http://www.geocities.com/technofundo/tech/java/equalhash.html
+	// for suggestions on hashCode
+        return 31 + time.hashCode() +  actionType + object.hashCode();
+    }
+
     public boolean sameActionAs(TDLAction obj, Time modePeriod) {
         if (obj instanceof TDLAction) {
             TDLAction action = (TDLAction) obj;
