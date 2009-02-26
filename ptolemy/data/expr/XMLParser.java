@@ -147,7 +147,7 @@ public class XMLParser {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    private DocumentBuilderFactory _documentBuilderFactory;
+    private DocumentBuilderFactory _documentBuilderFactory = null;
 
     private DocumentBuilder _documentBuilder;
 }
