@@ -422,6 +422,8 @@ public class PropertyConstraintSolver extends PropertySolver {
                 _getConstraintType(fsmConstraintType.stringValue()),
                 _getConstraintType(expressionASTNodeConstraintType.stringValue()));        
 
+	Writer writer = null;
+
         try {
             List<Inequality> conflicts = new LinkedList<Inequality>();
             List<Inequality> unacceptable = new LinkedList<Inequality>();
@@ -473,7 +475,6 @@ public class PropertyConstraintSolver extends PropertySolver {
 
                 // log initial constraints to file
                 File file = null;
-                Writer writer = null;
                 Date date = new Date();
                 String timestamp = date.toString().replace(":", "_");
                 String logFilename = getContainer().getName() + "__" + 
@@ -507,10 +508,11 @@ public class PropertyConstraintSolver extends PropertySolver {
                             }
                             file.createNewFile();
                         }
-                        writer = new FileWriter(file);
 
-                        writer.write(_getStatsAsString("\t"));
-                        writer.write(_getConstraintsAsLogFileString(constraintList, "I"));
+			writer = new FileWriter(file);
+
+			writer.write(_getStatsAsString("\t"));
+			writer.write(_getConstraintsAsLogFileString(constraintList, "I"));
 
                     } catch (IOException ex) {
                         throw new PropertyResolutionException(this, ex,
@@ -619,7 +621,16 @@ public class PropertyConstraintSolver extends PropertySolver {
             throw new PropertyResolutionException(this, toplevel, ex,
                     "Property resolution failed because of an error "
                     + "during property inference");
-        }
+	} finally {
+	    if (writer != null) {
+		try {
+		    writer.close();
+		} catch (IOException ex) {
+		    throw new PropertyResolutionException(this, toplevel(), ex,
+							  "Failed to close a file");
+		}
+	    }
+	}
     }
 
    
@@ -935,27 +946,34 @@ public class PropertyConstraintSolver extends PropertySolver {
     }
 
     private void _readConstraintFile(String filename) 
-    throws PropertyFailedRegressionTestException {
+	throws PropertyFailedRegressionTestException {
 
         File file = new File(filename);
 
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(file));
 
-            String line = reader.readLine();
-            while (line != null) {
-                _trainedConstraints.add(line);
-                line = reader.readLine();
-            }
+	try {
+	    BufferedReader reader = null;
 
-            getStats().put("# of trained constraints", _trainedConstraints.size());
+	    try {
+		reader = new BufferedReader(new FileReader(file));
 
-            reader.close();
+		String line = reader.readLine();
+		while (line != null) {
+		    _trainedConstraints.add(line);
+		    line = reader.readLine();
+		}
+
+		getStats().put("# of trained constraints", _trainedConstraints.size());
+	    } finally {
+		if (reader != null) {
+		    reader.close();
+		}
+	    }
         } catch (Exception ex) {
             throw new PropertyFailedRegressionTestException(this,
                     "Failed to open or read the constraint file \"" +
                     filename + "\".");
-        }
+	}
     }
 
     private void _regressionTestConstraints(PropertyConstraintHelper helper) throws IllegalActionException {
@@ -1043,11 +1061,15 @@ public class PropertyConstraintSolver extends PropertySolver {
                 constraintFile.createNewFile();
             }
 
-            Writer writer = new FileWriter(filename);
-            for (String constraint : _trainedConstraints) {
-                writer.write(constraint + _eol);
-            }
-            writer.close();
+            Writer writer = null;
+	    try {
+		writer = new FileWriter(filename);
+		for (String constraint : _trainedConstraints) {
+		    writer.write(constraint + _eol);
+		}
+	    } finally {
+		writer.close();
+	    }
 
         } catch (IOException ex) {
             throw new PropertyResolutionException(this, ex, 

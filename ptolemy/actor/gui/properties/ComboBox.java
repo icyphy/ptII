@@ -30,6 +30,7 @@ package ptolemy.actor.gui.properties;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.geom.Point2D;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -333,20 +334,34 @@ public class ComboBox extends GUIProperty implements ItemListener {
                     } else {
                         if (_momlSource != null) {
                             URL url = _parser.fileNameToURL(_momlSource, null);
-                            InputStreamReader reader = new InputStreamReader(
+                            InputStreamReader reader = null;
+			    try {
+				reader = new InputStreamReader(
                                     url.openStream());
-                            int bufferSize = 1024;
-                            char[] buffer = new char[bufferSize];
-                            int readSize = 0;
-                            StringBuffer string = new StringBuffer();
-                            while (readSize >= 0) {
-                                readSize = reader.read(buffer);
-                                if (readSize >= 0) {
-                                    string.append(buffer, 0, readSize);
-                                }
-                            }
-                            _momlText = string.toString();
-                            _momlSource = null;
+
+				int bufferSize = 1024;
+				char[] buffer = new char[bufferSize];
+				int readSize = 0;
+				StringBuffer string = new StringBuffer();
+				while (readSize >= 0) {
+				    readSize = reader.read(buffer);
+				    if (readSize >= 0) {
+					string.append(buffer, 0, readSize);
+				    }
+				}
+				_momlText = string.toString();
+				_momlSource = null;
+			    } finally {
+				if (reader != null) {
+				    try {
+					reader.close();
+				    } catch (IOException ex) {
+					throw new InternalErrorException("Failed to close \""
+									 + url + "\".");
+
+				    }
+				}
+			    }
                         }
                         moml = _momlText;
                     }
