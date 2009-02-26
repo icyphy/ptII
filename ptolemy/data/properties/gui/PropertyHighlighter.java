@@ -81,6 +81,7 @@ import diva.graph.GraphController;
  @Pt.AcceptedRating Red (mankit)
  */
 public class PropertyHighlighter extends NodeControllerFactory {
+    
     /** Construct a PropertyHighlighter with the specified container and name.
      *  @param container The container.
      *  @param name The name of the PropertyHighlighter.
@@ -115,6 +116,27 @@ public class PropertyHighlighter extends NodeControllerFactory {
         highlight.setExpression("true");
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         parameters                        ////
+    
+    /**
+     * Indicate whether the _showInfo attributes will be set.
+     */
+    public Parameter showText;
+
+    /**
+     * Indicate whether the _highlightColor attributes will be set.
+     */
+    public Parameter highlight;
+
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+    
+    /**
+     * Remove the highlighting and visible annotations
+     * for all property-able objects.
+     */
     public void clearDisplay() {
         
         // Get the PropertySolver.
@@ -157,6 +179,10 @@ public class PropertyHighlighter extends NodeControllerFactory {
         });        
     }
     
+    /**
+     * Clear the property annotations of associated with 
+     * the container solver.
+     */
     public void clearProperties() {
         // Get the PropertySolver.
         PropertySolver solver = (PropertySolver) getContainer();
@@ -207,67 +233,80 @@ public class PropertyHighlighter extends NodeControllerFactory {
         }
     }
     
+    /**
+     * Highlight all property-able objects with
+     * the specified colors for their property values,
+     * if the highlight parameter value is true.
+     * Otherwise, do nothing.
+     */
     public void highlightProperties() {
-        highlightProperties(
-                highlight.getExpression().equals("true"));
+        try {
+            if ((BooleanToken) highlight.getToken()
+                     == BooleanToken.TRUE) {
+                _highlightProperties();
+            }
+        } catch (IllegalActionException ex) {
+            // Silently, do nothing.
+        }    
     }
     
-    // FIXME: Check that the container is an instance of PropertyConstraintSolver.
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
-
-    public void highlightProperties(boolean doHighlight) {
-        if (doHighlight) {
-            _highlightProperties();
-        }
-    }
-
-    public void highlightProperty(NamedObj namedObj, Property property) 
+    /**
+     * If the value of the highlight parameter is set to
+     * true, highlight the given property-able object with
+     * the specified color associated with the given
+     * property, if there exists any.
+     * @param propertyable The given property-able object.
+     * @param property The given property.
+     * @exception IllegalActionException Thrown if an error
+     * occurs when creating or setting the value for the 
+     * highlightColor attribute in the property-able object.
+     */
+    public void highlightProperty(NamedObj propertyable, Property property) 
     throws IllegalActionException {
-        highlightProperty(namedObj, property, 
-                highlight.getToken() == BooleanToken.TRUE);
-    }
-
-    public void highlightProperty(NamedObj namedObj, Property property,
-            boolean doHighlight) throws IllegalActionException {
-        if (doHighlight) {
-            _highlightProperty(namedObj, property);
+        if (highlight.getToken() == BooleanToken.TRUE) {
+            _highlightProperty(propertyable, property);            
         }
     }
     
+    /**
+     * If the value of the showText parameter is set to
+     * true, show all property values visually. 
+     * Otherwise, do nothing.
+     */
     public void showProperties() {
-        showProperties(
-                showText.getExpression().equals("true"));
-    }
-    
-    public void showProperties(boolean doShow) {
-        if (doShow) {
+        if (showText.getExpression().equals("true")) {
             _showProperties();
         }
     }
-
+    
     /**
-     * @param namedObj
-     * @param property
-     * @throws IllegalActionException
+     * If the value of the showText parameter is true,
+     * show the given property value for the given
+     * property-able object. If the property is not null,
+     * this looks for the _showInfo parameter in the 
+     * property-able object. Create a new _showInfo
+     * StringParameter, if there does not already exists one.
+     * Set its value to the given property value. If the
+     * given property is null, this removes the _showInfo
+     * parameter from the property-able object. 
+     * @param propertyable The given property-able object.
+     * @param property The given property.
+     * @exception IllegalActionException Thrown if an error
+     * occurs when creating or setting the value for the 
+     * _showInfo parameter in the property-able object.
      */
-    public void showProperty(NamedObj namedObj, Property property) 
+    public void showProperty(NamedObj propertyable, Property property) 
             throws IllegalActionException {
-        
-        showProperty(namedObj, property, 
-                showText.getToken() == BooleanToken.TRUE);
-    }
-
-    public void showProperty(NamedObj namedObj, Property property,
-            boolean doShow) throws IllegalActionException {
-        if (doShow) {
-            _showProperty(namedObj, property);
+        if (showText.getToken() == BooleanToken.TRUE) {
+            _showProperty(propertyable, property);
         }
     }
     
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
     
-    public class EditHighlightDialog extends EditParametersDialog  {
+    private class EditHighlightDialog extends EditParametersDialog  {
+        
         /** Construct a dialog with the specified owner and target.
          *  A "Commit" and a "Cancel" button are added to the dialog.
          *  The dialog is placed relative to the owner.
@@ -333,12 +372,9 @@ public class PropertyHighlighter extends NodeControllerFactory {
     }
 
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         parameters                        ////
-    
     /** The controller that adds commands to the context menu.
      */
-    public class HighlighterController extends AttributeController {
+    private class HighlighterController extends AttributeController {
     
         /** Create a DependencyController that is associated with a controller.
          *  @param controller The controller.
@@ -377,10 +413,6 @@ public class PropertyHighlighter extends NodeControllerFactory {
         }
     }
 
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-    
     /** The action for the commands added to the context menu.
      */
     private class ClearProperty extends FigureAction {
@@ -398,10 +430,15 @@ public class PropertyHighlighter extends NodeControllerFactory {
     /** The action for the commands added to the configure menu.
      */
     private class ConfigureHighlightAction extends FigureAction {
+        
         public ConfigureHighlightAction() {
             super("Property Display");
         }
     
+        /**
+         * Open the dialog for configuring the highlight color
+         * for property values. 
+         */
         public void actionPerformed(ActionEvent e) {
                 // Determine which entity was selected for the look inside action.
                 super.actionPerformed(e);
@@ -439,7 +476,7 @@ public class PropertyHighlighter extends NodeControllerFactory {
         
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
-            highlightProperties(true);
+            _highlightProperties();
     
             // Repaint the GUI.
             getContainer().requestChange(new ChangeRequest(this,
@@ -459,7 +496,7 @@ public class PropertyHighlighter extends NodeControllerFactory {
         
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
-            showProperties(true);
+            _showProperties();
     
             // Repaint the GUI.
             getContainer().requestChange(new ChangeRequest(this,
@@ -469,8 +506,12 @@ public class PropertyHighlighter extends NodeControllerFactory {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
     /**
-     * 
+     * Highlight all property-able objects with
+     * the specified colors for their property values.
      */
     private void _highlightProperties() {
         // Get the PropertySolver.
@@ -547,7 +588,7 @@ public class PropertyHighlighter extends NodeControllerFactory {
     }
     
     /**
-     * 
+     * Show all property values visually.
      */
     private void _showProperties() {
         // Get the PropertySolver.
@@ -572,9 +613,14 @@ public class PropertyHighlighter extends NodeControllerFactory {
     }
 
     /**
-     * @param namedObj
-     * @param property
-     * @throws IllegalActionException
+     * Show the given property value for the given
+     * property-able object.
+     * @param namedObj The given property-able object.
+     * @param property The given property.
+     * @exception IllegalActionException Thrown if
+     *  there is an error in creating the visual
+     *  attribute and/or setting its value for the 
+     *  property-able object.
      */
     private void _showProperty(NamedObj namedObj, Property property)
     throws IllegalActionException {
@@ -613,15 +659,10 @@ public class PropertyHighlighter extends NodeControllerFactory {
         showAttribute.setToken(propertyString);
     }
     
-    /**
-     * Indicate whether the _showInfo attributes will be set.
-     */
-    public Parameter showText;
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
-    /**
-     * Indicate whether the _highlightColor attributes will be set.
+    /** The visual icon.
      */
-    public Parameter highlight;
-
     private EditorIcon _icon;
 }
