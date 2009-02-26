@@ -339,7 +339,7 @@ public class TDLCodeGeneratorUtilities {
 							.substring(1);
 					fromPortName = fromPortName.substring(fromPortName
 							.indexOf('.') + 1);
-					fromPortName.replace(fromPortName.substring(fromPortName
+					fromPortName = fromPortName.replace(fromPortName.substring(fromPortName
 							.indexOf('.'), fromPortName.indexOf('.',
 							fromPortName.indexOf('.') + 1) + 1), "");
 					taskoutputPorts.append(port.getName() + " := " + fromPortName
