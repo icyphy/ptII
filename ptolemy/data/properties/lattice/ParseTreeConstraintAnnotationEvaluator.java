@@ -103,7 +103,7 @@ public class ParseTreeConstraintAnnotationEvaluator extends ParseTreeAnnotationE
                     _helper).getSolver().getLattice();
 
             _evaluatedObject = lattice.getElement(
-                    _getNodeLabel(node).toString().toUpperCase());
+                    _getNodeLabel(node).toUpperCase());
         }
 
         // FIXME: Not handling AST constraint yet.
