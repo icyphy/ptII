@@ -104,16 +104,17 @@ import ptolemy.util.StringUtilities;
  </pre>
  would set the values of the two parameters.
 
- <p>Note that strings need to be carefully backslashed, so to set a
- parameter named <code>c</code> to the string <code>"bar"</code> it
- might be necessary to do something like:
- <pre>
- $PTII/bin/ptolemy foo.xml -a 5 -y.b 10 -c \\\"bar\\\"
- </pre>
- The reason the backslashes are necessary is because <code>moml</code>
- is a shell script which tends to strip off the double quotes.
+<p>Note that strings need to have double quotes converted to
+<code>&amp;quot;</code> so to set a parameter named <code>c</code>
+to the string <code>"bar"</code> it might be necessary to do
+something like:
+<pre>
+$PTII/bin/ptolemy foo.xml -a 5 -y.b 10 -c "&amp;quot;bar&amp;quot;"
+</pre>
+The <code>&amp;quot;</code> is necessary to convert the double quote
+to something safe to in an XML file.
 
- The -class option can be used to specify a Java class to be loaded.
+ <p>The -class option can be used to specify a Java class to be loaded.
  The named class must have a constructor that takes a Workspace
  as an argument.
  In the example below, $PTII/ptolemy/domains/sdf/demo/Butterfly/Butterfly.java

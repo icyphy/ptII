@@ -562,7 +562,7 @@ command line arguments.
    by giving a MoML file or a -class argument, then parameters of that
    model can be set on the command line.  The syntax is:
    <pre>
-   ptolemy <i>modelFile.xml</i> -<i>parameterName</i> <i>value</i>
+   $PTII/bin/ptolemy <i>modelFile.xml</i> -<i>parameterName</i> <i>value</i>
    </pre>
    where <i>parameterName</i> is the name of a parameter relative to
    the top level of a model or the director of a model.  For instance,
@@ -571,18 +571,19 @@ command line arguments.
    parameter named <code>a</code>, and <code>y</code> contains a
    parameter named <code>b</code>, then:
    <pre>
-   ptolemy foo.xml -a 5 -y.b 10
+   $PTII/bin/ptolemy foo.xml -a 5 -y.b 10
    </pre>
    would set the values of the two parameters.
 
-   <p>Note that strings need to be carefully backslashed, so to set a
-   parameter named <code>c</code> to the string <code>"bar"</code> it
-   might be necessary to do something like:
+   <p>Note that strings need to have double quotes converted to
+   <code>&amp;quot;</code> so to set a parameter named <code>c</code>
+   to the string <code>"bar"</code> it might be necessary to do
+   something like:
    <pre>
-   ptolemy foo.xml -a 5 -y.b 10 -c \\\"bar\\\"
+   $PTII/bin/ptolemy foo.xml -a 5 -y.b 10 -c "&amp;quot;bar&amp;quot;"
    </pre>
-   The reason the backslashes are necessary is because <code>ptolemy</code>
-   is a shell script which tends to strip off the double quotes.
+   The <code>&amp;quot;</code> is necessary to convert the double quote
+   to something safe to in an XML file.
 </BLOCKQUOTE>
 Toplevel parameters can be set by calling vergil with a similar syntax:
 <pre>
@@ -592,7 +593,10 @@ or
 <pre>
 $PTII/bin/ptexecute foo.xml -a 5 -y.b 10
 </pre>
-Note that MoMLSimpleApplication does not do this type of command line parsing.
+Note that MoMLSimpleApplication does not do this type of command line parsing,
+but <code>$PTII/ptolemy/moml/MoMLCommandLineApplication.java</code>
+  extends MoMLSimpleApplication and handles command line arguments
+  in a similar manner as above.
 
  <p>If you want to start Vergil by hand, the answer depends on which
 version of Ptolemy II you are using.
