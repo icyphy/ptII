@@ -1278,9 +1278,9 @@ public class DatagramReader extends TypedAtomicActor {
                             // receive().  Don't retry, however, until
                             // attributeChanged() is done changing the
                             // <i>localSocketNumber</i>
-                            synchronized (_syncSocket) {
+                            //synchronized (_syncSocket) {
                                 //   System.out.println("foo");
-                            }
+                            //}
                         } catch (NullPointerException ex) {
                             if (_debugging) {
                                 _debug("--!!--" + (_socket == null));
@@ -1310,9 +1310,9 @@ public class DatagramReader extends TypedAtomicActor {
                             // receive().  Don't retry, however, until
                             // attributeChanged() is done changing the
                             // <i>localSocketNumber</i>
-                            synchronized (_syncSocket) {
+                            //synchronized (_syncSocket) {
                                 //   System.out.println("foo");
-                            }
+                            //}
                         } catch (NullPointerException ex) {
                             if (_debugging) {
                                 _debug("--!!--" + (_socket == null));
