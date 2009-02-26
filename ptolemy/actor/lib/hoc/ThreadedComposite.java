@@ -404,9 +404,10 @@ public class ThreadedComposite extends MirrorComposite {
         public final List<QueuedToken> tokens;
         public final FrameType type;
 
-        public static FrameType EVENT = new FrameType();
-        public static FrameType POSTFIRE = new FrameType();
-        public static FrameType STOP = new FrameType();
+        // Final fields (FindBugs suggestion)
+        public final static FrameType EVENT = new FrameType();
+        public final static FrameType POSTFIRE = new FrameType();
+        public final static FrameType STOP = new FrameType();
 
         private static class FrameType {
             private FrameType() {};
