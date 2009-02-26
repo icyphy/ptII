@@ -49,6 +49,8 @@ import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.gui.JTextAreaExec;
+import ptolemy.gui.Query;
+import ptolemy.gui.Query.QueryFileChooser;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -138,8 +140,10 @@ public class MathematicalModelConverterGUI extends PtolemyFrame {
                             .getContextClassLoader().getResource(
                                     "ptolemy/verification/README.html");
 
-                    configuration.openModel(null, infoURL, infoURL
-                            .toExternalForm());
+                    if (configuration != null) {
+                        configuration.openModel(null, infoURL, infoURL
+                                .toExternalForm());
+                    }
                 } catch (Exception ex) {
                     throw new InternalErrorException(modelConverter, ex,
                             "Failed to open ptolemy/verification/README.html: ");
@@ -151,24 +155,26 @@ public class MathematicalModelConverterGUI extends PtolemyFrame {
         buttonPanel.setMaximumSize(new Dimension(500, 50));
         left.add(buttonPanel);
 
+        // File name query.
+        Query targetFileQuery = new Query();
+        targetFileQuery.addFileChooser("target", "Target File", "", null, null);
+        left.add(targetFileQuery);
+
+        // Control query.
         controlPanel = new JPanel();
-        // controlPanel.setLayout(new SpringLayout());
         controlPanel.setLayout(new BoxLayout(controlPanel, BoxLayout.Y_AXIS));
 
-        JPanel controlPanel1 = new JPanel();
-        controlPanel1.setSize(400, 30);
-        controlPanel1.add(new JLabel("Model Type"));
-
-        final ModelType[] modelTypes = ModelType.values();
-        modelTypeList = new JComboBox(modelTypes);
-        modelTypeList.setSelectedItem(ModelType.Maude);
-        controlPanel1.add(modelTypeList);
-        controlPanel.add(controlPanel1);
+        final Query controlQuery = new Query();
+        ModelType[] modelTypes = ModelType.values();
+        controlQuery.addChoice("type", "Model Type", modelTypes,
+                ModelType.Maude);
+        controlPanel.add(controlQuery);
 
         JPanel controlPanel2 = new JPanel();
         controlPanel2.setSize(400, 30);
         controlPanel2.add(new JLabel("Formula Type"));
-        String[] formulaTypes = { "CTL", "LTL", "TCTL", "Buffer Overflow", "Risk", "Reachability" };
+        String[] formulaTypes = { "CTL", "LTL", "TCTL", "Buffer Overflow",
+                "Risk", "Reachability" };
         formulaTypeList = new JComboBox(formulaTypes);
         formulaTypeList.setSelectedIndex(0);
         controlPanel2.add(formulaTypeList);
@@ -233,7 +239,8 @@ public class MathematicalModelConverterGUI extends PtolemyFrame {
                     exec.updateStatusBar("// Starting " + modelConverter
                             + "model converting process.");
 
-                    ModelType modelType = (ModelType) modelTypeList.getSelectedItem();
+                    ModelType modelType =
+                        (ModelType) controlQuery.getObjectValue("type");
 
                     String inputTemporalFormula = formula.getText() == null ? ""
                             : formula.getText().trim();
@@ -289,7 +296,7 @@ public class MathematicalModelConverterGUI extends PtolemyFrame {
     private JButton goButton;
     private JPanel left;
     private JTextArea messageArea;
-    private JComboBox modelTypeList;
+    //private JComboBox modelTypeList;
     private JButton moreInfoButton;
     private JComboBox outputChoiceTypeList;
     private JTextField variableSpanSize;

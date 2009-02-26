@@ -204,8 +204,8 @@ public class Query extends JPanel {
      *  @param values The list of possible choices.
      *  @param defaultChoice Default choice.
      */
-    public void addChoice(String name, String label, String[] values,
-            String defaultChoice) {
+    public void addChoice(String name, String label, Object[] values,
+            Object defaultChoice) {
         addChoice(name, label, values, defaultChoice, false);
     }
 
@@ -217,8 +217,8 @@ public class Query extends JPanel {
      *  @param editable True if an arbitrary choice can be entered, in addition
      *  to the choices in values.
      */
-    public void addChoice(String name, String label, String[] values,
-            String defaultChoice, boolean editable) {
+    public void addChoice(String name, String label, Object[] values,
+            Object defaultChoice, boolean editable) {
         addChoice(name, label, values, defaultChoice, editable, Color.white,
                 Color.black);
     }
@@ -234,8 +234,8 @@ public class Query extends JPanel {
      *  @param foreground The foreground color for the editable part.
      *  @return The combo box for the choice.
      */
-    public JComboBox addChoice(String name, String label, String[] values,
-            String defaultChoice, boolean editable, final Color background,
+    public JComboBox addChoice(String name, String label, Object[] values,
+            Object defaultChoice, boolean editable, final Color background,
             final Color foreground) {
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
@@ -976,9 +976,12 @@ public class Query extends JPanel {
         preferred.width = Short.MAX_VALUE;
         return preferred;
     }
-
+    
     /** Get the current value in the entry with the given name,
-     *  and return as a String.  All entry types support this.
+     *  and return as an Object.  This is different from {@link
+     *  #getStringValue(String)} in that if the entry is a combo box, the
+     *  selected object is returned, which need not be a string.
+     *  All entry types support this.
      *  Note that this method should be called from the event dispatch
      *  thread, since it needs to query to UI widgets for their current
      *  values.  If it is called from another thread, there is no
@@ -991,7 +994,7 @@ public class Query extends JPanel {
      *  @exception IllegalArgumentException If the entry type does not
      *   have a string representation (this should not be thrown).
      */
-    public String getStringValue(String name) throws NoSuchElementException,
+    public Object getObjectValue(String name) throws NoSuchElementException,
             IllegalArgumentException {
         Object result = _entries.get(name);
 
@@ -1020,7 +1023,7 @@ public class Query extends JPanel {
         } else if (result instanceof JSlider) {
             return "" + ((JSlider) result).getValue();
         } else if (result instanceof JComboBox) {
-            return (String) (((JComboBox) result).getSelectedItem());
+            return (((JComboBox) result).getSelectedItem());
         } else if (result instanceof JToggleButton[]) {
             // JRadioButton and JCheckButton are subclasses of JToggleButton
             // Regrettably, ButtonGroup gives no way to determine
@@ -1052,6 +1055,25 @@ public class Query extends JPanel {
                     + " a string representation for entries of type "
                     + result.getClass());
         }
+    }
+
+    /** Get the current value in the entry with the given name,
+     *  and return as a String.  All entry types support this.
+     *  Note that this method should be called from the event dispatch
+     *  thread, since it needs to query to UI widgets for their current
+     *  values.  If it is called from another thread, there is no
+     *  assurance that the value returned will be the current value.
+     *  @param name The name of the entry.
+     *  @return The value currently in the entry as a String.
+     *  @exception NoSuchElementException If there is no item with the
+     *   specified name.  Note that this is a runtime exception, so it
+     *   need not be declared explicitly.
+     *  @exception IllegalArgumentException If the entry type does not
+     *   have a string representation (this should not be thrown).
+     */
+    public String getStringValue(String name) throws NoSuchElementException,
+            IllegalArgumentException {
+        return getObjectValue(name).toString();
     }
 
     /** Get the preferred number of lines to be used for entry boxes created
@@ -1603,7 +1625,7 @@ public class Query extends JPanel {
 
         _entries.put(name, entry);
         _labels.put(name, label);
-        _previous.put(name, getStringValue(name));
+        _previous.put(name, getObjectValue(name));
 
         _recalculatePreferredSize(widget);
     }
