@@ -74,7 +74,7 @@ public class TerminalTutorial {
 
         // Create a controller to do the work.
         controller = new BasicController(graphicsPane);
-        defaultInteractor = controller.getSelectionInteractor();
+        //defaultInteractor = controller.getSelectionInteractor();
 
         // Create the window
         BasicFrame frame = new BasicFrame("Simple canvas tutorial", canvas);
