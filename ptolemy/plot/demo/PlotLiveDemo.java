@@ -82,6 +82,11 @@ public class PlotLiveDemo extends PlotLive {
         _count += 1.0;
 
         try {
+            // Findbugs:
+            // [M M SWL] Method calls Thread.sleep() with a lock held [SWL_SLEEP_WITH_LOCK_HELD]
+            // Here it is not a problem since we
+            // actually want to block the other threads
+            // if they want to paint to slow down the drawing.
             Thread.sleep(5);
         } catch (InterruptedException e) {
         }
