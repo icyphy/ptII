@@ -207,10 +207,13 @@ void top() {
 /* initialization exit code */
 /* wrapup entry code */
 /* wrapup exit code */
+//before splitbody0
 /* main entry code */
 /* The firing of the director. */
 /* The postfire of the director. */
+//before main exit code
 /* main exit code */
+//after main exit code
 }}
 
 # main(String[]) is tested in
@@ -244,7 +247,9 @@ Options that take values:
  -allowDynamicMultiportReferences         true|false (default: false)
  -codeDirectory <directory in which to put code (default: $HOME/codegen. Other values: $CWD, $HOME, $PTII, $TMPDIR)>
  -compile            true|false (default: true)
+ -compileTarget      <target to be run, defaults to empty string>
  -generateComment    true|false (default: true)
+ -generatorPackage   <Java package of code generator, defaults to ptolemy.codegen.c>
  -inline             true|false (default: false)
  -measureTime        true|false (default: false)
  -overwriteFiles     true|false (default: true)
