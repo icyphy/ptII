@@ -105,6 +105,9 @@ public class CSPSource extends Source {
         try {
             int limit = ((IntToken) tokenLimit.getToken()).intValue();
 
+            // FindBugs: [H C IL] An apparent infinite loop [IL_INFINITE_LOOP]
+            // If limit < 0 you indeed have an infinite loop,
+            // but that's the intend.
             while (_value < limit || limit < 0) {
                 Token t = new IntToken(_value);
                 output.send(0, t);
