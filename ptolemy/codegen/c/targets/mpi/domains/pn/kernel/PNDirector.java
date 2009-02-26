@@ -631,7 +631,7 @@ public class PNDirector extends Director {
         // the same amount of times.
         Parameter Iterations = (Parameter) _director.getContainer()
         .getAttribute("iterations");
-        String numIterations = new String();
+        String numIterations = "";
         if (Iterations == null) {
             numIterations = "1000";
         } else {
