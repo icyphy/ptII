@@ -26,6 +26,7 @@
  */
 package ptolemy.component.data.type;
 
+import java.util.Arrays;
 import ptolemy.component.data.TupleToken;
 import ptolemy.data.FunctionToken;
 import ptolemy.data.Token;
@@ -209,7 +210,7 @@ public class TupleType extends StructuredType implements Cloneable {
     /** Return a hash code value for this object.
      */
     public int hashCode() {
-        return _elementTypeTerms.hashCode() + 2917;
+        return Arrays.hashCode(_elementTypeTerms)+ 2917;
     }
 
     /** Set the elements that have declared type BaseType.UNKNOWN (the leaf
