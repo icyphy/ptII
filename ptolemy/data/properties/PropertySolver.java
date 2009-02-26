@@ -793,7 +793,7 @@ public abstract class PropertySolver extends PropertySolverBase {
         // The first check is for singleton elements, and the equals()
         // comparison is necessary for "equivalent" elements, such as
         // those in the SetLattice usecase.
-        if ((previousProperty == null && previousProperty != property)
+        if ((previousProperty == null && property != null)
                 || (previousProperty != null && !previousProperty
                         .equals(property))) {
 
