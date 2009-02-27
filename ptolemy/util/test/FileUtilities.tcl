@@ -219,7 +219,7 @@ test FileUtilities-8.5 {nameToURL that does not exist with a base URI} {
 
     set results "file://///doesnotexist"
     if { "[string range $javaVersion 0 2]" == "1.5" } { 
-	set "file:///doesnotexist"
+	set results "file:///doesnotexist"
     }
     list $fileExists0 [expr {[$url1 toString] == $results}]
 } {0 1}
