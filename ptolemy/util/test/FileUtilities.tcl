@@ -207,8 +207,22 @@ test FileUtilities-8.5 {nameToURL that does not exist with a base URI} {
     # FIXME: should this throw an exception because doesnotexist is not found?
     set url1 [java::call ptolemy.util.FileUtilities nameToURL \
 	file:///doesnotexist $baseURI [java::null]]
-    list $fileExists0 [$url1 toString]
-} {0 file:///doesnotexist}
+    set javaVersion [java::call ptolemy.util.StringUtilities getProperty java.version]
+
+    # Unfortunately, between Java 1.5 and 1.6,
+    # The URL constructor changed.
+    # In 1.5, new URL("file:////foo").toString()
+    # returns "file://foo"
+    # In 1.6, new URL("file:////foo").toString()
+    # return "file:////foo".
+    # See http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6561321
+
+    set results "file://///doesnotexist"
+    if { "[string range $javaVersion 0 2]" == "1.5" } { 
+	set "file:///doesnotexist"
+    }
+    list $fileExists0 [expr {[$url1 toString] == $results}]
+} {0 1}
 
 ######################################################################
 ####

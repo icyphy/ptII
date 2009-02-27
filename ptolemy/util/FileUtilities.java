@@ -376,7 +376,22 @@ public class FileUtilities {
                 try {
                     // Adding another '/' for remote execution.
                     if ((newURI.getScheme() != null)
-                            && (newURI.getAuthority() == null)) {
+			&& (newURI.getAuthority() == null)) {
+			// Change from Efrat:
+			// "I made these change to allow remote
+			// execution of a workflow from within a web
+			// service."
+
+			// "The first modification was due to a URI
+			// authentication exception when trying to
+			// create a file object from a URI on the
+			// remote side. The second modification was
+			// due to the file protocol requirements to
+			// use 3 slashes, 'file:///' on the remote
+			// side, although it would be probably be a
+			// good idea to also make sure first that the
+			// url string actually represents the file
+			// protocol."
                         urlString = urlString.substring(0, 6) + "//"
                                 + urlString.substring(6);
 
@@ -384,7 +399,14 @@ public class FileUtilities {
                         // urlString = urlString.substring(0, 6) + "/"
                         // + urlString.substring(6);
                     }
-                    return new URL(urlString);
+		    // Unfortunately, between Java 1.5 and 1.6,
+		    // The URL constructor changed.
+		    // In 1.5, new URL("file:////foo").toString()
+		    // returns "file://foo"
+		    // In 1.6, new URL("file:////foo").toString()
+		    // return "file:////foo".
+		    // See http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6561321
+		    return new URL(urlString);
                 } catch (Exception ex3) {
                     try {
                         // Under Webstart, opening
