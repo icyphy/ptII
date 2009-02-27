@@ -319,17 +319,19 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         code.append(includeFiles);
         code.append(typeResolutionCode);
         code.append(sharedCode);
-        code.append("//end shared code ******************************"+_eol);
+	// Don't use **** in comments, it causes the nightly build to 
+	// report errors.
+        code.append(comment("end shared code"));
         code.append(variableDeclareCode);
         code.append(preinitializeCode);
-        code.append("//end preinitialize code************************"+_eol);
+	code.append(comment("end preinitialize code"));
         //code.append(globalCode);
 
         if (!inlineValue) {
             
-            code.append("//before appending fireFunctionCode **********************"+_eol);
+            code.append(comment("before appending fireFunctionCode"));
             code.append(fireFunctionCode);
-            code.append("//after appending fireFunctionCode  **********************"+_eol);
+            code.append(comment("after appending fireFunctionCode"));
         }
 
         //if (containsCode(variableInitCode)
@@ -338,7 +340,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         String[] splitVariableInitCode = _splitBody("_varinit_",
                 variableInitCode);
         code.append(splitVariableInitCode[0]);
-//begin Shanna's comments out
+       //begin Shanna's comments out
         String[] splitInitializeCode = _splitBody("_initialize_",
                 initializeCode);
         code.append(splitInitializeCode[0]);
@@ -2013,7 +2015,9 @@ System.out.println("_generatePreinitializeCode called");
             "-codeDirectory",
         "<directory in which to put code (default: $HOME/codegen. Other values: $CWD, $HOME, $PTII, $TMPDIR)>" },
         { "-compile", "           true|false (default: true)" },
+        { "-compileTarget", "     <target to be run, defaults to empty string>" },
         { "-generateComment", "   true|false (default: true)" },
+	{ "-generatorPackage", "  <Java package of code generator, defaults to ptolemy.codegen.c>" },
         { "-inline", "            true|false (default: false)" },
         { "-measureTime", "       true|false (default: false)" },
         { "-overwriteFiles", "    true|false (default: true)" },
