@@ -473,12 +473,15 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  @return A formatted comment.
      */
     public String comment(int indentLevel, String comment) {
-        if (generateComment.getExpression().equals("true")) {
-            return StringUtilities.getIndentPrefix(indentLevel)
-            + formatComment(comment);
-        } else {
-            return "";
+        try {
+            if (generateComment.getToken() == BooleanToken.TRUE) {
+                return StringUtilities.getIndentPrefix(indentLevel)
+                + formatComment(comment);
+            }
+        } catch (IllegalActionException e) {
+            // do nothing.
         }
+        return "";
     }
 
     /** Return a formatted comment containing the
@@ -489,7 +492,14 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  @return A formatted comment.
      */
     public String comment(String comment) {
-        return formatComment(comment);
+        try {
+            if (generateComment.getToken() == BooleanToken.TRUE) {
+                return formatComment(comment);
+            } 
+        } catch (IllegalActionException e) {
+            // do nothing.
+        }
+        return "";
     }
 
     /** Return a formatted comment containing the specified string. In
@@ -1243,14 +1253,15 @@ System.out.println("_generatePreinitializeCode called");
 
         ActorCodeGenerator helperObject = null;
 
+        // e.g. "ptolemy.*" ==> "ptolemy.codegen.c.*"
+        String helperClassName = className.replaceFirst("ptolemy",
+                packageName);
+
         String targetValue = target.getExpression();
         if (!targetValue.equals(_DEFAULT_TARGET)) {
             // Look in the target-specific directory.
             String targetSubDirectory = 
                 ".targets." + targetValue;
-
-            String helperClassName = className.replaceFirst("ptolemy",
-                    packageName + targetSubDirectory);
 
             try {
                 helperObject = _instantiateHelper(object, helperClassName);
@@ -1265,11 +1276,6 @@ System.out.println("_generatePreinitializeCode called");
         }
 
         // Now, we look in the default directory.
-
-        // e.g. "ptolemy.*" ==> "ptolemy.codegen.c.*"
-        String helperClassName = className.replaceFirst("ptolemy",
-                packageName);
-
         if (helperClassName.equals(className)) {
             // It could be that the className does not begin with
             // ptolemy, so try a simple substitution.
@@ -1287,9 +1293,18 @@ System.out.println("_generatePreinitializeCode called");
                         + "substitution of the value of the generatorPackage "
                         + "parameter \"" + packageName + "\" failed?");
             }
-
-        } else {
+            if (helperObject != null) {
+                _helperStore.put(object, helperObject);
+                return helperObject;
+            }
+        } 
+    
+        try {
             helperObject = _instantiateHelper(object, helperClassName);
+        } catch (Exception ex) {
+            // try the implementation in the middle layer.
+            helperClassName = className.replaceFirst("ptolemy", "ptolemy.codegen");
+            helperObject = _instantiateHelper(object, helperClassName);                
         }
 
         _helperStore.put(object, helperObject);
