@@ -34,6 +34,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.LimitedFiringSource;
@@ -47,6 +48,7 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Variable;
+import ptolemy.domains.giotto.kernel.GiottoReceiver;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -180,7 +182,6 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             periodString = periodString.substring(1,periodString.length());
             
         }
-        code.append(generateDriverCode());
         
         args1.add("");
         if(_isTopGiottoDirector())
@@ -205,8 +206,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         code.append("vTaskDelayUntil(&xLastWakeTime,xFrequency);"+_eol);
         code.append("// here I should call generate driver code method for each of the actors"+_eol);
         code.append("  //call the methods for the tasks at this frequency of "+ i+_eol);
-        for(int j = 0; j<ActorFrequencies[i].size();j++)
-        {
+        for(int j = 0; j<ActorFrequencies[i].size();j++) {
             //call generate driver code for each of the actors
             code.append(ActorFrequencies[i].get(j)+"();"+_eol);
         }
@@ -349,6 +349,8 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             args.set(0, _getThreadName(frequencyValue));
             code.append(_generateBlockCode("declareTaskHandle", args));
         }
+
+        code.append(generateDriverCode());
        
         return processCode(code.toString());
     }
@@ -829,12 +831,49 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
        
     }
     
-    public String generateDriverCode() throws IllegalActionException
-    {
+    public String generateDriverCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         
-        code.append("//copy output to PORTS"+_eol);
-        code.append("//copy PORTS to inputs"+_eol);
+        for (Actor actor : (List<Actor>) 
+                ((TypedCompositeActor) _director.getContainer()).deepEntityList()) {
+
+
+            List outputPortList = actor.outputPortList();
+            Iterator outputPorts = outputPortList.iterator();
+
+            String actorDriverCode = "";
+            while (outputPorts.hasNext()) {
+                IOPort port = (IOPort) outputPorts.next();
+                Receiver[][] channelArray = port.getRemoteReceivers();
+
+                for (int i = 0; i < channelArray.length; i++) {
+                    Receiver[] receiverArray = channelArray[i];
+
+                    for (int j = 0; j < receiverArray.length; j++) {
+                        GiottoReceiver receiver = (GiottoReceiver) receiverArray[j];
+                        IOPort sinkPort = receiver.getContainer();
+                        
+                        ArrayList args = new ArrayList();
+
+                        // FIXME: figure out the channel number for the sinkPort.
+                        String sinkReference = "##ref(sinkPort)";
+                        String srcReference = "##ref(output#i)";
+                        
+                        args.add(sinkReference);
+                        args.add(srcReference);
+                        
+                        actorDriverCode += _generateBlockCode("updatePort", args);
+                        
+                    }
+                }
+            }
+            
+            ArrayList args = new ArrayList();
+            args.add(generateName((NamedObj) actor));
+            args.add(actorDriverCode);
+            code.append(_generateBlockCode("updatePort", args));
+        }
+        
         return code.toString();
     }
     /*public String generateTypeConvertFireCode(CodeGeneratorHelper actorHelper)
