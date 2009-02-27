@@ -52,6 +52,7 @@ import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.fsm.FSMGraphFrame;
 import ptolemy.vergil.fsm.FSMGraphModel;
+import ptolemy.verification.kernel.MathematicalModelConverter.FormulaType;
 import diva.graph.GraphPane;
 import diva.gui.GUIUtilities;
 
@@ -63,7 +64,7 @@ import diva.gui.GUIUtilities;
  * composite entity and a tableau, it creates an editor and populates the menus
  * and toolbar. This overrides the base class to associate with the editor an
  * instance of FmvAutomatonGraphController.
- * 
+ *
  * @author Chihhong Patrick Cheng Contributor: Edward A. Lee
  * @version $Id: FmvAutomatonGraphFrame.java,v 1.9 2008/01/29 07:51:58 patrickj
  *          Exp $
@@ -80,7 +81,7 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
      * constructor results in a graph frame that obtains its library either from
      * the model (if it has one) or the default library defined in the
      * configuration.
-     * 
+     *
      * @see Tableau#show()
      * @param entity
      *                The model to put in this frame.
@@ -98,7 +99,7 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
      * constructor results in a graph frame that obtains its library either from
      * the model (if it has one), or the <i>defaultLibrary</i> argument (if it
      * is non-null), or the default library defined in the configuration.
-     * 
+     *
      * @see Tableau#show()
      * @param entity
      *                The model to put in this frame.
@@ -120,7 +121,7 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
      * Create a new graph pane. Note that this method is called in constructor
      * of the base class, so it must be careful to not reference local variables
      * that may not have yet been created.
-     * 
+     *
      * @param entity
      *                The object to be displayed in the pane (which must be an
      *                instance of CompositeEntity).
@@ -218,12 +219,17 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
                     query);
 
             String pattern = "";
-            String finalChoice = "";
-            String span = "";
+            FormulaType finalChoice;
+            int span = 0;
             if (dialog.buttonPressed().equals("OK")) {
                 pattern = query.getStringValue("formula");
-                finalChoice = query.getStringValue("choice");
-                span = query.getStringValue("span");
+                String choice = query.getStringValue("choice");
+                if (choice.equals("CTL")) {
+                    finalChoice = FormulaType.CTL;
+                } else {
+                    finalChoice = FormulaType.LTL;
+                }
+                span = Integer.parseInt(query.getStringValue("span"));
                 // Retrieve the Fmv Automaton
                 FmvAutomaton model = (FmvAutomaton) getModel();
                 // StringBuffer = model
@@ -413,7 +419,7 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
 
         /**
          * Return true if the file name ends with ".smv".
-         * 
+         *
          * @param file
          *                The file to be checked.
          * @return true if the file is a directory or the file name, when
@@ -426,7 +432,7 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
 
         /**
          * Return the description of this file filter.
-         * 
+         *
          * @return The description of this file filter.
          */
         public String getDescription() {

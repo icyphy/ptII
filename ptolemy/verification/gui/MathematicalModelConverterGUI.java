@@ -29,6 +29,7 @@ package ptolemy.verification.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -37,26 +38,26 @@ import java.net.URL;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 
 import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.EditorPaneFactory;
 import ptolemy.actor.gui.PtolemyFrame;
+import ptolemy.actor.gui.PtolemyQuery;
 import ptolemy.actor.gui.Tableau;
+import ptolemy.data.IntToken;
 import ptolemy.gui.JTextAreaExec;
-import ptolemy.gui.Query;
-import ptolemy.gui.Query.QueryFileChooser;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.util.MessageHandler;
 import ptolemy.verification.kernel.MathematicalModelConverter;
+import ptolemy.verification.kernel.MathematicalModelConverter.FormulaType;
 import ptolemy.verification.kernel.MathematicalModelConverter.ModelType;
+import ptolemy.verification.kernel.MathematicalModelConverter.OutputType;
 
 //////////////////////////////////////////////////////////////////////////
 //// MathematicalModelConverter
@@ -69,7 +70,7 @@ import ptolemy.verification.kernel.MathematicalModelConverter.ModelType;
  generator. This UI will be invoked when you double click on the
  code generator.
 
- @author Chihhong Patrick Cheng, Edward A. Lee, Christopher Brooks
+ @author Chihhong Patrick Cheng, Thomas Huining Feng, Edward A. Lee, Christopher Brooks
  @version $Id$
  @since Ptolemy II 7.1
  @Pt.ProposedRating Red (patrickj)
@@ -97,37 +98,37 @@ public class MathematicalModelConverterGUI extends PtolemyFrame {
         setTitle(modelConverter.getName());
 
         // Caveats panel.
-        caveatsPanel = new JPanel();
+        JPanel caveatsPanel = new JPanel();
         caveatsPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
         caveatsPanel.setLayout(new BoxLayout(caveatsPanel, BoxLayout.X_AXIS));
 
-        messageArea = new JTextArea("NOTE: This is a highly preliminary "
-                + "facility for\n      verification with many "
-                + "limitations. It is \n      best viewed as "
-                + "a concept demonstration.", 2, 10);
+        JTextArea messageArea = new JTextArea("NOTE: This is a highly " +
+                "preliminary facility for\n      verification with many " +
+                "limitations. It is \n      best viewed as a concept " +
+                "demonstration.", 2, 10);
         messageArea.setEditable(false);
         messageArea.setBorder(BorderFactory.createEtchedBorder());
         messageArea.setLineWrap(true);
         messageArea.setWrapStyleWord(true);
         caveatsPanel.add(messageArea);
 
-        left = new JPanel();
+        JPanel left = new JPanel();
         left.setSize(500, 400);
         left.setLayout(new BoxLayout(left, BoxLayout.Y_AXIS));
         caveatsPanel.setMaximumSize(new Dimension(500, 100));
         left.add(caveatsPanel);
 
         // Panel for push buttons.
-        buttonPanel = new JPanel();
-        goButton = new JButton("Convert");
+        JPanel buttonPanel = new JPanel();
+        JButton goButton = new JButton("Convert");
         goButton.setToolTipText("Convert Model");
         buttonPanel.add(goButton, BorderLayout.CENTER);
 
-        clearButton = new JButton("Clear");
+        JButton clearButton = new JButton("Clear");
         clearButton.setToolTipText("Clear Log");
         buttonPanel.add(clearButton);
 
-        moreInfoButton = new JButton("More Info");
+        JButton moreInfoButton = new JButton("More Info");
         moreInfoButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 try {
@@ -146,7 +147,7 @@ public class MathematicalModelConverterGUI extends PtolemyFrame {
                     }
                 } catch (Exception ex) {
                     throw new InternalErrorException(modelConverter, ex,
-                            "Failed to open ptolemy/verification/README.html: ");
+                            "Failed to open ptolemy/verification/README.html.");
                 }
             }
         });
@@ -155,60 +156,16 @@ public class MathematicalModelConverterGUI extends PtolemyFrame {
         buttonPanel.setMaximumSize(new Dimension(500, 50));
         left.add(buttonPanel);
 
-        // File name query.
-        Query targetFileQuery = new Query();
-        targetFileQuery.addFileChooser("target", "Target File", "", null, null);
-        left.add(targetFileQuery);
+        // Query.
+        JPanel queryPanel = new JPanel();
 
-        // Control query.
-        controlPanel = new JPanel();
-        controlPanel.setLayout(new BoxLayout(controlPanel, BoxLayout.Y_AXIS));
+        PtolemyQuery query = new PtolemyQuery(modelConverter);
+        query.setInsets(new Insets(2, 0, 2, 0));
+        query.setTextWidth(25);
+        queryPanel.add(EditorPaneFactory.createEditorPane(modelConverter,
+                query));
 
-        final Query controlQuery = new Query();
-        ModelType[] modelTypes = ModelType.values();
-        controlQuery.addChoice("type", "Model Type", modelTypes,
-                ModelType.Maude);
-        controlPanel.add(controlQuery);
-
-        JPanel controlPanel2 = new JPanel();
-        controlPanel2.setSize(400, 30);
-        controlPanel2.add(new JLabel("Formula Type"));
-        String[] formulaTypes = { "CTL", "LTL", "TCTL", "Buffer Overflow",
-                "Risk", "Reachability" };
-        formulaTypeList = new JComboBox(formulaTypes);
-        formulaTypeList.setSelectedIndex(0);
-        controlPanel2.add(formulaTypeList);
-        controlPanel2.add(new JLabel("Output Choice"));
-        String[] outputChoiceTypes = { "Text Only", "Invoke NuSMV" };
-        outputChoiceTypeList = new JComboBox(outputChoiceTypes);
-        outputChoiceTypeList.setSelectedIndex(0);
-        controlPanel2.add(outputChoiceTypeList);
-        controlPanel.add(controlPanel2);
-
-        JPanel controlPanel3 = new JPanel();
-        controlPanel3.setSize(400, 30);
-        controlPanel3.add(new JLabel("Temporal Formula    "));
-        formula = new JTextField(30);
-        controlPanel3.add(formula);
-        controlPanel.add(controlPanel3);
-
-        JPanel controlPanel4 = new JPanel();
-        controlPanel4.setSize(400, 30);
-        controlPanel4.add(new JLabel("Variable Span Size  "));
-        variableSpanSize = new JTextField(30);
-        variableSpanSize.setText("0");
-        controlPanel4.add(variableSpanSize);
-        controlPanel.add(controlPanel4);
-
-        JPanel controlPanel5 = new JPanel();
-        controlPanel5.setSize(400, 30);
-        controlPanel5.add(new JLabel("FSMActor Buffer Size"));
-        bufferSize = new JTextField(30);
-        bufferSize.setText("5");
-        controlPanel5.add(bufferSize);
-        controlPanel.add(controlPanel5);
-
-        JScrollPane scrollPane = new JScrollPane(controlPanel);
+        JScrollPane scrollPane = new JScrollPane(queryPanel);
 
         left.add(scrollPane, BorderLayout.CENTER);
 
@@ -216,12 +173,12 @@ public class MathematicalModelConverterGUI extends PtolemyFrame {
         final JTextAreaExec exec = new JTextAreaExec(
                 "Terminal (Verification Results)", false);
 
-        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-                left, exec);
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, left,
+                exec);
         splitPane.setOneTouchExpandable(true);
 
-        // Adjust the divider so that the control panel does not
-        // have a horizontal scrollbar.
+        // Adjust the divider so that the control panel does not have a
+        // horizontal scrollbar.
         Dimension preferred = left.getPreferredSize();
         splitPane.setDividerLocation(preferred.width + 20);
 
@@ -236,31 +193,42 @@ public class MathematicalModelConverterGUI extends PtolemyFrame {
         goButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 try {
+                    ModelType modelType = (ModelType) modelConverter.modelType
+                            .getChosenValue();
+
+                    File file = modelConverter.target.asFile();
+
                     exec.updateStatusBar("// Starting " + modelConverter
                             + "model converting process.");
 
-                    ModelType modelType =
-                        (ModelType) controlQuery.getObjectValue("type");
-
-                    String inputTemporalFormula = formula.getText() == null ? ""
-                            : formula.getText().trim();
-                    String formulaType = (String) formulaTypeList
-                            .getSelectedItem();
-                    String varSpanSize = variableSpanSize.getText() == null ? ""
-                            : variableSpanSize.getText().trim();
-                    String outputChoice = (String) outputChoiceTypeList
-                            .getSelectedItem();
-                    String FSMBufferSize = bufferSize.getText() == null ? ""
-                            : bufferSize.getText().trim();
-                    if(formulaType.equalsIgnoreCase("Risk") || formulaType.equalsIgnoreCase("Reachability")){
-                        inputTemporalFormula = modelConverter.generateGraphicalSpec(formulaType);
-                        formulaType = "CTL";
+                    String inputTemporalFormula = modelConverter.formula
+                            .getExpression();
+                    FormulaType formulaType = (FormulaType) modelConverter
+                            .formulaType.getChosenValue();
+                    int span = ((IntToken) modelConverter.span.getToken())
+                            .intValue();
+                    OutputType outputType = (OutputType) modelConverter
+                            .outputType.getChosenValue();
+                    int bufferSize = ((IntToken) modelConverter.buffer
+                            .getToken()).intValue();
+                    if(formulaType == FormulaType.Risk ||
+                            formulaType == FormulaType.Reachability){
+                        inputTemporalFormula =
+                            modelConverter.generateGraphicalSpec(formulaType);
+                        formulaType = FormulaType.CTL;
                     }
 
                     StringBuffer code = new StringBuffer("");
-                    code.append(modelConverter.generateFile(modelType,
-                            inputTemporalFormula, formulaType, varSpanSize,
-                            outputChoice, FSMBufferSize));
+
+                    try {
+                        code.append(modelConverter.generateFile(file, modelType,
+                                inputTemporalFormula, formulaType, span,
+                                outputType, bufferSize));
+                    } catch (Exception e) {
+                        MessageHandler.error("Failed to output result to the " +
+                                "file.", e);
+                        return;
+                    }
 
                     File codeFileNameWritten = modelConverter.getCodeFile();
 
@@ -284,21 +252,4 @@ public class MathematicalModelConverterGUI extends PtolemyFrame {
             }
         });
     }
-
-    // Private variable for GUI components
-    private JTextField bufferSize;
-    private JPanel buttonPanel;
-    private JPanel caveatsPanel;
-    private JButton clearButton;
-    private JPanel controlPanel;
-    private JTextField formula;
-    private JComboBox formulaTypeList;
-    private JButton goButton;
-    private JPanel left;
-    private JTextArea messageArea;
-    //private JComboBox modelTypeList;
-    private JButton moreInfoButton;
-    private JComboBox outputChoiceTypeList;
-    private JTextField variableSpanSize;
-
 }

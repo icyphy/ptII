@@ -34,20 +34,20 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Random;
 
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-
 import ptolemy.actor.CompositeActor;
+import ptolemy.data.expr.ChoiceParameter;
+import ptolemy.data.expr.FileParameter;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.fmv.FmvAutomaton;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
-import ptolemy.util.StringUtilities;
 import ptolemy.verification.gui.MathematicalModelConverterGUIFactory;
 import ptolemy.verification.kernel.maude.RTMaudeUtility;
 
@@ -80,7 +80,36 @@ public class MathematicalModelConverter extends Attribute {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        _attachText("_iconDescription", "<svg>\n"
+        target = new FileParameter(this, "target", true);
+        target.setDisplayName("Target File");
+
+        modelType = new ChoiceParameter(this, "modelType", ModelType.class);
+        modelType.setExpression(ModelType.Maude.toString());
+        modelType.setDisplayName("Model Type");
+
+        formulaType = new ChoiceParameter(this, "Formula Type",
+                FormulaType.class);
+        formulaType.setExpression(FormulaType.CTL.toString());
+        formulaType.setDisplayName("Formula Type");
+
+        outputType = new ChoiceParameter(this, "Output Type", OutputType.class);
+        outputType.setExpression(OutputType.Text.toString());
+        outputType.setDisplayName("Output Type");
+
+        formula = new StringParameter(this, "formula");
+        formula.setDisplayName("Temporal Formula");
+
+        span = new Parameter(this, "span");
+        span.setTypeEquals(BaseType.INT);
+        span.setExpression("0");
+        span.setDisplayName("Variable Span Size");
+
+        buffer = new Parameter(this, "buffer");
+        buffer.setTypeEquals(BaseType.INT);
+        buffer.setExpression("5");
+        buffer.setDisplayName("FSMActor Buffer Size");
+
+        _attachText("_iconDescription", "<svg>n"
                 + "<rect x=\"-50\" y=\"-20\" width=\"100\" height=\"40\" "
                 + "style=\"fill:pink\"/>" + "<text x=\"-40\" y=\"-5\" "
                 + "style=\"font-size:12; font-family:SansSerif; fill:white\">"
@@ -100,8 +129,8 @@ public class MathematicalModelConverter extends Attribute {
     // public methods ////
 
     public StringBuffer generateCode(ModelType modelType,
-            String inputTemporalFormula, String formulaType,
-            String variableSpanSize, String FSMBufferSize)
+            String inputTemporalFormula, FormulaType formulaType,
+            int variableSpanSize, int FSMBufferSize)
             throws IllegalActionException, NameDuplicationException,
             CloneNotSupportedException {
         StringBuffer systemDescription = new StringBuffer("");
@@ -154,13 +183,12 @@ public class MathematicalModelConverter extends Attribute {
      *
      * @return Textual format of the converted model based on the specification
      *         given.
-     * @exception KernelException
-     *                    If a type conflict occurs or the model is running.
      */
-    public StringBuffer generateFile(ModelType modelType,
-            String inputTemporalFormula, String formulaType,
-            String variableSpanSize, String outputChoice, String FSMBufferSize)
-            throws Exception {
+    public StringBuffer generateFile(File file, ModelType modelType,
+            String inputTemporalFormula, FormulaType formulaType,
+            int variableSpanSize, OutputType outputChoice, int FSMBufferSize)
+            throws IllegalActionException, NameDuplicationException,
+            CloneNotSupportedException, IOException {
         StringBuffer returnStringBuffer = new StringBuffer("");
         // Perform deep traversal in order to generate .smv files.
         _codeFile = null;
@@ -174,88 +202,17 @@ public class MathematicalModelConverter extends Attribute {
                 StringBuffer systemDescription = generateCode(modelType,
                         inputTemporalFormula, formulaType, variableSpanSize,
                         FSMBufferSize);
-                FileWriter smvFileWriter = null;
-                String fileIdentifier = "";
-
-                switch (modelType) {
-                case Kripke:
-                    fileIdentifier = ".smv";
-                    break;
-                case CTA:
-                    fileIdentifier = ".d";
-                    break;
-                case Maude:
-                    fileIdentifier = ".maude";
-                    break;
-                }
-
-
-                if (outputChoice.equalsIgnoreCase("Text Only")) {
-                    JFileChooser fileSaveDialog = new JFileChooser();
-                    fileSaveDialog
-                            .setDialogType(JFileChooser.SAVE_DIALOG);
-                    fileSaveDialog
-                            .setDialogTitle("Convert Ptolemy model into "+ fileIdentifier +" file");
-                    if (_directory != null) {
-                        fileSaveDialog.setCurrentDirectory(_directory);
-                    } else {
-                        String cwd = StringUtilities
-                                .getProperty("user.dir");
-
-                        if (cwd != null) {
-                            fileSaveDialog
-                                    .setCurrentDirectory(new File(cwd));
+                if (outputChoice == OutputType.Text) {
+                    FileWriter writer = null;
+                    try {
+                        writer = new FileWriter(file);
+                        writer.write(systemDescription.toString());
+                        _codeFile = file;
+                    } finally {
+                        if (writer != null) {
+                            writer.close();
                         }
                     }
-
-                    int returnValue = fileSaveDialog
-                            .showSaveDialog(null);
-
-                    if (returnValue == JFileChooser.APPROVE_OPTION) {
-                        _directory = fileSaveDialog
-                                .getCurrentDirectory();
-
-                        try {
-                            File smvFile = fileSaveDialog
-                                    .getSelectedFile()
-                                    .getCanonicalFile();
-
-                            if (smvFile.exists()) {
-                                String queryString = "Overwrite "
-                                        + smvFile.getName() + "?";
-                                int selected = JOptionPane
-                                        .showOptionDialog(
-                                                null,
-                                                queryString,
-                                                "Save Changes?",
-                                                JOptionPane.YES_NO_OPTION,
-                                                JOptionPane.QUESTION_MESSAGE,
-                                                null, null, null);
-                                if (selected == 0) {
-                                    smvFileWriter = new FileWriter(
-                                            smvFile);
-                                    smvFileWriter
-                                            .write(systemDescription
-                                                    .toString());
-                                    _codeFile = smvFile;
-                                }
-                            } else {
-                                smvFileWriter = new FileWriter(smvFile);
-                                smvFileWriter.write(systemDescription
-                                        .toString());
-                                _codeFile = smvFile;
-                            }
-                        } catch (IOException ex) {
-                            MessageHandler
-                                    .error("Failed to perform the file closing process:\n"
-                                            + ex.getMessage());
-                        } finally {
-                            if (smvFileWriter != null) {
-                                smvFileWriter.close();
-                            }
-                        }
-                    }
-
                 } else {
                     if (modelType == ModelType.Kripke) {
                         // Invoke NuSMV. Create a temporal file and
@@ -282,14 +239,16 @@ public class MathematicalModelConverter extends Attribute {
                             // Now create the directory.
                             boolean isOpened = smvFolder.mkdir();
                             if (isOpened == false) {
-                                MessageHandler
-                                        .warning("Failed to invoke NuSMV correctly: \nUnable to open a temp folder.");
+                                throw new IllegalActionException("Failed to " +
+                                        "invoke NuSMV correctly: \nUnable to " +
+                                        "open a temp folder.");
                             }
                         } else {
                             boolean isOpened = smvFolder.mkdir();
                             if (isOpened == false) {
-                                MessageHandler
-                                        .warning("Failed to invoke NuSMV correctly:\nUnable to open a temp folder.");
+                                throw new IllegalActionException("Failed to " +
+                                        "invoke NuSMV correctly:\nUnable to " +
+                                        "open a temp folder.");
                             }
 
                         }
@@ -297,14 +256,15 @@ public class MathematicalModelConverter extends Attribute {
                         File smvFile = new File(folderName + "System.smv");
                         String fileAbsolutePath = smvFile.getAbsolutePath();
 
+                        FileWriter writer = null;
                         try {
-                            smvFileWriter = new FileWriter(smvFile);
-                            smvFileWriter.write(systemDescription
+                            writer = new FileWriter(smvFile);
+                            writer.write(systemDescription
                                     .toString());
 
                         } finally {
-                            if (smvFileWriter != null) {
-                                smvFileWriter.close();
+                            if (writer != null) {
+                                writer.close();
                             }
                         }
 
@@ -320,11 +280,6 @@ public class MathematicalModelConverter extends Attribute {
                             while ((line = reader.readLine()) != null) {
                                 returnStringBuffer.append(line + "\n");
                             }
-
-                        } catch (IOException ex) {
-                            MessageHandler
-                                    .warning("Failed to invoke NuSMV correctly: "
-                                            + ex.getMessage());
 
                         } finally {
                             reader.close();
@@ -356,7 +311,7 @@ public class MathematicalModelConverter extends Attribute {
      * @return The textual format of the graphical spec.
      * @throws IllegalActionException
      */
-    public String generateGraphicalSpec(String formulaType)
+    public String generateGraphicalSpec(FormulaType formulaType)
             throws IllegalActionException {
 
         if (_model instanceof CompositeActor) {
@@ -372,13 +327,11 @@ public class MathematicalModelConverter extends Attribute {
         return _codeFile;
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // protected variables ////
-
     public enum ModelType {
         CTA {
             public String toString() {
-                return "Communicating Timed Automata (Acceptable by RED under DE)";
+                return "Communicating Timed Automata (Acceptable by RED " +
+                        "under DE)";
             }
         }, Kripke {
             public String toString() {
@@ -390,6 +343,35 @@ public class MathematicalModelConverter extends Attribute {
             }
         }
     }
+
+    public enum FormulaType {
+        CTL,
+        LTL,
+        TCTL,
+        Buffer {
+            public String toString() {
+                return "Buffer Overflow";
+            }
+        },
+        Risk,
+        Reachability
+    }
+
+    public enum OutputType {
+        Text {
+            public String toString() {
+                return "Text Only";
+            }
+        },
+        SMV {
+            public String toString() {
+                return "Invoke NuSMV";
+            }
+        }
+    }
+
+    /////////////////////////////////////////////////////////////////
+    // protected variables ////
 
     /** The name of the file that was written. If no file was written, then the
      * value is null.
@@ -406,7 +388,8 @@ public class MathematicalModelConverter extends Attribute {
 
     /** This is used to delete recursively the folder and files within.
      */
-    private void _deleteFolder(File folder) throws Exception {
+    private void _deleteFolder(File folder) throws IllegalActionException,
+            IOException {
 
         if (folder.list() == null || folder.list().length <= 0) {
             boolean isDeleted = folder.delete();
@@ -436,6 +419,19 @@ public class MathematicalModelConverter extends Attribute {
                         "Temporary folder delete unsuccessful");
             }
         }
-
     }
+
+    public FileParameter target;
+
+    public ChoiceParameter modelType;
+
+    public ChoiceParameter formulaType;
+
+    public ChoiceParameter outputType;
+
+    public StringParameter formula;
+
+    public Parameter span;
+
+    public Parameter buffer;
 }

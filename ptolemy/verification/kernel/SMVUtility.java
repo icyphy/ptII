@@ -52,6 +52,7 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.verification.kernel.MathematicalModelConverter.FormulaType;
 
 // ////////////////////////////////////////////////////////////////////////
 // //SMVUtility
@@ -60,7 +61,7 @@ import ptolemy.kernel.util.NamedObj;
  * This is an utility function for Ptolemy II models. It performs a systematic
  * traversal of the system and generate NuSMV (or Cadence SMV) acceptable files for
  * model checking.
- * 
+ *
  * @author Chihhong Patrick Cheng, Contributor: Edward A. Lee, Christopher Brooks
  * @version $Id$
  * @since Ptolemy II 7.1
@@ -72,10 +73,10 @@ public class SMVUtility {
     /**
      * Return a StringBuffer that contains the converted .smv format of the
      * system. Note that in this version we use modular approach instead of
-     * direct dependency checking detection. Modular approach would generate 
+     * direct dependency checking detection. Modular approach would generate
      * a bigger state space. Also the current algorithm enables us to deal with
      * hierarchical systems.
-     * 
+     *
      * @param model The system under analysis.
      * @param pattern The temporal formula used to be attached in the .smv file.
      * @param choice The type of the formula. It may be either a CTL or LTL
@@ -86,7 +87,7 @@ public class SMVUtility {
      * @throws NameDuplicationException
      */
     public static StringBuffer advancedGenerateSMVDescription(
-            CompositeActor model, String pattern, String choice, String span)
+            CompositeActor model, String pattern, FormulaType choice, int span)
             throws IllegalActionException, NameDuplicationException {
 
         // Initialization of some global variable storages.
@@ -192,10 +193,10 @@ public class SMVUtility {
         }
 
         // Lastly, attach the specification into the file.
-        if (choice.equalsIgnoreCase("CTL")) {
+        if (choice == FormulaType.CTL) {
             mainModuleDescription.append("\n\tSPEC \n");
             mainModuleDescription.append("\t\t" + pattern + "\n");
-        } else if (choice.equalsIgnoreCase("LTL")) {
+        } else if (choice == FormulaType.LTL) {
             mainModuleDescription.append("\n\tLTLSPEC \n");
             mainModuleDescription.append("\t\t" + pattern + "\n");
         }
@@ -204,23 +205,24 @@ public class SMVUtility {
         return returnSMVFormat;
     }
 
-    /** 
+    /**
      * This function tries to generate the reachability/risk specification of
-     * a system by scanning through the subsystem, and extract states which 
+     * a system by scanning through the subsystem, and extract states which
      * have special risk or reachability labels.
-     * 
+     *
      * @param model The system model under analysis.
-     * @param specType The type of the graphical specification, it may be either
-     *                 "Risk" or "Reachability" 
+     * @param formulaType The type of the graphical specification, it may be either
+     *                 "Risk" or "Reachability"
      * @return A string indicating the CTL formula for risk/reachability analysis.
      * @throws IllegalActionException
      */
     public static String generateGraphicalSpecification(CompositeActor model,
-            String specType) throws IllegalActionException {
+            FormulaType formulaType) throws IllegalActionException {
 
         StringBuffer returnSpecStringBuffer = new StringBuffer("");
-        HashSet<String> specificationStateSet = _generateGraphicalSpecificationRecursiveStep(
-                model, specType, new StringBuffer(""));
+        HashSet<String> specificationStateSet =
+            _generateGraphicalSpecificationRecursiveStep(
+                model, formulaType, new StringBuffer(""));
         // Combine all these states with conjunctions.
         Iterator<String> stateSetSpecs = specificationStateSet.iterator();
         while (stateSetSpecs.hasNext()) {
@@ -231,7 +233,7 @@ public class SMVUtility {
                 returnSpecStringBuffer.append(stateSpec);
             }
         }
-        if (specType.equalsIgnoreCase("Risk")) {
+        if (formulaType == FormulaType.Risk) {
             return "!EF(" + returnSpecStringBuffer.toString() + ")";
         } else {
             return " EF(" + returnSpecStringBuffer.toString() + ")";
@@ -243,7 +245,7 @@ public class SMVUtility {
      * This function decides if the director of the current actor is SR. If not,
      * return false. This is because our current analysis is only valid when the
      * director is SR.
-     * 
+     *
      * @param model Model used for testing.
      * @return a boolean value indicating if the director is SR.
      */
@@ -256,20 +258,20 @@ public class SMVUtility {
         }
     }
 
-    /** Perform a systematic pre-scan to obtain information regarding the 
+    /** Perform a systematic pre-scan to obtain information regarding the
      *  visibility of a signal. See the description in the source code for
-     *  technical details. 
-     * 
+     *  technical details.
+     *
      * @param model The whole system under analysis
-     * @param span The number to expand the domain of a variable. Note that it is 
+     * @param span The number to expand the domain of a variable. Note that it is
      *             in fact irrelevant to the signal generation. It is only used for
-     *             the reuse of existing functions. 
+     *             the reuse of existing functions.
      * @return
      * @throws IllegalActionException
      * @throws NameDuplicationException
      */
     private static ArrayList<String> _advancedSystemSignalPreScan(
-            CompositeActor model, String span) throws IllegalActionException,
+            CompositeActor model, int span) throws IllegalActionException,
             NameDuplicationException {
 
         // This utility function performs a system pre-scanning and stores
@@ -282,7 +284,7 @@ public class SMVUtility {
         // (2)HashMap<String, HashSet<String>> _globalSignalRetrivalInfo:
         // It tells you for a certain component, the set of signals
         // used in its guard expression.
-        // 
+        //
         // (3) HashMap<String, HashSet<String>> _globalSignalNestedRetrivalInfo:
         // It tells you for a certain component, the set of signals emitted
         // from that component and from subsystems below that component in
@@ -302,8 +304,7 @@ public class SMVUtility {
                 HashSet<String> variableSet = null;
 
                 // Enumerate all variables used in the Kripke structure
-                int numSpan = Integer.parseInt(span);
-                variableSet = _decideVariableSet(innerFSMActor, numSpan);
+                variableSet = _decideVariableSet(innerFSMActor, span);
 
                 // Decide variables encoded in the Kripke Structure.
                 // Note that here the variable only contains Signal Variables.
@@ -395,9 +396,8 @@ public class SMVUtility {
 
                                         // Enumerate all variables used in the
                                         // Kripke structure
-                                        int numSpan = Integer.parseInt(span);
                                         variableSet = _decideVariableSet(
-                                                innerFSMActor, numSpan);
+                                                innerFSMActor, span);
 
                                         // Decide variables encoded in the
                                         // Kripke Structure.
@@ -515,8 +515,7 @@ public class SMVUtility {
 
                 HashSet<String> variableSet = null;
                 // Enumerate all variables used in the Kripke structure
-                int numSpan = Integer.parseInt(span);
-                variableSet = _decideVariableSet(controller, numSpan);
+                variableSet = _decideVariableSet(controller, span);
 
                 // Decide variables encoded in the Kripke Structure.
                 // Note that here the variable only contains Signal Variables.
@@ -611,12 +610,12 @@ public class SMVUtility {
     }
 
     /**
-     * This private function first decides signal variables that is emitted 
-     * from the actor. Note that signal variables only appears in outputActions. 
+     * This private function first decides signal variables that is emitted
+     * from the actor. Note that signal variables only appears in outputActions.
      * In order to keep the signal "X" compatible with the appearance
-     * in the guard expression "X_isPresent" shown in other actors, we need to 
-     * attach "_isPresent" with the signal.   
-     * 
+     * in the guard expression "X_isPresent" shown in other actors, we need to
+     * attach "_isPresent" with the signal.
+     *
      * @param actor The actor under analysis
      * @return A set containing names of the signal
      * @throws IllegalActionException
@@ -685,7 +684,7 @@ public class SMVUtility {
                         String lValue_isPresent = characters[0].trim()
                                 + "_isPresent";
 
-                        // add it into the _variableInfo 
+                        // add it into the _variableInfo
                         // see if it exists
                         if (_variableInfo.get(lValue_isPresent) == null) {
                             // Create a new one and insert all info.
@@ -710,9 +709,9 @@ public class SMVUtility {
     }
 
     /**
-     * This private function first decides signals used in the guard expression 
+     * This private function first decides signals used in the guard expression
      * of an actor. Those signals should be of the format XX_isPresent.
-     * 
+     *
      * @param actor The actor under analysis.
      * @return The set of signals used in the guard expression of the actor.
      * @throws IllegalActionException
@@ -813,15 +812,15 @@ public class SMVUtility {
         return returnVariableSet;
     }
 
-    /**  
+    /**
      * This private function first decides variables that would be used in the
      * Kripke structure. It would first perform a system prescan to have a rough
      * domain for each variable. Then it tries to expand the domain by using the
-     * constant span. 
-     * 
+     * constant span.
+     *
      * @param actor The actor under analysis
-     * @param numSpan The size to expand the original domain 
-     * @return 
+     * @param numSpan The size to expand the original domain
+     * @return
      * @throws IllegalActionException
      */
     private static HashSet<String> _decideVariableSet(FSMActor actor,
@@ -1070,10 +1069,10 @@ public class SMVUtility {
         return returnVariableSet;
     }
 
-    /** 
+    /**
      * Perform an enumeration of the state in this FmvAutomaton and return a
      * HashSet of states.
-     * 
+     *
      * @param actor The actor under analysis
      * @return A HashSet of states of a particular FSMActor
      * @throws IllegalActionException
@@ -1125,14 +1124,14 @@ public class SMVUtility {
         return returnStateSet;
     }
 
-    /** 
+    /**
      * Generate all premise-action pairs regarding this FmvAutomaton. For
-     * example, this method may generate (state=red)&&(count=1):{grn}. 
+     * example, this method may generate (state=red)&&(count=1):{grn}.
      * The premise is "(state=red)&&(count=1)", and the action is "{grn}"
      * This can only be applied when the domain of variable is decided.
-     * 
+     *
      * @param actor The actor under analysis
-     * @param variableSet The set of variables used 
+     * @param variableSet The set of variables used
      * @throws IllegalActionException
      */
     private static void _generateAllVariableTransitions(FSMActor actor,
@@ -1205,7 +1204,7 @@ public class SMVUtility {
                 // Retrieve the variable used in the Kripke structure.
                 // Also analyze the guard expression to understand the
                 // possible value domain for the value to execute.
-                // 
+                //
                 // A guard expression would need to be separated into
                 // separate sub-statements in order to estimate the boundary
                 // of the variable. Note that we need to tackle cases where
@@ -1213,7 +1212,7 @@ public class SMVUtility {
                 // constrain the way that an end user can do for writing
                 // codes. We do "not" expect him to write in the way like
                 // -1<a.
-                // 
+                //
                 // Also here we assume that every sub-guard expression is
                 // connected using && but not || operator. But it is easy to
                 // modify the code such that it supports ||.
@@ -1270,7 +1269,7 @@ public class SMVUtility {
                                     // First case, synchronize usage.
                                     // Pgo_isPresent
                                     // We add it into the list for transition.
-                                  
+
                                     signalPremise.append(characterOfSubGuard[0]
                                             .trim()
                                             + " & ");
@@ -1689,7 +1688,7 @@ public class SMVUtility {
                                 // a = a op constInt; or a = constInt;
 
                                 if (Pattern.matches(".*\\*.*", rValue)) {
-                                    
+
 
                                     String[] rValueOperends = rValue
                                             .split("\\*");
@@ -1956,13 +1955,13 @@ public class SMVUtility {
     }
 
     private static HashSet<String> _generateGraphicalSpecificationRecursiveStep(
-            CompositeActor model, String specType,
+            CompositeActor model, FormulaType formulaType,
             StringBuffer upperLevelStatement) throws IllegalActionException {
 
         HashSet<String> returnSpecificationStateSet = new HashSet<String>();
         // Based on specType, decide the type of the spec we are going to generate.
         boolean isRiskSpec = false;
-        if (specType.equalsIgnoreCase("Risk")) {
+        if (formulaType == FormulaType.Risk) {
             isRiskSpec = true;
         }
 
@@ -2020,9 +2019,9 @@ public class SMVUtility {
                     }
                 }
             } else if (innerEntity instanceof ModalModel) {
-                // We know that it is impossible for a ModalModel to have a 
+                // We know that it is impossible for a ModalModel to have a
                 // state with label. Also it is impossible to have a state
-                // machine refinement with label. Thus we may simply traverse 
+                // machine refinement with label. Thus we may simply traverse
                 // the system to see if a state has general refinement.
 
                 FSMActor controller = ((ModalModel) innerEntity)
@@ -2050,7 +2049,7 @@ public class SMVUtility {
                                                 .trim().equalsIgnoreCase("")) {
                                             HashSet<String> subSpecificationStateSet = _generateGraphicalSpecificationRecursiveStep(
                                                     ((CompositeActor) innerActor),
-                                                    specType,
+                                                    formulaType,
                                                     upperLevelStatement
                                                             .append(innerEntity
                                                                     .getName()
@@ -2060,7 +2059,7 @@ public class SMVUtility {
                                         } else {
                                             HashSet<String> subSpecificationStateSet = _generateGraphicalSpecificationRecursiveStep(
                                                     ((CompositeActor) innerActor),
-                                                    specType,
+                                                    formulaType,
                                                     upperLevelStatement
                                                             .append("."
                                                                     + innerEntity
@@ -2092,12 +2091,12 @@ public class SMVUtility {
      * structure acceptable by NuSMV from system model in Ptolemy II. Here
      * modular approach is applied to eliminate complexity of the conversion
      * process.
-     * 
-     * @param span The size to expand the original domain 
-     * 
+     *
+     * @param span The size to expand the original domain
+     *
      */
     private static ArrayList<StringBuffer> _generateSMVFormatModalModelWithRefinement(
-            ModalModel modalmodel, String span, String upperStateName)
+            ModalModel modalmodel, int span, String upperStateName)
             throws IllegalActionException, NameDuplicationException {
         // The sketch of the algorithm is roughly as follows:
         // (Step 0) All signals has been detected prior to execute this
@@ -2115,7 +2114,7 @@ public class SMVUtility {
         // the whole ModalModel as the composition of state
         // system where at any instant, there is one state
         // existing in each refinement.
-        //               
+        //
         // (2)reset = false: This means that after this transition, the status
         // of the source state would not be reset. Therefore
         // in a global view, the destination and the source
@@ -2124,14 +2123,14 @@ public class SMVUtility {
         // type, it means that each state are executed
         // asynchronously based on the indication of
         // the transition.
-        //  
+        //
         // An arbitrary combination of these two kinds of transition
         // leads to extremely complicated behavior of the system. In fact
         // the semantic should be contradictory when a state has two outgoing
         // transition with two different type. Thus in our verification
         // context, we do not allow a single state to have two different kind
         // of transitions.
-        // 
+        //
         // Also for ModalModels, it may have two kinds of state refinements:
         // (a)StateMachineRefinement: This means that the inner refinement is
         // a state machine. We may use existing
@@ -2140,7 +2139,7 @@ public class SMVUtility {
         // system (it should also be SR, otherwise is beyond)
         // our scope for manipulation.
         // (c)No refinement
-        // 
+        //
         // Now we list out all possible combinations:
         // (1a): This can be done easily by a whole rewriting of the system into
         // a bigger FSM consisting all substates and possible connections.
@@ -2269,8 +2268,8 @@ public class SMVUtility {
                                         // This is OK for our analysis
                                         // Generate system description for these
                                         // two.
-                                        modularDescription
-                                                .add(_generateSubSystemSMVDescription(
+                                        modularDescription.add(
+                                                _generateSubSystemSMVDescription(
                                                         (CompositeActor) innerActor,
                                                         span, state.getName()));
 
@@ -2316,18 +2315,18 @@ public class SMVUtility {
 
     /** This private function tries to generate the system description of a subsystem
      * which has a ModalModel controller as its upperlayer.
-     * 
+     *
      * @param model The subsystem which is the refinement of a state.
      * @param span The size of span to expand the domain of variable.
-     * @param upperStateName The name of the upper level model name. This 
+     * @param upperStateName The name of the upper level model name. This
      *                       upper state has the model as refinement.
-     * @return The StringBuffer description of the subsystem acceptable by the 
+     * @return The StringBuffer description of the subsystem acceptable by the
      *         model checker.
      * @throws IllegalActionException
      * @throws NameDuplicationException
      */
     private static StringBuffer _generateSubSystemSMVDescription(
-            CompositeActor model, String span, String upperStateName)
+            CompositeActor model, int span, String upperStateName)
             throws IllegalActionException, NameDuplicationException {
 
         StringBuffer returnFmvFormat = new StringBuffer("");
@@ -2391,7 +2390,7 @@ public class SMVUtility {
      * function to generate all possible combinations. The function would try to
      * attach correct premise and update correct new value for the variable set
      * by the transition based on the original value.
-     * 
+     *
      * @param currentPremise
      *                Current precondition for the transition. It is not
      *                completed unless parameter index == maxIndex.
@@ -2418,7 +2417,7 @@ public class SMVUtility {
      *                rValue</i>. When operatingSign is S or N, it represents
      *                the rValue of the system.
      * @param operatingSign
-     * 
+     *
      */
     private static void _recursiveStepGeneratePremiseAndResultEachTransition(
             String currentPremise, int index, int maxIndex,
@@ -3013,12 +3012,12 @@ public class SMVUtility {
                                                 // Integer.parseInt(((VariableInfo)
                                                 // _variableInfo.get(lValue))._maxValue)
                                                 // < 0
-                                                //  
+                                                //
                                                 // Starting from the upper bound + 1,
                                                 // +2, +3, +4 ... calculate all possible
                                                 // values until the new set-value is
                                                 // greater than GT.
-                                                // 
+                                                //
                                                 // For example, if upper bound is -5,
                                                 // and if the offset is 2, then for
                                                 // values in GT that is greater or equal
@@ -3260,7 +3259,7 @@ public class SMVUtility {
                                                 // +2, +3, +4 ...
                                                 // calculate all possible values until
                                                 // the value is less than LS.
-                                                // 
+                                                //
                                                 // For example, if upper bound = 1,
                                                 // lower bound = -7, and offset = -2,
                                                 // then we might have possible new
@@ -3393,7 +3392,7 @@ public class SMVUtility {
                                                 // -2, -3, -4 ...
                                                 // calculate all possible values until
                                                 // the value is less than GT.
-                                                // 
+                                                //
                                                 // For example, if upper bound = 7,
                                                 // lower bound = -1, and offset = -2,
                                                 // then we might have possible new
@@ -3751,7 +3750,7 @@ public class SMVUtility {
      * initial variable set. This is achieved using a scan on all transitions in
      * edges (equalities/ inequalities) and retrieve all integer values in the
      * system. Currently the span is not taken into consideration.
-     * 
+     *
      * @param actor
      *                The actor under analysis
      * @param variableSet
@@ -3799,19 +3798,19 @@ public class SMVUtility {
 
     }
 
-    /** This function tries to translate an single FSMActor into the 
-     *  format acceptable by model checker. 
-     * 
+    /** This function tries to translate an single FSMActor into the
+     *  format acceptable by model checker.
+     *
      * @param actor
      * @param span
-     * @param isController 
+     * @param isController
      * @param controllerName
      * @param refinementStateName
      * @return
      * @throws IllegalActionException
      */
     private static StringBuffer _translateSingleFSMActor(FSMActor actor,
-            String span, boolean isController, String controllerName,
+            int span, boolean isController, String controllerName,
             String refinementStateName) throws IllegalActionException {
 
         // This new version of utility function tries to translate a single
@@ -3822,7 +3821,7 @@ public class SMVUtility {
         // then in the description we need to instantiate each of the
         // sub-models (which is generated by state refinement) contained
         // within.
-        // 
+        //
         // (2) A single FSMActor can also be the a component of the subsystem
         // (state refinement with general model). In this way, we need to
         // add up information whether the current state in the upper
@@ -3876,12 +3875,11 @@ public class SMVUtility {
 
         // Decide variables encoded in the Kripke Structure.
         // Note that here the variable only contains inner variables.
-        // 
+        //
         HashSet<String> variableSet = null;
         // try {
         // Enumerate all variables used in the Kripke structure
-        int numSpan = Integer.parseInt(span);
-        variableSet = _decideVariableSet(actor, numSpan);
+        variableSet = _decideVariableSet(actor, span);
         // } catch (Exception exception) {
 
         // }
@@ -4117,7 +4115,7 @@ public class SMVUtility {
                                     frontAttachment.append(" ( "
                                             + info._preCondition + " ) ;\n\n ");
                                 } else {
-                                    
+
                                     frontAttachment.append("("
                                             + refinementStateActivePremise
                                             + " & " + info._preCondition
@@ -4157,7 +4155,7 @@ public class SMVUtility {
      * should add up this signal. If a signal is visible by the controller, then
      * we know that this signal is only passed between modules of the
      * controller. We can list out the location of the signal.
-     * 
+     *
      * @param controller
      *                The controller which contains those modules
      * @return An ArrayList containing all submodule definitions
@@ -4173,7 +4171,7 @@ public class SMVUtility {
         // thus if a subsystem really uses a signal from outside, we
         // need to add up the signal name (without the position) as an invoker
         // for example subModule(Sec_isPresent)
-        // 
+        //
 
         ArrayList<StringBuffer> returnList = new ArrayList<StringBuffer>();
         Iterator states = controller.entityList().iterator();

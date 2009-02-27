@@ -150,7 +150,27 @@ public class FileParameter extends StringParameter implements FileOrURLAccessor 
      */
     public FileParameter(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
+        this(container, name, false);
+    }
+
+    /** Construct an attribute with the given name contained by the
+     *  specified container. The container argument must not be null, or a
+     *  NullPointerException will be thrown.  This attribute will use the
+     *  workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty
+     *  string. Increment the version of the workspace.
+     *  @param container The container.
+     *  @param name The name of this attribute.
+     *  @param isOutput Whether the file is to be written to.
+     *  @exception IllegalActionException If the attribute is not of an
+     *   acceptable class for the container, or if the name contains a period.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
+     */
+    public FileParameter(NamedObj container, String name, boolean isOutput)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        _isOutput = isOutput;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -284,6 +304,13 @@ public class FileParameter extends StringParameter implements FileOrURLAccessor 
         }
     }
 
+    /** Return whether the file is to be written to.
+     *  @return True if the file is to be written and false otherwise.
+     */
+    public boolean isOutput() {
+        return _isOutput;
+    }
+
     /** Open the file or URL for reading. If the name begins with
      *  "$CLASSPATH", then search for the file relative to the classpath.
      *  If the name is relative, then it is relative to the directory
@@ -368,4 +395,7 @@ public class FileParameter extends StringParameter implements FileOrURLAccessor 
 
     /** The current writer for the output file. */
     private Writer _writer;
+
+    /** Whether the file is to be written to. */
+    private boolean _isOutput;
 }

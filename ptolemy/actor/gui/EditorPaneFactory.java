@@ -104,7 +104,21 @@ public class EditorPaneFactory extends Attribute {
     public static Component createEditorPane(NamedObj object) {
         PtolemyQuery query = new PtolemyQuery(object);
         query.setTextWidth(40);
+        return createEditorPane(object, query);
+    }
 
+    /** Return a new default widget for configuring the specified object.
+     *  This is used by the Configurer for objects that do not contain
+     *  an instance of EditorPaneFactory as an attribute.  The resulting
+     *  component is an instance of the PtolemyQuery class that
+     *  @param object The object to be configured.
+     *  @param query The query to which new entries for the object are to be
+     *  added.
+     *  @return An instance of the PtolemyQuery class that is created
+     *  with styles according to the type given in each visible attribute.
+     */
+    public static Component createEditorPane(NamedObj object,
+            PtolemyQuery query) {
         Iterator parameters = object.attributeList(Settable.class).iterator();
         boolean foundOne = false;
 

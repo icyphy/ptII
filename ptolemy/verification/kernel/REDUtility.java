@@ -53,6 +53,7 @@ import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.verification.kernel.MathematicalModelConverter.FormulaType;
 import ptolemy.verification.lib.BoundedBufferNondeterministicDelay;
 import ptolemy.verification.lib.BoundedBufferTimedDelay;
 
@@ -173,7 +174,7 @@ public class REDUtility {
      * @throws IllegalActionException
      */
     public static StringBuffer generateREDDescription(CompositeActor PreModel,
-            String pattern, String choice, String span, String bufferSizeFSM)
+            String pattern, FormulaType choice, int span, int bufferSizeFSM)
             throws IllegalActionException, NameDuplicationException,
             CloneNotSupportedException {
         // returnREDFormat: Store StringBuffer format system description
@@ -556,7 +557,7 @@ public class REDUtility {
 
         // Specification
         returnREDFormat.append("\n/*Specification */\n");
-        if (choice.equalsIgnoreCase("Buffer Overflow")) {
+        if (choice == FormulaType.Buffer) {
             returnREDFormat
                     .append("risk\nexists i:i>=1, (Buffer_Overflow[i]);\n\n");
 
@@ -2541,8 +2542,7 @@ public class REDUtility {
     }
 
     private static REDSingleEntityBean _translateFSMActor(FSMActor actor,
-            String span, String bufferSize,
-            HashSet<String> globalSynchronizerSet)
+            int span, int bufferSize, HashSet<String> globalSynchronizerSet)
             throws IllegalActionException {
 
         // FIXME: An experimental version dealing with the DE conversion
@@ -2681,8 +2681,7 @@ public class REDUtility {
         HashMap<String, String> initialValueSet = null;
 
         // Enumerate all variables used in the Kripke structure
-        int numSpan = Integer.parseInt(span);
-        variableSet = _decideVariableSet(actor, numSpan);
+        variableSet = _decideVariableSet(actor, span);
         initialValueSet = _retrieveVariableInitialValue(actor, variableSet);
 
         if (variableSet != null) {

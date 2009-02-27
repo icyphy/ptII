@@ -67,6 +67,7 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
@@ -316,7 +317,24 @@ public class Query extends JPanel {
     public void addFileChooser(String name, String label, String defaultName,
             URI base, File startingDirectory) {
         addFileChooser(name, label, defaultName, base, startingDirectory, true,
-                false, Color.white, Color.black);
+                false, false, Color.white, Color.black);
+    }
+
+    /** Create a FileChooser that selects files only, not directories, and
+     *  has the default colors (white in the background, black in the
+     *  foreground).
+     *  @param name The name used to identify the entry (when calling get).
+     *  @param label The label to attach to the entry.
+     *  @param defaultName The default file name to use.
+     *  @param base The URI with respect to which to give
+     *   relative file names, or null to give absolute file name.
+     *  @param startingDirectory The directory to open the file chooser in.
+     *  @param save Whether the file is to be saved or opened.
+     */
+    public void addFileChooser(String name, String label, String defaultName,
+            URI base, File startingDirectory, boolean save) {
+        addFileChooser(name, label, defaultName, base, startingDirectory, true,
+                false, save, Color.white, Color.black);
     }
 
     /** Create a FileChooser with default colors (white in the foreground,
@@ -334,7 +352,7 @@ public class Query extends JPanel {
             URI base, File startingDirectory, boolean allowFiles,
             boolean allowDirectories) {
         addFileChooser(name, label, defaultName, base, startingDirectory,
-                allowFiles, allowDirectories, Color.white, Color.black);
+                allowFiles, allowDirectories, false, Color.white, Color.black);
     }
 
     /** Create a FileChooser that selects files only, not directories.
@@ -348,9 +366,10 @@ public class Query extends JPanel {
      *  @param foreground The foreground color for the text entry box.
      */
     public void addFileChooser(String name, String label, String defaultName,
-            URI base, File startingDirectory, Color background, Color foreground) {
+            URI base, File startingDirectory, Color background,
+            Color foreground) {
         addFileChooser(name, label, defaultName, base, startingDirectory, true,
-                false, background, foreground);
+                false, false, background, foreground);
     }
 
     /** Create a FileChooser.
@@ -370,12 +389,34 @@ public class Query extends JPanel {
             String defaultName, URI base, File startingDirectory,
             boolean allowFiles, boolean allowDirectories, Color background,
             Color foreground) {
+        return addFileChooser(name, label, defaultName, base, startingDirectory,
+                allowFiles, allowDirectories, false, background, foreground);
+    }
+
+    /** Create a FileChooser.
+     *  @param name The name used to identify the entry (when calling get).
+     *  @param label The label to attach to the entry.
+     *  @param defaultName The default file name to use.
+     *  @param base The URI with respect to which to give
+     *   relative file names, or null to give absolute file name.
+     *  @param startingDirectory The directory to open the file chooser in.
+     *  @param allowFiles True if regular files may be chosen.
+     *  @param allowDirectories True if directories may be chosen.
+     *  @param save Whether the file is to be saved or opened.
+     *  @param background The background color for the text entry box.
+     *  @param foreground The foreground color for the text entry box.
+     *  @return The file chooser.
+     */
+    public QueryFileChooser addFileChooser(String name, String label,
+            String defaultName, URI base, File startingDirectory,
+            boolean allowFiles, boolean allowDirectories, boolean save,
+            Color background, Color foreground) {
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
 
         QueryFileChooser fileChooser = new QueryFileChooser(this, name,
                 defaultName, base, startingDirectory, allowFiles,
-                allowDirectories, background, foreground);
+                allowDirectories, save, background, foreground);
         _addPair(name, lbl, fileChooser, fileChooser);
         return fileChooser;
     }
@@ -642,7 +683,7 @@ public class Query extends JPanel {
         panel.add(bottom, BorderLayout.SOUTH);
 
         _constraints.gridwidth = GridBagConstraints.REMAINDER;
-        _constraints.insets = _noPadding;
+        _constraints.insets = _insets;
         _grid.setConstraints(panel, _constraints);
         _entryPanel.add(panel);
 
@@ -699,7 +740,7 @@ public class Query extends JPanel {
         panel.add(bottom, BorderLayout.SOUTH);
 
         _constraints.gridwidth = GridBagConstraints.REMAINDER;
-        _constraints.insets = _noPadding;
+        _constraints.insets = _insets;
         _grid.setConstraints(panel, _constraints);
         _entryPanel.add(panel);
 
@@ -976,7 +1017,7 @@ public class Query extends JPanel {
         preferred.width = Short.MAX_VALUE;
         return preferred;
     }
-    
+
     /** Get the current value in the entry with the given name,
      *  and return as an Object.  This is different from {@link
      *  #getStringValue(String)} in that if the entry is a combo box, the
@@ -1373,6 +1414,15 @@ public class Query extends JPanel {
         }
     }
 
+    /** Set the insets for the GridBagLayout manager used to layout the
+     *  components.
+     *
+     *  @param insets The insets.
+     */
+    public void setInsets(Insets insets) {
+        _insets = insets;
+    }
+
     /** Set the displayed text of an item that has been added using
      *  addLine. Notify listeners that the value has changed.
      *  @param name The name of the entry.
@@ -1612,7 +1662,7 @@ public class Query extends JPanel {
         _grid.setConstraints(label, _constraints);
         _entryPanel.add(label);
 
-        _constraints.insets = _noPadding;
+        _constraints.insets = _insets;
 
         if ((_columns > 1) && (((_entries.size() + 1) % _columns) != 0)) {
             _constraints.gridwidth = 1;
@@ -1641,7 +1691,8 @@ public class Query extends JPanel {
         preferredSize.width += 25;
 
         // Applets seem to need this, see CT/SigmaDelta
-        _widgetsHeight += widget.getPreferredSize().height;
+        _widgetsHeight += widget.getPreferredSize().height + _insets.top +
+                _insets.bottom;
         preferredSize.height = _widgetsHeight;
 
         Toolkit tk = Toolkit.getDefaultToolkit();
@@ -1746,7 +1797,7 @@ public class Query extends JPanel {
     private boolean _messageScrollPaneAdded = false;
 
     // No padding insets.
-    private Insets _noPadding = new Insets(0, 0, 0, 0);
+    private Insets _insets = new Insets(0, 0, 0, 0);
 
     // The hashtable of previous values, indexed by entry name.
     private Map _previous = new HashMap();
@@ -1789,11 +1840,11 @@ public class Query extends JPanel {
     /** Panel containing an entry box and color chooser.
      */
     public static class QueryColorChooser extends Box implements ActionListener {
-	/** Create a panel containing an entry box and a color chooser.
-	 *  @param owner The owner query
-	 *  @param name The name of the query
-	 *  @param defaultColor  The initial default color of the color chooser.
-	 */   
+    /** Create a panel containing an entry box and a color chooser.
+     *  @param owner The owner query
+     *  @param name The name of the query
+     *  @param defaultColor  The initial default color of the color chooser.
+     */
         public QueryColorChooser(Query owner, String name, String defaultColor) {
             super(BoxLayout.X_AXIS);
             _owner = owner;
@@ -1892,7 +1943,7 @@ public class Query extends JPanel {
                 URI base, File startingDirectory, boolean allowFiles,
                 boolean allowDirectories) {
             this(owner, name, defaultName, base, startingDirectory, allowFiles,
-                    allowDirectories, Color.white, Color.black);
+                    allowDirectories, false, Color.white, Color.black);
         }
 
     /** Construct a query file chooser.
@@ -1903,15 +1954,18 @@ public class Query extends JPanel {
      * @param startingDirectory the directory in which the file query is initially opened
      * @param allowFiles true if files are allowed to be selected.
      * @param allowDirectories if directories are allowed to be selected.
+     * @param save Whether the file is to be saved or opened.
      * @param background The color of the background.
      * @param foreground The color of the foregriound.
      */
         public QueryFileChooser(Query owner, String name, String defaultName,
                 URI base, File startingDirectory, boolean allowFiles,
-                boolean allowDirectories, Color background, Color foreground) {
+                boolean allowDirectories, boolean save, Color background,
+                Color foreground) {
             super(BoxLayout.X_AXIS);
             _owner = owner;
             _base = base;
+            _save = save;
             _startingDirectory = startingDirectory;
 
             if (!allowFiles && !allowDirectories) {
@@ -1952,7 +2006,24 @@ public class Query extends JPanel {
 
         public void actionPerformed(ActionEvent e) {
             // NOTE: If the last argument is null, then choose a default dir.
-            JFileChooser fileChooser = new JFileChooser(_startingDirectory);
+            JFileChooser fileChooser = new JFileChooser(_startingDirectory) {
+                public void approveSelection() {
+                    File file = getSelectedFile();
+                    if (file.exists() && getDialogType() == SAVE_DIALOG) {
+                        String queryString = file.getName() +
+                                " already exists. Overwrite?";
+                        int selected = JOptionPane.showOptionDialog(null,
+                                queryString, "Confirm save",
+                                JOptionPane.YES_NO_OPTION,
+                                JOptionPane.QUESTION_MESSAGE, null, null, null);
+                        if (selected == 0) {
+                            super.approveSelection();
+                        }
+                    } else {
+                        super.approveSelection();
+                    }
+                }
+            };
             String fileName = getSelectedFileName().trim();
             if (!fileName.equals("")) {
                 fileChooser.setSelectedFile(new File(fileName));
@@ -1978,7 +2049,8 @@ public class Query extends JPanel {
                         "QueryFileChooser: nothing to be chosen.");
             }
 
-            int returnValue = fileChooser.showOpenDialog(_owner);
+            int returnValue = _save ? fileChooser.showSaveDialog(_owner) :
+                fileChooser.showOpenDialog(_owner);
 
             if (returnValue == JFileChooser.APPROVE_OPTION) {
                 if (_base == null) {
@@ -2041,6 +2113,8 @@ public class Query extends JPanel {
 
         private String _name;
 
+        private boolean _save;
+
         private File _startingDirectory;
 
         private boolean _allowFiles;
@@ -2083,10 +2157,10 @@ public class Query extends JPanel {
     /** Listener for "CheckBox" and "Choice" entries.
      */
     public static class QueryItemListener implements ItemListener {
-	/** Create a listener for the CheckBox and Choice entries.
-	 *  @param owner The owner query
-	 *  @param name The name of the query
-	 */   
+    /** Create a listener for the CheckBox and Choice entries.
+     *  @param owner The owner query
+     *  @param name The name of the query
+     */
         public QueryItemListener(Query owner, String name) {
             _name = name;
             _owner = owner;

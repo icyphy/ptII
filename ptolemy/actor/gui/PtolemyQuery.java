@@ -282,11 +282,17 @@ public class PtolemyQuery extends Query implements QueryListener,
                         return;
                     }
 
+                    boolean isOutput = false;
+                    if (attribute instanceof FileParameter &&
+                            ((FileParameter) attribute).isOutput()) {
+                        isOutput = true;
+                    }
+                    
                     // FIXME: Should remember previous browse location?
                     // Next to last argument is the starting directory.
                     component = addFileChooser(name, displayName,
                             attribute.getExpression(), base, directory,
-                            allowFiles, allowDirectories,
+                            allowFiles, allowDirectories, isOutput,
                             preferredBackgroundColor(attribute),
                             preferredForegroundColor(attribute));
                     attachParameter(attribute, name);

@@ -42,6 +42,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.verification.kernel.MathematicalModelConverter.FormulaType;
 
 // ////////////////////////////////////////////////////////////////////////
 // // FmvAutomaton
@@ -122,8 +123,8 @@ public class FmvAutomaton extends FSMActor {
      * @exception IllegalActionException If there is a problem with
      * the conversion.  
      */
-    public StringBuffer convertToSMVFormat(String formula, String choice,
-            String span) throws IllegalActionException {
+    public StringBuffer convertToSMVFormat(String formula, FormulaType choice,
+            int span) throws IllegalActionException {
 
         _variableInfo = new HashMap<String, VariableInfo>();
 
@@ -137,10 +138,10 @@ public class FmvAutomaton extends FSMActor {
 
         // Based on the user selection on formula type, add different
         // annotations: For CTL we use "SPEC"; for LTL we use "LTLSPEC".
-        if (choice.equalsIgnoreCase("CTL")) {
+        if (choice == FormulaType.CTL) {
             returnSmvFormat.append("\tSPEC \n");
             returnSmvFormat.append("\t\t" + formula + "\n");
-        } else if (choice.equalsIgnoreCase("LTL")) {
+        } else if (choice == FormulaType.LTL) {
             returnSmvFormat.append("\tLTLSPEC \n");
             returnSmvFormat.append("\t\t" + formula + "\n");
         }
@@ -175,8 +176,7 @@ public class FmvAutomaton extends FSMActor {
         HashSet<String> variableSet; // = new HashSet<String>();
         try {
             // Enumerate all variables used in the Kripke structure
-            int numSpan = Integer.parseInt(span);
-            variableSet = _decideVariableSet(numSpan);
+            variableSet = _decideVariableSet(span);
         } catch (Exception exception) {
             throw new IllegalActionException(
                     "FmvAutomaton.convertToSMVFormat() clashes: "
@@ -202,18 +202,12 @@ public class FmvAutomaton extends FSMActor {
                         && (individual._minValue != null)) {
                     int lowerBound = Integer.parseInt(individual._minValue);
                     int upperBound = Integer.parseInt(individual._maxValue);
-                    if (Pattern.matches("^\\d+$", span) == true) {
-                        returnSmvFormat.append(" ls,");
-                        for (int number = lowerBound; number <= upperBound; number++) {
-                            returnSmvFormat.append(number);
-                            returnSmvFormat.append(",");
-                        }
-                        returnSmvFormat.append("gt };\n");
-                    } else {
-                        throw new IllegalActionException(
-                                "FmvAutomaton.convertToSMVFormat() error: \n"
-                                        + "Span is not a nonegative integer");
+                    returnSmvFormat.append(" ls,");
+                    for (int number = lowerBound; number <= upperBound; number++) {
+                        returnSmvFormat.append(number);
+                        returnSmvFormat.append(",");
                     }
+                    returnSmvFormat.append("gt };\n");
                 }
 
             }

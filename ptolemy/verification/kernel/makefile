@@ -71,12 +71,24 @@ MISC_FILES =	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	'SMVUtility$$VariableInfo.class' \
-	'SMVUtility$$VariableTransitionInfo.class' \
+	'MathematicalModelConverter$$1.class' \
+	'MathematicalModelConverter$$FormulaType$$1.class' \
+	'MathematicalModelConverter$$FormulaType.class' \
+	'MathematicalModelConverter$$ModelType$$1.class' \
+	'MathematicalModelConverter$$ModelType$$2.class' \
+	'MathematicalModelConverter$$ModelType$$3.class' \
+	'MathematicalModelConverter$$ModelType.class' \
+	'MathematicalModelConverter$$OutputType$$1.class' \
+	'MathematicalModelConverter$$OutputType$$2.class' \
+	'MathematicalModelConverter$$OutputType.class' \
+	'REDUtility$$1.class' \
 	'REDUtility$$REDModuleNameInitialBean.class' \
 	'REDUtility$$REDSingleEntityBean.class' \
-	'REDUtility$$REDSingleTransitionBean.class' \
-	'REDUtility$$VariableInfo.class' \ 
+	'REDUtility$$REDTransitionBean.class' \
+	'REDUtility$$VariableInfo.class' \
+	'SMVUtility$$1.class' \
+	'SMVUtility$$VariableInfo.class' \
+	'SMVUtility$$VariableTransitionInfo.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

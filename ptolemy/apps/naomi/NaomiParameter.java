@@ -57,6 +57,7 @@ public class NaomiParameter extends StringParameter implements ChangeListener {
     public NaomiParameter(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        setVisibility(EXPERT);
     }
 
     public void changeExecuted(ChangeRequest change) {

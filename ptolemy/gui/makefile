@@ -91,30 +91,21 @@ OPTIONAL_FILES = \
 	'GraphicalMessageHandler$$5.class' \
 	'GraphicalMessageHandler$$6.class' \
 	'GraphicalMessageHandler$$7.class' \
-	'JTextAreaExec$$10.class' \
 	'JTextAreaExec$$1.class' \
+	'JTextAreaExec$$2$$1.class' \
 	'JTextAreaExec$$2.class' \
 	'JTextAreaExec$$3.class' \
+	'JTextAreaExec$$4$$1.class' \
 	'JTextAreaExec$$4.class' \
 	'JTextAreaExec$$5.class' \
+	'JTextAreaExec$$6$$1.class' \
 	'JTextAreaExec$$6.class' \
 	'JTextAreaExec$$7.class' \
-	'JTextAreaExec$$8.class' \
-	'JTextAreaExec$$9.class' \
-	'JTextAreaExec$$5$$1.class' \
-	'JTextAreaExec$$7$$1.class' \
 	'JTextAreaExec$$_StreamReaderThread.class' \
-	'JTextAreaExec$$2$$1.class' \
-	'JTextAreaExec$$4$$1.class' \
-	'JTextAreaExec$$6$$1.class' \
-	'ShellTextArea$$3$$1.class' \
-	'Message$$1.class' \
-	'Message$$2.class' \
 	'Query$$1.class' \
-	'Query$$CheckBoxListener.class' \
-	'Query$$LineListener.class' \
 	'Query$$QueryActionListener.class' \
 	'Query$$QueryColorChooser.class' \
+	'Query$$QueryFileChooser$$1.class' \
 	'Query$$QueryFileChooser.class' \
 	'Query$$QueryFocusListener.class' \
 	'Query$$QueryItemListener.class' \
@@ -122,11 +113,11 @@ OPTIONAL_FILES = \
 	'Query$$SliderListener.class' \
 	'ShellTextArea$$1.class' \
 	'ShellTextArea$$2.class' \
+	'ShellTextArea$$3$$1.class' \
 	'ShellTextArea$$3.class' \
 	'ShellTextArea$$4.class' \
 	'ShellTextArea$$5.class' \
 	'ShellTextArea$$ShellKeyListener.class' \
-	'StreamExec$$_StreamReaderThread.class' \
 	'SwingWorker$$1.class' \
 	'SwingWorker$$2.class' \
 	'SwingWorker$$ThreadVar.class' \
