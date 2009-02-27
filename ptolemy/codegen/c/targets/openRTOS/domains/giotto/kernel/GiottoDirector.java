@@ -856,8 +856,14 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
                         ArrayList args = new ArrayList();
 
                         // FIXME: figure out the channel number for the sinkPort.
-                        String sinkReference = "##ref(sinkPort)";
-                        String srcReference = "##ref(output#i)";
+                        String channelOffset [] = {"0","0"};
+                        CodeGeneratorHelper myHelper = (CodeGeneratorHelper) this._getHelper(sinkPort.getContainer());
+                        String sinkReference = this.getReference((TypedIOPort)sinkPort,channelOffset,false,true,myHelper);//"##ref(sinkPort)";
+                        
+                        channelOffset[0]= Integer.valueOf(i).toString();
+                        myHelper = (CodeGeneratorHelper)_getHelper(actor);
+                        String srcReference = this.getReference((TypedIOPort)port,channelOffset,false,false,myHelper);//"##ref(sinkPort)";
+                       // "##ref(output#i)";
                         
                         args.add(sinkReference);
                         args.add(srcReference);
@@ -867,11 +873,13 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
                     }
                 }
             }
-            
+            if(outputPortList.size() > 1)
+            {
             ArrayList args = new ArrayList();
             args.add(generateName((NamedObj) actor));
             args.add(actorDriverCode);
-            code.append(_generateBlockCode("updatePort", args));
+            code.append(_generateBlockCode("driverCode", args));
+            }
         }
         
         return code.toString();
