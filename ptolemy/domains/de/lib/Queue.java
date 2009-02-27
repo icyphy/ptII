@@ -227,7 +227,7 @@ public class Queue extends Transformer {
                     _token = null;
                 } else {
                     output.send(0, (Token) _queue.get(0));
-                    _removeToken = true;
+                    _removeTokens = 1;
                 }
                 sizeOutput--;
                 _persistentTrigger = false;
@@ -258,7 +258,7 @@ public class Queue extends Transformer {
         _queue.clear();
         _persistentTrigger = false;
         _token = null;
-        _removeToken = false;
+        _removeTokens = 0;
         super.initialize();
     }
 
@@ -270,11 +270,11 @@ public class Queue extends Transformer {
         if (_token != null) {
             _queue.put(_token);
         }
-        if (_removeToken) {
+        for (int i = 0; i < _removeTokens; i++) {
             _queue.take();
         }
         _token = null;
-        _removeToken = false;
+        _removeTokens = 0;
 
         return super.postfire();
     }
@@ -328,6 +328,16 @@ public class Queue extends Transformer {
     /** The FIFOQueue. */
     protected FIFOQueue _queue;
 
+    /** The number of tokens that should be removed from the queue in
+     *  postfire().
+     */
+    protected int _removeTokens;
+
+    /** Token received in the fire() method for inclusion in
+     *  the queue in the postfire() method.
+     */
+    protected Token _token;
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -335,14 +345,4 @@ public class Queue extends Transformer {
      *  the last fire() method invocation.
      */
     private boolean _persistentTrigger;
-
-    /** Indicator that a token should be removed from the
-     *  queue in postfire().
-     */
-    private boolean _removeToken;
-
-    /** Token received in the fire() method for inclusion in
-     *  the queue in the postfire() method.
-     */
-    private Token _token;
 }

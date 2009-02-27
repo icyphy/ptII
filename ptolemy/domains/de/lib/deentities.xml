@@ -41,6 +41,9 @@
 <entity name="Server" class="ptolemy.domains.de.lib.Server">
 </entity>
 
+<entity name="SharedQueue" class="ptolemy.domains.de.lib.SharedQueue">
+</entity>
+
 <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
 </entity>
 
