@@ -61,21 +61,31 @@ public class NaomiParameter extends StringParameter implements ChangeListener {
     }
 
     public void changeExecuted(ChangeRequest change) {
-        if (change instanceof MoMLChangeRequest) {
+        if (change instanceof MoMLChangeRequest &&
+                !(change instanceof PrivateMoMLChangeRequest)) {
             NamedObj container = getContainer();
-            if (container != null && container.getContainer() ==
-                    ((MoMLChangeRequest) change).getContext()) {
+            NamedObj context = ((MoMLChangeRequest) change).getContext();
+            if (container != null && (container == context ||
+                    container.getContainer() == context)) {
                 String expression = StringUtilities.unescapeForXML(
                         formatExpression(_method, _attributeName, new Date(),
                                 _unit, _documentation));
                 String moml = "<property name=\"" + getName() + "\" value=\"" +
                         expression + "\"/>";
-                MoMLChangeRequest request = new MoMLChangeRequest(this,
-                        container, moml);
+                PrivateMoMLChangeRequest request = new PrivateMoMLChangeRequest(
+                        this, container, moml);
                 request.setUndoable(true);
                 request.setMergeWithPreviousUndo(true);
                 container.requestChange(request);
             }
+        }
+    }
+    
+    private static class PrivateMoMLChangeRequest extends MoMLChangeRequest {
+
+        public PrivateMoMLChangeRequest(Object originator, NamedObj context,
+                String request) {
+            super(originator, context, request);
         }
     }
 

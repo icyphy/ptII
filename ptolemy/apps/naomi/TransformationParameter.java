@@ -27,9 +27,15 @@
 */
 package ptolemy.apps.naomi;
 
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
+
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
+import ptolemy.moml.MoMLParser;
 
 //////////////////////////////////////////////////////////////////////////
 //// TransformationParameter
@@ -43,7 +49,8 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class TransformationParameter extends NaomiParameter {
+public class TransformationParameter extends NaomiParameter
+        implements CompositeNaomiAttribute {
 
     /**
      *  @param container
@@ -56,4 +63,35 @@ public class TransformationParameter extends NaomiParameter {
         super(container, name);
     }
 
+    public String getResourceIdentifier() {
+        return "Resource_" + getContainer().getName() + ".xml";
+    }
+
+    public void loadCompositeAttribute(Reader reader)
+            throws IllegalActionException, IOException {
+        MoMLParser parser = new MoMLParser();
+        NamedObj container = getContainer();
+        parser.setContext(container.getContainer());
+        try {
+            parser.parse(null, null, reader);
+        } catch (IllegalActionException e) {
+            throw e;
+        } catch (IOException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new IllegalActionException(null, e,
+                    "Unable to parse input resource.");
+        }
+    }
+
+    public void saveCompositeAttribute(Writer writer)
+            throws IllegalActionException, IOException {
+        NamedObj container = getContainer();
+        try {
+            ((NamedObj) container.clone(new Workspace())).exportMoML(writer);
+        } catch (CloneNotSupportedException e) {
+            throw new IllegalActionException(null, e, "Unable to clone the " +
+                    "associated object.");
+        }
+    }
 }

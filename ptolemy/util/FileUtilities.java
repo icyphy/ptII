@@ -206,7 +206,9 @@ public class FileUtilities {
         if (!file.isAbsolute()) {
             // Try to resolve the base directory.
             if (base != null) {
-                URI newURI = base.resolve(name);
+                // Need to replace \ with /, otherwise resolve would fail even
+                // if invoked in a windows OS. -- tfeng (02/27/2009)
+                URI newURI = base.resolve(name.replace('\\', '/'));
 
                 //file = new File(newURI);
                 String urlString = newURI.getPath();

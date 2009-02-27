@@ -45,6 +45,7 @@ PTPACKAGE = 	naomi
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
+	CompositeNaomiAttribute.java \
 	Connector.java \
 	NaomiParameter.java \
 	TransformationParameter.java
@@ -56,6 +57,7 @@ EXTRA_SRCS = 	$(JSRCS)
 OPTIONAL_FILES = \
 	'Connector$$1.class' \
 	'Connector$$2.class' \
+	'Connector$$3.class' \
 	'Connector$$Command.class' \
 	'Connector$$LinkNaomiAttributeAction.class' \
 	'Connector$$ListAction.class' \
@@ -68,7 +70,8 @@ OPTIONAL_FILES = \
 	'Connector$$SyncAction.class' \
 	'Connector$$Tuple.class' \
 	'Connector$$UnlinkNaomiAttributeAction.class' \
-	'NaomiParameter$$Method.class'
+	'NaomiParameter$$Method.class' \
+	'NaomiParameter$$PrivateMoMLChangeRequest.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

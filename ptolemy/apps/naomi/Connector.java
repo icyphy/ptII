@@ -28,14 +28,20 @@
 
 package ptolemy.apps.naomi;
 
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.net.URL;
 import java.util.Date;
 import java.util.HashMap;
@@ -241,9 +247,8 @@ public class Connector extends MoMLApplication {
             break;
 
         case TRANSFORM:
-            _loadAttributes(_inModel, _attributesPath, true);
+            _loadAttributes(_inModel, _attributesPath, false);
             _transform(_inModel);
-            //_saveInterface();
             break;
         }
     }
@@ -546,13 +551,14 @@ public class Connector extends MoMLApplication {
         private PtolemyFrame _frame;
     }
 
-    public static class Tuple<T1, T2, T3, T4> {
+    public static class Tuple<T1, T2, T3, T4, T5> {
 
-        public Tuple(T1 v1, T2 v2, T3 v3, T4 v4) {
+        public Tuple(T1 v1, T2 v2, T3 v3, T4 v4, T5 v5) {
             _v1 = v1;
             _v2 = v2;
             _v3 = v3;
             _v4 = v4;
+            _v5 = v5;
         }
 
         public T1 getV1() {
@@ -571,6 +577,10 @@ public class Connector extends MoMLApplication {
             return _v4;
         }
 
+        public T5 getV5() {
+            return _v5;
+        }
+
         private T1 _v1;
 
         private T2 _v2;
@@ -578,6 +588,8 @@ public class Connector extends MoMLApplication {
         private T3 _v3;
 
         private T4 _v4;
+
+        private T5 _v5;
     }
 
     public class UnlinkNaomiAttributeAction extends AbstractAction {
@@ -732,7 +744,7 @@ public class Connector extends MoMLApplication {
         }
     }
 
-    protected Tuple<String, Date, String, String> _loadAttribute(
+    protected Tuple<String, String, Date, String, String> _loadAttribute(
             File attributesPath, String attributeName)
             throws IllegalActionException {
         File attributeFile = new File(attributesPath, attributeName);
@@ -749,6 +761,9 @@ public class Connector extends MoMLApplication {
                     "/att:attribute/att:value");
             String value = expr.evaluate(document);
             value = StringUtilities.unescapeForXML(value);
+
+            expr = xpath.compile("/att:attribute/att:resource/@uri");
+            String resource = expr.evaluate(document);
 
             String unit;
             try {
@@ -768,8 +783,8 @@ public class Connector extends MoMLApplication {
                 doc = "";
             }
 
-            return new Tuple<String, Date, String, String>(value, fileDate,
-                    unit, doc);
+            return new Tuple<String, String, Date, String, String>(value,
+                    resource, fileDate, unit, doc);
         } catch (XPathExpressionException e) {
             throw new KernelRuntimeException(e, "Unexpected error.");
         }
@@ -777,7 +792,7 @@ public class Connector extends MoMLApplication {
 
     protected void _loadAttributes(NamedObj model, File attributesPath,
             boolean force) throws IllegalActionException {
-        for (Object attrObject : model.attributeList(Variable.class)) {
+        for (Object attrObject : model.attributeList(Attribute.class)) {
             Attribute attr = (Attribute) attrObject;
             for (Object paramObject
                     : attr.attributeList(NaomiParameter.class)) {
@@ -787,12 +802,17 @@ public class Connector extends MoMLApplication {
                     continue;
                 }
 
-                Tuple<String, Date, String, String> tuple = _loadAttribute(
+                Tuple<String, String, Date, String, String> tuple = _loadAttribute(
                         attributesPath, attributeName);
                 String value = tuple.getV1();
-                Date date = tuple.getV2();
-                String unit = tuple.getV3();
-                String doc = tuple.getV4();
+                String resource = tuple.getV2();
+                String protocol = "naomi://";
+                if (resource.startsWith(protocol)) {
+                    resource = resource.substring(protocol.length());
+                }
+                Date date = tuple.getV3();
+                String unit = tuple.getV4();
+                String doc = tuple.getV5();
 
                 if (!force) {
                     Date attributeDate = naomiParam.getModifiedDate();
@@ -803,24 +823,57 @@ public class Connector extends MoMLApplication {
 
                 System.out.println("Load: " + attributeName + " = " + value);
 
-                String moml = "<property name=\"" + attr.getName() + "\" " +
-                        "value=\"" + value + "\"/>";
-                MoMLChangeRequest request = new MoMLChangeRequest(this,
-                        attr.getContainer(), moml);
-                if (_undoable) {
-                    request.setUndoable(true);
-                    request.setMergeWithPreviousUndo(_mergeWithPrevious);
-                    _mergeWithPrevious = true;
+                if (naomiParam instanceof CompositeNaomiAttribute) {
+                    CompositeNaomiAttribute compositeAttr =
+                        (CompositeNaomiAttribute) naomiParam;
+                    InputStreamReader reader = null;
+                    File resourceFile = new File(_root, resource);
+                    if (resourceFile.canRead()) {
+                        try {
+                            reader = new InputStreamReader(
+                                    new FileInputStream(resourceFile));
+                            compositeAttr.loadCompositeAttribute(reader);
+                        } catch (IOException e) {
+                            throw new IllegalActionException(null, e,
+                                    "Unable to writer to resource file.");
+                        } finally {
+                            if (reader != null) {
+                                try {
+                                    reader.close();
+                                } catch (IOException e) {
+                                    throw new IllegalActionException(null, e,
+                                            "Unable to close input file.");
+                                }
+                            }
+                        }
+                    } else {
+                        System.out.println("Unable to find resource " +
+                                resource + ". Skipping.");
+                    }
+                } else if (attr instanceof Variable) {
+                    String moml = "<property name=\"" + attr.getName() + "\" " +
+                            "value=\"" + value + "\"/>";
+                    MoMLChangeRequest request = new MoMLChangeRequest(this,
+                            attr.getContainer(), moml);
+                    if (_undoable) {
+                        request.setUndoable(true);
+                        request.setMergeWithPreviousUndo(_mergeWithPrevious);
+                        _mergeWithPrevious = true;
+                    }
+                    request.execute();
+                } else {
+                    throw new IllegalActionException("Do not know how to " +
+                            "handle attribute " + attr.getName() + ".");
                 }
-                request.execute();
 
-                moml = "<property name=\"" + naomiParam.getName() + "\" " +
-                        "value=\"" + NaomiParameter.formatExpression(
+                String moml = "<property name=\"" + naomiParam.getName() +
+                        "\" value=\"" + NaomiParameter.formatExpression(
                                 naomiParam.getMethod(),
                                 naomiParam.getAttributeName(), date, unit,
                                 doc) +
                         "\"/>";
-                request = new MoMLChangeRequest(this, attr, moml);
+                MoMLChangeRequest request =
+                    new MoMLChangeRequest(this, attr, moml);
                 if (_undoable) {
                     request.setUndoable(true);
                     request.setMergeWithPreviousUndo(_mergeWithPrevious);
@@ -834,7 +887,7 @@ public class Connector extends MoMLApplication {
     }
 
     protected void _loadInterfaceFromModel(NamedObj model) {
-        for (Object attrObject : model.attributeList(Variable.class)) {
+        for (Object attrObject : model.attributeList(Attribute.class)) {
             Attribute attr = (Attribute) attrObject;
             for (Object paramObject
                     : attr.attributeList(NaomiParameter.class)) {
@@ -907,6 +960,7 @@ public class Connector extends MoMLApplication {
     }
 
     protected void _outputModel(NamedObj model) throws IllegalActionException {
+        OutputStreamWriter writer = null;
         try {
             PrintStream stream;
             if (_outModelName == null) {
@@ -914,12 +968,20 @@ public class Connector extends MoMLApplication {
             } else {
                 stream = new PrintStream(_outModelName);
             }
-            OutputStreamWriter writer = new OutputStreamWriter(stream);
+            writer = new OutputStreamWriter(stream);
             model.exportMoML(writer);
-            writer.flush();
         } catch (Exception e) {
             throw new IllegalActionException(null, e,
                     "Cannot output result model.");
+        } finally {
+            if (writer != null) {
+                try {
+                    writer.flush();
+                } catch (IOException e) {
+                    throw new IllegalActionException(null, e,
+                            "Unable to flush output.");
+                }
+            }
         }
     }
 
@@ -991,8 +1053,8 @@ public class Connector extends MoMLApplication {
     protected void _saveAttributes(NamedObj model, File attributesPath,
             boolean force) throws IllegalActionException {
 
-        for (Object attrObject : model.attributeList(Variable.class)) {
-            Variable attr = (Variable) attrObject;
+        for (Object attrObject : model.attributeList(Attribute.class)) {
+            Attribute attr = (Attribute) attrObject;
             for (Object paramObject
                     : attr.attributeList(NaomiParameter.class)) {
                 NaomiParameter naomiParam = (NaomiParameter) paramObject;
@@ -1011,13 +1073,6 @@ public class Connector extends MoMLApplication {
                         continue;
                     }
                 }
-
-                // Re-evaluate the attribute because in some cases the value is
-                // not up to date if the attribute refers to variables inside
-                // CompositeActors.
-                attr.invalidate();
-                String newValue = attr.getToken().toString();
-                System.out.println("Save: " + attributeName + " = " + newValue);
 
                 String unit = naomiParam.getUnit();
                 String doc = naomiParam.getDocumentation();
@@ -1043,11 +1098,69 @@ public class Connector extends MoMLApplication {
                             "owner");
                     owner.setTextContent(_owner);
                     root.appendChild(owner);
-                    Element value = document.createElementNS(NAMESPACES[0][1],
-                            "value");
-                    value.setTextContent(StringUtilities.escapeForXML(
-                            newValue));
-                    root.appendChild(value);
+
+                    if (naomiParam instanceof CompositeNaomiAttribute) {
+                        if (_outModelName == null) {
+                            throw new IllegalActionException(
+                                    "Unable to generate resource file " +
+                                    "name. Please specify the -out " +
+                                    "parameter.");
+                        }
+                        CompositeNaomiAttribute compositeAttr =
+                            (CompositeNaomiAttribute) naomiParam;
+                        String identifier =
+                            compositeAttr.getResourceIdentifier();
+                        PrintWriter writer = null;
+                        File outModelFile = new File(_outModelName);
+                        File outModelDirectory =
+                            outModelFile.getParentFile();
+                        File resourceFile = new File(outModelDirectory,
+                                identifier);
+                        try {
+                            writer = new PrintWriter(resourceFile);
+                            compositeAttr.saveCompositeAttribute(writer);
+                        } catch (IOException e) {
+                            throw new IllegalActionException(null, e,
+                                    "Unable to writer to resource file.");
+                        } finally {
+                            if (writer != null) {
+                                writer.close();
+                            }
+                        }
+
+                        String resourcePath = resourceFile.getAbsolutePath();
+                        String rootPath = new File(_root).getAbsolutePath();
+                        if (resourcePath.startsWith(rootPath)) {
+                            Element resource = document.createElementNS(
+                                    NAMESPACES[0][1], "resource");
+                            String resourceURI = "naomi://" +
+                                    resourcePath.substring(rootPath.length())
+                                    .replace('\\', '/');
+                            resource.setAttribute("name", identifier);
+                            resource.setAttribute("uri", resourceURI);
+                            root.appendChild(resource);
+                        }
+                    } else if (attr instanceof Variable) {
+                        Variable variable = (Variable) attr;
+
+                        // Re-evaluate the attribute because in some cases the value is
+                        // not up to date if the attribute refers to variables inside
+                        // CompositeActors.
+                        variable.invalidate();
+                        String newValue = variable.getToken().toString();
+                        System.out.println("Save: " + attributeName + " = " +
+                                newValue);
+
+                        Element value = document.createElementNS(
+                                NAMESPACES[0][1], "value");
+                        value.setTextContent(StringUtilities.escapeForXML(
+                                newValue));
+                        root.appendChild(value);
+                    } else {
+                        throw new IllegalActionException("Do not know how to " +
+                                "handle attribute " + attr.getName() + ".");
+                    }
+
                     Element units = document.createElementNS(NAMESPACES[0][1],
                             "units");
                     if (!unit.equals("")) {
@@ -1133,6 +1246,7 @@ public class Connector extends MoMLApplication {
                 for (String choice : choices) {
                     if (value.equals(choice)) {
                         transformation = transformations.get(i);
+                        break;
                     }
                     i++;
                 }
@@ -1146,6 +1260,45 @@ public class Connector extends MoMLApplication {
             if (factories.size() > 0) {
                 EditorFactory factory = (EditorFactory) factories.get(0);
                 factory.createEditor(transformation, null);
+                Frame[] frames = Frame.getFrames();
+                for (Frame frame : frames) {
+                    if (frame instanceof PtolemyFrame &&
+                            ((PtolemyFrame) frame).getModel() ==
+                                transformation) {
+                        frame.addWindowListener(new WindowListener() {
+
+                            public void windowActivated(WindowEvent e) {
+                            }
+
+                            public void windowClosed(WindowEvent e) {
+                            }
+
+                            public void windowClosing(WindowEvent event) {
+                                try {
+                                    _saveAttributes(_inModel, _attributesPath,
+                                            false);
+                                    _saveInterface();
+                                } catch (IllegalActionException e) {
+                                    MessageHandler.error(
+                                            "Unable to output attributes.", e);
+                                }
+                            }
+
+                            public void windowDeactivated(WindowEvent e) {
+                            }
+
+                            public void windowDeiconified(WindowEvent e) {
+                            }
+
+                            public void windowIconified(WindowEvent e) {
+                            }
+
+                            public void windowOpened(WindowEvent e) {
+                            }
+                        });
+                        break;
+                    }
+                }
             } else {
                 new EditParametersDialog(null, transformation);
             }
