@@ -78,7 +78,6 @@ OTHER_FILES_TO_BE_JARED = \
 	NonInterruptibleTimerIcon.xml \
 	QueueIcon.xml \
 	ServerIcon.xml \
-	SharedQueue.xml \
 	SingleEventIcon.xml \
 	TimeGapIcon.xml \
 	TimedDelayIcon.xml \
