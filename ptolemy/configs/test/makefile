@@ -87,8 +87,8 @@ test_java: jclass
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
 # These tests consume quite a bit of memory, so we increase the maximum
-# stack size to 300Mb
-JAVAFLAGS = -Xmx300m
+# stack size to 500Mb
+JAVAFLAGS = -Xmx500m
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
