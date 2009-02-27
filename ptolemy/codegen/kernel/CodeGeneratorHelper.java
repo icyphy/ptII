@@ -249,7 +249,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * @exception IllegalActionException Thrown if the given ptolemy cannot
      *  be resolved.
      */
-    public static String codeGenType(Type ptType) {
+    public String codeGenType(Type ptType) {
         // FIXME: We may need to add more types.
         // FIXME: We have to create separate type for different matrix types.
         String result = ptType == BaseType.INT ? "Int"
@@ -965,8 +965,20 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                             "Failed to generate parse tree for \"" + name
                             + "\". in \"" + container + "\"");
                 }
-                parseTreeCodeGenerator.evaluateParseTree(parseTree,
-                        new VariableScope(variable));
+		try {
+		    parseTreeCodeGenerator.evaluateParseTree(parseTree,
+							     new VariableScope(variable));
+		} catch (Exception ex) {
+		    StringBuffer results = new StringBuffer();
+		    Iterator allScopedVariableNames = ModelScope.getAllScopedVariableNames(variable,container).iterator();
+		    while (allScopedVariableNames.hasNext()) {
+			results.append(allScopedVariableNames.next().toString() + "\n");
+		    }
+		    throw new IllegalActionException(getComponent(), ex,
+						     "Failed to find " + variable.getFullName() + "\n"
+						     + results.toString());
+		    
+		}
 
                 String fireCode = processCode(parseTreeCodeGenerator
                         .generateFireCode());
@@ -1201,7 +1213,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * @param cgType The given codegen type.
      * @return true if the given type is primitive, otherwise false.
      */
-    public static boolean isPrimitive(String cgType) {
+    public boolean isPrimitive(String cgType) {
         return _primitiveTypes.contains(cgType);
     }
 
@@ -1210,7 +1222,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * @param ptType The given ptolemy type.
      * @return true if the given type is primitive, otherwise false.
      */
-    public static boolean isPrimitive(Type ptType) {
+    public boolean isPrimitive(Type ptType) {
         return _primitiveTypes.contains(codeGenType(ptType));
     }
 
@@ -1917,7 +1929,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     
             if (result != null) {
                 // If the variable found is a modified variable, which means
-                // its vaule can be directly changed during execution
+                // its value can be directly changed during execution
                 // (e.g., in commit action of a modal controller), then this
                 // variable is declared in the target language and should be
                 // referenced by the name anywhere it is used.
@@ -1994,6 +2006,10 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             return null;
         }
     
+	public String toString() {
+	    return super.toString() + " variable: " + _variable + " variable.parserScope: "
+		+ (_variable == null ? "N/A, _variable is null" : _variable.getParserScope());
+	}
         ///////////////////////////////////////////////////////////////////
         ////                         private variables                 ////
     
