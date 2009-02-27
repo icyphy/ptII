@@ -443,9 +443,23 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     /** Add a library command line argument the compile command.
      *  @param libraryCommand  The library command, for example
      *  "-L/usr/local/lib".
+     *  @see #addLibraryIfNecessary(String)
      */
     public void addLibrary(String libraryCommand) {
         _libraries.add(libraryCommand);
+    }
+
+    /** If the compile command does not yet containe a library,
+     * 	add a library command line argument the compile command.
+     *  
+     *  @param libraryCommand  The library command, for example
+     *  "-L/usr/local/lib".
+     *  @see #addLibrary(String)
+     */
+    public void addLibraryIfNecessary(String libraryCommand) {
+	if (!_libraries.contains(libraryCommand)) {
+	    _libraries.add(libraryCommand);
+	}
     }
 
     /** If the attribute is the codeDirectory parameter, then set the
