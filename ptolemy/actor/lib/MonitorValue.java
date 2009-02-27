@@ -76,6 +76,8 @@ public class MonitorValue extends Sink {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
+        initial = new Parameter(this, "initial");
+        
         value = new Parameter(this, "value");
     }
 
@@ -86,6 +88,8 @@ public class MonitorValue extends Sink {
      *  type as the input.
      */
     public Parameter value;
+    
+    public Parameter initial;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -93,7 +97,7 @@ public class MonitorValue extends Sink {
     /** Initialize the actor by clearing the display. */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        value.setExpression("");
+        value.setExpression(initial.getExpression());
         value.validate();
     }
 
