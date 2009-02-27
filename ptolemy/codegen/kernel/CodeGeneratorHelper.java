@@ -249,7 +249,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * @exception IllegalActionException Thrown if the given ptolemy cannot
      *  be resolved.
      */
-    public String codeGenType(Type ptType) {
+    public static String codeGenType(Type ptType) {
         // FIXME: We may need to add more types.
         // FIXME: We have to create separate type for different matrix types.
         String result = ptType == BaseType.INT ? "Int"
@@ -1213,7 +1213,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * @param cgType The given codegen type.
      * @return true if the given type is primitive, otherwise false.
      */
-    public boolean isPrimitive(String cgType) {
+    public static boolean isPrimitive(String cgType) {
         return _primitiveTypes.contains(cgType);
     }
 
@@ -1222,7 +1222,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * @param ptType The given ptolemy type.
      * @return true if the given type is primitive, otherwise false.
      */
-    public boolean isPrimitive(Type ptType) {
+    public static boolean isPrimitive(Type ptType) {
         return _primitiveTypes.contains(codeGenType(ptType));
     }
 
