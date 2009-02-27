@@ -198,11 +198,15 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
  */
+//end shared code ******************************
+//end preinitialize code************************
+//before appending fireFunctionCode **********************
 
 void top() {
 
 /* Fire Composite Actor: top */
 }
+//after appending fireFunctionCode  **********************
 /* initialization entry code */
 /* initialization exit code */
 /* wrapup entry code */
