@@ -263,8 +263,9 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
         if (result == null) {
             if (ptType instanceof ArrayType) {
-                result = codeGenType(((ArrayType) ptType).getElementType()) + "Array";
-                //result = "Array";
+		// This change breaks $PTII/bin/ptcg $PTII/ptolemy/codegen/c/actor/lib/colt/test/auto/BinomialSelectorTest.xml
+                //result = codeGenType(((ArrayType) ptType).getElementType()) + "Array";
+                result = "Array";
             } else if (ptType instanceof MatrixType) {
                 //result = ptType.getClass().getSimpleName().replace("Type", "");
                 result = "Matrix";
@@ -2372,7 +2373,9 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             Type elementType = ((ArrayType) ((Parameter) attribute)
                     .getType()).getElementType();
             
-            result.insert(0, "/*CGH77*/" + codeGenType(elementType) + "Array_get(");
+	    // This line breaks $PTII/bin/ptcg $PTII/ptolemy/codegen/c/actor/lib/comm/test/auto/HammingCoder.xml
+	    //result.insert(0, "/*CGH77*/" + codeGenType(elementType) + "_Array_get(");
+	    result.insert(0, "/*CGH77*/" + " Array_get(");
             result.append(" ," + channelAndOffset[1] + ")");
 
 
