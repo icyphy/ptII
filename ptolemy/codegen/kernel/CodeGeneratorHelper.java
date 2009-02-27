@@ -409,11 +409,11 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         StringBuffer code = new StringBuffer();
         code.append(_generateBlockByName(_defaultBlocks[3]));
         
-        Actor actor = (Actor) getComponent();
-        for (IOPort port : (List<IOPort>) actor.outputPortList()) {
-            CodeGeneratorHelper portHelper = (CodeGeneratorHelper) _getHelper(port);
-            code.append(portHelper.generatePostfireCode());
-        }
+//        Actor actor = (Actor) getComponent();
+//        for (IOPort port : (List<IOPort>) actor.outputPortList()) {
+//            CodeGeneratorHelper portHelper = (CodeGeneratorHelper) _getHelper(port);
+//            code.append(portHelper.generatePostfireCode());
+//        }
         return code.toString();
     }
 
@@ -3132,11 +3132,11 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     public String generatePrefireCode() throws IllegalActionException {
         // FIXME: This is to be used in future re-structuring.
         StringBuffer code = new StringBuffer();
-        Actor actor = (Actor) getComponent();
-        for (IOPort port : (List<IOPort>) actor.inputPortList()) {
-            CodeGeneratorHelper portHelper = (CodeGeneratorHelper) _getHelper(port);
-            code.append(portHelper.generatePrefireCode());
-        }
+//        Actor actor = (Actor) getComponent();
+//        for (IOPort port : (List<IOPort>) actor.inputPortList()) {
+//            CodeGeneratorHelper portHelper = (CodeGeneratorHelper) _getHelper(port);
+//            code.append(portHelper.generatePrefireCode());
+//        }
         return code.toString();
     }
 

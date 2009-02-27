@@ -100,8 +100,8 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    public String codeGenType(Type type) {
-	String ptolemyType = super.codeGenType(type);
+    public static String codeGenType(Type type) {
+	String ptolemyType = CodeGeneratorHelper.codeGenType(type);
 	if (ptolemyType == null) {
 	    return null;
 	}
@@ -420,7 +420,7 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
      * @param ptType The given ptolemy type.
      * @return true if the given type is primitive, otherwise false.
      */
-    public boolean isPrimitive(Type ptType) {
+    public static boolean isPrimitive(Type ptType) {
         return _primitiveTypes.contains(codeGenType(ptType));
     }
 
@@ -429,7 +429,7 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
      * @param cgType The given codegen type.
      * @return true if the given type is primitive, otherwise false.
      */
-    public boolean isPrimitive(String cgType) {
+    public static boolean isPrimitive(String cgType) {
         return _primitiveTypes.contains(cgType);
     }
 
@@ -666,9 +666,11 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
 
     /** A list of the primitive types supported by the code generator.
      */
-    protected List _primitiveTypes = Arrays.asList(new String[] {
+    static {
+        _primitiveTypes = Arrays.asList(new String[] {
             "Integer", "Double", "String", "Long", "Boolean", "UnsignedByte",
             "Pointer" });
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                  ////
