@@ -42,6 +42,7 @@ import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.codegen.kernel.ActorCodeGenerator;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.PortCodeGenerator;
+import ptolemy.codegen.kernel.CodeGeneratorHelper.Channel;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
@@ -168,7 +169,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
           temp[i]='0';  //terminate the string
           count++;
           periodString=new String(temp);
-          System.out.println("before padding with zeros: "+periodString);
+          //System.out.println("before padding with zeros: "+periodString);
           while(count < 3){
               periodString+='0';
               count++;
@@ -179,6 +180,8 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             periodString = periodString.substring(1,periodString.length());
             
         }
+        code.append(generateDriverCode());
+        
         args1.add("");
         if(_isTopGiottoDirector())
         {
@@ -191,7 +194,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         ArrayList<String> ActorFrequencies[] = _getActorFrequencyTable();
         //code.append("}"+_eol);
      
-        System.out.println("period string is "+periodString);
+       // System.out.println("period string is "+periodString);
         code.append("//I should append the frequencethread stuff here"+_eol);
        for(int i = 1; i <= _getAllFrequencies().size();i++){
         code.append("static void $actorSymbol()_frequency"+i+"(void * pvParameters){"+_eol);
@@ -493,8 +496,8 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
     public String getReference(TypedIOPort port, String[] channelAndOffset,
             boolean forComposite, boolean isWrite, CodeGeneratorHelper helper)
     throws IllegalActionException {
-        System.out.println("getReference from Giotto Director under OpenRTOS called ");
-        if(port.isOutput()&&isWrite)
+       // System.out.println("getReference from Giotto Director under OpenRTOS called ");
+        if(port.isOutput())
         {// do own thing here}
         // will need to take care of the case of where the output is for a composite actor
             return CodeGeneratorHelper.generateName(port)+"_"+channelAndOffset[1]+"PORT";
@@ -780,6 +783,102 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
     
     }
     
+    
+    /** Generate The fire function code. This method is called when the firing
+     *  code of each actor is not inlined. Each actor's firing code is in a
+     *  function with the same name as that of the actor.
+     *
+     *  @return The fire function code.
+     *  @exception IllegalActionException If thrown while generating fire code.
+     */
+    
+    /// this is my second hack at this method. Hopefully hit generates what we expect kindof
+    public String generateFireFunctionCode() throws IllegalActionException {
+        System.out.println("generateFireFunctionCode called from OpenRTOS giotto director***************");
+        StringBuffer code = new StringBuffer();//super.generateFireFunctionCode());
+        
+       // StringBuffer code = new StringBuffer();
+        Iterator actors = ((CompositeActor) _director.getContainer())
+        .deepEntityList().iterator();
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            
+            String actorFullName = actor.getFullName();
+            actorFullName = actorFullName.substring(1,actorFullName.length());
+            actorFullName = actorFullName.replace('.', '_');
+                
+
+            code.append(_eol + "void " + actorFullName+ _getFireFunctionArguments() + " {"
+                    + _eol);
+            code.append(actorHelper.generateFireCode());
+            code.append("}" + _eol);
+            
+            String temp = actorHelper.generateTypeConvertFireCode();//generateTypeConvertFireCode(actorHelper);/
+            if(temp.length() > 1)  // only generate driver code if the actor has an output
+            {
+            code.append(_eol + "void " + actorFullName
+                    + _getFireFunctionArguments()+"_driver" + " {"
+                    + _eol);
+            code.append(temp);
+            code.append("}" + _eol);
+            }
+        }
+        return code.toString();
+        
+       
+    }
+    
+    public String generateDriverCode() throws IllegalActionException
+    {
+        StringBuffer code = new StringBuffer();
+        
+        code.append("//copy output to PORTS"+_eol);
+        code.append("//copy PORTS to inputs"+_eol);
+        return code.toString();
+    }
+    /*public String generateTypeConvertFireCode(CodeGeneratorHelper actorHelper)
+    throws IllegalActionException {
+        System.out.println("generateTypeConvertFireCode(boolean) called from GiottoDirector.java");
+       StringBuffer code = new StringBuffer();
+       
+       boolean forComposite = false; // a false parameter is passed in to the originally called 
+                                      //generateTypeConvertFireCode in CodeGeneratorHelper.java
+
+        // Type conversion code for inter-actor port conversion.
+        Iterator channels = _getTypeConvertChannels().iterator();
+        if(channels == null)
+        {
+            System.out.println("channels has null value");
+        }
+        else{
+            System.out.println("not null");
+            System.out.println("channels has value: "+channels.toString());
+        }
+        while (channels.hasNext()) {
+            System.out.println("inside first while ");
+            Channel source = (Channel) channels.next();
+
+            if (!forComposite && source.port.isOutput() || forComposite
+                    && source.port.isInput()) {
+
+                Iterator sinkChannels =_getTypeConvertSinkChannels(source)
+                .iterator();
+
+                while (sinkChannels.hasNext()) {
+                    System.out.println("inside second while");
+                    Channel sink = (Channel) sinkChannels.next();
+                    code.append(_generateTypeConvertStatements(source, sink));
+                }
+            }
+        }
+       
+       System.out.println("about to return from generateTypeConvertFireCode in openRTOS giottodirector");
+       System.out.println("returning with:" +code.toString());
+       
+       return code.toString();
+    }*/
    
+    
     
 }
