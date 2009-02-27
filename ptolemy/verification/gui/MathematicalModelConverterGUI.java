@@ -159,11 +159,11 @@ public class MathematicalModelConverterGUI extends PtolemyFrame {
         // Query.
         JPanel queryPanel = new JPanel();
 
-        PtolemyQuery query = new PtolemyQuery(modelConverter);
-        query.setInsets(new Insets(2, 0, 2, 0));
-        query.setTextWidth(25);
+        _query = new PtolemyQuery(modelConverter);
+        _query.setInsets(new Insets(2, 0, 2, 0));
+        _query.setTextWidth(25);
         queryPanel.add(EditorPaneFactory.createEditorPane(modelConverter,
-                query));
+                _query));
 
         JScrollPane scrollPane = new JScrollPane(queryPanel);
 
@@ -252,4 +252,11 @@ public class MathematicalModelConverterGUI extends PtolemyFrame {
             }
         });
     }
+
+    protected boolean _close() {
+        _query.notifyListeners();
+        return super._close();
+    }
+
+    private PtolemyQuery _query;
 }
