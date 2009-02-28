@@ -55,15 +55,15 @@ proc testSplitLongBody {codeLines bodyLines} {
     return [$codeGenerator splitLongBody $bodyLines foo $code]
 }
 
-test CCodeGenerator-1.1 {Instantiate a CodeGenerator} {
+test JavaCodeGenerator-1.1 {Instantiate a CodeGenerator} {
     set model [sdfModel]
     set codeGenerator \
-	    [java::new ptolemy.codegen.c.kernel.CCodeGenerator \
+	    [java::new ptolemy.codegen.java.kernel.JavaCodeGenerator \
 	    $model "myCodeGenerator"]
     set generatorPackageParameter [java::cast  ptolemy.data.expr.StringParameter [$codeGenerator getAttribute generatorPackage]]
 
     list [$generatorPackageParameter getExpression]
-} {ptolemy.codegen.c}
+} {ptolemy.codegen.java}
 
 #####
 test CodeGenerator-2.1 {splitLongBody no code} {
@@ -72,7 +72,7 @@ test CodeGenerator-2.1 {splitLongBody no code} {
 } {{} {}}
 
 #####
-test CCodeGenerator-2.2 {splitLongBody code smaller than max body size} {
+test JavaCodeGenerator-2.2 {splitLongBody code smaller than max body size} {
     set results [testSplitLongBody 4 5]
     $results getrange
 } {{} {line 1;
@@ -82,7 +82,7 @@ line 4;
 }}
 
 #####
-test CCodeGenerator-2.3 {splitLongBody code same size as max body size} {
+test JavaCodeGenerator-2.3 {splitLongBody code same size as max body size} {
     set results [testSplitLongBody 5 5]
     $results getrange
 } {{} {line 1;
@@ -93,17 +93,17 @@ line 5;
 }}
 
 #####
-test CCodeGenerator-2.4 {splitLongBody code same size one over max body size} {
+test JavaCodeGenerator-2.4 {splitLongBody code same size one over max body size} {
     set results [testSplitLongBody 6 5]
     $results getrange
-} {{void foo_0(void) {
+} {{void foo_0() {
 line 1;
 line 2;
 line 3;
 line 4;
 line 5;
 }
-void foo_1(void) {
+void foo_1() {
 line 6;
 }
 } {foo_0();
@@ -111,28 +111,53 @@ foo_1();
 }}
 
 #####
-test CCodeGenerator-2.5 {splitLongBody code same size one over max body size} {
+test JavaCodeGenerator-2.5 {splitLongBody code same size one over max body size} {
     set results [testSplitLongBody 12 5]
     $results getrange
-} {{void foo_0(void) {
+} {{void foo_0() {
 line 1;
 line 2;
 line 3;
 line 4;
 line 5;
 }
-void foo_1(void) {
+void foo_1() {
 line 6;
 line 7;
 line 8;
 line 9;
 line 10;
 }
-void foo_2(void) {
+void foo_2() {
 line 11;
 line 12;
 }
 } {foo_0();
 foo_1();
 foo_2();
+}}
+
+#####
+test JavaCodeGenerator.tcl {splitLongBody if block spans end of max body size} {
+    set code "
+        line1;
+	if (A==B) {
+	    line3;
+	}
+        line5;
+"
+    set result [$codeGenerator splitLongBody 4 foo $code]
+    $result getrange
+} {{void foo_0() {
+
+        line1;
+	if (A==B) {
+	    line3;
+	}
+}
+void foo_1() {
+        line5;
+}
+} {foo_0();
+foo_1();
 }}
