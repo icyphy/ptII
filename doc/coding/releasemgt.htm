@@ -228,6 +228,10 @@ grep "does not contain a Copyright" /tmp/copycheck | grep -v README
 <li> Run <CODE>$PTII/adm/bin/fixsince</CODE> (not shipped with
 the release) and update the @since tags
 
+<li> Run <CODE>$PTII/adm/bin/chkpackagehtml</CODE> (not shipped with
+the release) and create any missing <code>package.html</code>
+or <code>README.txt</code> files.
+
 <li> Concatenate all the javadoc files in to one file and run
 <code>$PTII/util/testsuite/ptspell</code>. 
 
