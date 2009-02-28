@@ -117,5 +117,5 @@ test ParameterSetModel-3.1 {get all the scoped variable names for the const acto
 		    {getAllScopedVariableNames \
 			 ptolemy.data.expr.Variable ptolemy.kernel.util.NamedObj} \
 		    [java::null] $const] toArray]
-    $names getrange
-} {checkForFileUpdates value a firingsPerIteration firingCountLimit fileOrURL NONE initialDefaultContents}
+    lsort [$names getrange]
+} {NONE a checkForFileUpdates fileOrURL firingCountLimit firingsPerIteration initialDefaultContents value}
