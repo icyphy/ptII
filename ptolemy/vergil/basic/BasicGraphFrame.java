@@ -208,7 +208,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  @param defaultLibrary An attribute specifying the default library
      *   to use if the model does not have a library.   The <i>defaultLibrary</i>
      *  attribute is only read if the model does not have a 
-     *  @{link ptolemy.moml.LibraryAttribute} with the name
+     *  {@link ptolemy.moml.LibraryAttribute} with the name
      *  "<code>_library</code>", or if the LibraryAttribute cannot be
      *  read.
      */
@@ -774,7 +774,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /** Dispose of this frame.
      * 	Override this dispose() method to unattach any listeners that may keep
      *  this model from getting garbage collected.  This method calls
-     *  @{link #disposeSuper()}.
+     *  {@link #disposeSuper()}.
      */
     public void dispose() {
         // Remove the association with the library. This is necessary to allow
@@ -786,7 +786,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     }
     
     /** Invoke the dispose() method of the superclass, 
-     *  @{link ptolemy.actor.gui.PtolemyFrame}.
+     *  {@link ptolemy.actor.gui.PtolemyFrame}.
      */
     public void disposeSuper() {
 	// This method is used by Kepler for the tabbed pane interface.
