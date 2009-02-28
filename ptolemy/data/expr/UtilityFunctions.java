@@ -1462,7 +1462,7 @@ public class UtilityFunctions {
 
             // Vectors have now become obsolete, data is stored
             // in double[][].
-            k.removeAll(k);
+	    k.clear();
             returnMatrix = new DoubleMatrixToken(mtr);
         } finally {
             if (fin != null) {
