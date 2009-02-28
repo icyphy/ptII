@@ -1861,6 +1861,7 @@ ParseTreeCodeGenerator {
         cFunctionMap.put("sum", "$arraySum");
 
 	// Java Specific functions
+        cFunctionMap.put("NaN", "Double.NaN");
         cFunctionMap.put("abs", "Math.abs");
         cFunctionMap.put("acos", "Math.acos");
         cFunctionMap.put("asin", "Math.asin");
