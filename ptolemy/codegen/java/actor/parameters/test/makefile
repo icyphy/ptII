@@ -85,7 +85,7 @@ test_java: jclass
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
 # If necessary, build the actors and domains
-RAMP_CLASS = $(ROOT)/ptolemy/codegen/c/actor/lib/Ramp.class
+RAMP_CLASS = $(ROOT)/ptolemy/codegen/java/actor/lib/Ramp.class
 
 $(RAMP_CLASS): 
 	if [ ! -f $(RAMP_CLASS) ]; then \
@@ -94,7 +94,7 @@ $(RAMP_CLASS):
         fi
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) $(RAMP_CLASS) alljtests.tcl #test_auto test_codegen
+test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) $(RAMP_CLASS) alljtests.tcl test_auto test_codegen
 	$(JTCLSH) alljtests.tcl
 
 # 'make clean' removes $(KRUFT)

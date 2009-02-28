@@ -56,6 +56,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 PTCLASSALLJARS = \
 	colt/colt.jar \
 	conversions/conversions.jar \
+	hoc/hoc.jar \
 	logic/logic.jar \
 	string/string.jar
 
@@ -63,7 +64,6 @@ PTCLASSALLJARS = \
 OLD_PTCLASSALLJARS = \
 	comm/comm.jar \
 	gui/gui.jar \
-	hoc/hoc.jar \
 	io/io.jar \
 	javasound/javasound.jar \
 	jni/jni.jar \
@@ -96,6 +96,7 @@ JSRCS = \
 	SubscriptionAggregator.java \
 	Test.java \
 	TrigFunction.java \
+	UnaryMathFunction.java \
 	Uniform.java \
 	VectorAssembler.java \
 	VectorDisassembler.java
@@ -158,7 +159,6 @@ OLDJSRCS = \
 	ThrowException.java \
 	ThrowModelError.java \
 	TrigFunction.java \
-	UnaryMathFunction.java \
 	Uniform.java \
 	VectorAssembler.java \
 	VectorDisassembler.java \

@@ -130,7 +130,7 @@ public abstract class ColtRandomSource extends JavaCodeGeneratorHelper {
 	files.add("edu.cornell.lassp.houle.RngPack.Ranlux;");
 	files.add("edu.cornell.lassp.houle.RngPack.Ranmar;");
 
-	_codeGenerator.addLibrary("$(PTII)/lib/ptcolt.jar");
+	_codeGenerator.addLibraryIfNecessary("$(PTII)/lib/ptcolt.jar");
         return files;
     }
 

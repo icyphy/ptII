@@ -14,7 +14,7 @@ $actorSymbol(mostRecent) = $val(maxPastInputsToAverage);
 /**/
 
 /***fireBlock***/
-int i;
+int $actorSymbol(i);
 if ($actorSymbol(mostRecent) <= 0) {
     $actorSymbol(mostRecent) = $val(maxPastInputsToAverage) - 1;
 } else {
@@ -26,8 +26,8 @@ if ($actorSymbol(count) < $val(maxPastInputsToAverage)) {
     $actorSymbol(factor) = 1.0/$actorSymbol(count);
 }
 $actorSymbol(sum) = $actorSymbol(data)[$actorSymbol(mostRecent)];
-for (i = 1; i < $actorSymbol(count); i++) {
-    int dataIndex = ($actorSymbol(mostRecent) + i ) % ($val(maxPastInputsToAverage));
+for ($actorSymbol(i) = 1; $actorSymbol(i) < $actorSymbol(count); $actorSymbol(i)++) {
+    int dataIndex = ($actorSymbol(mostRecent) + $actorSymbol(i) ) % ($val(maxPastInputsToAverage));
     $actorSymbol(sum) += $actorSymbol(data)[dataIndex];
 
 }

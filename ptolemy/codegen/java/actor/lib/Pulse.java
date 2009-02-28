@@ -31,6 +31,7 @@ import java.util.ArrayList;
 
 import ptolemy.codegen.java.kernel.JavaCodeGeneratorHelper;
 import ptolemy.data.ArrayToken;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -76,7 +77,11 @@ public class Pulse extends JavaCodeGeneratorHelper {
         if (!isPrimitive(type)) {
             args.add("$tokenFunc($ref(values, 0)::zero())");
         } else {
-            args.add("0");
+	    if (type == BaseType.BOOLEAN) {
+		args.add("false");
+	    } else {
+		args.add("0");
+	    }
         }
 
         code.append(_generateBlockCode("initBlock", args));

@@ -95,7 +95,7 @@ Token divide_Integer_Array(int a1, Token a2) {
 
 /*** divide_Integer_Double() ***/
 int divide_Integer_Double(int a1, double a2) {
-    return a1 / a2;
+    return (int)(a1 / a2);
 }
 /**/
 
@@ -236,39 +236,39 @@ Token divide_Token_Token(Token a1, Token a2) {
 /**/
 
 /***divide_one_Array***/
-Token divide_one_Array(Token a1, ...) {
+Token divide_one_Array(Token a1, Token... tokens) {
     Token oneToken = $tokenFunc(a1::one(a1));
     return $Array_divide(oneToken, a1);
 }
 /**/
 
 /*** divide_one_Boolean ***/
-double divide_one_Boolean(boolean b, ...) {
+double divide_one_Boolean(boolean b, Token... tokens) {
     // FIXME: is this right?
     return b;
 }
 /**/
 
 /*** divide_one_Double ***/
-double divide_one_Double(double d, ...) {
+double divide_one_Double(double d, Token... tokens) {
     return 1.0/d;
 }
 /**/
 
 /*** divide_one_Int ***/
-int divide_one_Integer(int i, ...) {
+int divide_one_Integer(int i, Token... tokens) {
     return 1/i;
 }
 /**/
 
 /*** divide_one_Long ***/
-long divide_one_Long(long l, ...) {
+long divide_one_Long(long l, Token... tokens) {
     return 1L/l;
 }
 /**/
 
 /*** divide_one_Token ***/
-long divide_one_Token(Token a1, ...) {
+long divide_one_Token(Token a1, Token... tokens) {
     Token oneToken = $tokenFunc(a1::one(a1));
     return $divide_Token_Token(a1, token);
 }

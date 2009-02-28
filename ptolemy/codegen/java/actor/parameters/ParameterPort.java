@@ -30,6 +30,15 @@ package ptolemy.codegen.java.actor.parameters;
 import ptolemy.codegen.java.actor.TypedIOPort;
 
 
+/**
+Code generator helper for {@link ptolemy.actor.parameter.ParameterPort}.
+
+@author Man-Kit Leung
+@version $Id$
+@since Ptolemy II 7.2
+@Pt.ProposedRating Red (mankit)
+@Pt.AcceptedRating Red (mankit)
+ */
 public class ParameterPort extends TypedIOPort {
 
     /** Construct the code generator helper associated

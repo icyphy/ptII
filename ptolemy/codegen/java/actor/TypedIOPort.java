@@ -28,6 +28,15 @@
 package ptolemy.codegen.java.actor;
 
 
+/**
+Code generator helper for {@link ptolemy.actor.TypedIOPort}.
+
+@author Man-Kit Leung
+@version $Id$
+@since Ptolemy II 7.0
+@Pt.ProposedRating Red (mankit)
+@Pt.AcceptedRating Red (mankit)
+ */
 public class TypedIOPort extends IOPort {
 
     /** Construct the code generator helper associated

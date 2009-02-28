@@ -709,11 +709,36 @@ public class JavaCodeGenerator extends CodeGenerator {
             while ((line = bufferedReader.readLine()) != null) {
                 String methodName = prefix + "_" + methodNumber++;
                 body = new StringBuffer(line + _eol);
-                for (int i = 0; (i + 1) < linesPerMethod && line != null; i++) {
+		int openBracketCount = 0;
+		int commentCount = 0;
+                for (int i = 0; ((i + 1) < linesPerMethod && line != null)
+			 || openBracketCount > 0
+			 || commentCount > 0; i++) {
                     lineNumber++;
                     line = bufferedReader.readLine();
                     if (line != null) {
-                        body.append(line + _eol);
+			body.append(line + _eol);
+			String trimmedLine = line.trim();
+			if (trimmedLine.startsWith("/*")) {
+			    commentCount++;
+			}
+			if (trimmedLine.endsWith("*/")) {
+			    commentCount--;
+			}
+
+			if (!trimmedLine.startsWith("//")
+			    && !trimmedLine.startsWith("/*")
+			    && !trimmedLine.startsWith("*")) {
+			    // Look for curly braces in non-commented lines
+			    // This code could be buggy . . .
+			    if (line.trim().endsWith("{")) {
+				openBracketCount++;
+			    }
+			    // Lines can both start and end with braces.
+			    if (line.trim().startsWith("}")) {
+				openBracketCount--;
+			    }
+			}
                     }
                 }
 
@@ -797,6 +822,7 @@ public class JavaCodeGenerator extends CodeGenerator {
         _overloadedFunctions.parse(functionDir + "subtract.j");
         _overloadedFunctions.parse(functionDir + "toString.j");
         _overloadedFunctions.parse(functionDir + "convert.j");
+        _overloadedFunctions.parse(functionDir + "print.j");
         _overloadedFunctions.parse(functionDir + "negate.j");
         _overloadedFunctions.parse(typeDir + "Array.j");
         _overloadedFunctions.parse(typeDir + "Boolean.j");

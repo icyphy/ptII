@@ -1859,6 +1859,33 @@ ParseTreeCodeGenerator {
         cFunctionMap.put("roundToInt", "(int)");
         cFunctionMap.put("repeat", "$arrayRepeat");
         cFunctionMap.put("sum", "$arraySum");
+
+	// Java Specific functions
+        cFunctionMap.put("abs", "Math.abs");
+        cFunctionMap.put("acos", "Math.acos");
+        cFunctionMap.put("asin", "Math.asin");
+        cFunctionMap.put("atan", "Math.atan");
+        cFunctionMap.put("cbrt", "Math.cbrt");
+        cFunctionMap.put("ceil", "Math.ceil");
+        cFunctionMap.put("cos", "Math.cos");
+        cFunctionMap.put("cosh", "Math.cosh");
+        cFunctionMap.put("exp", "Math.exp");
+        cFunctionMap.put("expm1", "Math.expm1");
+        cFunctionMap.put("floor", "Math.floor");
+        cFunctionMap.put("log", "Math.log");
+        cFunctionMap.put("log10", "Math.log10");
+        cFunctionMap.put("log1p", "Math.log1p");
+        cFunctionMap.put("rint", "Math.rint");
+        cFunctionMap.put("round", "Math.round");
+        cFunctionMap.put("signum", "Math.signum");
+        cFunctionMap.put("sin", "Math.sin");
+        cFunctionMap.put("sinh", "Math.sinh");
+        cFunctionMap.put("sqrt", "Math.sqrt");
+        cFunctionMap.put("tan", "Math.tan");
+        cFunctionMap.put("tanh", "Math.tanh");
+        cFunctionMap.put("toDegrees", "Math.toDegrees");
+        cFunctionMap.put("toRadians", "Math.toRadians");
+        cFunctionMap.put("ulp", "Math.ulp");
     }
 
 }

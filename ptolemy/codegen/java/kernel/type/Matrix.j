@@ -182,6 +182,7 @@ Token Matrix_print(Token thisToken, Token... tokens) {
     // free(string.payload.String);
 
     int i, j;
+    Token element;
     printf("[");
     for (i = 0; i < ((matrix)(thisToken.payload)).column; i++) {
         if (i != 0) {
@@ -191,7 +192,10 @@ Token Matrix_print(Token thisToken, Token... tokens) {
             if (j != 0) {
                 printf("; ");
             }
-            functionTable[((matrix)(thisToken.payload)).elements[i * ((matrix)(thisToken.payload)).row + j].type][FUNC_print](((matrix)(thisToken.payload)).elements[i]);
+            //functionTable[((matrix)(thisToken.payload)).elements[i * ((matrix)(thisToken.payload)).row + j].type][FUNC_print](((matrix)(thisToken.payload)).elements[i]);
+	    element = element = Matrix_get(thisToken, j, i);
+            $tokenFunc(element::print(element));
+
         }
     }
     printf("]");
@@ -203,35 +207,24 @@ Token Matrix_print(Token thisToken, Token... tokens) {
 Token Matrix_toString(Token thisToken, Token... tokens) {
     int i, j;
     int currentSize, allocatedSize;
-    char* string;
     Token elementString;
 
-    allocatedSize = 512;
-    string = (char*) malloc(allocatedSize);
-    string[0] = '[';
-    string[1] = '\0';
-    currentSize = 2;
+    StringBuffer result = new StringBuffer("[");
     for (i = 0; i < ((matrix)(thisToken.payload)).column; i++) {
         if (i != 0) {
-            strcat(string, "; ");
+            result.append("; ");
         }
         for (j = 0; j < ((matrix)(thisToken.payload)).row; j++) {
             if (j != 0) {
-                strcat(string, ", ");
+	        result.append(", ");
             }
-            elementString = functionTable[(int) Matrix_get(thisToken, j, i).type][FUNC_toString](Matrix_get(thisToken, j, i));
-            currentSize += strlen(elementString.payload.String);
-            if (currentSize > allocatedSize) {
-                allocatedSize *= 2;
-                string = (char*) realloc(string, allocatedSize);
-            }
-
-            strcat(string, elementString.payload.String);
-            free(elementString.payload.String);
+            //elementString = functionTable[(int) Matrix_get(thisToken, j, i).type][FUNC_toString](Matrix_get(thisToken, j, i));
+	    elementString = $tokenFunc(Matrix_get(thisToken, j, i)::toString(Matrix_get(thisToken, j, i)));
+            result.append((String)(elementString.payload));
         }
     }
-    strcat(string, "]");
-    return String_new(string);
+    result.append("]");
+    return String_new(result.toString());
 }
 /**/
 
@@ -248,7 +241,8 @@ Token Matrix_add(Token thisToken, Token... tokens) {
 
     for (i = 0; i < ((matrix)(thisToken.payload)).column; i++) {
         for (j = 0; j < ((matrix)(thisToken.payload)).row; j++) {
-            Matrix_set(result, j, i, functionTable[(int)Matrix_get(thisToken, i, j).type][FUNC_add](Matrix_get(thisToken, i, j), Matrix_get(otherToken, i, j)));
+            //Matrix_set(result, j, i, functionTable[(int)Matrix_get(thisToken, i, j).type][FUNC_add](Matrix_get(thisToken, i, j), Matrix_get(otherToken, i, j)));
+            Matrix_set(result, j, i, $tokenFunc(Matrix_get(thisToken, i, j)::add(Matrix_get(thisToken, i, j), Matrix_get(otherToken, i, j))));
         }
     }
 
@@ -269,7 +263,8 @@ Token Matrix_subtract(Token thisToken, Token... tokens) {
 
     for (i = 0; i < ((matrix)(thisToken.payload)).column; i++) {
         for (j = 0; j < ((matrix)(thisToken.payload)).row; j++) {
-            Matrix_set(result, j, i, functionTable[(int)Matrix_get(thisToken, i, j).type][FUNC_subtract](Matrix_get(thisToken, i, j), Matrix_get(otherToken, i, j)));
+            //Matrix_set(result, j, i, functionTable[(int)Matrix_get(thisToken, i, j).type][FUNC_subtract](Matrix_get(thisToken, i, j), Matrix_get(otherToken, i, j)));
+            Matrix_set(result, j, i, $tokenFunc(Matrix_get(thisToken, i, j)::subtract(Matrix_get(thisToken, i, j), Matrix_get(otherToken, i, j))));
         }
     }
 
@@ -284,7 +279,7 @@ Token Matrix_subtract(Token thisToken, Token... tokens) {
 // Assume the given otherToken is array type.
 // Return a new Array token.
 Token Matrix_multiply(Token thisToken, Token... tokens) {
-    int i, j;
+    int i, j, index;
     Token result;
     Token element;
     Token otherToken = tokens[0];
@@ -304,7 +299,8 @@ Token Matrix_multiply(Token thisToken, Token... tokens) {
                 element = Matrix_get(thisToken, j, i);
                 if (((matrix)(otherToken.payload)).row == 1
                         && ((matrix)(otherToken.payload)).column == 1) {
-                    Matrix_set(result, j, i, functionTable[(int)element.type][FUNC_multiply](element, Matrix_get(otherToken, 0, 0)));
+                    //Matrix_set(result, j, i, functionTable[(int)element.type][FUNC_multiply](element, Matrix_get(otherToken, 0, 0)));
+		    throw new RuntimeException("Matrix_multiply(): Matrix multiplication not yet supported");
                 }
             }
         }
@@ -323,10 +319,11 @@ Token Matrix_multiply(Token thisToken, Token... tokens) {
         break;
         #endif
         default:
-        for (i = 0; i < ((matrix)(thisToken.payload)).column; i++) {
+        for (i = 0, index = 0; i < ((matrix)(thisToken.payload)).column; i++) {
             for (j = 0; j < ((matrix)(thisToken.payload)).row; j++) {
                 element = Matrix_get(thisToken, j, i);
-                result.payload.Matrix.elements[i] = functionTable[(int)element.type][FUNC_multiply](element, otherToken);
+                //result.payload.Matrix.elements[i] = functionTable[(int)element.type][FUNC_multiply](element, otherToken);
+                ((matrix)(result.payload)).elements[index] = $tokenFunc(element::multiply(otherToken));
             }
         }
     }
@@ -349,6 +346,7 @@ Token Matrix_divide(Token thisToken, Token... tokens) {
             for (j = 0; j < ((matrix)(thisToken.payload)).row; j++) {
                 element = Matrix_get(thisToken, j, i);
                 // FIXME: Need to program this.
+		throw new RuntimeException("Matrix_divide(): Matrix division not yet supported");
             }
         }
         break;

@@ -48,3 +48,9 @@ void print_Token(Token a) {
 }
 /**/
 
+/*** print_Token_Token() ***/
+Token print_Token_Token(Token a) {
+     print_Token(a);
+     return null;
+}
+/**/
