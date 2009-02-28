@@ -249,7 +249,12 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * @exception IllegalActionException Thrown if the given ptolemy cannot
      *  be resolved.
      */
-    public static String codeGenType(Type ptType) {
+    public /*static*/ String codeGenType(Type ptType) {
+	// Do not make this static as Java Codegen requires that it be
+	// non static.
+	// If this is static, then this command will fail:
+	// $PTII/bin/ptcg -generatorPackage ptolemy.codegen.java $PTII/ptolemy/codegen/java/actor/lib/colt/test/auto/ColtBinomialSelector.xml
+
         // FIXME: We may need to add more types.
         // FIXME: We have to create separate type for different matrix types.
         String result = ptType == BaseType.INT ? "Int"
@@ -1223,7 +1228,9 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * @param ptType The given ptolemy type.
      * @return true if the given type is primitive, otherwise false.
      */
-    public static boolean isPrimitive(Type ptType) {
+    public /*static*/ boolean isPrimitive(Type ptType) {
+	// This method cannot be static as it calls
+	// codeGenType(), which is not static
         return _primitiveTypes.contains(codeGenType(ptType));
     }
 

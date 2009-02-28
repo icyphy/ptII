@@ -100,8 +100,9 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    public static String codeGenType(Type type) {
-	String ptolemyType = CodeGeneratorHelper.codeGenType(type);
+    public /*static*/ String codeGenType(Type type) {
+	//String ptolemyType = CodeGeneratorHelper.codeGenType(type);
+	String ptolemyType = super.codeGenType(type);
 	if (ptolemyType == null) {
 	    return null;
 	}
@@ -420,7 +421,7 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
      * @param ptType The given ptolemy type.
      * @return true if the given type is primitive, otherwise false.
      */
-    public static boolean isPrimitive(Type ptType) {
+    public /*static*/ boolean isPrimitive(Type ptType) {
         return _primitiveTypes.contains(codeGenType(ptType));
     }
 
