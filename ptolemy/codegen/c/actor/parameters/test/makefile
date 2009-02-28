@@ -94,7 +94,7 @@ $(RAMP_CLASS):
         fi
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) $(RAMP_CLASS) alljtests.tcl #test_auto test_codegen
+test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) $(RAMP_CLASS) alljtests.tcl test_auto test_codegen
 	$(JTCLSH) alljtests.tcl
 
 # 'make clean' removes $(KRUFT)
