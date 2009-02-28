@@ -85,3 +85,37 @@ test ParameterSetModel-1.0 {Change the contents of the file read by ParameterSet
     file delete -force TestParameterSetMode.txt
     list $r1 $r2	
 } {{11 11 11 11 11} {42 42 42 42 42}}
+
+######################################################################
+####
+# 
+test ParameterSeModel-2.1 {Check out ModelScope.getScopedAttribute method} {
+    set attribute [java::call ptolemy.data.expr.ModelScope \
+		       {getScopedAttribute ptolemy.kernel.util.Attribute \
+			    ptolemy.kernel.util.NamedObj String} \
+		       [java::null] $const a]
+
+    list [$attribute toString]
+} {{ptolemy.data.expr.Variable {.top.parameterSet.a} 42}}
+
+######################################################################
+####
+# 
+test ParameterSeModel-2.2 {Check out ModelScope.getScopedObject } {
+     set object  [java::call ptolemy.data.expr.ModelScope \
+ 		       {getScopedObject \
+ 			    ptolemy.kernel.util.NamedObj String} \
+ 		       $const a]
+    list [$object toString]
+} {{ptolemy.data.expr.Variable {.top.parameterSet.a} 42}}
+
+######################################################################
+####
+# 
+test ParameterSetModel-3.1 {get all the scoped variable names for the const actor} {
+    set names [[java::call ptolemy.data.expr.ModelScope \
+		    {getAllScopedVariableNames \
+			 ptolemy.data.expr.Variable ptolemy.kernel.util.NamedObj} \
+		    [java::null] $const] toArray]
+    $names getrange
+} {checkForFileUpdates value a firingsPerIteration firingCountLimit fileOrURL NONE initialDefaultContents}
