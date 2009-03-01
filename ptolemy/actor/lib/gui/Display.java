@@ -50,13 +50,13 @@ import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
-import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -121,7 +121,7 @@ public class Display extends AbstractPlaceableActor {
         suppressBlankLines.setTypeEquals(BaseType.BOOLEAN);
         suppressBlankLines.setToken(BooleanToken.FALSE);
 
-        title = new StringAttribute(this, "title");
+        title = new StringParameter(this, "title");
         title.setExpression("");
 
         _attachText("_iconDescription", "<svg>\n"
@@ -164,7 +164,7 @@ public class Display extends AbstractPlaceableActor {
     public transient JTextArea textArea;
 
     /** The title to put on top. */
-    public StringAttribute title;
+    public StringParameter title;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -308,7 +308,12 @@ public class Display extends AbstractPlaceableActor {
         _container.add(_scrollPane);
         textArea.setBackground(Color.white);
 
-        String titleSpec = title.getExpression();
+        String titleSpec;
+        try {
+            titleSpec = title.stringValue();
+        } catch (IllegalActionException e) {
+            titleSpec = "Error in title: " + e.getMessage();
+        }
 
         if (!titleSpec.trim().equals("")) {
             _scrollPane.setBorder(BorderFactory.createTitledBorder(titleSpec));
@@ -560,7 +565,7 @@ public class Display extends AbstractPlaceableActor {
                 throws IllegalActionException, NameDuplicationException {
             super(container, name);
 
-            String title = display.title.getExpression();
+            String title = display.title.stringValue();
 
             if (title.trim().equals("")) {
                 title = display.getFullName();
