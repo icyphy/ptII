@@ -31,8 +31,7 @@ $actorSymbol(xvalue) = 0;
 /**/
 
 /***plotBlock($channel)***/
-//printf("plotBlock code should go here for %d",$ref(input#$channel));
-
+PlotPoint($actorSymbol(xvalue),$ref(input#$channel));
 /**/
 
 
