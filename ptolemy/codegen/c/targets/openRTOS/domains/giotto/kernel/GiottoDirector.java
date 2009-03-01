@@ -53,6 +53,7 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.StringUtilities;
 
 
 
@@ -83,6 +84,19 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
      */
     public GiottoDirector(ptolemy.domains.giotto.kernel.GiottoDirector giottoDirector) {
         super(giottoDirector);
+        System.out.println("The actors attatched to director "+_director.getDisplayName()+" are:");
+        
+       /* for (Actor actor : (List<Actor>) 
+                ((TypedCompositeActor) _director.getContainer()).deepEntityList()) {
+          
+           // actorNamesPerFrequency[_getFrequency(actor)].add(actor.getDisplayName());
+            String temp =actor.getFullName();
+            System.out.print(" "+temp);
+                     
+          }    
+        System.out.println("that's all the actors in the director");
+        */
+        
     }
     
     public String generateInitializeCode() throws IllegalActionException {
@@ -103,6 +117,14 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         args.add("");
         args.add("");
         args.add("");
+        
+        
+        args.set(0, "scheduler"); 
+        // stack size.
+        args.set(1, 100); 
+        // priority.
+        args.set(2, _MAX_PRIORITY_LEVEL); 
+        code.append(_generateBlockCode("createTask", args));  //create the scheduler thread
 
         for(int frequencyValue : frequencies) {
             
@@ -127,12 +149,15 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         }
      
         code.append(super.generateInitializeCode());
+        
       
         return processCode(code.toString());   
         
     }
+    
     public String generateSchedulerThread(String period) throws IllegalActionException{
     StringBuffer code = new StringBuffer();
+    ArrayList<String> ActorFrequencies[] = _getActorFrequencyTable();
     
     code.append("static void scheduler(void * pvParameters){"+_eol);
     code.append("portTickType xLastWakeTime;"+_eol);
@@ -140,7 +165,17 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
     code.append("xLastWakeTime = xTaskGetTickCount();"+_eol);
     code.append("    for(;;){"+_eol);
     code.append("     vTaskDelayUntil(&xLastWakeTime,xFrequency);"+_eol);
-    code.append("//run driver code here"+_eol);
+    code.append("//check mode stuff here for now just act like there is only one mode"+_eol);
+    for(int i = 1; i <= _getAllFrequencies().size();i++)
+    {
+        for(int j = 0; j<ActorFrequencies[i].size();j++) {
+            //call generate driver code for each of the actors
+            code.append(ActorFrequencies[i].get(j)+"_driver();"+_eol);
+        }
+        
+   }
+    
+    //code.append("//run driver code here"+_eol);
     //sync outputs to ports, sync inputs to ports
     code.append("//handle updates, mode switches, and switching the double buffer pointers"+_eol);
     code.append("    }"+_eol);
@@ -204,8 +239,9 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         code.append("xLastWakeTime = xTaskGetTickCount();"+_eol);
         code.append("   for(;;){"+_eol);
         code.append("vTaskDelayUntil(&xLastWakeTime,xFrequency);"+_eol);
-        code.append("// here I should call generate driver code method for each of the actors"+_eol);
+        code.append("// here I should call driver code method for each of the actors"+_eol);
         code.append("  //call the methods for the tasks at this frequency of "+ i+_eol);
+        
         for(int j = 0; j<ActorFrequencies[i].size();j++) {
             //call generate driver code for each of the actors
             code.append(ActorFrequencies[i].get(j)+"();"+_eol);
@@ -243,11 +279,10 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             String temp =actor.getFullName();
             temp=temp.substring(1,temp.length());
             temp=temp.replace('.', '_');
-                
             actorNamesPerFrequency[_getFrequency(actor)].add(temp);
-          
-            
-          }     
+                     
+          }    
+        
         return actorNamesPerFrequency;
     }
 
@@ -266,27 +301,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             frequencies.add(attributueValue);
         }
     
-    /*
-        Iterator frequencyIterator = frequencies.iterator();
-    
-        int frequencyValue;
-    
-        int currentPriorityLevel = 1;
-        for(int i = 0; i < frequencies.size();i++)
-        {// assign the low frequency task the lower priority, doesn't handle wrap around at the moment
-            frequencyValue = (Integer)frequencyIterator.next();
-           // frequencyTCode.append(generateFrequencyThreadCode(frequencyValue));
-    
-            //come back and create handlers for each of these frequency threads
-            //code.append("xTaskHandle "+"frequency"+frequencyValue+"handle;"+_eol);
-            //tempcode.append("xTaskCreate(frequency"+frequencyValue+",\"frequency"+frequencyValue+"\" "+",100,NULL,"+currentPriorityLevel+",frequency"+frequencyValue+"handle);"+_eol);
-            currentPriorityLevel++;
-            currentPriorityLevel %=9;
-    
-        }
-    */
-       // code.append(tempcode);
-    
+       
     
         //Attribute iterations = _director.getAttribute("iterations");
        
@@ -344,12 +359,13 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         }
         for(int frequencyValue : frequencies) {
             // assign the low frequency task the lower priority, doesn't handle wrap around at the moment
-            frequencyTCode.append(generateFrequencyThreadCode(frequencyValue));
+//            frequencyTCode.append(generateFrequencyThreadCode(frequencyValue));
 
-            args.set(0, _getThreadName(frequencyValue));
-            code.append(_generateBlockCode("declareTaskHandle", args));
+           args.set(0, _getThreadName(frequencyValue));
+           code.append(_generateBlockCode("declareTaskHandle", args));
         }
 
+        code.append("//driver code should be below here******************"+_eol);
         code.append(generateDriverCode());
        
         return processCode(code.toString());
@@ -382,7 +398,16 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
 
     private boolean _isTopGiottoDirector() {
         // TODO Auto-generated method stub
+        if(_director.depthInHierarchy()== 0)
+        {
+            System.out.println("the director "+_director.getDisplayName()+" is the top most director");
         return true;
+        }
+        else
+        {
+            System.out.println("the director "+_director.getDisplayName()+" is the not the top most director");
+            return false;
+        }
     }
     
 
@@ -398,7 +423,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         return code.toString();
     }
 
-  public String generateFrequencyThreadCode(int i) throws IllegalActionException{
+  /*public String generateFrequencyThreadCode(int i) throws IllegalActionException{
         StringBuffer code = new StringBuffer();
         code.append("static void $actorSymbol($+ frequency"+i+") (void * pvParameters){"+_eol);
         code.append("portTickType xLastWakeTime;"+_eol);
@@ -411,7 +436,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
 
         return code.toString();   
     }
-
+*/
 
 
     public String generatePostFireCode() throws IllegalActionException{
@@ -502,7 +527,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         if(port.isOutput())
         {// do own thing here}
         // will need to take care of the case of where the output is for a composite actor
-            return CodeGeneratorHelper.generateName(port)+"_"+channelAndOffset[1]+"PORT";
+            return CodeGeneratorHelper.generateName(port)+"_"+channelAndOffset[0]+"PORT";
             //return "//dummy for write port";
         }
       /* else if(port.isOutput())
@@ -816,7 +841,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             code.append(actorHelper.generateFireCode());
             code.append("}" + _eol);
             
-            String temp = actorHelper.generateTypeConvertFireCode();//generateTypeConvertFireCode(actorHelper);/
+            /*String temp = actorHelper.generateTypeConvertFireCode();//generateTypeConvertFireCode(actorHelper);/
             if(temp.length() > 1)  // only generate driver code if the actor has an output
             {
             code.append(_eol + "void " + actorFullName
@@ -824,7 +849,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
                     + _eol);
             code.append(temp);
             code.append("}" + _eol);
-            }
+            }*/
         }
         return code.toString();
         
@@ -833,6 +858,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
     
     public String generateDriverCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
+        System.out.println("generateDriver Code has been called");
         
         for (Actor actor : (List<Actor>) 
                 ((TypedCompositeActor) _director.getContainer()).deepEntityList()) {
@@ -873,15 +899,31 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
                     }
                 }
             }
-            if(outputPortList.size() > 1)
-            {
+            System.out.println("actorDriverCode is now:");
+            System.out.println(actorDriverCode);
+           // if(outputPortList.size() > 1)
+          //  if(actorDriverCode.length() >= 1) // not sure if this is the correct check
+            {// for now generate driver methods for all the actors
             ArrayList args = new ArrayList();
-            args.add(generateName((NamedObj) actor));
-            args.add(actorDriverCode);
+            args.add(generateDriverName((NamedObj) actor));
+            
+            CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            
+            
+            String temp = helper.generateTypeConvertFireCode();
+            if(temp.length()== 0)
+            {
+                args.add(actorDriverCode);
+            }
+            else
+            {
+                args.add(temp);
+            }
             code.append(_generateBlockCode("driverCode", args));
             }
         }
-        
+        System.out.println("about to return :");
+        System.out.println(code.toString());
         return code.toString();
     }
     /*public String generateTypeConvertFireCode(CodeGeneratorHelper actorHelper)
@@ -925,6 +967,31 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
        
        return code.toString();
     }*/
+    
+    /** Generate sanitized name for the given named object. Remove all
+     *  underscores to avoid conflicts with systems functions.
+     *  @param namedObj The named object for which the name is generated.
+     *  @return The sanitized name.
+     */
+    public static String generateDriverName(NamedObj namedObj)
+    {
+        String name = StringUtilities.sanitizeName(namedObj.getFullName());
+        // FIXME: Assume that all objects share the same top level. In this case,
+        // having the top level in the generated name does not help to
+        // expand the name space but merely lengthen the name string.
+        //        NamedObj parent = namedObj.toplevel();
+        //        if (namedObj.toplevel() == namedObj) {
+        //            return "_toplevel_";
+        //        }        
+        //        String name = StringUtilities.sanitizeName(namedObj.getName(parent));
+        if (name.startsWith("_")) {
+            name = name.substring(1, name.length());
+        }
+        return name.replaceAll("\\$", "Dollar")+"_driver";
+        
+        
+        
+    }
    
     
     

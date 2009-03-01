@@ -43,8 +43,8 @@ vTaskDelayUntil(&xLastWakeTime,xFrequency);
 
 
 /*** driverCode ($actorName, $code)***/
-void $actorName_driver() {
-	$code
+void $actorName() {
+   	$code
 }
 /**/
 
