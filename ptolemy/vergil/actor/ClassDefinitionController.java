@@ -52,6 +52,7 @@ import diva.canvas.Figure;
 import diva.canvas.toolbox.BasicFigure;
 import diva.graph.GraphController;
 import diva.graph.GraphModel;
+import diva.graph.JGraph;
 import diva.graph.layout.GlobalLayout;
 import diva.graph.layout.IncrLayoutAdapter;
 import diva.graph.layout.IncrementalLayoutListener;
@@ -142,6 +143,17 @@ public class ClassDefinitionController extends ActorController {
                 }, portFilter));
     }
 
+    /** Add hot keys to the actions in the given JGraph.
+     *  @param jgraph The JGraph to which hot keys are to be added.
+     */
+    public void addHotKeys(JGraph jgraph) {
+        super.addHotKeys(jgraph);
+        // _convertToInstanceAction does not have a hot key.
+        // GUIUtilities.addHotKey(jgraph, _convertToInstanceAction); 
+        GUIUtilities.addHotKey(jgraph, _createInstanceAction);
+        GUIUtilities.addHotKey(jgraph, _createSubclassAction);
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
