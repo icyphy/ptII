@@ -42,8 +42,8 @@ import ptolemy.kernel.util.Workspace;
 
 /**
  When the <i>control</i> input is true, copy the <i>input</i> to the
- <i>output</i>. If <i>control</i> is absent, or it is true and
- <i>input</i> is absent, then the output is absent.
+ <i>output</i>. If <i>control</i> is absent, false, or true with
+ <i>input</i> being absent, then the output is absent.
  This actor is inspired by the "when" operator in the synchronous
  languages LUSTRE and SIGNAL.
 
