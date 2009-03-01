@@ -341,6 +341,16 @@ public class PropertyClassChanges implements MoMLFilter {
         // Actors that have properties that have changed class.
         _actorsWithPropertyClassChanges = new HashMap();
 
+        // Display
+        HashMap displayClassChanges = new HashMap();
+
+        // Key = property name, Value = new class name
+        displayClassChanges.put("title",
+                "ptolemy.data.expr.StringParameter");
+
+        _actorsWithPropertyClassChanges.put("ptolemy.actor.lib.gui.Display",
+                displayClassChanges);
+
         // Expression
         // This is a second generation change.
         // Used to change it to a StringAttribute
