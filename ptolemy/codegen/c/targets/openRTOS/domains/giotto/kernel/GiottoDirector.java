@@ -84,19 +84,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
      */
     public GiottoDirector(ptolemy.domains.giotto.kernel.GiottoDirector giottoDirector) {
         super(giottoDirector);
-        System.out.println("The actors attatched to director "+_director.getDisplayName()+" are:");
-        
-       /* for (Actor actor : (List<Actor>) 
-                ((TypedCompositeActor) _director.getContainer()).deepEntityList()) {
-          
-           // actorNamesPerFrequency[_getFrequency(actor)].add(actor.getDisplayName());
-            String temp =actor.getFullName();
-            System.out.print(" "+temp);
-                     
-          }    
-        System.out.println("that's all the actors in the director");
-        */
-        
+            
     }
     
     public String generateInitializeCode() throws IllegalActionException {
