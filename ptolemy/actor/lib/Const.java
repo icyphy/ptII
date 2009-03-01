@@ -41,6 +41,11 @@ import ptolemy.kernel.util.Workspace;
  output is that of the token contained by the <i>value</i> parameter,
  which by default is an IntToken with value 1. The type of the output
  is that of <i>value</i> parameter.
+ <p>
+ If the trigger port is connected, then this actor fires only if a token is
+ provided on any channel of the trigger port. The value of that token
+ does not matter. Specifically, if there is no such token, the prefire()
+ method returns false.
 
  @author Yuhong Xiong, Edward A. Lee
  @version $Id$
