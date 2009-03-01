@@ -95,35 +95,41 @@ public class RelationWidthInference {
                                 unspecifiedSet.add(relation);
                             }
                             if (!relation.isWidthFixed() && relation.needsWidthInference()) {
-                                // If connected to non-multiports => the relation should be 1                        
-                                for (Object object : relation.linkedObjectsList()) {
-                                    if (object instanceof IOPort) {
-                                        IOPort port = (IOPort) object;
-                                        
-                                        if (!port.isMultiport()) {
-                                            relation._setInferredWidth(1);
-                                                //FIXME: Can be zero in the case that this relation
-                                                //      has no other port connected to it
+                                // If connected to non-multiports => the relation should be 1
+                                List<?> linkedObjects = relation.linkedObjectsList();
+                                if (linkedObjects.isEmpty()) {
+                                    relation._setInferredWidth(0);
+                                    workingRelationSet.add(relation);                                    
+                                } else {
+                                    for (Object object : linkedObjects) {
+                                        if (object instanceof IOPort) {
+                                            IOPort port = (IOPort) object;
                                             
-                                            workingRelationSet.add(relation);
-                                            break; //Break the for loop.
-                                        } else {
-                                            //Add known outside relations
-                                            for (Object connectedRelationObject : port.linkedRelationList()) {
-                                                IORelation connectedRelation = (IORelation) connectedRelationObject;
-                                                if (connectedRelation != null && connectedRelation.isWidthFixed()) {
-                                                    workingRelationSet.add(connectedRelation);
+                                            if (!port.isMultiport()) {
+                                                relation._setInferredWidth(1);
+                                                    //FIXME: Can be zero in the case that this relation
+                                                    //      has no other port connected to it
+                                                
+                                                workingRelationSet.add(relation);
+                                                break; //Break the for loop.
+                                            } else {
+                                                //Add known outside relations
+                                                for (Object connectedRelationObject : port.linkedRelationList()) {
+                                                    IORelation connectedRelation = (IORelation) connectedRelationObject;
+                                                    if (connectedRelation != null && connectedRelation.isWidthFixed()) {
+                                                        workingRelationSet.add(connectedRelation);
+                                                    }
                                                 }
-                                            }
-                                            //Add known inside relations
-                                            for (Object connectedRelationObject : port.insideRelationList()) {
-                                                IORelation connectedRelation = (IORelation) connectedRelationObject;
-                                                if (connectedRelation != null && connectedRelation.isWidthFixed()) {
-                                                    workingRelationSet.add(connectedRelation);
+                                                //Add known inside relations
+                                                for (Object connectedRelationObject : port.insideRelationList()) {
+                                                    IORelation connectedRelation = (IORelation) connectedRelationObject;
+                                                    if (connectedRelation != null && connectedRelation.isWidthFixed()) {
+                                                        workingRelationSet.add(connectedRelation);
+                                                    }
                                                 }
-                                            }
-                                            if (port.hasWidthConstraints()) {
-                                                workingPortSet.add(port);
+                                                if (port.hasWidthConstraints()) {
+                                                    workingPortSet.add(port);
+                                                }
                                             }
                                         }
                                     }
