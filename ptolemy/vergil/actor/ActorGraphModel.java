@@ -1074,26 +1074,32 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             NamedObj oldHead = (NamedObj) oldLink.getHead();
             NamedObj oldTail = (NamedObj) oldLink.getTail();
 
-            NamedObj oldHeadSemantic = (NamedObj) getSemanticObject(oldHead);
-            NamedObj oldTailSemantic = (NamedObj) getSemanticObject(oldTail);
-
-            int headRelationIndex = (oldHeadSemantic instanceof IOPort)
-                        ? IOPort.getRelationIndex((IOPort) oldHeadSemantic,
-                                    relation, headIsActorPort)
-                        : -1;
-            int tailRelationIndex = (oldTailSemantic instanceof IOPort)
-                        ? IOPort.getRelationIndex((IOPort) oldTailSemantic,
-                                relation, tailIsActorPort)
-                        : -1;
-
             _unlinkMoML(container, moml, oldHead, oldTail, relation);
+            
+            NamedObj oldHeadSemantic = (NamedObj) getSemanticObject(oldHead);
 
-            _linkWithRelation(moml, failmoml, container,
-                    oldTailSemantic, tailRelationIndex,
-                    newRelationName);
-            _linkWithRelation(moml, failmoml, container,
-                    oldHeadSemantic, headRelationIndex,
-                    newRelationName);
+            if (oldHeadSemantic != null) {
+                int headRelationIndex = (oldHeadSemantic instanceof IOPort)
+                            ? IOPort.getRelationIndex((IOPort) oldHeadSemantic,
+                                        relation, headIsActorPort)
+                            : -1;
+                _linkWithRelation(moml, failmoml, container,
+                        oldHeadSemantic, headRelationIndex,
+                        newRelationName);
+            }    
+                        
+            NamedObj oldTailSemantic = (NamedObj) getSemanticObject(oldTail);
+            
+            if (oldTailSemantic != null) {
+                int tailRelationIndex = (oldTailSemantic instanceof IOPort)
+                            ? IOPort.getRelationIndex((IOPort) oldTailSemantic,
+                                    relation, tailIsActorPort)
+                            : -1;            
+    
+                _linkWithRelation(moml, failmoml, container,
+                        oldTailSemantic, tailRelationIndex,
+                        newRelationName);
+            }
         }
 
         /** Return a MoML String that will delete the given edge from the
@@ -1180,6 +1186,27 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
         ///////////////////////////////////////////////////////////////////
         ////                         private methods                   ////
 
+        /** Get a location for a new relations between the ports denoted by
+         * semanticHead and semanticTail.
+         * @param semanticHead The head for the new relation.
+         * @param semanticTail The tail for the new relation.
+         * @param headIsActorPort A flag that specifies whether this is a
+         *      actor port of a actor or a stand-alone port.
+         * @param tailIsActorPort A flag that specifies whether this is a
+         *      actor port of a actor or a stand-alone port.
+         * @return The new location.
+         */
+        private double[] _getNewLocation(NamedObj semanticHead,
+                NamedObj semanticTail, boolean headIsActorPort,
+                boolean tailIsActorPort) {
+            double[] headLocation = _getLocation(headIsActorPort ? semanticHead.getContainer() : semanticHead).getLocation();
+            double[] tailLocation = _getLocation(tailIsActorPort ? semanticTail.getContainer() : semanticTail).getLocation();
+            double[] newLocation = new double[2];
+            newLocation[0] = (headLocation[0] + tailLocation[0]) / 2.0;
+            newLocation[1] = (headLocation[1] + tailLocation[1]) / 2.0;
+            newLocation = SnapConstraint.constrainPoint(newLocation);
+            return newLocation;
+        }
 
 
         /** Append moml to the given buffer that connects a link with the
@@ -1409,18 +1436,18 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                         // In case the head is a port of an actor in the current composite
                         // actor the head will be an IOPort, if it is a port of the current
                         // composite actor it will be a Locatable
-                        boolean headIsActorPort = oldLink.getHead() instanceof IOPort;
+                        boolean headIsActorPort
+                            = oldHeadSemantic != null ? oldLink.getHead() instanceof IOPort
+                                    : linkTail instanceof IOPort;
                         boolean tailIsActorPort = oldLink.getTail() instanceof IOPort;
 
                         final NamedObj toplevel = getPtolemyModel();
                         String newRelationName = toplevel.uniqueName("relation");
 
-                        double[] headLocation = _getLocation(headIsActorPort ? oldHeadSemantic.getContainer() : oldHeadSemantic).getLocation();
-                        double[] tailLocation = _getLocation(tailIsActorPort ? oldTailSemantic.getContainer() : oldTailSemantic).getLocation();
-                        double[] newLocation = new double[2];
-                        newLocation[0] = (headLocation[0] + tailLocation[0]) / 2.0;
-                        newLocation[1] = (headLocation[1] + tailLocation[1]) / 2.0;
-                        newLocation = SnapConstraint.constrainPoint(newLocation);
+                        double[] newLocation = _getNewLocation(
+                                oldHeadSemantic != null ? oldHeadSemantic : (NamedObj) getSemanticObject(linkTail),
+                                oldTailSemantic, headIsActorPort,
+                                tailIsActorPort);
 
                         relationName = newRelationName;
 
@@ -1540,6 +1567,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             request.setUndoable(true);
             container.requestChange(request);
         }
+
 
         /** Append moml to the given buffer that disconnects a link with the
          *  given head, tail, and relation. Names in the returned moml will be
