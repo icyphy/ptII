@@ -32,7 +32,11 @@ import java.io.StringReader;
 import java.io.Writer;
 import java.net.URL;
 
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Initializable;
+import ptolemy.actor.Manager;
 import ptolemy.actor.TypedActor;
+import ptolemy.actor.gt.TransformationListener;
 import ptolemy.actor.gt.TransformationMode;
 import ptolemy.actor.gt.TransformationRule;
 import ptolemy.data.ArrayToken;
@@ -64,7 +68,8 @@ import ptolemy.vergil.gt.TransformEventController.Factory;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class Transform extends GTEvent implements ConfigurableEntity {
+public class Transform extends GTEvent implements ConfigurableEntity,
+        TransformationListener {
 
     public Transform(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -87,6 +92,10 @@ public class Transform extends GTEvent implements ConfigurableEntity {
         _clearURI(_transformation);
 
         mode = new TransformationMode(this, "mode");
+
+        defer = new Parameter(this, "defer");
+        defer.setTypeEquals(BaseType.BOOLEAN);
+        defer.setToken(BooleanToken.FALSE);
     }
 
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
@@ -134,8 +143,17 @@ public class Transform extends GTEvent implements ConfigurableEntity {
         model.setDeferringChangeRequests(false);
         boolean isMatched = false;
         try {
+            boolean initializeObjects = false;
+            NamedObj toplevel = model.toplevel();
+            if (toplevel instanceof CompositeActor) {
+                Manager manager = ((CompositeActor) toplevel).getManager();
+                if (manager != null && manager.getState() != Manager.IDLE) {
+                    initializeObjects = true;
+                }
+            }
             isMatched = mode.transform(mode.getWorkingCopy(_transformation),
-                model);
+                model, initializeObjects ? this : null,
+                ((BooleanToken) defer.getToken()).booleanValue());
             if (isMatched) {
                 _debug(new GTDebugEvent(this, "Match found."));
             } else {
@@ -182,6 +200,8 @@ public class Transform extends GTEvent implements ConfigurableEntity {
     public Parameter matched;
 
     public TransformationMode mode;
+
+    public Parameter defer;
 
     public static class EmbeddedConfigurer extends Configurer {
 
@@ -240,4 +260,16 @@ public class Transform extends GTEvent implements ConfigurableEntity {
     private String _configureSource;
 
     private Configurer _configurer;
+
+    public void addObject(NamedObj object) {
+        if (object instanceof Initializable) {
+            Initializable initializable = (Initializable) object;
+            try {
+                initializable.preinitialize();
+                initializable.initialize();
+            } catch (IllegalActionException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

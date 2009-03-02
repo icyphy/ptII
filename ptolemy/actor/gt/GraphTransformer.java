@@ -99,6 +99,14 @@ public class GraphTransformer extends ChangeRequest {
         _matchResults.add(matchResult);
     }
 
+    public void addTransformationListener(TransformationListener listener) {
+        _listeners.add(listener);
+    }
+
+    public void removeTransformationListener(TransformationListener listener) {
+        _listeners.remove(listener);
+    }
+
     public MatchResult getMatchResult() {
         return _matchResult;
     }
@@ -123,12 +131,21 @@ public class GraphTransformer extends ChangeRequest {
 
     public static void transform(TransformationRule transformationRule,
             List<MatchResult> matchResults) throws TransformationException {
+        transform(transformationRule, matchResults, null);
+    }
+
+    public static void transform(TransformationRule transformationRule,
+            List<MatchResult> matchResults, TransformationListener listener)
+            throws TransformationException {
         if (matchResults.isEmpty()) {
             return;
         }
 
         GraphTransformer transformer = new GraphTransformer(transformationRule,
                 matchResults);
+        if (listener != null) {
+            transformer.addTransformationListener(listener);
+        }
         MatchResult matchResult = matchResults.get(0);
         NamedObj host = (NamedObj) matchResult.get(transformationRule
                 .getPattern());
@@ -142,8 +159,17 @@ public class GraphTransformer extends ChangeRequest {
 
     public static void transform(TransformationRule transformationRule,
             MatchResult matchResult) throws TransformationException {
+        transform(transformationRule, matchResult, null);
+    }
+
+    public static void transform(TransformationRule transformationRule,
+            MatchResult matchResult, TransformationListener listener)
+            throws TransformationException {
         GraphTransformer transformer = new GraphTransformer(transformationRule,
                 matchResult);
+        if (listener != null) {
+            transformer.addTransformationListener(listener);
+        }
         NamedObj host = (NamedObj) matchResult.get(transformationRule
                 .getPattern());
         if (host == null) {
@@ -153,7 +179,6 @@ public class GraphTransformer extends ChangeRequest {
         host.requestChange(transformer);
     }
 
-    @SuppressWarnings("unchecked")
     protected void _addConnections() throws TransformationException {
         for (NamedObj replacement : _replacementToHost.keySet()) {
             NamedObj host = _replacementToHost.get(replacement);
@@ -396,9 +421,15 @@ public class GraphTransformer extends ChangeRequest {
 
                         String moml = "<group name=\"auto\">"
                             + attribute.exportMoML() + "</group>";
-                        MoMLChangeRequest request = _createChangeRequest(host,
-                                moml);
+                        CreateObjectChangeRequest request =
+                            _createAddObjectRequest(host, moml);
                         request.execute();
+
+                        NamedObj newAttribute = request.getCreatedObjects()
+                                .get(0);
+                        for (TransformationListener listener : _listeners) {
+                            listener.addObject(newAttribute);
+                        }
                     }
                 }
             }
@@ -429,6 +460,10 @@ public class GraphTransformer extends ChangeRequest {
                     request.execute();
                     hostChild = request.getCreatedObjects().get(0);
                     _addReplacementToHostEntries(hostChild);
+
+                    for (TransformationListener listener : _listeners) {
+                        listener.addObject(hostChild);
+                    }
                 }
                 if (hostChild != null) {
                     _addObjects(child, hostChild, false);
@@ -464,6 +499,10 @@ public class GraphTransformer extends ChangeRequest {
                             "matching attributes.", e);
                 }
                 _recordMirroredObjects(child, hostChild);
+
+                for (TransformationListener listener : _listeners) {
+                    listener.addObject(hostChild);
+                }
             } else {
                 _addObjectsWithCreationAttributes(child);
             }
@@ -496,6 +535,21 @@ public class GraphTransformer extends ChangeRequest {
     private MoMLChangeRequest _createChangeRequest(NamedObj context,
             String moml) {
         MoMLChangeRequest request = new MoMLChangeRequest(this, context, moml);
+        if (_undoable) {
+            request.setUndoable(true);
+            if (_mergeWithPrevious) {
+                request.setMergeWithPreviousUndo(true);
+            } else {
+                _mergeWithPrevious = true;
+            }
+        }
+        return request;
+    }
+
+    private CreateObjectChangeRequest _createAddObjectRequest(NamedObj context,
+            String moml) {
+        CreateObjectChangeRequest request = new CreateObjectChangeRequest(
+                context, moml);
         if (_undoable) {
             request.setUndoable(true);
             if (_mergeWithPrevious) {
@@ -891,7 +945,6 @@ public class GraphTransformer extends ChangeRequest {
         }
     }
 
-    @SuppressWarnings("unchecked")
     private boolean _relink(Relation preserved, Relation removed) {
         // FIXME: Because we can't find a nice way to preserve the channel index
         // of the ports, the "removed" relation won't be removed if it is
@@ -1012,7 +1065,6 @@ public class GraphTransformer extends ChangeRequest {
         }
     }
 
-    @SuppressWarnings("unchecked")
     private Set<NamedObj> _removeObject(NamedObj object, boolean shallowRemoval)
             throws TransformationException {
         if (shallowRemoval && object instanceof CompositeEntity) {
@@ -1322,6 +1374,9 @@ public class GraphTransformer extends ChangeRequest {
 
     private CompositeEntity _host;
 
+    private List<TransformationListener> _listeners =
+        new LinkedList<TransformationListener>();
+
     private MatchResult _matchResult;
 
     private List<MatchResult> _matchResults;
@@ -1359,7 +1414,6 @@ public class GraphTransformer extends ChangeRequest {
             return _createdObjects;
         }
 
-        @SuppressWarnings("unchecked")
         protected void _postParse(MoMLParser parser) {
             super._postParse(parser);
 
@@ -1375,5 +1429,4 @@ public class GraphTransformer extends ChangeRequest {
 
         private List<NamedObj> _createdObjects;
     }
-
 }

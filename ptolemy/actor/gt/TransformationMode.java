@@ -11,6 +11,7 @@ import ptolemy.data.expr.ScopeExtender;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -77,11 +78,17 @@ implements MatchCallback {
     public boolean isMatchOnly() {
         return getChosenValue() == Mode.MATCH_ONLY;
     }
-
+    
     public boolean transform(TransformationRule workingCopy,
             CompositeEntity model) throws IllegalActionException {
+        return transform(workingCopy, model, null, false);
+    }
+
+    public boolean transform(final TransformationRule workingCopy,
+            CompositeEntity model, final TransformationListener listener,
+            boolean defer) throws IllegalActionException {
         Pattern pattern = workingCopy.getPattern();
-        Mode mode = (Mode) getChosenValue();
+        final Mode mode = (Mode) getChosenValue();
 
         _matcher.setMatchCallback(this);
         _matchResults.clear();
@@ -91,30 +98,36 @@ implements MatchCallback {
         if (_matchResults.isEmpty()) {
             return false;
         } else {
-            try {
-                switch (mode) {
-                case REPLACE_FIRST:
-                    MatchResult result = _matchResults.getFirst();
-                    GraphTransformer.transform(workingCopy, result);
-                    break;
-                case REPLACE_LAST:
-                    result = _matchResults.getLast();
-                    GraphTransformer.transform(workingCopy, result);
-                    break;
-                case REPLACE_ANY:
-                    result = _matchResults.get(_random.nextInt(
-                            _matchResults.size()));
-                    GraphTransformer.transform(workingCopy, result);
-                    break;
-                case REPLACE_ALL:
-                    GraphTransformer.transform(workingCopy,
-                            new LinkedList<MatchResult>(_matchResults));
-                    break;
-                case MATCH_ONLY:
-                    break;
+            ChangeRequest request = new ChangeRequest(this, "") {
+                protected void _execute() throws Exception {
+                    switch (mode) {
+                    case REPLACE_FIRST:
+                        MatchResult result = _matchResults.getFirst();
+                        GraphTransformer.transform(workingCopy, result, listener);
+                        break;
+                    case REPLACE_LAST:
+                        result = _matchResults.getLast();
+                        GraphTransformer.transform(workingCopy, result, listener);
+                        break;
+                    case REPLACE_ANY:
+                        result = _matchResults.get(_random.nextInt(
+                                _matchResults.size()));
+                        GraphTransformer.transform(workingCopy, result, listener);
+                        break;
+                    case REPLACE_ALL:
+                        GraphTransformer.transform(workingCopy,
+                                new LinkedList<MatchResult>(_matchResults),
+                                listener);
+                        break;
+                    case MATCH_ONLY:
+                        break;
+                    }
                 }
-            } catch (TransformationException e) {
-                throw new IllegalActionException("Unable to transform model.");
+            };
+            if (defer) {
+                model.requestChange(request);
+            } else {
+                request.execute();
             }
             return true;
         }

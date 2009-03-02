@@ -111,6 +111,7 @@ JSRCS = \
 	StateMatcher.java \
 	SubgraphMatchingException.java \
 	TransformationException.java \
+	TransformationListener.java \
 	TransformationMode.java \
 	TransformationRule.java \
 	TransitionMatcher.java \
