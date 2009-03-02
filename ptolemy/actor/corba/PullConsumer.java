@@ -187,10 +187,9 @@ public class PullConsumer extends Source {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        try {
-            _requestData = true;
-
+        try {            
             synchronized (_lock) {
+                _requestData = true;
                 _lock.notifyAll();
             }
 
@@ -354,8 +353,8 @@ public class PullConsumer extends Source {
         public void run() {
             while (true) {
                 try {
-                    if (!_requestData) {
-                        synchronized (_lock) {
+                    synchronized (_lock) {
+                        if (!_requestData) {
                             _lock.wait();
                         }
                     }
