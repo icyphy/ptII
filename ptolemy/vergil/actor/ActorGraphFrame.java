@@ -33,7 +33,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
-import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -59,7 +58,6 @@ import ptolemy.gui.Query;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NamedObj;
@@ -389,7 +387,10 @@ public class ActorGraphFrame extends ExtendedGraphFrame
 	    // Maybe we should get the background color and cache it?
             if (_entity != null) {
 		Effigy effigy = Configuration.findEffigy(_entity.toplevel());
-		Configuration configuration = (Configuration)effigy.toplevel();
+		if (effigy == null) {
+		    return;
+		}
+		Configuration configuration = (Configuration) effigy.toplevel();
 		try {
 		    PtolemyPreferences preferences = PtolemyPreferences
 			.getPtolemyPreferencesWithinConfiguration(configuration);
