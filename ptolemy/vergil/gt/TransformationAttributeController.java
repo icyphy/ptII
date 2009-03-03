@@ -146,9 +146,9 @@ public class TransformationAttributeController extends AttributeController {
         public void windowOpened(WindowEvent e) {
         }
 
-        Listener(TransformationAttribute attribute, BasicGraphFrame parent,
+        Listener(ERGModalModel transformation, BasicGraphFrame parent,
                 ERGGraphFrame child) throws NameDuplicationException {
-            super(attribute, null, parent);
+            super(transformation, null, parent);
             _parent = parent;
             _child = child;
         }
@@ -202,7 +202,8 @@ public class TransformationAttributeController extends AttributeController {
                 Tableau tableau = configuration.openInstance(modelUpdater);
                 ERGGraphFrame frame = (ERGGraphFrame) tableau.getFrame();
 
-                Listener listener = new Listener(attribute, actorFrame, frame);
+                Listener listener = new Listener(modelUpdater, actorFrame,
+                        frame);
                 listener._addListeners();
             } catch (Exception e) {
                 throw new InternalErrorException(null, e, "Unable to create " +

@@ -21,6 +21,12 @@
             <display name="Select object...">
             </display>
           </property>
+          <property name="Transform" class="ptolemy.actor.gt.gui.ComboItem">
+            <property name="next" class="ptolemy.data.expr.StringParameter" value="none">
+            </property>
+            <configure source="/E:/Desktop/Rule.xml">
+            </configure>
+          </property>
           <property name="CompositeActor" class="ptolemy.actor.gui.properties.ComboBox$Item">
             <property name="next" class="ptolemy.data.expr.StringParameter" value="none">
             </property>

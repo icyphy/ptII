@@ -86,44 +86,7 @@ public class TransformationAttributeEditorFactory extends EditorFactory {
         }
     }
 
-    protected static class TransformationListener implements ExecutionListener {
-
-        public void executionError(Manager manager, Throwable throwable) {
-            _frame.report("");
-        }
-
-        public void executionFinished(Manager manager) {
-            _frame.setModified(true);
-            _frame.report("");
-            GTFrameTools.changeModel(_frame, _model, true, true);
-        }
-
-        public void managerStateChanged(Manager manager) {
-            if (manager.getState() == Manager.INITIALIZING) {
-                _frame.report("Applying model transformation: " +
-                        _attribute.getName());
-                ERGModalModel modelUpdater = _attribute.getModelUpdater();
-                ModelParameter modelAttribute = (ModelParameter) modelUpdater
-                        .getController().getAttribute("Model");
-                modelAttribute.setModel(_model);
-            }
-        }
-
-        protected TransformationAttribute _attribute;
-
-        protected BasicGraphFrame _frame;
-
-        protected CompositeEntity _model;
-
-        TransformationListener(TransformationAttribute attribute,
-                CompositeEntity model, BasicGraphFrame frame) {
-            _attribute = attribute;
-            _model = model;
-            _frame = frame;
-        }
-    }
-
-    private static class ExecutionThread extends Thread {
+    public static class ExecutionThread extends Thread {
 
         public void run() {
             Manager manager = _attribute.getModelUpdater().getManager();
@@ -143,7 +106,8 @@ public class TransformationAttributeEditorFactory extends EditorFactory {
             _attribute = attribute;
             _model = model;
             _frame = frame;
-            _listener = new TransformationListener(_attribute, _model, _frame);
+            _listener = new TransformationListener(_attribute.getModelUpdater(),
+                    _model, _frame);
         }
 
         private TransformationAttribute _attribute;
@@ -153,5 +117,40 @@ public class TransformationAttributeEditorFactory extends EditorFactory {
         private TransformationListener _listener;
 
         private CompositeEntity _model;
+    }
+
+    public static class TransformationListener implements ExecutionListener {
+
+        public TransformationListener(ERGModalModel transformation,
+                CompositeEntity model, BasicGraphFrame frame) {
+            _transformation = transformation;
+            _model = model;
+            _frame = frame;
+        }
+
+        public void executionError(Manager manager, Throwable throwable) {
+            _frame.report("");
+        }
+
+        public void executionFinished(Manager manager) {
+            _frame.setModified(true);
+            _frame.report("");
+            GTFrameTools.changeModel(_frame, _model, true, true);
+        }
+
+        public void managerStateChanged(Manager manager) {
+            if (manager.getState() == Manager.INITIALIZING) {
+                _frame.report("Applying model transformation...");
+                ModelParameter modelAttribute = (ModelParameter) _transformation
+                        .getController().getAttribute("Model");
+                modelAttribute.setModel(_model);
+            }
+        }
+
+        protected BasicGraphFrame _frame;
+
+        protected CompositeEntity _model;
+
+        protected ERGModalModel _transformation;
     }
 }

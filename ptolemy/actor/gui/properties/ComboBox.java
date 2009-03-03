@@ -299,69 +299,46 @@ public class ComboBox extends GUIProperty implements ItemListener {
          */
         public void select() {
             if (_momlText != null) {
-                NamedObj container = getContainer();
-                while (container != null && !(container instanceof Tableau)) {
-                    container = container.getContainer();
-                }
-                if (container == null) {
-                    throw new InternalErrorException("Unable to find tableau.");
-                }
-
-                final JFrame frame = ((Tableau) container).getFrame();
-                if (!(frame instanceof PtolemyFrame)) {
-                    throw new InternalErrorException("The current frame has " +
-                            "no model.");
-                }
-                NamedObj model = ((PtolemyFrame) frame).getModel();
+                NamedObj model = _getModel();
 
                 try {
                     boolean parse = ((BooleanToken) this.parse.getToken())
                             .booleanValue();
                     String moml;
                     if (parse) {
-                        if (_parsedObject == null) {
-                            if (_momlSource != null) {
-                                URL url = _parser.fileNameToURL(_momlSource,
-                                        null);
-                                _parsedObject = _parser.parse(url, url);
-                                _momlSource = null;
-                            } else {
-                                _parsedObject = _parser.parse(_momlText);
-                            }
-                            _parser.reset();
-                        }
+                        _parseSource();
                         moml = getMoml(model, _parsedObject);
                     } else {
                         if (_momlSource != null) {
                             URL url = _parser.fileNameToURL(_momlSource, null);
                             InputStreamReader reader = null;
-			    try {
-				reader = new InputStreamReader(
-                                    url.openStream());
+                            try {
+                                reader = new InputStreamReader(
+                                        url.openStream());
 
-				int bufferSize = 1024;
-				char[] buffer = new char[bufferSize];
-				int readSize = 0;
-				StringBuffer string = new StringBuffer();
-				while (readSize >= 0) {
-				    readSize = reader.read(buffer);
-				    if (readSize >= 0) {
-					string.append(buffer, 0, readSize);
-				    }
-				}
-				_momlText = string.toString();
-				_momlSource = null;
-			    } finally {
-				if (reader != null) {
-				    try {
-					reader.close();
-				    } catch (IOException ex) {
-					throw new InternalErrorException("Failed to close \""
-									 + url + "\".");
-
-				    }
-				}
-			    }
+                                int bufferSize = 1024;
+                                char[] buffer = new char[bufferSize];
+                                int readSize = 0;
+                                StringBuffer string = new StringBuffer();
+                                while (readSize >= 0) {
+                                    readSize = reader.read(buffer);
+                                    if (readSize >= 0) {
+                                        string.append(buffer, 0, readSize);
+                                    }
+                                }
+                                _momlText = string.toString();
+                                _momlSource = null;
+                            } finally {
+                                if (reader != null) {
+                                    try {
+                                    reader.close();
+                                    } catch (IOException ex) {
+                                    throw new InternalErrorException(
+                                            "Failed to close \"" + url +
+                                            "\".");
+                                    }
+                                }
+                            }
                         }
                         moml = _momlText;
                     }
@@ -371,7 +348,8 @@ public class ComboBox extends GUIProperty implements ItemListener {
                             Iterator topObjects =
                                 parser.topObjectsCreated().iterator();
                             while (topObjects.hasNext()) {
-                                NamedObj topObject = (NamedObj) topObjects.next();
+                                NamedObj topObject =
+                                    (NamedObj) topObjects.next();
                                 if (topObject.attributeList(Location.class)
                                         .isEmpty()) {
                                     try {
@@ -379,13 +357,12 @@ public class ComboBox extends GUIProperty implements ItemListener {
                                                 topObject, topObject.uniqueName(
                                                         "_location"));
                                         Point2D center = ((BasicGraphFrame)
-                                                frame).getCenter();
+                                                _getFrame()).getCenter();
                                         location.setLocation(new double[]{
                                                 center.getX(), center.getY()});
                                     } catch (KernelException e) {
                                         throw new InternalErrorException(e);
                                     }
-
                                 }
                             }
                             parser.clearTopObjectsList();
@@ -465,6 +442,71 @@ public class ComboBox extends GUIProperty implements ItemListener {
          */
         public Parameter parse;
 
+        /** Get the frame in which this item is selected.
+         *
+         *  @return The frame.
+         */
+        protected JFrame _getFrame() {
+            NamedObj container = getContainer();
+            while (container != null && !(container instanceof Tableau)) {
+                container = container.getContainer();
+            }
+            if (container == null) {
+                throw new InternalErrorException("Unable to find tableau.");
+            }
+
+            return ((Tableau) container).getFrame();
+        }
+
+        /** Get the model contained in the current frame.
+         *
+         *  @return The model.
+         */
+        protected NamedObj _getModel() {
+            JFrame frame = _getFrame();
+            if (!(frame instanceof PtolemyFrame)) {
+                throw new InternalErrorException("The current frame has " +
+                        "no model.");
+            }
+            return ((PtolemyFrame) frame).getModel();
+        }
+
+        /** Parse the configuration source if it has not been parsed, and store
+         *  the result in protected field {@link _parsedObject}.
+         *
+         *  @throws Exception If it occurs in the parsing.
+         */
+        protected void _parseSource() throws Exception {
+            if (_parsedObject == null) {
+                if (_momlSource != null) {
+                    URL url = _parser.fileNameToURL(_momlSource, null);
+                    _parsedObject = _parser.parse(url, url);
+                    _momlSource = null;
+                } else {
+                    _parsedObject = _parser.parse(_momlText);
+                }
+                _parser.reset();
+            }
+        }
+
+        /** The input source that was specified the last time the configure
+         *  method was called.
+         */
+        protected String _momlSource;
+
+        /** The text string that represents the current configuration of this
+         *  object.
+         */
+        protected String _momlText;
+
+        /** The object obtained by parsing the moml text, or null.
+         */
+        protected NamedObj _parsedObject;
+
+        /** The parser used to parse the moml text.
+         */
+        protected MoMLParser _parser = new MoMLParser();
+
         /** Get the moml for the object to be added to the container.
          *  @return The moml string.
          *  @exception Exception If error occurs.
@@ -529,24 +571,6 @@ public class ComboBox extends GUIProperty implements ItemListener {
             return "<group name=\"auto\">\n" + object.exportMoML(name) +
                     "</group>\n";
         }
-
-        /** The input source that was specified the last time the configure
-         *  method was called.
-         */
-        private String _momlSource;
-
-        /** The text string that represents the current configuration of this
-         *  object.
-         */
-        private String _momlText;
-
-        /** The object obtained by parsing the moml text, or null.
-         */
-        private NamedObj _parsedObject;
-
-        /** The parser used to parse the moml text.
-         */
-        private MoMLParser _parser = new MoMLParser();
     }
 
     /** Create a new JComboBox component.

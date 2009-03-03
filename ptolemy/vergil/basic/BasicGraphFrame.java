@@ -178,7 +178,7 @@ import diva.util.java2d.ShapeUtilities;
 public abstract class BasicGraphFrame extends PtolemyFrame implements
         Printable, ClipboardOwner, ChangeListener, MouseWheelListener,
         MouseListener, MouseMotionListener {
-    
+
     /** Construct a frame associated with the specified Ptolemy II model
      *  or object. After constructing this, it is necessary
      *  to call setVisible(true) to make the frame appear.
@@ -193,7 +193,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     public BasicGraphFrame(NamedObj entity, Tableau tableau) {
         this(entity, tableau, null);
     }
-    
+
     /** Construct a frame associated with the specified Ptolemy II model.
      *  After constructing this, it is necessary
      *  to call setVisible(true) to make the frame appear.
@@ -201,13 +201,13 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  This constructor results in a graph frame that obtains its library
      *  either from the model (if it has one), or the <i>defaultLibrary</i>
      *  argument (if it is non-null), or the default library defined
-     *  in the configuration.  
+     *  in the configuration.
      *  @see Tableau#show()
      *  @param entity The model or object to put in this frame.
      *  @param tableau The tableau responsible for this frame.
      *  @param defaultLibrary An attribute specifying the default library
      *   to use if the model does not have a library.   The <i>defaultLibrary</i>
-     *  attribute is only read if the model does not have a 
+     *  attribute is only read if the model does not have a
      *  {@link ptolemy.moml.LibraryAttribute} with the name
      *  "<code>_library</code>", or if the LibraryAttribute cannot be
      *  read.
@@ -261,6 +261,12 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             change.setErrorReported(true);
             MessageHandler.error("Change failed", exception);
         }
+    }
+    
+    public void clearSelection() {
+        GraphController controller = _getGraphController();
+        SelectionModel model = controller.getSelectionModel();
+        model.clearSelection();
     }
 
     /** Get the currently selected objects from this document, if any,
@@ -772,7 +778,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     }
 
     /** Dispose of this frame.
-     * 	Override this dispose() method to unattach any listeners that may keep
+     *     Override this dispose() method to unattach any listeners that may keep
      *  this model from getting garbage collected.  This method calls
      *  {@link #disposeSuper()}.
      */
@@ -784,12 +790,12 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         _openGraphFrames.remove(this);
         disposeSuper();
     }
-    
-    /** Invoke the dispose() method of the superclass, 
+
+    /** Invoke the dispose() method of the superclass,
      *  {@link ptolemy.actor.gui.PtolemyFrame}.
      */
     public void disposeSuper() {
-	// This method is used by Kepler for the tabbed pane interface.
+    // This method is used by Kepler for the tabbed pane interface.
         super.dispose();
     }
 
@@ -864,6 +870,17 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      */
     public JGraph getJGraph() {
         return _jgraph;
+    }
+
+    /** Return a set of instances of NamedObj representing the objects
+     *  that are currently selected.  This set has no particular order
+     *  to it. If you need the selection objects in proper order, as
+     *  defined by the container, then call sortContainedObjects()
+     *  on the container to sort the result.
+     *  @return The set of selected objects.
+     */
+    public HashSet<NamedObj> getSelectionSet() {
+        return _getSelectionSet();
     }
 
     /** Return the rectangle representing the visible part of the
@@ -1426,9 +1443,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-	/**
-	 * BasicGraphFrame Initializer method
-	 */
+    /**
+     * BasicGraphFrame Initializer method
+     */
     protected void _initBasicGraphFrame() {
 
         getModel().addChangeListener(this);
@@ -1579,8 +1596,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 // We already printed a message, why print it again?
             } catch (Exception ex) {
                 try {
-		    // FIXME: It seems wrong to call MessageHandler here,
-		    // instead, we should throw an IllegalActionException?
+            // FIXME: It seems wrong to call MessageHandler here,
+            // instead, we should throw an IllegalActionException?
                     MessageHandler.warning(
                             "Invalid default library for the frame.", ex);
                 } catch (CancelException e) {
@@ -2071,7 +2088,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     }
 
     /** Prepare to export a design pattern.
-     *  In this base class, do nothing.	
+     *  In this base class, do nothing.
      */
     protected void _prepareExportDesignPattern() {
     }
@@ -2222,7 +2239,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
     /** The default Library. **/
     protected LibraryAttribute _defaultLibrary;
-    
+
     /** The cut action. */
     protected Action _cutAction;
 

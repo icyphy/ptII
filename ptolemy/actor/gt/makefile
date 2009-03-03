@@ -33,7 +33,7 @@
 
 ME =		ptolemy/actor/gt
 
-DIRS = 		controller data ingredients test util demo
+DIRS = 		controller data gui ingredients test util demo
 
 # Root of the Ptolemy II directory
 ROOT =		../../..
@@ -52,6 +52,7 @@ PTCLASSJAR =
 PTCLASSALLJARS = \
 	controller/controller.jar \
 	data/data.jar \
+	gui/gui.jar \
 	ingredients/ingredients.jar \
 	util/util.jar
 
