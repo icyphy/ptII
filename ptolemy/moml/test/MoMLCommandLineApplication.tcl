@@ -46,7 +46,7 @@ if {[info procs jdkCapture] == "" } then {
 ####
 #
 test MoMLCommandLineLocation-1.1 {} {
-    set results [exec  java -classpath $PTII ptolemy.moml.MoMLCommandLineApplication MoMLCommandLineApplicationTest.xml]
+    set results [exec  make MoMLCommandLineApplication1]
     regsub -all [java::call System getProperty "line.separator"] \
 	        $results "\n" results2
 
@@ -54,7 +54,7 @@ test MoMLCommandLineLocation-1.1 {} {
 } {A String}
 
 test MoMLCommandLineLocation-1.2 {Set the parameter to 2} {
-    set results [exec  java -classpath $PTII ptolemy.moml.MoMLCommandLineApplication -myParameter 2 MoMLCommandLineApplicationTest.xml]
+    set results [exec  make MoMLCommandLineApplication2]
     regsub -all [java::call System getProperty "line.separator"] \
 	        $results "\n" results2
     string range $results2 0 1
@@ -62,14 +62,14 @@ test MoMLCommandLineLocation-1.2 {Set the parameter to 2} {
 }
 
 test MoMLCommandLineLocation-1.3 {Set the parameter to a string} {
-    set results [exec  java -classpath $PTII ptolemy.moml.MoMLCommandLineApplication -myParameter "&quot;Hello, World&quot;" MoMLCommandLineApplicationTest.xml]
+    set results [exec  make MoMLCommandLineApplication3]
     regsub -all [java::call System getProperty "line.separator"] \
 	        $results "\n" results2
     string range $results2 0 11
 } {Hello, World}
 
 test MoMLCommandLineLocation-1.4 {Set the director iterations parameter to a 2} {
-    set results [exec  java -classpath $PTII ptolemy.moml.MoMLCommandLineApplication -SDF\ Director.iterations 2 MoMLCommandLineApplicationTest.xml]
+    set results [exec  make MoMLCommandLineApplication4]
     regsub -all [java::call System getProperty "line.separator"] \
 	        $results "\n" results2
     string range $results2 0 16
