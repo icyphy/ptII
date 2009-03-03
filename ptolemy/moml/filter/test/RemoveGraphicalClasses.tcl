@@ -348,7 +348,7 @@ test RemoveGraphicalClasses-2.1 {Filter a Display} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="DisplayTest" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
@@ -361,7 +361,7 @@ test RemoveGraphicalClasses-2.1 {Filter a Display} {
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
         </property>
-        <property name="title" class="ptolemy.kernel.util.StringAttribute" value="My Display">
+        <property name="title" class="ptolemy.data.expr.StringParameter" value="My Display">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{290.0, 220.0}">
         </property>
