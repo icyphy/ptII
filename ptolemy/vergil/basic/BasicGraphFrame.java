@@ -262,7 +262,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             MessageHandler.error("Change failed", exception);
         }
     }
-    
+
+    /** Clear the selected objects in this frame.
+     */
     public void clearSelection() {
         GraphController controller = _getGraphController();
         SelectionModel model = controller.getSelectionModel();
