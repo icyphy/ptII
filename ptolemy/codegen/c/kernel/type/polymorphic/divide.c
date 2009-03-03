@@ -107,7 +107,7 @@ inline int divide_Int_Int(int a1, int a2) {
 
 /*** divide_Int_Token() ***/
 int divide_Int_Token(int a1, Token a2) {
-    Token token = $new(Int, a1);
+    Token token = $new(Int(a1));
     return $typeFunc(TYPE_Int::divide(token, a2));
 }
 /**/

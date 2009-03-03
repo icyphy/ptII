@@ -110,7 +110,7 @@ boolean equals_Int_String(int a1, char* a2) {
 
 /*** equals_Int_Token() ***/
 boolean equals_Int_Token(int a1, Token a2) {
-    Token token = $new(Int, a1);
+    Token token = $new(Int(a1));
     return $typeFunc(TYPE_Int::equals(token, a2));
 }
 /**/
