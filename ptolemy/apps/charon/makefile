@@ -44,6 +44,7 @@ include $(CONFIG)
 
 JSRCS = \
 	Agent.java \
+	Assertion.java \
 	CharonCodeGenerator.java \
 	CharonToPtolemyII.java \
 	CharonProcessor.java 

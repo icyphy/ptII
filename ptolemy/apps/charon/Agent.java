@@ -35,7 +35,8 @@ import ptolemy.actor.TypeAttribute;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
-import ptolemy.actor.lib.Assertion;
+//import ptolemy.actor.lib.Assertion;
+
 import ptolemy.actor.lib.Expression;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.StringToken;
