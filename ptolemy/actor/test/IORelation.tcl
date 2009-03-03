@@ -104,12 +104,11 @@ test IORelation-3.3 {Test getWidth} {
     $e1 setManager $manager
     $e1 setName E1
     set r1 [java::new ptolemy.actor.IORelation $e1 R1]
+    # Relations linked to nothing get width 0 by width inference algorithm
     $r1 setWidth [java::field ptolemy.actor.IORelation WIDTH_TO_INFER]
-    catch {$manager inferWidths} msg
-    list $msg
-} {{ptolemy.kernel.util.IllegalActionException: The width of relation .E1.R1 can not be uniquely inferred.
-Please make the width inference deterministic by explicitly specifying the width of this relation.
-  in .E1.R1}}
+    $manager inferWidths
+    $r1 getWidth    
+} {0}
 
 
 test IORelation-3.4 {Test getWidth of a port} {
