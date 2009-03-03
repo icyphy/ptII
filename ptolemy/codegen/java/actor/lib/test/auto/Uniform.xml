@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Uniform" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
@@ -12,17 +12,17 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 55.0}">
         </property>
     </property>
-    <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{400.0, 60.0}">
-        </property>
-    </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={37, 35, 815, 695}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={37, 35, 815, 684}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 577]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 288.5}">
+    </property>
+    <property name="JavaCodeGenerator" class="ptolemy.codegen.java.kernel.JavaCodeGenerator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{470.0, 85.0}">
+        </property>
     </property>
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{0.1791243503078, 0.580269852914, 10.3895604583637, 0.7796583775584}, {0.948422596017, 0.5912510630139, 10.575162746049, 0.1330590873713}, {0.4808907807789, 0.7652807197498, 10.2289807288581, 1.0361769321563}, {0.0724750004759, 0.3802222970906, 10.8810312247185, 1.0683822039904}, {0.5073245139884, 0.8680091697785, 10.1782763650812, 0.1352890000054}, {0.5863259011658, 0.9689929188332, 10.6278098974122, 1.2182270682875}, {0.2220238549573, 0.3287061186171, 10.6023546427904, 1.733615522479}, {0.6745304038314, 0.7930109723784, 10.6540310813869, 1.5779190116765}, {0.8943879545886, 0.4854360660918, 10.3197600170557, 0.2314456651695}, {0.7652365152696, 0.6576789552097, 10.4980473239143, 1.0210968909501}}">
