@@ -103,8 +103,7 @@ MISC_FILES = $(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	Agilent \
-	Saber
+	Agilent
 
 JCLASS = $(JSRCS:%.java=%.class)
 
