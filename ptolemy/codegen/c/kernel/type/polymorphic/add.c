@@ -116,7 +116,7 @@ char* add_Int_String(int a1, char* a2) {
 
 /*** add_Int_Token() ***/
 int add_Int_Token(int a1, Token a2) {
-    Token token = $new(Int, a1);
+    Token token = $new(Int(a1));
     return $typeFunc(TYPE_Int::add(token, a2));
 }
 /**/
