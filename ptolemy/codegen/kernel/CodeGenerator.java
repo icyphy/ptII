@@ -1280,6 +1280,8 @@ System.out.println("_generatePreinitializeCode called");
                 ".targets." + targetValue;
 
             try {
+                helperClassName = className.replaceFirst("ptolemy",
+                        packageName + targetSubDirectory);
                 helperObject = _instantiateHelper(object, helperClassName);
                 _helperStore.put(object, helperObject);
                 return helperObject;                
@@ -1316,6 +1318,7 @@ System.out.println("_generatePreinitializeCode called");
         } 
     
         try {
+            helperClassName = className.replaceFirst("ptolemy", packageName);
             helperObject = _instantiateHelper(object, helperClassName);
         } catch (Exception ex) {
             // try the implementation in the middle layer.
