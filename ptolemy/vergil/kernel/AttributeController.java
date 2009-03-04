@@ -97,6 +97,12 @@ public class AttributeController extends IconController {
                     appearanceActions, "Appearance");
             _menuFactory.addMenuItemFactory(_appearanceMenuActionFactory);
             
+            _listenToAction = new ListenToAction(
+                    (BasicGraphController) getController(), _getComponentType());
+            _menuFactory.addMenuItemFactory(new MenuActionFactory(
+                    _listenToAction));
+            _listenToAction.setConfiguration(_configuration);
+            
         }
     }
 
@@ -156,6 +162,9 @@ public class AttributeController extends IconController {
     /** Action to launch rename dialog. */
     protected RenameDialogAction _renameAction;
 
+    /** Action to listen to debug messages. */
+    protected ListenToAction _listenToAction;
+    
     ///////////////////////////////////////////////////////////////////
     ////                     private members                       ////
 
