@@ -479,13 +479,23 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
                     try {
                         _subprocessReturnCode = _process.waitFor();
 
+                        if (_subprocessReturnCode != 0) {
+			    // FIXME: If we get a segfault in the subprocess, then it
+			    // would be nice to get the error in the display.  However,
+			    // there is no data to be found in the process error stream?
+			    appendJTextArea("Warning, process returned " + _subprocessReturnCode);
+
+			    synchronized (this) {
+				_process = null;
+			    }
+			    break;
+			}
+
                         synchronized (this) {
                             _process = null;
                         }
 
-                        if (_subprocessReturnCode != 0) {
-                            break;
-                        }
+
                     } catch (InterruptedException interrupted) {
                         appendJTextArea("InterruptedException: " + interrupted);
                         throw interrupted;
