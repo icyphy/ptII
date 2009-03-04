@@ -1,4 +1,4 @@
-#include "Array.h"
+#include "DoubleArray.h"
 
 /** NOTE: META SUBSTITUTION SYMBOLS
  * $Type: Int, Char, Array, etc.
@@ -14,7 +14,7 @@ struct doublearray {
     double* elements;                            // array of Token elements.
     char elementType;                          // type of the elements.
 };
-//typedef struct doublearray* DoubleArrayToken;
+typedef struct doublearray* DoubleArrayToken;
 /**/
 
 /***funcDeclareBlock***/
