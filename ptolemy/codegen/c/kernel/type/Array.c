@@ -208,7 +208,12 @@ Token Array_toString(Token thisToken, ...) {
 
     for (i = 0; i < thisToken.payload.Array->size; i++) {
         if (i != 0) {
-            strcat(string, ", ");
+	  // Before calling strcat() check the size.
+	  if (currentSize + 3 >= allocatedSize) {
+	    allocatedSize *= 2;
+            string = (char*) realloc(string, allocatedSize);
+	  }
+	  strcat(string, ", ");
         }
         elementString = functionTable[(int)thisToken.payload.Array->elements[i].type][FUNC_toString](thisToken.payload.Array->elements[i]);
         currentSize += strlen(elementString.payload.String);
@@ -216,12 +221,19 @@ Token Array_toString(Token thisToken, ...) {
             allocatedSize *= 2;
             string = (char*) realloc(string, allocatedSize);
         }
-
         strcat(string, elementString.payload.String);
         free(elementString.payload.String);
     }
+    if (currentSize + 2 >= allocatedSize) {
+      allocatedSize *= 2;
+      string = (char*) realloc(string, allocatedSize);
+    }
     strcat(string, "}");
-    return String_new(string);
+    Token result = String_new(string);
+    // String_new() calls strdup(), so we free here
+    // FIXME: If we free here, then the SequenceArrayToString.xml test crashes? 
+    //free(string);
+    return result;
 }
 /**/
 
