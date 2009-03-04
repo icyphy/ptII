@@ -693,7 +693,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         super._debug(message);
         System.out.println(message);
     }
-
+    
     private String _getArguments() {
 
         StringBuffer arguments = new StringBuffer();
