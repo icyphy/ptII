@@ -46,13 +46,9 @@ import javax.swing.SwingConstants;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.DebugListenerTableau;
 import ptolemy.actor.gui.DialogTableau;
-import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.OpenInstanceDialog;
-import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFrame;
-import ptolemy.actor.gui.TextEffigy;
 import ptolemy.actor.gui.UserActorLibrary;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
@@ -69,9 +65,9 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.basic.BasicGraphController;
-import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.debugger.BreakpointDialogFactory;
 import ptolemy.vergil.kernel.AttributeController;
+import ptolemy.vergil.kernel.ListenToAction;
 import ptolemy.vergil.kernel.PortDialogAction;
 import ptolemy.vergil.toolbox.EditIconAction;
 import ptolemy.vergil.toolbox.FigureAction;
@@ -178,12 +174,6 @@ public abstract class ActorController extends AttributeController {
         _menuFactory.addMenuItemFactory(new MenuActionFactory(
                 new SaveInLibraryAction()));
 
-        _listenToActorAction = new ListenToActorAction(
-                (BasicGraphController) getController());
-        _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                _listenToActorAction));
-        _listenToActorAction.setConfiguration(_configuration);
-
         //}
         // "Set Breakpoints"
         if (access == FULL) {
@@ -237,10 +227,6 @@ public abstract class ActorController extends AttributeController {
             _configureUnitsAction.setConfiguration(configuration);
         }
 
-        if (_listenToActorAction != null) {
-            _listenToActorAction.setConfiguration(_configuration);
-        }
-
         if (_configuration != null) {
             // NOTE: The following requires that the configuration be
             // non-null, or it will report an error.
@@ -256,6 +242,17 @@ public abstract class ActorController extends AttributeController {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /**
+     * Get the class label of the component. 
+     * @return the class label of the component. 
+     */
+    protected String _getComponentType() {
+        return "Actor";
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -368,8 +365,6 @@ public abstract class ActorController extends AttributeController {
     private BreakpointDialogFactory _breakpointDialogFactory;
 
     private ConfigureUnitsAction _configureUnitsAction;
-
-    private ListenToActorAction _listenToActorAction;
 
     private PortDialogAction _portDialogAction;
 
@@ -643,90 +638,6 @@ public abstract class ActorController extends AttributeController {
                 }
             }
         }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    //// ListenToActorAction
-
-    /** An action to listen to debug messages in the actor.
-     *  This is static so that other classes can use it.
-     */
-    public static class ListenToActorAction extends FigureAction {
-        /** Construct an action that listens to actor messages.
-         *  @param controller The corresponding controller.
-         */
-        public ListenToActorAction(BasicGraphController controller) {
-            super("Listen to Actor");
-            _controller = controller;
-        }
-
-        /** Construct an action that listens to actor messages.
-         *  @param target The target
-         *  @param controller The corresponding controller.
-         */
-        public ListenToActorAction(NamedObj target,
-                BasicGraphController controller) {
-            super("Listen to Actor");
-            _target = target;
-            _controller = controller;
-        }
-
-        /** Open a TextEffigy that displays debug messages.
-         *  @param event The action event, used to determine which entity
-         *  was selected for the listen to actor action
-         */
-        public void actionPerformed(ActionEvent event) {
-            if (_configuration == null) {
-                MessageHandler
-                        .error("Cannot listen to actor without a configuration.");
-                return;
-            }
-
-            // Determine which entity was selected for the listen to
-            // actor action.
-            super.actionPerformed(event);
-
-            NamedObj object = _target;
-
-            if (object == null) {
-                object = getTarget();
-            }
-
-            try {
-                BasicGraphFrame frame = _controller.getFrame();
-                Tableau tableau = frame.getTableau();
-
-                // effigy is the whole model.
-                Effigy effigy = (Effigy) tableau.getContainer();
-
-                // We want to open a new window that behaves as a
-                // child of the model window.  So, we create a new text
-                // effigy inside this one.  Specify model's effigy as
-                // a container for this new effigy.
-                Effigy textEffigy = new TextEffigy(effigy, effigy
-                        .uniqueName("debugListener" + object.getName()));
-
-                DebugListenerTableau debugTableau = new DebugListenerTableau(
-                        textEffigy, textEffigy.uniqueName("debugListener"
-                                + object.getName()));
-                debugTableau.setDebuggable(object);
-            } catch (KernelException ex) {
-                MessageHandler.error("Failed to create debug listener.", ex);
-            }
-        }
-
-        /** Set the configuration for use by the help screen.
-         *  @param configuration The configuration.
-         */
-        public void setConfiguration(Configuration configuration) {
-            _configuration = configuration;
-        }
-
-        private Configuration _configuration;
-
-        private BasicGraphController _controller;
-
-        private NamedObj _target;
     }
 
     ///////////////////////////////////////////////////////////////////

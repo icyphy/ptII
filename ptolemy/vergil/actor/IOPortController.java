@@ -119,9 +119,9 @@ public class IOPortController extends AttributeController {
 
         setNodeRenderer(new EntityPortRenderer());
 
-        // "Listen to Actor"
-        _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                new ListenToPortAction()));
+//        // "Listen to Actor"
+//        _menuFactory.addMenuItemFactory(new MenuActionFactory(
+//                new ListenToPortAction()));
 
         // Ports of entities do not use a selection interactor with
         // the same selection model as the rest of the first level figures.
@@ -249,6 +249,14 @@ public class IOPortController extends AttributeController {
         }
 
         return portRotation;
+    }
+
+    /**
+     * Get the class label of the component. 
+     * @return the class label of the component. 
+     */
+    protected String _getComponentType() {
+        return "Port";
     }
 
     /** Return the direction associated with the specified angle,
@@ -555,50 +563,6 @@ public class IOPortController extends AttributeController {
          */
         protected Figure _decoratePortFigure(Object node, Figure figure) {
             return figure;
-        }
-    }
-
-    // An action to listen to debug messages of the port.
-    private class ListenToPortAction extends FigureAction {
-        public ListenToPortAction() {
-            super("Listen to Port");
-        }
-
-        public void actionPerformed(ActionEvent e) {
-            if (_configuration == null) {
-                MessageHandler
-                        .error("Cannot listen to port without a configuration.");
-                return;
-            }
-
-            // Determine which entity was selected for the listen to
-            // port action.
-            super.actionPerformed(e);
-
-            NamedObj object = getTarget();
-
-            try {
-                BasicGraphController controller = (BasicGraphController) getController();
-                BasicGraphFrame frame = controller.getFrame();
-                Tableau tableau = frame.getTableau();
-
-                // effigy is of the whole model.
-                Effigy effigy = (Effigy) tableau.getContainer();
-
-                // We want to open a new window that behaves as a
-                // child of the model window.  So, we create a new text
-                // effigy inside this one.  Specify model's effigy as
-                // a container for this new effigy.
-                Effigy textEffigy = new TextEffigy(effigy, effigy
-                        .uniqueName("debugListener" + object.getName()));
-
-                DebugListenerTableau debugTableau = new DebugListenerTableau(
-                        textEffigy, textEffigy.uniqueName("debugListener"
-                                + object.getName()));
-                debugTableau.setDebuggable(object);
-            } catch (KernelException ex) {
-                MessageHandler.error("Failed to create debug listener.", ex);
-            }
         }
     }
 }

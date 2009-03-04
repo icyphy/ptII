@@ -96,7 +96,6 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
 	'ActorController$$EntityLayout.class' \
-	'ActorController$$ListenToActorAction.class' \
 	'ActorController$$LookInsideAction.class' \
 	'ActorController$$OpenInstanceAction.class' \
 	'ActorController$$SaveInLibraryAction.class' \
@@ -151,7 +150,6 @@ OPTIONAL_FILES = \
 	'IOPortController$$EntityPortRenderer$$1.class' \
 	'IOPortController$$EntityPortRenderer$$2.class' \
 	'IOPortController$$EntityPortRenderer.class' \
-	'IOPortController$$ListenToPortAction.class' \
 	'LinkController$$LinkDropper.class' \
 	'LinkController$$LinkRenderer.class' \
 	'LinkController$$LinkTarget.class'

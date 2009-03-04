@@ -54,6 +54,7 @@ import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.NamedObjController;
 import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.kernel.Link;
+import ptolemy.vergil.kernel.ListenToAction;
 import ptolemy.vergil.kernel.PortDialogAction;
 import ptolemy.vergil.kernel.RelationController;
 import ptolemy.vergil.toolbox.FigureAction;
@@ -714,7 +715,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
             String name = "Listen to Actor";
             final NamedObj target = object;
 
-            _action = new ActorController.ListenToActorAction(target,
+            _action = new ListenToAction(target,
                     ActorEditorGraphController.this);
             _action.setConfiguration(_configuration);
             return menu.add(_action, name);
@@ -731,7 +732,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
             }
         }
 
-        private ActorController.ListenToActorAction _action;
+        private ListenToAction _action;
 
         private Configuration _configuration;
     }

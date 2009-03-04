@@ -60,6 +60,7 @@ JSRCS = \
 	CompositePtolemyModel.java \
 	DebugRenderer.java \
 	Link.java \
+	ListenToAction.java \
 	PortDialogFactory.java \
 	PortDialogAction.java \
 	RelationController.java \

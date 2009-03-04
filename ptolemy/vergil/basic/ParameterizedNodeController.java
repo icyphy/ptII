@@ -31,6 +31,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import ptolemy.actor.gui.Configuration;
+import ptolemy.vergil.kernel.ListenToAction;
 import ptolemy.vergil.toolbox.ConfigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.PtolemyMenuFactory;
@@ -134,6 +135,13 @@ public class ParameterizedNodeController extends NamedObjController {
         // Set the selection model to allow this to be independently selected.
         SelectionModel sm = controller.getSelectionModel();
         interactor.setSelectionModel(sm);
+
+        _listenToAction = new ListenToAction(
+                (BasicGraphController) getController(), _getComponentType());
+        _menuFactory.addMenuItemFactory(new MenuActionFactory(
+                _listenToAction));
+        _listenToAction.setConfiguration(_configuration);
+            
     }
 
     /** Return the configuration menu factory.
@@ -142,6 +150,17 @@ public class ParameterizedNodeController extends NamedObjController {
      */
     public MenuActionFactory getConfigureMenuFactory() {
         return _configureMenuFactory;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /**
+     * Get the class label of the component. 
+     * @return the class label of the component. 
+     */
+    protected String _getComponentType() {
+        return "ParameterizedNode";
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -154,6 +173,9 @@ public class ParameterizedNodeController extends NamedObjController {
     /** The submenu for configure actions. */
     protected MenuActionFactory _configureMenuFactory;
 
+    /** Action to listen to debug messages. */
+    protected ListenToAction _listenToAction;
+    
     /** The menu creator. */
     protected MenuCreator _menuCreator;
 

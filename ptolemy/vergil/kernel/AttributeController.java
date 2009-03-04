@@ -30,6 +30,7 @@ package ptolemy.vergil.kernel;
 import javax.swing.Action;
 
 import ptolemy.actor.gui.Configuration;
+import ptolemy.vergil.basic.BasicGraphController;
 import ptolemy.vergil.basic.CustomizeDocumentationAction;
 import ptolemy.vergil.basic.GetDocumentationAction;
 import ptolemy.vergil.basic.IconController;
@@ -95,8 +96,10 @@ public class AttributeController extends IconController {
             _appearanceMenuActionFactory = new MenuActionFactory(
                     appearanceActions, "Appearance");
             _menuFactory.addMenuItemFactory(_appearanceMenuActionFactory);
+            
         }
     }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -121,8 +124,20 @@ public class AttributeController extends IconController {
     public void setConfiguration(Configuration configuration) {
         super.setConfiguration(configuration);
         _getDocumentationAction.setConfiguration(configuration);
+        _listenToAction.setConfiguration(_configuration);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /**
+     * Get the class label of the component. 
+     * @return the class label of the component. 
+     */
+    protected String _getComponentType() {
+        return "Attribute";
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                     public members                        ////
 
@@ -147,10 +162,12 @@ public class AttributeController extends IconController {
     /** The "get documentation" action. */
     private GetDocumentationAction _getDocumentationAction = new GetDocumentationAction();
 
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
     /** A static enumerator for constructor arguments. */
     protected static class Access {
     }
+    
 }
