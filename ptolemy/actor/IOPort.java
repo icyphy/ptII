@@ -920,7 +920,7 @@ public class IOPort extends ComponentPort {
         if (isInput()) {
             receivers = getReceivers();
         } else {
-            receivers = getRemoteReceivers();
+            receivers = getInsideReceivers();
         }
 
         for (int channel = 0; channel < receivers.length; channel++) {
@@ -928,6 +928,22 @@ public class IOPort extends ComponentPort {
                 for (int copy = 0; copy < receivers[channel].length; copy++) {
                     if (receivers[channel][copy] == receiver) {
                         return channel;
+                    }
+                }
+            }
+        }
+
+        // FIXME: this is for backwards compatibility, but really should go
+        // in a getChannelForRemoteReceiver()
+        if (! isInput()) {
+            receivers = getRemoteReceivers();
+
+            for (int channel = 0; channel < receivers.length; channel++) {
+                if (receivers[channel] != null) {
+                    for (int copy = 0; copy < receivers[channel].length; copy++) {
+                        if (receivers[channel][copy] == receiver) {
+                            return channel;
+                        }
                     }
                 }
             }
