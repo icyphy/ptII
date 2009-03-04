@@ -1733,3 +1733,44 @@ test IOPort-22.3 {test getChannelForReceiver} {
     [$p2 getChannelForReceiver [[$p3Rcvrs get 6] get 0]]
     
 } {0 1 2 0 1 2 3}
+
+# test getChannelForReceiver on a opaque output port
+test IOPort-22.4 { test getChannelForReceiver} {
+    set top [java::new ptolemy.actor.CompositeActor]
+    $top setDirector $director
+    $top setManager $manager
+    $top setName Top
+
+    set actor1 [java::new ptolemy.actor.AtomicActor $top Actor1]
+    set actor1Output [java::new ptolemy.actor.IOPort $actor1 actor1Output]
+    $actor1Output setOutput true
+
+    set composite [java::new ptolemy.actor.CompositeActor $top Composite]
+    set compositeInput [java::new ptolemy.actor.IOPort $composite compositeInput]
+    set compositeOutput [java::new ptolemy.actor.IOPort $composite compositeOutput]
+    $compositeInput setInput true
+    $compositeOutput setOutput true
+
+    set insideDirector [java::new ptolemy.actor.Director]
+    $composite setDirector $insideDirector
+    
+    set actor2 [java::new ptolemy.actor.AtomicActor $top Actor2]
+    set actor2Input [java::new ptolemy.actor.IOPort $top actor2Input]
+    $actor2Input setInput true
+
+    # connect actor1 to composite
+    set r1 [java::cast ptolemy.actor.IORelation [$top connect $actor1Output $compositeInput]]
+    $r1 setWidth 1
+
+    # connect actor2 to composite
+    set r2 [java::cast ptolemy.actor.IORelation [$top connect $compositeOutput $actor2Input]]
+    $r2 setWidth 1
+
+    # connect insides of composite
+    set r3 [java::cast ptolemy.actor.IORelation [$composite connect $compositeInput $compositeOutput]]
+
+    $director preinitialize
+
+    set recvrs [$compositeOutput getInsideReceivers]
+    $compositeOutput getChannelForReceiver [[$recvrs get 0] get 0]
+} {0}
