@@ -32,6 +32,7 @@ import java.util.HashMap;
 import ptolemy.data.properties.Property;
 import ptolemy.graph.CPO;
 import ptolemy.graph.DirectedAcyclicGraph;
+import ptolemy.graph.Node;
 import ptolemy.kernel.util.IllegalActionException;
 
 
@@ -299,6 +300,8 @@ public class PropertyLattice extends DirectedAcyclicGraph {
 
     protected DirectedAcyclicGraph _basicLattice = this; //new DirectedAcyclicGraph();
 
+    private HashMap<String, Property> _propertyMap = new HashMap<String, Property>();
+
     public void setBasicLattice(DirectedAcyclicGraph graph) {
         //_basicLattice = graph;
     }
@@ -354,15 +357,27 @@ public class PropertyLattice extends DirectedAcyclicGraph {
         return lattice;
     }
 
+    public Node addNodeWeight(Object weight) {
+        _propertyMap.put(weight.toString().toUpperCase(), (Property) weight);
+        return super.addNodeWeight(weight);
+    }
+    
+    
     public Property getElement(String fieldName)
     throws IllegalActionException {
-        try {
-            return (Property) getClass().getField(fieldName).get(this);
-        } catch (Exception ex) {
-//          return null;
+//        try {
+            //return (Property) getClass().getField(fieldName).get(this);
+            
+        Property property = _propertyMap.get(fieldName.toUpperCase());
+        if (property == null) {
             throw new IllegalActionException(
-                    "No lattice element named \"" + fieldName + "\".");
+                    "No lattice element named \"" + fieldName + "\".");                
         }
+        return property;
+        
+//        } catch (Exception ex) {
+//            return null;
+//        }
     }
 
     /** Return the greatest lower bound of the two given properties.
@@ -371,7 +386,7 @@ public class PropertyLattice extends DirectedAcyclicGraph {
      *  @return The greatest lower bound of property1 and property2.
      */
     public synchronized Property greatestLowerBound(Property property1, Property property2) {
-        return (Property) _lattice.greatestLowerBound((Property) property1, (Property) property2);
+        return (Property) /*_lattice*/super.greatestLowerBound((Property) property1, (Property) property2);
     }
 
     /** Return the an instance of CPO representing the infinite property
