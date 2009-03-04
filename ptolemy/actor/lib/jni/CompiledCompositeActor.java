@@ -36,6 +36,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -61,6 +62,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.URIAttribute;
+import ptolemy.kernel.util.DebugListener;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -219,7 +221,10 @@ public class CompiledCompositeActor extends TypedCompositeActor {
 
                 Object[] tokensToAllOutputPorts = null;
                 try {
-                    // Invoke the native fire method
+                    if (_debugging) {
+                        _debug("Invoke the native fire code.");
+                    }
+
                     tokensToAllOutputPorts = (Object[]) _jniFireMethod.invoke(
                             _jniWrapper, tokensFromAllInputPorts.toArray());
                 } catch (Throwable throwable) {
@@ -458,6 +463,11 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         // Create the .h file.
         commands.add("javah -classpath . " + _sanitizedActorName);
 
+        if (_debugging) {
+            _debugAndSystemOut("Execute command: " + commands.get(0));            
+            _debugAndSystemOut("Execute command: " + commands.get(1));            
+        }
+        
         _executeCommands.setWorkingDirectory(codeDirectory.asFile());
         _executeCommands.setCommands(commands);
         _executeCommands.start();
@@ -477,6 +487,9 @@ public class CompiledCompositeActor extends TypedCompositeActor {
      *  method in the helper class cannot be found or invoked.
      */
     protected void _generateAndCompileCCode() throws IllegalActionException {
+        if (_debugging) {
+            _debugAndSystemOut("Generate and compile C code.");
+        }
         _invokeHelperMethod("generateCode");
     }
 
@@ -536,8 +549,11 @@ public class CompiledCompositeActor extends TypedCompositeActor {
 
             Writer writer = null;
             try {
-                System.out.println("Writing \"" + codeFileName + "\" in \""
-                        + codeDirectory.getBaseDirectory() + "\"");
+                if (_debugging) {
+                    _debugAndSystemOut("Generate \"" + codeFileName + "\" in \""
+                            + codeDirectory.getBaseDirectory() + "\"");
+                }
+
                 writer = FileUtilities.openForWriting(codeFileName,
                         codeDirectory.getBaseDirectory(), false);
                 writer.write(code.toString());
@@ -582,22 +598,27 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         
         Effigy effigy = Configuration.findEffigy(this.toplevel());
         if (effigy != null && effigy.isModified()) {
-            System.out
-                    .println(message
-                            + "The effigy "
-                            + effigy
-                            + "(model : "
-                            + ((PtolemyEffigy) effigy).getModel()
-                            + ") says the model was modified and thus it does not matter "
-                            + "if the shared object file is newer than the model file "
-                            + "because the model file is out of date.");
+            
+            if (_debugging) {
+                _debugAndSystemOut(message
+                        + "The effigy "
+                        + effigy
+                        + "(model : "
+                        + ((PtolemyEffigy) effigy).getModel()
+                        + ") says the model was modified and thus it does not matter "
+                        + "if the shared object file is newer than the model file "
+                        + "because the model file is out of date.");
+            }
+
             return true;
         }
 
         URI modelURI = URIAttribute.getModelURI(this);
         if (modelURI == null) {
-            System.out.println(message
+            if (_debugging) {
+                _debugAndSystemOut(message
                     + "This model does not have a _uri parameter.");
+            }
             return true;
         }
         String modelPath = modelURI.getPath();
@@ -609,16 +630,21 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         }
         if (modelFile == null
                 || sharedObjectFile.lastModified() < modelFile.lastModified()) {
-            System.out.println(message
+            if (_debugging) {
+                _debugAndSystemOut(message
                     + "The sharedObjectFile has a modification time "
                     + "that is earlier than the modelFile modification time.");
+            }
             return true;
         }
 
         if (effigy == null) {
-            System.out.println(message + "No effigy.  This can happen when "
+            if (_debugging) {
+                _debugAndSystemOut(message
+                    + "No effigy.  This can happen when "
                     + "CodeGenerator.generateCode() is called from within "
                     + "the test suite.  The code will be recompiled.");
+            }
             _version = ++_noEffigyVersion;
             _updateSanitizedActorName();
             return true;
@@ -657,6 +683,15 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                     "Cannot generate library path.");
         }
         return sharedObjectPath;
+    }
+
+    /** Send a debug message to all debug listeners that have registered.
+     * Then print the message to System.out.
+     * @param message The given debug message.
+     */
+    private void _debugAndSystemOut(String message) {
+        super._debug(message);
+        System.out.println(message);
     }
 
     private String _getArguments() {
