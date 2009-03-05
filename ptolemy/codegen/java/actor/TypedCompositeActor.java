@@ -163,7 +163,6 @@ public class TypedCompositeActor extends JavaCodeGeneratorHelper {
             IOPort inputPort = (IOPort) inputPorts.next();
             if (!(inputPort instanceof ParameterPort)) {
                 directorHelper.generateTransferInputsCode(inputPort, code);
-                //generateTransferInputsCode(inputPort, code);
             }
         }
 
@@ -181,146 +180,6 @@ public class TypedCompositeActor extends JavaCodeGeneratorHelper {
         }
         return processCode(code.toString());
     }
-
-//    private void generateTransferOutputsCode(IOPort outputPort, StringBuffer code) {
-//        // TODO Auto-generated method stub
-//        
-//    }
-
-//    private void generateTransferInputsCode(IOPort inputPort, StringBuffer code) throws IllegalActionException {
-//        int rate = DFUtilities.getTokenConsumptionRate(inputPort);
-//        boolean targetCpp = ((BooleanToken) _codeGenerator.generateCpp
-//                .getToken()).booleanValue();
-//
-//        CompositeActor actor = (CompositeActor) getComponent();
-//        if (actor instanceof CompiledCompositeActor
-//                && ((BooleanToken) _codeGenerator.generateJNI.getToken())
-//                        .booleanValue()) {
-//
-//            // FindBugs wants this instanceof check.
-//            if (!(inputPort instanceof TypedIOPort)) {
-//                throw new InternalErrorException(inputPort, null,
-//                        " is not an instance of TypedIOPort.");
-//            }
-//            Type type = ((TypedIOPort) inputPort).getType();
-//            String portName = inputPort.getName();
-//
-//            for (int i = 0; i < inputPort.getWidth(); i++) {
-//                if (i < inputPort.getWidthInside()) {
-//
-//                    String tokensFromOneChannel = "tokensFromOneChannelOf"
-//                            + portName + i;
-//                    String pointerToTokensFromOneChannel = "pointerTo"
-//                            + tokensFromOneChannel;
-//
-//                    code.append("jobject "
-//                            + tokensFromOneChannel
-//                            + " = "
-//                            + JavaCodegenUtilities.jniGetObjectArrayElement(
-//                                    portName, String.valueOf(i), targetCpp)
-//                            + ";" + _eol);
-//
-//                    if (type == BaseType.INT) {
-//                        code.append("jint * "
-//                                + pointerToTokensFromOneChannel
-//                                + " = "
-//                                + JavaCodegenUtilities.jniGetArrayElements("Integer",
-//                                        tokensFromOneChannel, targetCpp) + ";"
-//                                + _eol);
-//                    } else if (type == BaseType.DOUBLE) {
-//                        code.append("jdouble * "
-//                                + pointerToTokensFromOneChannel
-//                                + " = "
-//                                + JavaCodegenUtilities.jniGetArrayElements(
-//                                        "Double", tokensFromOneChannel,
-//                                        targetCpp) + ";" + _eol);
-//                    } else if (type == PointerToken.POINTER) {
-//                        code.append("jint * "
-//                                + pointerToTokensFromOneChannel
-//                                + " = "
-//                                + JavaCodegenUtilities.jniGetArrayElements("Integer",
-//                                        tokensFromOneChannel, targetCpp) + ";"
-//                                + _eol);
-//                    } else if (type == BaseType.BOOLEAN) {
-//                        code.append("jboolean * "
-//                                + pointerToTokensFromOneChannel
-//                                + " = "
-//                                + JavaCodegenUtilities.jniGetArrayElements(
-//                                        "Boolean", tokensFromOneChannel,
-//                                        targetCpp) + ";" + _eol);
-//                    } else {
-//                        // FIXME: need to deal with other types
-//                    }
-//                    String portNameWithChannelNumber = portName;
-//                    if (inputPort.isMultiport()) {
-//                        portNameWithChannelNumber = portName + '#' + i;
-//                    }
-//                    for (int k = 0; k < rate; k++) {
-//
-//                        code.append(getReference("@"
-//                                + portNameWithChannelNumber + "," + k));
-//                        if (type == PointerToken.POINTER) {
-//                            code.append(" = (void *) "
-//                                    + pointerToTokensFromOneChannel + "[" + k
-//                                    + "];" + _eol);
-//                        } else {
-//                            code.append(" = " + pointerToTokensFromOneChannel
-//                                    + "[" + k + "];" + _eol);
-//                        }
-//                    }
-//
-//                    if (type == BaseType.INT) {
-//                        code.append(JavaCodegenUtilities.jniReleaseArrayElements(
-//                                "Integer", tokensFromOneChannel,
-//                                pointerToTokensFromOneChannel, targetCpp)
-//                                + ";" + _eol);
-//                    } else if (type == BaseType.DOUBLE) {
-//                        code.append(JavaCodegenUtilities.jniReleaseArrayElements(
-//                                "Double", tokensFromOneChannel,
-//                                pointerToTokensFromOneChannel, targetCpp)
-//                                + ";" + _eol);
-//                    } else if (type == PointerToken.POINTER) {
-//                        code.append(JavaCodegenUtilities.jniReleaseArrayElements(
-//                                "Integer", tokensFromOneChannel,
-//                                pointerToTokensFromOneChannel, targetCpp)
-//                                + ";" + _eol);
-//                    } else if (type == BaseType.BOOLEAN) {
-//                        code.append(JavaCodegenUtilities.jniReleaseArrayElements(
-//                                "Boolean", tokensFromOneChannel,
-//                                pointerToTokensFromOneChannel, targetCpp)
-//                                + ";" + _eol);
-//                    } else {
-//                        // FIXME: need to deal with other types
-//                    }
-//                }
-//            }
-//        } else {
-//            Director outsideDirector = (Director) _getHelper(actor.getExecutiveDirector());
-//            Director insideDirector = (Director) _getHelper(actor.getDirector());
-//            
-//            for (int i = 0; i < inputPort.getWidth(); i++) {
-//                if (i < inputPort.getWidthInside()) {
-//                    String name = inputPort.getName();
-//
-//                    if (inputPort.isMultiport()) {
-//                        name = name + '#' + i;
-//                    }
-//
-//                    for (int k = 0; k < rate; k++) {
-//                        //code.append(insideDirector.getReference("@" + name + "," + k, false, this));
-//                        code.append(insideDirector.getReference((TypedIOPort) inputPort, new String[]{"" + i, "" + k}, true, false, this));
-//                        code.append(" = " + _eol);
-//                        //code.append(outsideDirector.getReference(name + "," + k, false, this));
-//                        code.append(outsideDirector.getReference((TypedIOPort) inputPort, new String[]{"" + i, "" + k}, false, false, this));
-//                        code.append(";" + _eol);
-//                    }
-//                }
-//            }
-//        }
-//
-//        // Generate the type conversion code before fire code.
-//        code.append(generateTypeConvertFireCode(true));
-//    }
     
     /** Generate The fire function code. This method is called when
      *  the firing code of each actor is not inlined. Each actor's
@@ -336,7 +195,7 @@ public class TypedCompositeActor extends JavaCodeGeneratorHelper {
         ptolemy.actor.Director director = compositeActor.getDirector();
         Director directorHelper = (Director) _getHelper(director);
         code.append(directorHelper.generateFireFunctionCode());
-        if (!(compositeActor instanceof ptolemy.actor.lib.jni.CompiledCompositeActor && ((BooleanToken) _codeGenerator.generateJNI
+        if (!(compositeActor instanceof ptolemy.actor.lib.embeddedJava.CompiledCompositeActor && ((BooleanToken) _codeGenerator.embeddedCode
                 .getToken()).booleanValue())) {
             code.append(super.generateFireFunctionCode());
         }

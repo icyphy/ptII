@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import ptolemy.actor.lib.jni.PointerToken;
 import ptolemy.codegen.kernel.ParseTreeCodeGenerator;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BitwiseOperationToken;
@@ -1757,7 +1756,7 @@ ParseTreeCodeGenerator {
                                 : ptType == BaseType.DOUBLE ? "Double"
                                         : ptType == BaseType.BOOLEAN ? "Boolean"
                                                 : ptType == BaseType.UNSIGNED_BYTE ? "UnsignedByte"
-                                                        : ptType == PointerToken.POINTER ? "Pointer"
+                                                        //: ptType == PointerToken.POINTER ? "Pointer"
                                                                 : null;
 
         if (result == null) {
@@ -1806,7 +1805,7 @@ ParseTreeCodeGenerator {
                                 : ptType == BaseType.BOOLEAN ? "boolean"
                                         : ptType == BaseType.LONG ? "long"
                                                 : ptType == BaseType.UNSIGNED_BYTE ? "byte"
-                                                        : ptType == PointerToken.POINTER ? "void*"
+                                                        //: ptType == PointerToken.POINTER ? "void*"
                                                                 : "Token";
     }
 

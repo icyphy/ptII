@@ -34,7 +34,7 @@
 ME =		ptolemy/codegen/java/actor/lib
 
 # PTCOLT_DIR is set to colt if colt was found
-DIRS =		comm $(PTCOLT_DIR) conversions gui hoc io javasound jni \
+DIRS =		comm $(PTCOLT_DIR) conversions embeddedJava gui hoc io javasound jni \
 		logic string test tutorial
 
 # Root of the Java directory

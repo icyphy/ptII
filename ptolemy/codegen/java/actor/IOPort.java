@@ -34,7 +34,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.Receiver;
-import ptolemy.actor.lib.jni.EmbeddedCActor;
+import ptolemy.actor.lib.embeddedJava.EmbeddedJavaActor;
 import ptolemy.codegen.c.domains.pn.kernel.MpiPNDirector;
 import ptolemy.codegen.c.domains.pn.kernel.PNDirector;
 import ptolemy.codegen.java.kernel.JavaCodeGeneratorHelper;
@@ -147,7 +147,7 @@ public class IOPort extends JavaCodeGeneratorHelper implements PortCodeGenerator
         ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
         Actor actor = (Actor) port.getContainer();
 
-        if (actor instanceof EmbeddedCActor.EmbeddedActor) {
+        if (actor instanceof EmbeddedJavaActor.EmbeddedActor) {
             // ignore the inner SDFDirector.
             actor = (Actor) actor.getContainer();
         }

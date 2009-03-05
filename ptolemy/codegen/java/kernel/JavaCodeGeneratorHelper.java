@@ -33,12 +33,10 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.lib.jni.PointerToken;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.codegen.kernel.CodeGenerator;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
@@ -448,7 +446,7 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
                                 : ptType == BaseType.BOOLEAN ? "boolean"
                                         : ptType == BaseType.LONG ? "long"
                                                 : ptType == BaseType.UNSIGNED_BYTE ? "byte"
-                                                        : ptType == PointerToken.POINTER ? "void*"
+                                                        //: ptType == PointerToken.POINTER ? "void*"
                                                                 : "Token";
     }
 

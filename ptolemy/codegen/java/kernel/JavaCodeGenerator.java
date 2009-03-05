@@ -155,19 +155,7 @@ public class JavaCodeGenerator extends CodeGenerator {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generateInitializeEntryCode() throws IllegalActionException {
-
-        // If the container is in the top level, we are generating code
-        // for the whole model.
-        if (isTopLevel()) {
-            return _eol + _eol + "void initialize() {" + _eol;
-
-            // If the container is not in the top level, we are generating code
-            // for the Java and C co-simulation.
-        } else {
-            return _eol + _eol + "JNIEXPORT void JNICALL" + _eol + "Java_"
-                    + _sanitizedModelName + "_initialize("
-                    + "JNIEnv *env, jobject obj) {" + _eol;
-        }
+        return _eol + _eol + "public void initialize() {" + _eol;
     }
 
     /** Generate the initialization procedure exit point.
@@ -229,22 +217,28 @@ public class JavaCodeGenerator extends CodeGenerator {
                 mainEntryCode.append("//FIXME: JavaCodeGenerator hack" + _eol
                         + "init();" + _eol);
             }
-        } else {
-            // If the container is not in the top level, we are generating code
-            // for the Java and C co-simulation.
-            mainEntryCode.append(_eol + _eol + "JNIEXPORT jobjectArray JNICALL"
-                    + _eol + "Java_" + _sanitizedModelName + "_fire (" + _eol
-                    + "JNIEnv *env, jobject obj");
+
+         } else {
+            mainEntryCode.append(_eol + _eol + "public Object[] "
+                    + _eol + "fire (" + _eol);
 
             Iterator inputPorts = ((Actor) getContainer()).inputPortList()
                     .iterator();
+            boolean addComma = false;
             while (inputPorts.hasNext()) {
                 TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
-                mainEntryCode.append(", jobjectArray " + inputPort.getName());
+                if (addComma) {
+                    mainEntryCode.append(", ");
+                }
+                mainEntryCode.append("Object[]" + inputPort.getName());
+                addComma = true;
             }
 
             mainEntryCode.append("){" + _eol);
+
+
         }
+        
         return mainEntryCode.toString();
     }
 
@@ -258,7 +252,7 @@ public class JavaCodeGenerator extends CodeGenerator {
             return _INDENT1 + "System.exit(0);" + _eol + "}" + _eol + "}" + _eol;
         } else {
             return _INDENT1 + "return tokensToAllOutputPorts;" + _eol + "}"
-                    + _eol;
+            + _eol + "}" + _eol;
         }
     }
 
@@ -267,19 +261,8 @@ public class JavaCodeGenerator extends CodeGenerator {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generatePostfireEntryCode() throws IllegalActionException {
+        return _eol + _eol + "public boolean postfire() {" + _eol;
 
-        // If the container is in the top level, we are generating code
-        // for the whole model.
-        if (isTopLevel()) {
-            return _eol + _eol + "boolean postfire() {" + _eol;
-
-            // If the container is not in the top level, we are generating code
-            // for the Java and C co-simulation.
-        } else {
-            return _eol + _eol + "JNIEXPORT void JNICALL" + _eol + "Java_"
-                    + _sanitizedModelName + "_postfire("
-                    + "JNIEnv *env, jobject obj) {" + _eol;
-        }
     }
 
     /** Generate the postfire procedure exit point.
@@ -647,19 +630,7 @@ public class JavaCodeGenerator extends CodeGenerator {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generateWrapupEntryCode() throws IllegalActionException {
-
-        // If the container is in the top level, we are generating code
-        // for the whole model.
-        if (isTopLevel()) {
-            return _eol + _eol + "void wrapup() {" + _eol;
-
-            // If the container is not in the top level, we are generating code
-            // for the Java and C co-simulation.
-        } else {
-            return _eol + _eol + "JNIEXPORT void JNICALL" + _eol + "Java_"
-                    + _sanitizedModelName + "_wrapup("
-                    + "JNIEnv *env, jobject obj) {" + _eol;
-        }
+        return _eol + _eol + "public void wrapup() {" + _eol;
     }
 
     /** Generate the wrapup procedure exit point.
@@ -851,6 +822,7 @@ public class JavaCodeGenerator extends CodeGenerator {
 
         List commands = new LinkedList();
         if (((BooleanToken) compile.getToken()).booleanValue()) {
+            //TODO RODIERS
             commands.add("make -f " + _sanitizedModelName + ".mk "
                     + compileTarget.stringValue());
         }
@@ -1233,10 +1205,9 @@ public class JavaCodeGenerator extends CodeGenerator {
         templateList.add(generatorDirectory + "/targets/" + targetValue
                 + "/makefile.in");
 
-        // 3. Look for the generic C makefile.in
+        // 3. Look for the generic makefile.in
         // Note this code is repeated in the catch below.
-        templateList.add(generatorDirectory
-                + (isTopLevel() ? "/makefile.in" : "/jnimakefile.in"));
+        templateList.add(generatorDirectory + "/makefile.in");
 
         // If necessary, add a trailing / after codeDirectory.
         String makefileOutputName = codeDirectory.stringValue()

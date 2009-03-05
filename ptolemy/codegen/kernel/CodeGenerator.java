@@ -67,7 +67,6 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
-import ptolemy.moml.filter.RemoveGraphicalClasses;
 import ptolemy.util.ExecuteCommands;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
@@ -156,11 +155,11 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         generateCpp.setTypeEquals(BaseType.BOOLEAN);
         generateCpp.setExpression("false");
 
-        generateJNI = new Parameter(this, "generateJNI");
-        generateJNI.setTypeEquals(BaseType.BOOLEAN);
-        generateJNI.setExpression("true");
-        // Hide the generateJNI parameter from the user.
-        generateJNI.setVisibility(Settable.EXPERT);
+        embeddedCode = new Parameter(this, "embeddedCode");
+        embeddedCode.setTypeEquals(BaseType.BOOLEAN);
+        embeddedCode.setExpression("true");
+        // Hide the embeddedCode parameter from the user.
+        embeddedCode.setVisibility(Settable.EXPERT);
 
         inline = new Parameter(this, "inline");
         inline.setTypeEquals(BaseType.BOOLEAN);
@@ -238,8 +237,11 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         if (container instanceof ptolemy.actor.lib.jni.CompiledCompositeActor) {
             _sanitizedModelName = ((ptolemy.actor.lib.jni.CompiledCompositeActor) container)
             .getSanitizedName();
+        } else if (container instanceof ptolemy.actor.lib.embeddedJava.CompiledCompositeActor) {
+            _sanitizedModelName = ((ptolemy.actor.lib.embeddedJava.CompiledCompositeActor) container)
+            .getSanitizedName();
         }
-
+        
         boolean inlineValue = ((BooleanToken) inline.getToken()).booleanValue();
 
         // Analyze type conversions that may be needed.
@@ -299,7 +301,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         // generate type resolution code has to be after
         // fire(), wrapup(), preinit(), init()...
         String typeResolutionCode = generateTypeConvertCode();
-        String globalCode = generateGlobalCode();
+        //String globalCode = generateGlobalCode();
 
         // Include files depends the generated code, so it 
         // has to be generated after everything.
@@ -1149,7 +1151,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             /*CodeGenerator.containsCode(_postfireCode)*/);
 
         } else {
-            // Generate JNI code.
+            // Generate embedded code.
             CodeGeneratorHelper compositeHelper = (CodeGeneratorHelper) _getHelper(model);
             return compositeHelper.generateFireCode();
         }
@@ -1802,7 +1804,7 @@ System.out.println("_generatePreinitializeCode called");
                     }
 
                     codeGenerator._updateParameters(toplevel);
-                    codeGenerator.generateJNI.setExpression("false");
+                    codeGenerator.embeddedCode.setExpression("false");
 
                     try {
                         codeGenerator.generateCode();
@@ -1959,16 +1961,17 @@ System.out.println("_generatePreinitializeCode called");
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** If true, then generate code for that uses the JNI interface.
-     *  The default value is truie and this parameter is not usually
+    /** If true, then generate code for that uses the reflection for Java
+     *  and JNI for C and is embedded within the model 
+     *  The default value is false and this parameter is not usually
      *  editable by the user.  This parameter is set to true when
-     *  CompiledCompositeActor is run in an interpreted Ptolemy model
-     *  and C code is generated and called from Java.  This parameter
+     *  CompiledCompositeActor is run in an interpreted Ptolemy model.
+     *  This parameter
      *  is set to false when a model contains one or more
-     *  CompiledCompositeActors and C code is being generated for the
+     *  CompiledCompositeActors and C or Java code is being generated for the
      *  model.
      */
-    public Parameter generateJNI;
+    public Parameter embeddedCode;
 
     /** If true, generate file with no functions.  If false, generate
      *  file with functions. The default value is a parameter with the
