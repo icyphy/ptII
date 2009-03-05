@@ -1537,14 +1537,7 @@ public class PtParserTokenManager implements PtParserConstants {
                     default:
                         break;
                     }
-                } while (i != startsAt);
-            } else if (curChar < 128) {
-                do {
-                    switch (jjstateSet[--i]) {
-                    default:
-                        break;
-                    }
-                } while (i != startsAt);
+                } while (i != startsAt);            
             } else {
                 do {
                     switch (jjstateSet[--i]) {
