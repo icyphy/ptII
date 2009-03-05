@@ -194,7 +194,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
         ptolemy.codegen.c.actor.TypedCompositeActor compositeActorHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
 
         if (container instanceof CompiledCompositeActor
-                && ((BooleanToken) _codeGenerator.embeddedCode.getToken())
+                && ((BooleanToken) _codeGenerator.generateEmbeddedCode.getToken())
                 .booleanValue()) {
 
             // FindBugs wants this instanceof check.
@@ -343,7 +343,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
         ptolemy.codegen.c.actor.TypedCompositeActor compositeActorHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
 
         if (container instanceof CompiledCompositeActor
-                && ((BooleanToken) _codeGenerator.embeddedCode.getToken())
+                && ((BooleanToken) _codeGenerator.generateEmbeddedCode.getToken())
                 .booleanValue()) {
 
             if (_portNumber == 0) {

@@ -195,7 +195,7 @@ public class TypedCompositeActor extends JavaCodeGeneratorHelper {
         ptolemy.actor.Director director = compositeActor.getDirector();
         Director directorHelper = (Director) _getHelper(director);
         code.append(directorHelper.generateFireFunctionCode());
-        if (!(compositeActor instanceof ptolemy.actor.lib.embeddedJava.CompiledCompositeActor && ((BooleanToken) _codeGenerator.embeddedCode
+        if (!(compositeActor instanceof ptolemy.actor.lib.embeddedJava.CompiledCompositeActor && ((BooleanToken) _codeGenerator.generateEmbeddedCode
                 .getToken()).booleanValue())) {
             code.append(super.generateFireFunctionCode());
         }

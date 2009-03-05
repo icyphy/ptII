@@ -155,11 +155,11 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         generateCpp.setTypeEquals(BaseType.BOOLEAN);
         generateCpp.setExpression("false");
 
-        embeddedCode = new Parameter(this, "embeddedCode");
-        embeddedCode.setTypeEquals(BaseType.BOOLEAN);
-        embeddedCode.setExpression("true");
+        generateEmbeddedCode = new Parameter(this, "generateEmbeddedCode");
+        generateEmbeddedCode.setTypeEquals(BaseType.BOOLEAN);
+        generateEmbeddedCode.setExpression("true");
         // Hide the embeddedCode parameter from the user.
-        embeddedCode.setVisibility(Settable.EXPERT);
+        generateEmbeddedCode.setVisibility(Settable.EXPERT);
 
         inline = new Parameter(this, "inline");
         inline.setTypeEquals(BaseType.BOOLEAN);
@@ -1804,7 +1804,7 @@ System.out.println("_generatePreinitializeCode called");
                     }
 
                     codeGenerator._updateParameters(toplevel);
-                    codeGenerator.embeddedCode.setExpression("false");
+                    codeGenerator.generateEmbeddedCode.setExpression("false");
 
                     try {
                         codeGenerator.generateCode();
@@ -1971,7 +1971,7 @@ System.out.println("_generatePreinitializeCode called");
      *  CompiledCompositeActors and C or Java code is being generated for the
      *  model.
      */
-    public Parameter embeddedCode;
+    public Parameter generateEmbeddedCode;
 
     /** If true, generate file with no functions.  If false, generate
      *  file with functions. The default value is a parameter with the

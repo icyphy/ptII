@@ -171,7 +171,7 @@ public class SDFDirector extends StaticSchedulingDirector {
         ptolemy.codegen.java.actor.TypedCompositeActor compositeActorHelper = (ptolemy.codegen.java.actor.TypedCompositeActor) _getHelper(container);
 
         if (container instanceof CompiledCompositeActor
-                && ((BooleanToken) _codeGenerator.embeddedCode.getToken())
+                && ((BooleanToken) _codeGenerator.generateEmbeddedCode.getToken())
                         .booleanValue()) {
 
             // FindBugs wants this instanceof check.
@@ -272,7 +272,7 @@ public class SDFDirector extends StaticSchedulingDirector {
         ptolemy.codegen.java.actor.TypedCompositeActor compositeActorHelper = (ptolemy.codegen.java.actor.TypedCompositeActor) _getHelper(container);
 
         if (container instanceof CompiledCompositeActor
-                && ((BooleanToken) _codeGenerator.embeddedCode.getToken())
+                && ((BooleanToken) _codeGenerator.generateEmbeddedCode.getToken())
                         .booleanValue()) {
 
             if (_portNumber == 0) {
