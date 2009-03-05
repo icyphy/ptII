@@ -134,16 +134,12 @@ public class FixType extends StructuredType
      */
     public Type divide(Type rightArgumentType) {
         if (rightArgumentType instanceof FixType) {
-            if (rightArgumentType instanceof FixType) {
-                Precision rPrecision = ((FixType) rightArgumentType)
-                        .getPrecision();
-                Precision newPrecision = FixPoint.dividePrecision(rPrecision,
-                        _precision);
-                FixType returnType = new FixType(newPrecision);
-                return returnType;
-            } else {
-                return TypeLattice.leastUpperBound(this, rightArgumentType);
-            }
+            Precision rPrecision = ((FixType) rightArgumentType)
+                    .getPrecision();
+            Precision newPrecision = FixPoint.dividePrecision(rPrecision,
+                    _precision);
+            FixType returnType = new FixType(newPrecision);
+            return returnType;
         } else {
             return TypeLattice.leastUpperBound(this, rightArgumentType);
         }

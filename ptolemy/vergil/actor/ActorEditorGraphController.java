@@ -284,11 +284,9 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
                         } else if (possibleFigure instanceof UserObjectContainer) {
                             // Work our way up the CanvasComponent parent tree
                             // See EditorDropTarget for similar code.
-                           if (possibleFigure instanceof UserObjectContainer) {                            
-                             Object userObject = ((UserObjectContainer) possibleFigure).getUserObject();
-                                if (userObject instanceof Link) {
-                                    link = (Link) userObject;
-                                }
+                            Object userObject = ((UserObjectContainer) possibleFigure).getUserObject();
+                            if (userObject instanceof Link) {
+                                link = (Link) userObject;
                             }
                         }
                     }

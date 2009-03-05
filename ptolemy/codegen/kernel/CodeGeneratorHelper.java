@@ -1160,20 +1160,17 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     public String getSize(String name) throws IllegalActionException {
 
         // Try if the name is a parameter.
-        Attribute attribute = ModelScope.getScopedVariable(null, getComponent(),
+        Variable attribute = ModelScope.getScopedVariable(null, getComponent(),
                 name);
 
         if (attribute != null) {
-            // FIXME:  Could it be something other than variable?
-            if (attribute instanceof Variable) {
-                Token token = ((Variable) attribute).getToken();
+            Token token = attribute.getToken();
 
-                if (token instanceof ArrayToken) {
-                    return String.valueOf(((ArrayToken) token).length());
-                }
-
-                return "1";
+            if (token instanceof ArrayToken) {
+                return String.valueOf(((ArrayToken) token).length());
             }
+
+            return "1";
         } else {
             TypedIOPort port = getPort(name);
             if (port != null) {

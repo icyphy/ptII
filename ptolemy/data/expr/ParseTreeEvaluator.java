@@ -1413,7 +1413,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                         }
                     }
 
-                    if (result == null && object instanceof NamedObj) {
+                    if (result == null) {
                         List attributes = ((NamedObj) object).attributeList(
                                 ContainmentExtender.class);
                         Iterator attrIterator = attributes.iterator();
