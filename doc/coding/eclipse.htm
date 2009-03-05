@@ -418,11 +418,26 @@ See <a href="svn-config-auto-props.txt"><CODE>$PTII/doc/coding/svn-config-auto-p
 The bottom of the <CODE>.subversion/config</CODE> file should look like:
 
 <pre>
+###
+### Settings for your ~/.subversion/config file.  To use this:
+### 1) Edit your ~/.subversion/config file
+### 2) Insert the contents of this file into your
+###    ~/.subversion/config file
+### 3) You must set "enable-auto-props" to yes
+###    BEFORE the [auto-props] line.
+###    _BE_SURE_ to check that [auto-props] does NOT appear twice
+###    If you append the contents of this file at the end
+###    Of your config file, you will need to comment out
+###    the preexisting [auto-props] line.
+
 ### Set enable-auto-props to 'yes' to enable automatic properties
 ### for 'svn add' and 'svn import', it defaults to 'no'.
 ### Automatic properties are defined in the section 'auto-props'.
+### For this to work, the "enable-auto-props = yes" line should
+### be before the "[auto-props]" line.
 enable-auto-props	 = yes
 
+[auto-props]
 ### Section for configuring automatic properties.
 ### The format of the entries is:
 ###   file-name-pattern = propname[=value][;propname[=value]...]

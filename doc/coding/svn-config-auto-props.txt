@@ -1,8 +1,24 @@
 ### $Id$
+### 
+### Settings for your ~/.subversion/config file.  To use this:
+### 1) Edit your ~/.subversion/config file
+### 2) Insert the contents of this file into your
+###    ~/.subversion/config file
+### 3) You must set "enable-auto-props" to yes
+###    BEFORE the [auto-props] line.
+###    _BE_SURE_ to check that [auto-props] does NOT appear twice
+###    If you append the contents of this file at the end
+###    Of your config file, you will need to comment out
+###    the preexisting [auto-props] line.
+
 ### Set enable-auto-props to 'yes' to enable automatic properties
 ### for 'svn add' and 'svn import', it defaults to 'no'.
 ### Automatic properties are defined in the section 'auto-props'.
+### For this to work, the "enable-auto-props = yes" line should
+### be before the "[auto-props]" line.
 enable-auto-props	 = yes
+
+[auto-props]
 
 ### Section for configuring automatic properties.
 ### The format of the entries is:
@@ -11,7 +27,6 @@ enable-auto-props	 = yes
 ### '?').  All entries which match will be applied to the file.
 ### Note that auto-props functionality must be enabled, which
 ### is typically done by setting the 'enable-auto-props' option.
-[auto-props]
 *.MF = svn:eol-style=native;svn:keywords=Author Date Id Revision
 *.aart = svn:eol-style=native;svn:keywords=Author Date Id Revision
 *.ac = svn:eol-style=native;svn:keywords=Author Date Id Revision
