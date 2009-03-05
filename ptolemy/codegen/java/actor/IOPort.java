@@ -538,6 +538,11 @@ public class IOPort extends JavaCodeGeneratorHelper implements PortCodeGenerator
 
     private Receiver _getReceiver(String offset, int channel, ptolemy.actor.IOPort port) {
         Receiver[][] receivers = port.getReceivers();
+        
+        // For output ports getReceivers always returns an empty table.
+        if (receivers.length == 0) {
+            return null;
+        }
 
 	int staticOffset = -1;
         Receiver receiver = null;
@@ -553,11 +558,8 @@ public class IOPort extends JavaCodeGeneratorHelper implements PortCodeGenerator
 	if (staticOffset == -1) {
             // FIXME: Assume all receivers are the same type for the channel.
             // However, this may not be true.
-            if (receivers.length > 0) {
-                receiver = receivers[channel][0];
-            } else {
-                assert false;
-            }
+            assert (receivers.length > 0);
+            receiver = receivers[channel][0];
         }
         return receiver;
     }
