@@ -41,7 +41,6 @@ import ptolemy.data.expr.Variable;
 import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
@@ -195,7 +194,7 @@ public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
                 _expectingClass = false;
 
                 // Create the class.
-                Class newClass = Class.forName(arg);
+                Class<?> newClass = Class.forName(arg);
 
                 // Instantiate the specified class in a new workspace.
                 Workspace workspace = new Workspace();
@@ -204,7 +203,7 @@ public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
                 Class[] argTypes = new Class[1];
                 argTypes[0] = workspace.getClass();
 
-                Constructor constructor = newClass.getConstructor(argTypes);
+                Constructor<?> constructor = newClass.getConstructor(argTypes);
 
                 Object[] args = new Object[1];
                 args[0] = workspace;
@@ -278,16 +277,16 @@ public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
         }
 
         // Check saved options to see whether any is setting an attribute.
-        Iterator names = _parameterNames.iterator();
-        Iterator values = _parameterValues.iterator();
+        Iterator<String> names = _parameterNames.iterator();
+        Iterator<String> values = _parameterValues.iterator();
 
         while (names.hasNext() && values.hasNext()) {
-            String name = (String) names.next();
-            String value = (String) values.next();
+            String name = names.next();
+            String value = values.next();
 
             boolean match = false;
 
-            NamedObj model = _toplevel;
+            CompositeActor model = _toplevel;
             System.out.println("model = " + model.getFullName());
 
             Attribute attribute = model.getAttribute(name);
@@ -302,21 +301,19 @@ public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
                 }
             }
 
-            if (model instanceof CompositeActor) {
-                Director director = ((CompositeActor) model).getDirector();
+            Director director = model.getDirector();
 
-                if (director != null) {
-                    attribute = director.getAttribute(name);
+            if (director != null) {
+                attribute = director.getAttribute(name);
 
-                    if (attribute instanceof Settable) {
-                        match = true;
-                        ((Settable) attribute).setExpression(value);
+                if (attribute instanceof Settable) {
+                    match = true;
+                    ((Settable) attribute).setExpression(value);
 
-                        if (attribute instanceof Variable) {
-                            // Force evaluation so that listeners
-                            // are notified.
-                            ((Variable) attribute).getToken();
-                        }
+                    if (attribute instanceof Variable) {
+                        // Force evaluation so that listeners
+                        // are notified.
+                        ((Variable) attribute).getToken();
                     }
                 }
             }
@@ -392,8 +389,8 @@ public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
     private boolean _expectingClass = false;
 
     // List of parameter names seen on the command line.
-    private List _parameterNames = new LinkedList();
+    private List<String> _parameterNames = new LinkedList<String>();
 
     // List of parameter values seen on the command line.
-    private List _parameterValues = new LinkedList();
+    private List<String> _parameterValues = new LinkedList<String>();
 }
