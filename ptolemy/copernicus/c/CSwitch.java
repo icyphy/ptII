@@ -205,7 +205,6 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         stmt.getRightOp().apply(this);
         stmt.getLeftOp().apply(this);
 
-        StringBuffer code = new StringBuffer();
         String indent = null;
 
         if (indentLevel == 1) {
@@ -237,7 +236,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
 
         // castType makes sure values on left and right are compatible
         // also prevents gcc warnings.
-        code = _pop().append(" = (" + castType + ")").append(_pop());
+        StringBuffer code = _pop().append(" = (" + castType + ")").append(_pop());
 
         // If the right hand side is a newExpr, assign the correct class to
         // the variable on the left-hand-side.
@@ -1380,15 +1379,13 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
             }
         }
 
-        StringBuffer code = new StringBuffer();
-
         expression.getBase().apply(this);
 
         StringBuffer instanceName = _pop();
 
         // We're using the class pointer only for abstract methods.
         // We don't do this if the instance is an array.
-        code = new StringBuffer(instanceName + "->class->methods."
+        StringBuffer code = new StringBuffer(instanceName + "->class->methods."
                 + CNames.methodNameOf(method));
 
         // Default cast is used only if the declaring class does not seem

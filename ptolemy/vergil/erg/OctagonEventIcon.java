@@ -219,9 +219,9 @@ public class OctagonEventIcon extends NameIcon {
 
         double width = backBounds.getWidth() - _spacingValue * 2.0;
         double textWidth = stringBounds.getWidth() + 12.0;
-        double left = backBounds.getX();
+        //double left = backBounds.getX();
         if (textWidth > width) {
-            left += (width - textWidth) / 2.0;
+            //left += (width - textWidth) / 2.0;
             width = textWidth;
         }
         double height = backBounds.getHeight() + stringBounds.getHeight()

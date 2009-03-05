@@ -211,7 +211,8 @@ public class HierarchicalStateController extends StateController {
 
             String choiceName = query.getStringValue("Class");
             String newClass = (String) refinementClasses.get(choiceName);
-
+            
+            /*
             String currentRefinements = state.refinementName.getExpression();
 
             if ((currentRefinements == null) || currentRefinements.equals("")) {
@@ -219,7 +220,8 @@ public class HierarchicalStateController extends StateController {
             } else {
                 currentRefinements = currentRefinements.trim() + ", " + newName;
             }
-
+            */
+            
             // The MoML we create depends on whether the configuration
             // specified a set of prototype refinements.
             Entity template = null;

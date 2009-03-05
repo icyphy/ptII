@@ -650,7 +650,6 @@ public PtalonPopulator() {
 	
 	public final void parameter_declaration(AST _t) throws RecognitionException, PtalonRuntimeException {
 		
-		PtalonAST parameter_declaration_AST_in = (_t == ASTNULL) ? null : (PtalonAST)_t;
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		PtalonAST parameter_declaration_AST = null;
@@ -800,7 +799,6 @@ public PtalonPopulator() {
 	
 	public final void assigned_parameter_declaration(AST _t) throws RecognitionException, PtalonRuntimeException {
 		
-		PtalonAST assigned_parameter_declaration_AST_in = (_t == ASTNULL) ? null : (PtalonAST)_t;
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		PtalonAST assigned_parameter_declaration_AST = null;
@@ -814,7 +812,7 @@ public PtalonPopulator() {
 		PtalonAST e_AST = null;
 		PtalonAST b = null;
 		PtalonAST b_AST = null;
-		PtalonAST q_AST = null;
+		//PtalonAST q_AST = null;
 		PtalonAST q = null;
 		
 		boolean dynamic_name = false;
@@ -970,7 +968,7 @@ public PtalonPopulator() {
 				q = _t==ASTNULL ? null : (PtalonAST)_t;
 				qualified_identifier(_t);
 				_t = _retTree;
-				q_AST = (PtalonAST)returnAST;
+				//q_AST = (PtalonAST)returnAST;
 				astFactory.addASTChild(currentAST, returnAST);
 				
 				if (info.isReady() && !info.isCreated(b.getText())) {
@@ -1000,15 +998,12 @@ public PtalonPopulator() {
 	
 	public final void qualified_identifier(AST _t) throws RecognitionException {
 		
-		PtalonAST qualified_identifier_AST_in = (_t == ASTNULL) ? null : (PtalonAST)_t;
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		PtalonAST qualified_identifier_AST = null;
 		
 		PtalonAST tmp21_AST = null;
-		PtalonAST tmp21_AST_in = null;
 		tmp21_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
-		tmp21_AST_in = (PtalonAST)_t;
 		astFactory.addASTChild(currentAST, tmp21_AST);
 		match(_t,QUALID);
 		_t = _t.getNextSibling();
@@ -1233,7 +1228,6 @@ public PtalonPopulator() {
 	
 	public final void assignment(AST _t) throws RecognitionException, PtalonRuntimeException {
 		
-		PtalonAST assignment_AST_in = (_t == ASTNULL) ? null : (PtalonAST)_t;
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		PtalonAST assignment_AST = null;
@@ -1427,7 +1421,6 @@ public PtalonPopulator() {
  */
 	public final void nested_actor_declaration(AST _t) throws RecognitionException, PtalonRuntimeException {
 		
-		PtalonAST nested_actor_declaration_AST_in = (_t == ASTNULL) ? null : (PtalonAST)_t;
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		PtalonAST nested_actor_declaration_AST = null;
@@ -1484,7 +1477,6 @@ public PtalonPopulator() {
  */
 	public final void actor_declaration(AST _t) throws RecognitionException, PtalonRuntimeException {
 		
-		PtalonAST actor_declaration_AST_in = (_t == ASTNULL) ? null : (PtalonAST)_t;
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		PtalonAST actor_declaration_AST = null;
@@ -1608,7 +1600,6 @@ public PtalonPopulator() {
 	
 	public final void atomic_statement(AST _t) throws RecognitionException, PtalonRuntimeException {
 		
-		PtalonAST atomic_statement_AST_in = (_t == ASTNULL) ? null : (PtalonAST)_t;
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		PtalonAST atomic_statement_AST = null;
@@ -2039,7 +2030,6 @@ public PtalonPopulator() {
 	
 	public final void conditional_statement(AST _t) throws RecognitionException, PtalonRuntimeException {
 		
-		PtalonAST conditional_statement_AST_in = (_t == ASTNULL) ? null : (PtalonAST)_t;
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		PtalonAST conditional_statement_AST = null;
@@ -2225,7 +2215,6 @@ public PtalonPopulator() {
 	
 	public final void iterative_statement(AST _t) throws RecognitionException, PtalonRuntimeException {
 		
-		PtalonAST iterative_statement_AST_in = (_t == ASTNULL) ? null : (PtalonAST)_t;
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		PtalonAST iterative_statement_AST = null;
@@ -2407,7 +2396,6 @@ public PtalonPopulator() {
 	
 	public final void iterative_statement_evaluator(AST _t) throws RecognitionException, PtalonRuntimeException {
 		
-		PtalonAST iterative_statement_evaluator_AST_in = (_t == ASTNULL) ? null : (PtalonAST)_t;
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		PtalonAST iterative_statement_evaluator_AST = null;
@@ -2701,7 +2689,6 @@ public PtalonPopulator() {
 		PtalonEvaluator info
 	) throws RecognitionException, PtalonRuntimeException {
 		
-		PtalonAST actor_definition_AST_in = (_t == ASTNULL) ? null : (PtalonAST)_t;
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		PtalonAST actor_definition_AST = null;

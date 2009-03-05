@@ -334,8 +334,6 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         code.append(_generateBlockCode("preinitBlock"));
         HashSet<Integer> frequencies = _getAllFrequencies();
 
-        StringBuffer frequencyTCode = new StringBuffer();
-
         ArrayList args = new ArrayList();
         args.add("");
 

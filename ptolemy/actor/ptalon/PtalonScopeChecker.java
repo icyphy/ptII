@@ -534,7 +534,6 @@ public class PtalonScopeChecker extends antlr.TreeParser       implements Ptalon
 	
 	public final void parameter_declaration(AST _t) throws RecognitionException, PtalonScopeException {
 		
-		PtalonAST parameter_declaration_AST_in = (_t == ASTNULL) ? null : (PtalonAST)_t;
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		PtalonAST parameter_declaration_AST = null;
@@ -657,7 +656,6 @@ public class PtalonScopeChecker extends antlr.TreeParser       implements Ptalon
 	
 	public final void assigned_parameter_declaration(AST _t) throws RecognitionException, PtalonScopeException {
 		
-		PtalonAST assigned_parameter_declaration_AST_in = (_t == ASTNULL) ? null : (PtalonAST)_t;
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		PtalonAST assigned_parameter_declaration_AST = null;
@@ -672,9 +670,7 @@ public class PtalonScopeChecker extends antlr.TreeParser       implements Ptalon
 		{
 			AST __t26 = _t;
 			PtalonAST tmp30_AST = null;
-			PtalonAST tmp30_AST_in = null;
 			tmp30_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
-			tmp30_AST_in = (PtalonAST)_t;
 			astFactory.addASTChild(currentAST, tmp30_AST);
 			ASTPair __currentAST26 = currentAST.copy();
 			currentAST.root = currentAST.child;
@@ -683,9 +679,7 @@ public class PtalonScopeChecker extends antlr.TreeParser       implements Ptalon
 			_t = _t.getFirstChild();
 			AST __t27 = _t;
 			PtalonAST tmp31_AST = null;
-			PtalonAST tmp31_AST_in = null;
 			tmp31_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
-			tmp31_AST_in = (PtalonAST)_t;
 			astFactory.addASTChild(currentAST, tmp31_AST);
 			ASTPair __currentAST27 = currentAST.copy();
 			currentAST.root = currentAST.child;
@@ -822,7 +816,6 @@ public class PtalonScopeChecker extends antlr.TreeParser       implements Ptalon
 	
 	public final void relation_declaration(AST _t) throws RecognitionException, PtalonScopeException {
 		
-		PtalonAST relation_declaration_AST_in = (_t == ASTNULL) ? null : (PtalonAST)_t;
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		PtalonAST relation_declaration_AST = null;
@@ -986,7 +979,6 @@ public class PtalonScopeChecker extends antlr.TreeParser       implements Ptalon
 	
 	public final void assignment(AST _t) throws RecognitionException, PtalonScopeException {
 		
-		PtalonAST assignment_AST_in = (_t == ASTNULL) ? null : (PtalonAST)_t;
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		PtalonAST assignment_AST = null;
@@ -1179,7 +1171,6 @@ public class PtalonScopeChecker extends antlr.TreeParser       implements Ptalon
 		String paramValue
 	) throws RecognitionException, PtalonScopeException {
 		
-		PtalonAST nested_actor_declaration_AST_in = (_t == ASTNULL) ? null : (PtalonAST)_t;
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		PtalonAST nested_actor_declaration_AST = null;
@@ -1234,7 +1225,6 @@ public class PtalonScopeChecker extends antlr.TreeParser       implements Ptalon
 	
 	public final void actor_declaration(AST _t) throws RecognitionException, PtalonScopeException {
 		
-		PtalonAST actor_declaration_AST_in = (_t == ASTNULL) ? null : (PtalonAST)_t;
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		PtalonAST actor_declaration_AST = null;
@@ -1247,7 +1237,6 @@ public class PtalonScopeChecker extends antlr.TreeParser       implements Ptalon
 		
 		AST __t48 = _t;
 		a = _t==ASTNULL ? null :(PtalonAST)_t;
-		PtalonAST a_AST_in = null;
 		a_AST = (PtalonAST)astFactory.create(a);
 		astFactory.addASTChild(currentAST, a_AST);
 		ASTPair __currentAST48 = currentAST.copy();
@@ -1346,7 +1335,6 @@ public class PtalonScopeChecker extends antlr.TreeParser       implements Ptalon
 	
 	public final void atomic_statement(AST _t) throws RecognitionException, PtalonScopeException {
 		
-		PtalonAST atomic_statement_AST_in = (_t == ASTNULL) ? null : (PtalonAST)_t;
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		PtalonAST atomic_statement_AST = null;
@@ -1727,7 +1715,6 @@ public class PtalonScopeChecker extends antlr.TreeParser       implements Ptalon
 	
 	public final void conditional_statement(AST _t) throws RecognitionException, PtalonScopeException {
 		
-		PtalonAST conditional_statement_AST_in = (_t == ASTNULL) ? null : (PtalonAST)_t;
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		PtalonAST conditional_statement_AST = null;
@@ -1899,7 +1886,6 @@ public class PtalonScopeChecker extends antlr.TreeParser       implements Ptalon
 	
 	public final void iterative_statement(AST _t) throws RecognitionException, PtalonScopeException {
 		
-		PtalonAST iterative_statement_AST_in = (_t == ASTNULL) ? null : (PtalonAST)_t;
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		PtalonAST iterative_statement_AST = null;
@@ -2198,7 +2184,6 @@ public class PtalonScopeChecker extends antlr.TreeParser       implements Ptalon
 		PtalonEvaluator manager
 	) throws RecognitionException, PtalonScopeException {
 		
-		PtalonAST actor_definition_AST_in = (_t == ASTNULL) ? null : (PtalonAST)_t;
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		PtalonAST actor_definition_AST = null;

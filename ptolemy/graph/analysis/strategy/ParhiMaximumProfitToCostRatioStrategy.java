@@ -267,7 +267,7 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
                 delayGraphEdgeProfits));
 
         // creating the cycle that leads to the result
-        edges = graphPlusDelaysAsNodes.edges().toArray();
+        //edges = graphPlusDelaysAsNodes.edges().toArray();
 
         Object[] delayNodes = _delayCycle.toArray();
 

@@ -500,8 +500,7 @@ public class PNDirector extends Director {
 
         List<Actor> actorList = 
             ((CompositeActor) _director.getContainer()).deepEntityList();
-        boolean inline = ((BooleanToken) _codeGenerator.inline.getToken())
-        .booleanValue();
+        //boolean inline = ((BooleanToken) _codeGenerator.inline.getToken()).booleanValue();
 
         // Generate the task function for each actor.
         for (Actor actor : actorList) {
@@ -510,9 +509,9 @@ public class PNDirector extends Director {
             CodeGeneratorHelper helper = 
                 (CodeGeneratorHelper) _getHelper((NamedObj) actor);
 
-            if (!inline) {
+            //if (!inline) {
             //    code.append(helper.generateFireFunctionCode());
-            } 
+            //}
 
             code.append(_eol + "static void " + 
                     _getActorTaskLabel(actor) + "(void* arg) {" + _eol);

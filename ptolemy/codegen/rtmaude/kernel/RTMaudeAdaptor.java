@@ -25,7 +25,6 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
         StringBuffer code = new StringBuffer();
         StringBuffer parameterCode = new StringBuffer();
         StringBuffer portCode = new StringBuffer();
-        NamedObj actor = (NamedObj) getComponent();
         
         List<Variable> parameters = (List<Variable>) _getParameters();
         

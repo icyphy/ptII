@@ -102,13 +102,12 @@ public class ReaderProcessWriter {
             SoundWriter soundWriter = new SoundWriter(writeFile, sampleRate,
                     bitsPerSample, channels, putSamplesSize);
 
-            double[][] capturedSamplesArray = new double[channels][getSamplesSize];
             boolean done = false;
 
             // The main loop.
             while (!done) {
                 // Read in some audio samples.
-                capturedSamplesArray = soundReader.getSamples();
+                double[][] capturedSamplesArray = soundReader.getSamples();
 
                 if (_debug) {
                     System.out.println("Read some samples...");

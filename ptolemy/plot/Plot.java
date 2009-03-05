@@ -2450,7 +2450,7 @@ public class Plot extends PlotBox {
         
         if (nbrOfBins == 0 || lastBin.xpos != xpos) { 
             // Does not fall within last bin => add one bin
-            nbrOfBins += 1;
+            // nbrOfBins += 1;
             lastBin = new Bin(xpos);
             bins.add(lastBin);                                       
         }

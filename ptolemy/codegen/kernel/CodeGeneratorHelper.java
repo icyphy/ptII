@@ -713,7 +713,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         String includeFilesString = codeStream.toString();
 
         if (includeFilesString.length() > 0) {
-            LinkedList includeFilesList = new LinkedList();
+            LinkedList includeFilesList = null;
             try {
                 includeFilesList = StringUtilities
                 .readLines(includeFilesString);
@@ -740,7 +740,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         String includeDirectoriesString = codeStream.toString();
 
         if (includeDirectoriesString.length() > 0) {
-            LinkedList includeDirectoriesList = new LinkedList();
+            LinkedList includeDirectoriesList = null;
             try {
                 includeDirectoriesList = StringUtilities
                 .readLines(includeDirectoriesString);
@@ -767,7 +767,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         String librariesString = codeStream.toString();
 
         if (librariesString.length() > 0) {
-            LinkedList librariesList = new LinkedList();
+            LinkedList librariesList = null;
             try {
                 librariesList = StringUtilities.readLines(librariesString);
             } catch (IOException e) {
@@ -793,7 +793,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         String libraryDirectoriesString = codeStream.toString();
 
         if (libraryDirectoriesString.length() > 0) {
-            LinkedList libraryDirectoryList = new LinkedList();
+            LinkedList libraryDirectoryList = null;
             try {
                 libraryDirectoryList = StringUtilities
                 .readLines(libraryDirectoriesString);
