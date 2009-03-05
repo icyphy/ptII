@@ -42,7 +42,7 @@ import ptolemy.kernel.util.IllegalActionException;
  A helper class for ptolemy.actor.lib.gui.TimedPlotter.
 
  @author Shanna-Shaye Forbes
- @version $Id: TimedPlotter.java 50322 2008-08-07 13:53:48Z cxh $
+ @version $Id$
  @since Ptolemy II 7.2
  @Pt.ProposedRating Red
  @Pt.AcceptedRating Red

@@ -1,6 +1,6 @@
 # Makefile for Ptolemy II style Codegen
 #
-# @Version: $Id: makefile 51960 2008-12-24 20:05:20Z cxh $
+# @Version: $Id$
 # @Author: Man-Kit Leung
 #
 # @Copyright (c) 2008 The Regents of the University of California

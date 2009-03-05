@@ -50,7 +50,7 @@ import ptolemy.kernel.util.InternalErrorException;
  is also associated with a code generator.
 
  @author Man-Kit Leung
- @version $Id: SRDirector.java 50870 2008-10-22 15:05:00Z cxh $
+ @version $Id$
  @since Ptolemy II 7.2
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)

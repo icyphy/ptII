@@ -61,7 +61,7 @@ import ptolemy.vergil.properties.ModelAttributeController;
 
 
  @author Man-Kit Leung
- @version $Id: TransformationAttribute.java 52184 2009-01-25 01:32:08Z tfeng $
+ @version $Id$
  @since Ptolemy II 7.1
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)

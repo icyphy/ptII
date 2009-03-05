@@ -35,7 +35,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * @author Man-kit Leung
- * @version $Id: PortCodeGenerator.java 52207 2009-01-27 03:43:37Z cxh $
+ * @version $Id$
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)

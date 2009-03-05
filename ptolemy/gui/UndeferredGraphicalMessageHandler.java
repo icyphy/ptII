@@ -69,7 +69,7 @@ import ptolemy.util.StringUtilities;
  class.
 
  @author  Edward A. Lee, Steve Neuendorffer, John Reekie, and Elaine Cheong
- @version $Id: GraphicalMessageHandler.java 47513 2007-12-07 06:32:21Z cxh $
+ @version $Id$
  @since Ptolemy II 1.0
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (reviewmoderator)

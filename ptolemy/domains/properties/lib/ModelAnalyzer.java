@@ -49,7 +49,7 @@ that are to be applied to the model. This can be used, for
 example, to create animations.
 
 @author  Man-Kit Leung
-@version $Id: ModelAnalyzer.java 52327 2009-02-04 22:49:10Z mankit $
+@version $Id$
 @since Ptolemy II 6.0
 @Pt.ProposedRating Yellow (eal)
 @Pt.AcceptedRating Red (cxh)

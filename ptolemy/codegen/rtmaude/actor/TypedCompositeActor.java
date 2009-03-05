@@ -35,7 +35,7 @@ package ptolemy.codegen.rtmaude.actor;
  Code generator helper for typed composite actor.
 
  @author Man-Kit Leung
- @version $Id: TypedCompositeActor.java 51868 2008-12-15 06:10:30Z mankit $
+ @version $Id$
  @since Ptolemy II 7.2
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (zgang)

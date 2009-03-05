@@ -38,7 +38,7 @@ import ptolemy.kernel.util.NamedObj;
 /** FIXME: class comments needed.
  *
  *  @author Man-Kit Leung
- *  @version $Id: DirectorCodeGenerator.java 51851 2008-12-11 22:30:05Z mankit $
+ *  @version $Id$
  *  @since Ptolemy II 7.2
  *  @Pt.ProposedRating Red (mankit)
  *  @Pt.AcceptedRating Red (mankit)

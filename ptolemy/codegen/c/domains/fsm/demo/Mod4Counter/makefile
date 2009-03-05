@@ -1,6 +1,6 @@
 # Makefile for Ptolemy Classic style Codegen Mod4Counter
 #
-# @Version: $Id: makefile 44201 2006-10-27 22:10:06Z cxh $
+# @Version: $Id$
 # @Author: Hiren Patel
 #
 # @Copyright (c) 2006 The Regents of the University of California

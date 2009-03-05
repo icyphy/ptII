@@ -60,7 +60,7 @@ import ptolemy.moml.MoMLParser;
 
 
  @author Thomas Huining Feng
- @version $Id: FileUpdater.java 50653 2008-09-16 15:14:25Z cxh $
+ @version $Id$
  @since Ptolemy II 7.1
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)

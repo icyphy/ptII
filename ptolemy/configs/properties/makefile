@@ -2,7 +2,7 @@
 #
 # @Authors: Man-Kit Leung
 #
-# @Version: $Id: makefile 52077 2009-01-15 21:06:31Z tfeng $
+# @Version: $Id$
 #
 # @Copyright (c) 2002-2007 The Regents of the University of California.
 # All rights reserved.

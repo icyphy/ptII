@@ -47,7 +47,7 @@ import ptolemy.util.StringUtilities;
  * A extended base abstract class for a property solver.
  * 
  * @author Man-Kit Leung
- * @version $Id: PropertySolver.java 52224 2009-01-28 19:40:52Z mankit $
+ * @version $Id$
  * @since Ptolemy II 7.2
  * @Pt.ProposedRating Red (mankit)
  * @Pt.AcceptedRating Red (mankit)
@@ -82,7 +82,7 @@ public class PropertySolverTester {
             System.out
                     .println("Version "
                             + VersionAttribute.CURRENT_VERSION.getExpression()
-                            + ", Build $Id: PropertySolver.java 52224 2009-01-28 19:40:52Z mankit $");
+                            + ", Build $Id$");
 
             StringUtilities.exit(0);
             // If we are testing, and ptolemy.ptII.exitAfterWrapup is set

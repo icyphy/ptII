@@ -36,7 +36,7 @@ import ptolemy.kernel.util.IllegalActionException;
 /** FIXME: class comments needed.
  *
  *  @author Man-kit Leung
- *  @version $Id: ActorCodeGenerator.java 51851 2008-12-11 22:30:05Z mankit $
+ *  @version $Id$
  *  @since Ptolemy II 6.0
  *  @Pt.ProposedRating Yellow (eal)
  *  @Pt.AcceptedRating Yellow (eal)
