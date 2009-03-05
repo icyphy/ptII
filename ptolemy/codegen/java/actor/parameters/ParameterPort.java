@@ -31,7 +31,7 @@ import ptolemy.codegen.java.actor.TypedIOPort;
 
 
 /**
-Code generator helper for {@link ptolemy.actor.parameter.ParameterPort}.
+Code generator helper for {@link ptolemy.actor.parameters.ParameterPort}.
 
 @author Man-Kit Leung
 @version $Id$
