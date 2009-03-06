@@ -425,16 +425,16 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
 */
 
 
-    public String generatePostFireCode() throws IllegalActionException{
+    public String generatePostfireCode() throws IllegalActionException{
         StringBuffer code = new StringBuffer();
-        System.out.println("generatePostFireCode from openRTOS giotto director called here");
+        System.out.println("generatePostfireCode from openRTOS giotto director called here");
         
 
         for (Actor actor : (List<Actor>) 
                 ((TypedCompositeActor) _director.getContainer()).deepEntityList()) {
 
             //for each of the actors generate postfire code
-            //code.append(generatePostFireCode(actor)); 
+            //code.append(generatePostfireCode(actor)); 
         }
 
         return code.toString();
