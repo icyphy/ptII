@@ -15,6 +15,27 @@ Contents
 <li> <a href="#remoteresources">Remote resources</a>
 </menu>
 
+<h2><a name="Overview">Overview</a></h2>
+When a model is run, some run data is printed
+to stdout, such as:
+<pre>
+2212 ms. Memory: 31664K Free: 7107K (22%)
+</pre>
+
+This data is printed by ptolemy.actor.Manager, which has methods
+such as <code>timeAndMemory()</code>
+
+<p>To measure the time of an execution within a model, you could use
+the WallClockTime actor, see
+
+<p>The Expression Language also has totalMemory and freeMemory variables
+that can be accessed, though the values tend to get cached, so they
+are not always updated during the execution of a system.
+
+To do performance measurements, run models
+<a href="../ptIIfaq.htm#invoking Ptolemy II">without a GUI</a> and then do several runs, tossing out the times for the
+first run.  $PTII/ptolemy/actor/lib/test/performance, has some scripts that might be of use.
+
 <h2><a name="Models">Models</a></h2>
 <menu>
 <li> <a href="../../ptolemy/actor/lib/test/performance/"><CODE>ptolemy/actor/lib/test/performance/</CODE></a> 
