@@ -350,6 +350,13 @@ public class PropertyClassChanges implements MoMLFilter {
 
         _actorsWithPropertyClassChanges.put("ptolemy.actor.lib.gui.Display",
                 displayClassChanges);
+        
+        _actorsWithPropertyClassChanges.put("ptolemy.domains.sr.lib.gui.NonStrictDisplay",
+                displayClassChanges);
+
+        _actorsWithPropertyClassChanges.put("ptolemy.domains.dt.kernel.text.TimedDisplay",
+                displayClassChanges);
+
 
         // Expression
         // This is a second generation change.
