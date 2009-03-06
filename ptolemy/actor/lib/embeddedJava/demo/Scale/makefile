@@ -48,9 +48,7 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	Scale.xml \
-	ScaleWithEmbeddedCFileActor.xml \
-	codeForScaleWithECFADemo.c 
+	Scale.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
