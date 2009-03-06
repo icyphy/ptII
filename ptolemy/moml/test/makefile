@@ -137,9 +137,16 @@ test_java: jclass
 # PtolemyII-wide test definitions.
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
+USED_CLASSES = $(ROOT)/ptolemy/vergil/toolbox/AnnotationEditorFactory.class
+
 # These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
+test_jsimple: $(EXTRA_SRCS) jclass $(USED_CLASSES) $(KERNEL_TESTDEFS) alljtests.tcl
 	$(JTCLSH) alljtests.tcl 
+
+# If "make sources" fails during the build, then 
+# AnnotationEditorFactory might not be present
+$(ROOT)/ptolemy/vergil/toolbox/AnnotationEditorFactory.class: $(ROOT)/ptolemy/vergil/toolbox/AnnotationEditorFactory.java
+	(cd $(ROOT)/ptolemy/vergil/toolbox; $(MAKE))
 
 # Run vergil on each of the demos in compatDemo
 demo: compatDemo
