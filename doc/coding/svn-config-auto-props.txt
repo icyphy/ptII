@@ -27,6 +27,12 @@ enable-auto-props	 = yes
 ### '?').  All entries which match will be applied to the file.
 ### Note that auto-props functionality must be enabled, which
 ### is typically done by setting the 'enable-auto-props' option.
+###
+### NOTE: There is a bug in svn-1.5 and earlier where lines
+### that differ only in case cause problems - only the first
+### line is read.  See
+### http://subversion.tigris.org/issues/show_bug.cgi?id=2036
+### 
 *.MF = svn:eol-style=native;svn:keywords=Author Date Id Revision
 *.aart = svn:eol-style=native;svn:keywords=Author Date Id Revision
 *.ac = svn:eol-style=native;svn:keywords=Author Date Id Revision
@@ -152,9 +158,10 @@ enable-auto-props	 = yes
 INSTALL = svn:eol-style=native;svn:keywords=Author Date Id Revision
 KEYS = svn:eol-style=native;svn:keywords=Author Date Id Revision
 LICENSE = svn:eol-style=native;svn:keywords=Author Date Id Revision
+makefile = svn:eol-style=native;svn:keywords=Author Date Id Revision
 Makefile = svn:eol-style=native;svn:keywords=Author Date Id Revision
 NOTICE = svn:eol-style=native;svn:keywords=Author Date Id Revision
 README = svn:eol-style=native;svn:keywords=Author Date Id Revision
 abs-linkmap = svn:eol-style=native;svn:keywords=Author Date Id Revision
 abs-menulinks = svn:eol-style=native;svn:keywords=Author Date Id Revision
-makefile = svn:eol-style=native;svn:keywords=Author Date Id Revision
+
