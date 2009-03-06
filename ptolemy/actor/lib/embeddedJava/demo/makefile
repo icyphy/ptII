@@ -1,6 +1,6 @@
 # Makefile for Ptolemy II Java Native Interface (JNI) demos
 #
-# @Version: $Id: makefile 47844 2008-01-23 18:09:00Z cxh $
+# @Version: $Id$
 # @Author: Christopher Brooks (makefile only)
 #
 # @Copyright (c) 2007-2008 The Regents of the University of California.
