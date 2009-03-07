@@ -1,6 +1,6 @@
 # Makefile for helper classes that match ptolemy.actor.lib.java classes
 #
-# @Version: $Id: makefile 50375 2008-08-09 11:25:41Z cxh $
+# @Version: $Id$
 # @Author: Christopher Brooks
 #
 # @Copyright (c) 2007 The Regents of the University of California
