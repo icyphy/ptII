@@ -2931,21 +2931,16 @@ public class PlotBox extends JPanel implements Printable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
+
     // The range of the data to be plotted.
     protected transient double _yMax = 0;
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
     // The range of the data to be plotted.
     protected transient double _yMin = 0;
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
     // The range of the data to be plotted.
     protected transient double _xMax = 0;
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
     // The range of the data to be plotted.
     protected transient double _xMin = 0;
 
