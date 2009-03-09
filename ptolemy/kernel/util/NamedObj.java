@@ -272,7 +272,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         } else {
             synchronized (_changeLock) {
                 if (_changeListeners == null) {
-                    _changeListeners = new LinkedList();
+                    _changeListeners = new LinkedList<WeakReference<ChangeListener>>();
                 } else {
                     // In case there is a previous instance, remove it.
                     removeChangeListener(listener);
@@ -358,8 +358,8 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                 _attributes = new NamedList();
             }
 
-            List result = new LinkedList();
-            Iterator attributes = _attributes.elementList().iterator();
+            List<Object> result = new LinkedList<Object>();
+            Iterator<?> attributes = _attributes.elementList().iterator();
 
             while (attributes.hasNext()) {
                 Object attribute = attributes.next();
@@ -465,7 +465,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             newObject._fullNameVersion = -1;
 
             if (_attributes != null) {
-                Iterator parameters = _attributes.elementList().iterator();
+                Iterator<?> parameters = _attributes.elementList().iterator();
 
                 while (parameters.hasNext()) {
                     Attribute parameter = (Attribute) parameters.next();
@@ -501,7 +501,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             // to clone the list in case it is later modified in the source
             // of the clone.
             if (_override != null) {
-                newObject._override = new LinkedList(_override);
+                newObject._override = new LinkedList<Integer>(_override);
             }
 
             // NOTE: The value for the classname and superclass isn't
@@ -1138,7 +1138,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             String fullName = getName();
 
             // Use a hash set to keep track of what we've seen already.
-            Set visited = new HashSet();
+            Set<Nameable> visited = new HashSet<Nameable>();
             visited.add(this);
 
             Nameable container = getContainer();
@@ -1222,7 +1222,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             StringBuffer name = new StringBuffer(getName());
 
             // Use a hash set to keep track of what we've seen already.
-            Set visited = new HashSet();
+            Set<Nameable> visited = new HashSet<Nameable>();
             visited.add(this);
 
             Nameable container = getContainer();
@@ -1271,7 +1271,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @see Derivable
      */
     public List getPrototypeList() throws IllegalActionException {
-        List result = new LinkedList();
+        List<NamedObj> result = new LinkedList<NamedObj>();
         NamedObj container = getContainer();
         String relativeName = getName();
 
@@ -1559,7 +1559,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      */
     public List propagateValue() throws IllegalActionException {
         // Mark this object as having been modified directly.
-        _override = new LinkedList();
+        _override = new LinkedList<Integer>();
         _override.add(Integer.valueOf(0));
 
         return _getDerivedList(null, true, false, this, 0, _override, null);
@@ -1583,7 +1583,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             _getDerivedList(null, true, false, this, 0, _override, null);
         }
 
-        Iterator containedObjects = containedObjectsIterator();
+        Iterator<?> containedObjects = containedObjectsIterator();
 
         while (containedObjects.hasNext()) {
             NamedObj containedObject = (NamedObj) containedObjects.next();
@@ -1606,11 +1606,10 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         } else {
             synchronized (_changeLock) {
                 if (_changeListeners != null) {
-                    ListIterator listeners = _changeListeners.listIterator();
+                    ListIterator<WeakReference<ChangeListener>> listeners = _changeListeners.listIterator();
 
                     while (listeners.hasNext()) {
-                        WeakReference reference = (WeakReference) listeners
-                                .next();
+                        WeakReference<ChangeListener> reference = listeners.next();
 
                         if (reference.get() == listener) {
                             listeners.remove();
@@ -1678,7 +1677,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                 // Queue the request.
                 // Create the list of requests if it doesn't already exist
                 if (_changeRequests == null) {
-                    _changeRequests = new LinkedList();
+                    _changeRequests = new LinkedList<ChangeRequest>();
                 }
 
                 _changeRequests.add(change);
@@ -1915,8 +1914,8 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *   in the specified filter, or an empty list if there are none.
      */
     public List sortContainedObjects(Collection filter) {
-        LinkedList result = new LinkedList();
-        Iterator containedObjects = containedObjectsIterator();
+        LinkedList<NamedObj> result = new LinkedList<NamedObj>();
+        Iterator<?> containedObjects = containedObjectsIterator();
 
         while (containedObjects.hasNext()) {
             NamedObj object = (NamedObj) containedObjects.next();
@@ -1988,7 +1987,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  the deeply contained attributes.
      */
     public void validateSettables() throws IllegalActionException {
-        _validateSettables(new HashSet());
+        _validateSettables(new HashSet<Settable>());
     }
 
     /** Get the workspace. This method never returns null, since there
@@ -2105,7 +2104,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             int breadth = ((Integer) _override.get(depth)).intValue();
             _override.set(depth, Integer.valueOf(breadth + 1));
         }
-        Iterator objects = lazyContainedObjectsIterator();
+        Iterator<?> objects = lazyContainedObjectsIterator();
         while (objects.hasNext()) {
             NamedObj object = (NamedObj) objects.next();
             object._adjustOverride(depth + 1);
@@ -2158,7 +2157,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         // If the new object has any public fields whose name
         // matches that of an attribute, then set the public field
         // equal to the attribute.
-        Class myClass = getClass();
+        Class<? extends NamedObj> myClass = getClass();
         Field[] fields = myClass.getFields();
 
         for (int i = 0; i < fields.length; i++) {
@@ -2197,18 +2196,16 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             // while the execution thread is blocked, we want to be able to
             // add more debug listeners...
             // Yes, this is slow, but hey, it's debug code.
-            List list;
+            List<DebugListener> list;
 
             // NOTE: This used to synchronize on this, which caused
             // deadlocks.  We use a more specialized lock now.
             synchronized (_debugListeners) {
-                list = new ArrayList(_debugListeners);
+                list = new ArrayList<DebugListener>(_debugListeners);
             }
 
-            Iterator listeners = list.iterator();
-
-            while (listeners.hasNext()) {
-                ((DebugListener) listeners.next()).event(event);
+            for (DebugListener listener: list) {
+                listener.event(event);
             }
         }
     }
@@ -2224,18 +2221,16 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             // while the execution thread is blocked, we want to be able to
             // add more debug listeners...
             // Yes, this is slow, but hey, it's debug code.
-            List list;
+            List<DebugListener> list;
 
             // NOTE: This used to synchronize on this, which caused
             // deadlocks.  We use a more specialized lock now.
             synchronized (_debugListeners) {
-                list = new ArrayList(_debugListeners);
+                list = new ArrayList<DebugListener>(_debugListeners);
             }
 
-            Iterator listeners = list.iterator();
-
-            while (listeners.hasNext()) {
-                ((DebugListener) listeners.next()).message(message);
+            for (DebugListener listener: list) {
+                listener.message(message);
             }
         }
     }
@@ -2338,7 +2333,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                 }
 
                 if (_attributes != null) {
-                    Iterator parameters = _attributes.elementList().iterator();
+                    Iterator<?> parameters = _attributes.elementList().iterator();
 
                     while (parameters.hasNext()) {
                         Attribute parameter = (Attribute) parameters.next();
@@ -2389,7 +2384,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         // Callers of this method should hold read access 
         // so as to avoid ConcurrentModificationException.
         if (_attributes != null) {
-            Iterator attributes = _attributes.elementList().iterator();
+            Iterator<?> attributes = _attributes.elementList().iterator();
 
             while (attributes.hasNext()) {
                 Attribute attribute = (Attribute) attributes.next();
@@ -2491,7 +2486,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
 
         // If any contained object wishes to have
         // MoML exported, then this object will export MoML.
-        Iterator objects = containedObjectsIterator();
+        Iterator<?> objects = containedObjectsIterator();
 
         while (objects.hasNext()) {
             NamedObj object = (NamedObj) objects.next();
@@ -2523,7 +2518,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
     protected void _markContentsDerived(int depth) {
         depth = depth + 1;
 
-        Iterator objects = lazyContainedObjectsIterator();
+        Iterator<?> objects = lazyContainedObjectsIterator();
 
         while (objects.hasNext()) {
             NamedObj containedObject = (NamedObj) objects.next();
@@ -2682,14 +2677,14 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      */
     protected void _validateSettables(Collection attributesValidated)
             throws IllegalActionException {
-        Iterator attributes = attributeList(Settable.class).iterator();
+        Iterator<Object> attributes = attributeList(Settable.class).iterator();
         while (attributes.hasNext()) {
             Settable attribute = (Settable) attributes.next();
             if (attributesValidated.contains(attribute)) {
                 continue;
             }
             try {
-                Collection validated = (attribute).validate();
+                Collection<Settable> validated = (attribute).validate();
                 if (validated != null) {
                     attributesValidated.addAll(validated);
                 }
@@ -2790,13 +2785,13 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @exception IllegalActionException If propagate is true
      *   and propagation fails.
      */
-    private List _getDerivedList(Collection visited, boolean propagate,
-            boolean force, NamedObj context, int depth, List override,
+    private List<NamedObj> _getDerivedList(Collection<NamedObj> visited, boolean propagate,
+            boolean force, NamedObj context, int depth, List<Integer> override,
             String relativeName) throws IllegalActionException {
         try {
             workspace().getReadAccess();
 
-            LinkedList result = new LinkedList();
+            LinkedList<NamedObj> result = new LinkedList<NamedObj>();
 
             // We may have visited this container already, in
             // which case the propagation has occurred already.
@@ -2809,7 +2804,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             // go any further up the containment tree, since
             // the previous occurrence would have taken care of that.
             if (visited == null) {
-                visited = new HashSet();
+                visited = new HashSet<NamedObj>();
             } else {
                 if (visited.contains(context)) {
                     return result;
@@ -2832,10 +2827,10 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                 }
 
                 // Create a new override list to pass to the container.
-                List newOverride = null;
+                List<Integer> newOverride = null;
 
                 if (propagate) {
-                    newOverride = new LinkedList(override);
+                    newOverride = new LinkedList<Integer>(override);
 
                     // If the override list is not long enough for the
                     // new depth, make it long enough. It should at most
@@ -2863,12 +2858,12 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             }
 
             // Iterate over the children.
-            List othersList = ((Instantiable) context).getChildren();
+            List<?> othersList = ((Instantiable) context).getChildren();
             if (othersList != null) {
-                Iterator others = othersList.iterator();
+                Iterator<?> others = othersList.iterator();
 
                 while (others.hasNext()) {
-                    WeakReference reference = (WeakReference) others.next();
+                    WeakReference<?> reference = (WeakReference<?>) others.next();
                     NamedObj other = (NamedObj) reference.get();
                     if (other != null) {
                         // Found a deferral.
@@ -2950,7 +2945,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                             continue;
                         }
 
-                        List newOverride = null;
+                        List<Integer> newOverride = null;
 
                         // If the propagate argument is true, then
                         // determine whether the candidate object is
@@ -2959,7 +2954,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                         if (propagate) {
                             // Is it shadowed?  Create a new override
                             // list to pass to the candidate.
-                            newOverride = new LinkedList(override);
+                            newOverride = new LinkedList<Integer>(override);
                             newOverride.set(depth, Integer
                                     .valueOf(myBreadth + 1));
 
@@ -3009,7 +3004,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @param changer The override list for a path for the change.
      *  @return True if the candidate is shadowed.
      */
-    private boolean _isShadowed(List candidate, List changer) {
+    private boolean _isShadowed(List<Integer> candidate, List<Integer> changer) {
         if (candidate == null) {
             return false;
         }
@@ -3101,7 +3096,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
     /** List indicating whether and how this derived
      *  object has been modified.
      */
-    private List _override = null;
+    private List<Integer> _override = null;
 
     /** The value for the source MoML attribute. */
     private String _source;
@@ -3156,7 +3151,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             //_attributeListIterator.remove();
         }
 
-        private Iterator _attributeListIterator = null;
+        private Iterator<?> _attributeListIterator = null;
     }
 
     /** Serializable version of the Java Object class. */
