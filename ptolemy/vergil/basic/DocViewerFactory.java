@@ -100,17 +100,18 @@ public class DocViewerFactory extends EditorFactory {
             DocAttribute doc = (DocAttribute) docAttributes.get(0);
             if (!(parent instanceof TableauFrame)) {
                 MessageHandler.error("Cannot display documentation!");
-            }
-            Effigy effigy = ((TableauFrame) parent).getEffigy();
-            try {
-                DocEffigy newEffigy = new DocEffigy((CompositeEntity) effigy
-                        .getContainer(), effigy.getContainer().uniqueName(
-                        "parentClass"));
-                newEffigy.setDocAttribute(doc);
-                DocTableau tableau = new DocTableau(newEffigy, "docTableau");
-                tableau.show();
-            } catch (KernelException e) {
-                MessageHandler.error("Error opening documentation", e);
+            } else {
+                Effigy effigy = ((TableauFrame) parent).getEffigy();
+                try {
+                    DocEffigy newEffigy = new DocEffigy((CompositeEntity) effigy
+                            .getContainer(), effigy.getContainer().uniqueName(
+                            "parentClass"));
+                    newEffigy.setDocAttribute(doc);
+                    DocTableau tableau = new DocTableau(newEffigy, "docTableau");
+                    tableau.show();
+                } catch (KernelException e) {
+                    MessageHandler.error("Error opening documentation", e);
+                }
             }
             return;
         }

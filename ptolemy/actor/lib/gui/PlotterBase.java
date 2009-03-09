@@ -347,6 +347,10 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
         }
 
         if (_container instanceof PlotBox) {
+            // According to FindBugs the cast is an error:
+            //  [M D BC] Unchecked/unconfirmed cast [BC_UNCONFIRMED_CAST]
+            // However it is checked that _container instanceof PlotBox,
+            // so FindBugs is wrong.
             plot = (PlotBox) _container;
             plot.setButtons(true);
         } else {
