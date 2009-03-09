@@ -2932,27 +2932,29 @@ public class PlotBox extends JPanel implements Printable {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    // The range of the data to be plotted.
+    /** The maximum y value of the range of the data to be plotted. */
     protected transient double _yMax = 0;
 
-    // The range of the data to be plotted.
+    /** The minimum y value of the range of the data to be plotted. */
     protected transient double _yMin = 0;
 
-    // The range of the data to be plotted.
+    /** The maximum x value of the range of the data to be plotted. */
     protected transient double _xMax = 0;
 
-    // The range of the data to be plotted.
+    /** The minimum y valud of the range of the data to be plotted. */
     protected transient double _xMin = 0;
 
     /** The factor we pad by so that we don't plot points on the axes.
      */
     protected double _padding = 0.05;
 
-    // Whether the ranges have been given.
+    /** True if the x range have been given. */
     protected transient boolean _xRangeGiven = false;
 
+    /** True if the y range have been given. */
     protected transient boolean _yRangeGiven = false;
 
+    /** True if the ranges were given by zooming. */
     protected transient boolean _rangesGivenByZooming = false;
 
     /** The given X and Y ranges.
@@ -3049,10 +3051,16 @@ public class PlotBox extends JPanel implements Printable {
     // The naming convention is: "_ulx" = "upper left x", where "x" is
     // the horizontal dimension.
 
-    /** The x value of the upper left corner of the plot rectangle in pixels. */
+    /** The x value of the upper left corner of the plot rectangle in pixels.
+     *  Given a mouse click at x0, to convert to data coordinates, use:
+     *  (_xMin + (x0 - _ulx) / _xscale).
+     */
     protected int _ulx = 1;
 
-    /** The y value of the upper left corner of the plot rectangle in pixels. */
+    /** The y value of the upper left corner of the plot rectangle in pixels.
+     *  Given a mouse click at y0, to convert to data coordinates, use:
+     *  (_yMax - (y0 - _uly) / _yscale).
+     */ 
     protected int _uly = 1;
 
     /** The x value of the lower right corner of
@@ -4372,6 +4380,15 @@ public class PlotBox extends JPanel implements Printable {
                     || (event.getModifiers() == 0)) {
                 PlotBox.this._zoomStart(event.getX(), event.getY());
             }
+	    // Want to convert from mouse presses to data points?
+	    // Comment out the if clause above and uncomment this println:
+	    //System.out.println("PlotBox.mousePressed(): ("
+	    //		       + event.getX() + ", " + event.getY()
+            //		       + ") = ("
+            //		       + (_xMin + ((event.getX() - _ulx) / _xscale))
+            //		       + ", "
+            //		       + (_yMax - ((event.getY() - _uly) / _yscale))
+	    //                 + ")");
         }
 
         public void mouseReleased(MouseEvent event) {
