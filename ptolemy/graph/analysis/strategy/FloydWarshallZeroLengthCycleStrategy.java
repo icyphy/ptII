@@ -27,7 +27,7 @@ package ptolemy.graph.analysis.strategy;
 
 import ptolemy.graph.DirectedGraph;
 import ptolemy.graph.Graph;
-import ptolemy.graph.analysis.analyzer.NegativeLengthCycleAnalyzer;
+import ptolemy.graph.analysis.analyzer.ZeroLengthCycleAnalyzer;
 import ptolemy.graph.mapping.ToDoubleMapping;
 
 //////////////////////////////////////////////////////////////////////////
@@ -41,11 +41,11 @@ import ptolemy.graph.mapping.ToDoubleMapping;
  @since Ptolemy II 4.0
  @Pt.ProposedRating Red (shahrooz)
  @Pt.AcceptedRating Red (ssb)
- @author Shahrooz Shahparnia
+ @author Shahrooz Shahparnia, Nimish Sane
  @version $Id$
  */
 public class FloydWarshallZeroLengthCycleStrategy extends CachedStrategy
-        implements NegativeLengthCycleAnalyzer {
+        implements ZeroLengthCycleAnalyzer {
     /** Constructs negative cycle detection analyzer for a given graph and
      *  given edge values.
      *
@@ -67,7 +67,7 @@ public class FloydWarshallZeroLengthCycleStrategy extends CachedStrategy
      *
      *  @return True if the graph has a zero length cycle.
      */
-    public boolean hasNegativeLengthCycle() {
+    public boolean hasZeroLengthCycle() {
         return ((Boolean) _result()).booleanValue();
     }
 
