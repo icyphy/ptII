@@ -623,7 +623,9 @@ public class IORelation extends ComponentRelation {
         }
 
         // Invalidate schedule and type resolution of the new container.
-        if (container instanceof CompositeActor) {
+        
+        // Either container == null or container instanceof CompositeActor == true
+        if (container != null) {
             Director director = ((CompositeActor) container).getDirector();
 
             if (director != null) {
@@ -923,7 +925,7 @@ public class IORelation extends ComponentRelation {
         if (version != _inferredWidthVersion) {
             _inferredWidth = 1;
 
-            Iterator ports = linkedPortList().iterator();
+            Iterator<?> ports = linkedPortList().iterator();
 
             // Note that depending on the order of the ports get iterated,
             // the inferred width may be different if different ports have
@@ -1169,7 +1171,7 @@ public class IORelation extends ComponentRelation {
                 _cachedWidth = width;
 
                 // Set the width of all relations in the relation group.
-                Iterator relations = relationGroupList().iterator();
+                Iterator<?> relations = relationGroupList().iterator();
 
                 while (!_suppressWidthPropagation && relations.hasNext()) {
                     IORelation relation = (IORelation) relations.next();
@@ -1195,7 +1197,7 @@ public class IORelation extends ComponentRelation {
                 // FIXME: Haven't completely dealt with this
                 // possibility since the above changes may have
                 // partially completed.
-                Iterator ports = linkedPortList().iterator();
+                Iterator<?> ports = linkedPortList().iterator();
 
                 while (ports.hasNext()) {
                     IOPort p = (IOPort) ports.next();

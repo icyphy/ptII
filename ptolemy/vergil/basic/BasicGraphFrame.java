@@ -2154,7 +2154,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             }
 
             // If there is no parent that is a Frame, do nothing.
-            if (parent instanceof Frame) {
+            // We know that: (parent == null) || (parent instanceof Frame)
+            if (parent != null) {
                 WindowPropertiesAttribute properties =
                     (WindowPropertiesAttribute) getModel().getAttribute(
                             "_windowProperties",
