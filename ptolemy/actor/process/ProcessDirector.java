@@ -379,10 +379,10 @@ public class ProcessDirector extends Director {
      *  @exception IllegalActionException If a derived class throws it.
      */
     public boolean prefire() throws IllegalActionException {
-        // Clear the stopFire flag and trigger all of the actor threads.
-        _stopFireRequested = false;
-
         synchronized (this) {
+            // Clear the stopFire flag and trigger all of the actor threads.
+            _stopFireRequested = false;
+        
             notifyAll();
         }
 
@@ -430,7 +430,7 @@ public class ProcessDirector extends Director {
             _debug("Thread " + thread.getName() + " is exiting.");
         }
         
-        assert _activeThreads.contains(thread);
+        //assert _activeThreads.contains(thread);
         
         _activeThreads.remove(thread);
         
