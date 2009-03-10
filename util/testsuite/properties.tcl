@@ -1,6 +1,6 @@
 # Run property on all the models in auto
 #
-# @Author: Christopher Brooks
+# @Author: Christopher Brooks, Man-Kit Leung
 #
 # @Version: $Id$
 #
@@ -55,7 +55,7 @@ if [ file isdirectory auto/knownFailedTests ] {
 	    set args [java::new {String[]} 1 \
 			  [list $file]]
 
-	    set timeout 60000
+	    set timeout 120000
 	    puts "codegen.tcl: Setting watchdog for [expr {$timeout / 1000}]\
                   seconds at [clock format [clock seconds]]"
 	    set watchDog [java::new util.testsuite.WatchDog $timeout]
@@ -88,7 +88,7 @@ foreach file [glob auto/*.xml] {
 	set args [java::new {String[]} 1 \
 			  [list $file]]
 
-	set timeout 60000
+	set timeout 120000
 	puts "property.tcl: Setting watchdog for [expr {$timeout / 1000}]\
                   seconds at [clock format [clock seconds]]"
 	set watchDog [java::new util.testsuite.WatchDog $timeout]
