@@ -141,7 +141,7 @@
         </property>
     </property>
     <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
-        <property name="overwriteFiles" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="overwriteFiles" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="run" class="ptolemy.data.expr.Parameter" value="true">
         </property>
