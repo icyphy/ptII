@@ -124,6 +124,53 @@ public class VergilApplication extends MoMLApplication {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Print out an error message and stack trace on stderr and then
+     * display a dialog box.  This method is used as a fail safe
+     * in case there are problems with the configuration
+     * We use a Throwable here instead of an Exception because
+     * we might get an Error or and Exception. For example, if we
+     * are using JNI, then we might get a java.lang.UnsatisfiedLinkError,
+     * which is an Error, not and Exception.
+     * @param message  The message to be displayed
+     * @param args The arguments  to be displayed
+     * @param throwable The Throwable that caused the problem.
+     */ 
+    public static void errorAndExit(String message, String[] args,
+            Throwable throwable) {
+	// This is public so that other application frameworks may
+	// invoke it
+        StringBuffer argsBuffer = new StringBuffer("Command failed");
+
+        if (args.length > 0) {
+            argsBuffer.append("\nArguments: " + args[0]);
+
+            for (int i = 1; i < args.length; i++) {
+                argsBuffer.append(" " + args[i]);
+            }
+
+            argsBuffer.append("\n");
+        }
+
+        // First, print out the stack trace so that
+        // if the next step fails the user has
+        // a chance of seeing the message.
+        System.out.println(argsBuffer.toString());
+        throwable.printStackTrace();
+
+        // Display the error message in a stack trace
+        // If there are problems with the configuration,
+        // then there is a chance that we have not
+        // registered the GraphicalMessageHandler yet
+        // so we do so now so that we are sure
+        // the user can see the message.
+        // One way to test this is to run vergil -configuration foo
+        MessageHandler.setMessageHandler(new GraphicalMessageHandler());
+
+        MessageHandler.error(argsBuffer.toString(), throwable);
+
+        System.exit(0);
+    }
+
     /** Create a new instance of this application, passing it the
      *  command-line arguments.
      *  @param args The command-line arguments.
@@ -145,7 +192,7 @@ public class VergilApplication extends MoMLApplication {
                     } catch (Throwable throwable) {
                         // If we get an Error or and Exception while
                         // configuring, we will end up here.
-                        _errorAndExit("Command failed", args, throwable);
+                        errorAndExit("Command failed", args, throwable);
                     }
                 }
             });
@@ -153,7 +200,7 @@ public class VergilApplication extends MoMLApplication {
             // We are not likely to get here, but just to be safe
             // we try to print the error message and display it in a
             // graphical widget.
-            _errorAndExit("Command failed", args, throwable2);
+            errorAndExit("Command failed", args, throwable2);
         }
 
         // If the -test arg was set, then exit after 2 seconds.
@@ -423,49 +470,6 @@ public class VergilApplication extends MoMLApplication {
         }
 
         return true;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-    // Print out an error message and stack trace on stderr and then
-    // display a dialog box.  This method is used as a fail safe
-    // in case there are problems with the configuration
-    // We use a Throwable here instead of an Exception because
-    // we might get an Error or and Exception. For example, if we
-    // are using JNI, then we might get a java.lang.UnsatisfiedLinkError,
-    // which is an Error, not and Exception.
-    private static void _errorAndExit(String message, String[] args,
-            Throwable throwable) {
-        StringBuffer argsBuffer = new StringBuffer("Command failed");
-
-        if (args.length > 0) {
-            argsBuffer.append("\nArguments: " + args[0]);
-
-            for (int i = 1; i < args.length; i++) {
-                argsBuffer.append(" " + args[i]);
-            }
-
-            argsBuffer.append("\n");
-        }
-
-        // First, print out the stack trace so that
-        // if the next step fails the user has
-        // a chance of seeing the message.
-        System.out.println(argsBuffer.toString());
-        throwable.printStackTrace();
-
-        // Display the error message in a stack trace
-        // If there are problems with the configuration,
-        // then there is a chance that we have not
-        // registered the GraphicalMessageHandler yet
-        // so we do so now so that we are sure
-        // the user can see the message.
-        // One way to test this is to run vergil -configuration foo
-        MessageHandler.setMessageHandler(new GraphicalMessageHandler());
-
-        MessageHandler.error(argsBuffer.toString(), throwable);
-
-        System.exit(0);
     }
 
     ///////////////////////////////////////////////////////////////////
