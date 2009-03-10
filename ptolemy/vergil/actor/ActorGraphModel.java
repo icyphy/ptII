@@ -525,6 +525,9 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
         // We will remove objects from this list as we discover
         // existing links to them, and then create links to any
         // remaining objects in the list.
+        if (relation.getName().equals("relation")) {
+            int i = 0; i++;
+        }
         List<?> linkedObjects = relation.linkedObjectsList();
         int linkedObjectsCount = linkedObjects.size();
 
@@ -548,6 +551,19 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                 // and we'll end up creating two links where there
                 // should be one.
                 // EAL 6/26/05
+                continue;
+            }
+
+            if (tailObj != relation && headObj != relation &&
+                    linkedObjectsCount > 2) {
+                // When the link is a direct link between two ports but the
+                // relation has more than 2 ends, the link is corrupted and
+                // should be deleted. This could happen as a result of model
+                // transformation of the model in the frame.
+                // tfeng (03/10/2009)
+                link.setHead(null);
+                link.setTail(null);
+                _linkSet.remove(link);
                 continue;
             }
 
@@ -1075,7 +1091,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             NamedObj oldTail = (NamedObj) oldLink.getTail();
 
             _unlinkMoML(container, moml, oldHead, oldTail, relation);
-            
+
             NamedObj oldHeadSemantic = (NamedObj) getSemanticObject(oldHead);
 
             if (oldHeadSemantic != null) {
@@ -1086,16 +1102,16 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                 _linkWithRelation(moml, failmoml, container,
                         oldHeadSemantic, headRelationIndex,
                         newRelationName);
-            }    
-                        
+            }
+
             NamedObj oldTailSemantic = (NamedObj) getSemanticObject(oldTail);
-            
+
             if (oldTailSemantic != null) {
                 int tailRelationIndex = (oldTailSemantic instanceof IOPort)
                             ? IOPort.getRelationIndex((IOPort) oldTailSemantic,
                                     relation, tailIsActorPort)
-                            : -1;            
-    
+                            : -1;
+
                 _linkWithRelation(moml, failmoml, container,
                         oldTailSemantic, tailRelationIndex,
                         newRelationName);
