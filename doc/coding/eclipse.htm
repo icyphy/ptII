@@ -859,6 +859,13 @@ off automatic rebuild).
 <li>Right click that resource and select Replace With->Latest From Head.
 </ol>
 
+<h3>Copying Files</h3>
+Usually, it is better to extend Java classes than to copy them, but sometimes copying files
+under Subversion is useful.  To copy files, use the <code>svn cp</code> command.  Do
+not drag and drop directories as the directories contain a <code>.svn</code> directory
+that will have settings for the source location.  Instead, use <code>svn cp</code>.
+See also <code>svn mv</code>.
+
 <h3><a name="#debugTclTests">Debugging Tcl Tests</a></h3>
 <ol>
 <li> Go to Windows -&gt; Open Perspective -&gt; Java.
