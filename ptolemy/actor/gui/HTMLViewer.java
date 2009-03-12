@@ -403,6 +403,29 @@ public class HTMLViewer extends TableauFrame implements Printable,
         getContentPane().add(_scroller);
     }
 
+    /** Open a file dialog to identify a file to be opened, and then call
+     *  _read() to open the file.
+     *  In this class, we remove the body backgroundcascading style sheet 
+     *  setting so as to avoid a bug with the Windows Places Bar, see
+     *  <a href="http://bugzilla.ecoinformatics.org/show_bug.cgi?id=3801">open dialog, common places pane has white box instead of text</>.
+     */
+    protected void _open() {
+	HTMLDocument doc = (HTMLDocument) pane.getDocument();
+	StyleSheet styleSheet = doc.getStyleSheet();
+	try {
+	    if (_defaultStyleSheet != null) {
+		// Remove the body background style sheet setting.
+		styleSheet.removeStyleSheet(_defaultStyleSheet);
+	    }
+	    super._open();
+	} finally {
+	    if (_defaultStyleSheet != null) {
+		// Restore the style sheet.
+		styleSheet.addStyleSheet(_defaultStyleSheet);
+	    }
+
+	}
+    }
     /** Set the scroller size.
      *  @param width The width.
      *  @param height The width.
@@ -452,9 +475,14 @@ public class HTMLViewer extends TableauFrame implements Printable,
             // If _styleSheetURL is non-null, we set the style sheet
             // once and only once.  If try to do this in a static initializer,
             // then the styles are wrong.
+	    _defaultStyleSheet = new StyleSheet();
+            _defaultStyleSheet.importStyleSheet(_styleSheetURL);
             HTMLDocument doc = (HTMLDocument) pane.getDocument();
             StyleSheet styleSheet = doc.getStyleSheet();
-            styleSheet.importStyleSheet(_styleSheetURL);
+	    // We add the default style sheet so that we can temporarily remove
+	    // it when we call _open()
+            //styleSheet.importStyleSheet(_styleSheetURL);
+	    styleSheet.addStyleSheet(_defaultStyleSheet);
             new HTMLEditorKit().setStyleSheet(styleSheet);
             _styleSheetURL = null;
         }
@@ -482,8 +510,12 @@ public class HTMLViewer extends TableauFrame implements Printable,
     /** The base as specified by setBase(). */
     private URL _base;
 
+    /** The default style sheet, read in from _styleSheetURL. */
+    private StyleSheet _defaultStyleSheet;
+
     /** The url that refers to $PTII/doc/default.css. */
     private static URL _styleSheetURL;
+
     static {
         try {
             Class refClass = Class.forName("ptolemy.kernel.util.NamedObj");
