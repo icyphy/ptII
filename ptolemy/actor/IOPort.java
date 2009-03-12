@@ -4253,6 +4253,14 @@ public class IOPort extends ComponentPort {
                 director.invalidateResolvedTypes();
                 director.notifyConnectivityChange();
             }
+            // Need to do this for the executive director as well because the port
+            // may belong to an opaque composite actor.
+            Director executiveDirector = ((Actor) container).getExecutiveDirector();
+            if (executiveDirector != null) {
+                executiveDirector.invalidateSchedule();
+                executiveDirector.invalidateResolvedTypes();
+                executiveDirector.notifyConnectivityChange();
+            }
         }
     }
 
