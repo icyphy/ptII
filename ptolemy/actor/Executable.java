@@ -135,7 +135,7 @@ public interface Executable extends Initializable {
     public boolean postfire() throws IllegalActionException;
 
     /** This method should be invoked prior to each invocation of fire().
-     *  It returns true if the the fire() method can be invoked, given the
+     *  It returns true if the fire() method can be invoked, given the
      *  current status of the inputs and parameters of the actor. Thus
      *  this method will typically check preconditions for a firing, if
      *  there are any. In an opaque, non-atomic entity,
