@@ -27,6 +27,7 @@
  */
 package ptolemy.actor.gui;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -40,15 +41,19 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Enumeration;
 
 import javax.swing.BoxLayout;
 import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
+import javax.swing.UIManager;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.HTMLFrameHyperlinkEvent;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.Style;
 import javax.swing.text.html.StyleSheet;
 
 import ptolemy.gui.Top;
@@ -405,27 +410,92 @@ public class HTMLViewer extends TableauFrame implements Printable,
 
     /** Open a file dialog to identify a file to be opened, and then call
      *  _read() to open the file.
-     *  In this class, we remove the body backgroundcascading style sheet 
-     *  setting so as to avoid a bug with the Windows Places Bar, see
-     *  <a href="http://bugzilla.ecoinformatics.org/show_bug.cgi?id=3801">open dialog, common places pane has white box instead of text</>.
+     *  In this class, we temporarily set the background color to the
+     *  value of the "ToolBar.shadow" UI Property so as to avoid a bug
+     *  with the Windows Places Bar, see
+     *  <a href="http://bugzilla.ecoinformatics.org/show_bug.cgi?id=3801">open dialog, common places pane has white box instead of text</a>.
      */
     protected void _open() {
-	HTMLDocument doc = (HTMLDocument) pane.getDocument();
+    	HTMLDocument doc = (HTMLDocument) pane.getDocument();
 	StyleSheet styleSheet = doc.getStyleSheet();
+
+
+        // Debugging code, useful for seeing what properties are set.
+//         Enumeration rules = styleSheet.getStyleNames();
+//         while (rules.hasMoreElements()) {
+//             String name = (String) rules.nextElement();
+//             Style rule = styleSheet.getStyle(name);
+//             System.out.println("    ruleSS1: " + name + " " + rule.getName() + ": " + rule.toString());
+//             Enumeration attributeNames = rule.getAttributeNames();
+//             while (attributeNames.hasMoreElements()) {
+//                 Object attributeName = attributeNames.nextElement();
+//                 System.out.println("      attrname: "
+//                         + attributeName + " " + attributeName.getClass()
+//                         + " getAttribute(): " + rule.getAttribute(attributeName)
+//                         + " class: " + rule.getAttribute(attributeName).getClass()
+//                                    );
+
+//             }
+//         }
+
+//         StyleSheet styleSheets[] = styleSheet.getStyleSheets();
+//         for( int i = 0; i < styleSheets.length; i++) {
+//             System.out.println("  stylesSheet " + i + " "+ styleSheets[i]);
+//             rules = styleSheets[i].getStyleNames();
+//             while (rules.hasMoreElements()) {
+//                 String name = (String) rules.nextElement();
+//                 Style rule = styleSheets[i].getStyle(name);
+//                 System.out.println("    rule: " + rule.getName() + ": " + rule.toString());
+//                 Enumeration attributeNames = rule.getAttributeNames();
+//                 while (attributeNames.hasMoreElements()) {
+//                     System.out.println("      attrname: "
+//                             + attributeNames.nextElement());
+//                 }
+//             }
+//         }
+
+        Color background = null;
+        try {
+            // Get the background color of the HTML widget.
+            AttributeSet bodyAttribute = (AttributeSet) styleSheet.getStyle("body")
+                .getAttribute(javax.swing.text.StyleConstants.ResolveAttribute);
+            background = styleSheet.getBackground(bodyAttribute);
+        } catch (Exception ex) {
+            System.err.println("Problem getting background color");
+            ex.printStackTrace();
+        }
+
 	try {
-	    if (_defaultStyleSheet != null) {
-		// Remove the body background style sheet setting.
-		styleSheet.removeStyleSheet(_defaultStyleSheet);
-	    }
+            try {
+                // Get the color of the ToolBar shadow and use it.
+                Color shadow = UIManager.getColor("ToolBar.shadow");
+                String rgb = Integer.toHexString(shadow.getRGB());
+                styleSheet.addRule("BODY {background: #"
+                        + rgb.substring(2, rgb.length())
+                        + ";}");
+                _HTMLEditorKit.setStyleSheet(styleSheet);
+	    } catch (Exception ex) {
+                System.err.println("Problem setting background color");
+                ex.printStackTrace();
+            }
 	    super._open();
 	} finally {
-	    if (_defaultStyleSheet != null) {
-		// Restore the style sheet.
-		styleSheet.addStyleSheet(_defaultStyleSheet);
-	    }
-
+            try {
+                if (background != null) {
+                    // Restore the background color.
+                    String rgb = Integer.toHexString(background.getRGB());
+                    styleSheet.addRule("BODY {background: #"
+                            + rgb.substring(2, rgb.length())
+                            + ";}");
+                    _HTMLEditorKit.setStyleSheet(styleSheet);
+                } 
+	    } catch (Exception ex) {
+                System.out.println("Problem restoring background color.");
+                ex.printStackTrace();
+            }
 	}
     }
+
     /** Set the scroller size.
      *  @param width The width.
      *  @param height The width.
@@ -475,15 +545,13 @@ public class HTMLViewer extends TableauFrame implements Printable,
             // If _styleSheetURL is non-null, we set the style sheet
             // once and only once.  If try to do this in a static initializer,
             // then the styles are wrong.
-	    _defaultStyleSheet = new StyleSheet();
-            _defaultStyleSheet.importStyleSheet(_styleSheetURL);
             HTMLDocument doc = (HTMLDocument) pane.getDocument();
             StyleSheet styleSheet = doc.getStyleSheet();
-	    // We add the default style sheet so that we can temporarily remove
-	    // it when we call _open()
-            //styleSheet.importStyleSheet(_styleSheetURL);
-	    styleSheet.addStyleSheet(_defaultStyleSheet);
-            new HTMLEditorKit().setStyleSheet(styleSheet);
+            styleSheet.importStyleSheet(_styleSheetURL);
+            if (_HTMLEditorKit == null) {
+                _HTMLEditorKit = new HTMLEditorKit();
+            }
+            _HTMLEditorKit.setStyleSheet(styleSheet);
             _styleSheetURL = null;
         }
 
@@ -509,6 +577,9 @@ public class HTMLViewer extends TableauFrame implements Printable,
 
     /** The base as specified by setBase(). */
     private URL _base;
+
+    /** The HTMLEditorKit associated with this viewer. */
+    private static HTMLEditorKit _HTMLEditorKit;
 
     /** The default style sheet, read in from _styleSheetURL. */
     private StyleSheet _defaultStyleSheet;

@@ -710,7 +710,9 @@ public abstract class Top extends JFrame {
      */
     protected void _open() {
         JFileChooser fileDialog = new JFileChooser();
-
+        // To disable the Windows places bar on the left, uncomment the
+        // line below.
+        // fileDialog.putClientProperty("FileChooser.useShellFolder", Boolean.FALSE);
         if (_fileFilter != null) {
             fileDialog.addChoosableFileFilter(_fileFilter);
         }
