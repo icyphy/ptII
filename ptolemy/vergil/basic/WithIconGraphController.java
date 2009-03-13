@@ -81,6 +81,42 @@ public abstract class WithIconGraphController extends BasicGraphController {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    
+    /* Get a location for a port that hasn't got a location yet.
+     * @param pane The GraphPane.
+     * @param frame The BasicGraphFrame.  
+     * @param _prototype The port.
+     * @return The location.
+     */ 
+    static public double[] getNewPortLocation(GraphPane pane, BasicGraphFrame frame, IOPort _prototype) {       
+        Point2D center = frame.getCenter();
+        
+        Rectangle2D visiblePart = frame.getVisibleRectangle();
+
+        double[] p;
+        if (_prototype.isInput() && _prototype.isOutput()) {
+            p = _offsetFigure(center.getX(), (visiblePart
+                    .getY() + visiblePart.getHeight())
+                    - _PORT_OFFSET, NewPortAction.PASTE_OFFSET * 2, 0,
+                    pane, frame);
+        } else if (_prototype.isInput()) {
+            p = _offsetFigure(
+                    visiblePart.getX() + _PORT_OFFSET, center
+                            .getY(), 0, NewPortAction.PASTE_OFFSET * 2,
+                            pane, frame);
+        } else if (_prototype.isOutput()) {
+            p = _offsetFigure(visiblePart.getX()
+                    + visiblePart.getWidth() - _PORT_OFFSET,
+                    center.getY(), 0, NewPortAction.PASTE_OFFSET * 2,
+                    pane, frame);
+        } else {
+            p = _offsetFigure(center.getX(), center.getY(),
+                    NewPortAction.PASTE_OFFSET * 2, NewPortAction.PASTE_OFFSET * 2,
+                    pane, frame);
+        }
+        return p;
+    }
+    
     /** Set the configuration.  This is used by some of the controllers
      *  when opening files or URLs.
      *  @param configuration The configuration.
@@ -127,6 +163,37 @@ public abstract class WithIconGraphController extends BasicGraphController {
         _menuFactory
                 .addMenuItemFactory(new MenuActionFactory(_removeIconAction));
     }
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+    
+    /** Offset a figure if another figure is already at that location.
+     *  @param x The x value of the proposed location.
+     *  @param y The y value of the proposed location.
+     *  @param xOffset The x offset to be used if a figure is found.
+     *  @param yOffset The x offset to be used if a figure is found.
+     *  @param pane The GraphPane.
+     *  @param frame The BasicGraphFrame.  
+     *  @return An array of two doubles (x and y) that represents either
+     *  the original location or an offset location that does not obscure
+     *  an object of class <i>figure</i>.
+     */
+    static private double[] _offsetFigure(double x, double y, double xOffset,
+            double yOffset, GraphPane pane, BasicGraphFrame frame) {
+        FigureLayer foregroundLayer = pane.getForegroundLayer();
+
+        Rectangle2D visibleRectangle;
+        if (frame != null) {
+            visibleRectangle = frame.getVisibleRectangle();
+        } else {
+            visibleRectangle = pane.getCanvas().getVisibleSize();
+        }
+        double[] point = FigureAction.offsetFigure(x, y, xOffset, yOffset,
+                diva.canvas.connector.TerminalFigure.class,
+                foregroundLayer, visibleRectangle);
+        return point;
+    }    
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
@@ -233,41 +300,24 @@ public abstract class WithIconGraphController extends BasicGraphController {
                     || (getSourceType() == MENUBAR_TYPE)) {
                 // No location in the action, so put it in the middle.
                 BasicGraphFrame frame = WithIconGraphController.this.getFrame();
+                GraphPane pane = getGraphPane();
 
-                if (frame != null) {
-                    // Put in the middle of the visible part.
-                    Point2D center = frame.getCenter();
-
+                if (frame != null) {        
                     if (_prototype != null) {
-                        Rectangle2D visiblePart = frame.getVisibleRectangle();
-
-                        double[] p;
-                        if (_prototype.isInput() && _prototype.isOutput()) {
-                            p = _offsetFigure(center.getX(), (visiblePart
-                                    .getY() + visiblePart.getHeight())
-                                    - _PORT_OFFSET, _PASTE_OFFSET * 2, 0);
-                        } else if (_prototype.isInput()) {
-                            p = _offsetFigure(
-                                    visiblePart.getX() + _PORT_OFFSET, center
-                                            .getY(), 0, _PASTE_OFFSET * 2);
-                        } else if (_prototype.isOutput()) {
-                            p = _offsetFigure(visiblePart.getX()
-                                    + visiblePart.getWidth() - _PORT_OFFSET,
-                                    center.getY(), 0, _PASTE_OFFSET * 2);
-                        } else {
-                            p = _offsetFigure(center.getX(), center.getY(),
-                                    _PASTE_OFFSET * 2, _PASTE_OFFSET * 2);
-                        }
+                        // Put in the middle of the visible part.
+                        double[] p = getNewPortLocation(pane, frame, _prototype);
                         x = p[0];
                         y = p[1];
 
                     } else {
+                        // Put in the middle of the visible part.
+                        Point2D center = frame.getCenter();
+                        
                         x = center.getX();
                         y = center.getY();
                     }
                 } else {
-                    // Put in the middle of the pane.
-                    GraphPane pane = getGraphPane();
+                    // Put in the middle of the pane.                    
                     Point2D center = pane.getSize();
                     x = center.getX() / 2;
                     y = center.getY() / 2;
@@ -320,10 +370,10 @@ public abstract class WithIconGraphController extends BasicGraphController {
                 }
 
                 if (_prototype.isMultiport()) {
-                    // Set the width of the multiport to 0 so that the width is inferred.
+                    // Set the width of the multiport to -1 so that the width is inferred.
                     // See ptolemy/actor/lib/test/auto/VectorDisassemblerComposite.xml
                     moml
-                            .append("<property name=\"width\" class=\"ptolemy.data.expr.Parameter\" value=\"0\"/>");
+                            .append("<property name=\"width\" class=\"ptolemy.data.expr.Parameter\" value=\"-1\"/>");
                     moml.append("<property name=\"multiport\"/>");
                 }
             }
@@ -377,19 +427,8 @@ public abstract class WithIconGraphController extends BasicGraphController {
         protected double[] _offsetFigure(double x, double y, double xOffset,
                 double yOffset) {
 
-            GraphPane pane = getGraphPane();
-            FigureLayer foregroundLayer = pane.getForegroundLayer();
-
-            Rectangle2D visibleRectangle;
-            BasicGraphFrame frame = WithIconGraphController.this.getFrame();
-            if (frame != null) {
-                visibleRectangle = frame.getVisibleRectangle();
-            } else {
-                visibleRectangle = pane.getCanvas().getVisibleSize();
-            }
-            double[] point = _offsetFigure(x, y, xOffset, yOffset,
-                    diva.canvas.connector.TerminalFigure.class,
-                    foregroundLayer, visibleRectangle);
+            double[] point = WithIconGraphController._offsetFigure(x, y, xOffset, yOffset,
+                    getGraphPane(), WithIconGraphController.this.getFrame());
             return point;
         }
     }

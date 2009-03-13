@@ -33,6 +33,7 @@ import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
+import java.util.HashMap;
 
 import javax.swing.SwingConstants;
 
@@ -46,7 +47,11 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.vergil.basic.BasicGraphController;
+import ptolemy.vergil.basic.BasicGraphFrame;
+import ptolemy.vergil.basic.WithIconGraphController;
 import ptolemy.vergil.kernel.AttributeController;
+import ptolemy.vergil.toolbox.SnapConstraint;
 import diva.canvas.CanvasUtilities;
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
@@ -57,6 +62,7 @@ import diva.canvas.connector.TerminalFigure;
 import diva.canvas.toolbox.BasicFigure;
 import diva.canvas.toolbox.LabelFigure;
 import diva.graph.GraphController;
+import diva.graph.GraphPane;
 import diva.graph.NodeRenderer;
 import diva.util.java2d.Polygon2D;
 
@@ -150,6 +156,101 @@ public class ExternalIOPortController extends AttributeController {
         }
     }
 
+
+    /** Move the node's figure to the location specified in the node's
+     *  semantic object, if that object is an instance of Locatable.
+     *  If the semantic object is not a location, then do nothing.
+     *  If the figure associated with the semantic object is an instance
+     *  of TerminalFigure, then modify the location to ensure that the
+     *  connect site snaps to grid.
+     *  @param node The object to locate.
+     */
+    public void locateFigure(Object node) {
+        Figure nf = getController().getFigure(node);
+
+        try {
+            if (hasLocation(node)) {
+                double[] location = getLocation(node);
+                if (node instanceof Location) {
+                     NamedObj port = ((Location) node).getContainer();
+                     
+                     // In case the location is (0,0) we try to come up with a
+                     // better one.
+                    if (port instanceof IOPort && location[0] == 0.0 && location[1] == 0.0) { 
+                        BasicGraphController controller = (BasicGraphController) getController();
+                        BasicGraphFrame frame = controller.getFrame();
+                        
+                        // We have a bootstrapping problem. In case the window
+                        // is just being opened, the rendering happens before the 
+                        // creation of the the JGraph, and we don't know the actual
+                        // size of the window (hence the magic numbers below in case
+                        // frame.getJGraph() == null.
+                        if (frame.getJGraph() != null) {
+                            GraphPane pane = controller.getGraphPane();
+                            location = WithIconGraphController.getNewPortLocation(pane, frame, (IOPort) port);
+                        } else {
+                            IOPort ioPort = (IOPort) port;
+                            if (ioPort.isInput() && ioPort.isOutput()) {
+                                double[] newLocation = _inoutputPortLocations.get(ioPort);
+                                if (newLocation != null) {
+                                    location = newLocation;
+                                } else {
+                                    // Put at the bottom
+                                    location[0] = 300.0 + _inoutputPortLocations.size() * 40;
+                                    location[1] = 380.0 ;
+                                    _inoutputPortLocations.put(ioPort, location);                                    
+                                }
+                            } else if (ioPort.isInput()) {
+                                double[] newLocation = _inputPortLocations.get(ioPort);
+                                if (newLocation != null) {
+                                    location = newLocation;
+                                } else {
+                                    // Put at the left side                                    
+                                    location[0] = 20.0;
+                                    location[1] = 200.0 + _inputPortLocations.size() * 40;
+                                    _inputPortLocations.put(ioPort, location);                                    
+                                }
+                            } else if (ioPort.isOutput()) {
+                                double[] newLocation = _outputPortLocations.get(ioPort);
+                                if (newLocation != null) {
+                                    location = newLocation;
+                                } else {
+                                    // Put at the right side
+                                    location[0] = 580.0;
+                                    location[1] = 200.0 + _outputPortLocations.size() * 40;
+                                    _outputPortLocations.put(ioPort, location);                                    
+                                }                                
+                            } else {
+                                double[] newLocation = _otherPortLocations.get(ioPort);
+                                if (newLocation != null) {
+                                    location = newLocation;
+                                } else {
+                                    // Put in the middle
+                                    location[0] = 300.0;
+                                    location[1] = 200.0 + _otherPortLocations.size() * 40;
+                                    _otherPortLocations.put(ioPort, location);                                    
+                                }                                
+                            }
+                            
+                        }
+                        location = SnapConstraint.constrainPoint(location[0], location[1]);
+                    }
+                }
+                CanvasUtilities.translateTo(nf, location[0], location[1]);
+            }
+        } catch (Exception ex) {
+            // FIXME: Ignore if there is no valid location.  This
+            // happens occasionally due to a race condition in the
+            // Bouncer demo.  Occasionally, the repaint thread will
+            // attempt to locate the bouncing icon before the location
+            // parameter has been evaluated, causing an exception to
+            // be thrown.  Basically the lazy parameter evaluation
+            // mechanism causes rerendering in Diva to be rentrant,
+            // which it shouldn't be.  Unfortunately, I have no idea
+            // how to fix it... SN 5/5/2003
+        }
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -539,4 +640,11 @@ public class ExternalIOPortController extends AttributeController {
             return figure;
         }
     }
+    
+    // The following maps are to keep track of the ports that already needed
+    // to be located (since they had location 0,0).
+    private HashMap<Object, double[]> _inputPortLocations = new HashMap<Object, double[]>();
+    private HashMap<Object, double[]> _outputPortLocations = new HashMap<Object, double[]>();
+    private HashMap<Object, double[]> _inoutputPortLocations = new HashMap<Object, double[]>();
+    private HashMap<Object, double[]> _otherPortLocations = new HashMap<Object, double[]>();    
 }

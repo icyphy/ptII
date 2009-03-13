@@ -296,33 +296,7 @@ public class FigureAction extends AbstractAction {
     public int getY() {
         return _y;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                 ////
-
-    /** When the action was fired from a canvas interactor.
-     */
-    public static final SourceType CANVAS_TYPE = new SourceType("canvas");
-
-    /** When the action was fired from a context menu.
-     */
-    public static final SourceType CONTEXTMENU_TYPE = new SourceType(
-            "contextmenu");
-
-    /** When the action was fired from a toolbar icon.
-     */
-    public static final SourceType TOOLBAR_TYPE = new SourceType("toolbar");
-
-    /** When the action was fired from a menubar.
-     */
-    public static final SourceType MENUBAR_TYPE = new SourceType("menubar");
-
-    /** When the action was fired from a hotkey.
-     */
-    public static final SourceType HOTKEY_TYPE = new SourceType("hotkey");
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
+    
 
     /** Determine a new location for a figure if another figure is
      *  already at that location.
@@ -338,8 +312,8 @@ public class FigureAction extends AbstractAction {
      *  the original location or an offset location that does not obscure
      *  an object of class <i>figure</i>.
      */
-    protected double [] _offsetFigure(double x, double y, 
-            double xOffset, double yOffset, Class figureClass,
+    static public double [] offsetFigure(double x, double y, 
+            double xOffset, double yOffset, Class<?> figureClass,
             FigureLayer foregroundLayer,
             Rectangle2D visibleRectangle) {
         // Solve the problem of items from the toolbar overlapping.
@@ -376,8 +350,8 @@ public class FigureAction extends AbstractAction {
                     point[0] - halo, point[1] - halo, width, width);
 
             // Iterate through figures within the region.
-            Iterator foregroundFigures = foregroundLayer.getFigures().getIntersectedFigures(region).figuresFromFront();
-            Iterator pickFigures = CanvasUtilities.pickIter(foregroundFigures,
+            Iterator<?> foregroundFigures = foregroundLayer.getFigures().getIntersectedFigures(region).figuresFromFront();
+            Iterator<?> pickFigures = CanvasUtilities.pickIter(foregroundFigures,
                     region);
 
             while(pickFigures.hasNext() && !checkFigure) {
@@ -406,19 +380,19 @@ public class FigureAction extends AbstractAction {
                             if (point[0] > visibleRectangle.getWidth()) {
                                 point[0] = originalX;
                                 point[1] = originalY
-                                    - _PASTE_OFFSET * 2 * ++xMax; 
+                                    - PASTE_OFFSET * 2 * ++xMax; 
                                 if (point[1] < 0) {
                                     point[1] = originalY
-                                        + _PASTE_OFFSET * 2 * ++xMax; 
+                                        + PASTE_OFFSET * 2 * ++xMax; 
                                 }
                             }
 
                             if (point[1] > visibleRectangle.getHeight()) {
                                 point[0] = originalX
-                                    - _PASTE_OFFSET * 2 * ++yMax;
+                                    - PASTE_OFFSET * 2 * ++yMax;
                                 if (point[0] < 0) {
                                     point[0] = originalX
-                                        + _PASTE_OFFSET * 2 * ++xMax; 
+                                        + PASTE_OFFSET * 2 * ++xMax; 
                                 }
                                 point[1] = originalY;
 
@@ -443,10 +417,40 @@ public class FigureAction extends AbstractAction {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
+    ////                         public variables                 ////
+
+    /** When the action was fired from a canvas interactor.
+     */
+    public static final SourceType CANVAS_TYPE = new SourceType("canvas");
+
+    /** When the action was fired from a context menu.
+     */
+    public static final SourceType CONTEXTMENU_TYPE = new SourceType(
+            "contextmenu");
+
+    /** When the action was fired from a hotkey.
+     */
+    public static final SourceType HOTKEY_TYPE = new SourceType("hotkey");
+
+    /** When the action was fired from a menubar.
+     */
+    public static final SourceType MENUBAR_TYPE = new SourceType("menubar");
 
     /** Offset used when pasting objects. See also OffsetMoMLChangeRequest. */
-    protected static final int _PASTE_OFFSET = 20;
+    public static final int PASTE_OFFSET = 20;
+
+    /** When the action was fired from a toolbar icon.
+     */
+    public static final SourceType TOOLBAR_TYPE = new SourceType("toolbar");
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
