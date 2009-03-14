@@ -204,14 +204,14 @@ public abstract class ActorController extends AttributeController {
     }
 
     /** Add hot keys to the actions in the given JGraph.
-    *   It would be better that this method was added higher in the hierarchy. Now
-    *   most controllers 
-    *  @param jgraph The JGraph to which hot keys are to be added.
-    */
-   public void addHotKeys(JGraph jgraph) {
-       super.addHotKeys(jgraph);
-       GUIUtilities.addHotKey(jgraph, _lookInsideAction);
-   }
+     *   It would be better that this method was added higher in the hierarchy. Now
+     *   most controllers
+     *  @param jgraph The JGraph to which hot keys are to be added.
+     */
+    public void addHotKeys(JGraph jgraph) {
+        super.addHotKeys(jgraph);
+        GUIUtilities.addHotKey(jgraph, _lookInsideAction);
+    }
 
     /** Set the configuration.  This is used to open documentation files.
      *  @param configuration The configuration.
@@ -245,13 +245,13 @@ public abstract class ActorController extends AttributeController {
     ////                         protected methods                 ////
 
     /**
-     * Get the class label of the component. 
-     * @return the class label of the component. 
+     * Get the class label of the component.
+     * @return the class label of the component.
      */
     protected String _getComponentType() {
         return "Actor";
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -619,9 +619,7 @@ public abstract class ActorController extends AttributeController {
                     } else if (showInfo instanceof Settable) {
                         String value = ((Settable) showInfo).getExpression();
                         if (toShow != null && !value.trim().equals("")) {
-                            toShow += " ("
-                                    + value
-                                    + ")";
+                            toShow += " (" + value + ")";
                         } else {
                             toShow = ((Settable) showInfo).getExpression();
                         }

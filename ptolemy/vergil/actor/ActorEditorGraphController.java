@@ -256,43 +256,47 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
 
                 inverse.transform(point, point);
                 x = point.getX();
-                y = point.getY();               
-                
+                y = point.getY();
+
                 // If you add a vertex on top of an existing link the vertex will
                 // be added to the link. In this code fragment we will find
                 // out whether the vertex is on top of a link.
                 {
                     GraphPane pane = getGraphPane();
                     FigureLayer foregroundLayer = pane.getForegroundLayer();
-        
+
                     double halo = foregroundLayer.getPickHalo();
                     double width = halo * 2;
 
                     // The rectangle in which we search for a Figure.
-                    Rectangle2D region = new Rectangle2D.Double(
-                            x - halo, y - halo, width, width);
+                    Rectangle2D region = new Rectangle2D.Double(x - halo, y
+                            - halo, width, width);
 
                     // Iterate through figures within the region.
-                    Iterator<?> foregroundFigures = foregroundLayer.getFigures().getIntersectedFigures(region).figuresFromFront();
-                    Iterator<?> pickFigures = CanvasUtilities.pickIter(foregroundFigures,
-                            region);
+                    Iterator<?> foregroundFigures = foregroundLayer
+                            .getFigures().getIntersectedFigures(region)
+                            .figuresFromFront();
+                    Iterator<?> pickFigures = CanvasUtilities.pickIter(
+                            foregroundFigures, region);
 
-                    while(link == null && pickFigures.hasNext()) {
-                        CanvasComponent possibleFigure = (CanvasComponent)pickFigures.next();
+                    while (link == null && pickFigures.hasNext()) {
+                        CanvasComponent possibleFigure = (CanvasComponent) pickFigures
+                                .next();
                         if (possibleFigure == null) {
                             // Nothing to see here, move along - there is no Figure.
                         } else if (possibleFigure instanceof UserObjectContainer) {
                             // Work our way up the CanvasComponent parent tree
                             // See EditorDropTarget for similar code.
-                            Object userObject = ((UserObjectContainer) possibleFigure).getUserObject();
+                            Object userObject = ((UserObjectContainer) possibleFigure)
+                                    .getUserObject();
                             if (userObject instanceof Link) {
                                 link = (Link) userObject;
                             }
                         }
                     }
-                }                
+                }
             }
-        
+
             ActorGraphModel graphModel = (ActorGraphModel) getGraphModel();
             double[] point = _offsetVertex(SnapConstraint.constrainPoint(x, y));
             final NamedObj toplevel = graphModel.getPtolemyModel();
@@ -303,26 +307,26 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
                                 + "that is not a CompositeEntity.");
             }
 
-            final String relationName = toplevel.uniqueName("relation");                
+            final String relationName = toplevel.uniqueName("relation");
 
             StringBuffer moml = new StringBuffer();
             if (link != null) {
                 // Add the vertex to an existing link.
                 moml.append("<group>\n");
                 StringBuffer failmoml = new StringBuffer();
-                graphModel.getLinkModel().addNewVertexToLink(moml,
-                        failmoml, (CompositeEntity) toplevel, link, relationName, x, y);
+                graphModel.getLinkModel().addNewVertexToLink(moml, failmoml,
+                        (CompositeEntity) toplevel, link, relationName, x, y);
                 moml.append("</group>\n");
             } else {
                 final String vertexName = "vertex1";
-                
-                // Create the relation.                    
+
+                // Create the relation.
                 moml.append("<relation name=\"" + relationName + "\">\n");
                 moml.append("<vertex name=\"" + vertexName + "\" value=\"{");
                 moml.append(point[0] + ", " + point[1]);
                 moml.append("}\"/>\n");
                 moml.append("</relation>");
-            }    
+            }
             MoMLChangeRequest request = new MoMLChangeRequest(this, toplevel,
                     moml.toString());
             request.setUndoable(true);
@@ -347,8 +351,8 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
             } else {
                 visibleRectangle = pane.getCanvas().getVisibleSize();
             }
-            return offsetFigure(point[0], point[1], PASTE_OFFSET,
-                    PASTE_OFFSET, ptolemy.moml.Vertex.class, foregroundLayer,
+            return offsetFigure(point[0], point[1], PASTE_OFFSET, PASTE_OFFSET,
+                    ptolemy.moml.Vertex.class, foregroundLayer,
                     visibleRectangle);
         }
     }
@@ -359,7 +363,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
      */
     protected void _addHotKeys(JGraph jgraph) {
         super._addHotKeys(jgraph);
-        
+
         _classDefinitionController.addHotKeys(getFrame().getJGraph());
 
     }
@@ -372,50 +376,57 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
      *  will not have been fully constructed by the time this is called.
      */
     protected void _createControllers() {
-        Configuration _config = (Configuration)Configuration.configurations().iterator().next();
+        Configuration _config = (Configuration) Configuration.configurations()
+                .iterator().next();
         String _alternateActorInstanceClassName = null;
         _attributeController = new AttributeController(this,
                 AttributeController.FULL);
 
         _classDefinitionController = new ClassDefinitionController(this);
 
-        if(_config != null) {
-          /*
-           * If _alternateActorInstanceController is set in the config, use that
-           * class as the _entityController instead of the default 
-           * ActorInstanceController
-          */
-          StringAttribute _alternateActorInstanceAttribute = (StringAttribute)
-            _config.getAttribute("_alternateActorInstanceController");
-          if(_alternateActorInstanceAttribute != null) {
-            _alternateActorInstanceClassName = 
-              _alternateActorInstanceAttribute.getExpression();
-          }
+        if (_config != null) {
+            /*
+             * If _alternateActorInstanceController is set in the config, use that
+             * class as the _entityController instead of the default
+             * ActorInstanceController
+             */
+            StringAttribute _alternateActorInstanceAttribute = (StringAttribute) _config
+                    .getAttribute("_alternateActorInstanceController");
+            if (_alternateActorInstanceAttribute != null) {
+                _alternateActorInstanceClassName = _alternateActorInstanceAttribute
+                        .getExpression();
+            }
         }
-        
-        if(_alternateActorInstanceClassName == null) {
-          //System.out.println("Using standard ActorInstanceController");
-          
-          //default to the normal ActorInstanceController
-          _entityController = new ActorInstanceController(this);
+
+        if (_alternateActorInstanceClassName == null) {
+            //System.out.println("Using standard ActorInstanceController");
+
+            //default to the normal ActorInstanceController
+            _entityController = new ActorInstanceController(this);
         } else {
-          try {
-            //try to load the alternate class
-            
-            //System.out.println("Using _alternateActorInstanceController: " + 
-            //  _alternateActorInstanceClassName);
-            Class _alternateActorInstanceClass = Class.forName(_alternateActorInstanceClassName);
-            Class[] argsClass = new Class[] {diva.graph.GraphController.class};
-            Object[] args = new Object[] {this};
-            Constructor alternateActorInstanceConstructor = _alternateActorInstanceClass.getConstructor(argsClass);
-            _entityController = (ActorController) alternateActorInstanceConstructor.newInstance(args);
-          } catch(Exception e) {
-            System.out.println("The configuration has " +
-              "_alternateActorInstanceController set, but the class " +
-              _alternateActorInstanceClassName + " is not found.  Defaulting " +
-              " to ActorInstanceController: " + e.getMessage());
-              e.printStackTrace();
-          }
+            try {
+                //try to load the alternate class
+
+                //System.out.println("Using _alternateActorInstanceController: " +
+                //  _alternateActorInstanceClassName);
+                Class _alternateActorInstanceClass = Class
+                        .forName(_alternateActorInstanceClassName);
+                Class[] argsClass = new Class[] { diva.graph.GraphController.class };
+                Object[] args = new Object[] { this };
+                Constructor alternateActorInstanceConstructor = _alternateActorInstanceClass
+                        .getConstructor(argsClass);
+                _entityController = (ActorController) alternateActorInstanceConstructor
+                        .newInstance(args);
+            } catch (Exception e) {
+                System.out
+                        .println("The configuration has "
+                                + "_alternateActorInstanceController set, but the class "
+                                + _alternateActorInstanceClassName
+                                + " is not found.  Defaulting "
+                                + " to ActorInstanceController: "
+                                + e.getMessage());
+                e.printStackTrace();
+            }
         }
         _entityPortController = new IOPortController(this,
                 AttributeController.FULL);
