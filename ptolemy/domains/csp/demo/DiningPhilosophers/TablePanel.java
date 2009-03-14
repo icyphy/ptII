@@ -132,6 +132,9 @@ class TablePanel extends Panel {
      * Initializes the objects and the display.
      */
     protected void _initialize(Philosopher[] philosophers) {
+        // FindBugs: [M M IS] Inconsistent synchronization [IS2_INCONSISTENT_SYNC]
+        // Actually this is not an issue since the object is being created
+        // and other thread can't have access to it yet.        
         _philosophers = philosophers;
 
         for (int i = 0; i < 5; i++) {

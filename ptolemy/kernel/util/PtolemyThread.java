@@ -224,7 +224,7 @@ public class PtolemyThread extends Thread implements Debuggable {
     /** Flag that is true if there are debug listeners.
      *  @since Ptolemy II 2.3
      */
-    protected boolean _debugging = false;
+    protected volatile boolean _debugging = false;
 
     /** The list of DebugListeners registered with this object.
      *  @since Ptolemy II 2.3

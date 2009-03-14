@@ -158,7 +158,7 @@ public class TimeKeeper {
      *  this actor.
      */
     public Time getNextTime() {
-        if (_receiverList.size() == 0) {
+        if (_receiverList.isEmpty()) {
             return _currentTime;
         }
 
@@ -428,7 +428,7 @@ public class TimeKeeper {
 
     // This flag is set to true if any of the receivers have
     // a time stamp of PrioritizedTimedQueue.IGNORE
-    boolean _ignoredReceivers = false;
+    volatile boolean _ignoredReceivers = false;
 
     // The comparator that sorts the receivers
     // controlled by this time keeper.

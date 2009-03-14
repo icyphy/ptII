@@ -190,9 +190,11 @@ public abstract class PlotLive extends Plot implements Runnable {
             _plotLiveThread = new Thread(this, "PlotLive Thread");
             _plotLiveThread.start();
         } else {
-            synchronized (this) {
+            // synchronized (this) { is useless since the method is already
+            // synchronized.
+            // synchronized (this) {
                 notifyAll();
-            }
+            //}
         }
     }
 
@@ -202,6 +204,10 @@ public abstract class PlotLive extends Plot implements Runnable {
     public void stop() {
         _plotting = false;
         _paused = false;
+        
+        // FindBugs: [M M IS] Inconsistent synchronization [IS2_INCONSISTENT_SYNC]
+        // Actually this is not an issue, since once the thread has been created this
+        // member is not accessed until its destruction.
         _plotLiveThread = null;
     }
 

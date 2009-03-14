@@ -2100,7 +2100,7 @@ public class Plot extends PlotBox {
     /** An indicator of the marks style.  See _parseLine method for
      * interpretation.
      */
-    protected int _marks;
+    protected volatile int _marks;
     
     /** A vector of datasets. */
     protected ArrayList<ArrayList<PlotPoint>> _points = new ArrayList<ArrayList<PlotPoint>>();
@@ -2966,13 +2966,13 @@ public class Plot extends PlotBox {
     ////                         private variables                 ////
 
     /** @serial Offset per dataset in x axis units. */
-    private double _barOffset = 0.05;
+    private volatile double _barOffset = 0.05;
     
     /** @serial True if this is a bar plot. */
     private boolean _bars = false;
 
     /** @serial Width of a bar in x axis units. */
-    private double _barWidth = 0.5;
+    private volatile double _barWidth = 0.5;
 
     /**
      * An arraylist of the bins in the plot. A bin is represents a number of points that are all displayed on the same x position.

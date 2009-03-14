@@ -784,9 +784,9 @@ public class CompositeProcessDirector extends ProcessDirector {
     /** The controller that handles outputs from the composite. */
     private BranchController _outputBranchController;
 
-    private boolean _inputControllerIsBlocked = true;
+    private volatile boolean _inputControllerIsBlocked = true;
 
-    private boolean _outputControllerIsBlocked = true;
+    private volatile boolean _outputControllerIsBlocked = true;
 
     private HashSet _blockedReceivers = new HashSet();
 

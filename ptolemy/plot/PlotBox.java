@@ -2933,20 +2933,20 @@ public class PlotBox extends JPanel implements Printable {
     ////                         protected variables               ////
 
     /** The maximum y value of the range of the data to be plotted. */
-    protected transient double _yMax = 0;
+    protected transient volatile double _yMax = 0;
 
     /** The minimum y value of the range of the data to be plotted. */
-    protected transient double _yMin = 0;
+    protected transient volatile double _yMin = 0;
 
     /** The maximum x value of the range of the data to be plotted. */
-    protected transient double _xMax = 0;
+    protected transient volatile double _xMax = 0;
 
     /** The minimum y valud of the range of the data to be plotted. */
-    protected transient double _xMin = 0;
+    protected transient volatile double _xMin = 0;
 
     /** The factor we pad by so that we don't plot points on the axes.
      */
-    protected double _padding = 0.05;
+    protected volatile double _padding = 0.05;
 
     /** True if the x range have been given. */
     protected transient boolean _xRangeGiven = false;
@@ -3087,7 +3087,7 @@ public class PlotBox extends JPanel implements Printable {
     protected double _xscale = 1.0;
 
     /** Indicator whether to use _colors. */
-    protected boolean _usecolor = true;
+    protected volatile boolean _usecolor = true;
 
     // Default _colors, by data set.
     // There are 11 colors so that combined with the
@@ -4038,7 +4038,7 @@ public class PlotBox extends JPanel implements Printable {
     ////                         private variables                 ////
 
     /** Indicator of whether actions are deferred. */
-    private boolean _actionsDeferred = false;
+    private volatile boolean _actionsDeferred = false;
     
     // True when repainting happens by a timer thread.
     private boolean _automaticRescale = false;    

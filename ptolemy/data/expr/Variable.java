@@ -950,9 +950,14 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         // make sure to update the variables that depend on this.
         // Record which variables get changed so they can be
         // reversed if the change fails at any point.
-        LinkedList changed = new LinkedList();
+        LinkedList<ValueListener> changed = new LinkedList<ValueListener>();
         if (previousName != null && !previousName.equals(name)) {
             try {
+                // FIXME:
+                // FindBugs: [M M IS] Inconsistent synchronization [IS2_INCONSISTENT_SYNC]
+                // _valueListeners might change during the call of setName.
+                // Is there a risk for deadlocks if we would make this a 
+                // synchronized method?
                 if (_valueListeners != null) {
                     Iterator listeners = _valueListeners.iterator();
                     while (listeners.hasNext()) {

@@ -865,7 +865,7 @@ public class ModelReference extends TypedAtomicActor implements
     private transient int _executionOnFiringValue = _RUN_IN_CALLING_THREAD;
 
     // Flag indicating that the previous execution is in progress.
-    private transient boolean _executing = false;
+    private volatile transient boolean _executing = false;
 
     /** Reference to a thread that is lingering. */
     private Thread _lingeringThread = null;

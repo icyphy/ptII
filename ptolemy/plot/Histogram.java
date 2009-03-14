@@ -942,16 +942,16 @@ public class Histogram extends PlotBox {
     ////                         private variables                 ////
 
     /** @serial The width of a bar. */
-    private double _barwidth = 0.5;
+    private volatile double _barwidth = 0.5;
 
     /** @serial The offset between bars. */
-    private double _baroffset = 0.15;
+    private volatile double _baroffset = 0.15;
 
     /** @serial The width of a bin. */
     private double _binWidth = 1.0;
 
     /** @serial The offset between bins. */
-    private double _binOffset = 0.5;
+    private volatile double _binOffset = 0.5;
 
     // True when a bin has been changed and it need to be repainted
     // by the next scheduled repaint.

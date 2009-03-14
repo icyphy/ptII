@@ -689,7 +689,7 @@ public class PtidesDirector extends TimedPNDirector {
     /** Specify whether the director should wait for elapsed real time to
      *  catch up with model time.
      */
-    private boolean _synchronizeToRealTime;
+    volatile private boolean _synchronizeToRealTime;
     
     /** The real time at which the model begins executing. */
     private long _realStartTime = 0;

@@ -1384,7 +1384,7 @@ public class MoMLApplication implements ExecutionListener {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // The count of currently executing runs.
-    private int _activeCount = 0;
+    private volatile int _activeCount = 0;
 
     // Flag indicating that the previous argument was -class.
     private boolean _expectingClass = false;
