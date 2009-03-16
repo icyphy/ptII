@@ -77,7 +77,7 @@ import ptolemy.moml.MoMLParser;
 
  @author Thomas Huining Feng
  @version $Id$
- @since Ptolemy II 6.1
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
@@ -148,17 +148,16 @@ public class GraphMatcher extends GraphAnalyzer {
     }
 
     /** Match a pattern specified in the <tt>patternGraph</tt> to a model in
-     *  <tt>hostGraph</tt>. If the match is successful, <tt>true</tt> is
+     *  <tt>hostGraph</tt>. If the match is successful, true is
      *  returned, and the match result is stored internally, which can be
      *  retrieved with {@link #getMatchResult()}. A matching was successful if
      *  at least one match result was found, and the callback (an instance
-     *  implementing {@link MatchCallback}) returned <tt>true</tt> when it was
+     *  implementing {@link MatchCallback}) returned true when it was
      *  invoked.
      *
      *  @param pattern The pattern.
      *  @param hostGraph The host graph.
-     *  @return <tt>true</tt> if the match is successful; <tt>false</tt>
-     *   otherwise.
+     *  @return true if the match is successful; false otherwise.
      */
     public boolean match(Pattern pattern, CompositeEntity hostGraph) {
 
@@ -220,14 +219,14 @@ public class GraphMatcher extends GraphAnalyzer {
      *  the returned matcher object. This result can be obtained with {@link
      *  #getMatchResult()}. If the match is unsuccessful, the match result is
      *  empty, and {@link #isSuccessful()} of the returned matcher object
-     *  returns <tt>false</tt>.
+     *  returns false.
      *
      *  @param ruleXMLFile The name of the file in which the rule is stored.
      *  @param hostXMLFile The name of the file in which the model to be matched
      *   is stored.
      *  @return A matcher object with the first match result stored in it. If no
      *   match is found, {@link #isSuccessful()} of the matcher object returns
-     *   <tt>false</tt>, and {@link #getMatchResult()} returns an empty match.
+     *   false, and {@link #getMatchResult()} returns an empty match.
      *  @exception Exception If the rule file or the model file cannot be read.
      *  @see #match(String, String, MatchCallback)
      */
@@ -240,10 +239,10 @@ public class GraphMatcher extends GraphAnalyzer {
      *  model stored in the file with name <tt>hostXMLFile</tt>, whose top-level
      *  should be an instance of {@link CompositeEntity}, and invoke
      *  <tt>callback</tt>'s {@link MatchCallback#foundMatch(GraphMatcher)}
-     *  method whenever a match is found. If the callback returns <tt>true</tt>,
+     *  method whenever a match is found. If the callback returns true,
      *  the match will terminate and no more matches will be reported;
      *  otherwise, the match process continues, and the callback may be invoked
-     *  again. If <tt>callback</tt> is <tt>null</tt>, the behavior is the same
+     *  again. If <tt>callback</tt> is null, the behavior is the same
      *  as {@link #match(String, String)}.
      *
      *  @param ruleXMLFile The name of the file in which the rule is stored.
@@ -252,8 +251,8 @@ public class GraphMatcher extends GraphAnalyzer {
      *  @param callback The callback to be invoked when matches are found.
      *  @return A matcher object with the last match result stored in it. If no
      *   match is found, or though matches are found, the callback returns
-     *   <tt>false</tt> for all the matches, then {@link #isSuccessful()} of the
-     *   matcher object returns <tt>false</tt>, and {@link #getMatchResult()}
+     *   false for all the matches, then {@link #isSuccessful()} of the
+     *   matcher object returns false, and {@link #getMatchResult()}
      *   returns an empty match.
      *  @exception Exception If the rule file or the model file cannot be read.
      *  @see #match(String, String)
@@ -278,7 +277,7 @@ public class GraphMatcher extends GraphAnalyzer {
     /** Set the callback to be invoked by future calls to {@link
      *  #match(Pattern, CompositeEntity)}.
      *
-     *  @param callback The callback. If it is <tt>null</tt>, the callback is
+     *  @param callback The callback. If it is null, the callback is
      *   set to {@link #DEFAULT_CALLBACK}.
      *  @see #match(Pattern, CompositeEntity)
      */
@@ -290,9 +289,9 @@ public class GraphMatcher extends GraphAnalyzer {
         }
     }
 
-    /** The default callback that always returns <tt>true</tt>. A callback is
+    /** The default callback that always returns true. A callback is
      *  invoked whenever a match is found. Because this callback always returns
-     *  <tt>true</tt>, it terminates the matching process after the first match
+     *  true, it terminates the matching process after the first match
      *  is found, and the match result can be obtained later using {@link
      *  #getMatchResult()}.
      */
@@ -305,6 +304,13 @@ public class GraphMatcher extends GraphAnalyzer {
     ///////////////////////////////////////////////////////////////////
     ////                        protected methods                  ////
 
+    /** Return whether the object in the pattern should be ignored in the
+     *  pattern matching. An object is ignored if it is tagged to be ignored, or
+     *  it is tagged to be optional but a match including that object has
+     *  failed.
+     *
+     *  @return true if the object is ignored.
+     */
     protected boolean _isIgnored(Object object) {
         Boolean ignored = _cachedIgnoredObjects.get(object);
         if (ignored != null) {
@@ -328,15 +334,15 @@ public class GraphMatcher extends GraphAnalyzer {
         return result;
     }
 
-    /** Test whether the composite entity is opaque or not. Return <tt>true</tt>
+    /** Test whether the composite entity is opaque or not. Return true
      *  if the composite entity is an instance of {@link CompositeActor} and it
      *  is opaque. A composite actor is opaque if it has a director inside,
      *  which means the new level of hierarchy that it creates cannot be
      *  flattened, or it has a {@link HierarchyFlatteningAttribute} attribute
-     *  inside with value <tt>true.
+     *  inside with value true.
      *
      *  @param entity The composite entity to be tested.
-     *  @return <tt>true</tt> if the composite entity is an instance of {@link
+     *  @return true if the composite entity is an instance of {@link
      *   CompositeActor} and it is opaque.
      */
     protected boolean _isOpaque(CompositeEntity entity) {
@@ -359,6 +365,12 @@ public class GraphMatcher extends GraphAnalyzer {
         }
     }
 
+    /** Return whether the interconnected relations should be collapsed into one
+     *  in pattern matching.
+     *
+     *  @param container The container of the relations.
+     *  @return true if the relation should be collapsed.
+     */
     protected boolean _relationCollapsing(NamedObj container) {
         Token collapsingToken = _getAttribute(container,
                 RelationCollapsingAttribute.class, true, false, false);
@@ -422,10 +434,21 @@ public class GraphMatcher extends GraphAnalyzer {
         }
     }
 
+    /** Check whether the constraint is satisfied by the matching.
+     *
+     *  @param pattern The object in the pattern that has been matched with the
+     *   matched result stored in the _matchResult field.
+     *  @param constraint The constraint to be checked.
+     *  @return true if the constraint is satisfied.
+     */
     private boolean _checkConstraint(Pattern pattern, Constraint constraint) {
         return constraint.check(pattern, _matchResult);
     }
 
+    /** Check all the constraints are satisfied.
+     *
+     *  @return true if all the constraints are satisfied.
+     */
     private boolean _checkConstraints() {
         if (_matchResult.isEmpty()) {
             return false;
@@ -447,7 +470,8 @@ public class GraphMatcher extends GraphAnalyzer {
 
         NamedObj patternObject = (NamedObj) anyEntry.getKey();
         NamedObj patternContainer = patternObject.getContainer();
-        while (patternContainer != null && _matchResult.containsKey(patternContainer)) {
+        while (patternContainer != null && _matchResult.containsKey(
+                patternContainer)) {
             patternObject = patternContainer;
             patternContainer = patternContainer.getContainer();
         }
@@ -473,7 +497,15 @@ public class GraphMatcher extends GraphAnalyzer {
         return true;
     }
 
-    private static boolean _checkCriterion(NamedObj patternObject,
+    /** Check all the criteria are satisfied by matching the pattern object to
+     *  the host object.
+     *
+     *  @param patternObject The object in the pattern to which criteria are
+     *   associated.
+     *  @param hostObject The object in the host model to be tested.
+     *  @return true if all criteria, if any, are satisfied.
+     */
+    private static boolean _checkCriteria(NamedObj patternObject,
             NamedObj hostObject) {
         GTIngredientList ruleList = null;
         if (patternObject instanceof GTEntity) {
@@ -512,6 +544,8 @@ public class GraphMatcher extends GraphAnalyzer {
         return true;
     }
 
+    /** Clear all the cached objects.
+     */
     private void _clearCaches() {
         _cachedCreatedObjects.clear();
         _cachedIgnoredObjects.clear();
@@ -536,6 +570,17 @@ public class GraphMatcher extends GraphAnalyzer {
         }
     }
 
+    /** Search for the value of an attribute in the pattern hierarchy or the
+     *  host model hierarchy.
+     *
+     *  @param container The contained in the host model or the pattern.
+     *  @param attributeClass The class of the attribute to be searched for.
+     *  @param searchContainer Whether containers of the contain need to be
+     *   searched.
+     *  @param patternOnly Whether the attribute should only be in the pattern.
+     *  @param hostOnly Whether the attribute should only be in the host model.
+     *  @return The value of the attribute, if found, or null otherwise.
+     */
     private Token _getAttribute(NamedObj container,
             Class<? extends ParameterAttribute> attributeClass,
             boolean searchContainer, boolean patternOnly, boolean hostOnly) {
@@ -588,7 +633,7 @@ public class GraphMatcher extends GraphAnalyzer {
 
     /** Get a string that represents the object. If the object is an instance of
      *  {@link NamedObj}, the returned string is its name retrieved by {@link
-     *  NamedObj#getFullName()}; otherwise, the <tt>toString</tt> method of the
+     *  NamedObj#getFullName()}; otherwise, the toString() method of the
      *  object is called to get the string.
      *
      *  @param object The object.
@@ -645,27 +690,6 @@ public class GraphMatcher extends GraphAnalyzer {
         return negated;
     }
 
-    private boolean _matchAttribute(AttributeMatcher patternAttribute,
-            Attribute hostAttribute) {
-        if (!patternAttribute.match(hostAttribute)) {
-            return false;
-        }
-
-        if (!_checkCriterion(patternAttribute, hostAttribute)) {
-            return false;
-        }
-
-        int matchSize = _matchResult.size();
-        _matchResult.put(patternAttribute, hostAttribute);
-        
-        if (_checkBackward()) {
-            return true;
-        } else {
-            _matchResult.retain(matchSize);
-            return false;
-        }
-    }
-
     private boolean _matchAtomicEntity(ComponentEntity patternEntity,
             ComponentEntity hostEntity) {
         if (patternEntity instanceof GTEntity
@@ -673,7 +697,7 @@ public class GraphMatcher extends GraphAnalyzer {
             return false;
         }
 
-        if (!_checkCriterion(patternEntity, hostEntity)) {
+        if (!_checkCriteria(patternEntity, hostEntity)) {
             return false;
         }
 
@@ -726,6 +750,27 @@ public class GraphMatcher extends GraphAnalyzer {
         return success;
     }
 
+    private boolean _matchAttribute(AttributeMatcher patternAttribute,
+            Attribute hostAttribute) {
+        if (!patternAttribute.match(hostAttribute)) {
+            return false;
+        }
+
+        if (!_checkCriteria(patternAttribute, hostAttribute)) {
+            return false;
+        }
+
+        int matchSize = _matchResult.size();
+        _matchResult.put(patternAttribute, hostAttribute);
+
+        if (_checkBackward()) {
+            return true;
+        } else {
+            _matchResult.retain(matchSize);
+            return false;
+        }
+    }
+
     private boolean _matchCompositeEntity(CompositeEntity patternEntity,
             CompositeEntity hostEntity) {
         if (patternEntity instanceof GTEntity
@@ -733,7 +778,7 @@ public class GraphMatcher extends GraphAnalyzer {
             return false;
         }
 
-        if (!_checkCriterion(patternEntity, hostEntity)) {
+        if (!_checkCriteria(patternEntity, hostEntity)) {
             return false;
         }
 
@@ -1248,7 +1293,7 @@ public class GraphMatcher extends GraphAnalyzer {
     private boolean _shallowMatchDirector(Director patternDirector,
             Director hostDirector) {
 
-        if (!_checkCriterion(patternDirector, hostDirector)) {
+        if (!_checkCriteria(patternDirector, hostDirector)) {
             return false;
         }
 
@@ -1284,7 +1329,7 @@ public class GraphMatcher extends GraphAnalyzer {
 
     private static boolean _shallowMatchPort(Port patternPort, Port hostPort) {
 
-        if (!_checkCriterion(patternPort, hostPort)) {
+        if (!_checkCriteria(patternPort, hostPort)) {
             return false;
         }
 
@@ -1340,7 +1385,7 @@ public class GraphMatcher extends GraphAnalyzer {
     private boolean _shallowMatchRelation(Relation patternRelation,
             Relation hostRelation) {
 
-        if (!_checkCriterion(patternRelation, hostRelation)) {
+        if (!_checkCriteria(patternRelation, hostRelation)) {
             return false;
         }
 
