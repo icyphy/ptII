@@ -975,6 +975,13 @@ public class GraphMatcher extends GraphAnalyzer {
         return _matchObject(patternList, hostList);
     }
 
+    /** Match the list of pattern objects in the lookback entry to the list of
+     *  host objects in it.
+     * 
+     *  @param matchedObjectLists The lookback entry containing a list of
+     *   pattern objects and a list of host objects.
+     *  @return true if the match is successful.
+     */
     private boolean _matchList(LookbackEntry matchedObjectLists) {
         ObjectList patternList = matchedObjectLists.getPatternList();
         ObjectList hostList = matchedObjectLists.getHostList();
@@ -1083,6 +1090,15 @@ public class GraphMatcher extends GraphAnalyzer {
         return success;
     }
 
+    /** Match an object of any kind in the pattern to an object in the host
+     *  model.
+     * 
+     *  @param patternObject The object in the pattern.
+     *  @param hostObject The object in the host model.
+     *  @return true if the match is successful by matching the pattern object
+     *   to the host object. If false, no match can be found if the given
+     *   pattern object is matched to the host object.
+     */
     private boolean _matchObject(Object patternObject, Object hostObject) {
         Object match = _matchResult.get(patternObject);
         if (match != null && match.equals(hostObject)) {
@@ -1128,6 +1144,16 @@ public class GraphMatcher extends GraphAnalyzer {
         }
     }
 
+    /** Match a connection path (multiple links between a pair of ports with one
+     *  or more relations in between) in the pattern to a connection path in the
+     *  host model.
+     * 
+     *  @param patternPath The path in the pattern.
+     *  @param hostPath The path in the host model.
+     *  @return true if the match is successful by matching the pattern path
+     *   to the host path. If false, no match can be found if the given
+     *   pattern path is matched to the host path.
+     */
     private boolean _matchPath(Path patternPath, Path hostPath) {
 
         if (!_shallowMatchPath(patternPath, hostPath)) {
@@ -1158,6 +1184,14 @@ public class GraphMatcher extends GraphAnalyzer {
         return success;
     }
 
+    /** Match a port in the pattern to a port in the host model.
+     * 
+     *  @param patternPort The port in the pattern.
+     *  @param hostPort The port in the host model.
+     *  @return true if the match is successful by matching the pattern port
+     *   to the host port. If false, no match can be found if the given
+     *   pattern port is matched to the host port.
+     */
     private boolean _matchPort(Port patternPort, Port hostPort) {
         if (patternPort instanceof GTEntity
                 && !((GTEntity) patternPort).match(hostPort)) {
@@ -1271,6 +1305,14 @@ public class GraphMatcher extends GraphAnalyzer {
         return success;
     }
 
+    /** Match a relation in the pattern to a relation in the host model.
+     * 
+     *  @param patternRelation The relation in the pattern.
+     *  @param hostRelation The relation in the host model.
+     *  @return true if the match is successful by matching the pattern relation
+     *   to the host relation. If false, no match can be found if the given
+     *   pattern relation is matched to the host relation.
+     */
     private boolean _matchRelation(Relation patternRelation,
             Relation hostRelation) {
         if (patternRelation instanceof GTEntity
@@ -1328,6 +1370,10 @@ public class GraphMatcher extends GraphAnalyzer {
         return success;
     }
 
+    /** Print the match result in a readable format to standard output.
+     * 
+     *  @param match The match result to be printed.
+     */
     private static void _printMatch(MatchResult match) {
         List<Object> keyList = new LinkedList<Object>(match.keySet());
         Collections.sort(keyList, _comparator);
@@ -1339,6 +1385,14 @@ public class GraphMatcher extends GraphAnalyzer {
         }
     }
 
+    /** Shallow-match a director in the pattern to a director in the host model
+     *  but not anything that the director depends on. Return true if the
+     *  director itself matches, and false otherwise.
+     * 
+     *  @param patternDirector The director in the pattern.
+     *  @param hostDirector The director in the host model.
+     *  @return true if the director matches, and false otherwise.
+     */
     private boolean _shallowMatchDirector(Director patternDirector,
             Director hostDirector) {
 
@@ -1366,6 +1420,14 @@ public class GraphMatcher extends GraphAnalyzer {
         return success;
     }
 
+    /** Shallow-match a path in the pattern to a path in the host model
+     *  but not anything that the path depends on. Return true if the
+     *  path itself matches, and false otherwise.
+     * 
+     *  @param patternPath The path in the pattern.
+     *  @param hostPath The path in the host model.
+     *  @return true if the path matches, and false otherwise.
+     */
     private static boolean _shallowMatchPath(Path patternPath, Path hostPath) {
         Port patternStartPort = patternPath.getStartPort();
         Port hostStartPort = hostPath.getStartPort();
@@ -1376,6 +1438,14 @@ public class GraphMatcher extends GraphAnalyzer {
                 && _shallowMatchPort(patternEndPort, hostEndPort);
     }
 
+    /** Shallow-match a port in the pattern to a port in the host model
+     *  but not anything that the port depends on. Return true if the
+     *  port itself matches, and false otherwise.
+     * 
+     *  @param patternPort The port in the pattern.
+     *  @param hostPort The port in the host model.
+     *  @return true if the port matches, and false otherwise.
+     */
     private static boolean _shallowMatchPort(Port patternPort, Port hostPort) {
 
         if (!_checkCriteria(patternPort, hostPort)) {
@@ -1433,6 +1503,14 @@ public class GraphMatcher extends GraphAnalyzer {
         }
     }
 
+    /** Shallow-match a relation in the pattern to a relation in the host model
+     *  but not anything that the relation depends on. Return true if the
+     *  relation itself matches, and false otherwise.
+     * 
+     *  @param patternRelation The relation in the pattern.
+     *  @param hostRelation The relation in the host model.
+     *  @return true if the relation matches, and false otherwise.
+     */
     private boolean _shallowMatchRelation(Relation patternRelation,
             Relation hostRelation) {
 
@@ -1468,12 +1546,21 @@ public class GraphMatcher extends GraphAnalyzer {
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
 
+    /** A map from objects to Booleans value that identify whether they are
+     *  tagged to be created.
+     */
     private Map<Object, Boolean> _cachedCreatedObjects =
         new HashMap<Object, Boolean>();
 
+    /** A map from objects to Boolean values that identify whether they are
+     *  tagged to be ignored.
+     */
     private Map<Object, Boolean> _cachedIgnoredObjects =
         new HashMap<Object, Boolean>();
 
+    /** A map from objects to Boolean values that identify whether they are
+     *  tagged to be negated.
+     */
     private Map<Object, Boolean> _cachedNegatedObjects =
         new HashMap<Object, Boolean>();
 
@@ -1484,6 +1571,8 @@ public class GraphMatcher extends GraphAnalyzer {
     private Map<NamedObj, Object> _cachedOptionalContainers =
         new HashMap<NamedObj, Object>();
 
+    /** The callback to invoke in pattern matching.
+     */
     private MatchCallback _callback = DEFAULT_CALLBACK;
 
     /** The objects in the pattern that implement the MatchCallback interface,
@@ -1496,11 +1585,18 @@ public class GraphMatcher extends GraphAnalyzer {
     private List<MatchCallback> _callbacksInPattern =
         new LinkedList<MatchCallback>();
 
+    /** A comparator to sort objects in a container by their names.
+     */
     private static final NameComparator _comparator = new NameComparator();
 
+    /** A map from objects to Boolean values that identify whether those objects
+     *  have been ignored in the pattern matching.
+     */
     private Map<Object, Boolean> _ignoredOptionalObjects =
         new HashMap<Object, Boolean>();
 
+    /** A list of lookback entries.
+     */
     private LookbackList _lookbackList = new LookbackList();
 
     /** The map that matches objects in the pattern to the objects in the host.
@@ -1508,8 +1604,15 @@ public class GraphMatcher extends GraphAnalyzer {
      */
     private MatchResult _matchResult;
 
+    /** Whether the pattern matching has processed to the negation phase, where
+     *  all negated objects are to be matched but if any of them is found, the
+     *  match is in fact unsuccessful.
+     */
     private boolean _negation = false;
 
+    /** A map from parameters that are ValueIterators to their original values
+     *  (which are changed by in pattern matching to different values).
+     */
     private SequentialTwoWayHashMap<ValueIterator, Token> _parameterValues =
         new SequentialTwoWayHashMap<ValueIterator, Token>();
 
@@ -1518,17 +1621,33 @@ public class GraphMatcher extends GraphAnalyzer {
      */
     private boolean _success = false;
 
+    /** The part of match result that is temporary. I.e., the matches included
+     *  here are not final.
+     */
     private MatchResult _temporaryMatch = new MatchResult();
 
     ///////////////////////////////////////////////////////////////////
     ////                      private inner classes                ////
 
+    /** An entry for a lookback item. When pattern matching reaches an end of
+     *  the graph, it looks back and try to match all the objects discovered
+     *  along the way that have not been considered in the matching yet.
+     * 
+     */
     private static class LookbackEntry extends Tuple<Object> {
 
+        /** Get the list containing objects in the host model.
+         * 
+         *  @return The list containing objects in the host model.
+         */
         public ObjectList getHostList() {
             return (ObjectList) get(1);
         }
 
+        /** Get the list containing objects in the pattern.
+         * 
+         *  @return The list containing objects in the pattern.
+         */
         public ObjectList getPatternList() {
             return (ObjectList) get(0);
         }
