@@ -623,14 +623,6 @@ public class GraphMatcher extends GraphAnalyzer {
         return null;
     }
 
-    private static Criterion _getDefiningCriterion(NamedObj patternObject) {
-        if (patternObject instanceof Checkable) {
-            return ((Checkable) patternObject).getCriterion();
-        } else {
-            return null;
-        }
-    }
-
     /** Get a string that represents the object. If the object is an instance of
      *  {@link NamedObj}, the returned string is its name retrieved by {@link
      *  NamedObj#getFullName()}; otherwise, the toString() method of the
@@ -644,6 +636,12 @@ public class GraphMatcher extends GraphAnalyzer {
                 : object.toString();
     }
 
+    /** Get the container of the object that is tagged to be optional. If none,
+     *  return null.
+     * 
+     *  @param object The object whose optional container is to be found.
+     *  @return The optional container, or null.
+     */
     private NamedObj _getOptionalContainer(NamedObj object) {
         Object optionalObject = _cachedOptionalContainers.get(object);
         if (optionalObject != null) {
@@ -668,6 +666,12 @@ public class GraphMatcher extends GraphAnalyzer {
         }
     }
 
+    /** Return whether the object in the pattern is tagged to be created.
+     * 
+     *  @param object The object in the pattern.
+     *  @return true if the object is to be created (so it is not actually part
+     *   of the pattern but the replacement).
+     */
     private boolean _isCreated(Object object) {
         Boolean created = _cachedCreatedObjects.get(object);
         if (created != null) {
@@ -679,6 +683,13 @@ public class GraphMatcher extends GraphAnalyzer {
         return created;
     }
 
+    /** Return whether the object in the pattern is tagged to be negated.
+     *  Negated objects should not appear in the subgraph for the match to be
+     *  successful.
+     * 
+     *  @param object The object in the pattern.
+     *  @return true if the object is to be negated.
+     */
     private boolean _isNegated(Object object) {
         Boolean negated = _cachedNegatedObjects.get(object);
         if (negated != null) {
@@ -690,6 +701,15 @@ public class GraphMatcher extends GraphAnalyzer {
         return negated;
     }
 
+    /** Match an atomic entity in the pattern to an atomic entity in the host
+     *  model.
+     * 
+     *  @param patternEntity The atomic entity in the pattern.
+     *  @param hostEntity The atomic entity in the host model.
+     *  @return true if the match is successful by matching the pattern entity
+     *   to the host entity. If false, no match can be found if the given
+     *   pattern entity is matched to the host entity.
+     */
     private boolean _matchAtomicEntity(ComponentEntity patternEntity,
             ComponentEntity hostEntity) {
         if (patternEntity instanceof GTEntity
@@ -750,6 +770,14 @@ public class GraphMatcher extends GraphAnalyzer {
         return success;
     }
 
+    /** Match an attribute in the pattern to an attribute in the host model.
+     * 
+     *  @param patternAttribute The attribute in the pattern.
+     *  @param hostAttribute The attribute in the host model.
+     *  @return true if the match is successful by matching the pattern
+     *   attribute to the host attribute. If false, no match can be found if the
+     *   given pattern attribute is matched to the host attribute.
+     */
     private boolean _matchAttribute(AttributeMatcher patternAttribute,
             Attribute hostAttribute) {
         if (!patternAttribute.match(hostAttribute)) {
@@ -771,6 +799,15 @@ public class GraphMatcher extends GraphAnalyzer {
         }
     }
 
+    /** Match a composite entity in the pattern to a composite entity in the
+     *  host model.
+     * 
+     *  @param patternEntity The composite entity in the pattern.
+     *  @param hostEntity The composite entity in the host model.
+     *  @return true if the match is successful by matching the pattern entity
+     *   to the host entity. If false, no match can be found if the given
+     *   pattern entity is matched to the host entity.
+     */
     private boolean _matchCompositeEntity(CompositeEntity patternEntity,
             CompositeEntity hostEntity) {
         if (patternEntity instanceof GTEntity
@@ -887,6 +924,18 @@ public class GraphMatcher extends GraphAnalyzer {
         return success;
     }
 
+    /** Try to match a composite entity in the pattern to any composite entity
+     *  in the host model. This method should only be used at the beginning of
+     *  pattern matching, where the whole pattern should be matched to any
+     *  composite entity in the host model.
+     * 
+     *  @param patternEntity The composite entity in the pattern.
+     *  @param hostEntity The composite entity in the host model.
+     *  @return true if the match is successful by matching the pattern
+     *   attribute to the host attribute. If false, no match can be found if the
+     *   given pattern attribute is matched to the host attribute.
+     *  @see #_matchCompositeEntity(CompositeEntity, CompositeEntity)
+     */
     private boolean _matchCompositeEntityAtAllLevels(
             CompositeEntity patternEntity, CompositeEntity hostEntity) {
         ObjectList patternList = new ObjectList();
@@ -1337,8 +1386,12 @@ public class GraphMatcher extends GraphAnalyzer {
             if (hostPort instanceof IOPort) {
                 IOPort patternIOPort = (IOPort) patternPort;
                 IOPort hostIOPort = (IOPort) hostPort;
-                Criterion criterion = _getDefiningCriterion(patternIOPort);
-                if (criterion == null) {
+                
+                if (patternIOPort instanceof Checkable) {
+                    Criterion criterion =
+                        ((Checkable) patternIOPort).getCriterion();
+                    return criterion.match(hostIOPort);
+                } else {
                     boolean isInputEqual =
                         patternIOPort.isInput() == hostIOPort.isInput();
                     boolean isOutputEqual =
@@ -1371,8 +1424,6 @@ public class GraphMatcher extends GraphAnalyzer {
 
                     return isInputEqual && isOutputEqual && isMultiportEqual
                             && isNameEqual && isTypeCompatible;
-                } else {
-                    return criterion.match(hostIOPort);
                 }
             } else {
                 return true;
@@ -1426,6 +1477,10 @@ public class GraphMatcher extends GraphAnalyzer {
     private Map<Object, Boolean> _cachedNegatedObjects =
         new HashMap<Object, Boolean>();
 
+    /** A map from objects to their optional containers. If it has been
+     *  determined that they have no optional container, then the value would be
+     *  Boolean.FALSE rather than a NamedObj.
+     */
     private Map<NamedObj, Object> _cachedOptionalContainers =
         new HashMap<NamedObj, Object>();
 
