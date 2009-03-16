@@ -474,7 +474,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
                 _fireContainerAt(nextRealTimeEventTime);
 
                 Director executiveDirector = ((Actor) getContainer()).getExecutiveDirector();
-                while (executiveDirector != null && !(executiveDirector instanceof PtidesDirector))
+                while (executiveDirector != null && (executiveDirector.getContainer() != executiveDirector.toplevel()) )
                     executiveDirector = ((Actor)executiveDirector.getContainer()).getExecutiveDirector();
                 if (executiveDirector == null)
                     throw new IllegalActionException("This director can only be used as an embedded director.");
@@ -549,34 +549,6 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
     }
 
     /**
-     * This method returns true if an event on a port of an actor is safe to
-     * process. This method does a static analysis. Events are safe to process
-     * if timestamp - minimumDelay <= physicalTime. The minimum delay is
-     * determined by the causality interface. This method might return false but
-     * an event is still safe to process because there are events upstream which
-     * will certainly arrive at this port and all other ports in the same port
-     * group with a greater time stamp.
-     * 
-     * @param time
-     *            The time stamp of the event.
-     * @param port
-     *            The port on which to check the minimum delay time.
-     * @return True If it is safe to process a token.
-     * @throws IllegalActionException
-     *             Thrown if CausalityInterface cannot be computed.
-     */
-    public boolean isSafeToProcessStatically(Time time, IOPort port)
-            throws IllegalActionException {
-        CausalityInterfaceForComposites causalityInterface = (CausalityInterfaceForComposites) ((CompositeActor) this
-                .getContainer()).getCausalityInterface();
-        RealDependency minimumDelay = (RealDependency) causalityInterface
-                .getMinimumDelay(port);
-        return minimumDelay.value() == Double.MAX_VALUE
-                || time.subtract(minimumDelay.value()).compareTo(
-                        _currentPhysicalTime) <= 0;
-    }
-
-    /**
      * Create a new PtidesActorReceiver.
      */
     public Receiver newReceiver() {
@@ -601,7 +573,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
     @Override
     public boolean prefire() throws IllegalActionException {
         Director executiveDirector = ((Actor) getContainer()).getExecutiveDirector();  
-        while (executiveDirector != null && !(executiveDirector instanceof PtidesDirector))
+        while (executiveDirector != null && (executiveDirector.getContainer() != executiveDirector.toplevel()) )
                 executiveDirector = ((Actor)executiveDirector.getContainer()).getExecutiveDirector(); 
         _currentPhysicalTime = executiveDirector.getModelTime();
             
@@ -951,11 +923,13 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
                         for (int j = 0; j < recv.length; j++) {
                             PtidesActorReceiver receiver = (PtidesActorReceiver) recv[j];
                             Time time = receiver.getNextTime();
+                            System.out.println(((Actor)getContainer()).getDirector().getModelTime() + " " + getModelTime() + " " + time + " " + actor);
                             if (time != null
-                                    && (/*isSafeToProcessStatically(time, port) ||*/ 
-                                            _isSafeToProcess(port, 
+                                    && (time.compareTo(((Actor)getContainer()).getDirector().getModelTime()) <= 0 ||
+                                            _allUpstreamEventsHaveHigherTimestamps(port, 
                                             port, new ArrayList(), new Time(
                                                     this, 0.0), time))) {
+                                System.out.println(actor);
                                 List<TimedEvent> toRemove = new ArrayList<TimedEvent>();
                                 for (int k = 0; k < events.size(); k++) {
                                     TimedEvent event = events.get(k);
@@ -1081,86 +1055,65 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
      *         eventTimeStamp.
      * @throws IllegalActionException
      */
-    private boolean _isSafeToProcess(IOPort port, IOPort currentPort,
+    private boolean _allUpstreamEventsHaveHigherTimestamps(IOPort port, IOPort currentPort,
             Collection<IOPort> visitedPorts, Time delay, Time eventTimeStamp)
             throws IllegalActionException {
         if (visitedPorts == null)
             visitedPorts = new ArrayList<IOPort>();
         visitedPorts.add(currentPort);
-        CompositeActor platform = (CompositeActor) this.getContainer();
+        
+        CompositeActor cplatform = (CompositeActor) this.getContainer();
+        Actor currentActor = (Actor) currentPort.getContainer();
+        Time time = _getNextEventTimeStamp(currentPort);
+        
+        // min delay between sensor and port
+        if (PtidesActorProperties.isSensor(currentActor)) {
+            CausalityInterfaceForComposites causalityInterface = (CausalityInterfaceForComposites) cplatform.getCausalityInterface();
+            RealDependency minimumDelay = (RealDependency) causalityInterface.getMinimumDelay(port);
+            return minimumDelay.value() == Double.MAX_VALUE || time.subtract(minimumDelay.value()).compareTo(_currentPhysicalTime) <= 0;
+        }
+        
         if (currentPort.isInput()) {
-            Time time = _getNextEventTimeStamp(currentPort);
+            
             if (port != currentPort && time != null && !time.equals(Time.POSITIVE_INFINITY)) {
-                
-                
-                if (time.add(delay).compareTo(eventTimeStamp) >= 0) {
+                if (time.add(delay).compareTo(eventTimeStamp) > 0) { // current port has an event with a time stamp that will occur at port at a later time than eventtimestamp
                     return true;
-                } else if (time.add(delay).compareTo(eventTimeStamp) < 0) {
-                    return false;
-                }
-            }
-
-            // if port is input port of this actor
-            if (platform.inputPortList().contains(currentPort)) {
-                return true;
-            }
-            // else if port is input port of any actor in this actor
-            else {
-                if (currentPort.getContainer() instanceof CompositeActor) {
-                    Collection<IOPort> equivalentPorts = (((CompositeActor) currentPort
-                            .getContainer()).getCausalityInterface())
-                            .equivalentPorts(currentPort);
-                    for (IOPort equivalentPort : equivalentPorts) {
-                        Collection<IOPort> sourcePorts = equivalentPort
-                                .sourcePortList(); // contains only one item (?)
-                        for (IOPort sourcePort : sourcePorts) {
-                            return _isSafeToProcess(port, sourcePort, visitedPorts,
-                                    delay, eventTimeStamp);
-                        }
-                    }
-                } else {
-                    Collection<IOPort> sourcePorts = currentPort.sourcePortList();
-                    for (IOPort actorOutputPort : sourcePorts) {
-                        return _isSafeToProcess(port, actorOutputPort, visitedPorts,
-                                delay, eventTimeStamp);
-                    }
-                    if (sourcePorts.size() == 0) {
-                        return true;
-                    }
-                }
-            }
-        } else if (currentPort.isOutput()) {
-            // if port is output port of this actor
-            if (platform.outputPortList().contains(currentPort)) {
-                // impossible?
-            }
-            // else if port is output port of any actor in this actor
-            else {
-                if (currentPort.getContainer() instanceof CompositeActor) {
-                    CausalityInterface causalityInterface = ((Actor) currentPort
-                            .getContainer()).getCausalityInterface();
-                    Collection<IOPort> deepInputPorts = currentPort
-                            .deepInsidePortList();
-                    for (IOPort inputPort : deepInputPorts) {
-                        delay.add(((RealDependency) causalityInterface
-                                .getDependency(inputPort, currentPort)).value());
-                        return _isSafeToProcess(port, inputPort, visitedPorts, delay,
-                                eventTimeStamp);
-                    }
-                } else {
-                    CausalityInterface causalityInterface = ((Actor) currentPort
-                            .getContainer()).getCausalityInterface();
-                    Collection<IOPort> inputPorts = causalityInterface
-                            .dependentPorts(currentPort);
-                    for (IOPort inputPort : inputPorts) {
-                        delay.add(((RealDependency) causalityInterface
-                                .getDependency(inputPort, currentPort)).value());
-                        return _isSafeToProcess(port, inputPort, visitedPorts, delay,
-                                eventTimeStamp);
-                    }
-                    if (inputPorts.size() == 0) {
+                } 
+            } 
+            Collection<IOPort> equivalentPorts = (currentActor.getCausalityInterface()).equivalentPorts(currentPort);
+            boolean allAreSafeToProcess = true;
+            for (IOPort equivalentPort : equivalentPorts) {
+                Time eqtime = _getNextEventTimeStamp(equivalentPort);
+                if (eqtime == Time.POSITIVE_INFINITY ||  
+                        (equivalentPort == port && eqtime.add(delay).compareTo(eventTimeStamp) < 0) ||
+                        (equivalentPort != port && eqtime.add(delay).compareTo(eventTimeStamp) <= 0)) { // search upstream
+                    Collection<IOPort> sourcePorts = equivalentPort.sourcePortList(); 
+                    if (sourcePorts.size() == 0)
                         return false;
-                    }
+                    for (IOPort sourcePort : sourcePorts) {
+                        allAreSafeToProcess = allAreSafeToProcess & _allUpstreamEventsHaveHigherTimestamps(port, sourcePort, visitedPorts,
+                                delay, eventTimeStamp);
+                    } 
+                }
+            } 
+            return allAreSafeToProcess; 
+        } else if (currentPort.isOutput()) { 
+            if (currentActor instanceof CompositeActor) {
+                CausalityInterface causalityInterface = currentActor.getCausalityInterface();
+                Collection<IOPort> deepInputPorts = currentPort.deepInsidePortList();
+                for (IOPort inputPort : deepInputPorts) {
+                    delay = delay.add(((RealDependency) causalityInterface.getDependency(inputPort, currentPort)).value());
+                    return _allUpstreamEventsHaveHigherTimestamps(port, inputPort, visitedPorts, delay, eventTimeStamp);
+                }
+            } else {
+                CausalityInterface causalityInterface = currentActor.getCausalityInterface();
+                Collection<IOPort> inputPorts = causalityInterface.dependentPorts(currentPort);
+                for (IOPort inputPort : inputPorts) {
+                    delay = delay.add(((RealDependency) causalityInterface.getDependency(inputPort, currentPort)).value()); 
+                    return _allUpstreamEventsHaveHigherTimestamps(port, inputPort, visitedPorts, delay, eventTimeStamp);
+                }
+                if (inputPorts.size() == 0) {
+                    return false;
                 }
             }
         }
