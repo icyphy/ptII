@@ -384,12 +384,13 @@ public class ERGDirector extends Director implements TimedDirector,
      *  @param arguments The arguments to the event.
      *  @param triggers A list of ports and variables that triggers the event
      *   before its scheduled time is reached.
+     *  @param priority The priority of the event (0 for default)
      *  @param reset Whether the refinement of the scheduled event should be
-     *   (re)initialized when the event is processed.
+     *   reinitialized when the event is processed.
      *  @exception IllegalActionException If the operation is not
-     *   permissible (e.g. the given time is in the past), or if the executive director
-     *   does not support fireAt() precisely (it does not agree to refire
-     *   this ERG model at the requested time)
+     *   permissible (e.g. the given time is in the past), or if the executive
+     *   director does not support fireAt() precisely (it does not agree to
+     *   refire this ERG model at the requested time)
      */
     public void fireAt(Event event, Time time, ArrayToken arguments,
             List<NamedObj> triggers, int priority, boolean reset)
@@ -749,6 +750,9 @@ public class ERGDirector extends Director implements TimedDirector,
          *  @param arguments Arguments to the event.
          *  @param data The refiring data for the next refire() invocation of
          *   the event that causes this method to be called, or null if none.
+         *  @param priority The priority of the event (0 for default)
+         *  @param reset Whether the refinement of the scheduled event should be
+         *   reinitialized when the event is processed.
          */
         public TimedEvent(Time time, Object object, ArrayToken arguments,
                 RefiringData data, int priority, boolean reset) {

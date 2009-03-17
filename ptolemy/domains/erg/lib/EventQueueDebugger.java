@@ -1,4 +1,4 @@
-/*
+/* An attribute to debug the event queue of an ERG model.
 
  Copyright (c) 2008 The Regents of the University of California.
  All rights reserved.
@@ -33,7 +33,6 @@ import ptolemy.actor.util.Time;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.erg.kernel.ERGController;
 import ptolemy.domains.erg.kernel.ERGDirector;
@@ -48,7 +47,7 @@ import ptolemy.kernel.util.SingletonAttribute;
 //// EventQueueDebugger
 
 /**
-
+ An attribute to debug the event queue of an ERG model.
 
  @author Thomas Huining Feng
  @version $Id$
@@ -59,11 +58,18 @@ import ptolemy.kernel.util.SingletonAttribute;
 public class EventQueueDebugger extends SingletonAttribute
         implements EventQueueDebugListener, Initializable {
 
-    /**
-     *  @param container
-     *  @param name
-     *  @throws NameDuplicationException
-     *  @throws IllegalActionException
+    /** Construct an attribute with the given container and name.
+     *  If an attribute already exists with the same name as the one
+     *  specified here, that is an instance of class
+     *  SingletonAttribute (or a derived class), then that
+     *  attribute is removed before this one is inserted in the container.
+     *  @param container The container.
+     *  @param name The name of this attribute.
+     *  @exception IllegalActionException If the attribute cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   attribute with this name, and the class of that container is not
+     *   SingletonAttribute.
      */
     public EventQueueDebugger(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {
@@ -73,27 +79,59 @@ public class EventQueueDebugger extends SingletonAttribute
         active.setTypeEquals(BaseType.BOOLEAN);
         active.setToken(BooleanToken.TRUE);
 
-        debuggerClass = new StringParameter(this, "debuggerClass");
-
         _attachText("_iconDescription", _ICON_DESCRIPTION);
     }
 
+    /** Do nothing.
+     *
+     *  @param initializable Not used.
+     */
     public void addInitializable(Initializable initializable) {
     }
 
+    /** Do nothing.
+     *
+     *  @exception IllegalActionException Not thrown in this class.
+     */
     public void initialize() throws IllegalActionException {
     }
 
+    /** Invoked when an actor is inserted into the event queue.
+     *
+     *  @param position The position at which the actor is inserted.
+     *  @param time The time at which the actor is scheduled to fire.
+     *  @param actor The actor.
+     *  @param arguments Arguments to the actor, or null.
+     */
     public void insertActor(int position, Time time, Actor actor,
             ArrayToken arguments) {
     }
 
+    /** Invoked when an event is inserted into the event queue.
+     *
+     *  @param position The position at which the event is inserted.
+     *  @param time The time at which the event is scheduled to fire.
+     *  @param event The event.
+     *  @param arguments Arguments to the event, or null.
+     */
     public void insertEvent(int position, Time time, Event event,
             ArrayToken arguments) {
-        System.out.println("Schedule " + event.getName() + " at " + time +
-                " at position " + position);
+        try {
+            boolean isActive = ((BooleanToken) active.getToken())
+                    .booleanValue();
+            if (isActive) {
+                System.out.println("Schedule " + event.getName() + " at " +
+                        time + " at position " + position);
+            }
+        } catch (IllegalActionException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
+    /** Add this attribute as a debug listener to the director.
+     *
+     *  @exception IllegalActionException Not thrown in this class.
+     */
     public void preinitialize() throws IllegalActionException {
         NamedObj container = getContainer();
         if (container instanceof ERGController) {
@@ -102,17 +140,47 @@ public class EventQueueDebugger extends SingletonAttribute
         }
     }
 
+    /** Invoked when an event or actor is removed from the event queue.
+     *
+     *  @param position The position of the event or actor.
+     *  @param isCancelled Whether the removal is due to cancelation or
+     *   successful processing.
+     */
     public void removeEvent(int position, boolean isCancelled) {
-        if (isCancelled) {
-            System.out.println("Cancel event at position " + position);
-        } else {
-            System.out.println("Process event at position " + position);
+        try {
+            boolean isActive = ((BooleanToken) active.getToken())
+                    .booleanValue();
+            if (isActive) {
+                if (isCancelled) {
+                    System.out.println("Cancel event at position " + position);
+                } else {
+                    System.out.println("Process event at position " + position);
+                }
+            }
+        } catch (IllegalActionException e) {
+            System.out.println(e.getMessage());
         }
     }
 
+    /** Do nothing.
+     *
+     *  @param initializable Not used.
+     */
     public void removeInitializable(Initializable initializable) {
     }
 
+    /** Set the container and register this as an initializable in the
+     *  container.
+     *
+     *  @param container The container
+     *  @exception IllegalActionException If this attribute is not of the
+     *   expected class for the container, or it has no name,
+     *   or the attribute and container are not in the same workspace, or
+     *   the proposed container would result in recursive containment.
+     *  @exception NameDuplicationException If the container already has
+     *   an attribute with the name of this attribute that is of class
+     *   SingletonConfigurableAttribute.
+     */
     public void setContainer(NamedObj container) throws IllegalActionException,
             NameDuplicationException {
         NamedObj oldContainer = getContainer();
@@ -125,6 +193,10 @@ public class EventQueueDebugger extends SingletonAttribute
         }
     }
 
+    /** Remove this attribute from the list of debug listeners in the director.
+     *
+     *  @exception IllegalActionException Not thrown in this class.
+     */
     public void wrapup() throws IllegalActionException {
         NamedObj container = getContainer();
         if (container instanceof ERGController) {
@@ -133,10 +205,11 @@ public class EventQueueDebugger extends SingletonAttribute
         }
     }
 
+    /** A Boolean parameter that determines whether this debugger is active.
+     */
     public Parameter active;
 
-    public StringParameter debuggerClass;
-
+    /** The icon of the event queue debugger attribute. */
     private static final String _ICON_DESCRIPTION = "<svg>"
         + "<rect x=\"0\" y=\"0\" width=\"60\" height=\"10\""
         + "  style=\"fill:#C0C0C0\"/>" + "</svg>";

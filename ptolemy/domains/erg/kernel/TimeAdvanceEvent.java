@@ -41,6 +41,9 @@ package ptolemy.domains.erg.kernel;
  */
 public interface TimeAdvanceEvent {
 
-    /** Return the text that describes the time advance expression. */
+    /** Return the text that describes the time advance expression.
+     *
+     *  @return The text that describes the time advance expression.
+     */
     public String getTimeAdvanceText();
 }

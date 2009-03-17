@@ -638,7 +638,7 @@ public class GraphMatcher extends GraphAnalyzer {
 
     /** Get the container of the object that is tagged to be optional. If none,
      *  return null.
-     * 
+     *
      *  @param object The object whose optional container is to be found.
      *  @return The optional container, or null.
      */
@@ -667,7 +667,7 @@ public class GraphMatcher extends GraphAnalyzer {
     }
 
     /** Return whether the object in the pattern is tagged to be created.
-     * 
+     *
      *  @param object The object in the pattern.
      *  @return true if the object is to be created (so it is not actually part
      *   of the pattern but the replacement).
@@ -686,7 +686,7 @@ public class GraphMatcher extends GraphAnalyzer {
     /** Return whether the object in the pattern is tagged to be negated.
      *  Negated objects should not appear in the subgraph for the match to be
      *  successful.
-     * 
+     *
      *  @param object The object in the pattern.
      *  @return true if the object is to be negated.
      */
@@ -703,7 +703,7 @@ public class GraphMatcher extends GraphAnalyzer {
 
     /** Match an atomic entity in the pattern to an atomic entity in the host
      *  model.
-     * 
+     *
      *  @param patternEntity The atomic entity in the pattern.
      *  @param hostEntity The atomic entity in the host model.
      *  @return true if the match is successful by matching the pattern entity
@@ -771,7 +771,7 @@ public class GraphMatcher extends GraphAnalyzer {
     }
 
     /** Match an attribute in the pattern to an attribute in the host model.
-     * 
+     *
      *  @param patternAttribute The attribute in the pattern.
      *  @param hostAttribute The attribute in the host model.
      *  @return true if the match is successful by matching the pattern
@@ -801,7 +801,7 @@ public class GraphMatcher extends GraphAnalyzer {
 
     /** Match a composite entity in the pattern to a composite entity in the
      *  host model.
-     * 
+     *
      *  @param patternEntity The composite entity in the pattern.
      *  @param hostEntity The composite entity in the host model.
      *  @return true if the match is successful by matching the pattern entity
@@ -928,7 +928,7 @@ public class GraphMatcher extends GraphAnalyzer {
      *  in the host model. This method should only be used at the beginning of
      *  pattern matching, where the whole pattern should be matched to any
      *  composite entity in the host model.
-     * 
+     *
      *  @param patternEntity The composite entity in the pattern.
      *  @param hostEntity The composite entity in the host model.
      *  @return true if the match is successful by matching the pattern
@@ -977,7 +977,7 @@ public class GraphMatcher extends GraphAnalyzer {
 
     /** Match the list of pattern objects in the lookback entry to the list of
      *  host objects in it.
-     * 
+     *
      *  @param matchedObjectLists The lookback entry containing a list of
      *   pattern objects and a list of host objects.
      *  @return true if the match is successful.
@@ -1092,7 +1092,7 @@ public class GraphMatcher extends GraphAnalyzer {
 
     /** Match an object of any kind in the pattern to an object in the host
      *  model.
-     * 
+     *
      *  @param patternObject The object in the pattern.
      *  @param hostObject The object in the host model.
      *  @return true if the match is successful by matching the pattern object
@@ -1147,7 +1147,7 @@ public class GraphMatcher extends GraphAnalyzer {
     /** Match a connection path (multiple links between a pair of ports with one
      *  or more relations in between) in the pattern to a connection path in the
      *  host model.
-     * 
+     *
      *  @param patternPath The path in the pattern.
      *  @param hostPath The path in the host model.
      *  @return true if the match is successful by matching the pattern path
@@ -1185,7 +1185,7 @@ public class GraphMatcher extends GraphAnalyzer {
     }
 
     /** Match a port in the pattern to a port in the host model.
-     * 
+     *
      *  @param patternPort The port in the pattern.
      *  @param hostPort The port in the host model.
      *  @return true if the match is successful by matching the pattern port
@@ -1306,7 +1306,7 @@ public class GraphMatcher extends GraphAnalyzer {
     }
 
     /** Match a relation in the pattern to a relation in the host model.
-     * 
+     *
      *  @param patternRelation The relation in the pattern.
      *  @param hostRelation The relation in the host model.
      *  @return true if the match is successful by matching the pattern relation
@@ -1371,7 +1371,7 @@ public class GraphMatcher extends GraphAnalyzer {
     }
 
     /** Print the match result in a readable format to standard output.
-     * 
+     *
      *  @param match The match result to be printed.
      */
     private static void _printMatch(MatchResult match) {
@@ -1388,7 +1388,7 @@ public class GraphMatcher extends GraphAnalyzer {
     /** Shallow-match a director in the pattern to a director in the host model
      *  but not anything that the director depends on. Return true if the
      *  director itself matches, and false otherwise.
-     * 
+     *
      *  @param patternDirector The director in the pattern.
      *  @param hostDirector The director in the host model.
      *  @return true if the director matches, and false otherwise.
@@ -1423,7 +1423,7 @@ public class GraphMatcher extends GraphAnalyzer {
     /** Shallow-match a path in the pattern to a path in the host model
      *  but not anything that the path depends on. Return true if the
      *  path itself matches, and false otherwise.
-     * 
+     *
      *  @param patternPath The path in the pattern.
      *  @param hostPath The path in the host model.
      *  @return true if the path matches, and false otherwise.
@@ -1441,7 +1441,7 @@ public class GraphMatcher extends GraphAnalyzer {
     /** Shallow-match a port in the pattern to a port in the host model
      *  but not anything that the port depends on. Return true if the
      *  port itself matches, and false otherwise.
-     * 
+     *
      *  @param patternPort The port in the pattern.
      *  @param hostPort The port in the host model.
      *  @return true if the port matches, and false otherwise.
@@ -1456,7 +1456,7 @@ public class GraphMatcher extends GraphAnalyzer {
             if (hostPort instanceof IOPort) {
                 IOPort patternIOPort = (IOPort) patternPort;
                 IOPort hostIOPort = (IOPort) hostPort;
-                
+
                 if (patternIOPort instanceof Checkable) {
                     Criterion criterion =
                         ((Checkable) patternIOPort).getCriterion();
@@ -1506,7 +1506,7 @@ public class GraphMatcher extends GraphAnalyzer {
     /** Shallow-match a relation in the pattern to a relation in the host model
      *  but not anything that the relation depends on. Return true if the
      *  relation itself matches, and false otherwise.
-     * 
+     *
      *  @param patternRelation The relation in the pattern.
      *  @param hostRelation The relation in the host model.
      *  @return true if the relation matches, and false otherwise.
@@ -1585,7 +1585,7 @@ public class GraphMatcher extends GraphAnalyzer {
     private List<MatchCallback> _callbacksInPattern =
         new LinkedList<MatchCallback>();
 
-    /** A comparator to sort objects in a container by their names.
+    /** A comparator to sort objects in a container by their types and names.
      */
     private static final NameComparator _comparator = new NameComparator();
 
@@ -1632,12 +1632,12 @@ public class GraphMatcher extends GraphAnalyzer {
     /** An entry for a lookback item. When pattern matching reaches an end of
      *  the graph, it looks back and try to match all the objects discovered
      *  along the way that have not been considered in the matching yet.
-     * 
+     *
      */
     private static class LookbackEntry extends Tuple<Object> {
 
         /** Get the list containing objects in the host model.
-         * 
+         *
          *  @return The list containing objects in the host model.
          */
         public ObjectList getHostList() {
@@ -1645,50 +1645,142 @@ public class GraphMatcher extends GraphAnalyzer {
         }
 
         /** Get the list containing objects in the pattern.
-         * 
+         *
          *  @return The list containing objects in the pattern.
          */
         public ObjectList getPatternList() {
             return (ObjectList) get(0);
         }
 
+        /** Return whether matching for the objects in the two lists in this
+         *  entry has successfully finished.
+         *
+         *  @return true if the match is successful.
+         */
         public boolean isFinished() {
             return (Boolean) get(2);
         }
 
+        /** Return whether the objects in the lists should be negated in the
+         *  matching.
+         *
+         *  @return true if the objects should be negated.
+         */
         public boolean isNegated() {
             return (Boolean) get(3);
         }
 
+        /** Mark this lookback entry to be finished.
+         *
+         *  @param finished Whether this lookback entry is finished.
+         */
         public void setFinished(boolean finished) {
             set(2, finished);
         }
 
+        /** Mark that the objects in the lists should be negated.
+         *
+         *  @param negated Whether the objects should be negated.
+         */
         public void setNegated(boolean negated) {
             set(3, negated);
         }
 
+        /** Construct an unfinished lookback entry with the list of pattern
+         *  objects and the list of host objects.
+         *
+         *  @param patternList The list of pattern objects.
+         *  @param hostList The list of host objects.
+         */
         LookbackEntry(ObjectList patternList, ObjectList hostList) {
             super(patternList, hostList, false, false);
         }
 
     }
 
+    //////////////////////////////////////////////////////////////////////////
+    //// LookbackList
+
+    /**
+     A list of lookback entries.
+
+     @author Thomas Huining Feng
+     @version $Id$
+     @since Ptolemy II 7.1
+     @Pt.ProposedRating Red (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
+     */
     private static class LookbackList extends FastLinkedList<LookbackEntry> {
     }
 
+    //////////////////////////////////////////////////////////////////////////
+    //// NameComparator
+
+    /**
+     A comparator to sort objects in a container by their types and names.
+
+     @author Thomas Huining Feng
+     @version $Id$
+     @since Ptolemy II 7.1
+     @Pt.ProposedRating Red (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
+     */
     private static class NameComparator implements Comparator<Object> {
 
+        /** Compare two objects.
+         *
+         *  @param object1 The first object.
+         *  @param object2 The second object.
+         *  @return -1 is the first object is less; 1 if it is greater; or 0 if
+         *   the two objects are equal.
+         */
         public int compare(Object object1, Object object2) {
             return _getNameString(object1).compareTo(_getNameString(object2));
         }
     }
 
+    //////////////////////////////////////////////////////////////////////////
+    //// ObjectList
+
+    /**
+     A list of Java objects.
+
+     @author Thomas Huining Feng
+     @version $Id$
+     @since Ptolemy II 7.1
+     @Pt.ProposedRating Red (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
+     */
     private static class ObjectList extends FastLinkedList<Object> {
     }
 
+    //////////////////////////////////////////////////////////////////////////
+    //// ParameterIterator
+
+    /**
+     A class of objects used to iterate over all possible values of the value
+     iterators (object in class {@link ValueIterator}) in a given composite
+     entity.
+
+     @author Thomas Huining Feng
+     @version $Id$
+     @since Ptolemy II 7.1
+     @Pt.ProposedRating Red (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
+     */
     private class ParameterIterator extends GraphAnalyzer {
 
+        /** Set the values of value iterators in the composite entity with the
+         *  next set of allowable values. The iterators are ordered by their
+         *  names and each time, the last iterator's value is updated if its
+         *  next is still acceptable. If not, the iterator before last is
+         *  updated and the last iterator's value is reset to the beginning.
+         *  This goes on until all possible value combinations are tries, at
+         *  which time false is returned.
+         *
+         *  @return Whether the next set of values has been set to the value
+         *   iterators.
+         */
         public boolean next() {
             if (_firstTime) {
                 _firstTime = false;
@@ -1698,14 +1790,33 @@ public class GraphMatcher extends GraphAnalyzer {
             return _valueIterators != null;
         }
 
+        /** Return whether a composite entity is opaque.
+         *
+         *  @param entity The entity to test.
+         *  @return true if it is opaque; false otherwise.
+         */
         protected boolean _isOpaque(CompositeEntity entity) {
             return !GraphMatcher.this._isOpaque(entity);
         }
 
+        /** Return whether multiple interconnected relations in the container
+         *  should be collapsed and considered as one.
+         *
+         *  @param container The container.
+         *  @return true if the relations should be collapsed.
+         */
         protected boolean _relationCollapsing(NamedObj container) {
             return GraphMatcher.this._relationCollapsing(container);
         }
 
+        /** Construct a parameter iterator for the given entity, so that all the
+         *  value iterators in it are found, whose values will be iteratively
+         *  tries.
+         *
+         *  @param entity The entity.
+         *  @exception IllegalActionException If values of some value iterators
+         *   cannot be retrieved.
+         */
         ParameterIterator(ComponentEntity entity)
                 throws IllegalActionException {
             List<?> valueIterators = entity.attributeList(ValueIterator.class);
@@ -1740,6 +1851,9 @@ public class GraphMatcher extends GraphAnalyzer {
             }
         }
 
+        /** Compute the next set of values and store them in the value
+         *  iterators.
+         */
         private void _computeNext() {
             int i = _valueIterators.size();
             boolean terminate = false;
@@ -1782,8 +1896,12 @@ public class GraphMatcher extends GraphAnalyzer {
             }
         }
 
+        /** Whether next() is invoked the first time
+         */
         private boolean _firstTime = true;
 
+        /** The value iterators in the entity provided to the constructor.
+         */
         private List<ValueIterator> _valueIterators =
             new LinkedList<ValueIterator>();
     }
