@@ -112,6 +112,39 @@ public class PtidesActorProperties {
             return false;
         }
     }
+    
+    /** Return the execution time of the actor or the worst case
+     *  execution time if no execution time is specified, or
+     *  0.0 if neither is specified.
+     *  @param actor The actor for which the execution time is
+     *   requested.
+     *  @return The execution time.
+     *  @throws IllegalActionException If there is an _executionTime
+     *   attribute, but either it is not a Parameter of type double
+     *   or it has as its value an expression that cannot be evaluated.
+     */
+    public static double getExecutionTime(Actor actor)
+            throws IllegalActionException {
+        // FIXME: Make the other methods in this class look like this one.
+        try {
+            Parameter parameter = (Parameter) ((NamedObj) actor)
+                    .getAttribute("_executionTime");
+
+            if (parameter != null) {
+                DoubleToken token = (DoubleToken) parameter.getToken();
+
+                return token.doubleValue();
+            } else {
+                return getWCET(actor);
+            }
+        } catch (ClassCastException ex) {
+            throw new IllegalActionException(actor,
+                    "Actor has an attribute _executionTime, but "
+                    + "it is not a Parameter or its value is not"
+                    + " a double. It is: "
+                    + ((NamedObj) actor).getAttribute("_executionTime"));
+        }
+    }
 
     /**
      * Return the worst case execution time of the actor or 0 if no worst case

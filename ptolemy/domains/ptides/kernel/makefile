@@ -50,6 +50,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 JSRCS = \
 	PtidesActorProperties.java \
 	PtidesActorReceiver.java \
+	PtidesBasicDirector.java \
 	PtidesDirector.java \
 	PtidesEmbeddedDirector.java \
 	PtidesPlatformReceiver.java \
