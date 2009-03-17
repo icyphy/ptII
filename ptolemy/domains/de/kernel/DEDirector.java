@@ -1475,10 +1475,7 @@ public class DEDirector extends Director implements TimedDirector {
                 = (CausalityInterfaceForComposites)container.getCausalityInterface();
         return causality.getDepthOfPort(ioPort);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
+    
     /** Dequeue the events that have the smallest tag from the event queue.
      *  Return their destination actor. Advance the model tag to their tag.
      *  If the timestamp of the smallest tag is greater than the stop time
@@ -1496,7 +1493,7 @@ public class DEDirector extends Director implements TimedDirector {
      *  @exception IllegalActionException If event queue is not ready, or
      *  an event is missed, or time is set backwards.
      */
-    private Actor _getNextActorToFire() throws IllegalActionException {
+    protected Actor _getNextActorToFire() throws IllegalActionException {
         if (_eventQueue == null) {
             throw new IllegalActionException(
                     "Fire method called before the preinitialize method.");
@@ -1520,7 +1517,7 @@ public class DEDirector extends Director implements TimedDirector {
                 }
             }
 
-            if (!_isTopLevel()) {
+            if (_isEmbedded()) {
                 // If the director is not at the top level.
                 if (_eventQueue.isEmpty()) {
                     // This could happen if the container simply fires
@@ -1856,6 +1853,9 @@ public class DEDirector extends Director implements TimedDirector {
         // Note that the actor to be fired can be null.
         return actorToFire;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /** initialize parameters. Set all parameters to their default values.
      */
