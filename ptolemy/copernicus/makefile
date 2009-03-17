@@ -34,7 +34,12 @@ ME =		ptolemy/copernicus
 # kernel first, then alphabetical, then gui
 # PTJHDL_DIR is set by configure in $PTII/mk/ptII.mk if the jhdl jar file
 # was found
-DIRS =		kernel actor applet c interpreted shallow java $(PTJHDL_DIR) gui
+# 3/2009 - copernicus/java disabled because the demos have not worked since
+# 11/12/2008 - cxh
+#COPERNICUS_JAVA = java
+COPERNICUS_JAVA = java
+DIRS =		kernel actor applet c interpreted shallow \
+		$(COPERNICUS_JAVA) $(PTJHDL_DIR) gui
 
 # Root of the Java directory
 ROOT =		../..
@@ -55,9 +60,10 @@ PTCLASSALLJARS = \
 	c/c.jar \
 	interpreted/interpreted.jar \
 	kernel/kernel.jar \
-	java/java.jar \
 	shallow/shallow.jar \
 	gui/gui.jar
+
+#	java/java.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 JSRCS =

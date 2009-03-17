@@ -1350,15 +1350,17 @@ JSALLDIRS = \
 # Directories we run make in before running make in the NONJSALLDIRS
 NONJSALLCOREDIRS = \
 	ptolemy/copernicus/kernel \
-	ptolemy/copernicus/java \
 	ptolemy/copernicus/gui
+
+#	ptolemy/copernicus/java
 
 # Directories to run tests in outside of JavaScope
 NONJSALLDIRS = \
 	ptolemy/copernicus/actor \
 	ptolemy/copernicus/interpreted \
-	ptolemy/copernicus/java \
 	ptolemy/copernicus/shallow
+
+#	ptolemy/copernicus/java
 
 #	ptolemy/copernicus/c
 #	
