@@ -33,7 +33,7 @@
 
 ME =		ptolemy/codegen/c/domains
 
-DIRS =		fsm hdf pn sdf giotto
+DIRS =		fsm hdf pn sdf giotto ptides
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -58,6 +58,7 @@ PTCLASSALLJARS = \
 	pn/pn.jar \
 	giotto/giotto.jar \
 	sdf/sdf.jar
+	ptides/ptides.jar
 
 # Keep this list alphabetized.
 JSRCS =
