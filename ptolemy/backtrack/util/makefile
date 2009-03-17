@@ -98,6 +98,10 @@ OTHER_FILES_TO_BE_JARED = \
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
+# Needed for "make fast"
+GCC_FILES_CLASS = $(GCC_FILES:%.java=%.class)
+EXTRA_TARGETS = $(GCC_FILES_CLASS)
+
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 MISC_FILES =	$(DIRS) \
