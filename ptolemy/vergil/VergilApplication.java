@@ -30,6 +30,7 @@ package ptolemy.vergil;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -37,6 +38,7 @@ import javax.swing.SwingUtilities;
 
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
+import ptolemy.actor.gui.EffigyFactory;
 import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.actor.gui.ModelDirectory;
 import ptolemy.actor.gui.PtolemyEffigy;
@@ -321,16 +323,55 @@ public class VergilApplication extends MoMLApplication {
         URL introURL = null;
 
         ModelDirectory directory = configuration.getDirectory();
-
+        
         Parameter applicationBlankPtolemyEffigyAtStartup = (Parameter) configuration
                 .getAttribute("_applicationBlankPtolemyEffigyAtStartup",
                         Parameter.class);
         if ((applicationBlankPtolemyEffigyAtStartup != null)
                 && applicationBlankPtolemyEffigyAtStartup.getExpression()
                         .equals("true")) {
-            PtolemyEffigy.Factory factory = new PtolemyEffigy.Factory(
-                    directory, directory.uniqueName("ptolemyEffigy"));
 
+            EffigyFactory factory = null;
+
+            Parameter startupEffigyFactoryName = (Parameter)
+                    applicationBlankPtolemyEffigyAtStartup
+                            .getAttribute("_startupEffigyFactoryName");
+
+            // See if there's a startup name
+            if (startupEffigyFactoryName != null) {
+                String startupName = startupEffigyFactoryName.getExpression();
+                EffigyFactory factoryContainer = (EffigyFactory)
+                    configuration.getEntity("effigyFactory");
+
+                // Make sure there is effigyFactory
+                if(factoryContainer == null) {
+                    throw new IllegalActionException(
+                            "Could not find effigyFactory.");
+                }
+
+                // Search through the effigy factories for the startup name.
+                List factoryList = factoryContainer
+                        .entityList(EffigyFactory.class);
+                Iterator factories = factoryList.iterator();
+
+                while (factories.hasNext()) {
+                    final EffigyFactory currentFactory = (EffigyFactory)
+                            factories.next();
+                    if(currentFactory.getName().equals(startupName)) {
+                        factory = currentFactory;
+                    }
+                }
+
+                // Make sure we found it.
+                if (factory == null) {
+                    throw new IllegalActionException(
+                            "Could not find effigy factory " + startupName);
+                }
+
+            } else {
+                factory = new PtolemyEffigy.Factory(
+                        directory, directory.uniqueName("ptolemyEffigy"));
+            }
             Effigy effigy = factory.createEffigy(directory, null, null);
             configuration.createPrimaryTableau(effigy);
         }
