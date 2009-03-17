@@ -50,7 +50,7 @@ import ptolemy.kernel.util.NamedObj;
  *  represents physical time, whereas this time represents model
  *  time in the Ptides model.
  *
- *  @author Patricia Derler, Edward A. Lee
+ *  @author Patricia Derler, Edward A. Lee, Ben Lickly, Isaac Liu, Slobodan Matic, Jia Zou
  *  @version $Id$
  *  @since Ptolemy II 7.1
  *  @Pt.ProposedRating Yellow (cxh)
