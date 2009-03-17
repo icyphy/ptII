@@ -589,8 +589,7 @@ public class Director extends CodeGeneratorHelper {
 		extension = "j";
 	    }
         }
-        _codeStream = new CodeStream(
-                "$CLASSPATH/" + path + "." + extension, _codeGenerator);
+        _codeStream = new CodeStream(this);
     }
 
     /////////////////////////////////////////////////////////////////////
