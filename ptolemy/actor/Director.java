@@ -668,7 +668,10 @@ public class Director extends Attribute implements Executable {
             Nameable containersContainer = container.getContainer();
 
             // Initialize the current time.
-            if (containersContainer instanceof CompositeActor) {
+            // NOTE: Some (weird) directors pretend they are not embedded even
+            // if they are (e.g. in Ptides), so we call _isEmbedded() to give
+            // the subclass the option of pretending it is not embedded.
+            if (_isEmbedded() && (containersContainer instanceof CompositeActor)) {
                 // The container is an embedded model.
                 Time currentTime = ((CompositeActor) containersContainer)
                         .getDirector().getModelTime();
