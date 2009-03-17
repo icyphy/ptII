@@ -846,8 +846,8 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
             }
             // else if port is input port of any actor in this actor
             else {
-                if (port.getContainer() instanceof CompositeActor) {
-                    Collection<IOPort> equivalentPorts = (((CompositeActor) port
+                
+                    Collection<IOPort> equivalentPorts = (((Actor) port
                             .getContainer()).getCausalityInterface())
                             .equivalentPorts(port);
                     for (IOPort equivalentPort : equivalentPorts) {
@@ -861,6 +861,8 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
                                     minimumDelay = dependency;
                                 }
                             }
+                            if (sourcePorts.size() == 0) 
+                                minimumDelay = getDefaultDependency().oTimesIdentity();
                         }
                     }
                     // set minimum delay for all ports in this equivalence class 
@@ -872,19 +874,7 @@ public class CausalityInterfaceForComposites extends DefaultCausalityInterface {
                             _minimumDelays.put(sourcePort, minimumDelay);
                         }
                     }
-                } else {
-                    Collection<IOPort> sourcePorts = port.sourcePortList(); // contains only one item (?)
-                    for (IOPort actorOutputPort : sourcePorts) {
-                        Dependency dependency = _getMinimumDelay(
-                                actorOutputPort, visitedPorts);
-                        if (dependency.compareTo(minimumDelay) == Dependency.LESS_THAN) {
-                            minimumDelay = dependency;
-                        }
-                    }
-                    if (sourcePorts.size() == 0) {
-                        minimumDelay = getDefaultDependency();
-                    }
-                }
+                
             }
         } else if (port.isOutput()) {
             // if port is output port of this actor
