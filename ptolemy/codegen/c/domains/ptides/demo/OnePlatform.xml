@@ -1,0 +1,94 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="OnePlatform" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={321, 252, 745, 562}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[530, 445]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{265.0, 222.5}">
+    </property>
+    <property name="PtidesDirector" class="ptolemy.domains.ptides.kernel.PtidesDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 50.0]">
+        </property>
+        <property name="_numberOfMpiConnections" class="ptolemy.data.expr.Parameter" value="60">
+        </property>
+    </property>
+    <property name="SchedulePlotter" class="ptolemy.domains.ptides.lib.SchedulePlotter">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 45.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This example shows a single platform containing &#10;two sensors and one actuator.&#10;&#10;A sensor has a boolean attribute &quot;isSensor&quot; which is&#10;set to true, an actuator has an &quot;isActuator&quot; attribute.&#10;&#10;The attribute &quot;WCET&quot; specifies the worst case execution&#10;time of an actuator.&#10;&#10;The attribute &quot;minDelay&quot; of a port specifies the minimum&#10;model time delay. For ports in the same equivalence class, &#10;this attribute contains the same (minimum) value.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 205.0]">
+        </property>
+    </property>
+    <property name="CCodeGenerator" class="ptolemy.codegen.c.kernel.CCodeGenerator">
+        <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="E:/workspace/ptresearch/ptides/PtidesCodegen/">
+        </property>
+        <property name="generateEmbeddedCode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="inline" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="target" class="ptolemy.data.expr.StringParameter" value="luminary">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 135.0]">
+        </property>
+    </property>
+    <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 150.0]">
+        </property>
+        <property name="PtidesEmbeddedDirector" class="ptolemy.domains.ptides.kernel.PtidesEmbeddedDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 45.0]">
+            </property>
+        </property>
+        <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={916, 121, 508, 349}, maximized=false}">
+            </property>
+            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 180.0]">
+            </property>
+            <property name="isActuator" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                </property>
+            </property>
+            <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="2.0" max="10.0"/>
+<yRange min="0.0" max="1.0"/>
+<default marks="dots"/>
+</plot>?>
+            </configure>
+        </entity>
+        <entity name="Const" class="ptolemy.actor.lib.Const">
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{160, 180}">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+        </relation>
+        <link port="TimedPlotter.input" relation="relation"/>
+        <link port="Const.output" relation="relation"/>
+    </entity>
+</entity>
