@@ -217,6 +217,10 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
             } else {
                 name = filename;
             }
+	    // If the user has a & in the file name . . .
+	    // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=3901
+	    name = StringUtilities.escapeForXML(name);
+
             // If the model is not at the top level,
             // then we have to force the writer to export
             // the DTD, because the exportMoML() method
