@@ -1,4 +1,4 @@
-/*
+/* Interface of NamedObjs that correspond to criteria.
 
  Copyright (c) 2008 The Regents of the University of California.
  All rights reserved.
@@ -33,7 +33,12 @@ import ptolemy.actor.gt.ingredients.criteria.Criterion;
 //// Checkable
 
 /**
-
+ Interface of NamedObjs that correspond to criteria. Such NamedObjs are created
+ as a result of those criteria, rather than having criteria associated with them
+ as other NamedObjs. For example, a {@link PortMatcher} could be created
+ automatically as a result of a port criterion. In that case, the PortMatcher
+ should implement this interface, and define the {@link #getCriterion()} method
+ to return that criterion.
 
  @author Thomas Huining Feng
  @version $Id$
@@ -43,6 +48,10 @@ import ptolemy.actor.gt.ingredients.criteria.Criterion;
  */
 public interface Checkable {
 
+    /** Return the criterion that this checkable object corresponds to.
+     *
+     *  @return The criterion that this checkable object corresponds to.
+     */
     public Criterion getCriterion();
 
 }

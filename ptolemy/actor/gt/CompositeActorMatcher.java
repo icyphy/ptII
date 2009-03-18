@@ -62,7 +62,7 @@ import ptolemy.vergil.gt.GTIngredientsEditor;
 
  @author Thomas Huining Feng
  @version $Id$
- @since Ptolemy II 6.1
+ @since Ptolemy II 7.1
  @see AtomicActorMatcher
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)

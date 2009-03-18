@@ -43,6 +43,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
+//////////////////////////////////////////////////////////////////////////
+////Constraint
+
 /**
  Constraint used to restrict pattern matching in model transformations. A
  constraint contains an expression that must be evaluable into a boolean at the
@@ -57,7 +60,7 @@ import ptolemy.kernel.util.Workspace;
 
  @author Thomas Huining Feng
  @version $Id$
- @since Ptolemy II 6.1
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
 */

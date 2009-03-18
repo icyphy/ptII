@@ -1,4 +1,4 @@
-/*
+/* A matcher to match any attribute.
 
  Copyright (c) 2008 The Regents of the University of California.
  All rights reserved.
@@ -32,6 +32,7 @@ import java.util.Set;
 
 import ptolemy.actor.gt.ingredients.criteria.AttributeCriterion;
 import ptolemy.actor.gt.ingredients.criteria.Criterion;
+import ptolemy.actor.gt.ingredients.operations.Operation;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -43,7 +44,13 @@ import ptolemy.vergil.gt.GTIngredientsEditor;
 //// AttributeMatcher
 
 /**
-
+ A matcher to match any attribute. In the pattern of a {@link
+ TransformationRule}, this matcher can be customized by instances of {@link
+ Criterion}. In the replacement of a {@link TransformationRule}, operations can
+ be specified for this matcher with instances of {@link Operation}. The
+ operations will be performed on the attribute that is matched by the
+ corresponding matcher in the pattern, and is preserved after the
+ transformation.
 
  @author Thomas Huining Feng
  @version $Id$
@@ -53,11 +60,15 @@ import ptolemy.vergil.gt.GTIngredientsEditor;
  */
 public class AttributeMatcher extends Attribute implements GTEntity {
 
-    /**
-     *  @param container
-     *  @param name
-     *  @throws IllegalActionException
-     *  @throws NameDuplicationException
+    /** Construct an attribute matcher to be either contained in the pattern
+     *  of a {@link TransformationRule} or in the replacement.
+     *
+     *  @param container The proposed container of this matcher.
+     *  @param name The name of this matcher.
+     *  @exception IllegalActionException If this actor cannot be contained by
+     *   the proposed container.
+     *  @exception NameDuplicationException If the name coincides with an entity
+     *   already in the container.
      */
     public AttributeMatcher(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {

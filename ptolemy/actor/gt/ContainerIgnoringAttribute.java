@@ -1,4 +1,5 @@
-/*
+/* An attribute to specify that all composite actors within its container should
+   be considered as transparent, unless that have directors.
 
  Copyright (c) 2008 The Regents of the University of California.
  All rights reserved.
@@ -42,7 +43,8 @@ import ptolemy.moml.EntityLibrary;
 //// IgnoreContainerAttribute
 
 /**
-
+ An attribute to specify that all composite actors within its container should
+ be considered as transparent, unless that have directors.
 
  @author Thomas Huining Feng
  @version $Id$
@@ -52,25 +54,45 @@ import ptolemy.moml.EntityLibrary;
  */
 public class ContainerIgnoringAttribute extends ParameterAttribute {
 
-    /**
-     *  @param container
-     *  @param name
-     *  @throws NameDuplicationException
-     *  @throws IllegalActionException
+    /** Construct an attribute with the given name contained by the specified
+     *  entity. The container argument must not be null, or a
+     *  NullPointerException will be thrown.  This attribute will use the
+     *  workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty string.
+     *  Increment the version of the workspace.
+     *  @param container The container.
+     *  @param name The name of this attribute.
+     *  @exception IllegalActionException If the attribute is not of an
+     *   acceptable class for the container, or if the name contains a period.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
      */
     public ContainerIgnoringAttribute(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 
-    /**
-     *  @param workspace
+    /** Construct an attribute in the specified workspace with an empty
+     *  string as a name. You can then change the name with setName().
+     *  If the workspace argument
+     *  is null, then use the default workspace.
+     *  The object is added to the directory of the workspace.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the attribute.
      */
     public ContainerIgnoringAttribute(Workspace workspace) {
         super(workspace);
     }
 
-    public void attributeChanged(Attribute attribute) {
+    /** React to a change in an attribute.  This method is called by
+     *  a contained attribute when its value changes.
+     *
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the change is not acceptable
+     *   to this container (not thrown in this base class).
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
         if (getContainer() instanceof EntityLibrary) {
             return;
         }
@@ -106,6 +128,35 @@ public class ContainerIgnoringAttribute extends ParameterAttribute {
         return newObject;
     }
 
+    /** Specify the container NamedObj, adding this attribute to the
+     *  list of attributes in the container.  If the container already
+     *  contains an attribute with the same name, then throw an exception
+     *  and do not make any changes.  Similarly, if the container is
+     *  not in the same workspace as this attribute, throw an exception.
+     *  If this attribute is already contained by the NamedObj, do nothing.
+     *  If the attribute already has a container, remove
+     *  this attribute from its attribute list first.  Otherwise, remove
+     *  it from the directory of the workspace, if it is there.
+     *  If the argument is null, then remove it from its container.
+     *  It is not added to the workspace directory, so this could result in
+     *  this object being garbage collected.
+     *  Note that since an Attribute is a NamedObj, it can itself have
+     *  attributes.  However, recursive containment is not allowed, where
+     *  an attribute is an attribute of itself, or indirectly of any attribute
+     *  it contains.  This method is write-synchronized on the
+     *  workspace and increments its version number.
+     *  <p>
+     *  Subclasses may constrain the type of container by overriding
+     *  {@link #setContainer(NamedObj)}.
+     *  @param container The container to attach this attribute to..
+     *  @exception IllegalActionException If this attribute is not of the
+     *   expected class for the container, or it has no name,
+     *   or the attribute and container are not in the same workspace, or
+     *   the proposed container would result in recursive containment.
+     *  @exception NameDuplicationException If the container already has
+     *   an attribute with the name of this attribute.
+     *  @see #getContainer()
+     */
     public void setContainer(NamedObj container) throws IllegalActionException,
     NameDuplicationException {
         super.setContainer(container);
@@ -115,11 +166,15 @@ public class ContainerIgnoringAttribute extends ParameterAttribute {
         }
     }
 
+    /** The default value of this attribute.
+     */
     public static final boolean DEFAULT = false;
 
-    /**
-     *  @throws IllegalActionException
-     *  @throws NameDuplicationException
+    /** Initialize the parameter used to contain the value of this attribute.
+     *
+     *  @exception IllegalActionException If value of the parameter cannot be
+     *   set.
+     *  @exception NameDuplicationException If the parameter cannot be created.
      */
     protected void _initParameter() throws IllegalActionException,
             NameDuplicationException {
@@ -128,6 +183,8 @@ public class ContainerIgnoringAttribute extends ParameterAttribute {
         parameter.setToken(BooleanToken.getInstance(!DEFAULT));
     }
 
+    /** The icon used when flattening is set to true.
+     */
     private static final String _FLATTENING_ICON = "<svg>"
         + "<rect x=\"0\" y=\"0\" width=\"94\" height=\"32\""
         + "  style=\"fill:#00FFFF\"/>"
@@ -152,6 +209,8 @@ public class ContainerIgnoringAttribute extends ParameterAttribute {
         + "<rect x=\"61\" y=\"7\" width=\"26\" height=\"18\""
         + "  style=\"fill:#C0C0C0\"/>" + "</svg>";
 
+    /** The icon used when flattening is set to false.
+     */
     private static final String _NOT_FLATTENING_ICON = "<svg>"
         + "<rect x=\"0\" y=\"0\" width=\"94\" height=\"32\""
         + "  style=\"fill:#00FFFF\"/>"
