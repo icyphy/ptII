@@ -32,7 +32,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import ptolemy.copernicus.java.DataUtilities;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.ComplexToken;
@@ -306,11 +305,14 @@ public class PtolemyUtilities {
         } else if (token instanceof MatrixToken) {
             // Can't do this for all tokens, because it causes an
             // infinite loop!
-            String expression = token.toString();
-            Local tokenLocal = DataUtilities.generateExpressionCodeBefore(null,
-                    null, expression, new HashMap(), new HashMap(), body,
-                    insertPoint);
-            return tokenLocal;
+            throw new RuntimeException(
+                    "Unboxing is not supported for MatrixTokens.");
+	    // Commented out code below when copernicus/java was removed.
+            //String expression = token.toString();
+            //Local tokenLocal = DataUtilities.generateExpressionCodeBefore(null,
+            //        null, expression, new HashMap(), new HashMap(), body,
+            //        insertPoint);
+            //return tokenLocal;
         } else {
             // We want to avoid doing this for all tokens, because
             // string constructors are expensive..

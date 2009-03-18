@@ -38,7 +38,7 @@ ME =		ptolemy/copernicus
 # 11/12/2008 - cxh
 #COPERNICUS_JAVA = java
 COPERNICUS_JAVA = java
-DIRS =		kernel actor applet c interpreted shallow \
+DIRS =		kernel applet interpreted shallow \
 		$(COPERNICUS_JAVA) $(PTJHDL_DIR) gui
 
 # Root of the Java directory
@@ -57,7 +57,6 @@ PTCLASSJAR =
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 	applet/applet.jar \
-	c/c.jar \
 	interpreted/interpreted.jar \
 	kernel/kernel.jar \
 	shallow/shallow.jar \

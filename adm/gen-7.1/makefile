@@ -1261,7 +1261,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/plot \
 	$(REMOTE1PTIIDIST)/ptolemy/copernicus/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/copernicus/jhdl \
-	$(REMOTE1PTIIDIST)/ptolemy/copernicus/c \
 	$(REMOTE1PTIIDIST)/ptolemy/copernicus/gui \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/kernel/attributes \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/toolbox \
@@ -1351,17 +1350,15 @@ JSALLDIRS = \
 NONJSALLCOREDIRS = \
 	ptolemy/copernicus/kernel \
 	ptolemy/copernicus/gui
-
 #	ptolemy/copernicus/java
 
 # Directories to run tests in outside of JavaScope
 NONJSALLDIRS = \
-	ptolemy/copernicus/actor \
 	ptolemy/copernicus/interpreted \
 	ptolemy/copernicus/shallow
 
+#	ptolemy/copernicus/actor
 #	ptolemy/copernicus/java
-
 #	ptolemy/copernicus/c
 #	
 
@@ -1879,7 +1876,6 @@ remote4_test: $(PTII_SRC)
 		PTII_FULL=$(PTII_SRC) \
 		remote4nuke remote4ptiidist remote4configure \
 		remote4distclean remote4build \
-		remote4javatest \
 		remote4done
 
 # Create a separate tree and build on REMOTE4HOST
@@ -1901,7 +1897,6 @@ remote4: $(PTII_FULL) $(GENLOGDIR)
 	cd $(GENDIR); $(MAKE) -k EMAILTO=$(EMAILTO) \
 		remote4nuke remote4ptiidist remote4configure \
 		remote4distclean remote4build \
-		remote4javatest \
 		remote4done \
 		 > $(REMOTE4LOG) 2>&1
 
@@ -1970,10 +1965,10 @@ remote4javatest:
 	@echo "#"
 	@echo "$@ `date`"
 	@echo "`uptime`"
-	(cd $(REMOTE4PTIIDIST)/ptolemy/copernicus/java/test; \
-		PTII=$(REMOTE4PTIIDIST) $(MAKE) \
-		"JTCLSHFLAGS=-Dptolemy.ptII.timeOutSeconds=79200 -Xmx384M" \
-		test_long)
+	#(cd $(REMOTE4PTIIDIST)/ptolemy/copernicus/java/test; \
+	#	PTII=$(REMOTE4PTIIDIST) $(MAKE) \
+	#	"JTCLSHFLAGS=-Dptolemy.ptII.timeOutSeconds=79200 -Xmx384M" \
+	#	test_long)
 
 ##########################################################################
 # Build from a src tar file - similar to remote1, but w/o test case coverage
