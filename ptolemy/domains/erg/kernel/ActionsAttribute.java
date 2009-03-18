@@ -107,13 +107,13 @@ public class ActionsAttribute extends AbstractActionsAttribute {
     public ActionsAttribute(Workspace workspace) {
         super(workspace);
     }
-    
-    
+
+
 
     /** Execute this action.  For each destination identified in the
      *  action, compute the value in the action and perform the
      *  particular assignment.
-     *  
+     *
      *  @exception IllegalActionException If a destination is not found or if
      *  thrown while evaluating the expressions.
      */
@@ -262,9 +262,7 @@ public class ActionsAttribute extends AbstractActionsAttribute {
         }
     }
 
-    /** Return a parser scope used to type-check the actions. To evaluate the
-     *  actions, use {@link #execute(ParserScope)} with an explicitly given
-     *  scope.
+    /** Return a parser scope used to type-check the actions.
      *
      *  @return The parser scope.
      */

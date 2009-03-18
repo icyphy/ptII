@@ -473,9 +473,7 @@ public class Event extends State {
      *  names in the parameter list of this event. The values for those names
      *  are obtained from the given array of arguments.
      *
-     *  @param arguments The array of arguments.
      *  @return The parser scope.
-     *  @exception IllegalActionException If the number or types of the given
      *  arguments do not match those of the defined parameters.
      */
     protected ParserScope _getParserScope() {
