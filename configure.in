@@ -2131,7 +2131,7 @@ else
     if test "$RXTX_PRESENT" = "no"; then
         AC_MSG_WARN([Perhaps rxtx is not installed?
     You need not download rxtx unless you plan the actors in actor.lib.comm.
-    The rxtx package can be found at http://users.frii.com/jarvi/rxtx/])
+    The rxtx package can be found at http://rxtx.qbang.org/wiki/index.php/Download])
     fi
 fi
 
