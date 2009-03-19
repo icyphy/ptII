@@ -242,7 +242,7 @@ throws IllegalActionException {
        
     }
 
-private String _generateFireCode() throws IllegalActionException {
+    protected String _generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         double period = _getPeriod();
         int threadID = 0;
