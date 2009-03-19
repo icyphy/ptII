@@ -723,6 +723,13 @@ public class Query extends JPanel {
         return slider;
     }
 
+
+    /** Add text to the query.
+     *  @param text The text to be added.
+     *  @param color The olor of the text to be added.
+     *  @param alignment  The alignment, which is a value suitable
+     *  for the JPanel() constructor.
+     */
     public void addText(String text, Color color, int alignment) {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
