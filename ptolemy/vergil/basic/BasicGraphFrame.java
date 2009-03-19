@@ -1446,7 +1446,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     ////                         protected methods                 ////
 
     /**
-     * BasicGraphFrame Initializer method
+     * Initialize this BasicGraphFrame.
+     * Derived classes may call this method in their constructors.
      */
     protected void _initBasicGraphFrame() {
 
