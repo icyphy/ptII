@@ -51,7 +51,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	PtidesDirector.java
+	PtidesDirector.java \
 	PtidesEmbeddedDirector.java
 
 OTHER_FILES_TO_BE_JARED =
