@@ -167,7 +167,6 @@ OTHER_FILES_TO_BE_JARED = \
 	DiscreteRandomSource.c \
 	Distributor.c \
 	ElementsToArray.c \
-	ElementsToArray_new.c \
 	Exit.c \
 	Expression.c \
 	Gaussian.c \
