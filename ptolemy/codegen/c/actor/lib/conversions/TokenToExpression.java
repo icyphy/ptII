@@ -64,8 +64,8 @@ public class TokenToExpression extends CCodeGeneratorHelper {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public String generateFireCode() throws IllegalActionException {
-        super.generateFireCode();
+    protected String _generateFireCode() throws IllegalActionException {
+        super._generateFireCode();
 
         ptolemy.actor.lib.conversions.TokenToExpression actor = (ptolemy.actor.lib.conversions.TokenToExpression) getComponent();
 
@@ -75,21 +75,7 @@ public class TokenToExpression extends CCodeGeneratorHelper {
             args.add(codeGenType(inputType));
             _codeStream.appendCodeBlock("FireBlock", args);
         } else {
-            if (inputType instanceof ArrayType) {
-                Type elementType = ((ArrayType) inputType).getElementType();
-
-                if (elementType instanceof BaseType.ScalarType) {
-                    // test/auto/AddSubtract4.xml needs this.
-                    _codeStream.appendCodeBlock("TokenFireBlock");
-                } else {
-                    // test/auto/Commutator.xml needs this.
-                    ArrayList args2 = new ArrayList();
-                    args2.add("TYPE_" + codeGenType(elementType));
-                    _codeStream.appendCodeBlock("TokenArrayFireBlock", args2);
-                }
-            } else {
-                _codeStream.appendCodeBlock("TokenFireBlock");
-            }
+            _codeStream.appendCodeBlock("TokenFireBlock");
         }
         return processCode(_codeStream.toString());
     }
