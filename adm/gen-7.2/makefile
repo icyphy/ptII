@@ -86,6 +86,7 @@ PTII_FTP = /export/home/pt0/ptweb/ptolemyII/ptII$(MAJOR_VERSION)
 #make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/usr/sww/bin/jar clean all src.jar viptos.jar
 #make USER=cxh PTIIHOME=/tmp/cxh/tmp/ptII PTIIADM=/tmp/cxh/tmp/ptII/adm TAR=/bin/tar JAR=/usr/local/j2sdk1.4.2_01/bin/jar src.jar
 #gmake USER=bldmastr PTIIHOME=/export/home1/bldmastr/ptII PTIIADM=/export/home1/bldmastr/ptII/adm TAR=/usr/sfw/bin/gtar JAR=/usr/bin/jar clean all src.jar
+#make USER=bldmastr PTIIHOME=/home/bldmastr/ptII PTIIADM=/home/bldmastr/ptII/adm TAR=/usr/local/bin/tar JAR=/usr/bin/jar clean all src.jar
 
 USER =		ptII
 PTIIHOME =	/users/ptII
@@ -1365,22 +1366,15 @@ JSALLDIRS = \
 # Directories we run make in before running make in the NONJSALLDIRS
 NONJSALLCOREDIRS = \
 	ptolemy/copernicus/kernel \
-	ptolemy/copernicus/java \
 	ptolemy/copernicus/gui
 
 # Directories to run tests in outside of JavaScope
 NONJSALLDIRS = \
-	ptolemy/copernicus/actor \
 	ptolemy/copernicus/interpreted \
-	ptolemy/copernicus/java \
 	ptolemy/copernicus/shallow \
 	ptolemy/kernel \
 	ptolemy/moml \
 	ptolemy/util
-
-#	ptolemy/copernicus/c
-#	
-
 
 # Run JavaScope Code Coverage tool in the distribution tree
 # For command line options, see
