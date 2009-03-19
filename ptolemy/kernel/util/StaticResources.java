@@ -119,6 +119,11 @@ public class StaticResources {
         return result;
     }
 
+    /**
+     * Search for the ResourceBundle containing the UI Display Text.  
+     * @return The resource bundle that corresponds with 
+     * @{link #UI_DISPLAY_TEXT_BUNDLE}
+     */
     public static ResourceBundle getDisplayTextBundle() throws IOException {
 
         if (_displayTextBundle == null) {
@@ -190,10 +195,11 @@ public class StaticResources {
         return size;
     }
     
-    ///////////////////////////////////////////////////////////////////
-    ////                      public variables                     ////
-    ///////////////////////////////////////////////////////////////////
-
+    /**
+     * Search for the ResourceBundle containing the ui settings.
+     * @return The resource bundle that corresponds with 
+     * @{link #UI_SETTINGS_BUNDLE}
+     */
     public static ResourceBundle getUISettingsBundle() throws IOException {
 
         if (_uiSettingsBundle == null) {
@@ -201,6 +207,11 @@ public class StaticResources {
         }
         return _uiSettingsBundle;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                      public variables                     ////
+    ///////////////////////////////////////////////////////////////////
+
 
     // FIXME - get kepler-specific ref out of this path:
     /**
