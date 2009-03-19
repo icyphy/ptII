@@ -7,15 +7,17 @@ Token $actorSymbol(intArray);
 
 /*** fireBlock***/
 if ($actorSymbol(doDelete)) {
-    Array_delete($actorSymbol(intArray));
+    IntArray_delete($actorSymbol(intArray));
 } else {
     $actorSymbol(doDelete) = true;
 }
 
 $actorSymbol(length) = strlen($ref(input));
-$actorSymbol(intArray) = $new(Array($actorSymbol(length), 0));
+$actorSymbol(intArray) = $new(IntArray($actorSymbol(length), 0));
 for ($actorSymbol(i) = 0; $actorSymbol(i) < $actorSymbol(length); $actorSymbol(i)++) {
-    $actorSymbol(intArray).payload.Array->elements[$actorSymbol(i)] = $new(Int((int) $ref(input)[$actorSymbol(i)]));
+	printf("%d\n", $ref(input)[$actorSymbol(i)]);
+	fflush(stdout);
+    $actorSymbol(intArray).payload.IntArray->elements[$actorSymbol(i)] = (int) ($ref(input)[$actorSymbol(i)]);
 }
 $ref(output) = $actorSymbol(intArray);
 /**/
