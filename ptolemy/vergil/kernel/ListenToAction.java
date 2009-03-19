@@ -50,6 +50,7 @@ import ptolemy.vergil.toolbox.FigureAction;
 public class ListenToAction extends FigureAction {
     /** Construct an action that listens to NamedObj messages.
      *  @param controller The corresponding controller.
+     *  @param componentType A String that names the listened to component.
      */
     public ListenToAction(BasicGraphController controller, 
             String componentType) {
