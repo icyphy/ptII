@@ -89,6 +89,8 @@ public class MonitorValue extends Sink {
      */
     public Parameter value;
     
+    /** The initial value to be displayed.
+     */
     public Parameter initial;
 
     ///////////////////////////////////////////////////////////////////
