@@ -158,12 +158,8 @@ public class MathematicalModelConverter extends Attribute {
             break;
         case Maude:
             if (_model instanceof CompositeActor)
-                systemDescription.append(
-                        RTMaudeUtility.generateRTMDescription(
-                                (CompositeActor) _model,
-                                inputTemporalFormula
-                        )
-                );
+                systemDescription.append(RTMaudeUtility.generateRTMDescription(
+                        (CompositeActor) _model, inputTemporalFormula, true));
             /*
             else // FSMActor
                 systemDescription.append(

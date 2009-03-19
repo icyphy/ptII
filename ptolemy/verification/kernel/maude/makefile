@@ -31,6 +31,8 @@
 
 ME =            ptolemy/verification/kernel/maude
 
+DIRS =		ext
+
 # Root of the ptII directory
 ROOT =		../../../..
 
@@ -43,7 +45,15 @@ CLASSPATH =	$(ROOT)
 
 # Used to build zip files
 PTPACKAGE = 	maude
-PTCLASSJAR =	$(PTPACKAGE).jar
+PTCLASSJAR =
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
+# Include the .class files from these jars in PTCLASSALLJAR
+# If you change this, change DIRS above
+# Because of size issues, we don't include demo/demo.jar in verification.jar 
+PTCLASSALLJARS = \
+	ext/ext.jar
 
 JSRCS = \
 	RTMExpTranslator.java \

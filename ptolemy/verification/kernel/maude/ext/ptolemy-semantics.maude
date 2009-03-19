@@ -1,0 +1,713 @@
+--- The second attempt at defining a Real-Time Maude sematainer for ports
+--- a small fragment of Ptolemy. End of Aug 2008.
+
+load ptolemy-exp
+load real-time-maude
+
+-------------------------------------------------
+---            Identifiers and Events         ---
+-------------------------------------------------
+
+(omod IDENTIFIERS is
+    sorts PortId EPortId .	--- EPortId is the "global" name of a port. 
+    subsort PortId < Oid .	--- names for (local) ports
+
+    op _._ : Oid PortId -> EPortId [ctor] .
+    op _._ : Oid EPortId -> EPortId [ctor] . --- for inner actors
+
+    --- We need sets of destinations for one-to-many connections:
+    sort EPortIdSet .
+    subsort EPortId < EPortIdSet .
+    op noPort : -> EPortIdSet [ctor] .
+    op _;_ : EPortIdSet EPortIdSet -> EPortIdSet [ctor assoc comm id: noPort] .
+
+    sort Scope .
+    subsort Oid < Scope .
+    op __ : Scope Scope -> Scope [ctor assoc] .
+    op emptyScope : -> Scope [ctor] .
+
+    op _._ : Scope EPortId -> EPortId .
+
+    var SC : Scope . var O : Oid . var EPI : EPortId .
+    eq (SC O) . EPI = (SC . (O . EPI)) .
+    eq emptyScope . EPI = EPI .
+
+endom) 
+
+(tomod EVENTS is
+    pr PtolemyExp .
+    inc IDENTIFIERS .
+
+    --- An atomic event consists maybe of a port and the value that 
+    --- port should take.
+    sort Event .
+    op event : EPortId Exp -> Event [ctor] .
+
+    --- Multisets of such basic events:
+    sort Events .
+     subsort Event < Events .
+    op noEvent : -> Events [ctor] .
+    op __ : Events Events -> Events [ctor assoc comm id: noEvent] .
+
+    --- Events with "timer" (not "time") stamp:
+    sort TimedEvent .
+    op _;_;_ : Events Time Nat -> TimedEvent .
+
+    --- !!! Definition of 'EventQueue', should not impact Kyungmin's work:
+    sort EventQueue .
+    subsort TimedEvent < EventQueue . 
+    op nil : -> EventQueue .
+    op _::_ : EventQueue EventQueue -> EventQueue [ctor assoc id: nil] .
+
+    --- In a first attempt, the global event queue is just an "object":
+    class GlobalEventQueue | queue : EventQueue .
+
+    op globalEventQueue : -> Oid [ctor] .     --- name for global event queue obj
+
+endtom)
+
+-------------------------------------------------
+---            Port and Connection            ---
+-------------------------------------------------
+
+(omod PORTS is inc PtolemyExp .
+    class Port | status : PortStatus, value : Exp .
+    class InPort . 
+	subclass InPort < Port .
+    class OutPort .
+	subclass OutPort < Port .
+    --- InOut Port?
+
+    sort PortStatus .
+    ops unknown present absent : -> PortStatus [ctor] .
+endom)
+
+--- CONNECTIONS.
+--- In a first flat setting, all the connections are in a global state.
+--- Notice that we may only have one-to-one connections, but also
+--- one-to-many (and maybe other variations that we don't worry
+--- about so far?). 
+(omod CONNECTIONS is inc PORTS .
+    sort Connection .
+    op _==>_ : EPortId EPortIdSet -> Connection [ctor] .
+
+    --- In a flat world, where connections are in the global configuration, 
+    --- we need to state that connections are also, e.g., objects:
+
+    subsort Connection < Object .
+endom)
+
+
+-------------------------------------------------
+---         Various actor classes             ---
+-------------------------------------------------
+
+(omod ACTORS is inc PORTS .
+    class Actor | ports : Configuration,           *** a bunch of ports
+		  innerVariables : AssignMap,
+		  store : ValueMap .
+endom)
+
+(omod COMPOSITE-ACTORS is inc ACTORS .
+    class CompositeActor | innerActors : Configuration,
+			   refinements : RefinementSet .
+	subclass CompositeActor < Actor .
+
+    sort RefinementType RefinementItem RefinementSet .
+    subsort RefinementItem < RefinementSet .
+
+    op noRefinement : -> RefinementSet [ctor] .
+    ops State Transition : -> RefinementType [ctor] .
+    op _`[_`,_`]:_ : Oid RefinementType Bool Configuration -> RefinementItem [ctor] .
+    op _`,_ : RefinementSet RefinementSet -> RefinementSet 
+       [ctor comm assoc id: noRefinement] .
+endom)
+
+(tomod DELAY-ACTOR  is inc ACTORS .
+    class Delay | delay : Time .
+	subclass Delay < Actor .
+endtom)
+
+(tomod CLOCK is inc ACTORS .
+    class Clock | period : NzTime .
+	subclass Clock < Actor .
+endtom)
+
+(tomod FSM-ACTOR is inc COMPOSITE-ACTORS + IDENTIFIERS .
+    class FSM-Actor | currState : Location, 
+		      initState : Location,
+		      transitions : TransitionSet .
+	subclass FSM-Actor < CompositeActor .
+
+    sort Location .	    --- Location : Empty, Must be defined!
+
+    sort Transition TransitionSet .
+    subsort Transition < TransitionSet .
+    op _-->_`{_`} : Location  Location TransBody -> Transition [ctor] .
+    op emptyTransitionSet : -> TransitionSet [ctor] .
+    op _;_ : TransitionSet TransitionSet -> TransitionSet
+                                 [ctor assoc comm id: emptyTransitionSet] .
+
+    --- The transition body has guard, output, and set.
+    sort TransBody .
+    op guard:_output:_set:_ : Exp AssignMap AssignMap -> TransBody 
+	[ctor] .
+
+endtom)
+
+--- Names of variables, of locations, of ports and objects, etc, may
+--- be qid's in a first attempt, if that fits ...
+
+(tomod NAMES is 
+    inc EVENTS + CONNECTIONS + DELAY-ACTOR + CLOCK + FSM-ACTOR .
+    pr QID + POSRAT-TIME-DOMAIN .
+
+    subsorts Qid < PortId Location VarId .
+endtom)
+
+------------------------------------------------
+---           Execution Semantics            ---
+------------------------------------------------
+(tomod EX-EVENTS is inc NAMES .
+
+    vars CF CF' CF'' ACTS REST PORTS PORTS' : Configuration . var OBJ : Object .
+    vars O O' QUEUE : Oid .
+    vars P PI PI' : PortId . vars EPI : EPortId .
+    var PS : PortStatus .
+    vars V V' : Value .
+    var EVTS EVTS' : Events .
+    var EPIS : EPortIdSet .
+    vars L STATE STATE' STATE'' : Location .
+    var MEM VM VM' : ValueMap .  var OL AL AM VAL : AssignMap .
+    var VA : ValueAssignment .
+    var BODY : TransBody .
+    var TRANSSET : TransitionSet .
+    vars TG TG1 TG2 : Exp .
+    vars E E1 E2 : Exp .
+    var VI : VarId .
+    var NZT : NzTime .
+    vars EQ EQ1 EQ2 EQ3 EVENTQUEUE : EventQueue .
+    var EVENT : Event .
+    vars T T' : Time .
+    var N : Nat .  var CHANGED IsTop : Bool .
+    var CONNECTION : Connection .
+    var REFN REFN' : RefinementSet .
+    var RT : RefinementType .
+    var SCP : Scope .
+
+    ---------------------------------------------
+    --- Port-access expression evaluation
+    op @ports : Configuration -> ValueAssignment .
+    ops isPresent isAbsent : PortId -> Exp [ctor] .
+
+    eq [[ isPresent(PI) ]] (@ports( < PI : Port | status : PS > PORTS) ; VM)
+     = #b(PS == present) .
+    eq [[ isPresent(PI) ]] VM = #b(false) [owise] .
+
+    eq [[ isAbsent(PI) ]] (@ports( < PI : Port | status : PS > PORTS) ; VM)
+     = #b(PS == present) .
+    eq [[ isAbsent(PI) ]] VM = #b(false) [owise] .
+
+    ---------------------------------------------
+    ----- Evaluation of inner variables
+    op `[`[_`]`]_ : AssignMap ValueMap ~> ValueMap .
+    op evalVars : ValueMap ValueMap AssignMap Bool ~> ValueMap .
+    op evalVars : ValueMap AssignMap -> AssignMap .
+
+    eq [[AM]] VM = evalVars(VM, emptyMap, AM, false) .
+
+    eq evalVars(VM, VM', (VA ; AM),CHANGED) = evalVars(VM, (VM' ; VA), AM, false) .
+    eq evalVars(VM, VM', emptyMap, CHANGED) = VM' <+ VM .
+    eq evalVars(VM, VM', AM, CHANGED) 
+     =	if CHANGED then 
+	    VM' <+ VM  --- no more value calculated
+	else  
+	    evalVars(VM' <+ VM, emptyMap, evalVars(VM' <+ VM, AM), true) 
+	fi [owise] .
+
+    eq evalVars(VM, ((VI |-> E) ; AM)) = (VI |-> ([[E]] VM)) ; evalVars(VM, AM) .
+    eq evalVars(VM, emptyMap) = emptyMap .
+
+    ---------------------------------------------------------------------
+    --- First, in each new ports we must "reset" all ports to 'unknown'.
+    --- inner actors are concerned as well (except refinements).
+    --- the flag that means "the refinement is enabled" is setted to false
+
+    --- ??? refinement also need to be initialized (congruence)
+
+    --- FIXME: this version assume that the change of values at some time
+    --- does not affect the static execution semantics of that time
+
+    op initActs : Configuration -> Configuration [frozen (1)] .
+    op initInner : Object -> Object [frozen (1)] .
+    op initRefn : RefinementSet -> RefinementSet .
+    op initPorts : Configuration -> Configuration [frozen (1)] .
+
+    eq initActs(< O : Actor | ports : PORTS >  CF') 
+     =	initInner(< O : Actor | ports : initPorts(PORTS) >) initActs(CF') .
+    eq initActs(CF) = CF [owise] .   
+
+    eq initInner(< O : CompositeActor | innerActors : ACTS, refinements : REFN >)
+     = < O : CompositeActor | 
+	innerActors : initActs(ACTS), refinements : initRefn(REFN) > .
+    eq initInner(OBJ) = OBJ [owise] .
+
+    eq initRefn( ((L[RT,CHANGED]: CF),REFN) ) 
+     = (L[RT,false]: initActs(CF)), initRefn(REFN) .
+    eq initRefn(noRefinement) = noRefinement .
+
+    eq initPorts(< P : Port | status : PS >  PORTS) = 
+	< P : Port | status : unknown >  initPorts(PORTS) .
+    eq initPorts(PORTS) = PORTS [owise] .   
+
+
+    --- values of inner variables are calculated.
+    --- refinements are not evaluated here.
+    op evalMemory : ValueMap Configuration -> Configuration [frozen (2)] .
+    op evalInnerMemory : Object -> Object [frozen (2)] .
+
+    eq evalMemory(VM, < O : Actor | innerVariables : VAL >  CF) 
+     =	evalInnerMemory(< O : Actor | store : [[VAL]] VM >) evalMemory(VM, CF) .
+    eq evalMemory(VM, CF) = CF [owise] .   
+
+    eq evalInnerMemory(< O : CompositeActor | innerActors : ACTS, store : MEM >)
+     = < O : CompositeActor | innerActors : evalMemory(MEM, ACTS)  > .
+    eq evalInnerMemory(OBJ) = OBJ [owise] .
+
+    ---------------------------------------------------------------------
+    --- Add events to be "executed" to the appropriate ports:
+    --- inner actors are concerned as well (except refinements).
+    op addEventsToPorts : Events Configuration -> Configuration [frozen (2)] .
+    op addEventsToInner : Events Events Object Configuration -> Configuration [frozen (3 4)] .
+
+    eq addEventsToPorts( event(O . PI, V) EVTS,
+	< O : Actor | ports : < PI : Port | status : PS, value : V' > PORTS > CF) 
+     = addEventsToPorts( EVTS,
+	< O : Actor | ports : < PI : Port | status : present, value : V > PORTS > CF) .
+    eq addEventsToPorts( event(O . EPI, V) EVTS, < O : CompositeActor | > CF) 
+     = addEventsToInner(EVTS, event(EPI, V), < O : CompositeActor | > , CF) .
+
+    eq addEventsToInner(event(O . EPI,V) EVTS, EVTS', < O : CompositeActor | > ,CF)
+     = addEventsToInner(EVTS, event(EPI, V) EVTS', < O : CompositeActor | > , CF) .
+    eq addEventsToInner(EVTS, EVTS', < O : CompositeActor | innerActors : ACTS > , CF)
+     = addEventsToPorts(EVTS,
+	< O : CompositeActor | innerActors : addEventsToPorts(EVTS',ACTS) > CF) [owise] .
+
+    eq addEventsToPorts(EVTS, CF) = CF [owise] .
+
+    ---------------------------------------------------------------------
+    --- Next step: compute fixed points for the various ports.
+    --- inner actors and refinements are concerned as well .
+    op portFixPoints : Bool Configuration -> Configuration [frozen (1)] .
+    op portFixPoints2 : Bool Configuration Bool -> Configuration [frozen (1)] .
+
+    --- First step: propagate a decided output to an unknown input:
+    ceq portFixPoints(IsTop,
+	 < O : Actor | ports :  < PI : OutPort | status : PS, value : V > PORTS > 
+	 ((O . PI) ==> ((O' . PI') ; EPIS))
+	 < O' : Actor | ports : < PI' : InPort | status : unknown > PORTS' > 
+	REST)
+      = portFixPoints(IsTop,
+	 < O : Actor | ports :  < PI : OutPort |  > PORTS > 
+	 ((O . PI) ==> ((O' . PI') ; EPIS))
+	 < O' : Actor | 
+		ports : < PI' : InPort | status : PS, value : V > PORTS' > 
+	REST)  
+     if PS =/= unknown .
+
+    --- Down (Inner Actor)
+    ceq portFixPoints(IsTop,
+	< O : CompositeActor |
+	    ports : < PI : InPort | status : PS, value : V > PORTS,
+	    innerActors :
+		< O' : Actor | 
+		    ports : < PI' : InPort | status : unknown > PORTS' >
+		((O . PI) ==> ((O . O' . PI') ; EPIS)) ACTS
+	> REST)
+      = portFixPoints(IsTop,
+	< O : CompositeActor |
+	    ports : < PI : InPort | > PORTS,
+	    innerActors : CF
+	> REST)
+     if PS =/= unknown /\
+	CF := portFixPoints(false,
+		    < O' : Actor | 
+			ports : < PI' : InPort | status : PS, value : V > PORTS' >
+		    ((O . PI) ==> ((O . O' . PI') ; EPIS)) ACTS) .
+
+    --- Up (Inner Actor)
+    ceq portFixPoints(IsTop,
+	< O : CompositeActor |
+	    ports : < PI : OutPort | status : unknown > PORTS,
+	    innerActors :
+		< O' : Actor | 
+		    ports : < PI' : OutPort | status : PS, value : V > PORTS' >
+		((O . O' . PI') ==> ((O . PI) ; EPIS)) ACTS
+	> REST)
+      = portFixPoints(IsTop,
+	< O : CompositeActor |
+	    ports : < PI : OutPort | status : PS, value : V > PORTS,
+	    innerActors :
+		< O' : Actor | ports : < PI' : OutPort | > PORTS' >
+		((O . O' . PI') ==> ((O . PI) ; EPIS)) ACTS
+	> REST)
+     if PS =/= unknown .
+
+    --- Down (Refinement)
+    ceq portFixPoints(IsTop,
+	< O : CompositeActor |
+	    ports : < PI : Port | status : PS, value : V > PORTS,
+	    refinements : (
+		(L[RT,true]:
+		    < O' : Actor |
+			ports : < PI : Port | status : unknown > PORTS' > CF), 
+		REFN)
+	> REST)
+      = portFixPoints(IsTop,
+	< O : CompositeActor |
+	    ports : < PI : Port | > PORTS,
+	    refinements : ( (L[RT,true]: CF'), REFN)
+	> REST)
+     if PS =/= unknown /\
+	CF' := portFixPoints(false, 
+		    < O' : Actor |
+		    ports : < PI : Port | status : PS,value : V > PORTS' > CF) .
+
+    --- Up (Refinement)
+    ceq portFixPoints(IsTop,
+	< O : CompositeActor |
+	    ports : < PI : Port | status : unknown > PORTS,
+	    refinements : (
+		(L[RT,true]:
+		    < O' : Actor |
+			ports : < PI : Port | status : PS,value : V > PORTS' > CF),
+		REFN)
+	> REST)
+      = portFixPoints(IsTop,
+	< O : CompositeActor |
+	    ports : < PI : Port | status : PS, value : V > PORTS,
+	    refinements : (
+		(L[RT,true]: < O' : Actor | ports : < PI : Port | > PORTS' > CF),
+		REFN)
+	> REST)
+     if PS =/= unknown .
+
+    --- Second step: decide your output, when "unknown" of course!
+
+    --- By case on actor type. Clock and delay actors generate events 
+    --- "later" and hence
+    --- do not generate output WHEN their ports are in unknown state:
+
+    eq portFixPoints(IsTop,
+	 < O : Delay | ports :  < PI : OutPort | status : unknown > PORTS > REST) 
+     = portFixPoints(IsTop,
+	 < O : Delay | ports : < PI : OutPort | status : absent > PORTS > REST) .
+
+    eq portFixPoints(IsTop,
+	 < O : Clock | ports : < PI : OutPort | status : unknown > PORTS > REST)
+     = portFixPoints(IsTop,
+	 < O : Clock | ports : < PI : OutPort | status : absent > PORTS > REST) .
+
+    --- portFixPoints2 called only if at the top level.
+    eq portFixPoints(IsTop, CF) 
+     = if IsTop then portFixPoints2(IsTop, CF, false) else CF fi [owise] .
+
+    --- For FSM-Actors, this is much harder ...
+    --- assuming no prioritized transition
+
+    --- enabling state refinement, and run portFixpoint again
+    eq portFixPoints(IsTop,
+	    < O : FSM-Actor |
+		currState : STATE,
+		refinements : ((STATE[State,false]: CF), REFN),
+		store : MEM
+	    > REST)
+     = portFixPoints(IsTop,
+	    < O : FSM-Actor |
+		refinements : ((STATE[State,true]: evalMemory(MEM, CF)), REFN)
+	    > REST) .
+
+    --- normal transition (if refinement is already executed)
+    ceq portFixPoints(IsTop,
+	    < O : FSM-Actor | 
+		ports : < PI : OutPort | status : unknown > PORTS,
+		currState : STATE, refinements : REFN, store : MEM,
+		transitions : (
+		    (STATE --> STATE' {guard: TG output: OL set: AL}) ; TRANSSET)
+	    > REST) 
+      = portFixPoints(IsTop,
+	    < O : FSM-Actor | 
+		ports : updateOutPorts([[AL]] MEM, OL, 
+			    < PI : OutPort | status : unknown > PORTS) 
+	    > REST) 
+     if transApplicable(< PI : OutPort | status : unknown > PORTS, MEM, TG) 
+	/\ checkRefinement(STATE, State, REFN) .
+
+    --- FIXME : this should be executed when others are not enabled,
+    --- in all level.
+    --- should also update for the case when NO transition is aplicable. 
+    --- Then, no output should be generated:
+
+---(
+    ceq portFixPoints2(IsTop,
+	    < O : FSM-Actor | 
+		ports : < PI : OutPort | status : unknown > PORTS,
+		currState : STATE, refinements : REFN, store : MEM,
+		transitions : TRANSSET 
+	    > REST,CHANGED)
+      = portFixPoints2(IsTop,
+	    < O : FSM-Actor | 
+		ports : updateOutPorts(MEM, emptyMap,
+		    < PI : OutPort | status : unknown > PORTS) 
+	    > REST,true) 
+     if not transApplicable(< PI : OutPort | status : unknown > PORTS, 
+				MEM, STATE, TRANSSET)
+	/\ checkRefinement(STATE, State, REFN) .
+	---)
+
+    op checkRefinement : Location RefinementType RefinementSet -> Bool .
+    eq checkRefinement(L, RT, ((L[RT,false]: CF),REFN)) = false .
+    eq checkRefinement(L, RT, REFN) = true [owise] .
+
+
+    *** Big equation that ends search for fixpoints!!
+    eq portFixPoints2(IsTop, CF,CHANGED) 
+     = if CHANGED then portFixPoints(IsTop, CF) else CF fi [owise] .
+
+
+    *** Note: All these 'frozen' attributes are NOT needed, since all
+    *** the rewrites happen at the GlobalSystem level!
+
+    op updateOutPorts : ValueMap AssignMap Configuration -> Configuration .
+    eq updateOutPorts(MEM, (PI |-> E) ; OL, 
+		   < PI : OutPort | status : PS, value : V >  PORTS) 
+     = < PI : OutPort | status : present, value : [[E]] MEM >
+       updateOutPorts(MEM, OL, PORTS) .
+    --- if NOT in the output list for the transition, should have absent output: 
+    eq updateOutPorts(MEM, emptyMap, < PI : OutPort | >  PORTS) 
+     = < PI : OutPort | status : absent > updateOutPorts(MEM, emptyMap, PORTS) .
+    eq updateOutPorts(MEM, OL, PORTS) = PORTS [owise] .
+
+    ---------------------------------------------------------------------
+    op executeStep : EventQueue Scope Configuration -> Configuration .
+    op executeStep2 : EventQueue Scope Configuration -> Configuration .
+    op executeRefn : EventQueue Scope RefinementSet -> RefinementSet .
+
+    op revent : EventQueue -> RefinementSet [ctor] .
+    op ievent : EventQueue -> Configuration [ctor] .
+
+    op finalStep : Configuration -> Configuration .
+    eq finalStep(ievent(EQ) REST)
+     = < globalEventQueue : GlobalEventQueue | queue : EQ > REST .
+
+    --- variables of inner actors and refinements cannot be accessed from
+    --- outside. Hence, updating those before doing parent actor
+    --- events sholud be also considered.
+    ceq executeStep(EQ, SCP, 
+	< O : CompositeActor | innerActors : ACTS, refinements : REFN > REST)
+     =	CF'' executeStep(EQ3, SCP, REST)
+     if CF ievent(EQ1) := executeStep(EQ,SCP O, ACTS) /\
+	(REFN', revent(EQ2)) := executeRefn(EQ1,SCP O, REFN) /\
+	CF'' ievent(EQ3) := executeStep2(EQ2,SCP O,
+		< O : CompositeActor | innerActors : CF, refinements : REFN' >) .
+    eq executeStep(EQ, SCP, CF) = executeStep2(EQ, SCP, CF) [owise] .
+
+    ceq executeRefn(EQ, SCP, ((L[RT,true]: CF), REFN) )
+     = (L[RT,true]: CF'), executeRefn(EQ1, SCP, REFN)
+     if CF' ievent(EQ1) := executeStep(EQ,SCP,CF) .
+    eq executeRefn(EQ, SCP, REFN) = REFN, revent(EQ) [owise] .
+
+    --- When should clock generate "next" event?? Maybe when it has something
+    --- in its current output port??? Assumed exactly ONE outport per clock!
+
+    eq executeStep2(EQ, SCP,
+	< O : Clock | 
+	    ports : (< PI : OutPort | status : present >  PORTS), 
+	    period : NZT > 
+	REST) 
+     = < O : Clock | > 
+       executeStep2(addEvent(event(SCP . (O . PI), #r(0)), NZT,  EQ), SCP, REST) .
+
+    eq executeStep2(EQ, SCP,
+	< O : Clock | ports : (< PI : OutPort | status : absent >  PORTS) > REST) 
+     = < O : Clock | > executeStep2(EQ, SCP, REST) .
+
+    *** NOTE: relies on the fact that all clocks seem to have exactly
+    *** ONE output port!!! Will be more complicated otherwise!
+
+    *** execute a step for delay operators ... : do NOT generate new output.
+    *** IF input, then generate new event, otherwise do nothing. 
+
+    eq executeStep2(EQ, SCP,
+	< O : Delay | 
+	    ports : (
+		< PI : InPort | status : present, value : V >  
+		< PI' : OutPort | > PORTS),
+	    delay : T > REST)
+     = < O : Delay | > 
+       executeStep2(addEvent(event(SCP . (O . PI'), V), T,  EQ), SCP, REST) .
+
+    eq executeStep2(EQ, SCP,
+	< O : Delay | ports : (< PI : InPort | status : absent >  PORTS) > REST) 
+     = < O : Delay | > executeStep2(EQ, SCP, REST) .
+
+    *** FSM-Actor does NOT generate events in our first version, only changes
+    *** the internal state/valuation as a result of applying one transition ...
+    *** Again, the set of transitions is assumed to be *DETERMINISTIC*
+
+    ceq executeStep2(EQ, SCP,
+	< O : FSM-Actor | 
+	    ports : PORTS, 
+	    innerVariables : VAL, 
+	    currState : STATE,
+	    transitions : (
+		(STATE --> STATE' {guard: TG output: OL set: AL}) ; TRANSSET
+	    ) 
+	> REST)
+      = < O : FSM-Actor | innerVariables : [[AL]] VAL, currState : STATE' > 
+	executeStep2(EQ, SCP, REST) 
+     if transApplicable(PORTS, VAL, TG) .
+
+    --- I am not sufficiently sure about Ptolemy, but it could happen that
+    --- NO transition is enabled, as in the simple car system:
+
+    ceq executeStep2(EQ, SCP,
+	< O : FSM-Actor | 
+	    ports : PORTS,
+	    innerVariables : VAL,
+	    currState : STATE,
+	    transitions : TRANSSET 
+	> REST)
+      = < O : FSM-Actor | > executeStep2(EQ, SCP, REST) 
+     if not transApplicable(PORTS, VAL, STATE, TRANSSET) .
+
+
+    eq executeStep2(EQ, SCP, CONNECTION REST) 
+     = CONNECTION executeStep2(EQ, SCP, REST) .
+
+    eq executeStep2(EQ, SCP, < O : Actor | > REST) 
+     = < O : Actor | > executeStep2(EQ, SCP, REST) [owise] .
+    eq executeStep2(EQ, SCP, none) = ievent(EQ) .
+
+    op transApplicable : Configuration ValueMap Exp -> Bool [frozen (1)] .
+    op transApplicable : Configuration ValueMap Location TransitionSet -> Bool .
+
+    ceq transApplicable(PORTS, VAL, TG) = B:Bool
+     if #b(B:Bool) := [[TG]] (@ports(PORTS) <+ VAL) .
+
+    eq transApplicable(PORTS, VAL, STATE, emptyTransitionSet) = false .
+
+    eq transApplicable(PORTS, VAL, STATE, 
+	    (STATE --> STATE' {guard: TG output: OL set: AL}) ; TRANSSET) 
+     = transApplicable(PORTS, VAL, TG) or
+       transApplicable(PORTS, VAL, STATE, TRANSSET) .
+
+    ceq transApplicable(PORTS, VAL, STATE, 
+	    (STATE' --> STATE'' {BODY}) ; TRANSSET) 
+      = transApplicable(PORTS, VAL, STATE, TRANSSET) 
+     if STATE =/= STATE' .
+
+    op addEvent : Event Time EventQueue -> EventQueue .
+
+    --- add event first:
+    ceq addEvent(EVENT, T, (EVTS ; T' ; N) :: EVENTQUEUE) 
+      = ((EVENT ; T ; 0) :: (EVTS ; T' ; N) :: EVENTQUEUE)
+     if T < T' .
+
+    --- add event to the first event:
+    eq addEvent(EVENT, T, (EVTS ; T ; 0) :: EVENTQUEUE) 
+     = (EVENT EVTS ; T ; 0) :: EVENTQUEUE .
+
+    --- add event to rest of queue:
+    ceq addEvent(EVENT, T, (EVTS ; T' ; N) :: EVENTQUEUE) 
+      = ((EVTS ; T' ; N) :: addEvent(EVENT, T, EVENTQUEUE))
+     if T' < T .
+
+    eq addEvent(EVENT, T, nil) = (EVENT ; T ; 0) .
+
+endtom)
+
+
+*** Finally, the rules!!
+
+(tomod DYNAMICS is inc EX-EVENTS .
+
+    vars SYSTEM CF PORTS : Configuration .
+    var QUEUE O : Oid .
+    var EVTS : Events .
+    var NZT : NzTime .
+    var N : Nat . var NZ : NzNat .
+    var EVENTQUEUE : EventQueue .
+    vars T T' : Time .
+    var P : PortId .
+
+    op delta : EventQueue Time -> EventQueue .
+    eq delta((EVTS ; T ; N) :: EVENTQUEUE, T') 
+     = (EVTS ; T monus T' ; N) :: delta(EVENTQUEUE, T') .
+    eq delta(nil, T) = nil .
+
+    --- Although we could probably be happy with ONE single rules, for conceptual
+    --- clarity, we use three rules in the first attempt.
+
+    --- Basically, the rules advance time till the next event, 
+    --- and then, IN A SEPARATE rule, executes a transition.
+    --- These rules could obviously be combined into one ...
+
+    rl [tick] : 
+	{ SYSTEM 
+	    < QUEUE : GlobalEventQueue | 
+		queue : (EVTS ; NZT ; N) :: EVENTQUEUE > }
+    => { SYSTEM 
+	    < QUEUE : GlobalEventQueue | 
+		queue : (EVTS ; 0 ; N) :: delta(EVENTQUEUE, NZT) > }
+    in time NZT .
+
+    --- shortTick should be invoked for non-zero case (for model checking)
+    rl [shortTick] : 
+	{ SYSTEM 
+	    < QUEUE : GlobalEventQueue | 
+		queue : (EVTS ; 0 ; NZ) :: EVENTQUEUE > }
+    =>	{ SYSTEM 
+	    < QUEUE : GlobalEventQueue | 
+		queue : (EVTS ; 0 ; 0) :: EVENTQUEUE > } .
+
+    --- execute a step:
+    rl [executeStep] : 
+	{ SYSTEM 
+	  < QUEUE : GlobalEventQueue | queue : (EVTS ; 0 ; 0) :: EVENTQUEUE > } 
+    =>	{ finalStep(
+	    executeStep(EVENTQUEUE, emptyScope, 
+		portFixPoints(true, addEventsToPorts(EVTS,
+		    evalMemory(emptyMap,initActs(SYSTEM)))))) } . 
+
+    *** NEW! Initialization phase. Instead of explicitly adding the 
+    *** first elemnets to the queue, we add a new element
+    *** 'initEventQueue' to the state instead of the event queue object,
+    *** and then have the following rule to initialize the event queue:
+
+    op initEventQueue : -> Object [ctor] .
+
+    op initEvents : Configuration ~> EventQueue . 
+    eq initEvents(< O : Clock | ports : < P : OutPort | > PORTS > CF) 
+     = addEvent(event(O . P, #r(0)), 0, initEvents(CF)) .
+    eq initEvents(CF) = nil [owise] .
+
+    rl [initializeEventQueue] : 
+	{SYSTEM initEventQueue}
+    => 
+	{ SYSTEM 
+	  < globalEventQueue : GlobalEventQueue | queue : initEvents(SYSTEM) > } .
+
+    --- For the fragment of Ptolemy we now are considering, the initial events 
+    --- are just created by the clocks:
+endtom)
+
+(tomod INIT is
+    inc NAMES + DYNAMICS .
+    op init : -> Configuration .
+    op #model : -> Configuration .
+
+    eq init = initEventQueue #model .
+endtom)
+
+
