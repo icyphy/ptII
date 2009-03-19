@@ -41,8 +41,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-import bsh.This;
-
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
