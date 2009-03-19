@@ -3,7 +3,7 @@
 /**/
 
 /*** print_Boolean() ***/
-inline void print_Double(boolean b) {
+inline void print_Boolean(boolean b) {
     printf(b ? "true" : "false");
 }
 /**/
@@ -21,7 +21,7 @@ inline void print_Int(int i) {
 /**/
 
 /*** print_Long() ***/
-inline void print_Int(long long l) {
+inline void print_Long(long long l) {
     printf("%d", l);
 }
 /**/

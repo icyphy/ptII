@@ -22,6 +22,12 @@ Token add_Long_Array(Token a1, long long a2) {
 }
 /**/
 
+/*** add_BooleanArray_BooleanArray() ***/
+Token add_BooleanArray_BooleanArray(Token a1, Token a2) {
+    return $BooleanArray_add(a1, a2);
+}
+/**/
+
 /*** add_Boolean_Boolean() ***/
 boolean add_Boolean_Boolean(boolean a1, boolean a2) {
     return a1 | a2;
@@ -43,6 +49,18 @@ char* add_Boolean_String(boolean a1, char* a2) {
 }
 /**/
 
+/*** add_DoubleArray_Double() ***/
+Token add_DoubleArray_Double(Token a1, double a2) {
+    return $add_Double_DoubleArray(a2, a1);
+}
+/**/
+
+/*** add_DoubleArray_DoubleArray() ***/
+Token add_DoubleArray_DoubleArray(Token a1, Token a2) {
+    return $DoubleArray_add(a1, a2);
+}
+/**/
+
 /*** add_Double_Array() ***/
 Token add_Double_Array(double a1, Token a2) {
     int i;
@@ -58,6 +76,18 @@ Token add_Double_Array(double a1, Token a2) {
 /*** add_Double_Double() ***/
 double add_Double_Double(double a1, double a2) {
     return a1 + a2;
+}
+/**/
+
+/*** add_Double_DoubleArray() ***/
+Token add_Double_DoubleArray(double a1, Token a2) {
+    int i;
+    Token result = $new(DoubleArray(a2.payload.Array->size, 0));
+
+    for (i = 0; i < a2.payload.DoubleArray->size; i++) {
+    	DoubleArray_set(result, i, $add_Double_Double(a1, DoubleArray_get(a2, i)));
+    }
+    return result;
 }
 /**/
 
@@ -79,6 +109,12 @@ char* add_Double_String(double a1, char* a2) {
 Token add_Double_Token(double a1, Token a2) {
     Token token = $new(Double(a1));
     return $add_Token_Token(token, a2);
+}
+/**/
+
+/*** add_IntArray_IntArray() ***/
+Token add_IntArray_IntArray(Token a1, Token a2) {
+    return $IntArray_add(a1, a2);
 }
 /**/
 
@@ -143,6 +179,12 @@ long long add_Long_Long(long long a1, long long a2) {
 Token add_Long_Token(long long a1, Token a2) {
     Token token = $new(Long(a1));
     return $add_Token_Token(token, a2);
+}
+/**/
+
+/*** add_StringArray_StringArray() ***/
+Token add_StringArray_StringArray(Token a1, Token a2) {
+    return $StringArray_add(a1, a2);
 }
 /**/
 

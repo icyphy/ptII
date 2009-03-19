@@ -10,6 +10,10 @@
 #define negate_Double(a) -a
 /**/
 
+/*** negate_DoubleArray() ***/
+#define negate_DoubleArray(a) $DoubleArray_negate(a)
+/**/
+
 /*** negate_Int() ***/
 #define negate_Int(a) -a
 /**/

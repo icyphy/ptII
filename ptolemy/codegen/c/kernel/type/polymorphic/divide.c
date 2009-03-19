@@ -17,7 +17,7 @@ inline Token divide_Array_Double(Token a1, double a2) {
 /**/
 
 /*** divide_Array_Int() ***/
-Token divide_Int_Array(Token a1, int a2) {
+Token divide_Array_Int(Token a1, int a2) {
     int i;
     Token result = $new(Array(a1.payload.Array->size, 0));
 
@@ -29,7 +29,7 @@ Token divide_Int_Array(Token a1, int a2) {
 /**/
 
 /*** divide_Array_Long() ***/
-inline Token divide_Long_Array(Token a1, long long a2) {
+inline Token divide_Array_Long(Token a1, long long a2) {
     int i;
     Token result = $new(Array(a1.payload.Array->size, 0));
 
@@ -47,6 +47,30 @@ inline boolean divide_Boolean_Boolean(boolean a1, boolean a2) {
     // throw exception("Illegal boolean division.");
     //}
     return a1;
+}
+/**/
+
+/*** divide_DoubleArray_Double() ***/
+Token divide_DoubleArray_Double(Token a1, double a2) {
+    int i;
+    Token result = $new(DoubleArray(a1.payload.DoubleArray->size, 0));
+
+    for (i = 0; i < a1.payload.DoubleArray->size; i++) {
+    	DoubleArray_set(result, i, $divide_Double_Double(DoubleArray_get(a1, i), a2));
+    }
+    return result;
+}
+/**/
+
+/*** divide_DoubleArray_Int() ***/
+Token divide_DoubleArray_Int(Token a1, int a2) {
+    int i;
+    Token result = $new(DoubleArray(a1.payload.DoubleArray->size, 0));
+
+    for (i = 0; i < a1.payload.DoubleArray->size; i++) {
+    	DoubleArray_set(result, i, $divide_Double_Int(DoubleArray_get(a1, i), a2));
+    }
+    return result;
 }
 /**/
 
@@ -173,39 +197,39 @@ inline Token divide_Token_Token(Token a1, Token a2) {
 }
 /**/
 
-/***divide_one_Array***/
+/*** divide_one_Array() ***/
 inline Token divide_one_Array(Token a1, ...) {
     Token oneToken = $tokenFunc(a1::one(a1));
     return $Array_divide(oneToken, a1);
 }
 /**/
 
-/*** divide_one_Boolean ***/
+/*** divide_one_Boolean() ***/
 inline double divide_one_Boolean(boolean b, ...) {
     // FIXME: is this right?
     return b;
 }
 /**/
 
-/*** divide_one_Double ***/
+/*** divide_one_Double() ***/
 inline double divide_one_Double(double d, ...) {
     return 1.0/d;
 }
 /**/
 
-/*** divide_one_Int ***/
+/*** divide_one_Int() ***/
 inline int divide_one_Int(int i, ...) {
     return 1/i;
 }
 /**/
 
-/*** divide_one_Long ***/
+/*** divide_one_Long() ***/
 inline long divide_one_Long(long l, ...) {
     return 1L/l;
 }
 /**/
 
-/*** divide_one_Token ***/
+/*** divide_one_Token() ***/
 inline long divide_one_Token(Token a1, ...) {
     Token oneToken = $tokenFunc(a1::one(a1));
     return $divide_Token_Token(a1, token);

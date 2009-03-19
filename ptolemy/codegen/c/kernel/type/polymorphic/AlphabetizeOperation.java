@@ -34,6 +34,7 @@ import java.io.FileWriter;
 import java.util.TreeSet;
 
 import ptolemy.codegen.kernel.CodeStream;
+import ptolemy.codegen.kernel.CodeStream.Signature;
 import ptolemy.util.FileUtilities;
 
 public class AlphabetizeOperation {
@@ -51,17 +52,30 @@ public class AlphabetizeOperation {
                 String filename = file.getPath();
                 CodeStream stream = new CodeStream(filename, null);
 
-                TreeSet sortedSet = new TreeSet(stream
+                TreeSet<Signature> sortedSet = new TreeSet<Signature>(stream
                         .getAllCodeBlockSignatures());
 
                 StringBuffer code = new StringBuffer();
-                for (Object signature : sortedSet) {
-                    code.append(stream.getCodeBlockTemplate(signature));
+                for (Signature signature : sortedSet) {
+                    String templateCode = stream.getCodeBlockTemplate(signature);
+                    
+                    String[] fragments = templateCode.split(signature.functionName);
+
+                    // The templateCode should contain at least two occurrences of
+                    // the functionName. One for the code block header, and one for
+                    // the function definition. If not, that means something is
+                    // mis-typed, and will create compile bugs in code generation.
+                    if (fragments.length <= 2) {
+                        System.err.println("Warning -- " + signature + " does not" +
+                        		" contains the definition for " + signature.functionName);
+                    }
+                    code.append(templateCode);
+                    
                 }
 
                 if (code.toString().trim().length() > 0) {
                     FileWriter writer = new FileWriter(new File(filename));
-                    writer.write(code.toString());
+                    writer.write(code.toString().replaceAll("\r\n", "\n").replaceAll("\n", "\r\n"));
                     writer.close();
                 }
             }
