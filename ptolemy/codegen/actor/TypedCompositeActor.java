@@ -33,7 +33,6 @@ import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
-import ptolemy.codegen.kernel.Director;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -58,11 +57,11 @@ public class TypedCompositeActor extends CodeGeneratorHelper {
         super(component);
     }
 
-    public String generateFireCode() throws IllegalActionException {
+    protected String _generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        Director directorHelper = (Director) _getHelper(((ptolemy.actor.CompositeActor) getComponent())
-                .getDirector());
+        Director directorHelper = (Director) _getHelper(((ptolemy.actor
+                .CompositeActor) getComponent()).getDirector());
 
         code.append(directorHelper.generateFireCode());
         
@@ -70,16 +69,38 @@ public class TypedCompositeActor extends CodeGeneratorHelper {
     }
 
     public String generatePreinitializeCode() throws IllegalActionException {
-        return "";
+        StringBuffer code = new StringBuffer();
+
+        Director directorHelper = (Director) _getHelper(((ptolemy.actor
+                .CompositeActor) getComponent()).getDirector());
+
+        code.append(directorHelper.generatePreinitializeCode());
+        
+        return processCode(code.toString());
     }
 
     public String generateInitializeCode() throws IllegalActionException {
-        return "";
+        StringBuffer code = new StringBuffer();
+
+        Director directorHelper = (Director) _getHelper(((ptolemy.actor
+                .CompositeActor) getComponent()).getDirector());
+
+        code.append(directorHelper.generateInitializeCode());
+        
+        return processCode(code.toString());
     }
     
     public String generateWrapupCode() throws IllegalActionException {
-        return "";
+        StringBuffer code = new StringBuffer();
+
+        Director directorHelper = (Director) _getHelper(((ptolemy.actor
+                .CompositeActor) getComponent()).getDirector());
+
+        code.append(directorHelper.generateWrapupCode());
+        
+        return processCode(code.toString());
     }
+    
     public Set getSharedCode() throws IllegalActionException {
 
         // Use LinkedHashSet to give order to the shared code.
