@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: ptcygpwd,v 1.1.2.2 2008/02/07 05:37:54 cxh Exp $
+# $Id$
 
 # Print the pwd without the /cygdrive/c, which 
 # Java can't understand.
