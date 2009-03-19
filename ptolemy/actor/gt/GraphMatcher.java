@@ -309,6 +309,7 @@ public class GraphMatcher extends GraphAnalyzer {
      *  it is tagged to be optional but a match including that object has
      *  failed.
      *
+     *  @param object The object to be tested.
      *  @return true if the object is ignored.
      */
     protected boolean _isIgnored(Object object) {

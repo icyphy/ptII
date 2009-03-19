@@ -1,4 +1,4 @@
-/*
+/* A matcher to match any FSM actor.
 
 @Copyright (c) 2008 The Regents of the University of California.
 All rights reserved.
@@ -46,22 +46,31 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.ValueListener;
 import ptolemy.vergil.gt.GTIngredientsEditor;
 
+//////////////////////////////////////////////////////////////////////////
+//// FSMMatcher
+
 /**
+ A matcher to match any FSM actor.
 
  @author Thomas Huining Feng
  @version $Id$
- @since Ptolemy II 6.1
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
 public class FSMMatcher extends FSMActor implements GTCompositeActor, GTEntity,
         ValueListener {
 
-    /**
-     * @param container
-     * @param name
-     * @throws NameDuplicationException
-     * @throws IllegalActionException
+    /** Create an FSMMatcher in the specified container with the specified
+     *  name. The name must be unique within the container or an exception
+     *  is thrown. The container argument must not be null, or a
+     *  NullPointerException will be thrown.
+     *  @param container The container.
+     *  @param name The name of this actor within the container.
+     *  @exception IllegalActionException If the entity cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an entity already in the container.
      */
     public FSMMatcher(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
@@ -92,6 +101,13 @@ public class FSMMatcher extends FSMActor implements GTCompositeActor, GTEntity,
         return criteria;
     }
 
+    /** Return a string that contains the SVG icon description
+     *  ("&lt;svg&gt;...&lt;/svg&gt;") for this matcher. This icon description
+     *  is the default icon for the matcher, which may be changed by the
+     *  criteria.
+     *
+     *  @return The icon description.
+     */
     public String getDefaultIconDescription() {
         return null;
     }
@@ -140,6 +156,14 @@ public class FSMMatcher extends FSMActor implements GTCompositeActor, GTEntity,
         return _labelSet;
     }
 
+    /** Test whether this FSMMatcher can match the given object. The matching
+     *  is shallow in the sense that objects contained by this GTEntity need not
+     *  match the corresponding objects in the given object for the return
+     *  result to be true.
+     *
+     *  @param object The NamedObj.
+     *  @return Whether this GTEntity can match the given object.
+     */
     public boolean match(NamedObj object) {
         return object instanceof FSMActor;
     }

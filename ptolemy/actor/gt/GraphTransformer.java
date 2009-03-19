@@ -1,4 +1,4 @@
-/*
+/* Model transformation with a given match of the pattern.
 
 @Copyright (c) 2007-2008 The Regents of the University of California.
 All rights reserved.
@@ -70,18 +70,34 @@ import ptolemy.moml.MoMLParser;
 import ptolemy.moml.Vertex;
 import ptolemy.vergil.kernel.attributes.VisibleAttribute;
 
+//////////////////////////////////////////////////////////////////////////
+//// GraphTransformer
+
 /**
+ Model transformation with a given match of the pattern. The transformation is
+ implemented as a {@link ChangeRequest}, so its execution can be deferred. When
+ it is executed, it generates a bunch of {@link MoMLChangeRequest}s and
+ immediately executes those requests. Those requests adjusts the model with the
+ given match of the pattern.
 
  @author Thomas Huining Feng
  @version $Id$
- @since Ptolemy II 6.1
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
 public class GraphTransformer extends ChangeRequest {
 
+    /** Construct a transformer with the given transformation rule (including a
+     *  pattern and a replacement), and a list of match results. The transformer
+     *  tries to transform all matches, unless the previous ones violate the
+     *  latter ones.
+     *
+     *  @param transformationRule The transformation rule.
+     *  @param matchResults The list of match results.
+     */
     public GraphTransformer(TransformationRule transformationRule,
-            List<MatchResult> matchResults) throws TransformationException {
+            List<MatchResult> matchResults) {
         super(null, "Apply graph transformation to model.");
 
         _pattern = transformationRule.getPattern();
@@ -89,8 +105,15 @@ public class GraphTransformer extends ChangeRequest {
         _matchResults = matchResults;
     }
 
+    /** Construct a transformer with the given transformation rule (including a
+     *  pattern and a replacement), and a single match result. The transformer
+     *  transforms the match.
+     *
+     *  @param transformationRule The transformation rule.
+     *  @param matchResult The match result.
+     */
     public GraphTransformer(TransformationRule transformationRule,
-            MatchResult matchResult) throws TransformationException {
+            MatchResult matchResult) {
         super(null, "Apply graph transformation to model.");
 
         _pattern = transformationRule.getPattern();
@@ -99,41 +122,86 @@ public class GraphTransformer extends ChangeRequest {
         _matchResults.add(matchResult);
     }
 
+    /** Add a TransformationListener to listen to the transformation.
+     *
+     *  @param listener The TransformationListener.
+     */
     public void addTransformationListener(TransformationListener listener) {
         _listeners.add(listener);
     }
 
-    public void removeTransformationListener(TransformationListener listener) {
-        _listeners.remove(listener);
-    }
-
+    /** Get the current match result used for the transformation.
+     *
+     *  @return The current match result.
+     */
     public MatchResult getMatchResult() {
         return _matchResult;
     }
 
+    /** Get the pattern of the transformation rule being used.
+     *
+     *  @return The pattern.
+     */
     public Pattern getPattern() {
         return _pattern;
     }
 
+    /** Get the replacement of the transformation rule being used.
+     *
+     *  @return The replacement.
+     */
     public Replacement getReplacement() {
         return _replacement;
     }
 
+    /** Remove a previously added TransformationListener. No effect if the
+     *  TransformationListener is not added yet.
+     *
+     *  @param listener The TransformationListener.
+     */
+    public void removeTransformationListener(TransformationListener listener) {
+        _listeners.remove(listener);
+    }
+
+    /** Make all the transformers to execute undoable MoMLChangeRequests.
+     *
+     *  @param mergeWithPrevious Whether the undo entries should be merged with
+     *   previous undo entries.
+     */
     public static void startUndoableTransformation(boolean mergeWithPrevious) {
         _undoable = true;
         _mergeWithPrevious = mergeWithPrevious;
     }
 
+    /** Stop executing undoable MoMLChangeRequests in all transformers, so that
+     *  future requests cannot be undone.
+     */
     public static void stopUndoableTransformation() {
         _undoable = false;
         _mergeWithPrevious = false;
     }
 
+    /** Transform a list of match results with a transformation rule.
+     *
+     *  @param transformationRule The transformation rule.
+     *  @param matchResults The list of match results.
+     *  @exception TransformationException If the pattern is not matched to any
+     *   host model in the match results.
+     */
     public static void transform(TransformationRule transformationRule,
             List<MatchResult> matchResults) throws TransformationException {
         transform(transformationRule, matchResults, null);
     }
 
+    /** Transform a list of match results with a transformation rule.
+     *
+     *  @param transformationRule The transformation rule.
+     *  @param matchResults The list of match results.
+     *  @param listener The TransformationListener to listen to the
+     *   transformation.
+     *  @exception TransformationException If the pattern is not matched to any
+     *   host model in the match results.
+     */
     public static void transform(TransformationRule transformationRule,
             List<MatchResult> matchResults, TransformationListener listener)
             throws TransformationException {
@@ -157,11 +225,27 @@ public class GraphTransformer extends ChangeRequest {
         host.requestChange(transformer);
     }
 
+    /** Transform a match result with a transformation rule.
+     *
+     *  @param transformationRule The transformation rule.
+     *  @param matchResult The match result.
+     *  @exception TransformationException If the pattern is not matched to any
+     *   host model in the match result.
+     */
     public static void transform(TransformationRule transformationRule,
             MatchResult matchResult) throws TransformationException {
         transform(transformationRule, matchResult, null);
     }
 
+    /** Transform a match result with a transformation rule.
+     *
+     *  @param transformationRule The transformation rule.
+     *  @param matchResult The match result.
+     *  @param listener The TransformationListener to listen to the
+     *   transformation.
+     *  @exception TransformationException If the pattern is not matched to any
+     *   host model in the match result.
+     */
     public static void transform(TransformationRule transformationRule,
             MatchResult matchResult, TransformationListener listener)
             throws TransformationException {
@@ -532,9 +616,10 @@ public class GraphTransformer extends ChangeRequest {
         }
     }
 
-    private MoMLChangeRequest _createChangeRequest(NamedObj context,
+    private CreateObjectChangeRequest _createAddObjectRequest(NamedObj context,
             String moml) {
-        MoMLChangeRequest request = new MoMLChangeRequest(this, context, moml);
+        CreateObjectChangeRequest request = new CreateObjectChangeRequest(
+                context, moml);
         if (_undoable) {
             request.setUndoable(true);
             if (_mergeWithPrevious) {
@@ -546,10 +631,9 @@ public class GraphTransformer extends ChangeRequest {
         return request;
     }
 
-    private CreateObjectChangeRequest _createAddObjectRequest(NamedObj context,
+    private MoMLChangeRequest _createChangeRequest(NamedObj context,
             String moml) {
-        CreateObjectChangeRequest request = new CreateObjectChangeRequest(
-                context, moml);
+        MoMLChangeRequest request = new MoMLChangeRequest(this, context, moml);
         if (_undoable) {
             request.setUndoable(true);
             if (_mergeWithPrevious) {

@@ -225,8 +225,16 @@ public class AtomicActorMatcher extends TypedAtomicActor implements GTEntity,
      */
     public PatternObjectAttribute patternObject;
 
+    /** Write a MoML description of the contents of this object, which
+     *  in this class are the attributes plus the ports.  This method is called
+     *  by exportMoML().  Each description is indented according to the
+     *  specified depth and terminated with a newline character.
+     *  @param output The output to write to.
+     *  @param depth The depth in the hierarchy, to determine indenting.
+     *  @exception IOException If an I/O error occurs.
+     */
     protected void _exportMoMLContents(Writer output, int depth)
-    throws IOException {
+            throws IOException {
         super._exportMoMLContents(output, depth);
         GTEntityUtils.exportExtraProperties(this, output, depth);
     }

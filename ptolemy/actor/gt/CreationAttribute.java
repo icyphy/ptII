@@ -1,4 +1,4 @@
-/*
+/* An attribute to identify an object in the pattern to be created.
 
  Copyright (c) 2008 The Regents of the University of California.
  All rights reserved.
@@ -36,7 +36,10 @@ import ptolemy.kernel.util.Workspace;
 //// CreationAttribute
 
 /**
-
+ An attribute to identify an object in the pattern to be created. When an object
+ in the pattern contains one such attribute, it is essentially not part of the
+ pattern because it is ignored in pattern matching. When a match is found, the
+ object would be created in the result.
 
  @author Thomas Huining Feng
  @version $Id$
@@ -46,19 +49,31 @@ import ptolemy.kernel.util.Workspace;
  */
 public class CreationAttribute extends MatchingAttribute {
 
-    /**
-     *  @param container
-     *  @param name
-     *  @throws NameDuplicationException
-     *  @throws IllegalActionException
+    /** Construct an attribute with the given name contained by the specified
+     *  entity. The container argument must not be null, or a
+     *  NullPointerException will be thrown.  This attribute will use the
+     *  workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty string.
+     *  Increment the version of the workspace.
+     *  @param container The container.
+     *  @param name The name of this attribute.
+     *  @exception IllegalActionException If the attribute is not of an
+     *   acceptable class for the container, or if the name contains a period.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
      */
     public CreationAttribute(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 
-    /**
-     *  @param workspace
+    /** Construct an attribute in the specified workspace with an empty
+     *  string as a name. You can then change the name with setName().
+     *  If the workspace argument
+     *  is null, then use the default workspace.
+     *  The object is added to the directory of the workspace.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the attribute.
      */
     public CreationAttribute(Workspace workspace) {
         super(workspace);

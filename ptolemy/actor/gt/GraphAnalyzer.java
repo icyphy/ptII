@@ -1,4 +1,4 @@
-/*
+/* Superclass of classes that need to analyze the graph structures of models.
 
 @Copyright (c) 2007-2008 The Regents of the University of California.
 All rights reserved.
@@ -48,11 +48,15 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.NamedObj;
 
+//////////////////////////////////////////////////////////////////////////
+//// GraphAnalyzer
+
 /**
+ Superclass of classes that need to analyze the graph structures of models.
 
  @author Thomas Huining Feng
  @version $Id$
- @since Ptolemy II 6.1
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
@@ -142,7 +146,6 @@ public abstract class GraphAnalyzer {
      *   parameter; <tt>false</tt> otherwise.
      *  @see #findNextPath(Path, Set, Set)
      */
-    @SuppressWarnings("unchecked")
     public boolean findFirstPath(Port startPort, Path path,
             Set<? super Relation> visitedRelations,
             Set<? super Port> visitedPorts) {
@@ -285,7 +288,6 @@ public abstract class GraphAnalyzer {
      *   parameter; <tt>false</tt> otherwise.
      *  @see #findFirstPath(Port, Path, Set, Set)
      */
-    @SuppressWarnings("unchecked")
     public boolean findNextPath(Path path, Set<Relation> visitedRelations,
             Set<Port> visitedPorts) {
         Path.Entry entry = path.getTail();
@@ -369,8 +371,28 @@ public abstract class GraphAnalyzer {
     ///////////////////////////////////////////////////////////////////
     ////                      public inner classes                 ////
 
+    //////////////////////////////////////////////////////////////////////////
+    //// IndexedList
+
+    /**
+     A pair of a list and an index number.
+
+     @author Thomas Huining Feng
+     @version $Id$
+     @since Ptolemy II 7.1
+     @Pt.ProposedRating Red (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
+     */
     public static class IndexedList extends Pair<List<?>, Integer> {
 
+        /** Test the equivalence between two IndexedLists. They are equal if the
+         *  elements in the lists that their indices point to are equal (by
+         *  reference).
+         *
+         *  @param object The object to test.
+         *  @return true if the object is an IndexedList and it is equal to this
+         *   IndexedList; false otherwise.
+         */
         public boolean equals(Object object) {
             if (object instanceof IndexedList) {
                 IndexedList list = (IndexedList) object;
@@ -381,25 +403,64 @@ public abstract class GraphAnalyzer {
             }
         }
 
+        /** Return the hash code of the element in the list that the index
+         *  points to.
+         *
+         *  @return The hash code.
+         */
         public int hashCode() {
             return getFirst().get(getSecond()).hashCode();
         }
 
+        /** Construct an IndexedList.
+         *
+         *  @param list The list.
+         *  @param mark The index number.
+         */
         IndexedList(List<?> list, Integer mark) {
             super(list, mark);
         }
 
     }
 
+    //////////////////////////////////////////////////////////////////////////
+    //// IndexedLists
+
+    /**
+     A list of IndexedLists.
+
+     @author Thomas Huining Feng
+     @version $Id$
+     @since Ptolemy II 7.1
+     @Pt.ProposedRating Red (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
+     */
     public static class IndexedLists extends FastLinkedList<IndexedList> {
     }
 
+    //////////////////////////////////////////////////////////////////////////
+    //// Path
+
+    /**
+     A path between two ports.
+
+     @author Thomas Huining Feng
+     @version $Id$
+     @since Ptolemy II 7.1
+     @Pt.ProposedRating Red (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
+     */
     public static class Path extends IndexedLists implements Cloneable {
 
+        /** Clone this path and return a new path containing the same entries
+         *  between the same pair of ports.
+         *
+         *  @return A new path.
+         */
         public Object clone() {
-            // FIXME: Note that we do not call super.clone() here.  Is
-            // that right?
-
+            // Do not call super.clone() because super.clone() is simply the
+            // Object.clone() and it copies the references of the fields.
+            // Instead, we create a new path containing the same entries.
             Path path = new Path(_startPort);
             Entry entry = getHead();
             while (entry != null) {
@@ -409,6 +470,13 @@ public abstract class GraphAnalyzer {
             return path;
         }
 
+        /** Test the equivalence between two paths. They are equivalent if they
+         *  have the same ports and entries.
+         *
+         *  @param object The object to be tested.
+         *  @return true if the object is a path and it is equivalent to this
+         *   path; false otherwise.
+         */
         public boolean equals(Object object) {
             if (object instanceof Path) {
                 return super.equals(object)
@@ -417,20 +485,38 @@ public abstract class GraphAnalyzer {
             return false;
         }
 
+        /** Get the end port of this path.
+         *
+         *  @return The end port.
+         */
         public Port getEndPort() {
             IndexedList list = getTail().getValue();
             return (Port) ((List<?>) list.getFirst()).get(list.getSecond());
         }
 
+        /** Get the start port of this path.
+         *
+         *  @return The start port.
+         */
         public Port getStartPort() {
             return _startPort;
         }
 
+        /** Return the hash code of this path, which is a combination of the
+         *  start port's hash code and a hash code computed with all the entries
+         *  inside.
+         *
+         *  @return The hash code.
+         */
         public int hashCode() {
             return Arrays.hashCode(new int[] { _startPort.hashCode(),
                     super.hashCode() });
         }
 
+        /** Return a string that describes this path.
+         *
+         *  @return A string that describes this path.
+         */
         public String toString() {
             StringBuffer buffer = new StringBuffer();
             buffer.append(_startPort.getFullName());
@@ -451,21 +537,51 @@ public abstract class GraphAnalyzer {
             return buffer.toString();
         }
 
+        /** Construct a path, which has 0 length, with only a start port.
+         *
+         *  @param startPort The start port.
+         */
         Path(Port startPort) {
             _startPort = startPort;
         }
 
+        /** The start port.
+         */
         private Port _startPort;
     }
 
+    /** Test whether an object should be ignored from analysis.
+     *
+     *  @param object The object to be tested.
+     *  @return true if the object should be ignored; false otherwise.
+     */
     protected boolean _isIgnored(Object object) {
         return GTTools.isIgnored(object);
     }
 
+    /** Test whether a composite entity should be considered as opaque.
+     *
+     *  @param entity The composite entity to be tested.
+     *  @return true if the composite object should be considered as opaque;
+     *   false otherwise.
+     */
     protected abstract boolean _isOpaque(CompositeEntity entity);
 
+    /** Test whether the relations contained in the container should be
+     *  considered as collapsed, i.e., whether multiple connected relations
+     *  should be considered as just one.
+     *
+     *  @param container The container.
+     *  @return true if the relations should be considered as collapsed; false
+     *   otherwise.
+     */
     protected abstract boolean _relationCollapsing(NamedObj container);
 
+    /** Remove all the ignored objects from the list.
+     *
+     *  @param list The list.
+     *  @see #_isIgnored(Object)
+     */
     private void _removeIgnoredObjects(Iterable<?> list) {
         Iterator<?> iterator = list.iterator();
         while (iterator.hasNext()) {

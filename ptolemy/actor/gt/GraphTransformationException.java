@@ -1,4 +1,4 @@
-/*
+/* Superclass of any exception to be thrown in model transformation.
 
 @Copyright (c) 2007-2008 The Regents of the University of California.
 All rights reserved.
@@ -32,19 +32,46 @@ package ptolemy.actor.gt;
 
 import ptolemy.kernel.util.KernelException;
 
+//////////////////////////////////////////////////////////////////////////
+//// GraphTransformationException
+
+/**
+ Superclass of any exception to be thrown in model transformation.
+
+ @author Thomas Huining Feng
+ @version $Id$
+ @since Ptolemy II 7.1
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ */
 public class GraphTransformationException extends KernelException {
 
+    /** Construct an exception with a no specific detail message.
+     */
     public GraphTransformationException() {
     }
 
+    /** Construct an exception with a detail message.
+     *
+     *  @param message The message.
+     */
     public GraphTransformationException(String message) {
         super(null, null, null, message);
     }
 
+    /** Construct an exception with a detail message and a cause.
+     *
+     *  @param cause The cause of this exception.
+     *  @param message The message.
+     */
     public GraphTransformationException(String message, Throwable cause) {
         super(null, null, cause, message);
     }
 
+    /** Construct an exception with a cause.
+     *
+     *  @param cause The cause of this exception.
+     */
     public GraphTransformationException(Throwable cause) {
         super(null, null, cause, null);
     }
