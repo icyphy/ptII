@@ -188,12 +188,13 @@ COMPACKAGES = \
 # So, we expand the ptolemy.copernicus.java package
 COPERNICUSPACKAGES = \
 	ptolemy.copernicus.applet \
-	ptolemy.copernicus.c \
 	ptolemy.copernicus.gui \
 	ptolemy.copernicus.kernel \
-	ptolemy/copernicus/java/*.java \
 	$(JHDLPACKAGE) \
 	ptolemy.copernicus.shallow
+
+#	ptolemy.copernicus.c
+#	ptolemy/copernicus/java/*.java
 
 # Packages used by data/properties
 # Use this command:
