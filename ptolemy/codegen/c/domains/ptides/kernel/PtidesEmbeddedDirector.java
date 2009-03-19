@@ -34,7 +34,7 @@ import java.util.List;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
-import ptolemy.codegen.kernel.Director;
+import ptolemy.codegen.actor.Director;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
