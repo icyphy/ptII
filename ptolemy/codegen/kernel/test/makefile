@@ -56,7 +56,6 @@ JSIMPLE_TESTS = \
 	CodeGeneratorHelper.tcl \
 	CodeGeneratorUtilities.tcl \
 	CodeStream.tcl \
-	Director.tcl \
 	StaticSchedulingCodeGenerator.tcl
 
 # Graphical Java tests that use Tcl.

@@ -203,8 +203,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 /* before appending fireFunctionCode */
 
 void top() {
-
-/* Fire Composite Actor: top */
 }
 /* after appending fireFunctionCode */
 /* initialization entry code */
