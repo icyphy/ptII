@@ -82,7 +82,7 @@ public abstract class WithIconGraphController extends BasicGraphController {
     ////                         public methods                    ////
 
     
-    /* Get a location for a port that hasn't got a location yet.
+    /** Get a location for a port that hasn't got a location yet.
      * @param pane The GraphPane.
      * @param frame The BasicGraphFrame.  
      * @param _prototype The port.
