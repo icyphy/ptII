@@ -37,10 +37,10 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.PortParameter;
+import ptolemy.codegen.actor.Director;
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.CodeStream;
-import ptolemy.codegen.kernel.Director;
 import ptolemy.data.BooleanToken;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
@@ -119,13 +119,9 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      *  actor, or the director helper throws it while generating code
      *  for transferring data.
      */
-    public String generateFireCode() throws IllegalActionException {
+    protected String _generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(_codeGenerator.comment(2,
-                        "Fire Composite "
-                        + getComponent().getName()));
-
-        code.append(super.generateFireCode());
+        code.append(super._generateFireCode());
 
         Director directorHelper = (Director) _getHelper(((ptolemy.actor.CompositeActor) getComponent())
                 .getDirector());
@@ -141,8 +137,8 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
 
                 PortParameter portParameter = ((ParameterPort) inputPort)
                         .getParameter();
-                tempCode.append(CodeStream.indent(_codeGenerator
-                        .generateVariableName(portParameter)));
+                tempCode.append(_codeGenerator
+                        .generateVariableName(portParameter));
                 // FIXME: The = sign is language specific.
                 tempCode.append(" = ");
                 tempCode.append(getReference(inputPort.getName()));
@@ -150,8 +146,8 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
             }
         }
         if (tempCode.length() > 0) {
-            code.append(CodeStream.indent(_codeGenerator.comment("Update "
-                    + getComponent().getName() + "'s port parameters")));
+            code.append(_codeGenerator.comment("Update "
+                    + getComponent().getName() + "'s port parameters"));
             code.append(tempCode);
         }
 
@@ -335,6 +331,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         CompositeActor compositeActor = (CompositeActor) getComponent();
         ptolemy.actor.Director director = compositeActor.getDirector();
         Director directorHelper = (Director) _getHelper(director);
+        
         code.append(directorHelper.generateFireFunctionCode());
         if (!(compositeActor instanceof ptolemy.actor.lib.jni.CompiledCompositeActor && ((BooleanToken) _codeGenerator.generateEmbeddedCode
                 .getToken()).booleanValue())) {
