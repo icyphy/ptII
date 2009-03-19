@@ -43,7 +43,7 @@ import ptolemy.kernel.util.IllegalActionException;
  correct platform, and the platforms can distinguish from which actor should fire
  these events
  @author Jia Zou
- @version $Id: PTIDESDirector.java,v 1.102 2008/02/14 00:00:09 mankit Exp $
+ @version $Id$
  @since Ptolemy II 7.0
  @Pt.ProposedRating red (jiazou)
  @Pt.AcceptedRating 
