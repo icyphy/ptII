@@ -16,10 +16,11 @@ mailto=$1
 # The directory that contains build scripts
 ADMDIR=/users/ptII/adm
 
+
 # The log of the build
 ptbuildlog=/users/ptII/adm/test/ptIInightly.txt
 
-if [ "`hostname`" = "gigasource.eecs.berkeley.edu" -o "`hostname`" = "source.EECS.Berkeley.EDU" ]; then
+if [ "`hostname`" = "gigasource.eecs.berkeley.edu" -o "`hostname`" = "source.EECS.Berkeley.EDU" -o "`hostname`" = "sisyphus.eecs.berkeley.edu" ]; then
     ADMDIR=/home/bldmastr/ptII/adm
     ptbuildlog=/home/bldmastr/ptII/adm/logs/ptIInightly.txt
 fi
@@ -67,7 +68,7 @@ echo "------------------------------------------------" >> $mailmsg
 echo "Errors during the build and test process in ptII:" >> $mailmsg
 echo "" >> $mailmsg
 echo "To see the complete build and test log, see:" >> $mailmsg
-if [ "`hostname`" = "gigasource.eecs.berkeley.edu" -o "`hostname`" = "source.EECS.Berkeley.EDU" ]; then
+if [ "`hostname`" = "gigasource.eecs.berkeley.edu" -o "`hostname`" = "source.EECS.Berkeley.EDU" -o "`hostname`" = "sisyphus.eecs.berkeley.edu" ]; then
     echo "http://chess.eecs.berkeley.edu/ptolemy/src/ptII/adm/logs/ptIInightly.txt" >> $mailmsg
     echo " or, if you have a full account on gigascale, do" >> $mailmsg
     echo "scp `hostname`:/home/bldmastr/ptII/adm/logs/ptIInightly.txt /tmp" >> $mailmsg
@@ -170,7 +171,8 @@ egrep 'Total Tests' $ptbuildlog |
     egrep '^Failed: 0' >> $mailmsg
 
 
-if [ "`hostname`" = "gigasource.eecs.berkeley.edu" -o "`hostname`" = "source.EECS.Berkeley.EDU" ]; then
+
+if [ "`hostname`" = "gigasource.eecs.berkeley.edu" -o "`hostname`" = "source.EECS.Berkeley.EDU" -o "`hostname`" = "sisyphus.eecs.berkeley.edu" ]; then
     echo "" >> $mailmsg
     echo "------------------------------------------------" >> $mailmsg
     echo "Code Coverage Summary" >> $mailmsg
