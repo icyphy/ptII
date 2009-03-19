@@ -39,7 +39,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.LimitedFiringSource;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
-import ptolemy.codegen.kernel.Director;
+import ptolemy.codegen.actor.Director;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
