@@ -338,11 +338,16 @@ public class FSMGraphFrame extends ExtendedGraphFrame
         _menubar.add(_debugMenu);
     }
 
+    /** Return a new DebugMenuListener.
+     *  @return the new DebugMenuListener.
+     */
     protected ActionListener _getDebugMenuListener() {
-        DebugMenuListener debugMenuListener = new DebugMenuListener();
-        return debugMenuListener;
+        return new DebugMenuListener();
     }
 
+    /** Return an array of debug menu items.
+     *  @return an array of debug menu items.
+     */
     protected JMenuItem[] _debugMenuItems() {
         // Add debug menu.
         JMenuItem[] debugMenuItems = {
