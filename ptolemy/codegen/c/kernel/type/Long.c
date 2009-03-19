@@ -25,7 +25,7 @@ Token Long_equals(Token thisToken, ...) {
     otherToken = va_arg(argp, Token);
 
     va_end(argp);
-    return Boolean_new(thisToken.payload.Long == otherToken.payload.Long);
+    return $new(Boolean(thisToken.payload.Long == otherToken.payload.Long));
 }
 /**/
 
@@ -41,7 +41,7 @@ Token Long_print(Token thisToken, ...) {
 
 /***Long_toString***/
 Token Long_toString(Token thisToken, ...) {
-    return String_new(LongtoString(thisToken.payload.Long));
+    return $new(String(LongtoString(thisToken.payload.Long)));
 }
 /**/
 
@@ -52,7 +52,7 @@ Token Long_add(Token thisToken, ...) {
     Token otherToken = va_arg(argp, Token);
 
     va_end(argp);
-    return Long_new(thisToken.payload.Long + otherToken.payload.Long);
+    return $new(Long(thisToken.payload.Long + otherToken.payload.Long));
 }
 /**/
 
@@ -63,7 +63,7 @@ Token Long_subtract(Token thisToken, ...) {
     Token otherToken = va_arg(argp, Token);
 
     va_end(argp);
-    return Long_new(thisToken.payload.Long - otherToken.payload.Long);
+    return $new(Long(thisToken.payload.Long - otherToken.payload.Long));
 }
 /**/
 
@@ -79,16 +79,16 @@ Token Long_multiply(Token thisToken, ...) {
     switch (otherToken.type) {
 #ifdef TYPE_Int
     case TYPE_Int:
-        result = Long_new(thisToken.payload.Long * otherToken.payload.Int);
+        result = $new(Long(thisToken.payload.Long * otherToken.payload.Int));
         break;
 #endif
     case TYPE_Long:
-        result = Long_new(thisToken.payload.Long * otherToken.payload.Long);
+        result = $new(Long(thisToken.payload.Long * otherToken.payload.Long));
         break;
 
 #ifdef TYPE_Double
     case TYPE_Double:
-        result = Double_new(thisToken.payload.Long * otherToken.payload.Double);
+        result = $new(Double(thisToken.payload.Long * otherToken.payload.Double));
         break;
 #endif
 
@@ -110,7 +110,7 @@ Token Long_divide(Token thisToken, ...) {
     Token otherToken = va_arg(argp, Token);
 
     va_end(argp);
-    return Long_new(thisToken.payload.Long / otherToken.payload.Long);
+    return $new(Long(thisToken.payload.Long / otherToken.payload.Long));
 }
 /**/
 
@@ -123,13 +123,13 @@ Token Long_negate(Token thisToken, ...) {
 
 /***Long_zero***/
 Token Long_zero(Token token, ...) {
-    return Long_new(0);
+    return $new(Long(0));
 }
 /**/
 
 /***Long_one***/
 Token Long_one(Token token, ...) {
-    return Long_new(1);
+    return $new(Long(1));
 }
 /**/
 

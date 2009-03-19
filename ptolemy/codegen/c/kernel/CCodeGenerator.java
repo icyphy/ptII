@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -155,7 +156,6 @@ public class CCodeGenerator extends CodeGenerator {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generateInitializeEntryCode() throws IllegalActionException {
-        System.out.println("generateInitalizeEntryCode in CodeGenerator.java called");
         // If the container is in the top level, we are generating code
         // for the whole model.
         if (isTopLevel()) {
@@ -177,8 +177,6 @@ public class CCodeGenerator extends CodeGenerator {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generateInitializeExitCode() throws IllegalActionException {
-
-        System.out.println("generate Initialize Exit Code called in CCodeGenerator.java");
         return "}" + _eol;
     }
 
@@ -204,7 +202,7 @@ public class CCodeGenerator extends CodeGenerator {
      *  @return text that is suitable for the C preprocessor.
      */
     public String generateLineInfo(int lineNumber, String filename) {
-        return "#line " + lineNumber + " \"" + filename + "\"\n";
+        return "#line " + lineNumber + " \"" + filename + "\"" + _eol;
     }
 
     /** Generate the main entry point.
@@ -213,7 +211,6 @@ public class CCodeGenerator extends CodeGenerator {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generateMainEntryCode() throws IllegalActionException {
-        System.out.println("generateMainEntryCode called from CCodeGeneratorHelper");
         StringBuffer mainEntryCode = new StringBuffer();
 
         // If the container is in the top level, we are generating code
@@ -253,7 +250,6 @@ public class CCodeGenerator extends CodeGenerator {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generateMainExitCode() throws IllegalActionException {
-        System.out.println("generate mainExitCode called from CCodeGenerator.java");
         if (isTopLevel()) {
             return _INDENT1 + "exit(0);" + _eol + "}" + _eol;
         } else {
@@ -267,7 +263,6 @@ public class CCodeGenerator extends CodeGenerator {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generatePostfireEntryCode() throws IllegalActionException {
-        System.out.println("generate postfireEntryCode called from CCodeGenerator.java");
         // If the container is in the top level, we are generating code
         // for the whole model.
         if (isTopLevel()) {
@@ -332,7 +327,7 @@ public class CCodeGenerator extends CodeGenerator {
 
         HashSet functions = _getReferencedFunctions();
 
-        HashSet types = _getReferencedTypes(functions);
+        HashSet types = _getTypeIDToUsed(_getNewTypesUsed(functions));
 
         Object[] typesArray = types.toArray();
         CodeStream[] typeStreams = new CodeStream[types.size()];
@@ -340,6 +335,8 @@ public class CCodeGenerator extends CodeGenerator {
         // Generate type map.
         StringBuffer typeMembers = new StringBuffer();
         code.append("#define TYPE_Token -1 " + _eol);
+        
+        
         for (int i = 0; i < typesArray.length; i++) {
             // Open the .c file for each type.
             typeStreams[i] = new CodeStream(
@@ -349,9 +346,6 @@ public class CCodeGenerator extends CodeGenerator {
             code.append("#define TYPE_" + typesArray[i] + " " + i + _eol);
 
             // Dynamically generate all the types within the union.
-            if (i > 0) {
-                typeMembers.append(_INDENT2);
-            }
             typeMembers.append(typesArray[i] + "Token " + typesArray[i] + ";");
             if (i < typesArray.length - 1) {
                 typeMembers.append(_eol);
@@ -383,17 +377,19 @@ public class CCodeGenerator extends CodeGenerator {
             code.append(typeStreams[i].toString());
         }
 
+
         ArrayList args = new ArrayList();
         // Token declareBlock.
         if (typeMembers.length() != 0) {
-            args.add(typeMembers.toString());
             sharedStream.clear();
+            args.add(typeMembers.toString());
             sharedStream.appendCodeBlock("tokenDeclareBlock", args);
 
             if (defineEmptyToken) {
                 sharedStream.append("Token emptyToken; "
                         + comment("Used by *_delete() and others.") + _eol);
             }
+            code.append(sharedStream.toString());
         }
 
         // Set to true if we need the unsupportedFunction() method.
@@ -402,14 +398,82 @@ public class CCodeGenerator extends CodeGenerator {
         // Set to true if we need to scalarDelete() method.
         boolean defineScalarDeleteMethod = false;
 
+        // Append functions that are specified used by this type (without
+        // going through the function table).
+        for (int i = 0; i < typesArray.length; i++) {
+            typeStreams[i].clear();
+            typeStreams[i].appendCodeBlock("funcDeclareBlock");
+            code.append(typeStreams[i].toString());
+        }
+
+        // FIXME: in the future we need to load the convertPrimitivesBlock
+        // dynamically, and maybe break it into multiple blocks to minimize
+        // code size.
+        sharedStream.clear();
+        sharedStream.appendCodeBlock("convertPrimitivesBlock");
+        code.append(sharedStream.toString());
+        sharedStream.clear();
+
+        StringBuffer typeFunctionCode = new StringBuffer();
+        for (int i = 0; i < typesArray.length; i++) {
+            typeStreams[i].clear();
+            //typeStreams[i].appendCodeBlock(typesArray[i] + "_new");
+
+            for (int j = 0; j < functionsArray.length; j++) {
+                // The code block declaration has to follow this convention:
+                // /*** [function name]Block ***/
+                //     .....
+                // /**/
+                String functionName = typesArray[i] + "_"
+                + functionsArray[j];
+                
+                try {
+                    // Boolean_isCloseTo and String_isCloseTo map to
+                    // Boolean_equals and String_equals.
+                    if (functionsArray[j].equals("isCloseTo")
+                            && (typesArray[i].equals("Boolean") || typesArray[i]
+                                    .equals("String"))) {
+
+                        if (!functions.contains("equals")) {
+                            markFunctionCalled(
+                                    typesArray[i] + "_equals", null);
+                        }
+                    } else {
+                        if (!_unsupportedTypeFunctions.contains(functionName)
+                                && !_overloadedFunctionSet
+                                        .contains(functionName)) {
+
+                            markFunctionCalled(functionName, null);
+                        }
+                    }
+                } catch (IllegalActionException ex) {
+                    // We have to catch the exception if some code blocks are
+                    // not found. We have to define the function label in the
+                    // generated code because the function table makes
+                    // reference to this label.
+
+                    typeStreams[i].append("#define " + functionName + " MISSING " + _eol);
+                    _unsupportedTypeFunctions.add(functionName);
+                    
+                    System.out.println("Warning -- missing function defintion: "
+                            + functionName + "()");
+                    
+                    // It is ok because this polymorphic function may not be
+                    // supported by all types.
+                }
+            }
+            typeFunctionCode.append(processCode(typeStreams[i].toString()));
+        }
+        
         // Append type-polymorphic functions included in the function table.
         for (int i = 0; i < types.size(); i++) {
             // The "funcDeclareBlock" contains all function declarations for
             // the type.
             for (int j = 0; j < functionsArray.length; j++) {
-                String typeFunctionName = typesArray[i] + "_"
+                String functionName = typesArray[i] + "_"
                         + functionsArray[j];
-                if (_unsupportedTypeFunctions.contains(typeFunctionName)) {
+                
+                if (_unsupportedTypeFunctions.contains(functionName)) {
                     defineUnsupportedTypeFunctionMethod = true;
                 }
                 if (_scalarDeleteTypes.contains(typesArray[i])
@@ -429,16 +493,22 @@ public class CCodeGenerator extends CodeGenerator {
                         // Boolean_isCloseTo and String_isCloseTo
                         // use Boolean_equals and String_equals.
                         args.clear();
-                        args.add(typesArray[i] + "_equals");
-                        sharedStream.appendCodeBlock("funcHeaderBlock", args);
+                        functionName = typesArray[i] + "_equals"; 
+                        if (!_unsupportedTypeFunctions.contains(functionName)) {
+                            args.add(functionName);
+                            sharedStream.appendCodeBlock("funcHeaderBlock", args);
+                        }
                     }
                 }
                 if (!_scalarDeleteTypes.contains(typesArray[i])
                         || !functionsArray[j].equals("delete")) {
                     // Skip Boolean_delete etc.
                     args.clear();
-                    args.add(typeFunctionName);
-                    sharedStream.appendCodeBlock("funcHeaderBlock", args);
+                    if (!_unsupportedTypeFunctions.contains(functionName)) {
+                        args.add(functionName);
+                        sharedStream.append("// functionHeader: " + _eol);
+                        sharedStream.appendCodeBlock("funcHeaderBlock", args);
+                    }
                 }
             }
         }
@@ -455,77 +525,37 @@ public class CCodeGenerator extends CodeGenerator {
             sharedStream.appendCodeBlock("scalarDeleteFunction");
         }
 
+        // sharedStream should the global code (e.g. token declaration,
+        // constants, and etc.)
         code.append(sharedStream.toString());
-
-        // Append functions that are specified used by this type (without
-        // going through the function table).
-        for (int i = 0; i < typesArray.length; i++) {
-            typeStreams[i].clear();
-            typeStreams[i].appendCodeBlock("funcDeclareBlock");
-            code.append(typeStreams[i].toString());
-        }
-
-        // FIXME: in the future we need to load the convertPrimitivesBlock
-        // dynamically, and maybe break it into multiple blocks to minimize
-        // code size.
-        sharedStream.clear();
-        sharedStream.appendCodeBlock("convertPrimitivesBlock");
-        code.append(sharedStream.toString());
-
+        
         // Generate function type and token table.
         code.append(generateFunctionTable(typesArray, functionsArray));
 
-        for (int i = 0; i < typesArray.length; i++) {
-            typeStreams[i].clear();
-            typeStreams[i].appendCodeBlock(typesArray[i] + "_new");
+        // _overloadedFunctions contains the set of functions:
+        // add_Type1_Type2, negate_Type, and etc.
+        code.append(_overloadedFunctions.toString());
+        
+        // typeFunction contains the set of function: 
+        // Type_new(), Type_delete(), and etc. 
+        code.append(typeFunctionCode);
+        
+        return code.toString();
+    }
 
-            for (int j = 0; j < functionsArray.length; j++) {
-                // The code block declaration has to follow this convention:
-                // /*** [function name]Block ***/
-                //     .....
-                // /**/
-                try {
-                    // Boolean_isCloseTo and String_isCloseTo map to
-                    // Boolean_equals and String_equals.
-                    if (functionsArray[j].equals("isCloseTo")
-                            && (typesArray[i].equals("Boolean") || typesArray[i]
-                                    .equals("String"))) {
-
-                        if (!functions.contains("equals")) {
-                            typeStreams[i].appendCodeBlock(typesArray[i]
-                                    + "_equals");
-                        }
-                    } else {
-                        String functionName = typesArray[i] + "_"
-                                + functionsArray[j];
-
-                        if (!_unsupportedTypeFunctions.contains(functionName)
-                                && !_overloadedFunctionSet
-                                        .contains(functionName)) {
-
-                            typeStreams[i].appendCodeBlock(typesArray[i] + "_"
-                                    + functionsArray[j]);
-                        }
-                    }
-                } catch (IllegalActionException ex) {
-                    // We have to catch the exception if some code blocks are
-                    // not found. We have to define the function label in the
-                    // generated code because the function table makes
-                    // reference to this label.
-
-                    typeStreams[i].append("#define " + typesArray[i] + "_"
-                            + functionsArray[j] + " MISSING " + _eol);
-
-                    // It is ok because this polymorphic function may not be
-                    // supported by all types.
+    private HashSet<String> _getTypeIDToUsed(HashSet<String> types) {
+        HashSet result = new HashSet();
+        result.addAll(types);
+        
+        for (String type : types) {
+            if (type.endsWith("Array")) {
+                String elementType = type.replace("Array", "");
+                if (elementType.length() > 0) {
+                    result.add(elementType);
                 }
             }
-            code.append(processCode(typeStreams[i].toString()));
         }
-
-        code.append(_overloadedFunctions.toString());
-
-        return code.toString();
+        return result;
     }
 
     /** Process the specified code for the helper associated with the
@@ -562,7 +592,7 @@ public class CCodeGenerator extends CodeGenerator {
      * @param functions
      * @return
      */
-    private HashSet _getReferencedTypes(HashSet functions) {
+    private HashSet _getNewTypesUsed(HashSet functions) {
         // Determine the total number of referenced types.
         HashSet types = new HashSet();
         if (functions.contains("equals") || functions.contains("isCloseTo")) {
@@ -573,8 +603,10 @@ public class CCodeGenerator extends CodeGenerator {
             types.add("String");
         }
 
-        if (functions.contains("isCloseTo") && _newTypesUsed.contains("Int")
-                && !_newTypesUsed.contains("Double")) {
+        if (functions.contains("isCloseTo") 
+                //&& _newTypesUsed.contains("Int")
+                //&& !_newTypesUsed.contains("Double")
+                ) {
             // FIXME: we should not need Double for Int_isCloseTo()
             types.add("Double");
         }
@@ -591,7 +623,6 @@ public class CCodeGenerator extends CodeGenerator {
      */
     public String generateVariableDeclaration() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        System.out.println("generate variable declaration called from ccodegenerator.java");
         code.append(super.generateVariableDeclaration());
 
         // Generate variable declarations for modified variables.
@@ -788,25 +819,39 @@ public class CCodeGenerator extends CodeGenerator {
      */
     protected void _analyzeTypeConversions() throws IllegalActionException {
         super._analyzeTypeConversions();
-        _overloadedFunctionSet = new HashSet<String>();
+        _overloadedFunctionSet = new LinkedHashSet<String>();
         
         String cCodegenPath = "$CLASSPATH/ptolemy/codegen/c/";
         String typeDir = cCodegenPath + "kernel/type/";
         String functionDir = typeDir + "polymorphic/";
 
         _overloadedFunctions = new CodeStream(functionDir + "add.c", this);
-        _overloadedFunctions.parse(functionDir + "multiply.c");
-        _overloadedFunctions.parse(functionDir + "divide.c");
-        _overloadedFunctions.parse(functionDir + "subtract.c");
+        _overloadedFunctions.parse(functionDir + "clone.c");
         _overloadedFunctions.parse(functionDir + "convert.c");
+        _overloadedFunctions.parse(functionDir + "delete.c");
+        _overloadedFunctions.parse(functionDir + "divide.c");
+        _overloadedFunctions.parse(functionDir + "equals.c");
+        _overloadedFunctions.parse(functionDir + "multiply.c");
         _overloadedFunctions.parse(functionDir + "negate.c");
+        _overloadedFunctions.parse(functionDir + "print.c");
+        _overloadedFunctions.parse(functionDir + "subtract.c");
+        _overloadedFunctions.parse(functionDir + "toString.c");
+        _overloadedFunctions.parse(functionDir + "zero.c");
 
         _overloadedFunctions.parse(typeDir + "Array.c");
         _overloadedFunctions.parse(typeDir + "Boolean.c");
+        _overloadedFunctions.parse(typeDir + "BooleanArray.c");
+        _overloadedFunctions.parse(typeDir + "Complex.c");
         _overloadedFunctions.parse(typeDir + "Double.c");
+        _overloadedFunctions.parse(typeDir + "DoubleArray.c");
         _overloadedFunctions.parse(typeDir + "Int.c");
+        _overloadedFunctions.parse(typeDir + "IntArray.c");
+        _overloadedFunctions.parse(typeDir + "Long.c");
         _overloadedFunctions.parse(typeDir + "Matrix.c");
+        _overloadedFunctions.parse(typeDir + "Pointer.c");
         _overloadedFunctions.parse(typeDir + "String.c");
+        _overloadedFunctions.parse(typeDir + "StringArray.c");
+        _overloadedFunctions.parse(typeDir + "UnsignedByte.c");
 
         // Parse other function files. 
         String directorFunctionDir = cCodegenPath + "kernel/parameterized/directorFunctions/";
@@ -894,8 +939,10 @@ public class CCodeGenerator extends CodeGenerator {
             String filename = getOutputFilename();
             //filename = new java.io.File(filename).getAbsolutePath().replace('\\', '/');
 
-            StringTokenizer tokenizer = new StringTokenizer(code.toString(),
-                    _eol);
+            // Make sure all #line macros are at the start of a line.
+            String codeString = code.toString().replaceAll("#line", _eol + "#line");
+            
+            StringTokenizer tokenizer = new StringTokenizer(codeString, _eol);
 
             code = new StringBuffer();
 
@@ -904,7 +951,7 @@ public class CCodeGenerator extends CodeGenerator {
                 lastLine = tokenizer.nextToken();
             }
 
-            for (int i = 2; tokenizer.hasMoreTokens();) {
+            for (int i = 2; tokenizer.hasMoreTokens();) {                
                 String line = tokenizer.nextToken();
                 if (lastLine.trim().length() == 0) {
                     lastLine = line;
@@ -1268,20 +1315,22 @@ public class CCodeGenerator extends CodeGenerator {
 
             if (!_overloadedFunctionSet.contains(name)) {
 
-                String code = helper.processCode(functionCode);
+                String code = helper == null ? 
+                        processCode(functionCode) :
+                        helper.processCode(functionCode);
 
                 _overloadedFunctions.append(code);
 
                 _overloadedFunctionSet.add(name);
             }
-            if (name.startsWith("Array_")) {
-                // Array_xxx might need to have xxx added.
-                // See c/actor/lib/test/auto/MultiplyDivide5.xml
-
-                // FIXME: this will add any function, which means that
-                // if the user has Array_foo, foo is added.  Is this right?
-                _tokenFuncUsed.add(name.substring(6));
-            }
+//            if (name.startsWith("Array_")) {
+//                // Array_xxx might need to have xxx added.
+//                // See c/actor/lib/test/auto/MultiplyDivide5.xml
+//
+//                // FIXME: this will add any function, which means that
+//                // if the user has Array_foo, foo is added.  Is this right?
+//                _tokenFuncUsed.add(name.substring(6));
+//            }
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
                     "Failed to mark function called for \"" + name + "\" in \""
@@ -1292,7 +1341,8 @@ public class CCodeGenerator extends CodeGenerator {
 
     private CodeStream _overloadedFunctions;
 
-    private Set<String> _overloadedFunctionSet;
+	/** An ordered set of function code */
+    LinkedHashSet<String> _overloadedFunctionSet;
 
     /** Set of type/function combinations that are not supported.
      *  We use one method so as to reduce code size.

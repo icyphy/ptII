@@ -1,43 +1,43 @@
 /*** sharedBlock ***/
-        $super()
-        int $actorClass(i);
-        int $actorClass(index);
-        double $actorClass(factor);
+	$super()
+	int $actorClass(i);
+	int $actorClass(index);
+	double $actorClass(factor);
 /**/
 
 /*** sharedBlock2 ***/
-        $targetType(input) $actorClass(datum_$targetType(input));
+	$targetType(input) $actorClass(datum_$targetType(input));
 /**/
 
 /*** initBlock ***/
-        $actorSymbol(_taps) = $typeFunc(TYPE_Array::clone($ref(taps)));
-        $super()
+	$actorSymbol(_taps) = $clone_$cgType(taps)($ref(taps));
+	$super()
 /**/
 
 /*** fireBlock ***/
-        // First update the taps.
-        $actorClass(index) = ($val(errorDelay) * $val(decimation)) + $val(decimationPhase);
+	// First update the taps.
+	$actorClass(index) = ($val(errorDelay) * $val(decimation)) + $val(decimationPhase);
 
-        $actorClass(factor) = $ref(error) * $val(stepSize);
+	$actorClass(factor) = $ref(error) * $val(stepSize);
 
-        for ($actorClass(i) = 0; $actorClass(i) < $size(taps); $actorClass(i)++) {
-            // The data item to use here should be "index" in the past,
-            // where an index of zero would be the current input.
-            $actorClass(datum_$targetType(input)) = Array_get($actorSymbol(_data), (($actorSymbol(_mostRecent) + $actorClass(index) - 1) % $actorClass(length))).payload.$cgType(input);
-            $actorSymbol(_taps).payload.Array->elements[$actorClass(i)].payload.$cgType(input) += ($actorClass(factor) * $actorClass(datum_$targetType(input)));
-            $actorClass(index)++;
-        }
+	for ($actorClass(i) = 0; $actorClass(i) < $size(taps); $actorClass(i)++) {
+		// The data item to use here should be "index" in the past,
+		// where an index of zero would be the current input.
+		$actorClass(datum_$targetType(input)) = $cgType(taps)_get($actorSymbol(_data), (($actorSymbol(_mostRecent) + $actorClass(index) - 1) % $actorClass(length)));
+		$actorSymbol(_taps).payload.$cgType(taps)->elements[$actorClass(i)] += ($actorClass(factor) * $actorClass(datum_$targetType(input)));
+		$actorClass(index)++;
+	}
 
-        // Update the tapValues output.
-        // NOTE: This may be a relatively costly operation to be doing here.
-        $ref(tapValues) = $actorSymbol(_taps);
+	// Update the tapValues output.
+	// NOTE: This may be a relatively costly operation to be doing here.
+	$ref(tapValues) = $actorSymbol(_taps);
 
-        // Then run FIR filter
-        $super.fireBlock0()
-        $super()
+	// Then run FIR filter
+	$super.fireBlock0()
+	$super()
 /**/
 
 /*** wrapupBlock ***/
-        Array_delete($actorSymbol(_taps));
-        $super()
+	$cgType(taps)_delete($actorSymbol(_taps));
+	$super()
 /**/

@@ -41,10 +41,11 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.LimitedFiringSource;
 import ptolemy.actor.util.DFUtilities;
+import ptolemy.codegen.actor.Director;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.CodeStream;
-import ptolemy.codegen.kernel.Director;
 import ptolemy.codegen.kernel.PortCodeGenerator;
+import ptolemy.codegen.kernel.CodeGeneratorHelper.Channel;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
@@ -118,10 +119,10 @@ public class MpiPNDirector extends Director {
 	 * 
 	 * @return The generated body code.
 	 * @exception IllegalActionException
-	 *                If the {@link #generateFireCode()} method throws the
+	 *                If the {@link #_generateFireCode()} method throws the
 	 *                exceptions.
 	 */
-	public String generateFireCode() throws IllegalActionException {
+    public String generateFireCode() throws IllegalActionException {
 
 		this.analyzeModel();
 
@@ -222,23 +223,6 @@ public class MpiPNDirector extends Director {
 	}
 
 	/**
-	 * Do nothing in generating fire function code. The fire code is wrapped in
-	 * a for/while loop inside the thread function. The thread function is
-	 * generated in {@link #generatePreinitializeCode()} outside the main
-	 * function.
-	 * 
-	 * @return An empty string.
-	 * @exception IllegalActionException
-	 *                Not thrown in this class.
-	 */
-	public String generateFireFunctionCode() throws IllegalActionException {
-		StringBuffer code = new StringBuffer();
-
-		_generateThreadFunctionCode(code);
-		return code.toString();
-	}
-
-	/**
 	 * Get the files needed by the code generated from this helper class. This
 	 * base class returns an empty set.
 	 * 
@@ -304,16 +288,8 @@ public class MpiPNDirector extends Director {
 	public String generateMainLoop() throws IllegalActionException {
 		StringBuffer code = new StringBuffer();
 
-		boolean inline = ((BooleanToken) _codeGenerator.inline.getToken())
-				.booleanValue();
-
-		if (inline) {
-			code.append(generateFireCode());
-		} else {
-			code.append(CodeGeneratorHelper.generateName(_director
-					.getContainer())
-					+ "();" + _eol);
-		}
+		code.append(((CodeGeneratorHelper) _getHelper(_director
+		        .getContainer())).generateFireCode());
 
 		return code.toString();
 	}
@@ -394,9 +370,7 @@ public class MpiPNDirector extends Director {
 		_codeStream.appendCodeBlock("preinitBlock");
 		code.append(_codeStream.toString());
 
-		if (_codeGenerator.inline.getToken() == BooleanToken.TRUE) {
-			_generateThreadFunctionCode(code);
-		}
+		_generateThreadFunctionCode(code);
 
 		return bufferCode.toString() + code.toString();
 	}
@@ -872,9 +846,6 @@ public class MpiPNDirector extends Director {
 
 		List actorList = compositeActor.deepEntityList();
 
-		boolean inline = ((BooleanToken) _codeGenerator.inline.getToken())
-				.booleanValue();
-
 		// Generate the function for each actor thread.
 		for (Actor actor : (List<Actor>) actorList) {
 
@@ -1226,9 +1197,9 @@ public class MpiPNDirector extends Director {
 				// If not inline, generateFireCode() would be a call
 				// to the fire function which already includes the
 				// type conversion code.
-				if (inline) {
-					code.append(helper.generateTypeConvertFireCode());
-				}
+//				if (inline) {
+//					code.append(helper.generateTypeConvertFireCode());
+//				}
 
 				code.append(helper.generatePostfireCode());
 

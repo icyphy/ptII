@@ -27,7 +27,8 @@
  */
 package ptolemy.codegen.kernel.test.domains.sdf.kernel;
 
-import ptolemy.codegen.kernel.Director;
+import ptolemy.codegen.actor.Director;
+import ptolemy.codegen.kernel.CodeGenerator;
 
 //////////////////////////////////////////////////////////////////
 //// SDFDirector
@@ -45,7 +46,7 @@ import ptolemy.codegen.kernel.Director;
  */
 public class SDFDirector extends Director {
     /** Construct the code generator helper associated with the given director.
-     *  Note before calling the generate*() methos, you must also call
+     *  Note before calling the generate*() methods, you must also call
      *  setCodeGenerator(CodeGenerator).
      *  @param director The associated director.
      */

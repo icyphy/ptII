@@ -34,7 +34,7 @@ Token Double_equals(Token thisToken, ...) {
     va_end(argp);
 
     // Give tolerance for testing.
-    return Boolean_new(1.0E-6 > thisToken.payload.Double - otherToken.payload.Double);
+    return $new(Boolean(1.0E-6 > thisToken.payload.Double - otherToken.payload.Double));
 }
 /**/
 
@@ -49,7 +49,7 @@ Token Double_isCloseTo(Token thisToken, ...) {
     tolerance = va_arg(argp, Token);
 
     va_end(argp);
-    return Boolean_new(fabs(thisToken.payload.Double - otherToken.payload.Double) < tolerance.payload.Double);
+    return $new(Boolean(fabs(thisToken.payload.Double - otherToken.payload.Double) < tolerance.payload.Double));
 }
 /**/
 
@@ -61,7 +61,7 @@ Token Double_print(Token thisToken, ...) {
 
 /***Double_toString***/
 Token Double_toString(Token thisToken, ...) {
-    return String_new(DoubletoString(thisToken.payload.Double));
+    return $new(String(DoubletoString(thisToken.payload.Double)));
 }
 /**/
 
@@ -75,21 +75,21 @@ Token Double_add(Token thisToken, ...) {
     va_start(argp, thisToken);
     otherToken = va_arg(argp, Token);
 
-    
+
     switch (otherToken.type) {
     case TYPE_Double:
-    	result = Double_new(thisToken.payload.Double + otherToken.payload.Double);
+    	result = $new(Double(thisToken.payload.Double + otherToken.payload.Double));
     	break;
-    	
+
 #ifdef TYPE_Array
     case TYPE_Array:
         result = $add_Double_Array(thisToken.payload.Double, otherToken);
         break;
 #endif
-    
+
 	// FIXME: not finished
     default:
-        fprintf(stderr, "Double_multiply(): Multiply with an unsupported type. (%d)\n", otherToken.type);
+        fprintf(stderr, "Double_add(): Add with an unsupported type. (%d)\n", otherToken.type);
         exit(1);
     }
 
@@ -108,18 +108,18 @@ Token Double_subtract(Token thisToken, ...) {
     va_start(argp, thisToken);
     otherToken = va_arg(argp, Token);
 
-    
+
     switch (otherToken.type) {
     case TYPE_Double:
-    	result = Double_new(thisToken.payload.Double - otherToken.payload.Double);
+    	result = $new(Double(thisToken.payload.Double - otherToken.payload.Double));
     	break;
-    	
+
 #ifdef TYPE_Array
     case TYPE_Array:
         result = $subtract_Double_Array(thisToken.payload.Double, otherToken);
         break;
 #endif
-    
+
 	// FIXME: not finished
     default:
         fprintf(stderr, "Double_multiply(): Multiply with an unsupported type. (%d)\n", otherToken.type);
@@ -144,11 +144,11 @@ Token Double_multiply(Token thisToken, ...) {
 
     switch (otherToken.type) {
     case TYPE_Double:
-        result = Double_new(thisToken.payload.Double * otherToken.payload.Double);
+        result = $new(Double(thisToken.payload.Double * otherToken.payload.Double));
         break;
 #ifdef TYPE_Int
     case TYPE_Int:
-        result = Double_new(thisToken.payload.Double * otherToken.payload.Int);
+        result = $new(Double(thisToken.payload.Double * otherToken.payload.Int));
         break;
 #endif
 
@@ -178,7 +178,7 @@ Token Double_divide(Token thisToken, ...) {
     otherToken = va_arg(argp, Token);
 
     va_end(argp);
-    return Double_new(thisToken.payload.Double / otherToken.payload.Double);
+    return $new(Double(thisToken.payload.Double / otherToken.payload.Double));
 }
 /**/
 
@@ -191,13 +191,13 @@ Token Double_negate(Token thisToken, ...) {
 
 /***Double_zero***/
 Token Double_zero(Token token, ...) {
-    return Double_new(0.0);
+    return $new(Double(0.0));
 }
 /**/
 
 /***Double_one***/
 Token Double_one(Token token, ...) {
-    return Double_new(1.0);
+    return $new(Double(1.0));
 }
 /**/
 

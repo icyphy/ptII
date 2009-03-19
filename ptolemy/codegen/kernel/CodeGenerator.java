@@ -50,12 +50,17 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
 import ptolemy.actor.gui.MoMLApplication;
+import ptolemy.actor.lib.jni.PointerToken;
+import ptolemy.codegen.actor.Director;
 import ptolemy.codegen.gui.CodeGeneratorGUIFactory;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.MatrixType;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.Attribute;
@@ -103,9 +108,6 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             return file.isDirectory();
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     parameters                            ////
 
     // Note: If you add publicly settable parameters, update
     // _commandFlags or _commandOptions.
@@ -203,6 +205,115 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         new CodeGeneratorGUIFactory(this, "_codeGeneratorGUIFactory");
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                     parameters                            ////
+    
+    /** If true, then channels in multiports can be dynamically
+     *  referenced using the $ref macro.
+     *  TODO: This parameter is SDF specific.
+     */
+    public Parameter allowDynamicMultiportReference;
+
+    /** The directory in which to put the generated code.
+     *  This is a file parameter that must specify a directory.
+     *  The default is $HOME/codegen.
+     */
+    public FileParameter codeDirectory;
+
+    /** If true, then compile the generated code. The default
+     *  value is a parameter with the value true.
+     */
+    public Parameter compile;
+
+    /** The name of compile target to be run if the <i>compile</i> parameter
+     *  is true.  This is a string with a default value of the empty string,
+     *  which means the first target in the makefile would be run.
+     */
+    public StringParameter compileTarget;
+
+    /** If true, generate comments in the output code; otherwise,
+     *  no comments is generated. The default value is a parameter
+     *  with the value true.
+     */
+    public Parameter generateComment;
+
+    /** If true, the generated code will be C++ instead of C.
+     * FIXME: This is a temporary fix.  In the long run, C++ should
+     * be its own target language for code generation.  In the short
+     * run, this parameter will allow experimentation with C++ code
+     * generation, and should identify changes needed for correctly
+     * implemented C++ code generation.
+     */
+    public Parameter generateCpp;
+
+    /** The name of the package in which to look for helper class
+     *  code generators. This is a string that defaults to
+     *  "ptolemy.codegen.c".
+     */
+    public StringParameter generatorPackage;
+
+    /** If true, then generate code for that uses the reflection for Java
+     *  and JNI for C and is embedded within the model 
+     *  The default value is false and this parameter is not usually
+     *  editable by the user.  This parameter is set to true when
+     *  CompiledCompositeActor is run in an interpreted Ptolemy model.
+     *  This parameter
+     *  is set to false when a model contains one or more
+     *  CompiledCompositeActors and C or Java code is being generated for the
+     *  model.
+     */
+    public Parameter generateEmbeddedCode;
+
+    /** If true, generate file with no functions.  If false, generate
+     *  file with functions. The default value is a parameter with the
+     *  value false.
+     */
+    public Parameter inline;
+
+    /** If true, generate code to meausre the execution time.
+     *  The default value is a parameter with the value false.
+     */
+    public Parameter measureTime;
+
+    /** If true, overwrite preexisting files.  The default
+     *  value is a parameter with the value true.
+     */
+    public Parameter overwriteFiles;
+
+    /** If true, then buffers are padded to powers of two.
+     *  TODO: This parameter is SDF specific.
+     */
+    public Parameter padBuffers;
+
+    /** If true, then run the generated code. The default
+     *  value is a parameter with the value true.
+     */
+    public Parameter run;
+    
+    /** If true, then the generated source is bound to the line
+     *  number and file of the (helper) templates. Otherwise, the
+     *  source is bound only to the output file. This is a boolean
+     *  parameter with default value false.
+     */
+    public Parameter sourceLineBinding;
+
+    /** The hardware target for code generation.  The list of possible choices
+     *  is generated from the list of directories in the <code>targets</code>
+     *  subdirectory of the directory named by the <i>generatorPackage</i>
+     *  parameter.  For example, if <i>generatorPackage</i> is
+     *  <code>ptolemy.codegen.c</code>, and if
+     *  <code>$PTII/ptolemy/codegen/c/targets/</code> exists and contains
+     *  an <code>iRobot/</code> directory, and this parameter is set
+     *  to <code>iRobot</code>, then files from
+     *  <code>$PTII/ptolemy/codegen/c/targets/iRobot</code> will be used
+     *  to generate code.  The default value is the string "default"
+     *  which means that the default target for the language is used.
+     */
+    public StringParameter target;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                     public methods                        ////
+
     /** Generate code and append it to the given string buffer.
 
      *  Write the code to the directory specified by the codeDirectory
@@ -220,7 +331,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  @exception KernelException If the target file cannot be overwritten
      *   or write-to-file throw any exception.
      */
-    public int _generateCode(StringBuffer code) throws KernelException {
+    private int _generateCode(StringBuffer code) throws KernelException {
         // Record the current time so that we can monitor performance of the
         // code generator by printing messages whenever any part of the code
         // generation process takes more than 10 seconds.
@@ -241,7 +352,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             _sanitizedModelName = ((ptolemy.actor.lib.embeddedJava.CompiledCompositeActor) container)
             .getSanitizedName();
         }
-        
+
         boolean inlineValue = ((BooleanToken) inline.getToken()).booleanValue();
 
         // Analyze type conversions that may be needed.
@@ -321,16 +432,16 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         code.append(includeFiles);
         code.append(typeResolutionCode);
         code.append(sharedCode);
-	// Don't use **** in comments, it causes the nightly build to 
-	// report errors.
+        // Don't use **** in comments, it causes the nightly build to 
+        // report errors.
         code.append(comment("end shared code"));
         code.append(variableDeclareCode);
         code.append(preinitializeCode);
-	code.append(comment("end preinitialize code"));
+        code.append(comment("end preinitialize code"));
         //code.append(globalCode);
 
         if (!inlineValue) {
-            
+
             code.append(comment("before appending fireFunctionCode"));
             code.append(fireFunctionCode);
             code.append(comment("after appending fireFunctionCode"));
@@ -342,7 +453,6 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         String[] splitVariableInitCode = _splitBody("_varinit_",
                 variableInitCode);
         code.append(splitVariableInitCode[0]);
-       //begin Shanna's comments out
         String[] splitInitializeCode = _splitBody("_initialize_",
                 initializeCode);
         code.append(splitInitializeCode[0]);
@@ -351,8 +461,6 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         code.append(splitVariableInitCode[1]);
         code.append(splitInitializeCode[1]);
         code.append(initializeExitCode);
-        //end Shanna's comments out
-        //}
 
         /* FIXME: Postfire code should be invisible to the code generator.
          *  Postfire code should be generated by the Director helper.
@@ -459,9 +567,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  @see #addLibrary(String)
      */
     public void addLibraryIfNecessary(String libraryCommand) {
-	if (!_libraries.contains(libraryCommand)) {
-	    _libraries.add(libraryCommand);
-	}
+        if (!_libraries.contains(libraryCommand)) {
+            _libraries.add(libraryCommand);
+        }
     }
 
     /** If the attribute is the codeDirectory parameter, then set the
@@ -482,6 +590,66 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         } else {
             super.attributeChanged(attribute);
         }
+    }
+    
+    /**
+     * Get the corresponding type in code generation from the given Ptolemy
+     * type.
+     * @param ptType The given Ptolemy type.
+     * @return The code generation type.
+     * @exception IllegalActionException Thrown if the given ptolemy cannot
+     *  be resolved.
+     */
+    public String codeGenType(Type ptType) {
+    // Do not make this static as Java Codegen requires that it be
+    // non static.
+    // If this is static, then this command will fail:
+    // $PTII/bin/ptcg -generatorPackage ptolemy.codegen.java $PTII/ptolemy/codegen/java/actor/lib/colt/test/auto/ColtBinomialSelector.xml
+        if (ptType == BaseType.GENERAL) {
+            return "Token";
+        }
+        
+        // FIXME: this may be the case for unconnected ports.
+        if (ptType == BaseType.UNKNOWN) {
+            return "Token";
+        }
+        
+        if (ptType == BaseType.SCALAR) {
+            // FIXME: do we need a codegen type for scalar?
+            return "";
+        }
+
+        // FIXME: We may need to add more types.
+        // FIXME: We have to create separate type for different matrix types.
+        String result = 
+            ptType == BaseType.INT ? "Int" : 
+            ptType == BaseType.LONG ? "Long" : 
+            ptType == BaseType.STRING ? "String" : 
+            ptType == BaseType.DOUBLE ? "Double" : 
+            ptType == BaseType.BOOLEAN ? "Boolean" : 
+            ptType == BaseType.UNSIGNED_BYTE ? "UnsignedByte" : 
+            ptType == PointerToken.POINTER ? "Pointer" : null;
+
+        if (result == null) {
+            if (ptType instanceof ArrayType) {
+
+                // This change breaks $PTII/bin/ptcg $PTII/ptolemy/codegen/c/actor/lib/colt/test/auto/BinomialSelectorTest.xml
+                if (isPrimitive(((ArrayType) ptType).getElementType())) {
+                    result = codeGenType(((ArrayType) ptType).getElementType()) + "Array";
+                } else {
+                    result = "Array";
+                }
+
+            } else if (ptType instanceof MatrixType) {
+                //result = ptType.getClass().getSimpleName().replace("Type", "");
+                result = "Matrix";
+            }
+        }
+        if (result == null || result.length() == 0) {
+            System.out.println(
+                    "Cannot resolved codegen type from Ptolemy type: " + ptType);
+        }
+        return result;
     }
 
     /** Return a formatted comment containing the
@@ -946,6 +1114,26 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         return _sanitizedModelName + extension;
     }
+    
+    /**
+     * Determine if the given type is primitive.
+     * @param cgType The given codegen type.
+     * @return true if the given type is primitive, otherwise false.
+     */
+    public boolean isPrimitive(String cgType) {
+        return _primitiveTypes.contains(cgType);
+    }
+
+    /**
+     * Determine if the given type is primitive.
+     * @param ptType The given ptolemy type.
+     * @return true if the given type is primitive, otherwise false.
+     */
+    public boolean isPrimitive(Type ptType) {
+    // This method cannot be static as it calls
+    // codeGenType(), which is not static
+        return _primitiveTypes.contains(codeGenType(ptType));
+    }
 
     /** Test if the containing actor is in the top level.
      *  @return true if the containing actor is in the top level.
@@ -954,6 +1142,39 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         return getContainer().getContainer() == null;
     }
 
+
+    /** Return the Ptolemy type that corresponds to the type named by
+     *  the argument.
+     *  @param cgType A String naming a type.
+     *  @return null if there is not corresponding Ptolemy type.
+     */
+    public static Type ptolemyType(String cgType) {
+        Type result = cgType.equals("Int") ? BaseType.INT : cgType
+                .equals("Long") ? BaseType.LONG
+                        : cgType.equals("String") ? BaseType.STRING : cgType
+                                .equals("Boolean") ? BaseType.BOOLEAN : cgType
+                                        .equals("Double") ? BaseType.DOUBLE : cgType
+                                                .equals("Complex") ? BaseType.COMPLEX : cgType
+                                                        .equals("Pointer") ? PointerToken.POINTER : null;
+    
+        if (cgType.endsWith("Array")) {
+            String elementType = cgType.replace("Array", "");
+            result = new ArrayType(ptolemyType(elementType));
+    
+        } else if (cgType.endsWith("Matrix")) {
+            String elementType = cgType.replace("Matrix", "");
+            result = elementType.equals("Int") ? BaseType.INT_MATRIX
+                    : elementType.equals("Complex") ? BaseType.COMPLEX_MATRIX
+                            : elementType.equals("Double") ? BaseType.DOUBLE_MATRIX
+                                    : elementType.equals("Boolean") ? BaseType.BOOLEAN_MATRIX
+                                            : elementType.equals("Fix") ? BaseType.FIX_MATRIX
+                                                    : elementType
+                                                    .equals("Long") ? BaseType.LONG_MATRIX
+                                                            : null;
+    
+        }
+        return result;
+    }    
     /** Reset the code generator.
      */	
     public void reset() {
@@ -1036,6 +1257,24 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         return results;
     }
 
+    
+    /**
+     * Get the corresponding type in C from the given Ptolemy type.
+     * @param ptType The given Ptolemy type.
+     * @return The C data type.
+     */
+    public /*static*/ String targetType(Type ptType) {
+        // FIXME: we may need to add more primitive types.
+        return ptType == BaseType.INT ? "int"
+                : ptType == BaseType.STRING ? "char*"
+                        : ptType == BaseType.DOUBLE ? "double"
+                                : ptType == BaseType.BOOLEAN ? "boolean"
+                                        : ptType == BaseType.LONG ? "long long "
+                                                : ptType == BaseType.UNSIGNED_BYTE ? "unsigned char"
+                                                        : ptType == PointerToken.POINTER ? "void*"
+                                                                : "Token";
+    }
+    
     /** Add include directories specified by the actors in this model.
      *  @exception IllegalActionException Never in this base class.
      */
@@ -1177,7 +1416,6 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     protected String _generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-System.out.println("_generatePreinitializeCode called");
         ActorCodeGenerator helper = _getHelper(getContainer());
 
         try {
@@ -1195,7 +1433,6 @@ System.out.println("_generatePreinitializeCode called");
             throw new IllegalActionException(helper.getComponent(), throwable,
             "Failed to generate preinitialize code");
         }
-        System.out.println("going to return "+code.toString());
         return code.toString();
     }
 
@@ -1267,7 +1504,9 @@ System.out.println("_generatePreinitializeCode called");
 
         String packageName = generatorPackage.stringValue();
 
-        String className = object.getClass().getName();
+        Class helperClass = null;            
+        Class componentClass = object.getClass();
+        String className = componentClass.getName();
 
         ActorCodeGenerator helperObject = null;
 
@@ -1296,40 +1535,50 @@ System.out.println("_generatePreinitializeCode called");
         }
 
         // Now, we look in the default directory.
-        if (helperClassName.equals(className)) {
+        if (packageName.trim().length() == 0) {
+            packageName = "ptolemy.codegen";
+        }
+        
+        do {
+            className = componentClass.getName();
+            
+            // FIXME: Is this the right error message?
+            if (!className.contains("ptolemy")) {
+                throw new IllegalActionException("There is no "
+                        + "codegen adaptor for " + object.getClass());
+            }
+
             // It could be that the className does not begin with
             // ptolemy, so try a simple substitution.
             try {
-                helperClassName = packageName + "." + className;
-                helperObject = _instantiateHelper(object, helperClassName);
+                helperClassName = packageName + "." + 
+                className.replaceFirst("ptolemy.", "");
 
-            } catch (Exception ex) { 
-                throw new IllegalActionException(
-                        "The component class name \""
-                        + className
-                        + "\" and the helper class name \""
-                        + helperClassName
-                        + "\" are the same?  Perhaps the "
-                        + "substitution of the value of the generatorPackage "
-                        + "parameter \"" + packageName + "\" failed?");
+                helperObject = _instantiateHelper(
+                        object, componentClass, helperClassName);
+
+            } catch (IllegalActionException ex) { 
+                // If helper class cannot be found, search the helper class
+                // for parent class instead.
+                componentClass = componentClass.getSuperclass();
             }
-            if (helperObject != null) {
-                _helperStore.put(object, helperObject);
-                return helperObject;
-            }
-        } 
-    
-        try {
-            helperClassName = className.replaceFirst("ptolemy", packageName);
-            helperObject = _instantiateHelper(object, helperClassName);
-        } catch (Exception ex) {
-            // try the implementation in the middle layer.
-            helperClassName = className.replaceFirst("ptolemy", "ptolemy.codegen");
-            helperObject = _instantiateHelper(object, helperClassName);                
-        }
+            
+        } while (helperObject == null);
 
         _helperStore.put(object, helperObject);
         return helperObject;
+        //} 
+
+        //        try {
+        //            helperClassName = className.replaceFirst("ptolemy", packageName);
+        //            helperObject = _instantiateHelper(object, helperClassName);
+        //        } catch (Exception ex) {
+        //            // try the implementation in the middle layer.
+        //            helperClassName = className.replaceFirst("ptolemy", "ptolemy.codegen");
+        //            helperObject = _instantiateHelper(object, helperClassName);                
+        //        }
+        //_helperStore.put(object, helperObject);
+        //return helperObject;
 
     }
 
@@ -1457,7 +1706,14 @@ System.out.println("_generatePreinitializeCode called");
         + targetValue.substring(1);
         String helperClassName = packageName + ".targets." + targetValue + "."
         + upcaseTarget + "Target";
+
         return _instantiateHelper(component, helperClassName);
+    }
+
+    private ActorCodeGenerator _instantiateHelper(Object component,
+            String helperClassName) throws IllegalActionException {
+        return _instantiateHelper(component, 
+                component.getClass(), helperClassName);
     }
 
     /** Instantiate the given code generator helper.
@@ -1467,7 +1723,9 @@ System.out.println("_generatePreinitializeCode called");
      *  @exception IllegalActionException If the helper class cannot be found.
      */
     private ActorCodeGenerator _instantiateHelper(Object component,
-            String helperClassName) throws IllegalActionException {
+            Class componentClass, String helperClassName) 
+    throws IllegalActionException {
+        
         Class helperClass = null;
 
         try {
@@ -1480,8 +1738,9 @@ System.out.println("_generatePreinitializeCode called");
         Constructor constructor = null;
 
         try {
-            constructor = helperClass.getConstructor(new Class[] { component
-                    .getClass() });
+            constructor = helperClass.getConstructor(
+                    new Class[] { componentClass });
+            
         } catch (NoSuchMethodException e) {
             throw new IllegalActionException(this, e,
                     "There is no constructor in " + helperClassName
@@ -1709,8 +1968,8 @@ System.out.println("_generatePreinitializeCode called");
             // See MoMLSimpleApplication for similar code
             MoMLParser parser = new MoMLParser();
             MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
-	    // Don't remove graphical classes here, it means
-	    // we can't generate code for plotters etc using $PTII/bin/ptcg
+            // Don't remove graphical classes here, it means
+            // we can't generate code for plotters etc using $PTII/bin/ptcg
             //MoMLParser.addMoMLFilter(new RemoveGraphicalClasses());
 
             // Reset the list each time we parse a parameter set.
@@ -1800,7 +2059,7 @@ System.out.println("_generatePreinitializeCode called");
                                     String.class});
                         codeGenerator = (CodeGenerator) codeGeneratorConstructor.newInstance(new Object [] {
                                 toplevel,
-                        "CodeGenerator_AutoAdded"});
+                                "CodeGenerator_AutoAdded"});
                     }
 
                     codeGenerator._updateParameters(toplevel);
@@ -1914,110 +2173,9 @@ System.out.println("_generatePreinitializeCode called");
     }
 
 
-    /** If true, then channels in multiports can be dynamically
-     *  referenced using the $ref macro.
-     *  TODO: This parameter is SDF specific.
-     */
-    public Parameter allowDynamicMultiportReference;
-
-    /** The directory in which to put the generated code.
-     *  This is a file parameter that must specify a directory.
-     *  The default is $HOME/codegen.
-     */
-    public FileParameter codeDirectory;
-
-    /** If true, then compile the generated code. The default
-     *  value is a parameter with the value true.
-     */
-    public Parameter compile;
-
-    /** The name of compile target to be run if the <i>compile</i> parameter
-     *  is true.  This is a string with a default value of the empty string,
-     *  which means the first target in the makefile would be run.
-     */
-    public StringParameter compileTarget;
-
-    /** If true, generate comments in the output code; otherwise,
-     *  no comments is generated. The default value is a parameter
-     *  with the value true.
-     */
-    public Parameter generateComment;
-
-    /** If true, the generated code will be C++ instead of C.
-     * FIXME: This is a temporary fix.  In the long run, C++ should
-     * be its own target language for code generation.  In the short
-     * run, this parameter will allow experimentation with C++ code
-     * generation, and should identify changes needed for correctly
-     * implemented C++ code generation.
-     */
-    public Parameter generateCpp;
-
-    /** The name of the package in which to look for helper class
-     *  code generators. This is a string that defaults to
-     *  "ptolemy.codegen.c".
-     */
-    public StringParameter generatorPackage;
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** If true, then generate code for that uses the reflection for Java
-     *  and JNI for C and is embedded within the model 
-     *  The default value is false and this parameter is not usually
-     *  editable by the user.  This parameter is set to true when
-     *  CompiledCompositeActor is run in an interpreted Ptolemy model.
-     *  This parameter
-     *  is set to false when a model contains one or more
-     *  CompiledCompositeActors and C or Java code is being generated for the
-     *  model.
-     */
-    public Parameter generateEmbeddedCode;
-
-    /** If true, generate file with no functions.  If false, generate
-     *  file with functions. The default value is a parameter with the
-     *  value false.
-     */
-    public Parameter inline;
-
-    /** If true, generate code to meausre the execution time.
-     *  The default value is a parameter with the value false.
-     */
-    public Parameter measureTime;
-
-    /** If true, overwrite preexisting files.  The default
-     *  value is a parameter with the value true.
-     */
-    public Parameter overwriteFiles;
-
-    /** If true, then buffers are padded to powers of two.
-     *  TODO: This parameter is SDF specific.
-     */
-    public Parameter padBuffers;
-
-    /** If true, then run the generated code. The default
-     *  value is a parameter with the value true.
-     */
-    public Parameter run;
-    /** If true, then the generated source is bound to the line
-     *  number and file of the (helper) templates. Otherwise, the
-     *  source is bound only to the output file. This is a boolean
-     *  parameter with default value false.
-     */
-    public Parameter sourceLineBinding;
-
-    /** The hardware target for code generation.  The list of possible choices
-     *  is generated from the list of directories in the <code>targets</code>
-     *  subdirectory of the directory named by the <i>generatorPackage</i>
-     *  parameter.  For example, if <i>generatorPackage</i> is
-     *  <code>ptolemy.codegen.c</code>, and if
-     *  <code>$PTII/ptolemy/codegen/c/targets/</code> exists and contains
-     *  an <code>iRobot/</code> directory, and this parameter is set
-     *  to <code>iRobot</code>, then files from
-     *  <code>$PTII/ptolemy/codegen/c/targets/iRobot</code> will be used
-     *  to generate code.  The default value is the string "default"
-     *  which means that the default target for the language is used.
-     */
-    public StringParameter target;
 
     /** The name of the file that was written.
      *  If no file was written, then the value is null.
@@ -2037,7 +2195,7 @@ System.out.println("_generatePreinitializeCode called");
         { "-compile", "           true|false (default: true)" },
         { "-compileTarget", "     <target to be run, defaults to empty string>" },
         { "-generateComment", "   true|false (default: true)" },
-	{ "-generatorPackage", "  <Java package of code generator, defaults to ptolemy.codegen.c>" },
+        { "-generatorPackage", "  <Java package of code generator, defaults to ptolemy.codegen.c>" },
         { "-inline", "            true|false (default: false)" },
         { "-measureTime", "       true|false (default: false)" },
         { "-overwriteFiles", "    true|false (default: true)" },
@@ -2066,7 +2224,6 @@ System.out.println("_generatePreinitializeCode called");
     protected List<Code> _globalCode = new ArrayList<Code>();
 
 
-    
     /** List of library command line arguments where each element is
      *  a string, for example "-L/usr/local/lib".
      *  This variable is a list so as to preserve the order that the
@@ -2111,7 +2268,7 @@ System.out.println("_generatePreinitializeCode called");
      * codegen type to this set. Codegen types are supported by the code
      * generator package. (e.g. Int, Double, Array, and etc.)
      */
-    protected HashSet _newTypesUsed = new HashSet();
+    protected HashSet<String> _newTypesUsed = new HashSet<String>();
 
     /**
      * A static list of all macros supported by the code generator.
@@ -2121,6 +2278,13 @@ System.out.println("_generatePreinitializeCode called");
                     "cgType", "tokenFunc", "typeFunc", "actorSymbol",
                     "actorClass", "new" }));
 
+    /** A list of the primitive types supported by the code generator.
+     */
+    protected static List _primitiveTypes = Arrays.asList(new String[] {
+            "Int", "Double", "String", "Long", "Boolean", "UnsignedByte",
+    "Pointer" });
+
+    
     /** The postfire code. */
     protected String _postfireCode = null;
 
@@ -2166,13 +2330,13 @@ System.out.println("_generatePreinitializeCode called");
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
-    
+
     ///////////////////////////////////////////////////////////////////
     //// Code
     protected static class Code implements Comparable {        
         public Code (String string, int order) {
             this.string = string;
-            
+
             // Reverse the sign so that higher order value
             // will be first in the sorted list.
             this.order = -order;
@@ -2187,10 +2351,10 @@ System.out.println("_generatePreinitializeCode called");
             }
             return 0;
         }
-        
+
         public final String string;
-        
+
         private int order;
-        
+
     }
 }

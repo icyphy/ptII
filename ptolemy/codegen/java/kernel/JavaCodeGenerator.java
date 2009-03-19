@@ -32,6 +32,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -43,6 +44,7 @@ import java.util.StringTokenizer;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.lib.jni.PointerToken;
 import ptolemy.codegen.kernel.ActorCodeGenerator;
 import ptolemy.codegen.kernel.CodeGenerator;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
@@ -50,6 +52,10 @@ import ptolemy.codegen.kernel.CodeGeneratorUtilities;
 import ptolemy.codegen.kernel.CodeStream;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Variable;
+import ptolemy.data.type.ArrayType;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.MatrixType;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -92,6 +98,36 @@ public class JavaCodeGenerator extends CodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    public String codeGenType(Type type) {
+        //String ptolemyType = super.codeGenType(type);
+        String result = 
+            type == BaseType.INT ? "Int" : 
+            type == BaseType.LONG ? "Long" : 
+            type == BaseType.STRING ? "String" : 
+            type == BaseType.DOUBLE ? "Double" : 
+            type == BaseType.BOOLEAN ? "Boolean" : 
+            type == BaseType.UNSIGNED_BYTE ? "UnsignedByte" : 
+            type == PointerToken.POINTER ? "Pointer" : null;
+
+        if (result == null) {
+            if (type instanceof ArrayType) {
+                result = "Array";
+
+            } else if (type instanceof MatrixType) {
+                result = "Matrix";
+            }
+        }
+        if (result == null || result.length() == 0) {
+            System.out.println(
+                    "Cannot resolved codegen type from Ptolemy type: " + type);
+        }
+        if (result == null) {
+            return null;
+        }
+        return result.replace("Int", "Integer").replace("Integerger", "Integer");
+        //return ptolemyType.replace("Int", "Integer").replace("Integerger", "Integer").replace("Array", "Token");
+    }
 
     /** Generate the function table.  In this base class return
      *  the empty string.
@@ -459,7 +495,7 @@ public class JavaCodeGenerator extends CodeGenerator {
 
         for (int i = 0; i < typesArray.length; i++) {
             typeStreams[i].clear();
-            typeStreams[i].appendCodeBlock(typesArray[i] + "_new");
+            //typeStreams[i].appendCodeBlock(typesArray[i] + "_new");
 
             for (int j = 0; j < functionsArray.length; j++) {
 
@@ -475,8 +511,9 @@ public class JavaCodeGenerator extends CodeGenerator {
                                     .equals("String"))) {
 
                         if (!functions.contains("equals")) {
-                            typeStreams[i].appendCodeBlock(typesArray[i]
-                                    + "_equals");
+                            //typeStreams[i].appendCodeBlock(typesArray[i]
+                            //        + "_equals");
+                            markFunctionCalled(typesArray[i] + "_equals", null);
                         }
                     } else {
                         String functionName = typesArray[i] + "_"
@@ -486,8 +523,9 @@ public class JavaCodeGenerator extends CodeGenerator {
                                 && !_overloadedFunctionSet
                                         .contains(functionName)) {
 
-                            typeStreams[i].appendCodeBlock(typesArray[i] + "_"
-                                    + functionsArray[j]);
+                            //typeStreams[i].appendCodeBlock(typesArray[i] + "_"
+                                    //+ functionsArray[j]);
+                            markFunctionCalled(functionName, null);
                         }
                     }
                 } catch (IllegalActionException ex) {
@@ -530,12 +568,14 @@ public class JavaCodeGenerator extends CodeGenerator {
     private HashSet _getReferencedFunctions() {
         // Determine the total number of referenced polymorphic functions.
         HashSet functions = new HashSet();
+        functions.add("new");
         functions.add("delete");
         //functions.add("toString");    // for debugging.
         functions.add("convert");
         functions.add("isCloseTo");
         functions.addAll(_typeFuncUsed);
         functions.addAll(_tokenFuncUsed);
+        
         return functions;
     }
 
@@ -734,6 +774,25 @@ public class JavaCodeGenerator extends CodeGenerator {
 
         String[] results = { bodies.toString(), masterBody.toString() };
         return results;
+    }
+
+
+    /**
+     * Get the corresponding type in Java from the given Ptolemy type.
+     * @param ptType The given Ptolemy type.
+     * @return The Java data type.
+     */
+    public String targetType(Type ptType) {
+        // FIXME: this is duplicated code from CodeGeneratorHelper.targetType()
+        // FIXME: we may need to add more primitive types.
+        return ptType == BaseType.INT ? "int"
+                : ptType == BaseType.STRING ? "String"
+                        : ptType == BaseType.DOUBLE ? "double"
+                                : ptType == BaseType.BOOLEAN ? "boolean"
+                                        : ptType == BaseType.LONG ? "long"
+                                                : ptType == BaseType.UNSIGNED_BYTE ? "byte"
+                                                        //: ptType == PointerToken.POINTER ? "void*"
+                                                        : "Token";
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1321,11 +1380,12 @@ public class JavaCodeGenerator extends CodeGenerator {
             if (!_overloadedFunctionSet.contains(name)) {
                 _overloadedFunctionSet.add(name);
 
-                String code = helper.processCode(functionCode);
+                String code = (helper == null) ? processCode(functionCode) :
+                        helper.processCode(functionCode);
 
                 _overloadedFunctions.append(code);
 
-            }
+            }            
             if (name.startsWith("Array_")) {
                 // Array_xxx might need to have xxx added.
                 // See c/actor/lib/test/auto/MultiplyDivide5.xml
@@ -1355,6 +1415,14 @@ public class JavaCodeGenerator extends CodeGenerator {
      *  We use one method so as to reduce code size.
      */
     private static Set _scalarDeleteTypes;
+
+    /** A list of the primitive types supported by the code generator.
+     */
+    static {
+        _primitiveTypes = Arrays.asList(new String[] {
+                "Integer", "Double", "String", "Long", "Boolean", "UnsignedByte",
+        "Pointer" });
+    }
 
     static {
         _unsupportedTypeFunctions = new HashSet();

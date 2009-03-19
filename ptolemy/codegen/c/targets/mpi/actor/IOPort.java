@@ -71,7 +71,7 @@ public class IOPort extends ptolemy.codegen.c.actor.IOPort implements PortCodeGe
 
     public String generateCodeForSend(String channel, String dataToken) 
     throws IllegalActionException {
-        ptolemy.codegen.kernel.Director directorHelper = _getDirectorHelper();
+        ptolemy.codegen.actor.Director directorHelper = _getDirectorHelper();
         ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
         int channelNumber = Integer.valueOf(channel);
 
@@ -79,7 +79,7 @@ public class IOPort extends ptolemy.codegen.c.actor.IOPort implements PortCodeGe
     }
 
     public String generateCodeForGet(String channel) throws IllegalActionException {
-        ptolemy.codegen.kernel.Director directorHelper = _getDirectorHelper();
+        ptolemy.codegen.actor.Director directorHelper = _getDirectorHelper();
         ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
         int channelNumber = Integer.valueOf(channel);
 
@@ -419,8 +419,6 @@ public class IOPort extends ptolemy.codegen.c.actor.IOPort implements PortCodeGe
     protected String _generateOffset(String offsetString, int channel, boolean isWrite) 
     throws IllegalActionException {
 
-        boolean dynamicReferencesAllowed = ((BooleanToken) _codeGenerator.allowDynamicMultiportReference
-                .getToken()).booleanValue();
         boolean padBuffers = ((BooleanToken) _codeGenerator.padBuffers
                 .getToken()).booleanValue();
 
@@ -433,7 +431,7 @@ public class IOPort extends ptolemy.codegen.c.actor.IOPort implements PortCodeGe
 
         // When dynamic references are allowed, any input ports require
         // offsets.
-        if (dynamicReferencesAllowed && port.isInput()) {
+        if (port.isInput()) {
             if (!(port.isMultiport() || getBufferSize(port) > 1)) {
                 return "";
             }
@@ -528,9 +526,9 @@ public class IOPort extends ptolemy.codegen.c.actor.IOPort implements PortCodeGe
     }
 
 
-    private ptolemy.codegen.kernel.Director _getDirectorHelper() throws IllegalActionException {
+    private ptolemy.codegen.actor.Director _getDirectorHelper() throws IllegalActionException {
         Director director = getDirector();
-        return (ptolemy.codegen.kernel.Director) _getHelper(director);
+        return (ptolemy.codegen.actor.Director) _getHelper(director);
     }
 
 

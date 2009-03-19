@@ -1,6 +1,6 @@
 package ptolemy.codegen.rtmaude.domains.de.kernel;
 
-import ptolemy.codegen.kernel.Director;
+import ptolemy.codegen.actor.Director;
 
 public class DEDirector extends Director {
 

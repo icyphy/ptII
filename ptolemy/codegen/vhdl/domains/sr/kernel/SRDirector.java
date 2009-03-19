@@ -27,7 +27,7 @@
  */
 package ptolemy.codegen.vhdl.domains.sr.kernel;
 
-import ptolemy.codegen.kernel.Director;
+import ptolemy.codegen.actor.Director;
 
 //////////////////////////////////////////////////////////////////
 ////SDFDirector

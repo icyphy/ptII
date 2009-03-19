@@ -25,7 +25,7 @@ Token UnsignedByte_equals(Token thisToken, ...) {
     otherToken = va_arg(argp, Token);
 
     va_end(argp);
-    return Boolean_new(thisToken.payload.UnsignedByte == otherToken.payload.UnsignedByte);
+    return $new(Boolean(thisToken.payload.UnsignedByte == otherToken.payload.UnsignedByte));
 }
 /**/
 
@@ -39,7 +39,7 @@ Token UnsignedByte_isCloseTo(Token thisToken, ...) {
     tolerance = va_arg(argp, Token);
 
     va_end(argp);
-    return Boolean_new(fabs(thisToken.payload.UnsignedByte - otherToken.payload.UnsignedByte) < tolerance.payload.Double);
+    return $new(Boolean(fabs(thisToken.payload.UnsignedByte - otherToken.payload.UnsignedByte) < tolerance.payload.Double));
 }
 /**/
 
@@ -55,7 +55,7 @@ Token UnsignedByte_print(Token thisToken, ...) {
 
 /***UnsignedByte_toString***/
 Token UnsignedByte_toString(Token thisToken, ...) {
-    return String_new(UnsignedBytetoString(thisToken.payload.UnsignedByte));
+    return $new(String(UnsignedBytetoString(thisToken.payload.UnsignedByte)));
 }
 /**/
 
@@ -66,7 +66,7 @@ Token UnsignedByte_add(Token thisToken, ...) {
     Token otherToken = va_arg(argp, Token);
 
     va_end(argp);
-    return UnsignedByte_new(thisToken.payload.UnsignedByte + otherToken.payload.UnsignedByte);
+    return $new(UnsignedByte(thisToken.payload.UnsignedByte + otherToken.payload.UnsignedByte));
 }
 /**/
 
@@ -77,7 +77,7 @@ Token UnsignedByte_subtract(Token thisToken, ...) {
     Token otherToken = va_arg(argp, Token);
 
     va_end(argp);
-    return UnsignedByte_new(thisToken.payload.UnsignedByte - otherToken.payload.UnsignedByte);
+    return $new(UnsignedByte(thisToken.payload.UnsignedByte - otherToken.payload.UnsignedByte));
 }
 /**/
 
@@ -92,12 +92,12 @@ Token UnsignedByte_multiply(Token thisToken, ...) {
 
     switch (otherToken.type) {
     case TYPE_UnsignedByte:
-        result = UnsignedByte_new(thisToken.payload.UnsignedByte * otherToken.payload.UnsignedByte);
+        result = $new(UnsignedByte(thisToken.payload.UnsignedByte * otherToken.payload.UnsignedByte));
         break;
 
 #ifdef TYPE_Double
     case TYPE_Double:
-        result = Double_new(thisToken.payload.UnsignedByte * otherToken.payload.Double);
+        result = $new(Double(thisToken.payload.UnsignedByte * otherToken.payload.Double));
         break;
 #endif
 
@@ -119,7 +119,7 @@ Token UnsignedByte_divide(Token thisToken, ...) {
     Token otherToken = va_arg(argp, Token);
 
     va_end(argp);
-    return UnsignedByte_new(thisToken.payload.UnsignedByte / otherToken.payload.UnsignedByte);
+    return $new(UnsignedByte(thisToken.payload.UnsignedByte / otherToken.payload.UnsignedByte));
 }
 /**/
 
@@ -132,13 +132,13 @@ Token UnsignedByte_negate(Token thisToken, ...) {
 
 /***UnsignedByte_zero***/
 Token UnsignedByte_zero(Token token, ...) {
-    return UnsignedByte_new(0);
+    return $new(UnsignedByte(0));
 }
 /**/
 
 /***UnsignedByte_one***/
 Token UnsignedByte_one(Token token, ...) {
-    return UnsignedByte_new(1);
+    return $new(UnsignedByte(1));
 }
 /**/
 

@@ -34,7 +34,7 @@ Token String_equals(Token thisToken, ...) {
     otherToken = va_arg(argp, Token);
 
     va_end(argp);
-    return Boolean_new(!strcmp(thisToken.payload.String, otherToken.payload.String));
+    return $new(Boolean(!strcmp(thisToken.payload.String, otherToken.payload.String)));
 }
 /**/
 
@@ -55,7 +55,7 @@ Token String_toString(Token thisToken, ...) {
     // Guarrantee to return a new string.
     char* result = (char*) malloc(sizeof(char) * (3 + strlen(thisToken.payload.String)));
     sprintf(result, "\"%s\"", thisToken.payload.String);
-    return String_new(result);
+    return $new(String(result));
 }
 /**/
 
@@ -70,7 +70,7 @@ Token String_add(Token thisToken, ...) {
     strcat(result, otherToken.payload.String);
 
     va_end(argp);
-    return String_new(result);
+    return $new(String(result));
 }
 /**/
 
@@ -94,7 +94,7 @@ Token String_negate(Token thisToken, ...) {
 
 /***String_zero***/
 Token String_zero(Token token, ...) {
-    return String_new("");
+    return $new(String(""));
 }
 /**/
 
@@ -104,7 +104,7 @@ Token String_zero(Token token, ...) {
 
 /***String_clone***/
 Token String_clone(Token thisToken, ...) {
-    return String_new(thisToken.payload.String);
+    return $new(String(thisToken.payload.String));
 }
 /**/
 

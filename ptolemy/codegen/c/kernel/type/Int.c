@@ -25,7 +25,7 @@ Token Int_equals(Token thisToken, ...) {
     otherToken = va_arg(argp, Token);
 
     va_end(argp);
-    return Boolean_new(thisToken.payload.Int == otherToken.payload.Int);
+    return $new(Boolean(thisToken.payload.Int == otherToken.payload.Int));
 }
 /**/
 
@@ -39,7 +39,7 @@ Token Int_isCloseTo(Token thisToken, ...) {
     tolerance = va_arg(argp, Token);
 
     va_end(argp);
-    return Boolean_new(fabs(thisToken.payload.Int - otherToken.payload.Int) < tolerance.payload.Double);
+    return $new(Boolean(fabs(thisToken.payload.Int - otherToken.payload.Int) < tolerance.payload.Double));
 }
 /**/
 
@@ -55,7 +55,7 @@ Token Int_print(Token thisToken, ...) {
 
 /***Int_toString***/
 Token Int_toString(Token thisToken, ...) {
-    return String_new(InttoString(thisToken.payload.Int));
+    return $new(String(InttoString(thisToken.payload.Int)));
 }
 /**/
 
@@ -66,7 +66,7 @@ Token Int_add(Token thisToken, ...) {
     Token otherToken = va_arg(argp, Token);
 
     va_end(argp);
-    return Int_new(thisToken.payload.Int + otherToken.payload.Int);
+    return $new(Int(thisToken.payload.Int + otherToken.payload.Int));
 }
 /**/
 
@@ -77,7 +77,7 @@ Token Int_subtract(Token thisToken, ...) {
     Token otherToken = va_arg(argp, Token);
 
     va_end(argp);
-    return Int_new(thisToken.payload.Int - otherToken.payload.Int);
+    return $new(Int(thisToken.payload.Int - otherToken.payload.Int));
 }
 /**/
 
@@ -92,12 +92,12 @@ Token Int_multiply(Token thisToken, ...) {
 
     switch (otherToken.type) {
     case TYPE_Int:
-        result = Int_new(thisToken.payload.Int * otherToken.payload.Int);
+        result = $new(Int(thisToken.payload.Int * otherToken.payload.Int));
         break;
 
 #ifdef TYPE_Double
     case TYPE_Double:
-        result = Double_new(thisToken.payload.Int * otherToken.payload.Double);
+        result = $new(Double(thisToken.payload.Int * otherToken.payload.Double));
         break;
 #endif
 
@@ -119,7 +119,7 @@ Token Int_divide(Token thisToken, ...) {
     Token otherToken = va_arg(argp, Token);
 
     va_end(argp);
-    return Int_new(thisToken.payload.Int / otherToken.payload.Int);
+    return $new(Int(thisToken.payload.Int / otherToken.payload.Int));
 }
 /**/
 
@@ -132,13 +132,13 @@ Token Int_negate(Token thisToken, ...) {
 
 /***Int_zero***/
 Token Int_zero(Token token, ...) {
-    return Int_new(0);
+    return $new(Int(0));
 }
 /**/
 
 /***Int_one***/
 Token Int_one(Token token, ...) {
-    return Int_new(1);
+    return $new(Int(1));
 }
 /**/
 

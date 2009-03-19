@@ -37,6 +37,7 @@ import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.lib.jni.PointerToken;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.codegen.kernel.CodeGenerator;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
@@ -45,6 +46,7 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.MatrixType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -98,16 +100,20 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    public /*static*/ String codeGenType(Type type) {
-	//String ptolemyType = CodeGeneratorHelper.codeGenType(type);
-	String ptolemyType = super.codeGenType(type);
-	if (ptolemyType == null) {
-	    return null;
-	}
-	return ptolemyType.replace("Int", "Integer").replace("Integerger", "Integer");
-	//return ptolemyType.replace("Int", "Integer").replace("Integerger", "Integer").replace("Array", "Token");
+    /** Return the translated new constructor invocation string. Keep the types
+     *  referenced in the info table of this helper. The kernel will retrieve
+     *  this information to determine the total number of referenced types in
+     *  the model.
+     *  @param constructorString The string within the $new() macro.
+     *  @return The translated new constructor invocation string.
+     *  @exception IllegalActionException The given constructor string is
+     *   not well-formed.
+     */
+    public String getNewInvocation(String constructorString)
+    throws IllegalActionException {
+        addFunctionUsed("new");        
+        return super.getNewInvocation(constructorString);
     }
-
     /** Return a new parse tree code generator to use with expressions.
      *  @return the parse tree code generator to use with expressions.
      */
@@ -128,7 +134,7 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
     public String generateVariableDeclaration() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-	String name = CodeGeneratorHelper.generateName(getComponent());
+        String name = CodeGeneratorHelper.generateName(getComponent());
         // Generate variable declarations for referenced parameters.
         String referencedParameterDeclaration = _generateReferencedParameterDeclaration();
         if (referencedParameterDeclaration.length() > 1) {
@@ -182,10 +188,10 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
      */
     public String getFunctionInvocation(String functionString, boolean isStatic)
     throws IllegalActionException {
-	// Record the referenced type function in the infoTable.
-	super.getFunctionInvocation(functionString, isStatic); 
+        // Record the referenced type function in the infoTable.
+        super.getFunctionInvocation(functionString, isStatic); 
 
-	// FIXME: lots of duplicated code from superclass here.
+        // FIXME: lots of duplicated code from superclass here.
         functionString = processCode(functionString);
 
         // i.e. "$tokenFunc(token::add(arg1, arg2, ...))"
@@ -223,7 +229,7 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
             //return "functionTable[(int)" + typeOrToken + "][FUNC_"
             //+ functionName + "](" + argumentList;
 
-	    String methodType = typeOrToken.substring(typeOrToken.indexOf('_') + 1);
+            String methodType = typeOrToken.substring(typeOrToken.indexOf('_') + 1);
             return methodType + "_" + functionName + "(" + argumentList;
 
         } else {
@@ -235,8 +241,8 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
 
             //return "functionTable[(int)" + typeOrToken + ".type][FUNC_"
             //+ functionName + "](" + typeOrToken + argumentList;
-	    //String methodType = typeOrToken.substring(typeOrToken.indexOf('_') + 1);
-	    getCodeGenerator().markFunctionCalled(functionName + "_Token_Token", this);
+            //String methodType = typeOrToken.substring(typeOrToken.indexOf('_') + 1);
+            getCodeGenerator().markFunctionCalled(functionName + "_Token_Token", this);
             return functionName + "_Token_Token(" + typeOrToken + argumentList;
         }
     }
@@ -252,17 +258,17 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
         files.addAll(_includeFiles);
         return files;
     }    
-    
+
     /** Get the header files needed to compile with the jvm library.
-      *  @return A set of strings that are names of the header files
-      *   needed by the code generated for jvm library
-      *  @exception IllegalActionException Not Thrown in this subclass.
-      */
+     *  @return A set of strings that are names of the header files
+     *   needed by the code generated for jvm library
+     *  @exception IllegalActionException Not Thrown in this subclass.
+     */
     public Set getJVMHeaderFiles() throws IllegalActionException {
         String javaHome = StringUtilities.getProperty("java.home");
 
         ExecuteCommands executeCommands = getCodeGenerator()
-            .getExecuteCommands();
+        .getExecuteCommands();
         if (executeCommands == null) {
             executeCommands = new StreamExec();
         }
@@ -288,7 +294,7 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
         }
 
         String jreBinClientPath = javaHome + File.separator + "bin"
-            + File.separator + "client";
+        + File.separator + "client";
         executeCommands.stdout(_eol + _eol 
                 + "JavaCodeGeneratorHelper: appended to path "
                 + jreBinClientPath);
@@ -299,7 +305,7 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
         if (javaHome.endsWith("/jre")) {
             javaHome = javaHome.substring(0, javaHome.length() - 4);
         }
-            
+
         if (!(new File(javaHome + "/include").isDirectory())) {
             // It could be that we are running under WebStart
             // or otherwise in a JRE, so we should look for the JDK.
@@ -313,7 +319,7 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
                             public boolean accept(File pathname) {
                                 return new File(pathname, "/include/jni.h").canRead();
                             }
-                    });
+                        });
                 if (jdkFiles != null && jdkFiles.length >= 1) {
                     // Sort and get the last directory, which should
                     // be the most recent JDK.
@@ -336,118 +342,82 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
         } else if (osName.startsWith("SunOS")) {
             platform = "solaris";
         } else if (osName.startsWith("Mac OS X")) {
-	    platform = "Mac OS X";
-	}
-	String jvmLoaderDirective = "-ljvm";
-	String libjvmAbsoluteDirectory = "";
-	if (platform.equals("win32")) {
-	    getCodeGenerator().addInclude("-I\"" + javaHome + "/include/"
-					  + platform + "\"");
-
-	    // The directive we use to find jvm.dll, which is usually in 
-	    // something like c:/Program Files/Java/jre1.6.0_04/bin/client/jvm.dll
-	    jvmLoaderDirective = "-ljvm";
-
-	    String ptIIDir = StringUtilities.getProperty("ptolemy.ptII.dir").replace('\\', '/');
-	    String libjvmRelativeDirectory = "ptolemy/codegen/c/lib/win";
-	    libjvmAbsoluteDirectory = ptIIDir + "/"
-		+ libjvmRelativeDirectory;
-	    String libjvmFileName = "libjvm.dll.a"; 
-	    String libjvmPath = libjvmAbsoluteDirectory + "/" + libjvmFileName;
-		
-	    if ( !(new File(libjvmPath).canRead()) ) {
-		// If we are under WebStart or running from jar files, we
-		// will need to copy libjvm.dll.a from the jar file
-		// that gcc can find it.
-		URL libjvmURL = Thread.currentThread().getContextClassLoader()
-		    .getResource(libjvmRelativeDirectory + "/" + libjvmFileName);
-		if (libjvmURL != null) {
-		    String libjvmAbsolutePath = null;
-		    try {
-			// Look for libjvm.dll.a in the codegen directory
-			File libjvmFileCopy = new File(getCodeGenerator().codeDirectory.asFile(), "libjvm.dll.a");
-
-			if (!libjvmFileCopy.canRead()) {
-			    // Create libjvm.dll.a in the codegen directory
-			    FileUtilities.binaryCopyURLToFile(libjvmURL, 
-							      libjvmFileCopy);
-			}
-
-			libjvmAbsolutePath = libjvmFileCopy.getAbsolutePath();
-			if (libjvmFileCopy.canRead()) {
-			    libjvmAbsolutePath = libjvmAbsolutePath.replace('\\',
-									    '/'); 
-			    libjvmAbsoluteDirectory = libjvmAbsolutePath.substring(0,
-										       libjvmAbsolutePath.lastIndexOf("/"));
-
-			    // Get rid of everything before the last /lib
-			    // and the .dll.a
-			    jvmLoaderDirective = "-l"
-				+ libjvmAbsolutePath.substring(
-							       libjvmAbsolutePath.lastIndexOf("/lib") + 4,
-							       libjvmAbsolutePath.length() - 6);
-			    
-			}
-		    } catch (Exception ex) {
-			throw new IllegalActionException(getComponent(),
-							 ex, "Could not copy \"" + libjvmURL
-							 + "\" to the file system, path was: \""
-							 + libjvmAbsolutePath + "\"");
-		    }
-		}
-	    }
-	} else if (platform.equals("Mac OS X")) {
-	    if (javaHome != null) {
-		libjvmAbsoluteDirectory = javaHome + "/../Libraries";
-	    }
-	} else {
-            // Solaris, Linux etc.
-	    getCodeGenerator().addInclude("-I\"" + javaHome + "/include/"
-					  + platform + "\"");
+            platform = "Mac OS X";
         }
-	getCodeGenerator().addLibrary(
+        String jvmLoaderDirective = "-ljvm";
+        String libjvmAbsoluteDirectory = "";
+        if (platform.equals("win32")) {
+            getCodeGenerator().addInclude("-I\"" + javaHome + "/include/"
+                    + platform + "\"");
+
+            // The directive we use to find jvm.dll, which is usually in 
+            // something like c:/Program Files/Java/jre1.6.0_04/bin/client/jvm.dll
+            jvmLoaderDirective = "-ljvm";
+
+            String ptIIDir = StringUtilities.getProperty("ptolemy.ptII.dir").replace('\\', '/');
+            String libjvmRelativeDirectory = "ptolemy/codegen/c/lib/win";
+            libjvmAbsoluteDirectory = ptIIDir + "/"
+            + libjvmRelativeDirectory;
+            String libjvmFileName = "libjvm.dll.a"; 
+            String libjvmPath = libjvmAbsoluteDirectory + "/" + libjvmFileName;
+
+            if ( !(new File(libjvmPath).canRead()) ) {
+                // If we are under WebStart or running from jar files, we
+                // will need to copy libjvm.dll.a from the jar file
+                // that gcc can find it.
+                URL libjvmURL = Thread.currentThread().getContextClassLoader()
+                .getResource(libjvmRelativeDirectory + "/" + libjvmFileName);
+                if (libjvmURL != null) {
+                    String libjvmAbsolutePath = null;
+                    try {
+                        // Look for libjvm.dll.a in the codegen directory
+                        File libjvmFileCopy = new File(getCodeGenerator().codeDirectory.asFile(), "libjvm.dll.a");
+
+                        if (!libjvmFileCopy.canRead()) {
+                            // Create libjvm.dll.a in the codegen directory
+                            FileUtilities.binaryCopyURLToFile(libjvmURL, 
+                                    libjvmFileCopy);
+                        }
+
+                        libjvmAbsolutePath = libjvmFileCopy.getAbsolutePath();
+                        if (libjvmFileCopy.canRead()) {
+                            libjvmAbsolutePath = libjvmAbsolutePath.replace('\\',
+                            '/'); 
+                            libjvmAbsoluteDirectory = libjvmAbsolutePath.substring(0,
+                                    libjvmAbsolutePath.lastIndexOf("/"));
+
+                            // Get rid of everything before the last /lib
+                            // and the .dll.a
+                            jvmLoaderDirective = "-l"
+                                + libjvmAbsolutePath.substring(
+                                        libjvmAbsolutePath.lastIndexOf("/lib") + 4,
+                                        libjvmAbsolutePath.length() - 6);
+
+                        }
+                    } catch (Exception ex) {
+                        throw new IllegalActionException(getComponent(),
+                                ex, "Could not copy \"" + libjvmURL
+                                + "\" to the file system, path was: \""
+                                + libjvmAbsolutePath + "\"");
+                    }
+                }
+            }
+        } else if (platform.equals("Mac OS X")) {
+            if (javaHome != null) {
+                libjvmAbsoluteDirectory = javaHome + "/../Libraries";
+            }
+        } else {
+            // Solaris, Linux etc.
+            getCodeGenerator().addInclude("-I\"" + javaHome + "/include/"
+                    + platform + "\"");
+        }
+        getCodeGenerator().addLibrary(
                 "-L\"" + libjvmAbsoluteDirectory + "\"");
         getCodeGenerator().addLibrary(jvmLoaderDirective);
 
         Set files = new HashSet();
         files.add("<jni.h>");
         return files;
-    }
-
-    /**
-     * Determine if the given type is primitive.
-     * @param ptType The given ptolemy type.
-     * @return true if the given type is primitive, otherwise false.
-     */
-    public /*static*/ boolean isPrimitive(Type ptType) {
-        return _primitiveTypes.contains(codeGenType(ptType));
-    }
-
-    /**
-     * Determine if the given type is primitive.
-     * @param cgType The given codegen type.
-     * @return true if the given type is primitive, otherwise false.
-     */
-    public static boolean isPrimitive(String cgType) {
-        return _primitiveTypes.contains(cgType);
-    }
-
-    /**
-     * Get the corresponding type in Java from the given Ptolemy type.
-     * @param ptType The given Ptolemy type.
-     * @return The Java data type.
-     */
-    public String targetType(Type ptType) {
-	// FIXME: this is duplicated code from CodeGeneratorHelper.targetType()
-        // FIXME: we may need to add more primitive types.
-        return ptType == BaseType.INT ? "int"
-                : ptType == BaseType.STRING ? "String"
-                        : ptType == BaseType.DOUBLE ? "double"
-                                : ptType == BaseType.BOOLEAN ? "boolean"
-                                        : ptType == BaseType.LONG ? "long"
-                                                : ptType == BaseType.UNSIGNED_BYTE ? "byte"
-                                                        //: ptType == PointerToken.POINTER ? "void*"
-                                                                : "Token";
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -459,12 +429,12 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
      *  getting port information.
      */
     protected String _generateInputVariableDeclaration()
-            throws IllegalActionException {
+    throws IllegalActionException {
 
         StringBuffer code = new StringBuffer();
 
         Iterator inputPorts = ((Actor) getComponent()).inputPortList()
-                .iterator();
+        .iterator();
 
         while (inputPorts.hasNext()) {
             TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
@@ -473,7 +443,7 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
                 continue;
             }
 
-	    _portVariableDeclaration(code, inputPort);
+            _portVariableDeclaration(code, inputPort);
         }
 
         return code.toString();
@@ -485,11 +455,11 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
      *  getting port information.
      */
     protected String _generateOutputVariableDeclaration()
-            throws IllegalActionException {
+    throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         Iterator outputPorts = ((Actor) getComponent()).outputPortList()
-                .iterator();
+        .iterator();
 
         while (outputPorts.hasNext()) {
             TypedIOPort outputPort = (TypedIOPort) outputPorts.next();
@@ -497,8 +467,8 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
             // If either the output port is a dangling port or
             // the output port has inside receivers.
             if (!outputPort.isOutsideConnected() || outputPort.isInsideConnected()) {
-		_portVariableDeclaration(code, outputPort);
-             }
+                _portVariableDeclaration(code, outputPort);
+            }
         }
 
         return code.toString();
@@ -510,7 +480,7 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
      *  getting modified variable information.
      */
     protected String _generateReferencedParameterDeclaration()
-            throws IllegalActionException {
+    throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         if (_referencedParameters != null) {
@@ -537,7 +507,7 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
      *  getting port information.
      */
     protected String _generateTypeConvertVariableDeclaration()
-            throws IllegalActionException {
+    throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         Iterator channels = _getTypeConvertChannels().iterator();
@@ -565,7 +535,7 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
         return code.toString();
     }
 
-    protected String _getReference(Attribute attribute, String[] channelAndOffset)
+    public String getReference(Attribute attribute, String[] channelAndOffset)
     throws IllegalActionException {
         StringBuffer result = new StringBuffer();
         //FIXME: potential bug: if the attribute is not a parameter,
@@ -587,132 +557,118 @@ public class JavaCodeGeneratorHelper extends CodeGeneratorHelper {
 
             //result.append("[" + channelAndOffset[1] + "]");
             result.insert(0, "(" 
-			  + codeGenType(elementType).replace("Array", "Token").replace("Matrix", "Token")
-			  + ")(/*JCGH44*/Array_get(");
+                    + codeGenType(elementType).replace("Array", "Token").replace("Matrix", "Token")
+                    + ")(/*JCGH44*/Array_get(");
             if (isPrimitive(elementType)) {
-		result.insert(0, "("); 
-	    }
+                result.insert(0, "("); 
+            }
 
             result.append(" ," + channelAndOffset[1] + ")");
 
 
             if (isPrimitive(elementType)) {
-		String cgType = codeGenType(elementType).toLowerCase();
-	        if (cgType.equals("integer")) {
-		    cgType = "int";
-	        }
-		String operator = "Value()";
-	        if (cgType.equals("string")) {
-		    cgType = "";
-		    operator = "toString()";
-	        }
+                String cgType = codeGenType(elementType).toLowerCase();
+                if (cgType.equals("integer")) {
+                    cgType = "int";
+                }
+                String operator = "Value()";
+                if (cgType.equals("string")) {
+                    cgType = "";
+                    operator = "toString()";
+                }
                 result.append(".payload/*jcgh2*/))."
-			      + cgType
-			      + operator);
-	    } else {
-		result.append(")");
-	    }
+                        + cgType
+                        + operator);
+            } else {
+                result.append(")");
+            }
         }
         return result.toString();
     }
 
     protected String _replaceMacro(String macro, String parameter)
     throws IllegalActionException {
-    	String result = super._replaceMacro(macro, parameter);
+        String result = super._replaceMacro(macro, parameter);
 
-    	if (result != null) {
-    		if (macro.equals("cgType")) {
-		    return result.replace("Int", "Integer").replace("Integereger", "Integer");
-    		}
-    		return result;
-    	}
+        if (result != null) {
+            if (macro.equals("cgType")) {
+                return result.replace("Int", "Integer").replace("Integereger", "Integer");
+            }
+            return result;
+        }
 
-    	if (macro.equals("include")) {
-    		_includeFiles.add(parameter);
-    		return "";
-    	} else if (macro.equals("refinePrimitiveType")) {
-    		TypedIOPort port = getPort(parameter);
+        if (macro.equals("include")) {
+            _includeFiles.add(parameter);
+            return "";
+        } else if (macro.equals("refinePrimitiveType")) {
+            TypedIOPort port = getPort(parameter);
 
-    		if (port == null) {
-    			throw new IllegalActionException(parameter
-    					+ " is not a port. $refinePrimitiveType macro takes in a port.");
-    		}
-    		if (isPrimitive(port.getType())) {
-    			return ".payload/*jcgh*/." + codeGenType(port.getType());
-    		} else {
-    			return "";
-    		}
-    	}  else if (macro.equals("lcCgType")) {
-    		String cgType = _replaceMacro("cgType", parameter);
-    		if (cgType.equals("Integer")) {
-    			return "int";
-    		}
-    		return cgType.toLowerCase();
-    	}
+            if (port == null) {
+                throw new IllegalActionException(parameter
+                        + " is not a port. $refinePrimitiveType macro takes in a port.");
+            }
+            if (isPrimitive(port.getType())) {
+                return ".payload/*jcgh*/." + codeGenType(port.getType());
+            } else {
+                return "";
+            }
+        }  else if (macro.equals("lcCgType")) {
+            String cgType = _replaceMacro("cgType", parameter);
+            if (cgType.equals("Integer")) {
+                return "int";
+            }
+            return cgType.toLowerCase();
+        }
 
-    	// We will assume that it is a call to a polymorphic
-    	// functions.
-    	//String[] call = macro.split("_");
-    	getCodeGenerator().markFunctionCalled(macro, this);
-    	result = macro + "(" + parameter + ")";
+        // We will assume that it is a call to a polymorphic
+        // functions.
+        //String[] call = macro.split("_");
+        getCodeGenerator().markFunctionCalled(macro, this);
+        result = macro + "(" + parameter + ")";
 
-    	return result;
+        return result;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
 
-    /** A list of the primitive types supported by the code generator.
-     */
-    static {
-        _primitiveTypes = Arrays.asList(new String[] {
-            "Integer", "Double", "String", "Long", "Boolean", "UnsignedByte",
-            "Pointer" });
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                  ////
 
     private void _portVariableDeclaration(StringBuffer code, TypedIOPort port) 
-	throws IllegalActionException {
+    throws IllegalActionException {
 
-	code.append("static " + targetType(port.getType()) + " "
-                    + generateName(port));
+        code.append("static " + targetType(port.getType()) + " "
+                + generateName(port));
 
-	int bufferSize = getBufferSize(port);
+        int bufferSize = getBufferSize(port);
 
-        boolean dynamicReferencesAllowed = ((BooleanToken) _codeGenerator.allowDynamicMultiportReference
-                .getToken()).booleanValue();
+        if (port.isMultiport()) {
+            code.append("[]");
+            if (bufferSize > 1) {
+                code.append("[]");
+            }
+            code.append(" = new " + targetType(port.getType()));
+        } else {
+            if (bufferSize > 1) {
+                code.append("[]");
+                code.append(" = new " + targetType(port.getType()));
+            } else {
+                //code.append(" = ");
+            }
+        }
 
-	if (port.isMultiport()) {
-	    code.append("[]");
-	    if (bufferSize > 1 || dynamicReferencesAllowed) {
-		code.append("[]");
-	    }
-	    code.append(" = new " + targetType(port.getType()));
-	} else {
-	    if (bufferSize > 1) {
-		code.append("[]");
-		code.append(" = new " + targetType(port.getType()));
-	    } else {
-		//code.append(" = ");
-	    }
-	}
-
-	if (port.isMultiport()) {
-	    code.append("[" + port.getWidth() + "]");
-	    if (bufferSize > 1 || dynamicReferencesAllowed) {
-		code.append("[" + bufferSize + "]");
-	    }
-	} else {
-	    if (bufferSize > 1) {
-		code.append("[" + bufferSize + "]");
-	    } else {
-		//code.append("0");
-	    }
-	}
-	code.append(";" + _eol);
+        if (port.isMultiport()) {
+            code.append("[" + port.getWidth() + "]");
+        }
+        
+        if (bufferSize > 1) {
+            code.append("[" + bufferSize + "]");
+        } else {
+            //code.append("0");
+        }
+        code.append(";" + _eol);
     }
 
     ///////////////////////////////////////////////////////////////////

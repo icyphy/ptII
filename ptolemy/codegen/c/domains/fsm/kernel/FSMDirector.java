@@ -33,9 +33,9 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.util.DFUtilities;
+import ptolemy.codegen.actor.Director;
 import ptolemy.codegen.c.domains.fsm.kernel.FSMActor.TransitionRetriever;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
-import ptolemy.codegen.kernel.Director;
 import ptolemy.data.BooleanToken;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.kernel.Entity;
@@ -130,9 +130,6 @@ public class FSMDirector extends Director {
                 .getController();
         FSMActor controllerHelper = (FSMActor) _getHelper(controller);
 
-        boolean inline = ((BooleanToken) _codeGenerator.inline.getToken())
-                .booleanValue();
-
         int depth = 1;
         code.append(_getIndentPrefix(depth));
         code.append("switch ("
@@ -158,14 +155,7 @@ public class FSMDirector extends Director {
                     CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actors[i]);
 
                     // fire the actor
-                    if (inline) {
-                        code.append(actorHelper.generateFireCode());
-                        code.append(actorHelper.generateTypeConvertFireCode());
-                    } else {
-                        code.append(CodeGeneratorHelper
-                                .generateName((NamedObj) actors[i])
-                                + "();" + _eol);
-                    }
+                    code.append(actorHelper.generateFireCode());
 
                     // update buffer offset after firing each actor once
                     int[][] rates = actorHelper.getRates();

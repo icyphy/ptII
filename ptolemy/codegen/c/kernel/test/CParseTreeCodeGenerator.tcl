@@ -40,8 +40,13 @@ if {[string compare test [info procs test]] == 1} then {
 proc parseTreeTest {expression} {
     set ptParser [java::new ptolemy.data.expr.PtParser]
     set parseTree [$ptParser generateParseTree $expression]
+    set model [sdfModel]
+    set codeGenerator \
+    [java::new ptolemy.codegen.c.kernel.CCodeGenerator \
+    $model "myCodeGenerator"]
+
     set parseTreeCodeGenerator \
-	[java::new ptolemy.codegen.c.kernel.CParseTreeCodeGenerator]
+	[java::new ptolemy.codegen.c.kernel.CParseTreeCodeGenerator $codeGenerator]
     # We have to eval the parse tree first, though we ignore the value
     set token [$parseTreeCodeGenerator evaluateParseTree $parseTree]
     # return [list [$token toString] [$parseTreeCodeGenerator generateFireCode]]
@@ -79,8 +84,12 @@ test CParseTreeCodeGenerator-2.1 {Define a variable in a regular parse tree } {
 
 proc parseTreeTraceTest {expression} {
     set ptParser [java::new ptolemy.data.expr.PtParser]
+    set model [sdfModel]
+    set codeGenerator \
+    [java::new ptolemy.codegen.c.kernel.CCodeGenerator \
+    $model "myCodeGenerator"]
     set parseTreeCodeGenerator \
-    [java::new ptolemy.codegen.c.kernel.CParseTreeCodeGenerator]
+    [java::new ptolemy.codegen.c.kernel.CParseTreeCodeGenerator $codeGenerator]
 
     set parseTree [$ptParser generateParseTree $expression ]
     set tree [$parseTreeCodeGenerator traceParseTreeEvaluation \
@@ -178,13 +187,17 @@ test CParseTreeCodeGenerator-16.2 {visitFunctionApplicationNode} {
     Node ptolemy.data.expr.ASTPtLeafNode evaluated to 3
   Node ptolemy.data.expr.ASTPtArrayConstructNode evaluated to {0, 2, 3}
 Node ptolemy.data.expr.ASTPtFunctionApplicationNode evaluated to {0, 2, 3}
-} {map(, $new(Array(3, 3, $new(Int(0)), $new(Int(2)), $new(Int(3)), TYPE_Int)))}}
+} {$new(IntArray(3, 3, 0, 2, 3))}}
 
 
 test CParseTreeCodeGenerator-16.3 {visitFunctionApplicationNode} {
     set ptParser [java::new ptolemy.data.expr.PtParser]
+    set model [sdfModel]
+    set codeGenerator \
+    [java::new ptolemy.codegen.c.kernel.CCodeGenerator \
+    $model "myCodeGenerator"]
     set parseTreeCodeGenerator \
-	[java::new ptolemy.codegen.c.kernel.CParseTreeCodeGenerator]
+    [java::new ptolemy.codegen.c.kernel.CParseTreeCodeGenerator $codeGenerator]
     
     set parseTree [$ptParser generateParseTree \
 		       {f = function(x:double) x*5.0}]
@@ -240,7 +253,7 @@ test CParseTreeCodeGenerator-17.2 {Construct arrays with newline strings in them
   Entering node ptolemy.data.expr.ASTPtLeafNode
   Node ptolemy.data.expr.ASTPtLeafNode evaluated to "\\(regex\\)"
 Node ptolemy.data.expr.ASTPtArrayConstructNode evaluated to {"this is\n a test", "test two", "\\(regex\\)"}
-} {$new(Array(3, 3, $new(String("this is\\n a test")), $new(String("test two")), $new(String("\\\\(regex\\\\)")), TYPE_String))}}
+} {$new(StringArray(3, 3, "this is\\n a test", "test two", "\\\\(regex\\\\)"))}}
 
 # I've commented this out. The ParseTreeCodeGenerator should not be 
 # tested this way. -- Gang

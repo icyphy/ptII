@@ -43,9 +43,9 @@ Token Complex_equals(Token thisToken, ...) {
     va_end(argp);
 
     // Give tolerance for testing.
-    return Boolean_new(
+    return $new(Boolean(
     (1.0E-6 > thisToken.payload.Complex->real - otherToken.payload.Complex->real) &&
-    (1.0E-6 > thisToken.payload.Complex->imag - otherToken.payload.Complex->imag));
+    (1.0E-6 > thisToken.payload.Complex->imag - otherToken.payload.Complex->imag)));
 }
 /**/
 
@@ -60,7 +60,7 @@ Token Complex_toString(Token thisToken, ...) {
     char* string = (char*) malloc(sizeof(char) * 32);
     sprintf(string, "%.14g + %.14gi", thisToken.payload.Complex->real, thisToken.payload.Complex->imag);
 
-    return String_new(string);
+    return $new(String(string));
 }
 /**/
 
@@ -73,9 +73,9 @@ Token Complex_add(Token thisToken, ...) {
 
     va_end(argp);
 
-    return Complex_new(
+    return $new(Complex(
     thisToken.payload.Complex->real + otherToken.payload.Complex->real,
-    thisToken.payload.Complex->imag + otherToken.payload.Complex->imag);
+    thisToken.payload.Complex->imag + otherToken.payload.Complex->imag));
 }
 /**/
 
@@ -89,9 +89,9 @@ Token Complex_subtract(Token thisToken, ...) {
 
     va_end(argp);
 
-    return Complex_new(
+    return $new(Complex(
     thisToken.payload.Complex->real - otherToken.payload.Complex->real,
-    thisToken.payload.Complex->imag - otherToken.payload.Complex->imag);
+    thisToken.payload.Complex->imag - otherToken.payload.Complex->imag));
 }
 /**/
 
@@ -113,19 +113,19 @@ Token Complex_multiply(Token thisToken, ...) {
         r2 = otherToken.payload.Complex->real;
         i2 = otherToken.payload.Complex->imag;
 
-        result = Complex_new((r1 * r2) - (i1 * i2), (r1 * i2) + (r2 * i1));
+        result = $new(Complex((r1 * r2) - (i1 * i2), (r1 * i2) + (r2 * i1)));
         break;
 
 #ifdef TYPE_Double
     case TYPE_Double:
         r2 = otherToken.payload.Double;
-        result = Complex_new(r1 * r2, i1 * r2);
+        result = $new(Complex(r1 * r2, i1 * r2));
         break;
 #endif
 
 #ifdef TYPE_Int
     case TYPE_Int:
-        result = Complex_new(r1 * otherToken.payload.Intl, i1 * otherToken.payload.Int);
+        result = $new(Complex(r1 * otherToken.payload.Intl, i1 * otherToken.payload.Int));
         break;
 #endif
 
@@ -159,7 +159,7 @@ Token Complex_divide(Token thisToken, ...) {
     //(a+ib)/(c+id)=(ac+bd+i(bc-ad))/(c^2+d^2)
     temp = (r2 * r2) + (i2 * i2);
 
-    result = Complex_new(((r1 * r2) + (i1 * i2)) / temp, ((i1 * r2) - (r1 * i2)) / temp);
+    result = $new(Complex(((r1 * r2) + (i1 * i2)) / temp, ((i1 * r2) - (r1 * i2)) / temp));
 
     va_end(argp);
     return result;
@@ -176,20 +176,20 @@ Token Complex_negate(Token thisToken, ...) {
 
 /***Complex_zero***/
 Token Complex_zero(Token token, ...) {
-    return Complex_new(0.0, 0.0);
+    return $new(Complex(0.0, 0.0));
 }
 /**/
 
 /***Complex_one***/
 Token Complex_one(Token token, ...) {
-    return Complex_new(1.0, 0.0);
+    return $new(Complex(1.0, 0.0));
 }
 /**/
 
 
 /***Complex_clone***/
 Token Complex_clone(Token thisToken, ...) {
-    return Complex_new(thisToken.payload.Complex->real, thisToken.payload.Complex->imag);
+    return $new(Complex(thisToken.payload.Complex->real, thisToken.payload.Complex->imag));
 }
 /**/
 

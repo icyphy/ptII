@@ -1,24 +1,24 @@
 #include "DoubleArray.h"
 
 /** NOTE: META SUBSTITUTION SYMBOLS
- * $Type: Int, Char, Array, etc.
- * $TYPE_t: TYPE_Int, TYPE_Char, etc.
- * $type: int, char, etc.
- * $type_q: %d, %s, etc.
- * $print_size: 12(int), 22(long), 22(double), 6(boolean)
+ * Double: Int, Char, Array, etc.
+ * %g: %d, %s, etc.
+ * double: int, char, etc.
+ * 22: 12(int), 22(long), 22(double), 6(boolean)
  */
 
 /***declareBlock***/
+Token DoubleArray_new(int size, int given, ...);
 struct doublearray {
     int size;                                   // size of the array.
     double* elements;                            // array of Token elements.
-    char elementType;                          // type of the elements.
+    char elementType;     	                    // type of the elements.
 };
 typedef struct doublearray* DoubleArrayToken;
 /**/
 
 /***funcDeclareBlock***/
-// Array_get: get an element of an array.
+// DoubleArray_get: get an element of an array.
 #define DoubleArray_length(array) ((array).payload.DoubleArray->size)
 
 double DoubleArray_get(Token array, int i) {
@@ -29,12 +29,12 @@ double DoubleArray_get(Token array, int i) {
 	return ((double *) array.payload.DoubleArray->elements)[i];
 }
 
-// Array_set: set an element of an array.
+// DoubleArray_set: set an element of an array.
 void DoubleArray_set(Token array, int i, double element) {
     ((double *) array.payload.DoubleArray->elements)[i] = element;
 }
 
-// Array_resize: Change the size of an array,
+// DoubleArray_resize: Change the size of an array,
 // preserving those elements that fit.
 void DoubleArray_resize(Token array, int size) {
     array.payload.DoubleArray->size = size;
@@ -52,7 +52,7 @@ void DoubleArray_insert(Token array, double token) {
 
 
 /***DoubleArray_new***/
-// Array_new: Create a new array with the specified elements.
+// DoubleArray_new: Create a new array with the specified elements.
 //  The "size" argument specifies the size of the array, and
 // the "given" argument specifies the number of provided elements
 // (which will typically be <= size).
@@ -78,10 +78,7 @@ Token DoubleArray_new(int size, int given, ...) { //Revised
         if (given > 0) {
             va_start(argp, given);
             for (i = 0; i < given; i++) {
-                Token temp = ((Token) va_arg(argp, Token));
-                // if (elementType >= 0 && temp.type != elementType)
-                // 	temp = functionTable[(int) elementType][FUNC_convert](temp);
-				((double *) result.payload.DoubleArray->elements)[i] = temp.payload.Double;
+                result.payload.DoubleArray->elements[i] = (double) va_arg(argp, double);
             }
             va_end(argp);
         }
@@ -92,7 +89,7 @@ Token DoubleArray_new(int size, int given, ...) { //Revised
 
 
 /***DoubleArray_delete***/
-// Array_delete: FIXME: What does this do?
+// DoubleArray_delete: FIXME: What does this do?
 Token DoubleArray_delete(Token token, ...) { //Revised
     Token emptyToken;
     //Token element;
@@ -101,7 +98,7 @@ Token DoubleArray_delete(Token token, ...) { //Revised
     // Delete each elements.
     // for (i = 0; i < token.payload.DoubleArray->size; i++) {
     //     elementType = token.payload.DoubleArray->elementType;
-    //     element = Array_get(token, i);
+    //     element = DoubleArray_get(token, i);
     //     functionTable[(int) elementType][FUNC_delete](element);
     // }
     free((double *) token.payload.DoubleArray->elements);
@@ -115,7 +112,7 @@ Token DoubleArray_delete(Token token, ...) { //Revised
 
 
 /***DoubleArray_equals***/
-// Array_equals: Test an array for equality with a second array.
+// DoubleArray_equals: Test an array for equality with a second array.
 Token DoubleArray_equals(Token thisToken, ...) {
     int i;
     va_list argp;
@@ -124,26 +121,22 @@ Token DoubleArray_equals(Token thisToken, ...) {
     otherToken = va_arg(argp, Token);
 
     if (thisToken.payload.DoubleArray->size != otherToken.payload.DoubleArray->size) {
-        return Boolean_new(false);
+        return $new(Boolean(false));
     }
     for (i = 0; i < thisToken.payload.DoubleArray->size; i++) {
-    	if (!equals_Double_Double(DoubleArray_get(thisToken, i), DoubleArray_get(otherToken, i))) {
-    		return Boolean_new(false);
+    	if (!$equals_Double_Double(DoubleArray_get(thisToken, i), DoubleArray_get(otherToken, i))) {
+    		return $new(Boolean(false));
     	}
-        // if (!functionTable[(int)Array_get(thisToken, i).type][FUNC_equals]
-        //                 (Array_get(thisToken, i), Array_get(otherToken, i)).payload.Boolean) {
-        //     return Boolean_new(false);
-        // }
     }
 
     va_end(argp);
-    return Boolean_new(true);
+    return $new(Boolean(true));
 }
 /**/
 
 
 /***DoubleArray_isCloseTo***/
-// Array_isCloseTo: Test an array to see whether it is close in value to another.
+// DoubleArray_isCloseTo: Test an array to see whether it is close in value to another.
 Token DoubleArray_isCloseTo(Token thisToken, ...) {
     int i;
     va_list argp;
@@ -160,18 +153,18 @@ Token DoubleArray_isCloseTo(Token thisToken, ...) {
 
 
     if (thisToken.payload.DoubleArray->size != otherToken.payload.DoubleArray->size) {
-        return Boolean_new(false);
+        return $new(Boolean(false));
     }
     for (i = 0; i < thisToken.payload.DoubleArray->size; i++) {
         value1 = DoubleArray_get(thisToken, i);
         value2 = DoubleArray_get(otherToken, i);
 
         if (fabs(value1 - value2) > tolerance.payload.Double) {
-            return Boolean_new(false);
+            return $new(Boolean(false));
         }
     }
     va_end(argp);
-    return Boolean_new(true);
+    return $new(Boolean(true));
 }
 /**/
 
@@ -186,7 +179,7 @@ Token DoubleArray_print(Token thisToken, ...) {
             printf(", ");
         }
         printf("%g", DoubleArray_get(thisToken, i));
-        // functionTable[(int)thisToken.payload.DoubleArray->elementType][FUNC_print](Array_get(thisToken, i));
+        // functionTable[(int)thisToken.payload.DoubleArray->elementType][FUNC_print](DoubleArray_get(thisToken, i));
     }
     printf("}");
 }
@@ -194,42 +187,53 @@ Token DoubleArray_print(Token thisToken, ...) {
 
 
 /***DoubleArray_toString***/
-// Array_toString: Return a string token with a string representation
+// DoubleArray_toString: Return a string token with a string representation
 // of the specified array.
 Token DoubleArray_toString(Token thisToken, ...) {
 	int i;
     int currentSize, allocatedSize;
     char* string;
-    char elementString[22];
+    char* elementString;
     allocatedSize = 256;
     string = (char*) malloc(allocatedSize);
     string[0] = '{';
     string[1] = '\0';
-    currentSize = 2;
+
+    // Space for '{', '}', and '\0' characters.
+    currentSize = 3;
 
     //printf("%d\n", thisToken.payload.DoubleArray->size);
     for (i = 0; i < thisToken.payload.DoubleArray->size; i++) {
-    	if (i != 0) {
-            strcat(string, ", ");
-        }
+		// Calculate the require storage size.
+
     	// double temp = DoubleArray_get(thisToken, i);
-        sprintf(elementString, "%g", DoubleArray_get(thisToken, i));
+        elementString = $toString_Double(DoubleArray_get(thisToken, i));
         currentSize += strlen(elementString);
-        if (currentSize > allocatedSize) {
+		if (i != 0) {
+			currentSize += 2;
+		}
+
+		// Re-allocate storage.
+		if (currentSize > allocatedSize) {
             allocatedSize *= 2;
             string = (char*) realloc(string, allocatedSize);
+        }
+
+		// Concat the element strings and separators.
+		if (i != 0) {
+            strcat(string, ", ");
         }
         strcat(string, elementString);
     }
 
     strcat(string, "}");
-    return String_new(string);
+    return $new(String(string));
 }
 /**/
 
 
 /***DoubleArray_add***/
-// Array_add: Add an array to another array.
+// DoubleArray_add: Add an array to another array.
 // Assume the given otherToken is array type.
 // Return a new Array token.
 Token DoubleArray_add(Token thisToken, ...) {
@@ -249,15 +253,15 @@ Token DoubleArray_add(Token thisToken, ...) {
     size2 = otherToken.payload.DoubleArray->size;
     resultSize = (size1 > size2) ? size1 : size2;
 
-    result = DoubleArray_new(resultSize, 0, TYPE_Double);
+    result = $new(DoubleArray(resultSize, 0));
 
     for (i = 0; i < resultSize; i++) {
         if (size1 == 1) {
-        	DoubleArray_set(result, i, add_Double_Double(DoubleArray_get(thisToken, 0),DoubleArray_get(otherToken, i)));
+        	DoubleArray_set(result, i, $add_Double_Double(DoubleArray_get(thisToken, 0),DoubleArray_get(otherToken, i)));
         } else if (size2 == 1) {
-        	DoubleArray_set(result, i, add_Double_Double(DoubleArray_get(thisToken, i),DoubleArray_get(otherToken, 0)));
+        	DoubleArray_set(result, i, $add_Double_Double(DoubleArray_get(thisToken, i),DoubleArray_get(otherToken, 0)));
         } else {
-        	DoubleArray_set(result, i, add_Double_Double(DoubleArray_get(thisToken, i),DoubleArray_get(otherToken, i)));
+        	DoubleArray_set(result, i, $add_Double_Double(DoubleArray_get(thisToken, i),DoubleArray_get(otherToken, i)));
         }
     }
 
@@ -268,7 +272,7 @@ Token DoubleArray_add(Token thisToken, ...) {
 
 
 /***DoubleArray_subtract***/
-// Array_subtract: Subtract the second argument array
+// DoubleArray_subtract: Subtract the second argument array
 // from the first argument array.
 // Assume the given otherToken is an array.
 // FIXME: Arrays can have scalars subtracted!
@@ -291,15 +295,15 @@ Token DoubleArray_subtract(Token thisToken, ...) {
     size2 = otherToken.payload.DoubleArray->size;
     resultSize = (size1 > size2) ? size1 : size2;
 
-    result = DoubleArray_new(resultSize, 0, TYPE_Double);
+    result = $new(DoubleArray(resultSize, 0));
 
     for (i = 0; i < resultSize; i++) {
         if (size1 == 1) {
-        	DoubleArray_set(result, i, substract_Double_Double(DoubleArray_get(thisToken, 0),DoubleArray_get(otherToken, i)));
+        	DoubleArray_set(result, i, $subtract_Double_Double(DoubleArray_get(thisToken, 0),DoubleArray_get(otherToken, i)));
         } else if (size2 == 1) {
-        	DoubleArray_set(result, i, substract_Double_Double(DoubleArray_get(thisToken, i),DoubleArray_get(otherToken, 0)));
+        	DoubleArray_set(result, i, $subtract_Double_Double(DoubleArray_get(thisToken, i),DoubleArray_get(otherToken, 0)));
         } else {
-        	DoubleArray_set(result, i, substract_Double_Double(DoubleArray_get(thisToken, i),DoubleArray_get(otherToken, i)));
+        	DoubleArray_set(result, i, $subtract_Double_Double(DoubleArray_get(thisToken, i),DoubleArray_get(otherToken, i)));
         }
     }
 
@@ -310,7 +314,7 @@ Token DoubleArray_subtract(Token thisToken, ...) {
 
 
 /***DoubleArray_multiply***/
-// Array_multiply: Multiply an array by another array.
+// DoubleArray_multiply: Multiply an array by another array.
 // Multiplication is element-wise.
 // Assume the given otherToken is array type.
 // Return a new Array token.
@@ -331,15 +335,15 @@ Token DoubleArray_multiply(Token thisToken, ...) {
     size2 = otherToken.payload.DoubleArray->size;
     resultSize = (size1 > size2) ? size1 : size2;
 
-    result = DoubleArray_new(resultSize, 0, TYPE_Double);
+    result = $new(DoubleArray(resultSize, 0));
 
     for (i = 0; i < resultSize; i++) {
         if (size1 == 1) {
-        	DoubleArray_set(result, i, multiply_Double_Double(DoubleArray_get(thisToken, 0),DoubleArray_get(otherToken, i)));
+        	DoubleArray_set(result, i, $multiply_Double_Double(DoubleArray_get(thisToken, 0),DoubleArray_get(otherToken, i)));
         } else if (size2 == 1) {
-        	DoubleArray_set(result, i, multiply_Double_Double(DoubleArray_get(thisToken, i),DoubleArray_get(otherToken, 0)));
+        	DoubleArray_set(result, i, $multiply_Double_Double(DoubleArray_get(thisToken, i),DoubleArray_get(otherToken, 0)));
         } else {
-        	DoubleArray_set(result, i, multiply_Double_Double(DoubleArray_get(thisToken, i),DoubleArray_get(otherToken, i)));
+        	DoubleArray_set(result, i, $multiply_Double_Double(DoubleArray_get(thisToken, i),DoubleArray_get(otherToken, i)));
         }
     }
 
@@ -350,7 +354,7 @@ Token DoubleArray_multiply(Token thisToken, ...) {
 
 
 /***DoubleArray_divide***/
-// Array_divide: Divide the elements of the first array
+// DoubleArray_divide: Divide the elements of the first array
 // by the elements of the second array.
 // Assume the given otherToken is array type.
 // Return a new Array token.
@@ -371,15 +375,15 @@ Token DoubleArray_divide(Token thisToken, ...) {
     size2 = otherToken.payload.DoubleArray->size;
     resultSize = (size1 > size2) ? size1 : size2;
 
-    result = DoubleArray_new(resultSize, 0, TYPE_Double);
+    result = $new(DoubleArray(resultSize, 0));
 
     for (i = 0; i < resultSize; i++) {
         if (size1 == 1) {
-        	DoubleArray_set(result, i, divide_Double_Double(DoubleArray_get(thisToken, 0),DoubleArray_get(otherToken, i)));
+        	DoubleArray_set(result, i, $divide_Double_Double(DoubleArray_get(thisToken, 0),DoubleArray_get(otherToken, i)));
         } else if (size2 == 1) {
-        	DoubleArray_set(result, i, divide_Double_Double(DoubleArray_get(thisToken, i),DoubleArray_get(otherToken, 0)));
+        	DoubleArray_set(result, i, $divide_Double_Double(DoubleArray_get(thisToken, i),DoubleArray_get(otherToken, 0)));
         } else {
-        	DoubleArray_set(result, i, divide_Double_Double(DoubleArray_get(thisToken, i),DoubleArray_get(otherToken, i)));
+        	DoubleArray_set(result, i, $divide_Double_Double(DoubleArray_get(thisToken, i),DoubleArray_get(otherToken, i)));
         }
     }
 
@@ -390,15 +394,15 @@ Token DoubleArray_divide(Token thisToken, ...) {
 
 
 /***DoubleArray_negate***/
-// Array_negate: Negate each element of an array.
+// DoubleArray_negate: Negate each element of an array.
 // Return a new Array token.
 Token DoubleArray_negate(Token thisToken, ...) {
     int i;
     Token result;
-    result = DoubleArray_new(thisToken.payload.DoubleArray->size, 0, TYPE_Double);
+    result = $new(DoubleArray(thisToken.payload.DoubleArray->size, 0));
 
     for (i = 0; i < thisToken.payload.DoubleArray->size; i++) {
-        DoubleArray_set(thisToken, i, negate_Double(DoubleArray_get(thisToken, i)));
+        DoubleArray_set(result, i, $negate_Double(DoubleArray_get(thisToken, i)));
     }
     return result;
 }
@@ -406,16 +410,15 @@ Token DoubleArray_negate(Token thisToken, ...) {
 
 
 /***DoubleArray_zero***/
-// Array_zero: Return an array like the specified
+// DoubleArray_zero: Return an array like the specified
 // array but with zeros of the same type.
 Token DoubleArray_zero(Token thisToken, ...) {
     Token result;
-    Token element;
     int i;
 
-    result = DoubleArray_new(thisToken.payload.DoubleArray->size, 0, TYPE_Double);
+    result = $new(DoubleArray(thisToken.payload.DoubleArray->size, 0));
     for (i = 0; i < thisToken.payload.DoubleArray->size; i++) {
-        DoubleArray_set(thisToken, i, zero_Double(DoubleArray_get(thisToken, i)));
+        DoubleArray_set(result, i, $zero_Double());
     }
     return result;
 }
@@ -423,16 +426,16 @@ Token DoubleArray_zero(Token thisToken, ...) {
 
 
 /***DoubleArray_one***/
-// Array_one: Return an array like the specified
+// DoubleArray_one: Return an array like the specified
 // array but with ones of the same type.
 Token DoubleArray_one(Token thisToken, ...) {
     Token result;
     Token element;
     int i;
 
-    result = DoubleArray_new(thisToken.payload.DoubleArray->size, 0, TYPE_Double);
+    result = $new(DoubleArray(thisToken.payload.DoubleArray->size, 0));
     for (i = 0; i < thisToken.payload.DoubleArray->size; i++) {
-        DoubleArray_set(thisToken, i, one_Double(DoubleArray_get(thisToken, i)));
+        DoubleArray_set(result, i, $one_Double());
     }
     return result;
 }
@@ -440,16 +443,15 @@ Token DoubleArray_one(Token thisToken, ...) {
 
 
 /***DoubleArray_clone***/
-// Array_clone: Return a new array just like the
+// DoubleArray_clone: Return a new array just like the
 // specified array.
 Token DoubleArray_clone(Token thisToken, ...) {
     Token result;
-    Token element;
     int i;
 
-    result = DoubleArray_new(thisToken.payload.DoubleArray->size, 0, TYPE_Double);
+    result = $new(DoubleArray(thisToken.payload.DoubleArray->size, 0));
     for (i = 0; i < thisToken.payload.DoubleArray->size; i++) {
-        DoubleArray_set(thisToken, i, clone_Double(DoubleArray_get(thisToken, i)));
+        DoubleArray_set(result, i, $clone_Double(DoubleArray_get(thisToken, i)));
     }
     return result;
 }
@@ -458,31 +460,31 @@ Token DoubleArray_clone(Token thisToken, ...) {
 
 /***DoubleArray_sum***/
 // FIXME: WHAT DOES THIS FUNCTION DO?
-Token DoubleArray_sum(Token token) {
+double DoubleArray_sum(Token token) {
 	double result;
 	int i;
 
 	if (token.payload.DoubleArray->size <= 0) {
-		return token;
+		return DoubleArray_zero(token);
 	} else {
 		result = DoubleArray_get(token, 0);
 	}
 
     for (i = 1; i < token.payload.DoubleArray->size; i++) {
-    	result = add_Double_Double(result, DoubleArray_get(token, i));
+    	result = $add_Double_Double(result.payload.Double,DoubleArray_get(token, i).payload.Double);
     }
-    return Double_new(result);
+    return result;
 }
 /**/
 
 /***DoubleArray_repeat***/
-Token DoubleArray_repeat(int number, double value) {
+Token DoubleArray_repeat(int number, Double value) {
 	Token result;
-	result = DoubleArray_new(number, 0);
+	result = $new(DoubleArray(number, 0));
 	int i;
 
 	for (i = 0; i < number; i++) {
-        Array_set(result, i, value);
+		DoubleArray_set(result, i, value);
     }
     return result;
 }
@@ -500,29 +502,27 @@ Token DoubleArray_convert(Token token, ...) {
 //    Token element;
 //    va_list argp;
 //    char targetType;
-
-    // FIXME: do nothing for now, because we haven't figure out
-    // the proper design for this.
-
+//
 //    va_start(argp, token);
 //    targetType = va_arg(argp, int);
-
-    // FIXME: HOW DO WE KNOW WHICH TYPE WE'RE CONVERTING TO?
-//    result = DoubleArray_new(token.payload.DoubleArray->size, 0);
+//
+//    // FIXME: HOW DO WE KNOW WHICH TYPE WE'RE CONVERTING TO?
+//    result = $new(DoubleArray(token.payload.DoubleArray->size, 0));
 //
 //    for (i = 0; i < token.payload.DoubleArray->size; i++) {
-//        element = Array_get(token, i);
+//        element = DoubleArray_get(token, i);
 //        if (targetType != token.payload.DoubleArray->elementType) {
-//        	Array_set(result, i, functionTable[(int)targetType][FUNC_convert](element));
+//
+//        	DoubleArray_set(result, i, functionTable[(int)targetType][FUNC_convert](element));
 //            // result.payload.DoubleArray->elements[i] = functionTable[(int)targetType][FUNC_convert](element);
 //        } else {
-//            Array_Set(result, i, element);
+//        	DoubleArray_set(result, i, element);
 //        }
 //    }
-
+//
 //    va_end(argp);
 //    return result;
-    return token;
+	return token;
 }
 /**/
 

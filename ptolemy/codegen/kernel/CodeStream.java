@@ -843,7 +843,7 @@ public class CodeStream {
 
                     if (_needLineInfo()) {
                         codeToBeParsed.append(_codeGenerator.generateLineInfo(
-                                lineNumber, filename));
+                                lineNumber, filename) + _eol);
                     }
                     codeToBeParsed.append(line + _eol);
                 }
@@ -1561,9 +1561,9 @@ public class CodeStream {
     }
 
     /**
-     * A private class for representing a code block signature.
+     * Inner class for representing a code block signature.
      */
-    private static class Signature implements Comparable {
+    public static class Signature implements Comparable {
 
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
@@ -1576,7 +1576,7 @@ public class CodeStream {
          * @throw IllegalActionException Thrown if the given name is null,
          *  or the number of parameters is less than zero.
          */
-        public Signature(String functionName, int numParameters)
+        private Signature(String functionName, int numParameters)
         throws IllegalActionException {
 
             if (functionName == null || numParameters < 0) {

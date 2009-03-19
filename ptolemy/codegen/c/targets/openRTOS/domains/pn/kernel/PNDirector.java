@@ -38,8 +38,9 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.LimitedFiringSource;
+import ptolemy.codegen.actor.Director;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
-import ptolemy.codegen.kernel.Director;
+import ptolemy.codegen.kernel.CodeGeneratorHelper.Channel;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
@@ -217,24 +218,6 @@ public class PNDirector extends Director {
         return code.toString();
     }
 
-    /** 
-     * Generate the fire function code. 
-     * The code contains the function code for each actor. It is a collection
-     * of global functions, one for each actor that is visible to this
-     * director helper. Creating each new task requires one of these 
-     * function as parameter. It is the code that the task executes.
-     * When the inline parameter is checked, the task function code is
-     * generated in {@link #generatePreinitializeCode()} which is 
-     * outside the main function. 
-     * @return The fire function code.
-     * @exception IllegalActionException If there is an exception in 
-     *  generating the task function code.
-     */
-    public String generateFireFunctionCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        _generateTaskFunctionCode(code);
-        return code.toString();
-    }
 
     /**
      * Generate the initialize code.
@@ -283,15 +266,9 @@ public class PNDirector extends Director {
     public String generateMainLoop() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        boolean inline = ((BooleanToken) _codeGenerator.inline.getToken())
-        .booleanValue();
+        code.append(((CodeGeneratorHelper) _getHelper(_director
+                .getContainer())).generateFireCode());
 
-        if (inline) {
-            code.append(generateFireCode());
-        } else {
-            code.append(CodeGeneratorHelper.generateName(_director
-                    .getContainer()) + "();" + _eol);
-        }
         return code.toString();
     }
 
@@ -327,9 +304,7 @@ public class PNDirector extends Director {
     
         code.append(bufferCode);
     
-        if (_codeGenerator.inline.getToken() == BooleanToken.TRUE) {
-            _generateTaskFunctionCode(code);
-        }
+        _generateTaskFunctionCode(code);
     
         return code.toString();
     }
@@ -508,10 +483,6 @@ public class PNDirector extends Director {
 
             CodeGeneratorHelper helper = 
                 (CodeGeneratorHelper) _getHelper((NamedObj) actor);
-
-            //if (!inline) {
-            //    code.append(helper.generateFireFunctionCode());
-            //}
 
             code.append(_eol + "static void " + 
                     _getActorTaskLabel(actor) + "(void* arg) {" + _eol);

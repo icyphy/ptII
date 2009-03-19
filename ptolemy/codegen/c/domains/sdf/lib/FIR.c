@@ -1,11 +1,11 @@
 /*** preinitBlock ***/
 	Token $actorSymbol(_data);
-	Token $actorSymbol(_zero);
+	$targetType(input) $actorSymbol(_zero);
 	int $actorSymbol(_mostRecent);
 	int $actorSymbol(_phaseLength);
-	Token $actorSymbol(_outToken);
-	Token $actorSymbol(_tapItem);
-	Token $actorSymbol(_dataItem);
+	$targetType(input) $actorSymbol(_outToken);
+	$targetType(input) $actorSymbol(_tapItem);
+	$targetType(input) $actorSymbol(_dataItem);
 	Token $actorSymbol(_taps);
 /**/
 
@@ -25,11 +25,11 @@
 /**/
 
 /*** initBlock ***/
-    $actorSymbol(_zero) = $tokenFunc(Array_get($actorSymbol(_taps), 0)::zero());
+    $actorSymbol(_zero) = $zero_$cgType(input)($cgType(taps)_get($actorSymbol(_taps), 0));
 
-    $actorSymbol(_phaseLength) = $actorSymbol(_taps).payload.Array->size / $val(interpolation);
+    $actorSymbol(_phaseLength) = $actorSymbol(_taps).payload.$cgType(taps)->size / $val(interpolation);
 
-    if (($actorSymbol(_taps).payload.Array->size % $val(interpolation)) != 0) {
+    if (($actorSymbol(_taps).payload.$cgType(taps)->size % $val(interpolation)) != 0) {
         $actorSymbol(_phaseLength)++;
     }
 
@@ -40,10 +40,10 @@
     // seen data, because that data has not been saved.
     $actorClass(length) = $actorSymbol(_phaseLength) + $val(decimation);
 
-    $actorSymbol(_data) = $new(Array($actorClass(length), 0));
+    $actorSymbol(_data) = $new($cgType(taps)($actorClass(length), 0));
 
     for ($actorClass(i) = 0; $actorClass(i) < $actorClass(length); $actorClass(i)++) {
-        Array_set($actorSymbol(_data), $actorClass(i), $actorSymbol(_zero));
+    	$cgType(taps)_set($actorSymbol(_data), $actorClass(i), $actorSymbol(_zero));
     }
     $actorSymbol(_mostRecent) = $actorSymbol(_phaseLength);
 /**/
@@ -51,27 +51,29 @@
 
 
 /*** prefireBlock ***/
-	$actorSymbol(_zero) = $tokenFunc(Array_get($actorSymbol(_taps), 0)::zero());
-	
-	$actorSymbol(_phaseLength) = $actorSymbol(_taps).payload.Array->size / $val(interpolation);
-	
-	if (($actorSymbol(_taps).payload.Array->size % $val(interpolation)) != 0) {
+	$actorSymbol(_zero) = $tokenFunc($cgType(taps)_get($actorSymbol(_taps), 0)::zero());
+
+	$actorSymbol(_phaseLength) = $actorSymbol(_taps).payload.$cgType(taps)->size / $val(interpolation);
+
+	if (($actorSymbol(_taps).payload.$cgType(taps)->size % $val(interpolation)) != 0) {
 	    $actorSymbol(_phaseLength)++;
 	}
-	
+
 	// Create new data array and initialize index into it.
 	// Avoid losing the data if possible.
 	// NOTE: If the filter length increases, then it is impossible
 	// to correctly initialize the delay line to contain previously
 	// seen data, because that data has not been saved.
 	$actorClass(length) = $actorSymbol(_phaseLength) + $val(decimation);
-	
-	if ($actorSymbol(_data).payload.Array->size != $actorClass(length)) {
-        $actorSymbol(_data).payload.Array->elements = (Token*) realloc($actorSymbol(_data).payload.Array->elements, $actorClass(length) * sizeof(Token));
-        for ($actorClass(i) = $actorSymbol(_data).payload.Array->size; $actorClass(i) < $actorClass(length); $actorClass(i)++) {
-            Array_set($actorSymbol(_data), $actorClass(i), $actorSymbol(_zero));
+
+	if ($actorSymbol(_data).payload.$cgType(taps)->size != $actorClass(length)) {
+        //$actorSymbol(_data).payload.$cgType(taps)->elements = (Token*) realloc($actorSymbol(_data).payload.$cgType(taps)->elements, $actorClass(length) * sizeof(Token));
+        $cgType(taps)_resize($actorSymbol(_data), $actorClass(length));
+
+        for ($actorClass(i) = $actorSymbol(_data).payload.$cgType(taps)->size; $actorClass(i) < $actorClass(length); $actorClass(i)++) {
+        	$cgType(taps)_set($actorSymbol(_data), $actorClass(i), $actorSymbol(_zero));
         }
-        $actorSymbol(_data).payload.Array->size = $actorClass(length);
+        $actorSymbol(_data).payload.$cgType(taps)->size = $actorClass(length);
         $actorSymbol(_mostRecent) = $actorSymbol(_phaseLength);
 	}
 /**/
@@ -97,7 +99,7 @@ for ($actorClass(inC) = 1; $actorClass(inC) <= $val(decimation); $actorClass(inC
 
     // Note explicit type conversion, which is required to generate
     // code.
-    Array_set($actorSymbol(_data), $actorSymbol(_mostRecent), $ref((Token) input, $actorClass(inputIndex)++));
+    $cgType(taps)_set($actorSymbol(_data), $actorSymbol(_mostRecent), $ref(input, $actorClass(inputIndex)++));
 }
 
 // Interpolate once for each input consumed
@@ -113,17 +115,17 @@ for ($actorClass(inC) = 1; $actorClass(inC) <= $val(decimation); $actorClass(inC
 
             $actorClass(dataIndex) = (($actorSymbol(_mostRecent) + $val(decimation)) - $actorClass(inC) + $actorClass(i)) % ($actorClass(length));
 
-            if ($actorClass(tapsIndex) < $actorSymbol(_taps).payload.Array->size) {
-                $actorSymbol(_tapItem) = Array_get($actorSymbol(_taps), $actorClass(tapsIndex));
-                $actorSymbol(_dataItem) = Array_get($actorSymbol(_data), $actorClass(dataIndex));
-                $actorSymbol(_dataItem) = $multiply_Token_Token($actorSymbol(_tapItem), $actorSymbol(_dataItem));
-                $actorSymbol(_outToken) = $add_Token_Token($actorSymbol(_outToken), $actorSymbol(_dataItem));
+            if ($actorClass(tapsIndex) < $actorSymbol(_taps).payload.$cgType(taps)->size) {
+                $actorSymbol(_tapItem) = $cgType(taps)_get($actorSymbol(_taps), $actorClass(tapsIndex));
+                $actorSymbol(_dataItem) = $cgType(taps)_get($actorSymbol(_data), $actorClass(dataIndex));
+                $actorSymbol(_dataItem) = $multiply_$cgType(input)_$cgType(input)($actorSymbol(_tapItem), $actorSymbol(_dataItem));
+                $actorSymbol(_outToken) = $add_$cgType(input)_$cgType(input)($actorSymbol(_outToken), $actorSymbol(_dataItem));
             }
 
             // else assume tap is zero, so do nothing.
         }
 
-        $ref(output, ($actorClass(bufferIndex)++)) = $actorSymbol(_outToken)$refinePrimitiveType(output);
+        $ref(output, ($actorClass(bufferIndex)++)) = $actorSymbol(_outToken);
         $actorClass(phase) += $val(decimation);
     }
 
@@ -132,5 +134,5 @@ for ($actorClass(inC) = 1; $actorClass(inC) <= $val(decimation); $actorClass(inC
 /**/
 
 /*** wrapupBlock ***/
-//Array_delete($actorSymbol(_data));
+//$cgType(taps)_delete($actorSymbol(_data));
 /**/

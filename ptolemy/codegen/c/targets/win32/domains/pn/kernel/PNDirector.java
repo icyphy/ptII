@@ -39,8 +39,8 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.lib.LimitedFiringSource;
 import ptolemy.actor.util.DFUtilities;
+import ptolemy.codegen.actor.Director;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
-import ptolemy.codegen.kernel.Director;
 import ptolemy.codegen.kernel.PortCodeGenerator;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
@@ -86,10 +86,10 @@ public class PNDirector extends Director {
 	 * 
 	 * @return The generated body code.
 	 * @exception IllegalActionException
-	 *                If the {@link #generateFireCode()} method throws the
+	 *                If the {@link #_generateFireCode()} method throws the
 	 *                exceptions.
 	 */
-	public String generateFireCode() throws IllegalActionException {
+    public String generateFireCode() throws IllegalActionException {
 		StringBuffer code = new StringBuffer();
 		CompositeActor compositeActor = (CompositeActor) _director
 				.getContainer();
@@ -125,23 +125,6 @@ public class PNDirector extends Director {
         // FIXME: stack size.
         return 0;
     }
-
-    /**
-	 * Do nothing in generating fire function code. The fire code is wrapped in
-	 * a for/while loop inside the thread function. The thread function is
-	 * generated in {@link #generatePreinitializeCode()} outside the main
-	 * function.
-	 * 
-	 * @return An empty string.
-	 * @exception IllegalActionException
-	 *                Not thrown in this class.
-	 */
-	public String generateFireFunctionCode() throws IllegalActionException {
-		StringBuffer code = new StringBuffer();
-
-		_generateThreadFunctionCode(code);
-		return code.toString();
-	}
 
 	/**
 	 * Get the files needed by the code generated from this helper class. This
@@ -206,20 +189,12 @@ public class PNDirector extends Director {
      * 
      */
 	public String generateMainLoop() throws IllegalActionException {
-		StringBuffer code = new StringBuffer();
+        StringBuffer code = new StringBuffer();
 
-		boolean inline = ((BooleanToken) _codeGenerator.inline.getToken())
-				.booleanValue();
+        code.append(((CodeGeneratorHelper) _getHelper(_director
+                .getContainer())).generateFireCode());
 
-		if (inline) {
-			code.append(generateFireCode());
-		} else {
-			code.append(CodeGeneratorHelper.generateName(_director
-					.getContainer())
-					+ "();" + _eol);
-		}
-
-		return code.toString();
+        return code.toString();
 	}
 
 	/**
@@ -261,11 +236,8 @@ public class PNDirector extends Director {
 
 		code.append(bufferCode);
 
-		if (_codeGenerator.inline.getToken() == BooleanToken.TRUE) {
-			_generateThreadFunctionCode(code);
-		}
+		_generateThreadFunctionCode(code);
 
-		// return code.toString() + bufferCode.toString();
 		return code.toString();
 	}
 
@@ -461,22 +433,14 @@ public class PNDirector extends Director {
 
 		List actorList = ((CompositeActor) _director.getContainer())
 				.deepEntityList();
-		boolean inline = ((BooleanToken) _codeGenerator.inline.getToken())
-				.booleanValue();
 
 		Iterator actors = actorList.iterator();
 
 		// Generate the function for each actor thread.
-		actors = actorList.iterator();
-		while (actors.hasNext()) {
-			StringBuffer functionCode = new StringBuffer();
+        for (Actor actor : (List<Actor>) actorList) {
+            StringBuffer functionCode = new StringBuffer();
 
-			Actor actor = (Actor) actors.next();
 			CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
-
-			if (!inline) {
-				code.append(helper.generateFireFunctionCode());
-			}
 
 			code.append(_eol + "void* " + _getActorThreadLabel(actor)
 					+ "(void* arg) {" + _eol);
@@ -521,9 +485,9 @@ public class PNDirector extends Director {
 				// If not inline, generateFireCode() would be a call
 				// to the fire function which already includes the
 				// type conversion code.
-				if (inline) {
-					functionCode.append(helper.generateTypeConvertFireCode());
-				}
+//				if (inline) {
+//					functionCode.append(helper.generateTypeConvertFireCode());
+//				}
 
 				functionCode.append(helper.generatePostfireCode());
 

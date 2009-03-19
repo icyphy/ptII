@@ -28,15 +28,12 @@
 package ptolemy.codegen.c.domains.giotto.kernel;
 
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.lib.LimitedFiringSource;
 import ptolemy.actor.lib.jni.CompiledCompositeActor;
 import ptolemy.actor.lib.jni.PointerToken;
 import ptolemy.actor.util.DFUtilities;
@@ -44,14 +41,11 @@ import ptolemy.codegen.c.actor.sched.StaticSchedulingDirector;
 import ptolemy.codegen.c.kernel.CCodegenUtilities;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.CodeStream;
-import ptolemy.codegen.kernel.Director;
-import ptolemy.codegen.kernel.PortCodeGenerator;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
-import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;

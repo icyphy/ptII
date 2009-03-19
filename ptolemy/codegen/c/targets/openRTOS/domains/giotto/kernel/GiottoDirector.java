@@ -334,6 +334,8 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         code.append(_generateBlockCode("preinitBlock"));
         HashSet<Integer> frequencies = _getAllFrequencies();
 
+        StringBuffer frequencyTCode = new StringBuffer();
+
         ArrayList args = new ArrayList();
         args.add("");
 
@@ -397,7 +399,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
     }
     
 
-    public String generateFireCode() throws IllegalActionException{
+    public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         //code.append("//fire code should be here. I'm from the openRTOS GiottoDirector "+_eol);
         System.out.println("generateFireCode from openRTOS giotto director called here");
@@ -425,16 +427,16 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
 */
 
 
-    public String generatePostfireCode() throws IllegalActionException{
+    public String generatePostFireCode() throws IllegalActionException{
         StringBuffer code = new StringBuffer();
-        System.out.println("generatePostfireCode from openRTOS giotto director called here");
+        System.out.println("generatePostFireCode from openRTOS giotto director called here");
         
 
         for (Actor actor : (List<Actor>) 
                 ((TypedCompositeActor) _director.getContainer()).deepEntityList()) {
 
             //for each of the actors generate postfire code
-            //code.append(generatePostfireCode(actor)); 
+            //code.append(generatePostFireCode(actor)); 
         }
 
         return code.toString();
@@ -671,7 +673,11 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
 
            CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
            variableDeclarations.append(helperObject.generateVariableDeclaration());
-           variableDeclarations.append(helperObject.generatePortVariableDeclarations());
+           
+           // FIXEM: we don't want to add a new method to the 
+           // CodeGeneratorHelper public interface. 
+           //variableDeclarations.append(helperObject.generatePortVariableDeclarations());
+           
            //variableDeclarations.append("//should attempt to append port here"+_eol);
            // variableDeclarations.append(helperObject.);
         }
@@ -981,4 +987,5 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
    
     
     
+
 }

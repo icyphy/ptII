@@ -21,11 +21,11 @@ int $actorClass(_valueLength);
 /*** fireBlock ***/
 //this.prefireBlock();
 
-$actorClass(_valueLength) = $ref(reflectionCoefficients).payload.Array->size;
+$actorClass(_valueLength) = $ref(reflectionCoefficients).payload.DoubleArray->size;
 
 $ref(reflectionCoefficients) = $ref(newCoefficients);
 
-if ($actorClass(_valueLength) != $ref(reflectionCoefficients).payload.Array->size) {
+if ($actorClass(_valueLength) != $ref(reflectionCoefficients).payload.DoubleArray->size) {
     $this.reallocateBlock()
 }
 
@@ -39,7 +39,7 @@ for ($actorClass(j) = 0; $actorClass(j) < $val(blockSize); $actorClass(j)++) {
 
 
 /*** reallocateBlock ***/
-    $actorClass(_valueLength) = $ref(reflectionCoefficients).payload.Array->size;
+    $actorClass(_valueLength) = $ref(reflectionCoefficients).payload.DoubleArray->size;
 
     // Need to allocate or reallocate the arrays.
     free($actorSymbol(_backward));
@@ -56,6 +56,6 @@ for ($actorClass(j) = 0; $actorClass(j) < $val(blockSize); $actorClass(j)++) {
 
 /*** initReflectionCoefsBlock ***/
     for ($actorClass(i) = 0; $actorClass(i) < $actorClass(_valueLength); $actorClass(i)++) {
-        $actorSymbol(_reflectionCoefs)[$actorClass(i)] = Array_get($ref(reflectionCoefficients), $actorClass(i)).payload.Double;
+        $actorSymbol(_reflectionCoefs)[$actorClass(i)] = DoubleArray_get($ref(reflectionCoefficients), $actorClass(i));
     }
 /**/

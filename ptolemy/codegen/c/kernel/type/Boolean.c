@@ -1,6 +1,27 @@
+#define boolean char
+#define false 0
+#define true 1
+
 /***declareBlock***/
 typedef boolean BooleanToken;
 /**/
+
+
+extern TYPE_Boolean;
+#include <stdarg.h>
+#include <stdio.h>
+
+struct token {
+	char type;
+	union type {
+		BooleanToken Boolean;
+	} payload;
+};
+typedef struct token Token;
+extern Token String_new(char* string);
+extern char* BooleantoString(boolean b);
+
+
 
 /***funcDeclareBlock***/
 Token Boolean_new(boolean b);
@@ -28,9 +49,9 @@ Token Boolean_equals(Token thisToken, ...) {
     otherToken = va_arg(argp, Token);
 
     va_end(argp);
-    return Boolean_new(
-            ( thisToken.payload.Boolean && otherToken.payload.Boolean ) ||
-            ( !thisToken.payload.Boolean && !otherToken.payload.Boolean ));
+    return $new(Boolean(
+    		( thisToken.payload.Boolean && otherToken.payload.Boolean ) ||
+    		( !thisToken.payload.Boolean && !otherToken.payload.Boolean )));
 }
 /**/
 
@@ -47,7 +68,7 @@ Token Boolean_print(Token thisToken, ...) {
 
 /***Boolean_toString***/
 Token Boolean_toString(Token thisToken, ...) {
-    return String_new(BooleantoString(thisToken.payload.Boolean));
+    return $new(String(BooleantoString(thisToken.payload.Boolean)));
 }
 /**/
 
@@ -57,7 +78,7 @@ Token Boolean_add(Token thisToken, ...) {
     va_start(argp, thisToken);
     Token otherToken = va_arg(argp, Token);
     va_end(argp);
-    return Boolean_new(thisToken.payload.Boolean || otherToken.payload.Boolean);
+    return $new(Boolean(thisToken.payload.Boolean || otherToken.payload.Boolean));
 }
 /**/
 
@@ -82,13 +103,13 @@ Token Boolean_negate(Token thisToken, ...) {
 
 /***Boolean_zero***/
 Token Boolean_zero(Token token, ...) {
-    return Boolean_new(false);
+    return $new(Boolean(false));
 }
 /**/
 
 /***Boolean_one***/
 Token Boolean_one(Token token, ...) {
-    return Boolean_new(true);
+    return $new(Boolean(true));
 }
 /**/
 
@@ -100,7 +121,7 @@ Token Boolean_clone(Token thisToken, ...) {
 /**/
 
 
---------------------- static functions ------------------------------
+//--------------------- static functions ------------------------------
 /***Boolean_convert***/
 Token Boolean_convert(Token token, ...) {
     switch (token.type) {

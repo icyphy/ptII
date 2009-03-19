@@ -35,14 +35,18 @@ import java.util.Iterator;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.codegen.kernel.CodeGenerator;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.ParseTreeCodeGenerator;
+import ptolemy.codegen.kernel.CodeGeneratorHelper.Channel;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
+import ptolemy.domains.fsm.modal.ModalController;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.ExecuteCommands;
@@ -88,7 +92,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
      */
     public CCodeGeneratorHelper(NamedObj component) {
         super(component);
-        _parseTreeCodeGenerator = new CParseTreeCodeGenerator();
+        _parseTreeCodeGenerator = getParseTreeCodeGenerator();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -101,7 +105,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
         // FIXME: We need to create new ParseTreeCodeGenerator each time
         // here or else we get lots of test failures.  It would be better
         // if we could use the same CParseTreeCodeGenerator over and over.
-        _parseTreeCodeGenerator = new CParseTreeCodeGenerator();
+        _parseTreeCodeGenerator = new CParseTreeCodeGenerator(_codeGenerator);
         return _parseTreeCodeGenerator;
     }
 
@@ -150,26 +154,6 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
         return processCode(code.toString());
     }
 
-    
-    public String generatePortVariableDeclarations() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-
-        String name = CodeGeneratorHelper.generateName(getComponent());
-        
-      
-        // Generate PORT declarations for output ports.
-        String portVariableDeclaration = _generatePortVariableDeclarations();
-        if (portVariableDeclaration.length() > 1) {
-            code.append(_eol
-                    + _codeGenerator.comment(name + "'s PORT variable declarations."));
-            code.append(portVariableDeclaration);
-        }
-
-           return processCode(code.toString());    
-    
-     
-    }
-    
     /** Get the code generator associated with this helper class.
      *  @return The code generator associated with this helper class.
      *  @see #setCodeGenerator(CodeGenerator)
@@ -355,46 +339,6 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    public String _generatePortVariableDeclarations() throws IllegalActionException {
-        
-        System.out.println("get Port Variable Declarations called");
-        StringBuffer code = new StringBuffer();
-    
-        Iterator outputPorts = ((Actor) getComponent()).outputPortList()
-                .iterator();
-    
-        while (outputPorts.hasNext()) {
-            TypedIOPort outputPort = (TypedIOPort) outputPorts.next();
-    
-            // If either the output port is a dangling port or
-            // the output port has inside receivers.
-           //if (!outputPort.isOutsideConnected() || outputPort.isInsideConnected()) {
-            if(true){
-                code.append("static " + targetType(outputPort.getType()) + " "
-                        + generateName(outputPort)+"_PORT");
-    
-                if (outputPort.isMultiport()) {
-                    code.append("[" + outputPort.getWidthInside() + "]");
-                }
-    
-                int bufferSize = getBufferSize(outputPort);
-    
-                if (bufferSize > 1) {
-                    code.append("[" + bufferSize + "]");
-                }
-                code.append(";" + _eol);
-            }
-            else
-            {
-                System.out.println("didn't match if");
-            }
-           
-       // return "should define port here from CCodeGEneratorHelper";
-        }
-        //System.out.println("about to return: "+code.toString());
-        return code.toString();
-       }
-
     /** Generate input variable declarations.
      *  @return a String that declares input variables.
      *  @exception IllegalActionException If thrown while
@@ -502,6 +446,77 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
         return code.toString();
     }
 
+    /**
+     * Generate the type conversion statement for the particular offset of
+     * the two given channels. This assumes that the offset is the same for
+     * both channel. Advancing the offset of one has to advance the offset of
+     * the other.
+     * @param source The given source channel.
+     * @param sink The given sink channel.
+     * @param offset The given offset.
+     * @return The type convert statement for assigning the converted source
+     *  variable to the sink variable with the given offset.
+     * @exception IllegalActionException If there is a problem getting the
+     * helpers for the ports or if the conversion cannot be handled.
+     */
+    protected String _generateTypeConvertStatement(Channel source,
+            Channel sink, int offset) throws IllegalActionException {
+
+        Type sourceType = ((TypedIOPort) source.port).getType();
+        Type sinkType = ((TypedIOPort) sink.port).getType();
+
+        // In a modal model, a refinement may have an output port which is
+        // not connected inside, in this case the type of the port is
+        // unknown and there is no need to generate type conversion code
+        // because there is no token transferred from the port.
+        if (sourceType == BaseType.UNKNOWN) {
+            return "";
+        }
+
+        // The references are associated with their own helper, so we need
+        // to find the associated helper.
+        String sourcePortChannel = source.port.getName() + "#"
+        + source.channelNumber + ", " + offset;
+        String sourceRef = ((CodeGeneratorHelper) _getHelper(source.port
+                .getContainer())).getReference(sourcePortChannel);
+
+        String sinkPortChannel = sink.port.getName() + "#" + sink.channelNumber
+        + ", " + offset;
+
+        // For composite actor, generate a variable corresponding to
+        // the inside receiver of an output port.
+        // FIXME: I think checking sink.port.isOutput() is enough here.
+        if (sink.port.getContainer() instanceof CompositeActor
+                && sink.port.isOutput()) {
+            sinkPortChannel = "@" + sinkPortChannel;
+        }
+        String sinkRef = ((CodeGeneratorHelper) _getHelper(sink.port
+                .getContainer())).getReference(sinkPortChannel, true);
+
+        // When the sink port is contained by a modal controller, it is
+        // possible that the port is both input and output port. we need
+        // to pay special attention. Directly calling getReference() will
+        // treat it as output port and this is not correct.
+        // FIXME: what about offset?
+        if (sink.port.getContainer() instanceof ModalController) {
+            sinkRef = generateName(sink.port);
+            if (sink.port.isMultiport()) {
+                sinkRef = sinkRef + "[" + sink.channelNumber + "]";
+            }
+        }
+
+        String result = sourceRef;
+
+        String sourceCodeGenType = codeGenType(sourceType);
+        String sinkCodeGenType = codeGenType(sinkType);
+        
+        if (!sinkCodeGenType.equals(sourceCodeGenType)) {
+            result = "$convert_" + sourceCodeGenType + "_" 
+            + sinkCodeGenType + "(" + result + ")";
+        }
+        return sinkRef + " = " + result + ";" + _eol;
+    }
+
     /** Generate type convert variable declarations.
      *  @return a String that declares type convert variables.
      *  @exception IllegalActionException If thrown while
@@ -577,6 +592,9 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
 
         return result;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private fields                    ////
 
     /** The set of header files that needed to be included. */
     private Set _includeFiles = new HashSet();

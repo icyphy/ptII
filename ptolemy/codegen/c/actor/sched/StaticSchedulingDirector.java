@@ -34,10 +34,10 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.util.DFUtilities;
+import ptolemy.codegen.actor.Director;
 import ptolemy.codegen.kernel.ActorCodeGenerator;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.CodeStream;
-import ptolemy.codegen.kernel.Director;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
@@ -109,7 +109,6 @@ public class StaticSchedulingDirector extends Director {
 
                     // generate fire code for the actor
                     code.append(helper.generateFireCode());
-                    code.append(helper.generateTypeConvertFireCode());
 
                     _generateUpdatePortOffsetCode(code, actor);
                 }
@@ -202,15 +201,7 @@ public class StaticSchedulingDirector extends Director {
             }
         }
 
-        boolean inline = ((BooleanToken) _codeGenerator.inline.getToken())
-        .booleanValue();
-        
-        if (inline) {
-            code.append(generateFireCode());
-        } else {
-            code.append(CodeGeneratorHelper.generateName(_director
-                    .getContainer()) + "();" + _eol);
-        }
+        code.append(generateFireCode());
 
         // The code generated in generateModeTransitionCode() is executed
         // after one global iteration, e.g., in HDF model.

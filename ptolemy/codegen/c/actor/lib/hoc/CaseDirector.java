@@ -30,9 +30,8 @@ package ptolemy.codegen.c.actor.lib.hoc;
 import java.util.Iterator;
 
 import ptolemy.actor.CompositeActor;
+import ptolemy.codegen.actor.Director;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
-import ptolemy.codegen.kernel.Director;
-import ptolemy.data.BooleanToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -71,9 +70,6 @@ public class CaseDirector extends Director {
     public String generateFireCode() throws IllegalActionException {
 
         StringBuffer code = new StringBuffer();
-
-        boolean inline = ((BooleanToken) _codeGenerator.inline.getToken())
-                .booleanValue();
 
         ptolemy.actor.lib.hoc.Case container = (ptolemy.actor.lib.hoc.Case) getComponent()
                 .getContainer();
@@ -132,13 +128,7 @@ public class CaseDirector extends Director {
 
             // Fire the refinement
             if (fireRefinement) {
-                if (inline) {
                     code.append(refinementHelper.generateFireCode());
-                    code.append(refinementHelper.generateTypeConvertFireCode());
-                } else {
-                    code.append(CodeGeneratorHelper.generateName(refinement)
-                            + "();" + _eol);
-                }
             }
             fireRefinement = true;
 
@@ -149,14 +139,9 @@ public class CaseDirector extends Director {
 
         if (defaultRefinement != null) {
             code.append(_INDENT2 + "} else {" + _eol);
-            if (inline) {
-                CodeGeneratorHelper defaultHelper = (CodeGeneratorHelper) _getHelper(defaultRefinement);
-                code.append(defaultHelper.generateFireCode());
-                code.append(defaultHelper.generateTypeConvertFireCode());
-            } else {
-                code.append(CodeGeneratorHelper.generateName(defaultRefinement)
-                        + "();" + _eol);
-            }
+            CodeGeneratorHelper defaultHelper = 
+                (CodeGeneratorHelper) _getHelper(defaultRefinement);
+            code.append(defaultHelper.generateFireCode());
         }
 
         code.append(_INDENT2 + "}" + _eol);

@@ -53,7 +53,7 @@ Token Matrix_convert(Token token, ...) {
        Matrix_set(token, 0, 0, token);
        return token;
     */
-    return Matrix_new(1, 1, 1, token, token.type);
+    return $new(Matrix(1, 1, 1, token, token.type));
 }
 /**/
 
@@ -117,16 +117,16 @@ Token Matrix_equals(Token thisToken, ...) {
 
     if (( thisToken.payload.Matrix->row != otherToken.payload.Matrix->row ) ||
             ( thisToken.payload.Matrix->column != otherToken.payload.Matrix->column )) {
-        return Boolean_new(false);
+        return $new(Boolean(false));
     }
     for (i = 0; i < thisToken.payload.Matrix->column; i++) {
         for (j = 0; j < thisToken.payload.Matrix->row; j++) {
             if (!functionTable[(int) Matrix_get(thisToken, j, i).type][FUNC_equals](Matrix_get(thisToken, j, i), Matrix_get(otherToken, j, i)).payload.Boolean) {
-                return Boolean_new(false);
+                return $new(Boolean(false));
             }
         }
     }
-    return Boolean_new(true);
+    return $new(Boolean(true));
 }
 /**/
 
@@ -143,17 +143,17 @@ Token Matrix_isCloseTo(Token thisToken, ...) {
 
     if (( thisToken.payload.Matrix->row != otherToken.payload.Matrix->row ) ||
             ( thisToken.payload.Matrix->column != otherToken.payload.Matrix->column )) {
-        return Boolean_new(false);
+        return $new(Boolean(false));
     }
     for (i = 0; i < thisToken.payload.Matrix->column; i++) {
         for (j = 0; j < thisToken.payload.Matrix->row; j++) {
             if (!functionTable[(int) Matrix_get(thisToken, j, i).type][FUNC_isCloseTo](Matrix_get(thisToken, j, i), Matrix_get(otherToken, j, i), tolerance).payload.Boolean) {
-                return Boolean_new(false);
+                return $new(Boolean(false));
             }
         }
     }
     va_end(argp);
-    return Boolean_new(true);
+    return $new(Boolean(true));
 }
 /**/
 
@@ -213,7 +213,7 @@ Token Matrix_toString(Token thisToken, ...) {
         }
     }
     strcat(string, "]");
-    return String_new(string);
+    return $new(String(string));
 }
 /**/
 
@@ -231,7 +231,7 @@ Token Matrix_add(Token thisToken, ...) {
     va_start(argp, thisToken);
     otherToken = va_arg(argp, Token);
 
-    result = Matrix_new(thisToken.payload.Matrix->row, thisToken.payload.Matrix->column, 0);
+    result = $new(Matrix(thisToken.payload.Matrix->row, thisToken.payload.Matrix->column, 0));
 
     for (i = 0; i < thisToken.payload.Matrix->column; i++) {
         for (j = 0; j < thisToken.payload.Matrix->row; j++) {
@@ -257,7 +257,7 @@ Token Matrix_subtract(Token thisToken, ...) {
     va_start(argp, thisToken);
     otherToken = va_arg(argp, Token);
 
-    result = Matrix_new(thisToken.payload.Matrix->row, thisToken.payload.Matrix->column, 0);
+    result = $new(Matrix(thisToken.payload.Matrix->row, thisToken.payload.Matrix->column, 0));
 
     for (i = 0; i < thisToken.payload.Matrix->column; i++) {
         for (j = 0; j < thisToken.payload.Matrix->row; j++) {
@@ -288,9 +288,9 @@ Token Matrix_multiply(Token thisToken, ...) {
             && otherToken.payload.Matrix->row == 1
             && otherToken.payload.Matrix->column == 1) {
         // Handle simple scaling by a 1x1 matrix
-        result = Matrix_new(thisToken.payload.Matrix->row, thisToken.payload.Matrix->column, 0);
+        result = $new(Matrix(thisToken.payload.Matrix->row, thisToken.payload.Matrix->column, 0));
     } else {
-        result = Matrix_new(thisToken.payload.Matrix->row, thisToken.payload.Matrix->row, 0);
+        result = $new(Matrix(thisToken.payload.Matrix->row, thisToken.payload.Matrix->row, 0));
     }
     switch (otherToken.type) {
         case TYPE_Matrix:
@@ -306,8 +306,8 @@ Token Matrix_multiply(Token thisToken, ...) {
         break;
         #ifdef TYPE_Array
         case TYPE_Array:
-        element = Array_new(thisToken.payload.Matrix->column *
-        thisToken.payload.Matrix->row, 0);
+        element = $new(Array(thisToken.payload.Matrix->column *
+        thisToken.payload.Matrix->row, 0));
         for (i = 0; i < thisToken.payload.Matrix->column; i++) {
             for (j = 0; j < thisToken.payload.Matrix->row; j++) {
                 Array_set(element,
@@ -354,7 +354,7 @@ Token Matrix_divide(Token thisToken, ...) {
         #ifdef TYPE_Array
         case TYPE_Array:
         // Divide reverse.
-        result = Array_new(otherToken.payload.Array->size, 0);
+        result = $new(Array(otherToken.payload.Array->size, 0));
         for (i = 0; i < otherToken.payload.Array->size; i++) {
             element = Array_get(thisToken, i);
             result.payload.Array->elements[i] = functionTable[TYPE_Matrix][FUNC_divide](thisToken, element);
@@ -363,7 +363,7 @@ Token Matrix_divide(Token thisToken, ...) {
         break;
         #endif
         default:
-        result = Matrix_new(thisToken.payload.Matrix->row, thisToken.payload.Matrix->column, 0);
+        result = $new(Matrix(thisToken.payload.Matrix->row, thisToken.payload.Matrix->column, 0));
 
         for (i = 0, index = 0; i < thisToken.payload.Matrix->column; i++) {
             for (j = 0; j < thisToken.payload.Matrix->row; j++, index++) {

@@ -57,7 +57,7 @@ Token Array_new(int size, int given, ...) {
 	va_list argp;
 	int i;
 	Token result;
-	char elementType;
+//	char elementType;
 
 	result.type = TYPE_Array;
 	result.payload.Array = (ArrayToken) malloc(sizeof(struct array));
@@ -77,17 +77,17 @@ Token Array_new(int size, int given, ...) {
 			}
 
 			// elementType is given as the last argument.
-			elementType = va_arg(argp, int);
-			//result.payload.Array->elementType = elementType;
-
-			if (elementType >= 0) {
-				// convert the elements if needed.
-				for (i = 0; i < given; i++) {
-					if (Array_get(result, i).type != elementType) {
-						Array_set(result, i, functionTable[(int)elementType][FUNC_convert](Array_get(result, i)));
-					}
-				}
-			}
+//			elementType = va_arg(argp, int);
+//			//result.payload.Array->elementType = elementType;
+//
+//			if (elementType >= 0) {
+//				// convert the elements if needed.
+//				for (i = 0; i < given; i++) {
+//					if (Array_get(result, i).type != elementType) {
+//						Array_set(result, i, functionTable[(int)elementType][FUNC_convert](Array_get(result, i)));
+//					}
+//				}
+//			}
 
 			va_end(argp);
 		}
@@ -130,17 +130,17 @@ Token Array_equals(Token thisToken, ...) {
 	otherToken = va_arg(argp, Token);
 
 	if (thisToken.payload.Array->size != otherToken.payload.Array->size) {
-		return Boolean_new(false);
+		return $new(Boolean(false));
 	}
 	for (i = 0; i < thisToken.payload.Array->size; i++) {
 		if (!functionTable[(int)Array_get(thisToken, i).type][FUNC_equals]
 		                                                      (Array_get(thisToken, i), Array_get(otherToken, i)).payload.Boolean) {
-			return Boolean_new(false);
+			return $new(Boolean(false));
 		}
 	}
 
 	va_end(argp);
-	return Boolean_new(true);
+	return $new(Boolean(true));
 }
 /**/
 
@@ -157,16 +157,16 @@ Token Array_isCloseTo(Token thisToken, ...) {
 	tolerance = va_arg(argp, Token);
 
 	if (thisToken.payload.Array->size != otherToken.payload.Array->size) {
-		return Boolean_new(false);
+		return $new(Boolean(false));
 	}
 	for (i = 0; i < thisToken.payload.Array->size; i++) {
 		if (!functionTable[(int)Array_get(thisToken, i).type][FUNC_isCloseTo](Array_get(thisToken, i), Array_get(otherToken, i), tolerance).payload.Boolean) {
-			return Boolean_new(false);
+			return $new(Boolean(false));
 		}
 	}
 
 	va_end(argp);
-	return Boolean_new(true);
+	return $new(Boolean(true));
 }
 /**/
 
@@ -232,7 +232,7 @@ Token Array_toString(Token thisToken, ...) {
 	}
 
 	strcat(string, "}");
-	Token result = String_new(string);
+	Token result = $new(String(string));
 	// String_new() calls strdup(), so we free here
 	// FIXME: If we free here, then the SequenceArrayToString.xml test crashes?
 	//free(string);
@@ -262,7 +262,7 @@ Token Array_add(Token thisToken, ...) {
 	size2 = otherToken.payload.Array->size;
 	resultSize = (size1 > size2) ? size1 : size2;
 
-	result = Array_new(resultSize, 0);
+	result = $new(Array(resultSize, 0));
 
 	for (i = 0; i < resultSize; i++) {
 		if (size1 == 1) {
@@ -307,7 +307,7 @@ Token Array_subtract(Token thisToken, ...) {
 	size2 = otherToken.payload.Array->size;
 	resultSize = (size1 > size2) ? size1 : size2;
 
-	result = Array_new(resultSize, 0);
+	result = $new(Array(resultSize, 0));
 
 	for (i = 0; i < resultSize; i++) {
 		if (size1 == 1) {
@@ -350,7 +350,7 @@ Token Array_multiply(Token thisToken, ...) {
 	size2 = otherToken.payload.Array->size;
 	resultSize = (size1 > size2) ? size1 : size2;
 
-	result = Array_new(resultSize, 0);
+	result = $new(Array(resultSize, 0));
 
 	for (i = 0; i < resultSize; i++) {
 		if (size1 == 1) {
@@ -390,7 +390,7 @@ Token Array_divide(Token thisToken, ...) {
 	size2 = otherToken.payload.Array->size;
 	resultSize = (size1 > size2) ? size1 : size2;
 
-	result = Array_new(resultSize, 0);
+	result = $new(Array(resultSize, 0));
 
 	for (i = 0; i < resultSize; i++) {
 		if (size1 == 1) {
@@ -415,7 +415,7 @@ Token Array_negate(Token thisToken, ...) {
 	int i;
 	Token result;
 
-	result = Array_new(thisToken.payload.Array->size, 0);
+	result = $new(Array(thisToken.payload.Array->size, 0));
 
 	for (i = 0; i < thisToken.payload.Array->size; i++) {
 		Array_set(result, i, $tokenFunc(Array_get(thisToken, i)::negate()));
@@ -433,7 +433,7 @@ Token Array_zero(Token token, ...) {
 	Token element;
 	int i;
 
-	result = Array_new(token.payload.Array->size, 0);
+	result = $new(Array(token.payload.Array->size, 0));
 	for (i = 0; i < token.payload.Array->size; i++) {
 		element = Array_get(token, i);
 		result.payload.Array->elements[i]
@@ -452,7 +452,7 @@ Token Array_one(Token token, ...) {
 	Token element;
 	int i;
 
-	result = Array_new(token.payload.Array->size, 0);
+	result = $new(Array(token.payload.Array->size, 0));
 	for (i = 0; i < token.payload.Array->size; i++) {
 		element = Array_get(token, i);
 		result.payload.Array->elements[i]
@@ -471,7 +471,7 @@ Token Array_clone(Token token, ...) {
 	Token element;
 	int i;
 
-	result = Array_new(token.payload.Array->size, 0);
+	result = $new(Array(token.payload.Array->size, 0));
 	for (i = 0; i < token.payload.Array->size; i++) {
 		element = Array_get(token, i);
 		result.payload.Array->elements[i] = functionTable[(int)element.type][FUNC_clone](element);
@@ -511,7 +511,7 @@ Token arrayRepeat(int number, Token value) {
 /**/
 
 
------------- static function -----------------------------------------------
+//------------ static function -----------------------------------------------
 
 /***Array_convert***/
 
@@ -530,7 +530,7 @@ Token Array_convert(Token token, ...) {
 	targetType = va_arg(argp, int);
 
 
-	result = Array_new(token.payload.Array->size, 0);
+	result = $new(Array(token.payload.Array->size, 0));
 
 	for (i = 0; i < token.payload.Array->size; i++) {
 		element = Array_get(token, i);
