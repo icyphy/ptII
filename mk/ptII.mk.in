@@ -260,12 +260,8 @@ JAVAFLAGS =
 # ptolemy/actor/lib/jai/makefile
 JAI_JARS =	@JAI_JARS@
 
-# Jar file that contains JDHL, see http://www.jhdl.org.
-JHDL_JAR =	@JHDL_JAR@
-
 # If Jini is present, the set to yes, otherwise, set to no
 JINI_PRESENT =  @JINI_PRESENT@
-
 
 # ImageJ Jar file, used to compile ptolemy/domains/gr/lib/vr
 IMAGEJ_JAR =	@IMAGEJ_JAR@
@@ -478,9 +474,6 @@ PTJAI_DIR =	@PTJAI_DIR@
 # Ptolemy II packages that use Java Advanced Imaging
 # PTJAI_PACKAGES is used in ptII/doc/makefile
 PTJAI_PACKAGES =	@PTJAI_PACKAGES@
-
-# PTJHDL_DIR is set to jhdl if the JHDL directory is found
-PTJHDL_DIR =    @PTJHDL_DIR@
 
 # PTJMF_DIR is set to jmf if the JMF directory is found
 PTJMF_DIR =     @PTJMF_DIR@

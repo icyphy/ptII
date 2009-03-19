@@ -425,7 +425,6 @@ PTII_SRC_TO_BE_REMOVED = \
 		bin/convertToLazy \
 		bin/convertToLazy.bat \
 		bin/copernicus.bat \
-		bin/copernicusjhdl.bat \
 		bin/decompile.bat \
 		bin/emachine.bat \
 		bin/giottoc.bat \
@@ -1274,7 +1273,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/com/JLex \
 	$(REMOTE1PTIIDIST)/ptolemy/plot \
 	$(REMOTE1PTIIDIST)/ptolemy/copernicus/kernel \
-	$(REMOTE1PTIIDIST)/ptolemy/copernicus/jhdl \
 	$(REMOTE1PTIIDIST)/ptolemy/copernicus/gui \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/kernel/attributes \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/toolbox \

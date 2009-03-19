@@ -174,11 +174,6 @@ if [ "$PTJACL_DIR" = "ptjacl" ]; then
     PTJACL_JFLAG="@PTJACL_JFLAG@"
 fi
 
-
-# Jar file for JHDL
-JHDL_JAR="@JHDL_JAR@"
-
-
 #### Backtracking facility
 # The Backtracking facility uses Eclipse jar files
 # Set to backtrack and used in $PTII/ptolemy/makefile if Eclipse was found
@@ -682,12 +677,6 @@ case $commandname in
 	# all fail if we use Xmx384
 	javaflag="-Xmx512M"
         ;;
-    copernicusjhdl)
-	help="Do deep jhdl codegen"
-	javastartupclass=ptolemy.copernicus.kernel.Copernicus
-	javasourcedir=
-	applicationflags="-codeGenerator jhdl"
-        ;;
     decompile)
 	if [ -f "$JODE_JAR" ]; then
 	    help="Decompile by calling jode, for example: \
@@ -695,7 +684,7 @@ case $commandname in
 	    invokeHelp="Usage: $commandname [commonOptions] [momlSpecificOptions] className"
 	    javastartupclass=jode.decompiler.Main
 	    javasourcedir=
-	    jarfile="$ALL_JAR${CLASSPATHSEPARATOR}$JODE_JAR${CLASSPATHSEPARATOR}$JHDL_JAR"
+	    jarfile="$ALL_JAR${CLASSPATHSEPARATOR}$JODE_JAR"
 	    javaflag="$JODE_JFLAG"
 	else
 	    error='Jode was not found when $PTII/configure was run.
@@ -743,14 +732,14 @@ and run:
 	invokeHelp="Usage: $commandname [commonOptions] [momlSpecificOptions] className"
 	javastartupclass=jode.decompiler.Main
 	javasourcedir=
-	jarfile="$ALL_JAR${CLASSPATHSEPARATOR}$JODE_JAR${CLASSPATHSEPARATOR}$JHDL_JAR"
+	jarfile="$ALL_JAR${CLASSPATHSEPARATOR}$JODE_JAR"
 	javaflag="$JODE_JFLAG"
 	;;
     obfuscate)
 	help="Jode obfuscator, useful for reducing class file size"
 	javastartupclass=jode.obfuscator.Main
 	javasourcedir=
-	jarfile="$JODE_JAR${CLASSPATHSEPARATOR}$JHDL_JAR"
+	jarfile="$JODE_JAR"
 	javaflag="$JODE_JFLAG"
 	;;
     mescal)

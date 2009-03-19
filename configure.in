@@ -1692,64 +1692,6 @@ if test -z "$PTJAI_DIR"; then
 fi
 
 #--------------------------------------------------------------------
-#       JHDL is a Java Highlevel Description Language, see
-#	http://www.jhdl.org
-#       See if there was a command-line option for where JHDL is
-#       If not, look for $PTII/vendors/jhdl/ptjhdllib/JHDL.jar
-#--------------------------------------------------------------------
-
-# PTJHDL_DIR is set to jhdl and used in
-# $PTII/ptolemy/actor/makefile if jhdl was found
-PTJHDL_DIR=
-
-# Directory that contains the jhdl jar files
-JHDL_JAR='${PTII}/vendors/jhdl/ptjhdllib/JHDL.jar'
-
-# We only need to look for jhdl if $PTII/ptolemy/copernicus/jhdl exists
-if test ! -d "$PTII/ptolemy/copernicus/jhdl"; then
-    PT_MSG_STATUS([$PTII/ptolemy/copernicus/jhdl is not present,
-    so we need not find the JHDL - a Java Optimization Framework.])
-    JHDL_JAR='${PTII}/vendors/jhdl/ptjhdllib/JHDL.jar'
-else
-    AC_MSG_CHECKING([for jhdl jar file])
-    AC_ARG_WITH(jhdl-jar, [  --with-jhdl-jar=JARFILE       use JHDL from JARFILE,
-                          defaults to \$PTII/vendors/jhdl/ptjhdllib/JHDL.jar],
-	JHDL_JAR=$withval,
-	JHDL_JAR=$PTII/vendors/jhdl/ptjhdllib/JHDL.jar)
-
-    if test -f "$JHDL_JAR"; then
-	PT_MSG_RESULT([$JHDL_JAR])
-	# Set to jhdl and used in
-	# $PTII/ptolemy/apps/makefile if jhdl was found
-	PTJHDL_DIR=jhdl
-    else
-	JHDL_JAR=$PTII/vendors/jhdl/ptjhdllib/JHDL.jar
-	if test -f "$JHDL_JAR"; then
-	    PT_MSG_RESULT([$JHDL_JAR])
-	    # Set to jhdl and used in
-	    # $PTII/ptolemy/apps/makefile if jhdl was found
-	    PTJHDL_DIR=jhdl
-	fi    
-    fi	
-
-    if test "$PTJHDL_DIR" = ""; then
-        AC_MSG_WARN([Failed to find PTII/vendors/jhdl/ptjhdllib/JHDL.jar
-    perhaps JHDL is not installed?
-    You need not download JHDL unless you plan on using code generation
-    The JHDL SDK can be downloaded from http://www.jhdl.org])
-	# Note that we don't substitute in the ${PTII} here
-	JHDL_JAR='${PTII}/vendors/jhdl/ptjhdllib/JHDL.jar'
-    fi
-fi
-
-if test -z "$PTJHDL_DIR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/copernicus/jhdl/"
-else
-   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-    <classpathentry kind=\"lib\" path=\"$JHDL_JAR\"/>"
-fi 
-
-#--------------------------------------------------------------------
 #       JMF is the Java Media Framework
 #	For more information, 
 #       see http://java.sun.com/products/java-media/jmf
@@ -3901,9 +3843,6 @@ AC_SUBST(JDOCTAG)
 # and use JDOCTAGLET in doc/makefile
 AC_SUBST(JDOCTAGLET)
 
-# Jar file that contains JDHL, see http://www.jhdl.org
-AC_SUBST(JHDL_JAR)
-
 # Jini home directory, see http://www.sun.com/jini/
 AC_SUBST(JINI_DIR)
 
@@ -4120,9 +4059,6 @@ AC_SUBST(PTJAVA_HOME)
 # Set to gr and used in
 # $PTII/ptolemy/domains/makefile if Java 3D was found
 AC_SUBST(PTJAVA3D_DIR)
-
-# Set to jhdl if JDHL.jar was found
-AC_SUBST(PTJHDL_DIR)
 
 # Set to jmf if jmf.jar was found
 AC_SUBST(PTJMF_DIR)

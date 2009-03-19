@@ -55,7 +55,6 @@ SHELL_FILES = \
 	.ncapp2moml-util \
 	convertToLazy \
 	copernicus \
-	copernicusjhdl \
 	decompile \
 	emachine \
 	giottoc \
