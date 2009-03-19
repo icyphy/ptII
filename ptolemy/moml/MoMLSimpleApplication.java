@@ -220,14 +220,19 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables                 ////
+    ////                         protected variables               ////
+    /** The manager of this model. */
     protected Manager _manager = null;
 
-    // executionError() sets _sawThrowable to the exception.
+    /** The exception seen by executionError(). */
     protected Throwable _sawThrowable = null;
 
-    // Wait until executionFinished() or executionError() is called.
-    // If true and _sawThrowable is null then executionFinished() was called.
-    // If true and _sawThrowable is non-null then executionError() was called.
+    /** A flag that indicates if the execution has finished or thrown
+     *  an error.  The code busy waits until executionFinished() or
+     *  executionError() is called.  If this variable is true and
+     *  _sawThrowable is null then executionFinished() was called.  If
+     *  this variable is true and _sawThrowable is non-null then
+     *  executionError() was called.
+     */
     protected boolean _executionFinishedOrError = false;
 }
