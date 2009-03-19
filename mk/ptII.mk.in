@@ -207,7 +207,7 @@ JAVADOC = 	@JAVADOC@
 JDOCBREAKITERATOR = @JDOCBREAKITERATOR@
 
 # Increase the amount of memory that javadoc uses.
-JDOCMEMORY =	-J-Xmx350m
+JDOCMEMORY =	-J-Xmx1000m
 
 # Allow @Pt.AcceptedRating and @Pt.ProposedRating tags.
 JDOCTAG = 	@JDOCTAG@
