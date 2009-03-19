@@ -200,9 +200,11 @@ public class PortNameChanges implements MoMLFilter {
     /** Clear recorded state for this element so that it does not
      *  interfere with the next element.
      *  @param container The object created by this element.
-     * @param elementName The element name.
-     * @param currentCharData The character data, which appears
+     *  @param elementName The element name.
+     *  @param currentCharData The character data, which appears
      *  only in the doc and configure elements
+     *  @param xmlFile The file currently being parsed, ignored
+     *  by this method.
      *  @exception Exception Not thrown in this base class.
      */
     public void filterEndElement(NamedObj container, String elementName,
