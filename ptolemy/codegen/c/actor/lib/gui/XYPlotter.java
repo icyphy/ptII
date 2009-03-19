@@ -56,9 +56,9 @@ public class XYPlotter extends PlotterBase {
      *  @exception IllegalActionException If the code stream encounters
      *   errors in processing the specified code blocks.
      */
-    public String generateFireCode() throws IllegalActionException {
+    protected String _generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(super.generateFireCode());
+        code.append(super._generateFireCode());
         ptolemy.actor.lib.gui.XYPlotter actor = (ptolemy.actor.lib.gui.XYPlotter) getComponent();
         code.append(generatePlotFireCode(actor.inputX.getWidth()));
         return code.toString();

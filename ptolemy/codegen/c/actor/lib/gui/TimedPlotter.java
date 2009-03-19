@@ -61,7 +61,7 @@ public class TimedPlotter extends CCodeGeneratorHelper{//PlotterBase{  //CCodeGe
      *  @exception IllegalActionException If the code stream encounters
      *   errors in processing the specified code blocks.
      */
-   public String generateFireCode() throws IllegalActionException {
+   protected String _generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
        // code.append(super.generateFireCode());
         ptolemy.actor.lib.gui.TimedPlotter actor = (ptolemy.actor.lib.gui.TimedPlotter) getComponent();
