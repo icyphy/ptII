@@ -43,6 +43,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.net.URL;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -82,6 +83,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import ptolemy.actor.Manager;
+import ptolemy.actor.gt.GTTools;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.EditParametersDialog;
 import ptolemy.actor.gui.EditorFactory;
@@ -883,6 +885,12 @@ public class Connector extends MoMLApplication {
 
                 break;
             }
+        }
+        
+        Collection<NamedObj> children = GTTools.getChildren(model, true, true,
+                true, true);
+        for (NamedObj child : children) {
+            _loadAttributes(child, attributesPath, force);
         }
     }
 
