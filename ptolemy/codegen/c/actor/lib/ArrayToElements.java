@@ -60,23 +60,19 @@ public class ArrayToElements extends CCodeGeneratorHelper {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public String generateFireCode() throws IllegalActionException {
-        super.generateFireCode();
+    protected String _generateFireCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        code.append(super._generateFireCode());
 
         ptolemy.actor.lib.ArrayToElements actor = (ptolemy.actor.lib.ArrayToElements) getComponent();
 
         ArrayList args = new ArrayList();
         args.add(Integer.valueOf(0));
 
-        boolean isOutputPrimitive = isPrimitive(actor.output.getType());
         for (int i = 0; i < actor.output.getWidth(); i++) {
             args.set(0, Integer.valueOf(i));
-            if (isOutputPrimitive) {
-                _codeStream.appendCodeBlock("PrimitiveFireBlock", args);
-            } else {
-                _codeStream.appendCodeBlock("TokenFireBlock", args);
-            }
+            code.append(_generateBlockCode("fireBlock", args));
         }
-        return processCode(_codeStream.toString());
+        return processCode(code.toString());
     }
 }

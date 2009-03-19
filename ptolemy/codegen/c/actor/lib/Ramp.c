@@ -2,46 +2,19 @@
 static $targetType(output) $actorSymbol(state);
 /**/
 
-/*** ArrayConvertInitBlock($elementType) ***/
-$actorSymbol(state) = $typeFunc(TYPE_Array::convert($actorSymbol(state), $elementType));
+/***initBlock***/
+$actorSymbol(state) = $convert_$cgType(init)_$cgType(output)($val(init));
 /**/
 
-/*** ArrayConvertStepBlock($elementType) ***/
-$ref(step) = $typeFunc(TYPE_Array::convert($ref(step), $elementType));
+/***getTriggerTokens($channel)***/
+$get(trigger, $channel)
 /**/
 
-
-/***CommonInitBlock($type)***/
-$actorSymbol(state) = $val(($type)init);
-/**/
-
-/***StringInitBlock***/
-$actorSymbol(state) = strdup($val((String)init));
-/**/
-
-/***IntFireBlock***/
+/***fireBlock***/
 $ref(output) = $actorSymbol(state);
-$actorSymbol(state) += $ref((Int)step);
+
+// FIXME: this should be put into the postfireBlock
+// but postfire code generation is not working correctly yet.
+$actorSymbol(state) = $add_$cgType(output)_$cgType(step)($actorSymbol(state), $ref(step));
 /**/
 
-/***DoubleFireBlock***/
-$ref(output) = $actorSymbol(state);
-$actorSymbol(state) += $ref((Double)step);
-/**/
-
-/***BooleanFireBlock***/
-$ref(output) = $actorSymbol(state);
-$actorSymbol(state) |= $ref((Boolean)step);
-/**/
-
-/***StringFireBlock***/
-$ref(output) = (char*) realloc($ref(output), sizeof(char) * (strlen($actorSymbol(state)) + 1) );
-strcpy($ref(output), $actorSymbol(state));
-$actorSymbol(state) = (char*) realloc($actorSymbol(state), sizeof(char) * (strlen($actorSymbol(state)) + strlen($ref((String)step)) + 1) );
-strcat($actorSymbol(state),  $ref((String)step));
-/**/
-
-/***TokenFireBlock***/
-$ref(output) = $actorSymbol(state);
-$actorSymbol(state) = $tokenFunc($ref(output)::add($ref((Token)step)));
-/**/

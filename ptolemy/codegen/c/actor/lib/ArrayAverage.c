@@ -1,13 +1,13 @@
 /*** preinitBlock ***/
 int $actorSymbol(i);
-double $actorSymbol(sum);
+$targetType(output) $actorSymbol(sum);
 /**/
 
 /*** fireBlock ***/
-$actorSymbol(sum) = Array_get($ref(input), 0).payload.$cgType(output);
-for ($actorSymbol(i) = 1; $actorSymbol(i) < $ref(input).payload.Array->size; $actorSymbol(i)++) {
-    $actorSymbol(sum) += Array_get($ref(input), $actorSymbol(i)).payload.$cgType(output);
+$actorSymbol(sum) = $cgType(input)_get($ref(input), 0);
+for ($actorSymbol(i) = 1; $actorSymbol(i) < $ref(input).payload.$cgType(input)->size; $actorSymbol(i)++) {
+	$actorSymbol(sum) = $add_$cgType(output)_$cgType(output)($actorSymbol(sum), $cgType(input)_get($ref(input), $actorSymbol(i)));
 }
-$ref(output) = $actorSymbol(sum) / $ref(input).payload.Array->size;
+$ref(output) = $divide_$cgType(output)_Int($actorSymbol(sum), $ref(input).payload.$cgType(input)->size);
 /**/
 

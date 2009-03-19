@@ -31,6 +31,8 @@ import java.util.ArrayList;
 import java.util.Set;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import ptolemy.data.type.ArrayType;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -66,29 +68,40 @@ public class Test extends CCodeGeneratorHelper {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public String generateFireCode() throws IllegalActionException {
-        super.generateFireCode();
+    protected String _generateFireCode() throws IllegalActionException {
+        super._generateFireCode();
 
         ptolemy.actor.lib.Test actor = (ptolemy.actor.lib.Test) getComponent();
 
         ArrayList args = new ArrayList();
         args.add(Integer.valueOf(0));
         String multiChannel = "";
-        String inputType = "";
+        Type inputType = actor.input.getType();
+        String inputTypeString = "";
+        String blockName = "Block";
 
         if (actor.input.getWidth() > 1) {
             // If we have multiple inputs, use different blocks
             multiChannel = "MultiChannel";
-            //args.add(codeGenType(actor.input.getType()));
         }
+
+        inputTypeString = codeGenType(inputType);
+        if (isPrimitive(inputType)) {
+            blockName = inputTypeString + blockName;
+        } else {
+            if (multiChannel.length() == 0 && 
+                    (actor.input.getType() instanceof ArrayType)) {
+                blockName = "Array" + blockName;
+            } else {
+                blockName = "Token" + blockName;                    
+            }                
+            args.add(inputTypeString);
+        }
+        
         for (int i = 0; i < actor.input.getWidth(); i++) {
             args.set(0, Integer.valueOf(i));
-            if (isPrimitive(actor.input.getType())) {
-                inputType = codeGenType(actor.input.getType());
-            } else {
-                inputType = "Token";
-            }
-            _codeStream.appendCodeBlock(inputType + "Block" + multiChannel,
+            
+            _codeStream.appendCodeBlock(blockName + multiChannel,
                     args);
         }
         return processCode(_codeStream.toString());

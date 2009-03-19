@@ -1,16 +1,16 @@
-/*** preinitBlock ($type)***/
+/*** preinitBlock ***/
 int $actorSymbol(i);
 int $actorSymbol(indexValue);
-$type $actorSymbol(currentMax);
-$type $actorSymbol(temp);
+$targetType(output) $actorSymbol(currentMax);
+$targetType(output) $actorSymbol(temp);
 /**/
 
 /*** fireBlock ***/
 $actorSymbol(indexValue) = 0;
-$actorSymbol(currentMax) = Array_get($ref(input), 0).payload.$cgType(output);
+$actorSymbol(currentMax) = $cgType(input)_get($ref(input), 0);
 
-for ($actorSymbol(i) = 1; $actorSymbol(i) < $ref(input).payload.Array->size; $actorSymbol(i)++) {
-    $actorSymbol(temp) = Array_get($ref(input), $actorSymbol(i)).payload.$cgType(output);
+for ($actorSymbol(i) = 1; $actorSymbol(i) < $ref(input).payload.$cgType(input)->size; $actorSymbol(i)++) {
+    $actorSymbol(temp) = $cgType(input)_get($ref(input), $actorSymbol(i));
 
     if ($actorSymbol(currentMax) < $actorSymbol(temp)) {
         $actorSymbol(indexValue) = $actorSymbol(i);

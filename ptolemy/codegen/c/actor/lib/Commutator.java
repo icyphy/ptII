@@ -59,15 +59,14 @@ public class Commutator extends CCodeGeneratorHelper {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public String generateFireCode() throws IllegalActionException {
-        super.generateFireCode();
+    protected String _generateFireCode() throws IllegalActionException {
+        super._generateFireCode();
 
         ptolemy.actor.lib.Commutator actor = (ptolemy.actor.lib.Commutator) getComponent();
 
         ArrayList args = new ArrayList();
         args.add(Integer.valueOf(0));
-        String type = codeGenType(actor.output.getType());
-        args.add(type);
+
         for (int i = 0; i < actor.input.getWidth(); i++) {
             args.set(0, Integer.valueOf(i));
             _codeStream.appendCodeBlock("fireBlock", args);

@@ -8,13 +8,13 @@ double $actorSymbol(currentValue);
 /**/
 
 /*** fireBlock ***/
-$actorSymbol(inputSize) = $ref(array).payload.Array->size;
+$actorSymbol(inputSize) = $ref(array).payload.DoubleArray->size;
 if (($ref(start) >= $actorSymbol(inputSize)) || ($ref(start) < 0)) {
     // error;
     fprintf(stderr, "start is out of range: %d", $ref(start));
     exit(1);
 }
-$actorSymbol(reference) = Array_get($ref(array), $ref(start)).payload.Double;
+$actorSymbol(reference) = DoubleArray_get($ref(array), $ref(start));
 $actorSymbol(thresholdValue) = $val(threshold);
 $actorSymbol(increment) = -1;
 /**/
@@ -56,7 +56,7 @@ $actorSymbol(thresholdValue) = $actorSymbol(reference) - $actorSymbol(thresholdV
 // Default output if we don't find a crossing.
 $ref(output) = -1;
 for ($actorSymbol(i) = $ref(start); ($actorSymbol(i) < $actorSymbol(inputSize)) && ($actorSymbol(i) >= 0); $actorSymbol(i) += $actorSymbol(increment)) {
-    $actorSymbol(currentValue) = Array_get($ref(array), $actorSymbol(i)).payload.Double;
+    $actorSymbol(currentValue) = DoubleArray_get($ref(array), $actorSymbol(i));
 
     // Searching for values above the threshold.
     if ($actorSymbol(currentValue) > $actorSymbol(thresholdValue)) {
@@ -70,7 +70,7 @@ for ($actorSymbol(i) = $ref(start); ($actorSymbol(i) < $actorSymbol(inputSize)) 
 // Default output if we don't find a crossing.
 $ref(output) = -1;
 for ($actorSymbol(i) = $ref(start); ($actorSymbol(i) < $actorSymbol(inputSize)) && ($actorSymbol(i) >= 0); $actorSymbol(i) += $actorSymbol(increment)) {
-    $actorSymbol(currentValue) = Array_get($ref(array), $actorSymbol(i)).payload.Double;
+    $actorSymbol(currentValue) = DoubleArray_get($ref(array), $actorSymbol(i));
 
     // Searching for values below the threshold.
     if ($actorSymbol(currentValue) < $actorSymbol(thresholdValue)) {

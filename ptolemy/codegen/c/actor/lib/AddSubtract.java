@@ -62,8 +62,9 @@ public class AddSubtract extends CCodeGeneratorHelper {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public String generateFireCode() throws IllegalActionException {
-        super.generateFireCode();
+    protected String _generateFireCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        code.append(super._generateFireCode());
 
         ptolemy.actor.lib.AddSubtract actor = (ptolemy.actor.lib.AddSubtract) getComponent();
 
@@ -82,8 +83,14 @@ public class AddSubtract extends CCodeGeneratorHelper {
             initArgs.add(plusType);
             initArgs.add(outputType);
         }
-        _codeStream.appendCodeBlock(minusOnly ? "minusOnlyInitSum" : "initSum",
-                initArgs);
+        
+        if (minusOnly) {
+            code.append(_generateBlockCode("minusOnlyInitSum", initArgs));
+        } else if (plusType.equals(outputType)) {
+            code.append(_generateBlockCode("initSum"));
+        } else {
+            code.append(_generateBlockCode("convertAndInitSum", initArgs));
+        }
 
         args.add("");
         args.add(outputType);

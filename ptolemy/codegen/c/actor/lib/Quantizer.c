@@ -18,9 +18,8 @@ for ($actorSymbol(i) = 0;
      $actorSymbol(i)++) {
     // transitionPoint[I] = (levels[I] + levels[I+1]) / 2;
     $actorSymbol(transitionPoints)[$actorSymbol(i)] =
-        ($actorSymbol(levels).payload.Array->elements[$actorSymbol(i)].payload.Double
-                + $actorSymbol(levels).payload.Array->elements[$actorSymbol(i) + 1].payload.Double) / 2.0;
-
+        ($actorSymbol(levels).payload.DoubleArray->elements[$actorSymbol(i)]
+                + $actorSymbol(levels).payload.DoubleArray->elements[$actorSymbol(i) + 1]) / 2.0;
 }
 /**/
 
@@ -30,13 +29,13 @@ for ($actorSymbol(i) = 0;
      $actorSymbol(i)++) {
     if ($ref(input)
             <= $actorSymbol(transitionPoints)[$actorSymbol(i)]) {
-        $ref(output) = $actorSymbol(levels).payload.Array->elements[$actorSymbol(i)].payload.Double;
+        $ref(output) = $actorSymbol(levels).payload.DoubleArray->elements[$actorSymbol(i)];
         break;
     }
 }
 if ($actorSymbol(i) >= $numPoints) {
     // There was no match in the for loop above.
-    $ref(output) = $actorSymbol(levels).payload.Array->elements[$numPoints-1].payload.Double;
+    $ref(output) = $actorSymbol(levels).payload.DoubleArray->elements[$numPoints-1];
 
 }
 

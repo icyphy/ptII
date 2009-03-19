@@ -28,6 +28,7 @@
 package ptolemy.codegen.c.actor.lib;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import ptolemy.data.BooleanToken;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -57,14 +58,17 @@ public class Scale extends CCodeGeneratorHelper {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public String generateFireCode() throws IllegalActionException {
-        super.generateFireCode();
+    protected String _generateFireCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        code.append(super._generateFireCode());
 
         ptolemy.actor.lib.Scale actor = (ptolemy.actor.lib.Scale) getComponent();
 
-        String type = isPrimitive(actor.input.getType()) ? "" : "Token";
-
-        _codeStream.appendCodeBlock(type + "FireBlock", false);
-        return processCode(_codeStream.toString());
+        if (actor.scaleOnLeft.getToken() == BooleanToken.TRUE) {
+            code.append(_generateBlockCode("scaleOnLeft"));            
+        } else {
+            code.append(_generateBlockCode("scaleOnRight"));                        
+        }
+        return processCode(code.toString());
     }
 }

@@ -1,38 +1,40 @@
 /*** preinitBlock ***/
 int $actorSymbol(length);
 int $actorSymbol(i);
-boolean $actorSymbol(doDelete);
+//boolean $actorSymbol(doDelete);
 /**/
 
 /*** initBlock ***/
-$actorSymbol(doDelete) = false;
+//$actorSymbol(doDelete) = false;
 /**/
 
 /*** fireBlock ***/
-if ($actorSymbol(doDelete)) {
-    Array_delete($ref(output));
-}
+// FIXME: how should we do the freeing?
+//if ($actorSymbol(doDelete)) {
+//    $$cgType(output)_delete($ref(output));
+//}
 $actorSymbol(length) = 0;
 /**/
 
 
 /*** getTotalLength($channel) ***/
-$actorSymbol(length) += $ref(input#$channel).payload.Array->size;
+$actorSymbol(length) += $ref(input#$channel).payload.$cgType(input)->size;
 /**/
 
 /*** allocNewArray ***/
-$ref(output) = $new(Array($actorSymbol(length), 0));
+$ref(output) = $new($cgType(output)($actorSymbol(length), 0));
 $actorSymbol(length) = 0;
 /**/
 
-/*** fillArray($channel) ***/
+/*** fillArray($channel, $elementType) ***/
 for ($actorSymbol(i) = 0; $actorSymbol(i) < $ref(input#$channel).payload.Array->size; $actorSymbol(i)++) {
-    $ref(output).payload.Array->elements[$actorSymbol(length)] = $tokenFunc(Array_get($ref(input#$channel), $actorSymbol(i))::clone());
+	$cgType(output)_set($ref(output), $actorSymbol(length),
+    $clone_$elementType($cgType(input)_get($ref(input#$channel), $actorSymbol(i))));
     $actorSymbol(length)++;
 }
 /**/
 
 /***doDelete***/
-$actorSymbol(doDelete) = true;
+//$actorSymbol(doDelete) = true;
 /**/
 

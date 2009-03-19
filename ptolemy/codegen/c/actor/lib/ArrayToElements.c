@@ -1,7 +1,3 @@
-/*** TokenFireBlock($channel) ***/
-$ref(output#$channel) = Array_get($ref(input), $channel);
-/**/
-
-/*** PrimitiveFireBlock($channel) ***/
-$ref(output#$channel) = Array_get($ref(input), $channel).payload.$cgType(output);
+/*** fireBlock($channel) ***/
+$ref(output#$channel) = $cgType(input)_get($ref(input), $channel);
 /**/

@@ -75,23 +75,11 @@ public class Expression extends CCodeGeneratorHelper {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public String generateFireCode() throws IllegalActionException {
+    protected String _generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(super.generateFireCode());
+        code.append(super._generateFireCode());
 
-        //        Type portType = ((ptolemy.actor.lib.Expression) this.getComponent()).output
-        //                .getType();
-        //
-        //        // if port type is not primitive, then we use token type
-        //        if ((portType != BaseType.DOUBLE) && (portType != BaseType.INT)
-        //                && (portType != BaseType.STRING)
-        //                && (portType != BaseType.BOOLEAN)) {
-        //            portType = BaseType.GENERAL;
-        //        }
-
-        //code.append(processCode("    $ref(output)." + portType + "Port = ("
-        //        + _cParseTreeCodeGenerator.generateFireCode()) + ");" + _eol);
-        code.append(processCode("    $ref(output) = "
+        code.append(processCode("$ref(output) = "
                 + _cParseTreeCodeGenerator.generateFireCode())
                 + ";" + _eol);
         return code.toString();
@@ -127,7 +115,7 @@ public class Expression extends CCodeGeneratorHelper {
 
         if (_cParseTreeCodeGenerator == null) {
             // FIXME: why does this need to be done here?
-            _cParseTreeCodeGenerator = new CParseTreeCodeGenerator();
+            _cParseTreeCodeGenerator = (CParseTreeCodeGenerator) getParseTreeCodeGenerator();
         }
         ptolemy.actor.lib.Expression actor = (ptolemy.actor.lib.Expression) getComponent();
 
@@ -163,7 +151,7 @@ public class Expression extends CCodeGeneratorHelper {
      */
     public Set getSharedCode() throws IllegalActionException {
 
-        _cParseTreeCodeGenerator = new CParseTreeCodeGenerator();
+        _cParseTreeCodeGenerator = (CParseTreeCodeGenerator) getParseTreeCodeGenerator();
 
         Set codeBlocks = super.getSharedCode();
         codeBlocks.add(processCode(_cParseTreeCodeGenerator

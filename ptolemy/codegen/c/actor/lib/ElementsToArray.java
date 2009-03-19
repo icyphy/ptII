@@ -30,6 +30,8 @@ package ptolemy.codegen.c.actor.lib;
 import java.util.ArrayList;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import ptolemy.data.type.ArrayType;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
@@ -59,9 +61,9 @@ public class ElementsToArray extends CCodeGeneratorHelper {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public String generateFireCode() throws IllegalActionException {
+    protected String _generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(super.generateFireCode());
+        code.append(super._generateFireCode());
         ptolemy.actor.lib.ElementsToArray actor = (ptolemy.actor.lib.ElementsToArray) getComponent();
 
         ArrayList args = new ArrayList();

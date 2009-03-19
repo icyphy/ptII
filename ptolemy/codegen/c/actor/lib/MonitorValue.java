@@ -60,12 +60,12 @@ public class MonitorValue extends CCodeGeneratorHelper {
      *  encounters an error in processing the specified code blocks or
      *  the type is not supported.
      */
-    public String generateFireCode() throws IllegalActionException {
+    protected String _generateFireCode() throws IllegalActionException {
         // Note: this actor have the exact same functionality as Display.
         // We want to mirror the Ptolemy actor.lib code structure.
         // The .c files need to remain separate anyway.
         StringBuffer code = new StringBuffer();
-        code.append(super.generateFireCode());
+        code.append(super._generateFireCode());
 
         ptolemy.actor.lib.MonitorValue actor = (ptolemy.actor.lib.MonitorValue) getComponent();
 

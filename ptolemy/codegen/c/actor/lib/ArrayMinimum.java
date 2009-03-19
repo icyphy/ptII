@@ -51,24 +51,4 @@ public class ArrayMinimum extends CCodeGeneratorHelper {
     public ArrayMinimum(ptolemy.actor.lib.ArrayMinimum actor) {
         super(actor);
     }
-
-    /**
-     * Generate preinitialize code.
-     * Read the <code>preinitBlock</code> from ArrayMinimum.c,
-     * replace macros with their values and return the processed code string.
-     * @return The processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public String generatePreinitializeCode() throws IllegalActionException {
-        super.generatePreinitializeCode();
-        ptolemy.actor.lib.ArrayMinimum actor = (ptolemy.actor.lib.ArrayMinimum) getComponent();
-
-        ArrayList args = new ArrayList();
-        args.add(targetType(((ArrayType) actor.input.getType())
-                .getElementType()));
-
-        _codeStream.appendCodeBlock("preinitBlock", args);
-        return processCode(_codeStream.toString());
-    }
 }

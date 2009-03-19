@@ -69,7 +69,7 @@ void $actorClass(arraycopy)(double *src, int srcPos, double *dest, int destPos, 
     //reallocate();
 
     for ($actorClass(i) = 0; $actorClass(i) < $actorSymbol(_order); $actorClass(i)++) {
-        $actorSymbol(_reflectionCoefficients)[$actorClass(i)] = Array_get($ref(reflectionCoefficients), $actorClass(i)).payload.Double;
+        $actorSymbol(_reflectionCoefficients)[$actorClass(i)] = DoubleArray_get($ref(reflectionCoefficients), $actorClass(i));
     }
 
     for ($actorClass(i) = 0; $actorClass(i) < ($actorSymbol(_order) + 1); $actorClass(i)++) {

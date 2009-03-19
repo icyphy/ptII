@@ -30,6 +30,8 @@ package ptolemy.codegen.c.actor.lib;
 import java.util.ArrayList;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import ptolemy.data.type.ArrayType;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
@@ -60,8 +62,9 @@ public class ArrayAppend extends CCodeGeneratorHelper {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public String generateFireCode() throws IllegalActionException {
-        super.generateFireCode();
+    protected String _generateFireCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        code.append(super._generateFireCode());
 
         ptolemy.actor.lib.ArrayAppend actor = (ptolemy.actor.lib.ArrayAppend) getComponent();
 
@@ -69,17 +72,28 @@ public class ArrayAppend extends CCodeGeneratorHelper {
         args.add(Integer.valueOf(0));
         for (int i = 0; i < actor.input.getWidth(); i++) {
             args.set(0, Integer.valueOf(i));
-            _codeStream.appendCodeBlock("getTotalLength", args);
+            code.append(_generateBlockCode("getTotalLength", args));
         }
-        _codeStream.appendCodeBlock("allocNewArray");
+        code.append(_generateBlockCode("allocNewArray"));
 
+        args.add("");
         for (int i = 0; i < actor.input.getWidth(); i++) {
             args.set(0, Integer.valueOf(i));
-            _codeStream.appendCodeBlock("fillArray", args);
+            
+            Type inputType = actor.input.getType();
+            
+            if (inputType instanceof ArrayType) {
+                args.set(1, codeGenType(((ArrayType) inputType).getElementType()));
+                code.append(_generateBlockCode("fillArray", args));
+
+            } else {
+                // This shouldn't happen because the type
+                // constraints enforce this.
+            }
         }
 
-        _codeStream.appendCodeBlock("doDelete");
+        code.append(_generateBlockCode("doDelete"));
 
-        return processCode(_codeStream.toString());
+        return processCode(code.toString());
     }
 }

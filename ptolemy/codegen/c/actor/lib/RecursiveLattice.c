@@ -63,7 +63,7 @@ $this.fireBlock($actorSymbol(_order), 0)
     //reallocate();
 
     for ($actorClass(i) = 0; $actorClass(i) < $actorSymbol(_order); $actorClass(i)++) {
-        $actorSymbol(_reflectionCoefs)[$actorClass(i)] = Array_get($ref(reflectionCoefficients), $actorClass(i)).payload.Double;
+        $actorSymbol(_reflectionCoefs)[$actorClass(i)] = DoubleArray_get($ref(reflectionCoefficients), $actorClass(i));
     }
 /**/
 

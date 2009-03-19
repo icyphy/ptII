@@ -2,7 +2,11 @@
 $type $actorSymbol(result);
 /**/
 
-/***initSum($type1, $type2)***/
+/***initSum***/
+$actorSymbol(result) = $ref(plus#0);
+/**/
+
+/***convertAndInitSum($type1, $type2)***/
 $actorSymbol(result) = $convert_$type1_$type2($ref(plus#0));
 /**/
 

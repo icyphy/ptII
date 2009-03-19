@@ -57,59 +57,26 @@ public class Ramp extends CCodeGeneratorHelper {
         super(actor);
     }
 
-    /** Generate the initialize code. Declare the variable state.
-     *  @return The initialize code.
-     *  @exception IllegalActionException
-     */
-    public String generateInitializeCode() throws IllegalActionException {
-        super.generateInitializeCode();
-
-        ptolemy.actor.lib.Ramp actor = (ptolemy.actor.lib.Ramp) getComponent();
-
-        ArrayList args = new ArrayList();
-        args.add(codeGenType(actor.output.getType()));
-
-        _codeStream.append(_eol
-                + CodeStream.indent(_codeGenerator.comment("initialize "
-                        + getComponent().getName())));
-        if (actor.output.getType() == BaseType.STRING) {
-            _codeStream.appendCodeBlock("StringInitBlock");
-        } else {
-            _codeStream.appendCodeBlock("CommonInitBlock", args);
-            if (actor.output.getType() instanceof ArrayType) {
-                Type elementType = ((ArrayType) actor.output.getType())
-                        .getElementType();
-
-                args.set(0, "TYPE_" + codeGenType(elementType));
-                if (!actor.step.getType().equals(actor.output.getType())) {
-                    _codeStream.appendCodeBlock("ArrayConvertStepBlock", args);
-                }
-                if (!actor.init.getType().equals(actor.output.getType())) {
-                    _codeStream.appendCodeBlock("ArrayConvertInitBlock", args);
-                }
-            }
-        }
-
-        return processCode(_codeStream.toString());
-    }
-
     /**
      * Generate fire code for the Ramp actor.
      * @return The generated code.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public String generateFireCode() throws IllegalActionException {
-        super.generateFireCode();
+    protected String _generateFireCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
 
         ptolemy.actor.lib.Ramp actor = (ptolemy.actor.lib.Ramp) getComponent();
 
-        String type = codeGenType(actor.output.getType());
-        if (!isPrimitive(type)) {
-            type = "Token";
+        ArrayList args = new ArrayList();
+        args.add(new Integer(0));
+        for (int i = 0; i < actor.trigger.getWidth(); i++) {
+            args.set(0, new Integer(i));
+            code.append(_generateBlockCode("getTriggerTokens", args));
         }
-
-        _codeStream.appendCodeBlock(type + "FireBlock");
-        return processCode(_codeStream.toString());
+        
+        // Append the default "fireBlock".
+        code.append(super._generateFireCode());
+        return processCode(code.toString());
     }
 }

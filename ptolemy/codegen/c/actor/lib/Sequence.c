@@ -3,23 +3,29 @@ int $actorSymbol(currentIndex) = 0;
 boolean $actorSymbol(outputProduced) = false;
 /**/
 
-/***codeBlock1***/
+/***ignoreEnable***/
 if ($actorSymbol(currentIndex) < $size(values)) {
     $ref(output) = $ref(values, $actorSymbol(currentIndex));
     $actorSymbol(outputProduced) = true;
+    $send(output, 0)
 };
+$this.postfireBlock()
 /**/
 
 
-/***codeBlock2***/
+/***checkEnable***/
+$get(enable, 0)
+
 if ($ref(enable) && $actorSymbol(currentIndex) < $size(values)) {
     $ref(output) = $ref(values, $actorSymbol(currentIndex));
     $actorSymbol(outputProduced) = true;
+    $send(output, 0)
 }
+$this.postfireBlock()
 /**/
 
 
-/***codeBlock3***/
+/***postfireBlock***/
 if ($actorSymbol(outputProduced)) {
     $actorSymbol(outputProduced) = false;
     $actorSymbol(currentIndex) += 1;

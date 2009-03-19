@@ -21,14 +21,7 @@ double $actorSymbol(_alpha);
 
 /*** initBlock ***/
     $super();
-    $ref(adaptedReflectionCoefficients) = $new(Array($actorSymbol(_order), 0));
-
-    for ($actorClass(i) = 0; $actorClass(i) < $actorSymbol(_order); $actorClass(i)++) {
-        $ref(adaptedReflectionCoefficients).payload.Array->elements[$actorClass(i)].type = TYPE_Double;
-
-        // No need to initialize _reflectionCoefficientsCache values.
-        //$actorSymbol(_reflectionCoefficientsCache)[$actorClass(i)] = 0.0;
-    }
+    $ref(adaptedReflectionCoefficients) = $new(DoubleArray($actorSymbol(_order), 0));
 
     for ($actorClass(i) = 0; $actorClass(i) <= $actorSymbol(_order); $actorClass(i)++) {
         $actorSymbol(_estimatedErrorPower)[$actorClass(i)] = 0;
@@ -72,7 +65,7 @@ double $actorSymbol(_alpha);
             }
         }
 
-        $ref(adaptedReflectionCoefficients).payload.Array->elements[$actorClass(i) - 1].payload.Double = $actorClass(newCoefficient);
+        $ref(adaptedReflectionCoefficients).payload.DoubleArray->elements[$actorClass(i) - 1] = $actorClass(newCoefficient);
         $actorSymbol(_reflectionCoefficientsCache)[$actorClass(i) - 1] = $actorClass(newCoefficient);
         $actorSymbol(_estimatedErrorPowerCache)[$actorClass(i)] = $actorClass(newError);
     }

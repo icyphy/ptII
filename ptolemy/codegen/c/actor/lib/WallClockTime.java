@@ -59,9 +59,9 @@ public class WallClockTime extends CCodeGeneratorHelper {
      *  @exception IllegalActionException If the code stream encounters
      *   errors in processing the specified code blocks.
      */
-    public String generateFireCode() throws IllegalActionException {
+    protected String _generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(super.generateFireCode());
+        code.append(super._generateFireCode());
 
         ptolemy.actor.lib.WallClockTime actor = (ptolemy.actor.lib.WallClockTime) getComponent();
         ArrayList args = new ArrayList();

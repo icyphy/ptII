@@ -17,8 +17,8 @@ int $actorClass(resultIndex);
 /**/
 
 /*** initBlock ***/
-$ref(peakValues) = $new(Array(0, 0));
-$ref(peakIndices) = $new(Array(0, 0));
+$ref(peakValues) = $new(DoubleArray(0, 0));
+$ref(peakIndices) = $new(IntArray(0, 0));
 /**/
 
 
@@ -26,10 +26,12 @@ $ref(peakIndices) = $new(Array(0, 0));
     $actorClass(inputSize) = $size(input);
 
     if ($actorClass(inputSize) == 0) {
-        for ($actorClass(i) = 0; $actorClass(i) < $val(maximumNumberOfPeaks); $actorClass(i)++) {
-            Array_set($ref(peakValues), $actorClass(i), Array_get($ref(input), $actorClass(i)));
-            Array_set($ref(peakIndices), $actorClass(i), Array_get($ref(input), $actorClass(i)));
-        }
+		$ref(peakValues) = $ref(input);
+		$ref(peakIndices) = $convert_DoubleArray_IntArray($ref(input));
+//        for ($actorClass(i) = 0; $actorClass(i) < $val(maximumNumberOfPeaks); $actorClass(i)++) {
+//            DoubleArray_set($ref(peakValues), $actorClass(i), DoubleArray_get($ref(input), $actorClass(i)));
+//            IntArray_set($ref(peakIndices), $actorClass(i), (int) DoubleArray_get($ref(input), $actorClass(i)));
+//        }
     } else {
         $actorClass(start) = $ref(startIndex);
         $actorClass(end) = $ref(endIndex);
@@ -61,9 +63,9 @@ $ref(peakIndices) = $new(Array(0, 0));
             $actorClass(searchPeak) = true;
 
             $actorClass(localMaxIndex) = $actorClass(start);
-            $actorClass(localMax) = Array_get($ref(input), $actorClass(start)).payload.Double;
+            $actorClass(localMax) = DoubleArray_get($ref(input), $actorClass(start));
             $actorClass(localMin) = $actorClass(localMax);
-        $actorClass(squelchValue) = $val(squelch);
+            $actorClass(squelchValue) = $val(squelch);
 
             // The following values change since they are relative to
             // most recently peaks or values.
@@ -160,8 +162,8 @@ $ref(peakIndices) = $new(Array(0, 0));
 
                 if (($actorClass(indata) < $actorClass(dipThreshold)) && ($actorClass(localMax) > $actorClass(squelchValue))) {
 
-                    Array_insert($ref(peakIndices), $new(Int($actorClass(localMaxIndex))));
-                    Array_insert($ref(peakValues), $new(Double($actorClass(localMax))));
+                    DoubleArray_insert($ref(peakValues), $actorClass(localMax));
+                    IntArray_insert($ref(peakIndices), $actorClass(localMaxIndex));
 
                     if ($ref(peakValues).payload.Array->size > $val(maximumNumberOfPeaks)) {
                         break;
@@ -177,9 +179,9 @@ $ref(peakIndices) = $new(Array(0, 0));
             }
         }
 
-        if ($ref(peakIndices).payload.Array->size == 0) {
-            Array_insert($ref(peakValues), Array_get($ref(input), $actorClass(start)));
-            Array_insert($ref(peakIndices), $new(Int($ref(startIndex))));
+        if ($ref(peakIndices).payload.IntArray->size == 0) {
+            DoubleArray_insert($ref(peakValues), DoubleArray_get($ref(input), $actorClass(start)));
+            IntArray_insert($ref(peakIndices), $ref(startIndex));
         }
 
 /**/

@@ -48,29 +48,4 @@ public class ArrayElement extends CCodeGeneratorHelper {
     public ArrayElement(ptolemy.actor.lib.ArrayElement actor) {
         super(actor);
     }
-
-    /**
-     * Generate fire code.
-     * The method reads in <code>fireBlock</code> from Accumulator.c,
-     * replaces macros with their values and returns the processed code
-     * block.
-     * @return The generated code.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public String generateFireCode() throws IllegalActionException {
-        super.generateFireCode();
-
-        ptolemy.actor.lib.ArrayElement actor = (ptolemy.actor.lib.ArrayElement) getComponent();
-
-        if (isPrimitive(actor.output.getType())) {
-            // Indent to level 2
-            _codeStream.appendCodeBlock("PrimitiveFireBlock", false, 2);
-        } else {
-            // Indent to level 2
-            _codeStream.appendCodeBlock("TokenFireBlock", false, 2);
-        }
-
-        return processCode(_codeStream.toString());
-    }
 }
