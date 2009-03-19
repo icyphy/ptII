@@ -86,7 +86,7 @@ PTII_FTP = /export/home/pt0/ptweb/ptolemyII/ptII$(MAJOR_VERSION)
 #make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/usr/sww/bin/jar clean all src.jar viptos.jar
 #make USER=cxh PTIIHOME=/tmp/cxh/tmp/ptII PTIIADM=/tmp/cxh/tmp/ptII/adm TAR=/bin/tar JAR=/usr/local/j2sdk1.4.2_01/bin/jar src.jar
 #gmake USER=bldmastr PTIIHOME=/export/home1/bldmastr/ptII PTIIADM=/export/home1/bldmastr/ptII/adm TAR=/usr/sfw/bin/gtar JAR=/usr/bin/jar clean all src.jar
-#make USER=bldmastr PTIIHOME=/home/bldmastr/ptII PTIIADM=/home/bldmastr/ptII/adm TAR=/usr/local/bin/tar JAR=/usr/bin/jar clean all src.jar
+#make USER=bldmastr PTIIHOME=/home/bldmastr/ptII PTIIADM=/home/bldmastr/ptII/adm TAR=/usr/local/bin/tar JAR=/usr/bin/jar clean all src.jar setup
 
 USER =		ptII
 PTIIHOME =	/users/ptII
@@ -167,6 +167,7 @@ release_newton_setup:
 release_newton_remote4_test:
 	$(MAKE) USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII7.2.devel COMPRESS=gzip TAR=tar remote4_test REMOTE4PTIIDIST=c:/tmp/cxh/ptII7.2.devel/adm/gen-7.0/test/ptII$(VERSION)
 
+####
 release_fortytwo:
 	make USER=cxh PTIIHOME=/tmp/cxh/ptII7.2.devel COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar clean all src.jar
 
@@ -180,9 +181,21 @@ release_fortytwo_setup:
 release_fortytwo_remote4_test:
 	make USER=cxh PTIIHOME=/tmp/cxh/ptII7.2.devel COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar remote4_test
 
+####
+release_sisyphus:
+	make USER=bldmastr PTIIHOME=/tmp/cxh/ptII7.2.devel COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar clean all src.jar
+
+release_sisyphus_setup:
+	make USER=bldmastr PTIIHOME=/tmp/cxh/ptII7.2.devel COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar setup
+
+release_sisyphus_remote4_test:
+	make USER=bldmastr PTIIHOME=/home/bldmastr/ptII PTIIADM=/home/bldmastr/ptII/adm TAR=/usr/local/bin/tar JAR=/usr/bin/jar remote4_test
+
+####
 release_laptop:
 	make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII7.2.devel COMPRESS=gzip TAR=tar JAR=c:/Program\ Files/Java/jdk1.5.0_11/bin/jar clean all src.jar setup
 
+####
 release_nightly:
 	$(MAKE) -k REMOTE1HOME=/home/bldmastr \
 		PTII=/home/bldmastr/ptII \
@@ -1262,7 +1275,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/plot \
 	$(REMOTE1PTIIDIST)/ptolemy/copernicus/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/copernicus/jhdl \
-	$(REMOTE1PTIIDIST)/ptolemy/copernicus/c \
 	$(REMOTE1PTIIDIST)/ptolemy/copernicus/gui \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/kernel/attributes \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/toolbox \
@@ -1889,7 +1901,6 @@ remote4_test: $(PTII_SRC)
 		PTII_FULL=$(PTII_SRC) \
 		remote4nuke remote4ptiidist remote4configure \
 		remote4distclean remote4build \
-		remote4javatest \
 		remote4done
 
 # Create a separate tree and build on REMOTE4HOST
