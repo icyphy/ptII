@@ -67,7 +67,7 @@ import ptolemy.kernel.util.NamedObj;
  fire and wrapup code.
 
  @author Jia Zou
- @version $Id: PtidesDirector.java 52643 2009-03-05 19:36:24Z rodiers $
+ @version $Id$
  @since Ptolemy II 7.0
  @Pt.ProposedRating Red (jiazou)
  @Pt.AcceptedRating
