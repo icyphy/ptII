@@ -395,18 +395,41 @@ public class ThreadedComposite extends MirrorComposite {
     protected static class TokenFrame {
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
+
+	/** Construct a  TokenFrame.
+	 *  @param theTime The time of this token frame.
+	 *  @param theTokens a list of QueueTokens.
+	 *  @param theType The FrameType.
+	 */
         public TokenFrame(Time theTime, List<QueuedToken> theTokens, FrameType theType) {
             tokens = theTokens;
             time = theTime;
             type = theType;
         }
+	/** The time. */
         public final Time time;
+	/** A list of tokens. */
         public final List<QueuedToken> tokens;
+	/** The type of the frame. */
         public final FrameType type;
 
         // Final fields (FindBugs suggestion)
+	/**  A (possibly empty) bundle of data and a time
+	 *  stamp that is either provided to the inside thread from
+	 *  the inputs of a ThreadedComposite or provided by the
+	 *  inside thread to form the outputs of a ThreadedComposite.
+	 */
         public final static FrameType EVENT = new FrameType();
+
+	/**  POSTFIRE is a frame indicating that the inside actor
+	 *  can be postfired. No tokens are provided (they are assumed
+	 *  to have been consumed in the firing).
+	 */
         public final static FrameType POSTFIRE = new FrameType();
+
+	/** STOP is a frame provided to the inside thread to indicate
+	 *  that it should stop executing.
+	 */
         public final static FrameType STOP = new FrameType();
 
         private static class FrameType {
