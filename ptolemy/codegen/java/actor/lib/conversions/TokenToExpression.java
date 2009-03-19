@@ -64,8 +64,8 @@ public class TokenToExpression extends JavaCodeGeneratorHelper {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public String generateFireCode() throws IllegalActionException {
-        super.generateFireCode();
+    protected String _generateFireCode() throws IllegalActionException {
+        super._generateFireCode();
 
         ptolemy.actor.lib.conversions.TokenToExpression actor = (ptolemy.actor.lib.conversions.TokenToExpression) getComponent();
 

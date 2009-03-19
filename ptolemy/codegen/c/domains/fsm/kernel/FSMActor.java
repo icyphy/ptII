@@ -85,10 +85,10 @@ public class FSMActor extends CCodeGeneratorHelper {
      *  @exception IllegalActionException If thrown while generating
      *  firing code.
      */
-    public String generateFireCode() throws IllegalActionException {
+    protected String _generateFireCode() throws IllegalActionException {
 
         StringBuffer code = new StringBuffer();
-        code.append(super.generateFireCode());
+        code.append(super._generateFireCode());
 
         ptolemy.domains.fsm.kernel.FSMActor fsmActor = 
             (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
@@ -373,9 +373,6 @@ public class FSMActor extends CCodeGeneratorHelper {
                     }
                 }
 
-                boolean inline = ((BooleanToken) _codeGenerator.inline
-                        .getToken()).booleanValue();
-
                 // generate code for transition refinement
                 Actor[] actors = transition.getRefinement();
 
@@ -383,15 +380,7 @@ public class FSMActor extends CCodeGeneratorHelper {
                     for (int i = 0; i < actors.length; i++) {
                         CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper((NamedObj) actors[i]);
                         // fire the actor
-                        if (inline) {
-                            codeBuffer.append(helper.generateFireCode());
-                            codeBuffer.append(helper
-                                    .generateTypeConvertFireCode());
-                        } else {
-                            codeBuffer
-                            .append(generateName((NamedObj) actors[i])
-                                    + "();" + _eol);
-                        }
+                        codeBuffer.append(helper.generateFireCode());
                     }
                 }
 

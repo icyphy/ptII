@@ -10,7 +10,7 @@ public class Ramp extends RTMaudeAdaptor {
         super(component);
     }
     
-    public String generateFireCode() throws IllegalActionException {
+    protected String _generateFireCode() throws IllegalActionException {
         NamedObj actor = (NamedObj) getComponent();
         String name = actor.getFullName();
         return name + ": Hello World\n";

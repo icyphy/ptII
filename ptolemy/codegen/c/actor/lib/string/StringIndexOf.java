@@ -60,11 +60,11 @@ public class StringIndexOf extends CCodeGeneratorHelper {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public String generateFireCode() throws IllegalActionException {
+    protected String _generateFireCode() throws IllegalActionException {
         ptolemy.actor.lib.string.StringIndexOf actor = (ptolemy.actor.lib.string.StringIndexOf) getComponent();
 
         StringBuffer code = new StringBuffer();
-        code.append(super.generateFireCode());
+        code.append(super._generateFireCode());
         ArrayList args = new ArrayList();
         if (((BooleanToken) actor.searchForwards.getToken()).booleanValue()) {
             args.add(Integer.valueOf(1));

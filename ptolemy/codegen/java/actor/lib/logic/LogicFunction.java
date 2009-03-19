@@ -54,9 +54,9 @@ public class LogicFunction extends JavaCodeGeneratorHelper {
      * @return The generated code.
      * @exception IllegalActionException Not thrown in this base class.
      */
-    public String generateFireCode() throws IllegalActionException {
+    protected String _generateFireCode() throws IllegalActionException {
         StringBuffer codeBuffer = new StringBuffer();
-        codeBuffer.append(super.generateFireCode());
+        codeBuffer.append(super._generateFireCode());
 
         ptolemy.actor.lib.logic.LogicFunction actor = (ptolemy.actor.lib.logic.LogicFunction) getComponent();
 

@@ -60,8 +60,8 @@ public class BooleanMultiplexor extends JavaCodeGeneratorHelper {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public String generateFireCode() throws IllegalActionException {
-        super.generateFireCode();
+    protected String _generateFireCode() throws IllegalActionException {
+        super._generateFireCode();
 
         ptolemy.actor.lib.BooleanMultiplexor actor = (ptolemy.actor.lib.BooleanMultiplexor) getComponent();
 

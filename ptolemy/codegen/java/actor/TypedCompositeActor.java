@@ -37,10 +37,10 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.PortParameter;
+import ptolemy.codegen.actor.Director;
 import ptolemy.codegen.java.kernel.JavaCodeGeneratorHelper;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.CodeStream;
-import ptolemy.codegen.kernel.Director;
 import ptolemy.data.BooleanToken;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
@@ -119,13 +119,13 @@ public class TypedCompositeActor extends JavaCodeGeneratorHelper {
      *  actor, or the director helper throws it while generating code
      *  for transferring data.
      */
-    public String generateFireCode() throws IllegalActionException {
+    protected String _generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(_codeGenerator.comment(2,
                         "Fire Composite "
                         + getComponent().getName()));
 
-        code.append(super.generateFireCode());
+        code.append(super._generateFireCode());
 
         Director directorHelper = (Director) _getHelper(((ptolemy.actor.CompositeActor) getComponent())
                 .getDirector());

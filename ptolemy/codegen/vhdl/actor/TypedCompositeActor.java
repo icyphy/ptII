@@ -74,7 +74,7 @@ public class TypedCompositeActor extends VHDLCodeGeneratorHelper {
      *  actor, or the director helper throws it while generating code
      *  for transferring data.
      */
-    public String generateFireCode() throws IllegalActionException {
+    protected String _generateFireCode() throws IllegalActionException {
         StringBuffer result = new StringBuffer();
 
         Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())

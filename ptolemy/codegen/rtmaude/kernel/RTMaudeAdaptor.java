@@ -19,7 +19,7 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
     // FIXME: the period value is required to be an integer. We have
     // generate an integer even if the model has a double value.
     
-    public String generateFireCode() throws IllegalActionException {
+    protected String _generateFireCode() throws IllegalActionException {
         
         
         StringBuffer code = new StringBuffer();

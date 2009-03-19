@@ -65,8 +65,8 @@ public class DirectoryListing extends CCodeGeneratorHelper {
      *  or the code stream encounters an error in processing the specified code
      *  block(s).
      */
-    public String generateFireCode() throws IllegalActionException {
-        super.generateFireCode();
+    protected String _generateFireCode() throws IllegalActionException {
+        super._generateFireCode();
 
         ptolemy.actor.lib.io.DirectoryListing actor = 
             (ptolemy.actor.lib.io.DirectoryListing) getComponent();

@@ -57,12 +57,12 @@ public class FIR extends CCodeGeneratorHelper {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public String generateFireCode() throws IllegalActionException {
+    protected String _generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         code.append(_generateBlockCode("fireBlock0"));
 
-        code.append(super.generateFireCode());
+        code.append(super._generateFireCode());
 
         return processCode(code.toString());
     }
