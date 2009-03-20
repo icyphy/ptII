@@ -122,7 +122,7 @@ public class StaticResources {
     /**
      * Search for the ResourceBundle containing the UI Display Text.  
      * @return The resource bundle that corresponds with 
-     * @{link #UI_DISPLAY_TEXT_BUNDLE}
+     * {@link #UI_DISPLAY_TEXT_BUNDLE}
      */
     public static ResourceBundle getDisplayTextBundle() throws IOException {
 
@@ -198,7 +198,7 @@ public class StaticResources {
     /**
      * Search for the ResourceBundle containing the ui settings.
      * @return The resource bundle that corresponds with 
-     * @{link #UI_SETTINGS_BUNDLE}
+     * {@link #UI_SETTINGS_BUNDLE}
      */
     public static ResourceBundle getUISettingsBundle() throws IOException {
 
