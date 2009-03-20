@@ -44,13 +44,6 @@ public abstract class Criterion extends GTIngredient {
 
     /**
      * @param owner
-     */
-    public Criterion(GTIngredientList owner) {
-        super(owner);
-    }
-
-    /**
-     * @param owner
      * @param elementCount
      */
     public Criterion(GTIngredientList owner, int elementCount) {

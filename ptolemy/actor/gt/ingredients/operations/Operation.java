@@ -57,13 +57,6 @@ public abstract class Operation extends GTIngredient {
 
     /**
      * @param owner
-     */
-    public Operation(GTIngredientList owner) {
-        super(owner);
-    }
-
-    /**
-     * @param owner
      * @param elementCount
      */
     public Operation(GTIngredientList owner, int elementCount) {
