@@ -379,7 +379,9 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
      *             Thrown if an execution was missed.
      */
     public void fire() throws IllegalActionException {
-        System.out.println("--- fired: " + this.getContainer().getName() + " " + _currentPhysicalTime);
+	if (_debugging) {
+	    _debug("--- fired: " + this.getContainer().getName() + " " + _currentPhysicalTime);
+	}
         List<TimedEvent> eventsToFire = null;
         TimedEvent event = null;
         boolean iterate = true;
@@ -395,8 +397,10 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
                 Actor actorToFire = (Actor) eventInExecution.contents;
                 Time time = getFinishingTime(actorToFire);
                 if (time.equals(_currentPhysicalTime)) {
-                    System.out.println(" x " + _currentPhysicalTime + " "
+		    if (_debugging) {
+			_debug(" x " + _currentPhysicalTime + " "
                             + _currentTime + " " + actorToFire);
+		    }
                     _eventsInExecution.removeFirst();
                     _currentModelTime = eventInExecution.timeStamp;
                     if (!_fireAtTheBeginningOfTheWcet(actorToFire))
@@ -424,8 +428,10 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
                     eventsToFire, _eventsInExecution);
             event = _executionStrategy.getNextEventToFire(_eventsInExecution,
                     eventsToFire, nextRealTimeEventTime, _currentPhysicalTime);
-            System.out.println(_currentPhysicalTime + " " + _currentTime + " "
+	    if (_debugging) {
+		_debug(_currentPhysicalTime + " " + _currentTime + " "
                     + event);
+	    }
             // start firing an actor defined by the previously selected event
             if (event != null) {
                 _currentModelTime = event.timeStamp;
@@ -923,13 +929,17 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
                         for (int j = 0; j < recv.length; j++) {
                             PtidesActorReceiver receiver = (PtidesActorReceiver) recv[j];
                             Time time = receiver.getNextTime();
-                            System.out.println(((Actor)getContainer()).getDirector().getModelTime() + " " + getModelTime() + " " + time + " " + actor);
+			    if (_debugging) {
+				_debug(((Actor)getContainer()).getDirector().getModelTime() + " " + getModelTime() + " " + time + " " + actor);
+			    }
                             if (time != null
                                     && (time.compareTo(((Actor)getContainer()).getDirector().getModelTime()) <= 0 ||
                                             _allUpstreamEventsHaveHigherTimestamps(port, 
                                             port, new ArrayList(), new Time(
                                                     this, 0.0), time))) {
-                                System.out.println(actor);
+				if (_debugging) {
+				    _debug(actor.getFullName());
+				}
                                 List<TimedEvent> toRemove = new ArrayList<TimedEvent>();
                                 for (int k = 0; k < events.size(); k++) {
                                     TimedEvent event = events.get(k);

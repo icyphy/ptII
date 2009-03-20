@@ -380,7 +380,9 @@ public class PtidesDirector extends TimedPNDirector {
                     
                     List<IOPort> inputPorts = compositeActor.inputPortList();
                     for (IOPort port : inputPorts) {
-                        System.out.println("minDelay " + port + ": " + ((RealDependency)causalityInterface.getMinimumDelay(port)).value());
+			if (_debugging) {
+			    _debug("minDelay " + port + ": " + ((RealDependency)causalityInterface.getMinimumDelay(port)).value());
+			}
                     }
                     
                 }
