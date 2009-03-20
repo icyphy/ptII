@@ -53,6 +53,10 @@ fi
 # before /usr/bin/sort
 
 SORT=/usr/bin/sort
+if [ ! -x "$SORT"]; then
+    # Linux does not have /usr/bin/sort
+    SORT=sort
+fi
 
 for file in $otherjars
 do
