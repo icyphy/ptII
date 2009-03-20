@@ -61,7 +61,7 @@ This FAQ can be found at:
 	platforms does Ptolemy II run under?</b></a>
 
 	<li> <a href="#ptolemy II installation, what do I need"><b>3.3 What do I need to Install Ptolemy II?</b></a>
-	<li> <a href="#CVS Access"><b>3.4 How do I get CVS access to PtolemyII</b></a>
+	<li> <a href="#Subversion Access"><b>3.4 How do I get Subversion access to PtolemyII</b></a>
 	</menu> 
 
 <li> <a href="#ptolemy II faq: using Ptolemy II"><b>4. Using Ptolemy II</b></a>
@@ -152,50 +152,45 @@ commercial products, see
 <a href="http://ptolemy.eecs.berkeley.edu/archive/links.htm"><code>http://ptolemy.eecs.berkeley.edu/archive/links.htm</code></a>
 
 <dt> <a name="mailing list"><b>1.3 Is there a mailing list?</b></a>
-<DD> 
-The Ptolemy mailing lists are run by the Majordomo mailing list 
-server.  This server can automatically subscribe you to mailing
-lists and it can send you monthly archive files for each of the
-lists.  To find out more about our Majordomo sever, send an email
-letter to: majordomo@ptolemy.eecs.berkeley.edu with the word "help"
-in the body of the letter.
 
-<dl>
-<dt> Ptolemy Interest Mailing list
-<dd> This moderated mailing list is for Ptolemy announcements only. Thus,
-you cannot post to this group.  The amount of mail here is kept very
+  <p>The Ptolemy mailing lists are run by
+<a href="http://lists.eecs.berkeley.edu">http://lists.eecs.berkeley.edu</a>.
+
+<h2>Ptolemy Interest Mailing list</h2>
+
+<p>This moderated mailing list is for Ptolemy announcements only.
+You cannot post to this group.  The amount of mail here is kept very
 light (a few messages a year).
+To subscribe to the ptolemy-interest mailing list,
+go to
+<a href="https://lists.eecs.berkeley.edu/sympa/subscribe/ptolemy-interest">https://lists.eecs.berkeley.edu/sympa/subscribe/ptolemy-interest</a>. All mail to ptolemy-interest also goes to ptolemy-hackers, so if
+you subscribe to ptolemy-hackers, there is no need to subscribe to
+ptolemy-interest too.</p>
 
- <p>To subscribe to the ptolemy-interest mailing list, send mail to:
-ptolemy-interest-request@ptolemy.eecs.berkeley.edu with the word
-"subscribe" in the body (not the subject) of the letter.
- </p>
- <p>All mail to ptolemy-interest also goes to ptolemy-hackers, so if you
-subscribe to ptolemy-hackers, there is no need to subscribe to
-ptolemy-interest too.
- </p>
-
-<dt>  Ptolemy Hackers Mailing list
-<dd> This is a discussion list for Ptolemy questions, bug reports, and to
+<h2>Ptolemy Hackers Mailing list <a href="search/wais.htm">(search)</a></h2>
+<p>This is a discussion list for Ptolemy questions, bug reports, and to
 share Ptolemy additions and applications.  Since this is a discussion
-group, mail volume can sometimes be heavy.  All mail sent to Ptolemy-
-hackers is automatically cross posted to the comp.soft-sys.ptolemy
-newsgroup.
+group, mail volume can sometimes be heavy.
 
- <p>To subscribe to the ptolemy-hackers mailing list, send mail to:
-<a href="mailto:ptolemy-hackers-request@ptolemy.eecs.berkeley.edu"><code>ptolemy-hackers-request@ptolemy.eecs.berkeley.edu</code></a>
- with the word 
-"subscribe" in the body of the letter.  To leave the newsgroup put
-the word "unsubscribe" in the body of your message.
- </p>
-</dl>
+To subscribe to the ptolemy-hackers mailing list,
+go to <a href="https://lists.eecs.berkeley.edu/sympa/subscribe/ptolemy-hackers">https://lists.eecs.berkeley.edu/sympa/subscribe/ptolemy-hackers</a>.
+your message.  You can
+<a href="search/wais.htm">search this mailing list</a>
+for previously posted messages on any topic.</p>
 
-The best way to get questions answered is to subscribe to ptolemy-hackers
-and then send email to that list.
+<h2>Newsgroup: comp.soft-sys.ptolemy</h2>
+<p>Just like the ptolemy-hackers mailing list, the
+<a href="news:comp.soft-sys.ptolemy">comp.soft-sys.ptolemy</a> newsgroup
+is a forum of the discussion of Ptolemy questions, bug reports,
+additions, and applications.  It is best to post to the ptolemy-hackers 
+mailing list
+instead of the comp.soft-sys.ptolemy newsgroup as ptolemy-hackers
+goes directly to the mailboxes of the Ptolemy developers.  We make every
+effort to keep up with the compo.soft-sys.ptolemy newsgroup and
+repost questions from the newsgroup to the mailing list.
 
- <p>Ptolemy is distributed without support or warranty.  However, if you
-really need to contact a human being with a Ptolemy question, you can
-send email to: ptolemy at eecs berkeley edu.
+<p>The easiest way to read comp.soft-sys.ptolemy is via <a
+href="http://groups.google.com/group/comp.soft-sys.ptolemy/topics">Google Groups</a>.</p>
 
  <p> The Ptolemy Mailing lists and search engine can be found at
 <a href="http://ptolemy.eecs.berkeley.edu/search/" target="_top"><code>http://ptolemy.eecs.berkeley.edu/search/</code></a>
@@ -211,12 +206,12 @@ send email to: ptolemy at eecs berkeley edu.
 
  <p>A good bug report includes:
 <menu>
-<li> The version of Ptolemy you are running (5.0? 6.0)
+<li> The version of Ptolemy you are running (6.0? 7.0? The devel tree?)
 
-<li> Whether you built it from CVS sources or from the sources 
+<li> Whether you built it from Subversion sources or from the sources 
 shipped with the Windows installer or are running from the Windows installer.
 
-<li> Your platform (Windows? Linux) and version, along with the
+<li> Your platform (Windows? Linux?) and version, along with the
 the version of Java you are running
 
 <li> <B>Important</B>: a small test model, or else really detailed
@@ -520,8 +515,8 @@ For details, see the installation pages at
 <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/" target="_top"><code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/</code></a>
 <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/"><code></code></a>
 
-<dt><a name="CVS Access"><b>3.4 How do I get CVS access to PtolemyII</b></a>
-<dd>CVS access to the Ptolemy II development tree is available.
+<dt><a name="Subversion Access"><b>3.4 How do I get Subversion access to PtolemyII</b></a>
+<dd>Subversion access to the Ptolemy II development tree is available.
 Instructions can be found at
 <a href="http://chess.eecs.berkeley.edu/ptexternal" target="_top">http://chess.eecs.berkeley.edu/ptexternal</a>
 </dl>
