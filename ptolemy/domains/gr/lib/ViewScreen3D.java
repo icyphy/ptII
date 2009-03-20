@@ -736,7 +736,7 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
     protected SimpleUniverse _simpleUniverse;
 
     /** The user tranformation. */
-    protected TransformGroup _userTransformation = new TransformGroup();
+    protected TransformGroup _userTransformation;
 
     //  protected int _counter;
     //protected boolean _hasToken;
