@@ -42,13 +42,24 @@ if {[info procs jdkCapture] == "" } then {
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
+set makeArguments {}
+set makeOutput [exec make -v]
+if {[regexp GNUP $makeOutput]} { 
+    # GNU Make 
+    set makeArguments [list {--no-print-directory}]
+}
+
 ######################################################################
 ####
 #
 test MoMLCommandLineLocation-1.1 {} {
-    # Use "make -s" so that commands are not printed as they
+    # Use "make $makeArguments" so that commands are not printed as they
     # are executed
-    set results [exec  make -s MoMLCommandLineApplication1]
+    if {$makeArguments == {}} {
+	set results [exec make MoMLCommandLineApplication1]
+    } else {
+	set results [exec make $makeArguments MoMLCommandLineApplication1]
+    }
     regsub -all [java::call System getProperty "line.separator"] \
 	        $results "\n" results2
 
@@ -56,7 +67,11 @@ test MoMLCommandLineLocation-1.1 {} {
 } {A String}
 
 test MoMLCommandLineLocation-1.2 {Set the parameter to 2} {
-    set results [exec  make -s MoMLCommandLineApplication2]
+    if {$makeArguments == {}} {
+	set results [exec make MoMLCommandLineApplication2]
+    } else {
+	set results [exec make $makeArguments MoMLCommandLineApplication3]
+    }
     regsub -all [java::call System getProperty "line.separator"] \
 	        $results "\n" results2
     string range $results2 0 1
@@ -64,14 +79,22 @@ test MoMLCommandLineLocation-1.2 {Set the parameter to 2} {
 }
 
 test MoMLCommandLineLocation-1.3 {Set the parameter to a string} {
-    set results [exec  make -s MoMLCommandLineApplication3]
+    if {$makeArguments == {}} {
+	set results [exec make MoMLCommandLineApplication3]
+    } else {
+	set results [exec make $makeArguments MoMLCommandLineApplication3]
+    }
     regsub -all [java::call System getProperty "line.separator"] \
 	        $results "\n" results2
     string range $results2 0 11
 } {Hello, World}
 
 test MoMLCommandLineLocation-1.4 {Set the director iterations parameter to a 2} {
-    set results [exec  make -s MoMLCommandLineApplication4]
+    if {$makeArguments == {}} {
+	set results [exec make MoMLCommandLineApplication4]
+    } else {
+	set results [exec make $makeArguments MoMLCommandLineApplication4]
+    }
     regsub -all [java::call System getProperty "line.separator"] \
 	        $results "\n" results2
     string range $results2 0 16
