@@ -234,7 +234,7 @@ $(PTIIDIST):
 	@echo "#"
 	@echo "$@ `date`"
 	@echo "`uptime`"
-	mkdir $@
+	mkdir -p $@
 	#@echo "Be sure that ptolemy/media/javasound/javasound.jar exists"
 	#(cd $(PTIIHOME)/ptolemy/media/javasound; make jars)
 	#@echo "Be sure that ptolemy/actor/lib/javasound/javasound.jar exists"
