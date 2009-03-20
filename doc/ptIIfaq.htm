@@ -622,14 +622,29 @@ java -classpath "$PTII;$PTII/lib/diva.jar" ptolemy.vergil.VergilApplication
  <p>If you have chose the Windows Installer, then the individual
 <code>.class</code> files have been placed in jar files
 
-Vergil uses the following jar files
+<p>There are several different Ptolemy configurations that differ
+in the number of Ptolemy actors or models of computation that are
+available.  The Ptiny configuration includes common domains and is
+sometimes easier to work with than the full version.
+
+
+<p>The Ptiny configuration of Vergil uses the following jar files
 	<ul>
 	<li> <code>./ptolemy/ptsupport.jar</code>
 	<li> <code>./ptolemy/vergil/vergil.jar</code>
 	<li> <code>./ptolemy/lib/diva.jar</code>
 	<li> <code>./ptolemy/domains/domains.jar</code>
-	<li> <code>./ptolemy/copernicus/copernicus.jar</code>
+        </ul>
+<p>The full configuration of Vergil uses all the jar files
+	of the Ptiny version and the following jar files:
+	<ul>
+	<li><code>ptolemy/actor/gt/gt.jar</code></li>
+	<li><code>ptolemy/domains/erg/erg.jar</code></li>
+	<li><code>ptolemy/vergil/gt/gt.jar</code></li>
+	<li><code>ptolemy/vergil/erg/erg.jar</code></li>
+	<li><code>ptolemy/vergil/fsm/fmv/fmv.jar</code></li>
 	</ul>
+
 The directory where Ptolemy II is installed should also be in the classpath.
 
  <p><a name="invokebyhand">To start Vergil by hand</a> when the
@@ -637,13 +652,27 @@ Ptolemy II was installed from the Windows installer, try starting up by
 cd'ing to where the release is installed and typing in the following
 (all on one line)
 
+<p>Under Windows, to start the Ptiny version, first change to the
+	Ptolemy directory, then run:
  <!-- Split this into multiple lines so that the display does not
 have a horizontal scroll bar because of the length of the line. -->
 <pre>
 java -classpath ".;./ptolemy/ptsupport.jar;\
 ./ptolemy/vergil/vergil.jar;./lib/diva.jar;\
-./ptolemy/copernicus/copernicus.jar;\
-./ptolemy/domains/domains.jar"\
+./ptolemy/domains/domains.jar" \
+ ptolemy.vergil.VergilApplication -ptiny
+</pre>
+
+<p>To run the full version:
+<pre>
+java -classpath ".;ptolemy/ptsupport.jar;\
+ptolemy/vergil/vergil.jar;lib/diva.jar;\
+ptolemy/domains/domains.jar;\
+ptolemy/actor/gt/gt.jar;\
+ptolemy/domains/erg/erg.jar;\
+ptolemy/vergil/gt/gt.jar;\
+ptolemy/vergil/erg/erg.jar;\
+ptolemy/vergil/fsm/fmv/fmv.jar" \
  ptolemy.vergil.VergilApplication
 </pre>
 
@@ -651,9 +680,10 @@ See also <a href="#AddingAConfiguration"><b>5.2 How do I add a configuration?</b
 
 <dt>
 <a name="stacktrace"><b>4.2 Ptolemy II is hanging, how do I get a stack trace?</b></a>
-<dd>
+<pdd>
 If Ptolemy II is hanging, try generating a stack trace using
 one of the following methods:
+  
 
  <p>Under Windows, when you have built from source, try using
 "Control-Backslash", that is holding the Control key down and hitting
@@ -986,16 +1016,24 @@ and avoiding the usual edit/compile/run loop.
 
 <dt> <a name="CodeGen"><b>5.9 What about Code Generation?</b></a>
 
-<dd>Ptolemy II include a code generator developed by Stephen Neuendorffer
+Certain versions of Ptolemy II before Ptolemy 8.0 included the Copernicus
+  code generator, which is described below.  Portions of the Copernicus code generator
+  was removed between Ptolemy II 7.0.1 and Ptolemy II 8.0.beta because
+  it stopped passing its tests and extending it to support use of Java Generics
+  in the Ptolemy kernel was seen as being a large task.
+
+  <dd>Ptolemy II includes a code generator developed by Stephen Neuendorffer
 that reads non-hierarchical SDF models and generates Java .class files.
 This code generator is called Copernicus.  We call this 
 the <I>deep</I> code generator.
 The code that is produced by deep codegen uses very little of the
 Ptolemy infrastructure.  The ptolemy.math package is used sometimes.
+The deep code generator was removed between Ptolemy II 7.0.1
+    and Ptolemy II 8.0.beta.
 
  <p>In addition, Copernicus can read in models from other domains
 and generate a .class file that uses much more of the Ptolemy infrastructure.
-We call this the <I>shallow</I> code generator.
+We call this the <I>shallow</I> code generator.   
 
  <p>Copernicus can also read in models and generate applets.
  <br>To generate an applet within the Ptolemy II tree, try
@@ -1017,7 +1055,8 @@ compiler to create small standalone binaries.
 which was created by Ankush Varma and
 Professor Shuvra S. Bhattacharyya of the University of Maryland,
 The Copernicus C code generator generates C files for certain SDF
-models.  This C code generator is still very experimental.
+models.  This C code generator is still very experimental and
+    was removed between Ptolemy II 7.0.1 and 8.0.beta.
 
  <p>For more information about the Copernicus code generator, see
 <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/codegen.htm" target="_top"><code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/codegen.htm</code></a>
@@ -1027,17 +1066,17 @@ models.  This C code generator is still very experimental.
  <br>Ankush Varma, "<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/03/java-2-C">Retargetable Optimizing Java-to-C Compiler for Embedded Systems</a>," Master's Report, Department of Electrical and Computer Engineering, University of Maryland, College Park, MD, 2003.
 
 
+
  <p>As of Ptolemy II 4.0, no further development is occuring in 
 Copernicus.  However, the Ptolemy group is developing a 
 Ptolemy Classic style code generator that uses template files
-to build C files.  This code generator is not available in 
-Ptolemy II 5.0, but is available via 
-<a href="#CVS Access">CVS</a> and will ship in May, 2006.
+to build C files.  This code generator first shipped in
+Ptolemy II 6.0.
 
     <p>The current template effort synthesizes C code from certain
     Ptolemy II models (synchronous dataflow and heterochronous dataflow
     are functional, SR, and DE are being planned). In this
-    technology, we define "helper" classes associated with Ptolemy II
+    technology, we define "adapter" classes associated with Ptolemy II
     actors that define the C code implementation for the actor.
     The code generator functions (as in Giotto) to coordinate the
     components.  This effort is focused on efficiency. Our objective
