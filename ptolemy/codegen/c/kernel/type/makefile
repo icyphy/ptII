@@ -58,13 +58,17 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	Array.c \
 	Boolean.c \
+	BooleanArray.c \
 	Complex.c \
 	Double.c \
+	DoubleArray.c \
 	Int.c \
+	IntArray.c \
 	Long.c \
 	Matrix.c \
 	Pointer.c \
 	String.c \
+	StringArray.c \
 	UnsignedByte.c
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
