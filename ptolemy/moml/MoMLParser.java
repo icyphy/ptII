@@ -1143,11 +1143,11 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
             // The error messages used to be more verbose, uncomment
             // the next line if you would like to know what failed and why
-             errorMessage.append(
-                    "\n    base: " + base
-                    + "\n    source: " + source
-                    + "\n    result: " + result
-                    + "\n" +KernelException.stackTraceToString(ioException));
+            // errorMessage.append(
+            //        "\n    base: " + base
+            //        + "\n    source: " + source
+            //        + "\n    result: " + result
+            //        + "\n" +KernelException.stackTraceToString(ioException));
             result = _classLoader.getResource(source);
 
             if (result != null) {
