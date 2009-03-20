@@ -305,7 +305,10 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         if (_codeGenerator.inline.getToken() == BooleanToken.TRUE) {
             code.append(_generateFireCode());
             code.append(generateTypeConvertFireCode());
-        } else {
+        } else if (getComponent().getContainer() != null) {
+	    // Needed for jni and embeddedJava
+            code.append(_generateFireCode());
+	} else {
             code.append(_generateFireInvocation(
                     getComponent()) + ";" + _eol);
         }
