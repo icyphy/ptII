@@ -160,16 +160,16 @@ demo: compatDemo
 # makefile rules because AUXCLASSPATH may be set to include the
 # code coverage harness
 MoMLCommandLineApplication1:
-	@"$(JAVA)" -classpath $(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH) ptolemy.moml.MoMLCommandLineApplication   MoMLCommandLineApplicationTest.xml
+	@"$(JAVA)" -classpath "$(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH)" ptolemy.moml.MoMLCommandLineApplication   MoMLCommandLineApplicationTest.xml
 
 MoMLCommandLineApplication2:
-	@"$(JAVA)" -classpath $(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH) ptolemy.moml.MoMLCommandLineApplication  -myParameter 2 MoMLCommandLineApplicationTest.xml
+	@"$(JAVA)" -classpath "$(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH)" ptolemy.moml.MoMLCommandLineApplication  -myParameter 2 MoMLCommandLineApplicationTest.xml
 
 MoMLCommandLineApplication3:
-	@"$(JAVA)" -classpath $(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH) ptolemy.moml.MoMLCommandLineApplication  -myParameter "&quot;Hello, World&quot;" MoMLCommandLineApplicationTest.xml
+	@"$(JAVA)" -classpath "$(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH)" ptolemy.moml.MoMLCommandLineApplication  -myParameter "&quot;Hello, World&quot;" MoMLCommandLineApplicationTest.xml
 
 MoMLCommandLineApplication4:
-	@"$(JAVA)" -classpath $(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH) ptolemy.moml.MoMLCommandLineApplication  -SDF\ Director.iterations 2 MoMLCommandLineApplicationTest.xml
+	@"$(JAVA)" -classpath "$(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH)" ptolemy.moml.MoMLCommandLineApplication  -SDF\ Director.iterations 2 MoMLCommandLineApplicationTest.xml
 
 
 # Get the rest of the rules
