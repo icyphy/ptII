@@ -7,11 +7,11 @@
     </com.izforge.izpack.panels.TargetPanel>
     <com.izforge.izpack.panels.PacksPanel>
         <pack name="Ptiny" index="0" selected="true"/>
-        <pack name="Full" index="1" selected="false"/>
-        <pack name="Docs" index="2" selected="false"/>
-        <pack name="FullDocs" index="3" selected="false"/>
+        <pack name="Full" index="1" selected="true"/>
+        <pack name="Docs" index="2" selected="true"/>
+        <pack name="FullDocs" index="3" selected="true"/>
         <pack name="JRE" index="4" selected="false"/>
-        <pack name="Sources" index="5" selected="false"/>
+        <pack name="Sources" index="5" selected="true"/>
     </com.izforge.izpack.panels.PacksPanel>
     <com.izforge.izpack.panels.SummaryPanel/>
     <com.izforge.izpack.panels.InstallPanel/>
