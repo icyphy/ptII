@@ -37,7 +37,7 @@ ME =		ptolemy/copernicus
 # 3/2009 - copernicus/java disabled because the demos have not worked since
 # 11/12/2008 - cxh
 #COPERNICUS_JAVA = java
-COPERNICUS_JAVA = java
+COPERNICUS_JAVA =
 DIRS =		kernel applet interpreted shallow \
 		$(COPERNICUS_JAVA) $(PTJHDL_DIR) gui
 
