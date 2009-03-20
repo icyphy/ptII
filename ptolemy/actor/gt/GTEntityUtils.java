@@ -1,4 +1,4 @@
-/*
+/* A set of utilities for handling GTEntities.
 
 @Copyright (c) 2008 The Regents of the University of California.
 All rights reserved.
@@ -65,16 +65,27 @@ import ptolemy.util.StringUtilities;
 import ptolemy.vergil.icon.EditorIcon;
 
 /**
+ A set of utilities for handling GTEntities (instances of {@link GTEntity}).
 
  @author Thomas Huining Feng
  @version $Id$
- @since Ptolemy II 6.1
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
 public class GTEntityUtils {
 
-    public static void exportExtraProperties(GTEntity entity, Writer output,
+    /** For each port of the given entity, if the port is not persistent, such
+     *  as one automatically created in an AtomicActorMatcher with a
+     *  PortCriterion, store the persistent attributes of the port in a "port"
+     *  XML element.
+     *
+     *  @param entity The entity whose ports are looked at.
+     *  @param output The output writer.
+     *  @param depth The depth for the MoML output.
+     *  @exception IOException If the output writer cannot be written to.
+     */
+    public static void exportPortProperties(GTEntity entity, Writer output,
             int depth) throws IOException {
         if (entity instanceof Entity) {
             Entity ptEntity = (Entity) entity;
@@ -104,6 +115,16 @@ public class GTEntityUtils {
         }
     }
 
+    /** Find the effigy associated with the top level of the object, and if not
+     *  found but the top level has a ContainmentExtender attribute, use that
+     *  attribute to find the containment extender of the top level and continue
+     *  the search.
+     *
+     *  @param object The object.
+     *  @return The effigy, or null if not found.
+     *  @exception IllegalActionException If attributes cannot be retrieved, or
+     *   the container that an attribute points to is invalid.
+     */
     public static Effigy findToplevelEffigy(NamedObj object)
             throws IllegalActionException {
         NamedObj toplevel;
@@ -124,7 +145,13 @@ public class GTEntityUtils {
         return null;
     }
 
-    @SuppressWarnings("unchecked")
+    /** Update the appearance (icons and ports) of the entity with the change in
+     *  a GTIngredientAttribute, such as a criterion or an operation.
+     *
+     *  @param entity The entity.
+     *  @param attribute The attribute whose recent change leads to an update of
+     *   the entity.
+     */
     public static void updateAppearance(final GTEntity entity,
             GTIngredientsAttribute attribute) {
 
@@ -228,6 +255,13 @@ public class GTEntityUtils {
         }
     }
 
+    /** React to change of a settable contained in the entity and update the
+     *  entity's appearance.
+     *
+     *  @param entity The entity that contains the settable.
+     *  @param settable The settable whose value is changed.
+     *  @see ptolemy.kernel.util.ValueListener#valueChanged(Settable)
+     */
     public static void valueChanged(GTEntity entity, Settable settable) {
         GTIngredientsAttribute criteria = entity.getCriteriaAttribute();
 
@@ -253,8 +287,16 @@ public class GTEntityUtils {
         }
     }
 
+    /** Load the default icon of the actor specified in the class with name
+     *  actorClassName, and set the entity with that icon.
+     *
+     *  @param entity The entity whose icon is to be set.
+     *  @param actorClassName The class name of the actor for loading the
+     *   default icon.
+     *  @exception Exception If the icon cannot be set for the entity.
+     */
     private static void _loadActorIcon(GTEntity entity, String actorClassName)
-    throws Exception {
+            throws Exception {
         CompositeActor container = new CompositeActor();
         String moml = "<group><entity name=\"NewActor\" class=\""
                 + actorClassName + "\"/></group>";
@@ -272,8 +314,16 @@ public class GTEntityUtils {
         }
     }
 
+    /** Remove the EditorIcons defined for the entity.
+     *
+     *  @param entity The entity.
+     *  @return true if at least one EditorIcon is found and removed; false
+     *   otherwise.
+     *  @exception KernelException If error occurs while removing the
+     *   EditorIcons.
+     */
     private static boolean _removeEditorIcons(GTEntity entity)
-    throws KernelException {
+            throws KernelException {
         NamedObj object = (NamedObj) entity;
         boolean foundPersistentIcon = false;
         try {
@@ -292,6 +342,13 @@ public class GTEntityUtils {
         return !foundPersistentIcon;
     }
 
+    /** Set the icon description for the entity.
+     *
+     *  @param entity The entity.
+     *  @param iconDescription The icon description.
+     *  @exception Exception If an icon description cannot be created, or it
+     *   cannot be associated with the entity.
+     */
     private static void _setIconDescription(GTEntity entity,
             String iconDescription) throws Exception {
         SingletonConfigurableAttribute description =
@@ -300,8 +357,28 @@ public class GTEntityUtils {
         description.configure(null, null, iconDescription);
     }
 
+    //////////////////////////////////////////////////////////////////////////
+    //// LoadActorIconChangeRequest
+
+    /**
+     A change request to copy the icon of a newly created entity within a
+     container to a given GTEntity.
+
+     @author Thomas Huining Feng
+     @version $Id$
+     @since Ptolemy II 7.1
+     @Pt.ProposedRating Red (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
+     */
     private static class LoadActorIconChangeRequest extends ChangeRequest {
 
+        /** Construct a change request to copy the icon of a newly created
+         *  entity within a container to a given GTEntity.
+         *
+         *  @param entity The entity whose icon is to be set.
+         *  @param container The container of a single entity inside, which has
+         *   the icon to be copied.
+         */
         public LoadActorIconChangeRequest(GTEntity entity,
                 CompositeEntity container) {
             super(container, "Load the icon of the newly created actor");
@@ -310,6 +387,13 @@ public class GTEntityUtils {
             _container = container;
         }
 
+        /** Execute the change request by retrieving the icon description or
+         *  EditorIcon of the single entity in the container given in the
+         *  constructor and copying it to the entity given in the constructor.
+         *
+         *  @exception Exception If the icon cannot be retrieved, or it cannot
+         *   be associated with the entity.
+         */
         protected void _execute() throws Exception {
             ComponentEntity actor;
             try {
@@ -350,13 +434,34 @@ public class GTEntityUtils {
             }
         }
 
+        /** The container of a single entity to retrieve the icon.
+         */
         private CompositeEntity _container;
 
+        /** The entity to which the icon is to be copied.
+         */
         private GTEntity _entity;
     }
 
+    //////////////////////////////////////////////////////////////////////////
+    //// RestoreAppearanceChangeRequest
+
+    /**
+     A change request to restore the default icon of an entity.
+
+     @author Thomas Huining Feng
+     @version $Id$
+     @since Ptolemy II 7.1
+     @Pt.ProposedRating Red (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
+     */
     private static class RestoreAppearanceChangeRequest extends ChangeRequest {
 
+        /** Execute the change request and restore the default icon for the
+         *  entity.
+         *
+         *  @exception Exception The default icon cannot be set for the entity.
+         */
         protected void _execute() throws Exception {
             if (_removeEditorIcons(_entity)) {
                 _setIconDescription(_entity, _entity
@@ -364,11 +469,18 @@ public class GTEntityUtils {
             }
         }
 
+        /** Construct a change request to restore the default icon for an
+         *  entity.
+         *
+         *  @param entity The entity whose icon is to be restored.
+         */
         RestoreAppearanceChangeRequest(GTEntity entity) {
             super(entity, "Restore the default appearance.");
             _entity = entity;
         }
 
+        /** The entity whose icon is to be restored.
+         */
         private GTEntity _entity;
     }
 }

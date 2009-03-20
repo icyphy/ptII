@@ -1,4 +1,5 @@
-/*
+/* Superclass of the attributes used in the patterns or replacements of
+   transformation rules.
 
 @Copyright (c) 2007-2008 The Regents of the University of California.
 All rights reserved.
@@ -43,15 +44,22 @@ import ptolemy.moml.EntityLibrary;
 import ptolemy.moml.MoMLChangeRequest;
 
 /**
+ Superclass of the attributes used in the patterns or replacements of
+ transformation rules.
 
  @author Thomas Huining Feng
  @version $Id$
- @since Ptolemy II 6.1
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
 public abstract class GTAttribute extends Attribute {
 
+    /** Construct an attribute in the default workspace with an empty string
+     *  as its name.
+     *  The object is added to the directory of the workspace.
+     *  Increment the version number of the workspace.
+     */
     public GTAttribute() {
     }
 
@@ -85,6 +93,17 @@ public abstract class GTAttribute extends Attribute {
         super(workspace);
     }
 
+    /** Check the class of the container in which this attribute is to be
+     *  placed. If the container is not an intended one, throw an
+     *  IllegalActionException.
+     *
+     *  @param container The container.
+     *  @param containerClass The intended class of container.
+     *  @param deep Whether containers of the container should be checked
+     *   instead, if the container does not qualify.
+     *  @exception IllegalActionException If this attribute cannot be used with
+     *   the given container.
+     */
     protected void _checkContainerClass(NamedObj container,
             Class<? extends CompositeEntity> containerClass, boolean deep)
             throws IllegalActionException {
@@ -107,6 +126,12 @@ public abstract class GTAttribute extends Attribute {
         }
     }
 
+    /** Check whether this attribute is unique in the given container.
+     *
+     *  @param container The container.
+     *  @exception IllegalActionException If the container already has an
+     *   attribute in the same class.
+     */
     protected void _checkUniqueness(NamedObj container)
             throws IllegalActionException {
         if (container instanceof EntityLibrary) {
@@ -128,6 +153,11 @@ public abstract class GTAttribute extends Attribute {
         }
     }
 
+    /** Execute a MoMLChangeRequest to set the icon description of this
+     *  attribute.
+     *
+     *  @param iconDescription The icon description.
+     */
     protected void _setIconDescription(String iconDescription) {
         String moml = "<property name=\"_iconDescription\" class="
                 + "\"ptolemy.kernel.util.SingletonConfigurableAttribute\">"
@@ -137,6 +167,8 @@ public abstract class GTAttribute extends Attribute {
         request.execute();
     }
 
+    /** Request a MoMLChangeRequest to delete this attribute from its container.
+     */
     private void _deleteThis() {
         String moml = "<deleteProperty name=\"" + getName() + "\"/>";
         requestChange(new MoMLChangeRequest(this, getContainer(), moml));

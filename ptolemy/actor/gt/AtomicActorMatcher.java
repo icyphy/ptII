@@ -236,7 +236,7 @@ public class AtomicActorMatcher extends TypedAtomicActor implements GTEntity,
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
         super._exportMoMLContents(output, depth);
-        GTEntityUtils.exportExtraProperties(this, output, depth);
+        GTEntityUtils.exportPortProperties(this, output, depth);
     }
 
     ///////////////////////////////////////////////////////////////////

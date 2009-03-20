@@ -1,4 +1,4 @@
-/*
+/* Interface of the composite actors used in transformation rules.
 
  Copyright (c) 2008 The Regents of the University of California.
  All rights reserved.
@@ -33,7 +33,7 @@ import ptolemy.actor.TypedActor;
 //// GTCompositeEntity
 
 /**
-
+ Interface of the composite actors used in transformation rules.
 
  @author Thomas Huining Feng
  @version $Id$
