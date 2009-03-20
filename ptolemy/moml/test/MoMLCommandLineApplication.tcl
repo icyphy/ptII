@@ -70,7 +70,7 @@ test MoMLCommandLineLocation-1.2 {Set the parameter to 2} {
     if {$makeArguments == {}} {
 	set results [exec make MoMLCommandLineApplication2]
     } else {
-	set results [exec make $makeArguments MoMLCommandLineApplication3]
+	set results [exec make $makeArguments MoMLCommandLineApplication2]
     }
     regsub -all [java::call System getProperty "line.separator"] \
 	        $results "\n" results2
