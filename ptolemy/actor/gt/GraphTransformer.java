@@ -263,6 +263,10 @@ public class GraphTransformer extends ChangeRequest {
         host.requestChange(transformer);
     }
 
+    /** Add new connections.
+     *
+     *  @exception TransformationException If transformation is unsuccessful.
+     */
     protected void _addConnections() throws TransformationException {
         for (NamedObj replacement : _replacementToHost.keySet()) {
             NamedObj host = _replacementToHost.get(replacement);
@@ -349,11 +353,20 @@ public class GraphTransformer extends ChangeRequest {
         }
     }
 
+    /** Add new NamedObjs.
+     *
+     *  @exception TransformationException If transformation is unsuccessful.
+     */
     protected void _addObjects() throws TransformationException {
         _addObjectsWithCreationAttributes(_pattern);
         _addObjects(_replacement, _host, true);
     }
 
+    /** Execute the change request and perform the transformation on the match
+     *  result(s) given to the constructor.
+     *
+     *  @exception TransformationException If transformation is unsuccessful.
+     */
     protected void _execute() throws TransformationException {
         for (MatchResult matchResult : _matchResults) {
             _matchResult = (MatchResult) matchResult.clone();
@@ -391,10 +404,18 @@ public class GraphTransformer extends ChangeRequest {
         _hideRelations();
     }
 
-    protected void _hideRelations() throws TransformationException {
+    /** Hide all the relations in the host model that can be hidden, such as the
+     *  ones that are visible but are not multi-way.
+     */
+    protected void _hideRelations() {
         _hideRelations(_host);
     }
 
+    /** Initialize model transformation and construct the maps between objects
+     *  in the pattern, those in the replacement, and those in the host model.
+     *
+     *  @exception TransformationException If transformation is unsuccessful.
+     */
     protected void _init() throws TransformationException {
         _patternToReplacement = new TwoWayHashMap<NamedObj, NamedObj>();
         _initPatternToReplacement(_replacement);
@@ -403,6 +424,11 @@ public class GraphTransformer extends ChangeRequest {
         _initPreservedObjects(_pattern);
     }
 
+    /** Perform all the operations associated with the objects in the
+     *  replacement.
+     *
+     *  @exception TransformationException If transformation is unsuccessful.
+     */
     protected void _performOperations() throws TransformationException {
         for (Map.Entry<NamedObj, NamedObj> entry : _replacementToHost
                 .entrySet()) {
@@ -451,6 +477,11 @@ public class GraphTransformer extends ChangeRequest {
         }
     }
 
+    /** Record the MoML for the objects in the host model that are matched and
+     *  need to be preserved in the result.
+     *
+     *  @exception TransformationException If transformation is unsuccessful.
+     */
     protected void _recordMoML() throws TransformationException {
         _moml = new HashMap<NamedObj, String>();
         for (Map.Entry<NamedObj, NamedObj> entry : _replacementToHost
@@ -462,14 +493,27 @@ public class GraphTransformer extends ChangeRequest {
         }
     }
 
-    protected void _removeLinks() throws TransformationException {
+    /** Remove the links in the host model that are matched but need to be
+     *  deleted.
+     */
+    protected void _removeLinks() {
         _removeLinks(_pattern);
     }
 
+    /** Remove the NamedObjs in the host model that are matched but need to be
+     *  deleted.
+     *
+     *  @exception TransformationException If transformation is unsuccessful.
+     */
     protected void _removeObjects() throws TransformationException {
         _removeObjects(_host);
     }
 
+    /** Restore the values of the ValueIterators in the host model, so that they
+     *  have the values that were used to obtain the match result.
+     *
+     *  @exception TransformationException If transformation is unsuccessful.
+     */
     protected void _restoreParameterValues() throws TransformationException {
         SequentialTwoWayHashMap<ValueIterator, Token> parameterValues =
             _matchResult.getParameterValues();
@@ -484,11 +528,26 @@ public class GraphTransformer extends ChangeRequest {
         }
     }
 
+    /** Finish up transformation and remove the helper attributes in the
+     *  replacement and the host model created in the transformation.
+     *
+     *  @exception TransformationException If transformation is unsuccessful.
+     */
     protected void _wrapup() throws TransformationException {
         _removeReplacementObjectAttributes(_host);
         _removeReplacementObjectAttributes(_replacement);
     }
 
+    /** Add objects in a container in the replacement to a container in the host
+     *  model.
+     *
+     *  @param replacement A container in the replacement.
+     *  @param host A container in the host model.
+     *  @param copyAttributes Whether attributes of the container in the
+     *   replacement, if it is a CompositeEntity, should be copied to the
+     *   container in the host model.
+     *  @exception TransformationException If transformation is unsuccessful.
+     */
     private void _addObjects(NamedObj replacement, NamedObj host,
             boolean copyAttributes) throws TransformationException {
         try {
@@ -558,6 +617,12 @@ public class GraphTransformer extends ChangeRequest {
         }
     }
 
+    /** Add objects with {@link CreationAttribute}s from a container in the
+     *  pattern to the container that that container matches in the host model.
+     *
+     *  @param pattern A container in the pattern.
+     *  @exception TransformationException If transformation is unsuccessful.
+     */
     private void _addObjectsWithCreationAttributes(NamedObj pattern)
     throws TransformationException {
         Collection<?> children = GTTools.getChildren(pattern, false, true, true,
@@ -569,7 +634,12 @@ public class GraphTransformer extends ChangeRequest {
             }
             if (GTTools.isCreated(child)) {
                 String moml = child.exportMoMLPlain();
-                NamedObj host = _findChangeContext(pattern);
+                Object hostObject = null;
+                while (hostObject == null && pattern != null) {
+                    hostObject = _matchResult.get(pattern);
+                    pattern = pattern.getContainer();
+                }
+                NamedObj host = (NamedObj) hostObject;
                 moml = "<group name=\"auto\">\n" + moml + "</group>";
                 CreateObjectChangeRequest request =
                     new CreateObjectChangeRequest(host, moml);
@@ -593,6 +663,13 @@ public class GraphTransformer extends ChangeRequest {
         }
     }
 
+    /** Add replacement-to-host entries in the table by traversing from a
+     *  container in the host model to all its contained objects recursively.
+     *  The given container in the host model should have been created from the
+     *  replacement, and is not originally in the host model.
+     *
+     *  @param host A container in the host model.
+     */
     private void _addReplacementToHostEntries(NamedObj host) {
         ReplacementObjectAttribute attribute = _getReplacementObjectAttribute(
                 host);
@@ -616,6 +693,14 @@ public class GraphTransformer extends ChangeRequest {
         }
     }
 
+    /** Create a change request to add an object in the context in the host
+     *  model, and record the created object(s) in a private field of the change
+     *  request itself.
+     *
+     *  @param context The context.
+     *  @param moml The MoML to be executed to add the object.
+     *  @return The change request.
+     */
     private CreateObjectChangeRequest _createAddObjectRequest(NamedObj context,
             String moml) {
         CreateObjectChangeRequest request = new CreateObjectChangeRequest(
@@ -631,6 +716,12 @@ public class GraphTransformer extends ChangeRequest {
         return request;
     }
 
+    /** Create a change request to be executed in the context.
+     *
+     *  @param context The context.
+     *  @param moml The MoML to be executed.
+     *  @return The change request.
+     */
     private MoMLChangeRequest _createChangeRequest(NamedObj context,
             String moml) {
         MoMLChangeRequest request = new MoMLChangeRequest(this, context, moml);
@@ -645,15 +736,18 @@ public class GraphTransformer extends ChangeRequest {
         return request;
     }
 
-    private NamedObj _findChangeContext(NamedObj pattern) {
-        Object host = null;
-        while (host == null && pattern != null) {
-            host = _matchResult.get(pattern);
-            pattern = pattern.getContainer();
-        }
-        return (NamedObj) host;
-    }
-
+    /** Get a GTAttribute in the given attribute class with the given name in
+     *  the container. If it is not found in the container, and the container is
+     *  in the host model with a corresponding container in the replacement,
+     *  then the container in the replacement is searched. The container's
+     *  container is also searched, until no such attribute is found, or the top
+     *  level is reached.
+     *
+     *  @param container The container to start the search with.
+     *  @param name The name of the attribute to be searched for.
+     *  @param attributeClass The class of the attribute to be searched for.
+     *  @return The attribute, if found, or null otherwise.
+     */
     private Token _getAttribute(NamedObj container, String name,
             Class<? extends GTAttribute> attributeClass) {
 
@@ -682,6 +776,13 @@ public class GraphTransformer extends ChangeRequest {
         return null;
     }
 
+    /** Return the best location (in X-Y coordinates) for a relation that is
+     *  linked to the given list of objects.
+     *
+     *  @param linkedObjectList The list of objects that a relation is linked
+     *   to.
+     *  @return The X-Y coordinates of the chosen location.
+     */
     private double[] _getBestLocation(List<?> linkedObjectList) {
         double x = 0;
         double y = 0;
@@ -706,6 +807,14 @@ public class GraphTransformer extends ChangeRequest {
         return new double[] { x / num, y / num };
     }
 
+    /** Return the MoML to link the object to the relation. The object may be a
+     *  port or a relation.
+     *
+     *  @param object The object.
+     *  @param relation The relation.
+     *  @return The MoML whose execution leads to the object and the relation
+     *   being linked.
+     */
     private String _getLinkMoML(NamedObj object, Relation relation) {
         String moml = null;
         if (object instanceof Port) {
@@ -723,6 +832,11 @@ public class GraphTransformer extends ChangeRequest {
         return moml;
     }
 
+    /** Get the MoML for an object in the host model.
+     *
+     *  @param host An object in the host model.
+     *  @return The MoML for the object.
+     */
     private String _getMoML(NamedObj host) {
         if (host instanceof CompositeEntity) {
             CompositeEntity entity = (CompositeEntity) host;
@@ -748,6 +862,12 @@ public class GraphTransformer extends ChangeRequest {
         }
     }
 
+    /** Get the ReplacementObjectAttribute associated with an object in the host
+     *  model, if any.
+     *
+     *  @param object The object.
+     *  @return The ReplacementObjectAttribute, or null if not found.
+     */
     private ReplacementObjectAttribute _getReplacementObjectAttribute(
             NamedObj object) {
         Attribute attribute = object.getAttribute("replacementObject");
@@ -758,6 +878,11 @@ public class GraphTransformer extends ChangeRequest {
         }
     }
 
+    /** Hide all the relations in a container in the host model that can be
+     *  hidden, such as the ones that are visible but are not multi-way.
+     *
+     *  @param host A container in the host model.
+     */
     private void _hideRelations(CompositeEntity host) {
         try {
             host.workspace().getReadAccess();
@@ -866,6 +991,11 @@ public class GraphTransformer extends ChangeRequest {
         }
     }
 
+    /** Initialize the table from objects in the pattern to the objects in the
+     *  replacement.
+     *
+     *  @param replacement The replacement.
+     */
     private void _initPatternToReplacement(NamedObj replacement) {
         NamedObj pattern;
         if (replacement == _replacement) {
@@ -913,6 +1043,11 @@ public class GraphTransformer extends ChangeRequest {
         }
     }
 
+    /** For the objects in the pattern that are tagged to be preserved, mirror
+     *  them to the replacement to preserve them.
+     *
+     *  @param pattern The pattern.
+     */
     private void _initPreservedObjects(NamedObj pattern) {
         if (GTTools.isPreserved(pattern)) {
             NamedObj host = (NamedObj) _matchResult.get(pattern);
@@ -927,6 +1062,14 @@ public class GraphTransformer extends ChangeRequest {
         }
     }
 
+    /** Initialize the ReplacementObjectAttributes for all the objects in a
+     *  container in the replacement, so that when those objects are copied into
+     *  the host model, the new objects in the host model also have those
+     *  ReplacementObjectAttributes.
+     *
+     *  @param replacement A container in the replacement.
+     *  @exception TransformationException If attributes cannot be created.
+     */
     private void _initReplacementObjectAttributes(NamedObj replacement)
             throws TransformationException {
         _setReplacementObjectAttribute(replacement, GTTools.getCodeFromObject(
@@ -945,6 +1088,12 @@ public class GraphTransformer extends ChangeRequest {
         }
     }
 
+    /** For the objects in the replacement, initialize table entries that map
+     *  them to the host model if they are preserved from the pattern, and set
+     *  the ReplacementObjectAttributes for them.
+     *
+     *  @exception TransformationException If attributes cannot be created.
+     */
     private void _initReplacementToHost() throws TransformationException {
         _replacementToHost = new TwoWayHashMap<NamedObj, NamedObj>();
         for (Map.Entry<NamedObj, NamedObj> entry
@@ -972,10 +1121,17 @@ public class GraphTransformer extends ChangeRequest {
         }
     }
 
+    /** Test whether the attribute should be copied. Attributes that have
+     *  special meaning in the transformation, such as criteria and operations,
+     *  should not be copied into the host model, whereas other attributes
+     *  should if they or their containers are copied.
+     *
+     *  @param attribute The attribute to test.
+     *  @return true if the attribute should be copied; false otherwise.
+     */
     private boolean _isAttributeCopied(Attribute attribute) {
-        if (!attribute.isPersistent()
-                || attribute instanceof GTAttribute
-                || attribute instanceof GTEntity) {
+        if (!attribute.isPersistent() || attribute instanceof GTAttribute ||
+                attribute instanceof GTEntity) {
             return false;
         }
 
@@ -996,6 +1152,13 @@ public class GraphTransformer extends ChangeRequest {
         return false;
     }
 
+    /** Mirror the object tagged to be preserved in the pattern so that it is
+     *  also considered to exist in the replacement.
+     *
+     *  @param pattern An object in the pattern.
+     *  @param host An object in the host model corresponding to the object in
+     *   the pattern.
+     */
     private void _recordMirroredObjects(NamedObj pattern, NamedObj host) {
         _matchResult.put(pattern, host);
         _replacementToHost.put(pattern, host);
@@ -1029,6 +1192,17 @@ public class GraphTransformer extends ChangeRequest {
         }
     }
 
+    /** Remove the removed relation, and link all the ports that are originally
+     *  linked to the removed relation with the preserved relation. If any port
+     *  originally linked to the removed relation is linked to more than one
+     *  relations (including the removed relation), then false is returned and
+     *  no change is made.
+     *
+     *  @param preserved The preserved relation.
+     *  @param removed The removed relation.
+     *  @return true if the relinking can be done; otherwise, false and no
+     *   change is made.
+     */
     private boolean _relink(Relation preserved, Relation removed) {
         // FIXME: Because we can't find a nice way to preserve the channel index
         // of the ports, the "removed" relation won't be removed if it is
@@ -1066,6 +1240,12 @@ public class GraphTransformer extends ChangeRequest {
         return true;
     }
 
+    /** Remove the links in the host model that are matched but need to be
+     *  deleted.
+     *
+     *  @param pattern A container in the pattern that contains the links to be
+     *   removed.
+     */
     private void _removeLinks(CompositeEntity pattern) {
         Set<Pair<Relation, Object>> linksToRemove =
             new HashSet<Pair<Relation, Object>>();
@@ -1149,6 +1329,17 @@ public class GraphTransformer extends ChangeRequest {
         }
     }
 
+    /** Remove an object from the host model.
+     *
+     *  @param object The object in the host model to be removed.
+     *  @param shallowRemoval Whether the removal is shallow. If it is and the
+     *   object to be removed is a CompositeEntity, then the entities and the
+     *   connections between them in the CompositeEntity are moved to the upper
+     *   level.
+     *  @return The objects that are moved to the upper level, or null if the
+     *   removal is not shallow.
+     *  @exception TransformationException If transformation is unsuccessful.
+     */
     private Set<NamedObj> _removeObject(NamedObj object, boolean shallowRemoval)
             throws TransformationException {
         if (shallowRemoval && object instanceof CompositeEntity) {
@@ -1308,6 +1499,12 @@ public class GraphTransformer extends ChangeRequest {
         }
     }
 
+    /** Remove the NamedObjs in a container in the host model that are matched
+     *  but need to be deleted.
+     *
+     *  @param host A container in the host model.
+     *  @exception TransformationException If transformation is unsuccessful.
+     */
     private void _removeObjects(CompositeEntity host)
             throws TransformationException {
         try {
@@ -1367,6 +1564,12 @@ public class GraphTransformer extends ChangeRequest {
         }
     }
 
+    /** Remove the ReplacementObjectAttributes associated with the object and
+     *  any of the objects contained in that object.
+     *
+     *  @param object The object whose ReplacementObjectAttributes need to be
+     *   removed.
+     */
     private void _removeReplacementObjectAttributes(NamedObj object) {
         ReplacementObjectAttribute attribute = _getReplacementObjectAttribute(
                 object);
@@ -1393,6 +1596,11 @@ public class GraphTransformer extends ChangeRequest {
         }
     }
 
+    /** Remove the replacement-to-host entries in the table for the container in
+     *  the host model, as well as all the objects contained in it.
+     *
+     *  @param host A container in the host model.
+     */
     private void _removeReplacementToHostEntries(NamedObj host) {
         ReplacementObjectAttribute attribute = _getReplacementObjectAttribute(
                 host);
@@ -1416,6 +1624,12 @@ public class GraphTransformer extends ChangeRequest {
         }
     }
 
+    /** Replace the entries in the current match result from the old host object
+     *  to the new host object. Also replace the objects contained in them.
+     *
+     *  @param oldHost The old host object.
+     *  @param newHost The new host object.
+     */
     private void _replaceMatchResultEntries(NamedObj oldHost,
             NamedObj newHost) {
         NamedObj pattern = (NamedObj) _matchResult.getKey(oldHost);
@@ -1440,6 +1654,14 @@ public class GraphTransformer extends ChangeRequest {
         }
     }
 
+    /** Set the ReplacementObjectAttribute for an object in the host model with
+     *  the given code about the object type and object name.
+     *
+     *  @param object An object in the host model.
+     *  @param replacementObjectCode The code to be set in the
+     *   ReplacementObjectAttribute.
+     *  @exception TransformationException If the attribute cannot be created.
+     */
     private void _setReplacementObjectAttribute(NamedObj object,
             String replacementObjectCode) throws TransformationException {
         try {
@@ -1456,31 +1678,84 @@ public class GraphTransformer extends ChangeRequest {
         }
     }
 
+    /** The top level of the host model.
+     */
     private CompositeEntity _host;
 
+    /** The list of listeners.
+     */
     private List<TransformationListener> _listeners =
         new LinkedList<TransformationListener>();
 
+    /** The current match result for the transformation.
+     */
     private MatchResult _matchResult;
 
+    /** The list of match results to be used.
+     */
     private List<MatchResult> _matchResults;
 
+    /** Whether the change requests are undoable and merged with previous change
+     *  requests in an undo action.
+     */
     private static boolean _mergeWithPrevious = false;
 
+    /** The MoML of the objects recorded from the host model.
+     */
     private Map<NamedObj, String> _moml;
 
+    /** The pattern of the transformation rule.
+     */
     private Pattern _pattern;
 
+    /** A table from the preserved objects in the pattern to the objects in the
+     *  replacement.
+     */
     private TwoWayHashMap<NamedObj, NamedObj> _patternToReplacement;
 
+    /** The replacement of the transformation rule.
+     */
     private Replacement _replacement;
 
+    /** A table from the objects in the replacement to the objects in the host
+     *  model. Those objects are either preserved, or created as a result of the
+     *  transformation.
+     */
     private TwoWayHashMap<NamedObj, NamedObj> _replacementToHost;
 
+    /** Whether the change requests are undoable.
+     */
     private static boolean _undoable = false;
 
+    //////////////////////////////////////////////////////////////////////////
+    //// CreateObjectChangeRequest
+
+    /**
+     The change request to create objects in the host model and record those
+     objects in the tables.
+
+     @author Thomas Huining Feng
+     @version $Id$
+     @since Ptolemy II 7.1
+     @Pt.ProposedRating Red (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
+     */
     private class CreateObjectChangeRequest extends MoMLChangeRequest {
 
+        /** Construct a mutation request to be executed in the specified context.
+         *  The context is typically a Ptolemy II container, such as an entity,
+         *  within which the objects specified by the MoML code will be placed.
+         *  This method resets and uses a parser that is a static member
+         *  of this class.
+         *  A listener to changes will probably want to check the originator
+         *  so that when it is notified of errors or successful completion
+         *  of changes, it can tell whether the change is one it requested.
+         *  Alternatively, it can call waitForCompletion().
+         *  All external references are assumed to be absolute URLs.  Whenever
+         *  possible, use a different constructor that specifies the base.
+         *  @param context The context in which to execute the MoML.
+         *  @param request The mutation request in MoML.
+         */
         public CreateObjectChangeRequest(NamedObj context, String request) {
             super(GraphTransformer.this, context, request);
 
@@ -1494,10 +1769,19 @@ public class GraphTransformer extends ChangeRequest {
             }
         }
 
+        /** Get the list of objects that are created by this change request.
+         *
+         *  @return The list of created objects.
+         */
         public List<NamedObj> getCreatedObjects() {
             return _createdObjects;
         }
 
+        /** React to end of this change request, and record the objects in the
+         *  list of created objects.
+         *
+         *  @param parser The parser to execute this change request.
+         */
         protected void _postParse(MoMLParser parser) {
             super._postParse(parser);
 
@@ -1506,11 +1790,18 @@ public class GraphTransformer extends ChangeRequest {
             parser.clearTopObjectsList();
         }
 
+        /** React to start of this change request, and clear the list of created
+         *  objects.
+         *
+         *  @param parser The parser to execute this change request.
+         */
         protected void _preParse(MoMLParser parser) {
             super._preParse(parser);
             parser.clearTopObjectsList();
         }
 
+        /** The list of created objects.
+         */
         private List<NamedObj> _createdObjects;
     }
 }

@@ -558,7 +558,7 @@ public class GraphMatcher extends GraphAnalyzer {
      *  interface, and record them in the _callbacksInPattern list to be
      *  invoked when a match is found.
      *
-     *  @param container
+     *  @param container The container of the NamedObjs to be found.
      */
     private void _findAllMatchCallbacksInPattern(NamedObj container) {
         if (container instanceof MatchCallback) {
@@ -1618,7 +1618,7 @@ public class GraphMatcher extends GraphAnalyzer {
         new SequentialTwoWayHashMap<ValueIterator, Token>();
 
     /** The variable that indicates whether the last match operation is
-     *  successful. (See {@link #match(CompositeActorMatcher, NamedObj)})
+     *  successful.
      */
     private boolean _success = false;
 
