@@ -27,7 +27,9 @@
  */
 package ptolemy.data.properties.lattice;
 
+import ptolemy.data.properties.Property;
 import ptolemy.graph.CPO;
+import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// PropertySetLattice
@@ -90,6 +92,28 @@ public class PropertySetLattice extends PropertyLattice {
         }
     }
     
+    /**
+     * Return the property element for the specified name.
+     * @param elementName the specified element name.
+     * @return The property.
+     */
+    public Property getElement(String elementName)
+    throws IllegalActionException {
+        try {
+            return (Property) getClass().getField(elementName).get(this);
+            
+//        Property property = _propertyMap.get(fieldName.toUpperCase());
+//        if (property == null) {
+//            throw new IllegalActionException(
+//                    "No lattice element named \"" + fieldName + "\".");                
+//        }
+//        return property;
+        
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
     /** Return the greatest lower bound of the two given properties.
      *  @param t1 an instance of PropertySet.
      *  @param t2 an instance of PropertySet.
