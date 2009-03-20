@@ -81,7 +81,6 @@ PTAUXALLJARS = \
 		curriculum/curriculum.jar \
 		dde/dde.jar \
 	        dt/dt.jar \
-		erg/erg.jar \
 		giotto/giotto.jar \
 		$(PTGRDOMAIN_JAR) \
 		petrinet/petrinet.jar \
@@ -106,6 +105,7 @@ PTCLASSALLJARS = \
 		ct/ct.jar \
 		de/de.jar \
 		ddf/ddf.jar \
+		erg/erg.jar \
 		fsm/fsm.jar \
 		hdf/hdf.jar \
 		pn/pn.jar \
