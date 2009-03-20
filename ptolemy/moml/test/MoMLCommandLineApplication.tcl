@@ -43,9 +43,9 @@ if {[info procs jdkCapture] == "" } then {
 # set VERBOSE 1
 
 set makeArguments {}
-set makeOutput [exec make -v]
-if {[regexp GNUP $makeOutput]} { 
-    # GNU Make 
+set whichMake [exec which make]
+if {![regexp /usr/ccs/bin/make $whichMake]} { 
+    # Probably GNU Make 
     set makeArguments [list {--no-print-directory}]
 }
 
