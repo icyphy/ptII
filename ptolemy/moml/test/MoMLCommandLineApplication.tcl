@@ -46,7 +46,9 @@ if {[info procs jdkCapture] == "" } then {
 ####
 #
 test MoMLCommandLineLocation-1.1 {} {
-    set results [exec  make MoMLCommandLineApplication1]
+    # Use "make -s" so that commands are not printed as they
+    # are executed
+    set results [exec  make -s MoMLCommandLineApplication1]
     regsub -all [java::call System getProperty "line.separator"] \
 	        $results "\n" results2
 
@@ -54,7 +56,7 @@ test MoMLCommandLineLocation-1.1 {} {
 } {A String}
 
 test MoMLCommandLineLocation-1.2 {Set the parameter to 2} {
-    set results [exec  make MoMLCommandLineApplication2]
+    set results [exec  make -s MoMLCommandLineApplication2]
     regsub -all [java::call System getProperty "line.separator"] \
 	        $results "\n" results2
     string range $results2 0 1
@@ -62,14 +64,14 @@ test MoMLCommandLineLocation-1.2 {Set the parameter to 2} {
 }
 
 test MoMLCommandLineLocation-1.3 {Set the parameter to a string} {
-    set results [exec  make MoMLCommandLineApplication3]
+    set results [exec  make -s MoMLCommandLineApplication3]
     regsub -all [java::call System getProperty "line.separator"] \
 	        $results "\n" results2
     string range $results2 0 11
 } {Hello, World}
 
 test MoMLCommandLineLocation-1.4 {Set the director iterations parameter to a 2} {
-    set results [exec  make MoMLCommandLineApplication4]
+    set results [exec  make -s MoMLCommandLineApplication4]
     regsub -all [java::call System getProperty "line.separator"] \
 	        $results "\n" results2
     string range $results2 0 16
