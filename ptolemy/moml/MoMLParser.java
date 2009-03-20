@@ -1143,12 +1143,11 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
             // The error messages used to be more verbose, uncomment
             // the next line if you would like to know what failed and why
-            // errorMessage.append(
-            //        "\n    base: " + base
-            //        + "\n    source: " + source
-            //        + "\n    result: " + result
-            //        + "\n" +KernelException.stackTraceToString(ioException));
-            // That failed.  Try opening it relative to the classpath.
+             errorMessage.append(
+                    "\n    base: " + base
+                    + "\n    source: " + source
+                    + "\n    result: " + result
+                    + "\n" +KernelException.stackTraceToString(ioException));
             result = _classLoader.getResource(source);
 
             if (result != null) {
@@ -3616,7 +3615,30 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             url = null;
             // Try the alternate file, if it's not null.
             if (altClassAsFile != null) {
-                url = fileNameToURL(altClassAsFile, _base);
+		try {
+		    url = fileNameToURL(altClassAsFile, _base);
+		} catch (Exception ex) {
+		    // Throw the original exception, which is likely to have
+		    // the real reason that the file is missing.
+		    // For example, if loading a .xml file fails because of
+		    // a missing class, then we should report that message
+		    // instead of looking for a .moml file.
+		    // See test 32.1 in test/MoMLParser.tcl that reads in
+		    // test/AltFileNameExceptionTest.xml
+		    // It would be nice to have both messages displayed, but
+		    // it would be ugly.  
+
+		    // FIXME: The tricky question is: if loading both the .xml
+		    // and the .moml file fail, then what should be reported?
+		    // If the .xml file is present and loading it fails, then
+		    // any errors associated with the loading should be reported.
+		    // If the .xml file is not present and the .moml file is
+		    // present, then any errors associated with loading the
+		    // .moml file should be reported.  
+		    // If neither file is present, then a FileNotFoundException
+		    // should be thrown that lists both files.
+		    throw ex2;
+		}
                 // First check to see whether the object has been previously loaded.
                 if (_imports != null) {
                     WeakReference possiblePrevious = (WeakReference) _imports
