@@ -1166,7 +1166,8 @@ remote1distclean:
 	@echo "#ptIInightly-mail#: Starting make clean at `date`"
 	@echo "`uptime`"
 	(cd $(REMOTE1PTIIDIST); \
-		$(MAKE) clean; \
+		$(MAKE) clean)
+	-(cd $(REMOTE1PTIIDIST); \
 		find . -name codeDoc -exec rm -rf {} \;)
 
 remote1distjavadocs:
