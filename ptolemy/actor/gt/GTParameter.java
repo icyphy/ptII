@@ -1,4 +1,4 @@
-/*
+/* Superclass of the special parameters used in transformation rules.
 
 @Copyright (c) 2007-2008 The Regents of the University of California.
 All rights reserved.
@@ -53,41 +53,96 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
+//////////////////////////////////////////////////////////////////////////
+//// GTParameter
+
 /**
+ Superclass of the special parameters used in transformation rules.
 
  @author Thomas Huining Feng
  @version $Id$
- @since Ptolemy II 6.1
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
 public class GTParameter extends Parameter {
 
-    /**
-     * @param container
-     * @param name
-     * @exception IllegalActionException
-     * @exception NameDuplicationException
+    /** Construct a parameter with the given name contained by the specified
+     *  entity. The container argument must not be null, or a
+     *  NullPointerException will be thrown.  This parameter will use the
+     *  workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty string.
+     *  The object is not added to the list of objects in the workspace
+     *  unless the container is null.
+     *  Increment the version of the workspace.
+     *  @param container The container.
+     *  @param name The name of the parameter.
+     *  @exception IllegalActionException If the parameter is not of an
+     *   acceptable class for the container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   a parameter already in the container.
      */
     public GTParameter(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
+    //////////////////////////////////////////////////////////////////////////
+    //// Evaluator
+
+    /**
+     The evaluator used in a transformation rule. It differs from other
+     evaluators in that it uses a pattern and a match result to resolve names
+     in both the pattern and the host model that the pattern matches in the
+     match result. If a name is found in the host model, its value in the host
+     model is returned, regardless of whether the same name exists in the
+     pattern or not (even if this evaluator is used to evaluate a parameter
+     specified in the pattern).
+
+     @author Thomas Huining Feng
+     @version $Id$
+     @since Ptolemy II 7.1
+     @Pt.ProposedRating Red (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
+     */
     public static class Evaluator extends ParseTreeEvaluator {
 
+        /** Construct an evaluator.
+         *
+         *  @param pattern The pattern.
+         *  @param matchResult The match result for the match between the
+         *   pattern and a host model.
+         */
         public Evaluator(Pattern pattern, MatchResult matchResult) {
             _pattern = pattern;
             _matchResult = matchResult;
             _typeInference = new TypeInference(pattern, matchResult);
         }
 
+        /** Evaluate the parse tree with a scope that can resolve more names
+         *  than the given scope. The used scope first searches for names in the
+         *  host model. If the attempt fails, it invokes the given scope to
+         *  resolve the names.
+         *
+         *  @param node The node to be evaluated.
+         *  @param scope The scope to be used as a fallback.
+         *  @return The result of evaluation.
+         *  @exception IllegalActionException If an error occurs during
+         *   evaluation.
+         */
         public Token evaluateParseTree(ASTPtRootNode node, ParserScope scope)
                 throws IllegalActionException {
             return super.evaluateParseTree(node, _createScope(_pattern,
                     _matchResult, scope));
         }
 
+        /** Apply a method to the children of the specified node, where the
+         *  first child is the object on which the method is defined and the
+         *  rest of the children are arguments. This also handles indexing into
+         *  a record, which looks the same.
+         *  @param node The specified node.
+         *  @exception IllegalActionException If an evaluation error occurs.
+         */
         public void visitMethodCallNode(ASTPtMethodCallNode node)
                 throws IllegalActionException {
             int argCount = node.jjtGetNumChildren();
@@ -120,18 +175,51 @@ public class GTParameter extends Parameter {
             super.visitMethodCallNode(node);
         }
 
+        /** Create the scope to be used for name resolution.
+         *
+         *  @param pattern The pattern.
+         *  @param matchResult The match result.
+         *  @param superScope The scope to fall back on if a name cannot be
+         *   resolved.
+         *  @return The scope.
+         */
         protected ParserScope _createScope(Pattern pattern,
                 MatchResult matchResult, ParserScope superScope) {
             return new Scope(pattern, matchResult, superScope);
         }
 
+        /** The match result.
+         */
         private MatchResult _matchResult;
 
+        /** The pattern.
+         */
         private Pattern _pattern;
     }
 
+    //////////////////////////////////////////////////////////////////////////
+    //// Scope
+
+    /**
+     A scope to be used in {@link Evaluator} to resolve names with a pattern and
+     a match result.
+
+     @author Thomas Huining Feng
+     @version $Id$
+     @since Ptolemy II 7.1
+     @Pt.ProposedRating Red (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
+     */
     public static class Scope implements ParserScope {
 
+        /** Construct a scope.
+         *
+         *  @param pattern The pattern.
+         *  @param matchResult The match result for the match between the
+         *   pattern and a host model.
+         *  @param superscope The scope to fall back on if a name cannot be
+         *   resolved.
+         */
         public Scope(Pattern pattern, MatchResult matchResult,
                 ParserScope superscope) {
             _pattern = pattern;
@@ -139,6 +227,13 @@ public class GTParameter extends Parameter {
             _superscope = superscope;
         }
 
+        /** Look up and return the value with the specified name in the
+         *  scope. Return null if the name is not defined in this scope.
+         *  @param name The name of the variable to be looked up.
+         *  @return The token associated with the given name in the scope.
+         *  @exception IllegalActionException If a value in the scope
+         *  exists with the given name, but cannot be evaluated.
+         */
         public Token get(String name) throws IllegalActionException {
             // Resolve ports, entities and relations in the pattern.
             NamedObj patternChild = GTTools.getChild(_pattern, name, false,
@@ -182,6 +277,14 @@ public class GTParameter extends Parameter {
             }
         }
 
+        /** Look up and return the type of the value with the specified
+         *  name in the scope. Return null if the name is not defined in
+         *  this scope.
+         *  @param name The name of the variable to be looked up.
+         *  @return The token associated with the given name in the scope.
+         *  @exception IllegalActionException If a value in the scope
+         *  exists with the given name, but cannot be evaluated.
+         */
         public Type getType(String name) throws IllegalActionException {
             Token token = get(name);
             if (token != null) {
@@ -191,11 +294,31 @@ public class GTParameter extends Parameter {
             }
         }
 
+        /** Look up and return the type term for the specified name
+         *  in the scope. Return null if the name is not defined in this
+         *  scope, or is a constant type.
+         *  @param name The name of the variable to be looked up.
+         *  @return The InequalityTerm associated with the given name in
+         *  the scope.
+         *  @exception IllegalActionException If a value in the scope
+         *  exists with the given name, but cannot be evaluated.
+         */
         public InequalityTerm getTypeTerm(String name)
                 throws IllegalActionException {
             return _superscope.getTypeTerm(name);
         }
 
+        /** Return a list of names corresponding to the identifiers
+         *  defined by this scope.  If an identifier is returned in this
+         *  list, then get() and getType() will return a value for the
+         *  identifier.  Note that generally speaking, this list is
+         *  extremely expensive to compute, and users should avoid calling
+         *  it.  It is primarily used for debugging purposes.
+         *  @return A list of names corresponding to the identifiers
+         *  defined by this scope.
+         *  @exception IllegalActionException If constructing the list causes
+         *  it.
+         */
         public Set<?> identifierSet() throws IllegalActionException {
             Set<Object> identifiers = new HashSet<Object>(_superscope
                     .identifierSet());
@@ -211,26 +334,65 @@ public class GTParameter extends Parameter {
             return identifiers;
         }
 
+        /** The match result.
+         */
         protected MatchResult _matchResult;
 
+        /** The pattern.
+         */
         protected Pattern _pattern;
 
+        /** The scope used to resolve a name if it cannot be resolved in this
+         *  scope.
+         */
         protected ParserScope _superscope;
     }
 
+    //////////////////////////////////////////////////////////////////////////
+    //// TypeInference
+
+    /**
+     The type inference used to infer types of names in the host model and in
+     the pattern, which is used in {@link Evaluator}.
+
+     @author Thomas Huining Feng
+     @version $Id$
+     @since Ptolemy II 7.1
+     @Pt.ProposedRating Red (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
+     */
     public static class TypeInference extends ParseTreeTypeInference {
 
+        /** Construct a type inference.
+         *
+         *  @param pattern The pattern.
+         *  @param matchResult The match result for the match between the
+         *   pattern and a host model.
+         */
         public TypeInference(Pattern pattern, MatchResult matchResult) {
             _pattern = pattern;
             _matchResult = matchResult;
         }
 
+        /** Infer the type of the parse tree with the specified root node using
+         *  the specified scope to resolve the values of variables.
+         *  @param node The root of the parse tree.
+         *  @param scope The scope for evaluation.
+         *  @return The result of evaluation.
+         *  @exception IllegalActionException If an error occurs during
+         *   evaluation.
+         */
         public Type inferTypes(ASTPtRootNode node, ParserScope scope)
-        throws IllegalActionException {
+                throws IllegalActionException {
             return super.inferTypes(node, new Scope(_pattern, _matchResult,
                     scope));
         }
 
+        /** Set the type of the given node to be the return type of the
+         *  method determined for the given node.
+         *  @param node The specified node.
+         *  @exception IllegalActionException If an inference error occurs.
+         */
         public void visitMethodCallNode(ASTPtMethodCallNode node)
         throws IllegalActionException {
             int argCount = node.jjtGetNumChildren();
@@ -263,15 +425,50 @@ public class GTParameter extends Parameter {
             super.visitMethodCallNode(node);
         }
 
+        /** The match result.
+         */
         private MatchResult _matchResult;
 
+        /** The pattern.
+         */
         private Pattern _pattern;
     }
 
-    protected void _evaluate() throws IllegalActionException {
-        super._evaluate();
-    }
-
+    /** Evaluate the current expression to a token with the given pattern and
+     *  match result using {@link Evaluator}. If this variable
+     *  was last set directly with a token, then do nothing. In other words,
+     *  the expression is evaluated only if the value of the token was most
+     *  recently given by an expression.  The expression is also evaluated
+     *  if any of the variables it refers to have changed since the last
+     *  evaluation.  If the value of this variable
+     *  changes due to this evaluation, then notify all
+     *  value dependents and notify the container (if there is one) by
+     *  calling its attributeChanged() and attributeTypeChanged() methods,
+     *  as appropriate. An exception is thrown
+     *  if the expression is illegal, for example if a parse error occurs
+     *  or if there is a dependency loop.
+     *  <p>
+     *  If evaluation results in a token that is not of the same type
+     *  as the current type of the variable, then the type of the variable
+     *  is changed, unless the new type is incompatible with statically
+     *  specified types (setTypeEquals() and setTypeAtMost()).
+     *  If the type is changed, the attributeTypeChanged() method of
+     *  the container is called.  The container can reject the change
+     *  by throwing an exception.
+     *  <p>
+     *  This method may trigger a model error, which is delegated up
+     *  the container hierarchy until an error handler is found, and
+     *  is ignored if no error handler is found.  A model error occurs
+     *  if the expression cannot be parsed or cannot be evaluated.
+     *  <p>
+     *  Part of this method is read-synchronized on the workspace.
+     *
+     *  @param pattern The pattern.
+     *  @param matchResult The match result for the match between the pattern
+     *   and a host model.
+     *  @exception IllegalActionException If the expression cannot
+     *   be parsed or cannot be evaluated, or if a dependency loop is found.
+     */
     protected void _evaluate(Pattern pattern, MatchResult matchResult)
             throws IllegalActionException {
         setParseTreeEvaluator(new Evaluator(pattern, matchResult));

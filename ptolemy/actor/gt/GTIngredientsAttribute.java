@@ -1,4 +1,5 @@
-/*
+/* An attribute that contains a list of GTIngredients and is associated with an
+   entity in a transformation rule.
 
 @Copyright (c) 2007-2008 The Regents of the University of California.
 All rights reserved.
@@ -38,40 +39,83 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
-//// RuleListAttribute
+//// GTIngredientsAttribute
 
 /**
+ An attribute that contains a list of GTIngredients and is associated with an
+ entity in a transformation rule.
 
-@author Thomas Huining Feng
-@version $Id$
-@since Ptolemy II 6.1
-@Pt.ProposedRating Red (tfeng)
-@Pt.AcceptedRating Red (tfeng)
-*/
+ @author Thomas Huining Feng
+ @version $Id$
+ @since Ptolemy II 7.1
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ */
 public class GTIngredientsAttribute extends StringAttribute {
 
+    /** Construct an attribute in the default workspace with an empty string
+     *  as its name.
+     *  The object is added to the directory of the workspace.
+     *  Increment the version number of the workspace.
+     */
     public GTIngredientsAttribute() {
         _init();
     }
 
+    /** Construct an attribute with the given name contained by the specified
+     *  container. The container argument must not be null, or a
+     *  NullPointerException will be thrown.  This attribute will use the
+     *  workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty
+     *  string. The object is added to the directory of the workspace
+     *  if the container is null.
+     *  Increment the version of the workspace.
+     *  @param container The container.
+     *  @param name The name of this attribute.
+     *  @exception IllegalActionException If the attribute is not of an
+     *   acceptable class for the container, or if the name contains a period.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
+     */
     public GTIngredientsAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
     }
 
+    /** Construct an attribute in the specified workspace with an empty
+     *  string as a name.
+     *  The object is added to the directory of the workspace.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the attribute.
+     */
     public GTIngredientsAttribute(Workspace workspace) {
         super(workspace);
         _init();
     }
 
-    public GTIngredientList getIngredientList() throws MalformedStringException {
+    /** Parse the expression of this attribute if necessary and return the
+     *  up-to-date ingredient list contained in this attribute.
+     *
+     *  @return The ingredient list.
+     *  @exception MalformedStringException If error occurs while parsing the
+     *   expression.
+     */
+    public GTIngredientList getIngredientList()
+            throws MalformedStringException {
         if (!_parsed) {
             _parse();
         }
-        return _ruleList;
+        return _ingredientList;
     }
 
+    /** Set the expression of this attribute and defers parsing to the time when
+     *  the ingredient list is obtained with {@link #getIngredientList()} or
+     *  when {@link #validate()} is invoked.
+     *
+     *  @param expression The new expression.
+     *  @exception IllegalActionException If thrown by the superclass.
+     */
     public void setExpression(String expression) throws IllegalActionException {
         _parsed = false;
         if (!(getContainer() instanceof GTEntity)) {
@@ -80,6 +124,12 @@ public class GTIngredientsAttribute extends StringAttribute {
         super.setExpression(expression);
     }
 
+    /** Parse the expression if necessary.
+     *
+     *  @return Always null.
+     *  @exception IllegalActionException If error occurs while parsing the
+     *   expression.
+     */
     public Collection<?> validate() throws IllegalActionException {
         if (!_parsed) {
             try {
@@ -91,18 +141,29 @@ public class GTIngredientsAttribute extends StringAttribute {
         return null;
     }
 
+    /** Initialize this attribute when the constructor is executed.
+     */
     private void _init() {
         setClassName("ptolemy.actor.gt.GTIngredientsAttribute");
         setVisibility(EXPERT);
     }
 
+    /** Parse the expression.
+     *
+     *  @exception MalformedStringException If error occurs while parsing the
+     *   expression.
+     */
     private void _parse() throws MalformedStringException {
         _parsed = true;
-        _ruleList = GTIngredientList.parse(this, super.getExpression());
+        _ingredientList = GTIngredientList.parse(this, super.getExpression());
     }
 
-    private boolean _parsed = false;
+    /** The ingredient list obtained from the last expression  parsing.
+     */
+    private GTIngredientList _ingredientList = null;
 
-    private GTIngredientList _ruleList = null;
+    /** Indicate whether the current expression has been parsed.
+     */
+    private boolean _parsed = false;
 
 }

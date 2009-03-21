@@ -145,7 +145,7 @@ public abstract class GTIngredient {
     public abstract void setValues(String values);
 
     /** Return a readable string about this GTIngredient.
-     * 
+     *
      *  @return A string.
      */
     public String toString() {
@@ -153,7 +153,7 @@ public abstract class GTIngredient {
     }
 
     /** Validate the enablements and values of all the elements.
-     * 
+     *
      *  @exception ValidationException If some elements are invalid.
      */
     public abstract void validate() throws ValidationException;
@@ -164,7 +164,7 @@ public abstract class GTIngredient {
 
     /** Construct a GTIngredient within the given list as its owner containing a
      *  given number of elements. All elements are enabled at the beginning.
-     * 
+     *
      *  @param owner The list as the owner of the constructed GTIngredientList.
      *  @param elementCount The number of elements that the GTIngredient has.
      */
@@ -175,7 +175,7 @@ public abstract class GTIngredient {
     }
 
     /** Decode a Boolean field and store the value into the index-th element.
-     * 
+     *
      *  @param index The index.
      *  @param iterator The iterator used to iterate over all fields in a string
      *   describing all the values.
@@ -192,7 +192,7 @@ public abstract class GTIngredient {
     }
 
     /** Decode a string field and store the value into the index-th element.
-     * 
+     *
      *  @param index The index.
      *  @param iterator The iterator used to iterate over all fields in a string
      *   describing all the values.
@@ -211,7 +211,7 @@ public abstract class GTIngredient {
     /** Encode a Boolean field with the given value using the enablement of the
      *  index-th element, and append the encoded string to the end of the
      *  buffer.
-     * 
+     *
      *  @param buffer The buffer.
      *  @param index The index.
      *  @param value The value to be encoded.
@@ -229,7 +229,7 @@ public abstract class GTIngredient {
     /** Encode a string field with the given value using the enablement of the
      *  index-th element, and append the encoded string to the end of the
      *  buffer.
-     * 
+     *
      *  @param buffer The buffer.
      *  @param index The index.
      *  @param value The value to be encoded.
@@ -247,9 +247,10 @@ public abstract class GTIngredient {
     /** Escape a string that describes the value of a single element, so that it
      *  is enclosed in quotes and between the quotes, there are no quotes
      *  (single or double) or backslashes.
-     * 
+     *
      *  @param elementString The string to be escaped.
      *  @return The escaped string.
+     *  @see #_unescapeElementString(String)
      */
     protected static String _escapeElementString(String elementString) {
         if (elementString.equals("")) {
@@ -264,7 +265,7 @@ public abstract class GTIngredient {
 
     /** Find the closing parenthesis that matches the the open parenthesis at
      *  startPos position in string s.
-     * 
+     *
      *  @param s The string.
      *  @param startPos The position of the open parenthesis to be matched.
      *  @return The position of the matching close parenthesis, or -1 if either
@@ -302,6 +303,16 @@ public abstract class GTIngredient {
         return -1;
     }
 
+    /** Find the separator character in string s starting from position
+     *  startPos. If the separator is preceded with a backslash, then it is
+     *  escaped and would not be returned. The string may have quoted
+     *  substrings, and the contents between the quotes are not search.
+     *
+     *  @param s The string.
+     *  @param startPos The start position.
+     *  @param separator The separator charactor.
+     *  @return The position of the separator, if found, or -1 otherwise.
+     */
     protected static int _findSeparator(String s, int startPos,
             char separator) {
         boolean inDblQuote = false;
@@ -327,6 +338,14 @@ public abstract class GTIngredient {
         return -1;
     }
 
+    /** Unescape a string that has been escaped previously from an original
+     *  string that describes the value of a single element, and get back the
+     *  original string.
+     *
+     *  @param elementString The string to be unescaped.
+     *  @return The unescaped string.
+     *  @see #_escapeElementString(String)
+     */
     protected static String _unescapeElementString(String elementString) {
         if (elementString.equals("")) {
             return "";
@@ -343,16 +362,42 @@ public abstract class GTIngredient {
         return buffer.toString();
     }
 
+    //////////////////////////////////////////////////////////////////////////
+    //// FieldIterator
+
+    /**
+     An iterator to read the fields one by one in a string that describes the
+     values of all the elements.
+
+     @author Thomas Huining Feng
+     @version $Id$
+     @since Ptolemy II 7.1
+     @Pt.ProposedRating Red (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
+     */
     protected static class FieldIterator implements Iterator<String> {
 
+        /** Construct a field iterator.
+         *
+         *  @param values The string containing the values in fields.
+         */
         public FieldIterator(String values) {
             _values = values;
         }
 
+        /** Return whether there is a next field.
+         *
+         *  @return true if there is a next field; false otherwise.
+         */
         public boolean hasNext() {
             return _values != null && _values.length() > 0;
         }
 
+        /** Return the next field, if there is any, or null if the end of the
+         *  string has been reached.
+         *
+         *  @return The next field of the string.
+         */
         public String next() {
             int position = _values.indexOf(FIELD_SEPARATOR);
             String next;
@@ -366,14 +411,23 @@ public abstract class GTIngredient {
             return next;
         }
 
+        /** Throw a runtime exception because this method is not implemented.
+         */
         public void remove() {
             throw new KernelRuntimeException();
         }
 
+        /** The string containing the fields.
+         */
         private String _values;
     }
 
+    /** An array that contains a Boolean value for each element to identify
+     *  whether it is enabled.
+     */
     private boolean[] _enablements;
 
+    /** The list that contains this GTIngredient.
+     */
     private GTIngredientList _owner;
 }
