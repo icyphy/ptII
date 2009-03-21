@@ -29,10 +29,10 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/embeddedJava/demo/Scale
+ME =		ptolemy/codegen/java/actor/lib/embeddedJava/demo/Scale
 
 # Root of the Java directory
-ROOT =		../../../../../..
+ROOT =		../../../../../../../..
 
 CLASSPATH =	$(ROOT)
 

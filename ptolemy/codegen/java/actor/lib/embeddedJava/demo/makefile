@@ -28,13 +28,13 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/embeddedJava/demo
+ME =		ptolemy/codegen/java/actor/lib/embeddedJava/demo
 
 # Keep these alphabetical please.
 DIRS = 		Scale
 
 # Root of Ptolemy II directory
-ROOT =		../../../../..
+ROOT =		../../../../../../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
