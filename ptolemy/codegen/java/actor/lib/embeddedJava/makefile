@@ -33,7 +33,7 @@
 
 ME =		ptolemy/codegen/java/actor/lib/embeddedJava
 
-DIRS =		test
+DIRS =		demo test
 
 # Root of the Java directory
 ROOT =		../../../../../..
