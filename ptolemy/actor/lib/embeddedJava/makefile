@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor/lib/embeddedJava
 
-DIRS = 		doc demo
+DIRS = 		doc
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -63,7 +63,6 @@ MISC_FILES =
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo \
 	doc \
 	'EmbeddedjavaActor$$DummyActor.class' \
 	'EmbeddedJavaActor$$EmbeddedActor.class' \
