@@ -988,11 +988,21 @@ public class JNIUtilities {
                         + _indent1
                         + "static {\n"
                         + _indent2
+			+ "String sharedLibraryPrefix = \"\";\n"
+			+ _indent2
+			+ "String osName = System.getProperty(\"os.name\");\n"
+			+ _indent2
+			+ "if (osName.equals(\"Linux\") || osName.equals(\"SunOS\")) {\n"
+		        + _indent3
+		        + "sharedLibraryPrefix = \"lib\";\n"
+                        + _indent2
+		        + "}\n"
+                        + _indent2
                         + "String library = \"jni\""
                         + "+ File.separator + \""
                         + nativeLibrary
                         + "\""
-                        + "+ File.separator + \"Jni"
+                        + "+ File.separator + sharedLibraryPrefix + \"Jni"
                         + interNativeLibrary
                         + "\";\n"
                         + _indent2

@@ -103,8 +103,9 @@ include $(ROOT)/mk/ptcommon.mk
 # make fast runs "make $(PTLIB)
 PTLIB = 	launcher
 
+# Include both client and server dirs for Linux 64bit
 demo: launcher jclass
-	LD_LIBRARY_PATH="$(PTJAVA_HOME)/lib/$(PTJNI_LIB_ARCHITECTURE):$(PTJAVA_HOME)/lib/$(PTJNI_LIB_ARCHITECTURE)/client:/System/Library/Frameworks/JavaVM.framework/Libraries" \
+	LD_LIBRARY_PATH="$(PTJAVA_HOME)/lib/$(PTJNI_LIB_ARCHITECTURE):$(PTJAVA_HOME)/lib/$(PTJNI_LIB_ARCHITECTURE)/client:$(PTJAVA_HOME)/lib/$(PTJNI_LIB_ARCHITECTURE)/server:/System/Library/Frameworks/JavaVM.framework/Libraries" \
 		./launcher -Djava.class.path=$(ROOT) jni/launcher/Hello
 
 # $(PTMATLAB_cC) is set to cl or gcc by configure in $PTII/mk/ptII.mk

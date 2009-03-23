@@ -2516,6 +2516,7 @@ else
             CYGWIN_ME-*) PTJNI_SHAREDLIBRARY_CFLAG="-D__int64=\"long long\"";;
 	    CYGWIN_NT-*) PTJNI_SHAREDLIBRARY_CFLAG="-D__int64=\"long long\"";;
 	    CYGWIN_98-*) PTJNI_SHAREDLIBRARY_CFLAG="-D__int64=\"long long\"";;
+	    Linux)	 PTJNI_SHAREDLIBRARY_CFLAG=-fPIC;;
 	    SunOS)	 PTJNI_SHAREDLIBRARY_CFLAG=-fPIC;;
 	    *) PTJNI_SHAREDLIBRARY_CFLAG=;;
         esac
@@ -2526,6 +2527,7 @@ else
             CYGWIN_ME-*) PTJNI_SHAREDLIBRARY_LDFLAG=-Wl,--add-stdcall-alias;;
 	    CYGWIN_NT-*) PTJNI_SHAREDLIBRARY_LDFLAG=-Wl,--add-stdcall-alias;;
 	    CYGWIN_98-*) PTJNI_SHAREDLIBRARY_LDFLAG=-Wl,--add-stdcall-alias;;
+	    Linux)	 PTJNI_SHAREDLIBRARY_LDFLAG=-fPIC;;
 	    SunOS)	 PTJNI_SHAREDLIBRARY_LDFLAG=-fPIC;;
 	    *) PTJNI_SHAREDLIBRARY_LDFLAG=;;
         esac
