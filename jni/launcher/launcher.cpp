@@ -218,14 +218,16 @@ private:
     }
     // Work around:
     // warning: ISO C++ forbids casting between pointer-to-function and pointer-to-object
-#ifdef MAC_OS_X_VERSION_10_0
-    CreateJavaVM createJavaVM = reinterpret_cast<CreateJavaVM> (reinterpret_cast<long> (dlsym(sharedLibraryHandle, "JNI_CreateJavaVM_Impl")));
+
+#if defined(__MACH__)
+#define JNI_CREATEJAVAVM "JNI_CreateJavaVM_Impl"    
 #else
-    CreateJavaVM createJavaVM = reinterpret_cast<CreateJavaVM> (reinterpret_cast<long> (dlsym(sharedLibraryHandle, "JNI_CreateJavaVM")));
+#define JNI_CREATEJAVAVM "JNI_CreateJavaVM"    
 #endif
+    CreateJavaVM createJavaVM = reinterpret_cast<CreateJavaVM> (reinterpret_cast<long> (dlsym(sharedLibraryHandle, JNI_CREATEJAVAVM)));
     if (createJavaVM == 0) {
       std::ostringstream os;
-      os << "dlsym(\"" << sharedLibraryFilename << "\", JNI_CreateJavaVM) failed with " << dlerror() << ".";
+      os << "dlsym(\"" << sharedLibraryFilename << "\", JNI_CREATEJAVAVM) failed with " << dlerror() << ".";
       throw UsageError(os.str());
     }
     return createJavaVM;
