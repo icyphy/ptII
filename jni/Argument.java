@@ -174,7 +174,7 @@ public class Argument extends AbstractSettableAttribute {
             }
         } else if (StringUtilities.getProperty("os.name").startsWith("Linux")) {
             if (result.startsWith("long")) {
-                return "jint *";
+                return "jlong *";
             }
         }
 
@@ -227,7 +227,7 @@ public class Argument extends AbstractSettableAttribute {
         } else if (_cType.equals("long") || _cType.startsWith("long")) {
             // a C long is 32 bits. a java long is 64 bits,
             // so we use jint
-            returnJNIType = "jint" + returnJNIType;
+            returnJNIType = "jlong" + returnJNIType;
         } else if (_cType.equals("double") || _cType.startsWith("double")) {
             returnJNIType = "jdouble" + returnJNIType;
         } else if (_cType.equals("void") || _cType.startsWith("void")) {
@@ -264,7 +264,7 @@ public class Argument extends AbstractSettableAttribute {
         } else if (_cType.equals("long") || _cType.startsWith("long")) {
             // a C long is 32 bits unsigned. a java long is 64 bits,
             // so we use int which is 32 , but not unsigned !! TBF
-            returnJType = "int" + returnJType;
+            returnJType = "long" + returnJType;
         } else if (_cType.equals("double") || _cType.startsWith("double")) {
             // double is 64 bits in C and in Java, so no problem
             returnJType = "double" + returnJType;
@@ -328,7 +328,7 @@ public class Argument extends AbstractSettableAttribute {
         } else if (_cType.equals("short") || _cType.startsWith("short")) {
             returnCType = "Byte" + returnCType;
         } else if (_cType.equals("long") || _cType.startsWith("long")) {
-            returnCType = "Integer" + returnCType;
+            returnCType = "Long" + returnCType;
         } else if (_cType.equals("double") || _cType.startsWith("double")) {
             returnCType = "Double" + returnCType;
         } else if (_cType.equals("void") || _cType.startsWith("void")) {

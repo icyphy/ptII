@@ -133,5 +133,6 @@ test meaningOfLife-1.5 {Run a model that uses long arrays, but does not run } {
     # Create the JNI files and compile them.
     # generateJNI also deletes relations and ports and recreates the ports
     java::call jni.JNIUtilities generateJNI $toplevel
+    runModel $modelbase
 } {1}
 

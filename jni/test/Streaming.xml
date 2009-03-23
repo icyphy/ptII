@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Streaming" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={98, 23, 828, 655}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={98, 23, 825, 640}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[613, 537]">
     </property>
@@ -165,30 +165,46 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{0L}}}">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 35.0]">
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{0L}}}">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 90.0]">
         </property>
     </entity>
     <entity name="Test3" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{0L}}}">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 150.0]">
         </property>
     </entity>
     <entity name="Test4" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{0L}}}">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 210.0]">
         </property>
     </entity>
     <entity name="Test5" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{0L}}}">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 275.0]">
         </property>
     </entity>
     <entity name="Test6" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{0L}}}">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 335.0]">
         </property>
     </entity>
     <entity name="Test7" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{0L}}}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 390.0]">
         </property>
     </entity>

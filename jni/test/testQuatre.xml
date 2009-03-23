@@ -128,12 +128,15 @@ with jnitestdeux and jnitesttrois.</text></svg></configure>
         </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(long,4)"/>
         </port>
         <port name="inoutin" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(long,4)"/>
         </port>
         <port name="inoutout" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(long,4)"/>
         </port>
         <port name="ret" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -148,8 +151,9 @@ with jnitestdeux and jnitesttrois.</text></svg></configure>
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
         </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{{1,0},{ 0,1}}">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{{1,0,1,0},{ 0,1,0,1}}">
         </property>
+
         <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
         <doc>Create a generalized square wave</doc>
@@ -218,11 +222,14 @@ with jnitestdeux and jnitesttrois.</text></svg></configure>
         </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(long,4)"/>
         </port>
         <port name="inoutin" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(long,4)"/>
         </port>
         <port name="inoutout" class="ptolemy.actor.TypedIOPort">
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(long,4)"/>
             <property name="output"/>
         </port>
         <port name="ret" class="ptolemy.actor.TypedIOPort">
@@ -249,12 +256,15 @@ with jnitestdeux and jnitesttrois.</text></svg></configure>
         </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(long,4)"/>
         </port>
         <port name="inoutin" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(long,4)"/>
         </port>
         <port name="inoutout" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(long,4)"/>
         </port>
         <port name="ret" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -280,12 +290,15 @@ with jnitestdeux and jnitesttrois.</text></svg></configure>
         </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(long,4)"/>
         </port>
         <port name="inoutin" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(long,4)"/>
         </port>
         <port name="inoutout" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(long,4)"/>
         </port>
         <port name="ret" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -311,12 +324,15 @@ with jnitestdeux and jnitesttrois.</text></svg></configure>
         </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(long,4)"/>
         </port>
         <port name="inoutin" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(long,4)"/>
         </port>
         <port name="inoutout" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(long,4)"/>
         </port>
         <port name="ret" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -342,15 +358,16 @@ with jnitestdeux and jnitesttrois.</text></svg></configure>
         </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(long,4)"/>
         </port>
         <port name="inoutin" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(int,4)">
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(long,4)">
             </property>
         </port>
         <port name="inoutout" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(int,4)">
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(long,4)">
             </property>
         </port>
         <port name="ret" class="ptolemy.actor.TypedIOPort">
@@ -376,16 +393,17 @@ with jnitestdeux and jnitesttrois.</text></svg></configure>
         <property name="ret" class="jni.Argument" value="false,false,true,double" >
         </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(long,4)"/>
             <property name="input"/>
         </port>
         <port name="inoutin" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(int,4)">
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(long,4)">
             </property>
         </port>
         <port name="inoutout" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(int,4)">
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(long,4)">
             </property>
         </port>
         <port name="ret" class="ptolemy.actor.TypedIOPort">
@@ -412,12 +430,15 @@ with jnitestdeux and jnitesttrois.</text></svg></configure>
         </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(long,4)"/>
         </port>
         <port name="inoutin" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(long,4)"/>
         </port>
         <port name="inoutout" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(long,4)"/>
         </port>
         <port name="ret" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -443,12 +464,15 @@ with jnitestdeux and jnitesttrois.</text></svg></configure>
         </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(long,4)"/>
         </port>
         <port name="inoutin" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(long,4)"/>
         </port>
         <port name="inoutout" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(long,4)"/>
         </port>
         <port name="ret" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -474,15 +498,16 @@ with jnitestdeux and jnitesttrois.</text></svg></configure>
         </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(long,4)"/>
         </port>
         <port name="inoutin" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(int,4)">
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(long,4)">
             </property>
         </port>
         <port name="inoutout" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(int,4)">
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(long,4)">
             </property>
         </port>
         <port name="ret" class="ptolemy.actor.TypedIOPort">

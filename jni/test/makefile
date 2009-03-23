@@ -124,6 +124,9 @@ test_jsimple: ../launcher/launcher $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljt
 #	LD_LIBRARY_PATH="`pwd`:`pwd`/jni/meaningOfLife:`pwd`/jni/testDeux:`pwd`/jni/testTrois:`pwd`jni/jnimeaningOfLifeImeaningOfLife:/usr/local/lib:$(LD_LIBRARY_PATH)"; export LD_LIBRARY_PATH; \
 #
 
+vergil:
+	LD_LIBRARY_PATH="`pwd`:/usr/local/lib:$(PTJAVA_HOME)/lib/$(PTJNI_LIB_ARCHITECTURE):$(PTJAVA_HOME)/lib/$(PTJNI_LIB_ARCHITECTURE)/client:$(PTJAVA_HOME)/lib/$(PTJNI_LIB_ARCHITECTURE)/server:$(PTJAVA_HOME)/../Libraries/:$(LD_LIBRARY_PATH)"; export LD_LIBRARY_PATH; \
+	$(ROOT)/bin/vergil -jni Streaming.xml
 
 # PTCC is set in $PTII/mk/ptII.mk
 # See also ptolemy/matlab/makefile

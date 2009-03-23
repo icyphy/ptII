@@ -75,12 +75,18 @@ See the Visual Project jnitestTrois.</text></svg></configure>
         </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(long,2)"/>
+	      
         </port>
         <port name="inoutin" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(long,2)"/>
+
         </port>
         <port name="inoutout" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(long,2)"/>
+
         </port>
         <port name="ret" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -149,7 +155,7 @@ See the Visual Project jnitestTrois.</text></svg></configure>
         </port>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{6, 8}}, {{-6, -8}}, {{6, 8}}, {{-6, -8}}}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{6L, 8L}}, {{-6L, -8L}}, {{6L, 8L}}, {{-6L, -8L}}}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>

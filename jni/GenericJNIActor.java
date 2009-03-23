@@ -45,7 +45,9 @@ import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.LongToken;
 import ptolemy.data.StringToken;
+import ptolemy.data.ScalarToken;
 import ptolemy.data.Token;
 import ptolemy.data.UnsignedByteToken;
 import ptolemy.data.expr.Parameter;
@@ -413,6 +415,8 @@ public class GenericJNIActor extends TypedAtomicActor {
                             .booleanValue()));
                 } else if (typ.equals("int")) {
                     args.add(Integer.valueOf(((IntToken) tok).intValue()));
+                } else if (typ.equals("long")) {
+                    args.add(Long.valueOf(((ScalarToken) tok).longValue()));
                 } else if (typ.equals("double")) {
                     args.add(Double.valueOf(((DoubleToken) tok).doubleValue()));
                 } else if (typ.equals("class [I")) {
@@ -426,8 +430,26 @@ public class GenericJNIActor extends TypedAtomicActor {
 
                     //(int[])((ArrayToken)tok).arrayValue();
                     args.add(tab);
+                } else if (typ.equals("class [J")) {
+                    int siz = ((ArrayToken) tok).length();
+                    long[] tab = new long[siz];
+
+                    for (int j = 0; j < siz; j++) {
+			Token element = ((ArrayToken) tok).getElement(j);
+			try {
+			    tab[j] = ((LongToken) element).longValue();
+			} catch (Throwable throwable) {
+			    throw new IllegalActionException(this,
+							      throwable,
+							     "Failed to create LongToken, element " + j + " was: " + element.getClass().getName() + ", value: " + element + ", port: " + port);
+			}
+                    }
+
+                    //(int[])((ArrayToken)tok).arrayValue();
+                    args.add(tab);
                 } else {
-                    System.out.println("The intype is not convertible "
+                    System.out.println("The intype \"" + typ
+		            + "\" is not convertible "
                             + "with Ptolemy II types.");
                 }
             }
@@ -540,6 +562,8 @@ public class GenericJNIActor extends TypedAtomicActor {
                     port.send(0, new DoubleToken(((Double) ret).doubleValue()));
                 } else if (typ.equals("int")) {
                     port.send(0, new IntToken(((Integer) ret).intValue()));
+                } else if (typ.equals("long")) {
+                    port.send(0, new LongToken(((Long) ret).longValue()));
                 } else if (typ.equals("char")) {
                     port.send(0,
                             new UnsignedByteToken(((Byte) ret).byteValue()));
@@ -603,6 +627,13 @@ public class GenericJNIActor extends TypedAtomicActor {
                             throw new IllegalActionException(this, ex, "Type '"
                                     + typ + "' is not castable");
                         }
+                    } else if (typ.equals("long")) {
+                        try {
+                            port.send(0, new LongToken(field.getLong(obj)));
+                        } catch (IllegalAccessException ex) {
+                            throw new IllegalActionException(this, ex, "Type '"
+                                    + typ + "' is not castable");
+                        }
                     } else if (typ.equals("char")) {
                         try {
                             port.send(0, new UnsignedByteToken(field
@@ -633,6 +664,32 @@ public class GenericJNIActor extends TypedAtomicActor {
                             throw new IllegalActionException(this, ex, "Type '"
                                     + typ + "' is not castable");
                         }
+                    } else if (typ.equals("class [J")) {
+			Token [] toks = null;
+                        try {
+                            if (obj == null) {
+                                throw new InternalErrorException("obj == null?");
+                            }
+                            if (field.get(obj) == null) {
+                                throw new InternalErrorException(
+                                        "field.get(obj)  == null? (field = "
+                                                + field + " obj = " + obj);
+                            }
+                            toks = new Token[((long[]) field.get(obj)).length];
+
+                            for (int j = 0; j < ((long[]) field.get(obj)).length; j++) {
+                                toks[j] = new LongToken(((long[]) field.get(obj))[j]);
+                            }
+
+                            port.send(0, new ArrayToken(BaseType.LONG, toks));
+                        } catch (IllegalAccessException ex) {
+                            throw new IllegalActionException(this, ex, "Type '"
+                                    + typ + "' is not castable");
+                        } catch (IllegalActionException ex2) {
+			    throw new IllegalActionException(this, ex2,
+							     "Failed to send a Long array token " + toks + " to " + port);
+							     
+			}
                     } else if (typ.equals("class [D")) {
                         try {
                             Token[] toks = new Token[((double[]) field.get(obj)).length];
