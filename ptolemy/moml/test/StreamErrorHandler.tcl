@@ -120,7 +120,7 @@ test StreamErrorHandler-1.2 {Create a stream that we can read} {
 <entity name="b" class="ptolemy.moml.test.notAClass">
 ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.moml.test.notAClass
 Because:
--- $PTII/ptolemy/moml/test/ptolemy/moml/test/notAClass.moml (The system cannot find the path specified)
+-- $PTII/ptolemy/moml/test/ptolemy/moml/test/notAClass.xml (The system cannot find the path specified)
 -- XML file not found relative to classpath.
--- $PTII/ptolemy/moml/test/ptolemy/moml/test} ...}
+-- $PTII/ptolemy/moml/test/ptolemy/moml/test/} ...}
 

@@ -628,9 +628,10 @@ test MoMLChangeRequest-6.1 {setReportErrorsToHandler true (the default) } {
 Caused by:
  ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.actor.lib.XXX
 Because:
--- no protocol: ptolemy/actor/lib/XXX.moml
+-- no protocol: ptolemy/actor/lib/XXX.xml
 -- XML file not found relative to classpath.
--- $PTII/ptolemy/moml/test/ptolemy/actor/lib/XXX.moml} ... {} ...}
+-- $PTII/ptolemy/moml/test/ptolemy/actor/lib/XXX.xml
+$} ... {} ...}
 
 ######################################################################
 ####
@@ -646,9 +647,10 @@ test MoMLChangeRequest-6.2 {setReportErrorsToHandler true} {
 <entity name="const" class="ptolemy.actor.lib.XXX">
 ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.actor.lib.XXX
 Because:
--- no protocol: ptolemy/actor/lib/XXX.moml
+-- no protocol: ptolemy/actor/lib/XXX.xml
 -- XML file not found relative to classpath.
--- $PTII/ptolemy/moml/test/ptolemy/actor/lib/XXX.moml} ...}
+-- $PTII/ptolemy/moml/test/ptolemy/actor/lib/XXX.xml
+$} ...}
 
 
 # Restore the original MoMLParser Error Handler
