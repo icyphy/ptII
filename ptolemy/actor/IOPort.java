@@ -394,6 +394,41 @@ public class IOPort extends ComponentPort {
             }
         }
     }
+    
+    /**
+     * Check whether the widths constraints are met.
+     * @exception IllegalActionException If the width constraints or not met.
+     */
+    public void checkWidthConstraints() throws IllegalActionException {
+        int width = _getOutsideWidth(null);
+        for (Parameter parameter : _widthEqualToParameter) {
+            IntToken t = (IntToken) parameter.getToken();
+    
+            if (t != null) {
+                if (width != t.intValue()) {
+                    throw new IllegalActionException(this, 
+                            "The outside width (" + width + ") of port " + getFullName()
+                            + " is different from the width constrain specified by parameter "
+                            + parameter + " with container " + parameter.getContainer() + ". A"
+                            + " possible fix is to right clicking on the"
+                            + " outside relation(s) and set the width -1.");
+                }
+            }
+        }
+        
+        for (IOPort port : _widthEqualToPort) {
+            int otherWidth = port._getOutsideWidth(null); 
+            if (width != otherWidth) {
+                throw new IllegalActionException(this, 
+                        "The outside width (" + width + ") of port " + getFullName()
+                        + " is different from the outside width (" + otherWidth
+                        + ") of port " + port.getFullName()
+                        + ". A possible fix is to right clicking on the"
+                        + " outside relation(s) and set the width -1.");
+            }    
+        }
+    }
+    
 
     /** Clone this port into the specified workspace. The new port is
      *  <i>not</i> added to the directory of that workspace (you must do this
@@ -1598,7 +1633,6 @@ public class IOPort extends ComponentPort {
             _workspace.doneReading();
         }
     }
-    
 
     /** Get the width from the constraints put on the width
      *  of this port if the width is fully determined yet.

@@ -59,7 +59,7 @@ import ptolemy.util.StringUtilities;
  * than in MoML so that the inheritance mechanism prevents exported MoML for
  * every model from duplicating this information.
  *
- * @author Edward A. Lee
+ * @author Edward A. Lee, Contributor: Bert Rodiers
  * @version $Id$
  @since Ptolemy II 5.2
  * @Pt.ProposedRating Yellow (eal)
@@ -106,7 +106,22 @@ public class PtolemyPreferences extends ScopeExtendingAttribute {
         showParameters.addChoice("All");
         showParameters.setExpression("None");
         showParameters.setDisplayName("Show parameters");
+        
+        Parameter checkWidthConsistencyAtMultiports = new Parameter(this, "_checkWidthConsistencyAtMultiports");
+        checkWidthConsistencyAtMultiports.setTypeEquals(BaseType.BOOLEAN);
+        checkWidthConsistencyAtMultiports.setExpression("true");
+        checkWidthConsistencyAtMultiports.setDisplayName("Check width consistency at multiports");
 
+        Parameter checkWidthConstraints = new Parameter(this, "_checkWidthConstraints");
+        checkWidthConstraints.setTypeEquals(BaseType.BOOLEAN);
+        checkWidthConstraints.setExpression("true");
+        checkWidthConstraints.setDisplayName("Check width constraints");
+
+        Parameter defaultInferredWidthTo1 = new Parameter(this, "_defaultInferredWidthTo1");
+        defaultInferredWidthTo1.setTypeEquals(BaseType.BOOLEAN);
+        defaultInferredWidthTo1.setExpression("false");
+        defaultInferredWidthTo1.setDisplayName("Default inferred width to 1");
+        
         // The icon.
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-60\" y=\"-10\" "
@@ -163,19 +178,7 @@ public class PtolemyPreferences extends ScopeExtendingAttribute {
      *  @return The value of the preference, or null if it is not set.
      */
     public static Token preferenceValue(NamedObj context, String preferenceName) {
-        Variable result = ModelScope.getScopedVariable(null, context,
-                preferenceName);
-
-        if (result != null) {
-            try {
-                return result.getToken();
-            } catch (IllegalActionException ex) {
-                System.out.println("Warning: Invalid preference: " + ex);
-            }
-        }
-
-        // If no scoped variable is found, try for a defined constant.
-        return Constants.get(preferenceName);
+        return ModelScope.preferenceValue(context, preferenceName);
     }
 
     /** Check to see whether a preference of the specified name is

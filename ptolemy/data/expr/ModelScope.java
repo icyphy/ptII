@@ -33,6 +33,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import ptolemy.data.Token;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
@@ -51,7 +52,7 @@ import ptolemy.kernel.util.NamedObj;
  An abstract class that is useful for implementing expression language
  scopes for Ptolemy models.
 
- @author Xiaojun Liu, Steve Neuendorffer
+ @author Xiaojun Liu, Steve Neuendorffer, Contributor: Bert Rodiers
  @version $Id$
  @since Ptolemy II 2.1
  @Pt.ProposedRating Red (liuxj)
@@ -331,6 +332,34 @@ public abstract class ModelScope implements ParserScope {
 
         return null;
     }
+    
+
+    /** Check to see whether a preference of the specified name is
+     *  defined in the specified context, and if it is, return its value.
+     *  Note that if there is an error in the expression for the preference,
+     *  then this method will return null and report the error to standard out.
+     *  This is done because we assume the error will normally be caught
+     *  before this method is called.
+     *  @param context The context for the preference.
+     *  @param preferenceName The name of the preference.
+     *  @return The value of the preference, or null if it is not set.
+     */
+    public static Token preferenceValue(NamedObj context, String preferenceName) {
+        Variable result = ModelScope.getScopedVariable(null, context,
+                preferenceName);
+
+        if (result != null) {
+            try {
+                return result.getToken();
+            } catch (IllegalActionException ex) {
+                System.out.println("Warning: Invalid preference: " + ex);
+            }
+        }
+
+        // If no scoped variable is found, try for a defined constant.
+        return Constants.get(preferenceName);
+    }
+    
 
     // Search in the container for an attribute with the given name.
     // Search recursively in any instance of ScopeExtender in the

@@ -34,6 +34,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import ptolemy.data.BooleanToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.ModelScope;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
@@ -73,7 +76,25 @@ public class RelationWidthInference {
     public void inferWidths() throws IllegalActionException {
         if (_needsWidthInference) {
             final boolean logTimings = false;
-            final boolean checkConsistency = true;
+            boolean checkConsistencyAtMultiport = true;
+            
+            {
+                Token checkConsistency = ModelScope.preferenceValue(_topLevel,
+                        "_checkWidthConsistencyAtMultiports");
+                if (checkConsistency instanceof BooleanToken) {
+                    checkConsistencyAtMultiport = ((BooleanToken) checkConsistency).booleanValue();
+                }
+            }            
+            boolean checkWidthConstraints = true;
+            
+            {
+                Token checkConstraints = ModelScope.preferenceValue(_topLevel,
+                        "_checkWidthConstraints");
+                if (checkConstraints instanceof BooleanToken) {
+                    checkWidthConstraints = ((BooleanToken) checkConstraints).booleanValue();
+                }
+            }            
+            
             long startTime = (new Date()).getTime();
 
             try {
@@ -194,7 +215,7 @@ public class RelationWidthInference {
                         }
                         for (IOPort port : multiports) {
                             List<IORelation> updatedRelations = _relationsWithUpdatedWidthForMultiport(port);
-                            if (checkConsistency && !updatedRelations.isEmpty()) {
+                            if (checkConsistencyAtMultiport && !updatedRelations.isEmpty()) {
                                 // If we have updated relations for this port, it means that it is consistent
                                 // and hence we don't need to check consistency anymore.
                                 portsThatCanBeIngnoredForConsistencyCheck.add(port);
@@ -208,8 +229,6 @@ public class RelationWidthInference {
                     if (!workingPortSet.isEmpty() && !unspecifiedSet.isEmpty()) {
                         continueInference = false;
                         LinkedList<IOPort> workingPortList = new LinkedList<IOPort>(workingPortSet);
-                        // TODO: here we only extract width from the ports with constraints,
-                        //      we should also check whether all constraints match.
                         for (IOPort port : workingPortList) {
                             List<IORelation> updatedRelations = _relationsWithUpdatedWidthForMultiport(port);
                             if (!updatedRelations.isEmpty()) {
@@ -218,7 +237,7 @@ public class RelationWidthInference {
                                     // We found new information, so we can try to infer
                                     // new relations.
                             }
-                            if (checkConsistency && !updatedRelations.isEmpty()) {
+                            if (checkConsistencyAtMultiport && !updatedRelations.isEmpty()) {
                                 // If we have updated relations for this port, it means that it is consistent
                                 // and hence we don't need to check consistency anymore.
                                 portsThatCanBeIngnoredForConsistencyCheck.add(port);
@@ -227,7 +246,7 @@ public class RelationWidthInference {
                                 }
                             }
                             workingRelationList.addAll(updatedRelations);
-                        }                        
+                        }
                     }
                 }
                 
@@ -236,25 +255,48 @@ public class RelationWidthInference {
                             (System.currentTimeMillis() - afterinit)
                                     + " ms.");
                 }
-                
-                if (!unspecifiedSet.isEmpty()) {
-                    IORelation relation = unspecifiedSet.iterator().next();
-                    throw new IllegalActionException(relation, 
-                            "The width of relation " + relation.getFullName() +
-                            " can not be uniquely inferred.\n"                        
-                            + "Please make the width inference deterministic by"
-                            + " explicitly specifying the width of this relation.");
-                    
-                }
-                
+
                 //Consistency check
-                if (checkConsistency) {
-                    // TODO: also check the constraints.
+                if (checkConsistencyAtMultiport) {
+
                     portsToCheckConsistency.removeAll(portsThatCanBeIngnoredForConsistencyCheck);
                     for (IOPort port : portsToCheckConsistency) {
                         _checkConsistency(port);
                     }
-                }   
+                }
+                if (checkWidthConstraints) {
+                    for (IOPort port : workingPortSet) {
+                        _checkConsistency(port);
+                        port.checkWidthConstraints();
+                    }
+                }
+                
+                if (!unspecifiedSet.isEmpty()) {
+                    
+                    boolean defaultInferredWidthTo1 = false;
+                    
+                    {
+                        Token defaultTo1 = ModelScope.preferenceValue(_topLevel,
+                                "_defaultInferredWidthTo1");
+                        if (defaultTo1 instanceof BooleanToken) {
+                            defaultInferredWidthTo1 = ((BooleanToken) defaultTo1).booleanValue();
+                        }
+                    }
+
+                    if (defaultInferredWidthTo1) {
+                        for (IORelation relation : unspecifiedSet) {
+                            relation._setInferredWidth(1);
+                        }
+                    } else {
+                        IORelation relation = unspecifiedSet.iterator().next();
+                        throw new IllegalActionException(relation, 
+                                "The width of relation " + relation.getFullName() +
+                                " can not be uniquely inferred.\n"                        
+                                + "Please make the width inference deterministic by"
+                                + " explicitly specifying the width of this relation.");
+                    }                    
+                }
+                
             } finally {
                 _inferringWidths = false;
                 _topLevel.workspace().doneTemporaryWriting();
@@ -262,7 +304,7 @@ public class RelationWidthInference {
                     System.out.println("Time to do width inference: " +                
                             (System.currentTimeMillis() - startTime)
                                     + " ms.");
-                }                
+                }
             }
             _needsWidthInference = false;
         }
@@ -369,7 +411,8 @@ public class RelationWidthInference {
 	             + " inside or outside relation and set the width -1.");
          }
      }
-    
+     
+          
     /**
      * Infer the width for the relations connected to the port. If the width can be
      * inferred, update the width and return the relations for which the width has been
