@@ -350,7 +350,7 @@ $(PTII_SRC): $(PTII_FULL)
 		find . -name "*.class" -ls -exec rm {} \; ;\
 		cd ptolemy; \
 		echo "About to remove jars in `pwd`"; \
-		find . \( -name ptinyos -o -name jini -o -name extractJarFileTest.jar -o -name antlr.jar \) -prune -o -name "*.jar" -ls -exec rm {} \; ;\
+		find . \( -name ptinyos -o -name jini -o -name extractJarFileTest.jar -o -name antlr.jar -o -name "ojdbc5.jar" -o -name "ojdbc6.jar" -o -name "mysql-connector-java-5.1.6-bin.jar" \) -prune -o -name "*.jar" -ls -exec rm {} \; ;\
 		cd ..; \
 		cd ptolemy/domains/ptinyos; \
 		echo "About to remove jars in `pwd`"; \
@@ -1441,6 +1441,7 @@ remote1distjsall_2:
 			jsall JSINSTRFLAGS=;)
 
 remote1distjsall_3:
+	echo $$PATH
 	jssummary -HTML -PROGRESS \
 		-OUTFILE=$(JSOUTDIR)/coverage.html
 	jsreport -HTML -PROGRESS -RECURSIVE \
