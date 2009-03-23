@@ -992,7 +992,7 @@ public class JNIUtilities {
 			+ _indent2
 			+ "String osName = System.getProperty(\"os.name\");\n"
 			+ _indent2
-			+ "if (osName.equals(\"Linux\") || osName.equals(\"SunOS\")) {\n"
+			+ "if (osName.equals(\"Linux\") || osName.equals(\"SunOS\") || osName.equals(\"Mac OS X\")) {\n"
 		        + _indent3
 		        + "sharedLibraryPrefix = \"lib\";\n"
                         + _indent2
@@ -1243,11 +1243,13 @@ public class JNIUtilities {
                         + ".$(PTJNI_SHAREDLIBRARY_SUFFIX)\n"
                         + "$(SHAREDLIBRARY):\n"
                         + "\t\"$(PTCC)\" \\\n"
+                        + "\t\t\"-I$(PTJNI_INCLUDE)\" \\\n"
                         + "\t\t\"-I$(PTJAVA_HOME)/../include\" \\\n"
                         + "\t\t\"-I$(PTJAVA_HOME)/../include/$(PTJNI_ARCHITECTURE)\" \\\n"
                         + "\t\t$(PTJNI_SHAREDLIBRARY_CFLAG) \\\n"
                         + "\t\t-fno-exceptions \\\n"
-                        + "\t\t-shared $(PTJNI_SHAREDLIBRARY_LDFLAG) \\\n"
+                        + "\t\t$(PTJNI_GCC_SHARED_FLAG) \\\n"
+			+ "\t\t$(PTJNI_SHAREDLIBRARY_LDFLAG) \\\n"
                         + "\t\t-L"
                         + libraryPath
                         + " -l"
