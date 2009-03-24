@@ -407,6 +407,10 @@ See $PTII/doc/coding/maven.htm
     <url>http://ptolemy.org</url>
     <!-- <logo>http://ptolemy.eecs.berkeley.edu/image/ptolemy.jpg</logo> -->
   </organization>
+  <properties>
+    <!-- skip test-compile when doing "maven package" -->
+    <maven.test.skip>true</maven.test.skip>
+  </properties> 
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -555,18 +559,18 @@ See $PTII/doc/coding/maven.htm
 	<configuration>
 	  <source>1.5</source>
 	  <target>1.5</target>
+	  <verbose>true</verbose>
 	  <maxmem>1024m</maxmem>
 	  <excludes>
-	    <!-- grep excluding .classpath.in | awk -F "|" '{for(i=2;i<NF;i++) {print "           <exclude>" $i "</exclude>"}}' | sed 's@/</exclude>@/**</exclude>@' -->
+	   <!-- grep excluding .classpath.in | awk -F "|" '{for(i=2;i<NF;i++) {print "           <exclude>" $i "</exclude>"}}' | sed 's@/</exclude>@/**</exclude>@' -->
+	   <exclude>**/.svn/**</exclude>
            <exclude>**/adm/**</exclude>
-           <exclude>build/**</exclude>
+           <exclude>**/build/**</exclude>
            <exclude>**/codeDoc/**</exclude>
-           <exclude>config/**</exclude>
-           <exclude>diva/util/java2d/svg/**</exclude>
-           <exclude>ptolemy/backtrack/eclipse/**</exclude>
-           <exclude>ptolemy/backtrack/test/**</exclude>
-           <exclude>ptolemy/copernicus/c/test/**</exclude>
-           <exclude>ptolemy/copernicus/c/test/cm/**</exclude>
+           <exclude>**/config/**</exclude>
+           <exclude>**/diva/util/java2d/svg/**</exclude>
+           <exclude>**/ptolemy/backtrack/eclipse/**</exclude>
+           <exclude>**/ptolemy/backtrack/test/**</exclude>
            <exclude>doc/coding/templates/**</exclude>
            <exclude>ptolemy/copernicus/kernel/fragment/**</exclude>
            <exclude>ptolemy/distributed/**</exclude>
@@ -746,7 +750,26 @@ See $PTII/doc/coding/maven.htm
 	  </arguments>
 	</configuration>
       </plugin>
+      
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifest>
+              <addClasspath>true</addClasspath>
+              <mainClass>ptolemy.vergil.VergilApplication</mainClass>
+            </manifest>
+          </archive>
+	  <excludes>
+	    <exclude>**/.svn/**</exclude>
+	    <exclude>ptII-7.2.devel.jar</exclude>
+	  </excludes>
+        </configuration>
+
+      </plugin>
     </plugins>
+
   </build>
   <profiles>
     <profile>
