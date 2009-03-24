@@ -31,12 +31,13 @@
 
 ME =		ptolemy/domains/properties
 
-DIRS =		lib
+DIRS =		kernel lib
 
 # Root of Ptolemy II directory
 ROOT =		../../..
 
-CLASSPATH =	$(ROOT)
+# PropertySolverBase.java calls com.sun.tools.javac.Main.compile()
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(TOOLS_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -48,6 +49,7 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
+	kernel/kernel.jar \
 	lib/lib.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
