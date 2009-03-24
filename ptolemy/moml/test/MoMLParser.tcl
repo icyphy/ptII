@@ -4214,7 +4214,7 @@ java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]
 test MoMLParser-32.1 {If we read in a file that refers to a second file and the second file uses a missing class, make sure that the exception makes sense} {
     $parser reset
     catch {[$parser parseFile "AltFileNameExceptionTest.xml"]} errMsg
-    regsub -all {file:/.*/ptolemy/moml/test} [string range $errMsg 0 582] {file:/XXX/ptolemy/moml/test} result
+    regsub -all {file:/.*/ptolemy/moml/test} [string range $errMsg 0 502] {file:/XXX/ptolemy/moml/test} result
     list $result
 } {{com.microstar.xml.XmlException: XML element "entity" triggers exception. in file:/XXX/ptolemy/moml/test/ at line 5 and column 70
 Caused by:
@@ -4223,5 +4223,4 @@ Because:
 XML element "class" triggers exception. in file:/XXX/ptolemy/moml/test/AltFileNameExceptionTestFile.xml at line 4 and column 47
 Caused by:
  ptolemy.kernel.util.IllegalActionException: Cannot find class: NotAClass
-Because:
--- /home/bldmastr/ptII/ptolemy/moml/test/NotAClass.xml (No such file or}}
+Because:}}
