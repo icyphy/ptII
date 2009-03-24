@@ -1123,6 +1123,54 @@ fi
 
 
 #--------------------------------------------------------------------
+#       CUnit is used to test C Code in the code generator
+#	
+#	
+#--------------------------------------------------------------------
+# We only need to look for CUnit if this directory is present
+CUNIT_USER_DIR="$PTII/ptolemy/codegen/c/kernel/type/test"
+
+# PTCUNIT_DIR is set to test and used in 
+# ptII/ptolemy/codegen/c/kernel/type/test/makefile
+# if CUnit is found
+PTCUNIT_DIR=
+
+if test ! -d "$CUNIT_USER_DIR"; then
+    PT_MSG_STATUS([$CUNIT_USER_DIR is not present,
+    so we need not find CUnit for testing])
+else
+    AC_MSG_CHECKING([for CUnit to be used to test the C codegen templates])
+    AC_ARG_WITH(tools_jar, [  --with-cunit=DIR    use CUnit from DIR,
+                          defaults to /usr/local or $PTII/vendors/CUnit],
+	CUNIT_DIR=$withval,
+	CUNIT_DIR=/usr/local)
+    if test -r "$CUNIT_DIR/include/CUnit/Basic.h" ; then
+        PT_MSG_RESULT([$CUNIT_DIR])
+        #PTCUNIT_INCLUDE_DIR="$CUNIT_DIR/include"
+        #PTCUNIT_LIB_DIR="$CUNIT_DIR/lib"
+        PTCUNIT_DIR=test
+    else
+        if test -r /usr/local/include/CUnit/Basic.h ; then
+	    PT_MSG_RESULT([/usr/include])
+            #PTCUNIT_INCLUDE_DIR=/usr/local/include
+            #PTCUNIT_LIB_DIR=/usr/local/lib
+            PTCUNIT_DIR=test
+        else 
+	    if test -r "$PTII/vendors/CUnit/include/CUnit/Basic.h" ; then
+	        PT_MSG_RESULT([$PTII/vendors/CUnit])
+                #PTCUNIT_INCLUDE_DIR="$PTII/vendors/CUnit/include"
+	        #PTCUNIT_LIB_DIR="$PTII/vendors/CUnit/lib"
+	        PTCUNIT_DIR=test
+            else 
+   	        AC_MSG_WARN([Failed to find CUnit in /usr/local or
+    $PTII/vendors/CUnit.
+    CUnit is only necessary to test the C templates of the code generation facility])
+            fi
+        fi
+    fi
+fi
+
+#--------------------------------------------------------------------
 #       doclets are used to control javadoc
 #	The Ptolemy II doclets are in $PTII/doc/doclets
 #	and use $PTJAVA_HOME/../tools.jar to compile
@@ -4001,6 +4049,11 @@ AC_SUBST(PTCOMM_PACKAGES)
 
 # Set to copernicus and used in $PTII/ptolemy/makefile if Soot was found
 AC_SUBST(PTCOPERNICUS_DIR)
+
+# PTCUNIT_DIR is set to test and used in 
+# ptII/ptolemy/codegen/c/kernel/type/test/makefile
+# if CUnit is found
+AC_SUBST(PTCUNIT_DIR)
 
 # PTDATABASE_DIR is set to database and used in
 # $PTII/ptolemy/actor/lib/makefile if ojdbc6.jar was found.

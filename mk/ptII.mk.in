@@ -361,6 +361,11 @@ PTCOMM_PACKAGES =	@PTCOMM_PACKAGES@
 # Set to copernicus and used in $PTII/ptolemy/makefile if Soot was found
 PTCOPERNICUS_DIR = @PTCOPERNICUS_DIR@
 
+# PTCUNIT_DIR is set to test and used in 
+# ptII/ptolemy/codegen/c/kernel/type/test/makefile
+# if CUnit is found
+PTCUNIT_DIR =		@PTCUNIT_DIR@
+
 # PTDATABASE_DIR is set to database and used in
 # $PTII/ptolemy/actor/lib/makefile if ojdbc6.jar was found.
 PTDATABASE_DIR =	@PTDATABASE_DIR@

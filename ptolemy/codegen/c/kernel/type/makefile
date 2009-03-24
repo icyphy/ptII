@@ -31,7 +31,8 @@
 
 ME =		ptolemy/codegen/c/kernel/type
 
-DIRS =		polymorphic
+# configure sets PTCUNIT_DIR to test if CUnit was found
+DIRS =		polymorphic $(PTCUNIT_DIR)
 
 # Root of the Java directory
 ROOT =		../../../../..
