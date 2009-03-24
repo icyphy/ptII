@@ -24,7 +24,9 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 25.0]">
         </property>
     </property>
-    <entity name="EmbeddedJavaActor" class="ptolemy.cg.lib.EmbeddedCodeActor">
+    <entity name="EmbeddedActor" class="ptolemy.cg.lib.EmbeddedCodeActor">
+        <property name="generatorPackage" class="ptolemy.data.expr.StringParameter" value="generic.procedural.java">
+        </property>
         <property name="overwriteFiles" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="embeddedCode" class="ptolemy.kernel.util.StringAttribute" value="/***preinitBlock***/&#10;/**/&#10;&#10;/***initBlock***/&#10;/**/&#10;&#10;/***fireBlock***/&#10;// The following is ordinary Java code, except for&#10;// the macro references to the input and output&#10;// ports.&#10;$ref(output) = 2 * $ref(input);&#10;/**/&#10;&#10;/***wrapupBlock***/&#10;/**/&#10;&#10;">
@@ -35,41 +37,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 105.0]">
         </property>
-        <property name="CodeGenerator_AutoAdded" class="ptolemy.cg.kernel.generic.procedural.java.JavaCodeGenerator">
-            <property name="allowDynamicMultiportReference" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$HOME/cg/">
-                <property name="allowFiles" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-            </property>
-            <property name="compile" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="compileTarget" class="ptolemy.data.expr.StringParameter" value="">
-            </property>
-            <property name="generatorPackage" class="ptolemy.data.expr.StringParameter" value="generic.procedural.java">
-            </property>
-            <property name="generateComment" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="generateCpp" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="generateEmbeddedCode" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="inline" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="measureTime" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="overwriteFiles" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="padBuffers" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="run" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="sourceLineBinding" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="target" class="ptolemy.data.expr.StringParameter" value="default">
-            </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -99,8 +67,8 @@
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
     </relation>
-    <link port="EmbeddedJavaActor.input" relation="relation"/>
-    <link port="EmbeddedJavaActor.output" relation="relation2"/>
+    <link port="EmbeddedActor.input" relation="relation"/>
+    <link port="EmbeddedActor.output" relation="relation2"/>
     <link port="Ramp.output" relation="relation"/>
     <link port="Display.input" relation="relation2"/>
 </entity>

@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.cg.adapter.generic.procedural.java.adapters.ptolemy.actor;
+package ptolemy.cg.adapter.generic.procedural.c.adapters.ptolemy.actor;
 
 import java.util.HashMap;
 import java.util.List;
@@ -36,7 +36,7 @@ import ptolemy.actor.Director;
 import ptolemy.actor.Receiver;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.PortCodeGenerator;
-import ptolemy.cg.kernel.generic.procedural.java.JavaCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.procedural.c.CCodeGeneratorAdapter;
 import ptolemy.cg.lib.EmbeddedCodeActor;
 import ptolemy.data.BooleanToken;
 import ptolemy.kernel.util.IllegalActionException;
@@ -45,16 +45,16 @@ import ptolemy.kernel.util.IllegalActionException;
 ////IOPort
 
 /**
-Code generator adapter for {@link ptolemy.actor.IOPort}.
+Code generator adapter for IOPort.
 
 @author Man-Kit Leung
 @version $Id$
-@since Ptolemy II 7.2
+@since Ptolemy II 7.0
 @Pt.ProposedRating Red (mankit)
 @Pt.AcceptedRating Red (mankit)
  */
 
-public class IOPort extends JavaCodeGeneratorAdapter implements PortCodeGenerator {
+public class IOPort extends CCodeGeneratorAdapter implements PortCodeGenerator {
 
     /** Construct the code generator adapter associated
      *  with the given IOPort.
@@ -99,10 +99,9 @@ public class IOPort extends JavaCodeGeneratorAdapter implements PortCodeGenerato
         ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
 
         Receiver receiver = _getReceiver(offset, channel, port);
-
-     // FIXME rodiers: reintroduce PN! (but somewhere else)
+        // FIXME rodiers: reintroduce PN! (but somewhere else)
         if (false) {
-        /*
+/*
         if (_isPthread() && receiver instanceof PNQueueReceiver) {
             String result;
             if (offset.length() == 0 || offset.equals("0")) {
@@ -114,14 +113,13 @@ public class IOPort extends JavaCodeGeneratorAdapter implements PortCodeGenerato
                 result += offset + ", ";
             }
 
-	    // FIXME: why does this depend on PN?            
             PNDirector pnDirector = (PNDirector) _getAdapter(director);
             result += "&" + PNDirector.generatePortHeader(port, channel) + ", ";
             result += "&" + pnDirector.generateDirectorHeader() + ")";
             return "[" + result + "]";
             */
             return "";
-        // End FIXME rodiers
+            // End FIXME rodiers
         } else {
             return _generateOffset(offset, channel, isWrite);
         }
@@ -206,8 +204,8 @@ public class IOPort extends JavaCodeGeneratorAdapter implements PortCodeGenerato
 
         ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
         StringBuffer code = new StringBuffer();
-        code.append(getCodeGenerator().comment(_eol + "....Begin updateConnectedPortsOffset...."
-					       + CodeGeneratorAdapter.generateName(port)));
+//        code.append(getCodeGenerator().comment(_eol + "....Begin updateConnectedPortsOffset...."
+//					       + CodeGeneratorAdapter.generateName(port)));
 
         if (rate == 0) {
             return "";
@@ -242,7 +240,8 @@ public class IOPort extends JavaCodeGeneratorAdapter implements PortCodeGenerato
 
                 // FIXME rodiers: reintroduce PN specifics (but somewhere else)
                 if (false) {
-                /*if (_isPthread() && MpiPNDirector.isMpiReceiveBuffer(sinkPort, sinkChannelNumber)) {
+                /*
+                if (_isPthread() && MpiPNDirector.isMpiReceiveBuffer(sinkPort, sinkChannelNumber)) {
                     code.append(_generateMPISendCode(j, rate, sinkPort, sinkChannelNumber, director));
 
                 } else if (_isPthread() && receiver instanceof PNQueueReceiver) {
@@ -283,8 +282,8 @@ public class IOPort extends JavaCodeGeneratorAdapter implements PortCodeGenerato
                 }
             }
         }
-        code.append(getCodeGenerator().comment(_eol + "....End updateConnectedPortsOffset...."
-					       + CodeGeneratorAdapter.generateName(port)));
+//        code.append(getCodeGenerator().comment(_eol + "....End updateConnectedPortsOffset...."
+//					       + CodeGeneratorAdapter.generateName(port)));
         return code.toString();
     }
 
@@ -297,8 +296,9 @@ public class IOPort extends JavaCodeGeneratorAdapter implements PortCodeGenerato
             (ptolemy.actor.IOPort) getComponent();
         Receiver receiver = _getReceiver(null, 0, port);
 
-        String code = getCodeGenerator().comment(_eol + "....Begin updateOffset...." 
-						 + CodeGeneratorAdapter.generateName(port));
+        String code = "";
+//        code += getCodeGenerator().comment(_eol + "....Begin updateOffset...." 
+//						 + CodeGeneratorAdapter.generateName(port));
 
         //        int width = 0;
         //        if (port.isInput()) {
@@ -325,14 +325,14 @@ public class IOPort extends JavaCodeGeneratorAdapter implements PortCodeGenerato
                     code += _updatePNOffset(rate, channel.port, 
                             channel.channelNumber, directorAdapter, false);
                 }
-                code += getCodeGenerator().comment(_eol + "....End updateOffset (PN)...."
-						   + CodeGeneratorAdapter.generateName(port));
+//                code += getCodeGenerator().comment(_eol + "....End updateOffset (PN)...."
+//						   + CodeGeneratorAdapter.generateName(port));
             */
              // End FIXME rodiers
             } else {
                 code += _updateOffset(i, rate);
-                code += getCodeGenerator().comment(_eol + "\n....End updateOffset...."
-						   + CodeGeneratorAdapter.generateName(port));
+//                code += getCodeGenerator().comment(_eol + "\n....End updateOffset...."
+//						   + CodeGeneratorAdapter.generateName(port));
             }
         }
         return code;
@@ -340,8 +340,7 @@ public class IOPort extends JavaCodeGeneratorAdapter implements PortCodeGenerato
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
- // FIXME rodiers: reintroduce PN specifics (but somewhere else)
+    // FIXME rodiers: reintroduce PN specifics (but somewhere else)
     /*
     private String _generateMPISendCode(int channelNumber, 
             int rate, ptolemy.actor.IOPort sinkPort,
@@ -422,7 +421,7 @@ public class IOPort extends JavaCodeGeneratorAdapter implements PortCodeGenerato
     }
     //End FIXME rodiers
      */
-    
+
     /**
      * Generate the expression that represents the offset in the generated
      * code.
@@ -553,7 +552,7 @@ public class IOPort extends JavaCodeGeneratorAdapter implements PortCodeGenerato
 
     private Receiver _getReceiver(String offset, int channel, ptolemy.actor.IOPort port) {
         Receiver[][] receivers = port.getReceivers();
-        
+
         // For output ports getReceivers always returns an empty table.
         if (receivers.length == 0) {
             return null;
@@ -573,7 +572,7 @@ public class IOPort extends JavaCodeGeneratorAdapter implements PortCodeGenerato
 	if (staticOffset == -1) {
             // FIXME: Assume all receivers are the same type for the channel.
             // However, this may not be true.
-            assert (receivers.length > 0);
+	    assert (receivers.length > 0);
             receiver = receivers[channel][0];
         }
         return receiver;
@@ -613,13 +612,6 @@ public class IOPort extends JavaCodeGeneratorAdapter implements PortCodeGenerato
     }
 
 
-    /** Update the offset of the channel.
-     *  @param channel The channel number of the channel to be offset.
-     *  @param rate The firing rate of the port.
-     *  @return The code that represents the offset to the channel, 
-     *  @exception IllegalActionException If thrown while getting a token,
-     *  adapter, read offset or buffer size.
-     */
     protected String _updateOffset(int channel, int rate) throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         boolean padBuffers = ((BooleanToken) _codeGenerator.padBuffers
@@ -656,6 +648,7 @@ public class IOPort extends JavaCodeGeneratorAdapter implements PortCodeGenerato
 
     // FIXME rodiers: reintroduce PN specifics (but somewhere else)
     /*
+
     private String _updatePNOffset(int rate, ptolemy.actor.IOPort port, 
             int channelNumber, Director directorAdapter, boolean isWrite)
     throws IllegalActionException {
@@ -685,15 +678,13 @@ public class IOPort extends JavaCodeGeneratorAdapter implements PortCodeGenerato
         PNDirector.generatePortHeader(port, channelNumber) + ", &" +
         pnDirector.generateDirectorHeader() + ");" + _eol;
     }
-    //end FIXME rodiers
+        //end FIXME rodiers
     */
 
     /** Get the buffer size of channel of the port.
      *  @param channelNumber The number of the channel that is being set.
      *  @return return The size of the buffer.
      *  @see #setBufferSize(int, int)
-     *  @exception IllegalActionException If thrown while getting the width
-     *  of the channel.
      */
     public int getBufferSize(int channelNumber)
 	throws IllegalActionException {
@@ -739,7 +730,6 @@ public class IOPort extends JavaCodeGeneratorAdapter implements PortCodeGenerato
      *  @param channelNumber The number of the channel that is being set.
      *  @param bufferSize The size of the buffer.
      *  @see #getBufferSize(int)
-     * 
      */
     public void setBufferSize(int channelNumber, int bufferSize) {
         Channel channel = _getChannel(channelNumber);
@@ -788,5 +778,4 @@ public class IOPort extends JavaCodeGeneratorAdapter implements PortCodeGenerato
         return new Channel((ptolemy.actor.IOPort) 
                 getComponent(), channelNumber);
     }
-
 }

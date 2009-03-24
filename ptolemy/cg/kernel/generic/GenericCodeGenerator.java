@@ -1502,7 +1502,6 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
 
         String packageName = generatorPackage.stringValue();
 
-        Class adapterClass = null;            
         Class componentClass = object.getClass();
         String className = componentClass.getName();
 
@@ -1510,8 +1509,8 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
 
         // e.g. "ptolemy.*" ==> "ptolemy.codegen.c.*"
         // FIXME rodiers: we should this this conversion somewhere else
-        String adapterClassName = className.replaceFirst("ptolemy",
-                "ptolemy.cg.adapter." + packageName + ".adapters.ptolemy");
+        String adapterClassName =
+            "ptolemy.cg.adapter." + packageName + ".adapters." + className;
 
         String targetValue = target.getExpression();
         if (!targetValue.equals(_DEFAULT_TARGET)) {

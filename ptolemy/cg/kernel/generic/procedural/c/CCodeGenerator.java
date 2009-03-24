@@ -1,6 +1,6 @@
-/* Code generator for the Java language.
+/* Code generator for the C language.
 
- Copyright (c) 2008 The Regents of the University of California.
+ Copyright (c) 2005-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -25,17 +25,17 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.cg.kernel.generic.procedural.java;
+package ptolemy.cg.kernel.generic.procedural.c;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -44,18 +44,13 @@ import java.util.StringTokenizer;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.lib.jni.PointerToken;
 import ptolemy.cg.kernel.generic.ActorCodeGenerator;
+import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.CodeGeneratorUtilities;
 import ptolemy.cg.kernel.generic.CodeStream;
-import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Variable;
-import ptolemy.data.type.ArrayType;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.type.MatrixType;
-import ptolemy.data.type.Type;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -67,7 +62,7 @@ import ptolemy.util.StringUtilities;
 //////////////////////////////////////////////////////////////////////////
 ////CodeGenerator
 
-/** Base class for Java code generator.
+/** Base class for C code generator.
  *
  *  @author Gang Zhou
  *  @version $Id$
@@ -76,21 +71,21 @@ import ptolemy.util.StringUtilities;
  *  @Pt.AcceptedRating red (zgang)
  */
 
-public class JavaCodeGenerator extends GenericCodeGenerator {
+public class CCodeGenerator extends GenericCodeGenerator {
 
-    /** Create a new instance of the Java code generator.
+    /** Create a new instance of the C code generator.
      *  @param container The container.
-     *  @param name The name of the Java code generator.
+     *  @param name The name of the C code generator.
      *  @exception IllegalActionException If the super class throws the
      *   exception or error occurs when setting the file path.
      *  @exception NameDuplicationException If the super class throws the
      *   exception or an error occurs when setting the file path.
      */
-    public JavaCodeGenerator(NamedObj container, String name)
+    public CCodeGenerator(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        generatorPackage.setExpression("ptolemy.cg.adapter.generic.procedural.java.adapters");
+        generatorPackage.setExpression("ptolemy.codegen.c");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -98,36 +93,6 @@ public class JavaCodeGenerator extends GenericCodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    public String codeGenType(Type type) {
-        //String ptolemyType = super.codeGenType(type);
-        String result = 
-            type == BaseType.INT ? "Int" : 
-            type == BaseType.LONG ? "Long" : 
-            type == BaseType.STRING ? "String" : 
-            type == BaseType.DOUBLE ? "Double" : 
-            type == BaseType.BOOLEAN ? "Boolean" : 
-            type == BaseType.UNSIGNED_BYTE ? "UnsignedByte" : 
-            type == PointerToken.POINTER ? "Pointer" : null;
-
-        if (result == null) {
-            if (type instanceof ArrayType) {
-                result = "Array";
-
-            } else if (type instanceof MatrixType) {
-                result = "Matrix";
-            }
-        }
-        if (result == null || result.length() == 0) {
-            System.out.println(
-                    "Cannot resolved codegen type from Ptolemy type: " + type);
-        }
-        if (result == null) {
-            return null;
-        }
-        return result.replace("Int", "Integer").replace("Integerger", "Integer");
-        //return ptolemyType.replace("Int", "Integer").replace("Integerger", "Integer").replace("Array", "Token");
-    }
 
     /** Generate the function table.  In this base class return
      *  the empty string.
@@ -140,13 +105,13 @@ public class JavaCodeGenerator extends GenericCodeGenerator {
 
         if (functions.length > 0 && types.length > 0) {
 
-            code.append("private final int NUM_TYPE = " + types.length + ";" + _eol);
-            code.append("private final int NUM_FUNC = " + functions.length + ";" + _eol);
-            code.append("//Token (*functionTable[NUM_TYPE][NUM_FUNC])"
+            code.append("#define NUM_TYPE " + types.length + _eol);
+            code.append("#define NUM_FUNC " + functions.length + _eol);
+            code.append("Token (*functionTable[NUM_TYPE][NUM_FUNC])"
                     + "(Token, ...)= {" + _eol);
 
             for (int i = 0; i < types.length; i++) {
-                code.append("//\t{");
+                code.append("\t{");
                 for (int j = 0; j < functions.length; j++) {
                     if (functions[j].equals("isCloseTo")
                             && (types[i].equals("Boolean") || types[i]
@@ -181,7 +146,7 @@ public class JavaCodeGenerator extends GenericCodeGenerator {
                 code.append(_eol);
             }
 
-            code.append("//};" + _eol);
+            code.append("};" + _eol);
         }
         return code.toString();
     }
@@ -191,7 +156,20 @@ public class JavaCodeGenerator extends GenericCodeGenerator {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generateInitializeEntryCode() throws IllegalActionException {
-        return _eol + _eol + "public void initialize() {" + _eol;
+        // If the container is in the top level, we are generating code
+        // for the whole model.
+        if (isTopLevel()) {
+            // We use (void) so as to avoid the avr-gcc 3.4.6 warning:
+            // "function declaration isn't a prototype
+            return _eol + _eol + "void initialize(void) {" + _eol;
+
+            // If the container is not in the top level, we are generating code
+            // for the Java and C co-simulation.
+        } else {
+            return _eol + _eol + "JNIEXPORT void JNICALL" + _eol + "Java_"
+                    + _sanitizedModelName + "_initialize("
+                    + "JNIEnv *env, jobject obj) {" + _eol;
+        }
     }
 
     /** Generate the initialization procedure exit point.
@@ -199,7 +177,6 @@ public class JavaCodeGenerator extends GenericCodeGenerator {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generateInitializeExitCode() throws IllegalActionException {
-
         return "}" + _eol;
     }
 
@@ -225,7 +202,7 @@ public class JavaCodeGenerator extends GenericCodeGenerator {
      *  @return text that is suitable for the C preprocessor.
      */
     public String generateLineInfo(int lineNumber, String filename) {
-        return "#line " + lineNumber + " \"" + filename + "\"\n";
+        return "#line " + lineNumber + " \"" + filename + "\"" + _eol;
     }
 
     /** Generate the main entry point.
@@ -234,47 +211,37 @@ public class JavaCodeGenerator extends GenericCodeGenerator {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generateMainEntryCode() throws IllegalActionException {
-
         StringBuffer mainEntryCode = new StringBuffer();
 
         // If the container is in the top level, we are generating code
         // for the whole model.
         if (isTopLevel()) {
             mainEntryCode.append(_eol + _eol
-                    + "public static void main(String [] args) throws Exception {" + _eol
-				 + _sanitizedModelName + " model = new "
-				 + _sanitizedModelName + "();" + _eol
-				 + "model.run();" + _eol
-				 + "}" + _eol
-				 + "public void run() throws Exception {" + _eol);
-				 
-            String targetValue = target.getExpression();
-            if (!targetValue.equals(_DEFAULT_TARGET)) {
-                mainEntryCode.append("//FIXME: JavaCodeGenerator hack" + _eol
-                        + "init();" + _eol);
-            }
+                    + "int main(int argc, char *argv[]) {" + _eol);
+            //String targetValue = target.getExpression();
 
-         } else {
-            mainEntryCode.append(_eol + _eol + "public Object[] "
-                    + _eol + "fire (" + _eol);
+            // FIXME: why do we need this?
+//            if (!targetValue.equals(_DEFAULT_TARGET)) {
+//                mainEntryCode.append("//FIXME: CCodeGenerator hack" + _eol
+//                        + "init();" + _eol);
+//            }
+            
+        } else {
+            // If the container is not in the top level, we are generating code
+            // for the Java and C co-simulation.
+            mainEntryCode.append(_eol + _eol + "JNIEXPORT jobjectArray JNICALL"
+                    + _eol + "Java_" + _sanitizedModelName + "_fire (" + _eol
+                    + "JNIEnv *env, jobject obj");
 
             Iterator inputPorts = ((Actor) getContainer()).inputPortList()
                     .iterator();
-            boolean addComma = false;
             while (inputPorts.hasNext()) {
                 TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
-                if (addComma) {
-                    mainEntryCode.append(", ");
-                }
-                mainEntryCode.append("Object[]" + inputPort.getName());
-                addComma = true;
+                mainEntryCode.append(", jobjectArray " + inputPort.getName());
             }
 
             mainEntryCode.append("){" + _eol);
-
-
         }
-        
         return mainEntryCode.toString();
     }
 
@@ -283,12 +250,11 @@ public class JavaCodeGenerator extends GenericCodeGenerator {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generateMainExitCode() throws IllegalActionException {
-
         if (isTopLevel()) {
-            return _INDENT1 + "System.exit(0);" + _eol + "}" + _eol + "}" + _eol;
+            return _INDENT1 + "exit(0);" + _eol + "}" + _eol;
         } else {
             return _INDENT1 + "return tokensToAllOutputPorts;" + _eol + "}"
-            + _eol + "}" + _eol;
+                    + _eol;
         }
     }
 
@@ -297,8 +263,18 @@ public class JavaCodeGenerator extends GenericCodeGenerator {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generatePostfireEntryCode() throws IllegalActionException {
-        return _eol + _eol + "public boolean postfire() {" + _eol;
+        // If the container is in the top level, we are generating code
+        // for the whole model.
+        if (isTopLevel()) {
+            return _eol + _eol + "boolean postfire(void) {" + _eol;
 
+            // If the container is not in the top level, we are generating code
+            // for the Java and C co-simulation.
+        } else {
+            return _eol + _eol + "JNIEXPORT void JNICALL" + _eol + "Java_"
+                    + _sanitizedModelName + "_postfire("
+                    + "JNIEnv *env, jobject obj) {" + _eol;
+        }
     }
 
     /** Generate the postfire procedure exit point.
@@ -315,7 +291,7 @@ public class JavaCodeGenerator extends GenericCodeGenerator {
      */
     public String generatePostfireProcedureName() throws IllegalActionException {
 
-        return _INDENT1 + "postfire();" + _eol;
+        return _INDENT1 + "postfire(void);" + _eol;
     }
 
     /**
@@ -344,38 +320,32 @@ public class JavaCodeGenerator extends GenericCodeGenerator {
 
         // Include the constantsBlock at the top so that sharedBlocks from
         // actors can use true and false etc.  StringMatches needs this.
-
-        // FIXME rodiers: fix path
         CodeStream sharedStream = new CodeStream(
-                "$CLASSPATH/ptolemy/codegen/java/kernel/SharedCode.j", this);
+                "$CLASSPATH/ptolemy/codegen/c/kernel/SharedCode.c", this);
         sharedStream.appendCodeBlock("constantsBlock");
         code.append(sharedStream.toString());
 
         HashSet functions = _getReferencedFunctions();
 
-        HashSet types = _getReferencedTypes(functions);
+        HashSet types = _getTypeIDToUsed(_getNewTypesUsed(functions));
 
         Object[] typesArray = types.toArray();
         CodeStream[] typeStreams = new CodeStream[types.size()];
 
         // Generate type map.
         StringBuffer typeMembers = new StringBuffer();
-        code.append("private final short TYPE_Token = -1;" + _eol);
+        code.append("#define TYPE_Token -1 " + _eol);
+        
+        
         for (int i = 0; i < typesArray.length; i++) {
-            // Open the .j file for each type.
-            
-            // FIXME rodiers: fix path
+            // Open the .c file for each type.
             typeStreams[i] = new CodeStream(
-                    "$CLASSPATH/ptolemy/codegen/java/kernel/type/" + typesArray[i]
-                            + ".j", this);
+                    "$CLASSPATH/ptolemy/codegen/c/kernel/type/" + typesArray[i]
+                            + ".c", this);
 
-            code.append("#define PTCG_TYPE_" + typesArray[i] + " " + i + _eol);
-            code.append("private final short TYPE_" + typesArray[i] + " = " + i + ";"+ _eol);
+            code.append("#define TYPE_" + typesArray[i] + " " + i + _eol);
 
             // Dynamically generate all the types within the union.
-            if (i > 0) {
-                typeMembers.append(_INDENT2);
-            }
             typeMembers.append(typesArray[i] + "Token " + typesArray[i] + ";");
             if (i < typesArray.length - 1) {
                 typeMembers.append(_eol);
@@ -387,14 +357,16 @@ public class JavaCodeGenerator extends GenericCodeGenerator {
         // True if we have a delete function that needs to return a Token
         boolean defineEmptyToken = false;
 
+        // Generate function map.
         for (int i = 0; i < functionsArray.length; i++) {
-             code.append("#define FUNC_" + functionsArray[i] + " " + i + _eol);
-             if (functionsArray[i].equals("delete")) {
-                 defineEmptyToken = true;
-             }
+
+            code.append("#define FUNC_" + functionsArray[i] + " " + i + _eol);
+            if (functionsArray[i].equals("delete")) {
+                defineEmptyToken = true;
+            }
         }
 
-        //code.append("typedef struct token Token;" + _eol);
+        code.append("typedef struct token Token;" + _eol);
 
         // Generate type and function definitions.
         for (int i = 0; i < typesArray.length; i++) {
@@ -405,17 +377,19 @@ public class JavaCodeGenerator extends GenericCodeGenerator {
             code.append(typeStreams[i].toString());
         }
 
+
         ArrayList args = new ArrayList();
         // Token declareBlock.
         if (typeMembers.length() != 0) {
-            args.add(typeMembers.toString());
             sharedStream.clear();
+            args.add(typeMembers.toString());
             sharedStream.appendCodeBlock("tokenDeclareBlock", args);
 
             if (defineEmptyToken) {
                 sharedStream.append("Token emptyToken; "
                         + comment("Used by *_delete() and others.") + _eol);
             }
+            code.append(sharedStream.toString());
         }
 
         // Set to true if we need the unsupportedFunction() method.
@@ -424,14 +398,82 @@ public class JavaCodeGenerator extends GenericCodeGenerator {
         // Set to true if we need to scalarDelete() method.
         boolean defineScalarDeleteMethod = false;
 
+        // Append functions that are specified used by this type (without
+        // going through the function table).
+        for (int i = 0; i < typesArray.length; i++) {
+            typeStreams[i].clear();
+            typeStreams[i].appendCodeBlock("funcDeclareBlock");
+            code.append(typeStreams[i].toString());
+        }
+
+        // FIXME: in the future we need to load the convertPrimitivesBlock
+        // dynamically, and maybe break it into multiple blocks to minimize
+        // code size.
+        sharedStream.clear();
+        sharedStream.appendCodeBlock("convertPrimitivesBlock");
+        code.append(sharedStream.toString());
+        sharedStream.clear();
+
+        StringBuffer typeFunctionCode = new StringBuffer();
+        for (int i = 0; i < typesArray.length; i++) {
+            typeStreams[i].clear();
+            //typeStreams[i].appendCodeBlock(typesArray[i] + "_new");
+
+            for (int j = 0; j < functionsArray.length; j++) {
+                // The code block declaration has to follow this convention:
+                // /*** [function name]Block ***/
+                //     .....
+                // /**/
+                String functionName = typesArray[i] + "_"
+                + functionsArray[j];
+                
+                try {
+                    // Boolean_isCloseTo and String_isCloseTo map to
+                    // Boolean_equals and String_equals.
+                    if (functionsArray[j].equals("isCloseTo")
+                            && (typesArray[i].equals("Boolean") || typesArray[i]
+                                    .equals("String"))) {
+
+                        if (!functions.contains("equals")) {
+                            markFunctionCalled(
+                                    typesArray[i] + "_equals", null);
+                        }
+                    } else {
+                        if (!_unsupportedTypeFunctions.contains(functionName)
+                                && !_overloadedFunctionSet
+                                        .contains(functionName)) {
+
+                            markFunctionCalled(functionName, null);
+                        }
+                    }
+                } catch (IllegalActionException ex) {
+                    // We have to catch the exception if some code blocks are
+                    // not found. We have to define the function label in the
+                    // generated code because the function table makes
+                    // reference to this label.
+
+                    typeStreams[i].append("#define " + functionName + " MISSING " + _eol);
+                    _unsupportedTypeFunctions.add(functionName);
+                    
+                    System.out.println("Warning -- missing function defintion: "
+                            + functionName + "()");
+                    
+                    // It is ok because this polymorphic function may not be
+                    // supported by all types.
+                }
+            }
+            typeFunctionCode.append(processCode(typeStreams[i].toString()));
+        }
+        
         // Append type-polymorphic functions included in the function table.
         for (int i = 0; i < types.size(); i++) {
             // The "funcDeclareBlock" contains all function declarations for
             // the type.
             for (int j = 0; j < functionsArray.length; j++) {
-                String typeFunctionName = typesArray[i] + "_"
+                String functionName = typesArray[i] + "_"
                         + functionsArray[j];
-                if (_unsupportedTypeFunctions.contains(typeFunctionName)) {
+                
+                if (_unsupportedTypeFunctions.contains(functionName)) {
                     defineUnsupportedTypeFunctionMethod = true;
                 }
                 if (_scalarDeleteTypes.contains(typesArray[i])
@@ -451,16 +493,22 @@ public class JavaCodeGenerator extends GenericCodeGenerator {
                         // Boolean_isCloseTo and String_isCloseTo
                         // use Boolean_equals and String_equals.
                         args.clear();
-                        args.add(typesArray[i] + "_equals");
-                        sharedStream.appendCodeBlock("funcHeaderBlock", args);
+                        functionName = typesArray[i] + "_equals"; 
+                        if (!_unsupportedTypeFunctions.contains(functionName)) {
+                            args.add(functionName);
+                            sharedStream.appendCodeBlock("funcHeaderBlock", args);
+                        }
                     }
                 }
                 if (!_scalarDeleteTypes.contains(typesArray[i])
-                         || !functionsArray[j].equals("delete")) {
-                     // Skip Boolean_delete etc.
+                        || !functionsArray[j].equals("delete")) {
+                    // Skip Boolean_delete etc.
                     args.clear();
-                    args.add(typeFunctionName);
-                    sharedStream.appendCodeBlock("funcHeaderBlock", args);
+                    if (!_unsupportedTypeFunctions.contains(functionName)) {
+                        args.add(functionName);
+                        sharedStream.append("// functionHeader: " + _eol);
+                        sharedStream.appendCodeBlock("funcHeaderBlock", args);
+                    }
                 }
             }
         }
@@ -474,85 +522,40 @@ public class JavaCodeGenerator extends GenericCodeGenerator {
         if (defineScalarDeleteMethod) {
             // Types that share the scalarDelete() method, which does nothing.
             // We use one method so as to reduce code size.
-             sharedStream.appendCodeBlock("scalarDeleteFunction");
-         }
-
-        code.append(sharedStream.toString());
-
-        // Append functions that are specified used by this type (without
-        // going through the function table).
-        for (int i = 0; i < typesArray.length; i++) {
-            typeStreams[i].clear();
-            typeStreams[i].appendCodeBlock("funcDeclareBlock");
-            code.append(typeStreams[i].toString());
+            sharedStream.appendCodeBlock("scalarDeleteFunction");
         }
 
-        // FIXME: in the future we need to load the convertPrimitivesBlock
-        // dynamically, and maybe break it into multiple blocks to minimize
-        // code size.
-        sharedStream.clear();
-        sharedStream.appendCodeBlock("convertPrimitivesBlock");
+        // sharedStream should the global code (e.g. token declaration,
+        // constants, and etc.)
         code.append(sharedStream.toString());
-
+        
         // Generate function type and token table.
         code.append(generateFunctionTable(typesArray, functionsArray));
 
-        for (int i = 0; i < typesArray.length; i++) {
-            typeStreams[i].clear();
-            //typeStreams[i].appendCodeBlock(typesArray[i] + "_new");
+        // _overloadedFunctions contains the set of functions:
+        // add_Type1_Type2, negate_Type, and etc.
+        code.append(_overloadedFunctions.toString());
+        
+        // typeFunction contains the set of function: 
+        // Type_new(), Type_delete(), and etc. 
+        code.append(typeFunctionCode);
+        
+        return code.toString();
+    }
 
-            for (int j = 0; j < functionsArray.length; j++) {
-
-                // The code block declaration has to follow this convention:
-                // /*** [function name]Block ***/
-                //     .....
-                // /**/
-                try {
-                    // Boolean_isCloseTo and String_isCloseTo map to
-                    // Boolean_equals and String_equals.
-                    if (functionsArray[j].equals("isCloseTo")
-                            && (typesArray[i].equals("Boolean") || typesArray[i]
-                                    .equals("String"))) {
-
-                        if (!functions.contains("equals")) {
-                            //typeStreams[i].appendCodeBlock(typesArray[i]
-                            //        + "_equals");
-                            markFunctionCalled(typesArray[i] + "_equals", null);
-                        }
-                    } else {
-                        String functionName = typesArray[i] + "_"
-                                + functionsArray[j];
-
-                        if (!_unsupportedTypeFunctions.contains(functionName)
-                                && !_overloadedFunctionSet
-                                        .contains(functionName)) {
-
-                            //typeStreams[i].appendCodeBlock(typesArray[i] + "_"
-                                    //+ functionsArray[j]);
-                            markFunctionCalled(functionName, null);
-                        }
-                    }
-                } catch (IllegalActionException ex) {
-                    // We have to catch the exception if some code blocks are
-                    // not found. We have to define the function label in the
-                    // generated code because the function table makes
-                    // reference to this label.
-
-		    System.out.println("Warning, failed to find " + typesArray[i] + "_"
-				       + functionsArray[j]);
-//                     typeStreams[i].append("#define " + typesArray[i] + "_"
-//                             + functionsArray[j] + " MISSING " + _eol);
-
-                    // It is ok because this polymorphic function may not be
-                    // supported by all types.
+    private HashSet<String> _getTypeIDToUsed(HashSet<String> types) {
+        HashSet result = new HashSet();
+        result.addAll(types);
+        
+        for (String type : types) {
+            if (type.endsWith("Array")) {
+                String elementType = type.replace("Array", "");
+                if (elementType.length() > 0) {
+                    result.add(elementType);
                 }
             }
-            code.append(processCode(typeStreams[i].toString()));
         }
-
-        code.append(_overloadedFunctions.toString());
-
-        return code.toString();
+        return result;
     }
 
     /** Process the specified code for the adapter associated with the
@@ -562,9 +565,13 @@ public class JavaCodeGenerator extends GenericCodeGenerator {
      *  @exception IllegalActionException If illegal macro names are found.
      */
     public String processCode(String code) throws IllegalActionException {
-        JavaCodeGeneratorAdapter adapter = (JavaCodeGeneratorAdapter) _getAdapter(getContainer());
+        CCodeGeneratorAdapter adapter = (CCodeGeneratorAdapter) _getAdapter(getContainer());
         return adapter.processCode(code);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
 
     /**
      * @return
@@ -572,14 +579,12 @@ public class JavaCodeGenerator extends GenericCodeGenerator {
     private HashSet _getReferencedFunctions() {
         // Determine the total number of referenced polymorphic functions.
         HashSet functions = new HashSet();
-        functions.add("new");
         functions.add("delete");
         //functions.add("toString");    // for debugging.
         functions.add("convert");
         functions.add("isCloseTo");
         functions.addAll(_typeFuncUsed);
         functions.addAll(_tokenFuncUsed);
-        
         return functions;
     }
 
@@ -587,7 +592,7 @@ public class JavaCodeGenerator extends GenericCodeGenerator {
      * @param functions
      * @return
      */
-    private HashSet _getReferencedTypes(HashSet functions) {
+    private HashSet _getNewTypesUsed(HashSet functions) {
         // Determine the total number of referenced types.
         HashSet types = new HashSet();
         if (functions.contains("equals") || functions.contains("isCloseTo")) {
@@ -598,8 +603,10 @@ public class JavaCodeGenerator extends GenericCodeGenerator {
             types.add("String");
         }
 
-        if (functions.contains("isCloseTo") && _newTypesUsed.contains("Integer")
-                && !_newTypesUsed.contains("Double")) {
+        if (functions.contains("isCloseTo") 
+                //&& _newTypesUsed.contains("Int")
+                //&& !_newTypesUsed.contains("Double")
+                ) {
             // FIXME: we should not need Double for Int_isCloseTo()
             types.add("Double");
         }
@@ -674,7 +681,19 @@ public class JavaCodeGenerator extends GenericCodeGenerator {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generateWrapupEntryCode() throws IllegalActionException {
-        return _eol + _eol + "public void wrapup() {" + _eol;
+
+        // If the container is in the top level, we are generating code
+        // for the whole model.
+        if (isTopLevel()) {
+            return _eol + _eol + "void wrapup(void) {" + _eol;
+
+            // If the container is not in the top level, we are generating code
+            // for the Java and C co-simulation.
+        } else {
+            return _eol + _eol + "JNIEXPORT void JNICALL" + _eol + "Java_"
+                    + _sanitizedModelName + "_wrapup("
+                    + "JNIEnv *env, jobject obj) {" + _eol;
+        }
     }
 
     /** Generate the wrapup procedure exit point.
@@ -724,40 +743,15 @@ public class JavaCodeGenerator extends GenericCodeGenerator {
             while ((line = bufferedReader.readLine()) != null) {
                 String methodName = prefix + "_" + methodNumber++;
                 body = new StringBuffer(line + _eol);
-		int openBracketCount = 0;
-		int commentCount = 0;
-                for (int i = 0; ((i + 1) < linesPerMethod && line != null)
-			 || openBracketCount > 0
-			 || commentCount > 0; i++) {
+                for (int i = 0; (i + 1) < linesPerMethod && line != null; i++) {
                     lineNumber++;
                     line = bufferedReader.readLine();
                     if (line != null) {
-			body.append(line + _eol);
-			String trimmedLine = line.trim();
-			if (trimmedLine.startsWith("/*")) {
-			    commentCount++;
-			}
-			if (trimmedLine.endsWith("*/")) {
-			    commentCount--;
-			}
-
-			if (!trimmedLine.startsWith("//")
-			    && !trimmedLine.startsWith("/*")
-			    && !trimmedLine.startsWith("*")) {
-			    // Look for curly braces in non-commented lines
-			    // This code could be buggy . . .
-			    if (line.trim().endsWith("{")) {
-				openBracketCount++;
-			    }
-			    // Lines can both start and end with braces.
-			    if (line.trim().startsWith("}")) {
-				openBracketCount--;
-			    }
-			}
+                        body.append(line + _eol);
                     }
                 }
 
-                bodies.append("void " + methodName + "() {" + _eol
+                bodies.append("void " + methodName + "(void) {" + _eol
                         + body.toString() + "}" + _eol);
                 masterBody.append(methodName + "();" + _eol);
             }
@@ -780,25 +774,6 @@ public class JavaCodeGenerator extends GenericCodeGenerator {
         return results;
     }
 
-
-    /**
-     * Get the corresponding type in Java from the given Ptolemy type.
-     * @param ptType The given Ptolemy type.
-     * @return The Java data type.
-     */
-    public String targetType(Type ptType) {
-        // FIXME: this is duplicated code from CodeGeneratorAdapter.targetType()
-        // FIXME: we may need to add more primitive types.
-        return ptType == BaseType.INT ? "int"
-                : ptType == BaseType.STRING ? "String"
-                        : ptType == BaseType.DOUBLE ? "double"
-                                : ptType == BaseType.BOOLEAN ? "boolean"
-                                        : ptType == BaseType.LONG ? "long"
-                                                : ptType == BaseType.UNSIGNED_BYTE ? "byte"
-                                                        //: ptType == PointerToken.POINTER ? "void*"
-                                                        : "Token";
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -807,13 +782,13 @@ public class JavaCodeGenerator extends GenericCodeGenerator {
      *   include directories.
      */
     protected void _addActorIncludeDirectories() throws IllegalActionException {
-//         ActorCodeGenerator adapter = _getAdapter(getContainer());
+        ActorCodeGenerator adapter = _getAdapter(getContainer());
 
-//         Set actorIncludeDirectories = adapter.getIncludeDirectories();
-//         Iterator includeIterator = actorIncludeDirectories.iterator();
-//         while (includeIterator.hasNext()) {
-//             addInclude("-I\"" + ((String) includeIterator.next()) + "\"");
-//         }
+        Set actorIncludeDirectories = adapter.getIncludeDirectories();
+        Iterator includeIterator = actorIncludeDirectories.iterator();
+        while (includeIterator.hasNext()) {
+            addInclude("-I\"" + ((String) includeIterator.next()) + "\"");
+        }
     }
 
     /** Add libraries specified by the actors in this model.
@@ -821,20 +796,20 @@ public class JavaCodeGenerator extends GenericCodeGenerator {
      *   libraries.
      */
     protected void _addActorLibraries() throws IllegalActionException {
-//         ActorCodeGenerator adapter = _getAdapter(getContainer());
+        ActorCodeGenerator adapter = _getAdapter(getContainer());
 
-//         Set actorLibraryDirectories = adapter.getLibraryDirectories();
-//         Iterator libraryDirectoryIterator = actorLibraryDirectories.iterator();
-//         while (libraryDirectoryIterator.hasNext()) {
-//             addLibrary("-L\"" + ((String) libraryDirectoryIterator.next())
-//                     + "\"");
-//         }
+        Set actorLibraryDirectories = adapter.getLibraryDirectories();
+        Iterator libraryDirectoryIterator = actorLibraryDirectories.iterator();
+        while (libraryDirectoryIterator.hasNext()) {
+            addLibrary("-L\"" + ((String) libraryDirectoryIterator.next())
+                    + "\"");
+        }
 
-//         Set actorLibraries = adapter.getLibraries();
-//         Iterator librariesIterator = actorLibraries.iterator();
-//         while (librariesIterator.hasNext()) {
-//             addLibrary("-l\"" + ((String) librariesIterator.next()) + "\"");
-//         }
+        Set actorLibraries = adapter.getLibraries();
+        Iterator librariesIterator = actorLibraries.iterator();
+        while (librariesIterator.hasNext()) {
+            addLibrary("-l\"" + ((String) librariesIterator.next()) + "\"");
+        }
     }
 
     /** Analyze the model to find out what connections need to be type
@@ -844,35 +819,57 @@ public class JavaCodeGenerator extends GenericCodeGenerator {
      */
     protected void _analyzeTypeConversions() throws IllegalActionException {
         super._analyzeTypeConversions();
-
-        // FIXME: Refer to cg instead.
-        String cCodegenPath = "$CLASSPATH/ptolemy/codegen/java/kernel/";
-        String typeDir = cCodegenPath + "type/";
+        _overloadedFunctionSet = new LinkedHashSet<String>();
+        
+        String cCodegenPath = "$CLASSPATH/ptolemy/codegen/c/";
+        String typeDir = cCodegenPath + "kernel/type/";
         String functionDir = typeDir + "polymorphic/";
 
-        _overloadedFunctions = new CodeStream(functionDir + "add.j", this);
-        _overloadedFunctions.parse(functionDir + "equals.j");
-        _overloadedFunctions.parse(functionDir + "multiply.j");
-        _overloadedFunctions.parse(functionDir + "divide.j");
-        _overloadedFunctions.parse(functionDir + "subtract.j");
-        _overloadedFunctions.parse(functionDir + "toString.j");
-        _overloadedFunctions.parse(functionDir + "convert.j");
-        _overloadedFunctions.parse(functionDir + "print.j");
-        _overloadedFunctions.parse(functionDir + "negate.j");
-        _overloadedFunctions.parse(typeDir + "Array.j");
-        _overloadedFunctions.parse(typeDir + "Boolean.j");
-        _overloadedFunctions.parse(typeDir + "Double.j");
-        _overloadedFunctions.parse(typeDir + "Integer.j");
-        _overloadedFunctions.parse(typeDir + "Matrix.j");
-        _overloadedFunctions.parse(typeDir + "String.j");
+        _overloadedFunctions = new CodeStream(functionDir + "add.c", this);
+        _overloadedFunctions.parse(functionDir + "clone.c");
+        _overloadedFunctions.parse(functionDir + "convert.c");
+        _overloadedFunctions.parse(functionDir + "delete.c");
+        _overloadedFunctions.parse(functionDir + "divide.c");
+        _overloadedFunctions.parse(functionDir + "equals.c");
+        _overloadedFunctions.parse(functionDir + "multiply.c");
+        _overloadedFunctions.parse(functionDir + "negate.c");
+        _overloadedFunctions.parse(functionDir + "print.c");
+        _overloadedFunctions.parse(functionDir + "subtract.c");
+        _overloadedFunctions.parse(functionDir + "toString.c");
+        _overloadedFunctions.parse(functionDir + "zero.c");
 
-	//        String directorFunctionDir = cCodegenPath + "parameterized/directorFunctions/";
-	//        _overloadedFunctions.parse(directorFunctionDir + "PNDirector.java");
-	//        _overloadedFunctions.parse(directorFunctionDir + "OpenRtosPNDirector.java");
-	//        _overloadedFunctions.parse(directorFunctionDir + "MpiPNDirector.c");
+        _overloadedFunctions.parse(typeDir + "Array.c");
+        _overloadedFunctions.parse(typeDir + "Boolean.c");
+        _overloadedFunctions.parse(typeDir + "BooleanArray.c");
+        _overloadedFunctions.parse(typeDir + "Complex.c");
+        _overloadedFunctions.parse(typeDir + "Double.c");
+        _overloadedFunctions.parse(typeDir + "DoubleArray.c");
+        _overloadedFunctions.parse(typeDir + "Int.c");
+        _overloadedFunctions.parse(typeDir + "IntArray.c");
+        _overloadedFunctions.parse(typeDir + "Long.c");
+        _overloadedFunctions.parse(typeDir + "Matrix.c");
+        _overloadedFunctions.parse(typeDir + "Pointer.c");
+        _overloadedFunctions.parse(typeDir + "String.c");
+        _overloadedFunctions.parse(typeDir + "StringArray.c");
+        _overloadedFunctions.parse(typeDir + "UnsignedByte.c");
 
-        _overloadedFunctionSet = new HashSet<String>();
+        // Parse other function files. 
+        String directorFunctionDir = cCodegenPath + "kernel/parameterized/directorFunctions/";
+        _overloadedFunctions.parse(directorFunctionDir + "PNDirector.c");
 
+        
+        // ------------ Parse target-specific functions. --------------------        
+        if (target.getExpression().equals("default")) {
+            return;
+        }
+
+        try {
+            String targetDir = cCodegenPath + "targets/" + target.getExpression() + "/";
+            directorFunctionDir = targetDir + "kernel/parameterized/directorFunctions/";
+            _overloadedFunctions.parse(directorFunctionDir + "PNDirector.c", true);
+        } catch (IllegalActionException ex) {
+            // Some API's may not have these files. 
+        }
     }
 
     /** Execute the compile and run commands in the
@@ -886,14 +883,18 @@ public class JavaCodeGenerator extends GenericCodeGenerator {
 
         List commands = new LinkedList();
         if (((BooleanToken) compile.getToken()).booleanValue()) {
-            //TODO RODIERS
             commands.add("make -f " + _sanitizedModelName + ".mk "
                     + compileTarget.stringValue());
         }
 
         if (isTopLevel()) {
             if (((BooleanToken) run.getToken()).booleanValue()) {
-		commands.add("make -f " + _sanitizedModelName + ".mk run");
+                String command = codeDirectory.stringValue()
+                        + ((!codeDirectory.stringValue().endsWith("/") && !codeDirectory
+                                .stringValue().endsWith("\\")) ? "/" : "")
+                        + _sanitizedModelName;
+
+                commands.add("\"" + command.replace('\\', '/') + "\"");
             }
         }
 
@@ -931,60 +932,6 @@ public class JavaCodeGenerator extends GenericCodeGenerator {
     protected StringBuffer _finalPassOverCode(StringBuffer code)
             throws IllegalActionException {
 
-	// Simple cpp like preprocessor
-	// #define foo
-	// #ifdef foo
-	// #endif
-	// Note that foo does not have a value.
-	// Nested ifdefs are not supported.
-
-        StringTokenizer tokenizer = new StringTokenizer(
-                code.toString(), _eol + "\n");
-
-	code = new StringBuffer();
-
-	boolean okToPrint = true;
-	HashSet defines = new HashSet<String>();
-        while (tokenizer.hasMoreTokens()) {
-            String line = tokenizer.nextToken();
-	    if (line.indexOf("#") == -1) {
-		if (!okToPrint) {
-		    code.append("//" + line + _eol);
-		} else {
-		    // Use // style comments in case there is a /* .. */ comment.
-		    code.append(line + _eol);		
-		}
-	    } else {
-		line = line.trim();
-		int defineIndex = line.indexOf("#define");
-		if (defineIndex > -1) {
-		    String define = line.substring(defineIndex + 8);
-		    if (define.indexOf(" ") != -1) {
-			define = define.substring(0, define.indexOf(" "));
-		    }
-		    defines.add(define);
-		}
-		int ifIndex = line.indexOf("#ifdef");
-		if (ifIndex > -1) {
-		    String define = line.substring(ifIndex + 7);
-		    if (define.indexOf(" ") != -1) {
-			define = define.substring(0, define.indexOf(" "));
-		    }
-		    if (defines.contains(define)) {
-			okToPrint = true;
-		    } else {
-			okToPrint = false;
-		    }
-		} else {
-		    if (line.startsWith("#endif")) {
-			okToPrint = true;
-		    }
-		}
-		code.append("// " + line + _eol);
-	    }
-        }
-
-	// Run the pass over the code after pseudo preprocessing
         code = super._finalPassOverCode(code);
 
         if (((BooleanToken) sourceLineBinding.getToken()).booleanValue()) {
@@ -992,8 +939,10 @@ public class JavaCodeGenerator extends GenericCodeGenerator {
             String filename = getOutputFilename();
             //filename = new java.io.File(filename).getAbsolutePath().replace('\\', '/');
 
-            tokenizer = new StringTokenizer(code.toString(),
-                    _eol);
+            // Make sure all #line macros are at the start of a line.
+            String codeString = code.toString().replaceAll("#line", _eol + "#line");
+            
+            StringTokenizer tokenizer = new StringTokenizer(codeString, _eol);
 
             code = new StringBuffer();
 
@@ -1002,7 +951,7 @@ public class JavaCodeGenerator extends GenericCodeGenerator {
                 lastLine = tokenizer.nextToken();
             }
 
-            for (int i = 2; tokenizer.hasMoreTokens();) {
+            for (int i = 2; tokenizer.hasMoreTokens();) {                
                 String line = tokenizer.nextToken();
                 if (lastLine.trim().length() == 0) {
                     lastLine = line;
@@ -1047,30 +996,34 @@ public class JavaCodeGenerator extends GenericCodeGenerator {
         ActorCodeGenerator compositeActorAdapter = _getAdapter(getContainer());
         Set includingFiles = compositeActorAdapter.getHeaderFiles();
 
-        //includingFiles.add("<stdlib.h>"); // Sun requires stdlib.h for malloc
+        includingFiles.add("<stdlib.h>"); // Sun requires stdlib.h for malloc
 
-        //if (isTopLevel()
-        //        && ((BooleanToken) measureTime.getToken()).booleanValue()) {
-        //    includingFiles.add("<sys/time.h>");
-        //}
+        if (isTopLevel()
+                && ((BooleanToken) measureTime.getToken()).booleanValue()) {
+            includingFiles.add("<sys/time.h>");
+        }
 
-        //if (!isTopLevel()) {
-        //    includingFiles.add("\"" + _sanitizedModelName + ".h\"");
-        //
-        //    includingFiles.addAll(((JavaCodeGeneratorAdapter)compositeActorAdapter).getJVMHeaderFiles());
-        //}
+        if (!isTopLevel()) {
+            includingFiles.add("\"" + _sanitizedModelName + ".h\"");
 
-        //includingFiles.add("<stdarg.h>");
-        //includingFiles.add("<stdio.h>");
-        //includingFiles.add("<string.h>");
+            includingFiles.addAll(((CCodeGeneratorAdapter)compositeActorAdapter).getJVMHeaderFiles());
+        }
+
+        includingFiles.add("<stdarg.h>");
+        includingFiles.add("<stdio.h>");
+        includingFiles.add("<string.h>");
 
         for (String file : (Set<String>) includingFiles) {
-	    if (!file.equals("<math.h>")
-		&& !file.equals("<stdio.h>")) {
-		code.append("import " + file + _eol);
-	    }
+            // Not all embedded platforms have all .h files.
+            // For example, the AVR does not have time.h
+            // FIXME: Surely we can control whether the files are
+            // included more than once rather than relying on #ifndef!
+            code.append("#ifndef PT_NO_"
+                    + file.substring(1, file.length() - 3).replace('/', '_')
+                            .toUpperCase() + "_H" + _eol + "#include " + file
+                    + _eol + "#endif" + _eol);
         }
-	code.append("public class " + _sanitizedModelName + " {" + _eol);
+
         return code.toString();
     }
 
@@ -1081,15 +1034,10 @@ public class JavaCodeGenerator extends GenericCodeGenerator {
     protected String _printExecutionTime() {
         StringBuffer endCode = new StringBuffer();
         endCode.append(super._printExecutionTime());
-
-        endCode.append("Runtime runtime = Runtime.getRuntime();\n"
-		       + "long totalMemory = runtime.totalMemory() / 1024;\n"
-		       + "long freeMemory = runtime.freeMemory() / 1024;\n"
-		       + "System.out.println(System.currentTimeMillis() - startTime + \""
-		       + " ms. Memory: \" + totalMemory + \"K Free: \""
-		       + " + freeMemory + \"K (\" + "
-		       + "Math.round((((double) freeMemory) / ((double) totalMemory)) * 100.0)"
-		       + " + \"%\");\n");
+        endCode
+                .append("clock_gettime(CLOCK_REALTIME, &end);\n"
+                        + "dT = end.tv_sec - start.tv_sec + (end.tv_nsec - start.tv_nsec) * 1.0e-9;\n"
+                        + "printf(\"execution time: %g seconds\\n\", dT);\n\n");
         return endCode.toString();
     }
 
@@ -1099,7 +1047,9 @@ public class JavaCodeGenerator extends GenericCodeGenerator {
      */
     protected String _recordStartTime() {
         StringBuffer startCode = new StringBuffer();
-        startCode.append("long startTime = System.currentTimeMillis();");
+        startCode.append(super._recordStartTime());
+        startCode.append("struct timespec start, end;\n" + "double dT = 0.0;\n"
+                + "clock_gettime(CLOCK_REALTIME, &start);\n\n");
         return startCode.toString();
     }
 
@@ -1194,12 +1144,10 @@ public class JavaCodeGenerator extends GenericCodeGenerator {
             // the value of the generatorPackage.
             substituteMap = CodeGeneratorUtilities.newMap(this);
             substituteMap.put("@modelName@", _sanitizedModelName);
-            substituteMap.put("@CLASSPATHSEPARATOR@",
-			      StringUtilities.getProperty("path.separator"));
             substituteMap
                     .put("@PTCGIncludes@", _concatenateElements(_includes));
             substituteMap.put("@PTCGLibraries@",
-                    _concatenateClasspath(_libraries));
+                    _concatenateElements(_libraries));
 
             // Define substitutions to be used in the makefile
             substituteMap.put("@PTJNI_NO_CYGWIN@", "");
@@ -1208,9 +1156,9 @@ public class JavaCodeGenerator extends GenericCodeGenerator {
             substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "");
             substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "");
             if (((BooleanToken) generateCpp.getToken()).booleanValue()) {
-                substituteMap.put("@PTJavaCompiler@", "g++");
+                substituteMap.put("@PTCGCompiler@", "g++");
             } else {
-                substituteMap.put("@PTJavaCompiler@", "javac");
+                substituteMap.put("@PTCGCompiler@", "gcc");
             }
 
             String osName = StringUtilities.getProperty("os.name");
@@ -1218,6 +1166,9 @@ public class JavaCodeGenerator extends GenericCodeGenerator {
 		// Keep these alphabetical
                 if (osName.startsWith("Linux")) {
                     substituteMap.put("@PTJNI_GCC_SHARED_FLAG@", "-shared");
+		    // Need -fPIC for jni actors, see 
+                    // codegen/c/actor/lib/jni/test/auto/Scale.xml
+                    substituteMap.put("@PTJNI_SHAREDLIBRARY_CFLAG@", "-fPIC");
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "lib");
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "so");
                 } else if (osName.startsWith("Mac OS X")) {
@@ -1240,7 +1191,7 @@ public class JavaCodeGenerator extends GenericCodeGenerator {
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@", 
 				      "# Unknown java property os.name \"" + osName 
 				      + "\" please edit ptolemy/codegen/c/"
-				      + "kernel/JavaCodeGenerator.java and "
+				      + "kernel/CCodeGenerator.java and "
 				      + "ptolemy/actor/lib/jni/"
 				      + "CompiledCompositeActor.java");
 		}
@@ -1266,16 +1217,15 @@ public class JavaCodeGenerator extends GenericCodeGenerator {
         String generatorDirectory = generatorPackage.stringValue().replace('.',
                 '/');
         String targetValue = target.getExpression();
-        
         // FIXME rodiers: this path is not correct anymore
         templateList.add("ptolemy/cg/kernel/" + generatorDirectory + "/targets/" + targetValue
                 + "/makefile.in");
 
-        // 3. Look for the generic makefile.in
+        // 3. Look for the generic C makefile.in
         // Note this code is repeated in the catch below.
-        
-        // FIXME rodiers: this should happen for many functions (hence has to be abstracted)
-        templateList.add("ptolemy/cg/kernel/" + generatorDirectory + "/makefile.in");
+        // FIXME rodiers: this path is not correct anymore
+        templateList.add("ptolemy/cg/kernel/" + generatorDirectory
+                + (isTopLevel() ? "/makefile.in" : "/jnimakefile.in"));
 
         // If necessary, add a trailing / after codeDirectory.
         String makefileOutputName = codeDirectory.stringValue()
@@ -1332,27 +1282,6 @@ public class JavaCodeGenerator extends GenericCodeGenerator {
     ////                         private methods                   ////
 
     /** Given a Collection of Strings, return a string where each element of the
-     *  Set is separated by $
-     *  @param set The Set of Strings.
-     *  @return A String that contains each element of the Set separated by
-     *  a space.
-     */
-    private static String _concatenateClasspath(Collection collection) {
-        StringBuffer buffer = new StringBuffer();
-        Iterator iterator = collection.iterator();
-        while (iterator.hasNext()) {
-            if (buffer.length() > 0) {
-                buffer.append("$(CLASSPATHSEPARATOR)");
-            }
-            buffer.append((String) iterator.next());
-        }
-	if (buffer.length() > 0) {
-	    buffer.append("$(CLASSPATHSEPARATOR)");
-	}
-        return buffer.toString();
-    }
-
-    /** Given a Collection of Strings, return a string where each element of the
      *  Set is separated by a space.
      *  @param set The Set of Strings.
      *  @return A String that contains each element of the Set separated by
@@ -1380,29 +1309,30 @@ public class JavaCodeGenerator extends GenericCodeGenerator {
      *  @exception IllegalActionException If there is a problem adding
      *  a function to the set of overloaded functions.
      */
-    public void markFunctionCalled(String name, JavaCodeGeneratorAdapter adapter)
+    public void markFunctionCalled(String name, CCodeGeneratorAdapter adapter)
             throws IllegalActionException {
 
         try {
             String functionCode = _overloadedFunctions.getCodeBlock(name);
 
             if (!_overloadedFunctionSet.contains(name)) {
-                _overloadedFunctionSet.add(name);
 
-                String code = (adapter == null) ? processCode(functionCode) :
+                String code = adapter == null ? 
+                        processCode(functionCode) :
                         adapter.processCode(functionCode);
 
                 _overloadedFunctions.append(code);
 
-            }            
-            if (name.startsWith("Array_")) {
-                // Array_xxx might need to have xxx added.
-                // See c/actor/lib/test/auto/MultiplyDivide5.xml
-
-                // FIXME: this will add any function, which means that
-                // if the user has Array_foo, foo is added.  Is this right?
-                _tokenFuncUsed.add(name.substring(6));
+                _overloadedFunctionSet.add(name);
             }
+//            if (name.startsWith("Array_")) {
+//                // Array_xxx might need to have xxx added.
+//                // See c/actor/lib/test/auto/MultiplyDivide5.xml
+//
+//                // FIXME: this will add any function, which means that
+//                // if the user has Array_foo, foo is added.  Is this right?
+//                _tokenFuncUsed.add(name.substring(6));
+//            }
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
                     "Failed to mark function called for \"" + name + "\" in \""
@@ -1413,7 +1343,8 @@ public class JavaCodeGenerator extends GenericCodeGenerator {
 
     private CodeStream _overloadedFunctions;
 
-    private Set<String> _overloadedFunctionSet;
+	/** An ordered set of function code */
+    LinkedHashSet<String> _overloadedFunctionSet;
 
     /** Set of type/function combinations that are not supported.
      *  We use one method so as to reduce code size.
@@ -1424,14 +1355,6 @@ public class JavaCodeGenerator extends GenericCodeGenerator {
      *  We use one method so as to reduce code size.
      */
     private static Set _scalarDeleteTypes;
-
-    /** A list of the primitive types supported by the code generator.
-     */
-    static {
-        _primitiveTypes = Arrays.asList(new String[] {
-                "Integer", "Double", "String", "Long", "Boolean", "UnsignedByte",
-        "Pointer" });
-    }
 
     static {
         _unsupportedTypeFunctions = new HashSet();
@@ -1448,7 +1371,7 @@ public class JavaCodeGenerator extends GenericCodeGenerator {
         _scalarDeleteTypes = new HashSet();
         _scalarDeleteTypes.add("Boolean");
         _scalarDeleteTypes.add("Double");
-        _scalarDeleteTypes.add("Integer");
+        _scalarDeleteTypes.add("Int");
         _scalarDeleteTypes.add("Long");
     }
 }
