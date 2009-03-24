@@ -7,7 +7,7 @@ export MAVEN_OPTS="-Xms512m -Xmx512m -XX:PermSize=48m"
 See $PTII/doc/coding/maven.htm
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <version>7.1.devel</version>
+  <version>7.2.devel</version>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.ptolemy</groupId>
   <artifactId>ptII</artifactId>
@@ -559,6 +559,7 @@ See $PTII/doc/coding/maven.htm
 	  <excludes>
 	    <!-- grep excluding .classpath.in | awk -F "|" '{for(i=2;i<NF;i++) {print "           <exclude>" $i "</exclude>"}}' | sed 's@/</exclude>@/**</exclude>@' -->
            <exclude>**/adm/**</exclude>
+           <exclude>build/**</exclude>
            <exclude>**/codeDoc/**</exclude>
            <exclude>config/**</exclude>
            <exclude>diva/util/java2d/svg/**</exclude>
