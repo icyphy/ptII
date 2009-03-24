@@ -31,10 +31,11 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.ptides.kernel;
 
+import java.util.Stack;
+
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
 import ptolemy.actor.util.Time;
-import ptolemy.actor.util.TimedEvent;
 import ptolemy.data.BooleanToken;
 import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.domains.de.kernel.DEEventQueue;
@@ -49,6 +50,7 @@ import ptolemy.kernel.util.NamedObj;
  *  enclosing director. The enclosing director's time
  *  represents physical time, whereas this time represents model
  *  time in the Ptides model.
+ *  Assume the incoming event always has higher priority, so preemption always occurs.
  *
  *  @author Patricia Derler, Edward A. Lee, Ben Lickly, Isaac Liu, Slobodan Matic, Jia Zou
  *  @version $Id$
@@ -66,14 +68,14 @@ public class PtidesBasicDirector extends DEDirector {
      *  @throws NameDuplicationException If the superclass throws it.
      */
     public PtidesBasicDirector(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+    throws IllegalActionException, NameDuplicationException {
         super(container, name);
         // TODO Auto-generated constructor stub
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
-    
+
     /** Initialize the actors and request a refiring at the current
      *  time of the executive director. This overrides the base class to
      *  throw an exception if there is no executive director.
@@ -82,18 +84,18 @@ public class PtidesBasicDirector extends DEDirector {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _currentlyExecuting = null;
+        _currentlyExecutingStack = new Stack<DoubleTimedEvent>();
         _physicalTimeExecutionStarted = null;
-        
+
         NamedObj container = getContainer();
         if (!(container instanceof Actor)) {
             throw new IllegalActionException(this, 
-                    "No container, or container is not an Actor.");
+            "No container, or container is not an Actor.");
         }
         Director executiveDirector = ((Actor)container).getExecutiveDirector();
         if (executiveDirector == null) {
             throw new IllegalActionException(this, 
-                    "The PtidesBasicDirector can only be used within an enclosing director.");
+            "The PtidesBasicDirector can only be used within an enclosing director.");
         }
         executiveDirector.fireAtCurrentTime((Actor)container);
     }
@@ -111,16 +113,16 @@ public class PtidesBasicDirector extends DEDirector {
     public boolean postfire() throws IllegalActionException {
         // Do not call super.postfire() because that requests a
         // refiring at the next event time on the event queue.
-        
+
         boolean stop = ((BooleanToken) stopWhenQueueIsEmpty.getToken())
-                .booleanValue();
+        .booleanValue();
 
         Boolean result = !_stopRequested;
         if (getModelTime().compareTo(getModelStopTime()) >= 0) {
             result = false;
         }
         DEEventQueue eventQueue = getEventQueue();
-        if (eventQueue.isEmpty() && stop && _currentlyExecuting == null) {
+        if (eventQueue.isEmpty() && stop && _currentlyExecutingStack.isEmpty()) {
             result = false;
         }
         if (result) {
@@ -143,19 +145,34 @@ public class PtidesBasicDirector extends DEDirector {
         if (_debugging) {
             _debug("Prefiring: Current time is: " + getModelTime());
         }
-        
-        if (_currentlyExecuting != null) {
-            // We are currently executing an actor
-            Time remainingExecutionTime = _currentlyExecuting.timeStamp;
-            Time finishTime = _physicalTimeExecutionStarted.add(remainingExecutionTime);
-            if (!finishTime.equals(_getPhysicalTime())) {
-                return false;
-            }
-            
 
-        }
-        
         DEEventQueue eventQueue = getEventQueue();
+
+        // If the stack is not empty, then we want to decide whether we should
+        // execute another event in the queue, or keep executing the one on the stack.
+        executeFromEventQueue = _executeEventFromEventQueue();
+        
+        if (!executeFromEventQueue && !_currentlyExecutingStack.isEmpty()) {
+            // We will fire an actor from the stack
+            Time remainingExecutionTime = _currentlyExecutingStack.peek().timeStamp;
+            if (_physicalTimeExecutionStarted != null){
+                Time finishTime = _physicalTimeExecutionStarted.add(remainingExecutionTime);
+                if (!finishTime.equals(_getPhysicalTime())) {
+                    return false;
+                } else {
+                    setModelTime(_currentlyExecutingStack.peek().modelTime);
+                    return true;
+                }
+            } else {
+                if (remainingExecutionTime.compareTo(new Time(this, 0)) == 0) {
+                    _physicalTimeExecutionStarted = _getPhysicalTime();
+                    return false;
+                } else {
+                    setModelTime(_currentlyExecutingStack.peek().modelTime);
+                    return true;
+                }
+            }
+        }
         if (eventQueue.isEmpty()) {
             if (_debugging) {
                 _debug("Event queue is empty. prefire() returns false.");
@@ -177,7 +194,7 @@ public class PtidesBasicDirector extends DEDirector {
     protected boolean _isEmbedded() {
         return false;
     }
-    
+
     /** Dequeue the events that have the smallest tag from the event queue.
      *  Return their destination actor. 
      *  This overrides the DEDirector's implementation in order to not
@@ -190,30 +207,34 @@ public class PtidesBasicDirector extends DEDirector {
      *  director does not respect the fireAt call.
      */
     protected Actor _getNextActorToFire() throws IllegalActionException {
-        if (_currentlyExecuting != null) {
+        Time physicalTime = _getPhysicalTime();
+        Actor container = (Actor) getContainer();
+        Director director = container.getExecutiveDirector();
+
+        if (!executeFromEventQueue && !_currentlyExecutingStack.isEmpty()) {
             // FIXME: Here, we want to implement a Ptides preemption policy.
             // For now, we do not allow preemption, and continue executing
             // the currently executing actor until it finishes.
-            Actor result = (Actor) _currentlyExecuting.contents;
-            
-            _currentlyExecuting = null;
+
+            Actor result = (Actor) _currentlyExecutingStack.pop().contents;
             _physicalTimeExecutionStarted = null;
             return result;
-        }
-            
+        } // else execute the event in event queue. 
+        
+        Time modelTime = getEventQueue().get().timeStamp();
+
         Actor actorToFire = super._getNextActorToFire();
-        
+
         double executionTime = PtidesActorProperties.getExecutionTime(actorToFire);
-        
+
         if (executionTime == 0.0) {
             return actorToFire;
         } else {
-            Actor container = (Actor) getContainer();
-            Director director = container.getExecutiveDirector();
-            Time physicalTime = _getPhysicalTime();
+            container = (Actor) getContainer();
+            director = container.getExecutiveDirector();
             Time requestedTime = physicalTime.add(executionTime);
             Time result = director.fireAt(container, requestedTime);
-            
+
             if (!result.equals(requestedTime)) {
                 throw new IllegalActionException(actorToFire, director,
                         "Ptides director requires refiring at time "
@@ -221,15 +242,24 @@ public class PtidesBasicDirector extends DEDirector {
                         + ", but the enclosing director replied that it will refire at time "
                         + result);
             }
-            
-            TimedEvent event = new TimedEvent(new Time(this, executionTime), actorToFire);
-            _currentlyExecuting = event;
+
+            DoubleTimedEvent event = new DoubleTimedEvent(new Time(this, executionTime), actorToFire, modelTime);
+            // update information on the preempted event.
+            if (!_currentlyExecutingStack.isEmpty()) { 
+                if (_physicalTimeExecutionStarted != null) {
+                    DoubleTimedEvent timedEvent = _currentlyExecutingStack.peek();
+                    timedEvent.timeStamp = timedEvent.timeStamp.subtract
+                        (physicalTime.subtract(_physicalTimeExecutionStarted));
+                    assert(timedEvent.timeStamp.compareTo(new Time(this, 0)) >= 1);
+                }
+            }
+            _currentlyExecutingStack.push(event);
             _physicalTimeExecutionStarted = physicalTime;
-            
+
             return null;
         }
     }
-    
+
     /** Return the model time of the enclosing director, which is our model
      *  of physical time.
      *  @return Physical time.
@@ -239,19 +269,47 @@ public class PtidesBasicDirector extends DEDirector {
         Director director = container.getExecutiveDirector();
         return director.getModelTime();
     }
-    
-    
+
+    /** Decides whether we want to execute an event from the event queue.
+     *  In this implementation, we want to execute the event in the queue as long
+     *  as we could, unless the event queue is empty, or if the event in the queue is 
+     *  destined for an actor that is already on the stack.
+     *  @return true if we want to execute an event from the event queue, assuming
+     *  this event is the event of smallest timestamp in the queue.
+     *  FIXME: Different implementation can overwrite this method and choose
+     *  to execute an event from the event queue or from the stack.
+     */
+    private boolean _executeEventFromEventQueue() {
+        if (getEventQueue().isEmpty()) {
+            return false;
+        }
+        Actor actor = getEventQueue().get().actor();
+        for (DoubleTimedEvent event : _currentlyExecutingStack) {
+            if (event.contents == actor) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                     private variables                     ////
-    
-    /** The currently executing actor and its remaining execution time, 
-     *  or null if there is none.
+
+
+    /** The list of currently executing actors and their remaining execution time
      */
-    private TimedEvent _currentlyExecuting;
-    
+    private Stack<DoubleTimedEvent> _currentlyExecutingStack;
+
+
     /** The physical time at which the currently executing actor, if any,
      *  last resumed execution.
      */
     private Time _physicalTimeExecutionStarted;
-    
+
+    /** Boolean indicate whether we should execute an event from the event queue
+     *  or execute an event from the stack.
+     */
+    private boolean executeFromEventQueue;
+
+
 }
