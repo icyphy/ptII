@@ -137,7 +137,7 @@ public class TypedCompositeActor extends CCodeGeneratorAdapter {
 
                 PortParameter portParameter = ((ParameterPort) inputPort)
                         .getParameter();
-                tempCode.append(_codeGenerator
+                tempCode.append(getCodeGenerator()
                         .generateVariableName(portParameter));
                 // FIXME: The = sign is language specific.
                 tempCode.append(" = ");
@@ -146,7 +146,7 @@ public class TypedCompositeActor extends CCodeGeneratorAdapter {
             }
         }
         if (tempCode.length() > 0) {
-            code.append(_codeGenerator.comment("Update "
+            code.append(getCodeGenerator().comment("Update "
                     + getComponent().getName() + "'s port parameters"));
             code.append(tempCode);
         }
@@ -185,12 +185,12 @@ public class TypedCompositeActor extends CCodeGeneratorAdapter {
 
 //    private void generateTransferInputsCode(IOPort inputPort, StringBuffer code) throws IllegalActionException {
 //        int rate = DFUtilities.getTokenConsumptionRate(inputPort);
-//        boolean targetCpp = ((BooleanToken) _codeGenerator.generateCpp
+//        boolean targetCpp = ((BooleanToken) getCodeGenerator().generateCpp
 //                .getToken()).booleanValue();
 //
 //        CompositeActor actor = (CompositeActor) getComponent();
 //        if (actor instanceof CompiledCompositeActor
-//                && ((BooleanToken) _codeGenerator.generateJNI.getToken())
+//                && ((BooleanToken) getCodeGenerator().generateJNI.getToken())
 //                        .booleanValue()) {
 //
 //            // FindBugs wants this instanceof check.
@@ -333,7 +333,7 @@ public class TypedCompositeActor extends CCodeGeneratorAdapter {
         Director directorAdapter = (Director) _getAdapter(director);
         
         code.append(directorAdapter.generateFireFunctionCode());
-        if (!(compositeActor instanceof ptolemy.actor.lib.jni.CompiledCompositeActor && ((BooleanToken) _codeGenerator.generateEmbeddedCode
+        if (!(compositeActor instanceof ptolemy.actor.lib.jni.CompiledCompositeActor && ((BooleanToken) getCodeGenerator().generateEmbeddedCode
                 .getToken()).booleanValue())) {
             code.append(super.generateFireFunctionCode());
         }
@@ -352,7 +352,7 @@ public class TypedCompositeActor extends CCodeGeneratorAdapter {
      */
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer initializeCode = new StringBuffer();
-        //initializeCode.append(_codeGenerator.comment(1,
+        //initializeCode.append(getCodeGenerator().comment(1,
         //        "Initialize composite "
         //        + getComponent().getName()));
 
@@ -367,7 +367,7 @@ public class TypedCompositeActor extends CCodeGeneratorAdapter {
             String code = actorAdapter.resetInputPortsOffset();
             if (code.length() > 0) {
                 initializeCode.append(_eol
-                        + _codeGenerator.comment(1, actor.getName()
+                        + getCodeGenerator().comment(1, actor.getName()
                                 + "'s input offset initialization"));
                 initializeCode.append(code);
             }
@@ -377,7 +377,7 @@ public class TypedCompositeActor extends CCodeGeneratorAdapter {
         String code = resetOutputPortsOffset();
         if (code.length() > 0) {
             initializeCode.append(_eol
-                    + _codeGenerator.comment(
+                    + getCodeGenerator().comment(
                             getComponent().getName()
                                     + "'s output offset initialization"));
             initializeCode.append(code);
@@ -475,7 +475,7 @@ public class TypedCompositeActor extends CCodeGeneratorAdapter {
     public String generateVariableInitialization()
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        // code.append(_eol + _codeGenerator.comment(1, "Composite actor "
+        // code.append(_eol + getCodeGenerator().comment(1, "Composite actor "
         //                + getComponent().getName()
         //                + "'s variable initialization."));
 

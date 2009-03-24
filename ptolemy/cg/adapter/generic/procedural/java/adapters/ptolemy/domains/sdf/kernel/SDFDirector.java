@@ -163,7 +163,7 @@ public class SDFDirector extends StaticSchedulingDirector {
      */
     public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
             throws IllegalActionException {
-        code.append(CodeStream.indent(_codeGenerator.comment("SDFDirector: "
+        code.append(CodeStream.indent(getCodeGenerator().comment("SDFDirector: "
                 + "Transfer tokens to the inside.")));
         int rate = DFUtilities.getTokenConsumptionRate(inputPort);
 
@@ -172,7 +172,7 @@ public class SDFDirector extends StaticSchedulingDirector {
         TypedCompositeActor compositeActorAdapter = (TypedCompositeActor) _getAdapter(container);
 
         if (container instanceof CompiledCompositeActor
-                && ((BooleanToken) _codeGenerator.generateEmbeddedCode.getToken())
+                && ((BooleanToken) getCodeGenerator().generateEmbeddedCode.getToken())
                         .booleanValue()) {
 
             // FindBugs wants this instanceof check.
@@ -263,7 +263,7 @@ public class SDFDirector extends StaticSchedulingDirector {
      */
     public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
             throws IllegalActionException {
-        code.append(CodeStream.indent(_codeGenerator.comment("SDFDirector: "
+        code.append(CodeStream.indent(getCodeGenerator().comment("SDFDirector: "
                 + "Transfer tokens to the outside.")));
 
         int rate = DFUtilities.getTokenProductionRate(outputPort);
@@ -273,7 +273,7 @@ public class SDFDirector extends StaticSchedulingDirector {
         TypedCompositeActor compositeActorAdapter = (TypedCompositeActor) _getAdapter(container);
 
         if (container instanceof CompiledCompositeActor
-                && ((BooleanToken) _codeGenerator.generateEmbeddedCode.getToken())
+                && ((BooleanToken) getCodeGenerator().generateEmbeddedCode.getToken())
                         .booleanValue()) {
 
             if (_portNumber == 0) {
@@ -492,10 +492,10 @@ public class SDFDirector extends StaticSchedulingDirector {
         CompositeActor container = (CompositeActor) getComponent()
                 .getContainer();
 
-        boolean inline = ((BooleanToken) _codeGenerator.inline.getToken())
+        boolean inline = ((BooleanToken) getCodeGenerator().inline.getToken())
                 .booleanValue();
 
-        boolean padBuffers = ((BooleanToken) _codeGenerator.padBuffers
+        boolean padBuffers = ((BooleanToken) getCodeGenerator().padBuffers
                 .getToken()).booleanValue();
 
         StringBuffer tempCode = new StringBuffer();
@@ -556,7 +556,7 @@ public class SDFDirector extends StaticSchedulingDirector {
         }
         if (tempCode.length() > 0) {
             code.append("\n"
-                    + _codeGenerator.comment(container.getName()
+                    + getCodeGenerator().comment(container.getName()
                             + "'s offset variables"));
             code.append(tempCode);
         }
@@ -632,7 +632,7 @@ public class SDFDirector extends StaticSchedulingDirector {
             }
             if (tempCode2.length() > 0) {
                 code.append("\n"
-                        + _codeGenerator.comment(actor.getName()
+                        + getCodeGenerator().comment(actor.getName()
                                 + "'s offset variables"));
                 code.append(tempCode2);
             }
@@ -664,7 +664,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 
         CodeGeneratorAdapter adapter = (CodeGeneratorAdapter) _getAdapter(port
                 .getContainer());
-        boolean padBuffers = ((BooleanToken) _codeGenerator.padBuffers
+        boolean padBuffers = ((BooleanToken) getCodeGenerator().padBuffers
                 .getToken()).booleanValue();
 
         int bufferSize = adapter.getBufferSize(port, channelNumber);

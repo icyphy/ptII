@@ -124,7 +124,7 @@ public class TypedCompositeActor extends JavaCodeGeneratorAdapter {
      */
     protected String _generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(_codeGenerator.comment(2,
+        code.append(getCodeGenerator().comment(2,
                         "Fire Composite "
                         + getComponent().getName()));
 
@@ -144,7 +144,7 @@ public class TypedCompositeActor extends JavaCodeGeneratorAdapter {
 
                 PortParameter portParameter = ((ParameterPort) inputPort)
                         .getParameter();
-                tempCode.append(CodeStream.indent(_codeGenerator
+                tempCode.append(CodeStream.indent(getCodeGenerator()
                         .generateVariableName(portParameter)));
                 // FIXME: The = sign is language specific.
                 tempCode.append(" = ");
@@ -153,7 +153,7 @@ public class TypedCompositeActor extends JavaCodeGeneratorAdapter {
             }
         }
         if (tempCode.length() > 0) {
-            code.append(CodeStream.indent(_codeGenerator.comment("Update "
+            code.append(CodeStream.indent(getCodeGenerator().comment("Update "
                     + getComponent().getName() + "'s port parameters")));
             code.append(tempCode);
         }
@@ -198,7 +198,7 @@ public class TypedCompositeActor extends JavaCodeGeneratorAdapter {
         ptolemy.actor.Director director = compositeActor.getDirector();
         Director directorAdapter = (Director) _getAdapter(director);
         code.append(directorAdapter.generateFireFunctionCode());
-        if (!(compositeActor instanceof CompiledCompositeActor && ((BooleanToken) _codeGenerator.generateEmbeddedCode
+        if (!(compositeActor instanceof CompiledCompositeActor && ((BooleanToken) getCodeGenerator().generateEmbeddedCode
                 .getToken()).booleanValue())) {
             code.append(super.generateFireFunctionCode());
         }
@@ -217,7 +217,7 @@ public class TypedCompositeActor extends JavaCodeGeneratorAdapter {
      */
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer initializeCode = new StringBuffer();
-        //initializeCode.append(_codeGenerator.comment(1,
+        //initializeCode.append(getCodeGenerator().comment(1,
         //        "Initialize composite "
         //        + getComponent().getName()));
 
@@ -232,7 +232,7 @@ public class TypedCompositeActor extends JavaCodeGeneratorAdapter {
             String code = actorAdapter.resetInputPortsOffset();
             if (code.length() > 0) {
                 initializeCode.append(_eol
-                        + _codeGenerator.comment(1, actor.getName()
+                        + getCodeGenerator().comment(1, actor.getName()
                                 + "'s input offset initialization"));
                 initializeCode.append(code);
             }
@@ -242,7 +242,7 @@ public class TypedCompositeActor extends JavaCodeGeneratorAdapter {
         String code = resetOutputPortsOffset();
         if (code.length() > 0) {
             initializeCode.append(_eol
-                    + _codeGenerator.comment(
+                    + getCodeGenerator().comment(
                             getComponent().getName()
                                     + "'s output offset initialization"));
             initializeCode.append(code);
@@ -340,7 +340,7 @@ public class TypedCompositeActor extends JavaCodeGeneratorAdapter {
     public String generateVariableInitialization()
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        // code.append(_eol + _codeGenerator.comment(1, "Composite actor "
+        // code.append(_eol + getCodeGenerator().comment(1, "Composite actor "
         //                + getComponent().getName()
         //                + "'s variable initialization."));
 

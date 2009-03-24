@@ -45,12 +45,14 @@ import java.util.StringTokenizer;
 import ptolemy.actor.Actor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.cg.kernel.generic.ActorCodeGenerator;
-import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.CodeGeneratorUtilities;
 import ptolemy.cg.kernel.generic.CodeStream;
+import ptolemy.cg.kernel.generic.procedural.ProceduralCodeGenerator;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -71,7 +73,7 @@ import ptolemy.util.StringUtilities;
  *  @Pt.AcceptedRating red (zgang)
  */
 
-public class CCodeGenerator extends GenericCodeGenerator {
+public class CCodeGenerator extends ProceduralCodeGenerator {
 
     /** Create a new instance of the C code generator.
      *  @param container The container.
@@ -84,13 +86,28 @@ public class CCodeGenerator extends GenericCodeGenerator {
     public CCodeGenerator(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        
+        generateCpp = new Parameter(this, "generateCpp");
+        generateCpp.setTypeEquals(BaseType.BOOLEAN);
+        generateCpp.setExpression("false");
+        
 
-        generatorPackage.setExpression("ptolemy.codegen.c");
+        generatorPackage.setExpression("generic.procedural.c");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     parameters                            ////
 
+
+    /** If true, the generated code will be C++ instead of C.
+     * FIXME: This is a temporary fix.  In the long run, C++ should
+     * be its own target language for code generation.  In the short
+     * run, this parameter will allow experimentation with C++ code
+     * generation, and should identify changes needed for correctly
+     * implemented C++ code generation.
+     */
+    public Parameter generateCpp;
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

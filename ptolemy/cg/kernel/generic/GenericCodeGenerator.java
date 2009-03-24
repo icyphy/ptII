@@ -82,7 +82,7 @@ import ptolemy.util.StringUtilities;
 
 /** Base class for code generator.
  *
- *  @author Edward A. Lee, Gang Zhou, Ye Zhou, Contributors: Christopher Brooks
+ *  @author Edward A. Lee, Gang Zhou, Ye Zhou, Contributors: Christopher Brooks, Bert Rodiers
  *  @version $Id$
  *  @since Ptolemy II 6.0
  *  @Pt.ProposedRating Yellow (eal)
@@ -153,16 +153,6 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
         generateComment.setTypeEquals(BaseType.BOOLEAN);
         generateComment.setExpression("true");
 
-        generateCpp = new Parameter(this, "generateCpp");
-        generateCpp.setTypeEquals(BaseType.BOOLEAN);
-        generateCpp.setExpression("false");
-
-        generateEmbeddedCode = new Parameter(this, "generateEmbeddedCode");
-        generateEmbeddedCode.setTypeEquals(BaseType.BOOLEAN);
-        generateEmbeddedCode.setExpression("true");
-        // Hide the embeddedCode parameter from the user.
-        generateEmbeddedCode.setVisibility(Settable.EXPERT);
-
         inline = new Parameter(this, "inline");
         inline.setTypeEquals(BaseType.BOOLEAN);
         inline.setExpression("false");
@@ -229,6 +219,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
     /** The name of compile target to be run if the <i>compile</i> parameter
      *  is true.  This is a string with a default value of the empty string,
      *  which means the first target in the makefile would be run.
+     *  // FIXME rodiers: remove. Should be part of generatorPackage
      */
     public StringParameter compileTarget;
 
@@ -238,32 +229,11 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
      */
     public Parameter generateComment;
 
-    /** If true, the generated code will be C++ instead of C.
-     * FIXME: This is a temporary fix.  In the long run, C++ should
-     * be its own target language for code generation.  In the short
-     * run, this parameter will allow experimentation with C++ code
-     * generation, and should identify changes needed for correctly
-     * implemented C++ code generation.
-     */
-    public Parameter generateCpp;
-
     /** The name of the package in which to look for adapter class
      *  code generators. This is a string that defaults to
      *  "ptolemy.codegen.c".
      */
     public StringParameter generatorPackage;
-
-    /** If true, then generate code for that uses the reflection for Java
-     *  and JNI for C and is embedded within the model 
-     *  The default value is false and this parameter is not usually
-     *  editable by the user.  This parameter is set to true when
-     *  CompiledCompositeActor is run in an interpreted Ptolemy model.
-     *  This parameter
-     *  is set to false when a model contains one or more
-     *  CompiledCompositeActors and C or Java code is being generated for the
-     *  model.
-     */
-    public Parameter generateEmbeddedCode;
 
     /** If true, generate file with no functions.  If false, generate
      *  file with functions. The default value is a parameter with the
@@ -2064,7 +2034,10 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
                     }
 
                     codeGenerator._updateParameters(toplevel);
-                    codeGenerator.generateEmbeddedCode.setExpression("false");
+                    Attribute generateEmbeddedCode = codeGenerator.getAttribute("generateEmbeddedCode");
+                    if (generateEmbeddedCode instanceof Parameter) {
+                        ((Parameter) generateEmbeddedCode).setExpression("false");
+                    }
 
                     try {
                         codeGenerator.generateCode();

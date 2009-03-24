@@ -38,6 +38,8 @@ import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
 import ptolemy.cg.kernel.generic.ActorCodeGenerator;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.CodeStream;
+import ptolemy.cg.kernel.generic.GenericCodeGenerator;
+import ptolemy.cg.kernel.generic.procedural.c.CCodeGenerator;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
@@ -135,32 +137,6 @@ public class StaticSchedulingDirector extends Director {
             }
         }
         return code.toString();
-    }
-
-    /**
-     * Generate the code that updates the input/output port offset.
-     * @param code The given code buffer.
-     * @param actor The given actor.
-     * @exception IllegalActionException Thrown if 
-     *  _updatePortOffset(IOPort, StringBuffer, int) or getRate(IOPort)
-     *  throw it.  
-     */
-    private void _generateUpdatePortOffsetCode(StringBuffer code, Actor actor)
-            throws IllegalActionException {
-        // update buffer offset after firing each actor once
-        Iterator inputPorts = actor.inputPortList().iterator();
-        while (inputPorts.hasNext()) {
-            IOPort port = (IOPort) inputPorts.next();
-            int rate = DFUtilities.getRate(port);
-            _updatePortOffset(port, code, rate);
-        }
-
-        Iterator outputPorts = actor.outputPortList().iterator();
-        while (outputPorts.hasNext()) {
-            IOPort port = (IOPort) outputPorts.next();
-            int rate = DFUtilities.getRate(port);
-            _updateConnectedPortsOffset(port, code, rate);
-        }
     }
 
     /** Generate a main loop for an execution under the control of
@@ -280,4 +256,43 @@ public class StaticSchedulingDirector extends Director {
 
         return variableDeclarations.toString();
     }
+    
+    /** Get the code generator associated with this adapter class.
+     *  @return The code generator associated with this adapter class.
+     *  @see #setCodeGenerator(GenericCodeGenerator)
+     */
+    //FIXME rodiers: should this be here?
+    public CCodeGenerator getCodeGenerator() {
+        return (CCodeGenerator) _codeGenerator;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+    
+    /**
+     * Generate the code that updates the input/output port offset.
+     * @param code The given code buffer.
+     * @param actor The given actor.
+     * @exception IllegalActionException Thrown if 
+     *  _updatePortOffset(IOPort, StringBuffer, int) or getRate(IOPort)
+     *  throw it.  
+     */
+    private void _generateUpdatePortOffsetCode(StringBuffer code, Actor actor)
+            throws IllegalActionException {
+        // update buffer offset after firing each actor once
+        Iterator inputPorts = actor.inputPortList().iterator();
+        while (inputPorts.hasNext()) {
+            IOPort port = (IOPort) inputPorts.next();
+            int rate = DFUtilities.getRate(port);
+            _updatePortOffset(port, code, rate);
+        }
+
+        Iterator outputPorts = actor.outputPortList().iterator();
+        while (outputPorts.hasNext()) {
+            IOPort port = (IOPort) outputPorts.next();
+            int rate = DFUtilities.getRate(port);
+            _updateConnectedPortsOffset(port, code, rate);
+        }
+    }
+    
 }

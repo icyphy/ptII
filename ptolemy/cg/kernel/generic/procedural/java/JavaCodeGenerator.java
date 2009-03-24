@@ -49,7 +49,7 @@ import ptolemy.cg.kernel.generic.ActorCodeGenerator;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.CodeGeneratorUtilities;
 import ptolemy.cg.kernel.generic.CodeStream;
-import ptolemy.cg.kernel.generic.GenericCodeGenerator;
+import ptolemy.cg.kernel.generic.procedural.ProceduralCodeGenerator;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.ArrayType;
@@ -65,7 +65,7 @@ import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
-////CodeGenerator
+////JavaCodeGenerator
 
 /** Base class for Java code generator.
  *
@@ -76,7 +76,7 @@ import ptolemy.util.StringUtilities;
  *  @Pt.AcceptedRating red (zgang)
  */
 
-public class JavaCodeGenerator extends GenericCodeGenerator {
+public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
     /** Create a new instance of the Java code generator.
      *  @param container The container.
@@ -90,7 +90,7 @@ public class JavaCodeGenerator extends GenericCodeGenerator {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        generatorPackage.setExpression("ptolemy.cg.adapter.generic.procedural.java.adapters");
+        generatorPackage.setExpression("generic.procedural.java");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1207,11 +1207,7 @@ public class JavaCodeGenerator extends GenericCodeGenerator {
             substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@", "");
             substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "");
             substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "");
-            if (((BooleanToken) generateCpp.getToken()).booleanValue()) {
-                substituteMap.put("@PTJavaCompiler@", "g++");
-            } else {
-                substituteMap.put("@PTJavaCompiler@", "javac");
-            }
+            substituteMap.put("@PTJavaCompiler@", "javac");
 
             String osName = StringUtilities.getProperty("os.name");
             if (osName != null) {
