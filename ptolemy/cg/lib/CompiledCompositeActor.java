@@ -467,6 +467,10 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         File sharedObjectFile = new File(_sharedObjectPath(_sanitizedActorName));
         
         Effigy effigy = Configuration.findEffigy(this.toplevel());
+        
+        // FIXME rodiers
+        // effigy.isModified() is not the correct way to deal with changes.
+        // It might be the case that we already compiled after the change
         if (effigy != null && effigy.isModified()) {
             System.out
                     .println(message
@@ -522,27 +526,34 @@ public class CompiledCompositeActor extends TypedCompositeActor {
     private String _sharedObjectPath(String sanitizedActorName)
             throws IllegalActionException {
         String sharedObjectPath = null;
+        String generatorPackageString = generatorPackage.getExpression();
+        String fileName = "";
         try {
-            String fileName = "";
-            String osName = StringUtilities.getProperty("os.name");
-            if (osName != null) {
-                // FIXME rodiers: this is not correct for java code!
-                if (osName.startsWith("Windows")) {
-                    fileName = sanitizedActorName + ".dll";
-                } else if (osName.startsWith("Mac OS X")) {
-                    fileName = "lib" + sanitizedActorName + ".dylib";
-                } else {
-                    fileName = "lib" + sanitizedActorName + ".so";
+            if (generatorPackageString.equals("generic.procedural.java")) {
+                fileName = sanitizedActorName + ".class";                
+            } else if (generatorPackageString.equals("generic.procedural.c")) {            
+                String osName = StringUtilities.getProperty("os.name");
+                if (osName != null) {
+                    if (osName.startsWith("Windows")) {
+                        fileName = sanitizedActorName + ".dll";
+                    } else if (osName.startsWith("Mac OS X")) {
+                        fileName = "lib" + sanitizedActorName + ".dylib";
+                    } else {
+                        fileName = "lib" + sanitizedActorName + ".so";
+                    }                    
                 }
+            } else {
+                throw new IllegalActionException(this,
+                "generatorPackage " + generatorPackage + " not supported.");                
             }
             sharedObjectPath = codeDirectory.asFile().getCanonicalPath()
-                    + File.separator + fileName;
+            + File.separator + fileName;
             sharedObjectPath = sharedObjectPath.replace("\\", "/");
-
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
                     "Cannot generate library path.");
         }
+        
         return sharedObjectPath;
     }
 

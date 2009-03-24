@@ -523,17 +523,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
             throws IllegalActionException {
         String sharedObjectPath = null;
         try {
-            String fileName = "";
-            String osName = StringUtilities.getProperty("os.name");
-            if (osName != null) {
-                if (osName.startsWith("Windows")) {
-                    fileName = sanitizedActorName + ".dll";
-                } else if (osName.startsWith("Mac OS X")) {
-                    fileName = "lib" + sanitizedActorName + ".dylib";
-                } else {
-                    fileName = "lib" + sanitizedActorName + ".so";
-                }
-            }
+            String fileName = sanitizedActorName + ".class";
             sharedObjectPath = codeDirectory.asFile().getCanonicalPath()
                     + File.separator + fileName;
             sharedObjectPath = sharedObjectPath.replace("\\", "/");
