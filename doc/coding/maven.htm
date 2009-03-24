@@ -55,14 +55,6 @@ directory where <code>$PTII</code> is located, then be sure to change
 either <code>$PTII</code> or the current working directory so they
 both match.
 
-Run <code>make maven</code> in $PTII.
-
-   	<br>     example:
-<pre>
-		cd $PTII
-		make maven
-</pre>
-
 <li> Set MAVEN_OPTS to configure maven to use large amounts of memory
 
         <br>     example:
@@ -141,6 +133,11 @@ build a jar file, which slows down the build/test cycle.
 <h2>maven compile fails</h2>
 Below are various issues that occurred during the build.
 <dl>
+<dt><b>What about "make maven"?</b>
+<dd><code>mk/ptcommon.mk</code> includes a rule that will create a <code>ptII/src</code>
+directory.  The current <code>ptII/pom.xml<code> file does not use this directory,
+so there is no need to run <code>make maven</code>
+
 <dt><b>Problem: you need to be on line to compile</b>
 <pre>
 [INFO] artifact org.apache.maven.plugins:maven-resources-plugin: checking for updates from central
@@ -237,8 +234,22 @@ mvn -DeclipseDir=/Applications/eclipse eclipse:to-maven
    running <code>./configure --without-eclipse</code>.
    
 
+<dt>"mvn package" fails because of backtracking
+<pre>
+/Users/cxh/ptII/ptolemy/backtrack/eclipse/plugin/editor/PtolemyEditor.java:[52,35] cannot find symbol
+</pre>
+Solution: disable test-compile:
+<pre>
+  <properties>
+    <!-- skip test-compile when doing "maven package" -->
+    <maven.test.skip>true</maven.test.skip>
+  </properties> 
+</pre>
+
 </dl>
 
+<h2>Maven and OSGI</h2>
+<a href="http://felix.apache.org/site/apache-felix-maven-bundle-plugin-bnd.html">Bundle Plugin for Maven</a>
 
 <h2>Maven Notes</h2>
 <ul>
@@ -250,8 +261,8 @@ mvn -DeclipseDir=/Applications/eclipse eclipse:to-maven
   resources need to be moved.  The resources should be in the
   jar that uses the resources.
 
-  
-  
+<li>Don't run "mvn clean" it will remove $PTII!
+
 <li> The <code>$PTII/pom.xml</code> file lists <code>dev.archer.edu.au</code>
 as the repository, this should probably be changed.
 <li> What if not all optional components are available?  Should there
