@@ -720,7 +720,9 @@ extraclean:
 	-rm -f doc/codeDoc/* $(OPTIONAL_FILES) $(HTMLCHEKOUT)*
 
 
-AWK=gawk
+# gawk is GNU awk, which is more stable than regular awk.  $PTII/configure looks for gawk
+AWK=$(GAWK)
+
 # /usr/ccs/bin/make under Solaris does not have :=
 
 #FROM_DIR:=`echo o | "$(AWK)" '{ split(PWD, a, PTII); print a[2] }' PTII=$(PTII)/ PWD=\`pwd\``
@@ -729,9 +731,15 @@ FROM_DIR=`echo o | $(AWK) '{ split(PWD, a, PTII); print a[2] }' PTII=$(PTII)/ PW
 BASE_DIR=`echo o | awk '{ split(PWD, a, PTII); split(a[2], b, "/"); c=(""); for (i in b) { c=(c "../") }; print c }' PTII=$(PTII)/ PWD=\`pwd\``
 #BASE_DIR=`echo o | $(AWK) '{ split(PWD, a, PTII); split(a[2], b, "/"); c=(""); for (i in b) { c=(c "../") }; print c }' PTII=$(PTII)/ PWD=$(PWD)`
 COPY_OP=cp
-ADD_OP=test -e
-ADD_OP=echo 
 
+ADD_OP=test -e
+# Uncomment this line for verbosity
+#ADD_OP=echo $(COPY_OP) $$x 
+
+
+# Rule to build a maven repository in ptII/src
+# See ptII/doc/coding/maven.htm.
+# 
 maven:
 	@if [ "x$(DIRS)" != "x" ]; then \
 		set $(DIRS); \
@@ -755,7 +763,7 @@ maven:
 			fi ; \
 		done ; \
 	fi
-	@if [ "x$(EXTRA_SRCS)" != "x" ]; then \
+	@if [ "x$(EXTRA_SRCS)" != "x" -a "x$(EXTRA_SRCS)" != "x " ]; then \
 		MISC_DIR=$(BASE_DIR)src/main/other/$(FROM_DIR) ;\
 		JJT_DIR=$(BASE_DIR)src/main/jjtree/$(FROM_DIR) ;\
 		ANTLR_DIR=$(BASE_DIR)src/main/antlr/$(FROM_DIR) ;\

@@ -254,15 +254,30 @@ AC_ARG_WITH(find, [  --with-find=PATH         use the find command from PATH,
     FIND=/usr/bin/find)
 AC_PATH_PROG(FIND, find)
 if test `echo "$FIND" | grep system32`; then
-    AC_MSG_WARN(["Your path is probably messed up, you have a system32
-    directory in your path before /bin"])
+    AC_MSG_WARN([Your path is probably messed up, you have a system32
+    directory in your path before /bin])
     FIND=/bin/find
 fi
 
 if test ! -f "$FIND"; then
-    AC_MSG_WARN(["Could not find the "find" command, looked in \"$FIND\""])
+    AC_MSG_WARN([Could not find the "find" command, looked in \"$FIND\"])
 fi    
 
+#--------------------------------------------------------------------
+#       Look for the "gawk" command, used by maven
+#--------------------------------------------------------------------
+AC_ARG_WITH(gawk, [  --with-gawk=PATH         use the gawk command from PATH with maven,
+                           /usr/bin/gawk],
+    GAWK=$withval,
+    GAWK=gawk)
+AC_PATH_PROG(GAWK, gawk)
+if test ! -x "$GAWK"; then
+    AC_MSG_WARN([Couldn't find gawk, looking for awk. gawk or awk is used by maven.])
+    AC_PATH_PROG(GAWK, awk)
+    if test ! -x "$GAWK"; then
+        GAWK=awk
+    fi	
+fi
 
 
 # Substitute %20 for any spaces.
@@ -3775,6 +3790,9 @@ AC_SUBST(ECLIPSE_CLASSPATHENTRY_PDE_REQUIREDPLUGINS)
 
 # Location of Eclipse, which is used by ptolemy/backtracking
 AC_SUBST(ECLIPSE_DIR)
+
+# Location of GNU Awk, used by maven
+AC_SUBST(GAWK)
 
 # Directory that contains gc.h, used in copernicus/c
 AC_SUBST(GC_INCLUDE_DIR)

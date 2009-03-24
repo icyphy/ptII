@@ -592,6 +592,7 @@ See $PTII/doc/coding/maven.htm
            <exclude>ptolemy/moml/jxta/**</exclude>
            <exclude>ptolemy/moml/test/NoPackageActor.java</exclude>
            <exclude>src/**</exclude>
+           <exclude>target/**</exclude>
 	  </excludes>
 	</configuration>
       </plugin>

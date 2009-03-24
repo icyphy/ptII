@@ -183,6 +183,9 @@ CMKIT_DIR = @CMKIT_DIR@
 # Location of Eclipse, which is used by ptolemy/backtracking
 ECLIPSE_DIR = @ECLIPSE_DIR@
 
+# Location of GNU Awk, used by maven
+GAWK = @GAWK@
+
 # Directory that contains gc.h, used in copernicus/c
 GC_INCLUDE_DIR = @GC_INCLUDE_DIR@
 
