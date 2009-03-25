@@ -54,6 +54,7 @@ public interface ActorCodeGenerator extends ComponentCodeGenerator {
      *  @return A string containing declared read and write offset variables.
      *  @exception IllegalActionException If the helper class cannot be found
      *   or the director helper throws it.
+     *   FIXME rodiers: remove this method, this is SDF specific.
      */
     public String createOffsetVariablesIfNeeded() throws IllegalActionException;
 
@@ -75,18 +76,6 @@ public interface ActorCodeGenerator extends ComponentCodeGenerator {
 
     public String generateIterationCode(String countExpression) throws IllegalActionException;
     
-    /** Generate the main entry point.
-     *  @return Return the definition of the main entry point for a program.
-     *  In C, this would be defining main().
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-    // public String generateMainEntryCode() throws IllegalActionException;
-    /** Generate the main entry point.
-     *  @return Return the a string that closes optionally calls exit
-     *  and closes the main() method
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-    // public String generateMainExitCode() throws IllegalActionException;
     /** Generate mode transition code. It delegates to the director helper
      *  of the local director. The mode transition code generated in this
      *  method is executed after each global iteration, e.g., in HDF model.
@@ -94,6 +83,7 @@ public interface ActorCodeGenerator extends ComponentCodeGenerator {
      *  @param code The string buffer that the generated code is appended to.
      *  @exception IllegalActionException If the director helper throws it
      *   while generating mode transition code.
+     *   // FIXME rodiers: remove this method, this is ModalModel specific.
      */
     public void generateModeTransitionCode(StringBuffer code)
             throws IllegalActionException;
@@ -133,24 +123,28 @@ public interface ActorCodeGenerator extends ComponentCodeGenerator {
      *  @return A set of strings that are header files needed by the code
      *  generated from this helper class.
      *  @exception IllegalActionException If something goes wrong.
+     *  // FIXME rodiers: this is specific for procedural code 
      */
     public Set getHeaderFiles() throws IllegalActionException;
 
     /** Return a set of the directories to search for the actor's include files.
      * @return A set of directories to search for the actor's include files.
      * @exception IllegalActionException If thrown when finding the directories.
+     * // FIXME rodiers: this is specific for procedural code
      */
     public Set getIncludeDirectories() throws IllegalActionException;
 
     /** Return a set of the libraries to link the generated code to.
      * @return A set of libraries to link.
      * @exception IllegalActionException If thrown when finding the libraries.
+     * // FIXME rodiers: this is specific for C
      */
     public Set getLibraries() throws IllegalActionException;
 
     /** Return a set of the directories to search for libraries.
      * @return A set of directories to search.
      * @exception IllegalActionException If thrown when finding the libraries.
+     * // FIXME rodiers: this is specific for C
      */
     public Set getLibraryDirectories() throws IllegalActionException;
 
@@ -179,6 +173,7 @@ public interface ActorCodeGenerator extends ComponentCodeGenerator {
      *  @return code The generated code.
      *  @exception IllegalActionException If the helper class for the model
      *   director cannot be found.
+     *   FIXME rodiers: this is procedural code specific
      */
     public String generateVariableDeclaration() throws IllegalActionException;
 

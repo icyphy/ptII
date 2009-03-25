@@ -45,12 +45,11 @@ import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;
 
 /**
- *  FIXME: Replace all occurrences of "helper" with "adapter".
  *  FIXME: Get rid of C-specific comments, and put C-specific code in
  *   a subclass.
  *  
- * Read and process code blocks from the helper .c file. Helper .c files
- * contain c code blocks for the associated java helper actor. A proper
+ * Read and process code blocks from the adapter .c file. Adapter .c files
+ * contain c code blocks for the associated java adapter actor. A proper
  * code block should have the following grammar:
  * <pre>
  *     _BLOCKSTART CodeBlockName [(Parameter1, Parameter2), ...] _HEADEREND
@@ -96,33 +95,33 @@ public class CodeStream {
 
     /**
      * Construct a new code stream associated with the given java actor
-     * helper. Each actor should have its own codestream during code
+     * adapter. Each actor should have its own codestream during code
      * generation.
-     * @param helper The actor helper associated with this code stream,
+     * @param adapter The actor adapter associated with this code stream,
      * which is currently ignored.
      */
-    public CodeStream(CodeGeneratorAdapter helper) {
-        _helper = helper;
-        this._codeGenerator = _helper._codeGenerator;
+    public CodeStream(CodeGeneratorAdapter adapter) {
+        _adapter = adapter;
+        this._codeGenerator = _adapter._codeGenerator;
     }
 
     /**
      * Construct a new code stream associated with the given java actor
-     * helper. Each actor should have its own codestream during code
+     * adapter. Each actor should have its own codestream during code
      * generation.
      * @param templateArguments Template arguments to be substituted
      * in the code.  Template arguments begin with "<" and end with ">".
-     * @param helper The actor helper associated with this code stream,
+     * @param adapter The actor adapter associated with this code stream,
      * which is currently ignored.
      */
-    public CodeStream(List templateArguments, CodeGeneratorAdapter helper) {
-        this(helper);
+    public CodeStream(List<String> templateArguments, CodeGeneratorAdapter adapter) {
+        this(adapter);
         _templateArguments = templateArguments;
     }
 
     /**
      * Construct a new code stream, given a specified file path of the
-     * helper .[target] file as a URL suitable for
+     * adapter .[target] file as a URL suitable for
      * {@link ptolemy.util.FileUtilities#openForReading(String, URI, ClassLoader)},
      *  for example "file:./test/testCodeBlock.c".
      * @param path The given file path.
@@ -170,7 +169,7 @@ public class CodeStream {
      *  appendCodeBlock(String, List, boolean) throws the exception.
      */
     public void appendCodeBlock(String blockName) throws IllegalActionException {
-        appendCodeBlock(blockName, new LinkedList(), false);
+        appendCodeBlock(blockName, new LinkedList<String>(), false);
     }
 
     /**
@@ -187,7 +186,7 @@ public class CodeStream {
      */
     public void appendCodeBlock(String blockName, boolean mayNotExist)
     throws IllegalActionException {
-        appendCodeBlock(blockName, new LinkedList(), mayNotExist);
+        appendCodeBlock(blockName, new LinkedList<String>(), mayNotExist);
     }
 
     /**
@@ -205,7 +204,7 @@ public class CodeStream {
      */
     public void appendCodeBlock(String blockName, boolean mayNotExist,
             int indentLevel) throws IllegalActionException {
-        appendCodeBlock(blockName, new LinkedList(), mayNotExist, indentLevel);
+        appendCodeBlock(blockName, new LinkedList<String>(), mayNotExist, indentLevel);
     }
 
     /**
@@ -220,7 +219,7 @@ public class CodeStream {
      * @exception IllegalActionException If
      *  appendCodeBlock(String, List, boolean) throws the exception.
      */
-    public void appendCodeBlock(String blockName, List arguments)
+    public void appendCodeBlock(String blockName, List<String> arguments)
     throws IllegalActionException {
         appendCodeBlock(blockName, arguments, false);
     }
@@ -238,7 +237,7 @@ public class CodeStream {
      * @exception IllegalActionException If
      *  appendCodeBlock(String, List, boolean) throws the exception.
      */
-    public void appendCodeBlock(String blockName, List arguments,
+    public void appendCodeBlock(String blockName, List<String> arguments,
             int indentLevel) throws IllegalActionException {
         appendCodeBlock(blockName, arguments, false, indentLevel);
     }
@@ -257,7 +256,7 @@ public class CodeStream {
      *  the exception, or if the requested code block is required but cannot
      *  be found, or if the numbers of arguments and parameters do not match.
      */
-    public void appendCodeBlock(String blockName, List arguments,
+    public void appendCodeBlock(String blockName, List<String> arguments,
             boolean mayNotExist) throws IllegalActionException {
         appendCodeBlock(blockName, arguments, mayNotExist, _indentLevel);
     }
@@ -275,7 +274,7 @@ public class CodeStream {
      *  the exception, or if the requested code block is required but cannot
      *  be found, or if the numbers of arguments and parameters do not match.
      */
-    public void appendCodeBlock(String blockName, List arguments,
+    public void appendCodeBlock(String blockName, List<String> arguments,
             boolean mayNotExist, int indentLevel) throws IllegalActionException {
         if (!mayNotExist && arguments.size() == 0) {
             // That means this is a request by the user. This check prevents
@@ -287,7 +286,7 @@ public class CodeStream {
 
                 // The default blocks are automatically appended 
                 // by CodeGeneratorAdapter.
-                if (_helper != null && blockName.matches(blocks[i])) {
+                if (_adapter != null && blockName.matches(blocks[i])) {
                     throw new IllegalActionException(
                             blockName
                             + " -- is a code block that is appended by default.");
@@ -308,7 +307,7 @@ public class CodeStream {
      * @throws IllegalActionException Thrown if 
      *  getCodeBlock(String, List, boolean) throws it.
      */
-    public String getCodeBlock(String blockName, List arguments) throws IllegalActionException {
+    public String getCodeBlock(String blockName, List<String> arguments) throws IllegalActionException {
         return getCodeBlock(blockName, arguments, false);
     }
 
@@ -322,7 +321,7 @@ public class CodeStream {
      * constructing the code block table, or the given code block name
      * is required to exist but does not.
      */
-    public String getCodeBlock(String blockName, List arguments, 
+    public String getCodeBlock(String blockName, List<String> arguments, 
             boolean mayNotExist) throws IllegalActionException {
 
         // First, it checks if the code file is parsed already.
@@ -341,7 +340,7 @@ public class CodeStream {
             if (mayNotExist) {
                 return "";
             } else {
-                throw new IllegalActionException(_helper,
+                throw new IllegalActionException(_adapter,
                         "Cannot find code block: \"" + signature + "\" in \""
                         + _filePath + "\", the initial path was \""
 		        + _originalFilePath + "\".");
@@ -368,13 +367,13 @@ public class CodeStream {
             _constructCodeTable(true);
         }
 
-        Iterator allSignatures = _declarations.keys();
+        Iterator<Signature> allSignatures = _declarations.keys();
         while (allSignatures.hasNext()) {
-            Signature signature = (Signature) allSignatures.next();
+            Signature signature = allSignatures.next();
             if (signature.numParameters == 0
                     && signature.functionName.matches(nameExpression)) {
                 //_stream.append(_declarations.getCode(signature, new LinkedList()));
-                appendCodeBlock(signature.functionName, new LinkedList(), false,
+                appendCodeBlock(signature.functionName, new LinkedList<String>(), false,
                         _indentLevel);
             }
         }
@@ -389,8 +388,8 @@ public class CodeStream {
 
     /**
      * Return a String that contains all the code block names and
-     * bodies from the associated helper .[target] file.
-     * @return The content from parsing the helper .[target] file.
+     * bodies from the associated adapter .[target] file.
+     * @return The content from parsing the adapter .[target] file.
      * @exception IllegalActionException If an error occurs during parsing.
      */
     public String description() throws IllegalActionException {
@@ -400,11 +399,11 @@ public class CodeStream {
             _constructCodeTable(true);
         }
 
-        for (Iterator keys = _declarations.keys(); keys.hasNext();) {
-            Signature signature = (Signature) keys.next();
+        for (Iterator<Signature> keys = _declarations.keys(); keys.hasNext();) {
+            Signature signature = keys.next();
             buffer.append(signature.functionName);
 
-            List parameters = _declarations.getParameters(signature);
+            List<?> parameters = _declarations.getParameters(signature);
 
             if ((parameters != null) && (parameters.size() > 0)) {
                 for (int i = 0; i < parameters.size(); i++) {
@@ -419,7 +418,7 @@ public class CodeStream {
             }
 
             buffer.append(":" + _eol);
-            buffer.append(_declarations.getCode(signature, new LinkedList()));
+            buffer.append(_declarations.getCode(signature, new LinkedList<String>()));
             buffer.append(_eol + "-------------------------------" + _eol
                     + _eol);
         }
@@ -433,9 +432,9 @@ public class CodeStream {
      */
     public List<String> getAllCodeBlockNames() {
         List<String> result = new LinkedList<String>();
-        Iterator signatures = _declarations.keys();
+        Iterator<Signature> signatures = _declarations.keys();
         while (signatures.hasNext()) {
-            Signature signature = (Signature) signatures.next();
+            Signature signature = signatures.next();
             result.add(signature.functionName);
         }
         return result;
@@ -445,7 +444,7 @@ public class CodeStream {
      * Return a set of code block signatures contained by this CodeStream.
      * @return The set of code block signatures contained by this CodeStream.
      * @exception IllegalActionException If there is a problem when
-     * parsing the code helper .[target] file.
+     * parsing the code adapter .[target] file.
      */
     public Set<Signature> getAllCodeBlockSignatures() 
     throws IllegalActionException {
@@ -470,7 +469,7 @@ public class CodeStream {
 //                    + name + "\" in " + _filePath + ".");
 //        }
 //        return result.toString();
-        return getCodeBlock(name, new LinkedList());
+        return getCodeBlock(name, new LinkedList<String>());
     }
 
     /** Given a code block signature, return the corresponding code block
@@ -542,13 +541,13 @@ public class CodeStream {
     }
 
     /**
-     * Simple stand alone test method. Parse a helper .[target] file,
+     * Simple stand alone test method. Parse a adapter .[target] file,
      * and print all the code blocks.
      * @param args Command-line arguments, the first of which names a
      * .[target] file as a URL , for example file:./test/testCodeBlock.c.
      * @exception IOException If an error occurs when reading user inputs.
      * @exception IllegalActionException If an error occurs during parsing
-     *  the helper .[target] file.
+     *  the adapter .[target] file.
      */
     public static void main(String[] args) throws IOException,
     IllegalActionException {
@@ -563,7 +562,7 @@ public class CodeStream {
             System.out.println(_eol + "----------Result-----------------------"
                     + _eol);
 
-            LinkedList codeBlockArgs = new LinkedList();
+            LinkedList<String> codeBlockArgs = new LinkedList<String>();
             codeBlockArgs.add(Integer.toString(3));
             code.appendCodeBlock("initBlock", codeBlockArgs, false);
             System.out.println(code);
@@ -766,15 +765,15 @@ public class CodeStream {
     }
 
     /**
-     * Read the code blocks associated with this helper and construct the code
+     * Read the code blocks associated with this adapter and construct the code
      * block and parameter table. If there is a pre-specified file path to
      * read from, it only reads code block from the specified file only.
      * Otherwise, it recursively searches code blocks from super classes'
-     * helpers.
+     * adapters.
      * @param mayNotExist Indicate if the file is required to exist.
      * @param filePath The given .[target] file to read from.
      * @exception IllegalActionException If an error occurs when parsing the
-     *  helper .[target] file.
+     *  adapter .[target] file.
      */
     private void _constructCodeTable(boolean mayNotExist)
     throws IllegalActionException {
@@ -784,23 +783,23 @@ public class CodeStream {
         }
 
         if (_codeBlocks != null) {
-            _constructCodeTableHelper(mayNotExist);
+            _constructCodeTableAdapter(mayNotExist);
 
         } else if (_filePath != null) {
             // Use the pre-specified file path.
-            _constructCodeTableHelper(mayNotExist);
+            _constructCodeTableAdapter(mayNotExist);
         } else {
-            for (Class helperClass = _helper.getClass(); helperClass != null; helperClass = helperClass
+            for (Class<?> adapterClass = _adapter.getClass(); adapterClass != null; adapterClass = adapterClass
             .getSuperclass()) {
 
 		// We don't always update _originalFilePath here so
 		// that we can have a better error message.
-                _filePath = _getPath(helperClass);
+                _filePath = _getPath(adapterClass);
 		if (_originalFilePath == null) {
 		    _originalFilePath = _filePath;
 		}
 
-                _constructCodeTableHelper(mayNotExist);
+                _constructCodeTableAdapter(mayNotExist);
 
                 mayNotExist = true; // Superclass
             }
@@ -814,7 +813,7 @@ public class CodeStream {
      * @param mayNotExist Indicate if the file is required to exist.
      * @exception IllegalActionException
      */
-    private void _constructCodeTableHelper(boolean mayNotExist)
+    private void _constructCodeTableAdapter(boolean mayNotExist)
     throws IllegalActionException {
         BufferedReader reader = null;
 
@@ -837,8 +836,8 @@ public class CodeStream {
                 .nameToURL(_filePath, null, 
                         getClass().getClassLoader()).getPath();
 
-                if (_codeGenerator == null && _helper != null) {
-                    _codeGenerator = _helper._codeGenerator;
+                if (_codeGenerator == null && _adapter != null) {
+                    _codeGenerator = _adapter._codeGenerator;
                 }
 
                 // Read the entire content of the code block file.
@@ -876,7 +875,7 @@ public class CodeStream {
         } catch (IOException ex) {
             if (reader == null) {
                 if (mayNotExist) {
-                    /* System.out.println("Warning: Helper .[target] file " +
+                    /* System.out.println("Warning: Adapter .[target] file " +
                      _filePath + " not found"); */
                 } else {
                     reset();
@@ -901,9 +900,9 @@ public class CodeStream {
     }
 
     /** Return true if the generated source code is bound to the line
-     *  number and file of the helper templates.
+     *  number and file of the adapter templates.
      * @return True if the generated source code is bound to the line
-     *  number and file of the helper templates.    Return false
+     *  number and file of the adapter templates.    Return false
      *  if the source is bound only to the output file, or if there is
      *  no CodeGenerator associated with this stream.
      * @exception IllegalActionException If there is a problem reading
@@ -922,18 +921,18 @@ public class CodeStream {
     }
 
     /**
-     * Get the file path for the helper .[target] file associated with
-     * the given helper class.  If the helper has no code generator,
+     * Get the file path for the adapter .[target] file associated with
+     * the given adapter class.  If the adapter has no code generator,
      * then the empty string is returned.
-     * @param helperClass The given helper class
-     * @return Path for the helper .[target] file.
+     * @param adapterClass The given adapter class
+     * @return Path for the adapter .[target] file.
      */
-    private String _getPath(Class helperClass) {
-        GenericCodeGenerator codeGenerator = _helper.getCodeGenerator();
+    private String _getPath(Class<?> adapterClass) {
+        GenericCodeGenerator codeGenerator = _adapter.getCodeGenerator();
         if (codeGenerator == null) {
             return "";
         }
-        String extension = _helper._codeGenerator.generatorPackage
+        String extension = _adapter._codeGenerator.generatorPackage
         .getExpression();
         extension = extension.substring(extension.lastIndexOf(".") + 1);
 	// See also codegen/kernel/Director.java
@@ -947,7 +946,7 @@ public class CodeStream {
 	    // Foo.java.  So, we use the j extension.
 	    extension = "j";
 	}
-        return "$CLASSPATH/" + helperClass.getName().replace('.', '/') + "."
+        return "$CLASSPATH/" + adapterClass.getName().replace('.', '/') + "."
         + extension;
     }
 
@@ -955,7 +954,7 @@ public class CodeStream {
      * Parse from the _parseIndex and return the next code block
      * body from the given StringBuffer. This method recursively
      * parses within the code body for nested code blocks.
-     * @param codeInFile Code from the helper .c file.
+     * @param codeInFile Code from the adapter .c file.
      * @return The code body within the current code block.
      * @exception IllegalActionException If code block's close block
      *  pattern, _BLOCKEND, is missing.
@@ -1038,7 +1037,7 @@ public class CodeStream {
      * the code block name. This method puts the code block body (value)
      * and the code block name (key) into the code block table. It calls
      * the parseHeader(StringBuffer) and parseBody(StringBuffer) functions.
-     * @param codeInFile Code from the helper .c file.
+     * @param codeInFile Code from the adapter .c file.
      * @return The name of the code block, or null if there is no more code
      *  blocks to be parsed.
      * @exception IllegalActionException If an error occurs during parsing.
@@ -1068,7 +1067,7 @@ public class CodeStream {
      * Parse from the _parseIndex for the next code block header and
      * return the next code block name. This method parses for any parameter
      * declarations and put the list of parameter(s) into the _parameterTable.
-     * @param codeInFile Code from the helper .c file.
+     * @param codeInFile Code from the adapter .c file.
      * @return The name of the code block, or null if there is no more
      *  code blocks to be parsed.
      * @exception IllegalActionException If the code block's close header
@@ -1105,7 +1104,7 @@ public class CodeStream {
             signature = new Signature(name, 0);
 
             // Add an empty parameter list.
-            _declarations.putParameters(signature, new LinkedList());
+            _declarations.putParameters(signature, new LinkedList<String>());
 
         } else {
             String name = _checkCodeBlockName(codeInFile.substring(_parseIndex,
@@ -1113,7 +1112,7 @@ public class CodeStream {
 
             int parameterEndIndex = codeInFile.indexOf(")", _parseIndex);
 
-            List parameterList = _parseParameterList(codeInFile, _parseIndex,
+            List<String> parameterList = _parseParameterList(codeInFile, _parseIndex,
                     parameterEndIndex);
 
             signature = new Signature(name, parameterList.size());
@@ -1127,7 +1126,7 @@ public class CodeStream {
 
     private boolean _doParsing = true;
 
-    private static List _parseParameterList(StringBuffer codeInFile, int start,
+    private static List<String> _parseParameterList(StringBuffer codeInFile, int start,
             int end) {
 
         return _parseParameterList(codeInFile, start, end, "(", ")");
@@ -1142,11 +1141,11 @@ public class CodeStream {
      * @param end The given end index to stop parsing.
      * @return The list of parameter expressions.
      */
-    private static List _parseParameterList(StringBuffer codeInFile,
+    private static List<String> _parseParameterList(StringBuffer codeInFile,
             int start, int end, String startSymbol, String endSymbol) {
 
 
-        LinkedList parameterList = new LinkedList();
+        LinkedList<String> parameterList = new LinkedList<String>();
 
         int startIndex = codeInFile.indexOf(startSymbol, start) + 1;
         if (startIndex > end) {
@@ -1205,15 +1204,13 @@ public class CodeStream {
      *  _checkParameterName(String) throws it.
      */
     private static StringBuffer _substituteParameters(StringBuffer codeBlock,
-            List parameters, List arguments) throws IllegalActionException {
+            List<String> parameters, List<String> arguments) throws IllegalActionException {
         // Text-substitute for each parameters.
         for (int i = 0; i < arguments.size(); i++) {
 
             //String replaceString = arguments.get(i).toString();
-            String replaceString = _checkArgumentName(arguments.get(i)
-                    .toString());
-            String parameterName = _checkParameterName(parameters.get(i)
-                    .toString());
+            String replaceString = _checkArgumentName(arguments.get(i));
+            String parameterName = _checkParameterName(parameters.get(i));
             try {
                 codeBlock = new StringBuffer(codeBlock.toString().replaceAll(
                         parameterName, replaceString));
@@ -1253,7 +1250,7 @@ public class CodeStream {
          * scope is being added always add to the end of the list.
          */
         public void addScope() {
-            _codeTableList.addLast(new LinkedHashMap());
+            _codeTableList.addLast(new LinkedHashMap<Signature, Object[]>());
         }
 
         /**
@@ -1266,7 +1263,7 @@ public class CodeStream {
          * @exception IllegalActionException Thrown if
          *  getCode(Signature, List, List) throws it.
          */
-        public StringBuffer getCode(Signature signature, List arguments)
+        public StringBuffer getCode(Signature signature, List<String> arguments)
         throws IllegalActionException {
             return _getCode(signature, arguments, _codeTableList);
         }
@@ -1299,7 +1296,7 @@ public class CodeStream {
          * @param signature The given code block signature.
          * @return The list of parameters strings.
          */
-        public List getParameters(Signature signature) {
+        public List<?> getParameters(Signature signature) {
             return _getParameters(signature, _codeTableList);
         }
 
@@ -1314,9 +1311,9 @@ public class CodeStream {
         public void putCode(Signature signature, String filePath,
                 StringBuffer code) {
 
-            LinkedHashMap currentScope = (LinkedHashMap) _codeTableList.getLast();
+            LinkedHashMap<Signature, Object[]> currentScope = _codeTableList.getLast();
 
-            Object[] codeBlock = (Object[]) currentScope.get(signature);
+            Object[] codeBlock = currentScope.get(signature);
             codeBlock[0] = filePath;
             codeBlock[1] = code;
         }
@@ -1329,9 +1326,9 @@ public class CodeStream {
          * @exception IllegalActionException Thrown if the given signature
          *  already exists in the current scope.
          */
-        public void putParameters(Signature signature, List parameters)
+        public void putParameters(Signature signature, List<String> parameters)
         throws IllegalActionException {
-            LinkedHashMap currentScope = _codeTableList.getLast();
+            LinkedHashMap<Signature, Object[]> currentScope = _codeTableList.getLast();
             currentScope.get(signature);
             Object[] codeBlock = new Object[3];
             codeBlock[2] = parameters;
@@ -1360,8 +1357,8 @@ public class CodeStream {
          *  super call cannot be found, or if substituteParameters(
          *  StringBuffer, List, List) throws it.
          */
-        private StringBuffer _getCode(Signature signature, List arguments,
-                List scopeList) throws IllegalActionException {
+        private StringBuffer _getCode(Signature signature, List<String> arguments,
+                List<LinkedHashMap<Signature, Object[]>> scopeList) throws IllegalActionException {
 
             int size = scopeList.size();
 
@@ -1369,7 +1366,7 @@ public class CodeStream {
                 return null;
             }
 
-            LinkedHashMap table = (LinkedHashMap) scopeList.get(0);
+            LinkedHashMap<Signature, Object[]> table = scopeList.get(0);
 
             if (!table.containsKey(signature)) {
                 return _getCode(signature, arguments, scopeList
@@ -1377,7 +1374,7 @@ public class CodeStream {
             } else {
                 Object[] codeObject = (Object[]) table.get(signature);
                 StringBuffer codeBlock = (StringBuffer) codeObject[1];
-                List parameters = (List) codeObject[2];
+                List<String> parameters = (List<String>) codeObject[2];
 
                 if (arguments != null) {
                     codeBlock = _substituteParameters(codeBlock, parameters,
@@ -1393,21 +1390,21 @@ public class CodeStream {
         }
 
         private String _getHeader(Signature signature,
-                List scopeList) throws IllegalActionException {
+                List<LinkedHashMap<Signature, Object[]>> scopeList) throws IllegalActionException {
             int size = scopeList.size();
 
             if (size == 0) {
                 return null;
             }
 
-            LinkedHashMap table = (LinkedHashMap) scopeList.get(0);
+            LinkedHashMap<Signature, Object[]> table = scopeList.get(0);
 
             if (!table.containsKey(signature)) {
                 return _getHeader(signature, scopeList
                         .subList(1, size));
             } else {
-                Object[] codeObject = (Object[]) table.get(signature);
-                Iterator parameters = ((List) codeObject[2]).iterator();
+                Object[] codeObject = table.get(signature);
+                Iterator<?> parameters = ((List<?>) codeObject[2]).iterator();
 
                 StringBuffer header = new StringBuffer(signature.functionName + "(");
                 while (parameters.hasNext()) {
@@ -1422,7 +1419,7 @@ public class CodeStream {
 
 
         private StringBuffer _substituteSuperAndThis(Signature signature, 
-                List scopeList, Object[] codeObject, StringBuffer codeBlock) 
+                List<LinkedHashMap<Signature, Object[]>> scopeList, Object[] codeObject, StringBuffer codeBlock) 
         throws IllegalActionException {
 
             StringBuffer result;
@@ -1446,14 +1443,14 @@ public class CodeStream {
                     boolean isImplicit = dotIndex < 0 || dotIndex > openIndex;
 
                     if (openIndex < 0 || closeParen < 0 || openIndex > closeParen) {
-                        throw new IllegalActionException(_helper, 
+                        throw new IllegalActionException(_adapter, 
                                 signature + " contains an ill-formatted $" + macro + "().");
                     }
                     
                     String blockName = (isImplicit) ? signature.functionName : 
                         codeBlock.substring(dotIndex + 1, openIndex).trim();
                     
-                    // Arguments need to include the opening and closing parenthese.
+                    // Arguments need to include the opening and closing parentheses.
                     // This is necessary for parsing the arguments properly.
                     String arguments = codeBlock.substring(openIndex, closeParen + 1);
 
@@ -1461,14 +1458,14 @@ public class CodeStream {
                             signature, scopeList, codeObject, new StringBuffer(arguments));
                     
                     // recursively substitute the arguments.
-                    List callArguments = _parseParameterList(subBlock, 
+                    List<String> callArguments = _parseParameterList(subBlock, 
                             0, subBlock.length());
 
                     Signature callSignature = new Signature(blockName,
                             callArguments.size());
 
                     if (!isSuper && callSignature.equals(signature)) {
-                        throw new IllegalActionException(_helper, callSignature
+                        throw new IllegalActionException(_adapter, callSignature
                                 + " recursively appends itself in "
                                 + codeObject[0]);
                     }
@@ -1479,7 +1476,7 @@ public class CodeStream {
                                             scopeList.size()));
 
                     if (callCodeBlock == null) {
-                        throw new IllegalActionException(_helper,
+                        throw new IllegalActionException(_adapter,
                                 "Cannot find " + (isSuper ? "super" : "this")
                                 + " block for " + callSignature
                                 + " in \"" + codeObject[0] + "\"");
@@ -1522,15 +1519,15 @@ public class CodeStream {
          * @param scopeList The given list of scopes.
          * @return The list of parameter strings.
          */
-        private List _getParameters(Signature signature, List scopeList) {
+        private List<Object> _getParameters(Signature signature, List<LinkedHashMap<Signature, Object[]>> scopeList) {
 
             if (scopeList.isEmpty()) {
-                return new LinkedList();
+                return new LinkedList<Object>();
             }
-            LinkedHashMap currentScope = (LinkedHashMap) scopeList.get(0);
+            LinkedHashMap<Signature, Object[]> currentScope = scopeList.get(0);
 
             if (currentScope.containsKey(signature)) {
-                return (List) ((Object[]) currentScope.get(signature))[2];
+                return (List<Object>) (currentScope.get(signature))[2];
 
             } else {
                 return _getParameters(signature, scopeList.subList(1, scopeList
@@ -1542,10 +1539,10 @@ public class CodeStream {
          * Return all the keys contained in this code block table.
          * @return The set of keys contained in this code block table.
          */
-        private Set keySet() {
-            LinkedHashSet signatures = new LinkedHashSet();
+        private Set<Signature> keySet() {
+            LinkedHashSet<Signature> signatures = new LinkedHashSet<Signature>();
 
-            for (LinkedHashMap table : _codeTableList) {
+            for (LinkedHashMap<Signature, Object[]> table : _codeTableList) {
                 signatures.addAll(table.keySet());
             }
             return signatures;
@@ -1556,21 +1553,21 @@ public class CodeStream {
          * testing purposes.
          * @return A Iterator of all contained signature keys.
          */
-        private Iterator keys() {
+        private Iterator<Signature> keys() {
             return keySet().iterator();
         }
 
         /**
          * LinkedList of LinkedHashMap of code blocks. Each index of the
-         * LinkedList represents a separate helper .c code block file.
+         * LinkedList represents a separate adapter .c code block file.
          */
-        private LinkedList<LinkedHashMap> _codeTableList = new LinkedList<LinkedHashMap>();
+        private LinkedList<LinkedHashMap<Signature, Object[]>> _codeTableList = new LinkedList<LinkedHashMap<Signature, Object[]>>();
     }
 
     /**
      * Inner class for representing a code block signature.
      */
-    public static class Signature implements Comparable {
+    public static class Signature implements Comparable<Object> {
 
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
@@ -1675,7 +1672,7 @@ public class CodeStream {
 
     /**
      * The code block table that stores the code blocks information,
-     * like the code body (StringBuffer), signatures, .c helper class
+     * like the code body (StringBuffer), signatures, .c adapter class
      * associated with the code blocks. It uses code block Signature
      * as keys.
      */
@@ -1696,9 +1693,9 @@ public class CodeStream {
     private String _filePath = null;
 
     /**
-     * The helper associated with this code stream.
+     * The adapter associated with this code stream.
      */
-    private CodeGeneratorAdapter _helper = null;
+    private CodeGeneratorAdapter _adapter = null;
 
     /** Original value of _filePath, used for error messages. */
     private String _originalFilePath = null;
@@ -1714,8 +1711,8 @@ public class CodeStream {
      */
     private StringBuffer _stream = new StringBuffer();
 
-    private List _templateArguments;
+    private List<String> _templateArguments;
 
-    private List _templateParameters;
+    private List<String> _templateParameters;
 
 }

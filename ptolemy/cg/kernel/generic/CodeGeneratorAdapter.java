@@ -106,13 +106,6 @@ import ptolemy.util.StringUtilities;
 // FIXME: We probably don't want to derive from ActorCodeGenerator.
 public class CodeGeneratorAdapter extends NamedObj  implements ActorCodeGenerator {
 
-
-    /** Construct a code generator adapter.
-     */
-    public CodeGeneratorAdapter() {
-        this(null);
-    }
-
     /** Construct the code generator adapter associated
      *  with the given component.
      *  @param component The associated component.
@@ -358,18 +351,6 @@ public class CodeGeneratorAdapter extends NamedObj  implements ActorCodeGenerato
     return "";
     }
 
-    //public String generateMainEntryCode() throws IllegalActionException {
-    //    return _codeGenerator.comment("main entry code");
-    //}
-    /** Generate the main entry point.
-     *  @return In this base class, return a comment.  Subclasses
-     *  should return the a string that closes optionally calls exit
-     *  and closes the main() method
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-    //public String generateMainExitCode() throws IllegalActionException {
-    //    return _codeGenerator.comment("main exit code");
-    //}
     /** Generate mode transition code. The mode transition code
      *  generated in this method is executed after each global
      *  iteration, e.g., in HDF model.  Do nothing in this base class.
@@ -391,6 +372,7 @@ public class CodeGeneratorAdapter extends NamedObj  implements ActorCodeGenerato
      * @return The expression that represents the offset in the generated code.
      * @exception IllegalActionException If there is problems getting the port
      *  buffer size or the offset in the channel and offset map.
+     *  FIXME rodiers: this is SDF specific
      */
     public String generateOffset(String offsetString, IOPort port, int channel,
             boolean isWrite) throws IllegalActionException {

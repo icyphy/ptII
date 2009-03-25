@@ -58,6 +58,7 @@ import ptolemy.util.StringUtilities;
  This class is also associated with a code generator.
 
  FIXME: need documentation on how subclasses should extend this class.
+ FIXME rodiers: indirectly this class derives from ActorCodeGenerator. Does not seem logical to me.
 
  @see GenericCodeGenerator
  @author Ye Zhou, Gang Zhou
@@ -74,6 +75,7 @@ public class Director extends CodeGeneratorAdapter {
      *  @param director The associated director.
      */
     public Director(ptolemy.actor.Director director) {
+        super(director);
         _director = director;
     }
 
@@ -561,35 +563,35 @@ public class Director extends CodeGeneratorAdapter {
      *   adapter class.
      */
     public void setCodeGenerator(GenericCodeGenerator codeGenerator) {
-        _codeGenerator = codeGenerator;
+        super.setCodeGenerator(codeGenerator);
 
         String path = getClass().getName().replace('.', '/');  
 
         String packageName = getClass().getPackage().getName();
         
-        // FIXME rodiers : this is not correct for ptolemy.cg! 
-        if (packageName.startsWith("ptolemy.cg")) {
-            // Strip off the ptolemy.codegen
-            packageName = packageName.substring("ptolemy.cg.".length());
-        }
-
+        // packageName is typically something like:
+        // ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.sdf.kernel
+        // Thus "c" is the file extension for the adapter.  This is a bit of a hack.
+        String [] splittedString = packageName.split(".adapters.");
         String extension = "";
-        if (packageName.indexOf('.') != -1) { 
-            // Usually, Directors are in packages like
-            // ptolemy.codegen.c.  Thus "c" is the file extension
-            // for the adapter.  This is a bit of a hack.
-            extension = packageName.substring(0,
-                    packageName.indexOf('.'));
+        if (splittedString.length > 0) {
+            String temp = splittedString[0];
+            if (temp.indexOf('.') != -1) { 
+                extension = temp.substring(temp.lastIndexOf('.') + 1);
 
-	    // See also codegen/kernel/CodeStream.java
-	    if (extension.equals("java")) {
-		// Sigh.  The problem is that for Java codegen, if we
-		// have an actor Foo, then Foo.java defines the Java
-		// interface, so we can't have the stub code in
-		// Foo.java.  So, we use the j extension.
-		extension = "j";
-	    }
+                // See also codegen/kernel/CodeStream.java
+                if (extension.equals("java")) {
+                    // Sigh.  The problem is that for Java codegen, if we
+                    // have an actor Foo, then Foo.java defines the Java
+                    // interface, so we can't have the stub code in
+                    // Foo.java.  So, we use the j extension.
+                    extension = "j";
+                }
+            }
         }
+
+        // FIXME: Jia removed the following line in codegen
+        
         _codeStream = new CodeStream(
                 "$CLASSPATH/" + path + "." + extension, _codeGenerator);
     }
@@ -687,9 +689,6 @@ public class Director extends CodeGeneratorAdapter {
     static {
         _eol = StringUtilities.getProperty("line.separator");
     }
-
-    /** The codeStream associated with this director. */
-    protected CodeStream _codeStream;
 
     /** The associated director.
      */
