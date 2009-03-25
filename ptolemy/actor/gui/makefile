@@ -149,6 +149,7 @@ JSRCS = \
 	TextEffigy.java \
 	Tableau.java \
 	TableauFactory.java \
+	TopPack.java \
 	TokenEffigy.java \
 	TokenTableau.java \
 	TokenEffigy.java \
@@ -219,6 +220,8 @@ OPTIONAL_FILES = \
 	'ModelPane$$4.class' \
 	'ModelPane$$ClickListener.class' \
 	'ModelPane$$CommandListener.class' \
+	'ModelRepaintController$$1.class' \
+	'ModelRepaintController$$2.class' \
 	'MoMLApplication$$1.class' \
 	'MoMLApplication$$ConfigurationFilenameFilter.class' \
 	'MoMLApplication$$IgnoreErrorHandler.class' \
@@ -280,6 +283,7 @@ OPTIONAL_FILES = \
 	'RunTableau$$TopFactory.class' \
 	'ShellTextArea$$3$1.class' \
 	'Tableau$$1.class' \
+	'TableauFactory$$1.class' \
 	'TableauFrame$$1.class' \
 	'TableauFrame$$ExtensionFileFilter.class' \
 	'TableauFrame$$ViewMenuListener.class' \
