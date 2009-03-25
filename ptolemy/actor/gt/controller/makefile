@@ -128,6 +128,8 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	'Configure$$Listener.class' \
 	'Configure$$Query.class' \
+	'DesignPatternImporter$$1.class' \
+	'DesignPatternImporter$$MoMLContentFilter.class' \
 	'ReceiveInput$$InputListener.class' \
 	'Report$$1.class' \
 	'Report$$Mode$$1.class' \
@@ -145,6 +147,7 @@ OPTIONAL_FILES = \
 	'TableauControllerEvent$$1.class' \
 	'TableauParameter$$1.class' \
 	'Transform$$EmbeddedConfigurer.class' \
+	'TransformationAttribute$$1$$1.class' \
 	'TransformationAttribute$$1.class' \
 	'TransformationAttribute$$TransformationListener.class'
 

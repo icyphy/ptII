@@ -58,6 +58,7 @@ JGRAPHICAL_TESTS = dummy.tcl
 
 EXTRA_SRCS =	\
 	$(TCL_SRCS) $(JSRCS) \
+	ArrowKeySensorTest.xml \
 	Display.xml \
 	DisplayArray2.xml \
 	HistogramPlotter.xml \

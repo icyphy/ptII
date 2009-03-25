@@ -100,7 +100,8 @@ OPTIONAL_FILES = \
 	'FSMActor$$1.class' \
 	'FSMActor$$PortScope.class' \
 	'FSMDirector$$1.class' \
-	'State$$UpdateContentsRequest.class'
+	'State$$UpdateContentsRequest.class' \
+	'State$$InvisibleModalModel.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

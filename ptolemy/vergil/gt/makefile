@@ -135,6 +135,7 @@ OPTIONAL_FILES = \
 	'MatchResultViewer$$TransformUntilFixpointAction.class' \
 	'MatchResultViewer$$UndoChangeModelAction.class' \
 	'StateMatcherController$$Factory.class' \
+	'TransformEventController$$Factory.class' \
 	'TransformationAttributeController$$Factory.class' \
 	'TransformationAttributeController$$Listener.class' \
 	'TransformationAttributeController$$LookInsideAction.class' \

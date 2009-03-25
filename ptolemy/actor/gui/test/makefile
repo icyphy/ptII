@@ -85,7 +85,6 @@ MISC_FILES =	alljtests.tcl \
 	hideNameTestModel.xml \
 	hideNameTestSinewave.xml \
 	model.xml \
-	model\ with\ spaces.xml \
 	testCheckModelSize.xml \
 	testConfiguration.xml \
 	testDemos.htm \
@@ -94,6 +93,7 @@ MISC_FILES =	alljtests.tcl \
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	'model with spaces.xml' \
 	'SimpleTableau$$Factory.class' \
 	'SimpleTableau$$TopFactory.class' \
 

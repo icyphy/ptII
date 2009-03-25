@@ -56,6 +56,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
 	LatticeElement.java \
+	LatticeElementIcon.java \
 	PropertyLatticeComposite.java
 
 OTHER_FILES_TO_BE_JARED = \
@@ -67,11 +68,12 @@ EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	lib
+MISC_FILES =	kernel lib
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	'PropertyLatticeComposite$$Lattice.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

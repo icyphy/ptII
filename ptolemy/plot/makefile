@@ -120,6 +120,8 @@ OPTIONAL_FILES = \
 	'Histogram$$1.class' \
 	'Histogram$$2.class' \
 	'Histogram$$3.class' \
+	'Histogram$$4.class' \
+	'Histogram$$5.class' \
 	'PlotApplet$$1.class' \
 	'PlotApplication$$1.class' \
 	'PlotApplication$$2.class' \
@@ -131,16 +133,21 @@ OPTIONAL_FILES = \
 	'Plot$$5.class' \
 	'Plot$$6.class' \
 	'Plot$$7.class' \
+	'Plot$$8.class' \
+	'Plot$$9.class' \
 	ptolemy.plot$(JVERSION).tar.gz \
 	ptolemy.plot$(JVERSION).zip \
 	$(PTAUXJAR) \
 	$(PXGRAPHAPPLETJAR) \
 	$(PLOTMLAPPLETJAR) \
 	$(PLOTAPPLICATIONJAR) \
+	'Plot$$Bin.class' \
 	'PlotBox$$1.class' \
 	'PlotBox$$ButtonListener.class' \
 	'PlotBox$$CommandListener.class' \
 	'PlotBox$$DragListener.class' \
+	'PlotBox$$TimedRepaint$$1.class' \
+	'PlotBox$$TimedRepaint.class' \
 	'PlotBox$$ZoomListener.class' \
 	'PlotFormatter$$1.class' \
 	'PlotFormatter$$2.class' \

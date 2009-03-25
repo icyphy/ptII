@@ -42,11 +42,14 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Tcl sources that are part of the testing infrastructure
-TCL_SRCS =
-
+TCL_SRCS = \
+	PubSubAgg.tcl \
+	Publisher2.tcl \
+	PublisherCommon.tcl \
+	testDefs.tcl
 JSRCS =
 
-
+EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS)
 all: AddSubtractVsExpression
 
 STATSFILE=statsfile
@@ -70,7 +73,11 @@ runModel:
 
 MISC_FILES = \
 	AddSubtractPerformance.xml \
-	ExpressionPerformance.xml
+	ExpressionPerformance.xml \
+	plotPerformance \
+	runModels \
+	stats \
+
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

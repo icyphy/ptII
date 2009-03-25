@@ -48,10 +48,10 @@ PTPACKAGE = 	lib
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
+	EventQueueDebugger.java \
 	SynchronizeToRealtime.java
 
 OTHER_FILES_TO_BE_JARED = \
-	EventQueueDebugger.java \
 	ListenToInput.xml \
 	ListenToStop.xml \
 	ParallelTasks.xml \

@@ -110,7 +110,13 @@ OPTIONAL_FILES = \
 	'RealTimeComposite$$OutputFrame.class' \
 	'RealTimeComposite$$QueuedToken.class' \
 	'RealTimeComposite$$RealTimeDirector.class' \
-	'RealTimeComposite$$RealTimeDirector$$RealTimeThread.class'
+	'RealTimeComposite$$RealTimeDirector$$RealTimeThread.class' \
+	'ThreadedComposite$$1.class' \
+	'ThreadedComposite$$QueuedToken.class' \
+	'ThreadedComposite$$ThreadedDirector$$CompositeThread.class' \
+	'ThreadedComposite$$ThreadedDirector.class' \
+	'ThreadedComposite$$TokenFrame$$FrameType.class' \
+	'ThreadedComposite$$TokenFrame.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

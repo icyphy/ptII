@@ -1,4 +1,4 @@
-# Makefile for Ptolemy II Javasound Karplus-Strong Demo
+# Makefile for Ptolemy II Graph Transformation Game Of Life demo
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
@@ -51,7 +51,8 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	GameOfLife.xml
+	GameOfLife.xml \
+	GameOfLifeDE.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)

@@ -37,7 +37,8 @@ DIRS = 		ApplyFFT \
 		HocDE \
 		IterateOverArray \
 		MobileFunction \
-		ModelReference
+		ModelReference \
+		ThreadedComposite
 
 # Root of Ptolemy II directory
 ROOT =		../../../../..
@@ -58,7 +59,8 @@ PTCLASSALLJARS = \
 	HocDE/HocDE.jar \
 	IterateOverArray/IterateOverArray.jar \
 	MobileFunction/MobileFunction.jar \
-	ModelReference/ModelReference.jar
+	ModelReference/ModelReference.jar \
+	ThreadedComposite/ThreadedComposite.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 

@@ -41,6 +41,10 @@ ME =		util
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+MISC_FILES = \
+	$(DIRS) \
+	lisp
+
 all: suball
 install: subinstall
 

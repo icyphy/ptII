@@ -54,6 +54,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	ArrayPlotter.java \
 	ArrayPlotterXY.java \
+	ArrowKeyProbe.java \
 	ArrowKeySensor.java \
 	BarGraph.java \
 	Display.java \
@@ -84,6 +85,8 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	'ArrowKeySensor$$ActionListenerExceptionCatcher.class' \
+	'ArrowKeySensor$$MyFrame.class' \
 	'ArrowKeySensor$$MyFrame$$1.class' \
 	'ArrowKeySensor$$MyFrame$$2.class' \
 	'ArrowKeySensor$$MyFrame$$3.class' \
@@ -92,6 +95,7 @@ OPTIONAL_FILES = \
 	'ArrowKeySensor$$MyFrame$$6.class' \
 	'ArrowKeySensor$$MyFrame$$7.class' \
 	'ArrowKeySensor$$MyFrame$$8.class' \
+	'ArrowKeySensor$$MyFrame$$FocusMouseListener.class' \
 	'ArrowKeySensor$$1.class' \
 	'ArrowKeySensor$$2.class' \
 	'ArrowKeySensor$$3.class' \
@@ -100,7 +104,6 @@ OPTIONAL_FILES = \
 	'ArrowKeySensor$$6.class' \
 	'ArrowKeySensor$$7.class' \
 	'ArrowKeySensor$$8.class' \
-	'ArrowKeySensor$$MyFrame.class' \
 	'Display$$1.class' \
 	'Display$$DisplayWindow.class' \
 	'Display$$DisplayWindowTableau.class' \

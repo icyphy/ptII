@@ -33,7 +33,8 @@ ME =		ptolemy/configs
 
 # If you add a configuration, be sure to add the jar file
 # in PTCLASSALLJARS below
-DIRS =		codegen doc dsp full gt hyvisual jni jxta pn ptiny ptinyKepler \
+DIRS =		codegen doc dsp full gt hyvisual jni jxta \
+		luminary properties pn ptiny ptinyKepler \
 		space vhdl viptos visualsense test
 
 # Root of the Java directory

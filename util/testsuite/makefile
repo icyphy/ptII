@@ -55,6 +55,7 @@ TCL_SRCS = \
 	init.tcl \
 	jdktools.tcl \
 	lcompare.tcl \
+	JavaGC.tcl \
 	models.tcl \
 	properties.tcl \
 	removeGraphicalClasses.tcl \
@@ -63,8 +64,11 @@ TCL_SRCS = \
 	testEnums.tcl \
 	testParameters.tcl
 
+
+
 # Shell scripts that should be made executable
 SCRIPTS = \
+	GenerateConciseLog.py \
 	cgstats \
 	chkdemosize \
 	chkeol \
@@ -74,14 +78,17 @@ SCRIPTS = \
 	controlm \
 	deprecated \
 	gcstats \
+	gnuify-changelog.pl \
 	html2ps \
 	jindent \
 	memorystats \
 	mkreview \
+	ptChangeLogs \
 	ptIIbuildfast \
 	ptIIbuildtest \
 	ptIIdirs \
 	ptspell \
+	gnuify-changelog.pl \
 	rmtabs \
 	rmtrailingline \
 	rmtrailingspace \
@@ -95,6 +102,7 @@ EXTRA_SRCS =	$(JAVA_SRCS) $(TCL_SRCS) $(SCRIPTS) \
 # want make checkjunk to barf on them.
 MISC_FILES = \
 	README.jindent \
+	svn2cl-0.10 \
 	test
 
 # make checkjunk will not report OPTIONAL_FILES as trash

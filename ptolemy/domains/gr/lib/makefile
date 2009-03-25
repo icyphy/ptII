@@ -74,6 +74,7 @@ JSRCS = \
 	FigureInteractor.java \
 	Image2D.java \
 	KeyInput3D.java \
+	KeyInput3DProbe.java \
 	Line2D.java \
 	MouseInput3D.java \
 	MovableViewScreen3D.java \

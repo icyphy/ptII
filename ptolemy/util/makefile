@@ -53,6 +53,7 @@ JSRCS = \
 	ExecuteCommands.java \
 	FileUtilities.java \
 	MessageHandler.java \
+	OrderedResourceBundle.java \
 	StreamExec.java \
 	StringBufferExec.java \
 	StringUtilities.java \

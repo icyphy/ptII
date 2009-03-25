@@ -61,6 +61,7 @@ SHELL_FILES = \
 	histogram \
 	jode \
 	mescal \
+	mkosgi \
 	moml \
 	obfuscate \
 	ptcg \

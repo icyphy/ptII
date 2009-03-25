@@ -60,7 +60,8 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	iRobotCreateVerification.xml \
-	iRobotCreateCodeGenExperimental.xml
+	iRobotCreateCodeGenExperimental.xml \
+	iRobotFSMsOnly.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

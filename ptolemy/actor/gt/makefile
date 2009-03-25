@@ -133,7 +133,7 @@ EXTRA_SRCS =    $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	controller data ingredients test util
+MISC_FILES =	controller data gui ingredients test util
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
@@ -171,6 +171,7 @@ OPTIONAL_FILES = \
 	'ModelExecutor$$Wrapper.class' \
 	'ModelExecutor$$WrapperPort.class' \
 	'TransformationMode$$1.class' \
+	'TransformationMode$$2.class' \
 	'TransformationMode$$Mode$$1.class' \
 	'TransformationMode$$Mode$$2.class' \
 	'TransformationMode$$Mode$$3.class' \

@@ -66,6 +66,7 @@ EXTRA_SRCS = \
 	style.htm \
 	style.pdf \
 	sunlicense.htm \
+	svn-config-auto-props.txt \
 	tcljava.htm \
 	testing.htm \
 	toc.htm

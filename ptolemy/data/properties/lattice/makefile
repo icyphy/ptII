@@ -35,6 +35,7 @@ DIRS = \
 	academicFalseTrueEqualPriority \
 	academicFalseTrueSet \
 	exampleSetLattice \
+	imageOntology \
 	logicalAND \
 	logicalOrBackward \
 	namingSetLattice \
@@ -60,6 +61,7 @@ PTCLASSALLJARS = \
 	academicFalseTrueEqualPriority/properties.jar \
 	academicFalseTrueSet/properties.jar \
 	exampleSetLattice/properties.jar \
+	imageOntology/imageOntology.jar \
 	logicalAND/properties.jar \
 	logicalOrBackward/properties.jar \
 	namingSetLattice/namingSetLattice.jar \

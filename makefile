@@ -105,11 +105,13 @@ EXTRA_SRCS = \
 	configure.in \
 	configure \
 	plugin.xml \
+	pom.xml \
 	vergil.jnlp.in \
 	vergilDSP.jnlp.in \
 	vergilHyVisual.jnlp.in \
 	vergilPtiny.jnlp.in \
 	vergilPtinySandbox.jnlp.in \
+	vergilSpace.jnlp.in \
 	vergilVisualSense.jnlp.in
 
 # Sources that may or may not be present, but if they are present, we don't
@@ -238,17 +240,23 @@ CLEAN_SHIPPING_FILES = \
 		diva/canvas/tutorial/doc-files \
 		doc/img/PtolemyIICD.ec3 \
 		jni/launcher/launcher.exe \
+		jni/launcher/launcher.dSYM \
 		jni/launcher/launcher \
 		lib/cachedir \
 		ptolemy/apps ptolemy/actor/lib/ptp \
 		ptolemy/actor/gui/run \
+		ptolemy/actor/gui/test/CustomQueryExample.tar.gz \
 		ptolemy/actor/lib/gui/KeystrokeSensor* \
 		ptolemy/actor/lib/python/demo/HelloWorld \
 		ptolemy/actor/lib/python/demo/NotifyFailedTest \
 		ptolemy/actor/lib/security/test/foo.keystore \
+		ptolemy/codegen/chaco \
 		ptolemy/codegen/c/actor/lib/javasound/test/outfile.wav \
 		ptolemy/codegen/c/domains/sdf/kernel/test/foo.c \
+		ptolemy/codegen/kernel/newInterfaces \
 		ptolemy/codegen/kernel/test/substitute.out \
+		ptolemy/codegen/newinterface \
+		ptolemy/codegen/util \
 		ptolemy/codegen/vhdl \
 		ptolemy/copernicus/*/test/codeGenerator.tmp \
 		ptolemy/copernicus/jhdl \

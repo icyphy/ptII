@@ -61,7 +61,9 @@ MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	nc2moml \
+	ncapp2moml
 
 all: jclass
 	chmod a+rx unzip-opts.sh zip-opts.sh

@@ -65,7 +65,14 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	$(PTCLASSJAR)
+	$(PTCLASSJAR) \
+	'LatticeElementController$$CheckIsLatticeAction.class' \
+	'LatticeElementController$$ToggleAcceptabilityAction.class' \
+	'LatticeGraphFrame$$DebugMenuListener.class' \
+	'LatticeGraphFrameController$$CheckIsLatticeAction.class' \
+	'LatticeGraphTableau$$Factory.class' \
+	'ModelAttributeController$$Factory.class' \
+	'ModelAttributeController$$LookInsideAction.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

@@ -48,6 +48,7 @@ PTPACKAGE = 	kernel
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
+	LetTask.java \
 	TDLAction.java \
 	TDLActionsGraph.java \
 	TDLActor.java  \

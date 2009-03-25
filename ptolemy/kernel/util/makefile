@@ -88,6 +88,7 @@ JSRCS = \
 	Singleton.java \
 	SingletonAttribute.java \
 	SingletonConfigurableAttribute.java \
+	StaticResources.java \
 	StreamChangeListener.java \
 	StreamListener.java \
 	StringAttribute.java \
@@ -108,6 +109,7 @@ OPTIONAL_FILES = \
 	'CrossRefList$$1.class' \
 	'CrossRefList$$CrossRef.class' \
 	'CrossRefList$$CrossRefEnumeration.class' \
+	'NamedList$$1.class' \
 	'NamedList$$NamedListEnumeration.class' \
 	'NamedObj$$1.class' \
 	'NamedObj$$SerializableObject.class' \
