@@ -1539,12 +1539,20 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             packageName = "ptolemy.codegen";
         }
         
+
+	StringBuffer classesTried = new StringBuffer();
+	// Traverse the inheritance hierarchy of the componentClass
+	// and look for a helper.
         do {
             className = componentClass.getName();
             
             // FIXME: Is this the right error message?
             if (!className.contains("ptolemy")) {
-                throw new IllegalActionException("There is no "
+                throw new IllegalActionException("The classname \""
+		        + className
+                        + "\" does not contain \"ptolemy\"."
+			+ "The classes tried were:\n" + classesTried.toString()
+		        + "\nThus, there is no "
                         + "codegen adaptor for " + object.getClass());
             }
 
@@ -1552,7 +1560,12 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             // ptolemy, so try a simple substitution.
             try {
                 helperClassName = packageName + "." + 
-                className.replaceFirst("ptolemy.", "");
+		    className.replaceFirst("ptolemy.", "");
+		// Save the classes tried for the error message
+		if (classesTried.length() > 0) {
+		    classesTried.append(", ");
+		}
+		classesTried.append(helperClassName);
 
                 helperObject = _instantiateHelper(
                         object, componentClass, helperClassName);
