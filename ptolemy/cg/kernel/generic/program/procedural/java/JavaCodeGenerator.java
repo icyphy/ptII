@@ -239,7 +239,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
         // If the container is in the top level, we are generating code
         // for the whole model.
-        if (isTopLevel()) {
+        if (_isTopLevel()) {
             mainEntryCode.append(_eol + _eol
                     + "public static void main(String [] args) throws Exception {" + _eol
 				 + _sanitizedModelName + " model = new "
@@ -284,7 +284,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      */
     public String generateMainExitCode() throws IllegalActionException {
 
-        if (isTopLevel()) {
+        if (_isTopLevel()) {
             return _INDENT1 + "System.exit(0);" + _eol + "}" + _eol + "}" + _eol;
         } else {
             return _INDENT1 + "return tokensToAllOutputPorts;" + _eol + "}"
@@ -891,7 +891,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     + compileTarget.stringValue());
         }
 
-        if (isTopLevel()) {
+        if (_isTopLevel()) {
             if (((BooleanToken) run.getToken()).booleanValue()) {
 		commands.add("make -f " + _sanitizedModelName + ".mk run");
             }
@@ -989,7 +989,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
         if (((BooleanToken) sourceLineBinding.getToken()).booleanValue()) {
 
-            String filename = getOutputFilename();
+            String filename = _getOutputFilename();
             //filename = new java.io.File(filename).getAbsolutePath().replace('\\', '/');
 
             tokenizer = new StringTokenizer(code.toString(),

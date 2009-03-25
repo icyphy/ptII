@@ -91,7 +91,7 @@ public class EmbeddedCodeActor extends CompiledCompositeActor {
          *  so that its code table will be re-constructed.
          *  @exception IllegalActionException Not thrown in this base class.
          */
-        public Set getSharedCode() throws IllegalActionException {
+        public Set<String> getSharedCode() throws IllegalActionException {
             // FIXME: One can do optimization here so that reset
             // happens only when the embedded Java code is modified.
             _codeStream.reset();

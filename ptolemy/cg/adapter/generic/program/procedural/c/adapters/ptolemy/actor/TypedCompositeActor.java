@@ -639,13 +639,13 @@ public class TypedCompositeActor extends CCodeGeneratorAdapter {
      *  @exception IllegalActionException If the adapter associated with
      *  an actor throws it while generating shared code for the actor.
      */
-    public Set getSharedCode() throws IllegalActionException {
+    public Set<String> getSharedCode() throws IllegalActionException {
 
         // Use LinkedHashSet to give order to the shared code.
-        Set sharedCode = new LinkedHashSet();
+        Set<String> sharedCode = new LinkedHashSet<String>();
         sharedCode.addAll(super.getSharedCode());
 
-        Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
+        Iterator<?> actors = ((ptolemy.actor.CompositeActor) getComponent())
                 .deepEntityList().iterator();
 
         while (actors.hasNext()) {

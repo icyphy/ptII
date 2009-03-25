@@ -172,7 +172,7 @@ public interface ActorCodeGenerator extends ComponentCodeGenerator {
      * @return An empty set in this base class.
      * @exception IllegalActionException Not thrown in this base class.
      */
-    public Set getSharedCode() throws IllegalActionException;
+    public Set<String> getSharedCode() throws IllegalActionException;
 
     /** Generate variable declarations for inputs and outputs and parameters.
      *  Append the declarations to the given string buffer.

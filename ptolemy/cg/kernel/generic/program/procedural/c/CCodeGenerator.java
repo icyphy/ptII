@@ -175,7 +175,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
     public String generateInitializeEntryCode() throws IllegalActionException {
         // If the container is in the top level, we are generating code
         // for the whole model.
-        if (isTopLevel()) {
+        if (_isTopLevel()) {
             // We use (void) so as to avoid the avr-gcc 3.4.6 warning:
             // "function declaration isn't a prototype
             return _eol + _eol + "void initialize(void) {" + _eol;
@@ -232,7 +232,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
         // If the container is in the top level, we are generating code
         // for the whole model.
-        if (isTopLevel()) {
+        if (_isTopLevel()) {
             mainEntryCode.append(_eol + _eol
                     + "int main(int argc, char *argv[]) {" + _eol);
             //String targetValue = target.getExpression();
@@ -267,7 +267,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generateMainExitCode() throws IllegalActionException {
-        if (isTopLevel()) {
+        if (_isTopLevel()) {
             return _INDENT1 + "exit(0);" + _eol + "}" + _eol;
         } else {
             return _INDENT1 + "return tokensToAllOutputPorts;" + _eol + "}"
@@ -282,7 +282,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
     public String generatePostfireEntryCode() throws IllegalActionException {
         // If the container is in the top level, we are generating code
         // for the whole model.
-        if (isTopLevel()) {
+        if (_isTopLevel()) {
             return _eol + _eol + "boolean postfire(void) {" + _eol;
 
             // If the container is not in the top level, we are generating code
@@ -701,7 +701,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
         // If the container is in the top level, we are generating code
         // for the whole model.
-        if (isTopLevel()) {
+        if (_isTopLevel()) {
             return _eol + _eol + "void wrapup(void) {" + _eol;
 
             // If the container is not in the top level, we are generating code
@@ -904,7 +904,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                     + compileTarget.stringValue());
         }
 
-        if (isTopLevel()) {
+        if (_isTopLevel()) {
             if (((BooleanToken) run.getToken()).booleanValue()) {
                 String command = codeDirectory.stringValue()
                         + ((!codeDirectory.stringValue().endsWith("/") && !codeDirectory
@@ -953,7 +953,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
         if (((BooleanToken) sourceLineBinding.getToken()).booleanValue()) {
 
-            String filename = getOutputFilename();
+            String filename = _getOutputFilename();
             //filename = new java.io.File(filename).getAbsolutePath().replace('\\', '/');
 
             // Make sure all #line macros are at the start of a line.
@@ -1015,12 +1015,12 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
         includingFiles.add("<stdlib.h>"); // Sun requires stdlib.h for malloc
 
-        if (isTopLevel()
+        if (_isTopLevel()
                 && ((BooleanToken) measureTime.getToken()).booleanValue()) {
             includingFiles.add("<sys/time.h>");
         }
 
-        if (!isTopLevel()) {
+        if (!_isTopLevel()) {
             includingFiles.add("\"" + _sanitizedModelName + ".h\"");
 
             includingFiles.addAll(((CCodeGeneratorAdapter)compositeActorAdapter).getJVMHeaderFiles());
@@ -1242,7 +1242,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         // Note this code is repeated in the catch below.
         // FIXME rodiers: this path is not correct anymore
         templateList.add("ptolemy/cg/kernel/" + generatorDirectory
-                + (isTopLevel() ? "/makefile.in" : "/jnimakefile.in"));
+                + (_isTopLevel() ? "/makefile.in" : "/jnimakefile.in"));
 
         // If necessary, add a trailing / after codeDirectory.
         String makefileOutputName = codeDirectory.stringValue()

@@ -49,7 +49,6 @@ import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.actor.util.ExplicitChangeContext;
 import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
-import ptolemy.cg.kernel.generic.GenericCodeGenerator.Code;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.ObjectToken;
@@ -1158,8 +1157,8 @@ public class CodeGeneratorAdapter extends NamedObj  implements ActorCodeGenerato
      * @return An empty set in this base class.
      * @exception IllegalActionException Not thrown in this base class.
      */
-    public Set getSharedCode() throws IllegalActionException {
-        Set sharedCode = new HashSet();
+    public Set<String> getSharedCode() throws IllegalActionException {
+        Set<String> sharedCode = new HashSet<String>();
         _codeStream.clear();
         _codeStream.appendCodeBlocks(".*shared.*");
         if (!_codeStream.isEmpty()) {
@@ -2574,9 +2573,6 @@ public class CodeGeneratorAdapter extends NamedObj  implements ActorCodeGenerato
         return generateName(channel.port) + "_" + channel.channelNumber;
     }
 
-    protected void _putGlobalCode(String code, int order) throws IllegalActionException {
-        _codeGenerator._globalCode.add(new Code(code, order));
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods.                    ////

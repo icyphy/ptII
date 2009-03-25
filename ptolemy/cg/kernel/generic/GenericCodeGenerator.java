@@ -34,7 +34,6 @@ import java.io.Writer;
 import java.lang.reflect.Constructor;
 import java.net.URI;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -94,7 +93,8 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
     private static class TargetFilter implements FilenameFilter {
         /** Tests if the specified file in a directory is a directory
          *  other than "CVS".
-         *  FIXME: Also exclude subversion directories.
+         *  FIXME rodiers: Also exclude subversion directories.
+         *  FIXME rodiers: actually, this class can be removed with the redesign
          *  @param dir The directory in which the file is contained.
          *  @param name The name of the file in question.
          *  @return true if the file is a directory with a name other
@@ -250,231 +250,6 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
 
-    /** Generate code and append it to the given string buffer.
-
-     *  Write the code to the directory specified by the codeDirectory
-     *  parameter.  The file name is a sanitized version of the model
-     *  name with a suffix that is based on last package name of the
-     *  <i>generatorPackage</i> parameter.  Thus if the
-     *  <i>codeDirectory</i> is <code>$HOME</code>, the name of the
-     *  model is <code>Foo</code> and the <i>generatorPackage</i>
-     *  is <code>ptolemy.codegen.c</code>, then the file that is
-     *  written will be <code>$HOME/Foo.c</code>
-     *  This method is the main entry point.
-     *  @param code The given string buffer.
-     *  @return The return value of the last subprocess that was executed.
-     *  or -1 if no commands were executed.
-     *  @exception KernelException If the target file cannot be overwritten
-     *   or write-to-file throw any exception.
-     */
-    private int _generateCode(StringBuffer code) throws KernelException {
-        // Record the current time so that we can monitor performance of the
-        // code generator by printing messages whenever any part of the code
-        // generation process takes more than 10 seconds.
-        long startTime = (new Date()).getTime();
-        long overallStartTime = startTime;
-
-        reset();
-
-        _sanitizedModelName = CodeGeneratorAdapter.generateName(_model);
-
-        // Each time a .dll file is generated, we must use a different name
-        // for it so that it can be loaded without restarting vergil.
-        NamedObj container = getContainer();
-        if (container instanceof ptolemy.cg.lib.CompiledCompositeActor) {
-            _sanitizedModelName = ((ptolemy.cg.lib.CompiledCompositeActor) container)
-            .getSanitizedName();
-        }
-
-        boolean inlineValue = ((BooleanToken) inline.getToken()).booleanValue();
-
-        // Analyze type conversions that may be needed.
-        // This must be called before any code is generated.
-        _analyzeTypeConversions();
-
-        // Report time consumed if appropriate.
-        startTime = _printTimeAndMemory(startTime,
-        "CodeGenerator.analyzeTypeConvert() consumed: ");
-
-        // Add include directories and libraries specified by actors.
-        _addActorIncludeDirectories();
-        _addActorLibraries();
-
-        // Generate code.
-        // We use the strategy pattern here, calling methods that
-        // can be overridden in derived classes. We mostly invoke
-        // these methods in the order that the code will be
-        // executed, except for some exceptions as noted.
-        String sharedCode = _generateSharedCode();
-        String preinitializeCode = _generatePreinitializeCode();
-
-        // FIXME: The rest of these methods should be made protected
-        // like the ones called above. The derived classes also need
-        // to be fixed.
-        String initializeCode = generateInitializeCode();
-
-        // The StaticSchedulingCodeGenerator._generateBodyCode() reads
-        // _postfireCode to see if we should include a call to postfire or
-        // not, so we need to call generatePostfireCode() before
-        // call _generateBodyCode().
-        //_postfireCode = generatePostfireCode();
-
-        String bodyCode = _generateBodyCode();
-        String mainEntryCode = generateMainEntryCode();
-        String mainExitCode = generateMainExitCode();
-        String initializeEntryCode = generateInitializeEntryCode();
-        String initializeExitCode = generateInitializeExitCode();
-        String initializeProcedureName = generateInitializeProcedureName();
-        //String postfireEntryCode = generatePostfireEntryCode();
-        //String postfireExitCode = generatePostfireExitCode();
-        ///*String postfireProcedureName =*/generatePostfireProcedureName();
-        String wrapupEntryCode = generateWrapupEntryCode();
-        String wrapupExitCode = generateWrapupExitCode();
-        String wrapupProcedureName = generateWrapupProcedureName();
-
-        String fireFunctionCode = null;
-        if (!inlineValue) {
-            fireFunctionCode = generateFireFunctionCode();
-        }
-        String wrapupCode = generateWrapupCode();
-
-        // Generating variable declarations needs to happen after buffer
-        // sizes are set(?).
-        String variableDeclareCode = generateVariableDeclaration();
-        String variableInitCode = generateVariableInitialization();
-        // generate type resolution code has to be after
-        // fire(), wrapup(), preinit(), init()...
-        String typeResolutionCode = generateTypeConvertCode();
-        //String globalCode = generateGlobalCode();
-
-        // Include files depends the generated code, so it 
-        // has to be generated after everything.
-        String includeFiles = _generateIncludeFiles();
-
-        startTime = _printTimeAndMemory(startTime,
-        "CodeGenerator: generating code consumed: ");
-
-        // The appending phase.
-        code.append(generateCopyright());
-
-        // FIXME: Some user libraries may depend on our generated
-        // code (i.e. definition of "boolean"). So, we need to append
-        // these user libraries after the sharedCode. An easy to do
-        // this is to separate the standard libraries from user librar,
-        // hinted by the angle bracket <> syntax in a #include statement.
-        code.append(includeFiles);
-        code.append(typeResolutionCode);
-        code.append(sharedCode);
-        // Don't use **** in comments, it causes the nightly build to 
-        // report errors.
-        code.append(comment("end shared code"));
-        code.append(variableDeclareCode);
-        code.append(preinitializeCode);
-        code.append(comment("end preinitialize code"));
-        //code.append(globalCode);
-
-        if (!inlineValue) {
-
-            code.append(comment("before appending fireFunctionCode"));
-            code.append(fireFunctionCode);
-            code.append(comment("after appending fireFunctionCode"));
-        }
-
-        //if (containsCode(variableInitCode)
-        //        || containsCode(initializeCode)) {
-
-        String[] splitVariableInitCode = _splitBody("_varinit_",
-                variableInitCode);
-        code.append(splitVariableInitCode[0]);
-        String[] splitInitializeCode = _splitBody("_initialize_",
-                initializeCode);
-        code.append(splitInitializeCode[0]);
-
-        code.append(initializeEntryCode);
-        code.append(splitVariableInitCode[1]);
-        code.append(splitInitializeCode[1]);
-        code.append(initializeExitCode);
-
-        /* FIXME: Postfire code should be invisible to the code generator.
-         *  Postfire code should be generated by the Director adapter.
-         *
-        if (containsCode(_postfireCode)) {
-            // if (isTopLevel()) {
-            //                          code.append(postfireProcedureName);
-            //            } else {
-            String [] splitPostfireCode = _splitBody("_postfire_",
-                    _postfireCode);
-            code.append(splitPostfireCode[0]);
-            code.append(postfireEntryCode);
-            code.append(splitPostfireCode[1]);
-            code.append(postfireExitCode);
-            //            }
-        }
-         */
-        //if (containsCode(wrapupCode)) {
-        // FIXME: The wrapup code can span multiple lines, so
-        // our first attempt will not work.
-        //String [] splitWrapupCode = _splitBody("_wrapup_", wrapupCode);
-        //code.append(splitWrapupCode[0]);
-        code.append(wrapupEntryCode);
-        //code.append(splitWrapupCode[1]);
-        code.append(wrapupCode);
-        code.append(wrapupExitCode);
-        //}
-
-        code.append(mainEntryCode);
-
-        // If the container is in the top level, we are generating code
-        // for the whole model.
-        if (isTopLevel()) {
-            if (((BooleanToken) measureTime.getToken()).booleanValue()) {
-                code.append(_recordStartTime());
-            }
-
-            if (containsCode(variableInitCode) || containsCode(initializeCode)) {
-                code.append(initializeProcedureName);
-            }
-        }
-
-        code.append(bodyCode);
-
-        // If the container is in the top level, we are generating code
-        // for the whole model.
-        if (isTopLevel()) {
-            if (((BooleanToken) measureTime.getToken()).booleanValue()) {
-                code.append(_printExecutionTime());
-            }
-            if (containsCode(wrapupCode)) {
-                code.append(wrapupProcedureName);
-            }
-        }
-
-        code.append(mainExitCode);
-
-        if (_executeCommands == null) {
-            _executeCommands = new StreamExec();
-        }
-
-        startTime = _printTimeAndMemory(startTime,
-        "CodeGenerator: appending code consumed: ");
-
-        code = _finalPassOverCode(code);
-        startTime = _printTimeAndMemory(startTime,
-        "CodeGenerator: final pass consumed: ");
-
-        _codeFileName = _writeCode(code);
-
-        /*startTime =*/_printTimeAndMemory(startTime,
-        "CodeGenerator: writing code consumed: ");
-
-        _writeMakefile();
-
-        _printTimeAndMemory(overallStartTime,
-        "CodeGenerator: All phases above consumed: ");
-
-        return _executeCommands();
-    }
-
     /** Add an include command line argument the compile command.
      *  @param includeCommand  The include command, for example
      *  "-I/usr/local/include".
@@ -604,6 +379,18 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
         return "";
     }
     
+    /** Return true if the input contains code.
+     *  In this context, code is considered to be anything other
+     *  than comments and whitespace.
+     *  @param code The string to check for code.
+     *  @return True if the string contains anything other than
+     *  white space or comments
+     */
+    public static boolean containsCode(String code) {
+        return (code.replaceAll("/\\*[^*]*\\*/", "")
+                .replaceAll("[ \t\n\r]", "").length() > 0);
+    }
+    
     /** Generate code and write it to the file specified by the
      *  <i>codeDirectory</i> parameter.
      *  @return The return value of the last subprocess that was executed.
@@ -632,7 +419,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
         // If the container is in the top level, we are generating code
         // for the whole model. We have to make sure there is a manager,
         // and then preinitialize and resolve types.
-        if (isTopLevel()) {
+        if (_isTopLevel()) {
 
             // If necessary, create a manager.
             Actor container = ((Actor) getContainer());
@@ -733,18 +520,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
         ActorCodeGenerator adapter = _getAdapter(getContainer());
         code.append(adapter.generateFireFunctionCode());
         return code.toString();
-    }
-
-    /** Generate the function table.  In this base class return
-     *  the empty string.
-     *  @param types An array of types.
-     *  @param functions An array of functions.
-     *  @return The code that declares functions.
-     */
-    public Object generateFunctionTable(Object[] types, Object[] functions) {
-
-        return "";
-    }
+    }   
 
     /**
      * Return the code associated with initialization of the containing
@@ -940,7 +716,6 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generateWrapupEntryCode() throws IllegalActionException {
-
         return comment("wrapup entry code");
     }
 
@@ -949,7 +724,6 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generateWrapupExitCode() throws IllegalActionException {
-
         return comment("wrapup exit code");
     }
 
@@ -958,16 +732,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generateWrapupProcedureName() throws IllegalActionException {
-
         return "";
-    }
-
-    /** Return the name of the code file that was written, if any.
-     *  If no file was written, then return null.
-     *  @return The name of the file that was written.
-     */
-    public String getCodeFileName() {
-        return _codeFileName;
     }
 
     /** Return the associated component, which is always the container.
@@ -988,34 +753,12 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
         return _executeCommands;
     }
 
-    /** Return a list of macros this code generator supports.
-     *  @return Returns the _macros.
-     */
-    public List getMacros() {
-        return _macros;
-    }
-
     /** Return the set of modified variables.
      *  @return The set of modified variables.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public Set getModifiedVariables() throws IllegalActionException {
         return _modifiedVariables;
-    }
-
-    /**
-     * Return the name of the output file.
-     * @return The output file name.
-     * @exception IllegalActionException If there is problem resolving
-     *  the string value of the generatorPackage parameter.
-     */
-    public String getOutputFilename() throws IllegalActionException {
-        String packageValue = generatorPackage.stringValue();
-
-        String extension = packageValue
-        .substring(packageValue.lastIndexOf("."));
-
-        return _sanitizedModelName + extension;
     }
     
     /**
@@ -1038,14 +781,23 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
         return _primitiveTypes.contains(codeGenType(ptType));
     }
 
-    /** Test if the containing actor is in the top level.
-     *  @return true if the containing actor is in the top level.
+    /** Generate code for a model.
+     *  <p>For example:
+     *  <pre>
+     *  java -classpath $PTII ptolemy.codegen.kernel.CodeGenerator $PTII/ptolemy/codegen/c/actor/lib/test/auto/Ramp.xml
+     *  </pre>
+     *  or
+     *  <pre>
+     *  $PTII/bin/ptinvoke ptolemy.codegen.kernel.CodeGenerator $PTII/ptolemy/codegen/c/actor/lib/test/auto/Ramp.xml
+     *  </pre>
+     *  @param args An array of Strings, each element names a MoML file
+     *  containing a model.
+     *  @exception Exception If any error occurs.
      */
-    public boolean isTopLevel() {
-        return getContainer().getContainer() == null;
+    public static void main(String[] args) throws Exception {
+        generateCode(args);
     }
-
-
+    
     /** Return the Ptolemy type that corresponds to the type named by
      *  the argument.
      *  @param cgType A String naming a type.
@@ -1077,23 +829,6 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
     
         }
         return result;
-    }    
-    /** Reset the code generator.
-     */	
-    public void reset() {
-        // Reset the indent to zero.
-        _indent = 0;
-
-        // Reset the code file name so that getCodeFileName()
-        // accurately reports whether code was generated.
-        _codeFileName = null;
-
-        _newTypesUsed.clear();
-        _tokenFuncUsed.clear();
-        _typeFuncUsed.clear();
-        _libraries.clear();
-        _includes.clear();
-        _adapterStore.clear();
     }
 
     /** This method is used to set the code generator for a adapter class.
@@ -1177,12 +912,9 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
                                                         : ptType == PointerToken.POINTER ? "void*"
                                                                 : "Token";
     }
-    
-    /** Add include directories specified by the actors in this model.
-     *  @exception IllegalActionException Never in this base class.
-     */
-    protected void _addActorIncludeDirectories() throws IllegalActionException {
-    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Add libraries specified by the actors in this model.
      *  @exception IllegalActionException Never in this base class.
@@ -1277,7 +1009,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
         }
         Director directorAdapter = (Director) _getAdapter(director);
 
-        if (isTopLevel()) {
+        if (_isTopLevel()) {
             /*
             if (_postfireCode == null) {
                 throw new InternalErrorException(
@@ -1352,22 +1084,18 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
         StringBuffer code = new StringBuffer();
 
         ActorCodeGenerator targetAdapter = _getTargetAdapter(getContainer());
-        Set sharedCodeBlocks;
-        Iterator blocks;
         if (targetAdapter != null) {
-            sharedCodeBlocks = targetAdapter.getSharedCode();
-            blocks = sharedCodeBlocks.iterator();
-            while (blocks.hasNext()) {
-                String block = (String) blocks.next();
+            Set<String> sharedCodeBlocks = targetAdapter.getSharedCode();
+            for (String block : sharedCodeBlocks) {
                 code.append(block);
             }
         }
 
         ActorCodeGenerator adapter = _getAdapter(getContainer());
-        sharedCodeBlocks = adapter.getSharedCode();
-        blocks = sharedCodeBlocks.iterator();
+        Set<String> sharedCodeBlocks = adapter.getSharedCode();
+        Iterator<String> blocks = sharedCodeBlocks.iterator();
         while (blocks.hasNext()) {
-            String block = (String) blocks.next();
+            String block = blocks.next();
             code.append(block);
         }
 
@@ -1407,7 +1135,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
 
         String packageName = generatorPackage.stringValue();
 
-        Class componentClass = object.getClass();
+        Class<?> componentClass = object.getClass();
         String className = componentClass.getName();
 
         ActorCodeGenerator adapterObject = null;
@@ -1488,6 +1216,28 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
 
     }
 
+    /**
+     * Return the name of the output file.
+     * @return The output file name.
+     * @exception IllegalActionException If there is problem resolving
+     *  the string value of the generatorPackage parameter.
+     */
+    protected String _getOutputFilename() throws IllegalActionException {
+        String packageValue = generatorPackage.stringValue();
+
+        String extension = packageValue
+        .substring(packageValue.lastIndexOf("."));
+
+        return _sanitizedModelName + extension;
+    }
+
+    /** Test if the containing actor is in the top level.
+     *  @return true if the containing actor is in the top level.
+     */
+    protected boolean _isTopLevel() {
+        return getContainer().getContainer() == null;
+    }
+
     /** Generate the code for printing the execution time since
      *  the code generated by _recordStartTime() was called.
      *  This base class only generates a comment.
@@ -1495,22 +1245,6 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
      */
     protected String _printExecutionTime() {
         return comment("Print execution time.");
-    }
-
-    /** Print the elapsed time since the specified startTime if
-     *  the elpsed time is greater than 10 seconds. Otherwise,
-     *  do nothing.
-     *  @param startTime The start time.  Usually set to the value
-     *   of <code>(new Date()).getTime()</code>.
-     *  @param message A prefix to the printed message.
-     *  @return The current time.
-     */
-    protected long _printTimeAndMemory(long startTime, String message) {
-        long currentTime = (new Date()).getTime();
-        if (currentTime - startTime > 10000) {
-            System.out.println(message + Manager.timeAndMemory(startTime));
-        }
-        return currentTime;
     }
 
     /** Generate the code for recording the current time.
@@ -1536,7 +1270,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
 
         // This method is private so that the body of the caller shorter.
 
-        String codeFileName = getOutputFilename();
+        String codeFileName = _getOutputFilename();
 
         // Write the code to a file with the same name as the model into
         // the directory named by the codeDirectory parameter.
@@ -1589,7 +1323,240 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
      */
     protected void _writeMakefile() throws IllegalActionException {
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
+    /** Add include directories specified by the actors in this model.
+     *  @exception IllegalActionException Never in this base class.
+     */
+    private void _addActorIncludeDirectories() throws IllegalActionException {
+    }
+    
+    /** Generate code and append it to the given string buffer.
+     *  Write the code to the directory specified by the codeDirectory
+     *  parameter.  The file name is a sanitized version of the model
+     *  name with a suffix that is based on last package name of the
+     *  <i>generatorPackage</i> parameter.  Thus if the
+     *  <i>codeDirectory</i> is <code>$HOME</code>, the name of the
+     *  model is <code>Foo</code> and the <i>generatorPackage</i>
+     *  is <code>ptolemy.codegen.c</code>, then the file that is
+     *  written will be <code>$HOME/Foo.c</code>
+     *  This method is the main entry point.
+     *  @param code The given string buffer.
+     *  @return The return value of the last subprocess that was executed.
+     *  or -1 if no commands were executed.
+     *  @exception KernelException If the target file cannot be overwritten
+     *   or write-to-file throw any exception.
+     */
+    private int _generateCode(StringBuffer code) throws KernelException {
+        // Record the current time so that we can monitor performance of the
+        // code generator by printing messages whenever any part of the code
+        // generation process takes more than 10 seconds.
+        long startTime = (new Date()).getTime();
+        long overallStartTime = startTime;
+
+        _reset();
+
+        _sanitizedModelName = CodeGeneratorAdapter.generateName(_model);
+
+        // Each time a .dll file is generated, we must use a different name
+        // for it so that it can be loaded without restarting vergil.
+        NamedObj container = getContainer();
+        if (container instanceof ptolemy.cg.lib.CompiledCompositeActor) {
+            _sanitizedModelName = ((ptolemy.cg.lib.CompiledCompositeActor) container)
+            .getSanitizedName();
+        }
+
+        boolean inlineValue = ((BooleanToken) inline.getToken()).booleanValue();
+
+        // Analyze type conversions that may be needed.
+        // This must be called before any code is generated.
+        _analyzeTypeConversions();
+
+        // Report time consumed if appropriate.
+        startTime = _printTimeAndMemory(startTime,
+        "CodeGenerator.analyzeTypeConvert() consumed: ");
+
+        // Add include directories and libraries specified by actors.
+        _addActorIncludeDirectories();
+        _addActorLibraries();
+
+        // Generate code.
+        // We use the strategy pattern here, calling methods that
+        // can be overridden in derived classes. We mostly invoke
+        // these methods in the order that the code will be
+        // executed, except for some exceptions as noted.
+        String sharedCode = _generateSharedCode();
+        String preinitializeCode = _generatePreinitializeCode();
+
+        // FIXME: The rest of these methods should be made protected
+        // like the ones called above. The derived classes also need
+        // to be fixed.
+        String initializeCode = generateInitializeCode();
+
+        // The StaticSchedulingCodeGenerator._generateBodyCode() reads
+        // _postfireCode to see if we should include a call to postfire or
+        // not, so we need to call generatePostfireCode() before
+        // call _generateBodyCode().
+        //_postfireCode = generatePostfireCode();
+
+        String bodyCode = _generateBodyCode();
+        String mainEntryCode = generateMainEntryCode();
+        String mainExitCode = generateMainExitCode();
+        String initializeEntryCode = generateInitializeEntryCode();
+        String initializeExitCode = generateInitializeExitCode();
+        String initializeProcedureName = generateInitializeProcedureName();
+        //String postfireEntryCode = generatePostfireEntryCode();
+        //String postfireExitCode = generatePostfireExitCode();
+        ///*String postfireProcedureName =*/generatePostfireProcedureName();
+        String wrapupEntryCode = generateWrapupEntryCode();
+        String wrapupExitCode = generateWrapupExitCode();
+        String wrapupProcedureName = generateWrapupProcedureName();
+
+        String fireFunctionCode = null;
+        if (!inlineValue) {
+            fireFunctionCode = generateFireFunctionCode();
+        }
+        String wrapupCode = generateWrapupCode();
+
+        // Generating variable declarations needs to happen after buffer
+        // sizes are set(?).
+        String variableDeclareCode = generateVariableDeclaration();
+        String variableInitCode = generateVariableInitialization();
+        // generate type resolution code has to be after
+        // fire(), wrapup(), preinit(), init()...
+        String typeResolutionCode = generateTypeConvertCode();
+        //String globalCode = generateGlobalCode();
+
+        // Include files depends the generated code, so it 
+        // has to be generated after everything.
+        String includeFiles = _generateIncludeFiles();
+
+        startTime = _printTimeAndMemory(startTime,
+        "CodeGenerator: generating code consumed: ");
+
+        // The appending phase.
+        code.append(generateCopyright());
+
+        // FIXME: Some user libraries may depend on our generated
+        // code (i.e. definition of "boolean"). So, we need to append
+        // these user libraries after the sharedCode. An easy to do
+        // this is to separate the standard libraries from user librar,
+        // hinted by the angle bracket <> syntax in a #include statement.
+        code.append(includeFiles);
+        code.append(typeResolutionCode);
+        code.append(sharedCode);
+        // Don't use **** in comments, it causes the nightly build to 
+        // report errors.
+        code.append(comment("end shared code"));
+        code.append(variableDeclareCode);
+        code.append(preinitializeCode);
+        code.append(comment("end preinitialize code"));
+        //code.append(globalCode);
+
+        if (!inlineValue) {
+
+            code.append(comment("before appending fireFunctionCode"));
+            code.append(fireFunctionCode);
+            code.append(comment("after appending fireFunctionCode"));
+        }
+
+        //if (containsCode(variableInitCode)
+        //        || containsCode(initializeCode)) {
+
+        String[] splitVariableInitCode = _splitBody("_varinit_",
+                variableInitCode);
+        code.append(splitVariableInitCode[0]);
+        String[] splitInitializeCode = _splitBody("_initialize_",
+                initializeCode);
+        code.append(splitInitializeCode[0]);
+
+        code.append(initializeEntryCode);
+        code.append(splitVariableInitCode[1]);
+        code.append(splitInitializeCode[1]);
+        code.append(initializeExitCode);
+
+        /* FIXME: Postfire code should be invisible to the code generator.
+         *  Postfire code should be generated by the Director adapter.
+         *
+        if (containsCode(_postfireCode)) {
+            // if (isTopLevel()) {
+            //                          code.append(postfireProcedureName);
+            //            } else {
+            String [] splitPostfireCode = _splitBody("_postfire_",
+                    _postfireCode);
+            code.append(splitPostfireCode[0]);
+            code.append(postfireEntryCode);
+            code.append(splitPostfireCode[1]);
+            code.append(postfireExitCode);
+            //            }
+        }
+         */
+        //if (containsCode(wrapupCode)) {
+        // FIXME: The wrapup code can span multiple lines, so
+        // our first attempt will not work.
+        //String [] splitWrapupCode = _splitBody("_wrapup_", wrapupCode);
+        //code.append(splitWrapupCode[0]);
+        code.append(wrapupEntryCode);
+        //code.append(splitWrapupCode[1]);
+        code.append(wrapupCode);
+        code.append(wrapupExitCode);
+        //}
+
+        code.append(mainEntryCode);
+
+        // If the container is in the top level, we are generating code
+        // for the whole model.
+        if (_isTopLevel()) {
+            if (((BooleanToken) measureTime.getToken()).booleanValue()) {
+                code.append(_recordStartTime());
+            }
+
+            if (containsCode(variableInitCode) || containsCode(initializeCode)) {
+                code.append(initializeProcedureName);
+            }
+        }
+
+        code.append(bodyCode);
+
+        // If the container is in the top level, we are generating code
+        // for the whole model.
+        if (_isTopLevel()) {
+            if (((BooleanToken) measureTime.getToken()).booleanValue()) {
+                code.append(_printExecutionTime());
+            }
+            if (containsCode(wrapupCode)) {
+                code.append(wrapupProcedureName);
+            }
+        }
+
+        code.append(mainExitCode);
+
+        if (_executeCommands == null) {
+            _executeCommands = new StreamExec();
+        }
+
+        startTime = _printTimeAndMemory(startTime,
+        "CodeGenerator: appending code consumed: ");
+
+        code = _finalPassOverCode(code);
+        startTime = _printTimeAndMemory(startTime,
+        "CodeGenerator: final pass consumed: ");
+
+        /*_codeFileName =*/ _writeCode(code);
+
+        /*startTime =*/_printTimeAndMemory(startTime,
+        "CodeGenerator: writing code consumed: ");
+
+        _writeMakefile();
+
+        _printTimeAndMemory(overallStartTime,
+        "CodeGenerator: All phases above consumed: ");
+
+        return _executeCommands();
+    }
+    
     /** Get the code generator adapter associated with target, if any.
      *  @param component The given component.
      *  @return The code generator adapter.
@@ -1629,10 +1596,10 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
      *  @exception IllegalActionException If the adapter class cannot be found.
      */
     private ActorCodeGenerator _instantiateAdapter(Object component,
-            Class componentClass, String adapterClassName) 
+            Class<?> componentClass, String adapterClassName) 
     throws IllegalActionException {
         
-        Class adapterClass = null;
+        Class<?> adapterClass = null;
 
         try {
             adapterClass = Class.forName(adapterClassName);
@@ -1641,7 +1608,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
                     "Cannot find adapter class " + adapterClassName);
         }
 
-        Constructor constructor = null;
+        Constructor<?> constructor = null;
 
         try {
             constructor = adapterClass.getConstructor(
@@ -1679,9 +1646,6 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
         return castAdapterObject;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
     /** Pretty print the given line by indenting the line with the
      *  current indent level. If a block begin symbol is found, the
      *  indent level is incremented. Similarly, the indent level is
@@ -1702,6 +1666,36 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
         _indent += begin + end;
 
         return result;
+    }
+
+    /** Print the elapsed time since the specified startTime if
+     *  the elpsed time is greater than 10 seconds. Otherwise,
+     *  do nothing.
+     *  @param startTime The start time.  Usually set to the value
+     *   of <code>(new Date()).getTime()</code>.
+     *  @param message A prefix to the printed message.
+     *  @return The current time.
+     */
+    private long _printTimeAndMemory(long startTime, String message) {
+        long currentTime = (new Date()).getTime();
+        if (currentTime - startTime > 10000) {
+            System.out.println(message + Manager.timeAndMemory(startTime));
+        }
+        return currentTime;
+    }
+
+    /** Reset the code generator.
+     */ 
+    private void _reset() {
+        // Reset the indent to zero.
+        _indent = 0;
+
+        _newTypesUsed.clear();
+        _tokenFuncUsed.clear();
+        _typeFuncUsed.clear();
+        _libraries.clear();
+        _includes.clear();
+        _adapterStore.clear();
     }
 
     /** Split the code. */
@@ -1728,12 +1722,12 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
      */
     private void _updateParameters(NamedObj model) {
         // Check saved options to see whether any is setting an attribute.
-        Iterator names = _parameterNames.iterator();
-        Iterator values = _parameterValues.iterator();
+        Iterator<String> names = _parameterNames.iterator();
+        Iterator<String> values = _parameterValues.iterator();
 
         while (names.hasNext() && values.hasNext()) {
-            String name = (String) names.next();
-            String value = (String) values.next();
+            String name = names.next();
+            String value = values.next();
 
             Attribute attribute = model.getAttribute(name);
             if (attribute instanceof Settable) {
@@ -1827,29 +1821,6 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
         }
     }
 
-    private String generateGlobalCode() throws IllegalActionException {
-        // Global code should be independent of other code.
-        StringBuffer globalCode = new StringBuffer();
-        Object[] array = _globalCode.toArray();
-        Arrays.sort(array);
-        for (Object code : array) {
-            globalCode.append(((Code) code).string);
-        }
-        return globalCode.toString();
-    }
-
-    /** Return true if the input contains code.
-     *  In this context, code is considered to be anything other
-     *  than comments and whitespace.
-     *  @param code The string to check for code.
-     *  @return True if the string contains anything other than
-     *  white space or comments
-     */
-    public static boolean containsCode(String code) {
-        return (code.replaceAll("/\\*[^*]*\\*/", "")
-                .replaceAll("[ \t\n\r]", "").length() > 0);
-    }
-
     /** Generate code for a model.
      *  @param args An array of Strings, each element names a MoML file
      *  containing a model.
@@ -1858,7 +1829,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
      *  Return -2 if no CodeGenerator was created.
      *  @exception Exception If any error occurs.
      */
-    public static int generateCode(String[] args) throws Exception {
+    private static int generateCode(String[] args) throws Exception {
         try {
             if (args.length == 0) {
                 System.err.println("Usage: java -classpath $PTII "
@@ -1932,7 +1903,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
                     }
 
                     // Get all instances of this class contained in the model
-                    List codeGenerators = toplevel
+                    List<GenericCodeGenerator> codeGenerators = toplevel
                     .attributeList(GenericCodeGenerator.class);
 
                     // If the user called this with -generatorPackage ptolemy.codegen.java,
@@ -1942,7 +1913,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
                     if ( (parameterIndex = _parameterNames.indexOf("generatorPackage")) != -1) {
                         generatorPackageValue = _parameterValues.get(parameterIndex);
                     }
-                    Class generatorClass = _getCodeGeneratorClass(generatorPackageValue);
+                    Class<?> generatorClass = _getCodeGeneratorClass(generatorPackageValue);
 
 
                     if (codeGenerators.size() != 0) {
@@ -1959,7 +1930,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
 
                     if (codeGenerators.size() == 0 || codeGenerator == null) {
                         // Add a codeGenerator
-                        Constructor codeGeneratorConstructor =
+                        Constructor<?> codeGeneratorConstructor =
                             generatorClass.getConstructor(new Class[] {
                                     NamedObj.class, 
                                     String.class});
@@ -1999,23 +1970,6 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
         return -1;
     }
 
-    /** Generate code for a model.
-     *  <p>For example:
-     *  <pre>
-     *  java -classpath $PTII ptolemy.codegen.kernel.CodeGenerator $PTII/ptolemy/codegen/c/actor/lib/test/auto/Ramp.xml
-     *  </pre>
-     *  or
-     *  <pre>
-     *  $PTII/bin/ptinvoke ptolemy.codegen.kernel.CodeGenerator $PTII/ptolemy/codegen/c/actor/lib/test/auto/Ramp.xml
-     *  </pre>
-     *  @param args An array of Strings, each element names a MoML file
-     *  containing a model.
-     *  @exception Exception If any error occurs.
-     */
-    public static void main(String[] args) throws Exception {
-        generateCode(args);
-    }
-
     /** Parse a command-line argument. This method recognized -help
      *  and -version command-line arguments, and prints usage or
      *  version information. No other command-line arguments are
@@ -2024,7 +1978,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
      *  @return True if the argument is understood, false otherwise.
      *  @exception Exception If something goes wrong.
      */
-    public static boolean parseArg(String arg) throws Exception {
+    private static boolean parseArg(String arg) throws Exception {
         if (arg.equals("-help")) {
             System.out.println(_usage());
 
@@ -2050,7 +2004,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
     /** Return a string summarizing the command-line arguments.
      *  @return A usage string.
      */
-    protected static String _usage() {
+    private static String _usage() {
         // Call the static method that generates the usage strings.
         return StringUtilities.usageString(_commandTemplate, _commandOptions,
                 _commandFlags);
@@ -2063,13 +2017,13 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
      *  "ptolemy.codegen.c.kernel.CCodeGenerator" is searched for.
      *  @exception IllegalActionException If the adapter class cannot be found.
      */
-    private static Class _getCodeGeneratorClass(String generatorPackageValue)
+    private static Class<?> _getCodeGeneratorClass(String generatorPackageValue)
     throws IllegalActionException {
         String language = generatorPackageValue.substring(generatorPackageValue.lastIndexOf("."));
         String capitalizedLanguage = language.substring(1,2).toUpperCase() + language.substring(2);
         String codeGeneratorClassName = generatorPackageValue + ".kernel." + capitalizedLanguage
         + "CodeGenerator";
-        Class result = null;
+        Class<?> result = null;
         try {
             result = Class.forName(codeGeneratorClassName);
         } catch (Throwable throwable) {
@@ -2085,39 +2039,8 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-
-    /** The name of the file that was written.
-     *  If no file was written, then the value is null.
-     */
-    protected String _codeFileName = null;
-
-    /** The command-line options that are either present or not. */
-    protected static String[] _commandFlags = { "-help", "-version", };
-
-    /** The command-line options that take arguments. */
-    protected static String[][] _commandOptions = {
-        { "-allowDynamicMultiportReferences",
-        "        true|false (default: false)" },
-        {
-            "-codeDirectory",
-        "<directory in which to put code (default: $HOME/codegen. Other values: $CWD, $HOME, $PTII, $TMPDIR)>" },
-        { "-compile", "           true|false (default: true)" },
-        { "-compileTarget", "     <target to be run, defaults to empty string>" },
-        { "-generateComment", "   true|false (default: true)" },
-        { "-generatorPackage", "  <Java package of code generator, defaults to ptolemy.codegen.c>" },
-        { "-inline", "            true|false (default: false)" },
-        { "-measureTime", "       true|false (default: false)" },
-        { "-overwriteFiles", "    true|false (default: true)" },
-        { "-padBuffers", "        true|false (default: true)" },
-        { "-run", "               true|false (default: true)" },
-        { "-sourceLineBinding", " true|false (default: false)" },
-        { "-target", "            <target name, defaults to false>" },
-        { "-<parameter name>", "  <parameter value>" } };
-
-    /** The form of the command line. */
-    protected static final String _commandTemplate = "ptcg [ options ] [file ...]";
-
     /** The default target name. */
+    //TODO rodiers: remove
     protected static final String _DEFAULT_TARGET = "default";
 
     /** End of line character.  Under Unix: "\n", under Windows: "\n\r".
@@ -2129,8 +2052,6 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
     /** Execute commands to run the generated code.
      */
     protected ExecuteCommands _executeCommands;
-
-    protected List<Code> _globalCode = new ArrayList<Code>();
 
 
     /** List of library command line arguments where each element is
@@ -2151,11 +2072,6 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
      */
     protected static final String _INDENT2 = StringUtilities.getIndentPrefix(2);
 
-    /** Indent string for indent level 3.
-     *  @see ptolemy.util.StringUtilities#getIndentPrefix(int)
-     */
-    protected static final String _INDENT3 = StringUtilities.getIndentPrefix(3);
-
     /** Set of include command line arguments where each element is
      *  a string, for example "-I/usr/local/include".
      */
@@ -2163,9 +2079,6 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
 
     /** The model we for which we are generating code. */
     protected CompositeEntity _model;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
 
     /** A set that contains all variables in the model whose values can be
      *  changed during execution.
@@ -2179,23 +2092,11 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
      */
     protected HashSet<String> _newTypesUsed = new HashSet<String>();
 
-    /**
-     * A static list of all macros supported by the code generator.
-     */
-    protected List<String> _macros = new ArrayList<String>(Arrays
-            .asList(new String[] { "ref", "val", "size", "type", "targetType",
-                    "cgType", "tokenFunc", "typeFunc", "actorSymbol",
-                    "actorClass", "new" }));
-
     /** A list of the primitive types supported by the code generator.
      */
-    protected static List _primitiveTypes = Arrays.asList(new String[] {
+    protected static List<String> _primitiveTypes = Arrays.asList(new String[] {
             "Int", "Double", "String", "Long", "Boolean", "UnsignedByte",
-    "Pointer" });
-
-    
-    /** The postfire code. */
-    protected String _postfireCode = null;
+    "Pointer" });    
 
     /** The sanitized model name. */
     protected String _sanitizedModelName;
@@ -2213,11 +2114,37 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
      */
     protected Set<String> _typeFuncUsed = new HashSet<String>();
 
-    /** A map giving the code generator adapters for each actor. */
-    private Map _adapterStore = new HashMap();
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    
+    /** A map giving the code generator adapters for each actor. */
+    private Map<Object, ActorCodeGenerator> _adapterStore = new HashMap<Object, ActorCodeGenerator>();
+    
+    /** The command-line options that are either present or not. */
+    private static String[] _commandFlags = { "-help", "-version", };
+
+    /** The command-line options that take arguments. */
+    private static String[][] _commandOptions = {
+        { "-allowDynamicMultiportReferences",
+        "        true|false (default: false)" },
+        {
+            "-codeDirectory",
+        "<directory in which to put code (default: $HOME/codegen. Other values: $CWD, $HOME, $PTII, $TMPDIR)>" },
+        { "-compile", "           true|false (default: true)" },
+        { "-compileTarget", "     <target to be run, defaults to empty string>" },
+        { "-generateComment", "   true|false (default: true)" },
+        { "-generatorPackage", "  <Java package of code generator, defaults to ptolemy.codegen.c>" },
+        { "-inline", "            true|false (default: false)" },
+        { "-measureTime", "       true|false (default: false)" },
+        { "-overwriteFiles", "    true|false (default: true)" },
+        { "-padBuffers", "        true|false (default: true)" },
+        { "-run", "               true|false (default: true)" },
+        { "-sourceLineBinding", " true|false (default: false)" },
+        { "-target", "            <target name, defaults to false>" },
+        { "-<parameter name>", "  <parameter value>" } };
+
+    /** The form of the command line. */
+    private static final String _commandTemplate = "ptcg [ options ] [file ...]";
 
     /** The current indent level when pretty printing code. */
     private int _indent;
@@ -2235,35 +2162,5 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
 
     static {
         _eol = StringUtilities.getProperty("line.separator");
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner class                       ////
-
-    ///////////////////////////////////////////////////////////////////
-    //// Code
-    protected static class Code implements Comparable {        
-        public Code (String string, int order) {
-            this.string = string;
-
-            // Reverse the sign so that higher order value
-            // will be first in the sorted list.
-            this.order = -order;
-        }
-
-        public int compareTo(Object object) {
-            if (object instanceof Code) {
-                Code code2 = (Code) object;
-
-                return (order > code2.order) ? 1 : 
-                    (order < code2.order) ? -1 : 0;
-            }
-            return 0;
-        }
-
-        public final String string;
-
-        private int order;
-
     }
 }
