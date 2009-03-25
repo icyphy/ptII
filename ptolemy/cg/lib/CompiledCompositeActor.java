@@ -529,9 +529,9 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         String generatorPackageString = generatorPackage.getExpression();
         String fileName = "";
         try {
-            if (generatorPackageString.equals("generic.procedural.java")) {
+            if (generatorPackageString.equals("generic.program.procedural.java")) {
                 fileName = sanitizedActorName + ".class";                
-            } else if (generatorPackageString.equals("generic.procedural.c")) {            
+            } else if (generatorPackageString.equals("generic.program.procedural.c")) {            
                 String osName = StringUtilities.getProperty("os.name");
                 if (osName != null) {
                     if (osName.startsWith("Windows")) {
@@ -630,7 +630,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
 */
         try {
             generatorPackage = new StringParameter(this, "generatorPackage");
-            generatorPackage.setExpression("generic.procedural.java");
+            generatorPackage.setExpression("generic.program.procedural.java");
 
             inline = new Parameter(this, "inline");
             inline.setTypeEquals(BaseType.BOOLEAN);
