@@ -30,6 +30,7 @@ package ptolemy.cg.kernel.generic.procedural;
 
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -62,7 +63,12 @@ public class ProceduralCodeGenerator extends GenericCodeGenerator {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
+        compile = new Parameter(this, "compile");
+        compile.setTypeEquals(BaseType.BOOLEAN);
+        compile.setExpression("true");
 
+        compileTarget = new StringParameter(this, "compileTarget");
+        
         generateEmbeddedCode = new Parameter(this, "generateEmbeddedCode");
         generateEmbeddedCode.setTypeEquals(BaseType.BOOLEAN);
         generateEmbeddedCode.setExpression("true");
@@ -75,6 +81,19 @@ public class ProceduralCodeGenerator extends GenericCodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                     parameters                            ////
+    
+    /** If true, then compile the generated code. The default
+     *  value is a parameter with the value true.
+     */
+    public Parameter compile;
+   
+    /** The name of compile target to be run if the <i>compile</i> parameter
+     *  is true.  This is a string with a default value of the empty string,
+     *  which means the first target in the makefile would be run.
+     *  // FIXME rodiers: remove? Should be part of generatorPackage?
+     *  //      Nobody sets its value currently?
+     */
+    public StringParameter compileTarget;
     
     /** If true, then generate code for that uses the reflection for Java
      *  and JNI for C and is embedded within the model 

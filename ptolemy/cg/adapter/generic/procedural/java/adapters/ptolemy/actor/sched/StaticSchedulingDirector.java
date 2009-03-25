@@ -39,7 +39,7 @@ import ptolemy.cg.kernel.generic.ActorCodeGenerator;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.CodeStream;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
-import ptolemy.cg.kernel.generic.procedural.c.CCodeGenerator;
+import ptolemy.cg.kernel.generic.procedural.java.JavaCodeGenerator;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
@@ -261,8 +261,8 @@ public class StaticSchedulingDirector extends Director {
      *  @see #setCodeGenerator(GenericCodeGenerator)
      */
     //FIXME rodiers: should this be here?
-    public CCodeGenerator getCodeGenerator() {
-        return (CCodeGenerator) _codeGenerator;
+    public JavaCodeGenerator getCodeGenerator() {
+        return (JavaCodeGenerator) _codeGenerator;
     }
 
     ///////////////////////////////////////////////////////////////////

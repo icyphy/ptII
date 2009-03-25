@@ -141,12 +141,6 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
         new Parameter(codeDirectory, "allowFiles", BooleanToken.FALSE);
         new Parameter(codeDirectory, "allowDirectories", BooleanToken.TRUE);
 
-        compile = new Parameter(this, "compile");
-        compile.setTypeEquals(BaseType.BOOLEAN);
-        compile.setExpression("true");
-
-        compileTarget = new StringParameter(this, "compileTarget");
-
         generatorPackage = new StringParameter(this, "generatorPackage");
 
         generateComment = new Parameter(this, "generateComment");
@@ -211,18 +205,6 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
      */
     public FileParameter codeDirectory;
 
-    /** If true, then compile the generated code. The default
-     *  value is a parameter with the value true.
-     */
-    public Parameter compile;
-
-    /** The name of compile target to be run if the <i>compile</i> parameter
-     *  is true.  This is a string with a default value of the empty string,
-     *  which means the first target in the makefile would be run.
-     *  // FIXME rodiers: remove. Should be part of generatorPackage
-     */
-    public StringParameter compileTarget;
-
     /** If true, generate comments in the output code; otherwise,
      *  no comments is generated. The default value is a parameter
      *  with the value true.
@@ -279,6 +261,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
      *  <code>$PTII/ptolemy/codegen/c/targets/iRobot</code> will be used
      *  to generate code.  The default value is the string "default"
      *  which means that the default target for the language is used.
+     *  FIXME rodiers: remove parameter
      */
     public StringParameter target;
     
