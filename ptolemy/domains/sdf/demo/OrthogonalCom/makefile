@@ -43,7 +43,8 @@ include $(CONFIG)
 # Used to build jar files
 PTPACKAGE = 	OrthogonalCom
 PTCLASSJAR = 	$(PTPACKAGE).jar
-JSRCS =
+JSRCS =  \
+	OrthogonalCom.java
 
 OTHER_FILES_TO_BE_JARED = \
 	OrthogonalCom.xml
