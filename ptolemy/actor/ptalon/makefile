@@ -95,7 +95,8 @@ OPTIONAL_JSRCS = \
 	PtalonRecognizer.java \
 	PtalonLexer.java \
 	PtalonPopulator.java \
-	PtalonScopeChecker.java  
+	PtalonScopeChecker.java
+
 
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
@@ -143,13 +144,26 @@ DISTCLEAN_STUFF = \
 	PtalonRecognizer.java \
 	PtalonRecognizer.smap \
 	PtalonScopeCheckerTokenTypes.java \
-	PtalonScoperCheckerTokenTypes.txt \
+	PtalonScopeCheckerTokenTypes.txt \
 	PtalonScopeChecker.java \
 	PtalonScopeChecker.smap \
 	PtalonPopulatorTokenTypes.java \
 	PtalonPopulatorTokenTypes.txt \
 	PtalonPopulator.java \
 	PtalonPopulator.smap
+
+# make checkjunk will not report OPTIONAL_FILES as trash
+# make distclean removes OPTIONAL_FILES
+OPTIONAL_FILES = \
+	bugs \
+	demo \
+	$(DISTCLEAN_STUFF) \
+	'AbstractPtalonEvaluator$$IfTree.class' \
+	'AbstractPtalonEvaluator$$PtalonExpressionScope.class' \
+	'PtalonEvaluator$$ActorTree.class' \
+	PtalonPopulatorTokenTypes.class \
+	PtalonScopeCheckerTokenTypes.class \
+	PtalonTokenTypes.class
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
