@@ -28,7 +28,7 @@ COPYRIGHTENDKEY
 
 package ptolemy.cg.kernel.generic.program.procedural;
 
-import ptolemy.cg.kernel.generic.GenericCodeGenerator;
+import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
@@ -49,7 +49,7 @@ import ptolemy.kernel.util.Settable;
 *  @Pt.ProposedRating red (rodiers)
 *  @Pt.AcceptedRating red (rodiers)
 */
-public class ProceduralCodeGenerator extends GenericCodeGenerator {
+public class ProceduralCodeGenerator extends ProgramCodeGenerator {
     
     /** Create a new instance of the ProceduralCodeGenerator.
      *  @param container The container.

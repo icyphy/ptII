@@ -143,10 +143,6 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
 
         generatorPackage = new StringParameter(this, "generatorPackage");
 
-        generateComment = new Parameter(this, "generateComment");
-        generateComment.setTypeEquals(BaseType.BOOLEAN);
-        generateComment.setExpression("true");
-
         inline = new Parameter(this, "inline");
         inline.setTypeEquals(BaseType.BOOLEAN);
         inline.setExpression("false");
@@ -162,10 +158,6 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
         padBuffers = new Parameter(this, "padBuffers");
         padBuffers.setTypeEquals(BaseType.BOOLEAN);
         padBuffers.setExpression("true");
-
-        run = new Parameter(this, "run");
-        run.setTypeEquals(BaseType.BOOLEAN);
-        run.setExpression("true");
 
         sourceLineBinding = new Parameter(this, "sourceLineBinding");
         sourceLineBinding.setTypeEquals(BaseType.BOOLEAN);
@@ -205,11 +197,6 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
      */
     public FileParameter codeDirectory;
 
-    /** If true, generate comments in the output code; otherwise,
-     *  no comments is generated. The default value is a parameter
-     *  with the value true.
-     */
-    public Parameter generateComment;
 
     /** The name of the package in which to look for adapter class
      *  code generators. This is a string that defaults to
@@ -223,7 +210,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
      */
     public Parameter inline;
 
-    /** If true, generate code to meausre the execution time.
+    /** If true, generate code to measure the execution time.
      *  The default value is a parameter with the value false.
      */
     public Parameter measureTime;
@@ -238,11 +225,6 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
      */
     public Parameter padBuffers;
 
-    /** If true, then run the generated code. The default
-     *  value is a parameter with the value true.
-     */
-    public Parameter run;
-    
     /** If true, then the generated source is bound to the line
      *  number and file of the (adapter) templates. Otherwise, the
      *  source is bound only to the output file. This is a boolean
@@ -602,7 +584,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
         }
         return result;
     }
-
+    
     /** Return a formatted comment containing the
      *  specified string with a specified indent level.
      *  @param comment The string to put in the comment.
@@ -610,48 +592,18 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
      *  @return A formatted comment.
      */
     public String comment(int indentLevel, String comment) {
-        try {
-            if (generateComment.getToken() == BooleanToken.TRUE) {
-                return StringUtilities.getIndentPrefix(indentLevel)
-                + formatComment(comment);
-            }
-        } catch (IllegalActionException e) {
-            // do nothing.
-        }
         return "";
     }
 
     /** Return a formatted comment containing the
-     *  specified string. In this base class, the
-     *  comments is a C-style comment, which begins with
-     *  "\/*" and ends with "*\/".
+     *  specified string.
      *  @param comment The string to put in the comment.
      *  @return A formatted comment.
      */
     public String comment(String comment) {
-        try {
-            if (generateComment.getToken() == BooleanToken.TRUE) {
-                return formatComment(comment);
-            } 
-        } catch (IllegalActionException e) {
-            // do nothing.
-        }
         return "";
     }
-
-    /** Return a formatted comment containing the specified string. In
-     *  this base class, the comments is a C-style comment, which
-     *  begins with "\/*" and ends with "*\/" followed by the platform
-     *  dependent end of line character(s): under Unix: "\n", under
-     *  Windows: "\n\r". Subclasses may override this produce comments
-     *  that match the code generation language.
-     *  @param comment The string to put in the comment.
-     *  @return A formatted comment.
-     */
-    public String formatComment(String comment) {
-        return "/* " + comment + " */" + _eol;
-    }
-
+    
     /** Generate code and write it to the file specified by the
      *  <i>codeDirectory</i> parameter.
      *  @return The return value of the last subprocess that was executed.
