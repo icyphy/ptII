@@ -1009,7 +1009,7 @@ nonjsall:
 			( cd $(PTIIHOME)/$$x ; \
 			echo making tests  in $(PTIIHOME)/$$x ; \
 			$(MAKE) $(MFLAGS) $(MAKEVARS) \
-				"JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true -Xmx256M" \
+				"JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true" \
 				tests \
 			);  \
 		    fi ; \
