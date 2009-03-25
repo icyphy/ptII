@@ -72,6 +72,9 @@ MISC_FILES =	$(DIRS) test
 OPTIONAL_FILES = \
 	demo \
 	$(PTCLASSJAR) \
+	'MonitorReceiverContents$$1$$1.class' \
+	'MonitorReceiverContents$$1$$2.class' \
+	'MonitorReceiverContents$$1.class' \
 	'VisualModelReference$$1.class' \
 	'VisualModelReference$$2.class' \
 	'VisualModelReference$$3.class' \
