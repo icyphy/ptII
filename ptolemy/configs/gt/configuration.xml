@@ -142,7 +142,7 @@
 	    <!--ptalon not shipped with 6.0 -->
             <!--input source="ptolemy/actor/ptalon/ptalon.xml"/-->
         <!-- Properties library -->
-            <input source="ptolemy/configs/propertiesLibrary.xml"/>
+            <input source="ptolemy/configs/properties/propertiesLibrary.xml"/>
 	    <!--ptp not shipped with 6.0 -->
             <!--input source="ptolemy/ptp/lib/ptpentities.xml"/-->
             <input source="ptolemy/actor/lib/python/python.xml"/>

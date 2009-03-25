@@ -60,7 +60,15 @@ OTHER_FILES_TO_BE_JARED = \
 	configuration.xml \
 	intro.htm \
 	latticeEffigyFactory.xml \
+	latticeLibrary.xml \
 	latticeTableauFactory.xml \
+	propertiesActors.xml \
+	propertiesAttributeLibrary.xml \
+	propertiesConfigurableSolvers.xml \
+	propertiesConfigurableCombinedSolvers.xml \
+	propertiesConfigurableConstraintSolvers.xml \
+	propertiesConfigurableTokenSolvers.xml \
+	propertiesLibrary.xml \
 	welcomeWindow.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)

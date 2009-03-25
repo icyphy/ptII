@@ -6,7 +6,7 @@
   <!-- Specify the about file to open. -->
   <property name="_about"
             class="ptolemy.data.expr.FileParameter"
-            value="$CLASSPATH/ptolemy/configs/full/intro.htm"/>
+            value="$CLASSPATH/ptolemy/configs/properties/intro.htm"/>
 
   <!-- Specify the help file to open. -->
   <property name="_help"
@@ -45,7 +45,7 @@
     <input source="ptolemy/configs/gt/gtEffigyFactory.xml"/>
     <input source="ptolemy/configs/iaEffigyFactory.xml"/>
     <input source="ptolemy/configs/fmvEffigyFactory.xml"/>
-    <!--input source="ptolemy/configs/extendedEffigyFactories.xml"/-->
+    <input source="ptolemy/configs/extendedEffigyFactories.xml"/>
   </entity>
 
   <!-- The list of tableau factories, which defines the visual   -->
@@ -144,7 +144,7 @@
 	    <!--ptalon not shipped with 6.0 -->
             <!--input source="ptolemy/actor/ptalon/ptalon.xml"/-->
         <!-- Properties library -->
-            <input source="ptolemy/configs/propertiesLibrary.xml"/>
+            <input source="ptolemy/configs/properties/propertiesLibrary.xml"/>
 	    <!--ptp not shipped with 6.0 -->
             <!--input source="ptolemy/ptp/lib/ptpentities.xml"/-->
             <input source="ptolemy/actor/lib/python/python.xml"/>
