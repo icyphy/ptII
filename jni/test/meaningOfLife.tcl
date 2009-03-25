@@ -115,24 +115,8 @@ test meaningOfLife-1.4 {Run a model that uses both testDeux and testTrois} {
     testJNI testQuatre
 } {}
 
-test meaningOfLife-1.5 {Run a model that uses long arrays, but does not run } {
-    # Create the shared library that has the code we want
-    puts "Running 'make shared'"
-    puts "[exec make shared SHAREDBASE=Streaming]"
-
-    set modelbase Streaming
-    puts "Generating JNI for $modelbase" 
-
-    # Read in the model
-    set parser [java::new ptolemy.moml.MoMLParser]
-
-    set namedObj [$parser parseFile "./$modelbase.xml"]
-    set toplevel [java::cast ptolemy.actor.CompositeActor $namedObj]
-    
-
-    # Create the JNI files and compile them.
-    # generateJNI also deletes relations and ports and recreates the ports
-    java::call jni.JNIUtilities generateJNI $toplevel
-    runModel $modelbase
-} {1}
+test meaningOfLife-1.5 {Run a model that uses long arrays} {
+    # See https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=16
+    testJNI Streaming
+} {}
 
