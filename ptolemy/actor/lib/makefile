@@ -300,6 +300,8 @@ OPTIONAL_FILES = \
 	x10 \
 	'AbsoluteValue$$1.class' \
 	'AbsoluteValue$$FunctionTerm.class' \
+	'Commutator$$WidthDependentParameter.class' \
+	'Distributor$$WidthDependentParameter.class' \
 	'Exec$$_StreamReaderThread.class' \
 	'Expression$$1.class' \
 	'Expression$$OutputTypeFunction.class' \
