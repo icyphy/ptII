@@ -35,10 +35,12 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.DFUtilities;
+import ptolemy.cg.adapter.generic.procedural.adapters.ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.cg.adapter.generic.procedural.java.adapters.ptolemy.actor.TypedCompositeActor;
-import ptolemy.cg.adapter.generic.procedural.java.adapters.ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.CodeStream;
+import ptolemy.cg.kernel.generic.GenericCodeGenerator;
+import ptolemy.cg.kernel.generic.procedural.java.JavaCodeGenerator;
 import ptolemy.cg.lib.CompiledCompositeActor;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
@@ -421,6 +423,13 @@ public class SDFDirector extends StaticSchedulingDirector {
         //}
     }
 
+    /** Get the code generator associated with this adapter class.
+     *  @return The code generator associated with this adapter class.
+     *  @see #setCodeGenerator(GenericCodeGenerator)
+     */
+    public JavaCodeGenerator getCodeGenerator() {
+        return (JavaCodeGenerator) _codeGenerator;
+    }
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
 

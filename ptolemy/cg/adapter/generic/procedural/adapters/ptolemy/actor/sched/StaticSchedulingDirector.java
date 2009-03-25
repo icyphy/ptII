@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.cg.adapter.generic.procedural.c.adapters.ptolemy.actor.sched;
+package ptolemy.cg.adapter.generic.procedural.adapters.ptolemy.actor.sched;
 
 import java.util.Iterator;
 
@@ -38,8 +38,6 @@ import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
 import ptolemy.cg.kernel.generic.ActorCodeGenerator;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.CodeStream;
-import ptolemy.cg.kernel.generic.GenericCodeGenerator;
-import ptolemy.cg.kernel.generic.procedural.c.CCodeGenerator;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
@@ -53,9 +51,9 @@ import ptolemy.kernel.util.NamedObj;
 
 /**
  Code generator adapter associated with the StaticSchedulingDirector class.
- This classis also associated with a code generator.
+ This class is also associated with a code generator.
 
- @author Gang Zhou
+ @author Gang Zhou, Contributor: Bert Rodiers
  @version $Id$
  @since Ptolemy II 6.0
  @Pt.ProposedRating Yellow (zgang)
@@ -256,19 +254,10 @@ public class StaticSchedulingDirector extends Director {
 
         return variableDeclarations.toString();
     }
-    
-    /** Get the code generator associated with this adapter class.
-     *  @return The code generator associated with this adapter class.
-     *  @see #setCodeGenerator(GenericCodeGenerator)
-     */
-    //FIXME rodiers: should this be here?
-    public CCodeGenerator getCodeGenerator() {
-        return (CCodeGenerator) _codeGenerator;
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /**
      * Generate the code that updates the input/output port offset.
      * @param code The given code buffer.
@@ -294,5 +283,5 @@ public class StaticSchedulingDirector extends Director {
             _updateConnectedPortsOffset(port, code, rate);
         }
     }
-    
+
 }
