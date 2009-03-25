@@ -589,8 +589,6 @@ public class Director extends CodeGeneratorHelper {
 		extension = "j";
 	    }
         }
-        _codeStream = new CodeStream(
-                "$CLASSPATH/" + path + "." + extension, _codeGenerator);
     }
 
     /////////////////////////////////////////////////////////////////////
@@ -686,9 +684,6 @@ public class Director extends CodeGeneratorHelper {
     static {
         _eol = StringUtilities.getProperty("line.separator");
     }
-
-    /** The codeStream associated with this director. */
-    protected CodeStream _codeStream;
 
     /** The associated director.
      */
