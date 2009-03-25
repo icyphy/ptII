@@ -502,7 +502,7 @@ boolean BooleanArray_sum(Token token) {
 /**/
 
 /***BooleanArray_repeat***/
-Token BooleanArray_repeat(int number, Boolean value) {
+Token BooleanArray_repeat(int number, boolean value) {
 	Token result;
 	result = $new(BooleanArray(number, 0));
 	int i;

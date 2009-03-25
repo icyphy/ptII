@@ -478,7 +478,7 @@ double DoubleArray_sum(Token token) {
 /**/
 
 /***DoubleArray_repeat***/
-Token DoubleArray_repeat(int number, Double value) {
+Token DoubleArray_repeat(int number, double value) {
 	Token result;
 	result = $new(DoubleArray(number, 0));
 	int i;

@@ -184,7 +184,7 @@ inline Token subtract_Token_Double(Token a1, double a2) {
 
 /*** subtract_Token_Int() ***/
 inline int subtract_Token_Int(Token a1, int a2) {
-    Token token = $new(Int, a2);
+    Token token = $new(Int(a2));
     return $typeFunc(TYPE_Int::subtract(a1, token));
 }
 /**/

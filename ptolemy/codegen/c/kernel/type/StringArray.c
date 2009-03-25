@@ -251,68 +251,6 @@ Token StringArray_add(Token thisToken, ...) {
 /**/
 
 
-/***StringArray_subtract***/
-// StringArray_subtract: Subtract the second argument array
-// from the first argument array.
-// Assume the given otherToken is an array.
-// FIXME: Arrays can have scalars subtracted!
-// This will cause a nasty seg fault.
-// Return a new Array token.
-Token StringArray_subtract(Token thisToken, ...) {
-    int i;
-    int size1;
-    int size2;
-    int resultSize;
-
-    va_list argp;
-    Token result;
-    Token otherToken;
-
-    va_start(argp, thisToken);
-    otherToken = va_arg(argp, Token);
-
-    size1 = thisToken.payload.StringArray->size;
-    size2 = otherToken.payload.StringArray->size;
-    resultSize = (size1 > size2) ? size1 : size2;
-
-    result = $new(StringArray(resultSize, 0));
-
-    for (i = 0; i < resultSize; i++) {
-        if (size1 == 1) {
-        	StringArray_set(result, i, $subtract_String_String(StringArray_get(thisToken, 0),StringArray_get(otherToken, i)));
-        } else if (size2 == 1) {
-        	StringArray_set(result, i, $subtract_String_String(StringArray_get(thisToken, i),StringArray_get(otherToken, 0)));
-        } else {
-        	StringArray_set(result, i, $subtract_String_String(StringArray_get(thisToken, i),StringArray_get(otherToken, i)));
-        }
-    }
-
-    va_end(argp);
-    return result;
-}
-/**/
-
-
-
-
-/***StringArray_negate***/
-string $negate_String(string a1);
-
-// StringArray_negate: Negate each element of an array.
-// Return a new Array token.
-Token StringArray_negate(Token thisToken, ...) {
-    int i;
-    Token result;
-    result = $new(StringArray(thisToken.payload.StringArray->size, 0));
-
-    for (i = 0; i < thisToken.payload.StringArray->size; i++) {
-        StringArray_set(result, i, $negate_String(StringArray_get(thisToken, i)));
-    }
-    return result;
-}
-/**/
-
-
 /***StringArray_zero***/
 // StringArray_zero: Return an array like the specified
 // array but with zeros of the same type.
@@ -382,7 +320,7 @@ string StringArray_sum(Token token) {
 /**/
 
 /***StringArray_repeat***/
-Token StringArray_repeat(int number, String value) {
+Token StringArray_repeat(int number, string value) {
 	Token result;
 	result = $new(StringArray(number, 0));
 	int i;

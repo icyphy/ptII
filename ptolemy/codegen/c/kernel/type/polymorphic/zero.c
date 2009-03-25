@@ -26,6 +26,11 @@
 #define zero_Long(a) (0)
 /**/
 
+/*** zero_String() ***/
+#define zero_String(a) ""
+/**/
+
+
 /*** zero_Token() ***/
 #define zero_Token(a) $tokenFunc(a::zero())
 /**/

@@ -478,7 +478,7 @@ $type $TypeArray_sum(Token token) {
 /**/
 
 /***$TypeArray_repeat***/
-Token $TypeArray_repeat(int number, $Type value) {
+Token $TypeArray_repeat(int number, $type value) {
 	Token result;
 	result = $new($TypeArray(number, 0));
 	int i;

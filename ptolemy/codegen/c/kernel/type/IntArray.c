@@ -486,7 +486,7 @@ int IntArray_sum(Token token) {
 /**/
 
 /***IntArray_repeat***/
-Token IntArray_repeat(int number, Int value) {
+Token IntArray_repeat(int number, int value) {
 	Token result;
 	result = $new(IntArray(number, 0));
 	int i;

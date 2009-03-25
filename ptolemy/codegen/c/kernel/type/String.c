@@ -110,7 +110,7 @@ Token String_clone(Token thisToken, ...) {
 
 
 
------------------- static functions --------------------------------------
+//------------------ static functions --------------------------------------
 
 /***String_convert***/
 Token String_convert(Token token, ...) {
