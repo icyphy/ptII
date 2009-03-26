@@ -45,8 +45,8 @@ import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;
 
 /**
- * Read and process code blocks from the helper .c file. Helper .c files
- * contain c code blocks for the associated java helper actor. A proper
+ * Read and process code blocks from the adaptor .[target] file. Adaptor code template files
+ * contain c code blocks for the associated java adaptor actor. A proper
  * code block should have the following grammar:
  * <pre>
  *     _BLOCKSTART CodeBlockName [(Parameter1, Parameter2), ...] _HEADEREND
@@ -91,34 +91,34 @@ import ptolemy.util.StringUtilities;
 public class CodeStream {
 
     /**
-     * Construct a new code stream associated with the given java actor
-     * helper. Each actor should have its own codestream during code
+     * Construct a new code stream associated with the given adaptor. 
+     * Each actor should have its own codestream during code
      * generation.
-     * @param helper The actor helper associated with this code stream,
+     * @param adaptor The adaptor associated with this code stream,
      * which is currently ignored.
      */
-    public CodeStream(CodeGeneratorHelper helper) {
-        _helper = helper;
-        this._codeGenerator = _helper._codeGenerator;
+    public CodeStream(CodeGeneratorHelper adaptor) {
+        _adaptor = adaptor;
+        this._codeGenerator = _adaptor._codeGenerator;
     }
 
     /**
      * Construct a new code stream associated with the given java actor
-     * helper. Each actor should have its own codestream during code
+     * adaptor. Each actor should have its own codestream during code
      * generation.
      * @param templateArguments Template arguments to be substituted
      * in the code.  Template arguments begin with "<" and end with ">".
-     * @param helper The actor helper associated with this code stream,
+     * @param adaptor The actor adaptor associated with this code stream,
      * which is currently ignored.
      */
-    public CodeStream(List templateArguments, CodeGeneratorHelper helper) {
-        this(helper);
+    public CodeStream(List templateArguments, CodeGeneratorHelper adaptor) {
+        this(adaptor);
         _templateArguments = templateArguments;
     }
 
     /**
      * Construct a new code stream, given a specified file path of the
-     * helper .[target] file as a URL suitable for
+     * adaptor .[target] file as a URL suitable for
      * {@link ptolemy.util.FileUtilities#openForReading(String, URI, ClassLoader)},
      *  for example "file:./test/testCodeBlock.c".
      * @param path The given file path.
@@ -283,7 +283,7 @@ public class CodeStream {
 
                 // The default blocks are automatically appended 
                 // by CodeGeneratorHelper.
-                if (_helper != null && blockName.matches(blocks[i])) {
+                if (_adaptor != null && blockName.matches(blocks[i])) {
                     throw new IllegalActionException(
                             blockName
                             + " -- is a code block that is appended by default.");
@@ -337,7 +337,7 @@ public class CodeStream {
             if (mayNotExist) {
                 return "";
             } else {
-                throw new IllegalActionException(_helper,
+                throw new IllegalActionException(_adaptor,
                         "Cannot find code block: \"" + signature + "\" in \""
                         + _filePath + "\", the initial path was \""
 		        + _originalFilePath + "\".");
@@ -385,8 +385,8 @@ public class CodeStream {
 
     /**
      * Return a String that contains all the code block names and
-     * bodies from the associated helper .[target] file.
-     * @return The content from parsing the helper .[target] file.
+     * bodies from the associated adaptor .[target] file.
+     * @return The content from parsing the adaptor .[target] file.
      * @exception IllegalActionException If an error occurs during parsing.
      */
     public String description() throws IllegalActionException {
@@ -426,8 +426,13 @@ public class CodeStream {
     /**
      * Return a list of code block names contained by this CodeStream.
      * @return The list of code block names contained by this CodeStream.
+     * @exception IllegalActionException If there is a problem when
+     * parsing the code adaptor .[target] file.
      */
-    public List<String> getAllCodeBlockNames() {
+    public List<String> getAllCodeBlockNames() throws IllegalActionException {
+        if (_doParsing) {
+            _constructCodeTable(true);
+        }
         List<String> result = new LinkedList<String>();
         Iterator signatures = _declarations.keys();
         while (signatures.hasNext()) {
@@ -441,7 +446,7 @@ public class CodeStream {
      * Return a set of code block signatures contained by this CodeStream.
      * @return The set of code block signatures contained by this CodeStream.
      * @exception IllegalActionException If there is a problem when
-     * parsing the code helper .[target] file.
+     * parsing the code adaptor .[target] file.
      */
     public Set<Signature> getAllCodeBlockSignatures() 
     throws IllegalActionException {
@@ -538,13 +543,13 @@ public class CodeStream {
     }
 
     /**
-     * Simple stand alone test method. Parse a helper .[target] file,
+     * Simple stand alone test method. Parse a adaptor .[target] file,
      * and print all the code blocks.
      * @param args Command-line arguments, the first of which names a
      * .[target] file as a URL , for example file:./test/testCodeBlock.c.
      * @exception IOException If an error occurs when reading user inputs.
      * @exception IllegalActionException If an error occurs during parsing
-     *  the helper .[target] file.
+     *  the adaptor .[target] file.
      */
     public static void main(String[] args) throws IOException,
     IllegalActionException {
@@ -620,7 +625,7 @@ public class CodeStream {
         _declarations = null;
     }
 
-    /** Set the code blocks which will be parsed instead of .c file.
+    /** Set the code blocks which will be parsed instead of code template file.
      *  @param codeBlocks The code blocks to be parsed.
      */
     public void setCodeBlocks(String codeBlocks) {
@@ -762,15 +767,15 @@ public class CodeStream {
     }
 
     /**
-     * Read the code blocks associated with this helper and construct the code
+     * Read the code blocks associated with this adaptor and construct the code
      * block and parameter table. If there is a pre-specified file path to
      * read from, it only reads code block from the specified file only.
      * Otherwise, it recursively searches code blocks from super classes'
-     * helpers.
+     * adaptors.
      * @param mayNotExist Indicate if the file is required to exist.
      * @param filePath The given .[target] file to read from.
      * @exception IllegalActionException If an error occurs when parsing the
-     *  helper .[target] file.
+     *  adaptor .[target] file.
      */
     private void _constructCodeTable(boolean mayNotExist)
     throws IllegalActionException {
@@ -786,12 +791,12 @@ public class CodeStream {
             // Use the pre-specified file path.
             _constructCodeTableHelper(mayNotExist);
         } else {
-            for (Class helperClass = _helper.getClass(); helperClass != null; helperClass = helperClass
+            for (Class adaptorClass = _adaptor.getClass(); adaptorClass != null; adaptorClass = adaptorClass
             .getSuperclass()) {
 
 		// We don't always update _originalFilePath here so
 		// that we can have a better error message.
-                _filePath = _getPath(helperClass);
+                _filePath = _getPath(adaptorClass);
 		if (_originalFilePath == null) {
 		    _originalFilePath = _filePath;
 		}
@@ -820,7 +825,7 @@ public class CodeStream {
             if (_codeBlocks != null) {
                 codeToBeParsed.append(_codeBlocks);
             } else {
-                // Open the .c file for reading.
+                // Open the code template file for reading.
                 reader = FileUtilities.openForReading(_filePath, null, null);
 
                 if (reader == null) {
@@ -833,8 +838,8 @@ public class CodeStream {
                 .nameToURL(_filePath, null, 
                         getClass().getClassLoader()).getPath();
 
-                if (_codeGenerator == null && _helper != null) {
-                    _codeGenerator = _helper._codeGenerator;
+                if (_codeGenerator == null && _adaptor != null) {
+                    _codeGenerator = _adaptor._codeGenerator;
                 }
 
                 // Read the entire content of the code block file.
@@ -897,9 +902,9 @@ public class CodeStream {
     }
 
     /** Return true if the generated source code is bound to the line
-     *  number and file of the helper templates.
+     *  number and file of the adaptor templates.
      * @return True if the generated source code is bound to the line
-     *  number and file of the helper templates.    Return false
+     *  number and file of the adaptor templates.    Return false
      *  if the source is bound only to the output file, or if there is
      *  no CodeGenerator associated with this stream.
      * @exception IllegalActionException If there is a problem reading
@@ -918,18 +923,18 @@ public class CodeStream {
     }
 
     /**
-     * Get the file path for the helper .[target] file associated with
-     * the given helper class.  If the helper has no code generator,
+     * Get the file path for the adaptor .[target] file associated with
+     * the given adaptor class.  If the adaptor has no code generator,
      * then the empty string is returned.
-     * @param helperClass The given helper class
-     * @return Path for the helper .[target] file.
+     * @param adaptorClass The given adaptor class
+     * @return Path for the adaptor .[target] file.
      */
-    private String _getPath(Class helperClass) {
-        CodeGenerator codeGenerator = _helper.getCodeGenerator();
+    private String _getPath(Class adaptorClass) {
+        CodeGenerator codeGenerator = _adaptor.getCodeGenerator();
         if (codeGenerator == null) {
             return "";
         }
-        String extension = _helper._codeGenerator.generatorPackage
+        String extension = _adaptor._codeGenerator.generatorPackage
         .getExpression();
         extension = extension.substring(extension.lastIndexOf(".") + 1);
 	// See also codegen/kernel/Director.java
@@ -940,7 +945,7 @@ public class CodeStream {
 	    // Foo.java.  So, we use the j extension.
 	    extension = "j";
 	}
-        return "$CLASSPATH/" + helperClass.getName().replace('.', '/') + "."
+        return "$CLASSPATH/" + adaptorClass.getName().replace('.', '/') + "."
         + extension;
     }
 
@@ -948,7 +953,7 @@ public class CodeStream {
      * Parse from the _parseIndex and return the next code block
      * body from the given StringBuffer. This method recursively
      * parses within the code body for nested code blocks.
-     * @param codeInFile Code from the helper .c file.
+     * @param codeInFile Code from the adaptor code template file.
      * @return The code body within the current code block.
      * @exception IllegalActionException If code block's close block
      *  pattern, _BLOCKEND, is missing.
@@ -1031,7 +1036,7 @@ public class CodeStream {
      * the code block name. This method puts the code block body (value)
      * and the code block name (key) into the code block table. It calls
      * the parseHeader(StringBuffer) and parseBody(StringBuffer) functions.
-     * @param codeInFile Code from the helper .c file.
+     * @param codeInFile Code from the adaptor code template file.
      * @return The name of the code block, or null if there is no more code
      *  blocks to be parsed.
      * @exception IllegalActionException If an error occurs during parsing.
@@ -1061,7 +1066,7 @@ public class CodeStream {
      * Parse from the _parseIndex for the next code block header and
      * return the next code block name. This method parses for any parameter
      * declarations and put the list of parameter(s) into the _parameterTable.
-     * @param codeInFile Code from the helper .c file.
+     * @param codeInFile Code from the adaptor code template file.
      * @return The name of the code block, or null if there is no more
      *  code blocks to be parsed.
      * @exception IllegalActionException If the code block's close header
@@ -1439,7 +1444,7 @@ public class CodeStream {
                     boolean isImplicit = dotIndex < 0 || dotIndex > openIndex;
 
                     if (openIndex < 0 || closeParen < 0 || openIndex > closeParen) {
-                        throw new IllegalActionException(_helper, 
+                        throw new IllegalActionException(_adaptor, 
                                 signature + " contains an ill-formatted $" + macro + "().");
                     }
                     
@@ -1461,7 +1466,7 @@ public class CodeStream {
                             callArguments.size());
 
                     if (!isSuper && callSignature.equals(signature)) {
-                        throw new IllegalActionException(_helper, callSignature
+                        throw new IllegalActionException(_adaptor, callSignature
                                 + " recursively appends itself in "
                                 + codeObject[0]);
                     }
@@ -1472,7 +1477,7 @@ public class CodeStream {
                                             scopeList.size()));
 
                     if (callCodeBlock == null) {
-                        throw new IllegalActionException(_helper,
+                        throw new IllegalActionException(_adaptor,
                                 "Cannot find " + (isSuper ? "super" : "this")
                                 + " block for " + callSignature
                                 + " in \"" + codeObject[0] + "\"");
@@ -1555,7 +1560,7 @@ public class CodeStream {
 
         /**
          * LinkedList of LinkedHashMap of code blocks. Each index of the
-         * LinkedList represents a separate helper .c code block file.
+         * LinkedList represents a separate adaptor code template file.
          */
         private LinkedList<LinkedHashMap> _codeTableList = new LinkedList<LinkedHashMap>();
     }
@@ -1668,7 +1673,7 @@ public class CodeStream {
 
     /**
      * The code block table that stores the code blocks information,
-     * like the code body (StringBuffer), signatures, .c helper class
+     * like the code body (StringBuffer), signatures, adaptor class
      * associated with the code blocks. It uses code block Signature
      * as keys.
      */
@@ -1684,21 +1689,21 @@ public class CodeStream {
     }
 
     /**
-     * The path of the current .c file being parsed.
+     * The path of the current code template file being parsed.
      */
     private String _filePath = null;
 
     /**
-     * The helper associated with this code stream.
+     * The adaptor associated with this code stream.
      */
-    private CodeGeneratorHelper _helper = null;
+    private CodeGeneratorHelper _adaptor = null;
 
     /** Original value of _filePath, used for error messages. */
     private String _originalFilePath = null;
 
     /**
      * Index pointer that indicates the current location
-     * within the .c file to be parsed.
+     * within the code template file to be parsed.
      */
     private int _parseIndex = 0;
 
