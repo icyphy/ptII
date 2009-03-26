@@ -68,7 +68,8 @@ OPTIONAL_FILES = \
 	doc \
 	'PtidesBasicDirector$$DoubleTimedEvent.class' \
 	'PtidesReceiver$$Event.class' \
-	'PtidesReceiver$$TimeComparator.class'
+	'PtidesReceiver$$TimeComparator.class' \
+	'PtidesBasicDirector$$DoubleTimedEvent.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
