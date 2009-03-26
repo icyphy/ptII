@@ -35,7 +35,9 @@ ME =		ptolemy/backtrack
 
 # PTBACKTRACK_ECLIPSE_DIR is set to eclipse by configure in $PTII/mk/ptII.mk
 # if the eclipse jar files were found.
-DIRS =		$(PTBACKTRACK_ECLIPSE_DIR) automatic manual util xmlparser demo test
+# We don't include test in DIRS because test runs backtracking which requires
+# that jclass is run in the parent, but not yet in test.  Confusing . . .
+DIRS =		$(PTBACKTRACK_ECLIPSE_DIR) automatic manual util xmlparser demo
 
 # Root of the Java directory
 ROOT =		../..
@@ -72,7 +74,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	test automatic eclipse manual test ui util xmlparser
+MISC_FILES =	test automatic eclipse manual ui util xmlparser
 
 
 # make checkjunk will not report OPTIONAL_FILES as trash
@@ -80,6 +82,20 @@ MISC_FILES =	test automatic eclipse manual test ui util xmlparser
 OPTIONAL_FILES = \
 	demo \
 	doc
+
+# .class files in test/ that are removed here because test is not in DIRS above.
+# The reason this is important is if the user compiles with Java 1.6, and then
+# runs "make clean", then all the .class files should be removed so that
+# if the user runs with Java 1.5, then there are no problems.
+KRUFT = \
+	test/ArrayTest1Main.class \
+	test/RandomTest1Main.class \
+	test/Test1Main.class \
+	test/Test2Main.class \
+	test/array1/ArrayTest1.class \
+	test/random1/RandomTest1.class \
+	test/test1/Test1.class \
+	test/test2/Test2.class
 
 JCLASS = $(JSRCS:%.java=%.class)
 
