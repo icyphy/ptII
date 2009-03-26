@@ -50,6 +50,7 @@ import ptolemy.actor.Manager;
 import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.actor.lib.jni.PointerToken;
 import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
+import ptolemy.cg.gui.CodeGeneratorGUIFactory;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
@@ -161,8 +162,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
         // FIXME: We may not want this GUI dependency here...
         // This attribute could be put in the MoML in the library instead
         // of here in the Java code.
-        // FIXME rodiers: Add CodeGeneratorGUIFactory again!
-        //new CodeGeneratorGUIFactory(this, "_codeGeneratorGUIFactory");
+        new CodeGeneratorGUIFactory(this, "_codeGeneratorGUIFactory");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -704,7 +704,15 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
     public String generateWrapupProcedureName() throws IllegalActionException {
         return "";
     }
-
+    
+    /** Return the name of the code file that was written, if any.
+     *  If no file was written, then return null.
+     *  @return The name of the file that was written.
+     */
+    public String getCodeFileName() {
+        return _codeFileName;
+    }
+    
     /** Return the associated component, which is always the container.
      *  @return The adapter to generate code.
      */
@@ -1485,7 +1493,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
         startTime = _printTimeAndMemory(startTime,
         "CodeGenerator: final pass consumed: ");
 
-        /*_codeFileName =*/ _writeCode(code);
+        _codeFileName = _writeCode(code);
 
         /*startTime =*/_printTimeAndMemory(startTime,
         "CodeGenerator: writing code consumed: ");
@@ -1598,7 +1606,11 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
     private void _reset() {
         // Reset the indent to zero.
         _indent = 0;
-
+        
+        // Reset the code file name so that getCodeFileName()
+        // accurately reports whether code was generated.
+        _codeFileName = null;
+        
         _newTypesUsed.clear();
         _tokenFuncUsed.clear();
         _typeFuncUsed.clear();
@@ -2009,6 +2021,11 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
 
     /** The form of the command line. */
     private static final String _commandTemplate = "ptcg [ options ] [file ...]";
+    
+    /** The name of the file that was written.
+     *  If no file was written, then the value is null.
+     */
+    private String _codeFileName = null;
     
     private GeneratorPackageListParser _generatorPackageListParser = new GeneratorPackageListParser();
 
