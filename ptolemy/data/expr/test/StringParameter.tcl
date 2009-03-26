@@ -1,10 +1,10 @@
 # Tests for the StringParameter class
 #
-# @Author: Neil Smyth
+# @Author: Christopher Brooks
 #
 # @Version $Id$
 #
-# @Copyright (c) 1997-2006 The Regents of the University of California.
+# @Copyright (c) 2009 The Regents of the University of California.
 # All rights reserved.
 # 
 # Permission is hereby granted, without written agreement and without
@@ -75,10 +75,10 @@ test StringParameter-10.1 {test a nesting problem} {
     set parser [java::new ptolemy.moml.MoMLParser]
     $parser reset
     $parser purgeAllModelRecords
-    set toplevel [$parser parseFile expressionException.xml]
+    set toplevel [$parser parseFile StringParameterDialogBug.xml]
     set toplevel [java::cast ptolemy.kernel.CompositeEntity $toplevel]
     set CompositeActor2 [$toplevel getEntity CompositeActor1.CompositeActor2]
     $CompositeActor2 setContainer [java::null]
-    set p1 [java::cast ptolemy.data.expr.StringParameter [$toplevel getAttribute p1]]
+    set p1 [java::cast ptolemy.data.expr.Parameter [$toplevel getAttribute p1]]
     $p1 setExpression {bif}
 } {}
