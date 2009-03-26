@@ -85,7 +85,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      */
     public CCodeGenerator(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(container, name);
+        super(container, name, "c", "c");
         
         generateCpp = new Parameter(this, "generateCpp");
         generateCpp.setTypeEquals(BaseType.BOOLEAN);

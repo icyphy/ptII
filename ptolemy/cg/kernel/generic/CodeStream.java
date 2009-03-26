@@ -933,22 +933,7 @@ public class CodeStream {
             return "";
         }
 
-        // FIXME rodiers: don't access generatorPackageList directly!
-        
-        String extension = _adapter._codeGenerator.generatorPackageList
-        .getExpression();
-        extension = extension.substring(extension.lastIndexOf(".") + 1);
-	// See also codegen/kernel/Director.java
-
-        // FIXME: should the java specifics be in this class?
-	
-        if (extension.equals("java")) {
-	    // Sigh.  The problem is that for Java codegen, if we
-	    // have an actor Foo, then Foo.java defines the Java
-	    // interface, so we can't have the stub code in
-	    // Foo.java.  So, we use the j extension.
-	    extension = "j";
-	}
+        String extension = _adapter.getCodeGenerator().getTemplateExtension();
         return "$CLASSPATH/" + adapterClass.getName().replace('.', '/') + "."
         + extension;
     }

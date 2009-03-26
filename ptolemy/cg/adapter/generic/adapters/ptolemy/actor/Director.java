@@ -560,44 +560,6 @@ public class Director extends CodeGeneratorAdapter {
         return set;
     }
 
-    /** Set the code generator associated with this adapter class.
-     *  @param codeGenerator The code generator associated with this
-     *   adapter class.
-     */
-    public void setCodeGenerator(GenericCodeGenerator codeGenerator) {
-        super.setCodeGenerator(codeGenerator);
-
-        String path = getClass().getName().replace('.', '/');  
-
-        String packageName = getClass().getPackage().getName();
-        
-        // packageName is typically something like:
-        // ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.sdf.kernel
-        // Thus "c" is the file extension for the adapter.  This is a bit of a hack.
-        String [] splittedString = packageName.split(".adapters.");
-        String extension = "";
-        if (splittedString.length > 0) {
-            String temp = splittedString[0];
-            if (temp.indexOf('.') != -1) { 
-                extension = temp.substring(temp.lastIndexOf('.') + 1);
-
-                // See also codegen/kernel/CodeStream.java
-                if (extension.equals("java")) {
-                    // Sigh.  The problem is that for Java codegen, if we
-                    // have an actor Foo, then Foo.java defines the Java
-                    // interface, so we can't have the stub code in
-                    // Foo.java.  So, we use the j extension.
-                    extension = "j";
-                }
-            }
-        }
-
-        // FIXME: Jia removed the following line in codegen
-        
-        _codeStream = new CodeStream(
-                "$CLASSPATH/" + path + "." + extension, _codeGenerator);
-    }
-
     /////////////////////////////////////////////////////////////////////
     ////                   protected methods                         ////
 
@@ -621,16 +583,6 @@ public class Director extends CodeGeneratorAdapter {
         }
 
         return powerOfTwo;
-    }
-
-    /** Return a number of spaces that is proportional to the argument.
-     *  If the argument is negative or zero, return an empty string.
-     *  @param level The level of indenting represented by the spaces.
-     *  @return A string with zero or more spaces.
-     *  @see #_INDENT1
-     */
-    protected static String _getIndentPrefix(int level) {
-        return StringUtilities.getIndentPrefix(level);
     }
 
     /** Update the read offsets of the buffer associated with the given port.
@@ -681,40 +633,9 @@ public class Director extends CodeGeneratorAdapter {
     ////////////////////////////////////////////////////////////////////
     ////                     protected variables                    ////
 
-
-
-    /** End of line character.  Under Unix: "\n", under Windows: "\n\r".
-     *  We use a end of line charactor so that the files we generate
-     *  have the proper end of line character for use by other native tools.
-     */
-    protected static final String _eol;
-    static {
-        _eol = StringUtilities.getProperty("line.separator");
-    }
-
     /** The associated director.
      */
     protected ptolemy.actor.Director _director;
-
-    /** Indent string for indent level 1.
-     *  @see #_getIndentPrefix(int)
-     */
-    protected static final String _INDENT1 = _getIndentPrefix(1);
-
-    /** Indent string for indent level 2.
-     *  @see #_getIndentPrefix(int)
-     */
-    protected static final String _INDENT2 = _getIndentPrefix(2);
-
-    /** Indent string for indent level 3.
-     *  @see #_getIndentPrefix(int)
-     */
-    protected static final String _INDENT3 = _getIndentPrefix(3);
-
-    /** Indent string for indent level 4.
-     *  @see #_getIndentPrefix(int)
-     */
-    protected static final String _INDENT4 = _getIndentPrefix(4);
 
     public String generateCodeForSend(IOPort port, int channel, String dataToken) throws IllegalActionException {
         return "";

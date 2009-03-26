@@ -42,7 +42,6 @@ import ptolemy.cg.kernel.generic.CodeStream;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator;
 import ptolemy.cg.kernel.generic.program.procedural.c.CCodegenUtilities;
-import ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGenerator;
 import ptolemy.cg.lib.CompiledCompositeActor;
 import ptolemy.cg.lib.PointerToken;
 import ptolemy.data.BooleanToken;

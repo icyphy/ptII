@@ -94,14 +94,20 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
     /** Create a new instance of the code generator.
      *  @param container The container.
      *  @param name The name of the code generator.
+     *  @param outputFileExtension The extension of the output file.
+     *   (for example c in case of C and java in case of Java)  
+     *  @param templateExtension The extension of the template files.
+     *   (for example c in case of C and j in case of Java).
      *  @exception IllegalActionException If the super class throws the
      *   exception or error occurs when setting the file path.
      *  @exception NameDuplicationException If the super class throws the
      *   exception or an error occurs when setting the file path.
      */
-    public GenericCodeGenerator(NamedObj container, String name)
+    public GenericCodeGenerator(NamedObj container, String name, String outputFileExtension, String templateExtension)
     throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        _outputFileExtension = outputFileExtension;
+        _templateExtension = templateExtension;
 
         // Note: If you add publicly settable parameters, update
         // _commandFlags or _commandOptions.
@@ -723,6 +729,15 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
      */
     public Set getModifiedVariables() throws IllegalActionException {
         return _modifiedVariables;
+    }    
+
+    /**
+     * Return The extention of the template files.
+     * (for example c in case of C and j in case of Java)
+     * @return The extention of the template files..
+     */
+    public String getTemplateExtension() {
+        return _templateExtension;
     }
     
     /**
@@ -1154,14 +1169,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
      *  the string value of the generatorPackage parameter.
      */
     protected String _getOutputFilename() throws IllegalActionException {
-
-        // FIXME rodiers: don't access generatorPackageList directly!
-        String packageValue = generatorPackageList.stringValue();
-
-        String extension = packageValue
-        .substring(packageValue.lastIndexOf("."));
-
-        return _sanitizedModelName + extension;
+        return _sanitizedModelName + "." + _outputFileExtension;
     }
 
     /** Test if the containing actor is in the top level.
@@ -1900,6 +1908,10 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
      *  have the proper end of line character for use by other native tools.
      */
     protected static final String _eol;
+    static {
+        _eol = StringUtilities.getProperty("line.separator");
+    }
+    
 
     /** Execute commands to run the generated code.
      */
@@ -2014,9 +2026,15 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
      *  compilers take less time.*/
     private static int _LINES_PER_METHOD = 10000;
 
-    static {
-        _eol = StringUtilities.getProperty("line.separator");
-    }
+    /** The extension of the output file.
+     *   (for example c in case of C and java in case of Java)
+     */
+    private String _outputFileExtension;
+
+    /** The extension of the template files.
+     *   (for example c in case of C and j in case of Java)
+     */
+    private String _templateExtension;
        
     
     class GeneratorPackageListParser
@@ -2037,4 +2055,5 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
         
         private List<String> _generatorPackages;
     }
+
 }

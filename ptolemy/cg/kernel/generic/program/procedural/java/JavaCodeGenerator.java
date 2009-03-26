@@ -88,7 +88,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      */
     public JavaCodeGenerator(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(container, name);
+        super(container, name, "java", "j");
 
         generatorPackageList.setExpression("generic.program.procedural.java");
     }

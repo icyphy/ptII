@@ -54,14 +54,18 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
     /** Create a new instance of the ProceduralCodeGenerator.
      *  @param container The container.
      *  @param name The name of the ProceduralCodeGenerator.
+     *  @param outputFileExtension The extension of the output file.
+     *   (for example c in case of C and java in case of Java)
+     *  @param templateExtension The extension of the template files.
+     *   (for example c in case of C and j in case of Java).
      *  @exception IllegalActionException If the super class throws the
      *   exception or error occurs when setting the file path.
      *  @exception NameDuplicationException If the super class throws the
      *   exception or an error occurs when setting the file path.
      */
-    public ProgramCodeGenerator(NamedObj container, String name)
+    public ProgramCodeGenerator(NamedObj container, String name, String outputFileExtension, String templateExtension)
             throws IllegalActionException, NameDuplicationException {
-        super(container, name);
+        super(container, name, outputFileExtension, templateExtension);
 
         generateComment = new Parameter(this, "generateComment");
         generateComment.setTypeEquals(BaseType.BOOLEAN);
