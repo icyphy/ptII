@@ -247,8 +247,8 @@ public class JavaCodeGeneratorAdapter extends CodeGeneratorAdapter {
      *  generated from this adapter class.
      *  @exception IllegalActionException Not Thrown in this base class.
      */
-    public Set getHeaderFiles() throws IllegalActionException {
-        Set files = super.getHeaderFiles();
+    public Set<String> getHeaderFiles() throws IllegalActionException {
+        Set<String> files = super.getHeaderFiles();
         files.addAll(_includeFiles);
         return files;
     }    
@@ -258,7 +258,7 @@ public class JavaCodeGeneratorAdapter extends CodeGeneratorAdapter {
      *   needed by the code generated for jvm library
      *  @exception IllegalActionException Not Thrown in this subclass.
      */
-    public Set getJVMHeaderFiles() throws IllegalActionException {
+    public Set<String> getJVMHeaderFiles() throws IllegalActionException {
         String javaHome = StringUtilities.getProperty("java.home");
 
         ExecuteCommands executeCommands = getCodeGenerator()
@@ -409,7 +409,7 @@ public class JavaCodeGeneratorAdapter extends CodeGeneratorAdapter {
                 "-L\"" + libjvmAbsoluteDirectory + "\"");
         getCodeGenerator().addLibrary(jvmLoaderDirective);
 
-        Set files = new HashSet();
+        Set<String> files = new HashSet<String>();
         files.add("<jni.h>");
         return files;
     }
@@ -427,7 +427,7 @@ public class JavaCodeGeneratorAdapter extends CodeGeneratorAdapter {
 
         StringBuffer code = new StringBuffer();
 
-        Iterator inputPorts = ((Actor) getComponent()).inputPortList()
+        Iterator<?> inputPorts = ((Actor) getComponent()).inputPortList()
         .iterator();
 
         while (inputPorts.hasNext()) {
@@ -452,7 +452,7 @@ public class JavaCodeGeneratorAdapter extends CodeGeneratorAdapter {
     throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        Iterator outputPorts = ((Actor) getComponent()).outputPortList()
+        Iterator<?> outputPorts = ((Actor) getComponent()).outputPortList()
         .iterator();
 
         while (outputPorts.hasNext()) {
@@ -478,7 +478,7 @@ public class JavaCodeGeneratorAdapter extends CodeGeneratorAdapter {
         StringBuffer code = new StringBuffer();
 
         if (_referencedParameters != null) {
-            Iterator parameters = _referencedParameters.iterator();
+            Iterator<Parameter> parameters = _referencedParameters.iterator();
 
             while (parameters.hasNext()) {
                 Parameter parameter = (Parameter) parameters.next();
@@ -504,7 +504,7 @@ public class JavaCodeGeneratorAdapter extends CodeGeneratorAdapter {
     throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        Iterator channels = _getTypeConvertChannels().iterator();
+        Iterator<?> channels = _getTypeConvertChannels().iterator();
         while (channels.hasNext()) {
             Channel channel = (Channel) channels.next();
             Type portType = ((TypedIOPort) channel.port).getType();
@@ -671,7 +671,7 @@ public class JavaCodeGeneratorAdapter extends CodeGeneratorAdapter {
     ////                         private fields                    ////
 
     /** The set of header files that needed to be included. */
-    private Set _includeFiles = new HashSet();
+    private Set<String> _includeFiles = new HashSet<String>();
 
     /** True if we have printed the JVM warning. */
     private boolean _printedJVMWarning;

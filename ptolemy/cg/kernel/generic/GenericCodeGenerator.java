@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Constructor;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -148,6 +149,8 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
                 + "Double click to\ngenerate code.</text></svg>");
 
         _model = (CompositeEntity) getContainer();
+        
+        //_generatorPackageListParser._updateGeneratorPackageList();
 
         // FIXME: We may not want this GUI dependency here...
         // This attribute could be put in the MoML in the library instead
@@ -255,7 +258,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
             codeDirectory.setBaseDirectory(codeDirectory.asFile().toURI());
         } else if (attribute == generatorPackageList) {
             super.attributeChanged(attribute);
-            _generatorPackageListParser.updateGeneratorPackageList();
+            //_generatorPackageListParser._updateGeneratorPackageList();
         } else {
             super.attributeChanged(attribute);
         }
@@ -1079,75 +1082,69 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
      * @return The code generator adapter.
      * @throws IllegalActionException If the adapter class cannot be found.
      */
-    protected Object _getAdapter(Object object)
-    throws IllegalActionException {
+    protected Object _getAdapter(Object object) throws IllegalActionException {
 
         if (_adapterStore.containsKey(object)) {
             return _adapterStore.get(object);
         }
 
-        // FIXME rodiers: don't access generatorPackageList directly!
-        String packageName = generatorPackageList.stringValue();
-
-        Class<?> componentClass = object.getClass();
-        String className = componentClass.getName();
+        ArrayList<String> packages = new ArrayList<String>(_generatorPackageListParser.generatorPackages());
+        //ArrayList<String> packagesWorkingSet = new ArrayList<String>(packagesToBacktrack);
+        
+        Class<?> componentClass = object.getClass();        
 
         ActorCodeGenerator adapterObject = null;
-
-        // e.g. "ptolemy.*" ==> "ptolemy.codegen.c.*"
-        // FIXME rodiers: we should this this conversion somewhere else
-        String adapterClassName =
-            "ptolemy.cg.adapter." + packageName + ".adapters." + className;
-
-        // Now, we look in the default directory.
-        if (packageName.trim().length() == 0) {
-            //TODO rodiers: should probably become generic
-            packageName = "ptolemy.cg";
-        }
         
-        do { 
-            className = componentClass.getName();
+        // We have 3 levels in which we need to seek.
+        //      First the different packages
+        //      Secondly the hierarchy of the object
+        //      Lastly for each package the hierarchy of the package 
+        
+
+        while (adapterObject == null) {
+            String className = componentClass.getName();
             
-            // FIXME: Is this the right error message?
-            if (!className.contains("ptolemy")) {
+            if (packages.isEmpty()) {
                 throw new IllegalActionException("There is no "
                         + "codegen adaptor for " + object.getClass());
             }
-
-            // It could be that the className does not begin with
-            // ptolemy, so try a simple substitution.
-            try {
-                // FIXME rodiers: this mombo jumbo should probably move to a utility function
-                adapterClassName = "ptolemy.cg.adapter." + packageName + ".adapters." + className;
-
-                adapterObject = _instantiateAdapter(
-                        object, componentClass, adapterClassName);
-
-            } catch (IllegalActionException ex) { 
-                // If adapter class cannot be found, search the adapter class
-                // for parent class instead.
-                componentClass = componentClass.getSuperclass();
-                
-                // FIXME rodiers: we should have a nested while loop! (also for less specific targets) 
+            
+            if (!className.contains("ptolemy")) {
+                componentClass = object.getClass();
+                for (int i = 0; i < packages.size(); ++i) {
+                    String packageName = packages.get(i);
+                    if (packageName.indexOf('.') != -1) {
+                        packageName = packageName.substring(0, packageName.lastIndexOf('.'));
+                        packages.set(i, packageName);
+                    } else {
+                        packages.remove(i);
+                        --i;
+                    }
+                }
             }
             
-        } while (adapterObject == null);
+            for (int i = 0; i < packages.size(); ++i) {
+                String packageName = packages.get(i);
+                
+                // FIXME rodiers: this mombo jumbo should probably move to a utility function
+                String adapterClassName = "ptolemy.cg.adapter." + packageName + ".adapters." + className;
+                try {
+                    adapterObject = _instantiateAdapter(
+                            object, componentClass, adapterClassName);
+                } catch (IllegalActionException ex) { 
+                    // If adapter class cannot be found, get to next package
+                    continue;
+                }
+            }
+            if (adapterObject == null) {
+                // If adapter class cannot be found, search the adapter class
+                // for parent class instead.                    
+                componentClass = componentClass.getSuperclass();
+            }
+        }
 
         _adapterStore.put(object, adapterObject);
         return adapterObject;
-        //} 
-
-        //        try {
-        //            adapterClassName = className.replaceFirst("ptolemy", packageName);
-        //            adapterObject = _instantiateAdapter(object, adapterClassName);
-        //        } catch (Exception ex) {
-        //            // try the implementation in the middle layer.
-        //            adapterClassName = className.replaceFirst("ptolemy", "ptolemy.codegen");
-        //            adapterObject = _instantiateAdapter(object, adapterClassName);                
-        //        }
-        //_adapterStore.put(object, adapterObject);
-        //return adapterObject;
-
     }
 
     /**
@@ -2027,11 +2024,12 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
         public GeneratorPackageListParser() {            
         }
         
-        public List<String> generatorPackages() {
+        public List<String> generatorPackages() throws IllegalActionException {
+            _updateGeneratorPackageList();
             return _generatorPackages;
         }
-        
-        public void updateGeneratorPackageList() throws IllegalActionException {
+
+        private void _updateGeneratorPackageList() throws IllegalActionException {
             String packageList = generatorPackageList.stringValue();
             String[] packages = packageList.split("; *");
             _generatorPackages = Arrays.asList(packages);
