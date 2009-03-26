@@ -154,7 +154,7 @@ boolean equals_String_Double(char* a1, double a2) {
 /**/
 
 /*** equals_String_Int() ***/
-boolean char* equals_String_Int(char* a1, int a2) {
+boolean equals_String_Int(char* a1, int a2) {
 	return atoi(a1) == a2;
 }
 /**/

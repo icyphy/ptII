@@ -44,7 +44,7 @@ int add_Boolean_Int(boolean a1, int a2) {
 char* add_Boolean_String(boolean a1, char* a2) {
     char* result = (char*) malloc(sizeof(char) * ((a1 ? 5 : 6) + strlen(a2)));
     strcpy(result, a2);
-    strcat(result, (a1 ? "true" : "false");
+    strcat(result, (a1 ? "true" : "false"));
     return result;
 }
 /**/
