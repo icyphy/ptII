@@ -204,9 +204,9 @@ long long convert_Int_Long(int a) {
 /**/
 
 /*** convert_Int_String() ***/
-// FIXME: should the string representation include the double quotes ""?
-
 char* convert_Int_String(int a) {
+	// FIXME: should the string representation include the double quotes ""?
+
     char* string = (char*) malloc(sizeof(char) * 12);
     sprintf((char*) string, "%d", a);
     return string;

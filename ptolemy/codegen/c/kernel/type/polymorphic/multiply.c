@@ -11,14 +11,14 @@ Token multiply_Array_Double(Token a1, double a2) {
 /**/
 
 /*** multiply_Array_Int() ***/
-Token multiply_Int_Array(Token a1, int a2) {
-    return $multiply_Array_Int(a2, a1);
+Token multiply_Array_Int(Token a1, int a2) {
+    return $multiply_Int_Array(a2, a1);
 }
 /**/
 
 /*** multiply_Array_Long() ***/
-Token multiply_Long_Array(Token a1, long long a2) {
-    return $multiply_Array_Long(a2, a1);
+Token multiply_Array_Long(Token a1, long long a2) {
+    return $multiply_Long_Array(a2, a1);
 }
 /**/
 
