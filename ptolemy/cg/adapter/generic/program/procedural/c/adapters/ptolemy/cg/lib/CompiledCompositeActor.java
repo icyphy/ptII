@@ -179,7 +179,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                     .setBaseDirectory(codeGenerator.codeDirectory.asFile()
                             .toURI());
 
-            codeGenerator.generatorPackage.setExpression(actor.generatorPackage
+            codeGenerator.generatorPackageList.setExpression(actor.generatorPackage
                     .getExpression());
 
             codeGenerator.inline.setExpression(actor.inline.getExpression());

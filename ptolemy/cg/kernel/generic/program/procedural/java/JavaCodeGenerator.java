@@ -90,7 +90,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        generatorPackage.setExpression("generic.program.procedural.java");
+        generatorPackageList.setExpression("generic.program.procedural.java");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -247,12 +247,15 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 				 + "model.run();" + _eol
 				 + "}" + _eol
 				 + "public void run() throws Exception {" + _eol);
-				 
+
+            /* FIXME rodiers
             String targetValue = target.getExpression();
             if (!targetValue.equals(_DEFAULT_TARGET)) {
                 mainEntryCode.append("//FIXME: JavaCodeGenerator hack" + _eol
                         + "init();" + _eol);
             }
+            End FIXME rodiers
+            */
 
          } else {
             mainEntryCode.append(_eol + _eol + "public Object[] "
@@ -1259,12 +1262,11 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     + _sanitizedModelName + ".mk.in");
         }
         // 2. If the target parameter is set, look for a makefile.
-        String generatorDirectory = generatorPackage.stringValue().replace('.',
-                '/');
-        String targetValue = target.getExpression();
         
-        // FIXME rodiers: this path is not correct anymore
-        templateList.add("ptolemy/cg/kernel/" + generatorDirectory + "/targets/" + targetValue
+     // FIXME rodiers: don't access generatorPackageList directly!
+        String generatorDirectory = generatorPackageList.stringValue().replace('.',
+                '/');        
+        templateList.add("ptolemy/cg/kernel/" + generatorDirectory 
                 + "/makefile.in");
 
         // 3. Look for the generic makefile.in

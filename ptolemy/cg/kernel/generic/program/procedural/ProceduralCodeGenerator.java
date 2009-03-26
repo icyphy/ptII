@@ -76,7 +76,7 @@ public class ProceduralCodeGenerator extends ProgramCodeGenerator {
         generateEmbeddedCode.setVisibility(Settable.EXPERT);
 
         
-        generatorPackage.setExpression("generic.program.procedural");
+        generatorPackageList.setExpression("generic.program.procedural");
     }
 
     ///////////////////////////////////////////////////////////////////

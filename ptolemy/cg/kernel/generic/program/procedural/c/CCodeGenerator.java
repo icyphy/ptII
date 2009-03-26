@@ -92,7 +92,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         generateCpp.setExpression("false");
         
 
-        generatorPackage.setExpression("generic.program.procedural.c");
+        generatorPackageList.setExpression("generic.program.procedural.c");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -874,7 +874,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         String directorFunctionDir = cCodegenPath + "kernel/parameterized/directorFunctions/";
         _overloadedFunctions.parse(directorFunctionDir + "PNDirector.c");
 
-        
+        /* FIXME rodiers: do target specific code differently
+         
         // ------------ Parse target-specific functions. --------------------        
         if (target.getExpression().equals("default")) {
             return;
@@ -887,6 +888,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         } catch (IllegalActionException ex) {
             // Some API's may not have these files. 
         }
+        End FIXME rodiers
+        */
     }
 
     /** Execute the compile and run commands in the
@@ -1231,11 +1234,12 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                     + _sanitizedModelName + ".mk.in");
         }
         // 2. If the target parameter is set, look for a makefile.
-        String generatorDirectory = generatorPackage.stringValue().replace('.',
+        
+     // FIXME rodiers: don't access generatorPackageList directly!
+        String generatorDirectory = generatorPackageList.stringValue().replace('.',
                 '/');
-        String targetValue = target.getExpression();
         // FIXME rodiers: this path is not correct anymore
-        templateList.add("ptolemy/cg/kernel/" + generatorDirectory + "/targets/" + targetValue
+        templateList.add("ptolemy/cg/kernel/" + generatorDirectory
                 + "/makefile.in");
 
         // 3. Look for the generic C makefile.in

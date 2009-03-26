@@ -28,11 +28,9 @@
 package ptolemy.cg.kernel.generic;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Constructor;
-import java.net.URI;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Date;
@@ -88,26 +86,6 @@ import ptolemy.util.StringUtilities;
  *  @Pt.AcceptedRating Yellow (eal)
  */
 public class GenericCodeGenerator extends Attribute implements ComponentCodeGenerator {
-    /** A FilenameFilter that looks for directories other than CVS.
-     */
-    private static class TargetFilter implements FilenameFilter {
-        /** Tests if the specified file in a directory is a directory
-         *  other than "CVS".
-         *  FIXME rodiers: Also exclude subversion directories.
-         *  FIXME rodiers: actually, this class can be removed with the redesign
-         *  @param dir The directory in which the file is contained.
-         *  @param name The name of the file in question.
-         *  @return true if the file is a directory with a name other
-         *  than <code>CVS</code>
-         */
-        public boolean accept(File dir, String name) {
-            if (name.equals("CVS")) {
-                return false;
-            }
-            File file = new File(dir, name);
-            return file.isDirectory();
-        }
-    }
 
     // Note: If you add publicly settable parameters, update
     // _commandFlags or _commandOptions.
@@ -141,7 +119,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
         new Parameter(codeDirectory, "allowFiles", BooleanToken.FALSE);
         new Parameter(codeDirectory, "allowDirectories", BooleanToken.TRUE);
 
-        generatorPackage = new StringParameter(this, "generatorPackage");
+        generatorPackageList = new StringParameter(this, "generatorPackageList");        
 
         inline = new Parameter(this, "inline");
         inline.setTypeEquals(BaseType.BOOLEAN);
@@ -162,10 +140,6 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
         sourceLineBinding = new Parameter(this, "sourceLineBinding");
         sourceLineBinding.setTypeEquals(BaseType.BOOLEAN);
         sourceLineBinding.setExpression("false");
-
-        target = new StringParameter(this, "target");
-        target.setExpression("default");
-        _updateTarget();
 
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-50\" y=\"-20\" width=\"100\" height=\"40\" "
@@ -198,11 +172,13 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
     public FileParameter codeDirectory;
 
 
-    /** The name of the package in which to look for adapter class
-     *  code generators. This is a string that defaults to
-     *  "ptolemy.codegen.c".
+    /** The name of the package(s) in which to look for adapter
+     *  classes. The string can either be just
+     *  one package, such as "generic.program.procedural.java"
+     *  or a list of packages, such as "generic.program.procedural.java.target1; generic.program.procedural.java.target2"
+     *  The adapter is first searched in the first package.
      */
-    public StringParameter generatorPackage;
+    public StringParameter generatorPackageList;
 
     /** If true, generate file with no functions.  If false, generate
      *  file with functions. The default value is a parameter with the
@@ -231,21 +207,6 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
      *  parameter with default value false.
      */
     public Parameter sourceLineBinding;
-
-    /** The hardware target for code generation.  The list of possible choices
-     *  is generated from the list of directories in the <code>targets</code>
-     *  subdirectory of the directory named by the <i>generatorPackage</i>
-     *  parameter.  For example, if <i>generatorPackage</i> is
-     *  <code>ptolemy.codegen.c</code>, and if
-     *  <code>$PTII/ptolemy/codegen/c/targets/</code> exists and contains
-     *  an <code>iRobot/</code> directory, and this parameter is set
-     *  to <code>iRobot</code>, then files from
-     *  <code>$PTII/ptolemy/codegen/c/targets/iRobot</code> will be used
-     *  to generate code.  The default value is the string "default"
-     *  which means that the default target for the language is used.
-     *  FIXME rodiers: remove parameter
-     */
-    public StringParameter target;
     
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
@@ -292,9 +253,9 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
             // FIXME: This should not be necessary, but if we don't
             // do it, then getBaseDirectory() thinks we are in the current dir.
             codeDirectory.setBaseDirectory(codeDirectory.asFile().toURI());
-        } else if (attribute == generatorPackage) {
+        } else if (attribute == generatorPackageList) {
             super.attributeChanged(attribute);
-            _updateTarget();
+            _generatorPackageListParser.updateGeneratorPackageList();
         } else {
             super.attributeChanged(attribute);
         }
@@ -1083,14 +1044,6 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
     protected String _generateSharedCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        ActorCodeGenerator targetAdapter = _getTargetAdapter(getContainer());
-        if (targetAdapter != null) {
-            Set<String> sharedCodeBlocks = targetAdapter.getSharedCode();
-            for (String block : sharedCodeBlocks) {
-                code.append(block);
-            }
-        }
-
         ActorCodeGenerator adapter = _getAdapter(getContainer());
         Set<String> sharedCodeBlocks = adapter.getSharedCode();
         Iterator<String> blocks = sharedCodeBlocks.iterator();
@@ -1133,7 +1086,8 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
             return _adapterStore.get(object);
         }
 
-        String packageName = generatorPackage.stringValue();
+        // FIXME rodiers: don't access generatorPackageList directly!
+        String packageName = generatorPackageList.stringValue();
 
         Class<?> componentClass = object.getClass();
         String className = componentClass.getName();
@@ -1144,26 +1098,6 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
         // FIXME rodiers: we should this this conversion somewhere else
         String adapterClassName =
             "ptolemy.cg.adapter." + packageName + ".adapters." + className;
-
-        String targetValue = target.getExpression();
-        if (!targetValue.equals(_DEFAULT_TARGET)) {
-            // Look in the target-specific directory.
-            String targetSubDirectory = 
-                ".targets." + targetValue;
-
-            try {
-                adapterClassName = className.replaceFirst("ptolemy",
-                        packageName + targetSubDirectory);
-                adapterObject = _instantiateAdapter(object, adapterClassName);
-                _adapterStore.put(object, adapterObject);
-                return adapterObject;                
-
-            } catch (Exception ex) { 
-                // There may not be a target-specific implementation.
-
-                // FIXME: should we warn the users about this?
-            }
-        }
 
         // Now, we look in the default directory.
         if (packageName.trim().length() == 0) {
@@ -1223,7 +1157,9 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
      *  the string value of the generatorPackage parameter.
      */
     protected String _getOutputFilename() throws IllegalActionException {
-        String packageValue = generatorPackage.stringValue();
+
+        // FIXME rodiers: don't access generatorPackageList directly!
+        String packageValue = generatorPackageList.stringValue();
 
         String extension = packageValue
         .substring(packageValue.lastIndexOf("."));
@@ -1556,38 +1492,6 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
 
         return _executeCommands();
     }
-    
-    /** Get the code generator adapter associated with target, if any.
-     *  @param component The given component.
-     *  @return The code generator adapter.
-     *  @exception IllegalActionException If the adapter class cannot be found.
-     */
-    private ActorCodeGenerator _getTargetAdapter(NamedObj component)
-    throws IllegalActionException {
-        // FIXME: Do we want to cache the targetAdapter?
-        //if (_adapterStore.containsKey(component)) {
-        //    return (ActorCodeGenerator) _adapterStore.get(component);
-        //}
-
-        String targetValue = target.getExpression();
-        if (targetValue.equals(_DEFAULT_TARGET)) {
-            return null;
-        }
-        String packageName = generatorPackage.stringValue();
-
-        String upcaseTarget = targetValue.substring(0, 1).toUpperCase()
-        + targetValue.substring(1);
-        String adapterClassName = packageName + ".targets." + targetValue + "."
-        + upcaseTarget + "Target";
-
-        return _instantiateAdapter(component, adapterClassName);
-    }
-
-    private ActorCodeGenerator _instantiateAdapter(Object component,
-            String adapterClassName) throws IllegalActionException {
-        return _instantiateAdapter(component, 
-                component.getClass(), adapterClassName);
-    }
 
     /** Instantiate the given code generator adapter.
      *  @param component The given component.
@@ -1772,51 +1676,6 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
                         director.requestChange(request);
                     }
                 }
-            }
-        }
-    }
-
-    /** Update the target parameter choices from the directory named by
-     *  the generatorPackage parameter.  All the choices are removed
-     *  the choice "default" is added and then the names of all directories
-     *  in the directory named by <i>generatorPackage</i>/targets (except
-     *  the <code>CVS</code> directory are added as choices.
-     *  @exception IllegalActionException If the <i>generatorPackage</i>
-     *  attribute cannot be read.
-     */
-    private void _updateTarget() throws IllegalActionException {
-        String generatorPackageValue = generatorPackage.stringValue();
-        String generatorPackageDirectoryName = StringUtilities.substitute(
-                generatorPackageValue, ".", "/");
-
-        target.removeAllChoices();
-        target.addChoice(_DEFAULT_TARGET);
-
-        File generatorPackageFile = null;
-        try {
-            // This will likely fail if ptolemy/codegen/c/targets is
-            // in a jar file We use a URI here so that we can call
-            // File(URI).
-
-            URL generatorPackageURL = FileUtilities.nameToURL("$CLASSPATH/"
-                    + generatorPackageDirectoryName, null, 
-                    getClass().getClassLoader());
-            URI generatorPackageURI = new URI(generatorPackageURL
-                    .toExternalForm().replaceAll(" ", "%20"));
-            generatorPackageFile = new File(generatorPackageURI);
-        } catch (Exception ex) {
-            // Ignore, we can't find the directory.
-        }
-
-        if (generatorPackageFile == null) {
-            return;
-        }
-
-        File targetDirectory = new File(generatorPackageFile, "targets");
-        if (targetDirectory.exists()) {
-            String[] targets = targetDirectory.list(new TargetFilter());
-            for (int i = 0; i < targets.length; i++) {
-                target.addChoice(targets[i]);
             }
         }
     }
@@ -2039,10 +1898,6 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** The default target name. */
-    //TODO rodiers: remove
-    protected static final String _DEFAULT_TARGET = "default";
-
     /** End of line character.  Under Unix: "\n", under Windows: "\n\r".
      *  We use a end of line charactor so that the files we generate
      *  have the proper end of line character for use by other native tools.
@@ -2145,6 +2000,8 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
 
     /** The form of the command line. */
     private static final String _commandTemplate = "ptcg [ options ] [file ...]";
+    
+    private GeneratorPackageListParser _generatorPackageListParser = new GeneratorPackageListParser();
 
     /** The current indent level when pretty printing code. */
     private int _indent;
@@ -2162,5 +2019,24 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
 
     static {
         _eol = StringUtilities.getProperty("line.separator");
+    }
+       
+    
+    class GeneratorPackageListParser
+    {
+        public GeneratorPackageListParser() {            
+        }
+        
+        public List<String> generatorPackages() {
+            return _generatorPackages;
+        }
+        
+        public void updateGeneratorPackageList() throws IllegalActionException {
+            String packageList = generatorPackageList.stringValue();
+            String[] packages = packageList.split("; *");
+            _generatorPackages = Arrays.asList(packages);
+        }
+        
+        private List<String> _generatorPackages;
     }
 }

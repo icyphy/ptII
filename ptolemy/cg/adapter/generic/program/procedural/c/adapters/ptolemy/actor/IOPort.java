@@ -606,9 +606,13 @@ public class IOPort extends CCodeGeneratorAdapter implements PortCodeGenerator {
         boolean isPN = (((Actor) port.getContainer()).getDirector() 
                 instanceof ptolemy.domains.pn.kernel.PNDirector);
 
+        /* FIXME rodiers
         return isPN && (null == getCodeGenerator().getAttribute("mpi"))
         && (getCodeGenerator().target.getExpression().equals("default") || 
             getCodeGenerator().target.getExpression().equals("posix"));
+            */
+        return false;
+        //End FIXME rodiers
     }
 
 

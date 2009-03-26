@@ -932,7 +932,10 @@ public class CodeStream {
         if (codeGenerator == null) {
             return "";
         }
-        String extension = _adapter._codeGenerator.generatorPackage
+
+        // FIXME rodiers: don't access generatorPackageList directly!
+        
+        String extension = _adapter._codeGenerator.generatorPackageList
         .getExpression();
         extension = extension.substring(extension.lastIndexOf(".") + 1);
 	// See also codegen/kernel/Director.java

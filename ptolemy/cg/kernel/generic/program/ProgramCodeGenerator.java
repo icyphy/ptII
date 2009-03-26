@@ -71,7 +71,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         run.setTypeEquals(BaseType.BOOLEAN);
         run.setExpression("true");
         
-        generatorPackage.setExpression("generic.program");
+        generatorPackageList.setExpression("generic.program");
     }
 
     ///////////////////////////////////////////////////////////////////
