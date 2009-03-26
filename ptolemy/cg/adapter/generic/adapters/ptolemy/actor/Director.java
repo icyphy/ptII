@@ -44,6 +44,7 @@ import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.CodeStream;
 import ptolemy.cg.kernel.generic.PortCodeGenerator;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -90,7 +91,7 @@ public class Director extends CodeGeneratorAdapter {
      */
     public String createOffsetVariablesIfNeeded() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        Iterator actors = ((CompositeActor) _director.getContainer())
+        Iterator<?> actors = ((CompositeActor) _director.getContainer())
         .deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
@@ -114,7 +115,7 @@ public class Director extends CodeGeneratorAdapter {
         StringBuffer code = new StringBuffer();
         code.append(_codeGenerator.comment("The firing of the director."));
 
-        Iterator actors = ((CompositeActor) _director.getContainer())
+        Iterator<?> actors = ((CompositeActor) _director.getContainer())
         .deepEntityList().iterator();
 
         while (actors.hasNext()) {
@@ -134,7 +135,7 @@ public class Director extends CodeGeneratorAdapter {
      */
     public String generateFireFunctionCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        Iterator actors = ((CompositeActor) _director.getContainer())
+        Iterator<?> actors = ((CompositeActor) _director.getContainer())
         .deepEntityList().iterator();
         
         while (actors.hasNext()) {
@@ -151,8 +152,8 @@ public class Director extends CodeGeneratorAdapter {
      *  generated from this adapter class.
      *  @exception IllegalActionException If something goes wrong.
      */
-    public Set getHeaderFiles() throws IllegalActionException {
-        return new HashSet();
+    public Set<String> getHeaderFiles() throws IllegalActionException {
+        return new HashSet<String>();
     }
 
     /** Generate a main loop for an execution under the control of
@@ -177,7 +178,7 @@ public class Director extends CodeGeneratorAdapter {
         code.append(_codeGenerator.comment(1,
         "The initialization of the director."));
 
-        Iterator actors = ((CompositeActor) _director.getContainer())
+        Iterator<?> actors = ((CompositeActor) _director.getContainer())
         .deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
@@ -186,7 +187,7 @@ public class Director extends CodeGeneratorAdapter {
             code.append(adapterObject.generateInitializeCode());
 
             // Update write offset due to initial tokens produced.
-            Iterator outputPorts = actor.outputPortList().iterator();
+            Iterator<?> outputPorts = actor.outputPortList().iterator();
             while (outputPorts.hasNext()) {
                 IOPort port = (IOPort) outputPorts.next();
                 int rate = DFUtilities.getTokenInitProduction(port);
@@ -236,7 +237,7 @@ public class Director extends CodeGeneratorAdapter {
 
         code.append(_codeGenerator.comment(0, "The postfire of the director."));
 
-        Iterator actors = ((CompositeActor) _director.getContainer())
+        Iterator<?> actors = ((CompositeActor) _director.getContainer())
         .deepEntityList().iterator();
 
         while (actors.hasNext()) {
@@ -259,7 +260,7 @@ public class Director extends CodeGeneratorAdapter {
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        Iterator actors = ((CompositeActor) _director.getContainer())
+        Iterator<?> actors = ((CompositeActor) _director.getContainer())
         .deepEntityList().iterator();
 
         boolean addedDirectorComment = false;
@@ -296,7 +297,7 @@ public class Director extends CodeGeneratorAdapter {
      */
     public void generateModeTransitionCode(StringBuffer code)
     throws IllegalActionException {
-        Iterator actors = ((CompositeActor) _director.getContainer())
+        Iterator<?> actors = ((CompositeActor) _director.getContainer())
         .deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
@@ -384,7 +385,7 @@ public class Director extends CodeGeneratorAdapter {
     public String generateVariableDeclaration() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        Iterator actors = ((CompositeActor) _director.getContainer())
+        Iterator<?> actors = ((CompositeActor) _director.getContainer())
         .deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
@@ -404,7 +405,7 @@ public class Director extends CodeGeneratorAdapter {
     throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        Iterator actors = ((CompositeActor) _director.getContainer())
+        Iterator<?> actors = ((CompositeActor) _director.getContainer())
         .deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
@@ -428,7 +429,7 @@ public class Director extends CodeGeneratorAdapter {
 
         code.append(_codeGenerator.comment(1, "The wrapup of the director."));
 
-        Iterator actors = ((CompositeActor) _director.getContainer())
+        Iterator<?> actors = ((CompositeActor) _director.getContainer())
         .deepEntityList().iterator();
 
         while (actors.hasNext()) {
@@ -452,7 +453,7 @@ public class Director extends CodeGeneratorAdapter {
     }
 
 
-    // See CodeGeneratorAdapter._getReference(String, boolean)
+    // FIXME rodiers: Method only used for PN (in IOPort). Move to PNDirector?
     public static List<Channel> getReferenceChannels(IOPort port, int channelNumber)
     throws IllegalActionException {
 
@@ -467,7 +468,7 @@ public class Director extends CodeGeneratorAdapter {
         if ((port.isOutput() && !forComposite)
                 || (port.isInput() && forComposite)) {
 
-            List sinkChannels = 
+            List<Channel> sinkChannels = 
                 CodeGeneratorAdapter.getSinkChannels(port, channelNumber);
 
             return sinkChannels;
@@ -493,6 +494,7 @@ public class Director extends CodeGeneratorAdapter {
      *  @return The buffer size of the given channel. This base class
      *   always returns 1.
      *  @exception IllegalActionException Not thrown in this base class.
+     *  FIXME rodiers: only valid for SDF
      */
     public int getBufferSize(IOPort port, int channelNumber)
     throws IllegalActionException {
@@ -510,24 +512,24 @@ public class Director extends CodeGeneratorAdapter {
      *  @return An empty HashSet.
      *  @exception IllegalActionException Not thrown in this method.
      */
-    public Set getIncludeDirectories() throws IllegalActionException {
-        return new HashSet();
+    public Set<String> getIncludeDirectories() throws IllegalActionException {
+        return new HashSet<String>();
     }
 
     /** Return an empty HashSet.
      *  @return An empty HashSet.
      *  @exception IllegalActionException Not thrown in this method.
      */
-    public Set getLibraries() throws IllegalActionException {
-        return new HashSet();
+    public Set<String> getLibraries() throws IllegalActionException {
+        return new HashSet<String>();
     }
 
     /** Return an empty HashSet.
      *  @return An empty HashSet.
      *  @exception IllegalActionException Not thrown in this method.
      */
-    public Set getLibraryDirectories() throws IllegalActionException {
-        return new HashSet();
+    public Set<String> getLibraryDirectories() throws IllegalActionException {
+        return new HashSet<String>();
     }
 
     /** Return a set of parameters that will be modified during the execution
@@ -538,15 +540,15 @@ public class Director extends CodeGeneratorAdapter {
      *  @exception IllegalActionException If the adapter associated with an actor
      *   or director throws it while getting modified variables.
      */
-    public Set getModifiedVariables() throws IllegalActionException {
-        Set set = new HashSet();
+    public Set<Parameter> getModifiedVariables() throws IllegalActionException {
+        Set<Parameter> set = new HashSet<Parameter>();
 
         if (_director instanceof ExplicitChangeContext) {
             set.addAll(((ExplicitChangeContext) _director)
                     .getModifiedVariables());
         }
 
-        Iterator actors = ((CompositeActor) _director.getContainer())
+        Iterator<?> actors = ((CompositeActor) _director.getContainer())
         .deepEntityList().iterator();
 
         while (actors.hasNext()) {

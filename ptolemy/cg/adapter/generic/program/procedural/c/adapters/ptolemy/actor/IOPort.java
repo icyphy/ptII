@@ -69,7 +69,7 @@ public class IOPort extends CCodeGeneratorAdapter implements PortCodeGenerator {
 
     public String generateCodeForSend(String channel, String dataToken) 
     throws IllegalActionException {
-        ptolemy.codegen.actor.Director directorAdapter = _getDirectorAdapter();
+        ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director directorAdapter = _getDirectorAdapter();
         ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
         int channelNumber = Integer.valueOf(channel);
 
@@ -77,7 +77,7 @@ public class IOPort extends CCodeGeneratorAdapter implements PortCodeGenerator {
     }
 
     public String generateCodeForGet(String channel) throws IllegalActionException {
-        ptolemy.codegen.actor.Director directorAdapter = _getDirectorAdapter();
+        ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director directorAdapter = _getDirectorAdapter();
         ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
         int channelNumber = Integer.valueOf(channel);
 
@@ -225,10 +225,10 @@ public class IOPort extends CCodeGeneratorAdapter implements PortCodeGenerator {
         }
 
         for (int j = 0; j < length; j++) {
-            List sinkChannels = CodeGeneratorAdapter.getSinkChannels(port, j);
+            List<Channel> sinkChannels = CodeGeneratorAdapter.getSinkChannels(port, j);
 
             for (int k = 0; k < sinkChannels.size(); k++) {
-                Channel channel = (Channel) sinkChannels.get(k);
+                Channel channel = sinkChannels.get(k);
                 ptolemy.actor.IOPort sinkPort = channel.port;
                 int sinkChannelNumber = channel.channelNumber;
 
@@ -544,9 +544,9 @@ public class IOPort extends CCodeGeneratorAdapter implements PortCodeGenerator {
     }
 
 
-    private ptolemy.codegen.actor.Director _getDirectorAdapter() throws IllegalActionException {
+    private ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director _getDirectorAdapter() throws IllegalActionException {
         Director director = getDirector();
-        return (ptolemy.codegen.actor.Director) _getAdapter(director);
+        return (ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director) _getAdapter(director);
     }
 
 

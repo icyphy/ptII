@@ -535,7 +535,7 @@ public class JavaCodeGeneratorAdapter extends CodeGeneratorAdapter {
         //FIXME: potential bug: if the attribute is not a parameter,
         //it will be referenced but not declared.
         if (attribute instanceof Parameter) {
-            _referencedParameters.add(attribute);
+            _referencedParameters.add((Parameter) attribute);
         }
 
         result.append(_codeGenerator.generateVariableName(attribute));
@@ -546,6 +546,8 @@ public class JavaCodeGeneratorAdapter extends CodeGeneratorAdapter {
         }
 
         if (!channelAndOffset[1].equals("")) {
+            // FIXME Findbugs: [M D BC] Unchecked/unconfirmed cast [BC_UNCONFIRMED_CAST]
+            // We are not certain that attribute is parameter.
             Type elementType = ((ArrayType) ((Parameter) attribute)
                     .getType()).getElementType();
 

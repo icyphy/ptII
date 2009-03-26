@@ -69,7 +69,7 @@ public class IOPort extends JavaCodeGeneratorAdapter implements PortCodeGenerato
 
     public String generateCodeForSend(String channel, String dataToken) 
     throws IllegalActionException {
-        ptolemy.codegen.actor.Director directorAdapter = _getDirectorAdapter();
+        ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director directorAdapter = _getDirectorAdapter();
         ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
         int channelNumber = Integer.valueOf(channel);
 
@@ -77,7 +77,7 @@ public class IOPort extends JavaCodeGeneratorAdapter implements PortCodeGenerato
     }
 
     public String generateCodeForGet(String channel) throws IllegalActionException {
-        ptolemy.codegen.actor.Director directorAdapter = _getDirectorAdapter();
+        ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director directorAdapter = _getDirectorAdapter();
         ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
         int channelNumber = Integer.valueOf(channel);
 
@@ -227,7 +227,7 @@ public class IOPort extends JavaCodeGeneratorAdapter implements PortCodeGenerato
         }
 
         for (int j = 0; j < length; j++) {
-            List sinkChannels = CodeGeneratorAdapter.getSinkChannels(port, j);
+            List<Channel> sinkChannels = CodeGeneratorAdapter.getSinkChannels(port, j);
 
             for (int k = 0; k < sinkChannels.size(); k++) {
                 Channel channel = (Channel) sinkChannels.get(k);
@@ -545,9 +545,9 @@ public class IOPort extends JavaCodeGeneratorAdapter implements PortCodeGenerato
     }
 
 
-    private ptolemy.codegen.actor.Director _getDirectorAdapter() throws IllegalActionException {
+    private ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director _getDirectorAdapter() throws IllegalActionException {
         Director director = getDirector();
-        return (ptolemy.codegen.actor.Director) _getAdapter(director);
+        return (ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director) _getAdapter(director);
     }
 
 

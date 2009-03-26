@@ -29,6 +29,7 @@ package ptolemy.cg.kernel.generic;
 
 import java.util.Set;
 
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -125,28 +126,28 @@ public interface ActorCodeGenerator extends ComponentCodeGenerator {
      *  @exception IllegalActionException If something goes wrong.
      *  // FIXME rodiers: this is specific for procedural code 
      */
-    public Set getHeaderFiles() throws IllegalActionException;
+    public Set<String> getHeaderFiles() throws IllegalActionException;
 
     /** Return a set of the directories to search for the actor's include files.
      * @return A set of directories to search for the actor's include files.
      * @exception IllegalActionException If thrown when finding the directories.
      * // FIXME rodiers: this is specific for procedural code
      */
-    public Set getIncludeDirectories() throws IllegalActionException;
+    public Set<String> getIncludeDirectories() throws IllegalActionException;
 
     /** Return a set of the libraries to link the generated code to.
      * @return A set of libraries to link.
      * @exception IllegalActionException If thrown when finding the libraries.
      * // FIXME rodiers: this is specific for C
      */
-    public Set getLibraries() throws IllegalActionException;
+    public Set<String> getLibraries() throws IllegalActionException;
 
     /** Return a set of the directories to search for libraries.
      * @return A set of directories to search.
      * @exception IllegalActionException If thrown when finding the libraries.
      * // FIXME rodiers: this is specific for C
      */
-    public Set getLibraryDirectories() throws IllegalActionException;
+    public Set<String> getLibraryDirectories() throws IllegalActionException;
 
     /** Return a set of parameters that will be modified during the execution
      *  of the model. The actor gets those variables if it implements
@@ -156,7 +157,7 @@ public interface ActorCodeGenerator extends ComponentCodeGenerator {
      *  @exception IllegalActionException If an actor throws it while getting
      *   modified variables.
      */
-    public Set getModifiedVariables() throws IllegalActionException;
+    public Set<Parameter> getModifiedVariables() throws IllegalActionException;
 
     /**
      * Generate the shared code. This is the first generate method invoked out

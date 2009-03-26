@@ -66,11 +66,11 @@ public class CodeGeneratorUtilities {
      *  @exception IllegalActionException If there is a problem getting the
      *  Variables.
      */
-    public static HashMap newMap(NamedObj namedObj)
+    public static HashMap<String, String> newMap(NamedObj namedObj)
             throws IllegalActionException {
 
-        HashMap substituteMap = new HashMap();
-        Iterator attributes = namedObj.attributeList().iterator();
+        HashMap<String, String> substituteMap = new HashMap<String, String>();
+        Iterator<?> attributes = namedObj.attributeList().iterator();
 
         while (attributes.hasNext()) {
             Attribute attribute = (Attribute) attributes.next();
@@ -142,19 +142,18 @@ public class CodeGeneratorUtilities {
      *  @return  A string with the keys properly substituted with
      *  their corresponding values.
      */
-    public static String substitute(String input, Map substituteMap) {
+    public static String substitute(String input, Map<String, String> substituteMap) {
         // At first glance it would appear that we could use StringTokenizer
         // however, the token is really the String @codeBase@, not
         // the @ character.  StringTokenizer has problems with
         // "@codebase", which reports as having one token, but
         // should not be substituted since it is not "@codebase@"
-        Iterator substituteMapEntries = substituteMap.entrySet().iterator();
+        Iterator<Map.Entry<String, String>> substituteMapEntries = substituteMap.entrySet().iterator();
 
         while (substituteMapEntries.hasNext()) {
-            Map.Entry entries = (Map.Entry) substituteMapEntries.next();
-            String key = (String) entries.getKey();
-            input = StringUtilities.substitute(input, key, (String) entries
-                    .getValue());
+            Map.Entry<String, String> entries = substituteMapEntries.next();
+            String key = entries.getKey();
+            input = StringUtilities.substitute(input, key, entries.getValue());
         }
 
         return input;
@@ -175,7 +174,7 @@ public class CodeGeneratorUtilities {
      */
     public static String substitute(String inputFileName, NamedObj namedObj)
             throws FileNotFoundException, IOException {
-        Map substituteMap;
+        Map<String, String> substituteMap;
 
         try {
             substituteMap = newMap(namedObj);
@@ -231,7 +230,7 @@ public class CodeGeneratorUtilities {
      *  @exception IOException If there is a problem creating the
      *  substitution map.
      */
-    public static void substitute(BufferedReader inputFile, Map substituteMap,
+    public static void substitute(BufferedReader inputFile, Map<String, String> substituteMap,
             String outputFileName) throws FileNotFoundException, IOException {
         PrintWriter outputFile = null;
         try {
@@ -263,7 +262,7 @@ public class CodeGeneratorUtilities {
      *  @exception IOException If there is a problem creating the
      *  substitution map.
      */
-    public static void substitute(String inputFileName, Map substituteMap,
+    public static void substitute(String inputFileName, Map<String, String> substituteMap,
             String outputFileName) throws FileNotFoundException, IOException {
         BufferedReader inputFile = openAsFileOrURL(inputFileName);
         substitute(inputFile, substituteMap, outputFileName);
