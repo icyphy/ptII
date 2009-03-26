@@ -312,7 +312,7 @@ string StringArray_sum(Token token) {
 	}
 
     for (i = 1; i < token.payload.StringArray->size; i++) {
-    	result = $add_String_String(result.payload.String,StringArray_get(token, i).payload.String);
+    	result = $add_String_String(result, StringArray_get(token, i));
     }
     return result;
 }

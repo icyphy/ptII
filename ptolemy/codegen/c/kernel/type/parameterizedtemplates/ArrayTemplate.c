@@ -471,7 +471,7 @@ $type $TypeArray_sum(Token token) {
 	}
 
     for (i = 1; i < token.payload.$TypeArray->size; i++) {
-    	result = $add_$Type_$Type(result.payload.$Type,$TypeArray_get(token, i).payload.$Type);
+    	result = $add_$Type_$Type(result, $TypeArray_get(token, i));
     }
     return result;
 }

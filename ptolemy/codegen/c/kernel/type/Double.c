@@ -66,6 +66,7 @@ Token Double_toString(Token thisToken, ...) {
 /**/
 
 /***Double_add***/
+$include(<stdio.h>)
 Token add_Double_Array(double a1, Token a2);
 Token Double_add(Token thisToken, ...) {
     va_list argp;

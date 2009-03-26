@@ -125,7 +125,7 @@ Token Complex_multiply(Token thisToken, ...) {
 
 #ifdef TYPE_Int
     case TYPE_Int:
-        result = $new(Complex(r1 * otherToken.payload.Intl, i1 * otherToken.payload.Int));
+        result = $new(Complex(r1 * otherToken.payload.Int, i1 * otherToken.payload.Int));
         break;
 #endif
 

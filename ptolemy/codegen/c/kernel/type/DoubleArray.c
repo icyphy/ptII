@@ -471,7 +471,7 @@ double DoubleArray_sum(Token token) {
 	}
 
     for (i = 1; i < token.payload.DoubleArray->size; i++) {
-    	result = $add_Double_Double(result.payload.Double,DoubleArray_get(token, i).payload.Double);
+    	result = $add_Double_Double(result, DoubleArray_get(token, i));
     }
     return result;
 }

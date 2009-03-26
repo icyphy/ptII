@@ -1,5 +1,5 @@
 /***declareBlock***/
-#include <stdarg.h>     // Needed Matrix_new va_* macros
+$include(<stdarg.h>)     // Needed Matrix_new va_* macros
 
 struct matrix {
     unsigned int row;            // number of rows.

@@ -115,8 +115,6 @@ Token BooleanArray_delete(Token token, ...) { //Revised
 
 
 /***BooleanArray_equals***/
-boolean $equals_Boolean_Boolean(boolean a1, boolean a2);
-
 // BooleanArray_equals: Test an array for equality with a second array.
 Token BooleanArray_equals(Token thisToken, ...) {
     int i;
@@ -179,8 +177,6 @@ Token BooleanArray_isCloseTo(Token thisToken, ...) {
 
 
 /***BooleanArray_print***/
-void $print_Boolean(boolean b);
-
 // BooleanArray_print: Print the contents of an array to standard out.
 Token BooleanArray_print(Token thisToken, ...) {
     int i;
@@ -244,8 +240,6 @@ Token BooleanArray_toString(Token thisToken, ...) {
 
 
 /***BooleanArray_add***/
-boolean $add_Boolean_Boolean(boolean a1, boolean a2);
-
 // BooleanArray_add: Add an array to another array.
 // Assume the given otherToken is array type.
 // Return a new Array token.
@@ -285,8 +279,6 @@ Token BooleanArray_add(Token thisToken, ...) {
 
 
 /***BooleanArray_subtract***/
-boolean $subtract_Boolean_Boolean(boolean a1, boolean a2);
-
 // BooleanArray_subtract: Subtract the second argument array
 // from the first argument array.
 // Assume the given otherToken is an array.
@@ -329,8 +321,6 @@ Token BooleanArray_subtract(Token thisToken, ...) {
 
 
 /***BooleanArray_multiply***/
-boolean $multiply_Boolean_Boolean(boolean a1, boolean a2);
-
 // BooleanArray_multiply: Multiply an array by another array.
 // Multiplication is element-wise.
 // Assume the given otherToken is array type.
@@ -371,8 +361,6 @@ Token BooleanArray_multiply(Token thisToken, ...) {
 
 
 /***BooleanArray_divide***/
-boolean $divide_Boolean_Boolean(boolean a1, boolean a2);
-
 // BooleanArray_divide: Divide the elements of the first array
 // by the elements of the second array.
 // Assume the given otherToken is array type.
@@ -413,8 +401,6 @@ Token BooleanArray_divide(Token thisToken, ...) {
 
 
 /***BooleanArray_negate***/
-boolean $negate_Boolean(boolean a1);
-
 // BooleanArray_negate: Negate each element of an array.
 // Return a new Array token.
 Token BooleanArray_negate(Token thisToken, ...) {
@@ -447,7 +433,6 @@ Token BooleanArray_zero(Token thisToken, ...) {
 
 
 /***BooleanArray_one***/
-boolean $zero_Boolean();
 // BooleanArray_one: Return an array like the specified
 // array but with ones of the same type.
 Token BooleanArray_one(Token thisToken, ...) {
@@ -481,21 +466,19 @@ Token BooleanArray_clone(Token thisToken, ...) {
 
 
 /***BooleanArray_sum***/
-boolean $add_Boolean_Boolean(boolean a1, boolean a2);
-
 // FIXME: WHAT DOES THIS FUNCTION DO?
 boolean BooleanArray_sum(Token token) {
 	boolean result;
 	int i;
 
 	if (token.payload.BooleanArray->size <= 0) {
-		return BooleanArray_zero(token);
+		return false;
 	} else {
 		result = BooleanArray_get(token, 0);
 	}
 
     for (i = 1; i < token.payload.BooleanArray->size; i++) {
-    	result = $add_Boolean_Boolean(result.payload.Boolean,BooleanArray_get(token, i).payload.Boolean);
+    	result = $add_Boolean_Boolean(result, BooleanArray_get(token, i));
     }
     return result;
 }

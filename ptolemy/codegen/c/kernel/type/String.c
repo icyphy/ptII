@@ -40,7 +40,6 @@ Token String_equals(Token thisToken, ...) {
 
 /***String_isCloseTo***/
 /* No need to use String_isCloseTo(), we use String_equals() instead. */
-}
 /**/
 
 /***String_print***/

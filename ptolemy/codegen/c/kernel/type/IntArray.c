@@ -479,7 +479,7 @@ int IntArray_sum(Token token) {
 	}
 
     for (i = 1; i < token.payload.IntArray->size; i++) {
-    	result = $add_Int_Int(result.payload.Int,IntArray_get(token, i).payload.Int);
+    	result = $add_Int_Int(result, IntArray_get(token, i));
     }
     return result;
 }
