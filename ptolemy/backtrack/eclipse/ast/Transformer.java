@@ -163,13 +163,14 @@ public class Transformer {
 
                     try {
                         c = loader.loadClass(new File(fileName));
-                    } catch (Exception e) {
+                    } catch (Throwable throwable) {
                         /*System.err.println("Skipping \"" + files[j] + "\". "
                                 + "Cause: " + e.getMessage());
                         continue;*/
                         System.err.println("***********************");
-                        String message = e.getMessage();
-                        System.err.println("Cannot load class from file: "
+                        String message = throwable.getMessage();
+                        System.err.println("Cannot load class from file: \""
+                                + fileName + "\": "
                                 + message);
                         
                         String header = "Prohibited package name:";
@@ -199,6 +200,11 @@ public class Transformer {
                     }
 
                     fileList.add(files[j]);
+		    if (c == null) {
+			throw new NullPointerException("Could not obtain "
+						       + "preloaded class \""
+						       + fileName + "\"");
+		    }
                     crossAnalysis.add(c.getName());
                     _addInnerClasses(crossAnalysis, fileName,
                             (c.getPackage() == null) ? null : c.getPackage()
