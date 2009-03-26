@@ -9,7 +9,6 @@
 
 /***declareBlock***/
 Token StringArray_new(int size, int given, ...);
-typedef char* string;
 struct stringarray {
     int size;                                   // size of the array.
     string* elements;                            // array of Token elements.

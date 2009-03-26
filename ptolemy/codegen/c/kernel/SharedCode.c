@@ -2,7 +2,9 @@
 
 // Constants.
 #define MISSING 0
-#define boolean unsigned char
+
+typedef unsigned char boolean;
+typedef char* string;
 
 /* Infinity is a valid Ptolemy identifier. */
 #define Infinity HUGE_VAL
