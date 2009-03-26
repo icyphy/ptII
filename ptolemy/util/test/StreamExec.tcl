@@ -99,9 +99,11 @@ test StreamExec-2.3 {execute a command that does not exist, get stderr} {
     set result3 \
 	{IOException: java.io.IOException: Cannot run program "NotACommand": java.io.IOException: error=2, No such file or directory
 }
-
+    set result4 \
+	{IOException: java.io.IOException: java.io.IOException: NotACommand: not found
+}
     set retval 0
-    if {"$stderr" == "$result1" || "$stderr" == "$result2" || "$stderr" == "$result3"} {
+    if {"$stderr" == "$result1" || "$stderr" == "$result2" || "$stderr" == "$result3" || $stderr == "$result4"} {
 	set retval 1
     } else {
 	puts "Did not match any of the known good results:\n----"
