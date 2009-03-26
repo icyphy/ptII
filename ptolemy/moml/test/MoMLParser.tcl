@@ -4223,4 +4223,4 @@ Because:
 XML element "class" triggers exception. in file:/XXX/ptolemy/moml/test/AltFileNameExceptionTestFile.xml at line 4 and column 47
 Caused by:
  ptolemy.kernel.util.IllegalActionException: Cannot find class: NotAClass
-Because:}}
+}}
