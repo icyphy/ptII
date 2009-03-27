@@ -65,9 +65,6 @@ OTHER_FILES_TO_BE_JARED = \
 	propertiesActors.xml \
 	propertiesAttributeLibrary.xml \
 	propertiesConfigurableSolvers.xml \
-	propertiesConfigurableCombinedSolvers.xml \
-	propertiesConfigurableConstraintSolvers.xml \
-	propertiesConfigurableTokenSolvers.xml \
 	propertiesLibrary.xml \
 	welcomeWindow.xml
 

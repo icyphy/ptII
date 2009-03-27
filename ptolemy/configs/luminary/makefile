@@ -54,8 +54,6 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	codegenActorLibrary.xml \
-	codegenDirectors.xml \
 	codegenDomains.xml \
 	codegenLibrary.xml \
 	configuration.xml \
