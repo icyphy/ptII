@@ -79,6 +79,9 @@ public class ProceduralCodeGenerator extends ProgramCodeGenerator {
         // Hide the embeddedCode parameter from the user.
         generateEmbeddedCode.setVisibility(Settable.EXPERT);
 
+        sourceLineBinding = new Parameter(this, "sourceLineBinding");
+        sourceLineBinding.setTypeEquals(BaseType.BOOLEAN);
+        sourceLineBinding.setExpression("false");
         
         generatorPackageList.setExpression("generic.program.procedural");
     }
@@ -110,4 +113,11 @@ public class ProceduralCodeGenerator extends ProgramCodeGenerator {
      *  model.
      */
     public Parameter generateEmbeddedCode;
+    
+    /** If true, then the generated source is bound to the line
+     *  number and file of the (adapter) templates. Otherwise, the
+     *  source is bound only to the output file. This is a boolean
+     *  parameter with default value false.
+     */
+    public Parameter sourceLineBinding;
 }
