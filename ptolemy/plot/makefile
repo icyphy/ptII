@@ -222,9 +222,17 @@ BASECLASSFILES = \
 		'$(ME)/Plot$$5.class' \
 		'$(ME)/Plot$$6.class' \
 		'$(ME)/Plot$$7.class' \
+		'$(ME)/Plot$$8.class' \
+		'$(ME)/Plot$$9.class' \
+		'$(ME)/Plot$$Bin.class' \
 		$(ME)/PlotBox.class \
 		'$(ME)/PlotBox$$1.class' \
 		'$(ME)/PlotBox$$ButtonListener.class' \
+		'$(ME)/PlotBox$$CommandListener.class' \
+		'$(ME)/PlotBox$$DragListener.class' \
+		'$(ME)/PlotBox$$TimedRepaint$$1.class' \
+		'$(ME)/PlotBox$$TimedRepaint.class' \
+		'$(ME)/PlotBox$$ZoomListener.class' \
 		$(ME)/PlotDataException.class \
 		$(ME)/PlotPoint.class \
 		'$(ME)/Plot$$Format.class' \
