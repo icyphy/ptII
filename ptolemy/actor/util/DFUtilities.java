@@ -190,6 +190,10 @@ public class DFUtilities {
             // not set.  BooleanSelect had this problem.
             return defaultValue;
         }
+        
+        if (token.isNil()) {
+            throw new IllegalActionException(port, "Port rate parameter value is missing (is nil).");
+        }
 
         if (token instanceof IntToken) {
             return ((IntToken) token).intValue();
