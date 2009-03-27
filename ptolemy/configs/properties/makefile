@@ -62,6 +62,9 @@ OTHER_FILES_TO_BE_JARED = \
 	latticeEffigyFactory.xml \
 	latticeLibrary.xml \
 	latticeTableauFactory.xml \
+	propertiesConfiguredCombinedSolvers.xml \
+	propertiesConfiguredConstraintSolvers.xml \
+	propertiesConfiguredTokenSolvers.xml \
 	propertiesActors.xml \
 	propertiesAttributeLibrary.xml \
 	propertiesConfigurableSolvers.xml \
