@@ -28,8 +28,10 @@
 package ptolemy.domains.fsm.demo.ABP;
 
 import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.lib.RandomSource;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.Time;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
@@ -52,7 +54,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Red (liuxj)
  @Pt.AcceptedRating Red (cxh)
  */
-public class DEMessageSource extends TypedAtomicActor {
+public class DEMessageSource extends RandomSource {
     /** Constructor.
      *  @param container The composite actor that this actor belongs to.
      *  @param name The name of this actor.
@@ -64,7 +66,6 @@ public class DEMessageSource extends TypedAtomicActor {
     public DEMessageSource(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.INT);
         request = new TypedIOPort(this, "request", false, true);
         request.setTypeEquals(BaseType.GENERAL);
@@ -88,13 +89,17 @@ public class DEMessageSource extends TypedAtomicActor {
         _msgNum = 0;
         _nextMsgTime = new Time(getDirector(), -1.0);
 
+        if (_random == null
+                || ((BooleanToken) resetOnEachRun.getToken()).booleanValue()) {
+            _createGenerator();
+        }
         //System.out.println("DEChannel " + getFullName() +
         //        " initializing at time " + getCurrentTime());
         DEDirector dir = (DEDirector) getDirector();
         Time now = dir.getModelTime();
+	_generateRandomNumber();
         dir.fireAt(this, now.add(((DoubleToken) maxDelay.getToken())
-                .doubleValue()
-                * Math.random()));
+				 .doubleValue() * _current));
     }
 
     /** If this is the first fire, output the request
@@ -123,7 +128,9 @@ public class DEMessageSource extends TypedAtomicActor {
                 // ignore this
             } else {
                 // compute a random delay between zero and MaxDelay.
-                double delay = maxDelayValue * Math.random();
+		// super.fire calls _generateRandomNumber for us,
+		// which sets _current.
+                double delay = maxDelayValue * _current;
                 _nextMsgTime = now.add(delay);
                 dir.fireAt(this, _nextMsgTime);
             }
@@ -158,14 +165,25 @@ public class DEMessageSource extends TypedAtomicActor {
     /** @serial The next port. */
     public TypedIOPort next;
 
-    /** @serial The output port. */
-    public TypedIOPort output;
-
     /** @serial The request port. */
     public TypedIOPort request;
 
     /** @serial the mean inter-arrival time and value */
     public Parameter maxDelay;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Generate a new random number.
+     *  @exception IllegalActionException Not thrown in this base class.
+     *  Derived classes may throw it if there are problems getting parameter
+     *  values.
+     */
+    protected void _generateRandomNumber()
+	throws IllegalActionException {
+	_current = _random.nextDouble();
+    }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -178,4 +196,7 @@ public class DEMessageSource extends TypedAtomicActor {
 
     /** @serial The next time to generate a message. */
     private Time _nextMsgTime;
+
+    /** The random number for the current iteration. */
+    private double _current;
 }
