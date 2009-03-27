@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/configs/codegen
+ME =		ptolemy/configs/luminary
 
 # There is no demo directory, put demos in the corresponding domain
 # directory so that we can find them if we are looking at domains.
@@ -47,20 +47,20 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	codegen
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
+PTPACKAGE = 	luminary
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	codegenDomains.xml \
-	codegenLibrary.xml \
 	configuration.xml \
+	luminaryActorLibrary.xml \
+	luminaryDirectors.xml \
+	luminaryDomains.xml \
+	luminaryLibrary.xml \
+	welcomeWindow.xml \
 	demos.htm \
-	intro.htm \
-	makefile \
-	welcomeWindow.xml
+	intro.htm
 
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
