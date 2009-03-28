@@ -4215,12 +4215,24 @@ test MoMLParser-32.1 {If we read in a file that refers to a second file and the 
     $parser reset
     catch {[$parser parseFile "AltFileNameExceptionTest.xml"]} errMsg
     regsub -all {file:/.*/ptolemy/moml/test} [string range $errMsg 0 502] {file:/XXX/ptolemy/moml/test} result
-    list $result
-} {{com.microstar.xml.XmlException: XML element "entity" triggers exception. in file:/XXX/ptolemy/moml/test/ at line 5 and column 70
+    set result1 {com.microstar.xml.XmlException: XML element "entity" triggers exception. in file:/XXX/ptolemy/moml/test/ at line 5 and column 70
 Caused by:
  ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.moml.test.AltFileNameExceptionTestFile
 Because:
 XML element "class" triggers exception. in file:/XXX/ptolemy/moml/test/AltFileNameExceptionTestFile.xml at line 4 and column 47
 Caused by:
  ptolemy.kernel.util.IllegalActionException: Cannot find class: NotAClass
-}}
+}
+    set result2 {com.microstar.xml.XmlException: XML element "entity" triggers exception. in file:/XXX/ptolemy/moml/test/ at line 5 and column 70
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.moml.test.AltFileNameExceptionTestFile
+Because:
+XML element "class" triggers exception. in file:/XXX/ptolemy/moml/test/AltFileNameExceptionTestFile.xml at line 4 and column 47
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: Cannot find class: NotAClass
+Because:}
+
+    if { $result != $result1 && $result != $result2 } {
+	error "$result\nwas not equal to\n$result1\nor\n$result2"
+    }
+} {}
