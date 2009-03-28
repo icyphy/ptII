@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Hysteresis" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[511, 502]">
     </property>
@@ -20,7 +20,7 @@
         <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 0, 726, 620}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 22, 724, 612}, maximized=false}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model shows the Hysteresis effect. Hysteresis is a retardation &#10;of an effect when the forces acting upon a body are changed. It is&#10;often used to describe the phenomenon in which the magnetic induction &#10;of a ferromagnetic material lags behind the changing magnetic field.&#10;&#10;In this example, the noisy sinewave is turned into a square wave. However,&#10;the polarity of the square wave does not change immediately when the&#10;sinewave changes polarity.">
@@ -74,7 +74,7 @@
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
-            <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="state">
+            <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure><entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity></configure>
@@ -105,6 +105,10 @@
             <entity name="state" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state">
                 </property>
+                <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
@@ -114,6 +118,8 @@
             </entity>
             <entity name="state2" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state2">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
@@ -192,8 +198,12 @@
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </relation>
             <link port="input" relation="relation"/>
             <link port="output" relation="relation2"/>
@@ -245,8 +255,12 @@
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
             </relation>
             <link port="input" relation="relation"/>
             <link port="output" relation="relation2"/>
@@ -254,8 +268,12 @@
             <link port="Const.trigger" relation="relation"/>
         </entity>
         <relation name="inputRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </relation>
         <relation name="outputRelation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </relation>
         <link port="input" relation="inputRelation"/>
         <link port="output" relation="outputRelation"/>
@@ -269,13 +287,13 @@
     <entity name="Sinewave" class="ptolemy.actor.lib.Sinewave">
         <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
         </property>
-        <doc>This composite actor generates a sine wave.</doc>
         <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="8000.0">
-            <doc>The sampling frequency, in the same units as the frequency.</doc>
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
         </property>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={108, 103, 811, 561}}">
         </property>
         <property name="annotation" class="ptolemy.kernel.util.Attribute">
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
@@ -339,12 +357,20 @@
             </property>
             <doc>The phase, in radians.</doc>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={108, 103, 811, 561}}">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 135.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
+        <port name="frequency" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 90.0}">
+            </property>
+        </port>
+        <port name="phase" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 130.0}">
+            </property>
+        </port>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 145.0]">
@@ -353,7 +379,7 @@
         </property>
     </entity>
     <entity name="GaussianNoiseSource" class="ptolemy.actor.lib.Gaussian">
-        <property name="seed" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="0">
         </property>
         <property name="mean" class="ptolemy.actor.parameters.PortParameter" value="0.0">
         </property>
@@ -399,14 +425,22 @@
         </configure>
     </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
         <vertex name="vertex1" value="[245.0, 145.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <link port="ModalModel.input" relation="relation4"/>
     <link port="ModalModel.output" relation="relation"/>

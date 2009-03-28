@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="GuardedCount" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 4, 933, 629}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 22, 931, 621}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[718, 511]">
     </property>
@@ -40,7 +40,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 300.0]">
         </property>
     </property>
-    <entity name="DisplayCount" class="ptolemy.domains.sr.lib.NonStrictDisplay">
+    <entity name="DisplayCount" class="ptolemy.domains.sr.lib.gui.NonStrictDisplay">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={439, 350, 170, 435}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[162, 380]">
@@ -49,7 +49,7 @@
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="20">
         </property>
-        <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Count">
+        <property name="title" class="ptolemy.data.expr.StringParameter" value="Count">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 175.0]">
         </property>
@@ -368,28 +368,46 @@
             </property>
         </entity>
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
             <vertex name="vertex1" value="[325.0, 170.0]">
             </vertex>
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
             <vertex name="vertex1" value="[155.0, 375.0]">
             </vertex>
         </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
             <vertex name="vertex1" value="[210.0, 170.0]">
             </vertex>
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </relation>
         <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </relation>
         <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </relation>
         <relation name="relation2_6" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </relation>
         <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
@@ -419,7 +437,7 @@
         <link port="Comparator2.output" relation="relation12"/>
         <link port="Const3.output" relation="relation11"/>
     </entity>
-    <entity name="DisplayEnable" class="ptolemy.domains.sr.lib.NonStrictDisplay">
+    <entity name="DisplayEnable" class="ptolemy.domains.sr.lib.gui.NonStrictDisplay">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={220, 350, 220, 435}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[212, 380]">
@@ -428,7 +446,7 @@
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="20">
         </property>
-        <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Enable New Count">
+        <property name="title" class="ptolemy.data.expr.StringParameter" value="Enable New Count">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 260.0]">
         </property>
@@ -516,7 +534,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 110.0]">
             </property>
         </entity>
-        <entity name="DisplayCountRequests" class="ptolemy.domains.sr.lib.NonStrictDisplay">
+        <entity name="DisplayCountRequests" class="ptolemy.domains.sr.lib.gui.NonStrictDisplay">
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 350, 220, 435}, maximized=false}">
             </property>
             <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[212, 380]">
@@ -525,7 +543,7 @@
             </property>
             <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="20">
             </property>
-            <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Count Requests">
+            <property name="title" class="ptolemy.data.expr.StringParameter" value="Count Requests">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 165.0]">
             </property>
@@ -543,10 +561,14 @@
             </property>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
             <vertex name="vertex1" value="{165.0, 110.0}">
             </vertex>
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </relation>
         <link port="output" relation="relation"/>
         <link port="Sequence.output" relation="relation2"/>
@@ -555,12 +577,18 @@
         <link port="NonStrictDelay.output" relation="relation"/>
     </entity>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
         <vertex name="vertex1" value="[270.0, 260.0]">
         </vertex>
     </relation>
     <relation name="relation10_21" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <link port="DisplayCount.input" relation="relation10_21"/>
     <link port="CountDown.start" relation="relation"/>
