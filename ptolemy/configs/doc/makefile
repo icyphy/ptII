@@ -131,7 +131,7 @@ models.txt: $(ROOT)/ptolemy/actor/gui/HTMLAbout.class completeDemos.htm
 		ptolemy.actor.gui.HTMLAbout 
 
 update: $(DERIVED_FILES)
-	cvs commit -m "Master files changed" $(DERIVED_FILES)
+	svn commit -m "Master files changed" $(DERIVED_FILES)
 	rm -f doc.jar
 	$(MAKE) doc.jar
 
