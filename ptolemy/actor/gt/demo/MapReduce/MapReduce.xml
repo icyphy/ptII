@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="MapReduce" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={219, 115, 945, 701}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={219, 115, 935, 697}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[722, 587]">
     </property>
@@ -53,6 +53,9 @@
                                         </property>
                                         <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 125.0]">
                                         </property>
+                                        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                                            <configure><svg><rect x="0" y="0" width="60" height="40"  style="fill:#C0C0C0"/><rect x="5" y="17" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><rect x="39" y="25" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><line x1="25" y1="22" x2="30" y2="22"  style="stroke:#404040"/><line x1="30" y1="22" x2="30" y2="30"  style="stroke:#404040"/><line x1="30" y1="30" x2="35" y2="30"  style="stroke:#404040"/><text x="17" y="13"  style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
+                                        </property>
                                         <port name="doneReading">
                                             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
                                             </property>
@@ -74,6 +77,9 @@
                                         <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.PortCriterion/true/&quot;inputKeys&quot;/false//true/true/true/false/true/true/true/&quot;inputKeys&quot;)(ptolemy.actor.gt.ingredients.criteria.PortCriterion/true/&quot;inputValues&quot;/false//true/true/true/false/true/true/true/&quot;inputValues&quot;)(ptolemy.actor.gt.ingredients.criteria.PortCriterion/true/&quot;doneReceiving&quot;/false//true/true/true/false/true/false/true/&quot;doneReceiving&quot;)(ptolemy.actor.gt.ingredients.criteria.PortCriterion/true/&quot;output&quot;/false//true/false/true/true/true/false/true/&quot;output&quot;)">
                                         </property>
                                         <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 125.0]">
+                                        </property>
+                                        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                                            <configure><svg><rect x="0" y="0" width="60" height="40"  style="fill:#C0C0C0"/><rect x="5" y="17" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><rect x="39" y="25" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><line x1="25" y1="22" x2="30" y2="22"  style="stroke:#404040"/><line x1="30" y1="22" x2="30" y2="30"  style="stroke:#404040"/><line x1="30" y1="30" x2="35" y2="30"  style="stroke:#404040"/><text x="17" y="13"  style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
                                         </property>
                                         <port name="inputKeys">
                                             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -111,6 +117,9 @@
                                         </property>
                                         <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 125.0]">
                                         </property>
+                                        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                                            <configure><svg><rect x="0" y="0" width="60" height="40"  style="fill:#C0C0C0"/><rect x="5" y="17" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><rect x="39" y="25" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><line x1="25" y1="22" x2="30" y2="22"  style="stroke:#404040"/><line x1="30" y1="22" x2="30" y2="30"  style="stroke:#404040"/><line x1="30" y1="30" x2="35" y2="30"  style="stroke:#404040"/><text x="17" y="13"  style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
+                                        </property>
                                         <port name="doneReading">
                                             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
                                             </property>
@@ -132,6 +141,9 @@
                                         <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="Reduce">
                                         </property>
                                         <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 125.0]">
+                                        </property>
+                                        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                                            <configure><svg><rect x="0" y="0" width="60" height="40"  style="fill:#C0C0C0"/><rect x="5" y="17" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><rect x="39" y="25" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><line x1="25" y1="22" x2="30" y2="22"  style="stroke:#404040"/><line x1="30" y1="22" x2="30" y2="30"  style="stroke:#404040"/><line x1="30" y1="30" x2="35" y2="30"  style="stroke:#404040"/><text x="17" y="13"  style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
                                         </property>
                                         <port name="inputKeys">
                                             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -160,7 +172,7 @@
                                     <link port="Reduce.inputValues" relation="relation2"/>
                                 </entity>
                             </entity>
-</configure>
+                        </configure>
                     </entity>
                     <entity name="AddMaps" class="ptolemy.actor.gt.controller.GTEvent">
                         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="AddMaps">
@@ -196,12 +208,14 @@
                         <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                         </property>
                         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="matched">
-<display name="condition"/>                        </property>
+                            <display name="condition"/>
+                        </property>
                         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.4124791035162105">
                         </property>
                         <property name="gamma" class="ptolemy.data.expr.Parameter" value="-3.168679763605134">
                         </property>
                         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                            <display name="initialize"/>
                         </property>
                         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
@@ -226,6 +240,7 @@
                         <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.4676248965700793">
                         </property>
                         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                            <display name="initialize"/>
                         </property>
                         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
@@ -250,6 +265,7 @@
                         <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.6412170166614126">
                         </property>
                         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                            <display name="initialize"/>
                         </property>
                         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
@@ -274,6 +290,7 @@
                         <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.02523346064612158">
                         </property>
                         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                            <display name="initialize"/>
                         </property>
                         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
@@ -294,12 +311,14 @@
                         <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                         </property>
                         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="!matched">
-<display name="condition"/>                        </property>
+                            <display name="condition"/>
+                        </property>
                         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                         </property>
                         <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.06535917566265288">
                         </property>
                         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                            <display name="initialize"/>
                         </property>
                         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
@@ -379,17 +398,26 @@
                                         </property>
                                         <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 250.0]">
                                         </property>
+                                        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                                            <configure><svg><rect x="0" y="0" width="60" height="40"  style="fill:#C0C0C0"/><rect x="5" y="17" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><rect x="39" y="25" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><line x1="25" y1="22" x2="30" y2="22"  style="stroke:#404040"/><line x1="30" y1="22" x2="30" y2="30"  style="stroke:#404040"/><line x1="30" y1="30" x2="35" y2="30"  style="stroke:#404040"/><text x="17" y="13"  style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
+                                        </property>
                                     </entity>
                                     <entity name="Split" class="ptolemy.actor.gt.AtomicActorMatcher">
                                         <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.NameCriterion/false/&quot;Split&quot;)(ptolemy.actor.gt.ingredients.criteria.PortCriterion/true/&quot;lineInput&quot;/false//true/true/true/false/true/false/true/&quot;lineInput&quot;)(ptolemy.actor.gt.ingredients.criteria.PortCriterion/true/&quot;keys&quot;/false//true/false/true/true/true/true/true/&quot;keys&quot;)(ptolemy.actor.gt.ingredients.criteria.PortCriterion/true/&quot;values&quot;/false//true/false/true/true/true/true/true/&quot;values&quot;)">
                                         </property>
                                         <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 65.0]">
                                         </property>
+                                        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                                            <configure><svg><rect x="0" y="0" width="60" height="40"  style="fill:#C0C0C0"/><rect x="5" y="17" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><rect x="39" y="25" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><line x1="25" y1="22" x2="30" y2="22"  style="stroke:#404040"/><line x1="30" y1="22" x2="30" y2="30"  style="stroke:#404040"/><line x1="30" y1="30" x2="35" y2="30"  style="stroke:#404040"/><text x="17" y="13"  style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
+                                        </property>
                                     </entity>
                                     <entity name="Map" class="ptolemy.actor.gt.AtomicActorMatcher">
                                         <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.NameCriterion/false/&quot;Map&quot;)(ptolemy.actor.gt.ingredients.criteria.PortCriterion/true/&quot;inputKeys&quot;/false//true/true/true/false/true/false/true/&quot;inputKeys&quot;)(ptolemy.actor.gt.ingredients.criteria.PortCriterion/true/&quot;inputValues&quot;/false//true/true/true/false/true/false/true/&quot;inputValues&quot;)(ptolemy.actor.gt.ingredients.criteria.PortCriterion/true/&quot;doneReading&quot;/false//true/true/true/false/true/false/true/&quot;doneReading&quot;)(ptolemy.actor.gt.ingredients.criteria.PortCriterion/true/&quot;outputKeys&quot;/false//true/false/true/true/true/true/true/&quot;outputKeys&quot;)(ptolemy.actor.gt.ingredients.criteria.PortCriterion/true/&quot;outputValues&quot;/false//true/false/true/true/true/true/true/&quot;outputValues&quot;)(ptolemy.actor.gt.ingredients.criteria.PortCriterion/true/&quot;doneEmitting&quot;/false//true/false/true/true/true/false/true/&quot;doneEmitting&quot;)">
                                         </property>
                                         <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 65.0]">
+                                        </property>
+                                        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                                            <configure><svg><rect x="0" y="0" width="60" height="40"  style="fill:#C0C0C0"/><rect x="5" y="17" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><rect x="39" y="25" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><line x1="25" y1="22" x2="30" y2="22"  style="stroke:#404040"/><line x1="30" y1="22" x2="30" y2="30"  style="stroke:#404040"/><line x1="30" y1="30" x2="35" y2="30"  style="stroke:#404040"/><text x="17" y="13"  style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
                                         </property>
                                         <port name="doneReading">
                                             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
@@ -463,17 +491,26 @@
                                         </property>
                                         <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 250.0]">
                                         </property>
+                                        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                                            <configure><svg><rect x="0" y="0" width="60" height="40"  style="fill:#C0C0C0"/><rect x="5" y="17" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><rect x="39" y="25" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><line x1="25" y1="22" x2="30" y2="22"  style="stroke:#404040"/><line x1="30" y1="22" x2="30" y2="30"  style="stroke:#404040"/><line x1="30" y1="30" x2="35" y2="30"  style="stroke:#404040"/><text x="17" y="13"  style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
+                                        </property>
                                     </entity>
                                     <entity name="Split" class="ptolemy.actor.gt.AtomicActorMatcher">
                                         <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="Split">
                                         </property>
                                         <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 65.0]">
                                         </property>
+                                        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                                            <configure><svg><rect x="0" y="0" width="60" height="40"  style="fill:#C0C0C0"/><rect x="5" y="17" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><rect x="39" y="25" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><line x1="25" y1="22" x2="30" y2="22"  style="stroke:#404040"/><line x1="30" y1="22" x2="30" y2="30"  style="stroke:#404040"/><line x1="30" y1="30" x2="35" y2="30"  style="stroke:#404040"/><text x="17" y="13"  style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
+                                        </property>
                                     </entity>
                                     <entity name="Map" class="ptolemy.actor.gt.AtomicActorMatcher">
                                         <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="Map">
                                         </property>
                                         <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 65.0]">
+                                        </property>
+                                        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                                            <configure><svg><rect x="0" y="0" width="60" height="40"  style="fill:#C0C0C0"/><rect x="5" y="17" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><rect x="39" y="25" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><line x1="25" y1="22" x2="30" y2="22"  style="stroke:#404040"/><line x1="30" y1="22" x2="30" y2="30"  style="stroke:#404040"/><line x1="30" y1="30" x2="35" y2="30"  style="stroke:#404040"/><text x="17" y="13"  style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
                                         </property>
                                         <port name="doneReading">
                                             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
@@ -661,7 +698,7 @@
                                     <link port="Map2.doneEmitting" relation="relation6"/>
                                 </entity>
                             </entity>
-</configure>
+                        </configure>
                     </entity>
                     <entity name="Start" class="ptolemy.actor.gt.controller.GTEvent">
                         <property name="isInitialEvent" class="ptolemy.data.expr.Parameter" value="true">
@@ -689,6 +726,7 @@
                         <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.0893259561378894">
                         </property>
                         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                            <display name="initialize"/>
                         </property>
                         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
@@ -709,12 +747,14 @@
                         <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                         </property>
                         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="index &lt; mapCount">
-<display name="condition"/>                        </property>
+                            <display name="condition"/>
+                        </property>
                         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                         </property>
                         <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.7151020851839132">
                         </property>
                         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                            <display name="initialize"/>
                         </property>
                         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
@@ -739,6 +779,7 @@
                         <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.4130398868940632">
                         </property>
                         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                            <display name="initialize"/>
                         </property>
                         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
@@ -807,6 +848,9 @@
                                         </property>
                                         <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 125.0]">
                                         </property>
+                                        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                                            <configure><svg><rect x="0" y="0" width="60" height="40"  style="fill:#C0C0C0"/><rect x="5" y="17" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><rect x="39" y="25" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><line x1="25" y1="22" x2="30" y2="22"  style="stroke:#404040"/><line x1="30" y1="22" x2="30" y2="30"  style="stroke:#404040"/><line x1="30" y1="30" x2="35" y2="30"  style="stroke:#404040"/><text x="17" y="13"  style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
+                                        </property>
                                         <port name="doneReceiving">
                                             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
                                             </property>
@@ -858,6 +902,9 @@
                                         <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="Reduce">
                                         </property>
                                         <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 125.0]">
+                                        </property>
+                                        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                                            <configure><svg><rect x="0" y="0" width="60" height="40"  style="fill:#C0C0C0"/><rect x="5" y="17" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><rect x="39" y="25" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><line x1="25" y1="22" x2="30" y2="22"  style="stroke:#404040"/><line x1="30" y1="22" x2="30" y2="30"  style="stroke:#404040"/><line x1="30" y1="30" x2="35" y2="30"  style="stroke:#404040"/><text x="17" y="13"  style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
                                         </property>
                                         <port name="doneReceiving">
                                             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
@@ -990,7 +1037,7 @@
                                     <link port="Reduce2.output" relation="relation3"/>
                                 </entity>
                             </entity>
-</configure>
+                        </configure>
                     </entity>
                     <entity name="Start" class="ptolemy.actor.gt.controller.GTEvent">
                         <property name="isInitialEvent" class="ptolemy.data.expr.Parameter" value="true">
@@ -1018,6 +1065,7 @@
                         <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.0893259561378894">
                         </property>
                         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                            <display name="initialize"/>
                         </property>
                         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
@@ -1038,12 +1086,14 @@
                         <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                         </property>
                         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="index &lt; reduceCount">
-<display name="condition"/>                        </property>
+                            <display name="condition"/>
+                        </property>
                         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                         </property>
                         <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.7151020851839132">
                         </property>
                         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                            <display name="initialize"/>
                         </property>
                         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
@@ -1068,6 +1118,7 @@
                         <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.4130398868940635">
                         </property>
                         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                            <display name="initialize"/>
                         </property>
                         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
@@ -1155,7 +1206,7 @@
                                     </relation>
                                 </entity>
                             </entity>
-</configure>
+                        </configure>
                     </entity>
                     <entity name="SetReduceCount" class="ptolemy.actor.gt.controller.Transform">
                         <property name="mode" class="ptolemy.actor.gt.TransformationMode" value="replace all">
@@ -1216,7 +1267,7 @@
                                     </relation>
                                 </entity>
                             </entity>
-</configure>
+                        </configure>
                     </entity>
                     <entity name="SetStorageOutput" class="ptolemy.actor.gt.controller.Transform">
                         <property name="mode" class="ptolemy.actor.gt.TransformationMode" value="replace all">
@@ -1258,7 +1309,7 @@
                                     </entity>
                                 </entity>
                             </entity>
-</configure>
+                        </configure>
                     </entity>
                     <entity name="Start" class="ptolemy.domains.erg.kernel.Event">
                         <property name="isInitialEvent" class="ptolemy.data.expr.Parameter" value="true">
@@ -1278,6 +1329,7 @@
                         <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.08761872446651144">
                         </property>
                         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                            <display name="initialize"/>
                         </property>
                         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
@@ -1302,6 +1354,7 @@
                         <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.06246883582560575">
                         </property>
                         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                            <display name="initialize"/>
                         </property>
                         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
@@ -1326,6 +1379,7 @@
                         <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.07202253903107529">
                         </property>
                         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                            <display name="initialize"/>
                         </property>
                         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
@@ -1350,7 +1404,7 @@
                     <link port="Start.outgoingPort" relation="relation"/>
                 </entity>
             </entity>
-</configure>
+        </configure>
     </property>
     <property name="CleanUpModel" class="ptolemy.actor.gt.controller.TransformationAttribute">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 180.0]">
@@ -1431,10 +1485,13 @@
                                         </property>
                                         <property name="_location" class="ptolemy.kernel.util.Location" value="{205, 125}">
                                         </property>
+                                        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                                            <configure><svg><rect x="0" y="0" width="60" height="40"  style="fill:#C0C0C0"/><rect x="5" y="17" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><rect x="39" y="25" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><line x1="25" y1="22" x2="30" y2="22"  style="stroke:#404040"/><line x1="30" y1="22" x2="30" y2="30"  style="stroke:#404040"/><line x1="30" y1="30" x2="35" y2="30"  style="stroke:#404040"/><text x="17" y="13"  style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
+                                        </property>
                                     </entity>
                                 </entity>
                             </entity>
-</configure>
+                        </configure>
                     </entity>
                     <entity name="RemoveRelations" class="ptolemy.actor.gt.controller.Transform">
                         <property name="mode" class="ptolemy.actor.gt.TransformationMode" value="replace all">
@@ -1457,7 +1514,7 @@
                                 </property>
                                 <entity name="Pattern" class="ptolemy.actor.gt.Pattern">
                                     <property name="Constraint" class="ptolemy.actor.gt.Constraint">
-                                        <property name="constraint" class="ptolemy.actor.gt.GTParameter" value="relation.linkedPortList().isEmpty()">
+                                        <property name="constraint" class="ptolemy.actor.gt.Constraint$1" value="relation.linkedPortList().isEmpty()">
                                         </property>
                                         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                                             <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
@@ -1481,7 +1538,7 @@
                                     </relation>
                                 </entity>
                             </entity>
-</configure>
+                        </configure>
                     </entity>
                     <relation name="relation" class="ptolemy.domains.erg.kernel.SchedulingRelation">
                         <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
@@ -1491,6 +1548,7 @@
                         <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.6375862658192968">
                         </property>
                         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                            <display name="initialize"/>
                         </property>
                         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
@@ -1515,6 +1573,7 @@
                         <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.024939372375580304">
                         </property>
                         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                            <display name="initialize"/>
                         </property>
                         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
@@ -1539,6 +1598,7 @@
                         <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.06196338045755726">
                         </property>
                         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                            <display name="initialize"/>
                         </property>
                         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
@@ -1626,7 +1686,7 @@
                                     </relation>
                                 </entity>
                             </entity>
-</configure>
+                        </configure>
                     </entity>
                     <entity name="SetReduceCount" class="ptolemy.actor.gt.controller.Transform">
                         <property name="mode" class="ptolemy.actor.gt.TransformationMode" value="replace all">
@@ -1687,7 +1747,7 @@
                                     </relation>
                                 </entity>
                             </entity>
-</configure>
+                        </configure>
                     </entity>
                     <entity name="SetStorageOutput" class="ptolemy.actor.gt.controller.Transform">
                         <property name="mode" class="ptolemy.actor.gt.TransformationMode" value="replace all">
@@ -1729,7 +1789,7 @@
                                     </entity>
                                 </entity>
                             </entity>
-</configure>
+                        </configure>
                     </entity>
                     <entity name="Start" class="ptolemy.domains.erg.kernel.Event">
                         <property name="isInitialEvent" class="ptolemy.data.expr.Parameter" value="true">
@@ -1749,6 +1809,7 @@
                         <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.08761872446651144">
                         </property>
                         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                            <display name="initialize"/>
                         </property>
                         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
@@ -1773,6 +1834,7 @@
                         <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.06246883582560575">
                         </property>
                         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                            <display name="initialize"/>
                         </property>
                         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
@@ -1797,6 +1859,7 @@
                         <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.07202253903107529">
                         </property>
                         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                            <display name="initialize"/>
                         </property>
                         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
@@ -1821,7 +1884,7 @@
                     <link port="Start.outgoingPort" relation="relation"/>
                 </entity>
             </entity>
-</configure>
+        </configure>
     </property>
     <property name="CheckConsistency" class="ptolemy.actor.gt.controller.TransformationAttribute">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 180.0]">
@@ -1848,7 +1911,7 @@
                                 </property>
                                 <entity name="Pattern" class="ptolemy.actor.gt.Pattern">
                                     <property name="Constraint" class="ptolemy.actor.gt.Constraint">
-                                        <property name="constraint" class="ptolemy.actor.gt.GTParameter" value="&#10;!Actor.getName().equals(&quot;Clock&quot;) &amp;&amp;&#10;Actor.getContainer().getContainer() == null">
+                                        <property name="constraint" class="ptolemy.actor.gt.Constraint$1" value="&#10;!Actor.getName().equals(&quot;Clock&quot;) &amp;&amp;&#10;Actor.getContainer().getContainer() == null">
                                         </property>
                                         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                                             <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
@@ -1869,6 +1932,9 @@
                                         </property>
                                         <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 110.0]">
                                         </property>
+                                        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                                            <configure><svg><rect x="0" y="0" width="60" height="40"  style="fill:#C0C0C0"/><rect x="5" y="17" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><rect x="39" y="25" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><line x1="25" y1="22" x2="30" y2="22"  style="stroke:#404040"/><line x1="30" y1="22" x2="30" y2="30"  style="stroke:#404040"/><line x1="30" y1="30" x2="35" y2="30"  style="stroke:#404040"/><text x="17" y="13"  style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
+                                        </property>
                                     </entity>
                                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
                                         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
@@ -1881,7 +1947,7 @@
                                     <link port="Actor.criterion1" relation="relation"/>
                                 </entity>
                             </entity>
-</configure>
+                        </configure>
                     </entity>
                     <entity name="ReportError" class="ptolemy.actor.gt.controller.Report">
                         <property name="parameters" class="ptolemy.domains.erg.kernel.ParametersAttribute" value="(text : string)">
@@ -1923,6 +1989,7 @@
                         <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.3032709018729571">
                         </property>
                         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                            <display name="initialize"/>
                         </property>
                         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
@@ -1943,12 +2010,14 @@
                         <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                         </property>
                         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="matched">
-<display name="condition"/>                        </property>
+                            <display name="condition"/>
+                        </property>
                         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.7728035253847982">
                         </property>
                         <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.09142623553028607">
                         </property>
                         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                            <display name="initialize"/>
                         </property>
                         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
@@ -1969,12 +2038,14 @@
                         <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                         </property>
                         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="!FindUnconnectedMapReduce.error">
-<display name="condition"/>                        </property>
+                            <display name="condition"/>
+                        </property>
                         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.6228105072107923">
                         </property>
                         <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.03835663612074433">
                         </property>
                         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                            <display name="initialize"/>
                         </property>
                         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
@@ -1995,12 +2066,14 @@
                         <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                         </property>
                         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="!matched">
-<display name="condition"/>                        </property>
+                            <display name="condition"/>
+                        </property>
                         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.5051837361408835">
                         </property>
                         <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.471313640777391">
                         </property>
                         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                            <display name="initialize"/>
                         </property>
                         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
@@ -2021,12 +2094,14 @@
                         <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                         </property>
                         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="FindUnconnectedMapReduce.error">
-<display name="condition"/>                        </property>
+                            <display name="condition"/>
+                        </property>
                         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.8198727481135787">
                         </property>
                         <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.10176906287311802">
                         </property>
                         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                            <display name="initialize"/>
                         </property>
                         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
@@ -2111,6 +2186,9 @@
                                         </property>
                                         <property name="_location" class="ptolemy.kernel.util.Location" value="{130.0, 135.0}">
                                         </property>
+                                        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                                            <configure><svg><rect x="0" y="0" width="60" height="40"  style="fill:#C0C0C0"/><rect x="5" y="17" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><rect x="39" y="25" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><line x1="25" y1="22" x2="30" y2="22"  style="stroke:#404040"/><line x1="30" y1="22" x2="30" y2="30"  style="stroke:#404040"/><line x1="30" y1="30" x2="35" y2="30"  style="stroke:#404040"/><text x="17" y="13"  style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
+                                        </property>
                                         <port name="outputKeys">
                                             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                             </property>
@@ -2122,6 +2200,9 @@
                                         <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="Reduce">
                                         </property>
                                         <property name="_location" class="ptolemy.kernel.util.Location" value="{360.0, 135.0}">
+                                        </property>
+                                        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                                            <configure><svg><rect x="0" y="0" width="60" height="40"  style="fill:#C0C0C0"/><rect x="5" y="17" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><rect x="39" y="25" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><line x1="25" y1="22" x2="30" y2="22"  style="stroke:#404040"/><line x1="30" y1="22" x2="30" y2="30"  style="stroke:#404040"/><line x1="30" y1="30" x2="35" y2="30"  style="stroke:#404040"/><text x="17" y="13"  style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
                                         </property>
                                         <port name="inputKeys">
                                             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -2138,7 +2219,7 @@
                                     <link port="Reduce.inputKeys" relation="relation"/>
                                 </entity>
                             </entity>
-</configure>
+                        </configure>
                     </entity>
                     <entity name="FindUnconnectedValuesPort" class="ptolemy.actor.gt.controller.Match">
                         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -2165,6 +2246,9 @@
                                         </property>
                                         <property name="_location" class="ptolemy.kernel.util.Location" value="{130.0, 135.0}">
                                         </property>
+                                        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                                            <configure><svg><rect x="0" y="0" width="60" height="40"  style="fill:#C0C0C0"/><rect x="5" y="17" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><rect x="39" y="25" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><line x1="25" y1="22" x2="30" y2="22"  style="stroke:#404040"/><line x1="30" y1="22" x2="30" y2="30"  style="stroke:#404040"/><line x1="30" y1="30" x2="35" y2="30"  style="stroke:#404040"/><text x="17" y="13"  style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
+                                        </property>
                                         <port name="outputValues">
                                             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
                                             </property>
@@ -2176,6 +2260,9 @@
                                         <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="Reduce">
                                         </property>
                                         <property name="_location" class="ptolemy.kernel.util.Location" value="{360.0, 135.0}">
+                                        </property>
+                                        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                                            <configure><svg><rect x="0" y="0" width="60" height="40"  style="fill:#C0C0C0"/><rect x="5" y="17" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><rect x="39" y="25" width="16" height="10"  style="fill:#FFFFFF; stroke:#B00000"/><line x1="25" y1="22" x2="30" y2="22"  style="stroke:#404040"/><line x1="30" y1="22" x2="30" y2="30"  style="stroke:#404040"/><line x1="30" y1="30" x2="35" y2="30"  style="stroke:#404040"/><text x="17" y="13"  style="font-size:12; fill:#E00000; font-family:SansSerif">  match</text></svg></configure>
                                         </property>
                                         <port name="inputValues">
                                             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -2192,7 +2279,7 @@
                                     <link port="Reduce.inputValues" relation="relation"/>
                                 </entity>
                             </entity>
-</configure>
+                        </configure>
                     </entity>
                     <entity name="Fail" class="ptolemy.actor.gt.controller.GTEvent">
                         <property name="isFinalEvent" class="ptolemy.data.expr.Parameter" value="true">
@@ -2214,6 +2301,7 @@
                         <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.402287246665359">
                         </property>
                         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                            <display name="initialize"/>
                         </property>
                         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
@@ -2238,6 +2326,7 @@
                         <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.7094605155858892">
                         </property>
                         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                            <display name="initialize"/>
                         </property>
                         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
@@ -2258,12 +2347,14 @@
                         <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                         </property>
                         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="matched">
-<display name="condition"/>                        </property>
+                            <display name="condition"/>
+                        </property>
                         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.5266898792496448">
                         </property>
                         <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.8718645074992412">
                         </property>
                         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                            <display name="initialize"/>
                         </property>
                         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
@@ -2284,12 +2375,14 @@
                         <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                         </property>
                         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="matched">
-<display name="condition"/>                        </property>
+                            <display name="condition"/>
+                        </property>
                         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.4974248594754308">
                         </property>
                         <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.269013480828046">
                         </property>
                         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                            <display name="initialize"/>
                         </property>
                         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
@@ -2316,7 +2409,7 @@
                     <link port="Fail.incomingPort" relation="relation_1_4"/>
                 </entity>
             </entity>
-</configure>
+        </configure>
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -2718,7 +2811,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 187]">
         </property>
-        <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Word Counts">
+        <property name="title" class="ptolemy.data.expr.StringParameter" value="Word Counts">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 70.0]">
         </property>

@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Units" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
     </property>
     <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
@@ -338,7 +338,7 @@ voltage, etc.) and then divides by its argument.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 120.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 2, 980, 751}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 978, 743}, maximized=false}">
     </property>
     <property name="annotation4" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -388,11 +388,13 @@ voltage, etc.) and then divides by its argument.</text></svg></configure>
         </property>
     </entity>
     <entity name="DisplayVoltage" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={724, 60, 330, 237}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Voltage">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={724, 60, 330, 237}, maximized=false}">
+        <property name="title" class="ptolemy.data.expr.StringParameter" value="Voltage">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="635.0, 375.0">
         </property>
@@ -420,11 +422,13 @@ voltage, etc.) and then divides by its argument.</text></svg></configure>
         </property>
     </entity>
     <entity name="DisplayCurrent" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={724, 297, 330, 237}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Current">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={724, 297, 330, 237}, maximized=false}">
+        <property name="title" class="ptolemy.data.expr.StringParameter" value="Current">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="635.0, 435.0">
         </property>
@@ -480,11 +484,13 @@ voltage, etc.) and then divides by its argument.</text></svg></configure>
         </port>
     </entity>
     <entity name="DisplayCurrentInAmps" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={723, 533, 330, 237}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Current in units of Amps">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={723, 533, 330, 237}, maximized=false}">
+        <property name="title" class="ptolemy.data.expr.StringParameter" value="Current in units of Amps">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[660.0, 495.0]">
         </property>
@@ -512,30 +518,48 @@ voltage, etc.) and then divides by its argument.</text></svg></configure>
         </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
         <vertex name="vertex1" value="335.0, 375.0">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
         <vertex name="vertex1" value="455.0, 445.0">
         </vertex>
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
         <vertex name="vertex1" value="605.0, 595.0">
         </vertex>
     </relation>
     <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
         <vertex name="vertex1" value="[555.0, 435.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <link port="Scale2.input" relation="relation6"/>
     <link port="Scale2.output" relation="relation"/>
