@@ -115,7 +115,9 @@ PTCLASSALLJARS = \
 		hyvisual/hyvisual.jar \
 		jni/jni.jar \
 		jxta/jxta.jar \
+		luminary/luminary.jar \
 		pn/pn.jar \
+		properties/properties.jar \
 		ptiny/ptiny.jar \
 		ptinyKepler/ptinyKepler.jar \
 		space/space.jar \
