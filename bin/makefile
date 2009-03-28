@@ -61,7 +61,6 @@ SHELL_FILES = \
 	histogram \
 	jode \
 	mescal \
-	mkosgi \
 	moml \
 	obfuscate \
 	ptcg \
@@ -89,6 +88,7 @@ EXTRA_EXECUTABLE_SRCS = \
 	startjini \
 	mkjnlp \
 	mkl4j \
+	mkosgi \
 	viptos
 
 EXTRA_SRCS = \
