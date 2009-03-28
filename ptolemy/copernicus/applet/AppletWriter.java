@@ -44,6 +44,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.jar.JarEntry;
+import java.util.jar.JarOutputStream;
+import java.util.jar.Manifest;
 
 import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CompositeActor;
@@ -222,6 +225,10 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             }
         }
 
+	// The JNLP file to be created
+	String jnlpSourceFileName = _outputDirectory + "/" + _sanitizedModelName + ".jnlp";
+	String jnlpJarFileName = _outputDirectory + "/" + _sanitizedModelName + ".jar";
+
         try {
             // If the code base is the current directory, then we
             // copy the jar files over and set the value of _domainJar
@@ -229,37 +236,58 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             // We always want to generate the list of jar files so
             // that if for example we use fsm, then we are sure to
             // include diva.jar
+	    // We do both the applet jar files and the jnlp jar files
             StringBuffer jarFilesResults = new StringBuffer();
-            Iterator jarFiles = _findModelJarFiles(director).iterator();
+            StringBuffer jnlpJarFilesResults = new StringBuffer();
 
-            while (jarFiles.hasNext()) {
-                String jarFile = (String) jarFiles.next();
+
+	    // This is the signed jar file that includes the .jnlp file
+	    jnlpJarFilesResults.insert(0, "        <jar href=\""
+				       + _sanitizedModelName + ".jar\""
+				       + _jarFileLengthAttribute(jnlpSourceFileName)
+				       + "\n             main=\"true\"/>\n");
+
+            Iterator jarFileNames = _findModelJarFiles(director).iterator();
+
+            while (jarFileNames.hasNext()) {
+                String jarFileName = (String) jarFileNames.next();
 
                 if (jarFilesResults.length() > 0) {
                     jarFilesResults.append(",");
                 }
-
-                jarFilesResults.append(jarFile);
+                jarFilesResults.append(jarFileName);
+		jnlpJarFilesResults.append("        <jar href=\""
+				    + jarFileName + "\""
+ 				    + _jarFileLengthAttribute(_ptIIJarsPath + File.separator + jarFileName)
+				    + "\n             download=\"eager\"/>\n");
             }
 
             _modelJarFiles = jarFilesResults.toString();
 
 
-            // Get the vergil jar files
+            // Get the vergil jar files for the applet
             jarFilesResults = new StringBuffer();
-            jarFiles = _findVergilJarFiles(director).iterator();
+	    // We don't reset the jar files for jnlp because we assume
+	    // all JNLP files run vergil.
+            jarFileNames = _findVergilJarFiles(director).iterator();
 
-            while (jarFiles.hasNext()) {
-                String jarFile = (String) jarFiles.next();
+            while (jarFileNames.hasNext()) {
+                String jarFileName = (String) jarFileNames.next();
 
                 if (jarFilesResults.length() > 0) {
                     jarFilesResults.append(",");
                 }
 
-                jarFilesResults.append(jarFile);
+                jarFilesResults.append(jarFileName);
+
+		jnlpJarFilesResults.append("        <jar href=\""
+					   + jarFileName  + "\""
+					   + _jarFileLengthAttribute(_ptIIJarsPath + File.separator + jarFileName)
+					   + "\n             download=\"eager\"/>\n");
             }
 
             _vergilJarFiles = jarFilesResults.toString();
+	    _jnlpJars = jnlpJarFilesResults.toString();
 
         } catch (IOException ex) {
             // This exception tends to get eaten by soot, so we print as well.
@@ -315,10 +343,17 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         _substituteMap.put("@appletHeight@", Integer.toString(appletHeight));
         _substituteMap.put("@appletWidth@", Integer.toString(appletWidth));
         _substituteMap.put("@codeBase@", _codeBase);
+	_substituteMap.put("@jnlpJars@", _jnlpJars);
         _substituteMap.put("@modelJarFiles@", _modelJarFiles);
         _substituteMap.put("@outDir@", _outputDirectory);
         _substituteMap.put("@sanitizedModelName@", _sanitizedModelName);
         _substituteMap.put("@ptIIDirectory@", _ptIIJarsPath);
+	try {
+	    _substituteMap.put("@ptIILocalURL@", new File(_outputDirectory).toURI().toURL().toString());
+	} catch (Exception ex) {
+	    throw new InternalErrorException(null, ex, "Failed to create URL for \""
+					     + _outputDirectory + "\"");
+	}
         _substituteMap.put("@vergilHeight@", Integer.toString(vergilHeight));
         _substituteMap.put("@vergilJarFiles@", _vergilJarFiles);
         _substituteMap.put("@vergilWidth@", Integer.toString(vergilWidth));
@@ -424,6 +459,19 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             CodeGeneratorUtilities.substitute(_templateDirectory
                     + "modelVergil.htm.in", _substituteMap, _outputDirectory
                     + "/" + _sanitizedModelName + "Vergil.htm");
+            CodeGeneratorUtilities.substitute(_templateDirectory
+	            + "model.jnlp.in", _substituteMap, jnlpSourceFileName);
+
+	    _createJarFile(new File(jnlpJarFileName),
+			   new String [] {
+			       "JNLP-INF/APPLICATION.JNLP",
+			       "ptolemy/copernicus/applet/JNLPApplication.class",
+			       "ptolemy/actor/gui/jnlp/MenuApplication.class"},
+			   new File [] {
+			       new File(_outputDirectory + "/" + _sanitizedModelName + ".jnlp"),
+			       new File(_ptIIJarsPath + "/ptolemy/copernicus/applet/JNLPApplication.class"),
+			       new File(_ptIIJarsPath + "/ptolemy/actor/gui/jnlp/MenuApplication.class"),
+			   });
 
             // Copy $PTII/doc/default.css as well.
             File defaultStyleSheetDirectory = new File(_outputDirectory
@@ -440,7 +488,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     + "default.css", _substituteMap, defaultStyleSheetDirectory
                     .toString()
                     + "/default.css");
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             // This exception tends to get eaten by soot, so we print as well.
             System.err.println("Problem writing makefile or html files:" + ex);
             ex.printStackTrace();
@@ -543,8 +591,18 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 // we copy the jar file.
                 // Ptolemy II development trees will have jar files
                 // if 'make install' was run.
-                _copyFile(_ptIIJarsPath + File.separator + jarFile,
+		String signedSourceFileName = _ptIIJarsPath + File.separator
+		    + "signed" + File.separator + jarFile;
+		File signedSourceFile = new File(signedSourceFileName);
+		if (signedSourceFile.isFile()) {
+		    _copyFile(signedSourceFileName,
                         _outputDirectory, jarFile);
+		} else {
+		    System.out.println("Warning, could not find \""
+				       + signedSourceFileName + "\"");
+		    _copyFile(_ptIIJarsPath + File.separator + jarFile,
+                        _outputDirectory, jarFile);
+		}
             }
 
             return true;
@@ -751,6 +809,21 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         }
     }
 
+    /** Return the file size as a JNLP file attribute
+     */
+    private String _jarFileLengthAttribute(String fileName) throws IOException {
+	String fileLength = "";
+	try {
+	    File file = new File(fileName);
+	    //System.out.println("AppletWriter: " + fileName + " " + file.length());  
+	    return "\n             size=\"" + file.length() + "\"";
+	} catch (Exception ex) {
+	    System.out.println("Warning, could not find size of \"" + fileName
+			       + "\" : " + ex.getMessage());
+	}
+	return "";
+    }
+
     // find jar necessary jar files and optionally copy jar files into
     // _outputDirectory.  Note that we need look for jar files to find
     // diva.jar if we are using the FSM domain.
@@ -952,6 +1025,62 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 + domainDomain + ".jar";
     }
 
+    /** Create a jar file.
+     *	Based on http://www.java2s.com/Code/Java/File-Input-Output/CreateJarfile.htm
+     */
+    private void _createJarFile(File jarFile, String [] jarFileNames, File[] filesToBeJared) 
+	throws Exception {
+	
+	byte buffer[] = new byte[1024];
+
+	// Open archive file
+	FileOutputStream outputStream = null;
+	JarOutputStream jarOutputStream = null;
+
+	try {
+	    outputStream = new FileOutputStream(jarFile);
+	    jarOutputStream = new JarOutputStream(outputStream, new Manifest());
+
+	    for (int i = 0; i < filesToBeJared.length; i++) {
+		if (filesToBeJared[i] == null || !filesToBeJared[i].exists()
+		    || filesToBeJared[i].isDirectory()) {
+		    continue; // Just in case...
+		}
+		System.out.println("Adding " + filesToBeJared[i].getName());
+
+		// Add archive entry
+		JarEntry jarEntry = new JarEntry(jarFileNames[i]);
+		jarEntry.setTime(filesToBeJared[i].lastModified());
+		jarOutputStream.putNextEntry(jarEntry);
+
+		// Write file to archive
+		FileInputStream in = null;
+		try {
+		    in = new FileInputStream(filesToBeJared[i]);
+		    while (true) {
+			int nRead = in.read(buffer, 0, buffer.length);
+			if (nRead <= 0) {
+			    break;
+			}
+			jarOutputStream.write(buffer, 0, nRead);
+		    }
+		} finally {
+		    if (in != null) {
+			in.close();
+		    }
+		}
+	    }
+	} finally {
+	    if (jarOutputStream != null) {
+		try {
+		    jarOutputStream.close();
+		} catch (IOException ex) {
+		    System.out.println("Failed to close \"" + jarFile.getCanonicalPath() + "\"");
+		}
+	    }
+	}
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // The relative path to $PTII, for example "../../..".
@@ -1005,4 +1134,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
     // For example:
     // "lib/diva.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/ct/ct.jar,ptolemy/vergil/vergilApplet.jar" 
     private String _vergilJarFiles;
+
+    // The jar files that are necessary for the jnlp file.
+    private String _jnlpJars;
 }

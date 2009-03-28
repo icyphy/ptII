@@ -49,6 +49,7 @@ DIRS =		test
 # Keep this list alphabetized.
 JSRCS = \
 	AppletWriter.java \
+	JarSigner.java \
 	JNLPApplication.java \
 	Main.java
 
@@ -77,10 +78,30 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: jclass
 	@echo "To run the demo, run 'make demo'"
 
-install: all $(PTPACKAGE).jar
+install: all $(PTPACKAGE).jar JNLPApplication.jar
 	@echo "To run a demo that uses self contained jars: 'make test1'"
 
 demo: compileDemo #runDemo
+
+MENUAPPLICATION_DIR = $(ROOT)/ptolemy/actor/gui/jnlp/
+MENUAPPLICATION_CLASS = $(MENUAPPLICATION_DIR)/MenuApplication.class
+$(MENUAPPLICATION_CLASS): $(MENUAPPLICATION_DIR)/MenuApplication.java
+	(cd $(MENUAPPLICATION_DIR); $(MAKE)) 
+
+JNLPApplication.jar: JNLPApplication.class $(MENUAPPLICATION_CLASS)
+	rm -rf $(PTJAR_TMPDIR) $@
+	mkdir $(PTJAR_TMPDIR)
+	# Copy Application specific classes from this directory
+	mkdir -p $(PTJAR_TMPDIR)/$(ME)
+	-cp JNLPApplication.class \
+		$(OTHER_FILES_TO_BE_JARED) $(PTJAR_TMPDIR)/$(ME)
+	mkdir -p $(PTJAR_TMPDIR)/ptolemy/actor/gui/jnlp
+	-cp $(MENUAPPLICATION_CLASS) \
+		$(PTJAR_TMPDIR)/ptolemy/actor/gui/jnlp
+	@echo "Creating $@"
+	(cd $(PTJAR_TMPDIR); "$(JAR)" -cvf tmp.jar .)
+	mv $(PTJAR_TMPDIR)/tmp.jar $@
+	rm -rf $(PTJAR_TMPDIR)
 
 # OrthogonalCom
 MODEL =			OrthogonalCom
