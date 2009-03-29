@@ -21,6 +21,10 @@ See also <a href="whatsNew.htm">What's New in other versions</a>.
 <p>Contents:
 <ul>
 <li> <a href="#highlights">Highlights</a>
+    <ul>
+    <li><a href="#modelTransformation">Model Transformation</a>
+    <li><a href="#ergDomain">ERG Domain</a>
+    </ul>
 <li> <a href="#demos">New demonstrations</a>
 <li> <a href="#other">Other Key New Capabilities</a>
 <li> <a href="#libraries">New and Enhanced Actor Libraries</a>
@@ -29,8 +33,118 @@ See also <a href="whatsNew.htm">What's New in other versions</a>.
 </ul>
 
 <h2><a name="highlights">Highlights</a></h2>
-<ul>
 
+<!-- a little space -->
+<p> &nbsp;
+<h3><a name="modelTransformation">Model Transformation</h3>
+
+<p>The model transformation facility provides a framework for the
+analysis and transformation of actor models using model transformation
+techniques.
+
+<p>The design of large-scale models poses a number of challenges. As
+the size of the models increases to thousands of actors or hundreds of
+thousands of actors, analysis and consistent modification on the
+models become extremely hard. Furthermore, to maximize component
+reuse, a systematic approach is needed for the specification and
+maintenance of common patterns in the models and the transformation of
+those patterns.
+
+<p>The model transformation framework to be developed in this project
+aims to support the flexible specification of patterns and
+replacements by means of rules in graph grammar. An intuitive
+graphical user interface will be built. For novice users, a set of
+common transformations will be included in a library to facilitate
+their common tasks.
+
+<p>The transformations are models in their own right. They can be
+embedded in larger models hierarchically. Heterogeneous models of
+computation can be used to control the application of individual
+"atomic" transformations. This makes it easy to create sophisticated
+transformations by composing simple ones in a manageable and
+disciplined way. The sophisticated transformations will also take
+advantage of the concurrency inherent in those models of computation.
+
+<p>Model transformation can be applied as an optimization of modal
+models. These are hierarchical state machines with refinements in
+their states, which are sub-models to be executed when those states
+are active. The current implementation includes the complete
+description of each refinement in the model description, even though
+refinements of the states in a state machine tend to have large
+commonality. With the transformation technique, only one refinement
+needs to be stored completely. The others are obtained by
+transformations performed on the stored refinement. This eliminates
+redundancy and eases the job of modifying multiple refinements
+consistently.
+
+<p>Other applications of the model transformation technique include
+recognizing common design patterns in the models in a static analysis,
+replacing exiting design patterns with more efficient ones, and
+reusing design patterns by incorporating them into new models.
+
+<h4>References</h4>
+<ul>
+<li>Thomas Huining Feng, "<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2008/EECS-2008-159.html" target="_top">Engineering Structurally Configurable Models with Model Transformation</a>," Master's Thesis, EECS Department, University of California, Berkeley. UCB/EECS-2008-159. Dec. 2008.
+<li>Christopher Brooks, Chihhong Cheng, Thomas Huining Feng, Edward A. Lee and Reinhard von Hanxleden, "<a href="http://www.eecs.berkeley.edu/~tfeng/papers/bcflh08model.pdf" target="_top">Model Engineering using Multimodeling</a>," In <a href="http://www.info.fundp.ac.be/mccm/" target="_top">1st International Workshop on Model Co-Evolution and Consistency Management (MCCM '08)</a>, Toulouse, France, Sep. 2008.
+<li>Thomas Huining Feng and Edward A. Lee, "<a href="http://www.eecs.berkeley.edu/~tfeng/papers/fl08scalable.pdf" target="_top">Scalable Models Using Model Transformation</a>," In <a href="http://www.artist-embedded.org/artist/ACES-MB-08.html" target="_top">1st International Workshop on Model Based Architecting and Construction of Embedded Systems (ACESMB 2008)</a>, Toulouse, France, Sep. 2008.
+<li>Thomas Huining Feng, Miriam Zia, and Hans Vangheluwe, "<a href="http://www.eecs.berkeley.edu/~tfeng/papers/fzv07scsc.pdf" target="_top">Multi-Formalism Modelling and Model Transformation for the Design of Reactive Systems</a>," In <a href="http://www.sce.carleton.ca/faculty/wainer/SCSC07/" target="_top">2007 Summer Computer Simulation Conference (SCSC 2007)</a>, San Diego, CA, USA, Jul. 2007.
+</ul>
+
+<h4>Model Transformation Demonstrations</h4>
+
+<p>Primary Model Transformation Developer: Thomas Huining Feng
+
+<ul>
+  <li> <a href="../../../ptolemy/domains/erg/demo/AdaptiveCarWash/AdaptiveCarWash.xml">AdaptiveCarWash</a> (With ModelUpdater) </li>
+  <li> <a href="../../../ptolemy/actor/ptalon/gt/demo/Adder/Adder.xml">Adder</a> (Requires Ptalon and Antlr)</li>
+  <li> <a href="../../../ptolemy/actor/gt/demo/BouncingBallX2/BouncingBallX2.xml">BouncingBallX2</a> (Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>)</li>
+  <li> <a href="../../../ptolemy/actor/gt/demo/ConstOptimization/ConstOptimization.xml">ConstOptimization</a> (Using Complex Transformation) </li>
+  <li> <a href="../../../ptolemy/actor/gt/demo/ConstOptimization/ConstOptimizationDE.xml">ConstOptimization</a> (With TransformationController) </li>
+  <li> <a href="../../../ptolemy/actor/gt/demo/ConstOptimization/ConstOptimizationDDF.xml">ConstOptimization</a> (Without TransformationController) </li>
+  <li> <a href="../../../ptolemy/actor/gt/demo/DiningPhilosophers/DiningPhilosophers.xml">DiningPhilosophers</a> </li>
+  <li> <a href="../../../ptolemy/actor/gt/demo/GameOfLife/GameOfLife.xml">GameOfLife</a> </li>
+  <li> <a href="../../../ptolemy/actor/gt/demo/HierarchyFlattening/HierarchyFlattening.xml">HierarchyFlattening</a> </li>
+  <li> <a href="../../../ptolemy/actor/gt/demo/MapReduce/MapReduce.xml">MapReduce</a> </li>
+  <li> <a href="../../../ptolemy/actor/gt/demo/MapReduce/MapReduceDDF.xml">MapReduceDDF</a> </li>
+  <li> <a href="../../../ptolemy/actor/gt/demo/ModelExecution/ModelExecution.xml">ModelExecution</a> </li>
+  <li> <a href="../../../ptolemy/actor/gt/demo/ModelGeneration/ModelGeneration.xml">ModelGeneration</a> </li>
+  <li> <a href="../../../ptolemy/actor/gt/demo/PublisherTest/PublisherTest.xml">PublisherTest</a> </li>
+  <li> <a href="../../../ptolemy/actor/gt/demo/RegressionTest/RegressionTest.xml">RegressionTest</a> </li>
+</ul>
+
+<!-- a little space -->
+<p> &nbsp;
+<h3><a name="ergDomain">Event Relationship Graph Domain</h3>
+
+<p>The ERG (Event Relationship Graph) domain is a discrete-event model of computation. A model in ERG is represented with a graph of nodes and edges, where nodes represent events and directed edges between events represent scheduling relation. One or more events can be selected as initial events, which are scheduled
+at model time 0.0. When an event is fired, it possibly performs certain actions, and if there are outgoing edges from that event, the events at the end points of those edges are scheduled after non-negative delays. One or more events can also be selected as final events. The firing of final events causes the event
+queue to be emptied after their actions are performed, and therefore no more events can be processed.
+
+<p>The ERG domain supports a different kind of modal models called ERGModalModels, compared to modal models using FSMs (Finite State Machines) as the control. An ERGModalModel uses ERG at the top level, and each event is refined into a sub-model. The refinements can use ERG and any other Ptolemy models of computation.
+
+<p>An ERG model is timed. Although it should work in many domains, the DE (Discrete-Event) domain or ERG domain itself are recommended. When embedded in those domains, the scheduling of the ERG model is delegated to the container by calling the fireAt() function of its director.
+
+<p>There are many useful additional features for ERG, such as canceling edges and parameters. A canceling edge, denoted by a dotted line, cancels a previously scheduled event instead of scheduling a new one. If the pointed to event has multiple instances in the event queue, then the first instance is cancelled.
+Events may also have parameters, and the actual values for those parameters are specified by the expressions on the edges that schedule them. Those expressions are evaluated at run-time. The events may refer to the values of those parameters in their actions by parameter names.
+
+<h4>References</h4>
+<ul>
+<li> Lee W. Schruben, "Simulation Modeling with Event Graphs," Communications of the ACM (CACM), 26(11): 957-963, 1983.
+</ul>
+<h4>Event Relationship Graph Domain Demonstrations</h4>
+
+<p>Primary ERG Developer: Thomas Huining Feng
+
+<ul>
+  <li> <a href="../../../ptolemy/domains/erg/demo/AdaptiveCarWash/AdaptiveCarWash.xml">AdaptiveCarWash</a> (With ModelUpdater) </li>
+  <li> <a href="../../../ptolemy/domains/erg/demo/AdaptiveCarWash/AdaptiveCarWash_FSM.xml">AdaptiveCarWash</a> (With FSM Submodel) </li>
+  <li> <a href="../../../ptolemy/domains/erg/demo/CarWash/CarWash.xml">CarWash</a> </li>
+  <li> <a href="../../../ptolemy/actor/gt/demo/ConstOptimization/ConstOptimization.xml">ConstOptimization</a> (Using Complex Transformation) </li>
+  <li> <a href="../../../ptolemy/actor/gt/demo/ConstOptimization/ConstOptimizationDE.xml">ConstOptimization</a> (With TransformationController) </li>
+  <li> <a href="../../../ptolemy/actor/gt/demo/GameOfLife/GameOfLife.xml">GameOfLife</a> </li>
+  <li> <a href="../../../ptolemy/apps/naomi/demo/Intersection/Intersection.xml">Intersection</a> (A Naomi Demo)</li>
+  <li> <a href="../../../ptolemy/domains/erg/demo/SimultaneousCarWash/SimultaneousCarWash.xml">SimultaneousCarWash</a> </li>
+  <li> <a href="../../../ptolemy/domains/erg/demo/TrafficLight/TrafficLight.xml">TrafficLight</a> </li>
 </ul>
 
 <h2><a name="demos">New demonstrations</a></h2>
