@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/erg/demo/Intersection
+ME =		ptolemy/apps/naomi/demo/Intersection
 
 # Root of the Java directory
 ROOT =		../../../../..

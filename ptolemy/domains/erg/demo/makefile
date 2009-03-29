@@ -34,7 +34,7 @@ ME =		ptolemy/domains/erg/demo
 # Root of the Java directory
 ROOT =		../../../..
 
-DIRS =		AdaptiveCarWash CarWash Intersection SimultaneousCarWash TrafficLight
+DIRS =		AdaptiveCarWash CarWash SimultaneousCarWash TrafficLight
 
 CLASSPATH =	$(ROOT)
 
@@ -51,7 +51,6 @@ PTCLASSJAR =
 PTCLASSALLJARS = \
 	AdaptiveCarWash/AdaptiveCarWash.jar \
 	CarWash/CarWash.jar \
-	Intersection/Intersection.jar \
 	SimultaneousCarWash/SimultaneousCarWash.jar \
 	TrafficLight/TrafficLight.jar
 
