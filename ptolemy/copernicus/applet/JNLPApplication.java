@@ -65,7 +65,7 @@ public class JNLPApplication extends MenuApplication {
     public static void main(final String[] args) {
         // See the class comment of MenuApplication
         // about why we set the security manager to null.
-        //System.setSecurityManager(null);
+        System.setSecurityManager(null);
         MenuApplication.main(args);
     }
 }

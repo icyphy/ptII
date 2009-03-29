@@ -29,6 +29,7 @@
   </resources>
   <application-desc main-class="ptolemy.copernicus.applet.JNLPApplication">
 	<argument>-ptiny</argument>
+	<argument>@sanitizedModelName@.xml</argument>
   </application-desc>
   <!-- Need to deal with Java 3D -->
 

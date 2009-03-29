@@ -227,7 +227,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
 	// The JNLP file to be created
 	String jnlpSourceFileName = _outputDirectory + "/" + _sanitizedModelName + ".jnlp";
-	String jnlpJarFileName = _outputDirectory + "/" + _sanitizedModelName + ".jar";
+	String jnlpJarFileName = _outputDirectory + "/signed_" + _sanitizedModelName + ".jar";
+	String jnlpUnsignedJarFileName = _outputDirectory + "/" + _sanitizedModelName + ".jar";
 
         try {
             // If the code base is the current directory, then we
@@ -242,8 +243,9 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
 
 	    // This is the signed jar file that includes the .jnlp file
+            // FIXME: what if we don't want a signed jar?
 	    jnlpJarFilesResults.insert(0, "        <jar href=\""
-				       + _sanitizedModelName + ".jar\""
+				       + "signed_" + _sanitizedModelName + ".jar\""
 				       + _jarFileLengthAttribute(jnlpSourceFileName)
 				       + "\n             main=\"true\"/>\n");
 
@@ -462,16 +464,21 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             CodeGeneratorUtilities.substitute(_templateDirectory
 	            + "model.jnlp.in", _substituteMap, jnlpSourceFileName);
 
-	    _createJarFile(new File(jnlpJarFileName),
+	    _createJarFile(new File(jnlpUnsignedJarFileName),
 			   new String [] {
 			       "JNLP-INF/APPLICATION.JNLP",
+                               _sanitizedModelName + ".xml",
 			       "ptolemy/copernicus/applet/JNLPApplication.class",
 			       "ptolemy/actor/gui/jnlp/MenuApplication.class"},
 			   new File [] {
 			       new File(_outputDirectory + "/" + _sanitizedModelName + ".jnlp"),
+                               new File(newModelFileName),
 			       new File(_ptIIJarsPath + "/ptolemy/copernicus/applet/JNLPApplication.class"),
 			       new File(_ptIIJarsPath + "/ptolemy/actor/gui/jnlp/MenuApplication.class"),
 			   });
+
+            _signJarFile(jnlpUnsignedJarFileName,
+                    jnlpJarFileName);
 
             // Copy $PTII/doc/default.css as well.
             File defaultStyleSheetDirectory = new File(_outputDirectory
@@ -598,10 +605,20 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 		    _copyFile(signedSourceFileName,
                         _outputDirectory, jarFile);
 		} else {
-		    System.out.println("Warning, could not find \""
-				       + signedSourceFileName + "\"");
-		    _copyFile(_ptIIJarsPath + File.separator + jarFile,
-                        _outputDirectory, jarFile);
+                    String sourceJarFileName = _ptIIJarsPath + File.separator + jarFile;
+                    try {
+                        // FIXME: this will try to sign the applet jar files.
+                        // Is this right?  It means applets will have more permissions
+                        _signJarFile (sourceJarFileName,
+                                _outputDirectory + File.separator + jarFile);
+                    } catch (Exception ex) {
+                        System.out.println("Warning, could not sign \""
+                                + sourceJarFileName + "\"");
+                        ex.printStackTrace();
+                        _copyFile(sourceJarFileName,
+                                _outputDirectory, jarFile);
+                    }
+
 		}
             }
 
@@ -1023,6 +1040,22 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
         return StringUtilities.substitute(domainPackageDomain, ".", "/") + "/"
                 + domainDomain + ".jar";
+    }
+
+    /** Sign a jar file.
+     */   
+    private static void _signJarFile(String jarFileName, String signedJarFileName) throws Exception {
+        // FIXME: Hardwired paths and passwords here.
+        String keystoreFileName = StringUtilities.getProperty("ptolemy.ptII.dir")
+            + File.separator + "ptKeystore";
+        char[] storePassword = {'t', 'h', 'i', 's', '.', 'i', 's', '.', 't', 'h', 'e', '.', 's', 't', 'o', 'r', 'e', 'P', 'a', 's', 's', 'w', 'o', 'r', 'd', ',', 'c', 'h', 'a', 'n', 'g', 'e', '.', 'i', 't'};
+        char[] keyPassword = {'t', 'h', 'i', 's', '.', 'i', 's', '.', 't', 'h', 'e', '.', 'k', 'e', 'y', 'P', 'a', 's', 's', 'w', 'o', 'r', 'd', ',', 'c', 'h', 'a', 'n', 'g', 'e', '.', 'i', 't'};
+        String alias = "claudius"; 
+                    
+        System.out.println("About to sign \"" + jarFileName + "\" and create \"" 
+                + signedJarFileName + "\"");
+        JarSigner.sign (jarFileName, signedJarFileName,
+                keystoreFileName, alias, storePassword, keyPassword);
     }
 
     /** Create a jar file.
