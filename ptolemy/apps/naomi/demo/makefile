@@ -1,10 +1,10 @@
-# Makefile for CacheAwareScheduler kernel
+# Makefile for Ptolemy II Discrete Event domain demos
 #
-# @Authors: Sanjeev Kohli
+# @Authors: Thomas Huining Feng
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2005 The Regents of the University of California.
+# @Copyright (c) 1998-2008 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,12 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/apps/naomi
-
-DIRS =		demo
+ME =		ptolemy/apps/naomi/demo
 
 # Root of the Java directory
-ROOT =		../../..
+ROOT =		../../../..
+
+DIRS =		Intersection
 
 CLASSPATH =	$(ROOT)
 
@@ -43,51 +43,33 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	naomi
-PTCLASSJAR =	$(PTPACKAGE).jar
+PTPACKAGE = 	demo
+PTDIST =	$(PTPACKAGE)$(PTVERSION)
+PTCLASSJAR =
 
-JSRCS = \
-	CompositeNaomiAttribute.java \
-	Connector.java \
-	NaomiParameter.java \
-	TransformationParameter.java
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	Intersection/Intersection.jar
 
-EXTRA_SRCS = 	$(JSRCS)
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
+# Files that are not compiled, such as .tcl and .itcl files.
+EXTRA_SRCS =
+
+# Sources that may or may not be present, but if they are present, we don't
+# want make checkjunk to barf on them.
+MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	demo \
-	'Connector$$1.class' \
-	'Connector$$2.class' \
-	'Connector$$3.class' \
-	'Connector$$Command.class' \
-	'Connector$$LinkNaomiAttributeAction.class' \
-	'Connector$$ListAction.class' \
-	'Connector$$LoadAction$$1.class' \
-	'Connector$$LoadAction.class' \
-	'Connector$$MappedNamespaceContext.class' \
-	'Connector$$SaveAction$$1.class' \
-	'Connector$$SaveAction.class' \
-	'Connector$$SyncAction$$1.class' \
-	'Connector$$SyncAction.class' \
-	'Connector$$Tuple.class' \
-	'Connector$$UnlinkNaomiAttributeAction.class' \
-	'NaomiParameter$$Method.class' \
-	'NaomiParameter$$PrivateMoMLChangeRequest.class'
-
-JCLASS = $(JSRCS:%.java=%.class)
+OPTIONAL_FILES =
 
 all: jclass
+	@echo "To run all the demos, run 'make demo'"
+
 install: jclass jars
 
+demo: subdemo
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
-
-
-
-
-
-
-
