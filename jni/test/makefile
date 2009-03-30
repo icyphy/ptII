@@ -112,7 +112,7 @@ KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 	(cd ../launcher; $(MAKE))
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple: ../launcher/launcher $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
+test_jsimple: all_shared ../launcher/launcher $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
 	ls -l $(ROOT)/util/testsuite
 	@echo "Put . in the path so we can find the shared libraries"
 	@echo "Put ., /usr/local an libjvm.so in LD_LIBRARY_PATH"
