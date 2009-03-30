@@ -1,4 +1,4 @@
-/* Code generator for the Procedural languages.
+/* Code generator for the Programming languages.
 
 Copyright (c) 2009 The Regents of the University of California.
 All rights reserved.
@@ -39,9 +39,9 @@ import ptolemy.util.StringUtilities;
 
 
 //////////////////////////////////////////////////////////////////////////
-////ProceduralCodeGenerator
+////ProgramCodeGenerator
 
-/** Base class for Procedural code generator.
+/** Base class for Program code generator.
 *
 *  @author Bert Rodiers
 *  @version $Id$
@@ -197,7 +197,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  @param comment The string to put in the comment.
      *  @return A formatted comment.
      */
-    private String _formatComment(String comment) {
+    protected String _formatComment(String comment) {
         return "/* " + comment + " */" + _eol;
     }
 
