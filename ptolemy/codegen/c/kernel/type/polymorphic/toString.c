@@ -1,44 +1,66 @@
 /*** toString_Array() ***/
-#define toString_Array(a) $Array_toString(a)
+char* toString_Array(Token a) {
+	return $Array_toString(a)
+}
 /**/
 
 /*** toString_Boolean() ***/
-#define toString_Boolean(a) BooleantoString(a)
+char* toString_Boolean(boolean a) {
+	return BooleantoString(a);
+}
 /**/
 
 /*** toString_BooleanArray() ***/
-#define toString_BooleanArray(a) $BooleanArray_toString(a)
+char* toString_BooleanArray(Token a) {
+	return $BooleanArray_toString(a);
+}
 /**/
 
 /*** toString_Double() ***/
-#define toString_Double(a) DoubletoString(a)
+char* toString_Double(double a) {
+	return DoubletoString(a);
+}
 /**/
 
 /*** toString_DoubleArray() ***/
-#define toString_DoubleArray(a) $DoubleArray_toString(a)
+char* toString_DoubleArray(Token a) {
+	return $DoubleArray_toString(a);
+}
 /**/
 
 /*** toString_Int() ***/
-#define toString_Int(a) InttoString(a)
+char* toString_Int(int a) {
+	return InttoString(a);
+}
 /**/
 
 /*** toString_IntArray() ***/
-#define toString_IntArray(a) $IntArray_toString(a)
+char* toString_IntArray(Token a) {
+	return $IntArray_toString(a);
+}
 /**/
 
 /*** toString_Long() ***/
-#define toString_Long(a) LongtoString(a)
+char* toString_Long(long long a) {
+	return LongtoString(a);
+}
 /**/
 
 /*** toString_String() ***/
-#define toString_String(a) (a)
+char* toString_String(char* a) {
+	return (a);
+}
 /**/
 
 /*** toString_StringArray() ***/
-#define toString_StringArray(a) $StringArray_toString(a)
+char* toString_StringArray(Token a) {
+	return $StringArray_toString(a);
+}
 /**/
 
 /*** toString_Token() ***/
-#define toString_Token(a) $tokenFunc(a::toString())
+char* toString_Token(Token a) {
+	return $tokenFunc(a::toString());
+}
 /**/
 
