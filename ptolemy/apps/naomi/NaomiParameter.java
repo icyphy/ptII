@@ -80,7 +80,7 @@ public class NaomiParameter extends StringParameter implements ChangeListener {
             }
         }
     }
-    
+
     private static class PrivateMoMLChangeRequest extends MoMLChangeRequest {
 
         public PrivateMoMLChangeRequest(Object originator, NamedObj context,
@@ -102,9 +102,13 @@ public class NaomiParameter extends StringParameter implements ChangeListener {
 
     public static String formatExpression(Method method, String attributeName,
             Date modifiedDate, String unit, String documentation) {
-        return method + ":" + attributeName + " (" +
-                new SimpleDateFormat(DATE_FORMAT).format(modifiedDate) + ") (" +
-                unit + ") (" + documentation + ")";
+        if (method == null) {
+            return "";
+        } else {
+            return method + ":" + attributeName + " (" +
+                    new SimpleDateFormat(DATE_FORMAT).format(modifiedDate) +
+                    ") (" + unit + ") (" + documentation + ")";
+        }
     }
 
     public Method getMethod() {
@@ -144,9 +148,8 @@ public class NaomiParameter extends StringParameter implements ChangeListener {
     }
 
     public void setExpression(String expr) {
-        if (expr == null || expr.equals("")) {
-            expr = "get:no_name (" + new SimpleDateFormat(DATE_FORMAT).format(
-                    new Date()) + ")";
+        if (expr == null) {
+            expr = "";
         }
         super.setExpression(expr);
     }
@@ -168,31 +171,40 @@ public class NaomiParameter extends StringParameter implements ChangeListener {
 
     public Collection<?> validate() throws IllegalActionException {
         String expression = getExpression();
-        Matcher matcher = _PATTERN.matcher(expression);
-        if (!matcher.matches()) {
-            throw new IllegalActionException(this, "Fail to parse: " +
-                    expression);
-        }
-        String method = matcher.group(1);
-        if (method.equals("get")) {
-            _method = Method.GET;
-        } else if (method.equals("put")) {
-            _method = Method.PUT;
-        } else if (method.equals("sync")) {
-            _method = Method.SYNC;
+        if (expression == null || expression.equals("")) {
+            _method = null;
+            _attributeName = null;
+            _modifiedDate = null;
+            _unit = null;
+            _documentation = null;
         } else {
-            throw new IllegalActionException(this, "Unknown method: " + method);
+            Matcher matcher = _PATTERN.matcher(expression);
+            if (!matcher.matches()) {
+                throw new IllegalActionException(this, "Fail to parse: " +
+                        expression);
+            }
+            String method = matcher.group(1);
+            if (method.equals("get")) {
+                _method = Method.GET;
+            } else if (method.equals("put")) {
+                _method = Method.PUT;
+            } else if (method.equals("sync")) {
+                _method = Method.SYNC;
+            } else {
+                throw new IllegalActionException(this, "Unknown method: " +
+                        method);
+            }
+            _attributeName = matcher.group(2);
+            try {
+                _modifiedDate = new SimpleDateFormat(DATE_FORMAT).parse(
+                        matcher.group(3));
+            } catch (ParseException e) {
+                throw new IllegalActionException(this, e, "Fail to parse: " +
+                        expression);
+            }
+            _unit = matcher.group(4);
+            _documentation = matcher.group(5);
         }
-        _attributeName = matcher.group(2);
-        try {
-            _modifiedDate = new SimpleDateFormat(DATE_FORMAT).parse(
-                    matcher.group(3));
-        } catch (ParseException e) {
-            throw new IllegalActionException(this, e, "Fail to parse: " +
-                    expression);
-        }
-        _unit = matcher.group(4);
-        _documentation = matcher.group(5);
         return super.validate();
     }
 

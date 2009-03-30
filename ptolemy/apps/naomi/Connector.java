@@ -213,9 +213,9 @@ public class Connector extends MoMLApplication {
             break;
 
         case LIST:
-            HashMap<Attribute, String> sync = new HashMap<Attribute, String>();
-            HashMap<Attribute, String> load = new HashMap<Attribute, String>();
-            HashMap<Attribute, String> save = new HashMap<Attribute, String>();
+            HashMap<NamedObj, String> sync = new HashMap<NamedObj, String>();
+            HashMap<NamedObj, String> load = new HashMap<NamedObj, String>();
+            HashMap<NamedObj, String> save = new HashMap<NamedObj, String>();
             _list(_inModel, sync, load, save);
             for (String attr : sync.values()) {
                 System.out.println("Sync: " + attr);
@@ -249,7 +249,7 @@ public class Connector extends MoMLApplication {
             break;
 
         case TRANSFORM:
-            _loadAttributes(_inModel, _attributesPath, false);
+            _loadAttributes(_inModel, _attributesPath, true);
             _transform(_inModel);
             break;
         }
@@ -387,9 +387,9 @@ public class Connector extends MoMLApplication {
 
             _loadInterfaceFromModel(model);
 
-            HashMap<Attribute, String> sync = new HashMap<Attribute, String>();
-            HashMap<Attribute, String> load = new HashMap<Attribute, String>();
-            HashMap<Attribute, String> save = new HashMap<Attribute, String>();
+            HashMap<NamedObj, String> sync = new HashMap<NamedObj, String>();
+            HashMap<NamedObj, String> load = new HashMap<NamedObj, String>();
+            HashMap<NamedObj, String> save = new HashMap<NamedObj, String>();
             _list(model, sync, load, save);
             try {
                 _saveInterface();
@@ -398,15 +398,15 @@ public class Connector extends MoMLApplication {
             }
 
             Query query = new Query();
-            for (Map.Entry<Attribute, String> entry : sync.entrySet()) {
+            for (Map.Entry<NamedObj, String> entry : sync.entrySet()) {
                 String paramName = entry.getKey().getName();
                 query.addDisplay(paramName, paramName, entry.getValue());
             }
-            for (Map.Entry<Attribute, String> entry : load.entrySet()) {
+            for (Map.Entry<NamedObj, String> entry : load.entrySet()) {
                 String paramName = entry.getKey().getName();
                 query.addDisplay(paramName, paramName, entry.getValue());
             }
-            for (Map.Entry<Attribute, String> entry : save.entrySet()) {
+            for (Map.Entry<NamedObj, String> entry : save.entrySet()) {
                 String paramName = entry.getKey().getName();
                 query.addDisplay(paramName, paramName, entry.getValue());
             }
@@ -724,25 +724,27 @@ public class Connector extends MoMLApplication {
         return new File(_root, "attributes");
     }
 
-    protected void _list(NamedObj model, Map<Attribute, String> sync,
-            Map<Attribute, String> load, Map<Attribute, String> save) {
-        for (Object attrObject : model.attributeList(Variable.class)) {
-            Attribute attr = (Attribute) attrObject;
-            for (Object paramObject
-                    : attr.attributeList(NaomiParameter.class)) {
-                NaomiParameter naomiParam = (NaomiParameter) paramObject;
-                String attributeName = naomiParam.getAttributeName();
+    protected void _list(NamedObj model, Map<NamedObj, String> sync,
+            Map<NamedObj, String> load, Map<NamedObj, String> save) {
+        Collection<NamedObj> children = GTTools.getChildren(model, true, true,
+                true, true);
+        for (NamedObj child : children) {
+            List<NaomiParameter> parameters = child.attributeList(
+                    NaomiParameter.class);
+            for (NaomiParameter parameter : parameters) {
+                String attributeName = parameter.getAttributeName();
                 boolean needLoad = _inputAttributes.contains(attributeName);
                 boolean needSave = _outputAttributes.contains(attributeName);
-                String expression = naomiParam.getExpression();
+                String expression = parameter.getExpression();
                 if (needLoad && needSave) {
-                    sync.put(attr, expression);
+                    sync.put(child, expression);
                 } else if (needLoad) {
-                    load.put(attr, expression);
+                    load.put(child, expression);
                 } else if (needSave) {
-                    save.put(attr, expression);
+                    save.put(child, expression);
                 }
             }
+            _list(child, sync, load, save);
         }
     }
 
@@ -794,18 +796,19 @@ public class Connector extends MoMLApplication {
 
     protected void _loadAttributes(NamedObj model, File attributesPath,
             boolean force) throws IllegalActionException {
-        for (Object attrObject : model.attributeList(Attribute.class)) {
-            Attribute attr = (Attribute) attrObject;
-            for (Object paramObject
-                    : attr.attributeList(NaomiParameter.class)) {
-                NaomiParameter naomiParam = (NaomiParameter) paramObject;
-                String attributeName = naomiParam.getAttributeName();
+        Collection<NamedObj> children = new LinkedList<NamedObj>(
+                GTTools.getChildren(model, true, true, true, true));
+        for (NamedObj child : children) {
+            List<NaomiParameter> parameters = child.attributeList(
+                    NaomiParameter.class);
+            for (NaomiParameter parameter : parameters) {
+                String attributeName = parameter.getAttributeName();
                 if (!_inputAttributes.contains(attributeName)) {
                     continue;
                 }
 
-                Tuple<String, String, Date, String, String> tuple = _loadAttribute(
-                        attributesPath, attributeName);
+                Tuple<String, String, Date, String, String> tuple =
+                    _loadAttribute(attributesPath, attributeName);
                 String value = tuple.getV1();
                 String resource = tuple.getV2();
                 String protocol = "naomi://";
@@ -817,7 +820,7 @@ public class Connector extends MoMLApplication {
                 String doc = tuple.getV5();
 
                 if (!force) {
-                    Date attributeDate = naomiParam.getModifiedDate();
+                    Date attributeDate = parameter.getModifiedDate();
                     if (!attributeDate.before(date)) {
                         continue;
                     }
@@ -825,9 +828,9 @@ public class Connector extends MoMLApplication {
 
                 System.out.println("Load: " + attributeName + " = " + value);
 
-                if (naomiParam instanceof CompositeNaomiAttribute) {
+                if (parameter instanceof CompositeNaomiAttribute) {
                     CompositeNaomiAttribute compositeAttr =
-                        (CompositeNaomiAttribute) naomiParam;
+                        (CompositeNaomiAttribute) parameter;
                     InputStreamReader reader = null;
                     File resourceFile = new File(_root, resource);
                     if (resourceFile.canRead()) {
@@ -852,11 +855,11 @@ public class Connector extends MoMLApplication {
                         System.out.println("Unable to find resource " +
                                 resource + ". Skipping.");
                     }
-                } else if (attr instanceof Variable) {
-                    String moml = "<property name=\"" + attr.getName() + "\" " +
-                            "value=\"" + value + "\"/>";
+                } else if (child instanceof Variable) {
+                    String moml = "<property name=\"" + child.getName() +
+                            "\" value=\"" + value + "\"/>";
                     MoMLChangeRequest request = new MoMLChangeRequest(this,
-                            attr.getContainer(), moml);
+                            child.getContainer(), moml);
                     if (_undoable) {
                         request.setUndoable(true);
                         request.setMergeWithPreviousUndo(_mergeWithPrevious);
@@ -865,17 +868,17 @@ public class Connector extends MoMLApplication {
                     request.execute();
                 } else {
                     throw new IllegalActionException("Do not know how to " +
-                            "handle attribute " + attr.getName() + ".");
+                            "handle object " + child.getName() + ".");
                 }
 
-                String moml = "<property name=\"" + naomiParam.getName() +
+                String moml = "<property name=\"" + parameter.getName() +
                         "\" value=\"" + NaomiParameter.formatExpression(
-                                naomiParam.getMethod(),
-                                naomiParam.getAttributeName(), date, unit,
+                                parameter.getMethod(),
+                                parameter.getAttributeName(), date, unit,
                                 doc) +
                         "\"/>";
-                MoMLChangeRequest request =
-                    new MoMLChangeRequest(this, attr, moml);
+                MoMLChangeRequest request = new MoMLChangeRequest(this, child,
+                        moml);
                 if (_undoable) {
                     request.setUndoable(true);
                     request.setMergeWithPreviousUndo(_mergeWithPrevious);
@@ -885,23 +888,23 @@ public class Connector extends MoMLApplication {
 
                 break;
             }
-        }
-        
-        Collection<NamedObj> children = GTTools.getChildren(model, true, true,
-                true, true);
-        for (NamedObj child : children) {
+
             _loadAttributes(child, attributesPath, force);
         }
     }
 
     protected void _loadInterfaceFromModel(NamedObj model) {
-        for (Object attrObject : model.attributeList(Attribute.class)) {
-            Attribute attr = (Attribute) attrObject;
-            for (Object paramObject
-                    : attr.attributeList(NaomiParameter.class)) {
-                NaomiParameter naomiParam = (NaomiParameter) paramObject;
-                String attributeName = naomiParam.getAttributeName();
-                NaomiParameter.Method method = naomiParam.getMethod();
+        Collection<NamedObj> children = GTTools.getChildren(model, true, true,
+                true, true);
+        for (NamedObj child : children) {
+            List<NaomiParameter> parameters = child.attributeList(
+                    NaomiParameter.class);
+            for (NaomiParameter parameter : parameters) {
+                String attributeName = parameter.getAttributeName();
+                NaomiParameter.Method method = parameter.getMethod();
+                if (method == null) {
+                    continue;
+                }
                 switch (method) {
                 case GET:
                     _inputAttributes.add(attributeName);
@@ -915,6 +918,7 @@ public class Connector extends MoMLApplication {
                     break;
                 }
             }
+            _loadInterfaceFromModel(child);
         }
     }
 
@@ -1060,20 +1064,20 @@ public class Connector extends MoMLApplication {
 
     protected void _saveAttributes(NamedObj model, File attributesPath,
             boolean force) throws IllegalActionException {
-
-        for (Object attrObject : model.attributeList(Attribute.class)) {
-            Attribute attr = (Attribute) attrObject;
-            for (Object paramObject
-                    : attr.attributeList(NaomiParameter.class)) {
-                NaomiParameter naomiParam = (NaomiParameter) paramObject;
-                String attributeName = naomiParam.getAttributeName();
+        Collection<NamedObj> children = new LinkedList<NamedObj>(
+                GTTools.getChildren(model, true, true, true, true));
+        for (NamedObj child : children) {
+            List<NaomiParameter> parameters = child.attributeList(
+                    NaomiParameter.class);
+            for (NaomiParameter parameter : parameters) {
+                String attributeName = parameter.getAttributeName();
                 if (!_outputAttributes.contains(attributeName)) {
                     continue;
                 }
 
                 File attributeFile = new File(attributesPath, attributeName);
 
-                Date attributeDate = naomiParam.getModifiedDate();
+                Date attributeDate = parameter.getModifiedDate();
                 if (!force) {
                     Date fileDate = new Date(attributeFile.lastModified());
                     if (attributeFile.exists() && attributeFile.isFile()
@@ -1082,8 +1086,8 @@ public class Connector extends MoMLApplication {
                     }
                 }
 
-                String unit = naomiParam.getUnit();
-                String doc = naomiParam.getDocumentation();
+                String unit = parameter.getUnit();
+                String doc = parameter.getDocumentation();
 
                 try {
                     DocumentBuilderFactory docFactory =
@@ -1107,7 +1111,7 @@ public class Connector extends MoMLApplication {
                     owner.setTextContent(_owner);
                     root.appendChild(owner);
 
-                    if (naomiParam instanceof CompositeNaomiAttribute) {
+                    if (parameter instanceof CompositeNaomiAttribute) {
                         if (_outModelName == null) {
                             throw new IllegalActionException(
                                     "Unable to generate resource file " +
@@ -1115,7 +1119,7 @@ public class Connector extends MoMLApplication {
                                     "parameter.");
                         }
                         CompositeNaomiAttribute compositeAttr =
-                            (CompositeNaomiAttribute) naomiParam;
+                            (CompositeNaomiAttribute) parameter;
                         String identifier =
                             compositeAttr.getResourceIdentifier();
                         PrintWriter writer = null;
@@ -1148,12 +1152,12 @@ public class Connector extends MoMLApplication {
                             resource.setAttribute("uri", resourceURI);
                             root.appendChild(resource);
                         }
-                    } else if (attr instanceof Variable) {
-                        Variable variable = (Variable) attr;
+                    } else if (child instanceof Variable) {
+                        Variable variable = (Variable) child;
 
-                        // Re-evaluate the attribute because in some cases the value is
-                        // not up to date if the attribute refers to variables inside
-                        // CompositeActors.
+                        // Re-evaluate the attribute because in some cases the
+                        // value is not up to date if the attribute refers to
+                        // variables inside CompositeActors.
                         variable.invalidate();
                         String newValue = variable.getToken().toString();
                         System.out.println("Save: " + attributeName + " = " +
@@ -1166,7 +1170,7 @@ public class Connector extends MoMLApplication {
                         root.appendChild(value);
                     } else {
                         throw new IllegalActionException("Do not know how to " +
-                                "handle attribute " + attr.getName() + ".");
+                                "handle object " + child.getName() + ".");
                     }
 
                     Element units = document.createElementNS(NAMESPACES[0][1],
