@@ -48,7 +48,7 @@ import soot.SceneTransformer;
  A transformer that writes a makefile that can be used to run a model
  that has been code generated.
  <p>For a model called Foo, we generate Foo/makefile.
- in the directory named by the outDir parameter.
+ in the directory named by the outputDirectory parameter.
 
  @author Christopher Hylands
  @version $Id$
@@ -82,7 +82,7 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
     }
 
     public String getDeclaredOptions() {
-        return "_generatorAttributeFileName outDir overwrite targetPackage templateDirectory";
+        return "_generatorAttributeFileName outputDirectory overwrite targetPackage templateDirectory";
     }
 
     /** Add a makefile substitution from the given name to the given value.
@@ -175,7 +175,7 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
      *  <p>For example, if the model is called MyModel, and
      *  this phase is called with:
      *  <pre>
-     *        -p wjtp.makefileWriter targetPackage:foo.bar,outdir:c:/tmp,templateDirectory:bif
+     *        -p wjtp.makefileWriter targetPackage:foo.bar,outputDirector:c:/tmp,templateDirectory:bif
      *  </pre>
      *  Then we will create the directory c:/tmp/foo/bar/MyModel, read
      *  in $PTII/bif/makefile.in and generate c:/tmp/foo/bar/makefile.
@@ -188,7 +188,7 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
      *  <dd>_generatorAttributeFileName
      *  <dd>The pathname to the {@link GeneratorAttribute} that contains
      *  the keys and values will we use to update the makefile template with.
-     *  <dt>outDir
+     *  <dt>outputDirectory
      *  <dd>The absolute path to the directory where the generated code
      *  will reside, for example:
      *  <code>c:/ptII/ptolemy/copernicus/applet/cg/Butterfly</code>
@@ -277,20 +277,20 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
                     + " _generator attribute");
         }
 
-        _outputDirectory = PhaseOptions.getString(options, "outDir");
+        _outputDirectory = PhaseOptions.getString(options, "outputDirectory");
 
         if (!_outputDirectory.endsWith("/")) {
             _outputDirectory = _outputDirectory + "/";
         }
 
         // Create the directory where we will create the files.
-        File outDirFile = new File(_outputDirectory);
+        File outputDirectoryFile = new File(_outputDirectory);
 
-        if (!outDirFile.isDirectory()) {
-            if (!outDirFile.mkdirs()) { 
+        if (!outputDirectoryFile.isDirectory()) {
+            if (!outputDirectoryFile.mkdirs()) { 
                 throw new RuntimeException(
                         "Failed to create directory \""
-                        + outDirFile + "\"");
+                        + outputDirectoryFile + "\"");
             }
         }
 
@@ -307,7 +307,7 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
 
         try {
             substituteMap = CodeGeneratorUtilities.newMap(generatorAttribute);
-            substituteMap.put("@outDir@", _outputDirectory);
+            substituteMap.put("@outputDirectory@", _outputDirectory);
             substituteMap.put("@targetPackage@", _targetPackage);
             substituteMap.put("@templateDirectory@", _templateDirectory);
             substituteMap.putAll(_addedSubstitutions);

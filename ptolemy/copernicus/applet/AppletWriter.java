@@ -74,7 +74,7 @@ import soot.SceneTransformer;
  A transformer that writes an applet version of a model.
  For a model called Foo, we generate Foo/makefile, Foo/Foo.xml,
  Foo/Foo.htm Foo/FooVergil.htm in the directory named by the
- outDir parameter.
+ outputDirectory parameter.
 
  <p>Potential future enhancements
  <menu>
@@ -130,12 +130,12 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
     /** Return the declared options.  The declared options for
      *  this transformer is the string
      *  <pre>
-     *  targetPackage modelPath ptIIJarsPath outDir templateDirectory
+     *  modelPath outputDirectory ptIIJarsPath ptIIUserDirectory targetPackage targetPath templateDirectory
      *  </pre>
      *  @return the declared options.
      */
     public String getDeclaredOptions() {
-        return "targetPackage modelPath outDir ptIIJarsPath templateDirectory";
+        return "modelPath outputDirectory ptIIJarsPath ptIIUserDirectory targetPackage targetPath templateDirectory";
     }
 
     /** Return the phase name.  The phase name of
@@ -169,9 +169,12 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         // URL that names the model.
         _modelPath = PhaseOptions.getString(options, "modelPath");
 
-        _outputDirectory = PhaseOptions.getString(options, "outDir");
 
-        // Determine where $PTII is so that we can find the right directory.
+        // The directory that code will be generated in.
+        // $ptIIUserDirectory/$targetPath"
+        _outputDirectory = PhaseOptions.getString(options, "outputDirectory");
+
+          // Determine where $PTII is so that we can find the right directory.
         _ptIIJarsPath = PhaseOptions.getString(options, "ptIIJarsPath");
         try {
             if (_ptIIJarsPath == null) { 
@@ -189,9 +192,30 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     + "invoked with -Dptolemy.ptII.dir" + "=\"$PTII\"");
         }
 
+        _ptIIUserDirectory = PhaseOptions.getString(options, "ptIIUserDirectory");
+        try {
+            if (_ptIIUserDirectory == null) { 
+                // NOTE: getProperty() will probably fail in applets, which
+                // is why this is in a try block.
+                // NOTE: This property is set by the vergil startup script.
+                _ptIIUserDirectory = StringUtilities.getProperty("ptolemy.ptII.dir");
+            } else {
+                System.out.println("AppletWriter: ptIIUserDirectory = "
+                        + _ptIIUserDirectory);
+            }
+        } catch (SecurityException security) {
+            throw new InternalErrorException(null, security, "Could not find "
+                    + "'ptolemy.ptII.dir'" + " property.  Vergil should be "
+                    + "invoked with -Dptolemy.ptII.dir" + "=\"$PTII\"");
+        }
+
         // If the targetPackage is foo.bar, and the model is Bif,
         // the we will do mkdir $PTII/foo/bar/Bif/
         _targetPackage = PhaseOptions.getString(options, "targetPackage");
+
+        // The path relative to the ptIIUserDirectory to generate code in.
+        // Defaults to ptolemy/copernicus/$codeGenerator/cg/$modelName
+        _targetPath = PhaseOptions.getString(options, "targetPath");
 
         // Determine the value of _domainJar, which is the
         // path to the domain specific jar, e.g. "ptolemy/domains/sdf/sdf.jar"
@@ -215,13 +239,13 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 _ptIIJarsPath);
 
         // Create the directory where we will create the files.
-        File outDirFile = new File(_outputDirectory);
+        File outputDirectoryFile = new File(_outputDirectory);
 
-        if (!outDirFile.isDirectory()) {
+        if (!outputDirectoryFile.isDirectory()) {
             // MakefileWriter should have already created the directory
-            if (!outDirFile.mkdirs()) {
+            if (!outputDirectoryFile.mkdirs()) {
                 System.out.println("Warning: Failed to create directory \""
-                        + outDirFile + "\"");
+                        + outputDirectoryFile + "\"");
             }
         }
 
@@ -347,9 +371,10 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         _substituteMap.put("@codeBase@", _codeBase);
 	_substituteMap.put("@jnlpJars@", _jnlpJars);
         _substituteMap.put("@modelJarFiles@", _modelJarFiles);
-        _substituteMap.put("@outDir@", _outputDirectory);
+        _substituteMap.put("@outputDirectory@", _outputDirectory);
         _substituteMap.put("@sanitizedModelName@", _sanitizedModelName);
-        _substituteMap.put("@ptIIDirectory@", _ptIIJarsPath);
+        _substituteMap.put("@ptIIJarsPath@", _ptIIJarsPath);
+        _substituteMap.put("@ptIIUserDirectory@", _ptIIUserDirectory);
 	try {
 	    _substituteMap.put("@ptIILocalURL@", new File(_outputDirectory).toURI().toURL().toString());
 	} catch (Exception ex) {
@@ -1145,6 +1170,10 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
     // $PTII/signed.
     private String _ptIIJarsPath;
 
+    // The top level directory in which to write code.  The default value is the value
+    // of the ptolemy.ptII.dir Java sytem property.  The code app
+    private String _ptIIUserDirectory;
+
     // Map used to map @model@ to MyModel.
     private Map _substituteMap;
 
@@ -1154,6 +1183,10 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
     // is foo.bar, and the model is MyModel, we will create the code
     // in foo.bar.MyModel.
     private String _targetPackage;
+
+    // The path relative to the ptIIUserDirectory to generate code in.
+    // Defaults to ptolemy/copernicus/$codeGenerator/cg/$modelName
+    private String _targetPath;
 
     // The directory that contains the templates (makefile.in,
     // model.htm.in, modelApplet.htm.in)

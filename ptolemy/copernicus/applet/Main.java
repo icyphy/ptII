@@ -54,19 +54,20 @@ public class Main extends KernelMain {
     public void addTransforms() {
         Pack pack = PackManager.v().getPack("wjtp");
 
-        // Generate the makefile files in outDir
+        // Generate the makefile files in outputDirectory
         addTransform(pack, "wjtp.makefileWriter", MakefileWriter.v(_toplevel),
                 "_generatorAttributeFileName:" + _generatorAttributeFileName
                         + " targetPackage:" + _targetPackage
                         + " templateDirectory:" + _templateDirectory
-                        + " outDir:" + _outputDirectory + " overwrite:false");
+                        + " outputDirectory:" + _outputDirectory + " overwrite:false");
 
-        // Generate the applet files in outDir
+        // Generate the applet files in outputDirectory
         addTransform(pack, "wjtp.appletWriter", AppletWriter.v(_toplevel),
                 "targetPackage:" + _targetPackage
                         + " modelPath:" + _modelPath
-                        + " outDir:" + _outputDirectory
-                        + " ptIIJarsPath:" + _ptIIJarsPath);
+                        + " outputDirectory:" + _outputDirectory
+                        + " ptIIJarsPath:" + _ptIIJarsPath
+                        + " ptIIUserDirectory:" + _ptIIUserDirectory);
     }
 
     /** Parse any code generator specific arguments.
@@ -78,7 +79,9 @@ public class Main extends KernelMain {
         _modelPath = attribute.getParameter("modelPath");
         _outputDirectory = attribute.getParameter("outputDirectory");
         _ptIIJarsPath = attribute.getParameter("ptIIJarsPath");
+        _ptIIUserDirectory = attribute.getParameter("ptIIUserDirectory");
         _targetPackage = attribute.getParameter("targetPackage");
+        _targetPath = attribute.getParameter("targetPath");
         _templateDirectory = attribute.getParameter("templateDirectory");
         //_watchDogTimeout = attribute.getParameter("watchDogTimeout");
 
@@ -94,7 +97,11 @@ public class Main extends KernelMain {
 
     private String _ptIIJarsPath = "unsetParameter";
 
+    private String _ptIIUserDirectory = "unsetParameter";
+
     private String _targetPackage = "unsetParameter";
+
+    private String _targetPath = "unsetParameter";
 
     private String _templateDirectory = "ptolemy/copernicus/java";
 

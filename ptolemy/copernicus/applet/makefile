@@ -168,7 +168,7 @@ runDemo:
 	cd $(ROOT)/$(APPLETTARGETDIRECTORY); appletviewer $(MODEL)Vergil.htm
 
 # Test writing in a separate directory
-TESTDIR=c:/tmp/test
+TESTDIR=/tmp/test
 test1: $(JCLASS)
 	if [ ! -d "$(TESTDIR)" ]; then \
 		mkdir -p $(TESTDIR); \
