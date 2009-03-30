@@ -28,6 +28,7 @@
 package ptolemy.codegen.c.targets.luminary;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * Common code for the Luminary.
@@ -46,5 +47,9 @@ public class LuminaryTarget extends CCodeGeneratorHelper {
      */
     public LuminaryTarget(ptolemy.actor.TypedCompositeActor actor) {
         super(actor);
+    }
+    
+    public String generatePreinitializeCode() throws IllegalActionException {
+        return "from Luminary target";
     }
 }

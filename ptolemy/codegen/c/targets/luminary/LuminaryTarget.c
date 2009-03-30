@@ -2,12 +2,6 @@
 /* Standard includes. */
 #include <stdio.h>
 
-/* Scheduler includes. */
-#include "FreeRTOS.h"
-#include "Task.h"
-#include "queue.h"
-#include "semphr.h"
-
 /* Hardware library includes. */
 #include "hw_memmap.h"
 #include "hw_types.h"
@@ -20,6 +14,11 @@
 #include "osram128x64x4.h"
 #include "formike128x128x16.h"
 #include "bitmap.h"
+/**/
 
+/*** initBlock ***/
+GPIOConfig();
+initializeInterrupts();
+initializeTimers();
 /**/
 

@@ -10,8 +10,6 @@
 /**/
 
 /*** initPDBlock***/
-// DELETEME: should not be here, should be at domain
-initPIBlock();
 initPDBlock();
 /**/
 
