@@ -7,6 +7,7 @@ initializeEvents();
 initPIBlock();
 /**/
 
+/*
 processEvents() {
     while (1) {
         if (safeToProcess(event)) {
@@ -21,7 +22,7 @@ processEvents() {
 }
 
 fire(event) {
-    if (event->actor = A)
+    if (event->actor == A)
         A_fire();
 }
 
@@ -42,3 +43,4 @@ transferDataFunctionZout1_to_Ain1(){
 
 // So during codegen, Zout1_to_Ain1 would be generated using:
 // $ref(input), $ref(sourceOutputPort)
+*/
