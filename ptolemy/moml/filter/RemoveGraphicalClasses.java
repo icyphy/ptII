@@ -87,8 +87,8 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         // " X connection to foo:0 broken (explicit kill or server shutdown)."
         // Try uncommenting the next lines to see what is being
         // expanding before the error:
-        //System.out.println("filterAttributeValue: " + container + "\t"
-        //       +  attributeName + "\t" + attributeValue);
+        System.out.println("filterAttributeValue: " + container + "\t"
+               +  attributeName + "\t" + attributeValue);
         if (attributeValue == null) {
             return null;
         } else if (_graphicalClasses.containsKey(attributeValue)) {
@@ -245,6 +245,9 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         _graphicalClasses.put("ptolemy.actor.lib.gui.SequencePlotter",
                 "ptolemy.actor.lib.Discard");
 
+        _graphicalClasses.put("ptolemy.data.properties.gui.PropertyHighlighter",
+                null);
+
         _graphicalClasses.put("ptolemy.domains.sr.lib.NonStrictDisplay",
                 "ptolemy.actor.lib.Discard");
 
@@ -266,6 +269,7 @@ public class RemoveGraphicalClasses implements MoMLFilter {
 
         // 4/04 BooleanSwitch uses EditorIcon
         _graphicalClasses.put("ptolemy.vergil.icon.EditorIcon", null);
+
 
         // 11/06 FSM uses StateIcon
         _graphicalClasses.put("ptolemy.vergil.fsm.StateIcon", null);
@@ -300,10 +304,13 @@ public class RemoveGraphicalClasses implements MoMLFilter {
 
         _graphicalClasses.put("ptolemy.vergil.basic.NodeControllerFactory",
                 null);
+        _graphicalClasses.put("ptolemy.vergil.erg.EventIcon", null);
         _graphicalClasses.put("ptolemy.vergil.icon.AttributeValueIcon", null);
         _graphicalClasses.put("ptolemy.vergil.icon.BoxedValueIcon", null);
+        _graphicalClasses.put("ptolemy.vergil.icon.DesignPatternIcon", null);
         _graphicalClasses.put("ptolemy.vergil.icon.CopyCatIcon", null);
         _graphicalClasses.put("ptolemy.vergil.icon.EditorIcon", null);
+        _graphicalClasses.put("ptolemy.vergil.icon.ShapeIcon", null);
         _graphicalClasses.put("ptolemy.vergil.icon.XMLIcon", null);
 
         // ptolemy/actor/lib/test/auto/StopSDF.xml has a MonitorValue actor,
@@ -342,6 +349,7 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         _graphicalClasses.put("ptolemy.vergil.basic.DocAttribute",
                 "ptolemy.kernel.util.Attribute");
 
+	
         _graphicalClasses.put("ptolemy.domains.wireless.lib.GraphicalLocator",
                 "ptolemy.domains.wireless.lib.Locator");
 
