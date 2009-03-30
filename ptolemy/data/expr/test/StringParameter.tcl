@@ -74,6 +74,12 @@ test StringParameter-10.0 {test a nesting problem} {
 test StringParameter-10.1 {test a nesting problem} {
     set parser [java::new ptolemy.moml.MoMLParser]
     $parser reset
+    $parser setMoMLFilters [java::null]
+    $parser addMoMLFilters \
+	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
+
+    $parser addMoMLFilter [java::new \
+	    ptolemy.moml.filter.RemoveGraphicalClasses]
     $parser purgeAllModelRecords
     set toplevel [$parser parseFile StringParameterDialogBug.xml]
     set toplevel [java::cast ptolemy.kernel.CompositeEntity $toplevel]
