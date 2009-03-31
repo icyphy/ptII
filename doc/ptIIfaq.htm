@@ -71,6 +71,8 @@ This FAQ can be found at:
 	<li> <a href="#reading data from files?"><b>4.3 How do I read data from a file?</b></a>
 	<li> <a href="#loops"><b>4.4 How do I do loops in Ptolemy II?</b></a>
 	<li> <a href="#multiportComposites"><b>4.5 I have a Composite with a Multiport, but it only sees one channel?</b></a>
+	<li> <a href="#powerpoint"><b>4.6 How do I put a model into a PowerPoint Deck?</b></a>
+  	<li> <a href="#pdf"><b>4.7 How do I create a PDF of a model?</b></a>
 	</menu>
 
 <li> <a href="#ptolemy II faq: extending"><b>5. Extending Ptolemy II</b></a>
@@ -838,8 +840,30 @@ a proof of soundness. I.e., that the inferred width is always unique.
 We've looked into this in the past, but have not come up with a formal
 proof.
 
-</dl>
+<dt> <a name="powerpoint"><b>4.6 How do I put a model into a PowerPoint Deck?</b></a>
+<dd>Screen grabs of an model work ok for PowerPoint, but use GIF or PNG, not JPEG.
+Also, the image should not be scaled up after placing the image in PowerPoint;
+instead enlarge the image in Vergil and then do the capture.
 
+<dt> <a name="pdf"><b>4.7 How do I create a PDF of a model?</b></a>
+<dd>To include an image of a model in a LaTeX file, print the Ptolemy models to PDF.
+This requires that PDF printer drivers be installed on your machine.
+
+<p>The size of the window matters since the print utility tries to fit
+the result into the 8.5x11 page, and the result doesn't scale well
+(line thickness don't scale proportionally).  Try to make all my
+windows standard width before printing.  Also, reset the zoom before
+printing.
+
+<p> In Ptolemy II 8.0 and later, to print from the command line, run:
+<pre>
+       $PTII/bin/vergil -printPDF model.xml
+</pre>
+If need be, edit the results in Adobe Illustrator, including combining figures
+    and putting borders on the grey boxes.
+
+<p>Remove white space using Adobe Acrobat Pro by using
+    Tools -&gt; Advanced Editing -&gt; Crop Tool
 </dl>
 
 <h2><a name="ptolemy II faq: extending"><b>5. Extending Ptolemy II</b></a></h2>
