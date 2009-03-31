@@ -50,7 +50,6 @@ import ptolemy.kernel.util.PtolemyThread;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
-import ptolemy.util.TimeLogger;
 
 //////////////////////////////////////////////////////////////////////////
 //// Manager
@@ -308,8 +307,6 @@ public class Manager extends NamedObj implements Runnable {
      *   if there is no container.
      */
     public void execute() throws KernelException, IllegalActionException {
-        _timeLogger.open();
-        _timeLogger.log("Manager", "Begin execute");
         // NOTE: This method used to be synchronized, but holding the
         // lock on the Manager for the duration of an execution creates
         // endless possibilities for deadlock.  So instead, we put
@@ -470,8 +467,6 @@ public class Manager extends NamedObj implements Runnable {
                     }
                 }
             }
-            _timeLogger.log("Manager", "End execute");
-            _timeLogger.close();
         }
         /*
         System.out.println("Manager.execute() finished: "
@@ -598,11 +593,9 @@ public class Manager extends NamedObj implements Runnable {
      *                  or if the width cannot be inferred for a relation.
      */
     public void inferWidths() throws IllegalActionException {
-        _timeLogger.log("Manager", "Begin inferWidths");
         if (_relationWidthInference.needsWidthInference()) {
             _relationWidthInference.inferWidths();
         }
-        _timeLogger.log("Manager", "End inferWidths");
     }
 
     /** Initialize the model.  This calls the preinitialize() method of
@@ -617,7 +610,6 @@ public class Manager extends NamedObj implements Runnable {
     public synchronized void initialize() throws KernelException,
             IllegalActionException {
         try {
-            _timeLogger.log("Manager", "Begin initialize");
             _workspace.getReadAccess();
 
             // Make sure that change requests are not executed when requested,
@@ -641,7 +633,6 @@ public class Manager extends NamedObj implements Runnable {
             executeChangeRequests();
         } finally {
             _workspace.doneReading();
-            _timeLogger.log("Manager", "End initialize");
         }
     }
 
@@ -677,7 +668,6 @@ public class Manager extends NamedObj implements Runnable {
      *   is no container.
      */
     public boolean iterate() throws KernelException {
-        _timeLogger.log("Manager", "Begin iterate");
         if (_container == null) {
             throw new IllegalActionException(this, "No model to execute!");
         }
@@ -687,9 +677,7 @@ public class Manager extends NamedObj implements Runnable {
         long startTime = (new Date()).getTime();
         try {
             _workspace.getReadAccess();
-            _timeLogger.log("Manager", "Begin executeChangeRequests");
             executeChangeRequests();
-            _timeLogger.log("Manager", "End executeChangeRequests");
 
             // We should infer the widths before preinitializing the container, since the latter
             // will create the receivers for which it needs the widths of the relations.
@@ -735,16 +723,11 @@ public class Manager extends NamedObj implements Runnable {
             _actorsToInitialize.clear();
 
             if (_container.prefire()) {
-                _timeLogger.log("Manager", "Begin fire");
                 _container.fire();
-                _timeLogger.log("Manager", "End fire");
-                _timeLogger.log("Manager", "Begin postfire");
                 result = _container.postfire();
-                _timeLogger.log("Manager", "End postfire");
             }
         } finally {
             _workspace.doneReading();
-            _timeLogger.log("Manager", "End iterate");
         }
 
         return result;
@@ -930,8 +913,7 @@ public class Manager extends NamedObj implements Runnable {
      */
     public synchronized void preinitializeAndResolveTypes()
             throws KernelException {
-        _timeLogger.log("Manager", "Begin preinitializeAndResolveTypes");
-        try {            
+        try {
             _workspace.getReadAccess();
 
             if (_state != IDLE) {
@@ -1003,7 +985,6 @@ public class Manager extends NamedObj implements Runnable {
             }
 
             _workspace.doneReading();
-            _timeLogger.log("Manager", "End preinitializeAndResolveTypes");
         }
     }
 
@@ -1017,14 +998,12 @@ public class Manager extends NamedObj implements Runnable {
      *  and resolving types.
      */
     public void preinitializeIfNecessary() throws KernelException {
-        _timeLogger.log("Manager", "Begin preinitializeIfNecessary");
         try {
             if (_preinitializeVersion != _workspace.getVersion()) {
                 preinitializeAndResolveTypes();
             }
         } finally {
             _setState(IDLE);
-            _timeLogger.log("Manager", "End preinitializeIfNecessary");
         }
     }
 
@@ -1105,7 +1084,6 @@ public class Manager extends NamedObj implements Runnable {
      *  @exception TypeConflictException If a type conflict is detected.
      */
     public void resolveTypes() throws TypeConflictException {
-        _timeLogger.log("Manager", "Begin resolveTypes");
         if (!(_container instanceof TypedCompositeActor)) {
             return;
         }
@@ -1117,7 +1095,6 @@ public class Manager extends NamedObj implements Runnable {
             TypedCompositeActor.resolveTypes((TypedCompositeActor) _container);
         } finally {
             _workspace.doneReading();
-            _timeLogger.log("Manager", "End resolveTypes");
         }
     }
 
@@ -1352,7 +1329,6 @@ public class Manager extends NamedObj implements Runnable {
      *   wrapping up, or if there is no container.
      */
     public void wrapup() throws KernelException, IllegalActionException {
-        _timeLogger.log("Manager", "Begin wrapup");
         // NOTE: This method used to be synchronized, but we cannot
         // hold the lock on the director during wrapup because it
         // will cause deadlock. Instead, we use a small barrier
@@ -1396,7 +1372,6 @@ public class Manager extends NamedObj implements Runnable {
 
         // Wrapup completed successfully
         _setState(IDLE);
-        _timeLogger.log("Manager", "End wrapup");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1510,7 +1485,6 @@ public class Manager extends NamedObj implements Runnable {
      *          for a relation.
      */
     public void _inferWidths() throws IllegalActionException {
-        _timeLogger.log("Manager", "Begin _inferWidths");
         if (_relationWidthInference.needsWidthInference()) {
             State previousState = _state;
             try {
@@ -1520,7 +1494,6 @@ public class Manager extends NamedObj implements Runnable {
                 _setState(previousState);
             }
         }
-        _timeLogger.log("Manager", "End _inferWidths");
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -1568,9 +1541,6 @@ public class Manager extends NamedObj implements Runnable {
     // If startRun() is used, then this points to the thread that was
     // created.
     private PtolemyThread _thread;
-    
-    // A class that logs certain events together with a time stamp when enabled. 
-    private TimeLogger _timeLogger = new TimeLogger("c:/temp/log.txt", false /*Change to true to enable*/);
 
     // An indicator of whether type resolution needs to be done.
     private boolean _typesResolved = false;
