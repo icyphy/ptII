@@ -87,8 +87,8 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         // " X connection to foo:0 broken (explicit kill or server shutdown)."
         // Try uncommenting the next lines to see what is being
         // expanding before the error:
-        System.out.println("filterAttributeValue: " + container + "\t"
-               +  attributeName + "\t" + attributeValue);
+        //System.out.println("filterAttributeValue: " + container + "\t"
+        //       +  attributeName + "\t" + attributeValue);
         if (attributeValue == null) {
             return null;
         } else if (_graphicalClasses.containsKey(attributeValue)) {
