@@ -1,10 +1,9 @@
-# Makefile for the Continuous Time domain kernel
-#
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# Makefile for PtolemyII Finite State Machine (FSM) Domain
 #
 # @Version: $Id$
+# @Author: Xiaojun Liu
 #
-# @Copyright (c) 1998-2006 The Regents of the University of California.
+# @Copyright (c) 1998-2005 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,83 +28,42 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/ct/kernel
+ME =		ptolemy/domains/modal
 
-DIRS = 		solver test
+DIRS =		kernel modal demo doc test
 
-# Root of the Java directory
-ROOT =		../../../..
+# Root of Ptolemy II directory
+ROOT =		../../..
 
-CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	kernel
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
+PTPACKAGE = 	modal
 PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-		solver/solver.jar
+		kernel/kernel.jar \
+		modal/modal.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
-JSRCS = \
-	BreakpointODESolver.java \
-	CTBaseIntegrator.java \
-	CTCase.java \
-	CTCaseDirector.java \
-	CTCompositeActor.java \
-	CTDirector.java \
-	CTDynamicActor.java \
-	CTEmbeddedDirector.java \
-	CTEventGenerator.java \
-	CTExecutionPhase.java \
-	CTGeneralDirector.java \
-	CTMixedSignalDirector.java \
-	CTMultiSolverDirector.java \
-	CTReceiver.java \
-	CTRefinement.java \
-	CTSchedule.java \
-	CTScheduler.java \
-	CTStatefulActor.java \
-	CTStepSizeControlActor.java \
-	CTTransparentDirector.java \
-	CTWaveformGenerator.java \
-	HSModalDirector.java \
-	HSFSMDirector.java \
-	NumericalNonconvergeException.java \
-	ODESolver.java
-
-EXTRA_SRCS =	$(JSRCS)
-
-# Sources that may or may not be present, but if they are present, we don't
-# want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS) test
+# Files or directories that are present, but that 'make checkjunk'
+# should not complain about
+# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
+MISC_FILES =	kernel modal doc test 
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc \
-	'CTBaseIntegrator$$DoubleDouble.class' \
-	'CTBaseIntegrator$$History.class' \
-	'CTReceiver$$1.class' \
-	'CTReceiver$$2.class' \
-	'CTReceiver$$3.class' \
-	'CTReceiver$$SignalType.class' \
-	'CTScheduler$$1.class' \
-	'CTScheduler$$SignalTypes.class' \
-	'CTScheduler$$SignalTypeMap.class'
-
-JCLASS = $(JSRCS:%.java=%.class)
-
+	demo \
+	doc
 
 all: jclass
 install: jclass jars
-
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

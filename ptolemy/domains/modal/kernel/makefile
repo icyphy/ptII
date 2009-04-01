@@ -1,10 +1,10 @@
-# Makefile for the Continuous Time domain kernel
+# Makefile for the Ptolemy II Finite State Machine (FSM) Domain kernel
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Xiaojun Liu
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2006 The Regents of the University of California.
+# @Copyright (c) 1998-2008 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,82 +29,84 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/ct/kernel
+ME =            ptolemy/domains/modal/kernel
 
-DIRS = 		solver test
-
-# Root of the Java directory
+# Root of the ptII directory
 ROOT =		../../../..
 
-CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Used to build jar files
+DIRS = 		fmv ia test
+
+CLASSPATH =	$(ROOT)
+
+# Used to build zip files
 PTPACKAGE = 	kernel
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-		solver/solver.jar
+		fmv/fmv.jar \
+		ia/ia.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	BreakpointODESolver.java \
-	CTBaseIntegrator.java \
-	CTCase.java \
-	CTCaseDirector.java \
-	CTCompositeActor.java \
-	CTDirector.java \
-	CTDynamicActor.java \
-	CTEmbeddedDirector.java \
-	CTEventGenerator.java \
-	CTExecutionPhase.java \
-	CTGeneralDirector.java \
-	CTMixedSignalDirector.java \
-	CTMultiSolverDirector.java \
-	CTReceiver.java \
-	CTRefinement.java \
-	CTSchedule.java \
-	CTScheduler.java \
-	CTStatefulActor.java \
-	CTStepSizeControlActor.java \
-	CTTransparentDirector.java \
-	CTWaveformGenerator.java \
-	HSModalDirector.java \
-	HSFSMDirector.java \
-	NumericalNonconvergeException.java \
-	ODESolver.java
+	AbstractActionsAttribute.java \
+	Action.java \
+	ChoiceAction.java \
+	CommitAction.java \
+	CommitActionsAttribute.java \
+	ConfigurableEntity.java \
+	Configurer.java \
+	ContainmentExtender.java \
+	FSMActor.java \
+	FSMCausalityInterface.java \
+	FSMDirector.java \
+	ModalDirector.java \
+	MultipleEnabledTransitionsException.java \
+	MultirateFSMDirector.java \
+	NonStrictFSMDirector.java \
+	OutputActionsAttribute.java \
+	ParseTreeEvaluatorForGuardExpression.java \
+	RefinementActor.java \
+	RelationList.java \
+	RelationNode.java \
+	RelationType.java \
+	State.java \
+	StateEvent.java \
+	Transition.java
 
-EXTRA_SRCS =	$(JSRCS)
+OTHER_FILES_TO_BE_JARED = \
+	StateIcon.xml \
+	fsmentities.xml
+
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS) test
+MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	'CTBaseIntegrator$$DoubleDouble.class' \
-	'CTBaseIntegrator$$History.class' \
-	'CTReceiver$$1.class' \
-	'CTReceiver$$2.class' \
-	'CTReceiver$$3.class' \
-	'CTReceiver$$SignalType.class' \
-	'CTScheduler$$1.class' \
-	'CTScheduler$$SignalTypes.class' \
-	'CTScheduler$$SignalTypeMap.class'
+	'AbstractActionsAttribute$$TypeFunction.class' \
+	'Configurer$$ContainmentExtender.class' \
+	'FSMActor$$1.class' \
+	'FSMActor$$PortScope.class' \
+	'FSMDirector$$1.class' \
+	'State$$UpdateContentsRequest.class' \
+	'State$$InvisibleModalModel.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-
 all: jclass
-install: jclass jars
+install: all jars
 
 
 # Get the rest of the rules

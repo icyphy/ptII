@@ -1,10 +1,10 @@
-# Makefile for the Continuous Time domain kernel
+# Makefile for the PtolemyII Finite State Machine (FSM) Domain ABP Demo
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2006 The Regents of the University of California.
+# @Copyright (c) 1998-2005 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,83 +29,72 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/ct/kernel
+ME =		ptolemy/domains/modal/demo/ABP
+# Root of the Ptolemy II directory
+ROOT =		../../../../..
 
-DIRS = 		solver test
-
-# Root of the Java directory
-ROOT =		../../../..
-
-CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+# Flags to pass to javadoc. (Override value in ptII.mk)
+JDOCFLAGS = 	-author -version -public
+
+DIRS = 		#test doc
+
+CLASSPATH = 	../../../../..
+
 # Used to build jar files
-PTPACKAGE = 	kernel
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
-
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-		solver/solver.jar
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTPACKAGE = 	ABP
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	BreakpointODESolver.java \
-	CTBaseIntegrator.java \
-	CTCase.java \
-	CTCaseDirector.java \
-	CTCompositeActor.java \
-	CTDirector.java \
-	CTDynamicActor.java \
-	CTEmbeddedDirector.java \
-	CTEventGenerator.java \
-	CTExecutionPhase.java \
-	CTGeneralDirector.java \
-	CTMixedSignalDirector.java \
-	CTMultiSolverDirector.java \
-	CTReceiver.java \
-	CTRefinement.java \
-	CTSchedule.java \
-	CTScheduler.java \
-	CTStatefulActor.java \
-	CTStepSizeControlActor.java \
-	CTTransparentDirector.java \
-	CTWaveformGenerator.java \
-	HSModalDirector.java \
-	HSFSMDirector.java \
-	NumericalNonconvergeException.java \
-	ODESolver.java
+	DEMessageSource.java \
+	DETimer.java
 
-EXTRA_SRCS =	$(JSRCS)
+OTHER_FILES_TO_BE_JARED = \
+	$(JSRCS) \
+	ABP.xml \
+	Receiver.xml
+
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED) \
+	ABP.htm 
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS) test
+MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	'CTBaseIntegrator$$DoubleDouble.class' \
-	'CTBaseIntegrator$$History.class' \
-	'CTReceiver$$1.class' \
-	'CTReceiver$$2.class' \
-	'CTReceiver$$3.class' \
-	'CTReceiver$$SignalType.class' \
-	'CTScheduler$$1.class' \
-	'CTScheduler$$SignalTypes.class' \
-	'CTScheduler$$SignalTypeMap.class'
+	$(PTCLASSJAR) \
+	'ABPApplet$$CurrentTimeThread.class' \
+	'ABPApplet$$FinishButtonListener.class' \
+	'ABPApplet$$GoButtonListener.class' \
+	'ABPApplet$$MyExecutionListener.class' \
+	'ABPApplet$$PauseButtonListener.class' \
+	'ABPApplet$$TerminateButtonListener.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 
 all: jclass
-install: jclass jars
+	@echo "To run all the demos, run 'make demo'"
 
+install: jclass $(PTCLASSJAR)
+
+demo: demo_applet demo_ptolemy demo_vergil
+demo_applet:
+	CLASSPATH="$(CLASSPATH)" appletviewer ABP.htm
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" ABP.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" ABP.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

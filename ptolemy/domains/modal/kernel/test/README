@@ -1,0 +1,53 @@
+In addition to the regular files for testing, this directory also contains
+some utility programs to manipulate interface automata: Compose.java,
+GetInfo.java, and Deadlock.java. All of these programs can be invoked from
+the command line. The arguments are the MoML file names for interface
+automata. Interface automata can be created in the "Interface Automata Editor"
+in Vergil. Each of these programs are described below:
+
+(1) Compose.java:
+This program can be used to compose two or more interface automata. The usage
+is:
+
+java -classpath <class_path_to_ptII> ptolemy.domains.modal.kernel.test.Compose <ia1.xml> <ia2.xml> ...
+
+where <class_path_to_ptII> is the path to the Ptolemy II tree. <ia1.xml> and
+<ia2.xml> are the MoML file names for interface automata. Two or more MoML
+files can be specified.
+
+This program writes the MoML description of the composition automaton to
+stdout. Of course, the result can be redirected to a file and then viewed in
+Vergil. However, if the composition automaton has too many states, the
+vergil graph will be hard to read. Also, if the the composition automaton is
+more than several hundred states, MoML parser may not be able to parse it
+so further processing cannot be done.
+
+(2) GetInfo.java:
+This program displays the high-level information of one or more interface
+automata. This information includes the number of states and transitions,
+the number of input, output, and internal transitions and their names.
+The usage is:
+
+java -classpath <class_path_to_ptII> ptolemy.domains.modal.kernel.test.GetInfo <ia1.xml> <ia2.xml> ...
+
+The arguments are the same as the Compose program. If the number of automata
+is more than one, their information will be displayed one by one.
+
+(2) Deadlock.java:
+
+This program displays the names of deadlock states of an interface automaton.
+The deadlock states are the ones that do not have outgoing transitions. The
+usage is:
+
+java -classpath <class_path_to_ptII> ptolemy.domains.modal.kernel.test.Deadlock <ia.xml>
+
+Only one automaton can be specified on the command line. Since the property
+of deadlock is not compositional for interface automata, deadlock can only
+be checked on a closed automaton, which does not have any input and output
+transitions. If the specified automaton is not closed, an exception will
+be thrown.
+
+Some example interface automata drawn from the report by L. de Alfaro are
+also included in this directory. They are user.xml, comp.xml, gooChannel.xml,
+and channel.xml.
+

@@ -47,7 +47,7 @@ EXPERIMENTAL_DOMAINS = \
 # PTCONTINUOUS_DIR is set to continuous if we want to compile that domain.
 PTCONTINUOUS_DIR = continuous
 DOMAINS =	ci $(PTCONTINUOUS_DIR) csp ct curriculum \
-	        dde ddf de fsm erg hdf pn sdf dt \
+	        dde ddf de fsm erg hdf modal pn sdf dt \
 	        giotto petrinet rendezvous properties \
 		$(PTPSDF_DIR) ptides ptinyos $(PTSPACE_DIR) \
 		sr tdl tm $(PTJAVA3D_DIR) wireless
@@ -83,6 +83,7 @@ PTAUXALLJARS = \
 	        dt/dt.jar \
 		giotto/giotto.jar \
 		$(PTGRDOMAIN_JAR) \
+		modal/modal.jar \
 		petrinet/petrinet.jar \
 		properties/properties.jar \
 		ptides/ptides.jar \
@@ -149,6 +150,8 @@ DEMOJARS = \
 	fsm/doc/doc.jar \
 	hdf/demo/demo.jar \
 	hdf/doc/doc.jar \
+	modal/doc/doc.jar \
+	modal/doc/doc.jar \
 	pn/demo/demo.jar \
 	pn/doc/doc.jar \
 	rendezvous/demo/demo.jar \

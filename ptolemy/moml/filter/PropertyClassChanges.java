@@ -514,6 +514,9 @@ public class PropertyClassChanges implements MoMLFilter {
         _actorsWithPropertyClassChanges.put(
                 "ptolemy.domains.fsm.modal.ModalModel", modalModelClassChanges);
 
+        _actorsWithPropertyClassChanges.put(
+                "ptolemy.domains.modal.modal.ModalModel", modalModelClassChanges);
+
         // HashMap hdfClassChanges = new HashMap();
 //         hdfClassChanges.put("_Director", null);
 //         _actorsWithPropertyClassChanges.put(
@@ -589,6 +592,10 @@ public class PropertyClassChanges implements MoMLFilter {
         TransitionClassChanges.put("relationList", null);
         _actorsWithPropertyClassChanges
                 .put("ptolemy.domains.fsm.kernel.Transition",
+                        TransitionClassChanges);
+
+        _actorsWithPropertyClassChanges
+                .put("ptolemy.domains.modal.kernel.Transition",
                         TransitionClassChanges);
     }
 }

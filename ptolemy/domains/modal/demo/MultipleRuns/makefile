@@ -1,10 +1,10 @@
-# Makefile for the Continuous Time domain kernel
+# Makefile for FSM MultipleRuns Controller demo 
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Christopher Hylands (makefile only)
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2006 The Regents of the University of California.
+# @Copyright (c) 2001-2005 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,12 +29,10 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/ct/kernel
-
-DIRS = 		solver test
+ME =		ptolemy/domains/modal/demo/MultipleRuns
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -43,69 +41,51 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	kernel
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
+PTPACKAGE = 	MultipleRuns
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-		solver/solver.jar
+JSRCS =
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+OTHER_FILES_TO_BE_JARED = \
+	$(JSRCS) \
+	diagrams.xml \
+	MultipleRuns.xml
 
-JSRCS = \
-	BreakpointODESolver.java \
-	CTBaseIntegrator.java \
-	CTCase.java \
-	CTCaseDirector.java \
-	CTCompositeActor.java \
-	CTDirector.java \
-	CTDynamicActor.java \
-	CTEmbeddedDirector.java \
-	CTEventGenerator.java \
-	CTExecutionPhase.java \
-	CTGeneralDirector.java \
-	CTMixedSignalDirector.java \
-	CTMultiSolverDirector.java \
-	CTReceiver.java \
-	CTRefinement.java \
-	CTSchedule.java \
-	CTScheduler.java \
-	CTStatefulActor.java \
-	CTStepSizeControlActor.java \
-	CTTransparentDirector.java \
-	CTWaveformGenerator.java \
-	HSModalDirector.java \
-	HSFSMDirector.java \
-	NumericalNonconvergeException.java \
-	ODESolver.java
-
-EXTRA_SRCS =	$(JSRCS)
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED) \
+	MultipleRuns.htm \
+	MultipleRunsVergil.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS) test
+MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
+# make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc \
-	'CTBaseIntegrator$$DoubleDouble.class' \
-	'CTBaseIntegrator$$History.class' \
-	'CTReceiver$$1.class' \
-	'CTReceiver$$2.class' \
-	'CTReceiver$$3.class' \
-	'CTReceiver$$SignalType.class' \
-	'CTScheduler$$1.class' \
-	'CTScheduler$$SignalTypes.class' \
-	'CTScheduler$$SignalTypeMap.class'
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
 all: jclass
-install: jclass jars
+	@echo "To run all the demos, run 'make demo'"
 
+install: all $(PTCLASSJAR)
+
+demo: demo_applet demo_vergil_applet demo_ptolemy demo_vergil
+demo_applet:
+	CLASSPATH="$(CLASSPATH)" appletviewer MultipleRuns.htm
+
+demo_vergil_applet:
+	CLASSPATH="$(CLASSPATH)" appletviewer MultipleRunsVergil.htm
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" MultipleRuns.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" MultipleRuns.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

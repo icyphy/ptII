@@ -1,10 +1,9 @@
-# Makefile for the Continuous Time domain kernel
-#
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# Makefile for PtolemyII Finite State Machine Domain Demos
 #
 # @Version: $Id$
+# @Author: Xiaojun Liu
 #
-# @Copyright (c) 1998-2006 The Regents of the University of California.
+# @Copyright (c) 1998-2008 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,83 +28,62 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/ct/kernel
+ME = 		ptolemy/domains/modal/demo
 
-DIRS = 		solver test
+DIRS =		ABP Case ChainedTransitions Blending ModalBSC \
+		MultipleRuns StateTracker SystemLevelType
 
-# Root of the Java directory
+# Root of ptII directory
 ROOT =		../../../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH =     $(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	kernel
+PTPACKAGE = 	demo
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-		solver/solver.jar
+	ABP/ABP.jar \
+	Case/Case.jar \
+	ChainedTransitions/ChainedTransitions.jar \
+	Blending/Blending.jar \
+	ModalBSC/ModalBSC.jar \
+	StateTracker/StateTracker.jar \
+	SystemLevelType/SystemLevelType.jar
+
+# We are not shipping MultipleRuns because it leaves threads running.
+# MultipleRuns/MultipleRuns.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
-JSRCS = \
-	BreakpointODESolver.java \
-	CTBaseIntegrator.java \
-	CTCase.java \
-	CTCaseDirector.java \
-	CTCompositeActor.java \
-	CTDirector.java \
-	CTDynamicActor.java \
-	CTEmbeddedDirector.java \
-	CTEventGenerator.java \
-	CTExecutionPhase.java \
-	CTGeneralDirector.java \
-	CTMixedSignalDirector.java \
-	CTMultiSolverDirector.java \
-	CTReceiver.java \
-	CTRefinement.java \
-	CTSchedule.java \
-	CTScheduler.java \
-	CTStatefulActor.java \
-	CTStepSizeControlActor.java \
-	CTTransparentDirector.java \
-	CTWaveformGenerator.java \
-	HSModalDirector.java \
-	HSFSMDirector.java \
-	NumericalNonconvergeException.java \
-	ODESolver.java
+JSRCS =
 
-EXTRA_SRCS =	$(JSRCS)
+EXTRA_SRCS =    $(JSRCS) \
+	index.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS) test
+MISC_FILES =    $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc \
-	'CTBaseIntegrator$$DoubleDouble.class' \
-	'CTBaseIntegrator$$History.class' \
-	'CTReceiver$$1.class' \
-	'CTReceiver$$2.class' \
-	'CTReceiver$$3.class' \
-	'CTReceiver$$SignalType.class' \
-	'CTScheduler$$1.class' \
-	'CTScheduler$$SignalTypes.class' \
-	'CTScheduler$$SignalTypeMap.class'
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-
 all: jclass
-install: jclass jars
+	@echo "To run all the demos, run 'make demo'"
 
+install: jclass jars $(PTCLASSALLJAR)
+
+demo: subdemo
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
