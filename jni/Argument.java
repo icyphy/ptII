@@ -172,7 +172,8 @@ public class Argument extends AbstractSettableAttribute {
             if (result.startsWith("long")) {
                 return "int *";
             }
-        } else if (StringUtilities.getProperty("os.name").startsWith("Linux")) {
+        } else if (StringUtilities.getProperty("os.name").startsWith("Linux")
+		 || StringUtilities.getProperty("os.name").startsWith("Mac")) {
             if (result.startsWith("long")) {
                 return "jlong *";
             }
