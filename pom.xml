@@ -553,6 +553,7 @@ See $PTII/doc/coding/maven.htm
     <testSourceDirectory>${project.basedir}</testSourceDirectory>
     <testOutputDirectory>${project.basedir}</testOutputDirectory>
     <plugins>
+
       <plugin>
 	<groupId>org.apache.maven.plugins</groupId>
 	<artifactId>maven-compiler-plugin</artifactId>
@@ -600,6 +601,7 @@ See $PTII/doc/coding/maven.htm
 	  </excludes>
 	</configuration>
       </plugin>
+
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>javacc-maven-plugin</artifactId>
@@ -630,6 +632,7 @@ See $PTII/doc/coding/maven.htm
           </execution>
         </executions>
       </plugin>
+
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>javacc-maven-plugin</artifactId>
@@ -658,6 +661,7 @@ See $PTII/doc/coding/maven.htm
           </execution>
         </executions>
       </plugin>
+
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>javacc-maven-plugin</artifactId>
@@ -683,6 +687,7 @@ See $PTII/doc/coding/maven.htm
           </execution>
         </executions>
       </plugin>
+
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>javacc-maven-plugin</artifactId>
@@ -707,6 +712,7 @@ See $PTII/doc/coding/maven.htm
           </execution>
         </executions>
       </plugin>
+
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>antlr-maven-plugin</artifactId>
@@ -728,6 +734,7 @@ See $PTII/doc/coding/maven.htm
           </execution>
         </executions>
       </plugin>
+
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
@@ -766,8 +773,59 @@ See $PTII/doc/coding/maven.htm
 	    <exclude>ptII-7.2.devel.jar</exclude>
 	  </excludes>
         </configuration>
-
       </plugin>
+
+    <plugin>
+      <groupId>org.codehaus.mojo</groupId>
+      <artifactId>webstart-maven-plugin</artifactId>
+      <executions>
+	<execution>
+	  <goals>
+	    <goal>jnlp</goal> <!-- use jnlp, jnlp-inline or jnlp-single as appropriate -->
+	  </goals>
+	</execution>
+      </executions>
+      <dependencies>
+        <dependency>
+          <groupId>org.ptolemy</groupId>
+          <artifactId>ptII</artifactId>
+          <version>7.2.devel</version>
+	</dependency>
+      </dependencies>
+
+
+      <configuration>
+	<jnlp>
+	  <outputFile>administration.jnlp</outputFile> <!-- defaults to launch.jnlp -->
+	  <mainClass>ptolemy.vergil.VergilApplication</mainClass>
+	</jnlp>
+
+	<!--
+
+          This is the name of the directory within which the processed JNLP artifacts 
+          will be placed. This directory will reside in the root of the WAR file 
+          produced by the enclosing project. The name provided here must match the 
+          servlet-mapping url-pattern provided in the web.xml file. The default value is 'webstart'. 
+          -->
+	<outputDirectory>${project.build.directory}/${project.build.finalName}/webstart</outputDirectory>
+
+	<!-- 
+          This is the directory containing the Velocity templates from which the JNLP files 
+          will be generated. The default location is 'src/main/jnlp'.
+	-->
+	<templateDirectory>${project.basedir}/util/jnlp</templateDirectory>
+	<!-- workDirectory> </workDirectory -->
+	<artifactItems>
+	  <artifactItem>
+	    <groupId>org.ptolemy</groupId>
+	    <artifactId>ptII-7.2.devel.jar</artifactId>
+	    <version>7.2.devel</version>
+	    <type>jar</type>                            
+	  </artifactItem>
+	</artifactItems>
+      </configuration>
+    </plugin>
+
     </plugins>
 
   </build>
