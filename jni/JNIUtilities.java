@@ -576,10 +576,11 @@ public class JNIUtilities {
                                 + "ArrayElements("
                                 + arg.getName()
                                 + ",JNI_FALSE);\n"
-                                + "//if ((long *)in_1 == (long *)0 || (long *)inout_1 == (long *)0)n"
-                                + "//{\n"
-                                + "//std::cout << \"warning : the matrix is empty !\""
-                                + " << std::endl;\n" + "//}\n");
+                                + "    //if ((long *)in_1 == (long *)0 || (long *)inout_1 == (long *)0)n"
+                                + "    //{\n"
+                                + "    //std::cout << \"warning : the matrix is empty !\""
+                                + " << std::endl;\n"
+				+ "    //}\n");
             }
         }
 
@@ -611,7 +612,7 @@ public class JNIUtilities {
 
             if (typ.endsWith("[]")) {
                 typ = typ.substring(0, typ.length() - 2);
-                results.append("env->Release"
+                results.append("    env->Release"
                         + typ.substring(0, 1).toUpperCase()
                         + typ.substring(1, typ.length()) + "ArrayElements("
                         + arg.getName() + ", (" + arg.getC2TypeHack() + ")"
@@ -628,7 +629,7 @@ public class JNIUtilities {
 
             if (typ.endsWith("[]")) {
                 typ = typ.substring(0, typ.length() - 2);
-                results.append("env->Release"
+                results.append("    env->Release"
                         + typ.substring(0, 1).toUpperCase()
                         + typ.substring(1, typ.length()) + "ArrayElements("
                         + arg.getName() + ",(" + arg.getC2TypeHack() + ")"
@@ -664,7 +665,7 @@ public class JNIUtilities {
             if (!returnJNIType.equals("void")) {
                 results.append(_indent2 + "return _" + returnName + ";\n}\n");
             } else {
-                results.append(_indent2 + "return;\n}\n");
+                results.append(_indent2 + "return;\n    }\n");
             }
 
             results
