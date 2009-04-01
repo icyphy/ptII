@@ -248,6 +248,36 @@ Solution: disable test-compile:
 
 </dl>
 
+<h2>Maven and Web Start</h2>
+<ol>
+<li>Install 
+<pre>
+mvn install webstart:jnlp
+</pre>
+<li>
+</ol>
+
+<dl>
+<dt><b>has no matching file, why? Check the logs</b>
+<dd> 
+When running <code>maven webstart:jnlp</code>, I get
+<pre>
+Embedded error: artifact org.ptolemy:ptII:jar:7.2.devel has no matching file, why? Check the logs...
+</pre>
+See "3.5.3. Maven Coordinates" of the maven manual, which describes the naming for artifacts.
+It turns out that the jnlp rule needed to have:
+<pre>
+	&lt;artifactItems&gt;
+	  &lt;artifactItem&gt;
+	    &lt;groupId&gt;org.ptolemy&lt;/groupId&gt;
+	    &lt;artifactId&gt;ptII-7.2.devel.jar&lt;/artifactId&gt;
+	    &lt;version&gt;7.2.devel&lt;/version&gt;
+	    &lt;type&gt;jar&lt;/type&gt;                            
+	  &lt;/artifactItem&gt;
+	&lt;/artifactItems&gt;
+</pre>
+
+</dl>
 <h2>Maven and OSGI</h2>
 <a href="http://felix.apache.org/site/apache-felix-maven-bundle-plugin-bnd.html">Bundle Plugin for Maven</a>
 
