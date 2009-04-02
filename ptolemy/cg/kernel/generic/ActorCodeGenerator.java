@@ -119,6 +119,23 @@ public interface ActorCodeGenerator extends ComponentCodeGenerator {
      */
     public String generatePreinitializeCode() throws IllegalActionException;
 
+    /** Generate variable declarations for inputs and outputs and parameters.
+     *  Append the declarations to the given string buffer.
+     *  @return code The generated code.
+     *  @exception IllegalActionException If the helper class for the model
+     *   director cannot be found.
+     *   FIXME rodiers: this is procedural code specific
+     */
+    public String generateVariableDeclaration() throws IllegalActionException;
+
+    /** Generate variable initialization for the referenced parameters.
+     *  @return code The generated code.
+     *  @exception IllegalActionException If the helper class for the model
+     *   director cannot be found.
+     */
+    public String generateVariableInitialization()
+            throws IllegalActionException;
+    
     /** Get the files needed by the code generated from this helper class.
      *  This base class returns an empty set.
      *  @return A set of strings that are header files needed by the code
@@ -168,22 +185,5 @@ public interface ActorCodeGenerator extends ComponentCodeGenerator {
      * @exception IllegalActionException Not thrown in this base class.
      */
     public Set<String> getSharedCode() throws IllegalActionException;
-
-    /** Generate variable declarations for inputs and outputs and parameters.
-     *  Append the declarations to the given string buffer.
-     *  @return code The generated code.
-     *  @exception IllegalActionException If the helper class for the model
-     *   director cannot be found.
-     *   FIXME rodiers: this is procedural code specific
-     */
-    public String generateVariableDeclaration() throws IllegalActionException;
-
-    /** Generate variable initialization for the referenced parameters.
-     *  @return code The generated code.
-     *  @exception IllegalActionException If the helper class for the model
-     *   director cannot be found.
-     */
-    public String generateVariableInitialization()
-            throws IllegalActionException;
 
 }

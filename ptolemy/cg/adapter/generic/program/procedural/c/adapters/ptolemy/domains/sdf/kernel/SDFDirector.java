@@ -38,8 +38,10 @@ import ptolemy.actor.util.DFUtilities;
 import ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.TypedCompositeActor;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy;
 import ptolemy.cg.kernel.generic.CodeStream;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
+import ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy.Channel;
 import ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator;
 import ptolemy.cg.kernel.generic.program.procedural.c.CCodegenUtilities;
 import ptolemy.cg.lib.CompiledCompositeActor;
@@ -105,7 +107,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 
         ptolemy.actor.CompositeActor container = (ptolemy.actor.CompositeActor) getComponent()
                 .getContainer();
-        CodeGeneratorAdapter containerAdapter = (CodeGeneratorAdapter) _getAdapter(container);
+        CodeGeneratorAdapter containerAdapter = getCodeGenerator().getAdapter(container);
 
         // Generate code for creating external initial production.
         Iterator outputPorts = container.outputPortList().iterator();
@@ -178,7 +180,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 
         CompositeActor container = (CompositeActor) getComponent()
                 .getContainer();
-        TypedCompositeActor compositeActorAdapter = (TypedCompositeActor) _getAdapter(container);
+        TypedCompositeActor compositeActorAdapter = (TypedCompositeActor) getCodeGenerator().getAdapter(container);
 
         if (container instanceof CompiledCompositeActor
                 && ((BooleanToken) getCodeGenerator().generateEmbeddedCode.getToken())
@@ -325,7 +327,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 
         CompositeActor container = (CompositeActor) getComponent()
                 .getContainer();
-        TypedCompositeActor compositeActorAdapter = (TypedCompositeActor) _getAdapter(container);
+        TypedCompositeActor compositeActorAdapter = (TypedCompositeActor) getCodeGenerator().getAdapter(container);
 
         if (container instanceof CompiledCompositeActor
                 && ((BooleanToken) getCodeGenerator().generateEmbeddedCode.getToken())
@@ -616,7 +618,7 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  @see #setCodeGenerator(GenericCodeGenerator)
      */
     public CCodeGenerator getCodeGenerator() {
-        return (CCodeGenerator) _codeGenerator;
+        return (CCodeGenerator) super.getCodeGenerator();
     }
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
@@ -636,7 +638,7 @@ public class SDFDirector extends StaticSchedulingDirector {
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        CodeGeneratorAdapter adapter = (CodeGeneratorAdapter) _getAdapter(port
+        CodeGeneratorAdapter adapter = getCodeGenerator().getAdapter(port
                 .getContainer());
 
         int width;
@@ -648,7 +650,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 
         if (width != 0) {
             // Declare the read offset variable.
-            String channelReadOffset = CodeGeneratorAdapter.generateName(port);
+            String channelReadOffset = CodeGeneratorAdapterStrategy.generateName(port);
             channelReadOffset += "_readOffset";
 
             // Now replace the concrete offset with the variable.
@@ -661,7 +663,7 @@ public class SDFDirector extends StaticSchedulingDirector {
             code.append("static int " + channelReadOffset + ";\n");
 
             // Declare the write offset variable.
-            String channelWriteOffset = CodeGeneratorAdapter.generateName(port);
+            String channelWriteOffset = CodeGeneratorAdapterStrategy.generateName(port);
 
             channelWriteOffset += "_writeOffset";
 
@@ -692,11 +694,8 @@ public class SDFDirector extends StaticSchedulingDirector {
         boolean inline = ((BooleanToken) getCodeGenerator().inline.getToken())
                 .booleanValue();
 
-        boolean padBuffers = ((BooleanToken) getCodeGenerator().padBuffers
-                .getToken()).booleanValue();
-
         StringBuffer tempCode = new StringBuffer();
-        Iterator outputPorts = container.outputPortList().iterator();
+        Iterator<?> outputPorts = container.outputPortList().iterator();
         while (outputPorts.hasNext()) {
 
             IOPort outputPort = (IOPort) outputPorts.next();
@@ -719,11 +718,11 @@ public class SDFDirector extends StaticSchedulingDirector {
                     // read and write offset variables.
                 } else {
                     readTokens = DFUtilities.getRate(outputPort);
-                    Iterator sourcePorts = outputPort
+                    Iterator<?> sourcePorts = outputPort
                             .insideSourcePortList().iterator();
                     label1: while (sourcePorts.hasNext()) {
                         IOPort sourcePort = (IOPort) sourcePorts.next();
-//                            CodeGeneratorAdapter adapter = (CodeGeneratorAdapter) _getAdapter(sourcePort
+//                            CodeGeneratorAdapter adapter = getCodeGenerator().getAdapter(sourcePort
 //                                    .getContainer());
                         int width;
                         if (sourcePort.isInput()) {
@@ -732,7 +731,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                             width = sourcePort.getWidth();
                         }
                         for (int j = 0; j < width; j++) {
-                            Iterator channels = CodeGeneratorAdapter.getSinkChannels(
+                            Iterator<?> channels = CodeGeneratorAdapterStrategy.getSinkChannels(
                                     sourcePort, j).iterator();
                             while (channels.hasNext()) {
                                 Channel channel = (Channel) channels.next();
@@ -758,11 +757,11 @@ public class SDFDirector extends StaticSchedulingDirector {
             code.append(tempCode);
         }
 
-        Iterator actors = container.deepEntityList().iterator();
+        Iterator<?> actors = container.deepEntityList().iterator();
         while (actors.hasNext()) {
             StringBuffer tempCode2 = new StringBuffer();
             Actor actor = (Actor) actors.next();
-            Iterator inputPorts = actor.inputPortList().iterator();
+            Iterator<?> inputPorts = actor.inputPortList().iterator();
             while (inputPorts.hasNext()) {
                 IOPort inputPort = (IOPort) inputPorts.next();
 
@@ -793,11 +792,11 @@ public class SDFDirector extends StaticSchedulingDirector {
                         // variables.
                     } else {
                         readTokens = DFUtilities.getRate(inputPort);
-                        Iterator sourcePorts = inputPort.sourcePortList()
+                        Iterator<?> sourcePorts = inputPort.sourcePortList()
                                 .iterator();
                         label2: while (sourcePorts.hasNext()) {
                             IOPort sourcePort = (IOPort) sourcePorts.next();
-//                                CodeGeneratorAdapter adapter = (CodeGeneratorAdapter) _getAdapter(sourcePort
+//                                CodeGeneratorAdapter adapter = getCodeGenerator().getAdapter(sourcePort
 //                                        .getContainer());
                             int width;
                             if (sourcePort.isInput()) {
@@ -806,7 +805,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                                 width = sourcePort.getWidth();
                             }
                             for (int j = 0; j < width; j++) {
-                                Iterator channels = CodeGeneratorAdapter.getSinkChannels(
+                                Iterator<?> channels = CodeGeneratorAdapterStrategy.getSinkChannels(
                                         sourcePort, j).iterator();
                                 while (channels.hasNext()) {
                                     Channel channel = (Channel) channels
@@ -858,7 +857,7 @@ public class SDFDirector extends StaticSchedulingDirector {
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        CodeGeneratorAdapter adapter = (CodeGeneratorAdapter) _getAdapter(port
+        CodeGeneratorAdapter adapter = getCodeGenerator().getAdapter(port
                 .getContainer());
         boolean padBuffers = ((BooleanToken) getCodeGenerator().padBuffers
                 .getToken()).booleanValue();
@@ -887,7 +886,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                 // Declare the read offset variable.
                 StringBuffer channelReadOffset = new StringBuffer();
                 channelReadOffset
-                        .append(CodeGeneratorAdapter.generateName(port));
+                        .append(CodeGeneratorAdapterStrategy.generateName(port));
                 if (width > 1) {
                     channelReadOffset.append("_" + channelNumber);
                 }
@@ -905,7 +904,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 
                 // Declare the write offset variable.
                 StringBuffer channelWriteOffset = new StringBuffer();
-                channelWriteOffset.append(CodeGeneratorAdapter
+                channelWriteOffset.append(CodeGeneratorAdapterStrategy
                         .generateName(port));
                 if (width > 1) {
                     channelWriteOffset.append("_" + channelNumber);
@@ -932,13 +931,13 @@ public class SDFDirector extends StaticSchedulingDirector {
 
         ptolemy.domains.sdf.kernel.SDFDirector director = (ptolemy.domains.sdf.kernel.SDFDirector) getComponent();
         CompositeActor container = (CompositeActor) director.getContainer();
-        TypedCompositeActor containerAdapter = (TypedCompositeActor) _getAdapter(container);
+        TypedCompositeActor containerAdapter = (TypedCompositeActor) getCodeGenerator().getAdapter(container);
 
-        Iterator actors = container.deepEntityList().iterator();
+        Iterator<?> actors = container.deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorAdapter actorAdapter = (CodeGeneratorAdapter) _getAdapter((NamedObj) actor);
-            Iterator inputPorts = actor.inputPortList().iterator();
+            CodeGeneratorAdapter actorAdapter = getCodeGenerator().getAdapter((NamedObj) actor);
+            Iterator<?> inputPorts = actor.inputPortList().iterator();
             while (inputPorts.hasNext()) {
                 IOPort inputPort = (IOPort) inputPorts.next();
                 for (int k = 0; k < inputPort.getWidth(); k++) {
@@ -951,7 +950,7 @@ public class SDFDirector extends StaticSchedulingDirector {
             }
         }
 
-        Iterator outputPorts = container.outputPortList().iterator();
+        Iterator<?> outputPorts = container.outputPortList().iterator();
         while (outputPorts.hasNext()) {
             IOPort outputPort = (IOPort) outputPorts.next();
             for (int k = 0; k < outputPort.getWidthInside(); k++) {
@@ -977,7 +976,7 @@ public class SDFDirector extends StaticSchedulingDirector {
      */
     private int _padBuffer(IOPort port, int channelNumber)
             throws IllegalActionException {
-        CodeGeneratorAdapter adapter = (CodeGeneratorAdapter) _getAdapter(port
+        CodeGeneratorAdapter adapter = getCodeGenerator().getAdapter(port
                 .getContainer());
 
         int bufferSize = adapter.getBufferSize(port, channelNumber);

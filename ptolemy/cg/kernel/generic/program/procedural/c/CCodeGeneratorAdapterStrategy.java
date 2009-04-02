@@ -38,7 +38,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.DFUtilities;
-import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy;
 import ptolemy.cg.kernel.generic.ParseTreeCodeGenerator;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
@@ -73,7 +73,7 @@ import ptolemy.util.StringUtilities;
  code block to the output.
 
  <p>For a complete list of methods to define, see
- {@link ptolemy.codegen.kernel.CodeGeneratorAdapter}.
+ {@link ptolemy.codegen.kernel.CodeGeneratorAdapterStrategy}.
 
  <p>For further details, see <code>$PTII/ptolemy/codegen/README.html</code>
 
@@ -83,13 +83,11 @@ import ptolemy.util.StringUtilities;
  o @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class CCodeGeneratorAdapter extends CodeGeneratorAdapter {
+public class CCodeGeneratorAdapterStrategy extends CodeGeneratorAdapterStrategy {
     /**
      * Create a new instance of the C code generator adapter.
-     * @param component The actor object for this adapter.
      */
-    public CCodeGeneratorAdapter(NamedObj component) {
-        super(component);
+    public CCodeGeneratorAdapterStrategy() {
         _parseTreeCodeGenerator = getParseTreeCodeGenerator();
     }
 
@@ -116,7 +114,7 @@ public class CCodeGeneratorAdapter extends CodeGeneratorAdapter {
     public String generateVariableDeclaration() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-	String name = CodeGeneratorAdapter.generateName(getComponent());
+	String name = CodeGeneratorAdapterStrategy.generateName(getComponent());
         // Generate variable declarations for referenced parameters.
         String referencedParameterDeclaration = _generateReferencedParameterDeclaration();
         if (referencedParameterDeclaration.length() > 1) {
@@ -475,7 +473,7 @@ public class CCodeGeneratorAdapter extends CodeGeneratorAdapter {
         // to find the associated adapter.
         String sourcePortChannel = source.port.getName() + "#"
         + source.channelNumber + ", " + offset;
-        String sourceRef = ((CodeGeneratorAdapter) _getAdapter(source.port
+        String sourceRef = ((CodeGeneratorAdapterStrategy) _getAdapter(source.port
                 .getContainer())).getReference(sourcePortChannel);
 
         String sinkPortChannel = sink.port.getName() + "#" + sink.channelNumber
@@ -488,7 +486,7 @@ public class CCodeGeneratorAdapter extends CodeGeneratorAdapter {
                 && sink.port.isOutput()) {
             sinkPortChannel = "@" + sinkPortChannel;
         }
-        String sinkRef = ((CodeGeneratorAdapter) _getAdapter(sink.port
+        String sinkRef = ((CodeGeneratorAdapterStrategy) _getAdapter(sink.port
                 .getContainer())).getReference(sinkPortChannel, true);
 
         // When the sink port is contained by a modal controller, it is

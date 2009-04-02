@@ -29,7 +29,7 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.cg.l
 
 import java.util.Set;
 
-import ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -76,7 +76,7 @@ public class EmbeddedCodeActor extends CompiledCompositeActor {
 
     /** A placeholder or dummy actor used in Embedded Java code generation.
      */
-    public static class EmbeddedActor extends JavaCodeGeneratorAdapter {
+    public static class EmbeddedActor extends CodeGeneratorAdapter {
 
         /** Create a EmbeddedActor.
          *  @param actor The associated actor.
@@ -94,8 +94,8 @@ public class EmbeddedCodeActor extends CompiledCompositeActor {
         public Set<String> getSharedCode() throws IllegalActionException {
             // FIXME: One can do optimization here so that reset
             // happens only when the embedded Java code is modified.
-            _codeStream.reset();
-            _codeStream
+            getStrategy().getCodeStream().reset();
+            getStrategy().getCodeStream()
                     .setCodeBlocks(((ptolemy.cg.lib.EmbeddedCodeActor) getComponent()
                             .getContainer()).embeddedCode.getExpression());
             return super.getSharedCode();

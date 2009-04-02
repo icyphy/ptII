@@ -99,7 +99,7 @@ public class HTMLCodeGenerator extends ProgramCodeGenerator {
         code.append("</head>" + _eol);        
 
         code.append("<body>" + _eol);        
-        code.append(_getAdapter(toplevel()).generateFireCode());
+        code.append(getAdapter(toplevel()).generateFireCode());
         code.append("</body>" + _eol);        
 
         code.append("</html>" + _eol);

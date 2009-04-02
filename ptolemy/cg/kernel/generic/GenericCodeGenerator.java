@@ -63,6 +63,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -467,7 +468,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
      */
     public String generateFireFunctionCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        ActorCodeGenerator adapter = _getAdapter(getContainer());
+        ActorCodeGenerator adapter = getAdapter(getContainer());
         code.append(adapter.generateFireFunctionCode());
         return code.toString();
     }   
@@ -485,7 +486,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
         StringBuffer code = new StringBuffer();
         //code.append(comment("Initialize " + getContainer().getFullName()));
 
-        ActorCodeGenerator adapter = _getAdapter(getContainer());
+        ActorCodeGenerator adapter = getAdapter(getContainer());
         code.append(adapter.generateInitializeCode());
         return code.toString();
     }
@@ -557,7 +558,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
      */
     public String generatePostfireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        ActorCodeGenerator adapter = _getAdapter(getContainer());
+        ActorCodeGenerator adapter = getAdapter(getContainer());
         code.append(adapter.generatePostfireCode());
         return code.toString();
     }
@@ -606,7 +607,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
      *   director cannot be found.
      */
     public String generateVariableDeclaration() throws IllegalActionException {
-        ActorCodeGenerator adapter = _getAdapter(getContainer());
+        ActorCodeGenerator adapter = getAdapter(getContainer());
         return adapter.generateVariableDeclaration();
     }
 
@@ -622,7 +623,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
         //code.append(comment(1, "Variable initialization "
         //       + getContainer().getFullName()));
 
-        ActorCodeGenerator adapter = _getAdapter(getContainer());
+        ActorCodeGenerator adapter = getAdapter(getContainer());
 
         code.append(adapter.generateVariableInitialization());
         return code.toString();
@@ -635,7 +636,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
      *  @return The generated variable name.
      */
     public String generateVariableName(NamedObj attribute) {
-        return CodeGeneratorAdapter.generateName(attribute) + "_";
+        return CodeGeneratorAdapterStrategy.generateName(attribute) + "_";
     }
 
     /** Generate into the specified code stream the code associated with
@@ -650,7 +651,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
         StringBuffer code = new StringBuffer();
         //code.append(comment(1, "Wrapup " + getContainer().getFullName()));
 
-        ActorCodeGenerator adapter = _getAdapter(getContainer());
+        ActorCodeGenerator adapter = getAdapter(getContainer());
         code.append(adapter.generateWrapupCode());
         return code.toString();
     }
@@ -679,11 +680,20 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
         return "";
     }
     
+    /** Get the code generator adapter associated with the given component.
+     *  @param component The given component.
+     *  @return The code generator adapter.
+     *  @exception IllegalActionException If the adapter class cannot be found.
+     */
+    final public  CodeGeneratorAdapter getAdapter(NamedObj component) throws IllegalActionException {
+        return (CodeGeneratorAdapter) _getAdapter((Object) component);
+    }
+    
     /** Return the name of the code file that was written, if any.
      *  If no file was written, then return null.
      *  @return The name of the file that was written.
      */
-    public String getCodeFileName() {
+    final public String getCodeFileName() {
         return _codeFileName;
     }
     
@@ -701,7 +711,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
      *  @return executeCommands The subprocess command executor.
      *  @see #setExecuteCommands(ExecuteCommands)
      */
-    public ExecuteCommands getExecuteCommands() {
+    final public ExecuteCommands getExecuteCommands() {
         return _executeCommands;
     }
 
@@ -709,7 +719,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
      *  @return The set of modified variables.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    public Set getModifiedVariables() throws IllegalActionException {
+    final public Set getModifiedVariables() throws IllegalActionException {
         return _modifiedVariables;
     }    
 
@@ -718,7 +728,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
      * (for example c in case of C and j in case of Java)
      * @return The extention of the template files..
      */
-    public String getTemplateExtension() {
+    final public String getTemplateExtension() {
         return _templateExtension;
     }
     
@@ -727,7 +737,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
      * @param cgType The given codegen type.
      * @return true if the given type is primitive, otherwise false.
      */
-    public boolean isPrimitive(String cgType) {
+    final public boolean isPrimitive(String cgType) {
         return _primitiveTypes.contains(cgType);
     }
 
@@ -736,7 +746,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
      * @param ptType The given ptolemy type.
      * @return true if the given type is primitive, otherwise false.
      */
-    public boolean isPrimitive(Type ptType) {
+    final public boolean isPrimitive(Type ptType) {
     // This method cannot be static as it calls
     // codeGenType(), which is not static
         return _primitiveTypes.contains(codeGenType(ptType));
@@ -889,7 +899,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
      *   top composite actor is unavailable.
      */
     protected void _analyzeTypeConversions() throws IllegalActionException {
-        ((CodeGeneratorAdapter) _getAdapter(getContainer())).analyzeTypeConvert();
+        ((CodeGeneratorAdapter) getAdapter(getContainer())).analyzeTypeConvert();
     }
 
     /** Return the value of the codeDirectory parameter.
@@ -968,7 +978,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
         if (director == null) {
             throw new IllegalActionException(model, "Does not have a director.");
         }
-        Director directorAdapter = (Director) _getAdapter(director);
+        Director directorAdapter = (Director) getAdapter(director);
 
         if (_isTopLevel()) {
             /*
@@ -987,7 +997,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
 
         } else {
             // Generate embedded code.
-            CodeGeneratorAdapter compositeAdapter = (CodeGeneratorAdapter) _getAdapter(model);
+            CodeGeneratorAdapter compositeAdapter = (CodeGeneratorAdapter) getAdapter(model);
             return compositeAdapter.generateFireCode();
         }
     }
@@ -1012,7 +1022,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
      */
     protected String _generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        ActorCodeGenerator adapter = _getAdapter(getContainer());
+        ActorCodeGenerator adapter = getAdapter(getContainer());
 
         try {
             // Determine which variables in the model can change
@@ -1044,7 +1054,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
     protected String _generateSharedCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        ActorCodeGenerator adapter = _getAdapter(getContainer());
+        ActorCodeGenerator adapter = getAdapter(getContainer());
         Set<String> sharedCodeBlocks = adapter.getSharedCode();
         Iterator<String> blocks = sharedCodeBlocks.iterator();
         while (blocks.hasNext()) {
@@ -1063,23 +1073,13 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
         return code.toString();
     }
 
-    /** Get the code generator adapter associated with the given component.
-     *  @param component The given component.
-     *  @return The code generator adapter.
-     *  @exception IllegalActionException If the adapter class cannot be found.
-     */
-    protected ActorCodeGenerator _getAdapter(NamedObj component)
-    throws IllegalActionException {
-        return (ActorCodeGenerator) _getAdapter((Object) component);
-    }
-
     /** 
      * Get the code generator adapter associated with the given object.
      * @param object The given object.
      * @return The code generator adapter.
      * @throws IllegalActionException If the adapter class cannot be found.
      */
-    protected Object _getAdapter(Object object) throws IllegalActionException {
+    final protected Object _getAdapter(Object object) throws IllegalActionException {
 
         if (_adapterStore.containsKey(object)) {
             return _adapterStore.get(object);
@@ -1139,7 +1139,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
                 componentClass = componentClass.getSuperclass();
             }
         }
-
+        
         _adapterStore.put(object, adapterObject);
         return adapterObject;
     }
@@ -1161,6 +1161,10 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
         return getContainer().getContainer() == null;
     }
 
+    protected Class<? extends CodeGeneratorAdapterStrategy> _strategyClass() {
+        return CodeGeneratorAdapterStrategy.class;
+        
+    }
     /** Write the code to a directory named by the codeDirectory
      *  parameter, with a file name that is a sanitized version of the
      *  model name, and an extension that is the last package of
@@ -1265,7 +1269,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
 
         _reset();
 
-        _sanitizedModelName = CodeGeneratorAdapter.generateName(_model);
+        _sanitizedModelName = CodeGeneratorAdapterStrategy.generateName(_model);
 
         // Each time a .dll file is generated, we must use a different name
         // for it so that it can be loaded without restarting vergil.
@@ -1509,6 +1513,14 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
 
         ActorCodeGenerator castAdapterObject = (ActorCodeGenerator) adapterObject;
 
+        try {
+            ((CodeGeneratorAdapter) castAdapterObject)._setStrategy(_strategyClass().newInstance());
+        } catch (InstantiationException e) {
+            throw new InternalErrorException(e);
+        } catch (IllegalAccessException e) {
+            throw new InternalErrorException(e);
+        }
+        
         castAdapterObject.setCodeGenerator(this);
 
         return castAdapterObject;
@@ -1577,7 +1589,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
         String[] results = null;
         try {
             results = splitLongBody(_LINES_PER_METHOD, prefix
-                    + CodeGeneratorAdapter.generateName(getContainer()), code);
+                    + CodeGeneratorAdapterStrategy.generateName(getContainer()), code);
         } catch (IOException ex) {
             // Ignore
             System.out.println("Warning: Failed to split code: " + ex);

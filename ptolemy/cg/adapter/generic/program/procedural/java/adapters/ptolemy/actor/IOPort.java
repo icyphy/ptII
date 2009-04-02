@@ -35,8 +35,9 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.Receiver;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy;
 import ptolemy.cg.kernel.generic.PortCodeGenerator;
-import ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy.Channel;
 import ptolemy.cg.lib.EmbeddedCodeActor;
 import ptolemy.data.BooleanToken;
 import ptolemy.kernel.util.IllegalActionException;
@@ -54,7 +55,7 @@ Code generator adapter for {@link ptolemy.actor.IOPort}.
 @Pt.AcceptedRating Red (mankit)
  */
 
-public class IOPort extends JavaCodeGeneratorAdapter implements PortCodeGenerator {
+public class IOPort extends CodeGeneratorAdapter implements PortCodeGenerator {
 
     /** Construct the code generator adapter associated
      *  with the given IOPort.
@@ -87,8 +88,7 @@ public class IOPort extends JavaCodeGeneratorAdapter implements PortCodeGenerato
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        CodeGeneratorAdapter adapter = (CodeGeneratorAdapter) 
-        _getAdapter(getComponent().getContainer());
+        CodeGeneratorAdapter adapter = getCodeGenerator().getAdapter(getComponent().getContainer());
 
         return adapter.processCode(code.toString());
     }
@@ -175,7 +175,7 @@ public class IOPort extends JavaCodeGeneratorAdapter implements PortCodeGenerato
 
         ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
         CodeGeneratorAdapter actorAdapter = 
-            (CodeGeneratorAdapter) _getAdapter(port.getContainer());
+            getCodeGenerator().getAdapter(port.getContainer());
 
         StringBuffer code = new StringBuffer();
 
@@ -201,13 +201,13 @@ public class IOPort extends JavaCodeGeneratorAdapter implements PortCodeGenerato
 
     // Update the write offset of the [multiple] connected ports.
     public String updateConnectedPortsOffset(int rate, Director director) throws IllegalActionException {
-        boolean padBuffers = ((BooleanToken) _codeGenerator.padBuffers
+        boolean padBuffers = ((BooleanToken) getCodeGenerator().padBuffers
                 .getToken()).booleanValue();
 
         ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
         StringBuffer code = new StringBuffer();
         code.append(getCodeGenerator().comment(_eol + "....Begin updateConnectedPortsOffset...."
-					       + CodeGeneratorAdapter.generateName(port)));
+					       + CodeGeneratorAdapterStrategy.generateName(port)));
 
         if (rate == 0) {
             return "";
@@ -216,7 +216,7 @@ public class IOPort extends JavaCodeGeneratorAdapter implements PortCodeGenerato
                     + " is negative.");
         }
 
-        CodeGeneratorAdapter adapter = (CodeGeneratorAdapter) _getAdapter(port
+        CodeGeneratorAdapter adapter = getCodeGenerator().getAdapter(port
                 .getContainer());
 
         int length = 0;
@@ -227,7 +227,7 @@ public class IOPort extends JavaCodeGeneratorAdapter implements PortCodeGenerato
         }
 
         for (int j = 0; j < length; j++) {
-            List<Channel> sinkChannels = CodeGeneratorAdapter.getSinkChannels(port, j);
+            List<Channel> sinkChannels = CodeGeneratorAdapterStrategy.getSinkChannels(port, j);
 
             for (int k = 0; k < sinkChannels.size(); k++) {
                 Channel channel = (Channel) sinkChannels.get(k);
@@ -284,7 +284,7 @@ public class IOPort extends JavaCodeGeneratorAdapter implements PortCodeGenerato
             }
         }
         code.append(getCodeGenerator().comment(_eol + "....End updateConnectedPortsOffset...."
-					       + CodeGeneratorAdapter.generateName(port)));
+					       + CodeGeneratorAdapterStrategy.generateName(port)));
         return code.toString();
     }
 
@@ -298,7 +298,7 @@ public class IOPort extends JavaCodeGeneratorAdapter implements PortCodeGenerato
         Receiver receiver = _getReceiver(null, 0, port);
 
         String code = getCodeGenerator().comment(_eol + "....Begin updateOffset...." 
-						 + CodeGeneratorAdapter.generateName(port));
+						 + CodeGeneratorAdapterStrategy.generateName(port));
 
         //        int width = 0;
         //        if (port.isInput()) {
@@ -326,13 +326,13 @@ public class IOPort extends JavaCodeGeneratorAdapter implements PortCodeGenerato
                             channel.channelNumber, directorAdapter, false);
                 }
                 code += getCodeGenerator().comment(_eol + "....End updateOffset (PN)...."
-						   + CodeGeneratorAdapter.generateName(port));
+						   + CodeGeneratorAdapterStrategy.generateName(port));
             */
              // End FIXME rodiers
             } else {
                 code += _updateOffset(i, rate);
                 code += getCodeGenerator().comment(_eol + "\n....End updateOffset...."
-						   + CodeGeneratorAdapter.generateName(port));
+						   + CodeGeneratorAdapterStrategy.generateName(port));
             }
         }
         return code;
@@ -436,9 +436,9 @@ public class IOPort extends JavaCodeGeneratorAdapter implements PortCodeGenerato
     protected String _generateOffset(String offsetString, int channel, boolean isWrite) 
     throws IllegalActionException {
 
-        boolean dynamicReferencesAllowed = ((BooleanToken) _codeGenerator.allowDynamicMultiportReference
+        boolean dynamicReferencesAllowed = ((BooleanToken) getCodeGenerator().allowDynamicMultiportReference
                 .getToken()).booleanValue();
-        boolean padBuffers = ((BooleanToken) _codeGenerator.padBuffers
+        boolean padBuffers = ((BooleanToken) getCodeGenerator().padBuffers
                 .getToken()).booleanValue();
 
         ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
@@ -547,7 +547,7 @@ public class IOPort extends JavaCodeGeneratorAdapter implements PortCodeGenerato
 
     private ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director _getDirectorAdapter() throws IllegalActionException {
         Director director = getDirector();
-        return (ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director) _getAdapter(director);
+        return (ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director) getCodeGenerator().getAdapter(director);
     }
 
 
@@ -626,12 +626,12 @@ public class IOPort extends JavaCodeGeneratorAdapter implements PortCodeGenerato
      */
     protected String _updateOffset(int channel, int rate) throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        boolean padBuffers = ((BooleanToken) _codeGenerator.padBuffers
+        boolean padBuffers = ((BooleanToken) getCodeGenerator().padBuffers
                 .getToken()).booleanValue();
 
         ptolemy.actor.IOPort port = 
             (ptolemy.actor.IOPort) getComponent();
-        CodeGeneratorAdapter adapter = (CodeGeneratorAdapter) _getAdapter(port
+        CodeGeneratorAdapter adapter = getCodeGenerator().getAdapter(port
                 .getContainer());
 
         // Update the offset for each channel.            

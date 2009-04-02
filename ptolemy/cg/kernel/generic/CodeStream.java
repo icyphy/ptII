@@ -101,9 +101,9 @@ public class CodeStream {
      * @param adapter The actor adapter associated with this code stream,
      * which is currently ignored.
      */
-    public CodeStream(CodeGeneratorAdapter adapter) {
+    public CodeStream(CodeGeneratorAdapterStrategy adapter) {
         _adapter = adapter;
-        this._codeGenerator = _adapter._codeGenerator;
+        this._codeGenerator = _adapter.getCodeGenerator();
     }
 
     /**
@@ -115,7 +115,7 @@ public class CodeStream {
      * @param adapter The actor adapter associated with this code stream,
      * which is currently ignored.
      */
-    public CodeStream(List<String> templateArguments, CodeGeneratorAdapter adapter) {
+    public CodeStream(List<String> templateArguments, CodeGeneratorAdapterStrategy adapter) {
         this(adapter);
         _templateArguments = templateArguments;
     }
@@ -281,7 +281,7 @@ public class CodeStream {
             // That means this is a request by the user. This check prevents
             // user from appending duplicate code blocks that are already
             // appended by the code generator by default.
-            String[] blocks = CodeGeneratorAdapter.getDefaultBlocks();
+            String[] blocks = CodeGeneratorAdapterStrategy.getDefaultBlocks();
 
             for (int i = 0; i < blocks.length; i++) {
 
@@ -838,7 +838,7 @@ public class CodeStream {
                         getClass().getClassLoader()).getPath();
 
                 if (_codeGenerator == null && _adapter != null) {
-                    _codeGenerator = _adapter._codeGenerator;
+                    _codeGenerator = _adapter.getCodeGenerator();
                 }
 
                 // Read the entire content of the code block file.
@@ -1147,9 +1147,9 @@ public class CodeStream {
         }
 
         // Keep parsing for extra parameters.
-        for (int commaIndex = CodeGeneratorAdapter._indexOf(",", codeInFile.toString(), startIndex); 
+        for (int commaIndex = CodeGeneratorAdapterStrategy._indexOf(",", codeInFile.toString(), startIndex); 
         commaIndex != -1 && commaIndex <= endIndex; 
-        commaIndex = CodeGeneratorAdapter._indexOf(",", codeInFile.toString(), commaIndex + 1)) {
+        commaIndex = CodeGeneratorAdapterStrategy._indexOf(",", codeInFile.toString(), commaIndex + 1)) {
 
             String newParameter = codeInFile.substring(
                     startIndex, commaIndex);
@@ -1427,7 +1427,7 @@ public class CodeStream {
 
                     int dotIndex = codeBlock.indexOf(".", macroIndex);
                     int openIndex = codeBlock.indexOf("(", macroIndex);
-                    int closeParen = CodeGeneratorAdapter._findClosedParen(codeBlock.toString(), openIndex);
+                    int closeParen = CodeGeneratorAdapterStrategy._findClosedParen(codeBlock.toString(), openIndex);
 
                     boolean isImplicit = dotIndex < 0 || dotIndex > openIndex;
 
@@ -1684,7 +1684,7 @@ public class CodeStream {
     /**
      * The adapter associated with this code stream.
      */
-    private CodeGeneratorAdapter _adapter = null;
+    private CodeGeneratorAdapterStrategy _adapter = null;
 
     /** Original value of _filePath, used for error messages. */
     private String _originalFilePath = null;

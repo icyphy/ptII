@@ -78,7 +78,7 @@ ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director {
      */
     public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(_codeGenerator.comment("The firing of the director."));
+        code.append(getCodeGenerator().comment("The firing of the director."));
 
         Iterator<?> actors = ((CompositeActor) _director.getContainer())
         .deepEntityList().iterator();
@@ -88,7 +88,7 @@ ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director {
         while (actors.hasNext()) {
             code.append("<li>");        
             Actor actor = (Actor) actors.next();
-            CodeGeneratorAdapter adapter = (CodeGeneratorAdapter) _getAdapter((NamedObj) actor);
+            CodeGeneratorAdapter adapter = getCodeGenerator().getAdapter((NamedObj) actor);
             code.append(adapter.generateFireCode());
             code.append("</li>");        
         }

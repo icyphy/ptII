@@ -38,10 +38,11 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
-import ptolemy.cg.kernel.generic.program.procedural.c.CCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.CodeStream;
+import ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGenerator;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -57,7 +58,7 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Red (zgang)
  */
-public class TypedCompositeActor extends CCodeGeneratorAdapter {
+public class TypedCompositeActor extends ptolemy.cg.adapter.generic.adapters.ptolemy.actor.TypedCompositeActor {
     /** Construct the code generator adapter associated
      *  with the given TypedCompositeActor.
      *  @param component The associated component.
@@ -75,13 +76,13 @@ public class TypedCompositeActor extends CCodeGeneratorAdapter {
      */
     public void analyzeTypeConvert() throws IllegalActionException {
         super.analyzeTypeConvert();
-        Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
+        Iterator<?> actors = ((ptolemy.actor.CompositeActor) getComponent())
                 .deepEntityList().iterator();
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             try {
-                CodeGeneratorAdapter adapterObject = (CodeGeneratorAdapter) _getAdapter((NamedObj) actor);
+                CodeGeneratorAdapter adapterObject = getCodeGenerator().getAdapter((NamedObj) actor);
                 adapterObject.analyzeTypeConvert();
             } catch (Throwable throwable) {
                 throw new IllegalActionException(actor, throwable,
@@ -98,7 +99,7 @@ public class TypedCompositeActor extends CCodeGeneratorAdapter {
      *   or the director adapter throws it.
      */
     public String createOffsetVariablesIfNeeded() throws IllegalActionException {
-        Director directorAdapter = (Director) _getAdapter(((ptolemy.actor.CompositeActor) getComponent())
+        Director directorAdapter = (Director) getCodeGenerator().getAdapter(((ptolemy.actor.CompositeActor) getComponent())
                 .getDirector());
         return directorAdapter.createOffsetVariablesIfNeeded();
     }
@@ -123,10 +124,10 @@ public class TypedCompositeActor extends CCodeGeneratorAdapter {
         StringBuffer code = new StringBuffer();
         code.append(super._generateFireCode());
 
-        Director directorAdapter = (Director) _getAdapter(((ptolemy.actor.CompositeActor) getComponent())
+        Director directorAdapter = (Director) getCodeGenerator().getAdapter(((ptolemy.actor.CompositeActor) getComponent())
                 .getDirector());
 
-        Iterator inputPorts = ((ptolemy.actor.CompositeActor) getComponent())
+        Iterator<?> inputPorts = ((ptolemy.actor.CompositeActor) getComponent())
                 .inputPortList().iterator();
 
         // Update port parameters.
@@ -167,7 +168,7 @@ public class TypedCompositeActor extends CCodeGeneratorAdapter {
         code.append(directorAdapter.generateFireCode());
 
         // Transfer the data to the outside.
-        Iterator outputPorts = ((ptolemy.actor.CompositeActor) getComponent())
+        Iterator<?> outputPorts = ((ptolemy.actor.CompositeActor) getComponent())
                 .outputPortList().iterator();
 
         while (outputPorts.hasNext()) {
@@ -178,146 +179,6 @@ public class TypedCompositeActor extends CCodeGeneratorAdapter {
         return processCode(code.toString());
     }
 
-//    private void generateTransferOutputsCode(IOPort outputPort, StringBuffer code) {
-//        // TODO Auto-generated method stub
-//        
-//    }
-
-//    private void generateTransferInputsCode(IOPort inputPort, StringBuffer code) throws IllegalActionException {
-//        int rate = DFUtilities.getTokenConsumptionRate(inputPort);
-//        boolean targetCpp = ((BooleanToken) getCodeGenerator().generateCpp
-//                .getToken()).booleanValue();
-//
-//        CompositeActor actor = (CompositeActor) getComponent();
-//        if (actor instanceof CompiledCompositeActor
-//                && ((BooleanToken) getCodeGenerator().generateJNI.getToken())
-//                        .booleanValue()) {
-//
-//            // FindBugs wants this instanceof check.
-//            if (!(inputPort instanceof TypedIOPort)) {
-//                throw new InternalErrorException(inputPort, null,
-//                        " is not an instance of TypedIOPort.");
-//            }
-//            Type type = ((TypedIOPort) inputPort).getType();
-//            String portName = inputPort.getName();
-//
-//            for (int i = 0; i < inputPort.getWidth(); i++) {
-//                if (i < inputPort.getWidthInside()) {
-//
-//                    String tokensFromOneChannel = "tokensFromOneChannelOf"
-//                            + portName + i;
-//                    String pointerToTokensFromOneChannel = "pointerTo"
-//                            + tokensFromOneChannel;
-//
-//                    code.append("jobject "
-//                            + tokensFromOneChannel
-//                            + " = "
-//                            + CCodegenUtilities.jniGetObjectArrayElement(
-//                                    portName, String.valueOf(i), targetCpp)
-//                            + ";" + _eol);
-//
-//                    if (type == BaseType.INT) {
-//                        code.append("jint * "
-//                                + pointerToTokensFromOneChannel
-//                                + " = "
-//                                + CCodegenUtilities.jniGetArrayElements("Int",
-//                                        tokensFromOneChannel, targetCpp) + ";"
-//                                + _eol);
-//                    } else if (type == BaseType.DOUBLE) {
-//                        code.append("jdouble * "
-//                                + pointerToTokensFromOneChannel
-//                                + " = "
-//                                + CCodegenUtilities.jniGetArrayElements(
-//                                        "Double", tokensFromOneChannel,
-//                                        targetCpp) + ";" + _eol);
-//                    } else if (type == PointerToken.POINTER) {
-//                        code.append("jint * "
-//                                + pointerToTokensFromOneChannel
-//                                + " = "
-//                                + CCodegenUtilities.jniGetArrayElements("Int",
-//                                        tokensFromOneChannel, targetCpp) + ";"
-//                                + _eol);
-//                    } else if (type == BaseType.BOOLEAN) {
-//                        code.append("jboolean * "
-//                                + pointerToTokensFromOneChannel
-//                                + " = "
-//                                + CCodegenUtilities.jniGetArrayElements(
-//                                        "Boolean", tokensFromOneChannel,
-//                                        targetCpp) + ";" + _eol);
-//                    } else {
-//                        // FIXME: need to deal with other types
-//                    }
-//                    String portNameWithChannelNumber = portName;
-//                    if (inputPort.isMultiport()) {
-//                        portNameWithChannelNumber = portName + '#' + i;
-//                    }
-//                    for (int k = 0; k < rate; k++) {
-//
-//                        code.append(getReference("@"
-//                                + portNameWithChannelNumber + "," + k));
-//                        if (type == PointerToken.POINTER) {
-//                            code.append(" = (void *) "
-//                                    + pointerToTokensFromOneChannel + "[" + k
-//                                    + "];" + _eol);
-//                        } else {
-//                            code.append(" = " + pointerToTokensFromOneChannel
-//                                    + "[" + k + "];" + _eol);
-//                        }
-//                    }
-//
-//                    if (type == BaseType.INT) {
-//                        code.append(CCodegenUtilities.jniReleaseArrayElements(
-//                                "Int", tokensFromOneChannel,
-//                                pointerToTokensFromOneChannel, targetCpp)
-//                                + ";" + _eol);
-//                    } else if (type == BaseType.DOUBLE) {
-//                        code.append(CCodegenUtilities.jniReleaseArrayElements(
-//                                "Double", tokensFromOneChannel,
-//                                pointerToTokensFromOneChannel, targetCpp)
-//                                + ";" + _eol);
-//                    } else if (type == PointerToken.POINTER) {
-//                        code.append(CCodegenUtilities.jniReleaseArrayElements(
-//                                "Int", tokensFromOneChannel,
-//                                pointerToTokensFromOneChannel, targetCpp)
-//                                + ";" + _eol);
-//                    } else if (type == BaseType.BOOLEAN) {
-//                        code.append(CCodegenUtilities.jniReleaseArrayElements(
-//                                "Boolean", tokensFromOneChannel,
-//                                pointerToTokensFromOneChannel, targetCpp)
-//                                + ";" + _eol);
-//                    } else {
-//                        // FIXME: need to deal with other types
-//                    }
-//                }
-//            }
-//        } else {
-//            Director outsideDirector = (Director) _getAdapter(actor.getExecutiveDirector());
-//            Director insideDirector = (Director) _getAdapter(actor.getDirector());
-//            
-//            for (int i = 0; i < inputPort.getWidth(); i++) {
-//                if (i < inputPort.getWidthInside()) {
-//                    String name = inputPort.getName();
-//
-//                    if (inputPort.isMultiport()) {
-//                        name = name + '#' + i;
-//                    }
-//
-//                    for (int k = 0; k < rate; k++) {
-//                        //code.append(insideDirector.getReference("@" + name + "," + k, false, this));
-//                        code.append(insideDirector.getReference((TypedIOPort) inputPort, new String[]{"" + i, "" + k}, true, false, this));
-//                        code.append(" = " + _eol);
-//                        //code.append(outsideDirector.getReference(name + "," + k, false, this));
-//                        code.append(outsideDirector.getReference((TypedIOPort) inputPort, new String[]{"" + i, "" + k}, false, false, this));
-//                        code.append(";" + _eol);
-//                    }
-//                }
-//            }
-//        }
-//
-//        // Generate the type conversion code before fire code.
-//        code.append(generateTypeConvertFireCode(true));
-//    }
-    
     /** Generate The fire function code. This method is called when
      *  the firing code of each actor is not inlined. Each actor's
      *  firing code is in a function with the same name as that of the
@@ -330,10 +191,10 @@ public class TypedCompositeActor extends CCodeGeneratorAdapter {
         StringBuffer code = new StringBuffer();
         CompositeActor compositeActor = (CompositeActor) getComponent();
         ptolemy.actor.Director director = compositeActor.getDirector();
-        Director directorAdapter = (Director) _getAdapter(director);
+        Director directorAdapter = (Director) getCodeGenerator().getAdapter(director);
         
         code.append(directorAdapter.generateFireFunctionCode());
-        if (!(compositeActor instanceof ptolemy.actor.lib.jni.CompiledCompositeActor && ((BooleanToken) getCodeGenerator().generateEmbeddedCode
+        if (!(compositeActor instanceof ptolemy.actor.lib.jni.CompiledCompositeActor && ((BooleanToken) ((ProceduralCodeGenerator) getCodeGenerator()).generateEmbeddedCode
                 .getToken()).booleanValue())) {
             code.append(super.generateFireFunctionCode());
         }
@@ -359,11 +220,11 @@ public class TypedCompositeActor extends CCodeGeneratorAdapter {
         //initializeCode.append(super.generateInitializeCode());
 
         // Reset the offset for all of the contained actors' input ports.
-        Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
+        Iterator<?> actors = ((ptolemy.actor.CompositeActor) getComponent())
                 .deepEntityList().iterator();
         while (actors.hasNext()) {
             NamedObj actor = (NamedObj) actors.next();
-            CodeGeneratorAdapter actorAdapter = (CodeGeneratorAdapter) _getAdapter(actor);
+            CodeGeneratorAdapter actorAdapter = getCodeGenerator().getAdapter(actor);
             String code = actorAdapter.resetInputPortsOffset();
             if (code.length() > 0) {
                 initializeCode.append(_eol
@@ -383,7 +244,7 @@ public class TypedCompositeActor extends CCodeGeneratorAdapter {
             initializeCode.append(code);
         }
 
-        Director directorAdapter = (Director) _getAdapter(((ptolemy.actor.CompositeActor) getComponent())
+        Director directorAdapter = (Director) getCodeGenerator().getAdapter(((ptolemy.actor.CompositeActor) getComponent())
                 .getDirector());
 
         // Generate the initialize code by the director adapter.
@@ -402,7 +263,7 @@ public class TypedCompositeActor extends CCodeGeneratorAdapter {
      */
     public void generateModeTransitionCode(StringBuffer code)
             throws IllegalActionException {
-        Director directorAdapter = (Director) _getAdapter(((ptolemy.actor.CompositeActor) getComponent())
+        Director directorAdapter = (Director) getCodeGenerator().getAdapter(((ptolemy.actor.CompositeActor) getComponent())
                 .getDirector());
         directorAdapter.generateModeTransitionCode(code);
     }
@@ -418,31 +279,9 @@ public class TypedCompositeActor extends CCodeGeneratorAdapter {
     public String generatePostfireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         //code.append(super.generatePostfireCode());
-        Director directorAdapter = (Director) _getAdapter(((ptolemy.actor.CompositeActor) getComponent())
+        Director directorAdapter = (Director) getCodeGenerator().getAdapter(((ptolemy.actor.CompositeActor) getComponent())
                 .getDirector());
         code.append(directorAdapter.generatePostfireCode());
-        return processCode(code.toString());
-    }
-
-    /** Generate the preinitialize code of the associated composite actor.
-     *  It first creates buffer size and offset map for its input ports and
-     *  output ports. It then gets the result of generatePreinitializeCode()
-     *  method of the local director adapter.
-     *
-     *  @return The preinitialize code of the associated composite actor.
-     *  @exception IllegalActionException If the adapter associated with
-     *   an actor throws it while generating preinitialize code for the actor
-     *   or while creating buffer size and offset map.
-     */
-    public String generatePreinitializeCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generatePreinitializeCode());
-
-        Director directorAdapter = (Director) _getAdapter(((ptolemy.actor.CompositeActor) getComponent())
-                .getDirector());
-
-        code.append(directorAdapter.generatePreinitializeCode());
-
         return processCode(code.toString());
     }
 
@@ -459,7 +298,7 @@ public class TypedCompositeActor extends CCodeGeneratorAdapter {
 
         code.append(super.generateVariableDeclaration());
 
-        Director directorAdapter = (Director) _getAdapter(((ptolemy.actor.CompositeActor) getComponent())
+        Director directorAdapter = (Director) getCodeGenerator().getAdapter(((ptolemy.actor.CompositeActor) getComponent())
                 .getDirector());
         code.append(directorAdapter.generateVariableDeclaration());
 
@@ -481,7 +320,7 @@ public class TypedCompositeActor extends CCodeGeneratorAdapter {
 
         code.append(super.generateVariableInitialization());
 
-        Director directorAdapter = (Director) _getAdapter(((ptolemy.actor.CompositeActor) getComponent())
+        Director directorAdapter = (Director) getCodeGenerator().getAdapter(((ptolemy.actor.CompositeActor) getComponent())
                 .getDirector());
         code.append(directorAdapter.generateVariableInitialization());
 
@@ -498,7 +337,7 @@ public class TypedCompositeActor extends CCodeGeneratorAdapter {
     public String generateWrapupCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         //code.append(super.generateWrapupCode());
-        Director directorAdapter = (Director) _getAdapter(((ptolemy.actor.CompositeActor) getComponent())
+        Director directorAdapter = (Director) getCodeGenerator().getAdapter(((ptolemy.actor.CompositeActor) getComponent())
                 .getDirector());
         code.append(directorAdapter.generateWrapupCode());
         return processCode(code.toString());
@@ -524,21 +363,21 @@ public class TypedCompositeActor extends CCodeGeneratorAdapter {
      *  @exception IllegalActionException If the adapter associated with
      *   an actor throws it while generating header files for the actor.
      */
-    public Set getHeaderFiles() throws IllegalActionException {
-        Set files = new LinkedHashSet();
+    public Set<String> getHeaderFiles() throws IllegalActionException {
+        Set<String> files = new LinkedHashSet<String>();
         files.addAll(super.getHeaderFiles());
 
-        Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
+        Iterator<?> actors = ((ptolemy.actor.CompositeActor) getComponent())
                 .deepEntityList().iterator();
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorAdapter adapterObject = (CodeGeneratorAdapter) _getAdapter((NamedObj) actor);
+            CodeGeneratorAdapter adapterObject = getCodeGenerator().getAdapter((NamedObj) actor);
             files.addAll(adapterObject.getHeaderFiles());
         }
 
         // Get headers needed by the director adapter.
-        Director directorAdapter = (Director) _getAdapter(((ptolemy.actor.CompositeActor) getComponent())
+        Director directorAdapter = (Director) getCodeGenerator().getAdapter(((ptolemy.actor.CompositeActor) getComponent())
                 .getDirector());
         files.addAll(directorAdapter.getHeaderFiles());
 
@@ -551,21 +390,21 @@ public class TypedCompositeActor extends CCodeGeneratorAdapter {
      *  @exception IllegalActionException If thrown when gathering
      *  include directories.
      */
-    public Set getIncludeDirectories() throws IllegalActionException {
-        Set includeDirectories = new LinkedHashSet();
+    public Set<String> getIncludeDirectories() throws IllegalActionException {
+        Set<String> includeDirectories = new LinkedHashSet<String>();
         includeDirectories.addAll(super.getIncludeDirectories());
 
-        Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
+        Iterator<?> actors = ((ptolemy.actor.CompositeActor) getComponent())
                 .deepEntityList().iterator();
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorAdapter adapterObject = (CodeGeneratorAdapter) _getAdapter((NamedObj) actor);
+            CodeGeneratorAdapter adapterObject = getCodeGenerator().getAdapter((NamedObj) actor);
             includeDirectories.addAll(adapterObject.getIncludeDirectories());
         }
 
         // Get include directories needed by the director adapter.
-        Director directorAdapter = (Director) _getAdapter(((ptolemy.actor.CompositeActor) getComponent())
+        Director directorAdapter = (Director) getCodeGenerator().getAdapter(((ptolemy.actor.CompositeActor) getComponent())
                 .getDirector());
         includeDirectories.addAll(directorAdapter.getIncludeDirectories());
 
@@ -577,21 +416,21 @@ public class TypedCompositeActor extends CCodeGeneratorAdapter {
      *  @return A Set of libraries.
      *  @exception IllegalActionException If thrown when gathering libraries.
      */
-    public Set getLibraries() throws IllegalActionException {
-        Set libraries = new LinkedHashSet();
+    public Set<String> getLibraries() throws IllegalActionException {
+        Set<String> libraries = new LinkedHashSet<String>();
         libraries.addAll(super.getLibraries());
 
-        Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
+        Iterator<?> actors = ((ptolemy.actor.CompositeActor) getComponent())
                 .deepEntityList().iterator();
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorAdapter adapterObject = (CodeGeneratorAdapter) _getAdapter((NamedObj) actor);
+            CodeGeneratorAdapter adapterObject = getCodeGenerator().getAdapter((NamedObj) actor);
             libraries.addAll(adapterObject.getLibraries());
         }
 
         // Get libraries needed by the director adapter.
-        Director directorAdapter = (Director) _getAdapter(((ptolemy.actor.CompositeActor) getComponent())
+        Director directorAdapter = (Director) getCodeGenerator().getAdapter(((ptolemy.actor.CompositeActor) getComponent())
                 .getDirector());
         libraries.addAll(directorAdapter.getLibraries());
 
@@ -607,11 +446,11 @@ public class TypedCompositeActor extends CCodeGeneratorAdapter {
      *  @exception IllegalActionException If the adapter associated with an actor
      *   or director throws it while getting modified variables.
      */
-    public Set getModifiedVariables() throws IllegalActionException {
-        Set set = new HashSet();
+    public Set<Parameter> getModifiedVariables() throws IllegalActionException {
+        Set<Parameter> set = new HashSet<Parameter>();
         set.addAll(super.getModifiedVariables());
 
-        Director directorAdapter = (Director) _getAdapter(((ptolemy.actor.CompositeActor) getComponent())
+        Director directorAdapter = (Director) getCodeGenerator().getAdapter(((ptolemy.actor.CompositeActor) getComponent())
                 .getDirector());
         set.addAll(directorAdapter.getModifiedVariables());
         return set;
@@ -650,12 +489,12 @@ public class TypedCompositeActor extends CCodeGeneratorAdapter {
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorAdapter adapterObject = (CodeGeneratorAdapter) _getAdapter((NamedObj) actor);
+            CodeGeneratorAdapter adapterObject = getCodeGenerator().getAdapter((NamedObj) actor);
             sharedCode.addAll(adapterObject.getSharedCode());
         }
 
         // Get shared code used by the director adapter.
-        Director directorAdapter = (Director) _getAdapter(((ptolemy.actor.CompositeActor) getComponent())
+        Director directorAdapter = (Director) getCodeGenerator().getAdapter(((ptolemy.actor.CompositeActor) getComponent())
                 .getDirector());
         sharedCode.addAll(directorAdapter.getSharedCode());
 
@@ -669,9 +508,9 @@ public class TypedCompositeActor extends CCodeGeneratorAdapter {
      *  @exception IllegalActionException If thrown while getting or
      *   setting the offset.
      */
-    public String resetOutputPortsOffset() throws IllegalActionException {
+    private String resetOutputPortsOffset() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        Iterator outputPorts = ((Actor) getComponent()).outputPortList()
+        Iterator<?> outputPorts = ((Actor) getComponent()).outputPortList()
                 .iterator();
 
         while (outputPorts.hasNext()) {
@@ -753,10 +592,10 @@ public class TypedCompositeActor extends CCodeGeneratorAdapter {
      *  director adapter or while getting the buffer size or read offset
      *  or write offset.
      */
-    protected void _createOutputBufferSizeAndOffsetMap()
+    private void _createOutputBufferSizeAndOffsetMap()
             throws IllegalActionException {
 
-        Iterator outputPorts = ((Actor) getComponent()).outputPortList()
+        Iterator<?> outputPorts = ((Actor) getComponent()).outputPortList()
                 .iterator();
 
         while (outputPorts.hasNext()) {
@@ -764,7 +603,7 @@ public class TypedCompositeActor extends CCodeGeneratorAdapter {
             IOPort port = (IOPort) outputPorts.next();
             int length = port.getWidthInside();
 
-            Director directorAdapter = (Director) _getAdapter((((Actor) getComponent())
+            Director directorAdapter = (Director) getCodeGenerator().getAdapter((((Actor) getComponent())
                     .getDirector()));
 
             for (int i = 0; i < port.getWidthInside(); i++) {

@@ -37,6 +37,7 @@ import ptolemy.actor.util.DFUtilities;
 import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
 import ptolemy.cg.kernel.generic.ActorCodeGenerator;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy;
 import ptolemy.cg.kernel.generic.CodeStream;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
@@ -84,9 +85,9 @@ public class StaticSchedulingDirector extends Director {
     public String generateFireCode() throws IllegalActionException {
 
         StringBuffer code = new StringBuffer();
-        code.append(CodeStream.indent(_codeGenerator
+        code.append(CodeStream.indent(getCodeGenerator()
                 .comment("The firing of the StaticSchedulingDirector")));
-        boolean inline = ((BooleanToken) _codeGenerator.inline.getToken())
+        boolean inline = ((BooleanToken) getCodeGenerator().inline.getToken())
                 .booleanValue();
 
         // Generate code for one iteration.
@@ -102,7 +103,7 @@ public class StaticSchedulingDirector extends Director {
             // FIXME: Before looking for a adapter class, we should check to
             // see whether the actor contains a code generator attribute.
             // If it does, we should use that as the adapter.
-            CodeGeneratorAdapter adapter = (CodeGeneratorAdapter) _getAdapter((NamedObj) actor);
+            CodeGeneratorAdapter adapter = getCodeGenerator().getAdapter((NamedObj) actor);
 
             if (inline) {
                 for (int i = 0; i < firing.getIterationCount(); i++) {
@@ -124,7 +125,7 @@ public class StaticSchedulingDirector extends Director {
                             + " ; i++) {" + _eol);
                 }
 
-                code.append(CodeGeneratorAdapter.generateName((NamedObj)
+                code.append(CodeGeneratorAdapterStrategy.generateName((NamedObj)
                  actor) + "();" + _eol);
                 
                 _generateUpdatePortOffsetCode(code, actor);
@@ -179,7 +180,7 @@ public class StaticSchedulingDirector extends Director {
 
         // The code generated in generateModeTransitionCode() is executed
         // after one global iteration, e.g., in HDF model.
-        ActorCodeGenerator modelAdapter = (ActorCodeGenerator) _getAdapter(_director
+        ActorCodeGenerator modelAdapter = getCodeGenerator().getAdapter(_director
                 .getContainer());
         modelAdapter.generateModeTransitionCode(code);
 
@@ -245,7 +246,7 @@ public class StaticSchedulingDirector extends Director {
                     .doubleValue();
             if (periodValue != 0.0) {
                 variableDeclarations.append(_eol
-                        + _codeGenerator.comment(
+                        + getCodeGenerator().comment(
                                 "Director has a period attribute,"
                                         + " so we track current time."));
                 variableDeclarations.append("double _currentTime = 0;" + _eol);

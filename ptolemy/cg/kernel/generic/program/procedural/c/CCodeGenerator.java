@@ -46,9 +46,11 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.cg.kernel.generic.ActorCodeGenerator;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy;
 import ptolemy.cg.kernel.generic.CodeGeneratorUtilities;
 import ptolemy.cg.kernel.generic.CodeStream;
 import ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGenerator;
+import ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGeneratorAdapterStrategy;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
@@ -581,8 +583,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  @return The processed code.
      *  @exception IllegalActionException If illegal macro names are found.
      */
-    public String processCode(String code) throws IllegalActionException {
-        CCodeGeneratorAdapter adapter = (CCodeGeneratorAdapter) _getAdapter(getContainer());
+    private String processCode(String code) throws IllegalActionException {
+        CodeGeneratorAdapter adapter = getAdapter(getContainer());
         return adapter.processCode(code);
     }
 
@@ -651,7 +653,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                 // SetVariable needs this to be a Variable, not a Parameter.
                 Variable variable = (Variable) modifiedVariables.next();
 
-                CodeGeneratorAdapter adapter = (CodeGeneratorAdapter) _getAdapter(variable.getContainer());
+                CodeGeneratorAdapter adapter =  getAdapter(variable.getContainer());
                 code.append("static "
                         + adapter.targetType(variable.getType())
                         + " " + generateVariableName(variable) + ";" + _eol);
@@ -681,7 +683,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                 Variable variable = (Variable) modifiedVariables.next();
 
                 NamedObj container = variable.getContainer();
-                CodeGeneratorAdapter containerAdapter = (CodeGeneratorAdapter) _getAdapter(container);
+                CodeGeneratorAdapter containerAdapter =  getAdapter(container);
                 code.append(_INDENT1
                         + generateVariableName(variable)
                         + " = "
@@ -799,7 +801,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *   include directories.
      */
     protected void _addActorIncludeDirectories() throws IllegalActionException {
-        ActorCodeGenerator adapter = _getAdapter(getContainer());
+        ActorCodeGenerator adapter = getAdapter(getContainer());
 
         Set actorIncludeDirectories = adapter.getIncludeDirectories();
         Iterator includeIterator = actorIncludeDirectories.iterator();
@@ -813,7 +815,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *   libraries.
      */
     protected void _addActorLibraries() throws IllegalActionException {
-        ActorCodeGenerator adapter = _getAdapter(getContainer());
+        ActorCodeGenerator adapter = getAdapter(getContainer());
 
         Set actorLibraryDirectories = adapter.getLibraryDirectories();
         Iterator libraryDirectoryIterator = actorLibraryDirectories.iterator();
@@ -1013,7 +1015,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
     protected String _generateIncludeFiles() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        ActorCodeGenerator compositeActorAdapter = _getAdapter(getContainer());
+        CodeGeneratorAdapter compositeActorAdapter = getAdapter(getContainer());
         Set includingFiles = compositeActorAdapter.getHeaderFiles();
 
         includingFiles.add("<stdlib.h>"); // Sun requires stdlib.h for malloc
@@ -1026,7 +1028,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         if (!_isTopLevel()) {
             includingFiles.add("\"" + _sanitizedModelName + ".h\"");
 
-            includingFiles.addAll(((CCodeGeneratorAdapter)compositeActorAdapter).getJVMHeaderFiles());
+            includingFiles.addAll(((CCodeGeneratorAdapterStrategy) compositeActorAdapter.getStrategy()).getJVMHeaderFiles());
         }
 
         includingFiles.add("<stdarg.h>");
@@ -1073,6 +1075,10 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         return startCode.toString();
     }
 
+    protected Class<? extends CodeGeneratorAdapterStrategy> _strategyClass() {
+        return CCodeGeneratorAdapterStrategy.class;
+    }
+        
     /** Read in a template makefile, substitute variables and write
      *  the resulting makefile.
      *
@@ -1330,7 +1336,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  @exception IllegalActionException If there is a problem adding
      *  a function to the set of overloaded functions.
      */
-    public void markFunctionCalled(String name, CCodeGeneratorAdapter adapter)
+    final public void markFunctionCalled(String name, CCodeGeneratorAdapterStrategy adapter)
             throws IllegalActionException {
 
         try {

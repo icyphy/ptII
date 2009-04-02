@@ -32,6 +32,7 @@ import java.util.List;
 
 import ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.TypedCompositeActor;
 import ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator;
+import ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.kernel.util.IllegalActionException;
@@ -82,7 +83,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         // This is static so that ptolemy.cg.lib.CompiledCompositeActor
         // will not depend on ptolemy.codegen.
         GenericCodeGenerator codeGenerator = _getCodeGenerator(compositeActor);
-        return CodeGeneratorAdapter.copyFilesToCodeDirectory(compositeActor,
+        return CodeGeneratorAdapterStrategy.copyFilesToCodeDirectory(compositeActor,
                 codeGenerator);
     }
 

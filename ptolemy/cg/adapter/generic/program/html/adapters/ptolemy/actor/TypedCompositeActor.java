@@ -58,7 +58,7 @@ ptolemy.cg.adapter.generic.adapters.ptolemy.actor.TypedCompositeActor {
         code.append(getComponent().getName() + " contains: ");
         code.append("<ul>" + _eol);        
 
-        Director directorAdapter = (Director) _getAdapter(((ptolemy.actor
+        Director directorAdapter = (Director) getCodeGenerator().getAdapter(((ptolemy.actor
                 .CompositeActor) getComponent()).getDirector());
 
         code.append(directorAdapter.generateFireCode());

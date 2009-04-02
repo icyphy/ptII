@@ -47,9 +47,11 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.jni.PointerToken;
 import ptolemy.cg.kernel.generic.ActorCodeGenerator;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy;
 import ptolemy.cg.kernel.generic.CodeGeneratorUtilities;
 import ptolemy.cg.kernel.generic.CodeStream;
 import ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGenerator;
+import ptolemy.cg.kernel.generic.program.procedural.c.CCodeGeneratorAdapterStrategy;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.ArrayType;
@@ -564,8 +566,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  @return The processed code.
      *  @exception IllegalActionException If illegal macro names are found.
      */
-    public String processCode(String code) throws IllegalActionException {
-        JavaCodeGeneratorAdapter adapter = (JavaCodeGeneratorAdapter) _getAdapter(getContainer());
+    private String processCode(String code) throws IllegalActionException {
+        CodeGeneratorAdapter adapter = ((CodeGeneratorAdapter) getAdapter(getContainer()));
         return adapter.processCode(code);
     }
 
@@ -630,7 +632,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 // SetVariable needs this to be a Variable, not a Parameter.
                 Variable variable = (Variable) modifiedVariables.next();
 
-                CodeGeneratorAdapter adapter = (CodeGeneratorAdapter) _getAdapter(variable.getContainer());
+                CodeGeneratorAdapter adapter = (CodeGeneratorAdapter) getAdapter(variable.getContainer());
                 code.append("static "
                         + adapter.targetType(variable.getType())
                         + " " + generateVariableName(variable) + ";" + _eol);
@@ -660,7 +662,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 Variable variable = (Variable) modifiedVariables.next();
 
                 NamedObj container = variable.getContainer();
-                CodeGeneratorAdapter containerAdapter = (CodeGeneratorAdapter) _getAdapter(container);
+                CodeGeneratorAdapter containerAdapter = (CodeGeneratorAdapter) getAdapter(container);
                 code.append(_INDENT1
                         + generateVariableName(variable)
                         + " = "
@@ -1047,7 +1049,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
     protected String _generateIncludeFiles() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        ActorCodeGenerator compositeActorAdapter = _getAdapter(getContainer());
+        ActorCodeGenerator compositeActorAdapter = getAdapter(getContainer());
         Set includingFiles = compositeActorAdapter.getHeaderFiles();
 
         //includingFiles.add("<stdlib.h>"); // Sun requires stdlib.h for malloc
@@ -1105,6 +1107,11 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         startCode.append("long startTime = System.currentTimeMillis();");
         return startCode.toString();
     }
+    
+    protected Class<? extends CodeGeneratorAdapterStrategy> _strategyClass() {
+        return JavaCodeGeneratorAdapterStrategy.class;
+    }
+
 
     /** Read in a template makefile, substitute variables and write
      *  the resulting makefile.
@@ -1373,12 +1380,12 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  If the function starts with "Array_", add everything after the
      *  "Array_" is added to the set of token functions used.
      *  @param name The name of the function, for example "Double_equals"
-     *  @param adapter The corresponding adapter that contains the
+     *  @param strategy The corresponding adapter that contains the
      *  codeBlock.
      *  @exception IllegalActionException If there is a problem adding
      *  a function to the set of overloaded functions.
      */
-    public void markFunctionCalled(String name, JavaCodeGeneratorAdapter adapter)
+    final public void markFunctionCalled(String name, JavaCodeGeneratorAdapterStrategy strategy)
             throws IllegalActionException {
 
         try {
@@ -1387,8 +1394,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             if (!_overloadedFunctionSet.contains(name)) {
                 _overloadedFunctionSet.add(name);
 
-                String code = (adapter == null) ? processCode(functionCode) :
-                        adapter.processCode(functionCode);
+                String code = (strategy == null) ? processCode(functionCode) :
+                        strategy.processCode(functionCode);
 
                 _overloadedFunctions.append(code);
 
