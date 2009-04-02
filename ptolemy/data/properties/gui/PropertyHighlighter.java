@@ -32,6 +32,7 @@ import java.awt.event.ActionEvent;
 import java.util.Iterator;
 import java.util.List;
 
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.gui.EditParametersDialog;
 import ptolemy.data.BooleanToken;
@@ -81,7 +82,7 @@ import diva.graph.GraphController;
  @Pt.AcceptedRating Red (mankit)
  */
 public class PropertyHighlighter extends NodeControllerFactory {
-    
+
     /** Construct a PropertyHighlighter with the specified container and name.
      *  @param container The container.
      *  @param name The name of the PropertyHighlighter.
@@ -91,22 +92,22 @@ public class PropertyHighlighter extends NodeControllerFactory {
      *   an attribute already in the container.
      */
     public PropertyHighlighter(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+    throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Hide the name.
         SingletonParameter _hideName = new SingletonParameter(this, "_hideName");
         _hideName.setToken(BooleanToken.TRUE);
         _hideName.setVisibility(Settable.EXPERT);
-   
+
         // The icon.
         _icon = new EditorIcon(this, "_icon");
         RectangleAttribute rectangle = new RectangleAttribute(_icon,
-                "rectangle");
+        "rectangle");
         rectangle.width.setExpression("155.0");
         rectangle.height.setExpression("20.0");
         rectangle.fillColor.setExpression("{1.0, 0.7, 0.7, 1.0}");
-        
+
         showText = new Parameter(this, "showText");
         showText.setTypeEquals(BaseType.BOOLEAN);
         showText.setExpression("true");
@@ -118,7 +119,7 @@ public class PropertyHighlighter extends NodeControllerFactory {
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
-    
+
     /**
      * Indicate whether the _showInfo attributes will be set.
      */
@@ -129,56 +130,53 @@ public class PropertyHighlighter extends NodeControllerFactory {
      */
     public Parameter highlight;
 
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /**
      * Remove the highlighting and visible annotations
      * for all property-able objects.
      */
     public void clearDisplay() {
-        
+
         // Get the PropertySolver.
         PropertySolver solver = (PropertySolver) getContainer();
+        StringBuffer completeMoML = new StringBuffer("<group>");
         try {        
             List propertyables = solver.getAllPropertyables();
             //solver.reset();
-            
+
             for (Object propertyable : propertyables) {
                 if (propertyable instanceof NamedObj) {
                     NamedObj namedObj = (NamedObj) propertyable;
-    
-                    StringParameter showAttribute = 
-                        (StringParameter) namedObj.getAttribute("_showInfo");
-            
-                    Attribute highlightAttribute = 
-                        namedObj.getAttribute("_highlightColor");
                     
-    
-                        if (highlightAttribute != null) {
-                            highlightAttribute.setContainer(null);
-                        }
-                        
-                        if (showAttribute != null) {
-                            showAttribute.setContainer(null);
-                        }
+                    String request = "";
+                    if (namedObj.getAttribute("_showInfo") != null) {
+                        request += "<deleteProperty name=\"_showInfo\"/>";
+                    }
+                    if (namedObj.getAttribute("_highlightColor") != null) {
+                        request += "<deleteProperty name=\"_highlightColor\"/>";
+                    }
+                    request = _completeHierarchyInMoML(namedObj, request);
+
+                    completeMoML.append(request);
                 }
             }
         } catch (IllegalActionException e1) {
             assert false;
-        } catch (NameDuplicationException e1) {
-            assert false;
         }
         
-        
-        // Repaint the GUI.
-        getContainer().requestChange(new ChangeRequest(this,
-            "Repaint the GUI.") {
-            protected void _execute() throws Exception {}
-        });        
+        completeMoML.append("</group>");
+
+        // FIXME: we can only undo at the toplevel.
+        NamedObj toplevel = toplevel();
+        MoMLChangeRequest request = new MoMLChangeRequest(this, toplevel, completeMoML.toString());
+        request.setUndoable(true);
+        ((TypedCompositeActor)toplevel).requestChange(request);
+
     }
-    
+
     /**
      * Clear the property annotations of associated with 
      * the container solver.
@@ -192,7 +190,7 @@ public class PropertyHighlighter extends NodeControllerFactory {
             assert false;
         }
     }
-        
+
     /** Return a new node controller.  This base class returns an
      *  instance of IconController.  Derived
      *  classes can return some other class to customize the
@@ -217,22 +215,22 @@ public class PropertyHighlighter extends NodeControllerFactory {
         PropertySolver solver = (PropertySolver) getContainer();
         try {
             solver.workspace().getWriteAccess();
-            
+
             solver.resolveProperties(true);
 
             solver.checkErrors();
-            
+
             solver.displayProperties();
 
             solver.workspace().doneWriting();
-            
+
         } catch (KernelException e) {
             throw new InternalErrorException(e);
         } finally {
             solver.getSharedUtilities().resetAll();
         }
     }
-    
+
     /**
      * Highlight all property-able objects with
      * the specified colors for their property values,
@@ -241,185 +239,55 @@ public class PropertyHighlighter extends NodeControllerFactory {
      */
     public void highlightProperties() {
         try {
-            if ((BooleanToken) highlight.getToken()
-                     == BooleanToken.TRUE) {
+            if (highlight.getToken() == BooleanToken.TRUE) {
                 _highlightProperties();
             }
         } catch (IllegalActionException ex) {
             // Silently, do nothing.
         }    
     }
-    
-    /**
-     * If the value of the highlight parameter is set to
-     * true, highlight the given property-able object with
-     * the specified color associated with the given
-     * property, if there exists any.
-     * @param propertyable The given property-able object.
-     * @param property The given property.
-     * @exception IllegalActionException Thrown if an error
-     * occurs when creating or setting the value for the 
-     * highlightColor attribute in the property-able object.
-     */
-    public void highlightProperty(NamedObj propertyable, Property property) 
-    throws IllegalActionException {
-        if (highlight.getToken() == BooleanToken.TRUE) {
-            _highlightProperty(propertyable, property);            
-        }
-    }
-    
+
     /**
      * If the value of the showText parameter is set to
      * true, show all property values visually. 
      * Otherwise, do nothing.
      */
     public void showProperties() {
-        if (showText.getExpression().equals("true")) {
-            _showProperties();
-        }
+        try {
+            if (showText.getToken() == BooleanToken.TRUE) {
+                _showProperties();
+            }
+        } catch (IllegalActionException ex) {
+            // Silently, do nothing.
+        }    
     }
-    
-    /**
-     * If the value of the showText parameter is true,
-     * show the given property value for the given
-     * property-able object. If the property is not null,
-     * this looks for the _showInfo parameter in the 
-     * property-able object. Create a new _showInfo
-     * StringParameter, if there does not already exists one.
-     * Set its value to the given property value. If the
-     * given property is null, this removes the _showInfo
-     * parameter from the property-able object. 
-     * @param propertyable The given property-able object.
-     * @param property The given property.
-     * @exception IllegalActionException Thrown if an error
-     * occurs when creating or setting the value for the 
-     * _showInfo parameter in the property-able object.
-     */
-    public void showProperty(NamedObj propertyable, Property property) 
-            throws IllegalActionException {
-        if (showText.getToken() == BooleanToken.TRUE) {
-            _showProperty(propertyable, property);
-        }
-    }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
-    
-    private static class EditHighlightDialog extends EditParametersDialog  {
-        
-        /** Construct a dialog with the specified owner and target.
-         *  A "Commit" and a "Cancel" button are added to the dialog.
-         *  The dialog is placed relative to the owner.
-         *  @param owner The object that, per the user, appears to be
-         *   generating the dialog.
-         *  @param target The object whose parameters are being edited.
-         *  @param label The label for the dialog box.
-         */
-        public EditHighlightDialog(Frame owner, NamedObj target, String label) {
-            super(owner, target, label);            
-        }
-        
-        /** Open a dialog to add a new parameter.
-         *  @param message A message to place at the top, or null if none.
-         *  @param name The default name.
-         *  @param defValue The default value.
-         *  @param className The default class name.
-         *  @return The dialog that is created.
-         */
-        protected ComponentDialog _openAddDialog(String message, String name,
-                String defValue, String className) {
-            // Create a new dialog to add a parameter, then open a new
-            // EditParametersDialog.
-            _query = new Query();
-    
-            if (message != null) {
-                _query.setMessage(message);
-            }
-    
-            _query.addLine("name", "Name", name);
-            
-            ComponentDialog dialog = new ComponentDialog(_owner,
-                    "Add a new parameter to " + _target.getFullName(), _query, null);
-    
-            // If the OK button was pressed, then queue a mutation
-            // to create the parameter.
-            // A blank property name is interpreted as a cancel.
-            String newName = _query.getStringValue("name");
-            
-            if (dialog.buttonPressed().equals("OK") && !newName.equals("")) {
-                String moml = "<property name=\"" + newName + "\" value=\""
-                        + "property value\" class=\""
-                        + "ptolemy.kernel.util.StringAttribute" + "\"/>";
-                
-                MoMLChangeRequest request = new MoMLChangeRequest(this, _target,
-                        moml);
-                request.setUndoable(true);
-                _target.requestChange(request);
-    
-                moml = "<property name=\"" + newName + "HighlightColor\" value=\""
-                + "{1.0, 0.0, 0.0, 1.0}\" class=\""
-                + "ptolemy.actor.gui.ColorAttribute" + "\"/>";
-    
-                _target.addChangeListener(this);
-    
-                request = new MoMLChangeRequest(this, _target, moml);
-                request.setUndoable(true);
-                _target.requestChange(request);
-            }
-            
-            return dialog;
-        }
-    }
+    ////                   private inner classes                   ////
 
-
-    /** The controller that adds commands to the context menu.
-     */
-    private class HighlighterController extends AttributeController {
-    
-        /** Create a DependencyController that is associated with a controller.
-         *  @param controller The controller.
-         */
-        public HighlighterController(GraphController controller) {
-            super(controller);
-    
-            ClearProperty clearProperty = new ClearProperty();
-            _menuFactory.addMenuItemFactory(new MenuActionFactory(clearProperty));
-    
-            ClearDisplay clearDisplay = new ClearDisplay();
-            _menuFactory.addMenuItemFactory(new MenuActionFactory(clearDisplay));
-    
-            ShowProperty showProperty = new ShowProperty();
-            _menuFactory.addMenuItemFactory(new MenuActionFactory(showProperty));
-    
-            HighlightProperty highlightProperty = new HighlightProperty();
-            _menuFactory.addMenuItemFactory(new MenuActionFactory(highlightProperty));
-    
-            ConfigureHighlightAction highlight = new ConfigureHighlightAction();
-            _configureMenuFactory.addAction(highlight, "Configure");
-        }
-    }
-
-
-    /** The action for the commands added to the context menu.
+    /** The action for the clear display command to be added 
+     *  to the context menu.
      */
     private class ClearDisplay extends FigureAction {
         public ClearDisplay() {
             super("Clear Property Display");
         }
-        
+
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
             clearDisplay();
         }
     }
 
-    /** The action for the commands added to the context menu.
+
+    /** The action for the clear property command to be added 
+     *  to the context menu.
      */
     private class ClearProperty extends FigureAction {
         public ClearProperty() {
             super("Clear Property");
         }
-        
+
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
             clearProperties();
@@ -427,32 +295,33 @@ public class PropertyHighlighter extends NodeControllerFactory {
     }
 
 
-    /** The action for the commands added to the configure menu.
+    /** The action for the highlight configure command to be added 
+     *  to the context menu.
      */
     private class ConfigureHighlightAction extends FigureAction {
-        
+
         public ConfigureHighlightAction() {
             super("Property Display");
         }
-    
+
         /**
          * Open the dialog for configuring the highlight color
          * for property values. 
          */
         public void actionPerformed(ActionEvent e) {
-                // Determine which entity was selected for the look inside action.
-                super.actionPerformed(e);
-    
-                NamedObj target = PropertyHighlighter.this;
-                
-                // Create a dialog for configuring the object.
-                // First, identify the top parent frame.
-                Frame parent = getFrame();
-                
-                _openDialog(parent, target);
+            // Determine which entity was selected for the look inside action.
+            super.actionPerformed(e);
+
+            NamedObj target = PropertyHighlighter.this;
+
+            // Create a dialog for configuring the object.
+            // First, identify the top parent frame.
+            Frame parent = getFrame();
+
+            _openDialog(parent, target);
         }
-        
-        
+
+
         /** Open an edit parameters dialog.  This is a modal dialog, so
          *  this method returns only after the dialog has been dismissed.
          *  @param parent A frame to serve as a parent for the dialog, or
@@ -467,40 +336,139 @@ public class PropertyHighlighter extends NodeControllerFactory {
     }
 
 
-    /** The action for the commands added to the context menu.
+    /** The edit highlight dialog.
+     */  
+    private static class EditHighlightDialog extends EditParametersDialog  {
+
+        /** Construct a dialog with the specified owner and target.
+         *  A "Commit" and a "Cancel" button are added to the dialog.
+         *  The dialog is placed relative to the owner.
+         *  @param owner The object that, per the user, appears to be
+         *   generating the dialog.
+         *  @param target The object whose parameters are being edited.
+         *  @param label The label for the dialog box.
+         */
+        public EditHighlightDialog(Frame owner, NamedObj target, String label) {
+            super(owner, target, label);            
+        }
+
+        /** Open a dialog to add a new parameter.
+         *  @param message A message to place at the top, or null if none.
+         *  @param name The default name.
+         *  @param defValue The default value.
+         *  @param className The default class name.
+         *  @return The dialog that is created.
+         */
+        protected ComponentDialog _openAddDialog(String message, String name,
+                String defValue, String className) {
+            // Create a new dialog to add a parameter, then open a new
+            // EditParametersDialog.
+            _query = new Query();
+
+            if (message != null) {
+                _query.setMessage(message);
+            }
+
+            _query.addLine("name", "Name", name);
+
+            ComponentDialog dialog = new ComponentDialog(_owner,
+                    "Add a new parameter to " + _target.getFullName(), _query, null);
+
+            // If the OK button was pressed, then queue a mutation
+            // to create the parameter.
+            // A blank property name is interpreted as a cancel.
+            String newName = _query.getStringValue("name");
+
+            if (dialog.buttonPressed().equals("OK") && !newName.equals("")) {
+                String moml = "<property name=\"" + newName + "\" value=\""
+                + "property value\" class=\""
+                + "ptolemy.kernel.util.StringAttribute" + "\"/>";
+
+                MoMLChangeRequest request = new MoMLChangeRequest(this, _target,
+                        moml);
+                request.setUndoable(true);
+                _target.requestChange(request);
+
+                moml = "<property name=\"" + newName + "HighlightColor\" value=\""
+                + "{1.0, 0.0, 0.0, 1.0}\" class=\""
+                + "ptolemy.actor.gui.ColorAttribute" + "\"/>";
+
+                _target.addChangeListener(this);
+
+                request = new MoMLChangeRequest(this, _target, moml);
+                request.setUndoable(true);
+                _target.requestChange(request);
+            }
+
+            return dialog;
+        }
+    }
+
+
+    /** The action for the highlight property command to be added 
+     *  to the context menu.
      */
     private class HighlightProperty extends FigureAction {
         public HighlightProperty() {
             super("Highlight Property");
         }
-        
+
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
             _highlightProperties();
-    
+
             // Repaint the GUI.
             getContainer().requestChange(new ChangeRequest(this,
-                "Repaint the GUI.") {
+            "Repaint the GUI.") {
                 protected void _execute() throws Exception {}
             });        
         }
     }
 
 
-    /** The action for the commands added to the context menu.
+    /** The controller that adds commands to the context menu.
+     */
+    private class HighlighterController extends AttributeController {
+
+        /** Create a DependencyController that is associated with a controller.
+         *  @param controller The controller.
+         */
+        public HighlighterController(GraphController controller) {
+            super(controller);
+
+            ClearProperty clearProperty = new ClearProperty();
+            _menuFactory.addMenuItemFactory(new MenuActionFactory(clearProperty));
+
+            ClearDisplay clearDisplay = new ClearDisplay();
+            _menuFactory.addMenuItemFactory(new MenuActionFactory(clearDisplay));
+
+            ShowProperty showProperty = new ShowProperty();
+            _menuFactory.addMenuItemFactory(new MenuActionFactory(showProperty));
+
+            HighlightProperty highlightProperty = new HighlightProperty();
+            _menuFactory.addMenuItemFactory(new MenuActionFactory(highlightProperty));
+
+            ConfigureHighlightAction highlight = new ConfigureHighlightAction();
+            _configureMenuFactory.addAction(highlight, "Configure");
+        }
+    }
+
+
+    /** The action for the show property command to be added 
+     *  to the context menu.
      */
     private class ShowProperty extends FigureAction {
         public ShowProperty() {
             super("Show Property");
         }
-        
+
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
             _showProperties();
-    
+
             // Repaint the GUI.
             getContainer().requestChange(new ChangeRequest(this,
-                "Repaint the GUI.") {
+            "Repaint the GUI.") {
                 protected void _execute() throws Exception {}
             });        
         }
@@ -509,43 +477,38 @@ public class PropertyHighlighter extends NodeControllerFactory {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /**
-     * Highlight all property-able objects with
-     * the specified colors for their property values.
-     */
-    private void _highlightProperties() {
-        // Get the PropertySolver.
-        PropertySolver solver = (PropertySolver) getContainer();
-        try {
-            Iterator propertyables = solver.getAllPropertyables().iterator();
+    private String _completeHierarchyInMoML(NamedObj namedObj, String request) {
+        // construct moml request
+        NamedObj momlContainer = namedObj; 
+        if (momlContainer != null) {
 
-            while (propertyables.hasNext()) {
-                Object propertyableObject = propertyables.next();
+            // We don't need to specify the toplevel because
+            // that is the context which we will execute the
+            // change request.
+            while(momlContainer.getContainer() != null) {
+                String type = momlContainer.getElementName();
+                request = "<" + type + " name=\"" + momlContainer.getName() + 
+                "\" class=\"" + momlContainer.getClassName() + "\">" +
+                request + "</" + type + ">";
 
-                if (propertyableObject instanceof NamedObj) {
-                    NamedObj namedObj = (NamedObj) propertyableObject;
-
-                    Property property = solver.getResolvedProperty(namedObj, false);
-
-                    _highlightProperty(namedObj, property);
-                }
+                momlContainer = momlContainer.getContainer();
             }
-        } catch (IllegalActionException ex) {
-            assert false;
         }
+        return request;
     }
 
-    
     /**
      * @param namedObj
      * @param property
      * @throws IllegalActionException
      */
-    private void _highlightProperty(NamedObj namedObj, Property property) throws IllegalActionException {
+    private String _getMoMLHighlightString(NamedObj namedObj, 
+            Property property) throws IllegalActionException {
+
         String propertyString;
         if (property != null) {
             propertyString = property.toString();
-    
+
         } else if (getContainer() instanceof PropertyTokenSolver) {
             propertyString = "";//Token.NIL.toString();
         } else {
@@ -555,61 +518,34 @@ public class PropertyHighlighter extends NodeControllerFactory {
         //Highlight Propertyable namedObj's.
         for (ColorAttribute colorAttribute : (List<ColorAttribute>) 
                 attributeList(ColorAttribute.class)) {
-            
+
             String colorAttrName = colorAttribute.getName();
             if (colorAttrName.endsWith("HighlightColor")) {
-                
+
                 String propertyAttrName = colorAttrName
                 .substring(0, colorAttrName.length() - 14);
-                
+
                 Attribute attribute = getAttribute(propertyAttrName);
-                
+
                 if (attribute != null && attribute instanceof StringAttribute) {
+
                     String propertyToHighlight = ((StringAttribute) attribute).getExpression();
 
                     if (propertyToHighlight.equals(propertyString)) {
-                        ColorAttribute highlightAttribute = 
-                            (ColorAttribute) namedObj.getAttribute("_highlightColor");
-                        
-                        if (highlightAttribute == null) {
-                            try {
-                                highlightAttribute = new ColorAttribute(namedObj, "_highlightColor");
-                            } catch (NameDuplicationException e) {
-                                // This shouldn't happen. If another attribute 
-                                // has the same name, we should find it before.
-                                assert false;
-                            }
-                        }
-                        highlightAttribute.setExpression(colorAttribute.getExpression());
+                        String type = namedObj.getElementName();
+
+                        String request = "<property name=\"_highlightColor\" " +
+                        		"class=\"ptolemy.actor.gui.ColorAttribute\" value=\"" +
+                        		colorAttribute.getExpression() + "\"/>";
+
+                        request = _completeHierarchyInMoML(namedObj, request);
+                        return request;                        
                     }
                 }
             }
         }
-    }
-    
-    /**
-     * Show all property values visually.
-     */
-    private void _showProperties() {
-        // Get the PropertySolver.
-        PropertySolver solver = (PropertySolver) getContainer();
-        try {
-            Iterator propertyables = solver.getAllPropertyables().iterator();
 
-            while (propertyables.hasNext()) {
-                Object propertyableObject = propertyables.next();
-
-                if (propertyableObject instanceof NamedObj) {
-                    NamedObj namedObj = (NamedObj) propertyableObject;
-
-                    Property property = solver.getResolvedProperty(namedObj, false);
-
-                    _showProperty(namedObj, property);
-                }
-            }
-        } catch (IllegalActionException e) {
-            assert false;
-        }
+        return "";
     }
 
     /**
@@ -622,12 +558,14 @@ public class PropertyHighlighter extends NodeControllerFactory {
      *  attribute and/or setting its value for the 
      *  property-able object.
      */
-    private void _showProperty(NamedObj namedObj, Property property)
+    private String _getMoMLShowInfoString(NamedObj namedObj, Property property)
     throws IllegalActionException {
+
+        String request;
         String propertyString;
         if (property != null) {
             propertyString = property.toString();
-    
+
         } else if (getContainer() instanceof PropertyTokenSolver) {
             // FIXME: If we set propertyString to NIL, then 
             // we will have nils everywhere when we don't
@@ -636,31 +574,98 @@ public class PropertyHighlighter extends NodeControllerFactory {
         } else {
             propertyString = "";
         }
-        
-        // Update the _showInfo attribute.
+
         StringParameter showAttribute = 
             (StringParameter) namedObj.getAttribute("_showInfo");
 
-        try {
+        if (property == null && showAttribute != null) {
             // Remove the showInfo attribute if we don't have
             // any property to display.
-            if (property == null && showAttribute != null) {
-                showAttribute.setContainer(null);
-                return;
-                
-            } else if (showAttribute == null) {
-                showAttribute = new StringParameter(namedObj, "_showInfo");
+            request = "<deleteProperty name=\"_showInfo\"/>";
+
+        } else {
+            String type = namedObj.getElementName();
+
+            // Update the _showInfo attribute.
+            request = "<property name=\"_showInfo\" class=\"ptolemy.data.expr.StringParameter\" value=\"" +
+            propertyString +
+            "\"/>";
+        }
+
+        request = _completeHierarchyInMoML(namedObj, request);
+        return request;
+
+    }
+
+    /**
+     * Highlight all property-able objects with
+     * the specified colors for their property values.
+     */
+    private void _highlightProperties() {
+        StringBuffer completeMoML = new StringBuffer("<group>");
+
+        // Get the PropertySolver.
+        PropertySolver solver = (PropertySolver) getContainer();
+        try {
+            Iterator propertyables = solver.getAllPropertyables().iterator();
+
+            while (propertyables.hasNext()) {
+                Object propertyableObject = propertyables.next();
+
+                if (propertyableObject instanceof NamedObj) {
+                    NamedObj namedObj = (NamedObj) propertyableObject;
+
+                    Property property = solver.getResolvedProperty(namedObj, false);
+
+                    completeMoML.append(_getMoMLHighlightString(namedObj, property));
+                }
             }
-        } catch (NameDuplicationException e) {
-            // This shouldn't happen. If another attribute 
-            // has the same name, we should find it before.
+        } catch (IllegalActionException ex) {
             assert false;
         }
-        showAttribute.setToken(propertyString);
+        completeMoML.append("</group>");
+
+        // FIXME: we can only undo at the toplevel.
+        NamedObj toplevel = toplevel();
+        MoMLChangeRequest request = new MoMLChangeRequest(this, toplevel, completeMoML.toString());
+        request.setUndoable(true);
+        ((TypedCompositeActor)toplevel).requestChange(request);
     }
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+
+
+    /**
+     * Show all property values visually.
+     */
+    private void _showProperties() {
+        StringBuffer completeMoML = new StringBuffer("<group>");
+
+        // Get the PropertySolver.
+        PropertySolver solver = (PropertySolver) getContainer();
+        try {
+            Iterator propertyables = solver.getAllPropertyables().iterator();
+
+            while (propertyables.hasNext()) {
+                Object propertyableObject = propertyables.next();
+
+                if (propertyableObject instanceof NamedObj) {
+                    NamedObj namedObj = (NamedObj) propertyableObject;
+
+                    Property property = solver.getResolvedProperty(namedObj, false);
+
+                    completeMoML.append(_getMoMLShowInfoString(namedObj, property));
+                }
+            }
+        } catch (IllegalActionException e) {
+            assert false;
+        }
+        completeMoML.append("</group>");
+
+        // FIXME: we can only undo at the toplevel.
+        NamedObj toplevel = toplevel();
+        MoMLChangeRequest request = new MoMLChangeRequest(this, toplevel, completeMoML.toString());
+        request.setUndoable(true);
+        ((TypedCompositeActor)toplevel).requestChange(request);
+    }
 
     /** The visual icon.
      */

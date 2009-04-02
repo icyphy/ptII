@@ -80,7 +80,9 @@ public class PropertyConstraintFSMHelper extends PropertyConstraintCompositeHelp
     }
     
     public List<Inequality> constraintList() throws IllegalActionException {
-        super.constraintList();
+        // FIMXE: cannot call super here, because PropertyConstraintCompositeHelper
+        // recursively call constraintList() of its children.
+        //super.constraintList();
         
         HashMap<NamedObj, List<ASTPtRootNode>> outputActionMap = 
             new HashMap<NamedObj, List<ASTPtRootNode>>();

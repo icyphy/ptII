@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
@@ -48,6 +49,7 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
@@ -204,25 +206,39 @@ public abstract class PropertySolver extends PropertySolverBase {
         _repaintGUI();
     }
 
-    public void displayProperties() throws IllegalActionException {
+    /**
+     * If the value of the highlight parameter is set to
+     * true, highlight the given property-able object with
+     * the specified color associated with the given
+     * property, if there exists any.
+     * If the value of the showText parameter is true,
+     * show the given property value for the given
+     * property-able object. If the property is not null,
+     * this looks for the _showInfo parameter in the 
+     * property-able object. Create a new _showInfo
+     * StringParameter, if there does not already exists one.
+     * Set its value to the given property value. If the
+     * given property is null, this removes the _showInfo
+     * parameter from the property-able object. 
+     * @exception IllegalActionException Thrown if an error
+     * occurs when creating or setting the value for the 
+     * _showInfo parameter in the property-able object.
+     * Thrown if an error occurs when creating or setting 
+     * the value for the highlightColor attribute in the 
+     * property-able object.
+     */
+     public void displayProperties() throws IllegalActionException {
         // Do nothing if we are not in a mode that allows display.
         if (!(isResolve() || isView())) {
             return;
         }
-        Iterator propertyables = getAllPropertyables().iterator();
-        while (propertyables.hasNext()) {
-            Object propertyableObject = propertyables.next();
-
-            if (propertyableObject instanceof NamedObj) {
-                NamedObj namedObj = (NamedObj) propertyableObject;
-
-                Property property = getResolvedProperty(namedObj, false);
-
-                _highlighter.showProperty(namedObj, property);
-                _highlighter.highlightProperty(namedObj, property);
-            }
+        
+        if (_highlighter.highlight.getToken() == BooleanToken.TRUE) {
+            _highlighter.highlightProperties();
         }
-        _repaintGUI();
+        if (_highlighter.showText.getToken() == BooleanToken.TRUE) {
+            _highlighter.showProperties();        
+        }
     }
 
     /*
@@ -553,6 +569,7 @@ public abstract class PropertySolver extends PropertySolverBase {
                             // did not train (record) this exception.
                             success = false;
                         }
+                        throw ex;
                     }
                 }
             }
@@ -921,7 +938,7 @@ public abstract class PropertySolver extends PropertySolverBase {
 
     private Map<Object, Object> _stats = new LinkedHashMap<Object, Object>();
 
-    HashMap<Object, Property> _previousProperties = new HashMap<Object, Property>();
+    private HashMap<Object, Property> _previousProperties = new HashMap<Object, Property>();
 
     protected static final String _eol = StringUtilities
     .getProperty("line.separator");
