@@ -57,9 +57,9 @@ import java.util.zip.ZipFile;
 public class JarSigner {
 
     /** Construct a jar signer.
-     *  @param The alias for the signing key.
-     *  @param The private key to sign with.
-     *  @param The certificate chain.
+     *  @param alias The alias for the signing key.
+     *  @param privateKey The private key to sign with.
+     *  @param certChain The certificate chain.
      */
     public JarSigner(String alias, PrivateKey privateKey, X509Certificate[] certChain) {
         _alias = alias;
