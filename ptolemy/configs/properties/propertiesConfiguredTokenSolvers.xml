@@ -7,7 +7,10 @@
     <configure>
  	  <?moml
 		<group>
-		  <property name="FirstValuePTS" class="ptolemy.data.properties.configuredSolvers.token.FirstValuePTS"/>
+		  <property name="FirstValuePTS" class="ptolemy.data.properties.configuredSolvers.token.FirstValuePTS">
+				<!--FIXME: It is better if there is a way to instantiate this in the PropertySolver base class. -->
+				<property name="PropertyDisplayActions" class="ptolemy.data.properties.gui.PropertyDisplayActions"/>
+			</property>
   	  	</group>
  	  ?>
     </configure>

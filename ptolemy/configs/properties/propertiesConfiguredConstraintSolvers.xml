@@ -4,13 +4,25 @@
 
 <!-- Library of actors that are properties. -->
   <entity name="Configured ConstraintSolvers" class="ptolemy.moml.EntityLibrary">
-    <configure>
- 	  <?moml
+	<configure>
+		<?moml
 		<group>
-		  <property name="LogicalAND_Forward" class="ptolemy.data.properties.configuredSolvers.lattice.LogicalAND_Forward_CS"/>
-		  <property name="LogicalOR_Backward" class="ptolemy.data.properties.configuredSolvers.lattice.LogicalOR_Backward_CS"/>
-		  <property name="LogicalAND_OR_Value_CS" class="ptolemy.data.properties.configuredSolvers.lattice.LogicalAND_OR_Value_CS"/>
-		  <property name="TypeSystem_C" class="ptolemy.data.properties.configuredSolvers.lattice.TypeSystemCCS"/>
+			<property name="LogicalAND_Forward" class="ptolemy.data.properties.configuredSolvers.lattice.LogicalAND_Forward_CS">
+				<!--FIXME: It is better if there is a way to instantiate this in the PropertySolver base class. -->
+				<property name="PropertyDisplayActions" class="ptolemy.data.properties.gui.PropertyDisplayActions"/>
+			</property>
+			<property name="LogicalOR_Backward" class="ptolemy.data.properties.configuredSolvers.lattice.LogicalOR_Backward_CS">
+				<!--FIXME: It is better if there is a way to instantiate this in the PropertySolver base class. -->
+				<property name="PropertyDisplayActions" class="ptolemy.data.properties.gui.PropertyDisplayActions"/>
+			</property>
+			<property name="LogicalAND_OR_Value_CS" class="ptolemy.data.properties.configuredSolvers.lattice.LogicalAND_OR_Value_CS">
+				<!--FIXME: It is better if there is a way to instantiate this in the PropertySolver base class. -->
+				<property name="PropertyDisplayActions" class="ptolemy.data.properties.gui.PropertyDisplayActions"/>
+			</property>
+			<property name="TypeSystem_C" class="ptolemy.data.properties.configuredSolvers.lattice.TypeSystemCCS">
+				<!--FIXME: It is better if there is a way to instantiate this in the PropertySolver base class. -->
+				<property name="PropertyDisplayActions" class="ptolemy.data.properties.gui.PropertyDisplayActions"/>
+			</property>
   	  	</group>
  	  ?>
     </configure>

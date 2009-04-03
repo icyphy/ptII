@@ -531,6 +531,9 @@ public abstract class PropertySolverBase extends Attribute {
 
         
         if ((component instanceof IOPort) || (component instanceof Attribute)) {
+            if (((NamedObj) component).getContainer() == null) {
+                System.err.println("component container is null: " + component);
+            }
             return _getHelper(((NamedObj) component).getContainer());
         }
 

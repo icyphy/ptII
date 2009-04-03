@@ -27,17 +27,14 @@
 package ptolemy.data.properties;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.properties.gui.PropertyHighlighter;
 import ptolemy.data.properties.lattice.PropertyConstraintAttribute;
 import ptolemy.data.properties.token.PropertyTokenAttribute;
 import ptolemy.data.type.BaseType;
@@ -49,7 +46,6 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
-import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
@@ -86,7 +82,7 @@ public abstract class PropertySolver extends PropertySolverBase {
         action.setStringMode(true);
         _addActions(action);
 
-        _highlighter = new PropertyHighlighter(this, "PropertyHighlighter");
+        _highlighter = new PropertyMoMLHandler(this, "PropertyMoMLHandler");
 
         manualAnnotation = new Parameter(this, "manualAnnotation",
                 BooleanToken.FALSE);
@@ -94,6 +90,11 @@ public abstract class PropertySolver extends PropertySolverBase {
 
         all = new SharedParameter(this, "all", PropertySolver.class, "false");
         all.setTypeEquals(BaseType.BOOLEAN);
+        
+        // FIXME: We do not want this GUI dependency here...
+        // This attribute should be put in the MoML in the library instead
+        // of here in the Java code. 
+        //new PropertyDisplayActions(this, "PropertyDisplayActions");
     }
 
     public void addErrors(String error) {
@@ -163,49 +164,6 @@ public abstract class PropertySolver extends PropertySolverBase {
         _repaintGUI();
     }
 
-    /*
-     * Clear the display properties.
-     */
-    public void clearDisplay() {
-        _highlighter.clearDisplay();
-    }
-
-    /*
-     * Clear the resolved properties for this solver. This goes through all
-     * property-able objects and removes the property attributes that has the
-     * extended use-case name of this solver.
-     * 
-     * @exception IllegalActionException Not Thrown.
-     */
-    public void clearProperties() throws IllegalActionException {
-        _resolvedProperties.clear();
-
-        try {
-            for (Object propertyable : getAllPropertyables()) {
-                if (propertyable instanceof NamedObj) {
-                    NamedObj namedObj = (NamedObj) propertyable;
-
-                    PropertyAttribute attribute = (PropertyAttribute) namedObj
-                    .getAttribute(getExtendedUseCaseName());
-
-                    if (attribute != null) {
-                        attribute.setContainer(null);
-                    }
-                }
-            }
-
-            Attribute trainedException = getTrainedExceptionAttribute();
-
-            if (trainedException != null) {
-                trainedException.setContainer(null);
-            }
-
-        } catch (NameDuplicationException e1) {
-            assert false;
-        }
-        _repaintGUI();
-    }
-
     /**
      * If the value of the highlight parameter is set to
      * true, highlight the given property-able object with
@@ -241,6 +199,10 @@ public abstract class PropertySolver extends PropertySolverBase {
         }
     }
 
+    public PropertyMoMLHandler getMoMLHandler() {
+        return _highlighter;
+    }
+    
     /*
      * Return the previous resolved property for the given object.
      * 
@@ -277,9 +239,8 @@ public abstract class PropertySolver extends PropertySolverBase {
         return getAttribute(_TRAINED_EXCEPTION_ATTRIBUTE_NAME);
     }
 
-    public void highlightProperties() throws IllegalActionException {
-        _highlighter.highlightProperties();
-        _repaintGUI();
+    public String getTrainedExceptionAttributeName() {
+        return _TRAINED_EXCEPTION_ATTRIBUTE_NAME;
     }
 
     /*
@@ -476,16 +437,16 @@ public abstract class PropertySolver extends PropertySolverBase {
                 return true;
             } else if (actionValue.equals(CLEAR)) {
                 if (isInvoked) {
-                    clearProperties();
-                    clearDisplay();
+                    _resolvedProperties.clear();
+                    _highlighter.clearProperties();
+                    _highlighter.clearDisplay();
                 }
                 return true;
 
             } else if (actionValue.equals(VIEW)) {
                 if (isInvoked) {
-                    clearDisplay();
-                    showProperties();
-                    highlightProperties();
+                    _highlighter.clearDisplay();
+                    displayProperties();
                 }
                 return true;
 
@@ -499,10 +460,11 @@ public abstract class PropertySolver extends PropertySolverBase {
                 // Clear the display properties of the previous invoked solver.
                 // If no solver is invoked previously, at least clear
                 // the previous highlighting for this solver.
-                if (previousSolver == null) {
+                if (previousSolver == null || previousSolver.getContainer() == null) {
                     previousSolver = this;
                 }
-                previousSolver.clearDisplay();
+                
+                previousSolver._highlighter.clearDisplay();
 
                 _sharedUtilities._previousInvokedSolver = this;
 
@@ -599,11 +561,6 @@ public abstract class PropertySolver extends PropertySolverBase {
     public void setTesting() {
         action.setPersistent(true);
         setAction(TEST);
-        _repaintGUI();
-    }
-
-    public void showProperties() throws IllegalActionException {
-        _highlighter.showProperties();
         _repaintGUI();
     }
 
@@ -932,7 +889,7 @@ public abstract class PropertySolver extends PropertySolverBase {
     /*
      * The PropertyHighlighter that controls the property visualization.
      */
-    protected PropertyHighlighter _highlighter;
+    protected PropertyMoMLHandler _highlighter;
 
     protected boolean _isInvoked;
 

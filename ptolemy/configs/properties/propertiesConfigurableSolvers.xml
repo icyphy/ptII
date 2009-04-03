@@ -21,10 +21,19 @@
 		  </property>
 		</property>
 		
-        <property name="PropertyConstraintSolver" class="ptolemy.data.properties.lattice.PropertyConstraintSolver"/>
-        <property name="PropertyTokenSolver" class="ptolemy.data.properties.token.PropertyTokenSolver"/>
-        <property name="PropertyCombineSolver" class="ptolemy.data.properties.token.PropertyCombineSolver"/>		
-        <property name="PropertyRemover" class="ptolemy.data.properties.PropertyRemover"/>		
+        <property name="PropertyConstraintSolver" class="ptolemy.data.properties.lattice.PropertyConstraintSolver">
+        	<!--FIXME: It is better if there is a way to instantiate this in the PropertySolver base class. -->
+        	<property name="PropertyDisplayActions" class="ptolemy.data.properties.gui.PropertyDisplayActions"/>
+        </property>
+        <property name="PropertyTokenSolver" class="ptolemy.data.properties.token.PropertyTokenSolver">
+        	<!--FIXME: It is better if there is a way to instantiate this in the PropertySolver base class. -->
+        	<property name="PropertyDisplayActions" class="ptolemy.data.properties.gui.PropertyDisplayActions"/>
+        </property>
+        <property name="PropertyCombineSolver" class="ptolemy.data.properties.token.PropertyCombineSolver">
+        	<!--FIXME: It is better if there is a way to instantiate this in the PropertySolver base class. -->
+        	<property name="PropertyDisplayActions" class="ptolemy.data.properties.gui.PropertyDisplayActions"/>
+        </property>
+        <property name="PropertyRemover" class="ptolemy.data.properties.PropertyRemover"/>
       </group>
     ?>
   </configure>
