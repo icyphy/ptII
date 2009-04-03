@@ -1,10 +1,10 @@
-# Makefile for the Ptolemy runtime configs
+# Makefile for the Ptolemy with modal instead of fsm and all domains runtime configuration 
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2000-2008 The Regents of the University of California.
+# @Copyright (c) 2002-2005 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,16 +29,16 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/configs
+ME =		ptolemy/configs/modal
 
-# If you add a configuration, be sure to add the jar file
-# in PTCLASSALLJARS below
-DIRS =		codegen doc dsp full gt hyvisual jni jxta \
-		luminary modal properties pn ptiny ptinyKepler \
-		space vhdl viptos visualsense test
+# There is no demo directory, put demos in the corresponding domain
+# directory so that we can find them if we are looking at domains.
+# An alternative would be to split the demo subdirectory into
+# directories by domain
+DIRS =		#demo
 
 # Root of the Java directory
-ROOT =		../..
+ROOT =		../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -47,86 +47,35 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	configs
-PTCLASSJAR =
+PTPACKAGE = 	modal
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS =
 
-# These files go into PTCLASSALLJAR
-# ptIIplanet.gif should be in ../../doc/img, but Web Start
-#  has problems pulling in the gif if the gif is in a different jar
-#  so we include it in this jar
+# HTML Files that are derived from other HTML files.
+DERIVED_FILES =
+
 OTHER_FILES_TO_BE_JARED = \
-	README.txt \
-	annotation.xml \
+	$(DERIVED_FILES) \
 	automataActorLibrary.xml \
 	basicActorLibrary.xml \
 	basicDirectors.xml \
 	basicLibrary.xml \
-	basicUtilities.xml \
-	basicUtilitiesFSM.xml \
 	caseTableauFactory.xml \
-	codegen.xml \
-	customize.xml \
-	defaultFullConfiguration.xml \
-	ergEffigyFactory.xml \
-	ergTableauFactory.xml \
-	experimentalDirectors.xml \
-	extendedEffigyFactories.xml \
-	extendedTableauFactories.xml \
-	fsmEffigyFactories.xml \
-	fsmLibrary.xml \
-	fsmTableauFactory.xml \
+	configuration.xml \
 	fmvEffigyFactory.xml \
 	fmvTableauFactory.xml \
-	graphEffigyFactory.xml \
-	graphTableauFactory.xml \
+	hoc.xml \
 	iaEffigyFactory.xml \
 	iaTableauFactory.xml \
-	ptIIplanet.gif \
-	runConfiguration.xml \
-	runPanelConfiguration.xml \
-	runWelcomeWindow.xml \
+	intro.htm \
+	modalEffigyFactories.xml \
+	modalFullConfiguration.xml \
+	modalLibrary.xml \
+	modalTableauFactory.xml \
 	utilitiesLibrary.xml \
-	utilityAnalysis.xml \
-	utilityColorAttribute.xml \
-	utilityCompositeActor.xml \
-	utilityERGModalModel.xml \
-	utilityFileParameter.xml \
-	utilityIntRangeParameter.xml \
 	utilityModalModel.xml \
-	utilityNameParameter.xml \
-	utilityParameter.xml \
-	utilityParameters.xml \
-	utilityPortParameter.xml \
-	utilityPriority.xml \
-	utilityRequireVersion.xml \
-	utilityScopeExtender.xml \
-	utilitySharedParameter.xml \
-	utilityStringParameter.xml
-
-# Include these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-		codegen/codegen.jar \
-		doc/doc.jar \
-		dsp/dsp.jar \
-		full/full.jar \
-		gt/gt.jar \
-		hyvisual/hyvisual.jar \
-		jni/jni.jar \
-		jxta/jxta.jar \
-		luminary/luminary.jar \
-		modal/modal.jar \
-		pn/pn.jar \
-		properties/properties.jar \
-		ptiny/ptiny.jar \
-		ptinyKepler/ptinyKepler.jar \
-		space/space.jar \
-		vhdl/vhdl.jar \
-		viptos/viptos.jar \
-		visualsense/visualsense.jar
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+	welcomeWindow.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -140,14 +89,11 @@ OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass
+all: jclass $(DERIVED_FILES)
 	@echo "nothing need be done for make all in this directory"
 
-install: jclass jars
+install: all jars
 	@echo "nothing need be done for make install in this directory"
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
-
-
-
