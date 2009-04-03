@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor;
+package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -60,7 +60,6 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.AcceptedRating Red (zgang)
  */
 public class TypedCompositeActor extends ptolemy.cg.adapter.generic.adapters.ptolemy.actor.TypedCompositeActor {
-    // FIXME rodiers: don't we want to extend ptolemy.cg.adapter.generic.adapters.ptolemy.actor.TypedCompositeActor instead?
     
     /** Construct the code generator adapter associated
      *  with the given TypedCompositeActor.

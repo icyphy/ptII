@@ -57,6 +57,7 @@ public class TypedCompositeActor extends CodeGeneratorAdapter {
         super(component);
     }
 
+    @Override
     protected String _generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
@@ -92,6 +93,7 @@ public class TypedCompositeActor extends CodeGeneratorAdapter {
         return processCode(code.toString());
     }
 
+    @Override
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
@@ -103,6 +105,7 @@ public class TypedCompositeActor extends CodeGeneratorAdapter {
         return processCode(code.toString());
     }
     
+    @Override
     public String generateWrapupCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
@@ -114,6 +117,7 @@ public class TypedCompositeActor extends CodeGeneratorAdapter {
         return processCode(code.toString());
     }
     
+    @Override
     public Set<String> getSharedCode() throws IllegalActionException {
 
         // Use LinkedHashSet to give order to the shared code.

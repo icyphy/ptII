@@ -30,7 +30,7 @@ package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.cg.lib;
 import java.io.IOException;
 import java.util.List;
 
-import ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.TypedCompositeActor;
+import ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.TypedCompositeActor;
 import ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;

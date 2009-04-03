@@ -31,7 +31,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.DFUtilities;
-import ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.TypedCompositeActor;
+import ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.TypedCompositeActor;
 import ptolemy.cg.kernel.generic.CodeStream;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGenerator;
