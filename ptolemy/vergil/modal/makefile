@@ -1,4 +1,4 @@
-# Makefile for the ptolemy/vergil/fsm package
+# Makefile for the ptolemy/vergil/modal package
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
@@ -30,7 +30,7 @@
 # 						COPYRIGHTENDKEY
 
 
-ME =		ptolemy/vergil/fsm
+ME =		ptolemy/vergil/modal
 
 DIRS =		fmv ia modal
 
@@ -44,7 +44,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	fsm
+PTPACKAGE = 	modal
 PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
@@ -52,7 +52,7 @@ PTCLASSALLJARS = \
 		ia/ia.jar \
 		modal/modal.jar
 
-# jars not included in fsm.jar because they are not in ptiny
+# jars not included in modal.jar because they are not in ptiny
 #		fmv/fmv.jar
 
 
