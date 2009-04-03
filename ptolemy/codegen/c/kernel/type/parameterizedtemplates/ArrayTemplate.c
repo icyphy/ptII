@@ -465,7 +465,7 @@ $type $TypeArray_sum(Token token) {
 	int i;
 
 	if (token.payload.$TypeArray->size <= 0) {
-		return $TypeArray_zero(token);
+		return $zero_$Type();
 	} else {
 		result = $TypeArray_get(token, 0);
 	}

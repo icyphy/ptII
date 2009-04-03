@@ -473,7 +473,7 @@ int IntArray_sum(Token token) {
 	int i;
 
 	if (token.payload.IntArray->size <= 0) {
-		return $IntArray_zero(token);
+		return 0;
 	} else {
 		result = IntArray_get(token, 0);
 	}
