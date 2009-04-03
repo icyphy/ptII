@@ -454,6 +454,25 @@ public class KeplerDocumentationAttribute extends Attribute implements
         }
     }
 
+    /** Remove a property from the property hashtable.
+     *  @param name The name of the property.
+     *  @return The value of the property.
+     *  @exception IllegalActionException If an error occurs removing the
+     *  ConfigurableAttribute.
+     *  @exception NameDuplicationException If an error occurs removing the
+     *  ConfigurableAttribute.
+     *  @see #addProperty(String, String)
+     */
+    public String removeProperty(String name)
+            throws IllegalActionException, NameDuplicationException {
+        String retval = (String) _propertyHash.remove(name);
+        if(retval != null) {
+            Attribute attribute = getAttribute("prop:" + name);
+            attribute.setContainer(null);
+        }
+        return retval;
+    }
+
     /** Set the author.
      *  @param author The author.
      *  @see #getAuthor()
@@ -497,6 +516,9 @@ public class KeplerDocumentationAttribute extends Attribute implements
     /** Set the property hashtable.
      *  @param propertyHash The property hashtable.
      *  @see #getPropertyHash()
+     *
+     *  FIXME: need to remove all existing ConfigurableAttributes
+     *  for properties and add new ones for new hash table.
      */
     public void setPropertyHash(Hashtable propertyHash) {
         _propertyHash = propertyHash;
