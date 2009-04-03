@@ -513,9 +513,30 @@ public class PropertyClassChanges implements MoMLFilter {
         // in RemoveGraphical classes.
         _actorsWithPropertyClassChanges.put(
                 "ptolemy.domains.fsm.modal.ModalModel", modalModelClassChanges);
+ 
+
+
+        // ModalModel changes for the new model model
+        HashMap modalModelClassChanges2 = new HashMap();
+
+        // Key = property name, Value = new class name
+        modalModelClassChanges2.put("directorClass",
+                "ptolemy.data.expr.StringParameter");
+
+        // Remove the _Director attribute, which does not help the modal model
+        // to decide which director to choose. This attribugte will be
+        // automatically created. This attribute will not appear in the MoML
+        // output any more.
+        // NOTE: Remove a property by setting the new class to null.
+        modalModelClassChanges2.put("_Director", null);
+
+        // Here is the only difference between the filter for the old code
+        // and the new filter.
+        modalModelClassChanges2.put("_tableauFactory",
+                "ptolemy.vergil.modal.modal.ModalTableauFactory");
 
         _actorsWithPropertyClassChanges.put(
-                "ptolemy.domains.modal.modal.ModalModel", modalModelClassChanges);
+                "ptolemy.domains.modal.modal.ModalModel", modalModelClassChanges2);
 
         // HashMap hdfClassChanges = new HashMap();
 //         hdfClassChanges.put("_Director", null);
