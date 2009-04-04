@@ -69,12 +69,12 @@ public class JimpleWriter extends SceneTransformer implements HasPhaseOptions {
     }
 
     public String getDeclaredOptions() {
-        return "debug outDir";
+        return "debug outputDirectory";
     }
 
     /** Write out the Jimple file.
      *  Sample option arguments:
-     *        <code>-p wjtp.writeJimple1 outDir:jimple1</code>
+     *        <code>-p wjtp.writeJimple1 outputDirectory:jimple1</code>
      *
      *  @see ClassWriter
      *  @param phaseName The name of the phase, for example
@@ -87,7 +87,7 @@ public class JimpleWriter extends SceneTransformer implements HasPhaseOptions {
         System.out.println("JimpleWriter.internalTransform(" + phaseName + ", "
                 + options + ")");
 
-        String outDir = PhaseOptions.getString(options, "outDir");
+        String outputDirectory = PhaseOptions.getString(options, "outputDirectory");
 
         for (Iterator classes = Scene.v().getApplicationClasses().iterator(); classes
                 .hasNext();) {
@@ -95,18 +95,18 @@ public class JimpleWriter extends SceneTransformer implements HasPhaseOptions {
 
             String fileName;
 
-            if (!outDir.equals("")) {
-                File outDirFile = new File(outDir);
+            if (!outputDirectory.equals("")) {
+                File outputDirectoryFile = new File(outputDirectory);
 
-                if (!outDirFile.isDirectory()) {
-                    if (!outDirFile.mkdirs()) { 
+                if (!outputDirectoryFile.isDirectory()) {
+                    if (!outputDirectoryFile.mkdirs()) { 
                         throw new RuntimeException(
                                 "Failed to create directory \""
-                                + outDirFile + "\"");
+                                + outputDirectoryFile + "\"");
                     }
                 }
 
-                fileName = outDir + System.getProperty("file.separator");
+                fileName = outputDirectory + System.getProperty("file.separator");
             } else {
                 fileName = "";
             }

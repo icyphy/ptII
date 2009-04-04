@@ -70,12 +70,12 @@ public class Main extends KernelMain {
         // -p wjtp.watchDog time:30000
         addTransform(pack, "wjtp.watchDog", WatchDogTimer.v());
 
-        // Generate the makefile files in outDir
+        // Generate the makefile files in outputDirectory
         addTransform(pack, "wjtp.makefileWriter", MakefileWriter.v(_toplevel),
                 "_generatorAttributeFileName:" + _generatorAttributeFileName
                         + " targetPackage:" + _targetPackage
                         + " templateDirectory:" + _templateDirectory
-                        + " outDir:" + _outputDirectory);
+                        + " outputDirectory:" + _outputDirectory);
 
         // Create a class for the composite actor of the model
         addTransform(pack, "wjtp.mt", ShallowModelTransformer.v(_toplevel),
@@ -98,8 +98,8 @@ public class Main extends KernelMain {
         /*   */
         // This snapshot should be last...
         addTransform(pack, "wjtp.finalSnapshotJimple", JimpleWriter.v(),
-                "outDir:" + _outputDirectory);
-        addTransform(pack, "wjtp.finalSnapshot", ClassWriter.v(), "outDir:"
+                "outputDirector:" + _outputDirectory);
+        addTransform(pack, "wjtp.finalSnapshot", ClassWriter.v(), "outputDirectory:"
                 + _outputDirectory);
 
         // Disable the watch dog timer

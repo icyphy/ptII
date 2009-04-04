@@ -54,16 +54,16 @@ public class Main extends KernelMain {
     public void addTransforms() {
         Pack pack = PackManager.v().getPack("wjtp");
 
-        // Generate the makefile files in outDir
+        // Generate the makefile files in outputDirectory
         addTransform(pack, "wjtp.makefileWriter", MakefileWriter.v(_toplevel),
                 "_generatorAttributeFileName:" + _generatorAttributeFileName
                         + " targetPackage:" + _targetPackage
                         + " templateDirectory:" + _templateDirectory
-                        + " outDir:" + _outputDirectory);
+                        + " outputDirectory:" + _outputDirectory);
 
-        // Generate the interpreted files in outDir
+        // Generate the interpreted files in outputDirectory
         addTransform(pack, "wjtp.interpretedWriter", InterpretedWriter
-                .v(_toplevel), " outDir:" + _outputDirectory);
+                .v(_toplevel), " outputDirectory:" + _outputDirectory);
     }
 
     /** Parse any code generator specific arguments.

@@ -376,7 +376,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         _substituteMap.put("@ptIIJarsPath@", _ptIIJarsPath);
         _substituteMap.put("@ptIIUserDirectory@", _ptIIUserDirectory);
 	try {
-	    _substituteMap.put("@ptIILocalURL@", new File(_outputDirectory).toURI().toURL().toString());
+	    _substituteMap.put("@ptIILocalURL@", new URL(new File(_outputDirectory).toURI().toURL(), _codeBase).toString());
 	} catch (Exception ex) {
 	    throw new InternalErrorException(null, ex, "Failed to create URL for \""
 					     + _outputDirectory + "\"");

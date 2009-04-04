@@ -49,7 +49,7 @@ import soot.SceneTransformer;
  This transformer is the smallest standalone Ptolemy II transformer.
 
  <p>For a model called Foo, we generate Foo.xml,
- in the directory named by the outDir parameter.
+ in the directory named by the outputDirectory parameter.
 
 
  @author Christopher Hylands
@@ -80,7 +80,7 @@ public class InterpretedWriter extends SceneTransformer implements
     }
 
     public String getDeclaredOptions() {
-        return "targetPackage outDir";
+        return "targetPackage outputDirectory";
     }
 
     public String getPhaseName() {
@@ -110,7 +110,7 @@ public class InterpretedWriter extends SceneTransformer implements
         System.out.println("InterpretedWriter.internalTransform(" + phaseName
                 + ", " + options + ")");
 
-        _outputDirectory = PhaseOptions.getString(options, "outDir");
+        _outputDirectory = PhaseOptions.getString(options, "outputDirectory");
 
         // If the targetPackage is foo.bar, and the model is Bif,
         // the we will do mkdir $PTII/foo/bar/Bif/
@@ -119,18 +119,18 @@ public class InterpretedWriter extends SceneTransformer implements
         _sanitizedModelName = StringUtilities.sanitizeName(_model.getName());
 
         // Create the directory where we will create the files.
-        File outDirFile = new File(_outputDirectory);
+        File outputDirectoryFile = new File(_outputDirectory);
 
-        if (outDirFile.isDirectory()) {
+        if (outputDirectoryFile.isDirectory()) {
             System.out
-                    .println(" Warning: '" + outDirFile + "' already exists.");
+                    .println(" Warning: '" + outputDirectoryFile + "' already exists.");
         }
 
-        if (!outDirFile.isDirectory()) {
-            if (!outDirFile.mkdirs()) {
+        if (!outputDirectoryFile.isDirectory()) {
+            if (!outputDirectoryFile.mkdirs()) {
                 throw new InternalErrorException(
                             "Failed to create directory \""
-                            + outDirFile + "\"");
+                            + outputDirectoryFile + "\"");
             }
         }
 

@@ -50,7 +50,7 @@ longTest: demo
 smokeTest: demo
 
 demo:
-	"$(JAVA)" -Xfuture -classpath "$(CLASSPATH)" ptolemy.actor.gui.MoMLSimpleStatisticalApplication @outDir@@modelName@.xml
+	"$(JAVA)" -Xfuture -classpath "$(CLASSPATH)" ptolemy.actor.gui.MoMLSimpleStatisticalApplication @outputDirectory@@modelName@.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

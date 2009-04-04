@@ -49,7 +49,7 @@ import soot.util.JasminOutputStream;
  Write all of the application classes out to class files.  Jasmin files
  for the classes will be created in a temporary directory and then
  compiled into bytecode using the Jasmin assembler.  The output
- directory is specified using the outDir parameter.  The class files
+ directory is specified using the outputDirectory parameter.  The class files
  will be placed in the appropriate subdirectory of that directory
  according to their package name.
 
@@ -78,7 +78,7 @@ public class ClassWriter extends SceneTransformer implements HasPhaseOptions {
     }
 
     public String getDeclaredOptions() {
-        return "debug outDir";
+        return "debug outputDirectory";
     }
 
     /** Write out the class file.
@@ -91,29 +91,29 @@ public class ClassWriter extends SceneTransformer implements HasPhaseOptions {
      *           JimpleWriter.v()));
      *  </pre>
      *  Sample option arguments:
-     *        <code>-p wjtp.snapshot1 outDir:jimple1</code>
+     *        <code>-p wjtp.snapshot1 outputDirectory:jimple1</code>
      *
      *  @see JimpleWriter
      *  @param phaseName The name of the phase, for example
      *  <code>wjtp.snapshot1</code>.
      *  @param options The options Map.  This method uses the
-     *  <code>outDir</code> option to specify where the .class
+     *  <code>outputDirectory</code> option to specify where the .class
      *  file should be written
      */
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("ClassWriter.internalTransform(" + phaseName + ", "
                 + options + ")");
 
-        String outDir = PhaseOptions.getString(options, "outDir");
+        String outputDirectory = PhaseOptions.getString(options, "outputDirectory");
 
-        if (!outDir.equals("")) {
-            File outDirFile = new File(outDir);
+        if (!outputDirectory.equals("")) {
+            File outputDirectoryFile = new File(outputDirectory);
 
-            if (!outDirFile.isDirectory()) {
-                if (!outDirFile.mkdirs()) { 
+            if (!outputDirectoryFile.isDirectory()) {
+                if (!outputDirectoryFile.mkdirs()) { 
                     throw new RuntimeException(
                             "Failed to create directory \""
-                            + outDirFile + "\"");
+                            + outputDirectoryFile + "\"");
                 }
             }
         }
@@ -123,12 +123,12 @@ public class ClassWriter extends SceneTransformer implements HasPhaseOptions {
             SootClass theClass = (SootClass) classes.next();
 
             try {
-                _write(theClass, outDir);
+                _write(theClass, outputDirectory);
             } catch (Exception ex) {
                 // If we get an IOException, we might not have any idea
                 // of which directory was problematic
                 throw new RuntimeException("Creating class file for '"
-                        + theClass + "' in directory '" + outDir + "' failed",
+                        + theClass + "' in directory '" + outputDirectory + "' failed",
                         ex);
             }
         }

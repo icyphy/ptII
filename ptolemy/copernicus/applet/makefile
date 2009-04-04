@@ -149,6 +149,19 @@ compileDemo: $(JCLASS)
 		-targetPath      "$(TARGETPATH)" \
 		$(MODELPATH)
 
+# change this rule, be sure to run make tests
+jnlpDemo: $(JCLASS)
+	@echo "generate an applet for '$(MODELPATH)'"
+	$(PTII)/bin/copernicus \
+		-verbose \
+		-codeGenerator   "applet" \
+		-run 		 "false" \
+		-ptIIUserDirectory  "`echo "$(PTII)" | sed 's@\\\@/@g'`" \
+		-targetPackage   "$(TARGETPACKAGE)" \
+		-targetPath      "$(TARGETPATH)" \
+		$(MODELPATH)
+
+
 # Run the OrthoComm demo
 ORTHOCOMMTARGETDIRECTORY = $(TARGETPATH)/ToplevelModel
 runOrthoCommDemo:

@@ -67,7 +67,8 @@ public class Main extends KernelMain {
                         + " modelPath:" + _modelPath
                         + " outputDirectory:" + _outputDirectory
                         + " ptIIJarsPath:" + _ptIIJarsPath
-                        + " ptIIUserDirectory:" + _ptIIUserDirectory);
+                        + " ptIIUserDirectory:" + _ptIIUserDirectory
+                        + " targetPath: " + _targetPath);
     }
 
     /** Parse any code generator specific arguments.
