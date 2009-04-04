@@ -1,6 +1,8 @@
 /***initLCD***/
-// put the initialization code here.. ie.. rti init,
- RIT128x96x4Init(1000000);
+#ifndef _initlcd_
+#define _initlcd_
+RIT128x96x4Init(1000000);
+#endif
 /**/
 
 /***preinitBlock***/
@@ -36,9 +38,6 @@ vTaskDelayUntil(&xLastWakeTime,xFrequency);
 //call the methods for the tasks at this frequency
 }
 /**/
-
-
-
 
 
 
