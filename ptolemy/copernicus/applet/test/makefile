@@ -36,7 +36,8 @@ ME =		ptolemy/copernicus/applet/test
 ROOT =		../../../..
 
 #Certain models such as ct/lib/test/auto/ModalLLSTest.xml need diva
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
+#Include tools.jar so that sun.security.tools.SignatureFile is found
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(TOOLS_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
