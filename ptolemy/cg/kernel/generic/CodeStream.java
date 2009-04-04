@@ -101,7 +101,7 @@ public class CodeStream {
      * @param adapter The actor adapter associated with this code stream,
      * which is currently ignored.
      */
-    public CodeStream(CodeGeneratorAdapterStrategy adapter) {
+    public CodeStream(CodeGeneratorAdapter adapter) {
         _adapter = adapter;
         this._codeGenerator = _adapter.getCodeGenerator();
     }
@@ -115,7 +115,7 @@ public class CodeStream {
      * @param adapter The actor adapter associated with this code stream,
      * which is currently ignored.
      */
-    public CodeStream(List<String> templateArguments, CodeGeneratorAdapterStrategy adapter) {
+    public CodeStream(List<String> templateArguments, CodeGeneratorAdapter adapter) {
         this(adapter);
         _templateArguments = templateArguments;
     }
@@ -1684,7 +1684,7 @@ public class CodeStream {
     /**
      * The adapter associated with this code stream.
      */
-    private CodeGeneratorAdapterStrategy _adapter = null;
+    private CodeGeneratorAdapter _adapter = null;
 
     /** Original value of _filePath, used for error messages. */
     private String _originalFilePath = null;

@@ -51,7 +51,6 @@ import ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy;
 import ptolemy.cg.kernel.generic.CodeGeneratorUtilities;
 import ptolemy.cg.kernel.generic.CodeStream;
 import ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGenerator;
-import ptolemy.cg.kernel.generic.program.procedural.c.CCodeGeneratorAdapterStrategy;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.ArrayType;

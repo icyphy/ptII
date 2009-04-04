@@ -1555,6 +1555,7 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
      */
     final public void setAdapter(CodeGeneratorAdapter adapter) {
         _adapter = adapter;
+        _codeStream = new CodeStream(_adapter);
     }
 
     /** Set the buffer size of a given port.
@@ -2478,7 +2479,7 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
     /**
      * The code stream associated with this adapter.
      */
-    protected CodeStream _codeStream = new CodeStream(this);
+    protected CodeStream _codeStream = null;
 
     /** End of line character.  Under Unix: "\n", under Windows: "\n\r".
      *  We use a end of line character so that the files we generate
@@ -2853,7 +2854,7 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
         if (namedObj != null
                 && namedObj instanceof ptolemy.actor.lib.jni.EmbeddedCActor) {
             adapter =  codeGenerator.getAdapter(codeGenerator.getContainer());
-            codeStream = new CodeStream(adapter.getStrategy());
+            codeStream = new CodeStream(adapter);
             // We have an EmbeddedCActor, read the codeBlocks from
             // the embeddedCCode parameter.
             codeStream
@@ -2861,7 +2862,7 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
                     .getExpression());
         } else {
             adapter = codeGenerator.getAdapter(namedObj);
-            codeStream = new CodeStream(adapter.getStrategy());
+            codeStream = new CodeStream(adapter);
         }
     
         return codeStream;

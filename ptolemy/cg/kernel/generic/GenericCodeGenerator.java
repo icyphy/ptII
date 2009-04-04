@@ -1108,6 +1108,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
             
             if (!className.contains("ptolemy")) {
                 componentClass = object.getClass();
+                className = componentClass.getName();
                 for (int i = 0; i < packages.size(); ++i) {
                     String packageName = packages.get(i);
                     if (packageName.indexOf('.') != -1) {
