@@ -89,6 +89,8 @@ public class CodeGeneratorGUI extends PtolemyFrame {
             throws IllegalActionException, NameDuplicationException {
         super(codeGenerator, tableau);
 
+        this._statusBar.setVisible(false);
+        
         setTitle(codeGenerator.getName());
 
         // FIXME: The following is pretty lame.  If the model hasn't been saved,
@@ -139,10 +141,10 @@ public class CodeGeneratorGUI extends PtolemyFrame {
         });
         caveatsPanel.add(moreInfoButton);
 
-        JPanel left = new JPanel();
-        left.setLayout(new BoxLayout(left, BoxLayout.Y_AXIS));
+        JPanel upper = new JPanel();
+        upper.setLayout(new BoxLayout(upper, BoxLayout.Y_AXIS));
         caveatsPanel.setMaximumSize(new Dimension(500, 100));
-        left.add(caveatsPanel);
+        upper.add(caveatsPanel);
 
         // Panel for push buttons.
         JPanel buttonPanel = new JPanel();
@@ -161,7 +163,7 @@ public class CodeGeneratorGUI extends PtolemyFrame {
         buttonPanel.add(clearButton);
 
         buttonPanel.setMaximumSize(new Dimension(500, 50));
-        left.add(buttonPanel);
+        upper.add(buttonPanel);
 
         Configurer configurer = new Configurer(codeGenerator);
         JPanel controlPanel = new JPanel();
@@ -169,23 +171,25 @@ public class CodeGeneratorGUI extends PtolemyFrame {
 
         JScrollPane scrollPane = new JScrollPane(controlPanel);
 
-        left.add(scrollPane, BorderLayout.CENTER);
+        upper.add(scrollPane, BorderLayout.CENTER);
 
         // Create a JTextAreaExec without Start and Cancel buttons.
         final JTextAreaExec exec = new JTextAreaExec("Code Generator Commands",
                 false);
+        
+        exec.setPreferredSize(new Dimension(500, 300));
 
         // If we execute any commands, print the output in the text area.
         codeGenerator.setExecuteCommands(exec);
 
-        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-                left, exec);
+        JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
+                upper, exec);
         splitPane.setOneTouchExpandable(true);
 
         // Adjust the divider so that the control panel does not
         // have a horizontal scrollbar.
-        Dimension preferred = left.getPreferredSize();
-        splitPane.setDividerLocation(preferred.width + 20);
+        Dimension preferred = upper.getPreferredSize();
+        splitPane.setDividerLocation(preferred.height + 20);
 
         getContentPane().add(splitPane, BorderLayout.CENTER);
 
