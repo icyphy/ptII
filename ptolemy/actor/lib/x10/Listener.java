@@ -98,5 +98,5 @@ public class Listener extends Receiver {
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
     // Empty string token.
-    private StringToken _EMPTY_STRING = new StringToken("");
+    private static final StringToken _EMPTY_STRING = new StringToken("");
 }

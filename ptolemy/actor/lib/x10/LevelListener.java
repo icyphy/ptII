@@ -159,5 +159,5 @@ public class LevelListener extends Receiver {
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
     // Token to produce when no command is detected.
-    private IntToken _NO_COMMAND_TOKEN = new IntToken(-1);
+    private static final IntToken _NO_COMMAND_TOKEN = new IntToken(-1);
 }
