@@ -123,7 +123,8 @@ public class ImageDisplay extends Sink implements Placeable {
 
         newObject._container = null;
         newObject._frame = null;
-
+        newObject._pictureSize = (SizeAttribute)newObject.getAttribute("_pictureSize");
+        newObject._windowProperties = (WindowPropertiesAttribute)newObject.getAttribute("_windowProperties");
         return newObject;
     }
 

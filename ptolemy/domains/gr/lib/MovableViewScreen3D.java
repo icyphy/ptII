@@ -42,6 +42,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// MovableViewScreen3D
@@ -112,6 +113,20 @@ public class MovableViewScreen3D extends ViewScreen3D {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        MovableViewScreen3D newObject = (MovableViewScreen3D) super.clone(workspace);
+        newObject.viewerPosition = (PortParameter)newObject.getAttribute("viewerPosition"); 
+        newObject.viewerRotationAngle = (PortParameter)newObject.getAttribute("viwerRoationAngle");
+        newObject.viewerRotationAxis = (PortParameter)newObject.getAttribute("viewerRotationAxis"); 
+        return newObject;
+    }
 
     /** Call the ViewScreen fire() method, and translate and rotate the
      *  image if needed.
