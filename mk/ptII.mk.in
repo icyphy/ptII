@@ -206,6 +206,9 @@ JFLAGS = 	$(JDEBUG) $(JOPTIMIZE)
 # The javadoc binary, used to create html documentation of java classes.
 JAVADOC = 	@JAVADOC@
 
+# The javaws command is used to test Webstart JNLP files.
+JAVAWS =	@JAVAWS@
+
 # -breakiterator is only present in jdk1.4 and later
 JDOCBREAKITERATOR = @JDOCBREAKITERATOR@
 

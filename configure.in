@@ -660,6 +660,30 @@ if test ! -x "$JARSIGNER"; then
 fi
 
 #
+# The javaws command is used to test Webstart JNLP files.
+#
+AC_MSG_CHECKING([for the javaws command])
+if test -f "$PTJAVA_DIR/bin/javaws"; then
+    PT_MSG_RESULT($PTJAVA_DIR/bin/javaws)
+    JAVAWS="$PTJAVA_DIR/bin/javaws"
+else
+   if test -f "$PTJAVA_DIR/Commands/java"; then
+       PT_MSG_RESULT($PTJAVA_DIR/Commands/java)
+       JAVAWS="$PTJAVA_DIR/Commands/javaws"
+   else
+       AC_MSG_WARN([Cannot find '$PTJAVA_DIR/bin/javaws'.
+       or '$PTJAVA/Commands/javaws', looking in the path.
+       This is only a problem when testing the Java Webstart (JNLP) files.])
+       AC_PATH_PROG(JAVAWS, javaws)
+   fi
+fi
+
+if test ! -x "$JAVAWS"; then
+     AC_MSG_WARN([The javaws command "$JAVAWS" is not executable or not found.
+    This is only a problem when testing the Java Webstart (JNLP) files.])
+fi
+
+#
 # keytool command used to generate a certificate for testing actor.lib.security actors
 #
 AC_MSG_CHECKING([for the keytool command])
@@ -3891,6 +3915,9 @@ AC_SUBST(JAVACC_DIR)
 
 # The javadoc binary, used to create html documentation of java classes.
 AC_SUBST(JAVADOC)
+
+# The javaws command is used to test Webstart JNLP files.
+AC_SUBST(JAVAWS)
 
 # Location of jce.jar, usually $(PTJAVA_HOME)/lib/jce.jar
 # Java 1.5 has javax.crypto.Cipher in jce.jar
