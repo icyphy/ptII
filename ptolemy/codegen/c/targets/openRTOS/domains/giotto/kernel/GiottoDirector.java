@@ -38,6 +38,7 @@ import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.LimitedFiringSource;
+import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.codegen.kernel.ActorCodeGenerator;
@@ -84,22 +85,69 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
      */
     public GiottoDirector(ptolemy.domains.giotto.kernel.GiottoDirector giottoDirector) {
         super(giottoDirector);
+        System.out.println("GiottoDirector constructor in OpenRTOS target called");
             
     }
     
+    public String generateFireCode() throws IllegalActionException{
+        StringBuffer code = new StringBuffer();
+        //code.append("//fire code should be here. I'm from the openRTOS GiottoDirector "+_eol);
+        System.out.println("generateFireCode from openRTOS giotto director called here");
+        code.append("//Beginning of generateFireCode inside OpenRTOS GiottoDirector***************");
+        //code.append("scheduler()");
+        code.append(_eol+"}"+_eol);
+        //create thread methods here
+        code.append("//before calling generateMyThreads***************"+_eol);
+        code.append(generateMyThreads());
+        code.append("//after calling generateMyThreads***************"+_eol);
+        code.append("//End of generateFireCode inside OpenRTOS GiottoDirector***************"+_eol);
+        
+        
+        return code.toString();
+    }
+
+    /** Generate The fire function code. This method is called when the firing
+     *  code of each actor is not inlined. Each actor's firing code is in a
+     *  function with the same name as that of the actor.
+     *
+     *  @return The fire function code.
+     *  @exception IllegalActionException If thrown while generating fire code.
+     */
+    
+    /// this is my second hack at this method. Hopefully hit generates what we expect kindof
+    public String generateFireFunctionCode() throws IllegalActionException {
+        System.out.println("generateFireFunctionCode called from OpenRTOS giotto director***************");
+        StringBuffer code = new StringBuffer(" ");//super.generateFireFunctionCode());
+         
+        return code.toString();
+        
+        //content moved to _generateActorsCode() which is called in preinitialize b/c code wasn't being generated for 
+        //nested actors
+           
+    
+    }
+
+    public Set getHeaderFiles()throws IllegalActionException{
+        System.out.println("generateheader files openRTOS giotto director called here");
+        
+        HashSet files = new HashSet();
+        files.add("<stdio.h>");
+        return files;
+    }
+
     public String generateInitializeCode() throws IllegalActionException {
         System.out.println("generateInitializeCode from openRTOS giotto director called here");
         
         StringBuffer code = new StringBuffer();
         // to call the c codeblocks in *.c
         code.append(this._generateBlockCode("initLCD"));
-
+    
        HashSet<Integer> frequencies = _getAllFrequencies();
              //  StringBuffer frequencyTCode = new StringBuffer();
         
-
+    
         int currentPriorityLevel = 1;
-
+    
         ArrayList args = new ArrayList();
         
         args.add("");
@@ -107,27 +155,32 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         args.add("");
         
         
-        args.set(0, "scheduler"); 
+        args.set(0, "$actorSymbol()_scheduler"); 
         // stack size.
         args.set(1, 100); 
         // priority.
-        args.set(2, _MAX_PRIORITY_LEVEL); 
+        if(_isTopGiottoDirector())
+        {
+        args.set(2, _MAX_PRIORITY_LEVEL+1);
+        }else{
+            args.set(2, _MAX_PRIORITY_LEVEL);  // non top level scheduler so give priority one lower than the highest priority scheduling thread
+        }
         code.append(_generateBlockCode("createTask", args));  //create the scheduler thread
-
+    
         for(int frequencyValue : frequencies) {
             
             // assign the low frequency task the lower priority, doesn't handle wrap around at the moment
             //frequencyTCode.append(generateFrequencyThreadCode(frequencyValue));
-
+    
             //come back and create handlers for each of these frequency threads
-
+    
             // name for the thread.
             args.set(0, _getThreadName(frequencyValue)); 
             // stack size.
             args.set(1, _getStackSize(_getActors(frequencyValue))); 
             // priority.
             args.set(2, currentPriorityLevel); 
-
+    
             code.append(_generateBlockCode("createTask", args)); // need to figure out how to pass the method names to fire as an argument
             currentPriorityLevel++;
             
@@ -135,147 +188,21 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             // priority level for the scheduling thread.
             currentPriorityLevel %= _MAX_PRIORITY_LEVEL - 1;
         }
-     
+    
         code.append(super.generateInitializeCode());
         
-      
+        System.out.println("about to return:"+_eol+processCode(code.toString()));
         return processCode(code.toString());   
         
     }
-    
-    public String generateSchedulerThread(String period) throws IllegalActionException{
-    StringBuffer code = new StringBuffer();
-    ArrayList<String> ActorFrequencies[] = _getActorFrequencyTable();
-    
-    code.append("static void scheduler(void * pvParameters){"+_eol);
-    code.append("portTickType xLastWakeTime;"+_eol);
-    code.append("const portTickType xFrequency = "+period+"/portTICK_RATE_MS;"+_eol);
-    code.append("xLastWakeTime = xTaskGetTickCount();"+_eol);
-    code.append("    for(;;){"+_eol);
-    code.append("     vTaskDelayUntil(&xLastWakeTime,xFrequency);"+_eol);
-    code.append("//check mode stuff here for now just act like there is only one mode"+_eol);
-    for(int i = 1; i <= _getAllFrequencies().size();i++)
-    {
-        for(int j = 0; j<ActorFrequencies[i].size();j++) {
-            //call generate driver code for each of the actors
-            code.append(ActorFrequencies[i].get(j)+"_driver();"+_eol);
-        }
-        
-   }
-    
-    //code.append("//run driver code here"+_eol);
-    //sync outputs to ports, sync inputs to ports
-    code.append("//handle updates, mode switches, and switching the double buffer pointers"+_eol);
-    code.append("    }"+_eol);
-    code.append("      }"+_eol);
-           
-    return processCode(code.toString());
-    }
-    
-    public String generateMyThreads()throws IllegalActionException{
-        StringBuffer code = new StringBuffer();
-        ArrayList args1 = new ArrayList();
-        
-        double period = _getPeriod();
-        String periodString =Double.toString(period);
-        int dotIndex = periodString.indexOf('.');
-        if(dotIndex == -1){
-            // no decimal just multiply by 1000
-            periodString = Double.toString(period*1000);
-        }
-        else{
-          char temp[]= periodString.toCharArray();
-          int count = 0;
-          int i;
-          for(i = dotIndex; i < periodString.length()-1; i++){
-              temp[i]=temp[i+1];
-              count++;
-          }
-          temp[i]='0';  //terminate the string
-          count++;
-          periodString=new String(temp);
-          //System.out.println("before padding with zeros: "+periodString);
-          while(count < 3){
-              periodString+='0';
-              count++;
-          }
-        }
-        if(periodString.charAt(0)=='0')  // leading zero so remove it
-        {
-            periodString = periodString.substring(1,periodString.length());
-            
-        }
-        
-        args1.add("");
-        if(_isTopGiottoDirector())
-        {
-        args1.set(0,periodString); 
-//        code.append("\\run driver code here"+_eol);
-        //code.append(_generateBlockCode("createSchedulerThread", args1));
-        code.append(generateSchedulerThread(periodString));
-        }
-        
-        ArrayList<String> ActorFrequencies[] = _getActorFrequencyTable();
-        //code.append("}"+_eol);
-     
-       // System.out.println("period string is "+periodString);
-        code.append("//I should append the frequencethread stuff here"+_eol);
-       for(int i = 1; i <= _getAllFrequencies().size();i++){
-        code.append("static void $actorSymbol()_frequency"+i+"(void * pvParameters){"+_eol);
-        code.append("portTickType xLastWakeTime;"+_eol);
-        code.append("const portTickType xFrequency =("+ periodString+")/"+i+ "/portTICK_RATE_MS;"+_eol);
-        code.append("xLastWakeTime = xTaskGetTickCount();"+_eol);
-        code.append("   for(;;){"+_eol);
-        code.append("vTaskDelayUntil(&xLastWakeTime,xFrequency);"+_eol);
-        code.append("// here I should call driver code method for each of the actors"+_eol);
-        code.append("  //call the methods for the tasks at this frequency of "+ i+_eol);
-        
-        for(int j = 0; j<ActorFrequencies[i].size();j++) {
-            //call generate driver code for each of the actors
-            code.append(ActorFrequencies[i].get(j)+"();"+_eol);
-        }
-        
-        
-        code.append("}"+_eol);// close the for loop
-        if(i < _getAllFrequencies().size())
-            code.append("}"+_eol);// close the method loop
- 
-    }
-        
-        
-        return processCode(code.toString());
-    }
-    
-       
-    ArrayList<String>[] _getActorFrequencyTable()throws IllegalActionException{
-        //Hashtable<Integer,String> actorsPerFrequency= new Hashtable<Integer,String>();
-        //actorsPerFrequency.
-        int frequencyCount=_getAllFrequencies().size();
-        //ArrayList<String> actorsPerFrequencey[]= new ArrayList<String>(100);
-         ArrayList<String> actorNamesPerFrequency[] =  new ArrayList[frequencyCount+1];
-         for( int i=0; i<frequencyCount+1;i++)
-         {
-             actorNamesPerFrequency[i]=new ArrayList<String>();
-             
-         }
-
-        
-        for (Actor actor : (List<Actor>) 
-                ((TypedCompositeActor) _director.getContainer()).deepEntityList()) {
-          
-           // actorNamesPerFrequency[_getFrequency(actor)].add(actor.getDisplayName());
-            String temp =actor.getFullName();
-            temp=temp.substring(1,temp.length());
-            temp=temp.replace('.', '_');
-            actorNamesPerFrequency[_getFrequency(actor)].add(temp);
-                     
-          }    
-        
-        return actorNamesPerFrequency;
-    }
+/****
+ * Generates C code for the content of the main loop
+ * @param none
+ * @return String containing the content of the main method
+ */
 
     public String generateMainLoop() throws IllegalActionException{
-        StringBuffer code = new StringBuffer();
+              StringBuffer code = new StringBuffer();
         System.out.println("generate main loop from openRTOS giotto director called here");
         
         HashSet frequencies= new HashSet();
@@ -289,10 +216,10 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             frequencies.add(attributueValue);
         }
     
-       
+    
     
         //Attribute iterations = _director.getAttribute("iterations");
-       
+        code.append( "g_ulSystemClock = SysCtlClockGet();"+_eol);
         if (_isTopGiottoDirector()) {
             code.append("vTaskStartScheduler();"+_eol);
         }
@@ -300,364 +227,273 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
     
     }
 
-    public Set getHeaderFiles()throws IllegalActionException{
-        System.out.println("generateheader files openRTOS giotto director called here");
-        
-        HashSet files = new HashSet();
-        files.add("<stdio.h>");
-        return files;
-    }
-
-    private int _getStackSize(List<Actor> actors) {
-        // FIXME: there may be static analysis in the future.
-        // However, we are hard-coding this number for now.
-        return 100;
-    }
-
-    private List<Actor> _getActors(int frequencyValue) {
-        ArrayList<Actor> actors = new ArrayList<Actor>();
-        // TODO:
-        //should call _getActorFrequencyTable() and return the correct set of actors
-        return actors;
-    }
-
-    private String _getThreadName(int frequencyValue) {
-        return "$actorSymbol(frequency)" + frequencyValue;
-    }
-    
-       
-    public String generatePreinitializeCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer(super.generatePreinitializeCode());
-        // Declare the thread handles.
-        System.out.println("generatePreinitializeCode from openRTOS giotto director called here");
-        
-        code.append(_generateBlockCode("preinitBlock"));
-        HashSet<Integer> frequencies = _getAllFrequencies();
-
-        StringBuffer frequencyTCode = new StringBuffer();
-
-        ArrayList args = new ArrayList();
-        args.add("");
-
-        int currentPriorityLevel = 1;
-        if(_isTopGiottoDirector())
-        {
-            args.set(0, "scheduler");
-            code.append(_generateBlockCode("declareTaskHandle", args));
-        }
-        for(int frequencyValue : frequencies) {
-            // assign the low frequency task the lower priority, doesn't handle wrap around at the moment
-//            frequencyTCode.append(generateFrequencyThreadCode(frequencyValue));
-
-           args.set(0, _getThreadName(frequencyValue));
-           code.append(_generateBlockCode("declareTaskHandle", args));
-        }
-
-        code.append("//driver code should be below here******************"+_eol);
-        code.append(generateDriverCode());
-       
-        return processCode(code.toString());
-    }
-    
-    protected String _generateBlockCode(String blockName, List args)
+    /** Generate mode transition code. The mode transition code
+     *  generated in this method is executed after each global
+     *  iteration, e.g., in HDF model.  Do nothing in this base class.
+     *
+     *  @param code The string buffer that the generated code is appended to.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public void generateModeTransitionCode(StringBuffer code)
     throws IllegalActionException {
-        return _codeStream.getCodeBlock(blockName, args);        
+        System.out.println("I shoudl generate mode transition code here");
     }
 
-    
-    private HashSet<Integer> _getAllFrequencies() throws IllegalActionException {
-        HashSet frequencies= new HashSet();
-        int i = 0;
-        for (Actor actor : (List<Actor>) 
-                ((TypedCompositeActor) _director.getContainer()).deepEntityList()) {
-
-            int attributueValue =_getFrequency(actor);
-            i++;
-            frequencies.add(attributueValue);
-
-            //come back and figure out how to keep a list of all 
-            //the actors at each of the frequencies so you can call the right
-            //methods from the threads
-            // frequencies.add(_getFrequency(actor));
+    public String generateMyThreads()throws IllegalActionException{
+            System.out.println("generateMyThreads called");
+            StringBuffer code = new StringBuffer();
+            ArrayList args1 = new ArrayList();
+            
+            double period = _getPeriod();
+            String periodString =Double.toString(period);
+            int dotIndex = periodString.indexOf('.');
+            if(dotIndex == -1){
+                // no decimal just multiply by 1000
+                periodString = Double.toString(period*1000);
+            }
+            else{
+              char temp[]= periodString.toCharArray();
+              int count = 0;
+              int i;
+              for(i = dotIndex; i < periodString.length()-1; i++){
+                  temp[i]=temp[i+1];
+                  count++;
+              }
+              temp[i]='0';  //terminate the string
+              count++;
+              periodString=new String(temp);
+              //System.out.println("before padding with zeros: "+periodString);
+              while(count < 3){
+                  periodString+='0';
+                  count++;
+              }
+            }
+            if(periodString.charAt(0)=='0')  // leading zero so remove it
+            {
+                periodString = periodString.substring(1,periodString.length());
+                
+            }
+            
+            args1.add("");
+            //if(_isTopGiottoDirector())
+            //{
+            args1.set(0,periodString); 
+    //        code.append("\\run driver code here"+_eol);
+            //code.append(_generateBlockCode("createSchedulerThread", args1));
+            //if()
+            code.append(generateSchedulerThread(periodString));
+            System.out.println("*************just generated the scheduling thread for director: $actorSymbol()_");
+            //}
+            
+            
+            int outerActorFrequency = 1;
+            if(!_isTopGiottoDirector()){
+             //code.append(_eol+"//not the top most Giotto director"+_eol);
+             Actor myOuterActor =(TypedCompositeActor)_director.getContainer();
+             outerActorFrequency =_getFrequency(myOuterActor);
+             //code.append(_eol+"// I think I'm inside actor: "+_director.getContainer().getFullName()+" it has frequency"+outerActorFrequency+_eol);
+            }
+            
+            ArrayList<String> ActorFrequencies[] = _getActorFrequencyTable();
+            //code.append("}"+_eol);
+         
+           // System.out.println("period string is "+periodString);
+            code.append("//I should append the frequencethread stuff here"+_eol);
+            HashSet frequencies=_getAllFrequencies();
+            Object myFrequencies[]=frequencies.toArray();
+            Arrays.sort(myFrequencies);
+            int i = 0;
+           for(int k = 0; k < _getAllFrequencies().size();k++){
+               i = (Integer)myFrequencies[k];
+            code.append("static void $actorSymbol()_frequency"+i+"(void * pvParameters){"+_eol);
+            code.append("portTickType xLastWakeTime;"+_eol);
+            code.append("int count;"+_eol);
+            code.append("char buff[50];"+_eol);
+            code.append("const portTickType xFrequency =("+ periodString+")/"+i+"/ "+outerActorFrequency+ "/portTICK_RATE_MS;"+_eol);
+            code.append("xLastWakeTime = xTaskGetTickCount();"+_eol);
+            code.append("count = 0;"+_eol);
+            code.append("   for(;;){"+_eol);
+            code.append("vTaskDelayUntil(&xLastWakeTime,xFrequency);"+_eol);
+            code.append("count++;"+_eol);
+            code.append("// here I should call driver code method for each of the actors"+_eol);
+            code.append("  //call the methods for the tasks at this frequency of "+ i+_eol);
+            code.append("sprintf(buff,\"f"+i+"thread %d\",count);"+_eol);
+            code.append("RIT128x96x4StringDraw(buff, 0,_,15);"+_eol);
+            
+            for(int j = 0; j<ActorFrequencies[i].size();j++) {
+                //call generate driver code for each of the actors
+                code.append(ActorFrequencies[i].get(j)+"();"+_eol);
+            }
+            
+            code.append("}"+_eol);// close the for loop
+            if(i < _getAllFrequencies().size())
+                code.append("}"+_eol);// close the method loop
+     
+           }
+            
+            
+            return processCode(code.toString());
         }
-        
-        return frequencies;
-    }
-
-    private boolean _isTopGiottoDirector() {
-        // TODO Auto-generated method stub
-        if(_director.depthInHierarchy()== 0)
-        {
-            System.out.println("the director "+_director.getDisplayName()+" is the top most director");
-        return true;
-        }
-        else
-        {
-            System.out.println("the director "+_director.getDisplayName()+" is the not the top most director");
-            return false;
-        }
-    }
-    
-
-    public String generateFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        //code.append("//fire code should be here. I'm from the openRTOS GiottoDirector "+_eol);
-        System.out.println("generateFireCode from openRTOS giotto director called here");
-        //code.append("scheduler()");
-        code.append("}"+_eol);
-        //create thread methods here
-        code.append(generateMyThreads());
-        
-        return code.toString();
-    }
-
-  /*public String generateFrequencyThreadCode(int i) throws IllegalActionException{
-        StringBuffer code = new StringBuffer();
-        code.append("static void $actorSymbol($+ frequency"+i+") (void * pvParameters){"+_eol);
-        code.append("portTickType xLastWakeTime;"+_eol);
-        code.append("const portTickType xFrequency = ("+_getPeriod()+"/"+i+"*1000)/portTICK_RATE_MS;"+_eol);
-        code.append("xLastWakeTime xTaskGetTickCount();"+_eol);
-        code.append("for(;;){"+_eol);
-        code.append("vTaskDealyUntil(&xLastWakeTime,xFrequency);"+_eol);
-        code.append("//call the methods for the tasks at this frequency"+_eol);
-        code.append("}"+_eol);
-
-        return code.toString();   
-    }
-*/
-
 
     public String generatePostFireCode() throws IllegalActionException{
         StringBuffer code = new StringBuffer();
         System.out.println("generatePostFireCode from openRTOS giotto director called here");
         
-
+    
         for (Actor actor : (List<Actor>) 
                 ((TypedCompositeActor) _director.getContainer()).deepEntityList()) {
-
+    
             //for each of the actors generate postfire code
             //code.append(generatePostFireCode(actor)); 
         }
-
-        return code.toString();
-    }    
-
-
-    private int _getFrequency(Actor actor) throws IllegalActionException {
-        Attribute frequency = ((Entity)actor).getAttribute("frequency");
-        if (frequency == null) {
-            return 1;
-        } else {
-            return ((IntToken) ((Variable) frequency).getToken()).intValue();
-        }
-    }
-
-
-    private double _getPeriod() throws IllegalActionException {
-
-        /*
-         * Director = _director.container.director
-         * while (!director instanceof giottodirector) {
-         *   if (director.container.director exists)
-         *     director = director.container.director
-         *   else return periodValue attribute
-         * }
-         * return director._getPeriod() * director.container."frequency"
-         */
-
-        Director director = ((TypedCompositeActor)
-                _director.getContainer()).getExecutiveDirector();
-
-        while (director != null &&
-                !(director instanceof ptolemy.domains.giotto.kernel.GiottoDirector)) {
-            director = ((TypedCompositeActor)
-                    director.getContainer()).getExecutiveDirector();
-        }
-        if (director == null) {
-            // This is the case for the outer-most Giotto director.
-            Attribute period = _director.getAttribute("period");
-            double periodValue;
-
-            if (period != null) {
-                periodValue = ((DoubleToken) ((Variable) period).getToken())
-                .doubleValue();
-            } else {
-                throw new IllegalActionException(this, "There is no period" +
-                "specified in the outer-most Giotto director");
-            }
-            return periodValue;            
-        }
-   
-
-        // Get the frequency.  
-        // Ben I'm not sure why you originally called get frequency here
-        int frequency = _getFrequency((Actor)_director.getContainer());
-        return ((GiottoDirector) _getHelper(director))._getPeriod() / frequency;
-
-    }
-
     
-    /**
-     * Generate the thread function name for a given actor.
-     * 
-     * @param actor
-     *            The given actor.
-     * @return A unique label for the actor thread function.
-     */
-    private String _getActorThreadLabel(Actor actor) {
-            return CodeGeneratorHelper.generateName((NamedObj) actor)
-                            + "_ThreadFunction";
+        return code.toString();
     }
+
+    public String generatePreinitializeCode() throws IllegalActionException {
+            StringBuffer code = new StringBuffer(super.generatePreinitializeCode());
+            // Declare the thread handles.
+            System.out.println("generatePreinitializeCode from openRTOS giotto director called here");
+            
+            code.append("//speed of the processor clock"+_eol);
+            code.append(" unsigned long g_ulSystemClock;"+_eol);
+            code.append(_generateBlockCode("preinitBlock"));
+            HashSet<Integer> frequencies = _getAllFrequencies();
+    
+            StringBuffer frequencyTCode = new StringBuffer();
+    
+            ArrayList args = new ArrayList();
+            args.add("");
+    
+            int currentPriorityLevel = 1;
+            //if(_isTopGiottoDirector())
+            //{
+                args.set(0, "$actorSymbol()_scheduler");
+                code.append(_generateBlockCode("declareTaskHandle", args));
+           // }
+            for(int frequencyValue : frequencies) {
+                // assign the low frequency task the lower priority, doesn't handle wrap around at the moment
+    //            frequencyTCode.append(generateFrequencyThreadCode(frequencyValue));
+    
+               args.set(0, _getThreadName(frequencyValue));
+               code.append(_generateBlockCode("declareTaskHandle", args));
+            }
+    
+            code.append("//driver code should be below here******************"+_eol);
+           code.append(_generateDriverCode());
+           code.append(_generateActorsCode());
+           code.append("// end of generate Preinitialize code here %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+           //code.append("am i the top most director??");
+            //System.out.println("I should check to see if I'm the top most Giotto director here.. ");
+           
+            return processCode(code.toString());
+        }
+
+  
     public String getReference(TypedIOPort port, String[] channelAndOffset,
             boolean forComposite, boolean isWrite, CodeGeneratorHelper helper)
     throws IllegalActionException {
-       // System.out.println("getReference from Giotto Director under OpenRTOS called ");
-        if(port.isOutput())
-        {// do own thing here}
+      
+       if(port.isOutput())
+        {
+           if(channelAndOffset[0] == "")
+           {channelAndOffset[0] = "0";}
         // will need to take care of the case of where the output is for a composite actor
-            return CodeGeneratorHelper.generateName(port)+"_"+channelAndOffset[0]+"PORT";
-            //return "//dummy for write port";
+            return CodeGeneratorHelper.generateName(port);
+          // return CodeGeneratorHelper.generateName(port)+"_"+channelAndOffset[0];  
         }
-      /* else if(port.isOutput())
-        {
-            
-            return  "//dummy 2";
-        }
-       /* else if(port.isInput())
-        {
-            return "//dummy 3";
-            
-        }*/
+ 
         else
-            //return "//from else";
+           
                return super.getReference(port, channelAndOffset, forComposite, isWrite,helper);
     }
-    
-    
- /*   private void _generateThreadFunctionCode(StringBuffer code)
-    throws IllegalActionException {
 
-        List actorList = ((CompositeActor) _director.getContainer())
-        .deepEntityList();
-
-//      Generate the function for each actor thread.
-        for (Actor actor : (List<Actor>) actorList) {
-            StringBuffer functionCode = new StringBuffer();
-
-            CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
-
-            code.append(_eol + "void* " + _getActorThreadLabel(actor)
-                    + "(void* arg) {" + _eol);
-
-            // Generate debug code for printing the thread ID and actor name.
-            List args = new LinkedList();
-            args.add(_generateActorNameFileForDebugging());
-            args.add(actor.getDisplayName());
-            code.append(_codeStream.getCodeBlock("printThreadName", args));
-
-            // mainLoop
-
-            // Check if the actor is an opague CompositeActor.
-            // The actor is guaranteed to be opague from calling
-            // deepEntityList(),
-            // so all we need to check whether or not it is a CompositeActor.
-            if (actor instanceof CompositeActor) {
-                Director directorHelper = (Director) _getHelper(actor
-                        .getDirector());
-
-                // If so, it should contain a different Director.
-                assert (directorHelper != this);
-
-                functionCode.append(directorHelper.generateMainLoop());
-
-                functionCode.append("$incrementReadBlockingThreads(&"
-                        + generateDirectorHeader() + ");" + _eol);
-            } else {
-
-                String pnPostfireCode = "";
-
-                String loopCode = "while (true) {" + _eol;
-
-                // Generate a for loop if there is a firing count limit.
-                if (actor instanceof LimitedFiringSource) {
-                    int firingCount = ((IntToken) ((LimitedFiringSource) actor)
-                            .firingCountLimit.getToken()).intValue();
-
-                    if (firingCount != 0) {
-                        loopCode = "int i = 0;" + _eol +
-                        "for (; i < " + firingCount + "; i++) {" + _eol;
-                    }
-                    pnPostfireCode = _eol;
-                }                               
-
-                functionCode.append(loopCode);
-
-                functionCode.append(helper.generateFireCode());
-
-                // FIXME: Doesn't look like the following comment is correct.
-                // If not inline, generateFireCode() would be a call
-                // to the fire function which already includes the
-                // type conversion code.
-//              if (inline) {
-                functionCode.append(helper.generateTypeConvertFireCode());
-//              }
-
-                functionCode.append(helper.generatePostfireCode());
-
-                boolean forComposite = actor instanceof CompositeActor;
-
-                // Increment port offset.
-                for (IOPort port : (List<IOPort>) ((Entity) actor).portList()) {
-                    // Determine the amount to increment.
-                    int rate = 0;
-                    try {
-                        rate = DFUtilities.getRate(port);
-                    } catch (NullPointerException ex) {
-                        // int i = 0;
-                    }
-                    PortCodeGenerator portHelper = (PortCodeGenerator) _getHelper(port);
-                    CodeGeneratorHelper portCGHelper = (CodeGeneratorHelper) portHelper;
-
-                    if (portCGHelper.checkRemote(forComposite, port)) {
-                        pnPostfireCode += portHelper
-                        .updateConnectedPortsOffset(rate, _director);
-                    }
-                    if (port.isInput()) {
-                        pnPostfireCode += portHelper.updateOffset(rate,
-                                _director);
-                    }
-                }
-
-                // Code for incrementing buffer offsets.
-                functionCode.append(pnPostfireCode);
-
-                functionCode.append("}" + _eol);
-                functionCode.append("$incrementReadBlockingThreads(&"
-                        + generateDirectorHeader() + ");" + _eol);
-            }
-
-            // wrapup
-            functionCode.append(helper.generateWrapupCode());
-
-            functionCode.append("return NULL;" + _eol);
-            functionCode.append("}" + _eol);
-
-            // init
-            // This needs to be called last because all references
-            // need to be collected before generating their initialization.
-            String initializeCode = helper.generateInitializeCode();
-            String variableInitializeCode = helper
-            .generateVariableInitialization();
-            code.append(variableInitializeCode);
-            code.append(initializeCode);
-
-            code.append(functionCode);
-        }
+    public String generateSchedulerThread(String period) throws IllegalActionException{
+        System.out.println("genereateSchedulerThread called");
+    StringBuffer code = new StringBuffer();
+    ArrayList<String> ActorFrequencies[] = _getActorFrequencyTable();
+    int outerActorFrequency = 1;
+    if(!_isTopGiottoDirector()){
+     code.append(_eol+"//not the top most Giotto director"+_eol);
+     Actor myOuterActor =(TypedCompositeActor)_director.getContainer();
+     outerActorFrequency =_getFrequency(myOuterActor);
+     code.append(_eol+"// I think I'm inside actor: "+_director.getContainer().getFullName()+" it has frequency"+outerActorFrequency+_eol);
     }
-   */ 
+    
+    code.append("static void $actorSymbol()_scheduler(void * pvParameters){"+_eol);
+    code.append("portTickType xLastWakeTime;"+_eol);
+    code.append("int count;"+_eol);
+    code.append("int schedTick;"+_eol);
+    code.append("char buff[50];"+_eol);
     
     
+    HashSet frequencies=_getAllFrequencies();
+    Object myFrequencies[]=frequencies.toArray();
+    int intFrequencies[]= new int[_getAllFrequencies().size()];
+    for(int l = 0; l < _getAllFrequencies().size(); l++)
+    {
+        intFrequencies[l] = (Integer)myFrequencies[l];
+                
+    }
+    
+    int myLCM = _lcm(intFrequencies);
+    System.out.println("The LCM of my frequencies are "+ myLCM);
+    
+    code.append("const portTickType xFrequency = "+period+"/"+myLCM+"/"+outerActorFrequency+"/portTICK_RATE_MS;"+_eol);
+    code.append("xLastWakeTime = xTaskGetTickCount();"+_eol);
+    code.append("count = 0;"+_eol);
+    code.append("schedTick = 0;"+_eol);
+    code.append("    for(;;){"+_eol);
+    code.append("     vTaskDelayUntil(&xLastWakeTime,xFrequency);"+_eol);
+    code.append("count++;"+_eol);
+    
+    code.append("sprintf(buff,\"sc:%d\",count);"+_eol);
+    code.append("RIT128x96x4StringDraw(buff, _,40,25);"+_eol);
+    
+    
+    Arrays.sort(myFrequencies);
+    
+    
+    int i = 0;
+   for(int k = 0; k < _getAllFrequencies().size();k++){
+       i = (Integer)myFrequencies[k];
+           code.append("if( schedTick %"+(myLCM/i)+" == 0){"+_eol);
+           
+       for(int j = 0; j<ActorFrequencies[i].size();j++) {
+           //call generate driver code for each of the actors
+           
+           code.append(ActorFrequencies[i].get(j)+"_driver();"+_eol);
+       }
+       code.append("}"+_eol);
+   }
+   code.append("schedTick++;"+_eol); 
+   code.append("if(schedTick == "+(myLCM-1)+") {"+_eol);
+   code.append("schedTick = 0;"+_eol);
+   code.append("}"+_eol);
+  
    
+    code.append("    }"+_eol);
+    code.append("      }"+_eol);
+           
+    return processCode(code.toString());
+    }
+    
+    public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
+    throws IllegalActionException {
+        System.out.println("//generate transferInputsCode inside OpenRTOS Giotto director called.");
+    code.append("//generate transferInputsCode inside OpenRTOS Giotto director called."+_eol);
+    //super.generateTransferInputsCode(inputPort, code);
+    
+    }
+
+    public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
+    throws IllegalActionException {
+        System.out.println("//generate transferOutputsCode inside OpenRTOS Giotto director called.");
+    code.append(_eol+"//generate transferOutputsCode inside OpenRTOS Giotto director called."+_eol);
+    //super.generateTransferOutputsCode(outputPort, code);
+    
+    }
+
     /** Generate a variable declaration for the <i>period</i> parameter,
      *  if there is one.
      *  @return code The generated code.
@@ -670,37 +506,42 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         .deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-
-           CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+     
+          CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
            variableDeclarations.append(helperObject.generateVariableDeclaration());
-           
-           // FIXEM: we don't want to add a new method to the 
-           // CodeGeneratorHelper public interface. 
-           //variableDeclarations.append(helperObject.generatePortVariableDeclarations());
-           
-           //variableDeclarations.append("//should attempt to append port here"+_eol);
-           // variableDeclarations.append(helperObject.);
-        }
+           if((actor instanceof CompositeActor)!= true )
+           {
+              List <IOPort> actorPorts = actor.outputPortList();
+              if(actorPorts.size()> 0)
+              {
+               variableDeclarations.append(_eol+"//not composite actor so may need extra variable, later, make sure you check the type. It's default to static int at the moment"+_eol);
+               variableDeclarations.append("static int "+_getActorName(actor)+"_output;"+_eol);
+              }
+              
+           }
+         //  variableDeclarations.append(_generateVariableDeclarations(actor));
+           variableDeclarations.append("//############end variables for this actor: "+actor.getFullName()+_eol);
+            //variableDeclarations.append(_generatePortVariableDeclarations(actor));
+           //no need to create port variables if the normal output variables are read at the right time... they can be ports.. this way you only need two variables for double buffering
+         }
         
        return variableDeclarations.toString();
     }
-    
-    /** Generate mode transition code. The mode transition code
-     *  generated in this method is executed after each global
-     *  iteration, e.g., in HDF model.  Do nothing in this base class.
-     *
-     *  @param code The string buffer that the generated code is appended to.
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-    public void generateModeTransitionCode(StringBuffer code)
-    throws IllegalActionException {
-        System.out.println("I shoudl generate mode transition code here");
+
+    private String _generateVariableDeclarations(Actor actor) {
+        // TODO Auto-generated method stub
+        StringBuffer code= new StringBuffer();
+        // input variables
+        // output variables
+        
+        return code.toString();
+        
     }
-    
-  // I'm not sure if this is the right place to add these methods, I'll try something and see  
-    
-///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
+
+    protected String _generateBlockCode(String blockName, List args)
+    throws IllegalActionException {
+        return _codeStream.getCodeBlock(blockName, args);        
+    }
 
     /** Generate input variable declarations.
      *  @return a String that declares input variables.
@@ -712,22 +553,22 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         System.out.println("_generateInputVariableDeclaration called form OpenRTOS Giotto Director");
         boolean dynamicReferencesAllowed = ((BooleanToken) _codeGenerator.allowDynamicMultiportReference
                 .getToken()).booleanValue();
-
+    
         StringBuffer code = new StringBuffer();
-
+    
         Iterator inputPorts = ((Actor) getComponent()).inputPortList()
                 .iterator();
-
+    
         while (inputPorts.hasNext()) {
             TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
-
+    
             if (!inputPort.isOutsideConnected()) {
                 continue;
             }
-
+    
             code.append("static " + targetType(inputPort.getType()) + " "
                     + generateName(inputPort));
-
+    
             int bufferSize = getBufferSize(inputPort);
             if (inputPort.isMultiport()) {
                 code.append("[" + inputPort.getWidth() + "]");
@@ -739,10 +580,10 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
                     code.append("[" + bufferSize + "]");
                 }
             }
-
+    
             code.append(";" + _eol);
         }
-
+    
         return code.toString();
     }
 
@@ -755,217 +596,142 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             throws IllegalActionException {
         System.out.println("_gneerateOutputVariableDeclaration called form OpenRTOS Giotto Director");
         StringBuffer code = new StringBuffer();
-
+    
         Iterator outputPorts = ((Actor) getComponent()).outputPortList()
                 .iterator();
-
+    
         while (outputPorts.hasNext()) {
             TypedIOPort outputPort = (TypedIOPort) outputPorts.next();
-
+    
             // If either the output port is a dangling port or
             // the output port has inside receivers.
             if (!outputPort.isOutsideConnected() || outputPort.isInsideConnected()) {
                 code.append("static " + targetType(outputPort.getType()) + " "
                         + generateName(outputPort));
-
+    
                 if (outputPort.isMultiport()) {
                     code.append("[" + outputPort.getWidthInside() + "]");
                 }
-
+    
                 int bufferSize = getBufferSize(outputPort);
-
+    
                 if (bufferSize > 1) {
                     code.append("[" + bufferSize + "]");
                 }
                 code.append(";" + _eol);
             }
         }
-
+    
         return code.toString();
     }
 
-    public String getPortVariableDeclarations()  throws IllegalActionException {
-        return "getPortVariableDeclaration from Giotto Director Called";
-    }
-    
-    public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
-    throws IllegalActionException {
-        System.out.println("\\generate transferInputsCode inside OpenRTOS Giotto director called.");
-    code.append("\\generate transferInputsCode inside OpenRTOS Giotto director called.");
-    
-    }
-    
-    public void generateTransferOutputsCode(IOPort inputPort, StringBuffer code)
-    throws IllegalActionException {
-        System.out.println("\\generate transferOutputsCode inside OpenRTOS Giotto director called.");
-    code.append("\\generate transferOutputsCode inside OpenRTOS Giotto director called.");
-    
-    }
-    
-    
-    /** Generate The fire function code. This method is called when the firing
-     *  code of each actor is not inlined. Each actor's firing code is in a
-     *  function with the same name as that of the actor.
-     *
-     *  @return The fire function code.
-     *  @exception IllegalActionException If thrown while generating fire code.
-     */
-    
-    /// this is my second hack at this method. Hopefully hit generates what we expect kindof
-    public String generateFireFunctionCode() throws IllegalActionException {
-        System.out.println("generateFireFunctionCode called from OpenRTOS giotto director***************");
-        StringBuffer code = new StringBuffer();//super.generateFireFunctionCode());
-        
-       // StringBuffer code = new StringBuffer();
-        Iterator actors = ((CompositeActor) _director.getContainer())
-        .deepEntityList().iterator();
-        while (actors.hasNext()) {
-            Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
-            
-            String actorFullName = actor.getFullName();
-            actorFullName = actorFullName.substring(1,actorFullName.length());
-            actorFullName = actorFullName.replace('.', '_');
-                
-
-            code.append(_eol + "void " + actorFullName+ _getFireFunctionArguments() + " {"
-                    + _eol);
-            code.append(actorHelper.generateFireCode());
-            code.append("}" + _eol);
-            
-            /*String temp = actorHelper.generateTypeConvertFireCode();//generateTypeConvertFireCode(actorHelper);/
-            if(temp.length() > 1)  // only generate driver code if the actor has an output
-            {
-            code.append(_eol + "void " + actorFullName
-                    + _getFireFunctionArguments()+"_driver" + " {"
-                    + _eol);
-            code.append(temp);
-            code.append("}" + _eol);
-            }*/
-        }
-        return code.toString();
-        
-       
-    }
-    
-    public String generateDriverCode() throws IllegalActionException {
+    private String _generateActorsCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        System.out.println("generateDriver Code has been called");
-        
-        for (Actor actor : (List<Actor>) 
-                ((TypedCompositeActor) _director.getContainer()).deepEntityList()) {
-
-
-            List outputPortList = actor.outputPortList();
-            Iterator outputPorts = outputPortList.iterator();
-
-            String actorDriverCode = "";
-            while (outputPorts.hasNext()) {
-                IOPort port = (IOPort) outputPorts.next();
-                Receiver[][] channelArray = port.getRemoteReceivers();
-
-                for (int i = 0; i < channelArray.length; i++) {
-                    Receiver[] receiverArray = channelArray[i];
-
-                    for (int j = 0; j < receiverArray.length; j++) {
-                        GiottoReceiver receiver = (GiottoReceiver) receiverArray[j];
-                        IOPort sinkPort = receiver.getContainer();
+        System.out.println("generateActors Code has been called");
+             
+         
+         for (Actor actor : (List<Actor>) 
+                 ((TypedCompositeActor) _director.getContainer()).deepEntityList()) {
+         
+                   
+             CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
                         
-                        ArrayList args = new ArrayList();
-
-                        // FIXME: figure out the channel number for the sinkPort.
-                        String channelOffset [] = {"0","0"};
-                        CodeGeneratorHelper myHelper = (CodeGeneratorHelper) this._getHelper(sinkPort.getContainer());
-                        String sinkReference = this.getReference((TypedIOPort)sinkPort,channelOffset,false,true,myHelper);//"##ref(sinkPort)";
-                        
-                        channelOffset[0]= Integer.valueOf(i).toString();
-                        myHelper = (CodeGeneratorHelper)_getHelper(actor);
-                        String srcReference = this.getReference((TypedIOPort)port,channelOffset,false,false,myHelper);//"##ref(sinkPort)";
-                       // "##ref(output#i)";
-                        
-                        args.add(sinkReference);
-                        args.add(srcReference);
-                        
-                        actorDriverCode += _generateBlockCode("updatePort", args);
-                        
-                    }
-                }
-            }
-            System.out.println("actorDriverCode is now:");
-            System.out.println(actorDriverCode);
-           // if(outputPortList.size() > 1)
-          //  if(actorDriverCode.length() >= 1) // not sure if this is the correct check
-            {// for now generate driver methods for all the actors
-            ArrayList args = new ArrayList();
-            args.add(generateDriverName((NamedObj) actor));
-            
-            CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
-            
-            
-            String temp = helper.generateTypeConvertFireCode();
-            if(temp.length()== 0)
-            {
-                args.add(actorDriverCode);
-            }
-            else
-            {
-                args.add(temp);
-            }
-            code.append(_generateBlockCode("driverCode", args));
-            }
-        }
-        System.out.println("about to return :");
-        System.out.println(code.toString());
-        return code.toString();
-    }
-    /*public String generateTypeConvertFireCode(CodeGeneratorHelper actorHelper)
-    throws IllegalActionException {
-        System.out.println("generateTypeConvertFireCode(boolean) called from GiottoDirector.java");
-       StringBuffer code = new StringBuffer();
-       
-       boolean forComposite = false; // a false parameter is passed in to the originally called 
-                                      //generateTypeConvertFireCode in CodeGeneratorHelper.java
-
-        // Type conversion code for inter-actor port conversion.
-        Iterator channels = _getTypeConvertChannels().iterator();
-        if(channels == null)
-        {
-            System.out.println("channels has null value");
-        }
-        else{
-            System.out.println("not null");
-            System.out.println("channels has value: "+channels.toString());
-        }
-        while (channels.hasNext()) {
-            System.out.println("inside first while ");
-            Channel source = (Channel) channels.next();
-
-            if (!forComposite && source.port.isOutput() || forComposite
-                    && source.port.isInput()) {
-
-                Iterator sinkChannels =_getTypeConvertSinkChannels(source)
-                .iterator();
-
-                while (sinkChannels.hasNext()) {
-                    System.out.println("inside second while");
-                    Channel sink = (Channel) sinkChannels.next();
-                    code.append(_generateTypeConvertStatements(source, sink));
-                }
-            }
-        }
-       
-       System.out.println("about to return from generateTypeConvertFireCode in openRTOS giottodirector");
-       System.out.println("returning with:" +code.toString());
-       
-       return code.toString();
-    }*/
+             String actorFullName = _getActorName(actor);    
+             System.out.println("I have an actor named "+actorFullName+" going to generate fireCode for it now.");
     
+             code.append(_eol + "void " + actorFullName+ _getFireFunctionArguments() + " {"
+                     + _eol);
+             code.append("//about to check to see if it's a composite actor"+_eol);
+             
+                   //code.append();
+             if(actor instanceof CompositeActor) {
+                 System.out.println("composite actor: "+actor.getFullName()+" so doing stuff for that from actor code");
+                code.append("//this is where I should move stuff to my output ports as a composite actor"+_eol); 
+                  //GiottoDirector directorHelper = (GiottoDirector) _getHelper(actor.getDirector());
+                 List<IOPort> myOutputs = actor.outputPortList();
+                 System.out.println("I have "+myOutputs.size()+" port(s) to send info to");
+                 Iterator myItr = myOutputs.iterator();
+                 IOPort port;
+                 CodeGeneratorHelper myHelper;
+                 String srcReference;
+                 String sinkReference;
+                 int i = 0; //sink index counter
+                 int j = 0; // src index counter
+                 while(myItr.hasNext())
+                 {
+                     port = (IOPort)myItr.next();
+                     List connectToMe = port.insideSourcePortList();//port.insidePortList();//port.deepInsidePortList();   and port.insidePortList() lists adder plus , as well as adder output
+                   
+                    //code.append("port: "+port.getFullName()+" has source(s)"+_eol);
+               
+                     Iterator tome= connectToMe.iterator();
+                     while(tome.hasNext())
+                     {
+                         IOPort tempp = (IOPort)tome.next();
+                                                
+                         // port is sink
+                         //tempp is source
+                         
+                        // System.out.println(" j is "+j +"and size of connect to me is "+connectToMe.size());
+                         String channelOffset [] = {"0","0"};
+                       
+                           System.out.println("the sender port is named "+tempp.getFullName()+" and the reciever is "+port.getFullName());
+                           myHelper = (CodeGeneratorHelper)this._getHelper(tempp.getContainer());
+                          // temp+= _generateTypeConvertFireCode(false)+_eol;
+                         channelOffset[0] = Integer.valueOf(i).toString();
+                         System.out.println("channel offset is "+channelOffset[0]);
+                         srcReference = this.getReference((TypedIOPort)tempp,channelOffset,false,true,myHelper);
+                         System.out.println("after first call to getReference");
+                                               
+                         myHelper = (CodeGeneratorHelper)_getHelper(actor);
+                         channelOffset[0] = Integer.valueOf(j).toString();
+                         System.out.println("channel offset is "+channelOffset[0]);
+                         sinkReference = this.getReference((TypedIOPort)port,channelOffset,false,true,myHelper);
+                         System.out.println("after second call to getReference");
+                         j++;
+                           
+                          // temp+= _generateTypeConvertFireCode(sourcePort,port);//+_eol;                 
+                         System.out.println("I think the source Reference is "+srcReference+" and it's display name is "+tempp.getDisplayName());
+                         System.out.println("I think the sink Reference is "+sinkReference+" and it's display name is "+port.getDisplayName());
+              
+                         ArrayList args = new ArrayList();    
+                         args.add(sinkReference);
+                         args.add(srcReference);
+                            
+                         code.append(_generateBlockCode("updatePort", args)+_eol);
+                         
+                         
+                     }
+                     i++;  // not sure if this is the correct place to increment i
+                     
+                 
+
+                 }
+                 code.append(_eol+"//done with the transfer out for this composite actor"+_eol);
+               System.out.println("done with the transfer out for this composite actor");
+             } else{
+                 System.out.println("not composite actor");
+             }
+             
+             code.append(_eol+actorHelper.generateFireCode());
+     
+            code.append("}" + _eol);
+             
+         }
+         System.out.println("returning: "+_eol+code.toString());
+         return code.toString();
+         
+        
+    
+    
+    }
+
     /** Generate sanitized name for the given named object. Remove all
      *  underscores to avoid conflicts with systems functions.
      *  @param namedObj The named object for which the name is generated.
      *  @return The sanitized name.
      */
-    public static String generateDriverName(NamedObj namedObj)
+    private static String _generateDriverName(NamedObj namedObj)
     {
         String name = StringUtilities.sanitizeName(namedObj.getFullName());
         // FIXME: Assume that all objects share the same top level. In this case,
@@ -984,8 +750,545 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         
         
     }
-   
+    /** Generate the content of a driver methods. For each actor update it's inputs to the 
+     *  outputs stored in ports. The PORT allows double buffering, in this case the output
+     *  variable is used as the port. PORT here is simply a common variable, not a PORT in 
+     *  the general Ptolemy II actor sense
+     *  
+     *  NOTE: Duplicate ports connected through a fork are removed. IE. if an input is connected to a fork
+     *  and the fork is connected to two other places... it removes the first place from the list of places and keeps the last place
+     *  need to ask Jackie if there is a way to work around this b/c Reciever [][] recievers = getRecievers doesn't work.
+     *  @param none
+     *  @return code that copies outputs to a port, and inputs from a port in a driver method
+     */ String _generateDriverCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        System.out.println("generateDriver Code has been called");
+        
+        for (Actor actor : (List<Actor>) 
+                ((TypedCompositeActor) _director.getContainer()).deepEntityList()) {
     
+    
+            List inputPortList = actor.inputPortList();
+            System.out.println("this actor"+actor.getDisplayName()+" has "+inputPortList.size()+" input ports.");
+            Iterator inputPorts = inputPortList.iterator();
+    
+            String actorDriverCode = "";
+            String sinkReference = "";
+            String srcReference = "";
+            String temp = "";
+            StringBuffer transferIn= new StringBuffer();
+            StringBuffer transferOut=new StringBuffer();
+            String output="";
+            int i = 0; //sink index counter
+            int j = 0; // src index counter
+            CodeGeneratorHelper myHelper;
+            
+            
+           
+            
+            
+            while (inputPorts.hasNext()) {
+                i = 0;  // this is a test to see if this is to be done here, if so remove the i++ from the end of the loop
+                j = 0;
+                 IOPort port = (IOPort)inputPorts.next();
+                 System.out.println("this port's name is "+port.getFullName());
+                 Receiver[][] channelArray = port.getReceivers();
+                // port.
+                List<IOPort> cip = port.sourcePortList();
+                if(cip.size()>0)
+                {
+                    System.out.println("sourcePortList contains: ");
+                    Iterator tome2 =cip.iterator();
+                    while(tome2.hasNext()){
+                        IOPort tempp = (IOPort)tome2.next();
+                      System.out.print(tempp.getFullName()+" ");  
+            
+                   }
+                    System.out.println(" ");
+                }
+                
+                 
+                List<IOPort> connectedPorts = port.deepConnectedOutPortList();
+                List<IOPort> connectToMe = port.sourcePortList();//port.connectedPortList(); //connectedPortList();
+                System.out.println("connectToMe size is "+connectToMe.size());
+                //System.out.println("before remove double connections");
+          
+                Iterator tome= connectToMe.iterator();
+              System.out.println("currently connectToMe size is "+connectToMe.size());
+                
+                tome= connectToMe.iterator();
+                while(tome.hasNext())
+                {
+                    IOPort tempp = (IOPort)tome.next();
+                    System.out.println("******I'm connected to I think: "+tempp.getFullName());  
+                }
+                 
+                // Iterator cpIterator = connectedPorts.iterator();
+                Iterator cpIterator = connectToMe.iterator();
+                 while(cpIterator.hasNext()){//&&(j <connectToMe.size()-1)){
+                   IOPort sourcePort = (IOPort)cpIterator.next();
+                // FIXME: figure out the channel number for the sourcePort.
+                   // if you need to transfer inputs inside
+                   if(actor instanceof CompositeActor) {
+                      System.out.println("composite actor so doing stuff for that");
+                       //GiottoDirector directorHelper = (GiottoDirector) _getHelper(actor.getDirector());
+                       //_generateTransferInputsCode(port, transferIn);
+                       transferIn.append(("//should transfer input for this actor to from the outside to inside"+_eol));
+                       //generateTransferInputsCode(inputPort, code);
+                       
+                   }
+                
+                   System.out.println(" j is "+j +"and size of connect to me is "+connectToMe.size());
+                   String channelOffset [] = {"0","0"};
+                 
+                     System.out.println("the sender port is named "+sourcePort.getFullName()+" and the reciever is "+port.getFullName());
+                     myHelper = (CodeGeneratorHelper)this._getHelper(sourcePort.getContainer());
+                    // temp+= _generateTypeConvertFireCode(false)+_eol;
+                   channelOffset[0] = Integer.valueOf(i).toString();
+                   System.out.println("channel offset is "+channelOffset[0]);
+                     srcReference = this.getReference((TypedIOPort)sourcePort,channelOffset,false,true,myHelper);
+                     System.out.println("after first call to getReference");
+                                         
+                     myHelper = (CodeGeneratorHelper)_getHelper(actor);
+                     channelOffset[0] = Integer.valueOf(j).toString();
+                     System.out.println("channel offset is "+channelOffset[0]);
+                     sinkReference = this.getReference((TypedIOPort)port,channelOffset,false,true,myHelper);
+                     System.out.println("after second call to getReference");
+                     j++;
+                     
+                     temp+= _generateTypeConvertFireCode(sourcePort,port);//+_eol;                 
+                     System.out.println("I think the source Reference is "+srcReference+" and it's display name is "+sourcePort.getDisplayName());
+                     System.out.println("I think the sink Reference is "+sinkReference+" and it's display name is "+port.getDisplayName());
+        
+                     ArrayList args = new ArrayList();    
+                      args.add(sinkReference);
+                      args.add(srcReference);
+                      
+                      actorDriverCode += _generateBlockCode("updatePort", args);
+                     }
+                 
+                 if(actor instanceof CompositeActor) {
+                   // It is not necessary to generate transfer out code, 
+                     //since the fanout actor drivers will read the necessary values from the ports                    
+                     //GiottoDirector directorHelper = (GiottoDirector) _getHelper(actor.getDirector());
+                     //directorHelper._generateTransferOutputsCode(port, transferOut);
+                     
+                     //generateTransferInputsCode(inputPort, code);
+                     //transferOut.append("//should transfer input for this actor to from inside to outside"+_eol);
+                 }
+                 
+             i++; // increment the ofset variable // not sure if this is correct since we're using iterators 
+            } 
+            
+            System.out.println("actorDriverCode is now:");
+            System.out.println(actorDriverCode);
+            
+           
+            ArrayList args = new ArrayList();  
+            args.add(_generateDriverName((NamedObj) actor));
+           if(temp.length() == 0)   // if no type conversion is necessary
+            output=transferIn.toString()+actorDriverCode+transferOut.toString();
+           else
+               output=transferIn.toString()+temp+transferOut.toString();
+          
+           args.add(output);
+            code.append(_generateBlockCode("driverCode", args));
+            }
+        
+        System.out.println("about to return :");
+        System.out.println(code.toString());
+        return code.toString();
+    }
+
+     
+     private List<IOPort> _removeDoubleConnections(List<IOPort> connectToMe) {
+        List<IOPort> result= new ArrayList();
+        IOPort ptA;
+        IOPort ptB;
+        int j = 0;
+        int i = 0;
+        boolean isConnected = false;
+        Iterator lIterator = connectToMe.iterator();
+        while(lIterator.hasNext()){
+            ptA = (IOPort)lIterator.next();
+            i++;
+            j=i;
+            isConnected = false;
+            while(j< connectToMe.size()){
+                ptB= connectToMe.get(j);
+                isConnected = _isConnected(ptA,ptB);
+                if(isConnected)
+                { break;}
+                else
+                {j++;}
+            }
+            if(!isConnected)
+            {result.add(ptA);}
+        }
+        
+        return result;
+    }
+
+    private boolean _isConnected(IOPort portA, IOPort portB) {
+        // TODO Auto-generated method stub
+        boolean toReturn = false;
+        List<IOPort> portAPorts = portA.connectedPortList();
+        List<IOPort> portBPorts = portB.connectedPortList();
+        String name;
+        Iterator portItr = portAPorts.iterator();
+        System.out.print(portA.getFullName()+" is connected to : ");
+        while(portItr.hasNext()){
+            
+            name = ((IOPort)portItr.next()).getFullName();
+            System.out.print(name+" ");
+            if(name.equals(portB.getFullName()))
+            {
+                toReturn = true;
+                break;
+            }
+        }
+        if(toReturn == false)
+        {
+            System.out.println(" ");
+            
+            portItr = portBPorts.iterator();
+            
+            System.out.print(portB.getFullName()+" is connected to : ");
+            while(portItr.hasNext()){
+                
+                name = ((IOPort)portItr.next()).getFullName();
+                System.out.print(name+" ");
+                if(name.equals(portA.getFullName()))
+                {
+                    toReturn = true;
+                    break;
+                }
+              }
+            
+            
+            
+        }
+        System.out.println(" ");
+        System.out.println("PORTS "+portA.getFullName()+" "+portB.getFullName()+" are "+toReturn+" connected");
+        return toReturn;
+    }
+
+    /** Generate PORT variables. A PORT allows control over the value read
+      *  A port is an efficient way to handle double buffering
+      *  @param none
+      *  @return port variables
+      */
+    private String _generatePortVariableDeclarations(Actor actor) throws IllegalActionException {
+    
+       System.out.println("get Port Variable Declarations called");
+       StringBuffer code = new StringBuffer();
+    
+       Iterator outputPorts = actor.outputPortList()
+               .iterator();
+    
+       while (outputPorts.hasNext()) {
+           TypedIOPort outputPort = (TypedIOPort) outputPorts.next();
+    
+           // If either the output port is a dangling port or
+           // the output port has inside receivers.
+          //if (!outputPort.isOutsideConnected() || outputPort.isInsideConnected()) {
+           if(true){
+               code.append("static " + targetType(outputPort.getType()) + " "
+                       + generateName(outputPort)+"_0_PORT");
+    
+               if (outputPort.isMultiport()) {
+                   code.append("[" + outputPort.getWidthInside() + "]");
+               }
+    
+               int bufferSize = getBufferSize(outputPort);
+    
+               if (bufferSize > 1) {
+                   code.append("[" + bufferSize + "]");
+               }
+               code.append(";" + _eol);
+           }
+           else
+           {
+               System.out.println("didn't match if");
+           }
+          
+      // return "should define port here from CCodeGEneratorHelper";
+       }
+       //System.out.println("about to return: "+code.toString());
+       return code.toString();
+      }
+
+    private   ArrayList<String>[] _getActorFrequencyTable()throws IllegalActionException{
+        System.out.println("getActorFrequencyTable called");
+    
+        HashSet<Integer> allFrequncies = _getAllFrequencies();
+        int frequencyCount= allFrequncies.size();
+        //ArrayList<String> actorsPerFrequencey[]= new ArrayList<String>(100);
+        // ArrayList<String> actorNamesPerFrequency[] =  new ArrayList[frequencyCount+1];
+      
+         Object theseFrequencies[]= allFrequncies.toArray();
+         int maxfrequency = (Integer)theseFrequencies[0];
+         int it = 0;
+         while(it < frequencyCount)
+         {
+             
+             if( (Integer)theseFrequencies[it] > maxfrequency)
+                 maxfrequency = (Integer)theseFrequencies[it];
+            System.out.println("fequency value: "+ theseFrequencies[it]); 
+             it++;
+         }
+         
+         frequencyCount = maxfrequency;
+         ArrayList<String> actorNamesPerFrequency[] =  new ArrayList[frequencyCount+1];
+         for( int i=0; i<frequencyCount+1;i++)
+         {
+             actorNamesPerFrequency[i]=new ArrayList<String>();
+             
+         }
+         
+        System.out.println("table has size "+actorNamesPerFrequency.length);
+        for (Actor actor : (List<Actor>) 
+                ((TypedCompositeActor) _director.getContainer()).deepEntityList()) {
+          
+           String temp = _getActorName(actor);
+            System.out.println("actor "+temp+" has frequency :"+_getFrequency(actor)+"frequency count is: "+frequencyCount);
+            actorNamesPerFrequency[_getFrequency(actor)].add(temp);
+                     
+          }    
+        
+        return actorNamesPerFrequency;
+    }
+
+    private List<Actor> _getActors(int frequencyValue) {
+        ArrayList<Actor> actors = new ArrayList<Actor>();
+        // TODO:
+        //should call _getActorFrequencyTable() and return the correct set of actors
+        return actors;
+    }
+
+    private String _getActorName(Actor actor) {
+        String actorFullName = actor.getFullName();
+         actorFullName = actorFullName.substring(1,actorFullName.length());
+         actorFullName = actorFullName.replace('.', '_');
+         actorFullName = actorFullName.replace(' ', '_');
+        return actorFullName;
+    }
+
+    /**
+     * Generate the thread function name for a given actor.
+     * 
+     * @param actor
+     *            The given actor.
+     * @return A unique label for the actor thread function.
+     */
+    private String _getActorThreadLabel(Actor actor) {
+            return CodeGeneratorHelper.generateName((NamedObj) actor)
+                            + "_ThreadFunction";
+    }
+
+    private HashSet<Integer> _getAllFrequencies() throws IllegalActionException {
+        HashSet frequencies= new HashSet();
+        int i = 0;
+        for (Actor actor : (List<Actor>) 
+                ((TypedCompositeActor) _director.getContainer()).deepEntityList()) {
+    
+            int attributueValue =_getFrequency(actor);
+            i++;
+            frequencies.add(attributueValue);
+    
+            //come back and figure out how to keep a list of all 
+            //the actors at each of the frequencies so you can call the right
+            //methods from the threads
+            // frequencies.add(_getFrequency(actor));
+        }
+        
+        return frequencies;
+    }
+
+    private int _getFrequency(Actor actor) throws IllegalActionException {
+        Attribute frequency = ((Entity)actor).getAttribute("frequency");
+    
+        if (frequency == null) {
+            return 1;
+        } else {
+            return ((IntToken) ((Variable) frequency).getToken()).intValue();
+        }
+    }
+
+    private double _getPeriod() throws IllegalActionException {
+    
+        /*
+         * Director = _director.container.director
+         * while (!director instanceof giottodirector) {
+         *   if (director.container.director exists)
+         *     director = director.container.director
+         *   else return periodValue attribute
+         * }
+         * return director._getPeriod() * director.container."frequency"
+         */
+    
+        Director director = ((TypedCompositeActor)
+                _director.getContainer()).getExecutiveDirector();
+    
+        while (director != null &&
+                !(director instanceof ptolemy.domains.giotto.kernel.GiottoDirector)) {
+            director = ((TypedCompositeActor)
+                    director.getContainer()).getExecutiveDirector();
+        }
+        if (director == null) {
+            // This is the case for the outer-most Giotto director.
+            Attribute period = _director.getAttribute("period");
+            double periodValue;
+    
+            if (period != null) {
+                periodValue = ((DoubleToken) ((Variable) period).getToken())
+                .doubleValue();
+            } else {
+                throw new IllegalActionException(this, "There is no period" +
+                "specified in the outer-most Giotto director");
+            }
+            return periodValue;            
+        }
+    
+    
+        // Get the frequency.  
+        // Ben I'm not sure why you originally called get frequency here
+        int frequency = _getFrequency((Actor)_director.getContainer());
+        return ((GiottoDirector) _getHelper(director))._getPeriod() / frequency;
+    
+    }
+
+    private int _getStackSize(List<Actor> actors) {
+        // FIXME: there may be static analysis in the future.
+        // However, we are hard-coding this number for now.
+        return 100;
+    }
+
+    private String _getThreadName(int frequencyValue) {
+        return "$actorSymbol(frequency)" + frequencyValue;
+    }
+    
+       
+    private boolean _isTopGiottoDirector() {
+        // TODO Auto-generated method stub
+       /* if(_director.depthInHierarchy()== 0)
+        {
+            System.out.println("I "+_director.getDisplayName()+" am a top most director");
+        
+        }
+        else
+        {
+            System.out.println("I "+_director.getDisplayName()+" am not a top most director");
+           
+        }*/
+        
+    /*    Director director = ((TypedCompositeActor)
+                _director.getContainer()).getExecutiveDirector();
+        
+        if(director == null)
+        {
+            System.out.println("I'm the top most giotto director");
+            
+        }
+        else
+        {
+            System.out.println("I'm not really the top most giotto director");
+        }
+      */  
+        Director director = ((TypedCompositeActor)
+                _director.getContainer()).getExecutiveDirector();
+    
+           if (director == null) { // true for the top most director
+               
+            return true;  
+           }
+                         
+       return false;
+    }  
+       
+       
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+     //// this piece of code was copied from the Giotto Scheduler method
+    private int _lcm(int[] array) {
+        int count = array.length;
+
+        if (count < 1) {
+            throw new RuntimeException(
+                    "Length array passed to _lcm() is less than 1?");
+        }
+
+        int X = array[0];
+        int i = 0;
+
+        while (true) {
+            if ((X % array[i]) == 0) {
+                if (i >= (count - 1)) {
+                    break;
+                }
+
+                i++;
+            } else {
+                X = X + 1;
+                i = 0;
+            }
+        }
+
+        return X;
+    }
     
 
+    private void _generateTransferInputsCode(IOPort source,StringBuffer code) throws IllegalActionException
+    {
+       //super.generateTransferInputsCode(source, code);
+        
+    }
+    
+    
+    private void _generateTransferOutputsCode(IOPort source,StringBuffer code) throws IllegalActionException
+    {
+       super.generateTransferOutputsCode(source, code);
+        
+    }
+    
+    
+    /**
+     * Generate the type conversion fire code. This method is called by the
+     * Director to append necessary fire code to handle type conversion.
+     * @param forComposite True if we are generating code for a composite.
+     * @return The generated code.
+     * @exception IllegalActionException Not thrown in this base class.
+     */
+    public String _generateTypeConvertFireCode(IOPort source,IOPort sink)
+    throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        System.out.println("generateTypeConvertFireCode in OpenRTOS giotto director called");
+        //code.append("//generateTypeConvertFireCode in OpenRTOS giotto director called");
+        //not 100% sure what this should contain yet
+       
+//        CodeGeneratorHelper helper = (CodeGeneratorHelper)_getHelper(source.getContainer());
+//        // Type conversion code for inter-actor port conversion.
+//        for(int i = 0; i< source.getWidth();i++){
+//            Iterator channels = helper.getSinkChannels(sink, i).iterator();
+//            while (channels.hasNext()) {
+//                Channel srcChan = (Channel) channels.next();
+//    
+//                if (source.isOutput() || source.isInput()) {
+//    
+//                    Iterator sinkChannels = _getTypeConvertSinkChannels(srcChan)
+//                    .iterator();
+//    
+//                    while (sinkChannels.hasNext()) {
+//                        Channel sinkChan = (Channel) sinkChannels.next();
+//                        code.append(_generateTypeConvertStatements(srcChan, sinkChan));
+//                    }
+//                }
+//            }
+//        }
+        return code.toString();
+    }
+    
+ 
+    
+    
 }
