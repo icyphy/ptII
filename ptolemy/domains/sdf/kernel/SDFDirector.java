@@ -755,8 +755,10 @@ public class SDFDirector extends StaticSchedulingDirector {
                                             + k + " tokens available.");
                         }
                     }
-                } else {
+                } else if (port.isKnown(i)) {
                     // No inside connection to transfer tokens to.
+                    // Tolerate an unknown input, but if it is known, then
+                    // transfer the input token if there is one.
                     // In this case, consume one input token if there is one.
                     if (_debugging) {
                         _debug(getName(), "Dropping single input from "
