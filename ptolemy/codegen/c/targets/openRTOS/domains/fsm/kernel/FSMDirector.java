@@ -35,7 +35,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.codegen.c.domains.fsm.kernel.FSMActor.TransitionRetriever;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
-import ptolemy.codegen.kernel.Director;
+import ptolemy.codegen.actor.Director;
 import ptolemy.data.BooleanToken;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.kernel.Entity;
