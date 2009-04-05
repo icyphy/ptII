@@ -36,6 +36,7 @@ import java.util.Set;
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.codegen.kernel.ActorCodeGenerator;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
@@ -130,7 +131,7 @@ public class FSMActor extends CCodeGeneratorHelper {
         State initialState = fsmActor.getInitialState();
 
         _updateCurrentState(codeBuffer, initialState);
-
+        
         return processCode(codeBuffer.toString());
     }
 
@@ -157,10 +158,20 @@ public class FSMActor extends CCodeGeneratorHelper {
         args.add("");        
         for (State state : (List<State>) fsmActor.entityList()) {
             args.set(0, _generateStateConstantLabel(state));
-            args.set(1, index++);
+            args.set(1, index++);           
             code.append(_generateBlockCode("defineState", args));
         }
-
+        code.append("//I should generate the methods for my internal actors here. My actors are:");
+             
+        for (Actor actor : (List<Actor>) 
+                ((TypedCompositeActor)  this.getDirector().getContainer()).deepEntityList()) {
+            code.append(_eol+"void "+_getActorName(actor)+"(){"+_eol);
+           CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+           //code.append( actorHelper.generateFireCode());
+           code.append("}"+_eol);
+            
+        }
+        
         return processCode(code.toString());
     }
 
@@ -716,5 +727,13 @@ public class FSMActor extends CCodeGeneratorHelper {
             .getPortScope().identifierSet();
         }
     }
+    private String _getActorName(Actor actor) {
+        String actorFullName = actor.getFullName();
+         actorFullName = actorFullName.substring(1,actorFullName.length());
+         actorFullName = actorFullName.replace('.', '_');
+         actorFullName = actorFullName.replace(' ', '_');
+        return actorFullName;
+    }
+    
 
 }
