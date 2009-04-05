@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.codegen.c.targets.openRTOS.domains.fsm.modal;;
+package ptolemy.codegen.c.targets.openRTOS.domains.fsm.modal;
 
 import ptolemy.codegen.c.actor.IOPort;
 
