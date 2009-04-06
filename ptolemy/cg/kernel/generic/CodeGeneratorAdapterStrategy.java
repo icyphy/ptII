@@ -206,12 +206,14 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
         }
     }
 
-    public boolean checkLocal(boolean forComposite, IOPort port) throws IllegalActionException {
+    // FIXME rodiers: this only used by the PNDirector
+    static public boolean checkLocal(boolean forComposite, IOPort port) throws IllegalActionException {
         return (port.isInput() && !forComposite && port.isOutsideConnected())
         || (port.isOutput() && forComposite);
     }
 
-    public boolean checkRemote(boolean forComposite, IOPort port) {
+ // FIXME rodiers: this only used by the PNDirector
+    static public boolean checkRemote(boolean forComposite, IOPort port) {
         return (port.isOutput() && !forComposite)
         || (port.isInput() && forComposite);
     }
@@ -224,7 +226,7 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
      * @exception IllegalActionException Thrown if the given ptolemy cannot
      *  be resolved.
      */
-    public String codeGenType(Type ptType) {
+    final public String codeGenType(Type ptType) {
         return _codeGenerator.codeGenType(ptType);
     }
     
