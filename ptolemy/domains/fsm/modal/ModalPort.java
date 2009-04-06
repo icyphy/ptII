@@ -32,6 +32,7 @@ import java.util.Iterator;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentRelation;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
@@ -104,7 +105,7 @@ public class ModalPort extends TypedIOPort {
 
             if (result != -1) {
                 // Mirror the change in mirror ports.
-                ModalModel container = (ModalModel) getContainer();
+                CompositeEntity container = (CompositeEntity) getContainer();
                 Iterator entities = container.entityList().iterator();
 
                 while (entities.hasNext()) {
@@ -149,7 +150,7 @@ public class ModalPort extends TypedIOPort {
 
             if (result != -1) {
                 // Mirror the change in mirror ports.
-                ModalModel container = (ModalModel) getContainer();
+                CompositeEntity container = (CompositeEntity) getContainer();
                 Iterator entities = container.entityList().iterator();
 
                 while (entities.hasNext()) {
@@ -196,7 +197,7 @@ public class ModalPort extends TypedIOPort {
 
             if (result != -1) {
                 // Mirror the change in mirror ports.
-                ModalModel container = (ModalModel) getContainer();
+                CompositeEntity container = (CompositeEntity) getContainer();
                 Iterator entities = container.entityList().iterator();
 
                 while (entities.hasNext()) {
@@ -241,7 +242,7 @@ public class ModalPort extends TypedIOPort {
 
             if (result != -1) {
                 // Mirror the change in mirror ports.
-                ModalModel container = (ModalModel) getContainer();
+                CompositeEntity container = (CompositeEntity) getContainer();
                 Iterator entities = container.entityList().iterator();
 
                 while (entities.hasNext()) {
@@ -287,7 +288,7 @@ public class ModalPort extends TypedIOPort {
 
             if (result != -1) {
                 // Mirror the change in mirror ports.
-                ModalModel container = (ModalModel) getContainer();
+                CompositeEntity container = (CompositeEntity) getContainer();
                 Iterator entities = container.entityList().iterator();
 
                 while (entities.hasNext()) {
@@ -331,7 +332,7 @@ public class ModalPort extends TypedIOPort {
         try {
             _workspace.getWriteAccess();
 
-            ModalModel model = (ModalModel) getContainer();
+            CompositeEntity model = (CompositeEntity) getContainer();
 
             if ((model != null) && (container != model)) {
                 // The port is being removed from the current container.
@@ -389,7 +390,7 @@ public class ModalPort extends TypedIOPort {
             super.setInput(isInput);
 
             // Mirror the change in mirror ports.
-            ModalModel container = (ModalModel) getContainer();
+            CompositeEntity container = (CompositeEntity) getContainer();
             Iterator entities = container.entityList().iterator();
 
             while (entities.hasNext()) {
@@ -432,7 +433,7 @@ public class ModalPort extends TypedIOPort {
             super.setMultiport(isMultiport);
 
             // Mirror the change in mirror ports.
-            ModalModel container = (ModalModel) getContainer();
+            CompositeEntity container = (CompositeEntity) getContainer();
             Iterator entities = container.entityList().iterator();
 
             while (entities.hasNext()) {
@@ -473,7 +474,7 @@ public class ModalPort extends TypedIOPort {
             super.setName(name);
 
             // Mirror the change in mirror ports.
-            ModalModel container = (ModalModel) getContainer();
+            CompositeEntity container = (CompositeEntity) getContainer();
 
             // NOTE: This is called before there is even a container
             // to originally set the name.
@@ -528,7 +529,7 @@ public class ModalPort extends TypedIOPort {
             super.setOutput(isOutput);
 
             // Mirror the change in mirror ports.
-            ModalModel container = (ModalModel) getContainer();
+            CompositeEntity container = (CompositeEntity) getContainer();
             Iterator entities = container.entityList().iterator();
 
             while (entities.hasNext()) {
@@ -577,16 +578,16 @@ public class ModalPort extends TypedIOPort {
     ////                         protected methods                 ////
 
     /** Override the base class to ensure that the proposed container
-     *  is a ModalModel or null.
+     *  is a CompositeEntity or null.
      *  @param container The proposed container.
      *  @exception IllegalActionException If the proposed container is not a
      *   TypedActor, or if the base class throws it.
      */
     protected void _checkContainer(Entity container)
             throws IllegalActionException {
-        if (!(container instanceof ModalModel) && (container != null)) {
+        if (!(container instanceof CompositeEntity) && (container != null)) {
             throw new IllegalActionException(container, this,
-                    "ModalPort can only be contained by ModalModel objects. "
+                    "ModalPort can only be contained by CompositeEntity objects. "
                             + "The container was: " + container);
         }
     }
