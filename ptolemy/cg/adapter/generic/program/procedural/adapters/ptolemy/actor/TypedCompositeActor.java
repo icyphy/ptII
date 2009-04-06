@@ -94,20 +94,6 @@ public class TypedCompositeActor extends ptolemy.cg.adapter.generic.adapters.pto
         }
     }
 
-    /** Create read and write offset variables if needed for the associated
-     *  composite actor. It delegates to the director adapter of the local
-     *  director.
-     *  @return A string containing declared read and write offset variables.
-     *  @exception IllegalActionException If the adapter class cannot be found
-     *   or the director adapter throws it.
-     */
-    @Override
-    public String createOffsetVariablesIfNeeded() throws IllegalActionException {
-        Director directorAdapter = (Director) getCodeGenerator().getAdapter(((ptolemy.actor.CompositeActor) getComponent())
-                .getDirector());
-        return directorAdapter.createOffsetVariablesIfNeeded();
-    }
-
     /** Generate the fire code of the associated composite actor. This method
      *  first generates code for transferring any data from the input
      *  ports of this composite to the ports connected on the inside

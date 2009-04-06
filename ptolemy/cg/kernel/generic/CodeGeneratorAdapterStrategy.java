@@ -239,17 +239,6 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
         return _codeStream;
     }
 
-    /** Generate code for declaring read and write offset variables if needed.
-     *  Return empty string in this base class.
-     *
-     *  @return The empty string.
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-    public String createOffsetVariablesIfNeeded() throws IllegalActionException {
-        return "";
-    }
-
-
     /**
      * Generate the fire code. In this base class, add the name of the
      * associated component in the comment. It checks the inline parameter

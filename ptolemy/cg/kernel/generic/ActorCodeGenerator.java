@@ -49,15 +49,6 @@ public interface ActorCodeGenerator extends ComponentCodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Create read and write offset variables if needed for the associated
-     *  composite actor. It delegates to the director helper of the local
-     *  director.
-     *  @return A string containing declared read and write offset variables.
-     *  @exception IllegalActionException If the helper class cannot be found
-     *   or the director helper throws it.
-     *   FIXME rodiers: remove this method, this is SDF specific.
-     */
-    public String createOffsetVariablesIfNeeded() throws IllegalActionException;
 
     /** Generate into the specified string buffer the code associated
      *  with one firing of the container composite actor.

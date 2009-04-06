@@ -64,7 +64,7 @@ import ptolemy.util.StringUtilities;
 * </pre>
 *
 * @author Ye Zhou, Gang Zhou, Edward A. Lee, Bert Rodiers Contributors: Christopher Brooks, Teale Fristoe
-* @version $Id$
+* @version $Id: CodeGeneratorAdapter.java 52862 2009-03-26 00:21:28Z rodiers $
 * @since Ptolemy II 6.0
 * @Pt.ProposedRating Yellow (eal)
 * @Pt.AcceptedRating Yellow (eal)
@@ -93,17 +93,6 @@ public class CodeGeneratorAdapter extends NamedObj implements ActorCodeGenerator
     public void analyzeTypeConvert() throws IllegalActionException {
         _strategy.analyzeTypeConvert();
     }
-    
-    /** Generate code for declaring read and write offset variables if needed.
-     *  Return empty string in this base class.
-     *
-     *  @return The empty string.
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-    public String createOffsetVariablesIfNeeded() throws IllegalActionException {
-        return _strategy.createOffsetVariablesIfNeeded();
-    }
-    
 
     /**
      * Generate the fire code. In this base class, add the name of the

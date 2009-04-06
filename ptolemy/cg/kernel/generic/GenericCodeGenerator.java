@@ -1032,9 +1032,6 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
             // Delegate to the container to generate preinitialize code.
             code.append(adapter.generatePreinitializeCode());
 
-            // Create variables for buffer offset indexing.
-            // FIXME: This does not belong here. It is SDF-specific.
-            code.append(adapter.createOffsetVariablesIfNeeded());
         } catch (Throwable throwable) {
             throw new IllegalActionException(adapter.getComponent(), throwable,
             "Failed to generate preinitialize code");

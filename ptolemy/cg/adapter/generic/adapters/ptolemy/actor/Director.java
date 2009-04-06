@@ -83,23 +83,6 @@ public class Director extends CodeGeneratorAdapter {
     /////////////////////////////////////////////////////////////////
     ////                Public Methods                           ////
 
-    /** Generate code for declaring read and write offset variables if needed.
-     *  It delegates to the adapters of contained actors.
-     *  @return The generated code.
-     *  @exception IllegalActionException If thrown while creating
-     *  offset variables.
-     */
-    public String createOffsetVariablesIfNeeded() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        Iterator<?> actors = ((CompositeActor) _director.getContainer())
-        .deepEntityList().iterator();
-        while (actors.hasNext()) {
-            Actor actor = (Actor) actors.next();
-            CodeGeneratorAdapter adapterObject = getCodeGenerator().getAdapter((NamedObj) actor);
-            code.append(adapterObject.createOffsetVariablesIfNeeded());
-        }
-        return code.toString();
-    }
 
     /** Generate the code for the firing of actors.
      *  In this base class, it is attempted to fire all the actors once.
