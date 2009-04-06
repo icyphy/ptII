@@ -1212,10 +1212,20 @@ public class Director extends Attribute implements Executable {
     /** Return an array of suggested directors to be used with
      *  ModalModel. Each director is specified by its full class
      *  name.  The first director in the array will be the default
-     *  director used by a modal model.
+     *  director used by a modal model. This base class delegates
+     *  to the executive director, if there is one, and otherwise
+     *  returns an array with only one element,
+     *  "ptolemy.domains.fsm.kernel.FSMDirector".
      *  @return An array of suggested directors to be used with ModalModel.
      */
     public String[] suggestedModalModelDirectors() {
+        NamedObj container = getContainer();
+        if (container instanceof Actor) {
+            Director executiveDirector = ((Actor)container).getExecutiveDirector();
+            if (executiveDirector != null) {
+                return executiveDirector.suggestedModalModelDirectors();
+            }
+        }
         // Default is just one suggestion.
         String[] defaultSuggestions = { "ptolemy.domains.fsm.kernel.FSMDirector" };
         return defaultSuggestions;
