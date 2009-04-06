@@ -228,14 +228,10 @@ public class RemoveProperties implements MoMLFilter {
 
         _propertiesToBeRemoved.put("stopTime", removePropertyStopTime);
 
-        // For the directorClass of ModalModel after Ptolemy II 5.0, if the
-        // default value of the directorClass is HSDirector, remove it.
-        // Note that if the directorClass is chosen as HSDirector, it is the
-        // same as the default settings. So there is no need to record such
-        // information in the MoML file. Prior to Ptolemy II 5.0, models use
-        // HSDirector as the default director for modal models regardless of
-        // whether the model is a continuous-time model. However, HSDirector
-        // no longer works in models that are not continuous-time.
+        // A property named "directorClass" that is a StringAttribute
+        // or StringParameter with value "ptolemy.domains.fsm.kernel.HSDirector"
+        // will be removed. HSDirector no longer exists, so we revert
+        // to the default.
         HashMap removePropertyDirectorClass = new HashMap();
 
         // Key = attribute name, Value = attribute value
