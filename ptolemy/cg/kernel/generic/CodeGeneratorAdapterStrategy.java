@@ -391,8 +391,6 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
      * @exception IllegalActionException Not thrown in this base class.
      */
     public String generatePreinitializeCode() throws IllegalActionException {
-        _adapter._createBufferSizeAndOffsetMap();
-
         return _generateBlockByName(_defaultBlocks[0]);
     }
 
@@ -2013,59 +2011,8 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods.                    ////
 
-    /** Create the buffer size and offset maps for each input port, which is
-     *  associated with this adapter object. A key of the map is an IOPort
-     *  of the actor. The corresponding value is an array of channel objects.
-     *  The i-th channel object corresponds to the i-th channel of that IOPort.
-     *  This method is used to maintain a internal HashMap of channels of the
-     *  actor. The channel objects in the map are used to keep track of the
-     *  buffer sizes or offsets in their buffer.
-     *  @exception IllegalActionException If the director adapter or executive
-     *   director is not found, or if
-     *   {@link #setReadOffset(IOPort, int, Object)} method throws it, or if
-     *   {@link #setWriteOffset(IOPort, int, Object)} method throws it.
-     *
-     */
-    protected void _createBufferSizeAndOffsetMap()
-            throws IllegalActionException {
-        _adapter._createInputBufferSizeAndOffsetMap();
-    }
-    /** Create the input buffer and offset map.
-     *  @exception IllegalActionException If thrown while
-     *  getting port information.
-     *  FIXME rodiers: SDF specific
-     */
-    protected void _createInputBufferSizeAndOffsetMap()
-    throws IllegalActionException {
-        //We only care about input ports where data are actually stored
-        //except when an output port is not connected to any input port.
-        //In that case the variable corresponding to the unconnected output
-        //port always has size 1 and the assignment to this variable is
-        //performed just for the side effect.
-        Iterator<?> inputPorts = ((Actor) _object).inputPortList().iterator();
 
-        while (inputPorts.hasNext()) {
-            IOPort port = (IOPort) inputPorts.next();
-            int length = port.getWidth();
 
-            ptolemy.actor.Director director = getDirector();
-            Director directorAdapter = (Director) _getAdapter(director);
-
-            for (int i = 0; i < port.getWidth(); i++) {
-                int bufferSize = directorAdapter.getBufferSize(port, i);
-                setBufferSize(port, i, bufferSize);
-            }
-
-            for (int i = 0; i < length; i++) {
-                setReadOffset(port, i, Integer.valueOf(0));
-                setWriteOffset(port, i, Integer.valueOf(0));
-            }
-        }
-    }
-
-    /////////////////////////////////////////////////////////////////////
-    ////                      public inner classes                   ////
-    
     /** Given a block name, generate code for that block.
      *  This method is called by actors adapters that have simple blocks
      *  that do not take parameters or have widths.

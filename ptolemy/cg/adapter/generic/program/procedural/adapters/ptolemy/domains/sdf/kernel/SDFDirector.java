@@ -136,6 +136,11 @@ public class SDFDirector extends StaticSchedulingDirector {
 
         code.append(_createOffsetVariablesIfNeeded());
         
+        _createInputBufferSizeAndOffsetMap();
+
+        // For the inside receivers of the output ports.
+        _createOutputBufferSizeAndOffsetMap();
+        
         return code.toString();
     }
     
@@ -254,6 +259,45 @@ public class SDFDirector extends StaticSchedulingDirector {
             code.append("static int " + channelWriteOffset + ";\n");
         }
         return code.toString();
+    }
+
+
+    /** Create the input buffer and offset map.
+     *  @exception IllegalActionException If thrown while
+     *  getting port information.
+     */
+    protected void _createInputBufferSizeAndOffsetMap()
+    throws IllegalActionException {
+        
+        Iterator<?> actors = ((CompositeActor) _director.getContainer())
+            .deepEntityList().iterator();
+        
+        while (actors.hasNext()) {
+            NamedObj actor = (NamedObj) actors.next();
+            CodeGeneratorAdapter actorAdapter = getCodeGenerator().getAdapter(actor);
+            
+            //We only care about input ports where data are actually stored
+            //except when an output port is not connected to any input port.
+            //In that case the variable corresponding to the unconnected output
+            //port always has size 1 and the assignment to this variable is
+            //performed just for the side effect.
+            Iterator<?> inputPorts = ((Actor) actor).inputPortList().iterator();
+    
+            while (inputPorts.hasNext()) {
+                IOPort port = (IOPort) inputPorts.next();
+                int length = port.getWidth();
+    
+                for (int i = 0; i < port.getWidth(); i++) {
+                    int bufferSize = this/*called on the director*/.getBufferSize(port, i);
+                    actorAdapter.setBufferSize(port, i, bufferSize);
+                }
+    
+                for (int i = 0; i < length; i++) {
+                    actorAdapter.setReadOffset(port, i, Integer.valueOf(0));
+                    actorAdapter.setWriteOffset(port, i, Integer.valueOf(0));
+                }
+            }
+        }
     }
 
     /** Check for the given channel of the given port to see if
@@ -544,6 +588,42 @@ public class SDFDirector extends StaticSchedulingDirector {
             }
         }
         return code.toString();
+    }
+    
+
+    /** Create the output buffer and offset map.
+     *  @exception IllegalActionException If thrown while getting the
+     *  director adapter or while getting the buffer size or read offset
+     *  or write offset.
+     */
+    private void _createOutputBufferSizeAndOffsetMap()
+            throws IllegalActionException {
+
+        Iterator<?> outputPorts = ((Actor) ((CompositeActor) _director.getContainer())).outputPortList()
+                .iterator();
+        
+        CodeGeneratorAdapter containerAdapter = getCodeGenerator().getAdapter(_director.getContainer());
+
+        while (outputPorts.hasNext()) {
+
+            IOPort port = (IOPort) outputPorts.next();
+            int length = port.getWidthInside();
+
+
+            for (int i = 0; i < port.getWidthInside(); i++) {
+                // If the local director is an SDF director, then the buffer
+                // size got from the director adapter is final. Otherwise
+                // the buffer size will be updated later on with the maximum
+                // for all possible schedules.
+                int bufferSize = this/*directorAdapter*/.getBufferSize(port, i);
+                containerAdapter.setBufferSize(port, i, bufferSize);
+            }
+
+            for (int i = 0; i < length; i++) {
+                containerAdapter.setReadOffset(port, i, Integer.valueOf(0));
+                containerAdapter.setWriteOffset(port, i, Integer.valueOf(0));
+            }
+        }
     }
 
     /** Pad the buffer for the channel of the given port with the given

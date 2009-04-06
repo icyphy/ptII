@@ -510,21 +510,11 @@ public class CodeGeneratorAdapter extends NamedObj implements ActorCodeGenerator
         return _strategy.resetInputPortsOffset();
     }
     
-    protected void _createInputBufferSizeAndOffsetMap()
-            throws IllegalActionException {
-        _strategy._createInputBufferSizeAndOffsetMap();
-    }
-    
     public String generateOffset(String offsetString, IOPort port, int channel,
             boolean isWrite) throws IllegalActionException {
         return _strategy.generateOffset(offsetString, port, channel,
                             isWrite);
-    }
-    
-    protected void _createBufferSizeAndOffsetMap()
-    throws IllegalActionException {
-        _strategy._createBufferSizeAndOffsetMap();
-    }
+    }    
     
     
     

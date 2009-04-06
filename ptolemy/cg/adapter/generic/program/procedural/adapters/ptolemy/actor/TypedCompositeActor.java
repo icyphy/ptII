@@ -574,60 +574,6 @@ public class TypedCompositeActor extends ptolemy.cg.adapter.generic.adapters.pto
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods.                    ////
 
-    /** Create and initialize the buffer size and offset maps for this
-     *  composite actor. A key of the map is an IOPort of the actor.
-     *  The corresponding value is an array of buffer sizes or an
-     *  array of offsets. The i-th element in the array corresponds to
-     *  the i-th channel of that IOPort.
-     *
-     * @exception IllegalActionException If thrown while getting adapter
-     *  or buffer size.
-     */
-    @Override
-    protected void _createBufferSizeAndOffsetMap()
-            throws IllegalActionException {
-
-        _createInputBufferSizeAndOffsetMap();
-
-        // For the inside receivers of the output ports.
-        _createOutputBufferSizeAndOffsetMap();
-
-    }
-
-    /** Create the output buffer and offset map.
-     *  @exception IllegalActionException If thrown while getting the
-     *  director adapter or while getting the buffer size or read offset
-     *  or write offset.
-     */
-    private void _createOutputBufferSizeAndOffsetMap()
-            throws IllegalActionException {
-
-        Iterator<?> outputPorts = ((Actor) getComponent()).outputPortList()
-                .iterator();
-
-        while (outputPorts.hasNext()) {
-
-            IOPort port = (IOPort) outputPorts.next();
-            int length = port.getWidthInside();
-
-            Director directorAdapter = (Director) getCodeGenerator().getAdapter((((Actor) getComponent())
-                    .getDirector()));
-
-            for (int i = 0; i < port.getWidthInside(); i++) {
-                // If the local director is an SDF director, then the buffer
-                // size got from the director adapter is final. Otherwise
-                // the buffer size will be updated later on with the maximum
-                // for all possible schedules.
-                int bufferSize = directorAdapter.getBufferSize(port, i);
-                setBufferSize(port, i, bufferSize);
-            }
-
-            for (int i = 0; i < length; i++) {
-                setReadOffset(port, i, Integer.valueOf(0));
-                setWriteOffset(port, i, Integer.valueOf(0));
-            }
-        }
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
