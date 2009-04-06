@@ -214,7 +214,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
 
         // If the result is a boolean token, calculate the relation type.
         // Meanwhile, if the nodeName is "x_isPresent", the discreteVariableName
-        // is "x", based on the evaluation reaults of the node, we add or remove
+        // is "x", based on the evaluation results of the node, we add or remove
         // the discrete variable from the list of absent discrete variables.
         if (((BooleanToken) result).booleanValue()) {
             _relationType = RelationType.TRUE;
