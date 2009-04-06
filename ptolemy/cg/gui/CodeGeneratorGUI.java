@@ -129,7 +129,7 @@ public class CodeGeneratorGUI extends PtolemyFrame {
                     // work under WebStart.
                     URL infoURL = Thread.currentThread()
                             .getContextClassLoader().getResource(
-                                    "ptolemy/codegen/README.html");
+                                    "ptolemy/cg/README.html");
 
                     configuration.openModel(null, infoURL, infoURL
                             .toExternalForm());
