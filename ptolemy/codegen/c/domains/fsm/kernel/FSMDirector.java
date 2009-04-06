@@ -229,4 +229,68 @@ public class FSMDirector extends Director {
         }
         return code.toString();
     }
-}
+    
+   public String _generateActorCode() throws IllegalActionException{
+         StringBuffer code = new StringBuffer();
+       ptolemy.domains.fsm.kernel.FSMDirector director = (ptolemy.domains.fsm.kernel.FSMDirector) getComponent();
+       ptolemy.domains.fsm.kernel.FSMActor controller = director
+               .getController();
+       FSMActor controllerHelper = (FSMActor) _getHelper(controller);
+
+       boolean inline = ((BooleanToken) _codeGenerator.inline.getToken())
+               .booleanValue();
+
+       int depth = 1;
+       
+       Iterator states = controller.entityList().iterator();
+       int stateCount = 0;
+       depth++;
+
+       while (states.hasNext()) {
+          // code.append(_getIndentPrefix(depth));
+           //code.append("case " + stateCount + ":" + _eol);
+           stateCount++;
+
+           depth++;
+
+           State state = (State) states.next();
+           Actor[] actors = state.getRefinement();
+
+           if (actors != null) {
+               for (int i = 0; i < actors.length; i++) {
+                   CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actors[i]);
+
+                       code.append("void "+_getActorName(actors[i])+"(){");
+                       
+                       code.append(actorHelper.generateFireCode());
+                       code.append(actorHelper.generateTypeConvertFireCode());
+                   code.append(_eol+"}"+_eol);
+               }}
+       }
+       return code.toString();
+       }  
+               
+
+   private String _getActorName(Actor actor) {
+       String actorFullName = actor.getFullName();
+       actorFullName = actorFullName.substring(1,actorFullName.length());
+       actorFullName = actorFullName.replace('.', '_');
+       actorFullName = actorFullName.replace(' ', '_');
+       return actorFullName;
+       }
+   
+   
+   
+   public String generatePreinitializeCode()throws IllegalActionException{
+       StringBuffer code = new StringBuffer();
+       code.append(super.generatePreinitializeCode());
+      
+       code.append(_generateActorCode());
+      
+       return code.toString();
+   }
+   
+  
+   }
+            
+
