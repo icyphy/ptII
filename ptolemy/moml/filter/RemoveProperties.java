@@ -57,22 +57,25 @@ import ptolemy.moml.MoMLParser;
  // Now the default value is Infinity.
  HashMap removePropertyStopTime = new HashMap();
 
- // Key = attribute name, Value = attribute value
+ // Remove properties whose name is "stopTime" if their
+ // class and value properties are in the HashMap.
+ _propertiesToBeRemoved.put("stopTime", removePropertyStopTime);
+
+ // The class must be a Parameter for this to be removed.
+ removePropertyStopTime.put("ptolemy.data.expr.Parameter", null);
+
+ // The value must be one of the following representations of Double.MAX_VALUE.
  removePropertyStopTime.put("1.7976931348623E308", null);
  removePropertyStopTime.put("1.797693134862316E308", null);
  removePropertyStopTime.put("MaxDouble", null);
  removePropertyStopTime.put(""+Double.MAX_VALUE, null);
 
- removePropertyStopTime.put("ptolemy.data.expr.Parameter", null);
  </pre>
- The removePropertyStopTime HashMap stores every bit of details of the
- stopTime parameter to be removed including the class and value. Only when
- all details match, will this parameter be removed. This prevents user
- configuration of the stopTime parameter to be filtered.
+ The removePropertyStopTime HashMap stores all possible matches of the name
+ and class attributes of the MoML entry for this attribute. Given MoML with
+ both a class and a value, then both must match for the property to
+ be removed.
 
- <pre>
- _propertiesToBeRemoved.put("stopTime", removePropertyStopTime);
- </pre>
  The _propertiesToBeRemoved HashMap contains all the properties
  such as the stopTime parameter that will be removed.
 
