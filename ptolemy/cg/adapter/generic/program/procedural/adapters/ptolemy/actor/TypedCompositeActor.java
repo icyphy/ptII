@@ -214,30 +214,6 @@ public class TypedCompositeActor extends ptolemy.cg.adapter.generic.adapters.pto
 
         //initializeCode.append(super.generateInitializeCode());
 
-        // Reset the offset for all of the contained actors' input ports.
-        Iterator<?> actors = ((ptolemy.actor.CompositeActor) getComponent())
-                .deepEntityList().iterator();
-        while (actors.hasNext()) {
-            NamedObj actor = (NamedObj) actors.next();
-            CodeGeneratorAdapter actorAdapter = getCodeGenerator().getAdapter(actor);
-            String code = actorAdapter.resetInputPortsOffset();
-            if (code.length() > 0) {
-                initializeCode.append(_eol
-                        + getCodeGenerator().comment(1, actor.getName()
-                                + "'s input offset initialization"));
-                initializeCode.append(code);
-            }
-        }
-
-        // Reset the offset for all of the output ports.
-        String code = resetOutputPortsOffset();
-        if (code.length() > 0) {
-            initializeCode.append(_eol
-                    + getCodeGenerator().comment(
-                            getComponent().getName()
-                                    + "'s output offset initialization"));
-            initializeCode.append(code);
-        }
 
         Director directorAdapter = (Director) getCodeGenerator().getAdapter(((ptolemy.actor.CompositeActor) getComponent())
                 .getDirector());
@@ -505,45 +481,6 @@ public class TypedCompositeActor extends ptolemy.cg.adapter.generic.adapters.pto
         sharedCode.addAll(directorAdapter.getSharedCode());
 
         return sharedCode;
-    }
-
-    /** Reset the offsets of all inside buffers of all output ports of the
-     *  associated composite actor to the default value of 0.
-     *
-     *  @return The reset code of the associated composite actor.
-     *  @exception IllegalActionException If thrown while getting or
-     *   setting the offset.
-     */
-    private String resetOutputPortsOffset() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        Iterator<?> outputPorts = ((Actor) getComponent()).outputPortList()
-                .iterator();
-
-        while (outputPorts.hasNext()) {
-            IOPort port = (IOPort) outputPorts.next();
-
-            for (int i = 0; i < port.getWidthInside(); i++) {
-                Object readOffset = getReadOffset(port, i);
-                if (readOffset instanceof Integer) {
-                    // Read offset is a number.
-                    setReadOffset(port, i, Integer.valueOf(0));
-                } else {
-                    // Read offset is a variable.
-                    code.append(CodeStream.indent(((String) readOffset)
-                            + " = 0;" + _eol));
-                }
-                Object writeOffset = getWriteOffset(port, i);
-                if (writeOffset instanceof Integer) {
-                    // Write offset is a number.
-                    setWriteOffset(port, i, Integer.valueOf(0));
-                } else {
-                    // Write offset is a variable.
-                    code.append(CodeStream.indent(((String) writeOffset)
-                            + " = 0;" + _eol));
-                }
-            }
-        }
-        return code.toString();
     }
 
     /** Set the int array of firings per global iteration. For each

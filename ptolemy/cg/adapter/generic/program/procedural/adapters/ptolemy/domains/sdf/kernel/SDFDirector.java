@@ -38,6 +38,8 @@ import ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.Type
 import ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy;
+import ptolemy.cg.kernel.generic.CodeStream;
+import ptolemy.cg.kernel.generic.PortCodeGenerator;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy.Channel;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
@@ -88,6 +90,38 @@ public class SDFDirector extends StaticSchedulingDirector {
                 .getContainer();
         CodeGeneratorAdapter containerAdapter = getCodeGenerator().getAdapter(container);
 
+        // Reset the offset for all of the contained actors' input ports.
+        Iterator<?> actors = container.deepEntityList().iterator();
+        while (actors.hasNext()) {
+            NamedObj actor = (NamedObj) actors.next();
+            CodeGeneratorAdapter actorAdapter = getCodeGenerator().getAdapter(actor);
+            StringBuffer resetCode = new StringBuffer();
+            Iterator<?> inputPorts = ((Actor) actorAdapter.getComponent()).inputPortList().iterator();
+
+            while (inputPorts.hasNext()) {
+                IOPort port = (IOPort) inputPorts.next();
+                resetCode.append(((PortCodeGenerator)getCodeGenerator().getAdapter(port)).initializeOffsets());
+            }
+            
+            if (resetCode.length() > 0) {
+                resetCode.append(_eol
+                        + getCodeGenerator().comment(1, actor.getName()
+                                + "'s input offset initialization"));
+                code.append(resetCode);
+            }
+        }
+
+        // Reset the offset for all of the output ports.
+        String resetCode = _resetOutputPortsOffset();
+        if (resetCode.length() > 0) {
+            code.append(_eol
+                    + getCodeGenerator().comment(
+                            getComponent().getName()
+                                    + "'s output offset initialization"));
+            code.append(resetCode);
+        }
+
+        
         // Generate code for creating external initial production.
         Iterator<?> outputPorts = container.outputPortList().iterator();
         while (outputPorts.hasNext()) {
@@ -645,4 +679,49 @@ public class SDFDirector extends StaticSchedulingDirector {
 
         return newBufferSize;
     }
+    
+
+    /** Reset the offsets of all inside buffers of all output ports of the
+     *  associated composite actor to the default value of 0.
+     *
+     *  @return The reset code of the associated composite actor.
+     *  @exception IllegalActionException If thrown while getting or
+     *   setting the offset.
+     */
+    private String _resetOutputPortsOffset() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        Iterator<?> outputPorts = ((Actor) getComponent().getContainer()).outputPortList()
+                .iterator();
+        
+        CodeGeneratorAdapter containerAdapter = getCodeGenerator().getAdapter(getComponent()
+                .getContainer());
+        
+
+        while (outputPorts.hasNext()) {
+            IOPort port = (IOPort) outputPorts.next();
+
+            for (int i = 0; i < port.getWidthInside(); i++) {
+                Object readOffset = containerAdapter.getReadOffset(port, i);
+                if (readOffset instanceof Integer) {
+                    // Read offset is a number.
+                    containerAdapter.setReadOffset(port, i, Integer.valueOf(0));
+                } else {
+                    // Read offset is a variable.
+                    code.append(CodeStream.indent(((String) readOffset)
+                            + " = 0;" + _eol));
+                }
+                Object writeOffset = containerAdapter.getWriteOffset(port, i);
+                if (writeOffset instanceof Integer) {
+                    // Write offset is a number.
+                    containerAdapter.setWriteOffset(port, i, Integer.valueOf(0));
+                } else {
+                    // Write offset is a variable.
+                    code.append(CodeStream.indent(((String) writeOffset)
+                            + " = 0;" + _eol));
+                }
+            }
+        }
+        return code.toString();
+    }
+    
 }

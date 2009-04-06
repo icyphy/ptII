@@ -102,7 +102,6 @@ import ptolemy.util.StringUtilities;
  * @Pt.AcceptedRating Yellow (eal)
  */
 // FIXME: Why extend NamedObj? Extend Attribute and store in the actor being adapted?
-// FIXME: We probably don't want to derive from ActorCodeGenerator.
 public class CodeGeneratorAdapterStrategy extends NamedObj {
 
     /** Construct the code generator adapter strategy.
@@ -1519,24 +1518,6 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
         return result.toString();
     }
 
-    /** Reset the offsets of all channels of all input ports of the
-     *  associated actor to the default value of 0.
-     *
-     *  @return The reset code of the associated actor.
-     *  @exception IllegalActionException If thrown while getting or
-     *   setting the offset.
-     */
-    public String resetInputPortsOffset() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        Iterator<?> inputPorts = ((Actor) _object).inputPortList().iterator();
-
-        while (inputPorts.hasNext()) {
-            IOPort port = (IOPort) inputPorts.next();
-            code.append(((PortCodeGenerator)_getAdapter(port)).initializeOffsets());
-        }
-        return code.toString();
-    }
-    
     /** Set the adapter
      *  @param adapter The given adapter.
      */
@@ -1552,7 +1533,7 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
      *  @see #getBufferSize(IOPort)
      * @throws IllegalActionException 
      */
-    public void setBufferSize(IOPort port, int channelNumber, 
+    final public void setBufferSize(IOPort port, int channelNumber, 
             int bufferSize) throws IllegalActionException {
         ((PortCodeGenerator) _getAdapter(port))
         .setBufferSize(channelNumber, bufferSize);
@@ -1563,7 +1544,7 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
      *   adapter class.
      *  @see #getCodeGenerator()
      */
-    public void setCodeGenerator(GenericCodeGenerator codeGenerator) {
+    final public void setCodeGenerator(GenericCodeGenerator codeGenerator) {
         _codeGenerator = codeGenerator;
     }
 
@@ -1576,7 +1557,7 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
      *   be found.
      *  @see #getReadOffset(IOPort, int)
      */
-    public void setReadOffset(IOPort port, int channelNumber,
+    final public void setReadOffset(IOPort port, int channelNumber,
             Object readOffset) throws IllegalActionException {
         ((PortCodeGenerator) _getAdapter(port))
         .setReadOffset(channelNumber, readOffset);
@@ -1591,7 +1572,7 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
      *   {@link #setWriteOffset(IOPort, int, Object)} method throws it.
      *  @see #getWriteOffset(IOPort, int)
      */
-    public void setWriteOffset(IOPort port, int channelNumber,
+    final public void setWriteOffset(IOPort port, int channelNumber,
             Object writeOffset) throws IllegalActionException {
         ((PortCodeGenerator) _getAdapter(port))
 	    .setWriteOffset(channelNumber, writeOffset);
