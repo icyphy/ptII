@@ -48,6 +48,7 @@ import ptolemy.domains.fsm.kernel.State;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
@@ -481,6 +482,19 @@ public class Event extends State {
                 .getVersion()) {
             _parserScope = new VariableScope(this, getController()
                     .getPortScope());
+            TypedActor[] refinements;
+            try {
+                refinements = getRefinement();
+            } catch (IllegalActionException e) {
+                throw new InternalErrorException(this, e,
+                        "Unable to get refinements.");
+            }
+            if (refinements != null) {
+                for (int i = refinements.length - 1; i >= 0; i--) {
+                    _parserScope = new VariableScope((NamedObj) refinements[i],
+                            _parserScope);
+                }
+            }
             _parserScopeVersion = _workspace.getVersion();
         }
         return _parserScope;

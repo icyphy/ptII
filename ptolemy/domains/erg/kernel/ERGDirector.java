@@ -1076,6 +1076,7 @@ public class ERGDirector extends Director implements TimedDirector,
      *   before its scheduled time is reached.
      *  @param data The refiring data for the next refire() invocation of the
      *   event that causes this method to be called, or null if none.
+     *  @param priority The priority of the event (0 for default)
      *  @param reset Whether the refinement of the scheduled event should be
      *   (re)initialized when the event is processed.
      *  @exception IllegalActionException If the actor or event is to be

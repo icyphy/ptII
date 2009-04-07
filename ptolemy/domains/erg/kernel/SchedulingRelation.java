@@ -411,7 +411,7 @@ public class SchedulingRelation extends Transition {
 
     /** Return whether the given expression is statically equal to 0.0.
      *
-     *  @expression The expression.
+     *  @param expression The expression.
      *  @return True if the expression is statically equal to 0.0.
      */
     private boolean _isZero(String expression) {
