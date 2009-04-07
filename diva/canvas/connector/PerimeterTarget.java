@@ -56,7 +56,7 @@ public class PerimeterTarget extends AbstractConnectorTarget {
             return new PerimeterSite(f, 0);
         } else {
             // In case we are snapping a connector with a 
-            // connector we don't to snap at the mouse location,
+            // connector we want to snap at the mouse location,
             // not the "start" of the figure.
             // It would be even better to snap to the actual figure, but this
             // does not seem to be that easy (without iterating through the
