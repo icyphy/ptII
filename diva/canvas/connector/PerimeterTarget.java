@@ -26,6 +26,8 @@
  */
 package diva.canvas.connector;
 
+import java.awt.geom.Point2D;
+
 import diva.canvas.Figure;
 import diva.canvas.Site;
 
@@ -39,7 +41,7 @@ public class PerimeterTarget extends AbstractConnectorTarget {
     /** Return the nearest site on the figure if the figure
      * is not a connector
      */
-    public Site getHeadSite(Figure f, double x, double y) {
+    public Site getHeadSite(Figure f, final double x, final double y) {
         // Removed the test if (!(f instanceof Connector)) {
         // It is now also possible to connect with other links.
         // If this existing link has a vertex as head or tail,
@@ -50,6 +52,20 @@ public class PerimeterTarget extends AbstractConnectorTarget {
         
         // FIXME: Need to generate unique ID per figure
         // FIXME: Need to actually return a useful site!
-        return new PerimeterSite(f, 0);
+        if (!(f instanceof Connector)) {
+            return new PerimeterSite(f, 0);
+        } else {
+            // In case we are snapping a connector with a 
+            // connector we don't to snap at the mouse location,
+            // not the "start" of the figure.
+            // It would be even better to snap to the actual figure, but this
+            // does not seem to be that easy (without iterating through the
+            // complete shape.
+            return new PerimeterSite(f, 0) {
+                public Point2D getPoint(double normal) {
+                    return new Point2D.Double(x, y);
+                }
+            };
+        }
     }
 }
