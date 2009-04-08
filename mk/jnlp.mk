@@ -252,6 +252,7 @@ PTINY_ONLY_JNLP_JARS = \
 	ptolemy/codegen/c/vergil/vergil.jar \
 	ptolemy/codegen/demo/demo.jar \
 	$(PTALON_JARS) \
+	$(HYBRID_SYSTEMS_DEMO_AND_DOC_JARS) \
 	ptolemy/data/type/demo/demo.jar \
 	ptolemy/data/unit/demo/demo.jar \
 	ptolemy/domains/ddf/demo/demo.jar \
@@ -385,6 +386,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/sdf/lib/vq/data/data.jar \
 	ptolemy/domains/tm/demo/demo.jar \
 	ptolemy/domains/tm/doc/doc.jar \
+	ptolemy/verification/verification.jar \
 	ptolemy/vergil/erg/erg.jar \
 	ptolemy/vergil/fsm/fmv/fmv.jar \
 	ptolemy/vergil/gt/gt.jar \
@@ -573,7 +575,7 @@ jnlp_distclean: jnlp_clean
 # Rule to run the jnlp file
 PTJNLP = vergil.jnlp
 jnlp_run:
-	"$(PTJAVA_HOME)/../bin/javaws" -wait $(PTJNLP)
+	"$(PTJAVA_HOME)/bin/javaws" -wait $(PTJNLP)
 
 
 $(SIGNED_DIR):
@@ -985,11 +987,11 @@ $(UNJAR_DIST_DIR):
 # getting errors about unsigned applications
  
 jnlp_verify:
-	set $(ALL_JNLP_JARS); \
+	(cd signed; set $(ALL_JNLP_JARS); \
 	for x do \
 		echo "$$x"; \
 		"$(JARSIGNER)" -verify -verbose -certs $$x; \
-	done;
+	done;)
 
 # Use this to verify that the key is ok
 key_list:
