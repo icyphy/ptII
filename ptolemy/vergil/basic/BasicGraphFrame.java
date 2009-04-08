@@ -874,6 +874,13 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         return _jgraph;
     }
 
+    /** Return the JCanvasPanner instance
+     *  @return the JCanvasPanner
+     */
+    public JCanvasPanner getGraphPanner() {
+        return _graphPanner;
+    }
+
     /** Return a set of instances of NamedObj representing the objects
      *  that are currently selected.  This set has no particular order
      *  to it. If you need the selection objects in proper order, as
