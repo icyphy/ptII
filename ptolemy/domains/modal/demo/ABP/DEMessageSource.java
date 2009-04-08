@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.domains.fsm.demo.ABP;
+package ptolemy.domains.modal.demo.ABP;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.lib.RandomSource;
