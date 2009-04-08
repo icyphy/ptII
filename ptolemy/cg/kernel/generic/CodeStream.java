@@ -1147,9 +1147,9 @@ public class CodeStream {
         }
 
         // Keep parsing for extra parameters.
-        for (int commaIndex = CodeGeneratorAdapterStrategy._indexOf(",", codeInFile.toString(), startIndex); 
+        for (int commaIndex = CodeGeneratorAdapterStrategy.indexOf(",", codeInFile.toString(), startIndex); 
         commaIndex != -1 && commaIndex <= endIndex; 
-        commaIndex = CodeGeneratorAdapterStrategy._indexOf(",", codeInFile.toString(), commaIndex + 1)) {
+        commaIndex = CodeGeneratorAdapterStrategy.indexOf(",", codeInFile.toString(), commaIndex + 1)) {
 
             String newParameter = codeInFile.substring(
                     startIndex, commaIndex);

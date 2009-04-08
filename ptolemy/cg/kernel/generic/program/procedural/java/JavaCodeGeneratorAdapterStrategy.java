@@ -31,9 +31,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import ptolemy.actor.Actor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.DFUtilities;
+import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy;
 import ptolemy.cg.kernel.generic.ParseTreeCodeGenerator;
 import ptolemy.data.expr.Parameter;
@@ -41,7 +41,6 @@ import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
 //// JavaCodeGeneratorAdapter
@@ -127,9 +126,11 @@ public class JavaCodeGeneratorAdapterStrategy extends CodeGeneratorAdapterStrate
                     + _codeGenerator.comment(name + "'s referenced parameter declarations."));
             code.append(referencedParameterDeclaration);
         }
+        
+        Director director = getDirectorAdapter();
 
         // Generate variable declarations for input ports.
-        String inputVariableDeclaration = _generateInputVariableDeclaration();
+        String inputVariableDeclaration = director.generateInputVariableDeclaration();
         if (inputVariableDeclaration.length() > 1) {
             code.append(_eol
                     + _codeGenerator.comment(name + "'s input variable declarations."));
@@ -137,7 +138,7 @@ public class JavaCodeGeneratorAdapterStrategy extends CodeGeneratorAdapterStrate
         }
 
         // Generate variable declarations for output ports.
-        String outputVariableDeclaration = _generateOutputVariableDeclaration();
+        String outputVariableDeclaration = director.generateOutputVariableDeclaration();
         if (outputVariableDeclaration.length() > 1) {
             code.append(_eol
                     + _codeGenerator.comment(name + "'s output variable declarations."));
@@ -244,57 +245,6 @@ public class JavaCodeGeneratorAdapterStrategy extends CodeGeneratorAdapterStrate
         return files;
     }    
 
-    /** Generate input variable declarations.
-     *  @return a String that declares input variables.
-     *  @exception IllegalActionException If thrown while
-     *  getting port information.
-     */
-    protected String _generateInputVariableDeclaration()
-    throws IllegalActionException {
-
-        StringBuffer code = new StringBuffer();
-
-        Iterator<?> inputPorts = ((Actor) getComponent()).inputPortList()
-        .iterator();
-
-        while (inputPorts.hasNext()) {
-            TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
-
-            if (!inputPort.isOutsideConnected()) {
-                continue;
-            }
-
-            _portVariableDeclaration(code, inputPort);
-        }
-
-        return code.toString();
-    }
-
-    /** Generate output variable declarations.
-     *  @return a String that declares output variables.
-     *  @exception IllegalActionException If thrown while
-     *  getting port information.
-     */
-    private String _generateOutputVariableDeclaration()
-    throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-
-        Iterator<?> outputPorts = ((Actor) getComponent()).outputPortList()
-        .iterator();
-
-        while (outputPorts.hasNext()) {
-            TypedIOPort outputPort = (TypedIOPort) outputPorts.next();
-
-            // If either the output port is a dangling port or
-            // the output port has inside receivers.
-            if (!outputPort.isOutsideConnected() || outputPort.isInsideConnected()) {
-                _portVariableDeclaration(code, outputPort);
-            }
-        }
-
-        return code.toString();
-    }
-
     /** Generate referenced parameter declarations.
      *  @return a String that declares referenced parameters.
      *  @exception IllegalActionException If thrown while
@@ -340,7 +290,7 @@ public class JavaCodeGeneratorAdapterStrategy extends CodeGeneratorAdapterStrate
 
                 code.append("static ");
                 code.append(targetType(portType));
-                code.append(" " + _getTypeConvertReference(channel));
+                code.append(" " + getTypeConvertReference(channel));
 
                 //int bufferSize = getBufferSize(channel.port);
                 int bufferSize = Math.max(DFUtilities
@@ -458,41 +408,6 @@ public class JavaCodeGeneratorAdapterStrategy extends CodeGeneratorAdapterStrate
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                  ////
-
-    private void _portVariableDeclaration(StringBuffer code, TypedIOPort port) 
-    throws IllegalActionException {
-
-        code.append("static " + targetType(port.getType()) + " "
-                + generateName(port));
-
-        int bufferSize = getBufferSize(port);
-
-        if (port.isMultiport()) {
-            code.append("[]");
-            if (bufferSize > 1) {
-                code.append("[]");
-            }
-            code.append(" = new " + targetType(port.getType()));
-        } else {
-            if (bufferSize > 1) {
-                code.append("[]");
-                code.append(" = new " + targetType(port.getType()));
-            } else {
-                //code.append(" = ");
-            }
-        }
-
-        if (port.isMultiport()) {
-            code.append("[" + port.getWidth() + "]");
-        }
-        
-        if (bufferSize > 1) {
-            code.append("[" + bufferSize + "]");
-        } else {
-            //code.append("0");
-        }
-        code.append(";" + _eol);
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////

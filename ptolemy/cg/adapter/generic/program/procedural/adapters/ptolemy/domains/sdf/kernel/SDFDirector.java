@@ -34,12 +34,10 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.util.DFUtilities;
-import ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.TypedCompositeActor;
 import ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy;
 import ptolemy.cg.kernel.generic.CodeStream;
-import ptolemy.cg.kernel.generic.PortCodeGenerator;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy.Channel;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
@@ -100,7 +98,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 
             while (inputPorts.hasNext()) {
                 IOPort port = (IOPort) inputPorts.next();
-                resetCode.append(((PortCodeGenerator)getCodeGenerator().getAdapter(port)).initializeOffsets());
+                resetCode.append(_ports.initializeOffsets(port));
             }
             
             if (resetCode.length() > 0) {
@@ -255,9 +253,6 @@ public class SDFDirector extends StaticSchedulingDirector {
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        CodeGeneratorAdapter adapter = getCodeGenerator().getAdapter(port
-                .getContainer());
-
         int width;
         if (port.isInput()) {
             width = port.getWidth();
@@ -272,8 +267,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 
             // Now replace the concrete offset with the variable.
             for (int i = 0; i < width; i++) {
-                adapter
-                        .setReadOffset(port, i, channelReadOffset + "[" + i
+                _ports.setReadOffset(port, i, channelReadOffset + "[" + i
                                 + "]");
             }
             channelReadOffset += "[" + width + "]";
@@ -286,7 +280,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 
             // Now replace the concrete offset with the variable.
             for (int i = 0; i < width; i++) {
-                adapter.setWriteOffset(port, i, channelWriteOffset + "[" + i
+                _ports.setWriteOffset(port, i, channelWriteOffset + "[" + i
                         + "]");
             }
             channelWriteOffset += "[" + width + "]";
@@ -308,7 +302,6 @@ public class SDFDirector extends StaticSchedulingDirector {
         
         while (actors.hasNext()) {
             NamedObj actor = (NamedObj) actors.next();
-            CodeGeneratorAdapter actorAdapter = getCodeGenerator().getAdapter(actor);
             
             //We only care about input ports where data are actually stored
             //except when an output port is not connected to any input port.
@@ -323,12 +316,12 @@ public class SDFDirector extends StaticSchedulingDirector {
     
                 for (int i = 0; i < port.getWidth(); i++) {
                     int bufferSize = this/*called on the director*/.getBufferSize(port, i);
-                    actorAdapter.setBufferSize(port, i, bufferSize);
+                    _ports.setBufferSize(port, i, bufferSize);
                 }
     
                 for (int i = 0; i < length; i++) {
-                    actorAdapter.setReadOffset(port, i, Integer.valueOf(0));
-                    actorAdapter.setWriteOffset(port, i, Integer.valueOf(0));
+                    _ports.setReadOffset(port, i, Integer.valueOf(0));
+                    _ports.setWriteOffset(port, i, Integer.valueOf(0));
                 }
             }
         }
@@ -356,12 +349,10 @@ public class SDFDirector extends StaticSchedulingDirector {
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        CodeGeneratorAdapter adapter = getCodeGenerator().getAdapter(port
-                .getContainer());
         boolean padBuffers = ((BooleanToken) getCodeGenerator().padBuffers
                 .getToken()).booleanValue();
 
-        int bufferSize = adapter.getBufferSize(port, channelNumber);
+        int bufferSize = _ports.getBufferSize(port, channelNumber);
 
         // Increase the buffer size of that channel to the power of two.
         if (bufferSize > 0 && padBuffers) {
@@ -395,7 +386,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                 //        + adapter.getReadOffset(port, channelNumber) + ";\n");
                 code.append("static int " + channelReadOffsetVariable + ";\n");
                 // Now replace the concrete offset with the variable.
-                adapter.setReadOffset(port, channelNumber,
+                _ports.setReadOffset(port, channelNumber,
                         channelReadOffsetVariable);
             }
 
@@ -413,7 +404,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                         .toString();
                 code.append("static int " + channelWriteOffsetVariable + ";\n");
                 // Now replace the concrete offset with the variable.
-                adapter.setWriteOffset(port, channelNumber,
+                _ports.setWriteOffset(port, channelNumber,
                         channelWriteOffsetVariable);
             }
         }
@@ -430,20 +421,18 @@ public class SDFDirector extends StaticSchedulingDirector {
 
         ptolemy.domains.sdf.kernel.SDFDirector director = (ptolemy.domains.sdf.kernel.SDFDirector) getComponent();
         CompositeActor container = (CompositeActor) director.getContainer();
-        TypedCompositeActor containerAdapter = (TypedCompositeActor) getCodeGenerator().getAdapter(container);
 
         Iterator<?> actors = container.deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorAdapter actorAdapter = getCodeGenerator().getAdapter((NamedObj) actor);
             Iterator<?> inputPorts = actor.inputPortList().iterator();
             while (inputPorts.hasNext()) {
                 IOPort inputPort = (IOPort) inputPorts.next();
                 for (int k = 0; k < inputPort.getWidth(); k++) {
                     int newCapacity = getBufferSize(inputPort, k);
-                    int oldCapacity = actorAdapter.getBufferSize(inputPort, k);
+                    int oldCapacity = _ports.getBufferSize(inputPort, k);
                     if (newCapacity > oldCapacity) {
-                        actorAdapter.setBufferSize(inputPort, k, newCapacity);
+                        _ports.setBufferSize(inputPort, k, newCapacity);
                     }
                 }
             }
@@ -454,9 +443,9 @@ public class SDFDirector extends StaticSchedulingDirector {
             IOPort outputPort = (IOPort) outputPorts.next();
             for (int k = 0; k < outputPort.getWidthInside(); k++) {
                 int newCapacity = getBufferSize(outputPort, k);
-                int oldCapacity = containerAdapter.getBufferSize(outputPort, k);
+                int oldCapacity = _ports.getBufferSize(outputPort, k);
                 if (newCapacity > oldCapacity) {
-                    containerAdapter.setBufferSize(outputPort, k, newCapacity);
+                    _ports.setBufferSize(outputPort, k, newCapacity);
                 }
             }
         }
@@ -636,8 +625,6 @@ public class SDFDirector extends StaticSchedulingDirector {
         Iterator<?> outputPorts = ((Actor) ((CompositeActor) _director.getContainer())).outputPortList()
                 .iterator();
         
-        CodeGeneratorAdapter containerAdapter = getCodeGenerator().getAdapter(_director.getContainer());
-
         while (outputPorts.hasNext()) {
 
             IOPort port = (IOPort) outputPorts.next();
@@ -650,12 +637,12 @@ public class SDFDirector extends StaticSchedulingDirector {
                 // the buffer size will be updated later on with the maximum
                 // for all possible schedules.
                 int bufferSize = this/*directorAdapter*/.getBufferSize(port, i);
-                containerAdapter.setBufferSize(port, i, bufferSize);
+                _ports.setBufferSize(port, i, bufferSize);
             }
 
             for (int i = 0; i < length; i++) {
-                containerAdapter.setReadOffset(port, i, Integer.valueOf(0));
-                containerAdapter.setWriteOffset(port, i, Integer.valueOf(0));
+                _ports.setReadOffset(port, i, Integer.valueOf(0));
+                _ports.setWriteOffset(port, i, Integer.valueOf(0));
             }
         }
     }
@@ -670,16 +657,15 @@ public class SDFDirector extends StaticSchedulingDirector {
      */
     private int _padBuffer(IOPort port, int channelNumber)
             throws IllegalActionException {
-        CodeGeneratorAdapter adapter = getCodeGenerator().getAdapter(port
-                .getContainer());
 
-        int bufferSize = adapter.getBufferSize(port, channelNumber);
+        int bufferSize = _ports.getBufferSize(port, channelNumber);
         int newBufferSize = _ceilToPowerOfTwo(bufferSize);
-        adapter.setBufferSize(port, channelNumber, newBufferSize);
+        _ports.setBufferSize(port, channelNumber, newBufferSize);
 
         return newBufferSize;
     }
     
+
 
     /** Reset the offsets of all inside buffers of all output ports of the
      *  associated composite actor to the default value of 0.
@@ -691,29 +677,25 @@ public class SDFDirector extends StaticSchedulingDirector {
     private String _resetOutputPortsOffset() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         Iterator<?> outputPorts = ((Actor) getComponent().getContainer()).outputPortList()
-                .iterator();
-        
-        CodeGeneratorAdapter containerAdapter = getCodeGenerator().getAdapter(getComponent()
-                .getContainer());
-        
+                .iterator();               
 
         while (outputPorts.hasNext()) {
             IOPort port = (IOPort) outputPorts.next();
 
             for (int i = 0; i < port.getWidthInside(); i++) {
-                Object readOffset = containerAdapter.getReadOffset(port, i);
+                Object readOffset = _ports.getReadOffset(port, i);
                 if (readOffset instanceof Integer) {
                     // Read offset is a number.
-                    containerAdapter.setReadOffset(port, i, Integer.valueOf(0));
+                    _ports.setReadOffset(port, i, Integer.valueOf(0));
                 } else {
                     // Read offset is a variable.
                     code.append(CodeStream.indent(((String) readOffset)
                             + " = 0;" + _eol));
                 }
-                Object writeOffset = containerAdapter.getWriteOffset(port, i);
+                Object writeOffset = _ports.getWriteOffset(port, i);
                 if (writeOffset instanceof Integer) {
                     // Write offset is a number.
-                    containerAdapter.setWriteOffset(port, i, Integer.valueOf(0));
+                    _ports.setWriteOffset(port, i, Integer.valueOf(0));
                 } else {
                     // Write offset is a variable.
                     code.append(CodeStream.indent(((String) writeOffset)
@@ -724,4 +706,5 @@ public class SDFDirector extends StaticSchedulingDirector {
         return code.toString();
     }
     
+
 }

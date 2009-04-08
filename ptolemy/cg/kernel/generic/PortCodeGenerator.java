@@ -42,18 +42,6 @@ import ptolemy.kernel.util.IllegalActionException;
 // FIXME: This looks rather C specific!
 
 public interface PortCodeGenerator extends ComponentCodeGenerator {
-    /**Generate the expression that represents the offset in the generated
-     * code.
-     * @param offset The specified offset from the user.
-     * @param channel The referenced port channel.
-     * @param isWrite Whether to generate the write or read offset.
-     * @return The expression that represents the offset in the generated code.
-     * @exception IllegalActionException If there is problems getting the port
-     *  buffer size or the offset in the channel and offset map.
-     *  FIXME rodiers: this is SDF specific
-     */
-    public String generateOffset(String offset, int channel, boolean isWrite, 
-            Director directorHelper) throws IllegalActionException;
 
     /** Generate the get code.
      *  @param channel The channel for which the get code is generated.
@@ -69,22 +57,14 @@ public interface PortCodeGenerator extends ComponentCodeGenerator {
     public String generateCodeForSend(String channel, String dataToken)     
 	throws IllegalActionException;
 
-    /** Get the buffer size of channel of the port.
-     *  @param channelNumber The number of the channel that is being set.
-     *  @return return The size of the buffer.
-     *  @see #setBufferSize(int, int)
-     *  FIXME rodiers: this is SDF specific
-     */
-    public int getBufferSize(int channelNumber) throws IllegalActionException;
-
     /** Get the read offset of a channel of the port.
      *  @param channelNumber The number of the channel.
      *  @return The read offset.
      *  @see #setReadOffset(int, Object)
      *  FIXME rodiers: this is SDF specific
      */
-    public Object getReadOffset(int channelNumber)
-	throws IllegalActionException;
+//    public Object getReadOffset(int channelNumber)
+//	throws IllegalActionException;
 
     /** Get the write offset of a channel of the port.
      *  @param channelNumber The number of the channel.
@@ -93,16 +73,8 @@ public interface PortCodeGenerator extends ComponentCodeGenerator {
      *  @see #setWriteOffset(int, Object)
      *  FIXME rodiers: this is SDF specific
      */
-    public Object getWriteOffset(int channelNumber)
-	throws IllegalActionException;
-
-    /** Set the buffer size of channel of the port.
-     *  @param channelNumber The number of the channel that is being set.
-     *  @param bufferSize The size of the buffer.
-     *  @see #getBufferSize(int)
-     *  FIXME rodiers: this is SDF specific
-     */
-    public void setBufferSize(int channelNumber, int bufferSize);
+//    public Object getWriteOffset(int channelNumber)
+//	throws IllegalActionException;
 
     /** Set the read offset of a channel of the port.
      *  @param channelNumber The number of the channel that is being set.
@@ -110,32 +82,13 @@ public interface PortCodeGenerator extends ComponentCodeGenerator {
      *  @see #getReadOffset(int)
      *  FIXME rodiers: this is SDF specific
      */
-    public void setReadOffset(int channelNumber, Object readOffset);
+//    public void setReadOffset(int channelNumber, Object readOffset);
 
     /** Set the write offset of a channel of the port.
      *  @param channelNumber The number of the channel that is being set.
      *  @param writeOffset The offset.
      *  FIXME rodiers: this is SDF specific
      */
-    public void setWriteOffset(int channelNumber, Object writeOffset); 
+//    public void setWriteOffset(int channelNumber, Object writeOffset); 
 
-    /** Update the read offset.
-     *  @param rate  The rate of the channels.
-     *  @param directorHelper The Director helper
-     *  @return The offset.
-     *  FIXME rodiers: this is SDF specific
-     */
-    public String updateOffset(int rate, Director directorHelper) throws IllegalActionException;
-
-    /** Update the write offset of the [multiple] connected ports.
-     * FIXME rodiers: this is SDF specific
-     */
-    public String updateConnectedPortsOffset(int rate, Director director) throws IllegalActionException;
-
-
-    /** Initialize the offsets. 
-     *  @return The code to initialize the offsets.
-     *  FIXME rodiers: this is SDF specific
-     */
-    public String initializeOffsets() throws IllegalActionException;
 }

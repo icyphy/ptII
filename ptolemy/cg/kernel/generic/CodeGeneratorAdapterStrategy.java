@@ -338,7 +338,7 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
      * @exception IllegalActionException If there is problems getting the port
      *  buffer size or the offset in the channel and offset map.
      *  FIXME rodiers: this is SDF specific
-     */
+     
     public String generateOffset(String offsetString, IOPort port, int channel,
             boolean isWrite) throws IllegalActionException {
 
@@ -508,57 +508,6 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
      */
     public String generateWrapupCode() throws IllegalActionException {
         return _generateBlockByName(_defaultBlocks[4]);
-    }
-
-    /**
-     * Return the buffer size of a given port, which is the maximum of
-     * the bufferSizes of all channels of the given port.
-     * @param port The given port.
-     * @return The buffer size of the given port.
-     * @exception IllegalActionException If the
-     * {@link #getBufferSize(IOPort, int)} method throws it.
-     * @see #setBufferSize(IOPort, int, int)
-     */
-    public int getBufferSize(IOPort port) throws IllegalActionException {
-        int bufferSize = 1;
-
-        if (port.getContainer() == getComponent()) {
-            int length = 0;
-
-            if (port.isInput()) {
-                length = port.getWidth();
-            } else {
-                length = port.getWidthInside();
-            }
-
-            for (int i = 0; i < length; i++) {
-                int channelBufferSize = getBufferSize(port, i);
-
-                if (channelBufferSize > bufferSize) {
-                    bufferSize = channelBufferSize;
-                }
-            }
-        } else {
-            CodeGeneratorAdapter actorAdapter = getCodeGenerator().getAdapter(port
-                    .getContainer());
-            bufferSize = actorAdapter.getBufferSize(port);
-        }
-
-        return bufferSize;
-    }
-
-    /** Get the buffer size of the given port of this actor.
-     *  @param port The given port.
-     *  @param channelNumber The given channel.
-     *  @return The buffer size of the given port and channel.
-     *  @exception IllegalActionException If the getBufferSize()
-     *   method of the actor adapter class throws it.
-     * @see #setBufferSize(IOPort, int, int)
-     */
-    public int getBufferSize(IOPort port, int channelNumber)
-    throws IllegalActionException {
-        return ((PortCodeGenerator) _getAdapter(port))
-        .getBufferSize(channelNumber);
     }
 
     /** Get the code generator associated with this adapter class.
@@ -1018,7 +967,7 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
      * @param refName The given name.
      * @return The port that has the given name.
      */
-    public TypedIOPort getPort(String refName) {
+    final public TypedIOPort getPort(String refName) {
         Actor actor = (Actor) _object;
         Iterator<?> inputPorts = actor.inputPortList().iterator();
 
@@ -1064,12 +1013,12 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
      *   be found.
      *  @see #setReadOffset(IOPort, int, Object)
      */
-    public Object getReadOffset(IOPort inputPort, int channelNumber)
-    throws IllegalActionException {
-        
-        return ((PortCodeGenerator) _getAdapter(inputPort))
-        .getReadOffset(channelNumber);
-    }
+//    public Object getReadOffset(IOPort inputPort, int channelNumber)
+//    throws IllegalActionException {
+//        
+//        return ((PortCodeGenerator) _getAdapter(inputPort))
+//        .getReadOffset(channelNumber);
+//    }
 
     /** Return the reference to the specified parameter or port of the
      *  associated actor. For a parameter, the returned string is in
@@ -1095,60 +1044,7 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
     throws IllegalActionException {
         ptolemy.actor.Director director = getDirector();
         Director directorAdapter = (Director) _getAdapter(director);
-    
-        name = processCode(name);
-        String castType = _getCastType(name);
-        String refName = _getRefName(name);
-        String[] channelAndOffset = _getChannelAndOffset(name);
-    
-        // Usually given the name of an input port, getReference(String name)
-        // returns variable name representing the input port. Given the name
-        // of an output port, getReference(String name) returns variable names
-        // representing the input ports connected to the output port.
-        // However, if the name of an input port starts with '@',
-        // getReference(String name) returns variable names representing the
-        // input ports connected to the given input port on the inside.
-        // If the name of an output port starts with '@',
-        // getReference(String name) returns variable name representing the
-        // the given output port which has inside receivers.
-        // The special use of '@' is for composite actor when
-        // tokens are transferred into or out of the composite actor.
-        boolean forComposite = false;
-        if (refName.charAt(0) == '@') {
-            forComposite = true;
-            refName = refName.substring(1);
-        }
-    
-        TypedIOPort port = getPort(refName);
-        if (port != null) {
-    
-            if (port instanceof ParameterPort && port.numLinks() <= 0) {
-    
-                // Then use the parameter (attribute) instead.
-            } else {            
-                String result = directorAdapter.getReference(
-                        port, channelAndOffset, forComposite, isWrite, this);
-    
-                String refType = codeGenType(port.getType());
-    
-                return _generateTypeConvertMethod(result, castType, refType);
-            }
-        }
-    
-        // Try if the name is a parameter.
-        Attribute attribute = getComponent().getAttribute(refName);
-    
-        if (attribute != null) {
-            String refType = _getRefType(attribute);
-    
-            String result = directorAdapter.getReference(
-                    attribute, channelAndOffset, this);
-    
-            return _generateTypeConvertMethod(result, castType, refType);
-        }
-    
-        throw new IllegalActionException(getComponent(), "Reference not found: "
-                + name);
+        return directorAdapter.getReference(name, isWrite, _adapter);
     }
     
 
@@ -1186,160 +1082,6 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
             result.append(" ," + channelAndOffset[1] + ")");    
         }
         return result.toString();
-    }
-
-    public String getReference(TypedIOPort port, 
-            String[] channelAndOffset,
-            boolean forComposite,
-            boolean isWrite) throws IllegalActionException {
-    
-        StringBuffer result = new StringBuffer();
-        boolean dynamicReferencesAllowed = ((BooleanToken) _codeGenerator.
-                allowDynamicMultiportReference.getToken()).booleanValue();
-    
-        int channelNumber = 0;
-        boolean isChannelNumberInt = true;
-        if (!channelAndOffset[0].equals("")) {
-            // If dynamic multiport references are allowed, catch errors
-            // when the channel specification is not an integer.
-            if (dynamicReferencesAllowed) {
-                try {
-                    channelNumber = 
-                        (Integer.valueOf(channelAndOffset[0])).intValue();
-                } catch (Exception ex) {
-                    isChannelNumberInt = false;
-                }
-            } else {
-                channelNumber = 
-                    (Integer.valueOf(channelAndOffset[0])).intValue();
-            }
-        }
-    
-        if (!isChannelNumberInt) { // variable channel reference.
-            if (port.isOutput()) {
-                throw new IllegalActionException(
-                        "Variable channel reference not supported"
-                        + " for output ports");
-            } else {
-    
-                return generatePortReference(port, channelAndOffset, isWrite);
-            }
-        }
-    
-        // To support modal model, we need to check the following condition
-        // first because an output port of a modal controller should be
-        // mainly treated as an output port. However, during choice action,
-        // an output port of a modal controller will receive the tokens sent
-        // from the same port.  During commit action, an output port of a modal
-        // controller will NOT receive the tokens sent from the same port.
-        if (checkRemote(forComposite, port)) {
-            Receiver[][] remoteReceivers;
-    
-            // For the same reason as above, we cannot do: if (port.isInput())...
-            if (port.isOutput()) {
-                remoteReceivers = port.getRemoteReceivers();
-            } else {
-                remoteReceivers = port.deepGetReceivers();
-            }
-    
-            if (remoteReceivers.length == 0) {
-                // The channel of this output port doesn't have any sink.
-                result.append(generateName(getComponent()));
-                result.append("_");
-                result.append(port.getName());
-                return result.toString();
-            }
-    
-            Channel sourceChannel = new Channel(port, channelNumber);
-    
-            List<Channel> typeConvertSinks = _getTypeConvertSinkChannels(sourceChannel);
-    
-            List<Channel> sinkChannels = getSinkChannels(port, channelNumber);
-    
-            boolean hasTypeConvertReference = false;
-    
-            for (int i = 0; i < sinkChannels.size(); i++) {
-                Channel channel = sinkChannels.get(i);
-                IOPort sinkPort = channel.port;
-                int sinkChannelNumber = channel.channelNumber;
-    
-                // Type convert.
-                if (typeConvertSinks.contains(channel) && 
-                        isPrimitive(((TypedIOPort) sourceChannel.port).getType())) {
-    
-                    if (!hasTypeConvertReference) {
-                        if (i != 0) {
-                            result.append(" = ");
-                        }
-                        result.append(_getTypeConvertReference(sourceChannel));
-    
-                        if (dynamicReferencesAllowed && port.isInput()) {
-                            if (channelAndOffset[1].trim().length() > 0) {
-                                result.append("[" + channelAndOffset[1].trim() + "]");
-                            } else {
-                                result.append("[" + 
-                                        CodeGeneratorAdapterStrategy.generateChannelOffset(
-                                                port, isWrite, channelAndOffset[0]) + "]");
-                            }
-                        } else {
-                            int rate = Math.max(
-                                    DFUtilities.getTokenProductionRate(sourceChannel.port),
-                                    DFUtilities.getTokenConsumptionRate(sourceChannel.port));
-                            if (rate > 1
-                                    && channelAndOffset[1].trim().length() > 0) {
-                                result.append("["
-                                        + channelAndOffset[1].trim() + "]");
-                            }
-                        }
-                        hasTypeConvertReference = true;
-                    } else {
-                        // We already generated reference for this sink.
-                        continue;
-                    }
-                } else {
-                    if (i != 0) {
-                        result.append(" = ");
-                    }
-                    result.append(generateName(sinkPort));
-    
-                    if (sinkPort.isMultiport()) {
-                        result.append("[" + sinkChannelNumber + "]");
-                    }
-                    if (channelAndOffset[1].equals("")) {
-                        channelAndOffset[1] = "0";
-                    }
-                    result.append(_adapter.generateOffset(channelAndOffset[1],
-                            sinkPort, sinkChannelNumber, true));
-                }
-            }
-    
-            return result.toString();
-        }
-    
-        // Note that if the width is 0, then we have no connection to
-        // the port but the port might be a PortParameter, in which
-        // case we want the Parameter.
-        // codegen/c/actor/lib/string/test/auto/StringCompare3.xml
-        // tests this.
-    
-        if (checkLocal(forComposite, port)) {
-    
-            result.append(generateName(port));
-    
-            //if (!channelAndOffset[0].equals("")) {
-            if (port.isMultiport()) {
-                // Channel number specified. This must be a multiport.
-                result.append("[" + channelAndOffset[0] + "]");
-            }
-    
-            result.append(generateOffset(channelAndOffset[1], port,
-                    channelNumber, isWrite));
-    
-            return result.toString();
-        }
-    
-        // FIXME: when does this happen?
-        return "";
     }
     
     /**
@@ -1415,12 +1157,12 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
      *   be found.
      *  @see #setWriteOffset(IOPort, int, Object)
      */
-    public Object getWriteOffset(IOPort port, int channelNumber)
-    throws IllegalActionException {
-        
-        return ((PortCodeGenerator) _getAdapter(port))
-        .getWriteOffset(channelNumber);
-    }
+//    public Object getWriteOffset(IOPort port, int channelNumber)
+//    throws IllegalActionException {
+//        
+//        return ((PortCodeGenerator) _getAdapter(port))
+//        .getWriteOffset(channelNumber);
+//    }
 
     /**
      * Determine if the given type is primitive.
@@ -1528,19 +1270,6 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
         _codeStream = new CodeStream(_adapter);
     }
 
-    /** Set the buffer size of a given port.
-     *  @param port The given port.
-     *  @param channelNumber The given channel.
-     *  @param bufferSize The buffer size to be set to that port and channel.
-     *  @see #getBufferSize(IOPort)
-     * @throws IllegalActionException 
-     */
-    final public void setBufferSize(IOPort port, int channelNumber, 
-            int bufferSize) throws IllegalActionException {
-        ((PortCodeGenerator) _getAdapter(port))
-        .setBufferSize(channelNumber, bufferSize);
-    }
-
     /** Set the code generator associated with this adapter class.
      *  @param codeGenerator The code generator associated with this
      *   adapter class.
@@ -1559,11 +1288,11 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
      *   be found.
      *  @see #getReadOffset(IOPort, int)
      */
-    final public void setReadOffset(IOPort port, int channelNumber,
-            Object readOffset) throws IllegalActionException {
-        ((PortCodeGenerator) _getAdapter(port))
-        .setReadOffset(channelNumber, readOffset);
-    }
+//    final public void setReadOffset(IOPort port, int channelNumber,
+//            Object readOffset) throws IllegalActionException {
+//        ((PortCodeGenerator) _getAdapter(port))
+//        .setReadOffset(channelNumber, readOffset);
+//    }
 
     /** Set the write offset in a buffer of a given channel to which a token
      *  should be put.
@@ -1574,11 +1303,11 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
      *   {@link #setWriteOffset(IOPort, int, Object)} method throws it.
      *  @see #getWriteOffset(IOPort, int)
      */
-    final public void setWriteOffset(IOPort port, int channelNumber,
-            Object writeOffset) throws IllegalActionException {
-        ((PortCodeGenerator) _getAdapter(port))
-	    .setWriteOffset(channelNumber, writeOffset);
-    }
+//    final public void setWriteOffset(IOPort port, int channelNumber,
+//            Object writeOffset) throws IllegalActionException {
+//        ((PortCodeGenerator) _getAdapter(port))
+//	    .setWriteOffset(channelNumber, writeOffset);
+//    }
 
     /**
      * Get the corresponding type in C from the given Ptolemy type.
@@ -1606,7 +1335,7 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
      * @return The first occurence of the character in the string that
      *  is not embedded in parentheses.
      */
-    public static int _indexOf(String ch, String string, int fromIndex) {
+    public static int indexOf(String ch, String string, int fromIndex) {
     
         int parenIndex = fromIndex;
         int result = -1;
@@ -1629,10 +1358,10 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
         return result;
     }
 
-    public static List<String> _parseList(String parameters) {
+    public static List<String> parseList(String parameters) {
         List<String> result = new ArrayList<String>();
         int previousCommaIndex = 0;
-        int commaIndex = _indexOf(",", parameters, 0);
+        int commaIndex = indexOf(",", parameters, 0);
     
         while (commaIndex >= 0) {
             String item = parameters.substring(
@@ -1641,7 +1370,7 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
             result.add(item);
     
             previousCommaIndex = commaIndex + 1;
-            commaIndex = _indexOf(",", parameters, previousCommaIndex);
+            commaIndex = indexOf(",", parameters, previousCommaIndex);
         }
     
         String item = parameters.substring(
@@ -1983,12 +1712,12 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
 
 
     public static void selfTest() {
-        System.out.println(_parseList("(a, b, abc)"));
-        System.out.println(_indexOf(",", "(a, b, abc,), (a , b, abc,)", 0));
-        System.out.println(_indexOf(",", "a, b, abc,, (a , b, abc,)", 0));
-        System.out.println(_indexOf(",", ", (b), abc,, (a , b, abc,)", 0));
-        System.out.println(_indexOf(",", "a, (b, abc,), (a , b, abc,)", 0));
-        System.out.println(_indexOf(",", "(((a), b,) a),bc,, (a , b, abc,)", 0));
+        System.out.println(parseList("(a, b, abc)"));
+        System.out.println(indexOf(",", "(a, b, abc,), (a , b, abc,)", 0));
+        System.out.println(indexOf(",", "a, b, abc,, (a , b, abc,)", 0));
+        System.out.println(indexOf(",", ", (b), abc,, (a , b, abc,)", 0));
+        System.out.println(indexOf(",", "a, (b, abc,), (a , b, abc,)", 0));
+        System.out.println(indexOf(",", "(((a), b,) a),bc,, (a , b, abc,)", 0));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -2185,7 +1914,7 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
      * @param channel The given source channel.
      * @return The variable reference for the given channel.
      */
-    protected String _getTypeConvertReference(Channel channel) {
+    static public String getTypeConvertReference(Channel channel) {
         return generateName(channel.port) + "_" + channel.channelNumber;
     }
 
@@ -2304,9 +2033,9 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
             }
 
             try {
-                checker.invoke(userMacro, new Object[] { _parseList(parameter) });
+                checker.invoke(userMacro, new Object[] { parseList(parameter) });
                 return (String) handler.invoke(userMacro, 
-                        new Object[] { _parseList(parameter) });
+                        new Object[] { parseList(parameter) });
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex, 
                         "Failed to invoke user macro ($" + macro + ").");
@@ -2483,7 +2212,7 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
      *  equivalent value with the cast type.
      * @exception IllegalActionException
      */
-    private String _generateTypeConvertMethod(String ref, String castType,
+    public String _generateTypeConvertMethod(String ref, String castType,
             String refType) throws IllegalActionException {
 
         if (castType == null || refType == null || castType.equals(refType)) {
@@ -2527,69 +2256,7 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
         }
         return processCode(statements.toString());
     }
-
-    private String _getCastType(String name) throws IllegalActionException {
-        StringTokenizer tokenizer = new StringTokenizer(name, "#,", true);
-
-        // Get the referenced name.
-        String refName = tokenizer.nextToken().trim();
-
-        // Get the cast type (if any), so we can add the proper convert method.
-        StringTokenizer tokenizer2 = new StringTokenizer(refName, "()", false);
-        if (tokenizer2.countTokens() != 1 && tokenizer2.countTokens() != 2) {
-            throw new IllegalActionException(getComponent(), "Invalid cast type: "
-                    + refName);
-        }
-
-        if (tokenizer2.countTokens() == 2) {
-            String type = tokenizer2.nextToken().trim();
-            return (type.length() > 0) ? type : null;
-        }
-        return null;
-    }
-
-    /** Return the channel and offset given in a string.
-     *  The result is an string array of length 2. The first element
-     *  indicates the channel index, and the second the offset. If either
-     *  element is an empty string, it means that channel/offset is not
-     *  specified.
-     * @param name The given string.
-     * @return An string array of length 2, containing expressions of the
-     *  channel index and offset.
-     * @exception IllegalActionException If the channel index or offset
-     *  specified in the given string is illegal.
-     *  FIXME rodiers: SDF specific
-     */
-    private String[] _getChannelAndOffset(String name)
-    throws IllegalActionException {
-
-        String[] result = { "", "" };
-
-        // Given expression of forms:
-        //     "port"
-        //     "port, offset", or
-        //     "port#channel, offset".
-
-        int poundIndex = _indexOf("#", name, 0);
-        int commaIndex = _indexOf(",", name, 0);
-
-        if (commaIndex < 0) {
-            commaIndex = name.length();
-        }
-        if (poundIndex < 0) {
-            poundIndex = commaIndex;
-        }
-
-        if (poundIndex < commaIndex) {
-            result[0] = name.substring(poundIndex + 1, commaIndex);
-        }
-
-        if (commaIndex < name.length()) {
-            result[1] = name.substring(commaIndex + 1);
-        }
-        return result;
-    }
-
+    
     /** Return the actual CodeStream for this Adapter.
      * @return The actual CodeStream.
      * @exception IllegalActionException If thrown by a called method.
@@ -2617,40 +2284,6 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
         return position;
     }
 
-    private String _getRefName(String name) throws IllegalActionException {
-        StringTokenizer tokenizer = new StringTokenizer(name, "#,", true);
-    
-        if ((tokenizer.countTokens() != 1) && (tokenizer.countTokens() != 3)
-                && (tokenizer.countTokens() != 5)) {
-            throw new IllegalActionException(getComponent(),
-                    "Reference not found: " + name);
-        }
-    
-        // Get the referenced name.
-        String refName = tokenizer.nextToken().trim();
-    
-        // Get the cast type (if any), so we can add the proper convert method.
-        StringTokenizer tokenizer2 = new StringTokenizer(refName, "()", false);
-        if (tokenizer2.countTokens() != 1 && tokenizer2.countTokens() != 2) {
-            throw new IllegalActionException(getComponent(), "Invalid cast type: "
-                    + refName);
-        }
-    
-        if (tokenizer2.countTokens() == 2) {
-            // castType
-            tokenizer2.nextToken();
-        }
-    
-        return tokenizer2.nextToken().trim();
-    }
-
-    private String _getRefType(Attribute attribute) {
-        if (attribute instanceof Parameter) {
-            return codeGenType(((Parameter) attribute).getType());
-        }
-        return null;
-    }
-
     /**
      * Get the list of sink channels that the given source channel needs to
      * be type converted to.
@@ -2658,7 +2291,7 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
      * @return List of sink channels that the given source channel needs to
      * be type converted to.
      */
-    private List<Channel> _getTypeConvertSinkChannels(Channel source) {
+    public List<Channel> _getTypeConvertSinkChannels(Channel source) {
         if (_portConversions.containsKey(source)) {
             return _portConversions.get(source);
         }
@@ -2706,7 +2339,7 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
 
     private String _replaceGetMacro(String parameter) throws IllegalActionException {
         // e.g. $get(0, input);
-        List<String> parameters = _parseList(parameter);
+        List<String> parameters = parseList(parameter);
     
         TypedIOPort port = null;
         String channel = "";
@@ -2729,7 +2362,7 @@ public class CodeGeneratorAdapterStrategy extends NamedObj {
 
     private String _replaceSendMacro(String parameter) throws IllegalActionException {
         // e.g. $send(input, 0, token);
-        List<String> parameters = _parseList(parameter);
+        List<String> parameters = parseList(parameter);
     
         TypedIOPort port = null;
         String channel = "";

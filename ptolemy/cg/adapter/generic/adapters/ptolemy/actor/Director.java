@@ -36,19 +36,14 @@ import java.util.Set;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.util.DFUtilities;
 import ptolemy.actor.util.ExplicitChangeContext;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy;
 import ptolemy.cg.kernel.generic.ComponentCodeGenerator;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.CodeStream;
-import ptolemy.cg.kernel.generic.PortCodeGenerator;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy.Channel;
 import ptolemy.data.expr.Parameter;
-import ptolemy.kernel.Entity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -169,6 +164,11 @@ public class Director extends CodeGeneratorAdapter {
             // Initialize code for the actor.
             code.append(adapterObject.generateInitializeCode());
 
+            /*
+             * TODO rodiers: first part can certainly be removed
+             * code.append(portAdapter.generateInitializeCode());
+             *  also?
+             * 
             // Update write offset due to initial tokens produced.
             Iterator<?> outputPorts = actor.outputPortList().iterator();
             while (outputPorts.hasNext()) {
@@ -184,28 +184,9 @@ public class Director extends CodeGeneratorAdapter {
                     code.append(portAdapter.generateInitializeCode());
                 }
             }
+            */
         }
         return code.toString();
-    }
-
-    /**
-     * Generate the expression that represents the offset in the generated
-     * code.
-     * @param offsetString The specified offset from the user.
-     * @param port The referenced port.
-     * @param channel The referenced port channel.
-     * @param isWrite Whether to generate the write or read offset.
-     * @return The expression that represents the offset in the generated
-     * code.
-     * @exception IllegalActionException If there is problems getting
-     * the port buffer size or the offset in the channel and offset map.
-     */
-    public String generateOffset(String offsetString, IOPort port, 
-            int channel, boolean isWrite, CodeGeneratorAdapter adapter)
-    throws IllegalActionException {
-        assert false;
-        return "";
-        //return adapter._generateOffset(offsetString, port, channel, isWrite);
     }
 
     /** Generate the postfire code of the associated composite actor.
@@ -321,9 +302,6 @@ public class Director extends CodeGeneratorAdapter {
 
         // Generate the type conversion code before fire code.
         code.append(_compositeActorAdapter.generateTypeConvertFireCode(true));
-
-        // The offset of the input port itself is updated by outside director.
-        _updateConnectedPortsOffset(inputPort, code, 1);
     }
 
     /** Generate code for transferring enough tokens to fulfill the output
@@ -356,7 +334,8 @@ public class Director extends CodeGeneratorAdapter {
 
         // The offset of the ports connected to the output port is
         // updated by outside director.
-        _updatePortOffset(outputPort, code, 1);
+        // TODO rodiers: does this need to happen? where?
+        //_updatePortOffset(outputPort, code, 1);
     }
 
     /** Generate variable declarations for inputs and outputs and parameters.
@@ -423,18 +402,13 @@ public class Director extends CodeGeneratorAdapter {
 
         return code.toString();
     }
-
-    public String getReference(TypedIOPort port, String[] channelAndOffset,
-            boolean forComposite, boolean isWrite, CodeGeneratorAdapterStrategy adapter)
-    throws IllegalActionException {
-        return adapter.getReference(port, channelAndOffset, forComposite, isWrite);
+    
+    public String getReference(String name, boolean isWrite, CodeGeneratorAdapter target) 
+        throws IllegalActionException {
+        //TODO rodiers
+        assert false;
+        return null;
     }
-
-    public String getReference(Attribute attribute, String[] channelAndOffset,
-            CodeGeneratorAdapterStrategy adapter) throws IllegalActionException {
-        return adapter.getReference(attribute, channelAndOffset);
-    }
-
 
     // FIXME rodiers: Method only used for PN (in IOPort). Move to PNDirector?
     public static List<Channel> getReferenceChannels(IOPort port, int channelNumber)
@@ -465,23 +439,6 @@ public class Director extends CodeGeneratorAdapter {
             result.add(new Channel(port, channelNumber));
         }
         return result;
-    }
-
-
-
-    /** Return the buffer size of a given channel (i.e, a given port
-     *  and a given channel number). In this base class, this method
-     *  always returns 1.
-     *  @param port The given port.
-     *  @param channelNumber The given channel number.
-     *  @return The buffer size of the given channel. This base class
-     *   always returns 1.
-     *  @exception IllegalActionException Not thrown in this base class.
-     *  FIXME rodiers: only valid for SDF
-     */
-    public int getBufferSize(IOPort port, int channelNumber)
-    throws IllegalActionException {
-        return 1;
     }
 
     /** Return the director associated with this class.
@@ -568,51 +525,6 @@ public class Director extends CodeGeneratorAdapter {
         return powerOfTwo;
     }
 
-    /** Update the read offsets of the buffer associated with the given port.
-     *
-     *  @param port The port whose read offset is to be updated.
-     *  @param code The string buffer that the generated code is appended to.
-     *  @param rate The rate, which must be greater than or equal to 0.
-     *  @exception IllegalActionException If thrown while reading or writing
-     *   offsets, or getting the buffer size, or if the rate is less than 0.
-     */
-    protected void _updatePortOffset(IOPort port, StringBuffer code, int rate)
-    throws IllegalActionException {
-        if (rate == 0) {
-            return;
-        } else if (rate < 0) {
-            throw new IllegalActionException(port, "the rate: " + rate
-                    + " is negative.");
-        }
-
-        PortCodeGenerator portAdapter = (PortCodeGenerator) getCodeGenerator().getAdapter(port);
-        code.append(portAdapter.updateOffset(rate, _director));
-    }
-
-    /** Update the offsets of the buffers associated with the ports connected
-     *  with the given port in its downstream.
-     *
-     *  @param port The port whose directly connected downstream actors update
-     *   their write offsets.
-     *  @param code The string buffer that the generated code is appended to.
-     *  @param rate The rate, which must be greater than or equal to 0.
-     *  @exception IllegalActionException If thrown while reading or writing
-     *   offsets, or getting the buffer size, or if the rate is less than 0.
-     */
-    protected void _updateConnectedPortsOffset(IOPort port, StringBuffer code,
-            int rate) throws IllegalActionException {
-        if (rate == 0) {
-            return;
-        } else if (rate < 0) {
-            throw new IllegalActionException(port, "the rate: " + rate
-                    + " is negative.");
-        }
-
-        PortCodeGenerator portAdapter = (PortCodeGenerator) getCodeGenerator().getAdapter(port);
-        code.append(portAdapter.updateConnectedPortsOffset(rate, _director));
-
-    }
-
     ////////////////////////////////////////////////////////////////////
     ////                     protected variables                    ////
 
@@ -626,6 +538,20 @@ public class Director extends CodeGeneratorAdapter {
 
     public String generateCodeForGet(IOPort port, int channel) throws IllegalActionException {
         return "";
+    }
+
+    public String generateInputVariableDeclaration()
+            throws IllegalActionException {
+        //TODO rodiers
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public String generateOutputVariableDeclaration()
+            throws IllegalActionException {
+        //TODO rodiers
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

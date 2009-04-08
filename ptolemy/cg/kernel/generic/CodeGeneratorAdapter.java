@@ -29,8 +29,6 @@ package ptolemy.cg.kernel.generic;
 
 import java.util.Set;
 
-import ptolemy.actor.IOPort;
-import ptolemy.actor.TypedIOPort;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.Attribute;
@@ -339,16 +337,6 @@ public class CodeGeneratorAdapter extends NamedObj implements ActorCodeGenerator
                 channelAndOffset); 
     }
 
-    public String getReference(TypedIOPort port, 
-            String[] channelAndOffset,
-            boolean forComposite,
-            boolean isWrite) throws IllegalActionException {
-        return _strategy.getReference(port, 
-                    channelAndOffset,
-                    forComposite,
-                    isWrite); 
-    }
-    
     /**
      * Generate the shared code. This is the first generate method invoked out
      * of all, so any initialization of variables of this adapter should be done
@@ -455,64 +443,4 @@ public class CodeGeneratorAdapter extends NamedObj implements ActorCodeGenerator
     
     /** The associated component. */
     private NamedObj _component;
-    
-    //TEMPORARY CODE
-
-
-    /** FIXME rodiers: this is SDF specific
-     */
-    public int getBufferSize(IOPort port) throws IllegalActionException
-    {
-        return _strategy.getBufferSize(port);
-    }
-    
-    public int getBufferSize(IOPort port, int channelNumber) throws IllegalActionException
-    {
-        return _strategy.getBufferSize(port, channelNumber);
-    }
-
-    /** FIXME rodiers: this is SDF specific
-     */
-    public Object getReadOffset(IOPort inputPort, int channelNumber)
-        throws IllegalActionException {
-        return _strategy.getReadOffset(inputPort, channelNumber);
-    }
-
-    /** FIXME rodiers: this is SDF specific
-     */
-    public Object getWriteOffset(IOPort port, int channelNumber)
-        throws IllegalActionException {
-        return _strategy.getWriteOffset(port, channelNumber);
-    }
-
-    /** FIXME rodiers: this is SDF specific
-     * @throws IllegalActionException 
-     */
-    public void setBufferSize(IOPort port, int channelNumber, int bufferSize) throws IllegalActionException {
-        _strategy.setBufferSize(port, channelNumber, bufferSize);
-    }
-
-    /** FIXME rodiers: this is SDF specific
-     * @throws IllegalActionException 
-     */
-    public void setReadOffset(IOPort port, int channelNumber, Object readOffset) throws IllegalActionException {
-        _strategy.setReadOffset(port, channelNumber, readOffset);
-    }
-
-    /** FIXME rodiers: this is SDF specific
-     * @throws IllegalActionException 
-     */
-    public void setWriteOffset(IOPort port, int channelNumber, Object writeOffset) throws IllegalActionException {
-        _strategy.setWriteOffset(port, channelNumber, writeOffset);
-    }
-    
-    public String generateOffset(String offsetString, IOPort port, int channel,
-            boolean isWrite) throws IllegalActionException {
-        return _strategy.generateOffset(offsetString, port, channel,
-                            isWrite);
-    }    
-    
-    
-    
-    //END TEMP CODE
 }
