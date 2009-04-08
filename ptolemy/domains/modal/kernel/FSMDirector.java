@@ -24,22 +24,21 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
-package ptolemy.domains.modal.kernel;
+package ptolemy.domains.fsm.kernel;
 
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.InvariantViolationException;
-import ptolemy.actor.Mailbox;
-import ptolemy.actor.NoRoomException;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.QuasiTransparentDirector;
 import ptolemy.actor.Receiver;
@@ -74,6 +73,43 @@ import ptolemy.kernel.util.Workspace;
  contained by the composite actor. Each state of the mode controller
  represents a mode of operation and can be refined by an opaque CompositeActor
  contained by the same composite actor.
+ <p>
+ The mode controller contains a set of states and transitions. A transition has
+ a <i>guard expression</i>, any number of <i>output actions</i>, and any
+ number of <i>set actions</i>. It has an <i>initial state</i>, which is
+ the unique state whose <i>isInitialState</i> parameter is true.
+ The states and transitions can have <i>refinements</i>,
+ which are composite actors.
+ In outline, a firing of this director is a sequence of steps:
+ <ol>
+ <li> Read inputs.
+ <li> Evaluate the guards of preemptive transition out of the current state.
+ <li> If no preemptive transition is enabled:
+     <ol>
+     <li> Fire the refinements of the current state (if any).
+     <li> Evaluate guards on non-preemptive transitions out of the current state.
+     </ol>
+ <li> Choose a transition whose guard is true.
+ <li> Execute the output actions of the chosen transition.
+ <li> Fire the transition refinements of the chosen transition.
+ </ol>
+ In postfire, the following steps are performed:
+ <ol>
+ <li> Postfire the refinements of the current state if they were fired.
+ <li> Execute the set actions of the chosen transition.
+ <li> Postfire the transition refinements of the chosen transition.
+ <li> Change the current state to the destination of the chosen transition.
+ </ol>
+ Since this director makes no persistent 
+ state changes in its fire() method, it conforms
+ with the <i>actor abstract semantics</i>. Assuming the state and
+ transition refinements also conform, this director can be used inside any
+ Ptolemy II actor model of computation.  How it behaves in each domain,
+ however, can be somewhat subtle, particularly with domains that have fixed-point
+ semantics and when nondeterministic transitions are used.
+ The details are given below.
+
+
  <p>
  When a modal model is fired, this director first transfers the input tokens
  from the outside domain to the mode controller and the refinement of its
@@ -200,9 +236,19 @@ public class FSMDirector extends Director implements
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         FSMDirector newObject = (FSMDirector) super.clone(workspace);
-        newObject._controllerVersion = -1;
+        // Protected variables.
+        newObject._currentLocalReceiverMap = null;
+        newObject._enabledRefinements = null;
+        newObject._disabledActors = new HashSet();
         newObject._localReceiverMaps = new HashMap();
+        newObject._stateRefinementsToPostfire = new LinkedList<Actor>();
+        newObject._transitionRefinementsToPostfire = new LinkedList<Actor>();
+        
+        // Private variables.
+        newObject._controller = null;
+        newObject._controllerVersion = -1;
         newObject._localReceiverMapsVersion = -1;
+
         return newObject;
     }
     
@@ -225,7 +271,7 @@ public class FSMDirector extends Director implements
         return BooleanDependency.OTIMES_IDENTITY;
     }
 
-    /** Fire the model model for one iteration.
+    /** Fire the modal model for one iteration.
      *  If there is a preemptive transition enabled, execute its choice
      *  actions (outputActions). Otherwise,
      *  fire the refinement of the current state. After this firing,
@@ -241,27 +287,30 @@ public class FSMDirector extends Director implements
     public void fire() throws IllegalActionException {
         _stateRefinementsToPostfire.clear();
         _transitionRefinementsToPostfire.clear();
-        FSMActor ctrl = getController();
-        ctrl.readInputs();
-        State st = ctrl.currentState();
+        FSMActor controller = getController();
+        controller.readInputs();
+        State currentState = controller.currentState();
         if (_debugging) {
             _debug("*** Firing " + getFullName(), " at time " + getModelTime());
-            _debug("Current state is:", st.getName());
+            _debug("Current state is:", currentState.getName());
         }
 
-        Transition tr = ctrl.chooseTransition(st.preemptiveTransitionList());
-        _enabledTransition = tr;
-
-        if (tr != null) {
+        List<Transition> enabledPreemptiveTransitions = controller.enabledTransitions(currentState.preemptiveTransitionList());
+        if (enabledPreemptiveTransitions.size() > 0) {
+            // Do not call the following unless there is actually a preemptive transition enabled
+            // because in a fixed-point iteration you could get an exception if you call chooseTransition
+            // with the list of preemptive transitions after a non-preemptive transition was already
+            // discovered to be enabled.
+            Transition chosenTransition = controller.chooseTransition(enabledPreemptiveTransitions);
             if (_debugging) {
-                _debug("Preemptive transition enabled:",  tr.getName());
+                _debug("Preemptive transition enabled:",  chosenTransition.getName());
             }
             // First execute the refinements of the transition.
-            Actor[] actors = tr.getRefinement();
+            Actor[] actors = chosenTransition.getRefinement();
 
             if (actors != null) {
                 for (int i = 0; i < actors.length; ++i) {
-                    if (_stopRequested) {
+                    if (_stopRequested || _disabledActors.contains(actors[i])) {
                         break;
                     }
                     if (_debugging) {
@@ -274,15 +323,15 @@ public class FSMDirector extends Director implements
                 }
             }
 
-            ctrl.readOutputsFromRefinement();
+            controller.readOutputsFromRefinement();
             return;
         }
 
-        Actor[] actors = st.getRefinement();
+        Actor[] actors = currentState.getRefinement();
 
         if (actors != null) {
             for (int i = 0; i < actors.length; ++i) {
-                if (_stopRequested) {
+                if (_stopRequested || _disabledActors.contains(actors[i])) {
                     break;
                 }
                 if (actors[i].prefire()) {
@@ -294,19 +343,18 @@ public class FSMDirector extends Director implements
                 }
             }
         }
-        st.setVisited(true);
-        ctrl.readOutputsFromRefinement();
+        currentState.setVisited(true);
+        controller.readOutputsFromRefinement();
 
-        tr = ctrl.chooseTransition(st.nonpreemptiveTransitionList());
-        _enabledTransition = tr;
-        if (tr != null) {
+        Transition chosenTransition = controller.chooseTransition(currentState.nonpreemptiveTransitionList());
+        if (chosenTransition != null) {
             if (_debugging) {
-                _debug("Nonpreemptive transition enabled:",  tr.getName());
+                _debug("Nonpreemptive transition enabled:",  chosenTransition.getName());
             }
-            actors = tr.getRefinement();
+            actors = chosenTransition.getRefinement();
             if (actors != null) {
                 for (int i = 0; i < actors.length; ++i) {
-                    if (_stopRequested) {
+                    if (_stopRequested || _disabledActors.contains(actors[i])) {
                         break;
                     }
                     if (actors[i].prefire()) {
@@ -317,7 +365,7 @@ public class FSMDirector extends Director implements
                         _transitionRefinementsToPostfire.add(actors[i]);
                     }
                 }
-                ctrl.readOutputsFromRefinement();
+                controller.readOutputsFromRefinement();
             }
         }
     }
@@ -624,16 +672,36 @@ public class FSMDirector extends Director implements
     public void initialize() throws IllegalActionException {
         super.initialize();
         _buildLocalReceiverMaps();
+        _resetOutputReceivers();
+        _disabledActors.clear();
+    }
+    
+    /** Indicate that a schedule for the model may no longer be valid, if
+     *  there is a schedule.  This method should be called when topology
+     *  changes are made, or for that matter when any change that may
+     *  invalidate the schedule is made.  In this class, delegate to
+     *  the executive director. This is because changes in the FSM may
+     *  affect the causality interface of the FSM, which may be used
+     *  in scheduling by the enclosing director.
+     */
+    public void invalidateSchedule() {
+        Director executiveDirector = ((Actor)getContainer()).getExecutiveDirector();
+        if (executiveDirector != null) {
+            executiveDirector.invalidateSchedule();
+        }
     }
 
-    /** Return false if there is any output of the container does not depend
-     *  directly on all inputs of the container.
-     *  @return False if there is any output that does not
-     *   depend directly on an input.
-     *  @exception IllegalActionException Thrown if causality interface 
-     *  cannot be computed.
+    /** Return false. This director checks inputs to see whether
+     *  they are known before evaluating guards, so it can fired
+     *  even if it has unknown inputs.
+     *  @return False.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean isStrict() throws IllegalActionException {
+        return false;
+        /* NOTE: This used to return a value as follows based
+         * on the causality interface. But this is conservative
+         * and prevents using the director in some models.
         Actor container = (Actor)getContainer();
         CausalityInterface causality = container.getCausalityInterface();
         int numberOfOutputs = container.outputPortList().size();
@@ -653,34 +721,15 @@ public class FSMDirector extends Director implements
             }
         }
         return true;
+        */
     }
-
+    
     /** Return a receiver that is a one-place buffer. A token put into the
      *  receiver will override any token already in the receiver.
      *  @return A receiver that is a one-place buffer.
      */
     public Receiver newReceiver() {
-        return new Mailbox() {
-            public boolean hasRoom() {
-                return true;
-            }
-
-            public void put(Token token) {
-                try {
-                    if (hasToken() == true) {
-                        get();
-                    }
-
-                    super.put(token);
-                } catch (NoRoomException ex) {
-                    throw new InternalErrorException("One-place buffer: "
-                            + ex.getMessage());
-                } catch (NoTokenException ex) {
-                    throw new InternalErrorException("One-place buffer: "
-                            + ex.getMessage());
-                }
-            }
-        };
+        return new FSMReceiver();
     }
 
     /** Invoke postfire() on any state refinements that were fired,
@@ -692,9 +741,10 @@ public class FSMDirector extends Director implements
      *  returns false.
      *  <p>
      *  If any transition was taken in this iteration, and if there
-     *  is an executive director, then this method calls fireAtCurrentTime(Actor)
-     *  on that executive director. This requests a refiring in case the
-     *  there is an enabled transition. If there is, then the current
+     *  is an executive director, and if there is a transition from the
+     *  new state that is currently enabled, then this method calls
+     *  fireAtCurrentTime(Actor) on that executive director. If
+     *  there is an enabled transition, then the current
      *  state is transient, and we will want to spend zero time in it.
      *  @return True if the mode controller wishes to be scheduled for
      *   another iteration.
@@ -710,7 +760,10 @@ public class FSMDirector extends Director implements
             if (_debugging) {
                 _debug("Postfiring state refinment:", stateRefinement.getName());
             }
-            result &= stateRefinement.postfire();
+            if (!stateRefinement.postfire()) {
+                _disabledActors.add(stateRefinement);
+                result = false;
+            }
         }
 
         FSMActor controller = getController();
@@ -720,26 +773,19 @@ public class FSMDirector extends Director implements
             if (_debugging) {
                 _debug("Postfiring transition refinment:", transitionRefinement.getName());
             }
-            result &= transitionRefinement.postfire();
+            if (!transitionRefinement.postfire()) {
+                _disabledActors.add(transitionRefinement);
+                result = false;
+            }
         }
 
         _currentLocalReceiverMap = (Map) _localReceiverMaps.get(controller
                 .currentState());
+        
+        // Reset all the receivers on the inside of output ports.
+        // FIXME: Check derived classes. This may only make sense for FSMReceiver.
+        _resetOutputReceivers();
 
-        // If a transition was taken, then request a refiring at the current time
-        // in case the destination state is a transient state.
-        if (_enabledTransition != null) {
-            CompositeActor container = (CompositeActor) getContainer();
-            Director executiveDirector = container.getExecutiveDirector();
-            if (executiveDirector != null) {
-                if (_debugging) {
-                    _debug("Request refiring by "
-                            + executiveDirector.getFullName() + " at "
-                            + getModelTime());
-                }
-                executiveDirector.fireAtCurrentTime(container);
-            }
-        }
         return result && !_stopRequested;
     }
 
@@ -814,6 +860,11 @@ public class FSMDirector extends Director implements
         }
 
         boolean transferredToken = false;
+        // NOTE: This class does quite a song and dance with the "local
+        // receivers map" to avoid putting the input data into all
+        // refinements. Is this worth it? A much simpler design would
+        // just make the input data available to all refinements, whether
+        // they run or not.
         Receiver[][] insideReceivers = _currentLocalReceivers(port);
 
         for (int i = 0; i < port.getWidth(); i++) {
@@ -821,32 +872,35 @@ public class FSMDirector extends Director implements
                 if (port.isKnown(i)) {
                     if (port.hasToken(i)) {
                         Token t = port.get(i);
-
                         if ((insideReceivers != null)
                                 && (insideReceivers[i] != null)) {
                             for (int j = 0; j < insideReceivers[i].length; j++) {
                                 insideReceivers[i][j].put(t);
                                 if (_debugging) {
                                     _debug(getFullName(),
-                                            "transferring input from "
+                                            "transferring input "
+                                            + t
+                                            + " from "
                                             + port.getFullName()
                                             + " to "
-                                            + (insideReceivers[i][j])
-                                            .getContainer()
-                                            .getFullName());
+                                            + (insideReceivers[i][j]).getContainer().getFullName());
                                 }
                             }
-
                             transferredToken = true;
                         }
-                    } else {
+                    } else { /** Port does not have a token. */
                         if ((insideReceivers != null)
                                 && (insideReceivers[i] != null)) {
                             for (int j = 0; j < insideReceivers[i].length; j++) {
-                                if (insideReceivers[i][j].hasToken()) {
-                                    insideReceivers[i][j].get();
-                                }
+                                insideReceivers[i][j].clear();
                             }
+                        }
+                    }
+                } else { /** Port status is not known. */
+                    if ((insideReceivers != null)
+                            && (insideReceivers[i] != null)) {
+                        for (int j = 0; j < insideReceivers[i].length; j++) {
+                            insideReceivers[i][j].reset();
                         }
                     }
                 }
@@ -857,7 +911,6 @@ public class FSMDirector extends Director implements
                                 + ex.getMessage());
             }
         }
-
         return transferredToken;
     }
 
@@ -977,25 +1030,6 @@ public class FSMDirector extends Director implements
         }
     }
 
-    /** Return a list of enabled transitions among the given list of
-     *  transitions.
-     *  This method is called by subclasses of FSMDirector in other packages.
-     *  @param transitionList A list of transitions.
-     *  @return A list of enabled transition.
-     *  @exception IllegalActionException If the guard expression of any
-     *  transition can not be evaluated.
-     */
-    protected List _checkTransition(List transitionList)
-            throws IllegalActionException {
-        FSMActor controller = getController();
-
-        if (controller != null) {
-            return controller.enabledTransitions(transitionList);
-        } else {
-            throw new IllegalActionException(this, "No controller!");
-        }
-    }
-
     /** Return the enabled transition among the given list of transitions.
      *  Throw an exception if there is more than one transition enabled.
      *  This method is called by subclasses of FSMDirector in other packages.
@@ -1105,6 +1139,60 @@ public class FSMDirector extends Director implements
             throw new IllegalActionException(this, "No controller!");
         }
     }
+    
+    /** Transfer at most one data token from the given output port of
+     *  the container to the ports it is connected to on the outside.
+     *  If the receiver is known to be empty, then send a clear.
+     *  If the receiver status is not known, do nothing.
+     *  @exception IllegalActionException If the port is not an opaque
+     *   output port.
+     *  @param port The port to transfer tokens from.
+     *  @return True if the port has an inside token that was successfully
+     *  transferred.  Otherwise return false (or throw an exception).
+     *
+     */
+    protected boolean _transferOutputs(IOPort port)
+            throws IllegalActionException {
+        boolean result = false;
+        if (_debugging) {
+            _debug("Calling transferOutputs on port: " + port.getFullName());
+        }
+
+        if (!port.isOutput() || !port.isOpaque()) {
+            throw new IllegalActionException(this, port,
+                    "Attempted to transferOutputs on a port that "
+                            + "is not an opaque input port.");
+        }
+
+        for (int i = 0; i < port.getWidthInside(); i++) {
+            try {
+                if (port.isKnownInside(i)) {
+                    if (port.hasTokenInside(i)) {
+                        Token t = port.getInside(i);
+                        if (_debugging) {
+                            _debug(getName(), "transferring output "
+                                    + t
+                                    + " from "
+                                    + port.getName());
+                        }
+                        port.send(i, t);
+                        result = true;
+                    } else {
+                        if (_debugging) {
+                            _debug(getName(), "sending clear from "
+                                    + port.getName());
+                        }
+                        port.sendClear(i);
+                    }
+                }
+            } catch (NoTokenException ex) {
+                // this shouldn't happen.
+                throw new InternalErrorException(this, ex, null);
+            }
+        }
+        return result;
+    }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
@@ -1113,24 +1201,29 @@ public class FSMDirector extends Director implements
      *  for the current state.
      */
     protected Map _currentLocalReceiverMap = null;
+    
+    /** Actors that have returned false in postfire(). */
+    protected Set _disabledActors = new HashSet();
 
     /** The list of enabled actors that refines the current state.
      */
-
     // FIXME: this will help to improve performance when firing. However,
     // it is only used in the HSFSMDirector. Modify the fire() method.
     // Or this may not be necessary.
     protected List _enabledRefinements;
-
-    /** cached enabled transition.
-     */
-    protected Transition _enabledTransition = null;
 
     /** Stores for each state of the mode controller the map from input
      *  ports of the modal model to the local receivers when the mode
      *  controller is in that state.
      */
     protected Map _localReceiverMaps = new HashMap();
+    
+    /** State refinements to postfire(), as determined by the fire() method. */
+    protected List<Actor> _stateRefinementsToPostfire = new LinkedList<Actor>();
+
+    /** Transition refinements to postfire(), as determined by the fire() method. */
+    protected List<Actor> _transitionRefinementsToPostfire = new LinkedList<Actor>();
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -1161,6 +1254,28 @@ public class FSMDirector extends Director implements
         }
     }
 
+    /** Reset the output receivers, which are the inside receivers of
+     *  the output ports of the container.
+     *  @exception IllegalActionException If getting the receivers fails.
+     */
+    private void _resetOutputReceivers() throws IllegalActionException {
+        List<IOPort> outputs = ((Actor)getContainer()).outputPortList();
+        for (IOPort output : outputs) {
+            Receiver[][] receivers = output.getInsideReceivers();
+            if (receivers != null) {
+                for (int i = 0; i < receivers.length; i++) {
+                    if (receivers[i] != null) {
+                        for (int j = 0; j < receivers[i].length; j++) {
+                            if (receivers[i][j] instanceof FSMReceiver) {
+                                receivers[i][j].reset();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
@@ -1172,10 +1287,4 @@ public class FSMDirector extends Director implements
 
     // Version of the local receiver maps.
     private long _localReceiverMapsVersion = -1;
-
-    /** State refinements to postfire(), as determined by the fire() method. */
-    private List<Actor> _stateRefinementsToPostfire = new LinkedList<Actor>();
-
-    /** Transition refinements to postfire(), as determined by the fire() method. */
-    private List<Actor> _transitionRefinementsToPostfire = new LinkedList<Actor>();
 }
