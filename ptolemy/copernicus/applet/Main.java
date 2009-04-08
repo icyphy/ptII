@@ -58,6 +58,7 @@ public class Main extends KernelMain {
         addTransform(pack, "wjtp.makefileWriter", MakefileWriter.v(_toplevel),
                 "_generatorAttributeFileName:" + _generatorAttributeFileName
                         + " targetPackage:" + _targetPackage
+                        + " targetPath:" + _targetPath
                         + " templateDirectory:" + _templateDirectory
                         + " outputDirectory:" + _outputDirectory + " overwrite:false");
 
@@ -68,13 +69,15 @@ public class Main extends KernelMain {
                         + " outputDirectory:" + _outputDirectory
                         + " ptIIJarsPath:" + _ptIIJarsPath
                         + " ptIIUserDirectory:" + _ptIIUserDirectory
-                        + " targetPath: " + _targetPath);
+                        + " targetPath:" + _targetPath);
+        System.out.println("applet.Main.addTransforms, targetPath: " + _targetPath);
     }
 
     /** Parse any code generator specific arguments.
      */
     protected String[] _parseArgs(GeneratorAttribute attribute)
             throws Exception {
+        new Exception("applet.Main.parseArgs(): " + attribute.getFullName() + " targetPath: " + attribute.getParameter("targetPath")).printStackTrace();
         _generatorAttributeFileName = attribute
                 .getParameter("generatorAttributeFileName");
         _modelPath = attribute.getParameter("modelPath");

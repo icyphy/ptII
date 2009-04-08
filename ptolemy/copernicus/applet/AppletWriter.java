@@ -216,6 +216,11 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         // The path relative to the ptIIUserDirectory to generate code in.
         // Defaults to ptolemy/copernicus/$codeGenerator/cg/$modelName
         _targetPath = PhaseOptions.getString(options, "targetPath");
+        if (_targetPath.length() > 0 && !_targetPath.substring(_targetPath.length() - 1).equals("/")) {
+            System.out.println("AppletWriter: appending / to targetPath");
+            _targetPath += "/";
+        } 
+
 
         // Determine the value of _domainJar, which is the
         // path to the domain specific jar, e.g. "ptolemy/domains/sdf/sdf.jar"
@@ -269,9 +274,11 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 	    // This is the signed jar file that includes the .jnlp file
             // FIXME: what if we don't want a signed jar?
 	    jnlpJarFilesResults.insert(0, "        <jar href=\""
-				       + "signed_" + _sanitizedModelName + ".jar\""
+				       + _targetPath + "signed_" + _sanitizedModelName + ".jar\""
 				       + _jarFileLengthAttribute(jnlpSourceFileName)
 				       + "\n             main=\"true\"/>\n");
+
+            boolean sawSignedOnce = false;
 
             Iterator jarFileNames = _findModelJarFiles(director).iterator();
 
@@ -282,14 +289,39 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     jarFilesResults.append(",");
                 }
                 jarFilesResults.append(jarFileName);
+                
+                // If the ptII/signed directory contains the jar file, then set
+                // signed to "signed/".  Otherwise, set signed to "".
+                String signed =  "";
+                String signedJarFileName = _ptIIJarsPath + File.separator + "signed"
+                    + File.separator + jarFileName;
+                if (new File(signedJarFileName).exists()) {;
+                    signed = "signed" + File.separator;
+                    sawSignedOnce = true;
+                }
+                if (signed == "" && sawSignedOnce) {
+                    // We saw something in the signed directory, but this file
+                    // is not there, so we sign it.
+                    try {
+                        _signJarFile(_ptIIJarsPath + File.separator + jarFileName,
+                                signedJarFileName);
+                        signed = "signed" + File.separator;
+                    } catch (Exception ex) {
+                        throw new InternalErrorException(null, ex, "Failed to sign \""
+                                + _ptIIJarsPath + File.separator + jarFileName
+                                + "\" and create \"" + signedJarFileName + "\"");
+                    }
+                }
+                System.out.println("signedJarFile: " + signedJarFileName + " signed: \"" + signed + "\"");
 		jnlpJarFilesResults.append("        <jar href=\""
-				    + jarFileName + "\""
- 				    + _jarFileLengthAttribute(_ptIIJarsPath + File.separator + jarFileName)
+				    + signed + jarFileName + "\""
+ 				    + _jarFileLengthAttribute(_ptIIJarsPath + File.separator + signed + jarFileName)
 				    + "\n             download=\"eager\"/>\n");
             }
 
             _modelJarFiles = jarFilesResults.toString();
 
+            sawSignedOnce = false;
 
             // Get the vergil jar files for the applet
             jarFilesResults = new StringBuffer();
@@ -306,9 +338,32 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
                 jarFilesResults.append(jarFileName);
 
+                // If the ptII/signed directory contains the jar file, then set
+                // signed to "signed/".  Otherwise, set signed to "".
+                String signed =  "";
+                String signedJarFileName = _ptIIJarsPath + File.separator + "signed"
+                    + File.separator + jarFileName;
+                if (new File(signedJarFileName).exists()) {;
+                    signed = "signed" + File.separator;
+                    sawSignedOnce = true;
+                } 
+                if (signed == "" && sawSignedOnce) {
+                    // We saw something in the signed directory, but this file
+                    // is not there, so we sign it.
+                    try {
+                        _signJarFile(_ptIIJarsPath + File.separator + jarFileName,
+                                _ptIIJarsPath + File.separator + "signed"
+                                + File.separator + jarFileName);
+                        signed = "signed" + File.separator;
+                    } catch (Exception ex) {
+                        throw new InternalErrorException(null, ex, "Failed to sign \""
+                                + _ptIIJarsPath + File.separator + jarFileName
+                                + "\" and create \"" + signedJarFileName + "\"");
+                    }
+                }
 		jnlpJarFilesResults.append("        <jar href=\""
-					   + jarFileName  + "\""
-					   + _jarFileLengthAttribute(_ptIIJarsPath + File.separator + jarFileName)
+					   + signed + jarFileName  + "\""
+					   + _jarFileLengthAttribute(_ptIIJarsPath + File.separator + signed + jarFileName)
 					   + "\n             download=\"eager\"/>\n");
             }
 
@@ -381,6 +436,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 	    throw new InternalErrorException(null, ex, "Failed to create URL for \""
 					     + _outputDirectory + "\"");
 	}
+        _substituteMap.put("@targetPath@", _targetPath);
         _substituteMap.put("@vergilHeight@", Integer.toString(vergilHeight));
         _substituteMap.put("@vergilJarFiles@", _vergilJarFiles);
         _substituteMap.put("@vergilWidth@", Integer.toString(vergilWidth));

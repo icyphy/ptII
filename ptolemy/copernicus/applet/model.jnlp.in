@@ -8,7 +8,7 @@
      it will appear in the desktop icon
 -->
 <jnlp codebase="@ptIILocalURL@"
-      href="@ptIILocalURL@@sanitizedModelName@.jnlp"> 
+      href="@ptIILocalURL@@targetPath@@sanitizedModelName@.jnlp"> 
   <information>
 	  <title>@sanitizedModelName@</title>
 	  <vendor>Ptolemy Project, UC Berkeley</vendor>

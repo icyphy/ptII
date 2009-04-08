@@ -82,7 +82,7 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
     }
 
     public String getDeclaredOptions() {
-        return "_generatorAttributeFileName outputDirectory overwrite targetPackage templateDirectory";
+        return "_generatorAttributeFileName outputDirectory overwrite targetPackage targetPath templateDirectory";
     }
 
     /** Add a makefile substitution from the given name to the given value.
@@ -296,6 +296,9 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
 
         _targetPackage = PhaseOptions.getString(options, "targetPackage");
 
+        _targetPath = PhaseOptions.getString(options, "targetPath");
+
+        System.out.println("MakefileWriter: _targetPath: " + _targetPath);
         _templateDirectory = PhaseOptions.getString(options,
                 "templateDirectory");
 
@@ -309,6 +312,7 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
             substituteMap = CodeGeneratorUtilities.newMap(generatorAttribute);
             substituteMap.put("@outputDirectory@", _outputDirectory);
             substituteMap.put("@targetPackage@", _targetPackage);
+            substituteMap.put("@targetPath@", _targetPath);
             substituteMap.put("@templateDirectory@", _templateDirectory);
             substituteMap.putAll(_addedSubstitutions);
         } catch (IllegalActionException ex) {
@@ -430,6 +434,8 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
     // is foo.bar, and the model is MyModel, we will create the code
     // in foo.bar.MyModel.
     private String _targetPackage;
+
+    private String _targetPath;
 
     // The directory that contains the templates (makefile.in,
     // model.htm.in, modelApplet.htm.in)

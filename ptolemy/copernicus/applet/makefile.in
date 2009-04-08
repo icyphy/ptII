@@ -69,23 +69,33 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 # Don't include all or install rules here, we want the user
 # to run 'make demos' to run the tests.
-all: jclass
+all: jclass @modelName@.jnlp
 	@echo "To run all the demos, run 'make demo'"
 
-install: all $(PTCLASSJAR)
+install: all $(PTCLASSJAR) 
+
+# Unfortunately, Java 1.6.0_09 and earlier does not support relative codebase
+# in the .jnlp file.  Mac OS X does not have support for Java 1.6.0_10, so
+# we ship @modelName@.jnlp.in, which contains "@PTII_LOCALURL@".  When
+# make is run, we substitute in the local path.
+@modelName@.jnlp@: @modelName@.jnlp.in
+	sed 's/@PTII_LOCALURL@/$(PTII_LOCALURL)/g' < $^ > $@
 
 demo: demo_applet demo_vergil_applet demo_ptolemy demo_vergil
 demo_applet:
 	CLASSPATH="$(CLASSPATH)" appletviewer @modelName@.htm
-
-demo_vergil_applet:
-	CLASSPATH="$(CLASSPATH)" appletviewer @modelName@Vergil.htm
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" @modelName@.xml
 
 demo_vergil:
 	"$(PTII)/bin/vergil" @modelName@.xml
+
+demo_vergil_applet:
+	CLASSPATH="$(CLASSPATH)" appletviewer @modelName@Vergil.htm
+
+demo_webstart:
+	"$(JAVAWS)" -wait @modelName@.jnlp
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
