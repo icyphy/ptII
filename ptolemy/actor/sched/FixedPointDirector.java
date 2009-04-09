@@ -292,6 +292,11 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         super.initialize();
 
         _realStartTime = System.currentTimeMillis();
+        
+        // NOTE: The following used to be done in prefire(), which is wrong,
+        // because prefire() can be invoked multiple times in an iteration
+        // (particularly if this is inside another FixedPointDirector).
+        _resetAllReceivers();
     }
 
     /** Return true if all the controlled actors' isFireFunctional()
@@ -331,8 +336,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
 
     /** Return false. The transferInputs() method checks whether
      *  the inputs are known before calling hasToken().
-     *  Thus this derictor tolerate unknown inputs.
-     *
+     *  Thus this director tolerates unknown inputs.
      *  @return False.
      */
     public boolean isStrict() {
@@ -351,12 +355,13 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         return receiver;
     }
 
-    /** Call postfire() on all contained actors that were fired on the last
-     *  invocation of fire().  If <i>synchronizeToRealTime</i> is true, then
+    /** Call postfire() on all contained actors that were fired in the current
+     *  iteration.  If <i>synchronizeToRealTime</i> is true, then
      *  wait for real time elapse to match or exceed model time. Return false if the model
      *  has finished executing, either by reaching the iteration limit, or if
      *  no actors in the model return true in postfire(), or if stop has
-     *  been requested. This method is called only once for each iteration.
+     *  been requested, or if no actors fired at all in the last iteration.
+     *  This method is called only once for each iteration.
      *  Note that actors are postfired in arbitrary order.
      *  @return True if the execution is not finished.
      *  @exception IllegalActionException If the iterations parameter does
@@ -382,14 +387,18 @@ public class FixedPointDirector extends StaticSchedulingDirector {
                 // Construct a list of the unknown inputs.
                 StringBuffer unknownInputs = new StringBuffer();
                 Iterator inputPorts = actor.inputPortList().iterator();
+                IOPort firstPort = null;
                 while (inputPorts.hasNext()) {
                     IOPort inputPort = (IOPort) inputPorts.next();
                     if (!inputPort.isKnown()) {
                         unknownInputs.append(inputPort.getName());
                         unknownInputs.append("\n");
+                        if (firstPort == null) {
+                            firstPort = inputPort;
+                        }
                     }
                 }
-                throw new IllegalActionException(actor,
+                throw new IllegalActionException(actor, firstPort,
                         "Unknown inputs remain. Possible causality loop:\n"
                         + unknownInputs);
             }
@@ -405,6 +414,11 @@ public class FixedPointDirector extends StaticSchedulingDirector {
             _debug(this.getFullName() + "Iteration " + _currentIteration
                     + " is complete.");
         }
+        
+        // NOTE: The following used to be done in prefire(), which is wrong,
+        // because prefire() can be invoked multiple times in an iteration
+        // (particularly if this is inside another FixedPointDirector).
+        _resetAllReceivers();
 
         // Check whether the current execution has reached its iteration limit.
         _currentIteration++;
@@ -416,29 +430,6 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         }
 
         return super.postfire() && needMoreIterations;
-    }
-
-    /** Initialize the firing of the director by resetting state variables
-     *  and reset all receivers to unknown.
-     *  @return True always.
-     *  @exception IllegalActionException If thrown by the parent class.
-     */
-    public boolean prefire() throws IllegalActionException {
-        if (_debugging) {
-            _debug("FixedPointDirector: Called prefire().");
-        }
-        _actorsAllowedToFire.clear();
-        _actorsFinishedFiring.clear();
-        _actorsFired.clear();
-        _cachedAllInputsKnown.clear();
-        _lastNumberOfKnownReceivers = -1;
-
-        _resetAllReceivers();
-
-        // Set current time based on the enclosing model.
-        boolean result = super.prefire();
-
-        return result;
     }
 
     /** Return an array of suggested directors to be used with
@@ -520,9 +511,16 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         _currentNumberOfKnownReceivers++;
     }
 
-    /** Reset all receivers to unknown status.
+    /** Reset all receivers to unknown status and clear out variables used
+     *  to track which actors fired in the last iteration. 
      */
     protected void _resetAllReceivers() {
+        _actorsAllowedToFire.clear();
+        _actorsFinishedFiring.clear();
+        _actorsFired.clear();
+        _cachedAllInputsKnown.clear();
+        _lastNumberOfKnownReceivers = -1;
+
         if (_debugging) {
             _debug("    FixedPointDirector is resetting all receivers");
         }
