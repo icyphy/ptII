@@ -55,6 +55,25 @@ public class TimedPlotter extends CCodeGeneratorHelper{//PlotterBase{  //CCodeGe
     public TimedPlotter(ptolemy.actor.lib.gui.TimedPlotter actor) {
         super(actor);
     }
+    
+    public String generateFireCode() throws IllegalActionException {
+        System.out.println("Timed Plotter generateFireCode called");
+        
+         StringBuffer code = new StringBuffer();
+        // code.append(super.generateFireCode());
+         ptolemy.actor.lib.gui.TimedPlotter actor = (ptolemy.actor.lib.gui.TimedPlotter) getComponent();
+         if(actor.getAttribute("_top")!= null)
+         {
+         code.append(generatePlotFireCode(actor.input.getWidth(),1));
+         }
+     else if(actor.getAttribute("_bottom")!= null){
+             code.append(generatePlotFireCode(actor.input.getWidth(),2));  
+         }
+         else{
+             code.append(generatePlotFireCode(actor.input.getWidth(),0));  
+         }
+         return code.toString();
+     }
 
     /** Generate fire code.
      *  @return The generated code.
@@ -105,5 +124,6 @@ public class TimedPlotter extends CCodeGeneratorHelper{//PlotterBase{  //CCodeGe
 
         return code.toString();
     }
+    
     
 }
