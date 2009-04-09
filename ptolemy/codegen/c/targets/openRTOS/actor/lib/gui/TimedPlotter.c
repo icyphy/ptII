@@ -32,7 +32,7 @@ $actorSymbol(xvalue) = 0;
 
 /***plotBlock($channel)***/
 PlotPoint($actorSymbol(xvalue),$ref(input#$channel));
- $actorSymbol(xvalue)++;
+$actorSymbol(xvalue)++;
 /**/
 
 
@@ -63,6 +63,7 @@ void PlotPoint(int x,int y)
  int myminx;
  int dotsize;
  int axissize;
+char buff[50];
 
    mymaxy = 89;
    myminx = 0;
@@ -72,7 +73,9 @@ void PlotPoint(int x,int y)
 
    myx = myminx +(x*10);
 
-   RIT128x96x4StringDraw(".",   myx,myy,20);
+   //RIT128x96x4StringDraw(".",   myx,myy,20);
+   sprintf(buff,"xv: %d yv: %d",x,y);
+    RIT128x96x4StringDraw(buff,   0,50,20);
    
 
 }
