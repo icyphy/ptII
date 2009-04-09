@@ -72,18 +72,18 @@ public class FixedPointScheduler extends Scheduler {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Return the schedule.
+    /** Return the schedule. This method attempts to construct a schedule based
+     *  on a topological sort of the graph (which uses causality interfaces).
+     *  If there are cycles, no such sort is possible, and this method simply
+     *  returns a schedule that lists the actors in their natural order in the
+     *  container, which is the order in which they were created (unless that
+     *  order has been modified through "bring to front" or "send to back").
      *  This method should not be called directly, but rather the getSchedule()
      *  method (which is defined in the superclass) will call it when the
      *  schedule is invalid.  This method is not synchronized on the workspace.
-     *
      *  @return A schedule.
-     *  @exception NotSchedulableException If the model is not
-     *   schedulable because of a dependency loop, or because there
-     *   is no containing director, or because the containing director
-     *   has no container.
      */
-    protected Schedule _getSchedule() throws NotSchedulableException {
+    protected Schedule _getSchedule() {
         StaticSchedulingDirector director = (StaticSchedulingDirector) getContainer();
         if (director == null) {
             throw new NotSchedulableException(this, "No director.  ");
@@ -95,27 +95,27 @@ public class FixedPointScheduler extends Scheduler {
         }
         CausalityInterfaceForComposites causality
                 = (CausalityInterfaceForComposites)compositeActor.getCausalityInterface();
+        List<Actor> sortedActors;
         try {
-            List<Actor> sortedActors = causality.topologicalSort();
-            Schedule schedule = new Schedule();
-            if (_debugging) {
-                _debug("## Schedule generated:");
-            }
-            for (Actor actor : sortedActors) {
-                Firing firing = new Firing(actor);
-                schedule.add(firing);
-                if (_debugging) {
-                    _debug(" - " + actor.getFullName());
-                }
-            }
-            if (_debugging) {
-                _debug("## End of schedule.");
-            }
-            setValid(true);
-            return schedule;
-        } catch (IllegalActionException e) {
-            throw new NotSchedulableException(
-                    e.getNameable1(), e.getNameable2(), e.getMessage());
+            sortedActors = causality.topologicalSort();
+        } catch (IllegalActionException ex) {
+            sortedActors = compositeActor.deepEntityList();
         }
+        Schedule schedule = new Schedule();
+        if (_debugging) {
+            _debug("## Schedule generated:");
+        }
+        for (Actor actor : sortedActors) {
+            Firing firing = new Firing(actor);
+            schedule.add(firing);
+            if (_debugging) {
+                _debug(" - " + actor.getFullName());
+            }
+        }
+        if (_debugging) {
+            _debug("## End of schedule.");
+        }
+        setValid(true);
+        return schedule;
     }
 }
