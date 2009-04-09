@@ -71,7 +71,6 @@ import ptolemy.util.StringUtilities;
  @Pt.AcceptedRating Red (sssf)
  */
 
-//at the moment I'm not sure exactly what should go in this specific implementation. It will be filled out as the semester progresses.
 public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.GiottoDirector {
 
 
@@ -91,16 +90,35 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
     
     public String generateFireCode() throws IllegalActionException{
         StringBuffer code = new StringBuffer();
+        if(_isTopDirectorFSM())
+            code.append(_eol+"//should append fire code for Giotto inside fsm"+_eol);
+        else
+            code.append(_generateFireCode());
+        
+        return code.toString();
+    }
+    private String _generateFireCode() throws IllegalActionException{
+        StringBuffer code = new StringBuffer();
         //code.append("//fire code should be here. I'm from the openRTOS GiottoDirector "+_eol);
         System.out.println("generateFireCode from openRTOS giotto director called here");
         code.append("//Beginning of generateFireCode inside OpenRTOS GiottoDirector***************");
         //code.append("scheduler()");
-        code.append(_eol+"}"+_eol);
+        if(!_isTopDirectorFSM()){
+            //top director isn't fsm so close the method that would normally contain the fire code 
+            //if the inline option was enabled and being used. Inline is invalid for giotto codegen
+            code.append(_eol+"}"+_eol);
+        }
         //create thread methods here
         code.append("//before calling generateMyThreads***************"+_eol);
         code.append(generateMyThreads());
         code.append("//after calling generateMyThreads***************"+_eol);
         code.append("//End of generateFireCode inside OpenRTOS GiottoDirector***************"+_eol);
+        
+        if(_isTopDirectorFSM()){
+            //insert a close parenthesis b/c it's not done automatically in the code
+            code.append(_eol+"}"+_eol);
+        }
+        
         
         
         return code.toString();
@@ -317,8 +335,8 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
             code.append("count++;"+_eol);
             code.append("// here I should call driver code method for each of the actors"+_eol);
             code.append("  //call the methods for the tasks at this frequency of "+ i+_eol);
-            code.append("sprintf(buff,\"f"+i+"thread %d\",count);"+_eol);
-            code.append("RIT128x96x4StringDraw(buff, 0,_,15);"+_eol);
+            code.append("//sprintf(buff,\"f"+i+"thread %d\",count);"+_eol);
+            code.append("//RIT128x96x4StringDraw(buff, 0,_,15);"+_eol);
             
             for(int j = 0; j<ActorFrequencies[i].size();j++) {
                 //call generate driver code for each of the actors
@@ -386,6 +404,11 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
            //code.append("am i the top most director??");
             //System.out.println("I should check to see if I'm the top most Giotto director here.. ");
            
+           if(_isTopDirectorFSM()){
+               code.append(_eol+"//################# fire code for Giotto stuff here"+_eol);
+               code.append(_generateFireCode());
+               code.append(_eol+"//end of generate fire code stuff for top director fsm"+_eol);
+               }
             return processCode(code.toString());
         }
 
@@ -447,8 +470,8 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
     code.append("     vTaskDelayUntil(&xLastWakeTime,xFrequency);"+_eol);
     code.append("count++;"+_eol);
     
-    code.append("sprintf(buff,\"sc:%d\",count);"+_eol);
-    code.append("RIT128x96x4StringDraw(buff, _,40,25);"+_eol);
+    code.append("//sprintf(buff,\"sc:%d\",count);"+_eol);
+    code.append("//RIT128x96x4StringDraw(buff, _,40,25);"+_eol);
     
     
     Arrays.sort(myFrequencies);
@@ -711,6 +734,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
                  System.out.println("not composite actor");
              }
             System.out.println("about to call generateFirecode on the composite actor"); 
+            code.append(_eol+"//about to call generateFireCode on the actorHelper");
            code.append(_eol+actorHelper.generateFireCode());
              System.out.println("after calling the generateFireCode on composite actor");
              /*if(actor instanceof CompositeActor&&(actor.getDirector().getClassName()=="ptolemy.domains.fsm.kernel.FSMDirector")){
@@ -1238,32 +1262,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
     
        
     private boolean _isTopGiottoDirector() {
-        // TODO Auto-generated method stub
-       /* if(_director.depthInHierarchy()== 0)
-        {
-            System.out.println("I "+_director.getDisplayName()+" am a top most director");
-        
-        }
-        else
-        {
-            System.out.println("I "+_director.getDisplayName()+" am not a top most director");
-           
-        }*/
-        
-    /*    Director director = ((TypedCompositeActor)
-                _director.getContainer()).getExecutiveDirector();
-        
-        if(director == null)
-        {
-            System.out.println("I'm the top most giotto director");
-            
-        }
-        else
-        {
-            System.out.println("I'm not really the top most giotto director");
-        }
-      */  
-        Director director = ((TypedCompositeActor)
+           Director director = ((TypedCompositeActor)
                 _director.getContainer()).getExecutiveDirector();
     
            if (director == null) { // true for the top most director
@@ -1356,6 +1355,25 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         return code.toString();
     }
     
+    private boolean _isTopDirectorFSM()
+    {
+        boolean returnValue = false;
+        
+        
+        
+        Director director = ((TypedCompositeActor)
+                _director.getContainer()).getExecutiveDirector();
+    
+        if(director != null &&
+                (director instanceof ptolemy.domains.fsm.kernel.FSMDirector)) {
+           returnValue = true;
+           }
+            
+        
+        return returnValue;
+        
+        
+    }
  
     
     
