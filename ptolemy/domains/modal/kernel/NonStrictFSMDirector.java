@@ -196,7 +196,7 @@ public class NonStrictFSMDirector extends FSMDirector {
                     .get(randomChoice);
         }
 
-        _enabledTransition = enabledTransition;
+        controller.setLastChosenTransition(enabledTransition);
 
         if (enabledTransition == null) {
             // Get the inputs needed by the refinement.
@@ -287,8 +287,7 @@ public class NonStrictFSMDirector extends FSMDirector {
                 enabledTransition = (Transition) enabledTransitions
                         .get(randomChoice);
             }
-
-            _enabledTransition = enabledTransition;
+            controller.setLastChosenTransition(enabledTransition);
         }
 
         if (enabledTransition != null) {
@@ -383,7 +382,7 @@ public class NonStrictFSMDirector extends FSMDirector {
     }
 
     /** Given a state, get a set of input ports referred in the guards of
-     *  the nonpreemptive transitions leaving that state.
+     *  the preemptive transitions leaving that state.
      *  @param state The given state.
      *  @exception IllegalActionException If there is no controller or
      *   if any guard expression is illegal.
@@ -395,8 +394,8 @@ public class NonStrictFSMDirector extends FSMDirector {
         _preemptiveTransitionsInputs = getTransitionReferredInputPorts(preemptiveTransitionList);
     }
 
-    /** Given a set of ports, get those are input ports and put them
-     *  in the indicated referred set.
+    /** Given a set of ports, get those that are input ports of the container
+     *  and put them in the indicated referred set.
      *  @param portSet The given set of ports
      *  @param referredInputPorts The referred set.
      */

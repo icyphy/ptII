@@ -45,6 +45,7 @@ import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.actor.util.ConstVariableModelAnalysis;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.actor.util.DependencyDeclaration;
+import ptolemy.actor.util.Time;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Variable;
 import ptolemy.domains.sdf.kernel.SDFReceiver;
@@ -187,7 +188,12 @@ public class MultirateFSMDirector extends FSMDirector {
                                 + "transition refinements.");
             }
 
-            _readOutputsFromRefinement();
+            // NOTE: Must not read outputs from refinement!
+            // They have been previously read in the fire() method
+            // and for domains like HDF where tokens are consumed,
+            // the output buffers will be empty!
+            // EAL 3/27/09
+            // _readOutputsFromRefinement();
 
             //execute the output actions
             Iterator actions = transition.choiceActionList().iterator();
@@ -240,38 +246,23 @@ public class MultirateFSMDirector extends FSMDirector {
 
         chooseNextNonTransientState(currentState);
     }
-
-    /** Return the current state if it has a refinement. Otherwise, make
-     *  state transitions until a state with a refinement is found. Set that
-     *  non-transient state to be the current state and return it.
-     *  @return The non-transient state.
-     *  @exception IllegalActionException If a transient state is reached
-     *   while no further transition is enabled.
+    
+    /** Override the base class to ignore the fireAt() call if the specified
+     *  actor is the controller. The controller calls fireAtCurrentTime()
+     *  if the destination state is enabled, but this director already handles
+     *  transient states.
+     *  @param actor The actor scheduled to be fired.
+     *  @return If the argument is the controller, then return Time.NEGATIVE_INFINITY,
+     *   to indicate that the request is being ignored. Otherwise, return what the
+     *   superclass returns.
+     *  @exception IllegalActionException If thrown by the executive director.
      */
-    public State getNonTransientState() throws IllegalActionException {
+    public Time fireAtCurrentTime(Actor actor) throws IllegalActionException {
         FSMActor controller = getController();
-        State currentState = controller.currentState();
-        TypedActor[] currentRefinements = currentState.getRefinement();
-
-        while (currentRefinements == null) {
-            chooseTransition(currentState);
-
-            // Commit the transition.
-            super.postfire();
-            currentState = controller.currentState();
-
-            Transition lastChosenTransition = _getLastChosenTransition();
-
-            if (lastChosenTransition == null) {
-                throw new IllegalActionException(this,
-                        "Reached a transient state "
-                                + "without an enabled transition.");
-            }
-
-            currentRefinements = currentState.getRefinement();
+        if (actor != controller) {
+            return super.fireAtCurrentTime(actor);
         }
-
-        return currentState;
+        return Time.NEGATIVE_INFINITY;
     }
 
     /** Initialize the modal model. If this method is called immediately
@@ -314,7 +305,7 @@ public class MultirateFSMDirector extends FSMDirector {
             // NOTE: The following will throw an exception if
             // the state does not have a refinement, so after
             // this call, we can assume the state has a refinement.
-            currentState = getNonTransientState();
+            currentState = _getNonTransientState();
 
             TypedActor[] currentRefinements = currentState.getRefinement();
 
@@ -366,12 +357,9 @@ public class MultirateFSMDirector extends FSMDirector {
         FSMActor controller = getController();
         State currentState = controller.currentState();
         Transition lastChosenTransition = _getLastChosenTransition();
-        TypedCompositeActor actor;
-        Director refinementDir;
-        boolean superPostfire;
 
         // Commit the transition.
-        superPostfire = super.postfire();
+        boolean superPostfire = super.postfire();
         currentState = controller.currentState();
 
         TypedActor[] actors = currentState.getRefinement();
@@ -382,10 +370,10 @@ public class MultirateFSMDirector extends FSMDirector {
                             + "one refinement: " + currentState.getName());
         }
 
-        actor = (TypedCompositeActor) (actors[0]);
+        TypedCompositeActor actor = (TypedCompositeActor) (actors[0]);
 
         if (lastChosenTransition != null) {
-            refinementDir = actor.getDirector();
+            Director refinementDir = actor.getDirector();
 
             if (refinementDir instanceof MultirateFSMDirector) {
                 refinementDir.postfire();
@@ -456,7 +444,7 @@ public class MultirateFSMDirector extends FSMDirector {
         // NOTE: The following will throw an exception if
         // the state does not have a refinement, so after
         // this call, we can assume the state has a refinement.
-        State currentState = getNonTransientState();
+        State currentState = _getNonTransientState();
         super.preinitialize();
         _setCurrentState(currentState);
 
@@ -503,6 +491,15 @@ public class MultirateFSMDirector extends FSMDirector {
                 }
             }
         }
+    }
+
+    /** Return a boolean to indicate whether a ModalModel under control
+     *  of this director supports multirate firing.
+     *  @return True indicating a ModalModel under control of this director
+     *   does support multirate firing.
+     */
+    public boolean supportMultirateFiring() {
+        return true;
     }
 
     /** Transfer data from the input port of the container to the
@@ -885,6 +882,45 @@ public class MultirateFSMDirector extends FSMDirector {
         }
 
         return outputRateChanged;
+    }
+    
+    /////////////////////////////////////////////////////////////////////////
+    ////                       protected variables                       ////
+
+    /** Return the current state if it has a refinement. Otherwise, make
+     *  state transitions until a state with a refinement is found. Set that
+     *  non-transient state to be the current state and return it.
+     *  @return The non-transient state.
+     *  @exception IllegalActionException If a transient state is reached
+     *   while no further transition is enabled.
+     */
+    private State _getNonTransientState() throws IllegalActionException {
+        FSMActor controller = getController();
+        State currentState = controller.currentState();
+        TypedActor[] currentRefinements = currentState.getRefinement();
+
+        while (currentRefinements == null) {
+            chooseTransition(currentState);
+
+            // Commit the transition.
+            // This is similar to what super.postfire() does (via
+            // controller.postfire()), but it is inappropriate to call
+            // postfire() here.
+            controller._commitLastChosenTransition();
+            currentState = controller.currentState();
+            Transition lastChosenTransition = _getLastChosenTransition();
+            controller._lastChosenTransition = null;
+
+            if (lastChosenTransition == null) {
+                throw new IllegalActionException(this,
+                        "Reached a transient state "
+                                + "without an enabled transition.");
+            }
+
+            currentRefinements = currentState.getRefinement();
+        }
+
+        return currentState;
     }
 
     /////////////////////////////////////////////////////////////////////////

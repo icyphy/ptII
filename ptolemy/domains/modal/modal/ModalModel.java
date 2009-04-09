@@ -33,12 +33,12 @@ import java.util.Map;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.ct.kernel.CTCompositeActor;
 import ptolemy.domains.modal.kernel.FSMActor;
 import ptolemy.domains.modal.kernel.FSMDirector;
 import ptolemy.domains.modal.kernel.State;
@@ -128,7 +128,7 @@ import ptolemy.util.MessageHandler;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (reviewmoderator)
  */
-public class ModalModel extends CTCompositeActor implements ChangeListener {
+public class ModalModel extends TypedCompositeActor implements ChangeListener {
     /** Construct a modal model in the specified workspace with
      *  no container and an empty string as a name. You can then change
      *  the name with setName(). If the workspace argument is null, then
@@ -248,10 +248,10 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
                         Director executiveDirector = getExecutiveDirector();
 
                         if (executiveDirector != null) {
-                            boolean supportMultirateFiring = executiveDirector
-                                    .supportMultirateFiring();
-
-                            if (supportMultirateFiring) {
+                            // Need both the executive director and the local director to
+                            // support multirate firing in order for this to work.
+                            if (newDirector.supportMultirateFiring() 
+                                    && executiveDirector.supportMultirateFiring()) {
                                 getController().setSupportMultirate(true);
                             }
                         }
@@ -310,40 +310,6 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
         }
 
         return newModel;
-    }
-
-    /** Return true if any refinements contain at least one dynamic actor.
-     *  @return True if any refinements contain at least one dynamic actor.
-     */
-    public boolean containsDynamicActors() {
-        boolean result = false;
-        Iterator actors = deepEntityList().iterator();
-        while (!result && actors.hasNext()) {
-            Actor actor = (Actor) actors.next();
-            if (actor instanceof FSMActor) {
-                continue;
-            }
-            // Since the rest of actors must be refinements.
-            result |= ((CTCompositeActor) actor).containsDynamicActors();
-        }
-        return result;
-    }
-
-    /** Return true if any refinements contain at least one event generator.
-     *  @return True if any refinements contain at least one event generator.
-     */
-    public boolean containsWaveformGenerators() {
-        boolean result = false;
-        Iterator actors = deepEntityList().iterator();
-        while (!result && actors.hasNext()) {
-            Actor actor = (Actor) actors.next();
-            if (actor instanceof FSMActor) {
-                continue;
-            }
-            // Since the rest of actors must be refinements.
-            result |= ((CTCompositeActor) actor).containsWaveformGenerators();
-        }
-        return result;
     }
 
     /** Get representation of dependencies between input ports and
@@ -525,11 +491,8 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
                     .suggestedModalModelDirectors();
 
             for (int i = 0; i < suggestions.length; i++) {
-                // FIXME:  It was necessary to change fsm to modal when we made a copy of fsm. 
-                suggestions[i] = suggestions[i].replace("domains.fsm.", "domains.modal.").replace("HSFSMDirector", "HSModalDirector");
-
+                suggestions[i] = suggestions[i].replace("domains.fsm.", "domains.modal.");
                 directorClass.addChoice(suggestions[i]);
-
                 if (i == 0) {
                     directorClass.setExpression(suggestions[i]);
                 }

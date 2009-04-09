@@ -200,7 +200,7 @@ public class FSMCausalityInterface extends CausalityInterfaceForComposites {
                        Set<String> freeVariables = collector.collectFreeVariables(guardParseTree);
                        for (String freeVariable : freeVariables) {
                            // Reach into the FSMActor to get the port.
-                           IOPort port = (IOPort)actor._identifierToPort.get(freeVariable);
+                           IOPort port = (IOPort)actor._getPortForIdentifier(freeVariable);
                            if (port != null && port.isInput()) {
                                // Found a reference to an input port in the guard.
                                inputs.add(port);

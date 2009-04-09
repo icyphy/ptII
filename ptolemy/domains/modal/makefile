@@ -1,4 +1,4 @@
-# Makefile for PtolemyII Finite State Machine (FSM) Domain
+# Makefile for PtolemyII Modal domain
 #
 # @Version: $Id$
 # @Author: Xiaojun Liu

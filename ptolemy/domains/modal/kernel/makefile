@@ -67,6 +67,7 @@ JSRCS = \
 	FSMActor.java \
 	FSMCausalityInterface.java \
 	FSMDirector.java \
+	FSMReceiver.java \
 	ModalDirector.java \
 	MultipleEnabledTransitionsException.java \
 	MultirateFSMDirector.java \
