@@ -28,23 +28,20 @@
 package ptolemy.domains.continuous.kernel;
 
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.Receiver;
-import ptolemy.actor.sched.FixedPointReceiver;
 import ptolemy.actor.util.Time;
 import ptolemy.data.expr.ParseTreeEvaluator;
-import ptolemy.domains.fsm.kernel.FSMActor;
-import ptolemy.domains.fsm.kernel.ModalDirector;
-import ptolemy.domains.fsm.kernel.ParseTreeEvaluatorForGuardExpression;
-import ptolemy.domains.fsm.kernel.RelationList;
-import ptolemy.domains.fsm.kernel.State;
-import ptolemy.domains.fsm.kernel.Transition;
+import ptolemy.domains.modal.kernel.FSMActor;
+import ptolemy.domains.modal.kernel.FSMDirector;
+import ptolemy.domains.modal.kernel.ParseTreeEvaluatorForGuardExpression;
+import ptolemy.domains.modal.kernel.RelationList;
+import ptolemy.domains.modal.kernel.State;
+import ptolemy.domains.modal.kernel.Transition;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -70,7 +67,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (liuxj)
  */
-public class HybridModalDirector extends ModalDirector implements
+public class HybridModalDirector extends FSMDirector implements
         ContinuousStatefulComponent, ContinuousStepSizeController {
 
     /** Construct a director in the given container with the given name.
@@ -105,134 +102,10 @@ public class HybridModalDirector extends ModalDirector implements
         HybridModalDirector newObject = (HybridModalDirector) super.clone(workspace);
         newObject._enclosingContinuousDirector = null;
         newObject._enclosingContinuousDirectorVersion = -1;
+        /* FIXME
         newObject._receivers = new LinkedList();
+        */
         return newObject;
-    }
-
-    /** Fire the modal model.
-     *  If there is a preemptive transition enabled, execute its choice
-     *  actions (outputActions) and fire its refinement. Otherwise,
-     *  fire the refinement of the current state. After this firing,
-     *  if there is a transition enabled, execute its choice actions
-     *  and fire the refinement of the transition.
-     *  If any tokens are produced during this firing, they are sent to
-     *  both the output ports of the model model but also the input ports of
-     *  the mode controller.
-     *  @exception IllegalActionException If there is more than one
-     *   transition enabled, or there is no controller, or thrown by any
-     *   choice action.
-     */
-    public void fire() throws IllegalActionException {
-        if (_debugging) {
-            _debug("Firing " + getFullName(), " at time " + getModelTime());
-        }
-        FSMActor controller = getController();
-        // Read the inputs from the environment.
-        controller.readInputs();
-        State st = controller.currentState();
-
-        // Chose a preemptive transition, if there is one,
-        // and execute its choice actions.
-        // The choice actions are the outputActions, not the setActions.
-        Transition tr = controller.chooseTransition(st
-                .preemptiveTransitionList());
-        _enabledTransition = tr;
-
-        // If a preemptive transition was found, prefire and fire
-        // the refinements of the transition, and then return.
-        if (tr != null) {
-            if (_debugging) {
-                _debug("Preemptive transition is enabled.");
-            }
-            Actor[] actors = tr.getRefinement();
-            if (actors != null) {
-                for (int i = 0; i < actors.length; ++i) {
-                    if (_stopRequested) {
-                        break;
-                    }
-                    if (_debugging) {
-                        _debug("Prefire and fire the refinement of the preemptive transition: "
-                                + actors[i].getFullName());
-                    }
-                    if (actors[i].prefire()) {
-                        actors[i].fire();
-                        _actorsFired.add(actors[i]);
-                    }
-                }
-            }
-            controller.readOutputsFromRefinement();
-            return;
-        }
-
-        // There was no preemptive transition, so we proceed
-        // to the refinement of the current state.
-        Actor[] actors = st.getRefinement();
-        if (actors != null) {
-            for (int i = 0; i < actors.length; ++i) {
-                if (_stopRequested) {
-                    break;
-                }
-                if (_debugging) {
-                    _debug("Fire the refinement of the current state: ",
-                            actors[i].getFullName());
-                }
-                actors[i].fire();
-                _actorsFired.add(actors[i]);
-            }
-        }
-        // Mark that this state has been visited.
-        st.setVisited(true);
-
-        // Read the inputs from the environment.
-        controller.readInputs();
-        // Read the outputs from the refinement.
-        controller.readOutputsFromRefinement();
-
-        // NOTE: we assume the controller, which is an FSM actor, is strict.
-        // That is, the controller will only fire when all inputs are ready.
-        // NOTE: There seems to be a problem. In particular, if some inputs are
-        // unknown before this modal model fires, the transition is not checked.
-        // This suggest that we might need another firing if some inputs later
-        // become known so that to ensure that no transition is missed.
-        // NOTE: this is saved by the _hasIterationConverged() method
-        // defined in the FixedPointDirector, where it ensures that no receivers
-        // will change their status and until then an iteration is claimed
-        // complete.
-        Iterator inputPorts = controller.inputPortList().iterator();
-
-        while (inputPorts.hasNext()) {
-            IOPort inputPort = (IOPort) inputPorts.next();
-            if (!inputPort.isKnown()) {
-                return;
-            }
-        }
-
-        // See whether there is an enabled transition.
-        tr = controller.chooseTransition(st.nonpreemptiveTransitionList());
-        _enabledTransition = tr;
-        if (tr != null) {
-            if (_debugging) {
-                _debug("Transition: " + tr.getName() + " is enabled.");
-            }
-            actors = tr.getRefinement();
-            if (actors != null) {
-                for (int i = 0; i < actors.length; ++i) {
-                    if (_stopRequested) {
-                        break;
-                    }
-
-                    if (actors[i].prefire()) {
-                        if (_debugging) {
-                            _debug("Prefire and fire the refinement of the transition: "
-                                    + actors[i].getFullName());
-                        }
-                        actors[i].fire();
-                        _actorsFired.add(actors[i]);
-                    }
-                }
-                controller.readOutputsFromRefinement();
-            }
-        }
     }
 
     /** Return error tolerance used for detecting enabled transitions.
@@ -270,7 +143,9 @@ public class HybridModalDirector extends ModalDirector implements
         boolean result = true;
         _lastDistanceToBoundary = 0.0;
         _distanceToBoundary = 0.0;
-        Iterator actors = _actorsFired.iterator();
+                
+        // Double iterator over two lists.
+        Iterator actors = new ActorsFiredIterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             if (actor instanceof ContinuousStepSizeController) {
@@ -309,47 +184,36 @@ public class HybridModalDirector extends ModalDirector implements
             List preemptiveEnabledTransitions = controller
                     .enabledTransitions(currentState.preemptiveTransitionList());
 
-            if (preemptiveEnabledTransitions.size() != 0) {
-                if (_debugging && _verbose) {
-                    _debug("Find enabled preemptive transitions.");
-                }
-            }
-
             // Check whether there is any non-preemptive transition enabled.
             List nonpreemptiveEnabledTransitions = controller
                     .enabledTransitions(currentState
                             .nonpreemptiveTransitionList());
 
-            if (nonpreemptiveEnabledTransitions.size() != 0) {
-                if (_debugging && _verbose) {
-                    _debug("Find enabled non-preemptive transitions.");
-                }
-            }
-
             // Check whether there is any event detected for preemptive transitions.
             Transition preemptiveTrWithEvent = _checkEvent(currentState
                     .preemptiveTransitionList());
-
-            if (preemptiveTrWithEvent != null) {
-                if (_debugging) {
-                    _debug("Detected event for transition:  "
-                            + preemptiveTrWithEvent.getGuardExpression());
-                }
-            }
 
             // Check whether there is any event detected for
             // nonpreemptive transitions.
             Transition nonPreemptiveTrWithEvent = _checkEvent(currentState
                     .nonpreemptiveTransitionList());
 
-            if (nonPreemptiveTrWithEvent != null) {
-                if (_debugging) {
+            if (_debugging && _verbose) {
+                if (preemptiveEnabledTransitions.size() != 0) {
+                    _debug("Found enabled preemptive transitions.");
+                }
+                if (nonpreemptiveEnabledTransitions.size() != 0) {
+                    _debug("Found enabled non-preemptive transitions.");
+                }
+                if (preemptiveTrWithEvent != null) {
+                    _debug("Detected event for transition:  "
+                            + preemptiveTrWithEvent.getGuardExpression());
+                }
+                if (nonPreemptiveTrWithEvent != null) {
                     _debug("Detected event for transition:  "
                             + nonPreemptiveTrWithEvent.getGuardExpression());
                 }
             }
-
-            double errorTolerance = enclosingDirector.getErrorTolerance();
 
             // If there is no transition enabled, the last step size is
             // accurate for transitions. The states will be committed at
@@ -454,6 +318,7 @@ public class HybridModalDirector extends ModalDirector implements
                 }
 
                 // If we are close enough, then the flipping of the guard is OK.
+                double errorTolerance = enclosingDirector.getErrorTolerance();
                 if (_distanceToBoundary < errorTolerance) {
                     _distanceToBoundary = 0.0;
                     _lastDistanceToBoundary = 0.0;
@@ -468,28 +333,6 @@ public class HybridModalDirector extends ModalDirector implements
         }
     }
 
-    /** Return false. The transferInputs() method checks whether
-     *  the inputs are known before calling hasToken().
-     *  Thus this director tolerate unknown inputs.
-     *
-     *  @return False.
-     */
-    public boolean isStrict() {
-        return false;
-    }
-
-    /** Return a new HybridModalReceiver. If a subclass overrides this
-     *  method, the receiver it creates must be a subclass of FixedPointReceiver,
-     *  and it must add the receiver to the _receivers list (a protected
-     *  member of this class).
-     *  @return A new HybridModalReceiver.
-     */
-    public Receiver newReceiver() {
-        Receiver receiver = new FixedPointReceiver();
-        _receivers.add(receiver);
-        return receiver;
-    }
-
     /** Override the base class so that if there is no enabled transition
      *  then we record for each relation (comparison operation) in each
      *  guard expression the distance between the current value of the
@@ -498,8 +341,10 @@ public class HybridModalDirector extends ModalDirector implements
      *  or there is no controller.
      */
     public boolean postfire() throws IllegalActionException {
-        State currentState = getController().currentState();
-        if (_enabledTransition == null) {
+        FSMActor controller = getController();
+        State currentState = controller.currentState();
+        Transition lastChosenTransition = controller.getLastChosenTransition();
+        if (lastChosenTransition == null) {
             // Only commit the current states of the relationlists
             // of all the transitions during these execution phases.
             Iterator iterator = currentState.nonpreemptiveTransitionList()
@@ -546,6 +391,16 @@ public class HybridModalDirector extends ModalDirector implements
                         .getRelationList();
                 relationList.resetRelationList();
             }
+            // The superclass only calls fireAtCurrentTime() if there is an enabled
+            // transition in the new state. We want to always call it after taking
+            // a transition to get the effect of superdense time. That is, we will
+            // fire again at the current time in the new state so that outputs from
+            // the new state.
+            NamedObj container = getContainer();
+            if (container instanceof Actor) {
+                Director executiveDirector = ((Actor)container).getExecutiveDirector();
+                executiveDirector.fireAtCurrentTime((Actor)container);
+            }
         }
         return super.postfire();
     }
@@ -564,7 +419,9 @@ public class HybridModalDirector extends ModalDirector implements
         if (_debugging) {
             _debug("HybridModalDirector: Called prefire().");
         }
+        /* FIXME
         _resetAllReceivers();
+        */
         Nameable container = getContainer();
         if (container instanceof Actor) {
             Director executiveDirector = ((Actor) container)
@@ -609,7 +466,7 @@ public class HybridModalDirector extends ModalDirector implements
      */
     public double refinedStepSize() throws IllegalActionException {
         double result = Double.POSITIVE_INFINITY;
-        Iterator actors = _actorsFired.iterator();
+        Iterator actors = new ActorsFiredIterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             if (actor instanceof ContinuousStepSizeController) {
@@ -665,7 +522,7 @@ public class HybridModalDirector extends ModalDirector implements
      *  This will roll back any actors that were fired in the current iteration.
      */
     public void rollBackToCommittedState() {
-        Iterator actors = _actorsFired.iterator();
+        Iterator actors = new ActorsFiredIterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             if (actor instanceof ContinuousStatefulComponent) {
@@ -679,6 +536,18 @@ public class HybridModalDirector extends ModalDirector implements
                 }
             }
         }
+        // Reset the last chosen transition of the FSM controller to null
+        // because upon moving forward again we may choose a different
+        // transition.
+        try {
+            FSMActor controller = getController();
+            if (controller != null) {
+                controller.setLastChosenTransition(null);
+            }
+        } catch (IllegalActionException e) {
+            // This should not occur.
+            throw new InternalErrorException(e);
+        }
     }
 
     /** Return the minimum of the step sizes suggested by any
@@ -689,7 +558,7 @@ public class HybridModalDirector extends ModalDirector implements
      */
     public double suggestedStepSize() throws IllegalActionException {
         double result = Double.POSITIVE_INFINITY;
-        Iterator actors = _actorsFired.iterator();
+        Iterator actors = new ActorsFiredIterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             if (actor instanceof ContinuousStepSizeController) {
@@ -808,6 +677,7 @@ public class HybridModalDirector extends ModalDirector implements
 
     /** Reset all receivers to unknown status.
      */
+    /* FIXME
     protected void _resetAllReceivers() {
         if (_debugging) {
             _debug("    HybridModalDirector is resetting all receivers");
@@ -818,6 +688,7 @@ public class HybridModalDirector extends ModalDirector implements
             ((FixedPointReceiver) receiverIterator.next()).reset();
         }
     }
+    */
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -858,5 +729,33 @@ public class HybridModalDirector extends ModalDirector implements
     private double _lastDistanceToBoundary = 0.0;
 
     /** List of all receivers this director has created. */
+    /* FIXME
     private List _receivers = new LinkedList();
+    */
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    /** Iterator over _stateRefinementsToPostfire followed by
+     *  _transitionRefinementsToPostfire.
+     */
+    private class ActorsFiredIterator implements Iterator {
+        public ActorsFiredIterator() {
+            _iterator = _stateRefinementsToPostfire.iterator();
+        }
+        public boolean hasNext() {
+            if (_iterator.hasNext()) {
+                return true;
+            }
+            _iterator = _transitionRefinementsToPostfire.iterator();
+            return _iterator.hasNext();
+        }
+        public Object next() {
+            return _iterator.next();
+        }
+        public void remove() {
+            // Ignore.
+        }
+        private Iterator _iterator;
+    }
 }

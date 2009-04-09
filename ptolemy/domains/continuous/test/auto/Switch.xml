@@ -109,35 +109,35 @@ to see the modal behavior.</text></svg></configure>
             </property>
         </property>
     </entity>
-    <entity name="modal model" class="ptolemy.domains.fsm.modal.ModalModel">
+    <entity name="modal model" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="directorClass" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.continuous.kernel.HybridModalDirector">
         </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
+        <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 85.0">
         </property>
-        <port name="trigger" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="trigger" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
             <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
             </property>
         </port>
-        <port name="input1" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="input1" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
         </port>
-        <port name="input2" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="input2" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
         </port>
-        <port name="output" class="ptolemy.domains.fsm.modal.ModalPort">
+        <port name="output" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="output"/>
             <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
             </property>
         </port>
-        <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
+        <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="const">
             </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
-    <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/annotation.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
+    <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/annotation.xml"></input><entity name="state" class="ptolemy.domains.modal.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
   </configure>
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[491, 350]">
@@ -189,44 +189,44 @@ the states to see their refinements.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 260.0">
                 </property>
             </property>
-            <port name="trigger" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="trigger" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="45.46875, 119.4453125">
                 </property>
             </port>
-            <port name="input1" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="input1" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="45.46875, 199.4453125">
                 </property>
             </port>
-            <port name="input2" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="input2" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="45.46875, 279.4453125">
                 </property>
             </port>
-            <port name="output" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="output" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="490.0, 185.0">
                 </property>
             </port>
-            <entity name="const" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="const" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="const">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 185.0">
                 </property>
             </entity>
-            <entity name="sine" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="sine" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="sine">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="390.0, 185.0">
                 </property>
             </entity>
-            <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="trigger_isPresent">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
@@ -238,7 +238,7 @@ the states to see their refinements.</text></svg></configure>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
-            <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
+            <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="trigger_isPresent">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
@@ -255,7 +255,7 @@ the states to see their refinements.</text></svg></configure>
             <link port="sine.incomingPort" relation="relation"/>
             <link port="sine.outgoingPort" relation="relation3"/>
         </entity>
-        <entity name="const" class="ptolemy.domains.fsm.modal.Refinement">
+        <entity name="const" class="ptolemy.domains.modal.modal.Refinement">
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
@@ -264,22 +264,22 @@ the states to see their refinements.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 50.0}">
                 </property>
             </property>
-            <port name="trigger" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="trigger" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="40.46875, 109.4453125">
                 </property>
             </port>
-            <port name="input1" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="input1" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="40.46875, 189.4453125">
                 </property>
             </port>
-            <port name="input2" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="input2" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="40.46875, 269.4453125">
                 </property>
             </port>
-            <port name="output" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="output" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="211.921875, 189.6171875">
                 </property>
@@ -289,7 +289,7 @@ the states to see their refinements.</text></svg></configure>
             <link port="input1" relation="relation"/>
             <link port="output" relation="relation"/>
         </entity>
-        <entity name="sine" class="ptolemy.domains.fsm.modal.Refinement">
+        <entity name="sine" class="ptolemy.domains.modal.modal.Refinement">
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
@@ -298,22 +298,22 @@ the states to see their refinements.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 50.0}">
                 </property>
             </property>
-            <port name="trigger" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="trigger" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="35.46875, 119.4453125">
                 </property>
             </port>
-            <port name="input1" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="input1" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="35.46875, 199.4453125">
                 </property>
             </port>
-            <port name="input2" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="input2" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="35.46875, 279.4453125">
                 </property>
             </port>
-            <port name="output" class="ptolemy.domains.fsm.modal.RefinementPort">
+            <port name="output" class="ptolemy.domains.modal.modal.RefinementPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="161.921875, 279.6171875">
                 </property>

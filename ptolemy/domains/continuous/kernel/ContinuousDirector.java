@@ -401,16 +401,19 @@ public class ContinuousDirector extends FixedPointDirector implements
             while (!_ODESolver._isStepFinished() && iterations < _maxIterations
                     && !_stopRequested) {
                 // Resolve the fixed point at the current time.
-                // Note that prefire resets all receivers to unknown,
-                // and fire() iterates to a fixed point where all signals
-                // become known.
+                // First, invoke prefire() to set current time to match
+                // the environment time. Then, reset all receivers to begin
+                // a fixed-point iteration. Then populate the appropriate
+                // receivers with input values. Then invoke super.fire(), which
+                // iterates to a fixed point where all signals
+                // become known (unless there is a causality loop).
                 // Although super.prefire() is called in the prefire() method,
                 // super.prefire() is called again here, because it may take
                 // several iterations to complete an integration step.
-                // As a side effect, all receivers are reset to unknown status.
-                // Therefore, we need to transfer the inputs from the
-                // environment to inside again.
+                // FIXME: Is calling prefire() right? Doesn't this overwrite
+                // the time update below?
                 if (super.prefire()) {
+                    _resetAllReceivers();
                     _transferInputsToInside();
                     super.fire();
                     if (iterations == 0) {
@@ -495,27 +498,30 @@ public class ContinuousDirector extends FixedPointDirector implements
         if (_debugging) {
             _debug(actor.getName() + " requests refiring at " + time);
         }
-        // Check if the request time is earlier than the current time.
-        Time currentTime = getModelTime();
-        // Breakpoints always have an index larger than 1 except the
-        // stop time breakpoint.
-        int index = 1;
-
-        int comparisonResult = time.compareTo(currentTime);
-        if (comparisonResult < 0) {
-            throw new IllegalActionException(actor, "Requested time: " + time
-                    + " is earlier than the current time: " + currentTime);
-        } else if (comparisonResult == 0) {
-            index = _index + 1;
+        synchronized(_breakpoints) {
+            // Check if the request time is earlier than the current time.
+            Time currentTime = getModelTime();
+            // Breakpoints always have an index larger than 1 except the
+            // stop time breakpoint.
+            int index = 1;
+    
+            int comparisonResult = time.compareTo(currentTime);
+            if (comparisonResult < 0) {
+                // Adjust time to match the current time.
+                time = currentTime;
+                index = _index + 1;
+            } else if (comparisonResult == 0) {
+                index = _index + 1;
+            }
+            // Insert a superdense time object as a breakpoint into the
+            // breakpoint table.
+            _breakpoints.insert(new SuperdenseTime(time, index));
+            if (_debugging) {
+                _debug("Inserted breakpoint with time = " + time + ", and index = "
+                        + index);
+            }
+            return time;
         }
-        // Insert a superdense time object as a breakpoint into the
-        // breakpoint table.
-        _breakpoints.insert(new SuperdenseTime(time, index));
-        if (_debugging) {
-            _debug("Inserted breakpoint with time = " + time + ", and index = "
-                    + index);
-        }
-        return time;
     }
 
     /** Return the current integration step size.
@@ -1526,6 +1532,9 @@ public class ContinuousDirector extends FixedPointDirector implements
             }
         }
         boolean result = super.prefire();
+        // FIXME: Why is the following needed?
+        _resetAllReceivers();
+
         if (_debugging) {
             _debug("ContinuousDirector: prefire() returns " + result);
         }
@@ -1571,6 +1580,9 @@ public class ContinuousDirector extends FixedPointDirector implements
         // by setting the current time. Note that this is also done at the very
         // beginning of this method.
         boolean result = super.prefire();
+        // FIXME: Why is the following needed?
+        _resetAllReceivers();
+
         if (_debugging) {
             _debug("ContinuousDirector: prefire() returns " + result);
         }
@@ -1727,6 +1739,9 @@ public class ContinuousDirector extends FixedPointDirector implements
         // because it sets the local model time to match that of the
         // executive director.
         boolean result = super.prefire();
+        // FIXME: Why is the following needed?
+        _resetAllReceivers();
+
         if (_debugging) {
             _debug("ContinuousDirector: prefire() returns " + result);
         }

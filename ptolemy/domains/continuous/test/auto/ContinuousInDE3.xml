@@ -63,12 +63,12 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{270.0, 90.0}">
             </property>
         </property>
-        <port name="in" class="ptolemy.domains.fsm.modal.RefinementPort">
+        <port name="in" class="ptolemy.domains.modal.modal.RefinementPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 195.0}">
             </property>
         </port>
-        <port name="out" class="ptolemy.domains.fsm.modal.RefinementPort">
+        <port name="out" class="ptolemy.domains.modal.modal.RefinementPort">
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{495.0, 200.0}">
             </property>

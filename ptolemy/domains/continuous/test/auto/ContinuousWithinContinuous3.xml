@@ -39,7 +39,7 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
         </property>
-        <port name="output" class="ptolemy.domains.fsm.modal.RefinementPort">
+        <port name="output" class="ptolemy.domains.modal.modal.RefinementPort">
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 85.0]">
             </property>
