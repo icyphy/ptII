@@ -97,7 +97,7 @@ public class GiottoDirector extends ptolemy.codegen.c.domains.giotto.kernel.Giot
         
         return code.toString();
     }
-    private String _generateFireCode() throws IllegalActionException{
+    protected String _generateFireCode() throws IllegalActionException{
         StringBuffer code = new StringBuffer();
         //code.append("//fire code should be here. I'm from the openRTOS GiottoDirector "+_eol);
         System.out.println("generateFireCode from openRTOS giotto director called here");
