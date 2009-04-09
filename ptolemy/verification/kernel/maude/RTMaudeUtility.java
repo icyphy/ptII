@@ -87,21 +87,121 @@ public class RTMaudeUtility {
         // RTM initial state for current Ptolemy model (DE)
         RTMList topconf = _translateCompositeEntity(model, null);
 
-        StringBuffer returnRTMFormat = new StringBuffer("");
+        StringBuffer returnRTMFormat = new StringBuffer();
 
         _loadSemanticFiles(returnRTMFormat, inlineFilesIfPossible);
 
         returnRTMFormat.append("\n");
-        returnRTMFormat.append("(tomod " + model.getName() + "-RTM-INIT is\n");
+        _generateModelBody(returnRTMFormat, model.getName(), topconf);
+        returnRTMFormat.append("\n");
+        _generateFormula(returnRTMFormat, formula);
+        returnRTMFormat.append("\n");
+
+        return returnRTMFormat;
+    }
+
+    /**
+     * Return a StringBuffer that contains the converted .maude format of the
+     * system.
+     *
+     * @param model The system under analysis.
+     * @param formula
+
+     * @return The converted .maude format of the system.
+     * @throws IllegalActionException
+     * @throws NameDuplicationException
+     */
+    public static StringBuffer generateRTMDescription(BufferedReader template,
+            CompositeActor model, String formula) throws IllegalActionException,
+            NameDuplicationException {
+
+        // RTM initial state for current Ptolemy model (DE)
+        RTMList topconf = _translateCompositeEntity(model, null);
+
+        StringBuffer returnRTMFormat = new StringBuffer();
+
+        String line;
+        boolean beginModel = false;
+        boolean beginFormula = false;
+        try {
+            do {
+                line = template.readLine();
+                if (line != null) {
+                    String lineTrimed = line.trim();
+                    if (beginModel || beginFormula) {
+                        if (lineTrimed.replace("-", "").trim().equals("")) {
+                            // A ----- line
+                            returnRTMFormat.append(line);
+                            returnRTMFormat.append("\n");
+                            
+                            do {
+                                line = template.readLine();
+                                if (line == null || line.replace("-", "").trim()
+                                        .equals("")) {
+                                    break;
+                                }
+                            } while (true);
+                        }
+                        if (beginModel) {
+                            _generateModelBody(returnRTMFormat,
+                                    model.getName(), topconf);
+                            beginModel = false;
+                        } else {
+                            _generateFormula(returnRTMFormat, formula);
+                            beginFormula = false;
+                        }
+                    } else if (lineTrimed.equals("")) {
+                        if (beginModel) {
+                            _generateModelBody(returnRTMFormat, model.getName(),
+                                    topconf);
+                            beginModel = false;
+                            continue;
+                        } else if (beginFormula) {
+                            _generateFormula(returnRTMFormat, formula);
+                            beginFormula = false;
+                            continue;
+                        }
+                    } else if (lineTrimed.startsWith("---") &&
+                            lineTrimed.endsWith("---") &&
+                            lineTrimed.substring(3, lineTrimed.length() - 3)
+                                    .trim().equalsIgnoreCase("Model Begin")) {
+                        beginModel = true;
+                        beginFormula = false;
+                    } else if (lineTrimed.startsWith("---") &&
+                            lineTrimed.endsWith("---") &&
+                            lineTrimed.substring(3, lineTrimed.length() - 3)
+                                    .trim().equalsIgnoreCase("Formula Begin")) {
+                        beginModel = false;
+                        beginFormula = true;
+                    }
+                    returnRTMFormat.append(line);
+                    returnRTMFormat.append("\n");
+                }
+                if (line == null) {
+                    break;
+                }
+            } while (true);
+        } catch (IOException e) {
+            throw new IllegalActionException(null, e,
+                    "Unable to read template");
+        }
+
+        return returnRTMFormat;
+    }
+
+    private static void _generateFormula(StringBuffer returnRTMFormat,
+            String formula) {
+        if (formula != null && formula.trim().length() > 0)    // model check command
+            returnRTMFormat.append("(mc {init} |=u "  + formula + " .)\n");
+    }
+
+    private static void _generateModelBody(StringBuffer returnRTMFormat,
+            String modelName, RTMList topconf) {
+        returnRTMFormat.append("(tomod " + modelName + "-RTM-INIT is\n");
         returnRTMFormat.append("  inc INIT + PTOLEMY-MODELCHECK .\n");
         returnRTMFormat.append("  eq #model = \n");
         returnRTMFormat.append(topconf.print(0, false) + " .\n");
         returnRTMFormat.append("endtom)\n");
-        returnRTMFormat.append("\n");
-        if (formula != null && formula.trim().length() > 0)    // model check command
-            returnRTMFormat.append("(mc {init} |=u "  + formula + " .)");
-
-        return returnRTMFormat;
     }
 
     private static void _loadSemanticFiles(StringBuffer buffer,

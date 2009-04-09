@@ -82,6 +82,9 @@ public class MathematicalModelConverter extends Attribute {
 
         target = new FileParameter(this, "target", true);
         target.setDisplayName("Target File");
+        
+        template = new FileParameter(this, "template", true);
+        template.setDisplayName("Template File");
 
         modelType = new ChoiceParameter(this, "modelType", ModelType.class);
         modelType.setExpression(ModelType.Maude.toString());
@@ -158,8 +161,16 @@ public class MathematicalModelConverter extends Attribute {
             break;
         case Maude:
             if (_model instanceof CompositeActor)
-                systemDescription.append(RTMaudeUtility.generateRTMDescription(
-                        (CompositeActor) _model, inputTemporalFormula, true));
+                if (template.getExpression().trim().equals("")) {
+                    systemDescription.append(RTMaudeUtility
+                            .generateRTMDescription((CompositeActor) _model,
+                                    inputTemporalFormula, true));
+                } else {
+                    systemDescription.append(RTMaudeUtility
+                            .generateRTMDescription(template.openForReading(),
+                                    (CompositeActor) _model,
+                                    inputTemporalFormula));
+                }
             /*
             else // FSMActor
                 systemDescription.append(
@@ -418,6 +429,8 @@ public class MathematicalModelConverter extends Attribute {
     }
 
     public FileParameter target;
+    
+    public FileParameter template;
 
     public ChoiceParameter modelType;
 
