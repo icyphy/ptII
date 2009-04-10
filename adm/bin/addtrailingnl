@@ -19,7 +19,7 @@ files=$@
 for file in $files
 do
     #echo "$0: $file"
-    results=`tail -1 $file | od -bv | tail -2 |head -1 | grep '012$'`
+    results=`tail -1 $file | od -bv | tail -2 |head -1 | egrep '012 *$'`
     if [ "x$results" = "x" ]; then
 	if [ "$printonly" = "no" ]; then
 	    echo "$file: does not have a trailing newline, adding one now."
