@@ -34,7 +34,7 @@ Token Matrix_delete(Token token, Token... tokens) {
     for (i = 0; i < ((matrix)(token.payload)).column; i++) {
         for (j = 0; j < ((matrix)(token.payload)).row; j++) {
             element = Matrix_get(token, j, i);
-            System.out.println("Matrix_delete: convert needs work");      
+            System.out.println("Matrix_delete: convert needs work");
             //functionTable[(int) element.type][FUNC_delete](element);
         }
     }
@@ -136,7 +136,7 @@ boolean Matrix_equals(Token thisToken, Token... tokens) {
     int i, j;
     Token otherToken = tokens[0];
 
-    if (((matrix)(thisToken.payload)).row != ((matrix)(otherToken.payload)).row 
+    if (((matrix)(thisToken.payload)).row != ((matrix)(otherToken.payload)).row
         || ((matrix)(thisToken.payload)).column != ((matrix)(otherToken.payload)).column) {
         return false;
     }
@@ -160,7 +160,7 @@ Token Matrix_isCloseTo(Token thisToken, Token... elements) {
     Token otherToken = elements[0];
     Token tolerance = elements[1];
 
-    if (((matrix)(thisToken.payload)).row != ((matrix)(otherToken.payload)).row 
+    if (((matrix)(thisToken.payload)).row != ((matrix)(otherToken.payload)).row
         || ((matrix)(thisToken.payload)).column != ((matrix)(otherToken.payload)).column) {
         return Boolean_new(false);
     }

@@ -2,7 +2,7 @@
 // java/kernel/type/Array.j
 private class array {
     public int size;
-    public Token [] elements;        
+    public Token [] elements;
 }
 // Definition of the array struct.
 //struct array {
@@ -108,7 +108,7 @@ Token Array_new(int size, int given, Object... elements) {
                 }
             }
         }
-    } 
+    }
     return result;
 }
 /**/
@@ -124,7 +124,7 @@ Token Array_delete(Token token, Object... elements) {
     // Delete each elements.
     for (i = 0; i < ((array)(token.payload)).size; i++) {
             element = Array_get(token, i);
-                System.out.println("Array_delete: convert needs work");      
+                System.out.println("Array_delete: convert needs work");
         //functionTable[(int)element.type][FUNC_delete](element);
     }
     //free(token.payload.Array->elements);
@@ -207,12 +207,12 @@ Token Array_print(Token thisToken, Token... tokens) {
                switch(elementType) {
                 case TYPE_Array:
                       results.append($Array_toString(((array)(thisToken.payload)).elements[i]).payload);
-                    break;                
-                  default: 
+                    break;
+                  default:
                     results.append(((array)(thisToken.payload)).elements[i].payload.toString());
-                    break;                
+                    break;
             }
-        } 
+        }
     }
     results.append("}");
 
@@ -242,15 +242,15 @@ Token Array_toString(Token thisToken, Token... ignored) {
                switch(elementType) {
                 case TYPE_Array:
                       result.append(Array_toString(((array)(thisToken.payload)).elements[i]).payload);
-                    break;                
+                    break;
                 case TYPE_String:
                     result.append("\"" + ((array)(thisToken.payload)).elements[i].payload.toString() + "\"");
                     break;
-                  default: 
+                  default:
                     result.append(((array)(thisToken.payload)).elements[i].payload.toString());
-                    break;                
+                    break;
             }
-        } 
+        }
     }
     result.append("}");
     return String_new(result.toString());
@@ -492,7 +492,7 @@ Token Array_clone(Token token, Token... tokens) {
 
 
 /***arraySum***/
-Token arraySum(Token token) {        
+Token arraySum(Token token) {
         Token result;
         int i;
         if (((array)(thisToken.payload)).size <= 0) {
@@ -500,7 +500,7 @@ Token arraySum(Token token) {
         } else {
                 result = Array_get(token, 0);
         }
-        
+
     for (i = 0; i < ((array)(thisToken.payload)).size; i++) {
         result = $add_Token_Token(result, Array_get(token, i));
     }
@@ -509,7 +509,7 @@ Token arraySum(Token token) {
 /**/
 
 /***arrayRepeat***/
-Token arrayRepeat(int number, Token value) {        
+Token arrayRepeat(int number, Token value) {
         Token result = $new(Array(number, 0));
         int i;
 

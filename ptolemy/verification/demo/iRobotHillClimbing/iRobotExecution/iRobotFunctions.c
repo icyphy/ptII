@@ -46,7 +46,7 @@ void initializeRobot(void)
   UBRR0 = Ubrr57600;
   UCSR0B = (_BV(TXEN0) | _BV(RXEN0));
   UCSR0C = (_BV(UCSZ00) | _BV(UCSZ01));
-  
+
   // Turn on interrupts (by Patrick)
   sei();
 }

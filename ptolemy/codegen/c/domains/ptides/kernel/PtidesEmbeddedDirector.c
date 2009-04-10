@@ -35,11 +35,11 @@ A_fire() {
     }
     //FireBlock();
 }
-        
+
 transferDataFunctionZout1_to_Ain1(){
     Ain1 = Zout1;
 }
-    
+
 
 // So during codegen, Zout1_to_Ain1 would be generated using:
 // $ref(input), $ref(sourceOutputPort)

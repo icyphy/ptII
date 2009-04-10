@@ -6,7 +6,7 @@
         double coef[4];
         double indexSqr;
         int i;
-        
+
         double iStartSqr = iStart * iStart;
         double iEndSqr = iEnd * iEnd;
         M[0][0] = iStartSqr * iStart;
@@ -53,13 +53,13 @@
 
 /***sharedInterpolateBlock***/
     $this.hermiteBlock()
-    
+
     inline double $actorClass(interpolate)(int index, Token indexes, Token values, int period, int order, int numRefPoints, int largestIndex) {
         //int numRefPoints = indexes.length;
         //int largestIndex = Array_get(indexes, numRefPoints - 1);
         int i;
         int indexIndexStart;
-        
+
         if ((index < 0) || (index > largestIndex)) {
             if (period == 0) {
                 return 0.0;

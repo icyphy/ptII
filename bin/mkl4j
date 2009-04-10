@@ -1,7 +1,7 @@
 #! /bin/sh
 # $Id$
 # Create a Launch4j (http://launch4j.sourceforge.net/) configuration file
-# 
+#
 ROOT=.
 base=vergil
 cmdLine=""
@@ -36,7 +36,7 @@ if [ ! $# -eq 0 ]; then
        if [ ! -f $1 ]; then
            echo "$0: warning: $1 does not exist" 1>&2
            exit 2
-       fi           
+       fi
        classPath="$classPath
     <cp>$1</cp>"
        shift

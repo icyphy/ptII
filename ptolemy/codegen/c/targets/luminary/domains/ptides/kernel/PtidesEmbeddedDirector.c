@@ -23,7 +23,7 @@ void initializeTimers(void) {
 
          SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER0);
         SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER1);
-        
+
         IntPrioritySet(INT_TIMER0A, 0x00);
         IntPrioritySet(INT_TIMER0B, 0x00);
         IntPrioritySet(INT_TIMER1A, 0x00);
@@ -55,7 +55,7 @@ unsigned long convertNsecsToCycles(unsigned long nsecs) {
         // z = x * 4 - x
         y = nsecs >> 7;
         z = ((y >> 7) << 2) - (y >> 7);
-        return y + z; 
+        return y + z;
 }
 /**/
 
@@ -65,7 +65,7 @@ void die(char *mess) {
         RIT128x96x4DisplayOn();
         sprintf(str, mess);
         RIT128x96x4StringDraw(str, 0,90,15);
-        return; 
+        return;
 }
 /**/
 
@@ -79,19 +79,19 @@ void enableInterrupts() {
     //IntEnable(INT_UART0);
     //UARTIntEnable(UART0_BASE, UART_INT_RX | UART_INT_RT);
         return;
-} 
+}
 /**/
 
 /*** get real time ***/
-void getRealTime(Time* physicalTime) {  
+void getRealTime(Time* physicalTime) {
 
         unsigned long tick1,tick2,tempSecs;
-        
+
         while (TRUE) {
                 tick1 = SysTickValueGet();
                 tempSecs = secs;
                 tick2 = SysTickValueGet();
-                if(tick2 < tick1) {  
+                if(tick2 < tick1) {
             // second has been incremented so (I think the counter starts high and counts down)
                         physicalTime->secs = tempSecs;
                         tick2 = TIMER_ROLLOVER_CYCLES - tick2;
@@ -104,7 +104,7 @@ void getRealTime(Time* physicalTime) {
 
 /*** timer ***/
 void Timer0IntHandler(void) {
-    TimerIntClear(TIMER0_BASE, TIMER_TIMA_TIMEOUT);        
+    TimerIntClear(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
         if (timerInterruptSecsLeft > 0) {
                 TimerLoadSet(TIMER0_BASE, TIMER_BOTH, TIMER_ROLLOVER_CYCLES);
                 timerInterruptSecsLeft--;
@@ -117,7 +117,7 @@ void Timer0IntHandler(void) {
         IntDisable(INT_TIMER0B);
         TimerIntDisable(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
         TimerIntDisable(TIMER0_BASE, TIMER_TIMB_TIMEOUT);
-        disableInterrupts();                                                                                                                                         
+        disableInterrupts();
         addStack();
 }
 /**/
@@ -139,7 +139,7 @@ int timeCompare(Time* time1, Time* time2) {
         } else if (time1->secs == time2->secs && time1->nsecs == time2->nsecs) {
                 return 0;
         }
-        return 1;        
+        return 1;
 }
 void timeSet(Time* time, Time* refTime) {
         time->secs = refTime->secs;

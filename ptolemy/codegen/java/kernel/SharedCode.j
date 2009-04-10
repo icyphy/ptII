@@ -10,7 +10,7 @@
 /***tokenDeclareBlock ($types)***/
 
 private class Token {
-    private Short type;    
+    private Short type;
     Object payload;
     /* $types
      */

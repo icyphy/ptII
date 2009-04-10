@@ -60,18 +60,18 @@ Token Double_toString(Token thisToken, Token... tokens) {
 Token Double_add(Token thisToken, Token... tokens) {
     Token result;
     Token otherToken = tokens[0];
-    
+
     switch (otherToken.type) {
     case TYPE_Double:
             result = Double_new((Double)thisToken.payload + (Double)otherToken.payload);
             break;
-            
+
 #ifdef PTCG_TYPE_Array
     case TYPE_Array:
         result = $add_Double_Array((Double)thisToken.payload, otherToken);
         break;
 #endif
-    
+
         // FIXME: not finished
     default:
         throw new RuntimeException("Double_multiply(): Multiply with an unsupported type.: " + otherToken.type);
@@ -90,13 +90,13 @@ Token Double_subtract(Token thisToken, Token... tokens) {
     case TYPE_Double:
             result = Double_new((Double)thisToken.payload - (Double)otherToken.payload);
             break;
-            
+
 #ifdef PTCG_TYPE_Array
     case TYPE_Array:
         result = $subtract_Double_Array((Double)thisToken.payload, otherToken);
         break;
 #endif
-    
+
         // FIXME: not finished
     default:
         throw new RuntimeException("Double_subtract(): Multiply with an unsupported type.: " + otherToken.type);

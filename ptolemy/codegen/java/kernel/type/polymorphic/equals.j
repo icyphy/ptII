@@ -198,10 +198,10 @@ boolean equals_Token_Token(Token a1, Token a2) {
 /*** isCloseTo_Token_Token() ***/
 boolean isCloseTo_Token_Token(Token thisToken, Token otherToken, Token tolerance) {
     boolean result = false;
-    if (thisToken.payload instanceof Number 
+    if (thisToken.payload instanceof Number
             && thisToken.payload instanceof Number
             && tolerance.payload instanceof Number) {
-        result = 
+        result =
             Math.abs((((Number)(thisToken.payload)).doubleValue() - ((Number)(otherToken.payload)).doubleValue())) < ((Number)(tolerance.payload)).doubleValue();
     } else if (thisToken.type == TYPE_Array
                && otherToken.type == TYPE_Array) {
@@ -211,8 +211,8 @@ boolean isCloseTo_Token_Token(Token thisToken, Token otherToken, Token tolerance
                && otherToken.type == TYPE_Matrix) {
         return ((Boolean)(Matrix_isCloseTo(thisToken, otherToken, tolerance).payload)).booleanValue();
 #endif
-    } else { 
-            
+    } else {
+
         throw new InternalError("equals_Token_Token_(): iscloseTo with an unsupported type. " + thisToken.type + " " + otherToken.type + " " + tolerance.type);
     }
     return result;

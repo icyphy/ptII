@@ -49,7 +49,7 @@ static FILE* temp_file = NULL;
 
 /** Initialize the test suite.
  */
-int init_IntSuite(void) { 
+int init_IntSuite(void) {
   return 0;
 }
 

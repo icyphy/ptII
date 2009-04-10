@@ -868,7 +868,7 @@ void iRobotCreateCodeGenExperimental_iRobotActuator_Drive4_EmbeddedActor(void) {
         }
         /*
         drive(iRobotCreateCodeGenExperimental_iRobotActuator_Drive4_EmbeddedActor_velocity, iRobotCreateCodeGenExperimental_iRobotActuator_Drive4_EmbeddedActor_radius);
-        
+
         //while(distance <= iRobotCreateCodeGenExperimental_iRobotActuator_Drive4_EmbeddedActor_UnitDistance){
             //while(distance <= 20){
                 //drive(iRobotCreateCodeGenExperimental_iRobotActuator_Drive4_EmbeddedActor_velocity, iRobotCreateCodeGenExperimental_iRobotActuator_Drive4_EmbeddedActor_radius);
@@ -992,7 +992,7 @@ void iRobotCreateCodeGenExperimental_iRobotActuator_Drive4_EmbeddedActor(void) {
         }
         void iRobotCreateCodeGenExperimental_iRobotCtrl_PowerOn_initializeIRobot_EmbeddedActor(void) {
             /* Fire EmbeddedActor */
-            
+
         }
         void iRobotCreateCodeGenExperimental_iRobotCtrl_PowerOn_initializeIRobot(void) {
             /* Fire Composite Actor: initializeIRobot */
@@ -1707,7 +1707,7 @@ void iRobotCreateCodeGenExperimental_iRobotActuator_Drive4_EmbeddedActor(void) {
             iRobotCreateCodeGenExperimental_iRobotActuator();
         }
         void initialize(void) {
-                
+
                             /* initEmbeddedActor */
             // Initialize the microcontroller
             initializeRobot();
@@ -1839,29 +1839,29 @@ void iRobotCreateCodeGenExperimental_iRobotActuator_Drive4_EmbeddedActor(void) {
             /* The wrapup of the director. */
             /* The wrapup of the director. */
             /* wrapupEmbeddedActor */
-            
+
             /* The wrapup of the director. */
             /* The wrapup of the director. */
             /* wrapupEmbeddedActor */
-            
+
             /* The wrapup of the director. */
             /* wrapupEmbeddedActor */
-            
+
             /* The wrapup of the director. */
             /* wrapupEmbeddedActor */
-            
-            /* The wrapup of the director. */
-            /* The wrapup of the director. */
-            /* wrapupEmbeddedActor */
-            
+
             /* The wrapup of the director. */
             /* The wrapup of the director. */
             /* wrapupEmbeddedActor */
-            
+
             /* The wrapup of the director. */
             /* The wrapup of the director. */
             /* wrapupEmbeddedActor */
-            
+
+            /* The wrapup of the director. */
+            /* The wrapup of the director. */
+            /* wrapupEmbeddedActor */
+
         }
         int main(int argc, char *argv[]) {
             initialize();

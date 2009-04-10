@@ -216,16 +216,16 @@ Token subtract_Token_Token(Token a1, Token a2) {
 }
 void print_Token3(Token token) {
     switch (token.type) {
-        case TYPE_Integer: 
+        case TYPE_Integer:
             System.out.println((Integer) token.payload);
             break;
-        case TYPE_Array: 
+        case TYPE_Array:
             $Array_print(token);
             break;
         default:
             System.out.println(token);
             break;
-    }                   
+    }
 }
 /**/
 

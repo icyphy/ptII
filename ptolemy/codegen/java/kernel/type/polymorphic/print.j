@@ -32,19 +32,19 @@ void print_Integer(long l) {
 void print_Token(Token a) {
      //$tokenFunc(a::print());
     switch (token.type) {
-        case TYPE_Double: 
+        case TYPE_Double:
             $Double_print(token);
             break;
-        case TYPE_Integer: 
+        case TYPE_Integer:
             $Integer_print(token);
             break;
-        case TYPE_Array: 
+        case TYPE_Array:
             $Array_print(token);
             break;
         default:
             System.out.println(token);
             break;
-    }                   
+    }
 }
 /**/
 

@@ -74,7 +74,7 @@ void PlotPoint(int x,int y)
    myx = myminx +(x*10);
 
    RIT128x96x4StringDraw(".",   myx,myy,20);
-   
+
 
 }
 
@@ -98,7 +98,7 @@ void PlotPoint1(int x,int y)
    myx = myminx +(x*10);
 
    RIT128x96x4StringDraw(".",   myx,myy,20);
-   
+
 
 }
 void PlotPoint2(int x,int y)
@@ -120,7 +120,7 @@ void PlotPoint2(int x,int y)
    myx = myminx +(x*10);
 
    RIT128x96x4StringDraw(".",   myx,myy,20);
-   
+
 
 }
 /**/
