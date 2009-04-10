@@ -160,7 +160,7 @@ public abstract class GTIngredient {
 
     /** The string to separate elements in a string that describes their values.
      */
-    public static final String FIELD_SEPARATOR = "/";
+    public static final char FIELD_SEPARATOR = '/';
 
     /** Construct a GTIngredient within the given list as its owner containing a
      *  given number of elements. All elements are enabled at the beginning.
@@ -287,6 +287,8 @@ public abstract class GTIngredient {
                     inDblQuote = !inDblQuote;
                 } else if (c == '\'' && !inDblQuote && !escaped) {
                     inSngQuote = !inSngQuote;
+                } else if (c == '(' && !inDblQuote && !inSngQuote) {
+                    parenNum++;
                 } else if (c == ')' && !inDblQuote && !inSngQuote) {
                     parenNum--;
                 }
@@ -399,7 +401,33 @@ public abstract class GTIngredient {
          *  @return The next field of the string.
          */
         public String next() {
-            int position = _values.indexOf(FIELD_SEPARATOR);
+            //int position = _values.indexOf(FIELD_SEPARATOR);
+            int position = -1;
+            boolean inDblQuote = false;
+            boolean inSngQuote = false;
+            boolean escaped = false;
+            for (int i = 0; i < _values.length(); i++) {
+                char c = _values.charAt(i);
+
+                if (c == '\\' && (inDblQuote || inSngQuote)) {
+                    escaped = !escaped;
+                } else if (c == '\"' && !escaped) {
+                    inDblQuote = !inDblQuote;
+                } else if (c == '\'' && !inDblQuote && !escaped) {
+                    inSngQuote = !inSngQuote;
+                }
+                
+                if (!escaped && !inDblQuote && !inSngQuote &&
+                        c == FIELD_SEPARATOR) {
+                    position = i;
+                    break;
+                }
+
+                if (c != '\\') {
+                    escaped = false;
+                }
+            }
+            
             String next;
             if (position < 0) {
                 next = _values;
