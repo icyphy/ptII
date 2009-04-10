@@ -1,6 +1,6 @@
 /* Interface representing dependencies between ports of an associated actor.
 
- Copyright (c) 2008 The Regents of the University of California.
+ Copyright (c) 2008-2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
