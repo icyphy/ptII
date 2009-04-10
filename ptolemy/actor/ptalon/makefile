@@ -95,8 +95,8 @@ OPTIONAL_JSRCS = \
 	PtalonRecognizer.java \
 	PtalonLexer.java \
 	PtalonPopulator.java \
-	PtalonScopeChecker.java
-
+	PtalonScopeChecker.java \
+	PtalonTokenTypes.java
 
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
