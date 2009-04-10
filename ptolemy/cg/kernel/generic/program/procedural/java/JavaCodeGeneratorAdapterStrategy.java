@@ -68,7 +68,7 @@ import ptolemy.kernel.util.IllegalActionException;
  <p>For further details, see <code>$PTII/ptolemy/codegen/README.html</code>
 
  @author Christopher Brooks, Edward Lee, Man-Kit Leung, Gang Zhou, Ye Zhou
- @version $Id: JavaCodeGeneratorAdapter.java 52869 2009-03-26 18:02:55Z rodiers $
+ @version $Id$
  @since Ptolemy II 7.1
  o @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Red (cxh)

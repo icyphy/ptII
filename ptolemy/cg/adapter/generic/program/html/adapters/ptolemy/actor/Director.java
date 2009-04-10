@@ -44,7 +44,7 @@ import ptolemy.kernel.util.NamedObj;
 
  @see GenericCodeGenerator
  @author Man-Kit Leung, Bert Rodiers
- @version $Id: Director.java 52870 2009-03-26 20:04:15Z rodiers $
+ @version $Id$
  @since Ptolemy II 7.1
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)

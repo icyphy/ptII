@@ -62,7 +62,7 @@ import ptolemy.util.StringUtilities;
 * </pre>
 *
 * @author Ye Zhou, Gang Zhou, Edward A. Lee, Bert Rodiers Contributors: Christopher Brooks, Teale Fristoe
-* @version $Id: CodeGeneratorAdapter.java 52862 2009-03-26 00:21:28Z rodiers $
+* @version $Id$
 * @since Ptolemy II 7.1
 * @Pt.ProposedRating Yellow (eal)
 * @Pt.AcceptedRating Yellow (eal)
