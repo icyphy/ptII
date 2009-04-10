@@ -58,7 +58,6 @@ DERIVED_FILES =
 
 OTHER_FILES_TO_BE_JARED = \
 	configuration.xml \
-	ergTableauFactory.xml \
 	graphTableauFactory.xml \
 	graphTableauFactory.xml \
 	gtActorLibrary.xml \
@@ -67,6 +66,7 @@ OTHER_FILES_TO_BE_JARED = \
 	gtStateLibrary.xml \
 	gtTableauFactory.xml \
 	intro.htm \
+	pteraTableauFactory.xml \
 	welcomeWindow.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)

@@ -60,7 +60,7 @@ OTHER_FILES_TO_BE_JARED = \
 	SingleQueueMultipleServers.xml \
 	SingleQueueMultipleServersTE.xml \
 	TrafficLight.xml \
-	ergLibrary.xml
+	pteraLibrary.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
