@@ -77,7 +77,7 @@ import diva.graph.GraphController;
  code generator.
 
  @author Man-Kit Leung
- @version $Id: PropertyHighlighter.java 52929 2009-04-02 22:07:24Z mankit $
+ @version $Id$
  @since Ptolemy II 7.0
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
