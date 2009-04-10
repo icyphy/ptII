@@ -7,7 +7,7 @@
 # again until all the bogus copyrights have been found
 
 # 1. Check out a fresh tree in a separate directory 
-#    PtII:  cd ~/tmp; cvs -d :ext:gigasource:/home/cvs co ptII
+#    PtII:  cd ~/tmp; svn co svn+ssh://source.eecs.berkeley.edu/chess/ptII/trunk ptII
 #    Metro: cd ~/tmp; cvs -d  :ext:ic:/projects/hwsw/hwsw/common/src co metro)
 #
 # 2. Remove ptII/vendors
@@ -18,7 +18,10 @@
 #    Metro: cd metro; $METRO/adm/bin/metrotxtfiles > /tmp/f)
 #
 # 4. Find files modified since the start of the year
-#    find . -type f -a -mtime -`date +%j` | grep -v CVS | sort > /tmp/new
+#    NOTE: this requires that ~/.subversion/config has
+#    use-commit-times = yes
+#
+#    find . -name .svn -prune -o -type f -a -mtime -`date +%j` | grep -v "\.svn" | sort > /tmp/new
 #    sort /tmp/f > /tmp/f.sort
 #    comm -12 /tmp/new /tmp/f.sort > /tmp/f.new
 #
@@ -54,6 +57,7 @@ do
 done
 shift `expr $OPTIND - 1`
 
+filesupdated=/tmp/fixcopyright_filesupdated.$$
 
 search() {
 topdir=`pwd`
@@ -70,16 +74,12 @@ do
 	file=`basename $fullfile`
 	dirname=`dirname $fullfile`
 	cd $dirname
-	if [ -d SCCS -o -d RCS ]; then
-	    echo "Error: SCCS or RCS directory"
-	    exit 2
-	fi
 	doit
 	if [ "$printonly" = "no" ]; then
 	    cp /tmp/fixcopyright.tmp $file
-	    if [ -d CVS ]; then
-		cvs commit -m "$LOGMESSAGE" $file 
-	    fi	
+            echo "Not running svn commit, just copying"
+	    #svn commit -m "Removing tabs" $file
+	    echo $fullfile >> $filesupdated
 	else
 	    echo "Would update and commit"
 	fi	
@@ -90,78 +90,79 @@ cd $topdir
 }
 
 doit() {
-    sed 's/Copyright \(\&[^ ]*\) 1998\([ ,]\)/Copyright \1 1998-2007\2/' \
+    sed 's/Copyright \(\&[^ ]*\) 1998\([ ,]\)/Copyright \1 1998-2009\2/' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
 EGREPMATCH="Copyright &[^ ]* 1998[ ,]"
-LOGMESSAGE="Changed copyright to 2007"
+LOGMESSAGE="Changed copyright to 2009"
 
 search $@
 
 doit() {
-    sed 's/\(199[0-8]\)-199[0-9]/\1-2007/' \
+    sed 's/\(199[0-8]\)-199[0-9]/\1-2009/' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
 EGREPMATCH="199[0-8]-199[0-9]"
-LOGMESSAGE="Changed copyright to 2007"
+LOGMESSAGE="Changed copyright to 2009"
 
 search $@
 
 # EVERY_YEAR: update the regex to get last-year's changes
 
 doit() {
-    sed 's/Copyright (c) \(199[0-9]\)-200[01234567]/Copyright (c) \1-2008/' \
+    sed 's/Copyright (c) \(199[0-9]\)-200[012345678]/Copyright (c) \1-2009/' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
 
 # EVERY_YEAR: update the regex to get last-year's changes
 
-EGREPMATCH='Copyright \(c\) 199[0-9]-200[01234567]'
-LOGMESSAGE="Changed copyright to 2008"
+EGREPMATCH='Copyright \(c\) 199[0-9]-200[012345678]'
+LOGMESSAGE="Changed copyright to 2009"
 
 search $@
 
 # EVERY_YEAR: update the regex to get last-year's changes
 
 doit() {
-    sed 's/Copyright (c) \(200[01234]\)-200[01234567] /Copyright (c) \1-2008 /' \
+    sed 's/Copyright (c) \(200[01234]\)-200[012345678] /Copyright (c) \1-2009 /' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
 
 # EVERY_YEAR: update the regex to get last-year's changes
 
-EGREPMATCH='Copyright \(c\) 200[01234]-200[01234567]'
-LOGMESSAGE="Changed copyright to 2008"
+EGREPMATCH='Copyright \(c\) 200[01234]-200[012345678]'
+LOGMESSAGE="Changed copyright to 2009"
 
 search $@
 
 doit() {
-    sed 's/Copyright (c) \(199[0-9]\) /Copyright (c) \1-2008 /' \
+    sed 's/Copyright (c) \(199[0-9]\) /Copyright (c) \1-2009 /' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
 EGREPMATCH="Copyright \(c\) 199[0-9] "
-LOGMESSAGE="Changed copyright to 2008"
+LOGMESSAGE="Changed copyright to 2009"
 
 search $@
 
 # EVERY_YEAR: update the regex to get last-year's changes
 
 doit() {
-    sed 's/Copyright (c) \(200[01234567]\) /Copyright (c) \1-2008 /' \
+    sed 's/Copyright (c) \(200[012345678]\) /Copyright (c) \1-2009 /' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
 
 # EVERY_YEAR: update the regex to get last-year's changes
 
-EGREPMATCH="Copyright \(c\) 200[01234567] "
-LOGMESSAGE="Changed copyright to 2008"
+EGREPMATCH="Copyright \(c\) 200[012345678] "
+LOGMESSAGE="Changed copyright to 2009"
 
 search $@
 
 
+rm -f $filesupdated
