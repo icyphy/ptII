@@ -218,12 +218,12 @@ public class MoMLApplication implements ExecutionListener {
 
             // Run if -run argument was specified.
             if (_run) {
-		if (_printPDF) {
-		    // Need to set background
-		    PtolemyPreferences preferences = PtolemyPreferences
-			.getPtolemyPreferencesWithinConfiguration(_configuration);
-		    preferences.backgroundColor.setExpression("{1.0, 1.0, 1.0, 1.0}");
-		}
+                if (_printPDF) {
+                    // Need to set background
+                    PtolemyPreferences preferences = PtolemyPreferences
+                        .getPtolemyPreferencesWithinConfiguration(_configuration);
+                    preferences.backgroundColor.setExpression("{1.0, 1.0, 1.0, 1.0}");
+                }
                 runModels();
 
                 if (_exit) {
@@ -235,13 +235,13 @@ public class MoMLApplication implements ExecutionListener {
                     Thread waitThread = new Thread() {
                         public void run() {
                             waitForFinish();
-			    if (_printPDF) {
-				try {
-				    _printPDF();
-				} catch (Exception ex) {
-				    ex.printStackTrace();
-				}
-			    }
+                            if (_printPDF) {
+                                try {
+                                    _printPDF();
+                                } catch (Exception ex) {
+                                    ex.printStackTrace();
+                                }
+                            }
                             StringUtilities.exit(0);
                         }
                     };
@@ -252,10 +252,10 @@ public class MoMLApplication implements ExecutionListener {
                     waitThread.start();
                 }
             } else {
-		if (_printPDF) {
-		    _printPDF();
-		}
-	    }
+                if (_printPDF) {
+                    _printPDF();
+                }
+            }
         } catch (Throwable ex) {
             // Make sure that we do not eat the exception if there are
             // problems parsing.  For example, "ptolemy -FOO bar bif.xml"
@@ -634,13 +634,13 @@ public class MoMLApplication implements ExecutionListener {
      */
     protected String _configurationUsage(String commandTemplate,
             String[][] commandOptions, String[] commandFlags) {
-	String [][] commandFlagsWithDescriptions = new String [commandFlags.length][2];
+        String [][] commandFlagsWithDescriptions = new String [commandFlags.length][2];
         for (int i = 0; i < commandFlags.length; i++) {
-	    commandFlagsWithDescriptions[i][0] = commandFlags[i];
-	    commandFlagsWithDescriptions[i][1] = "";
-	}
-	return _configurationUsage(commandTemplate, commandOptions,
-				   commandFlagsWithDescriptions);
+            commandFlagsWithDescriptions[i][0] = commandFlags[i];
+            commandFlagsWithDescriptions[i][1] = "";
+        }
+        return _configurationUsage(commandTemplate, commandOptions,
+                                   commandFlagsWithDescriptions);
     }
 
     /** Return a string summarizing the command-line arguments,
@@ -679,11 +679,11 @@ public class MoMLApplication implements ExecutionListener {
         // Print any command flags from this class first
         for (i = 0; i < _commandFlagsWithDescriptions.length; i++) {
             result.append(" " + _commandFlagsWithDescriptions[i][0] + "\t"
-			  + _commandFlagsWithDescriptions[i][1] + "\n");
+                          + _commandFlagsWithDescriptions[i][1] + "\n");
         }
         for (i = 0; i < commandFlagsWithDescriptions.length; i++) {
             result.append(" " + commandFlagsWithDescriptions[i][0] + "\t"
-			  + commandFlagsWithDescriptions[i][1] + "\n");
+                          + commandFlagsWithDescriptions[i][1] + "\n");
         }
 
         try {
@@ -865,8 +865,8 @@ public class MoMLApplication implements ExecutionListener {
 
             // NOTE: This means the test suites cannot test -help
             StringUtilities.exit(0);
-	} else if (arg.equals("-printPDF")) {
-	    _printPDF = true;
+        } else if (arg.equals("-printPDF")) {
+            _printPDF = true;
         } else if (arg.equals("-run")) {
             _run = true;
         } else if (arg.equals("-runThenExit")) {
@@ -1045,30 +1045,30 @@ public class MoMLApplication implements ExecutionListener {
             _configuration = _createEmptyConfiguration();
         }
 
-	if (_configuration != null) {
-	    // If the configuration has a _classesToRemove attribute,
-	    // then set a MoMLFilter to remove those classes.  This
-	    // is used by Ptiny and Kepler to avoid the Code Generator.
-	    Parameter classesToRemoveParameter = (Parameter) _configuration.getAttribute("_classesToRemove");
+        if (_configuration != null) {
+            // If the configuration has a _classesToRemove attribute,
+            // then set a MoMLFilter to remove those classes.  This
+            // is used by Ptiny and Kepler to avoid the Code Generator.
+            Parameter classesToRemoveParameter = (Parameter) _configuration.getAttribute("_classesToRemove");
 
-	    if (classesToRemoveParameter != null) {
-		ArrayToken classesToRemoveToken = (ArrayToken) classesToRemoveParameter.getToken();
-		// We use RemoveGraphicalClasses here to remove these
-		// classes.
-		// FIXME: this could cause problem with RemoveGraphicalClasses
-		// elsewhere, but usually we run w/o _classesToRemove
-		RemoveGraphicalClasses filter = new RemoveGraphicalClasses();
-		RemoveGraphicalClasses.clear();
-		// _classesToRemove is an array of Strings where each element
-		// names a class to be added to the MoMLFilter for removal.
-		for (int i = 0; i < classesToRemoveToken.length(); i++) {
-		    String classNameToRemove = ((StringToken) classesToRemoveToken
-						.getElement(i)).stringValue();
-		    filter.put(classNameToRemove, null);
-		}
-		MoMLParser.addMoMLFilter(filter);
-	    }
-	}
+            if (classesToRemoveParameter != null) {
+                ArrayToken classesToRemoveToken = (ArrayToken) classesToRemoveParameter.getToken();
+                // We use RemoveGraphicalClasses here to remove these
+                // classes.
+                // FIXME: this could cause problem with RemoveGraphicalClasses
+                // elsewhere, but usually we run w/o _classesToRemove
+                RemoveGraphicalClasses filter = new RemoveGraphicalClasses();
+                RemoveGraphicalClasses.clear();
+                // _classesToRemove is an array of Strings where each element
+                // names a class to be added to the MoMLFilter for removal.
+                for (int i = 0; i < classesToRemoveToken.length(); i++) {
+                    String classNameToRemove = ((StringToken) classesToRemoveToken
+                                                .getElement(i)).stringValue();
+                    filter.put(classNameToRemove, null);
+                }
+                MoMLParser.addMoMLFilter(filter);
+            }
+        }
 
         for (int i = 0; i < args.length; i++) {
             String arg = args[i];
@@ -1204,43 +1204,43 @@ public class MoMLApplication implements ExecutionListener {
      *  service or if there is another problem printing.
      */
     protected void _printPDF() throws Exception {
-	if (_configuration == null) {
-	    System.out.println("_printPDF: no configuration?");
-	    return;
-	}
-	ModelDirectory directory = (ModelDirectory) _configuration
-	    .getEntity(Configuration._DIRECTORY_NAME);
+        if (_configuration == null) {
+            System.out.println("_printPDF: no configuration?");
+            return;
+        }
+        ModelDirectory directory = (ModelDirectory) _configuration
+            .getEntity(Configuration._DIRECTORY_NAME);
         Iterator effigies = directory.entityList().iterator();
 
         while (effigies.hasNext()) {
             Effigy effigy = (Effigy) effigies.next();
-	    Iterator tableaux = effigy.entityList(Tableau.class).iterator();
-	    while (tableaux.hasNext()) {
-		Tableau tableau = (Tableau) tableaux.next();
-		JFrame frame = tableau.getFrame();
-		if (frame instanceof TableauFrame) {
-		    // FIXME: lamely, we skip by the configuration directory and UserLibrary by name?
-		    if (!tableau.getFullName().equals(".configuration.directory.configuration.graphTableau")
-			&& 
-			!tableau.getFullName().equals(".configuration.directory.UserLibrary.graphTableau")) {
-			try {
-			    // Set the background to white
+            Iterator tableaux = effigy.entityList(Tableau.class).iterator();
+            while (tableaux.hasNext()) {
+                Tableau tableau = (Tableau) tableaux.next();
+                JFrame frame = tableau.getFrame();
+                if (frame instanceof TableauFrame) {
+                    // FIXME: lamely, we skip by the configuration directory and UserLibrary by name?
+                    if (!tableau.getFullName().equals(".configuration.directory.configuration.graphTableau")
+                        && 
+                        !tableau.getFullName().equals(".configuration.directory.UserLibrary.graphTableau")) {
+                        try {
+                            // Set the background to white
 
-			    //frame.setBackground(java.awt.Color.WHITE);
-			    //((ptolemy.vergil.basic.BasicGraphFrame)frame).getJGraph().getCanvasPane().getCanvas().setBackground(java.awt.Color.WHITE);
-			    PtolemyPreferences preferences = PtolemyPreferences
-				.getPtolemyPreferencesWithinConfiguration(_configuration);
-			    preferences.backgroundColor.setExpression("{1.0, 1.0, 1.0, 1.0}");
-			    frame.repaint();
-			} catch (Exception ex) {
-			    System.out.println("Failed to set the background to white.");
-			    ex.printStackTrace();
-			}
-			((TableauFrame) frame).printPDF();
-		    }
-		}
-	    }
-	}
+                            //frame.setBackground(java.awt.Color.WHITE);
+                            //((ptolemy.vergil.basic.BasicGraphFrame)frame).getJGraph().getCanvasPane().getCanvas().setBackground(java.awt.Color.WHITE);
+                            PtolemyPreferences preferences = PtolemyPreferences
+                                .getPtolemyPreferencesWithinConfiguration(_configuration);
+                            preferences.backgroundColor.setExpression("{1.0, 1.0, 1.0, 1.0}");
+                            frame.repaint();
+                        } catch (Exception ex) {
+                            System.out.println("Failed to set the background to white.");
+                            ex.printStackTrace();
+                        }
+                        ((TableauFrame) frame).printPDF();
+                    }
+                }
+            }
+        }
     }
 
     /** Read a Configuration from the URL given by the specified string.
@@ -1278,12 +1278,12 @@ public class MoMLApplication implements ExecutionListener {
 
     /** The command-line options that are either present or not. */
     protected String[][] _commandFlagsWithDescriptions = {
-	{"-help", "Print this help message"},
-	{"-printPDF", "Print to a PDF printer"},
-	{"-run", "Run the models"},
-	{"-runThenExit", "Run the models, then exit after the models finish."},
-	{"-test", "Exit after two seconds."},
-	{"-version", "Print version information."}};
+        {"-help", "Print this help message"},
+        {"-printPDF", "Print to a PDF printer"},
+        {"-run", "Run the models"},
+        {"-runThenExit", "Run the models, then exit after the models finish."},
+        {"-test", "Exit after two seconds."},
+        {"-version", "Print version information."}};
 
     /** The command-line options that take arguments. */
     protected static String[][] _commandOptions = {

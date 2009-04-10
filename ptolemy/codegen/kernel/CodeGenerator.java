@@ -560,7 +560,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     }
 
     /** If the compile command does not yet containe a library,
-     * 	add a library command line argument the compile command.
+     *         add a library command line argument the compile command.
      *  
      *  @param libraryCommand  The library command, for example
      *  "-L/usr/local/lib".
@@ -1176,7 +1176,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         return result;
     }    
     /** Reset the code generator.
-     */	
+     */        
     public void reset() {
         // Reset the indent to zero.
         _indent = 0;
@@ -1540,19 +1540,19 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         }
         
 
-	StringBuffer classesTried = new StringBuffer();
-	// Traverse the inheritance hierarchy of the componentClass
-	// and look for a helper.
+        StringBuffer classesTried = new StringBuffer();
+        // Traverse the inheritance hierarchy of the componentClass
+        // and look for a helper.
         do {
             className = componentClass.getName();
             
             // FIXME: Is this the right error message?
             if (!className.contains("ptolemy")) {
                 throw new IllegalActionException("The classname \""
-		        + className
+                        + className
                         + "\" does not contain \"ptolemy\"."
-			+ "The classes tried were:\n" + classesTried.toString()
-		        + "\nThus, there is no "
+                        + "The classes tried were:\n" + classesTried.toString()
+                        + "\nThus, there is no "
                         + "codegen adaptor for " + object.getClass());
             }
 
@@ -1560,12 +1560,12 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             // ptolemy, so try a simple substitution.
             try {
                 helperClassName = packageName + "." + 
-		    className.replaceFirst("ptolemy.", "");
-		// Save the classes tried for the error message
-		if (classesTried.length() > 0) {
-		    classesTried.append(", ");
-		}
-		classesTried.append(helperClassName);
+                    className.replaceFirst("ptolemy.", "");
+                // Save the classes tried for the error message
+                if (classesTried.length() > 0) {
+                    classesTried.append(", ");
+                }
+                classesTried.append(helperClassName);
 
                 helperObject = _instantiateHelper(
                         object, componentClass, helperClassName);

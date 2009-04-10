@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
 */
@@ -68,9 +68,9 @@ public interface ScheduleListener {
      */
     public void initialize(Hashtable nodesActors);
 
-	/**
-	 * Type of schedule event.
-	 */
+        /**
+         * Type of schedule event.
+         */
     public static enum ScheduleEventType {
         /** Started the execution of an actor. */
         START, 

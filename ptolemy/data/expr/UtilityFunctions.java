@@ -618,7 +618,7 @@ public class UtilityFunctions {
      *  @return the environment variable, or null if the variable is not defined.
      */
     public static StringToken getenv(String variableName) {
-	return new StringToken(System.getenv(variableName));
+        return new StringToken(System.getenv(variableName));
     }
 
     /** Get a variable from the environment.
@@ -626,16 +626,16 @@ public class UtilityFunctions {
      */
     public static RecordToken getenv() throws IllegalActionException {
 
-	Map<String,Token> environmentMap = new HashMap<String,Token>();
+        Map<String,Token> environmentMap = new HashMap<String,Token>();
 
-	Map<String,String> environment = System.getenv();
+        Map<String,String> environment = System.getenv();
 
-	Iterator environmentVariables = environment.entrySet().iterator();
-	while (environmentVariables.hasNext()) {
-	    Map.Entry pairs = (Map.Entry)environmentVariables.next();
-	    environmentMap.put((String)(pairs.getKey()), new StringToken((String)(pairs.getValue())));
-	}
-	return new RecordToken(environmentMap);
+        Iterator environmentVariables = environment.entrySet().iterator();
+        while (environmentVariables.hasNext()) {
+            Map.Entry pairs = (Map.Entry)environmentVariables.next();
+            environmentMap.put((String)(pairs.getKey()), new StringToken((String)(pairs.getValue())));
+        }
+        return new RecordToken(environmentMap);
     }
 
     /** Get the specified property from the environment. An empty string
@@ -1462,7 +1462,7 @@ public class UtilityFunctions {
 
             // Vectors have now become obsolete, data is stored
             // in double[][].
-	    k.clear();
+            k.clear();
             returnMatrix = new DoubleMatrixToken(mtr);
         } finally {
             if (fin != null) {

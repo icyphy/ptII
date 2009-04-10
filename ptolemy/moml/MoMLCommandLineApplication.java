@@ -129,68 +129,68 @@ public class MoMLCommandLineApplication extends MoMLSimpleApplication {
         // has problems finding resources like files specified in
         // parameters if the xml file was specified as an absolute path.
         CompositeActor toplevel = (CompositeActor) parser.parse(null, new File(
-	       args[args.length - 1]).toURI().toURL());
+               args[args.length - 1]).toURI().toURL());
 
         _manager = new Manager(toplevel.workspace(), "MoMLSimpleApplication");
         toplevel.setManager(_manager);
         toplevel.addChangeListener(this);
         _manager.addExecutionListener(this);
 
-	// This code is very similar to code in 
-	// ptolemy.actor.gui.MoMLApplication
-	String parameterName = null;
-	String parameterValue = null;
+        // This code is very similar to code in 
+        // ptolemy.actor.gui.MoMLApplication
+        String parameterName = null;
+        String parameterValue = null;
         for (int i = 0; i < args.length - 1; i++) {
             String arg = args[i];
-	    if (arg.trim().startsWith("-")) {
-		if (i >= (args.length - 1)) {
-		    throw new IllegalActionException("Cannot set "
+            if (arg.trim().startsWith("-")) {
+                if (i >= (args.length - 1)) {
+                    throw new IllegalActionException("Cannot set "
                                 + "parameter " + arg + " when no value is "
                                 + "given.");
-		}
+                }
 
-		// Save in case this is a parameter name and value.
-		parameterName = arg.substring(1);
-		parameterValue = args[i + 1];
+                // Save in case this is a parameter name and value.
+                parameterName = arg.substring(1);
+                parameterValue = args[i + 1];
 
-		// First, see if there are any attributes in the top level
-		Attribute attribute = toplevel.getAttribute(parameterName);
-		if (attribute instanceof Settable) {
-		    // Use a MoMLChangeRequest so that visual rendition (if
-		    // any) is updated and listeners are notified.
-		    String moml = "<property name=\"" + parameterName
-			+ "\" value=\"" + parameterValue + "\"/>";
-		    MoMLChangeRequest request = new MoMLChangeRequest(this,
-								      toplevel, moml);
+                // First, see if there are any attributes in the top level
+                Attribute attribute = toplevel.getAttribute(parameterName);
+                if (attribute instanceof Settable) {
+                    // Use a MoMLChangeRequest so that visual rendition (if
+                    // any) is updated and listeners are notified.
+                    String moml = "<property name=\"" + parameterName
+                        + "\" value=\"" + parameterValue + "\"/>";
+                    MoMLChangeRequest request = new MoMLChangeRequest(this,
+                                                                      toplevel, moml);
                         toplevel.requestChange(request);
-		}			
+                }                        
 
-		// Now try for parameters in the director
-		if (toplevel instanceof CompositeActor) {
-		    Director director = ((CompositeActor) toplevel)
-			.getDirector();
+                // Now try for parameters in the director
+                if (toplevel instanceof CompositeActor) {
+                    Director director = ((CompositeActor) toplevel)
+                        .getDirector();
 
-		    if (director != null) {
-			attribute = director.getAttribute(parameterName);
+                    if (director != null) {
+                        attribute = director.getAttribute(parameterName);
 
-			if (attribute instanceof Settable) {
-			    // Use a MoMLChangeRequest so that visual rendition (if
-			    // any) is updated and listeners are notified.
-			    String moml = "<property name=\"" + parameterName
-				+ "\" value=\"" + parameterValue + "\"/>";
-			    MoMLChangeRequest request = new MoMLChangeRequest(
+                        if (attribute instanceof Settable) {
+                            // Use a MoMLChangeRequest so that visual rendition (if
+                            // any) is updated and listeners are notified.
+                            String moml = "<property name=\"" + parameterName
+                                + "\" value=\"" + parameterValue + "\"/>";
+                            MoMLChangeRequest request = new MoMLChangeRequest(
                                         this, director, moml);
-			    director.requestChange(request);
+                            director.requestChange(request);
                             }
                         }
                     }
-		i++;
-	    } else {
-		// Unrecognized option.
+                i++;
+            } else {
+                // Unrecognized option.
                     throw new IllegalActionException("Unrecognized option: "
                             + arg);
                 }
-	    }
+            }
         _manager.execute();
 
         // PtExecuteApplication uses _activeCount to determine when

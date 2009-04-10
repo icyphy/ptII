@@ -9,6 +9,8 @@ tmpfile=/tmp/addtrailingnl.$$
 nlfile=/tmp/addtrailingnl_nlfile.$$
 echo "foo" | awk '{printf("\n")}' > $nlfile
 
+filesupdated=/tmp/addtrailingnl_filesupdated.$$
+
 printonly=no
 if [ "$1" = "-n" ]; then
     shift
@@ -30,11 +32,19 @@ do
         cat  $file $nlfile > $tmpfile
 	if [ "$printonly" = "no" ]; then
             cp $tmpfile $file
-	    svn commit -m "Added trailing newline" $file
+	    echo "Not running svn commit, just copying"
+	    #svn commit -m "Added trailing newline" $file
+	    echo $file >> $filesupdated
 	else    
 	    echo "$file: would commit"
 	    diff $file $tmpfile
         fi
     fi
 done
-rm -f $tmpfile $nlfile
+
+if [ "$printonly" = "no" ]; then
+    echo "Thes files should be checked in:"
+    cat $filesupdated
+fi
+
+rm -f $tmpfile $nlfile $filesupdated

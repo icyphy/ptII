@@ -137,7 +137,7 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
      *   a period.
      */
     public static XMLIcon getXMLIcon(NamedObj container, String name) 
-	throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         try {
           Class XMLIconClass = _getAlternateXMLIcon();
           if (XMLIconClass == null) {
@@ -414,8 +414,8 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
         Configuration _config = (Configuration)Configuration.configurations().iterator().next();
         String _alternateXMLIconClassName = null;
         if (_config != null) {
-	    // If _alternateXMLIcon is set in the config, use that
-	    // class as the XMLIcon instead of the default
+            // If _alternateXMLIcon is set in the config, use that
+            // class as the XMLIcon instead of the default
 
           StringAttribute _alternateXMLIconAttribute = (StringAttribute)
             _config.getAttribute("_alternateXMLIcon");

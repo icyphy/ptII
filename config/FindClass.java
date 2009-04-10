@@ -125,6 +125,6 @@ public class FindClass {
         } else {
             System.out.print(entryURL);
         }
-	System.exit(0);
+        System.exit(0);
     }
 }

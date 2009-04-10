@@ -64,7 +64,7 @@ public class IOPortEvent implements DebugEvent {
     public IOPortEvent(IOPort port, int event, int channel, boolean outside,
             Token[] tokens, int vectorLength) {
         _port = port;
-	_event = event;
+        _event = event;
         _channel = channel;
         _outside = outside;
         _tokenArray = tokens;
@@ -87,7 +87,7 @@ public class IOPortEvent implements DebugEvent {
     public IOPortEvent(IOPort port, int event, int channel, boolean outside,
             Token token) {
         _port = port;
-	_event = event;
+        _event = event;
         _channel = channel;
         _outside = outside;
         _tokenArray = null;

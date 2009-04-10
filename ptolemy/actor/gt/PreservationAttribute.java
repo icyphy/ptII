@@ -46,22 +46,22 @@ import ptolemy.kernel.util.Workspace;
  */
 public class PreservationAttribute extends MatchingAttribute {
 
-	/**
-	 *  @param container
-	 *  @param name
-	 *  @throws NameDuplicationException
-	 *  @throws IllegalActionException
-	 */
-	public PreservationAttribute(NamedObj container, String name)
-			throws NameDuplicationException, IllegalActionException {
-		super(container, name);
-	}
+        /**
+         *  @param container
+         *  @param name
+         *  @throws NameDuplicationException
+         *  @throws IllegalActionException
+         */
+        public PreservationAttribute(NamedObj container, String name)
+                        throws NameDuplicationException, IllegalActionException {
+                super(container, name);
+        }
 
-	/**
-	 *  @param workspace
-	 */
-	public PreservationAttribute(Workspace workspace) {
-		super(workspace);
-	}
+        /**
+         *  @param workspace
+         */
+        public PreservationAttribute(Workspace workspace) {
+                super(workspace);
+        }
 
 }

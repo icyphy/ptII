@@ -157,9 +157,9 @@ public class PlotApplication extends PlotFrame {
 
         setVisible(true);
 
-	if (_printPDF) {
-	    _printPDF();
-	}
+        if (_printPDF) {
+            _printPDF();
+        }
     }
 
     /** Display the given plot.  Unlike the two argument constructor,
@@ -369,7 +369,7 @@ public class PlotApplication extends PlotFrame {
                 { "-width", "<pixels>" }, };
 
         String[] commandFlags = { "-help", "-printPDF", 
-				  "-test", "-version", "-", };
+                                  "-test", "-version", "-", };
         StringBuffer result = new StringBuffer(
                 "Usage: ptplot [ options ] [file ...]\n\n"
                         + "Options that take values:\n");

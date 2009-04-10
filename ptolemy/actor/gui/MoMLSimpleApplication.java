@@ -70,6 +70,6 @@ public class MoMLSimpleApplication extends ptolemy.moml.MoMLSimpleApplication {
      *  or running the model.
      */
     public MoMLSimpleApplication(String xmlFileName) throws Throwable {
-	super(xmlFileName);
+        super(xmlFileName);
     }
 }

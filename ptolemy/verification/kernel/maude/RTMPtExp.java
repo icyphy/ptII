@@ -22,10 +22,10 @@ public class RTMPtExp extends RTMFragment {
         this.frag = rt.translateExpression(exp);
     }
     public String getValue() throws IllegalActionException {
-    	String g = this.frag.trim();
-    	if ( (g.startsWith("#r(") || g.startsWith("#f(") || g.startsWith("#b(")) && g.endsWith(")"))
-    			return g.substring(3, g.length()-1);
-    	else
-    		throw new IllegalActionException("Not Value!");
+            String g = this.frag.trim();
+            if ( (g.startsWith("#r(") || g.startsWith("#f(") || g.startsWith("#b(")) && g.endsWith(")"))
+                            return g.substring(3, g.length()-1);
+            else
+                    throw new IllegalActionException("Not Value!");
     }
 }

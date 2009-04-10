@@ -881,9 +881,9 @@ public class Configuration extends CompositeEntity implements
                     && !fieldType.toString().equals("COM.sun.suntest.javascope.database.CoverageUnit")
                     && !field.getName().equals("js$p")
                     // Skip fields introduced by backtracking
-		    && !(field.getName().indexOf("$RECORD$") != -1)
-		    && !(field.getName().indexOf("$RECORDS") != -1)
-		    && !(field.getName().indexOf("$CHECKPOINT") != -1)
+                    && !(field.getName().indexOf("$RECORD$") != -1)
+                    && !(field.getName().indexOf("$RECORDS") != -1)
+                    && !(field.getName().indexOf("$CHECKPOINT") != -1)
                     // Skip immutables
                     && !fieldType.equals(java.net.InetAddress.class)
                     && !fieldType.equals(java.util.regex.Pattern.class)
@@ -904,21 +904,21 @@ public class Configuration extends CompositeEntity implements
                         assignment = ".getPort(\"" + assignment + "\")";
                         //                       } else if (fieldType.isInstance( new Attribute())) {
                     } else if (Class.forName("ptolemy.kernel.util.Attribute").isAssignableFrom(fieldType)) { 
-			Attribute fieldAttribute = (Attribute)field.get(namedObjClone); 
+                        Attribute fieldAttribute = (Attribute)field.get(namedObjClone); 
 
-			if (fieldAttribute.getContainer() != namedObjClone) {
-			    // If the attribute is actually contained by a Port
-			    // and not by the AtomicActor, then get its value.
-			    // SDF actors that have ports that have
-			    // tokenConsumptionRate and tokenProductionRate 
-			    // such as ConvolutionalCoder need this.
-			    assignment = "."
-				+ fieldAttribute.getContainer().getName()
-				+ ".getAttribute(\"" + fieldAttribute.getName()
-				+ "\")";
-			} else {
-			    assignment = ".getAttribute(\"" + assignment + "\")";
-			}
+                        if (fieldAttribute.getContainer() != namedObjClone) {
+                            // If the attribute is actually contained by a Port
+                            // and not by the AtomicActor, then get its value.
+                            // SDF actors that have ports that have
+                            // tokenConsumptionRate and tokenProductionRate 
+                            // such as ConvolutionalCoder need this.
+                            assignment = "."
+                                + fieldAttribute.getContainer().getName()
+                                + ".getAttribute(\"" + fieldAttribute.getName()
+                                + "\")";
+                        } else {
+                            assignment = ".getAttribute(\"" + assignment + "\")";
+                        }
                     } else {
                         assignment = "\n\t/* Get the object method "
                             + "or null?  */ "

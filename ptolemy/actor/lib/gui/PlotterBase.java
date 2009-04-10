@@ -419,10 +419,10 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
             }
         }
 
-	if (plot != null) {
-	    // If we are generating code, then plot might be null;
-	    plot.setAutomaticRescale(false);
-	}
+        if (plot != null) {
+            // If we are generating code, then plot might be null;
+            plot.setAutomaticRescale(false);
+        }
         
         super.wrapup();        
     }

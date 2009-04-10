@@ -161,8 +161,8 @@ public class DatabaseSelect extends Source {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         DatabaseSelect newObject = (DatabaseSelect) super.clone(workspace);
 
-	try { 
-	    newObject.output.setTypeAtLeast(ArrayType.arrayOf(newObject.columns));
+        try { 
+            newObject.output.setTypeAtLeast(ArrayType.arrayOf(newObject.columns));
         } catch (IllegalActionException ex) {
             // CloneNotSupportedException does not have a constructor
             // that takes a cause argument, so we use initCause
@@ -170,7 +170,7 @@ public class DatabaseSelect extends Source {
             throwable.initCause(ex);
             throw throwable;
         }
-	return newObject;
+        return newObject;
     }
 
     /** Perform the query on the database and produce the result

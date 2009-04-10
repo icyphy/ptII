@@ -78,14 +78,14 @@ public class CaseDirector extends Director {
         ptolemy.actor.lib.hoc.Case container = (ptolemy.actor.lib.hoc.Case) getComponent()
                 .getContainer();
 
-	boolean useIf = false;
+        boolean useIf = false;
         boolean useSwitch = false;
         if (container.control.getType() == BaseType.BOOLEAN) {
-	    useIf = true;
+            useIf = true;
             code.append(_eol + _INDENT2 + " if ("
                     + _codeGenerator.generateVariableName(container.control)
                     + ") {" + _eol);
-	} else if (container.control.getType() == BaseType.INT) {
+        } else if (container.control.getType() == BaseType.INT) {
             // We have a boolean or integer, so we can use a C switch.
             useSwitch = true;
             code.append(_eol + _INDENT2 + "switch("
@@ -107,9 +107,9 @@ public class CaseDirector extends Director {
             CodeGeneratorHelper refinementHelper = (CodeGeneratorHelper) _getHelper(refinement);
             String refinementName = refinement.getName();
             if (!refinementName.equals("default")) {
-		if (useIf) {
-		    // Noop
-		} else if (useSwitch) {
+                if (useIf) {
+                    // Noop
+                } else if (useSwitch) {
                     code.append(_INDENT2 + "case " + refinementName + ":");
                 } else {
                     if (refinementCount == 1) {
@@ -127,8 +127,8 @@ public class CaseDirector extends Director {
                             + "\")) {" + _eol);
                 }
             } else {
-		if (useIf) {
-		    code.append(_INDENT2 + "} else {" +_eol);
+                if (useIf) {
+                    code.append(_INDENT2 + "} else {" +_eol);
                 } else if (useSwitch) {
                     code.append(_INDENT2 + "default: ");
                 } else {

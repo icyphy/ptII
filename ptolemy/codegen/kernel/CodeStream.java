@@ -126,7 +126,7 @@ public class CodeStream {
      */
     public CodeStream(String path, CodeGenerator generator) {
         _filePath = path;
-	_originalFilePath = path;
+        _originalFilePath = path;
         _codeGenerator = generator;
     }
 
@@ -340,7 +340,7 @@ public class CodeStream {
                 throw new IllegalActionException(_adaptor,
                         "Cannot find code block: \"" + signature + "\" in \""
                         + _filePath + "\", the initial path was \""
-		        + _originalFilePath + "\".");
+                        + _originalFilePath + "\".");
             }
         }
 
@@ -794,12 +794,12 @@ public class CodeStream {
             for (Class adaptorClass = _adaptor.getClass(); adaptorClass != null; adaptorClass = adaptorClass
             .getSuperclass()) {
 
-		// We don't always update _originalFilePath here so
-		// that we can have a better error message.
+                // We don't always update _originalFilePath here so
+                // that we can have a better error message.
                 _filePath = _getPath(adaptorClass);
-		if (_originalFilePath == null) {
-		    _originalFilePath = _filePath;
-		}
+                if (_originalFilePath == null) {
+                    _originalFilePath = _filePath;
+                }
 
                 _constructCodeTableHelper(mayNotExist);
 
@@ -937,14 +937,14 @@ public class CodeStream {
         String extension = _adaptor._codeGenerator.generatorPackage
         .getExpression();
         extension = extension.substring(extension.lastIndexOf(".") + 1);
-	// See also codegen/kernel/Director.java
-	if (extension.equals("java")) {
-	    // Sigh.  The problem is that for Java codegen, if we
-	    // have an actor Foo, then Foo.java defines the Java
-	    // interface, so we can't have the stub code in
-	    // Foo.java.  So, we use the j extension.
-	    extension = "j";
-	}
+        // See also codegen/kernel/Director.java
+        if (extension.equals("java")) {
+            // Sigh.  The problem is that for Java codegen, if we
+            // have an actor Foo, then Foo.java defines the Java
+            // interface, so we can't have the stub code in
+            // Foo.java.  So, we use the j extension.
+            extension = "j";
+        }
         return "$CLASSPATH/" + adaptorClass.getName().replace('.', '/') + "."
         + extension;
     }

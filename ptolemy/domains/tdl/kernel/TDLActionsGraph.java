@@ -886,7 +886,7 @@ public class TDLActionsGraph {
             int frequency = TDLModuleDirector
                     .getFrequency((NamedObj) transition);
             long invocationPeriod = modePeriod.getLongValue() / frequency; 
-	    Director director = _module.getDirector();
+            Director director = _module.getDirector();
             for (int i = 0; i < frequency; i++) {
                 List l = (List) sensorsAndTransitions.get(new Time(director, i));
                 if (l == null) {

@@ -117,8 +117,8 @@ public class Occupants extends ArrayOfRecordsRecorder {
         iconColumns.setExpression("{\"deskno\", \"lname\"}");
         colorKey.setExpression("sponsorlname");
         columns.setExpression("{\"deskno\", \"lname\", \"fnames\"," +
-        		" \"email\", \"classcd\", \"sponsorlname\", " +
-        		"\"occupancy\", \"departure\", \"spacenotes\"}");
+                        " \"email\", \"classcd\", \"sponsorlname\", " +
+                        "\"occupancy\", \"departure\", \"spacenotes\"}");
         
         databaseManager = new StringParameter(this, "databaseManager");
         databaseManager.setExpression("DatabaseManager");

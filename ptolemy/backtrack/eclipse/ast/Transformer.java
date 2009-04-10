@@ -85,7 +85,7 @@ public class Transformer {
      *  @exception Exception If any exception occues.
      */
     public static void main(String[] args) throws Exception {
-	try {
+        try {
         if (args.length == 0) {
             _printUsage();
         } else {
@@ -200,11 +200,11 @@ public class Transformer {
                     }
 
                     fileList.add(files[j]);
-		    if (c == null) {
-			throw new NullPointerException("Could not obtain "
-						       + "preloaded class \""
-						       + fileName + "\"");
-		    }
+                    if (c == null) {
+                        throw new NullPointerException("Could not obtain "
+                                                       + "preloaded class \""
+                                                       + fileName + "\"");
+                    }
                     crossAnalysis.add(c.getName());
                     _addInnerClasses(crossAnalysis, fileName,
                             (c.getPackage() == null) ? null : c.getPackage()
@@ -246,10 +246,10 @@ public class Transformer {
                 standardWriter.close();
             }
         }
-	} catch (Exception ex) {
-	    ex.printStackTrace();
-	    System.exit(2);
-	}
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            System.exit(2);
+        }
     }
 
     /** Parse the command-line arguments starting from the given position.

@@ -97,9 +97,9 @@ public class VergilApplication extends MoMLApplication {
      *  @exception Exception If command line arguments have problems.
      */
     public VergilApplication(String[] args) throws Exception {
-	// FindBugs: FIXME: Note that MoMLApplication(String, String[]) starts a 
-	// thread, which means that the error handler will not be registered before
-	// the thread starts.
+        // FindBugs: FIXME: Note that MoMLApplication(String, String[]) starts a 
+        // thread, which means that the error handler will not be registered before
+        // the thread starts.
         super("ptolemy/configs", args);
 
         // Create register an error handler with the parser so that
@@ -139,8 +139,8 @@ public class VergilApplication extends MoMLApplication {
      */ 
     public static void errorAndExit(String message, String[] args,
             Throwable throwable) {
-	// This is public so that other application frameworks may
-	// invoke it
+        // This is public so that other application frameworks may
+        // invoke it
         StringBuffer argsBuffer = new StringBuffer("Command failed");
 
         if (args.length > 0) {

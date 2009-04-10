@@ -187,9 +187,9 @@ public class EventSource extends TypedAtomicActor {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         EventSource newObject = (EventSource) super.clone(workspace);
 
-	newObject._offsets = new double[_offsets.length];
-	System.arraycopy(_offsets, 0, newObject._offsets,
-			 0, _offsets.length);
+        newObject._offsets = new double[_offsets.length];
+        System.arraycopy(_offsets, 0, newObject._offsets,
+                         0, _offsets.length);
 
         try {
             newObject.output.setTypeAtLeast(ArrayType

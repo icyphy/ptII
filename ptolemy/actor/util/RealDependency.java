@@ -111,7 +111,7 @@ public class RealDependency implements Dependency {
      *  @exception ClassCastException if d is not a RealDependency.
      */
     public Dependency oPlus(Dependency d) {
-	// FIXME: Findbugs reports this as an Unchecked/unconfirmed cast
+        // FIXME: Findbugs reports this as an Unchecked/unconfirmed cast
         if (((RealDependency) d)._value < _value) {
             return d;
         }
@@ -134,7 +134,7 @@ public class RealDependency implements Dependency {
      *  @exception ClassCastException if d is not a RealDependency.
      */
     public Dependency oTimes(Dependency d) {
-	// FIXME: Findbugs reports this as an Unchecked/unconfirmed cast
+        // FIXME: Findbugs reports this as an Unchecked/unconfirmed cast
         return new RealDependency(_value + ((RealDependency) d)._value);
     }
 

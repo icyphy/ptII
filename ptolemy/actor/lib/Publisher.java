@@ -159,8 +159,8 @@ public class Publisher extends TypedAtomicActor {
                 String newValue = channel.stringValue();
                 if (!newValue.equals(_channel)) {
                     _channel = newValue;
-		    // We now call _updateLinks in preinitialize().
-		    // This change makes the open time roughly 40% faster.
+                    // We now call _updateLinks in preinitialize().
+                    // This change makes the open time roughly 40% faster.
                 }
             }
         } else {
@@ -249,8 +249,8 @@ public class Publisher extends TypedAtomicActor {
         if (!_updatedLinks) {
             _updateLinks();
         }
-	// Call super.preinitialize() after updating links so that
-	// we have connections made before possibly inferring widths.
+        // Call super.preinitialize() after updating links so that
+        // we have connections made before possibly inferring widths.
         super.preinitialize();
     }
 
@@ -285,8 +285,8 @@ public class Publisher extends TypedAtomicActor {
      *   using the same channel, or if the channel name has not been set.
      */
     protected List _findSubscribers() throws IllegalActionException {
-	// This method is protected so that users can subclass this class
-	// and create alternative ways of managing finding Subscribers.
+        // This method is protected so that users can subclass this class
+        // and create alternative ways of managing finding Subscribers.
         LinkedList result = new LinkedList();
         // Find the nearest opaque container above in the hierarchy.
         CompositeEntity container = (CompositeEntity) getContainer();

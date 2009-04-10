@@ -148,10 +148,10 @@ public class Round extends Transformer {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Round newObject = (Round) super.clone(workspace);
 
-	// The non-primitive fields of the clone must refer to objects
-	// distinct from the objects of the same name in the class.
-	// If this is not done, then there may be problems with actor
-	// oriented classes.
+        // The non-primitive fields of the clone must refer to objects
+        // distinct from the objects of the same name in the class.
+        // If this is not done, then there may be problems with actor
+        // oriented classes.
         newObject._resultArray = new IntToken[0];
         return newObject;
     }

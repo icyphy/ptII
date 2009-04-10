@@ -469,38 +469,38 @@ public class PlotFrame extends JFrame {
      * service or if there is another problem printing.
      */
     protected void _printPDF() throws PrinterException {
-	// Find something that will print to PDF
-	boolean foundPDFPrinter = false;
+        // Find something that will print to PDF
+        boolean foundPDFPrinter = false;
 
-	PrintService pdfPrintService = null;
-	PrintService printServices[] = PrinterJob.lookupPrintServices();
-	for (int i = 0; i < printServices.length; i++) {
-	    if (printServices[i].getName().indexOf("PDF") != -1) {
-		foundPDFPrinter = true;
-		pdfPrintService = printServices[i];
-	    }
-	}
+        PrintService pdfPrintService = null;
+        PrintService printServices[] = PrinterJob.lookupPrintServices();
+        for (int i = 0; i < printServices.length; i++) {
+            if (printServices[i].getName().indexOf("PDF") != -1) {
+                foundPDFPrinter = true;
+                pdfPrintService = printServices[i];
+            }
+        }
 
-	if (pdfPrintService == null) {
-	    throw new PrinterException("Could not find a printer with the "
-				       + "string \"PDF\" in its name.");
-	}
+        if (pdfPrintService == null) {
+            throw new PrinterException("Could not find a printer with the "
+                                       + "string \"PDF\" in its name.");
+        }
 
-	PrinterJob job = PrinterJob.getPrinterJob();
-	job.setPrintService(pdfPrintService);
-	job.setPrintable(plot, job.defaultPage());
+        PrinterJob job = PrinterJob.getPrinterJob();
+        job.setPrintService(pdfPrintService);
+        job.setPrintable(plot, job.defaultPage());
 
-	PrintRequestAttributeSet aset = new HashPrintRequestAttributeSet();
-	// This gets ignored, but let's try it anyway
-	Destination destination = new Destination(new File("plot.pdf").toURI());
-	aset.add(destination);
+        PrintRequestAttributeSet aset = new HashPrintRequestAttributeSet();
+        // This gets ignored, but let's try it anyway
+        Destination destination = new Destination(new File("plot.pdf").toURI());
+        aset.add(destination);
 
-	job.print(aset);
-	if (foundPDFPrinter) {
-	    System.out.println("Plot printed from command line. "
-			       + "Under MacOSX, look for "
-			       + "~/Desktop/Java Printing.pdf");
-	}
+        job.print(aset);
+        if (foundPDFPrinter) {
+            System.out.println("Plot printed from command line. "
+                               + "Under MacOSX, look for "
+                               + "~/Desktop/Java Printing.pdf");
+        }
     }
 
     /** Print using the native dialog.

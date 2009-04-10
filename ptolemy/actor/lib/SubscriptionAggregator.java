@@ -166,8 +166,8 @@ public class SubscriptionAggregator extends Subscriber {
             // graphs.  We could store the hash of the channelName
             // and if the hash is present, then do the comparison.
 
-	    // FIXME: so when does _channelDoesNotMatch and _channelMatches
-	    // get reset?  What if the channel name changes?
+            // FIXME: so when does _channelDoesNotMatch and _channelMatches
+            // get reset?  What if the channel name changes?
             _channelDoesNotMatch.add(channelName);
         }
         return false;
@@ -203,8 +203,8 @@ public class SubscriptionAggregator extends Subscriber {
         if (width == 0) {
             throw new IllegalActionException(this,
                     "SubscriptionAggregator has no matching Publisher, "
-					     + "channel was \""
-					     + channel.getExpression() + "\".");
+                                             + "channel was \""
+                                             + channel.getExpression() + "\".");
         }
         Token result = null;
         for (int i = 0; i < width; i++) {
@@ -252,8 +252,8 @@ public class SubscriptionAggregator extends Subscriber {
      *  @return A list of publishers.
      */
     protected List _findPublishers() {
-	// This method is protected so that users can subclass this class
-	// and create alternative ways of managing finding Publishers.
+        // This method is protected so that users can subclass this class
+        // and create alternative ways of managing finding Publishers.
 
         List result = new LinkedList();
         // Find the nearest opaque container above in the hierarchy.

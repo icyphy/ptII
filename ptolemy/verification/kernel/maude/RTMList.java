@@ -34,7 +34,7 @@ public class RTMList extends RTMTerm {
     }
     
     public boolean isEmpty() {
-    	return items.isEmpty();
+            return items.isEmpty();
     }
 
     @Override

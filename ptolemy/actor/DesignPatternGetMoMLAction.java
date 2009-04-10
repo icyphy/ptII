@@ -252,7 +252,7 @@ public class DesignPatternGetMoMLAction {
      *  to override.
      *  @param name The name of the parameter.
      *  @param expression The expression of the parameter.
-     */	
+     */        
     public void overrideParameter(String name, String expression) {
         _overridenParameters.put(name, expression);
     }

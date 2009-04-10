@@ -227,9 +227,9 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         _graphicalClasses = new HashMap();
 
         // Alphabetical by key class
-	// We can convert any graphical classes that have a port named "input" to
-	// a Discard actor.  However, classes like XYPlot have ports named "X" and Y",
-	// so XYPlot cannot be converted.
+        // We can convert any graphical classes that have a port named "input" to
+        // a Discard actor.  However, classes like XYPlot have ports named "X" and Y",
+        // so XYPlot cannot be converted.
         _graphicalClasses.put("ptolemy.actor.lib.gui.ArrayPlotter",
                 "ptolemy.actor.lib.Discard");
         _graphicalClasses.put("ptolemy.actor.lib.gui.BarGraph",
@@ -349,7 +349,7 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         _graphicalClasses.put("ptolemy.vergil.basic.DocAttribute",
                 "ptolemy.kernel.util.Attribute");
 
-	
+        
         _graphicalClasses.put("ptolemy.domains.wireless.lib.GraphicalLocator",
                 "ptolemy.domains.wireless.lib.Locator");
 

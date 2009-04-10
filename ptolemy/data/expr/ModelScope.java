@@ -129,23 +129,23 @@ public abstract class ModelScope implements ParserScope {
             // It would be nice if ScopeExtender and NamedObj were common in
             // some way to avoid this cast.
 
-	    // This change was necessary for Java Code Generation.
-	    // We don't want to call getAllScopedVariableNames() here because
-	    // we will end up in an endless loop. 
+            // This change was necessary for Java Code Generation.
+            // We don't want to call getAllScopedVariableNames() here because
+            // we will end up in an endless loop. 
 
-	    // Test 3.1 in ptolemy/actor/parameters/test/ParameterSetModel.tcl
-	    // will go in an endless loop if the next two lines are on commente:
+            // Test 3.1 in ptolemy/actor/parameters/test/ParameterSetModel.tcl
+            // will go in an endless loop if the next two lines are on commente:
             //nameSet.addAll(getAllScopedVariableNames(exclude,
             //        (NamedObj) extender));
 
-	    // This is safer, but does it include everything?
-	    for (Iterator attributes = extender.attributeList().iterator(); attributes.hasNext();) {
-		Attribute attribute = (Attribute) attributes.next();
-		if (attribute instanceof Variable) {
-		    nameSet.add(attribute.getName());
-		}
-	    }
-	}
+            // This is safer, but does it include everything?
+            for (Iterator attributes = extender.attributeList().iterator(); attributes.hasNext();) {
+                Attribute attribute = (Attribute) attributes.next();
+                if (attribute instanceof Variable) {
+                    nameSet.add(attribute.getName());
+                }
+            }
+        }
         return nameSet;
     }
 

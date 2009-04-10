@@ -180,19 +180,19 @@ public class Lattice extends Transformer {
         newObject._forwardCache = new double[newObject._order + 1];
         newObject._reflectionCoefficients = new double[newObject._order];
 
-	System.arraycopy(_backward, 0, newObject._backward,
-			 0, _backward.length);
-	System.arraycopy(_backwardCache, 0, newObject._backwardCache,
-			 0, _backwardCache.length);
-	System.arraycopy(_forward, 0, newObject._forward,
-			 0, _forward.length);
-	System.arraycopy(_forwardCache, 0, newObject._forwardCache,
-			 0, _forwardCache.length);
-	System.arraycopy(_reflectionCoefficients, 0,
-			 newObject._reflectionCoefficients,
-			 0, _reflectionCoefficients.length);
+        System.arraycopy(_backward, 0, newObject._backward,
+                         0, _backward.length);
+        System.arraycopy(_backwardCache, 0, newObject._backwardCache,
+                         0, _backwardCache.length);
+        System.arraycopy(_forward, 0, newObject._forward,
+                         0, _forward.length);
+        System.arraycopy(_forwardCache, 0, newObject._forwardCache,
+                         0, _forwardCache.length);
+        System.arraycopy(_reflectionCoefficients, 0,
+                         newObject._reflectionCoefficients,
+                         0, _reflectionCoefficients.length);
 
-	try {
+        try {
             ArrayToken value = (ArrayToken) reflectionCoefficients.getToken();
             for (int i = 0; i < _order; i++) {
                 _reflectionCoefficients[i] = ((DoubleToken) value.getElement(i))

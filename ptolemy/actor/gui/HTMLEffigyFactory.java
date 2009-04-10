@@ -118,11 +118,11 @@ public class HTMLEffigyFactory extends EffigyFactory {
             }
 
             String contentType;
-	    try {
-		contentType = connection.getContentType();
-	    } catch (SecurityException ex) {
-		throw new SecurityException("Failed to open " + base + " " + in, ex);
-	    }
+            try {
+                contentType = connection.getContentType();
+            } catch (SecurityException ex) {
+                throw new SecurityException("Failed to open " + base + " " + in, ex);
+            }
 
             if (contentType == null) {
                 return null;

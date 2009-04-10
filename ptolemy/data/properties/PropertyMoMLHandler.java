@@ -332,8 +332,8 @@ public class PropertyMoMLHandler extends Attribute {
                         String type = namedObj.getElementName();
 
                         String request = "<property name=\"_highlightColor\" " +
-                        		"class=\"ptolemy.actor.gui.ColorAttribute\" value=\"" +
-                        		colorAttribute.getExpression() + "\"/>";
+                                        "class=\"ptolemy.actor.gui.ColorAttribute\" value=\"" +
+                                        colorAttribute.getExpression() + "\"/>";
 
                         request = _completeHierarchyInMoML(namedObj, request);
                         return request;                        

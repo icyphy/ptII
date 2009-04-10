@@ -307,7 +307,7 @@ public class PtolemyUtilities {
             // infinite loop!
             throw new RuntimeException(
                     "Unboxing is not supported for MatrixTokens.");
-	    // Commented out code below when copernicus/java was removed.
+            // Commented out code below when copernicus/java was removed.
             //String expression = token.toString();
             //Local tokenLocal = DataUtilities.generateExpressionCodeBefore(null,
             //        null, expression, new HashMap(), new HashMap(), body,

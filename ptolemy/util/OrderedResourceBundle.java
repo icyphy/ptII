@@ -54,306 +54,306 @@ import java.util.ResourceBundle;
  */
 public class OrderedResourceBundle {
 
-	/**
-	 * Construct an OrderedResourceBundle.
-	 * 
-	 * @param stream
-	 *            InputStream for reading the java properties file from which
-	 *            this object will take its values.  The stream is closed
-	 *            by this constructor.
-	 * @throws IOException
-	 *             if there is a problem reading the InputStream
-	 * @throws NullPointerException
-	 *             if the InputStream is null
-	 */
-	public OrderedResourceBundle(InputStream stream) throws IOException,
-			NullPointerException {
+        /**
+         * Construct an OrderedResourceBundle.
+         * 
+         * @param stream
+         *            InputStream for reading the java properties file from which
+         *            this object will take its values.  The stream is closed
+         *            by this constructor.
+         * @throws IOException
+         *             if there is a problem reading the InputStream
+         * @throws NullPointerException
+         *             if the InputStream is null
+         */
+        public OrderedResourceBundle(InputStream stream) throws IOException,
+                        NullPointerException {
 
-		if (stream == null) {
-			throw new NullPointerException(
-					"OrderedResourceBundle constructor received a NULL InputStream");
-		}
-		BufferedReader propsReader = new BufferedReader(new InputStreamReader(
-				stream));
+                if (stream == null) {
+                        throw new NullPointerException(
+                                        "OrderedResourceBundle constructor received a NULL InputStream");
+                }
+                BufferedReader propsReader = new BufferedReader(new InputStreamReader(
+                                stream));
 
-		if (stream == null) {
-			throw new NullPointerException();
-		}
-		// This method closes propsReader
-		orderedMap = getPropsAsOrderedMap(propsReader);
-	}
+                if (stream == null) {
+                        throw new NullPointerException();
+                }
+                // This method closes propsReader
+                orderedMap = getPropsAsOrderedMap(propsReader);
+        }
 
-	////////////////////////////////////////////////////////////////////////////
-	//                                              public methods
+        ////////////////////////////////////////////////////////////////////////////
+        //                                              public methods
 
-	/**
-	 * Get a resource bundle using the specified base name and the default
-	 * locale. The returned bundle has its entries in the same order as those in
-	 * the original properties file, so a call to getKeys() will return an
-	 * Iterator that allows retrieval of the keys in the original order. See
-	 * javadoc for <code>java.util.ResourceBundle</code> for a complete
-	 * description of the search and instantiation strategy.
-	 * 
-	 * @param baseName
-	 *            String denoting the name of the properties file that will be
-	 *            read to populate this ResourceBundle.<br>
-	 *            </br> Example 1: if the baseName is MyPropsFile, and the
-	 *            default Locale is en_US, a properties file named:
-	 *            <code>MyPropsFile_en_US.properties</code> will be sought on
-	 *            the classpath.<br>
-	 *            </br> Example 2: if the baseName is
-	 *            org.mydomain.pkg.MyPropsFile, and the default Locale is en_US,
-	 *            a properties file named:
-	 *            <code>org/mydomain/pkg/MyPropsFile_en_US.properties</code>
-	 *            will be sought on the classpath.<br>
-	 *            </br> NOTE: valid comment chars are # and !<br>
-	 *            </br> valid delimiters are (space) : =
-	 * @return OrderedResourceBundle - a ResourceBundle with its entries in the
-	 *         same order as those in the original properties file
-	 * @throws IOException
-	 *             if there is a problem reading the file
-	 * @throws MissingResourceException
-	 *             if the file cannot be found
-	 * @throws NullPointerException
-	 *             if baseName is null
-	 */
-	public static OrderedResourceBundle getBundle(String baseName)
-			throws IOException, MissingResourceException, NullPointerException {
+        /**
+         * Get a resource bundle using the specified base name and the default
+         * locale. The returned bundle has its entries in the same order as those in
+         * the original properties file, so a call to getKeys() will return an
+         * Iterator that allows retrieval of the keys in the original order. See
+         * javadoc for <code>java.util.ResourceBundle</code> for a complete
+         * description of the search and instantiation strategy.
+         * 
+         * @param baseName
+         *            String denoting the name of the properties file that will be
+         *            read to populate this ResourceBundle.<br>
+         *            </br> Example 1: if the baseName is MyPropsFile, and the
+         *            default Locale is en_US, a properties file named:
+         *            <code>MyPropsFile_en_US.properties</code> will be sought on
+         *            the classpath.<br>
+         *            </br> Example 2: if the baseName is
+         *            org.mydomain.pkg.MyPropsFile, and the default Locale is en_US,
+         *            a properties file named:
+         *            <code>org/mydomain/pkg/MyPropsFile_en_US.properties</code>
+         *            will be sought on the classpath.<br>
+         *            </br> NOTE: valid comment chars are # and !<br>
+         *            </br> valid delimiters are (space) : =
+         * @return OrderedResourceBundle - a ResourceBundle with its entries in the
+         *         same order as those in the original properties file
+         * @throws IOException
+         *             if there is a problem reading the file
+         * @throws MissingResourceException
+         *             if the file cannot be found
+         * @throws NullPointerException
+         *             if baseName is null
+         */
+        public static OrderedResourceBundle getBundle(String baseName)
+                        throws IOException, MissingResourceException, NullPointerException {
 
-		String filename = getPropsFileNamePlusLocale(baseName);
+                String filename = getPropsFileNamePlusLocale(baseName);
 
-		InputStream stream = OrderedResourceBundle.class
-				.getResourceAsStream(filename);
-		
-		// The OrderedResourceBundle closes stream.
-		return new OrderedResourceBundle(stream);
-	}
+                InputStream stream = OrderedResourceBundle.class
+                                .getResourceAsStream(filename);
+                
+                // The OrderedResourceBundle closes stream.
+                return new OrderedResourceBundle(stream);
+        }
 
-	/**
-	 * Get a string for the given key from this resource bundle.
-	 * 
-	 * @param key
-	 *            the key for the desired string
-	 * @return the string for the given key, or null if: a null value is
-	 *         actually mapped to this key, key not found, or key is null
-	 */
-	public String getString(String key) {
-		return (String) orderedMap.get(key);
-	}
+        /**
+         * Get a string for the given key from this resource bundle.
+         * 
+         * @param key
+         *            the key for the desired string
+         * @return the string for the given key, or null if: a null value is
+         *         actually mapped to this key, key not found, or key is null
+         */
+        public String getString(String key) {
+                return (String) orderedMap.get(key);
+        }
 
-	/**
-	 * Get an Iterator over the Set of keys, allowing retrieval of the keys in
-	 * the original order as listed in the properties file.
-	 * 
-	 * @return Iterator
-	 */
-	public Iterator getKeys() {
-		return orderedMap.keySet().iterator();
-	}
+        /**
+         * Get an Iterator over the Set of keys, allowing retrieval of the keys in
+         * the original order as listed in the properties file.
+         * 
+         * @return Iterator
+         */
+        public Iterator getKeys() {
+                return orderedMap.keySet().iterator();
+        }
 
-	////////////////////////////////////////////////////////////////////////////
-	//                           private methods
+        ////////////////////////////////////////////////////////////////////////////
+        //                           private methods
 
-	/** Get the properties as an ordered map.
-	 * 	@param propsReader The reader that contains the properties.  This method
-	 * 	closes propsReader upon completion
-	 *  @return The properties.
-	 */
-	private LinkedHashMap getPropsAsOrderedMap(BufferedReader propsReader)
-			throws IOException {
+        /** Get the properties as an ordered map.
+         *         @param propsReader The reader that contains the properties.  This method
+         *         closes propsReader upon completion
+         *  @return The properties.
+         */
+        private LinkedHashMap getPropsAsOrderedMap(BufferedReader propsReader)
+                        throws IOException {
 
-		LinkedHashMap orderedMap = new LinkedHashMap();
-		try {
-			String readLine = null;
+                LinkedHashMap orderedMap = new LinkedHashMap();
+                try {
+                        String readLine = null;
 
-			while ((readLine = propsReader.readLine()) != null) {
+                        while ((readLine = propsReader.readLine()) != null) {
 
-				readLine = readLine.trim();
+                                readLine = readLine.trim();
 
-				if (readLine.length() < 1) {
-					continue;
-				}
+                                if (readLine.length() < 1) {
+                                        continue;
+                                }
 
-				// Find start of key
-				int lineLen = readLine.length();
-				int keyStart;
-				for (keyStart = 0; keyStart < lineLen; keyStart++) {
-					if (whiteSpaceChars.indexOf(readLine.charAt(keyStart)) == -1) {
-						break;
-					}
-				}
+                                // Find start of key
+                                int lineLen = readLine.length();
+                                int keyStart;
+                                for (keyStart = 0; keyStart < lineLen; keyStart++) {
+                                        if (whiteSpaceChars.indexOf(readLine.charAt(keyStart)) == -1) {
+                                                break;
+                                        }
+                                }
 
-				// Continue lines that end in slashes if they are not comments
-				char firstChar = readLine.charAt(keyStart);
-				if ((firstChar != '#') && (firstChar != '!')) {
-					while (continueLine(readLine)) {
-						String nextLine = propsReader.readLine();
-						if (nextLine == null) {
-							nextLine = "";
-						}
-						String choppedLine = readLine.substring(0, lineLen - 1);
-						// Advance beyond whitespace on new line
-						int startIndex;
-						for (startIndex = 0; startIndex < nextLine.length(); startIndex++) {
-							if (whiteSpaceChars.indexOf(nextLine
-									.charAt(startIndex)) == -1) {
-								break;
-							}
-						}
-						nextLine = nextLine.substring(startIndex, nextLine
-								.length());
-						readLine = choppedLine + nextLine;
-						lineLen = readLine.length();
-					}
+                                // Continue lines that end in slashes if they are not comments
+                                char firstChar = readLine.charAt(keyStart);
+                                if ((firstChar != '#') && (firstChar != '!')) {
+                                        while (continueLine(readLine)) {
+                                                String nextLine = propsReader.readLine();
+                                                if (nextLine == null) {
+                                                        nextLine = "";
+                                                }
+                                                String choppedLine = readLine.substring(0, lineLen - 1);
+                                                // Advance beyond whitespace on new line
+                                                int startIndex;
+                                                for (startIndex = 0; startIndex < nextLine.length(); startIndex++) {
+                                                        if (whiteSpaceChars.indexOf(nextLine
+                                                                        .charAt(startIndex)) == -1) {
+                                                                break;
+                                                        }
+                                                }
+                                                nextLine = nextLine.substring(startIndex, nextLine
+                                                                .length());
+                                                readLine = choppedLine + nextLine;
+                                                lineLen = readLine.length();
+                                        }
 
-					// Find separation between key and value
-					int sepIdx;
-					for (sepIdx = keyStart; sepIdx < lineLen; sepIdx++) {
-						char currentChar = readLine.charAt(sepIdx);
-						if (currentChar == '\\') {
-							sepIdx++;
-						} else if (keyValueSeparators.indexOf(currentChar) != -1) {
-							break;
-						}
-					}
+                                        // Find separation between key and value
+                                        int sepIdx;
+                                        for (sepIdx = keyStart; sepIdx < lineLen; sepIdx++) {
+                                                char currentChar = readLine.charAt(sepIdx);
+                                                if (currentChar == '\\') {
+                                                        sepIdx++;
+                                                } else if (keyValueSeparators.indexOf(currentChar) != -1) {
+                                                        break;
+                                                }
+                                        }
 
-					// Skip over whitespace after key if any
-					int valueIndex;
-					for (valueIndex = sepIdx; valueIndex < lineLen; valueIndex++) {
-						if (whiteSpaceChars
-								.indexOf(readLine.charAt(valueIndex)) == -1) {
-							break;
-						}
-					}
+                                        // Skip over whitespace after key if any
+                                        int valueIndex;
+                                        for (valueIndex = sepIdx; valueIndex < lineLen; valueIndex++) {
+                                                if (whiteSpaceChars
+                                                                .indexOf(readLine.charAt(valueIndex)) == -1) {
+                                                        break;
+                                                }
+                                        }
 
-					// Skip over one non whitespace key value separators if any
-					if (valueIndex < lineLen) {
-						if (strictKeyValueSeparators.indexOf(readLine
-								.charAt(valueIndex)) != -1) {
-							valueIndex++;
-						}
-					}
-					// Skip over white space after other separators if any
-					while (valueIndex < lineLen) {
-						if (whiteSpaceChars
-								.indexOf(readLine.charAt(valueIndex)) == -1) {
-							break;
-						}
-						valueIndex++;
-					}
-					String nextKey = readLine.substring(keyStart, sepIdx);
-					String nextVal = (sepIdx < lineLen) ? readLine.substring(
-							valueIndex, lineLen) : "";
-					orderedMap.put(unescape(nextKey), unescape(nextVal));
-				}
-			}
-		} finally {
-			try {
-				if (propsReader != null) {
-					propsReader.close();
-				}
-			} catch (IOException ce) {
-			}
-		}
-		return orderedMap;
-	}
+                                        // Skip over one non whitespace key value separators if any
+                                        if (valueIndex < lineLen) {
+                                                if (strictKeyValueSeparators.indexOf(readLine
+                                                                .charAt(valueIndex)) != -1) {
+                                                        valueIndex++;
+                                                }
+                                        }
+                                        // Skip over white space after other separators if any
+                                        while (valueIndex < lineLen) {
+                                                if (whiteSpaceChars
+                                                                .indexOf(readLine.charAt(valueIndex)) == -1) {
+                                                        break;
+                                                }
+                                                valueIndex++;
+                                        }
+                                        String nextKey = readLine.substring(keyStart, sepIdx);
+                                        String nextVal = (sepIdx < lineLen) ? readLine.substring(
+                                                        valueIndex, lineLen) : "";
+                                        orderedMap.put(unescape(nextKey), unescape(nextVal));
+                                }
+                        }
+                } finally {
+                        try {
+                                if (propsReader != null) {
+                                        propsReader.close();
+                                }
+                        } catch (IOException ce) {
+                        }
+                }
+                return orderedMap;
+        }
 
-	// un-escape all the escaped standard delimiters and comment chars, if any
-	// exist. Works for " " : # = !
-	private String unescape(String line) {
+        // un-escape all the escaped standard delimiters and comment chars, if any
+        // exist. Works for " " : # = !
+        private String unescape(String line) {
 
-		line = line.replaceAll("\\\\ ", " ");
-		line = line.replaceAll("\\\\:", ":");
-		line = line.replaceAll("\\\\#", "#");
-		line = line.replaceAll("\\\\=", "=");
-		line = line.replaceAll("\\\\!", "!");
+                line = line.replaceAll("\\\\ ", " ");
+                line = line.replaceAll("\\\\:", ":");
+                line = line.replaceAll("\\\\#", "#");
+                line = line.replaceAll("\\\\=", "=");
+                line = line.replaceAll("\\\\!", "!");
 
-		return line;
-	}
+                return line;
+        }
 
-	/*
-	 * Returns true if the given line is a line that must be appended to the
-	 * next line
-	 */
-	private boolean continueLine(String line) {
-		int slashCount = 0;
-		int index = line.length() - 1;
-		while ((index >= 0) && (line.charAt(index--) == '\\')) {
-			slashCount++;
-		}
-		// FindBugs: The code uses x % 2 == 1 to check to see if a value is odd,
-		// but this won't work for negative numbers (e.g., (-5) % 2 == -1).
-		// If this code is intending to check for oddness, consider
-		// using x & 1 == 1, or x % 2 != 0. 
+        /*
+         * Returns true if the given line is a line that must be appended to the
+         * next line
+         */
+        private boolean continueLine(String line) {
+                int slashCount = 0;
+                int index = line.length() - 1;
+                while ((index >= 0) && (line.charAt(index--) == '\\')) {
+                        slashCount++;
+                }
+                // FindBugs: The code uses x % 2 == 1 to check to see if a value is odd,
+                // but this won't work for negative numbers (e.g., (-5) % 2 == -1).
+                // If this code is intending to check for oddness, consider
+                // using x & 1 == 1, or x % 2 != 0. 
 
-		return (slashCount % 2 != 0);
-	}
+                return (slashCount % 2 != 0);
+        }
 
-	private static String getPropsFileNamePlusLocale(String baseName)
-			throws MissingResourceException, NullPointerException {
+        private static String getPropsFileNamePlusLocale(String baseName)
+                        throws MissingResourceException, NullPointerException {
 
-		if (baseName == null) {
-			return null;
-		}
-		baseName = baseName.trim();
+                if (baseName == null) {
+                        return null;
+                }
+                baseName = baseName.trim();
 
-		if (baseName.length() < 1) {
-			return baseName;
-		}
+                if (baseName.length() < 1) {
+                        return baseName;
+                }
 
-		// use ResourceBundle's code to find the properties file's locale
-		// - ie the last part of its name - such as the "_en_US" at the end
-		// of "mypropsfile_en_US.properties"
-		Locale bundleLocale = ResourceBundle.getBundle(baseName).getLocale();
+                // use ResourceBundle's code to find the properties file's locale
+                // - ie the last part of its name - such as the "_en_US" at the end
+                // of "mypropsfile_en_US.properties"
+                Locale bundleLocale = ResourceBundle.getBundle(baseName).getLocale();
 
-		String lang = bundleLocale.getLanguage();
-		String ctry = bundleLocale.getCountry();
-		String vart = bundleLocale.getVariant();
+                String lang = bundleLocale.getLanguage();
+                String ctry = bundleLocale.getCountry();
+                String vart = bundleLocale.getVariant();
 
-		boolean hasLang = (lang.length() > 0);
-		boolean hasCtry = (ctry.length() > 0);
-		boolean hasVart = (vart.length() > 0);
+                boolean hasLang = (lang.length() > 0);
+                boolean hasCtry = (ctry.length() > 0);
+                boolean hasVart = (vart.length() > 0);
 
-		baseName = baseName.replace('.', '/');
+                baseName = baseName.replace('.', '/');
 
-		if (!baseName.startsWith(FWD_SLASH)) {
-			baseName = FWD_SLASH + baseName;
-		}
+                if (!baseName.startsWith(FWD_SLASH)) {
+                        baseName = FWD_SLASH + baseName;
+                }
 
-		StringBuffer fnBuff = new StringBuffer(baseName);
+                StringBuffer fnBuff = new StringBuffer(baseName);
 
-		if (!hasLang && !hasCtry && !hasVart) {
-			fnBuff.append(PROPS_EXT);
-			return fnBuff.toString();
-		}
+                if (!hasLang && !hasCtry && !hasVart) {
+                        fnBuff.append(PROPS_EXT);
+                        return fnBuff.toString();
+                }
 
-		if (hasLang) {
-			fnBuff.append(UNDERSCORE);
-			fnBuff.append(lang);
-		}
-		if (hasCtry) {
-			fnBuff.append(UNDERSCORE);
-			fnBuff.append(ctry);
-		}
-		if (hasVart) {
-			fnBuff.append(UNDERSCORE);
-			fnBuff.append(vart);
-		}
-		fnBuff.append(PROPS_EXT);
+                if (hasLang) {
+                        fnBuff.append(UNDERSCORE);
+                        fnBuff.append(lang);
+                }
+                if (hasCtry) {
+                        fnBuff.append(UNDERSCORE);
+                        fnBuff.append(ctry);
+                }
+                if (hasVart) {
+                        fnBuff.append(UNDERSCORE);
+                        fnBuff.append(vart);
+                }
+                fnBuff.append(PROPS_EXT);
 
-		return fnBuff.toString();
-	}
+                return fnBuff.toString();
+        }
 
-	// //////////////////////////////////////////////////////////////////////////
-	// private variables
+        // //////////////////////////////////////////////////////////////////////////
+        // private variables
 
-	private final static String FWD_SLASH = "/";
-	private final static String UNDERSCORE = "_";
-	private final static String PROPS_EXT = ".properties";
+        private final static String FWD_SLASH = "/";
+        private final static String UNDERSCORE = "_";
+        private final static String PROPS_EXT = ".properties";
 
-	private static final String whiteSpaceChars = " \t\r\n\f";
-	private static final String keyValueSeparators = "=: \t\r\n\f";
-	private static final String strictKeyValueSeparators = "=:";
+        private static final String whiteSpaceChars = " \t\r\n\f";
+        private static final String keyValueSeparators = "=: \t\r\n\f";
+        private static final String strictKeyValueSeparators = "=:";
 
-	private LinkedHashMap orderedMap;
+        private LinkedHashMap orderedMap;
 }

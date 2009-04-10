@@ -85,12 +85,12 @@ public class SMVLegacyCodeActor extends TypedCompositeActor {
         embeddedSMVCode.setVisibility(Settable.EXPERT);
 
         String code = "\n/* The file contains contents in formats acceptable by SMV.\n" +
-        	     " * Currently there is no content checking functionality.\n" +
-        	     " * It is the designer's responsibility to keep it correct.\n" +
-        	     " *\n" +
-        	     " * The module name and the corresponding input parameter \n" +
-        	     " * would be generated automatically.\n" +
-        	     " */";
+                     " * Currently there is no content checking functionality.\n" +
+                     " * It is the designer's responsibility to keep it correct.\n" +
+                     " *\n" +
+                     " * The module name and the corresponding input parameter \n" +
+                     " * would be generated automatically.\n" +
+                     " */";
         embeddedSMVCode.setExpression(code);
 
         _attachText("_iconDescription", "<svg>\n"

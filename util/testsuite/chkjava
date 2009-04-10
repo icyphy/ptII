@@ -213,14 +213,14 @@ do
         fi
 
         # Check for lines with trailing spaces
-        results=`egrep '[ 	]+$' $file`
+        results=`egrep '[         ]+$' $file`
         if [ "x$results" != "x" ]; then
             echo "$file: contains trailing spaces or trailing tabs, run rmtrailingspace to fix this"
             echo "$results"
         fi
 
         # Check for lines with tabs
-        results=`egrep '[	]' $file`
+        results=`egrep '[        ]' $file`
         if [ "x$results" != "x" ]; then
             echo "$file: contains tabs, run rmtabs to fix this"
             echo "$results"

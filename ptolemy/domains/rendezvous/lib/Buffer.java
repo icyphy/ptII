@@ -128,9 +128,9 @@ public class Buffer extends TypedAtomicActor {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Buffer newObject = (Buffer) super.clone(workspace);
-	newObject._buffer = new LinkedList();
+        newObject._buffer = new LinkedList();
 
-	return newObject;
+        return newObject;
     }
 
     /** If it has not already been done, start a thread to read tokens from the

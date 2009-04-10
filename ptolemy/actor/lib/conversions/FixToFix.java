@@ -177,10 +177,10 @@ public class FixToFix extends Converter {
         // Set the type constraint.
         newObject.input.setTypeAtMost(BaseType.UNSIZED_FIX);
 
-	// The non-primitive fields of the clone must refer to objects
-	// distinct from the objects of the same name in the class.
-	// If this is not done, then there may be problems with actor
-	// oriented classes.
+        // The non-primitive fields of the clone must refer to objects
+        // distinct from the objects of the same name in the class.
+        // If this is not done, then there may be problems with actor
+        // oriented classes.
         newObject._quantization = new FixPointQuantization(
                 newObject._quantization.getPrecision(),
                 newObject._quantization.getOverflow(),

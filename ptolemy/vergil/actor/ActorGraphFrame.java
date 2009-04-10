@@ -167,7 +167,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame
         _importLibraryAction = new ImportLibraryAction();
         _instantiateAttributeAction = new InstantiateAttributeAction();
         _instantiateEntityAction = new InstantiateEntityAction();
-    	
+            
     }
     
     /**
@@ -383,24 +383,24 @@ public class ActorGraphFrame extends ExtendedGraphFrame
         }
 
         private void _setBackground() {
-	    // FIXME: It seems kind of expensive to call this each time on repaint.
-	    // Maybe we should get the background color and cache it?
+            // FIXME: It seems kind of expensive to call this each time on repaint.
+            // Maybe we should get the background color and cache it?
             if (_entity != null) {
-		Effigy effigy = Configuration.findEffigy(_entity.toplevel());
-		if (effigy == null) {
-		    return;
-		}
-		Configuration configuration = (Configuration) effigy.toplevel();
-		try {
-		    PtolemyPreferences preferences = PtolemyPreferences
-			.getPtolemyPreferencesWithinConfiguration(configuration);
+                Effigy effigy = Configuration.findEffigy(_entity.toplevel());
+                if (effigy == null) {
+                    return;
+                }
+                Configuration configuration = (Configuration) effigy.toplevel();
+                try {
+                    PtolemyPreferences preferences = PtolemyPreferences
+                        .getPtolemyPreferencesWithinConfiguration(configuration);
                     getCanvas().setBackground(
                             preferences.backgroundColor.asColor());
-		} catch (IllegalActionException ex) {
-		    System.err.println("Warning, failed to find Ptolemy Preferences "
-				       + "or set the background, using default.");
-		    ex.printStackTrace();
-		}
+                } catch (IllegalActionException ex) {
+                    System.err.println("Warning, failed to find Ptolemy Preferences "
+                                       + "or set the background, using default.");
+                    ex.printStackTrace();
+                }
             }
         }
 

@@ -55,11 +55,11 @@ public class SchedulingRelationController extends TransitionController {
     }
     
     public void setConfiguration(Configuration configuration) {
-    	super.setConfiguration(configuration);
-    	
-    	if (_lookInsideActionFactory != null) {
-    		_menuFactory.removeMenuItemFactory(_lookInsideActionFactory);
-    	}
+            super.setConfiguration(configuration);
+            
+            if (_lookInsideActionFactory != null) {
+                    _menuFactory.removeMenuItemFactory(_lookInsideActionFactory);
+            }
     }
 
     public static class SchedulingRelationRenderer extends LinkRenderer {

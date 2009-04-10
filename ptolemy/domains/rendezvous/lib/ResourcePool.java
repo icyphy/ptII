@@ -175,7 +175,7 @@ public class ResourcePool extends TypedAtomicActor {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ResourcePool newObject = (ResourcePool) super.clone(workspace);
-	newObject._pool = new LinkedList();
+        newObject._pool = new LinkedList();
         // set type constraints.
         try {
             newObject.grant.setTypeAtLeast(ArrayType

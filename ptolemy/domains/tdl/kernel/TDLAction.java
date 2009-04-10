@@ -127,8 +127,8 @@ public class TDLAction {
      *  @return A hash code value for this token.
      */
     public int hashCode() {
-	// See http://www.geocities.com/technofundo/tech/java/equalhash.html
-	// for suggestions on hashCode
+        // See http://www.geocities.com/technofundo/tech/java/equalhash.html
+        // for suggestions on hashCode
         return 31 + time.hashCode() +  actionType + object.hashCode();
     }
 

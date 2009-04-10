@@ -181,7 +181,7 @@ public class ModelDisplay extends AbstractPlaceableActor implements
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ModelDisplay newObject = (ModelDisplay) super.clone(workspace);
-	newObject._entity = _createBlankEntity();
+        newObject._entity = _createBlankEntity();
         return newObject;
     }
 
@@ -278,7 +278,7 @@ public class ModelDisplay extends AbstractPlaceableActor implements
      */
     private static NamedObj _createBlankEntity() {
         String moml = "<entity name=\"top\" class=\"ptolemy.kernel.CompositeEntity\"/>";
-	NamedObj entity = null;
+        NamedObj entity = null;
         MoMLParser parser = new MoMLParser();
         try {
             entity = parser.parse(null, moml);
@@ -288,7 +288,7 @@ public class ModelDisplay extends AbstractPlaceableActor implements
         } catch (Exception ex) {
             throw new InternalErrorException(ex);
         }
-	return entity;
+        return entity;
     }
 
     ///////////////////////////////////////////////////////////////////

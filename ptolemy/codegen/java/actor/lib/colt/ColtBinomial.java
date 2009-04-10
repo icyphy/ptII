@@ -66,7 +66,7 @@ public class ColtBinomial extends ColtRandomSource {
      */
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
-	    _codeStream.appendCodeBlock("binomialInitBlock");
+            _codeStream.appendCodeBlock("binomialInitBlock");
 
         return processCode(_codeStream.toString());
     }

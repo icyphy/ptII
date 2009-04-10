@@ -381,59 +381,59 @@ public class ArrowKeySensor extends TypedAtomicActor {
             setVisible(true);
         }
 
-	/* A mouse listener that requests focus for the source of any
-	 * mouse event it receives.
-	 */
-	private /*static*/ class FocusMouseListener implements MouseListener {
-	        // FindBugs suggests making this class static so as to decrease
-	        // the size of instances and avoid dangling references.
-	        // However, Java does allow inner classes of inner classes to be
-	        // static.	    
-	    
-	    // This is a copy of diva/gui/toolbox/FocusMouseListener.java
-	    // because we don't want the dependency on diva.
+        /* A mouse listener that requests focus for the source of any
+         * mouse event it receives.
+         */
+        private /*static*/ class FocusMouseListener implements MouseListener {
+                // FindBugs suggests making this class static so as to decrease
+                // the size of instances and avoid dangling references.
+                // However, Java does allow inner classes of inner classes to be
+                // static.            
+            
+            // This is a copy of diva/gui/toolbox/FocusMouseListener.java
+            // because we don't want the dependency on diva.
 
-	    /** Invoked when the mouse is released.
-	     *  Ignored in this listener.
-	     *  @param event The corresponding event.
-             */		
-	    public void mouseReleased(MouseEvent event) {
-	    }
+            /** Invoked when the mouse is released.
+             *  Ignored in this listener.
+             *  @param event The corresponding event.
+             */                
+            public void mouseReleased(MouseEvent event) {
+            }
 
-	    /** Invoked when the mouse enters a component.
-	     *  Ignored in this listener.
-	     *  @param event The corresponding event.
-             */		
-	    public void mouseEntered(MouseEvent event) {
-	    }
+            /** Invoked when the mouse enters a component.
+             *  Ignored in this listener.
+             *  @param event The corresponding event.
+             */                
+            public void mouseEntered(MouseEvent event) {
+            }
 
-	    /** Invoked when the mouse exits a component.
-	     *  Ignored in this listener.
-	     *  @param event The corresponding event.
-             */		
-	    public void mouseExited(MouseEvent event) {
-	    }
+            /** Invoked when the mouse exits a component.
+             *  Ignored in this listener.
+             *  @param event The corresponding event.
+             */                
+            public void mouseExited(MouseEvent event) {
+            }
 
-	    /**
-	     * Grab the keyboard focus when the component that this
-	     * listener is attached to is clicked on.
-	     *  @param event The corresponding event.
-	     */
-	    public void mousePressed(MouseEvent event) {
-		Component component = event.getComponent();
+            /**
+             * Grab the keyboard focus when the component that this
+             * listener is attached to is clicked on.
+             *  @param event The corresponding event.
+             */
+            public void mousePressed(MouseEvent event) {
+                Component component = event.getComponent();
 
-		if (!component.hasFocus()) {
-		    component.requestFocus();
-		}
-	    }
+                if (!component.hasFocus()) {
+                    component.requestFocus();
+                }
+            }
 
-	    /** Invoked when the mouse is clicked (pressed and released).
-	     *  Ignored in this listener.
-	     *  @param event The corresponding event.
-             */		
-	    public void mouseClicked(MouseEvent event) {
-	    }
-	}
+            /** Invoked when the mouse is clicked (pressed and released).
+             *  Ignored in this listener.
+             *  @param event The corresponding event.
+             */                
+            public void mouseClicked(MouseEvent event) {
+            }
+        }
 
         ///////////////////////////////////////////////////////////////////
         ////                     private methods                        ////

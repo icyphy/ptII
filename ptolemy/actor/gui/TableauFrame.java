@@ -333,7 +333,7 @@ public class TableauFrame extends Top {
      * service or if there is another problem printing.
      */
     public void printPDF() throws PrinterException {
-	_printPDF();
+        _printPDF();
     }
 
     ///////////////////////////////////////////////////////////////////

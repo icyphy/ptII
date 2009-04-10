@@ -63,7 +63,7 @@ public interface PortCodeGenerator extends ComponentCodeGenerator {
      *  @return The code that sends the dataToken on the channel.
      */ 
     public String generateCodeForSend(String channel, String dataToken)     
-	throws IllegalActionException;
+        throws IllegalActionException;
 
     /** Get the buffer size of channel of the port.
      *  @param channelNumber The number of the channel that is being set.
@@ -78,7 +78,7 @@ public interface PortCodeGenerator extends ComponentCodeGenerator {
      *  @see #setReadOffset(int, Object)
      */
     public Object getReadOffset(int channelNumber)
-	throws IllegalActionException;
+        throws IllegalActionException;
 
     /** Get the write offset of a channel of the port.
      *  @param channelNumber The number of the channel.
@@ -87,7 +87,7 @@ public interface PortCodeGenerator extends ComponentCodeGenerator {
      *  @see #setWriteOffset(int, Object)
      */
     public Object getWriteOffset(int channelNumber)
-	throws IllegalActionException;
+        throws IllegalActionException;
 
     /** Set the buffer size of channel of the port.
      *  @param channelNumber The number of the channel that is being set.

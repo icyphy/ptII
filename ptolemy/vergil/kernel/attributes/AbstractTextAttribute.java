@@ -163,7 +163,7 @@ public class AbstractTextAttribute extends VisibleAttribute {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-    	 if (attribute == center) {
+             if (attribute == center) {
              if (((BooleanToken) center.getToken()).booleanValue()) {
                  _icon.setAnchor(SwingConstants.CENTER);
              } else {

@@ -99,7 +99,7 @@ public class BackwardCompatibility {
         _filterList.add(new PropertyClassChanges());
         _filterList.add(new GRColorChanges());
         _filterList.add(new RemoveProperties());
-	//System.out.println("Filtering and converting to LazyTypedCompositeActors");
+        //System.out.println("Filtering and converting to LazyTypedCompositeActors");
         //_filterList.add(new LazyTypedCompositeActorChanges());
         _filterList.add(new RelationWidthChanges());        
     }

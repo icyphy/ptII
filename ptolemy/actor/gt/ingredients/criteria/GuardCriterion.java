@@ -84,9 +84,9 @@ public class GuardCriterion extends Criterion {
         Variable guardVariable = null;
         try {
             guardVariable = new Variable(object, object.uniqueName(
-            		"guardVariable"));
+                            "guardVariable"));
             String guard = ((Transition) object).guardExpression
-            		.getExpression();
+                            .getExpression();
             String guardTester = "(" + guard + ") == (" + _guardValue + ")";
             guardVariable.setExpression(guardTester);
             BooleanToken result = (BooleanToken) guardVariable.getToken();
@@ -94,14 +94,14 @@ public class GuardCriterion extends Criterion {
         } catch (Exception e) {
             return false;
         } finally {
-        	if (guardVariable != null) {
-        		try {
-					guardVariable.setContainer(null);
-				} catch (Exception e) {
-			    throw new InternalErrorException("Failed to set container of "
-							     + guardVariable + " to null");
-				}
-        	}
+                if (guardVariable != null) {
+                        try {
+                                        guardVariable.setContainer(null);
+                                } catch (Exception e) {
+                            throw new InternalErrorException("Failed to set container of "
+                                                             + guardVariable + " to null");
+                                }
+                }
         }
     }
 

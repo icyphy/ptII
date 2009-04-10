@@ -202,60 +202,60 @@ public class PropertySolverTestReporter {
 
     private static void _printGlobalStats(Map stats) throws IOException {
         BufferedWriter writer = null;
-	try {
-	    writer = new BufferedWriter(new FileWriter(new File(
+        try {
+            writer = new BufferedWriter(new FileWriter(new File(
                 _statsFilename)));
 
-	    for (Object field : stats.keySet()) {
-		writer.append(field + _separator + stats.get(field));
-		writer.newLine();
-	    }
-	} finally {
-	    if (writer != null) {
-		writer.close();
-	    }
-	}
+            for (Object field : stats.keySet()) {
+                writer.append(field + _separator + stats.get(field));
+                writer.newLine();
+            }
+        } finally {
+            if (writer != null) {
+                writer.close();
+            }
+        }
     }
 
 
     private static void _printLocalStats(Map<Object, Map> stats)
             throws IOException {
         BufferedWriter writer = null;
-	try {
-	    writer = new BufferedWriter(new FileWriter(new File(
+        try {
+            writer = new BufferedWriter(new FileWriter(new File(
                 _statsFilename), true));
 
-	    // Give ordering to the header fields.
-	    List headers = new LinkedList(_modelStatsHeaders);
-	    headers.addAll(_solverStatsHeaders);
+            // Give ordering to the header fields.
+            List headers = new LinkedList(_modelStatsHeaders);
+            headers.addAll(_solverStatsHeaders);
 
-	    // Print the header row.
-	    writer.append("Filename" + _separator);
-	    writer.append("Solver" + _separator);
-	    writer.append("Invocation");
-	    for (Object header : headers) {
-		writer.append(_separator + header.toString());
-	    }
-	    writer.newLine();
+            // Print the header row.
+            writer.append("Filename" + _separator);
+            writer.append("Solver" + _separator);
+            writer.append("Invocation");
+            for (Object header : headers) {
+                writer.append(_separator + header.toString());
+            }
+            writer.newLine();
 
-	    // Iterate using triplet keys {testFile, solver, isInvoked}.
-	    for (Object key : stats.keySet()) {
-		Map entry = stats.get(key);
-		writer.append(key.toString());
+            // Iterate using triplet keys {testFile, solver, isInvoked}.
+            for (Object key : stats.keySet()) {
+                Map entry = stats.get(key);
+                writer.append(key.toString());
 
-		for (Object header : headers) {
-		    writer.append(_separator);
-		    if (entry.containsKey(header)) {
-			writer.append(entry.get(header).toString());
-		    }
-		}
-		writer.newLine();
-	    }
-	} finally {
-	    if (writer != null) {
-		writer.close();
-	    }
-	}
+                for (Object header : headers) {
+                    writer.append(_separator);
+                    if (entry.containsKey(header)) {
+                        writer.append(entry.get(header).toString());
+                    }
+                }
+                writer.newLine();
+            }
+        } finally {
+            if (writer != null) {
+                writer.close();
+            }
+        }
     }
     
 
@@ -436,15 +436,15 @@ public class PropertySolverTestReporter {
                     File errorFile = _getExceptionLogFile(file, failed);
 
                     BufferedWriter writer = null;
-		    try {
-			writer = new BufferedWriter(new FileWriter(
+                    try {
+                        writer = new BufferedWriter(new FileWriter(
                             errorFile));
-			writer.write(errors);
-		    } finally {
-			if (writer != null) {
-			    writer.close();
-			}
-		    }
+                        writer.write(errors);
+                    } finally {
+                        if (writer != null) {
+                            writer.close();
+                        }
+                    }
                 }
                 // ==========================================================
             }

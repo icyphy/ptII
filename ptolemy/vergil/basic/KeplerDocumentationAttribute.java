@@ -98,7 +98,7 @@ public class KeplerDocumentationAttribute extends Attribute implements
      *  @exception Exception If thrown while configuring the port
      */
     public void addPort(String name, String value) 
-	throws NameDuplicationException, Exception {
+        throws NameDuplicationException, Exception {
 
         _portHash.put(name, value);
         ConfigurableAttribute port = new ConfigurableAttribute(this, "port:"
@@ -114,7 +114,7 @@ public class KeplerDocumentationAttribute extends Attribute implements
      *  @see #getProperty(String)
      */
     public void addProperty(String name, String value) 
-	throws NameDuplicationException, Exception {
+        throws NameDuplicationException, Exception {
         _propertyHash.put(name, value);
         ConfigurableAttribute attribute = new ConfigurableAttribute(this, "prop:"
                 + name);

@@ -226,15 +226,15 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
                         // The director should not be persistent.
                         newDirector.setPersistent(false);
                         try {
-                        	StringAttribute newControllerName =
-                        		(StringAttribute) newDirector.getAttribute(
-                        				"controllerName");
-                        	newControllerName.setExpression("_Controller");
+                                StringAttribute newControllerName =
+                                        (StringAttribute) newDirector.getAttribute(
+                                                        "controllerName");
+                                newControllerName.setExpression("_Controller");
                         } catch (Exception e) {
-                        	throw new IllegalActionException("Director class \""
-                        			+ newDirectorClass + "\" cannot be used "
-                        			+ "because it does not have a "
-                        			+ "\"controllerName\" attribute.");
+                                throw new IllegalActionException("Director class \""
+                                                + newDirectorClass + "\" cannot be used "
+                                                + "because it does not have a "
+                                                + "\"controllerName\" attribute.");
                         }
 
                         if ((director != null)

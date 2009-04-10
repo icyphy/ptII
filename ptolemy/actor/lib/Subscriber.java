@@ -220,10 +220,10 @@ public class Subscriber extends TypedAtomicActor {
         super.fire();
         int width = input.getWidth();
         if (width == 0) {
-	    channel.validate();
+            channel.validate();
             throw new IllegalActionException(this,
-   	            "Subscriber could not find a matching Publisher "
-		    + "with channel \""
+                       "Subscriber could not find a matching Publisher "
+                    + "with channel \""
                     + channel.stringValue() + "\"");
 
         }
@@ -242,55 +242,55 @@ public class Subscriber extends TypedAtomicActor {
      *   publisher.
      */
     public void preinitialize() throws IllegalActionException {
-	// We have two cases:
+        // We have two cases:
         // 1) _updateLinks is false.
-	// If this was created by instantiating a container class,
+        // If this was created by instantiating a container class,
         // then the links would not have been updated when setContainer()
         // was called, so we must do it now.
-	//
-	// 2) input.getWidth() is 0
+        //
+        // 2) input.getWidth() is 0
 
-	// If we are converting back and forth from class to instance,
-	// then there is a chance that we have not called
-	// _updateLinks() recently.  See Publisher-1.6 in
-	// test/Publisher.tcl. A better fix might be toclear
-	// _updateLinks when the relation to the input port was deleted by
-	// CompositeEntity.setClassDefinition().    This would probably
-	// require creating a custom port class that would notice the deletion
-	// Another idea is to
-	// compare the workspace version number against the version
-	// number when we set _updatedLinks.  However, this could
-	// result in poor performance.
+        // If we are converting back and forth from class to instance,
+        // then there is a chance that we have not called
+        // _updateLinks() recently.  See Publisher-1.6 in
+        // test/Publisher.tcl. A better fix might be toclear
+        // _updateLinks when the relation to the input port was deleted by
+        // CompositeEntity.setClassDefinition().    This would probably
+        // require creating a custom port class that would notice the deletion
+        // Another idea is to
+        // compare the workspace version number against the version
+        // number when we set _updatedLinks.  However, this could
+        // result in poor performance.
 
         if (!_updatedLinks || !input.isOutsideConnected()) {
             _updateLinks();
             if (!input.isOutsideConnected()) {
-		// Find the nearest opaque container above in the hierarchy.
-		CompositeEntity container = (CompositeEntity) getContainer();
-		while (container != null && !container.isOpaque()) {
-		    container = (CompositeEntity) container.getContainer();
-		}
-		StringBuffer publisherChannelNames = new StringBuffer();
-		if (container != null) {
-		    Iterator<?> actors = container.deepOpaqueEntityList().iterator();
-		    while (actors.hasNext()) {
-			Object actor = actors.next();
-			if (actor instanceof Publisher) {
-			    publisherChannelNames.append( ((Publisher) actor)._channel + "\n");
-			}
-		    }
-		}
+                // Find the nearest opaque container above in the hierarchy.
+                CompositeEntity container = (CompositeEntity) getContainer();
+                while (container != null && !container.isOpaque()) {
+                    container = (CompositeEntity) container.getContainer();
+                }
+                StringBuffer publisherChannelNames = new StringBuffer();
+                if (container != null) {
+                    Iterator<?> actors = container.deepOpaqueEntityList().iterator();
+                    while (actors.hasNext()) {
+                        Object actor = actors.next();
+                        if (actor instanceof Publisher) {
+                            publisherChannelNames.append( ((Publisher) actor)._channel + "\n");
+                        }
+                    }
+                }
 
                 throw new IllegalActionException(this,
                         "Subscriber has no matching Publisher, channel was \""
-						 + channel.getExpression()
-						 + "\" which evaluated to \""
-						 + channel.stringValue() + "\"."
-						 + publisherChannelNames);
+                                                 + channel.getExpression()
+                                                 + "\" which evaluated to \""
+                                                 + channel.stringValue() + "\"."
+                                                 + publisherChannelNames);
             }
         }
-	// Call super.preinitialize() after updating links so that
-	// we have connections made before possibly inferring widths.
+        // Call super.preinitialize() after updating links so that
+        // we have connections made before possibly inferring widths.
         super.preinitialize();
     }
 
@@ -301,8 +301,8 @@ public class Subscriber extends TypedAtomicActor {
      *  @return A publisher, or null if none is found.
      */
     protected Publisher _findPublisher() {
-	// This method is protected so that users can subclass this class
-	// and create alternative ways of managing finding Publishers.
+        // This method is protected so that users can subclass this class
+        // and create alternative ways of managing finding Publishers.
 
         // Find the nearest opaque container above in the hierarchy.
         CompositeEntity container = (CompositeEntity) getContainer();

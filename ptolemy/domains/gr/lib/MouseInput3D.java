@@ -105,9 +105,9 @@ public class MouseInput3D extends GRActor3D {
             y.send(0, new IntToken(_yClicked));
             _hasData = false;
 
-	    if (_debugging) {
-		_debug("clicked location -> " + _xClicked + " " + _yClicked);
-	    }
+            if (_debugging) {
+                _debug("clicked location -> " + _xClicked + " " + _yClicked);
+            }
         }
     }
 

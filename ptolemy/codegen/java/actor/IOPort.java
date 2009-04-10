@@ -115,7 +115,7 @@ public class IOPort extends JavaCodeGeneratorHelper implements PortCodeGenerator
                 result += offset + ", ";
             }
 
-	    // FIXME: why does this depend on PN?
+            // FIXME: why does this depend on PN?
             PNDirector pnDirector = (PNDirector) _getHelper(director);
             result += "&" + PNDirector.generatePortHeader(port, channel) + ", ";
             result += "&" + pnDirector.generateDirectorHeader() + ")";
@@ -205,7 +205,7 @@ public class IOPort extends JavaCodeGeneratorHelper implements PortCodeGenerator
         ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
         StringBuffer code = new StringBuffer();
         code.append(getCodeGenerator().comment(_eol + "....Begin updateConnectedPortsOffset...."
-					       + CodeGeneratorHelper.generateName(port)));
+                                               + CodeGeneratorHelper.generateName(port)));
 
         if (rate == 0) {
             return "";
@@ -278,7 +278,7 @@ public class IOPort extends JavaCodeGeneratorHelper implements PortCodeGenerator
             }
         }
         code.append(getCodeGenerator().comment(_eol + "....End updateConnectedPortsOffset...."
-					       + CodeGeneratorHelper.generateName(port)));
+                                               + CodeGeneratorHelper.generateName(port)));
         return code.toString();
     }
 
@@ -292,7 +292,7 @@ public class IOPort extends JavaCodeGeneratorHelper implements PortCodeGenerator
         Receiver receiver = _getReceiver(null, 0, port);
 
         String code = getCodeGenerator().comment(_eol + "....Begin updateOffset...." 
-						 + CodeGeneratorHelper.generateName(port));
+                                                 + CodeGeneratorHelper.generateName(port));
 
         //        int width = 0;
         //        if (port.isInput()) {
@@ -317,11 +317,11 @@ public class IOPort extends JavaCodeGeneratorHelper implements PortCodeGenerator
                             channel.channelNumber, directorHelper, false);
                 }
                 code += getCodeGenerator().comment(_eol + "....End updateOffset (PN)...."
-						   + CodeGeneratorHelper.generateName(port));
+                                                   + CodeGeneratorHelper.generateName(port));
             } else {
                 code += _updateOffset(i, rate);
                 code += getCodeGenerator().comment(_eol + "\n....End updateOffset...."
-						   + CodeGeneratorHelper.generateName(port));
+                                                   + CodeGeneratorHelper.generateName(port));
             }
         }
         return code;
@@ -544,18 +544,18 @@ public class IOPort extends JavaCodeGeneratorHelper implements PortCodeGenerator
             return null;
         }
 
-	int staticOffset = -1;
+        int staticOffset = -1;
         Receiver receiver = null;
-	if (offset != null) {
-	    try {
-		staticOffset = Integer.parseInt(offset);
-		receiver = receivers[channel][staticOffset];
-	    } catch (Exception ex) {
-		staticOffset = -1;
-	    }
-	}
+        if (offset != null) {
+            try {
+                staticOffset = Integer.parseInt(offset);
+                receiver = receivers[channel][staticOffset];
+            } catch (Exception ex) {
+                staticOffset = -1;
+            }
+        }
 
-	if (staticOffset == -1) {
+        if (staticOffset == -1) {
             // FIXME: Assume all receivers are the same type for the channel.
             // However, this may not be true.
             assert (receivers.length > 0);
@@ -678,7 +678,7 @@ public class IOPort extends JavaCodeGeneratorHelper implements PortCodeGenerator
      *  of the channel.
      */
     public int getBufferSize(int channelNumber)
-	throws IllegalActionException {
+        throws IllegalActionException {
         Channel channel = _getChannel(channelNumber);
         
         if (_bufferSizes.get(channel) == null) {
@@ -698,7 +698,7 @@ public class IOPort extends JavaCodeGeneratorHelper implements PortCodeGenerator
      *  @see #setReadOffset(int, Object)
      */
     public Object getReadOffset(int channelNumber)
-	throws IllegalActionException {
+        throws IllegalActionException {
         Channel channel = _getChannel(channelNumber);
         return _readOffsets.get(channel);
         

@@ -30,7 +30,7 @@ public class RTMObject extends RTMTerm {
     }
     
     public void setClass(String classname) {
-    	this.objClass = classname;
+            this.objClass = classname;
     }
     
     @Override

@@ -231,8 +231,8 @@ public class NonPreemptivePlatformExecutionStrategy extends
                             .getDoubleValue(),
                             ScheduleEventType.MISSEDEXECUTION);
                     throw new IllegalActionException("missed execution, " + event.contents + " wanted to " +
-                    		"be fired at " + event.timeStamp + " but it is already " + physicalTime
-                    		);
+                                    "be fired at " + event.timeStamp + " but it is already " + physicalTime
+                                    );
                 } else if (physicalTime.compareTo(event.timeStamp) < 0) {
                     index++;
                     continue;

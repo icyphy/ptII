@@ -580,7 +580,7 @@ public class JNIUtilities {
                                 + "    //{\n"
                                 + "    //std::cout << \"warning : the matrix is empty !\""
                                 + " << std::endl;\n"
-				+ "    //}\n");
+                                + "    //}\n");
             }
         }
 
@@ -989,15 +989,15 @@ public class JNIUtilities {
                         + _indent1
                         + "static {\n"
                         + _indent2
-			+ "String sharedLibraryPrefix = \"\";\n"
-			+ _indent2
-			+ "String osName = System.getProperty(\"os.name\");\n"
-			+ _indent2
-			+ "if (osName.equals(\"Linux\") || osName.equals(\"SunOS\") || osName.equals(\"Mac OS X\")) {\n"
-		        + _indent3
-		        + "sharedLibraryPrefix = \"lib\";\n"
+                        + "String sharedLibraryPrefix = \"\";\n"
                         + _indent2
-		        + "}\n"
+                        + "String osName = System.getProperty(\"os.name\");\n"
+                        + _indent2
+                        + "if (osName.equals(\"Linux\") || osName.equals(\"SunOS\") || osName.equals(\"Mac OS X\")) {\n"
+                        + _indent3
+                        + "sharedLibraryPrefix = \"lib\";\n"
+                        + _indent2
+                        + "}\n"
                         + _indent2
                         + "String library = \"jni\""
                         + "+ File.separator + \""
@@ -1250,7 +1250,7 @@ public class JNIUtilities {
                         + "\t\t$(PTJNI_SHAREDLIBRARY_CFLAG) \\\n"
                         + "\t\t-fno-exceptions \\\n"
                         + "\t\t$(PTJNI_GCC_SHARED_FLAG) \\\n"
-			+ "\t\t$(PTJNI_SHAREDLIBRARY_LDFLAG) \\\n"
+                        + "\t\t$(PTJNI_SHAREDLIBRARY_LDFLAG) \\\n"
                         + "\t\t-L"
                         + libraryPath
                         + " -l"

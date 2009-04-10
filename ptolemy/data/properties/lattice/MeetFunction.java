@@ -135,9 +135,9 @@ public class MeetFunction
     }
     
     public InequalityTerm[] getConstants() {
-	// Findbugs: Impossible cast from Object[] to
-	// ptolemy.graph.InequalityTerm[] in
-	// ptolemy.data.properties.lattice.LatticeProperty.getConstants()
+        // Findbugs: Impossible cast from Object[] to
+        // ptolemy.graph.InequalityTerm[] in
+        // ptolemy.data.properties.lattice.LatticeProperty.getConstants()
         //return (InequalityTerm[]) new LinkedList().toArray();
         return new InequalityTerm[0];
     }

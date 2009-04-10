@@ -139,30 +139,30 @@ public class RunTableau extends Tableau {
             super(model, tableau);
         }
 
-	/** Print the plot to a printer, represented by the specified graphics
-	 *  object.
-	 *  @param graphics The context into which the page is drawn.
-	 *  @param format The size and orientation of the page being drawn.
-	 *  @param index The zero based index of the page to be drawn.
-	 *  @return PAGE_EXISTS if the page is rendered successfully, or
-	 *   NO_SUCH_PAGE if pageIndex specifies a non-existent page.
-	 *  @exception PrinterException If the print job is terminated.
-	 */
-	public synchronized int print(Graphics graphics, PageFormat format,
-				      int index) throws PrinterException {
-	    if (graphics == null) {
-		return Printable.NO_SUCH_PAGE;
-	    }
+        /** Print the plot to a printer, represented by the specified graphics
+         *  object.
+         *  @param graphics The context into which the page is drawn.
+         *  @param format The size and orientation of the page being drawn.
+         *  @param index The zero based index of the page to be drawn.
+         *  @return PAGE_EXISTS if the page is rendered successfully, or
+         *   NO_SUCH_PAGE if pageIndex specifies a non-existent page.
+         *  @exception PrinterException If the print job is terminated.
+         */
+        public synchronized int print(Graphics graphics, PageFormat format,
+                                      int index) throws PrinterException {
+            if (graphics == null) {
+                return Printable.NO_SUCH_PAGE;
+            }
 
-	    // We only print on one page.
-	    // FIXME: we should allow printing to multiple pages
-	    if (index >= 1) {
-		return Printable.NO_SUCH_PAGE;
-	    }
+            // We only print on one page.
+            // FIXME: we should allow printing to multiple pages
+            if (index >= 1) {
+                return Printable.NO_SUCH_PAGE;
+            }
 
-	    paint(graphics);
-	    return Printable.PAGE_EXISTS;
-	}
+            paint(graphics);
+            return Printable.PAGE_EXISTS;
+        }
 
         ///////////////////////////////////////////////////////////////////
         ////                         protected methods                 ////

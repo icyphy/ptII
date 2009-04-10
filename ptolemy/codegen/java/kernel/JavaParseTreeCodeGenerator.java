@@ -787,13 +787,13 @@ ParseTreeCodeGenerator {
                 //_fireCode.append(label.substring(7, label.length() - 1));
                 _childCode = label.substring(7, label.length() - 1);
             } else {
-		// FIXME: handle the rest of the constants from data.expr.Constants
-		if (label.equals("Infinity")) {
-		    _childCode = "Double.POSITIVE_INFINITY";
-		} else {
-		    //_fireCode.append(label);
-		    _childCode = label;
-		}
+                // FIXME: handle the rest of the constants from data.expr.Constants
+                if (label.equals("Infinity")) {
+                    _childCode = "Double.POSITIVE_INFINITY";
+                } else {
+                    //_fireCode.append(label);
+                    _childCode = label;
+                }
             }
 
             return;
@@ -1746,7 +1746,7 @@ ParseTreeCodeGenerator {
      *  be resolved.
      */
     private /*static*/ String _codeGenType(Type ptType) {
-	// FIXME: this is duplicated code from CodeGeneratorHelper.codeGenType
+        // FIXME: this is duplicated code from CodeGeneratorHelper.codeGenType
 
         // FIXME: We may need to add more types.
         // FIXME: We have to create separate type for different matrix types.
@@ -1774,11 +1774,11 @@ ParseTreeCodeGenerator {
         //            "Cannot resolved codegen type from Ptolemy type: " + ptType);
         //}
 
-	// Java specific changes
-	if (result != null) {
-	    return result.replace("Int", "Integer").replace("Array", "Token");
-	}
-	return result;
+        // Java specific changes
+        if (result != null) {
+            return result.replace("Int", "Integer").replace("Array", "Token");
+        }
+        return result;
     }
 
     /**
@@ -1787,7 +1787,7 @@ ParseTreeCodeGenerator {
      * @return true if the given type is primitive, otherwise false.
      */
     private boolean _isPrimitive(Type ptType) {
-	// FIXME: this is duplicated code from CodeGeneratorHelper.isPrimitive()
+        // FIXME: this is duplicated code from CodeGeneratorHelper.isPrimitive()
         return _primitiveTypes.contains(_codeGenType(ptType));
     }
 
@@ -1797,7 +1797,7 @@ ParseTreeCodeGenerator {
      * @return The Java data type.
      */
     private String _targetType(Type ptType) {
-	// FIXME: this is duplicated code from CodeGeneratorHelper.targetType()
+        // FIXME: this is duplicated code from CodeGeneratorHelper.targetType()
         // FIXME: we may need to add more primitive types.
         return ptType == BaseType.INT ? "int"
                 : ptType == BaseType.STRING ? "String"
@@ -1859,7 +1859,7 @@ ParseTreeCodeGenerator {
         cFunctionMap.put("repeat", "$arrayRepeat");
         cFunctionMap.put("sum", "$arraySum");
 
-	// Java Specific functions
+        // Java Specific functions
         cFunctionMap.put("NaN", "Double.NaN");
         cFunctionMap.put("abs", "Math.abs");
         cFunctionMap.put("acos", "Math.acos");

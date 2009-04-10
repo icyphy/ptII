@@ -104,13 +104,13 @@ public class Discard extends Sink implements Configurable {
      *  @return Always return null.
      */
     public String getConfigureSource() {
-	return null;
+        return null;
     }
 
     /** Return null because this actor is not actually configurable.
      *  @return Always return null.
      */
     public String getConfigureText() {
-	return null;
+        return null;
     }
 }

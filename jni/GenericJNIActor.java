@@ -435,21 +435,21 @@ public class GenericJNIActor extends TypedAtomicActor {
                     long[] tab = new long[siz];
 
                     for (int j = 0; j < siz; j++) {
-			Token element = ((ArrayToken) tok).getElement(j);
-			try {
-			    tab[j] = ((LongToken) element).longValue();
-			} catch (Throwable throwable) {
-			    throw new IllegalActionException(this,
-							      throwable,
-							     "Failed to create LongToken, element " + j + " was: " + element.getClass().getName() + ", value: " + element + ", port: " + port);
-			}
+                        Token element = ((ArrayToken) tok).getElement(j);
+                        try {
+                            tab[j] = ((LongToken) element).longValue();
+                        } catch (Throwable throwable) {
+                            throw new IllegalActionException(this,
+                                                              throwable,
+                                                             "Failed to create LongToken, element " + j + " was: " + element.getClass().getName() + ", value: " + element + ", port: " + port);
+                        }
                     }
 
                     //(int[])((ArrayToken)tok).arrayValue();
                     args.add(tab);
                 } else {
                     System.out.println("The intype \"" + typ
-		            + "\" is not convertible "
+                            + "\" is not convertible "
                             + "with Ptolemy II types.");
                 }
             }
@@ -665,7 +665,7 @@ public class GenericJNIActor extends TypedAtomicActor {
                                     + typ + "' is not castable");
                         }
                     } else if (typ.equals("class [J")) {
-			Token [] toks = null;
+                        Token [] toks = null;
                         try {
                             if (obj == null) {
                                 throw new InternalErrorException("obj == null?");
@@ -686,10 +686,10 @@ public class GenericJNIActor extends TypedAtomicActor {
                             throw new IllegalActionException(this, ex, "Type '"
                                     + typ + "' is not castable");
                         } catch (IllegalActionException ex2) {
-			    throw new IllegalActionException(this, ex2,
-							     "Failed to send a Long array token " + toks + " to " + port);
-							     
-			}
+                            throw new IllegalActionException(this, ex2,
+                                                             "Failed to send a Long array token " + toks + " to " + port);
+                                                             
+                        }
                     } else if (typ.equals("class [D")) {
                         try {
                             Token[] toks = new Token[((double[]) field.get(obj)).length];

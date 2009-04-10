@@ -21,8 +21,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION_2
+                                                COPYRIGHTENDKEY
 
 
  */
@@ -147,11 +147,11 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
      * Increment the version number of the workspace.
      * 
      * @exception IllegalActionException 
-	 * 				  If the director is not compatible with the specified 
-     *				  container.
+         *                                   If the director is not compatible with the specified 
+     *                                  container.
      * @exception NameDuplicationException 
-	 *				  If the container not a CompositeActor and the name 
-     *				  collides with an entity in the container.
+         *                                  If the container not a CompositeActor and the name 
+     *                                  collides with an entity in the container.
      */
     public PtidesEmbeddedDirector() throws IllegalActionException,
             NameDuplicationException {
@@ -202,7 +202,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
         _initialize();
     }
 
-	///////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////
     ////                    public parameter                       ////
     
     /**
@@ -262,15 +262,15 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
             CloneNotSupportedException throwable = new CloneNotSupportedException();
             throwable.initCause(ex);
             throw throwable;
-	}
+        }
 
         String strategy = null;
         try {
            strategy = ((StringToken) executionStrategy.getToken()).stringValue();
         } catch (Exception ex) {
-	    throw new InternalErrorException(this, ex,
-					     "Should not produce an exception,"
-					     + " this is checked before.");
+            throw new InternalErrorException(this, ex,
+                                             "Should not produce an exception,"
+                                             + " this is checked before.");
         }
         newObject._chooseExecutionStrategy(strategy);
         return newObject;
@@ -379,9 +379,9 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
      *             Thrown if an execution was missed.
      */
     public void fire() throws IllegalActionException {
-	if (_debugging) {
-	    _debug("--- fired: " + this.getContainer().getName() + " " + _currentPhysicalTime);
-	}
+        if (_debugging) {
+            _debug("--- fired: " + this.getContainer().getName() + " " + _currentPhysicalTime);
+        }
         List<TimedEvent> eventsToFire = null;
         TimedEvent event = null;
         boolean iterate = true;
@@ -397,10 +397,10 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
                 Actor actorToFire = (Actor) eventInExecution.contents;
                 Time time = getFinishingTime(actorToFire);
                 if (time.equals(_currentPhysicalTime)) {
-		    if (_debugging) {
-			_debug(" x " + _currentPhysicalTime + " "
+                    if (_debugging) {
+                        _debug(" x " + _currentPhysicalTime + " "
                             + _currentTime + " " + actorToFire);
-		    }
+                    }
                     _eventsInExecution.removeFirst();
                     _currentModelTime = eventInExecution.timeStamp;
                     if (!_fireAtTheBeginningOfTheWcet(actorToFire))
@@ -428,10 +428,10 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
                     eventsToFire, _eventsInExecution);
             event = _executionStrategy.getNextEventToFire(_eventsInExecution,
                     eventsToFire, nextRealTimeEventTime, _currentPhysicalTime);
-	    if (_debugging) {
-		_debug(_currentPhysicalTime + " " + _currentTime + " "
+            if (_debugging) {
+                _debug(_currentPhysicalTime + " " + _currentTime + " "
                     + event);
-	    }
+            }
             // start firing an actor defined by the previously selected event
             if (event != null) {
                 _currentModelTime = event.timeStamp;
@@ -929,17 +929,17 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
                         for (int j = 0; j < recv.length; j++) {
                             PtidesActorReceiver receiver = (PtidesActorReceiver) recv[j];
                             Time time = receiver.getNextTime();
-			    if (_debugging) {
-				_debug(((Actor)getContainer()).getDirector().getModelTime() + " " + getModelTime() + " " + time + " " + actor);
-			    }
+                            if (_debugging) {
+                                _debug(((Actor)getContainer()).getDirector().getModelTime() + " " + getModelTime() + " " + time + " " + actor);
+                            }
                             if (time != null
                                     && (time.compareTo(((Actor)getContainer()).getDirector().getModelTime()) <= 0 ||
                                             _allUpstreamEventsHaveHigherTimestamps(port, 
                                             port, new ArrayList(), new Time(
                                                     this, 0.0), time))) {
-				if (_debugging) {
-				    _debug(actor.getFullName());
-				}
+                                if (_debugging) {
+                                    _debug(actor.getFullName());
+                                }
                                 List<TimedEvent> toRemove = new ArrayList<TimedEvent>();
                                 for (int k = 0; k < events.size(); k++) {
                                     TimedEvent event = events.get(k);

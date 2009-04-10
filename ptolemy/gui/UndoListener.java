@@ -57,7 +57,7 @@ import javax.swing.undo.UndoManager;
  * @author ben leinfelder
  */
 public class UndoListener implements UndoableEditListener {
-	
+        
     /**
      * Construct an undo listener.
      * <p>This constructor allows simple usage without setting up key mapping
@@ -72,8 +72,8 @@ public class UndoListener implements UndoableEditListener {
      * <i>textArea</i> .
      * <p>A typical usage pattern would be:
      * <code>
-     * 	JTextArea textArea = new JTextArea("testing");
-     * 	textArea.getDocument().addUndoableEditListener(new UndoListener(textArea));
+     *         JTextArea textArea = new JTextArea("testing");
+     *         textArea.getDocument().addUndoableEditListener(new UndoListener(textArea));
      * </code>
      * @param textArea the text component that is being listened to
      * and upon which undo/redo actions will be performed
@@ -87,12 +87,12 @@ public class UndoListener implements UndoableEditListener {
         // Ctrl-z or equivalent to undo.
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z,
                              Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
-        		"undo");
+                        "undo");
         actionMap.put("undo", _undoAction);
         // Ctrl-y or equivalent to redo
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_Y,
                              Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()),
-        		"redo");
+                        "redo");
         actionMap.put("redo", _redoAction);
     }
         

@@ -75,33 +75,33 @@ public class ConvertToLazy implements ChangeListener {
     public ConvertToLazy(String xmlFileName, int threshold) throws Throwable {
         MoMLParser parser = new MoMLParser();
 
-	// Save the current MoMLFilters before conversion so that if
-	// we call this class from within a larger application, we don't
-	// change the filters.
-	List oldFilters = MoMLParser.getMoMLFilters();
-	try {
-	    // The test suite calls UseLazyCompositeApplication multiple times,
-	    // and the list of filters is static, so we reset it each time
-	    // so as to avoid adding filters every time we run an auto test.
-	    // We set the list of MoMLFilters to handle Backward Compatibility.
-	    MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
+        // Save the current MoMLFilters before conversion so that if
+        // we call this class from within a larger application, we don't
+        // change the filters.
+        List oldFilters = MoMLParser.getMoMLFilters();
+        try {
+            // The test suite calls UseLazyCompositeApplication multiple times,
+            // and the list of filters is static, so we reset it each time
+            // so as to avoid adding filters every time we run an auto test.
+            // We set the list of MoMLFilters to handle Backward Compatibility.
+            MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
 
-	    // If there is a MoML error, then throw the exception as opposed
-	    // to skipping the error.  If we call StreamErrorHandler instead,
-	    // then the nightly build may fail to report MoML parse errors
-	    // as failed tests
-	    //parser.setErrorHandler(new StreamErrorHandler());
-	    // We use parse(URL, URL) here instead of parseFile(String)
-	    // because parseFile() works best on relative pathnames and
-	    // has problems finding resources like files specified in
-	    // parameters if the xml file was specified as an absolute path.
-	    TypedCompositeActor toplevel = (TypedCompositeActor) parser.parse(null, new File(
+            // If there is a MoML error, then throw the exception as opposed
+            // to skipping the error.  If we call StreamErrorHandler instead,
+            // then the nightly build may fail to report MoML parse errors
+            // as failed tests
+            //parser.setErrorHandler(new StreamErrorHandler());
+            // We use parse(URL, URL) here instead of parseFile(String)
+            // because parseFile() works best on relative pathnames and
+            // has problems finding resources like files specified in
+            // parameters if the xml file was specified as an absolute path.
+            TypedCompositeActor toplevel = (TypedCompositeActor) parser.parse(null, new File(
                 xmlFileName).toURI().toURL());
-	    convert(toplevel, threshold);
-	    System.out.println(toplevel.exportMoML());
-	} finally {
-	    MoMLParser.setMoMLFilters(oldFilters);
-	}
+            convert(toplevel, threshold);
+            System.out.println(toplevel.exportMoML());
+        } finally {
+            MoMLParser.setMoMLFilters(oldFilters);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

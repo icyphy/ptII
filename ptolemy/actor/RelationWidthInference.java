@@ -404,11 +404,11 @@ public class RelationWidthInference {
          if (insideWidth != 0 && outsideWidth != 0 && insideWidth != outsideWidth) {
              throw new IllegalActionException(port, 
                      "The inside width (" + insideWidth + ") and the outside width ("
-		     + outsideWidth + ") of port " + port.getFullName()
+                     + outsideWidth + ") of port " + port.getFullName()
                      + " are not either equal to 0 or not equal to each other and are therefore"
-		     + " inconsistent.\nCan't determine a uniquely defined width for"
+                     + " inconsistent.\nCan't determine a uniquely defined width for"
                      + " the connected relations. A possible fix is to right clicking on either the"
-	             + " inside or outside relation and set the width -1.");
+                     + " inside or outside relation and set the width -1.");
          }
      }
      

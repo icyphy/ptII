@@ -169,16 +169,16 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
         //  [M M IS] Inconsistent synchronization [IS2_INCONSISTENT_SYNC]
         // Actually this is not a problem since the object is
         // being created and hence nobody else has access to it.
-	newObject._outputValues = new LinkedList<String>();
+        newObject._outputValues = new LinkedList<String>();
 
-	try {
-	    Attribute old =  newObject.getAttribute("_windowProperties");
-	    if (old != null) {
-		old.setContainer(null);
-	    }
-	    newObject._windowProperties = new WindowPropertiesAttribute(newObject,
+        try {
+            Attribute old =  newObject.getAttribute("_windowProperties");
+            if (old != null) {
+                old.setContainer(null);
+            }
+            newObject._windowProperties = new WindowPropertiesAttribute(newObject,
                 "_windowProperties");
-	    newObject._windowProperties.setPersistent(true);
+            newObject._windowProperties.setPersistent(true);
         } catch (Exception ex) {
             // CloneNotSupportedException does not have a constructor
             // that takes a cause argument, so we use initCause

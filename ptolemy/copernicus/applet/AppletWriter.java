@@ -254,10 +254,10 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             }
         }
 
-	// The JNLP file to be created
-	String jnlpSourceFileName = _outputDirectory + "/" + _sanitizedModelName + ".jnlp";
-	String jnlpJarFileName = _outputDirectory + "/signed_" + _sanitizedModelName + ".jar";
-	String jnlpUnsignedJarFileName = _outputDirectory + "/" + _sanitizedModelName + ".jar";
+        // The JNLP file to be created
+        String jnlpSourceFileName = _outputDirectory + "/" + _sanitizedModelName + ".jnlp";
+        String jnlpJarFileName = _outputDirectory + "/signed_" + _sanitizedModelName + ".jar";
+        String jnlpUnsignedJarFileName = _outputDirectory + "/" + _sanitizedModelName + ".jar";
 
         try {
             // If the code base is the current directory, then we
@@ -266,17 +266,17 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             // We always want to generate the list of jar files so
             // that if for example we use fsm, then we are sure to
             // include diva.jar
-	    // We do both the applet jar files and the jnlp jar files
+            // We do both the applet jar files and the jnlp jar files
             StringBuffer jarFilesResults = new StringBuffer();
             StringBuffer jnlpJarFilesResults = new StringBuffer();
 
 
-	    // This is the signed jar file that includes the .jnlp file
+            // This is the signed jar file that includes the .jnlp file
             // FIXME: what if we don't want a signed jar?
-	    jnlpJarFilesResults.insert(0, "        <jar href=\""
-				       + _targetPath + "signed_" + _sanitizedModelName + ".jar\""
-				       + _jarFileLengthAttribute(jnlpSourceFileName)
-				       + "\n             main=\"true\"/>\n");
+            jnlpJarFilesResults.insert(0, "        <jar href=\""
+                                       + _targetPath + "signed_" + _sanitizedModelName + ".jar\""
+                                       + _jarFileLengthAttribute(jnlpSourceFileName)
+                                       + "\n             main=\"true\"/>\n");
 
             boolean sawSignedOnce = false;
 
@@ -313,10 +313,10 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     }
                 }
                 System.out.println("signedJarFile: " + signedJarFileName + " signed: \"" + signed + "\"");
-		jnlpJarFilesResults.append("        <jar href=\""
-				    + signed + jarFileName + "\""
- 				    + _jarFileLengthAttribute(_ptIIJarsPath + File.separator + signed + jarFileName)
-				    + "\n             download=\"eager\"/>\n");
+                jnlpJarFilesResults.append("        <jar href=\""
+                                    + signed + jarFileName + "\""
+                                     + _jarFileLengthAttribute(_ptIIJarsPath + File.separator + signed + jarFileName)
+                                    + "\n             download=\"eager\"/>\n");
             }
 
             _modelJarFiles = jarFilesResults.toString();
@@ -325,8 +325,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
             // Get the vergil jar files for the applet
             jarFilesResults = new StringBuffer();
-	    // We don't reset the jar files for jnlp because we assume
-	    // all JNLP files run vergil.
+            // We don't reset the jar files for jnlp because we assume
+            // all JNLP files run vergil.
             jarFileNames = _findVergilJarFiles(director).iterator();
 
             while (jarFileNames.hasNext()) {
@@ -361,14 +361,14 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                                 + "\" and create \"" + signedJarFileName + "\"");
                     }
                 }
-		jnlpJarFilesResults.append("        <jar href=\""
-					   + signed + jarFileName  + "\""
-					   + _jarFileLengthAttribute(_ptIIJarsPath + File.separator + signed + jarFileName)
-					   + "\n             download=\"eager\"/>\n");
+                jnlpJarFilesResults.append("        <jar href=\""
+                                           + signed + jarFileName  + "\""
+                                           + _jarFileLengthAttribute(_ptIIJarsPath + File.separator + signed + jarFileName)
+                                           + "\n             download=\"eager\"/>\n");
             }
 
             _vergilJarFiles = jarFilesResults.toString();
-	    _jnlpJars = jnlpJarFilesResults.toString();
+            _jnlpJars = jnlpJarFilesResults.toString();
 
         } catch (IOException ex) {
             // This exception tends to get eaten by soot, so we print as well.
@@ -424,18 +424,18 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         _substituteMap.put("@appletHeight@", Integer.toString(appletHeight));
         _substituteMap.put("@appletWidth@", Integer.toString(appletWidth));
         _substituteMap.put("@codeBase@", _codeBase);
-	_substituteMap.put("@jnlpJars@", _jnlpJars);
+        _substituteMap.put("@jnlpJars@", _jnlpJars);
         _substituteMap.put("@modelJarFiles@", _modelJarFiles);
         _substituteMap.put("@outputDirectory@", _outputDirectory);
         _substituteMap.put("@sanitizedModelName@", _sanitizedModelName);
         _substituteMap.put("@ptIIJarsPath@", _ptIIJarsPath);
         _substituteMap.put("@ptIIUserDirectory@", _ptIIUserDirectory);
-	try {
-	    _substituteMap.put("@ptIILocalURL@", new URL(new File(_outputDirectory).toURI().toURL(), _codeBase).toString());
-	} catch (Exception ex) {
-	    throw new InternalErrorException(null, ex, "Failed to create URL for \""
-					     + _outputDirectory + "\"");
-	}
+        try {
+            _substituteMap.put("@ptIILocalURL@", new URL(new File(_outputDirectory).toURI().toURL(), _codeBase).toString());
+        } catch (Exception ex) {
+            throw new InternalErrorException(null, ex, "Failed to create URL for \""
+                                             + _outputDirectory + "\"");
+        }
         _substituteMap.put("@targetPath@", _targetPath);
         _substituteMap.put("@vergilHeight@", Integer.toString(vergilHeight));
         _substituteMap.put("@vergilJarFiles@", _vergilJarFiles);
@@ -543,20 +543,20 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     + "modelVergil.htm.in", _substituteMap, _outputDirectory
                     + "/" + _sanitizedModelName + "Vergil.htm");
             CodeGeneratorUtilities.substitute(_templateDirectory
-	            + "model.jnlp.in", _substituteMap, jnlpSourceFileName);
+                    + "model.jnlp.in", _substituteMap, jnlpSourceFileName);
 
-	    _createJarFile(new File(jnlpUnsignedJarFileName),
-			   new String [] {
-			       "JNLP-INF/APPLICATION.JNLP",
+            _createJarFile(new File(jnlpUnsignedJarFileName),
+                           new String [] {
+                               "JNLP-INF/APPLICATION.JNLP",
                                _sanitizedModelName + ".xml",
-			       "ptolemy/copernicus/applet/JNLPApplication.class",
-			       "ptolemy/actor/gui/jnlp/MenuApplication.class"},
-			   new File [] {
-			       new File(_outputDirectory + "/" + _sanitizedModelName + ".jnlp"),
+                               "ptolemy/copernicus/applet/JNLPApplication.class",
+                               "ptolemy/actor/gui/jnlp/MenuApplication.class"},
+                           new File [] {
+                               new File(_outputDirectory + "/" + _sanitizedModelName + ".jnlp"),
                                new File(newModelFileName),
-			       new File(_ptIIJarsPath + "/ptolemy/copernicus/applet/JNLPApplication.class"),
-			       new File(_ptIIJarsPath + "/ptolemy/actor/gui/jnlp/MenuApplication.class"),
-			   });
+                               new File(_ptIIJarsPath + "/ptolemy/copernicus/applet/JNLPApplication.class"),
+                               new File(_ptIIJarsPath + "/ptolemy/actor/gui/jnlp/MenuApplication.class"),
+                           });
 
             _signJarFile(jnlpUnsignedJarFileName,
                     jnlpJarFileName);
@@ -679,13 +679,13 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 // we copy the jar file.
                 // Ptolemy II development trees will have jar files
                 // if 'make install' was run.
-		String signedSourceFileName = _ptIIJarsPath + File.separator
-		    + "signed" + File.separator + jarFile;
-		File signedSourceFile = new File(signedSourceFileName);
-		if (signedSourceFile.isFile()) {
-		    _copyFile(signedSourceFileName,
+                String signedSourceFileName = _ptIIJarsPath + File.separator
+                    + "signed" + File.separator + jarFile;
+                File signedSourceFile = new File(signedSourceFileName);
+                if (signedSourceFile.isFile()) {
+                    _copyFile(signedSourceFileName,
                         _outputDirectory, jarFile);
-		} else {
+                } else {
                     String sourceJarFileName = _ptIIJarsPath + File.separator + jarFile;
                     try {
                         // FIXME: this will try to sign the applet jar files.
@@ -700,7 +700,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                                 _outputDirectory, jarFile);
                     }
 
-		}
+                }
             }
 
             return true;
@@ -910,16 +910,16 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
     /** Return the file size as a JNLP file attribute
      */
     private String _jarFileLengthAttribute(String fileName) throws IOException {
-	String fileLength = "";
-	try {
-	    File file = new File(fileName);
-	    //System.out.println("AppletWriter: " + fileName + " " + file.length());  
-	    return "\n             size=\"" + file.length() + "\"";
-	} catch (Exception ex) {
-	    System.out.println("Warning, could not find size of \"" + fileName
-			       + "\" : " + ex.getMessage());
-	}
-	return "";
+        String fileLength = "";
+        try {
+            File file = new File(fileName);
+            //System.out.println("AppletWriter: " + fileName + " " + file.length());  
+            return "\n             size=\"" + file.length() + "\"";
+        } catch (Exception ex) {
+            System.out.println("Warning, could not find size of \"" + fileName
+                               + "\" : " + ex.getMessage());
+        }
+        return "";
     }
 
     // find jar necessary jar files and optionally copy jar files into
@@ -1140,59 +1140,59 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
     }
 
     /** Create a jar file.
-     *	Based on http://www.java2s.com/Code/Java/File-Input-Output/CreateJarfile.htm
+     *        Based on http://www.java2s.com/Code/Java/File-Input-Output/CreateJarfile.htm
      */
     private void _createJarFile(File jarFile, String [] jarFileNames, File[] filesToBeJared) 
-	throws Exception {
-	
-	byte buffer[] = new byte[1024];
+        throws Exception {
+        
+        byte buffer[] = new byte[1024];
 
-	// Open archive file
-	FileOutputStream outputStream = null;
-	JarOutputStream jarOutputStream = null;
+        // Open archive file
+        FileOutputStream outputStream = null;
+        JarOutputStream jarOutputStream = null;
 
-	try {
-	    outputStream = new FileOutputStream(jarFile);
-	    jarOutputStream = new JarOutputStream(outputStream, new Manifest());
+        try {
+            outputStream = new FileOutputStream(jarFile);
+            jarOutputStream = new JarOutputStream(outputStream, new Manifest());
 
-	    for (int i = 0; i < filesToBeJared.length; i++) {
-		if (filesToBeJared[i] == null || !filesToBeJared[i].exists()
-		    || filesToBeJared[i].isDirectory()) {
-		    continue; // Just in case...
-		}
-		System.out.println("Adding " + filesToBeJared[i].getName());
+            for (int i = 0; i < filesToBeJared.length; i++) {
+                if (filesToBeJared[i] == null || !filesToBeJared[i].exists()
+                    || filesToBeJared[i].isDirectory()) {
+                    continue; // Just in case...
+                }
+                System.out.println("Adding " + filesToBeJared[i].getName());
 
-		// Add archive entry
-		JarEntry jarEntry = new JarEntry(jarFileNames[i]);
-		jarEntry.setTime(filesToBeJared[i].lastModified());
-		jarOutputStream.putNextEntry(jarEntry);
+                // Add archive entry
+                JarEntry jarEntry = new JarEntry(jarFileNames[i]);
+                jarEntry.setTime(filesToBeJared[i].lastModified());
+                jarOutputStream.putNextEntry(jarEntry);
 
-		// Write file to archive
-		FileInputStream in = null;
-		try {
-		    in = new FileInputStream(filesToBeJared[i]);
-		    while (true) {
-			int nRead = in.read(buffer, 0, buffer.length);
-			if (nRead <= 0) {
-			    break;
-			}
-			jarOutputStream.write(buffer, 0, nRead);
-		    }
-		} finally {
-		    if (in != null) {
-			in.close();
-		    }
-		}
-	    }
-	} finally {
-	    if (jarOutputStream != null) {
-		try {
-		    jarOutputStream.close();
-		} catch (IOException ex) {
-		    System.out.println("Failed to close \"" + jarFile.getCanonicalPath() + "\"");
-		}
-	    }
-	}
+                // Write file to archive
+                FileInputStream in = null;
+                try {
+                    in = new FileInputStream(filesToBeJared[i]);
+                    while (true) {
+                        int nRead = in.read(buffer, 0, buffer.length);
+                        if (nRead <= 0) {
+                            break;
+                        }
+                        jarOutputStream.write(buffer, 0, nRead);
+                    }
+                } finally {
+                    if (in != null) {
+                        in.close();
+                    }
+                }
+            }
+        } finally {
+            if (jarOutputStream != null) {
+                try {
+                    jarOutputStream.close();
+                } catch (IOException ex) {
+                    System.out.println("Failed to close \"" + jarFile.getCanonicalPath() + "\"");
+                }
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

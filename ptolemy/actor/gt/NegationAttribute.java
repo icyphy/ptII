@@ -46,22 +46,22 @@ import ptolemy.kernel.util.Workspace;
  */
 public class NegationAttribute extends MatchingAttribute {
 
-	/**
-	 *  @param container
-	 *  @param name
-	 *  @throws NameDuplicationException
-	 *  @throws IllegalActionException
-	 */
-	public NegationAttribute(NamedObj container, String name)
-			throws NameDuplicationException, IllegalActionException {
-		super(container, name);
-	}
+        /**
+         *  @param container
+         *  @param name
+         *  @throws NameDuplicationException
+         *  @throws IllegalActionException
+         */
+        public NegationAttribute(NamedObj container, String name)
+                        throws NameDuplicationException, IllegalActionException {
+                super(container, name);
+        }
 
-	/**
-	 *  @param workspace
-	 */
-	public NegationAttribute(Workspace workspace) {
-		super(workspace);
-	}
+        /**
+         *  @param workspace
+         */
+        public NegationAttribute(Workspace workspace) {
+                super(workspace);
+        }
 
 }

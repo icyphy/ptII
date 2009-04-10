@@ -46,22 +46,22 @@ import ptolemy.kernel.util.Workspace;
  */
 public class OptionAttribute extends MatchingAttribute {
 
-	/**
-	 *  @param container
-	 *  @param name
-	 *  @throws NameDuplicationException
-	 *  @throws IllegalActionException
-	 */
-	public OptionAttribute(NamedObj container, String name)
-			throws NameDuplicationException, IllegalActionException {
-		super(container, name);
-	}
+        /**
+         *  @param container
+         *  @param name
+         *  @throws NameDuplicationException
+         *  @throws IllegalActionException
+         */
+        public OptionAttribute(NamedObj container, String name)
+                        throws NameDuplicationException, IllegalActionException {
+                super(container, name);
+        }
 
-	/**
-	 *  @param workspace
-	 */
-	public OptionAttribute(Workspace workspace) {
-		super(workspace);
-	}
+        /**
+         *  @param workspace
+         */
+        public OptionAttribute(Workspace workspace) {
+                super(workspace);
+        }
 
 }

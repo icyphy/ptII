@@ -171,32 +171,32 @@ public final class NamedList implements Cloneable, Serializable {
      */
     public Nameable get(String name) {
         if (_hashEnabled) {
-	    // If the name was changed, then _hashedList will be wrong
-	    Nameable found = _hashedList.get(name);
-	    if (found != null) {
-		if (found.getName().equals(name)) {
-		    return found;
-		} else {
-		    // The name of the Nameable was changed, but the
-		    // _hashedList was not updated, so we remove the old
-		    // entry.
-		    _hashedList.remove(name);
-		}
-	    }
-	}
+            // If the name was changed, then _hashedList will be wrong
+            Nameable found = _hashedList.get(name);
+            if (found != null) {
+                if (found.getName().equals(name)) {
+                    return found;
+                } else {
+                    // The name of the Nameable was changed, but the
+                    // _hashedList was not updated, so we remove the old
+                    // entry.
+                    _hashedList.remove(name);
+                }
+            }
+        }
 
-	// Do a linear search
+        // Do a linear search
         Iterator iterator = _namedList.iterator();
 
         while (iterator.hasNext()) {
             Nameable obj = (Nameable) iterator.next();
 
             if (name.equals(obj.getName())) {
-		if (_hashEnabled) {
-		    // The name of the NamedObj was likely changed, so
-		    // add it to the hashedList.
-		    _hashedList.put(name, obj);
-		}
+                if (_hashEnabled) {
+                    // The name of the NamedObj was likely changed, so
+                    // add it to the hashedList.
+                    _hashedList.put(name, obj);
+                }
                 return obj;
             }
         }
@@ -544,8 +544,8 @@ public final class NamedList implements Cloneable, Serializable {
     /** @serial A LinkedList containing the elements. */
     private LinkedList<Nameable> _namedList = new LinkedList<Nameable>() {
         public boolean add(Nameable obj) {
-	    // Findbugs: "Ambiguous invocation of either an outer or
-	    // inherited method java.util.LinkedList.size()," so we use super.size()
+            // Findbugs: "Ambiguous invocation of either an outer or
+            // inherited method java.util.LinkedList.size()," so we use super.size()
             if (super.size() > _threshhold && !_hashEnabled) {
                 enableHash();
             }

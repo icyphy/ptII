@@ -306,9 +306,9 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             code.append(_generateFireCode());
             code.append(generateTypeConvertFireCode());
         } else if (getComponent().getContainer() != null) {
-	    // Needed for jni and embeddedJava
+            // Needed for jni and embeddedJava
             code.append(_generateFireCode());
-	} else {
+        } else {
             code.append(_generateFireInvocation(
                     getComponent()) + ";" + _eol);
         }
@@ -990,20 +990,20 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                             "Failed to generate parse tree for \"" + name
                             + "\". in \"" + container + "\"");
                 }
-		try {
-		    parseTreeCodeGenerator.evaluateParseTree(parseTree,
-							     new VariableScope(variable));
-		} catch (Exception ex) {
-		    StringBuffer results = new StringBuffer();
-		    Iterator allScopedVariableNames = ModelScope.getAllScopedVariableNames(variable,container).iterator();
-		    while (allScopedVariableNames.hasNext()) {
-			results.append(allScopedVariableNames.next().toString() + "\n");
-		    }
-		    throw new IllegalActionException(getComponent(), ex,
-						     "Failed to find " + variable.getFullName() + "\n"
-						     + results.toString());
-		    
-		}
+                try {
+                    parseTreeCodeGenerator.evaluateParseTree(parseTree,
+                                                             new VariableScope(variable));
+                } catch (Exception ex) {
+                    StringBuffer results = new StringBuffer();
+                    Iterator allScopedVariableNames = ModelScope.getAllScopedVariableNames(variable,container).iterator();
+                    while (allScopedVariableNames.hasNext()) {
+                        results.append(allScopedVariableNames.next().toString() + "\n");
+                    }
+                    throw new IllegalActionException(getComponent(), ex,
+                                                     "Failed to find " + variable.getFullName() + "\n"
+                                                     + results.toString());
+                    
+                }
 
                 String fireCode = processCode(parseTreeCodeGenerator
                         .generateFireCode());
@@ -1316,7 +1316,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                 throw new IllegalActionException(this, throwable,
                         "Failed to replace the parameter \"" + name
                         + "\" in the macro \"" + macro
-		        + "\".\nInitial code was:\n" + code);
+                        + "\".\nInitial code was:\n" + code);
             }
 
             String string = code.substring(closeParenIndex + 1, nextPos);
@@ -1395,7 +1395,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     public void setWriteOffset(IOPort port, int channelNumber,
             Object writeOffset) throws IllegalActionException {
         ((PortCodeGenerator) _getHelper(port))
-	    .setWriteOffset(channelNumber, writeOffset);
+            .setWriteOffset(channelNumber, writeOffset);
     }
 
     /**
@@ -2168,10 +2168,10 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             return null;
         }
     
-	public String toString() {
-	    return super.toString() + " variable: " + _variable + " variable.parserScope: "
-		+ (_variable == null ? "N/A, _variable is null" : _variable.getParserScope());
-	}
+        public String toString() {
+            return super.toString() + " variable: " + _variable + " variable.parserScope: "
+                + (_variable == null ? "N/A, _variable is null" : _variable.getParserScope());
+        }
         ///////////////////////////////////////////////////////////////////
         ////                         private variables                 ////
     

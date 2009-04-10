@@ -1163,10 +1163,10 @@ public class CCodeGenerator extends CodeGenerator {
 
             String osName = StringUtilities.getProperty("os.name");
             if (osName != null) {
-		// Keep these alphabetical
+                // Keep these alphabetical
                 if (osName.startsWith("Linux")) {
                     substituteMap.put("@PTJNI_GCC_SHARED_FLAG@", "-shared");
-		    // Need -fPIC for jni actors, see 
+                    // Need -fPIC for jni actors, see 
                     // codegen/c/actor/lib/jni/test/auto/Scale.xml
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_CFLAG@", "-fPIC");
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "lib");
@@ -1181,20 +1181,20 @@ public class CCodeGenerator extends CodeGenerator {
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@", "-fPIC");
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "lib");
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "so");
-		} else if (osName.startsWith("Windows")) {
+                } else if (osName.startsWith("Windows")) {
                     substituteMap.put("@PTJNI_GCC_SHARED_FLAG@", "-shared");
                     substituteMap.put("@PTJNI_NO_CYGWIN@", "-mno-cygwin");
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@",
                             "-Wl,--add-stdcall-alias");
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "dll");
-		} else {
+                } else {
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@", 
-				      "# Unknown java property os.name \"" + osName 
-				      + "\" please edit ptolemy/codegen/c/"
-				      + "kernel/CCodeGenerator.java and "
-				      + "ptolemy/actor/lib/jni/"
-				      + "CompiledCompositeActor.java");
-		}
+                                      "# Unknown java property os.name \"" + osName 
+                                      + "\" please edit ptolemy/codegen/c/"
+                                      + "kernel/CCodeGenerator.java and "
+                                      + "ptolemy/actor/lib/jni/"
+                                      + "CompiledCompositeActor.java");
+                }
 
             }
         } catch (IllegalActionException ex) {
@@ -1341,7 +1341,7 @@ public class CCodeGenerator extends CodeGenerator {
 
     private CodeStream _overloadedFunctions;
 
-	/** An ordered set of function code */
+        /** An ordered set of function code */
     LinkedHashSet<String> _overloadedFunctionSet;
 
     /** Set of type/function combinations that are not supported.

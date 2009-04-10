@@ -45,23 +45,23 @@ public class QueryChooserHelper {
 
   /**  Determine the parent of this frame.
    * 
-   * @param container	the container
-   * @return		the parent frame if one exists or null if not
+   * @param container        the container
+   * @return                the parent frame if one exists or null if not
    */
   public static Frame getParentFrame(Container container) {
-    Frame	result;
-    Container	parent;
+    Frame        result;
+    Container        parent;
 
     result = null;
 
     parent = container;
     while (parent != null) {
       if (parent instanceof Frame) {
-	result = (Frame) parent;
-	break;
+        result = (Frame) parent;
+        break;
       }
       else {
-	parent = parent.getParent();
+        parent = parent.getParent();
       }
     }
 
@@ -71,23 +71,23 @@ public class QueryChooserHelper {
   /**
    * Determine the dialog of this frame.
    * 
-   * @param container	the container
-   * @return		the parent dialog if one exists or null if not
+   * @param container        the container
+   * @return                the parent dialog if one exists or null if not
    */
   public static Dialog getParentDialog(Container container) {
-    Dialog	result;
-    Container	parent;
+    Dialog        result;
+    Container        parent;
 
     result = null;
 
     parent = container;
     while (parent != null) {
       if (parent instanceof Dialog) {
-	result = (Dialog) parent;
-	break;
+        result = (Dialog) parent;
+        break;
       }
       else {
-	parent = parent.getParent();
+        parent = parent.getParent();
       }
     }
 

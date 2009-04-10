@@ -97,9 +97,9 @@ public class DEMessageSource extends RandomSource {
         //        " initializing at time " + getCurrentTime());
         DEDirector dir = (DEDirector) getDirector();
         Time now = dir.getModelTime();
-	_generateRandomNumber();
+        _generateRandomNumber();
         dir.fireAt(this, now.add(((DoubleToken) maxDelay.getToken())
-				 .doubleValue() * _current));
+                                 .doubleValue() * _current));
     }
 
     /** If this is the first fire, output the request
@@ -128,8 +128,8 @@ public class DEMessageSource extends RandomSource {
                 // ignore this
             } else {
                 // compute a random delay between zero and MaxDelay.
-		// super.fire calls _generateRandomNumber for us,
-		// which sets _current.
+                // super.fire calls _generateRandomNumber for us,
+                // which sets _current.
                 double delay = maxDelayValue * _current;
                 _nextMsgTime = now.add(delay);
                 dir.fireAt(this, _nextMsgTime);
@@ -180,8 +180,8 @@ public class DEMessageSource extends RandomSource {
      *  values.
      */
     protected void _generateRandomNumber()
-	throws IllegalActionException {
-	_current = _random.nextDouble();
+        throws IllegalActionException {
+        _current = _random.nextDouble();
     }
 
 

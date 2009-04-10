@@ -2014,7 +2014,7 @@ public class PlotBox extends JPanel implements Printable {
 
         int captionHeight = (_captionStrings.size()) * (_captionFontMetrics.getHeight());
         if (captionHeight > 0) {
-            captionHeight += 5; 	//extra padding
+            captionHeight += 5;         //extra padding
         }
 
         // Number of vertical tick marks depends on the height of the font
@@ -4380,15 +4380,15 @@ public class PlotBox extends JPanel implements Printable {
                     || (event.getModifiers() == 0)) {
                 PlotBox.this._zoomStart(event.getX(), event.getY());
             }
-	    // Want to convert from mouse presses to data points?
-	    // Comment out the if clause above and uncomment this println:
-	    //System.out.println("PlotBox.mousePressed(): ("
-	    //		       + event.getX() + ", " + event.getY()
-            //		       + ") = ("
-            //		       + (_xMin + ((event.getX() - _ulx) / _xscale))
-            //		       + ", "
-            //		       + (_yMax - ((event.getY() - _uly) / _yscale))
-	    //                 + ")");
+            // Want to convert from mouse presses to data points?
+            // Comment out the if clause above and uncomment this println:
+            //System.out.println("PlotBox.mousePressed(): ("
+            //                       + event.getX() + ", " + event.getY()
+            //                       + ") = ("
+            //                       + (_xMin + ((event.getX() - _ulx) / _xscale))
+            //                       + ", "
+            //                       + (_yMax - ((event.getY() - _uly) / _yscale))
+            //                 + ")");
         }
 
         public void mouseReleased(MouseEvent event) {

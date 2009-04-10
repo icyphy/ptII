@@ -307,10 +307,10 @@ public class ClassChanges implements MoMLFilter {
                 "ptolemy.vergil.actor.lib.ModelDisplay");
 
         _classChanges.put("ptolemy.domains.sr.lib.ButtonTime",
-			  "ptolemy.domains.sr.lib.gui.ButtonTime");
+                          "ptolemy.domains.sr.lib.gui.ButtonTime");
 
         _classChanges.put("ptolemy.domains.sr.lib.NonStrictDisplay",
-			  "ptolemy.domains.sr.lib.gui.NonStrictDisplay");
+                          "ptolemy.domains.sr.lib.gui.NonStrictDisplay");
 
         
         // Look for Kepler's NamedObjId, and if we don't find it, then
@@ -324,7 +324,7 @@ public class ClassChanges implements MoMLFilter {
         }
 
         _classChanges.put("ptolemy.data.unit.UnitAttribute",
-			  "ptolemy.moml.unit.UnitAttribute");
+                          "ptolemy.moml.unit.UnitAttribute");
     }
 
     // Set of class names that are obsolete and should be simply

@@ -77,11 +77,11 @@ public class Pulse extends JavaCodeGeneratorHelper {
         if (!isPrimitive(type)) {
             args.add("$tokenFunc($ref(values, 0)::zero())");
         } else {
-	    if (type == BaseType.BOOLEAN) {
-		args.add("false");
-	    } else {
-		args.add("0");
-	    }
+            if (type == BaseType.BOOLEAN) {
+                args.add("false");
+            } else {
+                args.add("0");
+            }
         }
 
         code.append(_generateBlockCode("initBlock", args));

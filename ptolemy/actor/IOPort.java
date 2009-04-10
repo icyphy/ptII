@@ -546,12 +546,12 @@ public class IOPort extends ComponentPort {
                     if (!madeOne && (myWidth == 1) && (width > 1)) {
                         width = 1;
                     }
-		    if (width == -1) {
-			throw new IllegalActionException(this,
-							 "Width of relation \""
-							 + relation.getName()
-							 + "\" was -1?");
-		    }
+                    if (width == -1) {
+                        throw new IllegalActionException(this,
+                                                         "Width of relation \""
+                                                         + relation.getName()
+                                                         + "\" was -1?");
+                    }
 
                     Receiver[][] result = new Receiver[width][1];
 

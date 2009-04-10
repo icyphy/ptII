@@ -334,9 +334,9 @@ public class MirrorComposite extends TypedCompositeActor implements
 
         super._addPort(port);
         
-	// Findbugs: The if clause above requires that we have a
-	// MirrorPort if we are here, so there is no way that we can
-	// have a ParameterPort.
+        // Findbugs: The if clause above requires that we have a
+        // MirrorPort if we are here, so there is no way that we can
+        // have a ParameterPort.
         //if (!_mirrorParameterPorts && (port instanceof ParameterPort)) {
         //    return;
         //}

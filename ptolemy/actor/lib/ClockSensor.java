@@ -323,10 +323,10 @@ public class ClockSensor extends TimedSource {
 
 
         try {
-	    ArrayToken offsetsValue = (ArrayToken) offsets.getToken();
-	    newObject._offsets = new double[offsetsValue.length()];
-	    System.arraycopy(_offsets, 0, newObject._offsets,
-			 0, _offsets.length);
+            ArrayToken offsetsValue = (ArrayToken) offsets.getToken();
+            newObject._offsets = new double[offsetsValue.length()];
+            System.arraycopy(_offsets, 0, newObject._offsets,
+                         0, _offsets.length);
         } catch (IllegalActionException ex) {
             // CloneNotSupportedException does not have a constructor
             // that takes a cause argument, so we use initCause

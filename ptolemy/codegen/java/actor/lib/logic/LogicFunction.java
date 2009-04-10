@@ -73,7 +73,7 @@ public class LogicFunction extends JavaCodeGeneratorHelper {
         codeBuffer.append("((");
 
         for (int i = 0; i < actor.input.getWidth(); i++) {
-	    codeBuffer.append("$ref(input#" + i + ")");
+            codeBuffer.append("$ref(input#" + i + ")");
 
             if (i < (actor.input.getWidth() - 1)) {
                 if (function.equals("and") || function.equals("nand")) {

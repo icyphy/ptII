@@ -416,8 +416,8 @@ public class HTMLViewer extends TableauFrame implements Printable,
      *  <a href="http://bugzilla.ecoinformatics.org/show_bug.cgi?id=3801">open dialog, common places pane has white box instead of text</a>.
      */
     protected void _open() {
-    	HTMLDocument doc = (HTMLDocument) pane.getDocument();
-	StyleSheet styleSheet = doc.getStyleSheet();
+            HTMLDocument doc = (HTMLDocument) pane.getDocument();
+        StyleSheet styleSheet = doc.getStyleSheet();
 
 
         // Debugging code, useful for seeing what properties are set.
@@ -465,7 +465,7 @@ public class HTMLViewer extends TableauFrame implements Printable,
             ex.printStackTrace();
         }
 
-	try {
+        try {
             try {
                 // Get the color of the ToolBar shadow and use it.
                 Color shadow = UIManager.getColor("ToolBar.shadow");
@@ -474,12 +474,12 @@ public class HTMLViewer extends TableauFrame implements Printable,
                         + rgb.substring(2, rgb.length())
                         + ";}");
                 _HTMLEditorKit.setStyleSheet(styleSheet);
-	    } catch (Exception ex) {
+            } catch (Exception ex) {
                 System.err.println("Problem setting background color");
                 ex.printStackTrace();
             }
-	    super._open();
-	} finally {
+            super._open();
+        } finally {
             try {
                 if (background != null) {
                     // Restore the background color.
@@ -489,11 +489,11 @@ public class HTMLViewer extends TableauFrame implements Printable,
                             + ";}");
                     _HTMLEditorKit.setStyleSheet(styleSheet);
                 } 
-	    } catch (Exception ex) {
+            } catch (Exception ex) {
                 System.out.println("Problem restoring background color.");
                 ex.printStackTrace();
             }
-	}
+        }
     }
 
     /** Set the scroller size.

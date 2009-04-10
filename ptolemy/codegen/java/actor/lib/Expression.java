@@ -135,16 +135,16 @@ public class Expression extends JavaCodeGeneratorHelper {
             // Note that the parser is NOT retained, since in most
             // cases the expression doesn't change, and the parser
             // requires a large amount of memory.
-	    if (1 == 0) {
-		// Debugging
-		PtParser parser = new PtParser();
-		ASTPtRootNode parseTree = parser.generateParseTree(actor.expression
-								   .getExpression());
+            if (1 == 0) {
+                // Debugging
+                PtParser parser = new PtParser();
+                ASTPtRootNode parseTree = parser.generateParseTree(actor.expression
+                                                                   .getExpression());
 
-		System.out.println("Expression trace:\n" 
-				   + _javaParseTreeCodeGenerator.traceParseTreeEvaluation(parseTree,
-											  new VariableScope(actor)));
-	    }
+                System.out.println("Expression trace:\n" 
+                                   + _javaParseTreeCodeGenerator.traceParseTreeEvaluation(parseTree,
+                                                                                          new VariableScope(actor)));
+            }
             PtParser parser = new PtParser();
             ASTPtRootNode parseTree = parser.generateParseTree(actor.expression
                     .getExpression());

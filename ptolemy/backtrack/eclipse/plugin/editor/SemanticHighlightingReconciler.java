@@ -760,8 +760,8 @@ public class SemanticHighlightingReconciler implements
 
                     CompilationUnit ast = JavaPlugin.getDefault()
                             .getASTProvider().getAST(
-                            		EditorUtility.getEditorInputJavaElement(
-                            				_editor, false),
+                                            EditorUtility.getEditorInputJavaElement(
+                                                            _editor, false),
                                     ASTProvider.WAIT_YES, monitor);
                     reconciled(ast, false, monitor);
 

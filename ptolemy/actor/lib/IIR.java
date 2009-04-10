@@ -188,9 +188,9 @@ public class IIR extends Transformer {
             throw throwable;
         }
 
-	newObject._stateVector = new Token[_stateVector.length];
-	System.arraycopy(_stateVector, 0, newObject._stateVector,
-			 0, _stateVector.length);
+        newObject._stateVector = new Token[_stateVector.length];
+        System.arraycopy(_stateVector, 0, newObject._stateVector,
+                         0, _stateVector.length);
 
         return newObject;
     }

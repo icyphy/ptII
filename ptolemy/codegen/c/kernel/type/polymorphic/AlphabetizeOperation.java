@@ -68,7 +68,7 @@ public class AlphabetizeOperation {
                     // mis-typed, and will create compile bugs in code generation.
                     if (fragments.length <= 1) {
                         System.err.println("Warning -- " + signature + " does not" +
-                        		" contains the definition for " + signature.functionName);
+                                        " contains the definition for " + signature.functionName);
                     }
                     code.append(templateCode);
                     

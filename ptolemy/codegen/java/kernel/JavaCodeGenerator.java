@@ -242,12 +242,12 @@ public class JavaCodeGenerator extends CodeGenerator {
         if (isTopLevel()) {
             mainEntryCode.append(_eol + _eol
                     + "public static void main(String [] args) throws Exception {" + _eol
-				 + _sanitizedModelName + " model = new "
-				 + _sanitizedModelName + "();" + _eol
-				 + "model.run();" + _eol
-				 + "}" + _eol
-				 + "public void run() throws Exception {" + _eol);
-				 
+                                 + _sanitizedModelName + " model = new "
+                                 + _sanitizedModelName + "();" + _eol
+                                 + "model.run();" + _eol
+                                 + "}" + _eol
+                                 + "public void run() throws Exception {" + _eol);
+                                 
             String targetValue = target.getExpression();
             if (!targetValue.equals(_DEFAULT_TARGET)) {
                 mainEntryCode.append("//FIXME: JavaCodeGenerator hack" + _eol
@@ -534,8 +534,8 @@ public class JavaCodeGenerator extends CodeGenerator {
                     // generated code because the function table makes
                     // reference to this label.
 
-		    System.out.println("Warning, failed to find " + typesArray[i] + "_"
-				       + functionsArray[j]);
+                    System.out.println("Warning, failed to find " + typesArray[i] + "_"
+                                       + functionsArray[j]);
 //                     typeStreams[i].append("#define " + typesArray[i] + "_"
 //                             + functionsArray[j] + " MISSING " + _eol);
 
@@ -720,36 +720,36 @@ public class JavaCodeGenerator extends CodeGenerator {
             while ((line = bufferedReader.readLine()) != null) {
                 String methodName = prefix + "_" + methodNumber++;
                 body = new StringBuffer(line + _eol);
-		int openBracketCount = 0;
-		int commentCount = 0;
+                int openBracketCount = 0;
+                int commentCount = 0;
                 for (int i = 0; ((i + 1) < linesPerMethod && line != null)
-			 || openBracketCount > 0
-			 || commentCount > 0; i++) {
+                         || openBracketCount > 0
+                         || commentCount > 0; i++) {
                     lineNumber++;
                     line = bufferedReader.readLine();
                     if (line != null) {
-			body.append(line + _eol);
-			String trimmedLine = line.trim();
-			if (trimmedLine.startsWith("/*")) {
-			    commentCount++;
-			}
-			if (trimmedLine.endsWith("*/")) {
-			    commentCount--;
-			}
+                        body.append(line + _eol);
+                        String trimmedLine = line.trim();
+                        if (trimmedLine.startsWith("/*")) {
+                            commentCount++;
+                        }
+                        if (trimmedLine.endsWith("*/")) {
+                            commentCount--;
+                        }
 
-			if (!trimmedLine.startsWith("//")
-			    && !trimmedLine.startsWith("/*")
-			    && !trimmedLine.startsWith("*")) {
-			    // Look for curly braces in non-commented lines
-			    // This code could be buggy . . .
-			    if (line.trim().endsWith("{")) {
-				openBracketCount++;
-			    }
-			    // Lines can both start and end with braces.
-			    if (line.trim().startsWith("}")) {
-				openBracketCount--;
-			    }
-			}
+                        if (!trimmedLine.startsWith("//")
+                            && !trimmedLine.startsWith("/*")
+                            && !trimmedLine.startsWith("*")) {
+                            // Look for curly braces in non-commented lines
+                            // This code could be buggy . . .
+                            if (line.trim().endsWith("{")) {
+                                openBracketCount++;
+                            }
+                            // Lines can both start and end with braces.
+                            if (line.trim().startsWith("}")) {
+                                openBracketCount--;
+                            }
+                        }
                     }
                 }
 
@@ -861,10 +861,10 @@ public class JavaCodeGenerator extends CodeGenerator {
         _overloadedFunctions.parse(typeDir + "Matrix.j");
         _overloadedFunctions.parse(typeDir + "String.j");
 
-	//        String directorFunctionDir = cCodegenPath + "parameterized/directorFunctions/";
-	//        _overloadedFunctions.parse(directorFunctionDir + "PNDirector.java");
-	//        _overloadedFunctions.parse(directorFunctionDir + "OpenRtosPNDirector.java");
-	//        _overloadedFunctions.parse(directorFunctionDir + "MpiPNDirector.c");
+        //        String directorFunctionDir = cCodegenPath + "parameterized/directorFunctions/";
+        //        _overloadedFunctions.parse(directorFunctionDir + "PNDirector.java");
+        //        _overloadedFunctions.parse(directorFunctionDir + "OpenRtosPNDirector.java");
+        //        _overloadedFunctions.parse(directorFunctionDir + "MpiPNDirector.c");
 
         _overloadedFunctionSet = new HashSet<String>();
 
@@ -888,7 +888,7 @@ public class JavaCodeGenerator extends CodeGenerator {
 
         if (isTopLevel()) {
             if (((BooleanToken) run.getToken()).booleanValue()) {
-		commands.add("make -f " + _sanitizedModelName + ".mk run");
+                commands.add("make -f " + _sanitizedModelName + ".mk run");
             }
         }
 
@@ -926,60 +926,60 @@ public class JavaCodeGenerator extends CodeGenerator {
     protected StringBuffer _finalPassOverCode(StringBuffer code)
             throws IllegalActionException {
 
-	// Simple cpp like preprocessor
-	// #define foo
-	// #ifdef foo
-	// #endif
-	// Note that foo does not have a value.
-	// Nested ifdefs are not supported.
+        // Simple cpp like preprocessor
+        // #define foo
+        // #ifdef foo
+        // #endif
+        // Note that foo does not have a value.
+        // Nested ifdefs are not supported.
 
         StringTokenizer tokenizer = new StringTokenizer(
                 code.toString(), _eol + "\n");
 
-	code = new StringBuffer();
+        code = new StringBuffer();
 
-	boolean okToPrint = true;
-	HashSet defines = new HashSet<String>();
+        boolean okToPrint = true;
+        HashSet defines = new HashSet<String>();
         while (tokenizer.hasMoreTokens()) {
             String line = tokenizer.nextToken();
-	    if (line.indexOf("#") == -1) {
-		if (!okToPrint) {
-		    code.append("//" + line + _eol);
-		} else {
-		    // Use // style comments in case there is a /* .. */ comment.
-		    code.append(line + _eol);		
-		}
-	    } else {
-		line = line.trim();
-		int defineIndex = line.indexOf("#define");
-		if (defineIndex > -1) {
-		    String define = line.substring(defineIndex + 8);
-		    if (define.indexOf(" ") != -1) {
-			define = define.substring(0, define.indexOf(" "));
-		    }
-		    defines.add(define);
-		}
-		int ifIndex = line.indexOf("#ifdef");
-		if (ifIndex > -1) {
-		    String define = line.substring(ifIndex + 7);
-		    if (define.indexOf(" ") != -1) {
-			define = define.substring(0, define.indexOf(" "));
-		    }
-		    if (defines.contains(define)) {
-			okToPrint = true;
-		    } else {
-			okToPrint = false;
-		    }
-		} else {
-		    if (line.startsWith("#endif")) {
-			okToPrint = true;
-		    }
-		}
-		code.append("// " + line + _eol);
-	    }
+            if (line.indexOf("#") == -1) {
+                if (!okToPrint) {
+                    code.append("//" + line + _eol);
+                } else {
+                    // Use // style comments in case there is a /* .. */ comment.
+                    code.append(line + _eol);                
+                }
+            } else {
+                line = line.trim();
+                int defineIndex = line.indexOf("#define");
+                if (defineIndex > -1) {
+                    String define = line.substring(defineIndex + 8);
+                    if (define.indexOf(" ") != -1) {
+                        define = define.substring(0, define.indexOf(" "));
+                    }
+                    defines.add(define);
+                }
+                int ifIndex = line.indexOf("#ifdef");
+                if (ifIndex > -1) {
+                    String define = line.substring(ifIndex + 7);
+                    if (define.indexOf(" ") != -1) {
+                        define = define.substring(0, define.indexOf(" "));
+                    }
+                    if (defines.contains(define)) {
+                        okToPrint = true;
+                    } else {
+                        okToPrint = false;
+                    }
+                } else {
+                    if (line.startsWith("#endif")) {
+                        okToPrint = true;
+                    }
+                }
+                code.append("// " + line + _eol);
+            }
         }
 
-	// Run the pass over the code after pseudo preprocessing
+        // Run the pass over the code after pseudo preprocessing
         code = super._finalPassOverCode(code);
 
         if (((BooleanToken) sourceLineBinding.getToken()).booleanValue()) {
@@ -1060,12 +1060,12 @@ public class JavaCodeGenerator extends CodeGenerator {
         //includingFiles.add("<string.h>");
 
         for (String file : (Set<String>) includingFiles) {
-	    if (!file.equals("<math.h>")
-		&& !file.equals("<stdio.h>")) {
-		code.append("import " + file + _eol);
-	    }
+            if (!file.equals("<math.h>")
+                && !file.equals("<stdio.h>")) {
+                code.append("import " + file + _eol);
+            }
         }
-	code.append("public class " + _sanitizedModelName + " {" + _eol);
+        code.append("public class " + _sanitizedModelName + " {" + _eol);
         return code.toString();
     }
 
@@ -1078,13 +1078,13 @@ public class JavaCodeGenerator extends CodeGenerator {
         endCode.append(super._printExecutionTime());
 
         endCode.append("Runtime runtime = Runtime.getRuntime();\n"
-		       + "long totalMemory = runtime.totalMemory() / 1024;\n"
-		       + "long freeMemory = runtime.freeMemory() / 1024;\n"
-		       + "System.out.println(System.currentTimeMillis() - startTime + \""
-		       + " ms. Memory: \" + totalMemory + \"K Free: \""
-		       + " + freeMemory + \"K (\" + "
-		       + "Math.round((((double) freeMemory) / ((double) totalMemory)) * 100.0)"
-		       + " + \"%\");\n");
+                       + "long totalMemory = runtime.totalMemory() / 1024;\n"
+                       + "long freeMemory = runtime.freeMemory() / 1024;\n"
+                       + "System.out.println(System.currentTimeMillis() - startTime + \""
+                       + " ms. Memory: \" + totalMemory + \"K Free: \""
+                       + " + freeMemory + \"K (\" + "
+                       + "Math.round((((double) freeMemory) / ((double) totalMemory)) * 100.0)"
+                       + " + \"%\");\n");
         return endCode.toString();
     }
 
@@ -1190,7 +1190,7 @@ public class JavaCodeGenerator extends CodeGenerator {
             substituteMap = CodeGeneratorUtilities.newMap(this);
             substituteMap.put("@modelName@", _sanitizedModelName);
             substituteMap.put("@CLASSPATHSEPARATOR@",
-			      StringUtilities.getProperty("path.separator"));
+                              StringUtilities.getProperty("path.separator"));
             substituteMap
                     .put("@PTCGIncludes@", _concatenateElements(_includes));
             substituteMap.put("@PTCGLibraries@",
@@ -1210,7 +1210,7 @@ public class JavaCodeGenerator extends CodeGenerator {
 
             String osName = StringUtilities.getProperty("os.name");
             if (osName != null) {
-		// Keep these alphabetical
+                // Keep these alphabetical
                 if (osName.startsWith("Linux")) {
                     substituteMap.put("@PTJNI_GCC_SHARED_FLAG@", "-shared");
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "lib");
@@ -1225,20 +1225,20 @@ public class JavaCodeGenerator extends CodeGenerator {
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@", "-fPIC");
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "lib");
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "so");
-		} else if (osName.startsWith("Windows")) {
+                } else if (osName.startsWith("Windows")) {
                     substituteMap.put("@PTJNI_GCC_SHARED_FLAG@", "-shared");
                     substituteMap.put("@PTJNI_NO_CYGWIN@", "-mno-cygwin");
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@",
                             "-Wl,--add-stdcall-alias");
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "dll");
-		} else {
+                } else {
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@", 
-				      "# Unknown java property os.name \"" + osName 
-				      + "\" please edit ptolemy/codegen/c/"
-				      + "kernel/JavaCodeGenerator.java and "
-				      + "ptolemy/actor/lib/jni/"
-				      + "CompiledCompositeActor.java");
-		}
+                                      "# Unknown java property os.name \"" + osName 
+                                      + "\" please edit ptolemy/codegen/c/"
+                                      + "kernel/JavaCodeGenerator.java and "
+                                      + "ptolemy/actor/lib/jni/"
+                                      + "CompiledCompositeActor.java");
+                }
 
             }
         } catch (IllegalActionException ex) {
@@ -1337,9 +1337,9 @@ public class JavaCodeGenerator extends CodeGenerator {
             }
             buffer.append((String) iterator.next());
         }
-	if (buffer.length() > 0) {
-	    buffer.append("$(CLASSPATHSEPARATOR)");
-	}
+        if (buffer.length() > 0) {
+            buffer.append("$(CLASSPATHSEPARATOR)");
+        }
         return buffer.toString();
     }
 

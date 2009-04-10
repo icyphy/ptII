@@ -97,19 +97,19 @@ public abstract class ColtRandomSource extends JavaCodeGeneratorHelper {
         }
 
 
-	String generatorClassValue = ((StringToken) actor.generatorClass.getToken()).stringValue();
-	if ((generatorClassValue == null)
-	    || generatorClassValue.equals("DRand")) {
-	    _codeStream.appendCodeBlock("setRandomNumberGeneratorDRand");
-	} else if (generatorClassValue.equals("MersenneTwister (MT19937)")) {
-	    _codeStream.appendCodeBlock("setRandomNumberMersenneTwister");
-	} else if (generatorClassValue.equals("Ranecu")) {
-	    _codeStream.appendCodeBlock("setRandomNumberRanecu");
-	} else if (generatorClassValue.equals("Ranlux")) {
-	    _codeStream.appendCodeBlock("setRandomNumberRanlux");
-	} else if (generatorClassValue.equals("Ranmar")) {
-	    _codeStream.appendCodeBlock("setRandomNumberRanmar");
-	}
+        String generatorClassValue = ((StringToken) actor.generatorClass.getToken()).stringValue();
+        if ((generatorClassValue == null)
+            || generatorClassValue.equals("DRand")) {
+            _codeStream.appendCodeBlock("setRandomNumberGeneratorDRand");
+        } else if (generatorClassValue.equals("MersenneTwister (MT19937)")) {
+            _codeStream.appendCodeBlock("setRandomNumberMersenneTwister");
+        } else if (generatorClassValue.equals("Ranecu")) {
+            _codeStream.appendCodeBlock("setRandomNumberRanecu");
+        } else if (generatorClassValue.equals("Ranlux")) {
+            _codeStream.appendCodeBlock("setRandomNumberRanlux");
+        } else if (generatorClassValue.equals("Ranmar")) {
+            _codeStream.appendCodeBlock("setRandomNumberRanmar");
+        }
 
 
 
@@ -123,14 +123,14 @@ public abstract class ColtRandomSource extends JavaCodeGeneratorHelper {
      */
     public Set getHeaderFiles() throws IllegalActionException {
         Set files = super.getHeaderFiles();
-	files.add("cern.jet.random.engine.DRand;");
-	files.add("cern.jet.random.engine.MersenneTwister;");
-	files.add("edu.cornell.lassp.houle.RngPack.RandomElement;");
-	files.add("edu.cornell.lassp.houle.RngPack.Ranecu;");
-	files.add("edu.cornell.lassp.houle.RngPack.Ranlux;");
-	files.add("edu.cornell.lassp.houle.RngPack.Ranmar;");
+        files.add("cern.jet.random.engine.DRand;");
+        files.add("cern.jet.random.engine.MersenneTwister;");
+        files.add("edu.cornell.lassp.houle.RngPack.RandomElement;");
+        files.add("edu.cornell.lassp.houle.RngPack.Ranecu;");
+        files.add("edu.cornell.lassp.houle.RngPack.Ranlux;");
+        files.add("edu.cornell.lassp.houle.RngPack.Ranmar;");
 
-	_codeGenerator.addLibraryIfNecessary("$(PTII)/lib/ptcolt.jar");
+        _codeGenerator.addLibraryIfNecessary("$(PTII)/lib/ptcolt.jar");
         return files;
     }
 

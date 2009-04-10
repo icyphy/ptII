@@ -295,9 +295,9 @@ public class StringUtilities {
 
         if (propertyName.equals("user.dir")) {
             try {
-		if (property == null) {
-		    return property;
-		}
+                if (property == null) {
+                    return property;
+                }
                 File userDirFile = new File(property);
                 return userDirFile.getCanonicalPath();
             } catch (IOException ex) {
@@ -739,9 +739,9 @@ public class StringUtilities {
      */
     public static String substitute(String string, String pattern,
             String replacement) {
-	if (string == null) {
-	    return null;
-	}
+        if (string == null) {
+            return null;
+        }
         int start = string.indexOf(pattern);
 
         while (start != -1) {
@@ -997,13 +997,13 @@ public class StringUtilities {
      */
     public static String usageString(String commandTemplate,
             String[][] commandOptions, String[] commandFlags) {
-	String [][] commandFlagsWithDescriptions = new String [commandFlags.length][2];
+        String [][] commandFlagsWithDescriptions = new String [commandFlags.length][2];
         for (int i = 0; i < commandFlags.length; i++) {
-	    commandFlagsWithDescriptions[i][0] = commandFlags[i];
-	    commandFlagsWithDescriptions[i][1] = "";
-	}
-	return usageString(commandTemplate, commandOptions,
-			   commandFlagsWithDescriptions);
+            commandFlagsWithDescriptions[i][0] = commandFlags[i];
+            commandFlagsWithDescriptions[i][1] = "";
+        }
+        return usageString(commandTemplate, commandOptions,
+                           commandFlagsWithDescriptions);
     }
 
     /** Return a string that contains a description of how to use a
@@ -1033,21 +1033,21 @@ public class StringUtilities {
 
         for (i = 0; i < commandOptions.length; i++) {
             result.append(" " + commandOptions[i][0]);
-	    if (commandOptions[i][1].length() > 0) {
-		result.append(" " + commandOptions[i][1]);
-	    }
-	    result.append("\n");
+            if (commandOptions[i][1].length() > 0) {
+                result.append(" " + commandOptions[i][1]);
+            }
+            result.append("\n");
         }
 
         result.append("\nBoolean flags:\n");
 
         for (i = 0; i < commandFlagsWithDescriptions.length; i++) {
             result.append(" " + commandFlagsWithDescriptions[i][0]);
-	    if (commandFlagsWithDescriptions[i][1].length() > 0) {
-		result.append("\t"
-			      + commandFlagsWithDescriptions[i][1]);
-	    }
-	    result.append("\n");
+            if (commandFlagsWithDescriptions[i][1].length() > 0) {
+                result.append("\t"
+                              + commandFlagsWithDescriptions[i][1]);
+            }
+            result.append("\n");
         }
 
         return result.toString();

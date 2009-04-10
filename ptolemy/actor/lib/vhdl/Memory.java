@@ -186,8 +186,8 @@ public class Memory extends SynchronousFixTransformer {
     }
 
     /** Override the base class to declare that the <i>address</i>,
-     *	<i>dataIn</i> and <i>writeEnable</i> ports do not depend on
-     *	the <i>output</i> in a firing.
+     *        <i>dataIn</i> and <i>writeEnable</i> ports do not depend on
+     *        the <i>output</i> in a firing.
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();

@@ -171,10 +171,10 @@ public class SetTableau extends TableauControllerEvent {
             }
             break;
         case NORMAL:
-	    // FIXME: Findbugs BIT says that this will always be equal:
-	    // "This method compares an expression of the form (e
-	    // &amp; 0) to 0, which will always compare equal.  This
-	    // may indicate a logic error or typo."
+            // FIXME: Findbugs BIT says that this will always be equal:
+            // "This method compares an expression of the form (e
+            // &amp; 0) to 0, which will always compare equal.  This
+            // may indicate a logic error or typo."
 
             if ((frame.getExtendedState() & JFrame.NORMAL) != JFrame.NORMAL) {
                 frame.setExtendedState(JFrame.NORMAL);

@@ -157,6 +157,12 @@ ptolemy/configs/test/vergilConfigurationNoMatlabNoSerialNoApps.xml
 ptolemy/configs/visualnc
 ptolemy/data/expr/TVariable.java
 ptolemy/gui/JPanelTest.java
+ptolemy/codegen/c/targets/mpi
+ptolemy/codegen/c/targets/openRTOS
+ptolemy/codegen/c/targets/posix
+ptolemy/codegen/c/targets/pret
+ptolemy/codegen/c/targets/win32
+ptolemy/codegen/domains/sr
 ptolemy/copernicus/actor/test/codeGenerator.tmp
 ptolemy/copernicus/applet/test/ptII
 ptolemy/copernicus/applet/test/tmp
@@ -204,6 +210,7 @@ ptolemy/domains/giotto/kernel/test/ptolemy.giotto
 ptolemy/domains/gr/lib/Loader3D.java
 ptolemy/domains/gr/lib/Loader3D.class
 ptolemy/domains/gr/lib/experimental
+ptolemy/domains/gro
 ptolemy/domains/hs
 ptolemy/domains/nc
 ptolemy/domains/odf

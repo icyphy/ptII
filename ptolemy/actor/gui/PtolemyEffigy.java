@@ -217,9 +217,9 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
             } else {
                 name = filename;
             }
-	    // If the user has a & in the file name . . .
-	    // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=3901
-	    name = StringUtilities.escapeForXML(name);
+            // If the user has a & in the file name . . .
+            // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=3901
+            name = StringUtilities.escapeForXML(name);
 
             // If the model is not at the top level,
             // then we have to force the writer to export
@@ -433,35 +433,35 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                         }
 
                         if (toplevel != null) {
-			    try {
-				String entityClassName = StringUtilities
+                            try {
+                                String entityClassName = StringUtilities
                                     .getProperty("entityClassName");
-				if ((entityClassName.length() > 0
-				     || endTime > startTime + Manager.minimumStatisticsTime)
+                                if ((entityClassName.length() > 0
+                                     || endTime > startTime + Manager.minimumStatisticsTime)
                                     && toplevel instanceof CompositeEntity) {
-				    System.out
+                                    System.out
                                         .println("Opened "
-						 + input
-						 + " in "
-						 + (System.currentTimeMillis() - startTime)
-						 + " ms.");
+                                                 + input
+                                                 + " in "
+                                                 + (System.currentTimeMillis() - startTime)
+                                                 + " ms.");
 
-				    long statisticsStartTime = System.currentTimeMillis();
-				    System.out.println(((CompositeEntity) toplevel)
-						       .statistics(entityClassName));
-				    long statisticsEndTime = System.currentTimeMillis();
-				    if (statisticsEndTime - statisticsStartTime
-					> Manager.minimumStatisticsTime) {
-					System.out.println("Generating statistics took"
-							   + (statisticsEndTime - statisticsStartTime)
-							   + " ms. ");
-				    }
-				}
-			    } catch (SecurityException ex) {
-				System.err.println("Warning, while trying to print timing statistics,"
-						   + " failed to read the entityClassName"
-						   + " property (-sandbox always causes this)");
-			    }
+                                    long statisticsStartTime = System.currentTimeMillis();
+                                    System.out.println(((CompositeEntity) toplevel)
+                                                       .statistics(entityClassName));
+                                    long statisticsEndTime = System.currentTimeMillis();
+                                    if (statisticsEndTime - statisticsStartTime
+                                        > Manager.minimumStatisticsTime) {
+                                        System.out.println("Generating statistics took"
+                                                           + (statisticsEndTime - statisticsStartTime)
+                                                           + " ms. ");
+                                    }
+                                }
+                            } catch (SecurityException ex) {
+                                System.err.println("Warning, while trying to print timing statistics,"
+                                                   + " failed to read the entityClassName"
+                                                   + " property (-sandbox always causes this)");
+                            }
                             effigy.setModel(toplevel);
 
                             // A MoMLFilter may have modified the model

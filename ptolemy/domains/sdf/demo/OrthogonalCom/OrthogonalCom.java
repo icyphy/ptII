@@ -79,12 +79,12 @@ public class OrthogonalCom extends TypedCompositeActor {
             Const signal1 = new Const(this, "signal1");
             // signal1.value.setToken(new DoubleMatrixToken(
             //         new double[][] {{ 1, 1, 1, 1, 1, 1, 1, 1 }}));
-	    signal1.value.setExpression("{1, 1, 1, 1, 1, 1, 1, 1}");
+            signal1.value.setExpression("{1, 1, 1, 1, 1, 1, 1, 1}");
 
             Const signal2 = new Const(this, "signal2");
             // signal2.value.setToken(new DoubleMatrixToken(
             //         new double[][] {{ 1, 1, 1, 1, -1, -1, -1, -1 }}));
-	    signal2.value.setExpression("{1, 1, 1, 1, -1, -1 ,-1 ,-1}");
+            signal2.value.setExpression("{1, 1, 1, 1, -1, -1 ,-1 ,-1}");
 
             // Signal selector
             Multiplexor mux = new Multiplexor(this, "mux");
@@ -99,12 +99,12 @@ public class OrthogonalCom extends TypedCompositeActor {
             // Convert noise samples into matrix.
             // SequenceToDoubleMatrix noisePacker =
             //     new SequenceToDoubleMatrix(this, "noisePacker");
-	    SequenceToArray noisePacker =
-	          new SequenceToArray(this, "noisePacker");
+            SequenceToArray noisePacker =
+                  new SequenceToArray(this, "noisePacker");
 
             // Pack 8 samples into each matrix.
             // noisePacker.columns.setToken(new IntToken(8));
-	    noisePacker.arrayLength.setToken(new IntToken(8));
+            noisePacker.arrayLength.setToken(new IntToken(8));
 
             // Correlators
             DotProduct correlator1 = new DotProduct(this, "correlator1");

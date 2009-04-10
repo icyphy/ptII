@@ -223,8 +223,8 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
      *  @see #lazyAllCompositeEntityList()
      */
     public List allCompositeEntityList() {
-	populate();
-	return super.allCompositeEntityList();
+        populate();
+        return super.allCompositeEntityList();
     }
 
     /** Clone the library into the specified workspace. The new object is
@@ -291,7 +291,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
      */
     public List classDefinitionList() {
         populate();
-	return super.classDefinitionList();
+        return super.classDefinitionList();
     }
 
     /** Return true if this object contains the specified object,
@@ -374,7 +374,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
      *  @return An unmodifiable list of ComponentEntity objects.
      */
     public List entityList() {
-	populate();
+        populate();
         return super.entityList();
     }
 
@@ -402,8 +402,8 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
-	populate();
-	super.exportMoML(output, depth, name); 
+        populate();
+        super.exportMoML(output, depth, name); 
     }
 
     /** Get a contained entity by name. The name may be compound,
@@ -519,19 +519,19 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
 
             LinkedList result = new LinkedList();
 
-	    List<ComponentEntity> entities = lazyEntityList();
+            List<ComponentEntity> entities = lazyEntityList();
             for (ComponentEntity entity : entities) {
-		if (!entity.isOpaque()) {
-		    result.add(entity);
-		    result.addAll(((CompositeEntity) entity)
-				  .lazyAllCompositeEntityList());
+                if (!entity.isOpaque()) {
+                    result.add(entity);
+                    result.addAll(((CompositeEntity) entity)
+                                  .lazyAllCompositeEntityList());
                 }                
             }
             return result;
         } finally {
             _workspace.doneReading();
         }
-    }	
+    }        
 
     /** Lazy version of {@link #classDefinitionList()}.
      *  In this base class, this is identical to classDefinitionList(),
@@ -704,9 +704,9 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
                 // NOTE: This does not seem like the right thing to do!
                 // removeAllEntities();
 
-		// If we have a subclass that has LazyTypedCompositeActor
-		// in it, then things get tricky.  See
-		// actor/lib/test/auto/LazySubClassModel.xml
+                // If we have a subclass that has LazyTypedCompositeActor
+                // in it, then things get tricky.  See
+                // actor/lib/test/auto/LazySubClassModel.xml
                 
                 // If this is an instance or subclass of something, that
                 // something must also be a LazyTypedCompositeActor and
@@ -715,57 +715,57 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
                     ((LazyTypedCompositeActor)getParent()).populate();
                 }
 
-		// We were getting ConcurrentModifications because
-		// when we instantiate and call
-		// NamedObj._markContentsDerived() we end up
-		// eventually calling populate(), which calls
-		// parse(URL, String, Reader) and adds a
-		// ParserAttribute, which results in a
-		// ConcurrentModificationException
+                // We were getting ConcurrentModifications because
+                // when we instantiate and call
+                // NamedObj._markContentsDerived() we end up
+                // eventually calling populate(), which calls
+                // parse(URL, String, Reader) and adds a
+                // ParserAttribute, which results in a
+                // ConcurrentModificationException
 
                 MoMLParser parser = new MoMLParser(workspace());
 
-		// If we get the parser from ParserAttribute, then
-		// after we call parse(), MoMLParser._xmlParser gets
-		// set to null, which causes problems for the calling
-		// parse() method.
-		//NamedObj toplevel = toplevel();
-		//MoMLParser parser = ParserAttribute.getParser(toplevel);
+                // If we get the parser from ParserAttribute, then
+                // after we call parse(), MoMLParser._xmlParser gets
+                // set to null, which causes problems for the calling
+                // parse() method.
+                //NamedObj toplevel = toplevel();
+                //MoMLParser parser = ParserAttribute.getParser(toplevel);
 
                 parser.setContext(this);
 
-		List savedFilters = MoMLParser.getMoMLFilters();
-		try {
-		    MoMLParser.setMoMLFilters(null);
-		    if ((_configureSource != null) && !_configureSource.equals("")) {
-			URL xmlFile = new URL(_base, _configureSource);
-			parser.parse(xmlFile, xmlFile);
-		    }
+                List savedFilters = MoMLParser.getMoMLFilters();
+                try {
+                    MoMLParser.setMoMLFilters(null);
+                    if ((_configureSource != null) && !_configureSource.equals("")) {
+                        URL xmlFile = new URL(_base, _configureSource);
+                        parser.parse(xmlFile, xmlFile);
+                    }
 
-		    if ((_configureText != null) && !_configureText.equals("")) {
-			// NOTE: Regrettably, the XML parser we are using cannot
-			// deal with having a single processing instruction at the
-			// outer level.  Thus, we have to strip it.
-			String trimmed = _configureText.trim();
+                    if ((_configureText != null) && !_configureText.equals("")) {
+                        // NOTE: Regrettably, the XML parser we are using cannot
+                        // deal with having a single processing instruction at the
+                        // outer level.  Thus, we have to strip it.
+                        String trimmed = _configureText.trim();
 
-			if (trimmed.startsWith("<?") && trimmed.endsWith("?>")) {
-			    trimmed = trimmed.substring(2, trimmed.length() - 2)
+                        if (trimmed.startsWith("<?") && trimmed.endsWith("?>")) {
+                            trimmed = trimmed.substring(2, trimmed.length() - 2)
                                 .trim();
 
-			    if (trimmed.startsWith("moml")) {
-				trimmed = trimmed.substring(4).trim();
-				parser.parse(_base, trimmed);
-			    }
+                            if (trimmed.startsWith("moml")) {
+                                trimmed = trimmed.substring(4).trim();
+                                parser.parse(_base, trimmed);
+                            }
 
-			    // If it's not a moml processing instruction, ignore.
-			} else {
-			    // Data is not enclosed in a processing instruction.
-			    // Must have been given in a CDATA section.
-			    parser.parse(_base, _configureText);
-			}
-		    }
-		} finally {
-		    MoMLParser.setMoMLFilters(savedFilters);
+                            // If it's not a moml processing instruction, ignore.
+                        } else {
+                            // Data is not enclosed in a processing instruction.
+                            // Must have been given in a CDATA section.
+                            parser.parse(_base, _configureText);
+                        }
+                    }
+                } finally {
+                    MoMLParser.setMoMLFilters(savedFilters);
                 }
             }
         } catch (Exception ex) {
@@ -887,13 +887,13 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
      */
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
-	populate();
-	// Export top level attributes and ports
+        populate();
+        // Export top level attributes and ports
 
-	List _attributes = attributeList();
-	String _displayName = getDisplayName();
+        List _attributes = attributeList();
+        String _displayName = getDisplayName();
 
-	//FIXME: start of duplicated code from NamedObj
+        //FIXME: start of duplicated code from NamedObj
         // If the display name has been set, then include a display element.
         // Note that copying parameters that have _displayName set need
         // to export _displayName.  
@@ -915,24 +915,24 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
                 attribute.exportMoML(output, depth);
             }
         }
-	//FIXME: end of duplicated code from NamedObj
+        //FIXME: end of duplicated code from NamedObj
 
-	//FIXME: start of duplicated code from Entity
+        //FIXME: start of duplicated code from Entity
         Iterator ports = portList().iterator();
 
         while (ports.hasNext()) {
             Port port = (Port) ports.next();
             port.exportMoML(output, depth);
         }
-	//FIXME: end of duplicated code from Entity
+        //FIXME: end of duplicated code from Entity
 
 
-	// Everything else is in a configure
+        // Everything else is in a configure
 
         output.write(_getIndentPrefix(depth) + "<configure>\n");
         output.write(_getIndentPrefix(depth + 1) + "<group>\n");
 
-	//FIXME: start of duplicated code from CompositeEntity
+        //FIXME: start of duplicated code from CompositeEntity
         Iterator classes = classDefinitionList().iterator();
 
         while (classes.hasNext()) {
@@ -961,7 +961,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements Lazy
         // That mechanism was far too fragile.
         // EAL 3/10/04
         output.write(exportLinks(depth + 2, null));
-	//FIXME: end of duplicated code from CompositeEntity
+        //FIXME: end of duplicated code from CompositeEntity
 
         output.write(_getIndentPrefix(depth + 1) + "</group>\n");
         output.write(_getIndentPrefix(depth) + "</configure>\n");

@@ -113,36 +113,36 @@ public class Backtrack extends TypedAtomicActor {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Backtrack newObject = (Backtrack) super.clone(workspace);
 
-	newObject._handleMap = new HashMap();
+        newObject._handleMap = new HashMap();
 
-	try { 
+        try { 
 
-	    ptolemy.kernel.Port oldPort = newObject.getPort("checkpoint");
-	    if (oldPort != null) {
-		oldPort.setContainer(null);
-	    }
-	    newObject._checkpoint = new TypedIOPort(newObject, "checkpoint",
- 						    true, false);
-	    newObject._checkpoint.setTypeEquals(BaseType.BOOLEAN);
+            ptolemy.kernel.Port oldPort = newObject.getPort("checkpoint");
+            if (oldPort != null) {
+                oldPort.setContainer(null);
+            }
+            newObject._checkpoint = new TypedIOPort(newObject, "checkpoint",
+                                                     true, false);
+            newObject._checkpoint.setTypeEquals(BaseType.BOOLEAN);
 
-	    // These ports do not follow the naming convention, so we have
-	    // to clone them separately.
+            // These ports do not follow the naming convention, so we have
+            // to clone them separately.
 
-	    oldPort = newObject.getPort("rollback");
-	    if (oldPort != null) {
-		oldPort.setContainer(null);
-	    }
-	    newObject._rollback = new TypedIOPort(newObject, "rollback",
-						  true, false);
-	    newObject._rollback.setTypeEquals(BaseType.LONG);
+            oldPort = newObject.getPort("rollback");
+            if (oldPort != null) {
+                oldPort.setContainer(null);
+            }
+            newObject._rollback = new TypedIOPort(newObject, "rollback",
+                                                  true, false);
+            newObject._rollback.setTypeEquals(BaseType.LONG);
 
-	    oldPort = newObject.getPort("handle");
-	    if (oldPort != null) {
-		oldPort.setContainer(null);
-	    }
+            oldPort = newObject.getPort("handle");
+            if (oldPort != null) {
+                oldPort.setContainer(null);
+            }
 
- 	    newObject._handle = new TypedIOPort(newObject, "handle", false, true);
-	    newObject._handle.setTypeEquals(BaseType.LONG);
+             newObject._handle = new TypedIOPort(newObject, "handle", false, true);
+            newObject._handle.setTypeEquals(BaseType.LONG);
         } catch (Exception ex) {
             // CloneNotSupportedException does not have a constructor
             // that takes a cause argument, so we use initCause
@@ -151,7 +151,7 @@ public class Backtrack extends TypedAtomicActor {
             throw throwable;
         }
 
-	return newObject;
+        return newObject;
     }
 
     /** Create checkpoint and record the given checkpoint handle if required. A
