@@ -51,7 +51,6 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	OptimizedModel.xml \
 	Sinewave.xml \
 	SinewaveOptimization.xml
 
