@@ -164,5 +164,9 @@ LOGMESSAGE="Changed copyright to 2009"
 
 search $@
 
+if [ "$printonly" = "no" ]; then
+    echo "Thes files should be checked in:"
+    cat $filesupdated
+fi
 
 rm -f $filesupdated
