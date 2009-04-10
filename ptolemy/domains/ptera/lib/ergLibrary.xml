@@ -1,0 +1,54 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<group>
+  <entity name="DesignPatterns" class="ptolemy.moml.EntityLibrary">
+    <property name="DesignPatternImporter" class="ptolemy.actor.gt.controller.DesignPatternImporter">
+      <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}"/>
+      </property>
+      <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+        <configure>
+          <svg>
+            <text style="font-size:14; font-family:SansSerif; fill:blue">-D-</text>
+          </svg>
+        </configure>
+      </property>
+    </property>
+    <configure>
+      <?moml
+        <group>
+          <input source="ptolemy/domains/ptera/lib/ListenToInput.xml"/>
+          <input source="ptolemy/domains/ptera/lib/ListenToStop.xml"/>
+          <input source="ptolemy/domains/ptera/lib/ParallelTasks.xml"/>
+          <input source="ptolemy/domains/ptera/lib/RepeatForCount.xml"/>
+          <input source="ptolemy/domains/ptera/lib/SendOutput.xml"/>
+          <input source="ptolemy/domains/ptera/lib/SingleQueueMultipleServers.xml"/>
+          <input source="ptolemy/domains/ptera/lib/SingleQueueMultipleServersTE.xml"/>
+          <input source="ptolemy/domains/ptera/lib/TrafficLight.xml"/>
+        </group>
+      ?>
+    </configure>
+  </entity>
+  <entity name="Event" class="ptolemy.domains.ptera.kernel.Event">
+    <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"/>
+  </entity>
+  <property name="SynchronizeToRealtime" class="ptolemy.domains.ptera.lib.SynchronizeToRealtime">
+    <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+      <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+      </property>
+    </property>
+    <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+      <configure>
+        <svg>
+          <circle cx="3" cy="3" r="2" style="fill:#0000FF"/>
+        </svg>
+      </configure>
+    </property>
+    <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+    </property>
+  </property>
+  <property name="EventQueueDebugger" class="ptolemy.domains.ptera.lib.EventQueueDebugger">
+    
+  </property>
+</group>

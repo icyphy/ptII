@@ -40,7 +40,7 @@ import ptolemy.actor.gt.GTTools;
 import ptolemy.actor.gt.controller.TransformationAttribute;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Tableau;
-import ptolemy.domains.erg.kernel.ERGModalModel;
+import ptolemy.domains.ptera.kernel.PteraModalModel;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
@@ -51,9 +51,9 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.NamedObjController;
 import ptolemy.vergil.basic.NodeControllerFactory;
-import ptolemy.vergil.erg.ERGGraphFrame;
 import ptolemy.vergil.gt.TransformationAttributeEditorFactory.TransformationListener;
 import ptolemy.vergil.kernel.AttributeController;
+import ptolemy.vergil.ptera.PteraGraphFrame;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import diva.graph.GraphController;
@@ -146,8 +146,8 @@ public class TransformationAttributeController extends AttributeController {
         public void windowOpened(WindowEvent e) {
         }
 
-        Listener(ERGModalModel transformation, BasicGraphFrame parent,
-                ERGGraphFrame child) throws NameDuplicationException {
+        Listener(PteraModalModel transformation, BasicGraphFrame parent,
+                PteraGraphFrame child) throws NameDuplicationException {
             super(transformation, null, parent);
             _parent = parent;
             _child = child;
@@ -179,7 +179,7 @@ public class TransformationAttributeController extends AttributeController {
             toplevel.getManager().removeExecutionListener(this);
         }
 
-        private ERGGraphFrame _child;
+        private PteraGraphFrame _child;
 
         private BasicGraphFrame _parent;
     }
@@ -198,9 +198,9 @@ public class TransformationAttributeController extends AttributeController {
             BasicGraphFrame actorFrame = (BasicGraphFrame) getFrame();
             Configuration configuration = actorFrame.getConfiguration();
             try {
-                ERGModalModel modelUpdater = attribute.getModelUpdater();
+                PteraModalModel modelUpdater = attribute.getModelUpdater();
                 Tableau tableau = configuration.openInstance(modelUpdater);
-                ERGGraphFrame frame = (ERGGraphFrame) tableau.getFrame();
+                PteraGraphFrame frame = (PteraGraphFrame) tableau.getFrame();
 
                 Listener listener = new Listener(modelUpdater, actorFrame,
                         frame);

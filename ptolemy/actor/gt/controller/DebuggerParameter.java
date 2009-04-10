@@ -42,7 +42,7 @@ import ptolemy.data.IntToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.erg.kernel.ERGController;
+import ptolemy.domains.ptera.kernel.PteraController;
 import ptolemy.kernel.util.DebugEvent;
 import ptolemy.kernel.util.DebugListener;
 import ptolemy.kernel.util.IllegalActionException;
@@ -177,12 +177,12 @@ public class DebuggerParameter extends TableauParameter
         NamedObj container = getContainer();
         boolean hierarchical = ((BooleanToken) this.hierarchical.getToken())
                 .booleanValue();
-        if (container instanceof ERGController) {
-            LinkedList<ERGController> controllers =
-                new LinkedList<ERGController>();
-            controllers.add((ERGController) container);
+        if (container instanceof PteraController) {
+            LinkedList<PteraController> controllers =
+                new LinkedList<PteraController>();
+            controllers.add((PteraController) container);
             while (!controllers.isEmpty()) {
-                ERGController controller = controllers.removeFirst();
+                PteraController controller = controllers.removeFirst();
                 for (Object entity : controller.deepEntityList()) {
                     if (entity instanceof GTEvent) {
                         GTEvent event = (GTEvent) entity;
@@ -197,8 +197,8 @@ public class DebuggerParameter extends TableauParameter
                         TypedActor[] refinements = event.getRefinement();
                         if (refinements != null) {
                             for (TypedActor refinement : refinements) {
-                                if (refinement instanceof ERGController) {
-                                    controllers.add((ERGController) refinement);
+                                if (refinement instanceof PteraController) {
+                                    controllers.add((PteraController) refinement);
                                 }
                             }
                         }

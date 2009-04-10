@@ -1,13 +1,13 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<class name="DesignPatternTransformer" extends="ptolemy.domains.erg.kernel.ERGModalModel">
+<class name="DesignPatternTransformer" extends="ptolemy.domains.ptera.kernel.PteraModalModel">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
     <property name="_location" class="ptolemy.kernel.util.Location" value="{235, 135}">
     </property>
-    <entity name="_Controller" class="ptolemy.domains.erg.kernel.ERGController">
-        <property name="_Director" class="ptolemy.domains.erg.kernel.ERGDirector">
+    <entity name="_Controller" class="ptolemy.domains.ptera.kernel.PteraController">
+        <property name="_Director" class="ptolemy.domains.ptera.kernel.PteraDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
             </property>
         </property>

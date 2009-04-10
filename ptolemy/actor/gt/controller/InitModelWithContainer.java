@@ -27,8 +27,8 @@
 */
 package ptolemy.actor.gt.controller;
 
-import ptolemy.domains.erg.kernel.ERGController;
-import ptolemy.domains.erg.kernel.ERGModalModel;
+import ptolemy.domains.ptera.kernel.PteraController;
+import ptolemy.domains.ptera.kernel.PteraModalModel;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -53,8 +53,8 @@ public class InitModelWithContainer extends InitModel {
     }
 
     protected CompositeEntity _getInitialModel() throws IllegalActionException {
-        ERGController controller = (ERGController) getContainer();
-        ERGModalModel modalModel = (ERGModalModel) controller.getContainer();
+        PteraController controller = (PteraController) getContainer();
+        PteraModalModel modalModel = (PteraModalModel) controller.getContainer();
         CompositeEntity containingModel =
             (CompositeEntity) modalModel.getContainer();
         if (containingModel == null) {

@@ -2,13 +2,13 @@
 <!DOCTYPE property PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <property name="factoryERG" class="ptolemy.actor.gui.PtolemyTableauFactory">
-  <property name="Event Relation Graph Editor" class="ptolemy.vergil.erg.ERGGraphTableau$Factory">
+  <property name="Event Relation Graph Editor" class="ptolemy.vergil.ptera.PteraGraphTableau$Factory">
     <property name="_library" class="ptolemy.moml.LibraryAttribute">
       <configure>
         <entity name="EventLibrary" class="ptolemy.kernel.CompositeEntity">
           <property name="TransformationAttribute" class="ptolemy.actor.gt.controller.TransformationAttribute"/>
           <input source="ptolemy/configs/basicUtilities.xml"/>
-          <input source="ptolemy/domains/erg/lib/ergLibrary.xml"/>
+          <input source="ptolemy/domains/ptera/lib/ergLibrary.xml"/>
         </entity>
       </configure>
     </property>
@@ -32,7 +32,7 @@
             </property>
             <property name="parse" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <configure source="ptolemy/domains/erg/lib/RepeatForCount.xml">
+            <configure source="ptolemy/domains/ptera/lib/RepeatForCount.xml">
             </configure>
           </property>
         </property>

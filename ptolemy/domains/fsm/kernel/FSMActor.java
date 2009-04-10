@@ -69,7 +69,7 @@ import ptolemy.data.type.HasTypeConstraints;
 import ptolemy.data.type.ObjectType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.Typeable;
-import ptolemy.domains.erg.kernel.ERGModalModel;
+import ptolemy.domains.ptera.kernel.PteraModalModel;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.ComponentEntity;
@@ -701,7 +701,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @return true if new input tokens have been received.
      */
     public boolean hasInput() {
-        Iterator<?> inPorts = ((ERGModalModel) getContainer()).inputPortList()
+        Iterator<?> inPorts = ((PteraModalModel) getContainer()).inputPortList()
                 .iterator();
         while (inPorts.hasNext() && !_stopRequested) {
             Port port = (Port) inPorts.next();

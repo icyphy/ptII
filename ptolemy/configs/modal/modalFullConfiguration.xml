@@ -39,8 +39,8 @@
   <entity name="effigyFactory" class="ptolemy.actor.gui.EffigyFactory">
     <input source="ptolemy/configs/graphEffigyFactory.xml"/>
     <input source="ptolemy/configs/modal/modalEffigyFactories.xml"/>
-    <!-- Skip erg because it depends on fsm -->
-    <!-- input source="ptolemy/configs/ergEffigyFactory.xml"/ -->
+    <!-- Skip ptera because it depends on fsm -->
+    <!-- input source="ptolemy/configs/pteraEffigyFactory.xml"/ -->
     <!-- Skip gt because it depends on fsm -->
     <!-- input source="ptolemy/configs/gt/gtEffigyFactory.xml"/ -->
     <input source="ptolemy/configs/modal/iaEffigyFactory.xml"/>
@@ -56,8 +56,8 @@
   <property name="tableauFactory" class="ptolemy.actor.gui.TableauFactory">
     <!-- Skip gt because it depends on fsm -->
     <!-- input source="ptolemy/configs/gt/gtTableauFactory.xml"/ -->
-    <!-- Skip erg because it depends on fsm -->
-    <!-- input source="ptolemy/configs/ergTableauFactory.xml" -->
+    <!-- Skip ptera because it depends on fsm -->
+    <!-- input source="ptolemy/configs/pteraTableauFactory.xml" -->
     <input source="ptolemy/configs/modal/iaTableauFactory.xml"/>
     <input source="ptolemy/configs/modal/fmvTableauFactory.xml"/>
     <input source="ptolemy/configs/modal/modalTableauFactory.xml"/>
@@ -80,7 +80,7 @@
       <configure>
         <?moml
           <group>
-            <!-- input source="ptolemy/configs/utilityERGModalModel.xml"/ -->
+            <!-- input source="ptolemy/configs/utilityPteraModalModel.xml"/ -->
           </group>
         ?>
       </configure>

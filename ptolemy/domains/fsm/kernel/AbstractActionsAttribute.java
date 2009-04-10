@@ -102,7 +102,7 @@ public abstract class AbstractActionsAttribute extends Action implements
         HasTypeConstraints {
     /** Construct an action with the given name contained
      *  by the specified container (which should be a Transition when used in
-     *  the FSM domain, and an Event in the ERG domain). The <i>container</i>
+     *  the FSM domain, and an Event in the Ptera domain). The <i>container</i>
      *  argument must not
      *  be null, or a NullPointerException will be thrown. This action will
      *  use the workspace of the container for synchronization and

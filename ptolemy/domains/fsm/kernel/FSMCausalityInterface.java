@@ -187,7 +187,7 @@ public class FSMCausalityInterface extends CausalityInterfaceForComposites {
                    // all referenced input ports.
                    Set<IOPort> inputs = new HashSet<IOPort>();
                    String guard = transition.getGuardExpression();
-                   // The guard expression may be empty (in the ERG domain,
+                   // The guard expression may be empty (in the Ptera domain,
                    // for example). Continue if this is the case.
                    if (guard.trim().equals("")) {
                        continue;

@@ -784,7 +784,7 @@
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="false">
             </property>
         </port>
-        <entity name="_Controller" class="ptolemy.domains.erg.kernel.ERGController">
+        <entity name="_Controller" class="ptolemy.domains.ptera.kernel.PteraController">
             <property name="MeanFailureTime" class="ptolemy.data.expr.Parameter" value="MeanFailureTime">
             </property>
             <property name="FailureDuration" class="ptolemy.data.expr.Parameter" value="FailureDuration">

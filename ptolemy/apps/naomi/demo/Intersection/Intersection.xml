@@ -13,13 +13,13 @@ at any pedestrian light and presses the request button. The Berkeley
 policy is to serve the pedestrian immediately. The Manhattan policy,
 on the contrary, completely ignores pedestrian requests.
     This model features heterogeneous multi-modeling. Models of
-computation, such as DE (discrete-event), ERG (event relationship
-graph), Wireless, SDF (synchronous dataflow) and FSM (finite state
-machine), are used at different levels of the model hierarchy for
-maximum design flexibility. Another highlight is the use of model
-transformation with ERG controllers. Specifically, PeriodController is
-a component that changes the car and pedestrian arrival rates
-dynamically according to the intersection specification.
+computation, such as DE (discrete-event), Ptera (Ptolemy event
+relationship actor), Wireless, SDF (synchronous dataflow) and FSM
+(finite state machine), are used at different levels of the model
+hierarchy for maximum design flexibility. Another highlight is the use
+of model transformation with Ptera controllers. Specifically,
+PeriodController is a component that changes the car and pedestrian
+arrival rates dynamically according to the intersection specification.
     DurationController monitors the number of waiting cars and the
                           number of waiting pedestrians, and increases or
                           decreases the green durations if the two numbers
@@ -3818,7 +3818,7 @@ Edward A. Lee</text></svg></configure>
     <entity name="DurationController" class="ptolemy.actor.gt.controller.ModelUpdater">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 50.0]">
         </property>
-        <entity name="_Controller" class="ptolemy.domains.erg.kernel.ERGController">
+        <entity name="_Controller" class="ptolemy.domains.ptera.kernel.PteraController">
             <property name="Interval" class="ptolemy.data.expr.Parameter" value="1.0">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
@@ -3956,8 +3956,8 @@ Edward A. Lee</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{95.0, 30.0}">
                 </property>
             </entity>
-            <entity name="Monitor" class="ptolemy.domains.erg.kernel.Event">
-                <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="&#10;IncreaseNS =&#10;    (Intersection.CarCountN - Intersection.PedCountN) +&#10;    (Intersection.CarCountS - Intersection.PedCountS) &gt;&#10;    Threshold;&#10;DecreaseNS =&#10;    (Intersection.CarCountN - Intersection.PedCountN) +&#10;    (Intersection.CarCountS - Intersection.PedCountS) &lt;&#10;    -Threshold;&#10;IncreaseEW =&#10;    (Intersection.CarCountE - Intersection.PedCountE) +&#10;    (Intersection.CarCountW - Intersection.PedCountW) &gt;&#10;    Threshold;&#10;DecreaseEW =&#10;    (Intersection.CarCountE - Intersection.PedCountE) +&#10;    (Intersection.CarCountW - Intersection.PedCountW) &lt;&#10;    -Threshold&#10;">
+            <entity name="Monitor" class="ptolemy.domains.ptera.kernel.Event">
+                <property name="actions" class="ptolemy.domains.ptera.kernel.ActionsAttribute" value="&#10;IncreaseNS =&#10;    (Intersection.CarCountN - Intersection.PedCountN) +&#10;    (Intersection.CarCountS - Intersection.PedCountS) &gt;&#10;    Threshold;&#10;DecreaseNS =&#10;    (Intersection.CarCountN - Intersection.PedCountN) +&#10;    (Intersection.CarCountS - Intersection.PedCountS) &lt;&#10;    -Threshold;&#10;IncreaseEW =&#10;    (Intersection.CarCountE - Intersection.PedCountE) +&#10;    (Intersection.CarCountW - Intersection.PedCountW) &gt;&#10;    Threshold;&#10;DecreaseEW =&#10;    (Intersection.CarCountE - Intersection.PedCountE) +&#10;    (Intersection.CarCountW - Intersection.PedCountW) &lt;&#10;    -Threshold&#10;">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -4145,7 +4145,7 @@ Edward A. Lee</text></svg></configure>
                     </entity>
                 </configure>
             </entity>
-            <entity name="StartMonitoring" class="ptolemy.domains.erg.kernel.Event">
+            <entity name="StartMonitoring" class="ptolemy.domains.ptera.kernel.Event">
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
@@ -4271,7 +4271,7 @@ Edward A. Lee</text></svg></configure>
                     </entity>
                 </configure>
             </entity>
-            <relation name="relation_1_3" class="ptolemy.domains.erg.kernel.SchedulingRelation">
+            <relation name="relation_1_3" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="IncreaseNS">
@@ -4290,14 +4290,14 @@ Edward A. Lee</text></svg></configure>
                 </property>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="0.0">
+                <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="0.0">
                 </property>
                 <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
-            <relation name="relation_1_5" class="ptolemy.domains.erg.kernel.SchedulingRelation">
+            <relation name="relation_1_5" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="DecreaseNS">
@@ -4316,14 +4316,14 @@ Edward A. Lee</text></svg></configure>
                 </property>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="0.0">
+                <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="0.0">
                 </property>
                 <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
-            <relation name="relation_1_8" class="ptolemy.domains.erg.kernel.SchedulingRelation">
+            <relation name="relation_1_8" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.4443294216507965">
@@ -4339,14 +4339,14 @@ Edward A. Lee</text></svg></configure>
                 </property>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="0.0">
+                <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="0.0">
                 </property>
                 <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
-            <relation name="relation" class="ptolemy.domains.erg.kernel.SchedulingRelation">
+            <relation name="relation" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.1845750013894759">
@@ -4362,7 +4362,7 @@ Edward A. Lee</text></svg></configure>
                 </property>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="Infinity">
+                <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="Infinity">
                 </property>
                 <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
                 </property>
@@ -4371,7 +4371,7 @@ Edward A. Lee</text></svg></configure>
                 <property name="triggers" class="ptolemy.data.expr.StringParameter" value="&#10;Intersection.CarCountN,&#10;Intersection.CarCountE,&#10;Intersection.CarCountS,&#10;Intersection.CarCountW,&#10;Intersection.PedCountN,&#10;Intersection.PedCountE,&#10;Intersection.PedCountS,&#10;Intersection.PedCountW">
                 </property>
             </relation>
-            <relation name="relation_1_2" class="ptolemy.domains.erg.kernel.SchedulingRelation">
+            <relation name="relation_1_2" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.00854159783117804">
@@ -4387,14 +4387,14 @@ Edward A. Lee</text></svg></configure>
                 </property>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="Interval">
+                <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="Interval">
                 </property>
                 <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
-            <relation name="relation_1_7" class="ptolemy.domains.erg.kernel.SchedulingRelation">
+            <relation name="relation_1_7" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.13624397882532513">
@@ -4410,14 +4410,14 @@ Edward A. Lee</text></svg></configure>
                 </property>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="Interval">
+                <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="Interval">
                 </property>
                 <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
-            <relation name="relation_1_4" class="ptolemy.domains.erg.kernel.SchedulingRelation">
+            <relation name="relation_1_4" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="IncreaseEW">
@@ -4436,14 +4436,14 @@ Edward A. Lee</text></svg></configure>
                 </property>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="0.0">
+                <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="0.0">
                 </property>
                 <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
                 </property>
                 <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
-            <relation name="relation_1_6" class="ptolemy.domains.erg.kernel.SchedulingRelation">
+            <relation name="relation_1_6" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
                 <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
                 </property>
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="DecreaseEW">
@@ -4462,7 +4462,7 @@ Edward A. Lee</text></svg></configure>
                 </property>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="0.0">
+                <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="0.0">
                 </property>
                 <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
                 </property>
@@ -4490,7 +4490,7 @@ Edward A. Lee</text></svg></configure>
     <entity name="NSRoadController" class="ptolemy.actor.gt.controller.ModelUpdater">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 390.0]">
         </property>
-        <entity name="_Controller" class="ptolemy.domains.erg.kernel.ERGController">
+        <entity name="_Controller" class="ptolemy.domains.ptera.kernel.PteraController">
             <property name="DesignPatternImporter" class="ptolemy.actor.gt.controller.DesignPatternImporter">
                 <property name="designPatternFile" class="ptolemy.data.expr.FileParameter" value="ArrivalRateController.xml">
                 </property>
@@ -4517,7 +4517,7 @@ Edward A. Lee</text></svg></configure>
     <entity name="EWRoadController" class="ptolemy.actor.gt.controller.ModelUpdater">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 390.0]">
         </property>
-        <entity name="_Controller" class="ptolemy.domains.erg.kernel.ERGController">
+        <entity name="_Controller" class="ptolemy.domains.ptera.kernel.PteraController">
             <property name="DesignPatternImporter" class="ptolemy.actor.gt.controller.DesignPatternImporter">
                 <property name="designPatternFile" class="ptolemy.data.expr.FileParameter" value="ArrivalRateController.xml">
                 </property>

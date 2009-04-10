@@ -30,7 +30,7 @@ package ptolemy.actor.gt.controller;
 import ptolemy.actor.Manager;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
-import ptolemy.domains.erg.kernel.ERGController;
+import ptolemy.domains.ptera.kernel.PteraController;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -67,7 +67,7 @@ public class Stop extends GTEvent {
 
     public RefiringData fire(ArrayToken arguments)
     throws IllegalActionException {
-        ERGController controller = getController();
+        PteraController controller = getController();
 
         Manager manager = controller.getManager();
         if (manager != null) {

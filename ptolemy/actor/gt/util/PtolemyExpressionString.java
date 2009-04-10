@@ -35,7 +35,7 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.PtParser;
-import ptolemy.domains.erg.kernel.VariableScope;
+import ptolemy.domains.ptera.kernel.VariableScope;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 

@@ -30,9 +30,9 @@ package ptolemy.actor.gt.controller;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.erg.kernel.ERGController;
-import ptolemy.domains.erg.kernel.Event;
 import ptolemy.domains.fsm.modal.RefinementExtender;
+import ptolemy.domains.ptera.kernel.PteraController;
+import ptolemy.domains.ptera.kernel.Event;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -74,11 +74,11 @@ public class GTEvent extends Event {
 
     public ModelParameter getModelParameter() throws IllegalActionException {
         NamedObj container = getContainer();
-        if (!(container instanceof ERGController)) {
+        if (!(container instanceof PteraController)) {
             return null;
         }
 
-        ERGController controller = (ERGController) container;
+        PteraController controller = (PteraController) container;
         ModelParameter actorParameter = null;
         while (actorParameter == null && controller != null) {
             actorParameter = (ModelParameter) controller.getAttribute("Model",
@@ -86,13 +86,14 @@ public class GTEvent extends Event {
             if (actorParameter == null) {
                 Event event = (Event) controller.getRefinedState();
                 if (event != null) {
-                    controller = (ERGController) event.getContainer();
+                    controller = (PteraController) event.getContainer();
                 }
             }
         }
         if (actorParameter == null) {
             throw new IllegalActionException("Unable to find the Model " +
-                    "parameter in the ERG controller of type ModelParameter.");
+                    "parameter in the Ptera controller of type " +
+                    "ModelParameter.");
         }
         return actorParameter;
     }
@@ -111,8 +112,8 @@ public class GTEvent extends Event {
     private void _setRefinementExtender() {
         NamedObj container = getContainer();
         if (refinementExtender != null) {
-            if (container instanceof ERGController) {
-                ERGController controller = (ERGController) container;
+            if (container instanceof PteraController) {
+                PteraController controller = (PteraController) container;
                 if (controller.getPort("modelInput") != null &&
                         controller.getPort("modelOutput") != null) {
                     refinementExtender.className.setExpression("ptolemy." +

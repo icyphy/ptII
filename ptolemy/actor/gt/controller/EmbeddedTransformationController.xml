@@ -1,8 +1,8 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<class name="EmbeddedTransformationController" extends="ptolemy.domains.erg.kernel.ERGController">
-    <property name="_Director" class="ptolemy.domains.erg.kernel.ERGDirector">
+<class name="EmbeddedTransformationController" extends="ptolemy.domains.ptera.kernel.PteraController">
+    <property name="_Director" class="ptolemy.domains.ptera.kernel.PteraDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
         </property>
     </property>

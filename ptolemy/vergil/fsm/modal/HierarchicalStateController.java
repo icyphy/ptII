@@ -422,7 +422,7 @@ public class HierarchicalStateController extends StateController {
         Map map = new TreeMap();
         map.put("Default Refinement", "ptolemy.domains.fsm.modal.Refinement");
         map.put("Event Relationship Graph Refinement",
-                "ptolemy.domains.erg.kernel.ERGController");
+                "ptolemy.domains.ptera.kernel.PteraController");
         map.put("State Machine Refinement",
                 "ptolemy.domains.fsm.modal.ModalController");
         return map;

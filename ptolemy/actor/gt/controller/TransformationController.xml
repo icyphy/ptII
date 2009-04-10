@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<class name="TransformationController" extends="ptolemy.domains.erg.kernel.ERGModalModel">
+<class name="TransformationController" extends="ptolemy.domains.ptera.kernel.PteraModalModel">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
     <property name="_location" class="ptolemy.kernel.util.Location" value="{235, 135}">
@@ -16,8 +16,8 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 200.0]">
         </property>
     </port>
-    <entity name="_Controller" class="ptolemy.domains.erg.kernel.ERGController">
-        <property name="_Director" class="ptolemy.domains.erg.kernel.ERGDirector">
+    <entity name="_Controller" class="ptolemy.domains.ptera.kernel.PteraController">
+        <property name="_Director" class="ptolemy.domains.ptera.kernel.PteraDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
             </property>
         </property>
@@ -133,7 +133,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 365.0]">
             </property>
         </entity>
-        <relation name="relation" class="ptolemy.domains.erg.kernel.SchedulingRelation">
+        <relation name="relation" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
             <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.4752997116966139">
@@ -148,7 +148,7 @@
             </property>
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="Infinity">
+            <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="Infinity">
             </property>
             <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
             </property>
@@ -157,7 +157,7 @@
             <property name="triggers" class="ptolemy.data.expr.StringParameter" value="modelInput">
             </property>
         </relation>
-        <relation name="relation2" class="ptolemy.domains.erg.kernel.SchedulingRelation">
+        <relation name="relation2" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
             <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.2244551237136343">
@@ -172,7 +172,7 @@
             </property>
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="Infinity">
+            <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="Infinity">
             </property>
             <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
             </property>

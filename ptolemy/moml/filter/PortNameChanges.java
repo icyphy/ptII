@@ -160,7 +160,7 @@ public class PortNameChanges implements MoMLFilter {
                 && attributeName.equals("port")
                 // If we don't have the following case, sometimes opening a
                 // model with a TransformationController inside may cause an
-                // exception because the container may be an ERG event, not a
+                // exception because the container may be a Ptera event, not a
                 // CompositeEntity. (tfeng 08/03/2008)
                 // <<<
                 && container instanceof CompositeEntity) {

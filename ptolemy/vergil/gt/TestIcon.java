@@ -38,7 +38,7 @@ import javax.swing.SwingConstants;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.expr.Parameter;
-import ptolemy.domains.erg.kernel.Event;
+import ptolemy.domains.ptera.kernel.Event;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;

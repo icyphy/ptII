@@ -42,7 +42,7 @@ import ptolemy.data.expr.Constants;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.PtParser;
 import ptolemy.data.type.Type;
-import ptolemy.domains.erg.kernel.VariableScope;
+import ptolemy.domains.ptera.kernel.VariableScope;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;

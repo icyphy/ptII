@@ -37,7 +37,7 @@ import ptolemy.actor.gt.controller.ModelParameter;
 import ptolemy.actor.gt.controller.TransformationAttribute;
 import ptolemy.actor.gui.EditorFactory;
 import ptolemy.data.BooleanToken;
-import ptolemy.domains.erg.kernel.ERGModalModel;
+import ptolemy.domains.ptera.kernel.PteraModalModel;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -121,7 +121,7 @@ public class TransformationAttributeEditorFactory extends EditorFactory {
 
     public static class TransformationListener implements ExecutionListener {
 
-        public TransformationListener(ERGModalModel transformation,
+        public TransformationListener(PteraModalModel transformation,
                 CompositeEntity model, BasicGraphFrame frame) {
             _transformation = transformation;
             _model = model;
@@ -151,6 +151,6 @@ public class TransformationAttributeEditorFactory extends EditorFactory {
 
         protected CompositeEntity _model;
 
-        protected ERGModalModel _transformation;
+        protected PteraModalModel _transformation;
     }
 }

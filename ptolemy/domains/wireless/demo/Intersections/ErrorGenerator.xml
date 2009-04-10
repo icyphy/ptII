@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<class name="ErrorGenerator" extends="ptolemy.domains.erg.kernel.ERGModalModel">
+<class name="ErrorGenerator" extends="ptolemy.domains.ptera.kernel.PteraModalModel">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.1.devel">
     </property>
     <port name="ErrorIn" class="ptolemy.domains.fsm.modal.ModalPort">
@@ -24,8 +24,8 @@
         <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
     </port>
-    <entity name="_Controller" class="ptolemy.domains.erg.kernel.ERGController">
-        <property name="_Director" class="ptolemy.domains.erg.kernel.ERGDirector">
+    <entity name="_Controller" class="ptolemy.domains.ptera.kernel.PteraController">
+        <property name="_Director" class="ptolemy.domains.ptera.kernel.PteraDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
             </property>
         </property>
@@ -116,47 +116,47 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 290.0]">
             </property>
         </port>
-        <entity name="init" class="ptolemy.domains.erg.kernel.Event">
+        <entity name="init" class="ptolemy.domains.ptera.kernel.Event">
             <property name="isInitialEvent" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Error=0">
+            <property name="actions" class="ptolemy.domains.ptera.kernel.ActionsAttribute" value="Error=0">
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 70.0]">
             </property>
         </entity>
-        <entity name="error" class="ptolemy.domains.erg.kernel.Event">
-            <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Error=1;&#10;  ErrorOut=1">
+        <entity name="error" class="ptolemy.domains.ptera.kernel.Event">
+            <property name="actions" class="ptolemy.domains.ptera.kernel.ActionsAttribute" value="Error=1;&#10;  ErrorOut=1">
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 250.0]">
             </property>
         </entity>
-        <entity name="interact" class="ptolemy.domains.erg.kernel.Event">
+        <entity name="interact" class="ptolemy.domains.ptera.kernel.Event">
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 185.0]">
             </property>
         </entity>
-        <entity name="pasvError" class="ptolemy.domains.erg.kernel.Event">
-            <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Error=1;&#10;  ErrorOut=1">
+        <entity name="pasvError" class="ptolemy.domains.ptera.kernel.Event">
+            <property name="actions" class="ptolemy.domains.ptera.kernel.ActionsAttribute" value="Error=1;&#10;  ErrorOut=1">
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 255.0]">
             </property>
         </entity>
-        <entity name="ok" class="ptolemy.domains.erg.kernel.Event">
-            <property name="actions" class="ptolemy.domains.erg.kernel.ActionsAttribute" value="Error=0;&#10;  OkOut=1">
+        <entity name="ok" class="ptolemy.domains.ptera.kernel.Event">
+            <property name="actions" class="ptolemy.domains.ptera.kernel.ActionsAttribute" value="Error=0;&#10;  OkOut=1">
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 400.0]">
             </property>
         </entity>
-        <relation name="relation" class="ptolemy.domains.erg.kernel.SchedulingRelation">
+        <relation name="relation" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
             <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.4612974107904771">
@@ -171,14 +171,14 @@
             </property>
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="- log(1 - random()) * MeanFailureTime">
+            <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="- log(1 - random()) * MeanFailureTime">
             </property>
             <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
             </property>
             <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </relation>
-        <relation name="relation2" class="ptolemy.domains.erg.kernel.SchedulingRelation">
+        <relation name="relation2" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
             <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-1.1789504255386933">
@@ -193,7 +193,7 @@
             </property>
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="Infinity">
+            <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="Infinity">
             </property>
             <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
             </property>
@@ -202,7 +202,7 @@
             <property name="triggers" class="ptolemy.data.expr.StringParameter" value="ErrorIn, OkIn">
             </property>
         </relation>
-        <relation name="relation3" class="ptolemy.domains.erg.kernel.SchedulingRelation">
+        <relation name="relation3" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
             <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
             </property>
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Error==0&#10;&amp;&amp; ErrorIn_isPresent">
@@ -219,14 +219,14 @@
             </property>
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="0.0">
+            <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="0.0">
             </property>
             <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
             </property>
             <property name="canceling" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </relation>
-        <relation name="relation4" class="ptolemy.domains.erg.kernel.SchedulingRelation">
+        <relation name="relation4" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
             <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
             </property>
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Error==1&#10;&amp;&amp; OkIn_isPresent">
@@ -243,14 +243,14 @@
             </property>
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="0.0">
+            <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="0.0">
             </property>
             <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
             </property>
             <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </relation>
-        <relation name="relation5" class="ptolemy.domains.erg.kernel.SchedulingRelation">
+        <relation name="relation5" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
             <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.3691676089242395">
@@ -265,7 +265,7 @@
             </property>
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="Infinity">
+            <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="Infinity">
             </property>
             <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
             </property>
@@ -274,7 +274,7 @@
             <property name="triggers" class="ptolemy.data.expr.StringParameter" value="ErrorIn, OkIn">
             </property>
         </relation>
-        <relation name="relation6" class="ptolemy.domains.erg.kernel.SchedulingRelation">
+        <relation name="relation6" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
             <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
             </property>
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Error==0&#10;&amp;&amp; ErrorIn_isPresent">
@@ -291,14 +291,14 @@
             </property>
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="0.0">
+            <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="0.0">
             </property>
             <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
             </property>
             <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </relation>
-        <relation name="relation8" class="ptolemy.domains.erg.kernel.SchedulingRelation">
+        <relation name="relation8" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
             <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
@@ -313,14 +313,14 @@
             </property>
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="FailureDuration">
+            <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="FailureDuration">
             </property>
             <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
             </property>
             <property name="canceling" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </relation>
-        <relation name="relation9" class="ptolemy.domains.erg.kernel.SchedulingRelation">
+        <relation name="relation9" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
             <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
@@ -335,7 +335,7 @@
             </property>
             <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="delay" class="ptolemy.domains.erg.kernel.SchedulingRelation$1" value="- log(1 - random()) * MeanFailureTime">
+            <property name="delay" class="ptolemy.domains.ptera.kernel.SchedulingRelation$1" value="- log(1 - random()) * MeanFailureTime">
             </property>
             <property name="arguments" class="ptolemy.kernel.util.StringAttribute" value="{}">
             </property>

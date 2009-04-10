@@ -119,9 +119,9 @@ public abstract class Action extends StringAttribute {
     public void setContainer(NamedObj container) throws IllegalActionException,
             NameDuplicationException {
         // An Action is used in a Transition in the FSM domain, or an Event in
-        // the ERG domain.
+        // the Ptera domain.
         
-        // FSM should not depend on ERG, so this check is removed.
+        // FSM should not depend on Ptera, so this check is removed.
         // In fact, this check is not necessary, because all instantiable
         // classes in FSM declares container to have type Transition.
         

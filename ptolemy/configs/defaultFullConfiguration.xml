@@ -39,7 +39,7 @@
   <entity name="effigyFactory" class="ptolemy.actor.gui.EffigyFactory">
     <input source="ptolemy/configs/graphEffigyFactory.xml"/>
     <input source="ptolemy/configs/fsmEffigyFactories.xml"/>
-    <input source="ptolemy/configs/ergEffigyFactory.xml"/>
+    <input source="ptolemy/configs/pteraEffigyFactory.xml"/>
     <input source="ptolemy/configs/gt/gtEffigyFactory.xml"/>
     <input source="ptolemy/configs/iaEffigyFactory.xml"/>
     <input source="ptolemy/configs/fmvEffigyFactory.xml"/>
@@ -53,7 +53,7 @@
   <!-- of other editors that appear in the View menu.            -->
   <property name="tableauFactory" class="ptolemy.actor.gui.TableauFactory">
     <input source="ptolemy/configs/gt/gtTableauFactory.xml"/>
-    <input source="ptolemy/configs/ergTableauFactory.xml"/>
+    <input source="ptolemy/configs/pteraTableauFactory.xml"/>
     <input source="ptolemy/configs/iaTableauFactory.xml"/>
     <input source="ptolemy/configs/fmvTableauFactory.xml"/>
     <input source="ptolemy/configs/fsmTableauFactory.xml"/>
@@ -76,7 +76,7 @@
       <configure>
         <?moml
           <group>
-            <input source="ptolemy/configs/utilityERGModalModel.xml"/>
+            <input source="ptolemy/configs/utilityPteraModalModel.xml"/>
           </group>
         ?>
       </configure>

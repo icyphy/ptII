@@ -33,7 +33,7 @@ ME =		ptolemy/actor/gt/demo
 
 DIRS =		BouncingBallX2 ConstOptimization DiningPhilosophers \
 		GameOfLife HierarchyFlattening MapReduce ModelExecution \
-		ModelGeneration PublisherTest RegressionTest
+		ModelGeneration PublisherTest RegressionTest SinewaveOptimization
 
 # Root of the Ptolemy II directory
 ROOT =		../../../..
@@ -60,7 +60,8 @@ PTCLASSALLJARS = \
 	ModelExecution/ModelExecution.jar \
 	ModelGeneration/ModelGeneration.jar \
 	PublisherTest/PublisherTest.jar \
-	RegressionTest/RegressionTest.jar
+	RegressionTest/RegressionTest.jar \
+	SinewaveOptimization/SinewaveOptimization.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 

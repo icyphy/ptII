@@ -29,8 +29,8 @@ package ptolemy.actor.gt.controller;
 
 import ptolemy.data.ActorToken;
 import ptolemy.data.ArrayToken;
-import ptolemy.domains.erg.kernel.ERGController;
 import ptolemy.domains.fsm.modal.RefinementPort;
+import ptolemy.domains.ptera.kernel.PteraController;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -58,7 +58,7 @@ public class OutputModel extends GTEvent {
         RefiringData data = super.fire(arguments);
 
         CompositeEntity entity = getModelParameter().getModel();
-        ERGController container = (ERGController) getContainer();
+        PteraController container = (PteraController) getContainer();
         RefinementPort destination = (RefinementPort) container.getPort(
                 _OUTPUT_PORT_NAME);
         destination.broadcastClear();

@@ -31,8 +31,8 @@
 
 ME =		ptolemy/vergil
 
-DIRS = 		toolbox basic actor kernel fsm erg gt debugger \
-		icon lib modal properties tree tdl unit test
+DIRS = 		toolbox basic actor kernel fsm gt debugger \
+		icon lib modal properties ptera tree tdl unit test
 
 # Root of the Java directory
 ROOT =		../..
@@ -62,7 +62,7 @@ PTAUXALLJARS = \
 		unit/unit.jar
 
 # Packages that are not part of the ptiny version of Vergil
-#		erg/erg.jar
+#		ptera/ptera.jar
 #		gt/gt.jar
 #		tdl/tdl.jar 
 #		properties/properties.jar

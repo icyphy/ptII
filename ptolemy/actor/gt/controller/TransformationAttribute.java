@@ -41,8 +41,8 @@ import ptolemy.actor.gt.GTAttribute;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.domains.de.kernel.DEDirector;
-import ptolemy.domains.erg.kernel.ERGModalModel;
 import ptolemy.domains.fsm.kernel.Configurer;
+import ptolemy.domains.ptera.kernel.PteraModalModel;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.Attribute;
@@ -117,7 +117,7 @@ implements Configurable {
             newObject._configurer.setManager(new Manager(workspace,
                     "_manager"));
             newObject._configurer.setConfiguredObject(newObject);
-            newObject._modelUpdater = (ERGModalModel) _modelUpdater.clone(
+            newObject._modelUpdater = (PteraModalModel) _modelUpdater.clone(
                     workspace);
             newObject._modelUpdater.setContainer(newObject._configurer);
         } catch (KernelException e) {
@@ -134,7 +134,7 @@ implements Configurable {
             _configurer.removeAllEntities();
             parser.setContext(_configurer);
             parser.parse(base, source, new StringReader(text));
-            _modelUpdater = (ERGModalModel) _configurer.entityList().get(0);
+            _modelUpdater = (PteraModalModel) _configurer.entityList().get(0);
             _clearURI(_modelUpdater);
         }
 
@@ -209,7 +209,7 @@ implements Configurable {
         return null;
     }
 
-    public ERGModalModel getModelUpdater() {
+    public PteraModalModel getModelUpdater() {
         return _modelUpdater;
     }
 
@@ -268,7 +268,7 @@ implements Configurable {
                     "the transformation rule within \"" + getFullName() +
                     "\".");
         }
-        _modelUpdater = (ERGModalModel) _configurer.getEntity("ModelUpdater");
+        _modelUpdater = (PteraModalModel) _configurer.getEntity("ModelUpdater");
 
         new TransformationAttributeIcon(this, "_icon");
         new TransformationAttributeController.Factory(this,
@@ -284,7 +284,7 @@ implements Configurable {
     private List<ExecutionListener> _executionListeners =
         new LinkedList<ExecutionListener>();
 
-    private ERGModalModel _modelUpdater;
+    private PteraModalModel _modelUpdater;
 
     private class TransformationListener extends Attribute
             implements ExecutionListener {

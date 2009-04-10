@@ -44,7 +44,7 @@ import ptolemy.kernel.util.NamedObj;
  the container of the object that contains the implementing attribute. The
  returned container is supposed to be the object that visually contains the
  object that owns the implementing attribute, as seen by the model designer. In
- particular, for a modal model (either FSM or ERG), even though a refinement is
+ particular, for a modal model (either FSM or Ptera), even though a refinement is
  visually contained by a state or an event, {@link NamedObj#getContainer()} of
  that refinement does not return the state or event because of a difference
  between the visual representation and internal data representation. In that

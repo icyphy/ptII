@@ -37,7 +37,7 @@ import ptolemy.actor.gt.IgnoringAttribute;
 import ptolemy.actor.gui.properties.ComboBox;
 import ptolemy.actor.gui.properties.ComboBox.Item;
 import ptolemy.data.BooleanToken;
-import ptolemy.domains.erg.kernel.ERGModalModel;
+import ptolemy.domains.ptera.kernel.PteraModalModel;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -99,15 +99,15 @@ public class ComboItem extends Item {
                     _parser.reset();
                 }
 
-                ERGModalModel erg = (ERGModalModel) _parsedObject;
+                PteraModalModel ptera = (PteraModalModel) _parsedObject;
                 BasicGraphFrame frame = (BasicGraphFrame) _getFrame();
                 TransformationListener listener = new TransformationListener(
-                        erg, model, frame);
-                Manager manager = erg.getManager();
+                        ptera, model, frame);
+                Manager manager = ptera.getManager();
                 if (manager == null) {
-                    Workspace workspace = erg.workspace();
+                    Workspace workspace = ptera.workspace();
                     manager = new Manager(workspace, "manager");
-                    erg.setManager(manager);
+                    ptera.setManager(manager);
                 }
                 manager.addExecutionListener(listener);
                 try {

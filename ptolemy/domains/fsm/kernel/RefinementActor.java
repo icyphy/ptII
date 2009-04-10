@@ -1,5 +1,5 @@
 /* An interface for actors that act as refinements of states in FSMs or events
- in ERG models.
+ in Ptera models.
 
  Copyright (c) 2008 The Regents of the University of California.
  All rights reserved.
@@ -38,7 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
  An interface for actors that act as refinements of states in FSMs or events in
- ERG models.
+ Ptera models.
 
  @author Thomas Huining Feng
  @version $Id$

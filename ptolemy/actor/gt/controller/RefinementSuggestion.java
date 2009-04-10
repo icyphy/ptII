@@ -27,7 +27,7 @@
 */
 package ptolemy.actor.gt.controller;
 
-import ptolemy.domains.erg.kernel.ERGController;
+import ptolemy.domains.ptera.kernel.PteraController;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -55,8 +55,8 @@ public class RefinementSuggestion extends
 
     public String getRefinementClass(NamedObj dropObject) {
         NamedObj container = getContainer().getContainer();
-        if (container instanceof ERGController) {
-            ERGController controller = (ERGController) container;
+        if (container instanceof PteraController) {
+            PteraController controller = (PteraController) container;
             if (controller.getPort("modelInput") != null &&
                     controller.getPort("modelOutput") != null) {
                 return "ptolemy.actor.gt.controller." +
