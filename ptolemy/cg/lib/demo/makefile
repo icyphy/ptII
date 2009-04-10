@@ -45,7 +45,7 @@ PTPACKAGE = 	demo
 PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = 
+PTCLASSALLJARS = \
 	Scale/Scale.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar

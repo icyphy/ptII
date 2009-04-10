@@ -30,10 +30,10 @@
 # 						COPYRIGHTENDKEY
 
 # Location of this directory, relative to the Ptolemy II directory
-ME =		ptolemy/cg/kernel/generic/program/procedural/java/test
+ME =		ptolemy/cg/lib/test
 
 # Root of the Ptolemy II directory
-ROOT =		../../../../../../../..
+ROOT =		../../../..
 
 CLASSPATH =	$(ROOT)
 

@@ -79,7 +79,21 @@ MISC_FILES =	program
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo 
+	demo \
+	'CodeGeneratorAdapter$$1.class' \
+	'CodeGeneratorAdapter$$Channel.class' \
+	'CodeGeneratorAdapter$$VariableScope.class' \
+	'CodeGeneratorAdapterStrategy$$1.class' \
+	'CodeGeneratorAdapterStrategy$$Channel.class' \
+	'CodeGeneratorAdapterStrategy$$VariableScope.class' \
+	'CodeStream$$1.class' \
+	'CodeStream$$CodeBlockTable.class' \
+	'CodeStream$$Signature.class' \
+	'GenericCodeGenerator$$1.class' \
+	'GenericCodeGenerator$$Code.class' \
+	'GenericCodeGenerator$$GeneratorPackageListParser.class' \
+	'GenericCodeGenerator$$TargetFilter.class'
+
 
 JCLASS = $(JSRCS:%.java=%.class)
 

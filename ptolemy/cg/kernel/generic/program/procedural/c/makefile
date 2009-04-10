@@ -36,7 +36,7 @@ ME =		ptolemy/cg/kernel/generic/program/procedural/c
 DIRS =		
 
 # Root of the Java directory
-ROOT =		../../../../../..
+ROOT =		../../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -74,8 +74,9 @@ MISC_FILES =
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo 
-	
+	demo \
+	'CCodeGeneratorAdapter$$1.class' \
+        'CCodeGeneratorAdapterStrategy$$1.class' \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
