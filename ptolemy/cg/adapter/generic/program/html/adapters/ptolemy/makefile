@@ -31,12 +31,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/cg/adapter/generic/program
+ME =		ptolemy/cg/adapter/generic/program/html/adapters/ptolemy
 
-DIRS =		html procedural
+DIRS =		actor 
 
 # Root of the Java directory
-ROOT =		../../../../..
+ROOT =		../../../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,7 +45,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	program
+PTPACKAGE = 	ptolemy
 PTCLASSJAR =
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
@@ -53,8 +53,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
 PTCLASSALLJARS = \
-	html/html.jar \
-	procedural/procedural.jar
+	actor/actor.jar 
 
 # Keep this list alphabetized.
 JSRCS = 
@@ -66,7 +65,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	procedural
+MISC_FILES =	actor 
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
