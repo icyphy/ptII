@@ -23,7 +23,7 @@ See also <a href="whatsNew.htm">What's New in other versions</a>.
 <li> <a href="#highlights">Highlights</a>
     <ul>
     <li><a href="#modelTransformation">Model Transformation</a>
-    <li><a href="#ergDomain">ERG Domain</a>
+    <li><a href="#pteraDomain">Ptera Domain</a>
     </ul>
 <li> <a href="#demos">New demonstrations</a>
 <li> <a href="#other">Other Key New Capabilities</a>
@@ -95,7 +95,7 @@ reusing design patterns by incorporating them into new models.
 <p>Primary Model Transformation Developer: Thomas Huining Feng
 
 <ul>
-  <li> <a href="../../../ptolemy/domains/erg/demo/AdaptiveCarWash/AdaptiveCarWash.xml">AdaptiveCarWash</a> (With ModelUpdater) </li>
+  <li> <a href="../../../ptolemy/domains/ptera/demo/AdaptiveCarWash/AdaptiveCarWash.xml">AdaptiveCarWash</a> (With ModelUpdater) </li>
   <li> <a href="../../../ptolemy/actor/ptalon/gt/demo/Adder/Adder.xml">Adder</a> (Requires Ptalon and Antlr)</li>
   <li> <a href="../../../ptolemy/actor/gt/demo/BouncingBallX2/BouncingBallX2.xml">BouncingBallX2</a> (Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>)</li>
   <li> <a href="../../../ptolemy/actor/gt/demo/ConstOptimization/ConstOptimization.xml">ConstOptimization</a> (Using Complex Transformation) </li>
@@ -110,41 +110,43 @@ reusing design patterns by incorporating them into new models.
   <li> <a href="../../../ptolemy/actor/gt/demo/ModelGeneration/ModelGeneration.xml">ModelGeneration</a> </li>
   <li> <a href="../../../ptolemy/actor/gt/demo/PublisherTest/PublisherTest.xml">PublisherTest</a> </li>
   <li> <a href="../../../ptolemy/actor/gt/demo/RegressionTest/RegressionTest.xml">RegressionTest</a> </li>
+  <li> <a href="../../../ptolemy/actor/gt/demo/SinewaveOptimization/SinewaveOptimization.xml">SinewaveOptimization</a> </li>
 </ul>
 
 <!-- a little space -->
 <p> &nbsp;
-<h3><a name="ergDomain">Event Relationship Graph Domain</h3>
+<h3><a name="pteraDomain">Ptera (Ptolemy Event Relationship Actor) Domain</h3>
 
-<p>The ERG (Event Relationship Graph) domain is a discrete-event model of computation. A model in ERG is represented with a graph of nodes and edges, where nodes represent events and directed edges between events represent scheduling relation. One or more events can be selected as initial events, which are scheduled
+<p>The Ptera (Ptolemy Event Relationship Actor) domain is a discrete-event model of computation. A model in Ptera is represented with a graph of nodes and edges, where nodes represent events and directed edges between events represent scheduling relation. One or more events can be selected as initial events, which are scheduled
 at model time 0.0. When an event is fired, it possibly performs certain actions, and if there are outgoing edges from that event, the events at the end points of those edges are scheduled after non-negative delays. One or more events can also be selected as final events. The firing of final events causes the event
 queue to be emptied after their actions are performed, and therefore no more events can be processed.
 
-<p>The ERG domain supports a different kind of modal models called ERGModalModels, compared to modal models using FSMs (Finite State Machines) as the control. An ERGModalModel uses ERG at the top level, and each event is refined into a sub-model. The refinements can use ERG and any other Ptolemy models of computation.
+<p>The Ptera domain supports a different kind of modal models called PteraModalModels, compared to modal models using FSMs (Finite State Machines) as the control. A PteraModalModel uses Ptera at the top level, and each event is refined into a sub-model. The refinements can use Ptera and any other Ptolemy models of computation.
 
-<p>An ERG model is timed. Although it should work in many domains, the DE (Discrete-Event) domain or ERG domain itself are recommended. When embedded in those domains, the scheduling of the ERG model is delegated to the container by calling the fireAt() function of its director.
+<p>A Ptera model is timed. Although it should work in many domains, the DE (Discrete-Event) domain or Ptera domain itself are recommended. When embedded in those domains, the scheduling of the Ptera model is delegated to the container by calling the fireAt() function of its director.
 
-<p>There are many useful additional features for ERG, such as canceling edges and parameters. A canceling edge, denoted by a dotted line, cancels a previously scheduled event instead of scheduling a new one. If the pointed to event has multiple instances in the event queue, then the first instance is cancelled.
+<p>There are many useful additional features for Ptera, such as canceling edges and parameters. A canceling edge, denoted by a dotted line, cancels a previously scheduled event instead of scheduling a new one. If the pointed to event has multiple instances in the event queue, then the first instance is cancelled.
 Events may also have parameters, and the actual values for those parameters are specified by the expressions on the edges that schedule them. Those expressions are evaluated at run-time. The events may refer to the values of those parameters in their actions by parameter names.
 
 <h4>References</h4>
 <ul>
 <li> Lee W. Schruben, "Simulation Modeling with Event Graphs," Communications of the ACM (CACM), 26(11): 957-963, 1983.
 </ul>
-<h4>Event Relationship Graph Domain Demonstrations</h4>
 
-<p>Primary ERG Developer: Thomas Huining Feng
+<h4>Ptolemy Event Relationship Actor Domain Demonstrations</h4>
+
+<p>Primary Ptera Developer: Thomas Huining Feng
 
 <ul>
-  <li> <a href="../../../ptolemy/domains/erg/demo/AdaptiveCarWash/AdaptiveCarWash.xml">AdaptiveCarWash</a> (With ModelUpdater) </li>
-  <li> <a href="../../../ptolemy/domains/erg/demo/AdaptiveCarWash/AdaptiveCarWash_FSM.xml">AdaptiveCarWash</a> (With FSM Submodel) </li>
-  <li> <a href="../../../ptolemy/domains/erg/demo/CarWash/CarWash.xml">CarWash</a> </li>
+  <li> <a href="../../../ptolemy/domains/ptera/demo/AdaptiveCarWash/AdaptiveCarWash.xml">AdaptiveCarWash</a> (With ModelUpdater) </li>
+  <li> <a href="../../../ptolemy/domains/ptera/demo/AdaptiveCarWash/AdaptiveCarWash_FSM.xml">AdaptiveCarWash</a> (With FSM Submodel) </li>
+  <li> <a href="../../../ptolemy/domains/ptera/demo/CarWash/CarWash.xml">CarWash</a> </li>
   <li> <a href="../../../ptolemy/actor/gt/demo/ConstOptimization/ConstOptimization.xml">ConstOptimization</a> (Using Complex Transformation) </li>
   <li> <a href="../../../ptolemy/actor/gt/demo/ConstOptimization/ConstOptimizationDE.xml">ConstOptimization</a> (With TransformationController) </li>
   <li> <a href="../../../ptolemy/actor/gt/demo/GameOfLife/GameOfLife.xml">GameOfLife</a> </li>
   <li> <a href="../../../ptolemy/apps/naomi/demo/Intersection/Intersection.xml">Intersection</a> (A Naomi Demo)</li>
-  <li> <a href="../../../ptolemy/domains/erg/demo/SimultaneousCarWash/SimultaneousCarWash.xml">SimultaneousCarWash</a> </li>
-  <li> <a href="../../../ptolemy/domains/erg/demo/TrafficLight/TrafficLight.xml">TrafficLight</a> </li>
+  <li> <a href="../../../ptolemy/domains/ptera/demo/SimultaneousCarWash/SimultaneousCarWash.xml">SimultaneousCarWash</a> </li>
+  <li> <a href="../../../ptolemy/domains/ptera/demo/TrafficLight/TrafficLight.xml">TrafficLight</a> </li>
 </ul>
 
 <h2><a name="demos">New demonstrations</a></h2>
