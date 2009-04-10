@@ -50,7 +50,7 @@ package ptolemy.actor.gui.jnlp;
  @see MenuApplication
 
  @author Christopher Hylands
- @version $Id: DSPApplication.java 38798 2005-07-08 20:00:01Z cxh $
+ @version $Id$
  @since Ptolemy II 2.0
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)

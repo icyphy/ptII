@@ -58,7 +58,7 @@ import ptolemy.kernel.util.SingletonAttribute;
  this attribute from the model.
 
  @author  Edward A. Lee
- @version $Id: MonitorReceiverContents.java 51551 2008-11-11 00:19:48Z rodiers $
+ @version $Id$
  @since Ptolemy II 7.2
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)

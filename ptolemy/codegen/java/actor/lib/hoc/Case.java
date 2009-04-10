@@ -34,7 +34,7 @@ package ptolemy.codegen.java.actor.lib.hoc;
  Code generator helper for Case actor.
 
  @author Gang Zhou
- @version $Id: Case.java 42628 2006-05-17 22:34:31Z cxh $
+ @version $Id$
  @since Ptolemy II 5.2
  @Pt.ProposedRating Green (zgang)
  @Pt.AcceptedRating Green (cxh)

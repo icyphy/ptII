@@ -1,6 +1,6 @@
 # Makefile for Java helper classes that match ptolemy.actor.lib.hoc classes
 #
-# @Version: $Id: makefile 49686 2008-05-31 01:28:35Z cxh $
+# @Version: $Id$
 # @Author: Christopher Brooks
 #
 # @Copyright (c) 2009 The Regents of the University of California

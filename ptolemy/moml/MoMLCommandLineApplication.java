@@ -90,7 +90,7 @@ or
  is a shell script which tends to strip off the double quotes.
 
  @author Christopher Brooks
- @version $Id: MoMLSimpleApplication.java 50870 2008-10-22 15:05:00Z cxh $
+ @version $Id$
  @since Ptolemy II 7.2
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (eal)

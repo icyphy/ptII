@@ -48,7 +48,7 @@ import ptolemy.kernel.util.InternalErrorException;
  thread safety, the methods need to be synchronized.
 
  @author Thomas Mandl, Man-Kit Leung, Edward A. Lee
- @version $Id: Lattice.java 49253 2008-04-20 05:35:13Z mankit $
+ @version $Id$
  @since Ptolemy II 0.4
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)

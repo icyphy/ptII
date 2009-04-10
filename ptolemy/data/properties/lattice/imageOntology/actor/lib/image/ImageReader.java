@@ -41,7 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
  A helper class for ptolemy.actor.lib.image.ImageReader.
 
  @author Man-Kit Leung
- @version $Id: ImageReader.java 50588 2008-09-05 21:29:06Z mankit $
+ @version $Id$
  @since Ptolemy II 7.2
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)

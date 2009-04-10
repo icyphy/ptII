@@ -39,7 +39,7 @@ import ptolemy.data.properties.lattice.PropertyLattice;
  A class that represents dynamic property in the StaticDynamic lattice.
 
  @author Thomas Mandl, Man-Kit Leung, Edward A. Lee
- @version $Id: Unknown.java 50589 2008-09-05 21:30:29Z mankit $
+ @version $Id$
  @since Ptolemy II 0.4
  @Pt.ProposedRating Red (neuendor)
  @Pt.AcceptedRating Red (cxh)

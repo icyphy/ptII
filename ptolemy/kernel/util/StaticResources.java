@@ -37,7 +37,7 @@ import java.util.ResourceBundle;
  * Static resources for accessing ResourceBundles.
  * 
  * @author Matthew Brooke
- * @version $Id: StaticResources.java 16353 2009-01-15 03:37:44Z aschultz $
+ * @version $Id$
  * @since Ptolemy II 7.2
  * @Pt.ProposedRating
  * @Pt.AcceptedRating

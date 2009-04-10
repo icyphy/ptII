@@ -36,7 +36,7 @@ import ptolemy.codegen.java.actor.TypedCompositeActor;
  Code generator helper for MultiCompositeActor actor.
 
  @author Gang Zhou
- @version $Id: MultiCompositeActor.java 42628 2006-05-17 22:34:31Z cxh $
+ @version $Id$
  @since Ptolemy II 5.2
  @Pt.ProposedRating Green (zgang)
  @Pt.AcceptedRating Green (cxh)

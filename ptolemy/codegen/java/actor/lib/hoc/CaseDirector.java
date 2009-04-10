@@ -43,7 +43,7 @@ import ptolemy.kernel.util.IllegalActionException;
  Code generator helper class associated with the CaseDirector class.
 
  @author Gang Zhou
- @version $Id: CaseDirector.java 47513 2007-12-07 06:32:21Z cxh $
+ @version $Id$
  @since Ptolemy II 5.2
  @Pt.ProposedRating Green (zgang)
  @Pt.AcceptedRating Green (cxh))

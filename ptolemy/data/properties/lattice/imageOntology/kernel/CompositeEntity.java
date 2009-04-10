@@ -38,7 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
  A property constraint helper for composite actor.
 
  @author Man-Kit Leung
- @version $Id: CompositeEntity.java 50605 2008-09-10 03:29:07Z mankit $
+ @version $Id$
  @since Ptolemy II 7.2
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)

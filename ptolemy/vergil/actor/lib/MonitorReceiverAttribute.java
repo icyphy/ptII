@@ -57,7 +57,7 @@ import ptolemy.vergil.kernel.attributes.TextAttribute;
  in your model to cause the display to be updated, or use MonitorReceiverContents.
 
  @author  Edward A. Lee
- @version $Id: MonitorReceiverAttribute.java 51551 2008-11-11 00:19:48Z rodiers $
+ @version $Id$
  @since Ptolemy II 7.2
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)

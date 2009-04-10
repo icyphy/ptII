@@ -39,7 +39,7 @@ import ptolemy.data.properties.lattice.PropertyLattice;
  A base class representing a property.
 
  @author Man-Kit Leung
- @version $Id: True.java 49253 2008-04-20 05:35:13Z mankit $
+ @version $Id$
  @since Ptolemy II 0.4
  @Pt.ProposedRating Red (neuendor)
  @Pt.AcceptedRating Red (cxh)

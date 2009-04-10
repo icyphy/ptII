@@ -1,6 +1,6 @@
 # Makefile for the Java classes used in property annotation.
 #
-# @Version: $Id: makefile 37543 2005-04-12 02:12:09Z cxh $
+# @Version: $Id$
 # @Author: Man-Kit Leung
 #
 # @Copyright (c) 2008-2009 The Regents of the University of California.

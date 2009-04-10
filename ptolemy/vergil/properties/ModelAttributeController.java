@@ -54,7 +54,7 @@ import diva.gui.GUIUtilities;
 /**
 
  @author Man-Kit Leung
- @version $Id: ModelAttributeController.java 50438 2008-08-15 19:11:29Z tfeng $
+ @version $Id$
  @since Ptolemy II 6.1
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)

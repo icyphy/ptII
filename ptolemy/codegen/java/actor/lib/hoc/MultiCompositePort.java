@@ -33,7 +33,7 @@ import ptolemy.codegen.java.actor.IOPort;
 Code generator helper.
 
 @author Man-Kit Leung
-@version $Id: MultiCompositePort.java 49210 2008-04-08 03:13:45Z mankit $
+@version $Id$
 @since Ptolemy II 7.0
 @Pt.ProposedRating Red (mankit)
 @Pt.AcceptedRating Red (mankit)

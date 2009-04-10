@@ -2,7 +2,7 @@
 #
 # @Authors: Man-Kit Leung, based on a file by Christopher Brooks.
 #
-# @Version: $Id: makefile 36425 2005-02-28 20:51:43Z cxh $
+# @Version: $Id$
 #
 # @Copyright (c) 2000-2009 The Regents of the University of California.
 # All rights reserved.

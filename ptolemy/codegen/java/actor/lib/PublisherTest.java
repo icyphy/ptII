@@ -40,7 +40,7 @@ import ptolemy.kernel.util.IllegalActionException;
  A helper class for ptolemy.actor.lib.PublisherTest.
 
  @author Christopher Brooks
- @version $Id: PublisherTest.java 51589 2008-11-12 07:01:30Z cxh $
+ @version $Id$
  @since Ptolemy II 6.1
  @Pt.ProposedRating Green (cxh)
  @Pt.AcceptedRating Green (cxh)
