@@ -54,6 +54,8 @@ import ptolemy.kernel.util.Workspace;
  * A TDL module forms a unit that consists of sensors, actuators, and modes.
  *
  * @author Patricia Derler
+@version $Id$
+@since Ptolemy II 7.1
  */
 public class TDLModule extends ModalModel {
 

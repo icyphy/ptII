@@ -53,7 +53,7 @@ import ptolemy.vergil.kernel.attributes.RectangleAttribute;
 
  @author Christopher Brooks, Based on MicaLeds byElaine Cheong
  @version $Id$
- @since Ptolemy II 6.1
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (celaine)
  @Pt.AcceptedRating Red (celaine)
  */

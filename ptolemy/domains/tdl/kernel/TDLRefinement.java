@@ -42,6 +42,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  * refinement should be used are TDLRefinementPort.
  *
  * @author Patricia Derler
+@version $Id$
+@since Ptolemy II 7.1
  *
  */
 public class TDLRefinement extends Refinement {

@@ -46,7 +46,7 @@ import ptolemy.vergil.toolbox.FigureAction;
 
  @author Edward A. Lee and Steve Neuendorffer
  @version $Id$
- @since Ptolemy II 5.2
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (johnr)
  */

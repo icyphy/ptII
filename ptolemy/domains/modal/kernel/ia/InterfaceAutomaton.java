@@ -75,7 +75,7 @@ import ptolemy.kernel.util.Workspace;
 
  @author Yuhong Xiong, Xiaojun Liu and Edward A. Lee
  @version $Id$
- @since Ptolemy II 2.0
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Yellow (liuxj)
  @Pt.AcceptedRating Yellow (kienhuis)
  @see State

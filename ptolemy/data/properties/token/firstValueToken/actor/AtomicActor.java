@@ -48,7 +48,7 @@ import ptolemy.kernel.util.KernelException;
 
  @author Thomas Mandl, Man-Kit Leung
  @version $Id$
- @since Ptolemy II 6.2
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */

@@ -38,7 +38,7 @@ import ptolemy.domains.modal.kernel.State;
 
  @author Yuhong Xiong
  @version $Id$
- @since Ptolemy II 2.1
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (yuhong)
  @Pt.AcceptedRating Red (yuhong)
  */

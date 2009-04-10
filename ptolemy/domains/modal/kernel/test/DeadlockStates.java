@@ -48,7 +48,7 @@ import ptolemy.moml.MoMLParser;
 
  @author Yuhong Xiong
  @version $Id$
- @since Ptolemy II 2.0
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (yuhong)
  @Pt.AcceptedRating Red (reviewmoderator)
  */

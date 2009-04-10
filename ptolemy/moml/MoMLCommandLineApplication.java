@@ -91,7 +91,7 @@ or
 
  @author Christopher Brooks
  @version $Id$
- @since Ptolemy II 7.2
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (eal)
  */

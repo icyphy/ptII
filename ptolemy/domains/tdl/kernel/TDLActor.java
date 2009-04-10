@@ -41,6 +41,8 @@ import ptolemy.kernel.util.Workspace;
  * TDL Actor used in the TDL domain.
  *
  * @author Patricia Derler
+@version $Id$
+@since Ptolemy II 7.1
  */
 public class TDLActor extends FSMActor {
 

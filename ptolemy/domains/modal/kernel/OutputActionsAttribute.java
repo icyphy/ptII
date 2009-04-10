@@ -84,7 +84,7 @@ import ptolemy.kernel.util.Workspace;
 
  @author Xiaojun Liu, Edward A. Lee, Haiyang Zheng
  @version $Id$
- @since Ptolemy II 1.0
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (hyzheng)
  @Pt.AcceptedRating Red (hyzheng)
  @see CommitActionsAttribute

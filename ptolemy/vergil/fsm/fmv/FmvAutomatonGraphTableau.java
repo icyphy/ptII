@@ -50,7 +50,7 @@ import ptolemy.vergil.fsm.FSMGraphTableau;
 
  @author  Chihhong Patrick Cheng
  @version $Id$
- @since Ptolemy II 6.1
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (patrickj)
  @Pt.AcceptedRating Red ()
  */

@@ -57,7 +57,7 @@ import ptolemy.kernel.util.NamedObj;
  of actor.
  @author Jia Zou
  @version $Id$
- @since Ptolemy II 7.0
+ @since Ptolemy II 7.1
  @Pt.ProposedRating red (jiazou)
  @Pt.AcceptedRating
  */

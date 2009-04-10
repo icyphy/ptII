@@ -66,7 +66,7 @@ import ptolemy.math.Precision;
 
  @author Christopher Brooks, Edward Lee, Jackie Leung, Gang Zhou, Ye Zhou
  @version $Id$
- @since Ptolemy II 6.0
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */

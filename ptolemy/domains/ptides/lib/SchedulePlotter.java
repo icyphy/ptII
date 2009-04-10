@@ -68,6 +68,8 @@ import ptolemy.plot.Plot;
  * o \ transfer output port o .
  *
  * @author Patricia Derler
+@version $Id$
+@since Ptolemy II 7.1
  */
 public class SchedulePlotter extends Attribute implements ScheduleListener {
 

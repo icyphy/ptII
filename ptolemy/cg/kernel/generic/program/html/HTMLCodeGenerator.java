@@ -46,7 +46,7 @@ import ptolemy.util.StringUtilities;
 *
 *  @author Man-Kit Leung, Bert Rodiers
 *  @version $Id$
-*  @since Ptolemy II 7.2
+*  @since Ptolemy II 7.1
 *  @Pt.ProposedRating red (rodiers)
 *  @Pt.AcceptedRating red (rodiers)
 */

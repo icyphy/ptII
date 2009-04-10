@@ -67,7 +67,7 @@ import java.util.ListIterator;
 
  @author Haiyang Zheng
  @version $Id$
- @since Ptolemy II 4.0
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Yellow (hyzheng)
  @Pt.AcceptedRating Red (hyzheng)
  */

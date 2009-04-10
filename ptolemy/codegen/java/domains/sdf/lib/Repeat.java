@@ -37,7 +37,7 @@ import ptolemy.codegen.java.kernel.JavaCodeGeneratorHelper;
 
  @author Ye Zhou
  @version $Id$
- @since Ptolemy II 6.0
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Green (zhouye)
  @Pt.AcceptedRating Green (cxh)
  */

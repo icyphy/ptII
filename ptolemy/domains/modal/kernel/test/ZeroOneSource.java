@@ -44,7 +44,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  (Alternating Mark 1) test.
  @author Xiaojun Liu
  @version $Id$
- @since Ptolemy II 1.0
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (liuxj)
  @Pt.AcceptedRating Red (cxh)
  */

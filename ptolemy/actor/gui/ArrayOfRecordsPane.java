@@ -63,7 +63,7 @@ import ptolemy.kernel.util.InternalErrorException;
 
  @author Edward A. Lee
  @version $Id$
- @since Ptolemy II 2.1
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (eal)
  */

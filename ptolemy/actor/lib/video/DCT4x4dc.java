@@ -47,7 +47,7 @@ import ptolemy.kernel.util.Workspace;
 
    @author Hwayong Oh
    @version $Id: DCT4x4dc.java
-   @since Ptolemy II 7.0
+   @since Ptolemy II 7.1
    @Pt.ProposedRating Red
    @Pt.AcceptedRating Red
 */

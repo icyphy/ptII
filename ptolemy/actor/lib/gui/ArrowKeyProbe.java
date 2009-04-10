@@ -61,7 +61,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
  @author Winthrop Williams
  @version $Id$
- @since Ptolemy II 2.0
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (winthrop)
  @Pt.AcceptedRating Red (winthrop)
  */

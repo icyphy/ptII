@@ -66,7 +66,7 @@ import diva.util.NullIterator;
 
  @author Steve Neuendorffer
  @version $Id$
- @since Ptolemy II 2.0
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Yellow (neuendor)
  @Pt.AcceptedRating Red (johnr)
  */

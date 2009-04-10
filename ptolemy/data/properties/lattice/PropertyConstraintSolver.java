@@ -76,7 +76,7 @@ import ptolemy.util.FileUtilities;
 /**
  @author Man-Kit Leung, Edward A. Lee
  @version $Id$
- @since Ptolemy II 6.0.4
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */

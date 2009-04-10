@@ -35,7 +35,7 @@ package ptolemy.codegen.java.actor.lib.hoc;
 
  @author Gang Zhou
  @version $Id$
- @since Ptolemy II 5.2
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Green (zgang)
  @Pt.AcceptedRating Green (cxh)
  */

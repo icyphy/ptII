@@ -85,7 +85,7 @@ import ptolemy.util.StringUtilities;
 
  @author Edward A. Lee, Vinay Krishnan
  @version $Id$
- @since Ptolemy II 4.0
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (vkris)
  */

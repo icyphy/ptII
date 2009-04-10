@@ -86,6 +86,8 @@ import ptolemy.kernel.util.NamedObj;
  * in the graph.
  *
  * @author Patricia Derler
+@version $Id$
+@since Ptolemy II 7.1
  */
 public class TDLModuleDirector extends ModalDirector {
 

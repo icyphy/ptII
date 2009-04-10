@@ -47,6 +47,8 @@ import ptolemy.kernel.util.Workspace;
  * A TDL task is an SDF actor with TDL specific parameters.
  *
  * @author Patricia Derler
+@version $Id$
+@since Ptolemy II 7.1
  *
  */
 public class TDLTask extends TypedCompositeActor {

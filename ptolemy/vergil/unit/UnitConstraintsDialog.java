@@ -60,7 +60,7 @@ import ptolemy.moml.unit.UnitEquation;
 
  @author Rowland R Johnson
  @version $Id$
- @since Ptolemy II 4.0
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Yellow (rowland)
  @Pt.AcceptedRating Red (rowland)
  */

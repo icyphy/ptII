@@ -67,7 +67,7 @@ import ptolemy.util.MessageHandler;
 
  @author Edward A. Lee, Christopher Brooks
  @version $Id$
- @since Ptolemy II 6.0
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Green (cxh)
  @Pt.AcceptedRating Red (eal)
  */

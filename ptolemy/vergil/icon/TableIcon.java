@@ -67,7 +67,7 @@ import diva.canvas.toolbox.LabelFigure;
 
  @author Edward A. Lee
  @version $Id$
- @since Ptolemy II 2.0
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (johnr)
  */

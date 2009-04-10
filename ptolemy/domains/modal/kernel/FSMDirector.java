@@ -152,7 +152,7 @@ import ptolemy.kernel.util.Workspace;
 
  @author Xiaojun Liu, Haiyang Zheng
  @version $Id$
- @since Ptolemy II 0.4
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Yellow (hyzheng)
  @Pt.AcceptedRating Red (hyzheng)
  @see FSMActor

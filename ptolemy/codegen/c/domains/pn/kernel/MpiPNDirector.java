@@ -68,7 +68,7 @@ import ptolemy.kernel.util.StringAttribute;
  *
  * @author Man-Kit Leung, Isaac Liu, Jia Zou
  * @version $Id$
- * @since Ptolemy II 7.0
+ * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (mankit)
  * @Pt.AcceptedRating Red (mankit)
  */

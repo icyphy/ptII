@@ -41,7 +41,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
  @author Teale Fristoe
  @version $Id$
- @since Ptolemy II 6.1
+ @since Ptolemy II 7.1
  @Pt.ProposedRating red (tbf)
  @Pt.AcceptedRating
  */

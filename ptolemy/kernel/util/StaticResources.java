@@ -38,7 +38,7 @@ import java.util.ResourceBundle;
  *
  * @author Matthew Brooke
  * @version $Id$
- * @since Ptolemy II 7.2
+ * @since Ptolemy II 7.1
  * @Pt.ProposedRating
  * @Pt.AcceptedRating
  */

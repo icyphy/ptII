@@ -50,7 +50,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
  @author Xiaojun Liu
  @version $Id$
- @since Ptolemy II 0.4
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (liuxj)
  @Pt.AcceptedRating Red (cxh)
  */

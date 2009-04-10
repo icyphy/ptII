@@ -50,7 +50,7 @@ example, to create animations.
 
 @author  Man-Kit Leung
 @version $Id$
-@since Ptolemy II 6.0
+@since Ptolemy II 7.1
 @Pt.ProposedRating Yellow (eal)
 @Pt.AcceptedRating Red (cxh)
 */

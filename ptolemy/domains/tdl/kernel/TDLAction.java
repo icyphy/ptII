@@ -35,6 +35,8 @@ import ptolemy.actor.util.Time;
 /**
  * Describes a TDL action. Used in the TDLActionsGraph.
  * @author Patricia Derler
+@version $Id$
+@since Ptolemy II 7.1
  *
  */
 public class TDLAction {
@@ -143,6 +145,8 @@ public class TDLAction {
     /**
      * This class compares two TDL actions.
      * @author Patricia Derler
+@version $Id$
+@since Ptolemy II 7.1
      */
     public static class TDLActionComparator implements Comparator  {
 

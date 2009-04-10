@@ -43,6 +43,8 @@ import ptolemy.kernel.util.Workspace;
  * this parameter is true - slots: string that supports TDL slot selection.
  *
  * @author Patricia Derler
+@version $Id$
+@since Ptolemy II 7.1
  *
  */
 public class TDLRefinementPort extends RefinementPort {

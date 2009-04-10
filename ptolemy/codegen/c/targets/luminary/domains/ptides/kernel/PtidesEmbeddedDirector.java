@@ -68,7 +68,7 @@ import ptolemy.kernel.util.NamedObj;
 
  @author Jia Zou
  @version $Id$
- @since Ptolemy II 7.0
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (jiazou)
  @Pt.AcceptedRating
  */

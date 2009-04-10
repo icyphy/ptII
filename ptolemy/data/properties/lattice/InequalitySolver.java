@@ -67,7 +67,7 @@ import ptolemy.kernel.util.NamedObj;
 
  @author Yuhong Xiong
  @version $Id$
- @since Ptolemy II 0.2
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Green (cxh)
  @Pt.AcceptedRating Red (cxh)
  */

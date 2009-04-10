@@ -36,7 +36,7 @@ package ptolemy.codegen.c.actor.lib.jni;
 
  @author Gang Zhou, Christopher Brooks, Teale Fristoe
  @version $Id$
- @since Ptolemy II 6.1
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (tbf)
  @Pt.AcceptedRating
  */

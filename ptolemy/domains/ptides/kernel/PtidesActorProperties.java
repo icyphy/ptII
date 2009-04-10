@@ -48,6 +48,8 @@ import ptolemy.kernel.util.NamedObj;
  * </ul>.</p>
  *
  * @author Patricia Derler
+@version $Id$
+@since Ptolemy II 7.1
  */
 public class PtidesActorProperties {
 

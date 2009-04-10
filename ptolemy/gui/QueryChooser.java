@@ -42,6 +42,8 @@ import javax.swing.JLabel;
  * classes outside the <code>ptolemy.gui</code> package.
  *
  * @author  fracpete (fracpete at waikato dot ac dot nz)
+@version $Id$
+@since Ptolemy II 7.1
  * @version $Id$
  */
 public abstract class QueryChooser extends Box implements SettableQueryChooser,

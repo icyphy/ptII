@@ -56,7 +56,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
  @author Man-Kit Leung
  @version $Id$
- @since Ptolemy II 2.1
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  @see ptolemy.data.expr.ASTPtRootNode

@@ -49,7 +49,7 @@ import diva.canvas.FigureDecorator;
  assumes that an edge is being highlighted.
  @version        $Id$
  @author         Rowland R Johnson
- @since Ptolemy II 4.0
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (rowland)
  @Pt.AcceptedRating Red (rowland)
  */

@@ -40,7 +40,7 @@ import ptolemy.kernel.util.InvalidStateException;
 
  @author Mingyung Ko
  @version $Id$
- @since Ptolemy II 2.1
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (myko)
  @Pt.AcceptedRating Red (ssb)
  */

@@ -49,7 +49,7 @@ import ptolemy.kernel.util.Workspace;
 
    @author Hwayong Oh
    @version $Id$
-   @since Ptolemy II 7.0
+   @since Ptolemy II 7.1
    @Pt.ProposedRating Red (oh)
    @Pt.AcceptedRating Red (oh)
 */

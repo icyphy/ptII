@@ -57,7 +57,7 @@ import ptolemy.moml.filter.BackwardCompatibility;
 
  @author Edward A. Lee
  @version $Id$
- @since Ptolemy II 2.0
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (eal)
  */

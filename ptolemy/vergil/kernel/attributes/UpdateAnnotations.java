@@ -71,7 +71,7 @@ For hybrid system models, use the CTEmbeddedDirector.&lt;/text&gt;&lt;/svg&gt;&l
 
  @author Christopher Brooks
  @version $Id$
- @since Ptolemy II 7.0.2
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */

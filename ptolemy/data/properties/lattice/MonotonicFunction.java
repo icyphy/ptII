@@ -42,7 +42,7 @@ import ptolemy.graph.InequalityTerm;
 
  @author Steve Neuendorffer
  @version $Id$
- @since Ptolemy II 4.0
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Yellow (neuendor)
  @Pt.AcceptedRating Red (neuendor)
  */

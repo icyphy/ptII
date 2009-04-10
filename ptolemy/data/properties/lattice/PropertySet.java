@@ -45,7 +45,7 @@ import ptolemy.data.properties.Property;
 
  @author Man-Kit Leung
  @version $Id$
- @since Ptolemy II 7.0
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  @see ptolemy.graph.CPO

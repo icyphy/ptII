@@ -60,6 +60,8 @@ import net.jxta.resolver.ResolverService;
 /**
  A model server register the servant to the name server and wait for calls.
  @author Jie Liu
+@version $Id$
+@since Ptolemy II 7.1
  @version $Id$
  @Pt.ProposedRating Red (liuj)
  @Pt.AcceptedRating Red (cxh)

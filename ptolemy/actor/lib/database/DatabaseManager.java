@@ -87,7 +87,7 @@ import ptolemy.util.StringUtilities;
 
  @author Edward A. Lee
  @version $Id$
- @since Ptolemy II 0.3
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (cxh)
  */

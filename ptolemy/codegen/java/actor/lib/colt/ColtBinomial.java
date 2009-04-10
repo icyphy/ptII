@@ -42,7 +42,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * @see ptolemy.actor.lib.colt.ColtBinomial
  * @author Teale Fristoe
  * @version $Id$
- * @since Ptolemy II 6.0
+ * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red
  * @Pt.AcceptedRating
  *

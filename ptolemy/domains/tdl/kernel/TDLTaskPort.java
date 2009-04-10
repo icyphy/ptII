@@ -41,6 +41,8 @@ import ptolemy.kernel.util.Workspace;
  * TDL output port has an initial value.
  *
  * @author Patricia Derler
+@version $Id$
+@since Ptolemy II 7.1
  *
  */
 public class TDLTaskPort extends TypedIOPort {

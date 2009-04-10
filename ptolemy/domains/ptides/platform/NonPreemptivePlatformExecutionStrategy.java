@@ -37,6 +37,8 @@ import ptolemy.kernel.util.IllegalActionException;
  * This is an implementation of a non-preemptive platform execution strategy.
  *
  * @author Patricia Derler
+@version $Id$
+@since Ptolemy II 7.1
  */
 public class NonPreemptivePlatformExecutionStrategy extends
         PlatformExecutionStrategy {
@@ -56,6 +58,8 @@ public class NonPreemptivePlatformExecutionStrategy extends
      * event in the list should be fired next.
      *
      * @author Patricia Derler
+@version $Id$
+@since Ptolemy II 7.1
      */
     private static class WCETComparator implements Comparator {
 

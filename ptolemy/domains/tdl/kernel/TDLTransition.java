@@ -50,6 +50,8 @@ import ptolemy.kernel.util.Workspace;
  * the mode period, this value defines when this transition is tested.
  *
  * @author Patricia Derler
+@version $Id$
+@since Ptolemy II 7.1
  *
  */
 public class TDLTransition extends Transition {

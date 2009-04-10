@@ -51,7 +51,7 @@ import ptolemy.kernel.util.StringAttribute;
 
  @author Gang Zhou, Contributor: Bert Rodiers
  @version $Id$
- @since Ptolemy II 6.1
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (zgang)
  @Pt.AcceptedRating Red (zgang)
  */

@@ -47,7 +47,7 @@ import ptolemy.math.Rounding;
  *
  * @author Man-Kit Leung
  * @version $Id$
- * @since Ptolemy II 6.0
+ * @since Ptolemy II 7.1
  * @Pt.ProposedRating Green (mankit)
  * @Pt.AcceptedRating Green (cxh)
  */

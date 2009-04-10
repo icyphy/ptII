@@ -47,6 +47,8 @@ import ptolemy.kernel.util.IllegalActionException;
  * the execution strategy property field of the PtidesEmbeddedDirector.
  *
  * @author Patricia Derler
+@version $Id$
+@since Ptolemy II 7.1
  *
  */
 public abstract class PlatformExecutionStrategy {

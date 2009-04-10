@@ -36,7 +36,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  An actor that listens for keys pressed on the viewscreen.
  @author C. Fong
  @version $Id$
- @since Ptolemy II 1.0
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (chf)
  @Pt.AcceptedRating Red (chf)
  */

@@ -50,6 +50,8 @@ import ptolemy.kernel.util.IllegalActionException;
  * actors can preempt each other.
  *
  * @author Patricia Derler
+@version $Id$
+@since Ptolemy II 7.1
  *
  */
 public class PreemptivePlatformExecutionStrategy extends
@@ -69,6 +71,8 @@ public class PreemptivePlatformExecutionStrategy extends
      * event in the list should be fired next.
      *
      * @author Patricia Derler
+@version $Id$
+@since Ptolemy II 7.1
      *
      */
     private static class WCETComparator implements Comparator {

@@ -58,7 +58,7 @@ import ptolemy.util.StringUtilities;
 
  @author Man-kit Leung, Vinayak Nagpal
  @version $Id$
- @since Ptolemy II 6.1
+ @since Ptolemy II 7.1
  @Pt.ProposedRating red (zgang)
  @Pt.AcceptedRating red (zgang)
  */

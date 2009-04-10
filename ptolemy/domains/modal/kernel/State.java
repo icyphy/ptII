@@ -83,7 +83,7 @@ import ptolemy.moml.MoMLParser;
 
  @author Xiaojun Liu
  @version $Id$
- @since Ptolemy II 0.4
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Yellow (liuxj)
  @Pt.AcceptedRating Yellow (kienhuis)
  @see Transition

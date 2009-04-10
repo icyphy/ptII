@@ -42,6 +42,8 @@ import ptolemy.kernel.util.Workspace;
  * Controller for the TDL module.
  *
  * @author Patricia Derler
+@version $Id$
+@since Ptolemy II 7.1
  *
  */
 public class TDLController extends TDLActor {

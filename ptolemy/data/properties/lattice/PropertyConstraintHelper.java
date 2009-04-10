@@ -60,7 +60,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
  @author Man-Kit Leung, Thomas Mandl, Edward A. Lee
  @version $Id$
- @since Ptolemy II 0.4
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */

@@ -57,7 +57,7 @@ A extended base abstract class for a property solver.
 
 @author Man-Kit Leung
 @version $Id$
-@since Ptolemy II 7.0
+@since Ptolemy II 7.1
 @Pt.ProposedRating Red (mankit)
 @Pt.AcceptedRating Red (mankit)
  */

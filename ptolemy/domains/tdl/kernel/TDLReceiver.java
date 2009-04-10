@@ -45,6 +45,8 @@ import ptolemy.kernel.util.IllegalActionException;
  * Giotto receiver.
  *
  * @author Patricia Derler
+@version $Id$
+@since Ptolemy II 7.1
  *
  */
 public class TDLReceiver extends AbstractReceiver implements StateReceiver {

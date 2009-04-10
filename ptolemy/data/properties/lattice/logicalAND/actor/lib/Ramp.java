@@ -42,6 +42,8 @@ import ptolemy.kernel.util.IllegalActionException;
  A helper class for ptolemy.actor.lib.Ramp.
 
  @author Thomas Mandl
+@version $Id$
+@since Ptolemy II 7.1
 */
 public class Ramp extends Source {
 

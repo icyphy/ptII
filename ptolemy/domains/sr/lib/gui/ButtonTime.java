@@ -54,7 +54,7 @@ import ptolemy.kernel.util.StringAttribute;
 
  @author  Paul Whitaker
  @version $Id$
- @since Ptolemy II 2.0
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (pwhitake)
  @Pt.AcceptedRating Red (pwhitake)
  */

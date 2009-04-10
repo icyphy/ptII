@@ -40,7 +40,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
  @author Edward A. Lee
  @version $Id$
- @since Ptolemy II 5.2
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Green (eal)
  @Pt.AcceptedRating Red (hyzheng)
  @see FSMActor

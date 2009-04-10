@@ -39,7 +39,7 @@ import ptolemy.codegen.actor.Director;
 
  @author Ye Zhou, Gang Zhou
  @version $Id$
- @since Ptolemy II 6.0
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Yellow (zgang)  FIXME: Should associated with a static scheduling code generator. Cleanup, then review.
  @Pt.AcceptedRating Red (eal)
  */

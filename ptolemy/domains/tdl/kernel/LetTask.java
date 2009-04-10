@@ -33,6 +33,8 @@ import ptolemy.actor.Actor;
  * logical execution time.
  *
  * @author Patricia Derler
+@version $Id$
+@since Ptolemy II 7.1
  */
 public class LetTask {
 

@@ -50,7 +50,7 @@ import ptolemy.vergil.modal.FSMGraphTableau;
 
  @author  Steve Neuendorffer, Yuhong Xiong
  @version $Id$
- @since Ptolemy II 2.0
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (yuhong)
  @Pt.AcceptedRating Red (johnr)
  */

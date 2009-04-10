@@ -56,7 +56,7 @@ O1, O1, and O2 in order.
 
  @author Man-Kit Leung
  @version $Id$
- @since Ptolemy II 6.0.2
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */

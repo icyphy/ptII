@@ -39,6 +39,8 @@ import ptolemy.actor.Actor;
  * A schedule listener reacts to given events.
  *
  * @author Patricia Derler
+@version $Id$
+@since Ptolemy II 7.1
  */
 public interface ScheduleListener {
     // /////////////////////////////////////////////////////////////////

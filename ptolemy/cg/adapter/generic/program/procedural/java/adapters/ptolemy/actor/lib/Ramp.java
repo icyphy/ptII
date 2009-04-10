@@ -44,7 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
  @author Gang Zhou, Bert Rodiers
  @version $Id$
- @since Ptolemy II 6.0
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Green (zgang)
  @Pt.AcceptedRating Green (cxh)
  */

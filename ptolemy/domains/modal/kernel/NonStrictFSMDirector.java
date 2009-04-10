@@ -80,7 +80,7 @@ import ptolemy.kernel.util.Workspace;
 
  @author Ye Zhou
  @version $Id$
- @since Ptolemy II 4.1
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (zhouye)
  @Pt.AcceptedRating Red (cxh)
  */

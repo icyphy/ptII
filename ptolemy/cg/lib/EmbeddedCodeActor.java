@@ -52,7 +52,7 @@ import ptolemy.kernel.util.StringAttribute;
 
  @author Edward A. Lee, Bert Rodiers, Gang Zhou
  @version $Id$
- @since Ptolemy II 6.1
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (zgang)
  @Pt.AcceptedRating Red (zgang)
  */

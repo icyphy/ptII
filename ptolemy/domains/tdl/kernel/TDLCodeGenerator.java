@@ -51,6 +51,8 @@ import ptolemy.kernel.util.Settable;
  *
  *
  * @author Patricia Derler
+@version $Id$
+@since Ptolemy II 7.1
  */
 public class TDLCodeGenerator extends Attribute {
         /**

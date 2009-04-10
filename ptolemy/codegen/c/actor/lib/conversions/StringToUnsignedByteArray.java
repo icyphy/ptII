@@ -38,7 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *
  * @author Teale Fristoe
  * @version $Id$
- * @since Ptolemy II 6.0
+ * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (tbf)
  * @Pt.AcceptedRating
  */

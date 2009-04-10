@@ -55,7 +55,7 @@ import diva.gui.GUIUtilities;
 
  @author Man-Kit Leung
  @version $Id$
- @since Ptolemy II 6.1
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */

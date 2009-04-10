@@ -40,7 +40,7 @@ import ptolemy.kernel.util.Nameable;
 
  @author Haiyang Zheng
  @version $Id$
- @since Ptolemy II 4.0
+ @since Ptolemy II 7.1
  @Pt.ProposedRating Red (hyzheng)
  @Pt.AcceptedRating Red (hyzheng)
  */
