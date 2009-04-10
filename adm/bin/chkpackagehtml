@@ -5,11 +5,7 @@
 for package in $@
 do
 	directory=`echo $package | sed 's@\.@/@g'`
-	if [ ! -f "$directory/README.txt" ]; then
-	   echo "$directory/README.txt does not exist"
-        fi	   
-
-	if [ ! -f "$directory/package.html" ]; then
-	   echo "$directory/package.html does not exist"
+	if [ ! -f "$directory/README.txt" -o ! "$directory/package.html" ]; then
+	   echo "$package"
         fi	   
 done
