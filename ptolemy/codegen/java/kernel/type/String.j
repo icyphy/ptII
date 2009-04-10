@@ -54,7 +54,7 @@ Token String_add(Token thisToken, Token... tokens) {
     Token otherToken = tokens[0];
 
     return String_new((String)(String_convert(thisToken).payload)
-    	   + (String)(String_convert(otherToken).payload));
+               + (String)(String_convert(otherToken).payload));
 }
 /**/
 
@@ -124,7 +124,7 @@ Token String_convert(Token token, Token... ignored) {
         // FIXME: not finished
     default:
         throw new RuntimeException("String_convert(): Conversion from an unsupported type: "
-	 + token.type);
+         + token.type);
     }
 
 }

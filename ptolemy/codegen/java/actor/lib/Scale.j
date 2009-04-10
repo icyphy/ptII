@@ -44,7 +44,7 @@ Token Scale_scaleOnRight(Token input, double factor) {
 
         return result;
     } else {
-	return $tokenFunc(input::multiply($new(Double(factor))));
+        return $tokenFunc(input::multiply($new(Double(factor))));
     }
 }
 /**/

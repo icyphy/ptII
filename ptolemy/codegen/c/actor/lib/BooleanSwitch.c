@@ -1,9 +1,9 @@
 /*** fireBlock ***/
 $get(control, 0)
 if ($ref(control)) {
-	$generateTrueOutputs()
+        $generateTrueOutputs()
 } else {
-	$generateFalseOutputs()
+        $generateFalseOutputs()
 }
 /**/
 

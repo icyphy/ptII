@@ -16,7 +16,7 @@ $actorSymbol(current) = (int)$actorSymbol(seed);
 
 
 /*** setRandomNumberGeneratorDRand ***/
-	$actorSymbol(_randomNumberGenerator) = new DRand((int) $actorSymbol(seed));
+        $actorSymbol(_randomNumberGenerator) = new DRand((int) $actorSymbol(seed));
 /**/
 
 /*** setRandomNumberGeneratorMersenneTwister ***/

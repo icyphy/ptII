@@ -6,7 +6,7 @@ Token convert_Array_Array(Token a) {
 
 /*** convert_Boolean_Boolean() ***/
 boolean convert_Boolean_Boolean(boolean a) {
-	return a;
+        return a;
 }
 /**/
 
@@ -173,11 +173,11 @@ Token convert_Token_Token2(Short type1, Token token, Short type2) {
 #ifdef PTCG_TYPE_String
     case TYPE_String:
         return token;
-	break;
+        break;
 #endif
     default:
         throw new RuntimeException("String_convert(): Conversion from an unsupported type: "
-	 + token.type);
+         + token.type);
     }
 
 }

@@ -32,9 +32,9 @@ Token Matrix_delete(Token token, Token... tokens) {
 
     // Delete each elements.
     for (i = 0; i < ((matrix)(token.payload)).column; i++) {
-	for (j = 0; j < ((matrix)(token.payload)).row; j++) {
+        for (j = 0; j < ((matrix)(token.payload)).row; j++) {
             element = Matrix_get(token, j, i);
-	    System.out.println("Matrix_delete: convert needs work");      
+            System.out.println("Matrix_delete: convert needs work");      
             //functionTable[(int) element.type][FUNC_delete](element);
         }
     }
@@ -89,37 +89,37 @@ Token Matrix_new(int row, int column, int given, Object... elements) {
         //result.payload.Matrix->elements = (Token*) calloc(row * column, sizeof(Token));
         //((matrix)(result.payload).elements = new Token[row * column];
 
-	for (i = 0; i < given; i++) {
-	    matrix.elements[i] = (Token)elements[i];
-	}
-	// elementType is given as the last argument.
-	elementType = (Short)elements[i];
+        for (i = 0; i < given; i++) {
+            matrix.elements[i] = (Token)elements[i];
+        }
+        // elementType is given as the last argument.
+        elementType = (Short)elements[i];
 
-	if (elementType >= 0) {
-	    // convert the elements if needed.
-	    for (int j = 0; j < given; j++) {
-		if (Matrix_get(result, j, 0).type != elementType) {
+        if (elementType >= 0) {
+            // convert the elements if needed.
+            for (int j = 0; j < given; j++) {
+                if (Matrix_get(result, j, 0).type != elementType) {
                         //result.payload.Matrix->elements[j] = functionTable[(int)elementType][FUNC_convert](Matrix_get(result, j, 0));
-		switch(elementType) {
-		    case TYPE_Array:
-		        System.out.println("Matrix_ on an array of arrays, possible problem");
-		        break;
-		    case TYPE_Token:
-		        Matrix_set(result, j, 0, Matrix_get(result, j, 0));
-		        break;
+                switch(elementType) {
+                    case TYPE_Array:
+                        System.out.println("Matrix_ on an array of arrays, possible problem");
+                        break;
+                    case TYPE_Token:
+                        Matrix_set(result, j, 0, Matrix_get(result, j, 0));
+                        break;
 #ifdef PTCG_TYPE_Double
-		    case TYPE_Double:
-		        Matrix_set(result, j, 0, Double_convert(Matrix_get(result, j, 0)));
-		        break;
+                    case TYPE_Double:
+                        Matrix_set(result, j, 0, Double_convert(Matrix_get(result, j, 0)));
+                        break;
 #endif
 #ifdef PTCG_TYPE_Integer
-		    case TYPE_Integer:
-		        Matrix_set(result, j, 0, Integer_convert(Matrix_get(result, j, 0)));
-		        break;
+                    case TYPE_Integer:
+                        Matrix_set(result, j, 0, Integer_convert(Matrix_get(result, j, 0)));
+                        break;
 #endif
-		    default:
-		        throw new RuntimeException("Matrix_new(): Conversion from an unsupported type: "
-						   +  elementType);
+                    default:
+                        throw new RuntimeException("Matrix_new(): Conversion from an unsupported type: "
+                                                   +  elementType);
                    }
                 }
             }
@@ -137,13 +137,13 @@ boolean Matrix_equals(Token thisToken, Token... tokens) {
     Token otherToken = tokens[0];
 
     if (((matrix)(thisToken.payload)).row != ((matrix)(otherToken.payload)).row 
-	|| ((matrix)(thisToken.payload)).column != ((matrix)(otherToken.payload)).column) {
+        || ((matrix)(thisToken.payload)).column != ((matrix)(otherToken.payload)).column) {
         return false;
     }
     for (i = 0; i < ((matrix)(thisToken.payload)).row; i++) {
-	for (j = 0; j < ((matrix)(thisToken.payload)).row; j++) {
+        for (j = 0; j < ((matrix)(thisToken.payload)).row; j++) {
             //if (!functionTable[(int) Matrix_get(thisToken, j, i).type][FUNC_equals](Matrix_get(thisToken, j, i), Matrix_get(otherToken, j, i)).payload.Boolean) {
-	    if (!equals_Token_Token(Matrix_get(thisToken, i, j), Matrix_get(otherToken, i, j))) {
+            if (!equals_Token_Token(Matrix_get(thisToken, i, j), Matrix_get(otherToken, i, j))) {
                 return false;
             }
         }
@@ -161,12 +161,12 @@ Token Matrix_isCloseTo(Token thisToken, Token... elements) {
     Token tolerance = elements[1];
 
     if (((matrix)(thisToken.payload)).row != ((matrix)(otherToken.payload)).row 
-	|| ((matrix)(thisToken.payload)).column != ((matrix)(otherToken.payload)).column) {
+        || ((matrix)(thisToken.payload)).column != ((matrix)(otherToken.payload)).column) {
         return Boolean_new(false);
     }
     for (i = 0; i < ((matrix)(thisToken.payload)).row; i++) {
-	for (j = 0; j < ((matrix)(thisToken.payload)).row; j++) {
-	    if (!isCloseTo_Token_Token(Matrix_get(thisToken, i, j), Matrix_get(otherToken, i, j), tolerance)) {
+        for (j = 0; j < ((matrix)(thisToken.payload)).row; j++) {
+            if (!isCloseTo_Token_Token(Matrix_get(thisToken, i, j), Matrix_get(otherToken, i, j), tolerance)) {
                 return Boolean_new(false);
             }
         }
@@ -193,7 +193,7 @@ Token Matrix_print(Token thisToken, Token... tokens) {
                 printf("; ");
             }
             //functionTable[((matrix)(thisToken.payload)).elements[i * ((matrix)(thisToken.payload)).row + j].type][FUNC_print](((matrix)(thisToken.payload)).elements[i]);
-	    element = element = Matrix_get(thisToken, j, i);
+            element = element = Matrix_get(thisToken, j, i);
             $tokenFunc(element::print(element));
 
         }
@@ -216,10 +216,10 @@ Token Matrix_toString(Token thisToken, Token... tokens) {
         }
         for (j = 0; j < ((matrix)(thisToken.payload)).row; j++) {
             if (j != 0) {
-	        result.append(", ");
+                result.append(", ");
             }
             //elementString = functionTable[(int) Matrix_get(thisToken, j, i).type][FUNC_toString](Matrix_get(thisToken, j, i));
-	    elementString = $tokenFunc(Matrix_get(thisToken, j, i)::toString(Matrix_get(thisToken, j, i)));
+            elementString = $tokenFunc(Matrix_get(thisToken, j, i)::toString(Matrix_get(thisToken, j, i)));
             result.append((String)(elementString.payload));
         }
     }
@@ -285,7 +285,7 @@ Token Matrix_multiply(Token thisToken, Token... tokens) {
     Token otherToken = tokens[0];
 
     if (otherToken.type == TYPE_Matrix
-	&& ((matrix)(otherToken.payload)).row == 1
+        && ((matrix)(otherToken.payload)).row == 1
             && ((matrix)(otherToken.payload)).column == 1) {
         // Handle simple scaling by a 1x1 matrix
         result = Matrix_new(((matrix)(thisToken.payload)).row, ((matrix)(thisToken.payload)).column, 0);
@@ -300,7 +300,7 @@ Token Matrix_multiply(Token thisToken, Token... tokens) {
                 if (((matrix)(otherToken.payload)).row == 1
                         && ((matrix)(otherToken.payload)).column == 1) {
                     //Matrix_set(result, j, i, functionTable[(int)element.type][FUNC_multiply](element, Matrix_get(otherToken, 0, 0)));
-		    throw new RuntimeException("Matrix_multiply(): Matrix multiplication not yet supported");
+                    throw new RuntimeException("Matrix_multiply(): Matrix multiplication not yet supported");
                 }
             }
         }
@@ -346,7 +346,7 @@ Token Matrix_divide(Token thisToken, Token... tokens) {
             for (j = 0; j < ((matrix)(thisToken.payload)).row; j++) {
                 element = Matrix_get(thisToken, j, i);
                 // FIXME: Need to program this.
-		throw new RuntimeException("Matrix_divide(): Matrix division not yet supported");
+                throw new RuntimeException("Matrix_divide(): Matrix division not yet supported");
             }
         }
         break;

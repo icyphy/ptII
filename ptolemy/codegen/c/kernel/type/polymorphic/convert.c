@@ -35,13 +35,13 @@ char* convert_Boolean_String(boolean a) {
 
 /*** convert_DoubleArray_Array() ***/
 Token convert_DoubleArray_Array(Token token) {
-	int i;
-	int length = token.payload.DoubleArray->size;
-	Token result = $new(Array(length, 0));
-	for (i = 0; i < length; i++) {
-		Array_set(result, i, $convert_Double_Token(DoubleArray_get(token, i)));
-	}
-	return result;
+        int i;
+        int length = token.payload.DoubleArray->size;
+        Token result = $new(Array(length, 0));
+        for (i = 0; i < length; i++) {
+                Array_set(result, i, $convert_Double_Token(DoubleArray_get(token, i)));
+        }
+        return result;
 }
 /**/
 
@@ -51,25 +51,25 @@ Token convert_DoubleArray_Array(Token token) {
 
 /*** convert_DoubleArray_IntArray() ***/
 Token convert_DoubleArray_IntArray(Token token) {
-	int i;
-	int length = token.payload.DoubleArray->size;
-	Token result = $new(IntArray(length, 0));
-	for (i = 0; i < length; i++) {
-		IntArray_set(result, i, (int) DoubleArray_get(token, i));
-	}
-	return result;
+        int i;
+        int length = token.payload.DoubleArray->size;
+        Token result = $new(IntArray(length, 0));
+        for (i = 0; i < length; i++) {
+                IntArray_set(result, i, (int) DoubleArray_get(token, i));
+        }
+        return result;
 }
 /**/
 
 /*** convert_DoubleArray_StringArray() ***/
 Token convert_DoubleArray_StringArray(Token token) {
-	int i;
-	int length = token.payload.DoubleArray->size;
-	Token result = $new(StringArray(length, 0));
-	for (i = 0; i < length; i++) {
-		StringArray_set(result, i, $convert_Double_String(DoubleArray_get(token, i)));
-	}
-	return result;
+        int i;
+        int length = token.payload.DoubleArray->size;
+        Token result = $new(StringArray(length, 0));
+        for (i = 0; i < length; i++) {
+                StringArray_set(result, i, $convert_Double_String(DoubleArray_get(token, i)));
+        }
+        return result;
 }
 /**/
 
@@ -119,9 +119,9 @@ char* convert_Double_String(double a) {
 
 /*** convert_Double_StringArray() ***/
 Token convert_Double_StringArray(double d) {
-	Token result = $new(StringArray(1, 0));
-	StringArray_set(result, 0, $convert_Double_String(d));
-	return result;
+        Token result = $new(StringArray(1, 0));
+        StringArray_set(result, 0, $convert_Double_String(d));
+        return result;
 }
 /**/
 
@@ -133,25 +133,25 @@ inline Token convert_Double_Token(double a) {
 
 /*** convert_IntArray_Array() ***/
 Token convert_IntArray_Array(Token token) {
-	int i;
-	int length = token.payload.IntArray->size;
-	Token result = $new(Array(length, 0));
-	for (i = 0; i < length; i++) {
-		Array_set(result, i, $convert_Int_Token(IntArray_get(token, i)));
-	}
-	return result;
+        int i;
+        int length = token.payload.IntArray->size;
+        Token result = $new(Array(length, 0));
+        for (i = 0; i < length; i++) {
+                Array_set(result, i, $convert_Int_Token(IntArray_get(token, i)));
+        }
+        return result;
 }
 /**/
 
 /*** convert_IntArray_DoubleArray() ***/
 Token convert_IntArray_DoubleArray(Token token) {
-	int i;
-	int length = token.payload.IntArray->size;
-	Token result = $new(DoubleArray(length, 0));
-	for (i = 0; i < length; i++) {
-		DoubleArray_set(result, i, (double) IntArray_get(token, i));
-	}
-	return result;
+        int i;
+        int length = token.payload.IntArray->size;
+        Token result = $new(DoubleArray(length, 0));
+        for (i = 0; i < length; i++) {
+                DoubleArray_set(result, i, (double) IntArray_get(token, i));
+        }
+        return result;
 }
 /**/
 
@@ -161,13 +161,13 @@ Token convert_IntArray_DoubleArray(Token token) {
 
 /*** convert_IntArray_StringArray() ***/
 Token convert_IntArray_StringArray(Token token) {
-	int i;
-	int length = token.payload.IntArray->size;
-	Token result = $new(StringArray(length, 0));
-	for (i = 0; i < length; i++) {
-		StringArray_set(result, i, $convert_Int_String(IntArray_get(token, i)));
-	}
-	return result;
+        int i;
+        int length = token.payload.IntArray->size;
+        Token result = $new(StringArray(length, 0));
+        for (i = 0; i < length; i++) {
+                StringArray_set(result, i, $convert_Int_String(IntArray_get(token, i)));
+        }
+        return result;
 }
 /**/
 
@@ -205,7 +205,7 @@ long long convert_Int_Long(int a) {
 
 /*** convert_Int_String() ***/
 char* convert_Int_String(int a) {
-	// FIXME: should the string representation include the double quotes ""?
+        // FIXME: should the string representation include the double quotes ""?
 
     char* string = (char*) malloc(sizeof(char) * 12);
     sprintf((char*) string, "%d", a);
@@ -215,9 +215,9 @@ char* convert_Int_String(int a) {
 
 /*** convert_Int_StringArray() ***/
 Token convert_Int_StringArray(int i) {
-	Token result = $new(StringArray(1, 0));
-	StringArray_set(result, 0, $convert_Int_String(i));
-	return result;
+        Token result = $new(StringArray(1, 0));
+        StringArray_set(result, 0, $convert_Int_String(i));
+        return result;
 }
 /**/
 
@@ -279,9 +279,9 @@ char* convert_String_Boolean(char* a) {
 
 /*** convert_String_StringArray() ***/
 Token convert_String_StringArray(char* s) {
-	Token result = $new(StringArray(1, 0));
-	StringArray_set(result, 0, s);
-	return result;
+        Token result = $new(StringArray(1, 0));
+        StringArray_set(result, 0, s);
+        return result;
 }
 /**/
 

@@ -24,7 +24,7 @@ boolean equals_Array_Long(Token a1, long long a2) {
 
 /*** equals_Boolean_Boolean() ***/
 boolean equals_Boolean_Boolean(boolean a1, boolean a2) {
-	// logical comparison.
+        // logical comparison.
     return (!a1 == !a2);
 }
 /**/
@@ -149,13 +149,13 @@ boolean equals_String_Boolean(char* a1, boolean a2) {
 
 /*** equals_String_Double() ***/
 boolean equals_String_Double(char* a1, double a2) {
-	return atof(a1) == a2;
+        return atof(a1) == a2;
 }
 /**/
 
 /*** equals_String_Int() ***/
 boolean equals_String_Int(char* a1, int a2) {
-	return atoi(a1) == a2;
+        return atoi(a1) == a2;
 }
 /**/
 

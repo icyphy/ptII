@@ -47,7 +47,7 @@ $get(input, $channel)
 
 $actorSymbol(inputToken) = $ref(input#$channel);
 if ($channel == 0) {
-	$actorSymbol(numberOfTokensSeen)++;
+        $actorSymbol(numberOfTokensSeen)++;
 }
 
 /* $channel of $actorSymbol() */
@@ -95,7 +95,7 @@ $get(input, $channel)
 
 $actorSymbol(inputToken) = $ref(input#$channel);
 if ($channel == 0) {
-	$actorSymbol(numberOfTokensSeen)++;
+        $actorSymbol(numberOfTokensSeen)++;
 }
 
 /* $channel of $actorSymbol() */
@@ -137,7 +137,7 @@ $get(input, $channel)
 
 $actorSymbol(inputToken) = $ref(input#$channel);
 if ($channel == 0) {
-	$actorSymbol(numberOfTokensSeen)++;
+        $actorSymbol(numberOfTokensSeen)++;
 }
 /* $channel of $actorSymbol() */
 $actorSymbol(correctValuesThisFiring_$channel) =
@@ -176,14 +176,14 @@ $get(input, $channel)
 
 $actorSymbol(inputToken) = $ref(input#$channel);
 if ($channel == 0) {
-	$actorSymbol(numberOfTokensSeen)++;
+        $actorSymbol(numberOfTokensSeen)++;
 }
 /* $channel of $actorSymbol() */
 $actorSymbol(correctValuesThisFiring_$channel) =
 $ref(correctValues, $actorSymbol(numberOfTokensSeen));
 if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
         && (strcmp((char *)$actorSymbol(inputToken),
-        		StringArray_get($actorSymbol(correctValuesThisFiring_$channel), $channel))
+                        StringArray_get($actorSymbol(correctValuesThisFiring_$channel), $channel))
                 != 0)) {
     printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was a String: \"%s\". Should have been a String: \"%s\"\n",
             $actorSymbol(numberOfTokensSeen),
@@ -202,50 +202,50 @@ $actorSymbol(inputToken) = $ref(input#$channel);
 /* If the type of the input is an array, then cast the input to
  * the type of the elements of the elements of correctValues. */
 if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)) {
-	$actorSymbol(trainedValues) = Array_get($ref(correctValues, $actorSymbol(numberOfTokensSeen)), $channel);
+        $actorSymbol(trainedValues) = Array_get($ref(correctValues, $actorSymbol(numberOfTokensSeen)), $channel);
 
-	if (!$typeFunc(
-		TYPE_$inputType::isCloseTo(
-				$actorSymbol(trainedValues),
-				$actorSymbol(inputToken),
-				$actorSymbol(toleranceToken))).payload.Boolean) {
+        if (!$typeFunc(
+                TYPE_$inputType::isCloseTo(
+                                $actorSymbol(trainedValues),
+                                $actorSymbol(inputToken),
+                                $actorSymbol(toleranceToken))).payload.Boolean) {
 
-		printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %s. Should have been within %10.30g of: %s.\n",
-				$actorSymbol(numberOfTokensSeen),
-				$tokenFunc($actorSymbol(inputToken)::toString()).payload.String,
-				$ref(tolerance),
-				$typeFunc(TYPE_$inputType::toString($actorSymbol(trainedValues))).payload.String);
-		exit(-1);
-	}
+                printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %s. Should have been within %10.30g of: %s.\n",
+                                $actorSymbol(numberOfTokensSeen),
+                                $tokenFunc($actorSymbol(inputToken)::toString()).payload.String,
+                                $ref(tolerance),
+                                $typeFunc(TYPE_$inputType::toString($actorSymbol(trainedValues))).payload.String);
+                exit(-1);
+        }
 }
 /**/
 
 /***TokenBlock($channel, $inputType)***/
-	$get(input, $channel)
+        $get(input, $channel)
 
-	//Token
-	$actorSymbol(numberOfTokensSeen)++;
-	$actorSymbol(inputToken) = $ref(input#$channel);
+        //Token
+        $actorSymbol(numberOfTokensSeen)++;
+        $actorSymbol(inputToken) = $ref(input#$channel);
 
-	/* If the type of the input is an array, then cast the input to
-	 * the type of the elements of the elements of correctValues. */
-	if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)) {
-		$actorSymbol(trainedValues) = $ref(correctValues, $actorSymbol(numberOfTokensSeen));
+        /* If the type of the input is an array, then cast the input to
+         * the type of the elements of the elements of correctValues. */
+        if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)) {
+                $actorSymbol(trainedValues) = $ref(correctValues, $actorSymbol(numberOfTokensSeen));
 
-		if (!$typeFunc(
-			TYPE_$inputType::isCloseTo(
-					$actorSymbol(trainedValues),
-					$actorSymbol(inputToken),
-					$actorSymbol(toleranceToken))).payload.Boolean) {
+                if (!$typeFunc(
+                        TYPE_$inputType::isCloseTo(
+                                        $actorSymbol(trainedValues),
+                                        $actorSymbol(inputToken),
+                                        $actorSymbol(toleranceToken))).payload.Boolean) {
 
-			printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %s. Should have been within %10.30g of: %s.\n",
-					$actorSymbol(numberOfTokensSeen),
-					$tokenFunc($actorSymbol(inputToken)::toString()).payload.String,
-														$ref(tolerance),
-					$typeFunc(TYPE_$inputType::toString($actorSymbol(trainedValues))).payload.String);
-			exit(-1);
-	    }
-	}
+                        printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %s. Should have been within %10.30g of: %s.\n",
+                                        $actorSymbol(numberOfTokensSeen),
+                                        $tokenFunc($actorSymbol(inputToken)::toString()).payload.String,
+                                                                                                                $ref(tolerance),
+                                        $typeFunc(TYPE_$inputType::toString($actorSymbol(trainedValues))).payload.String);
+                        exit(-1);
+            }
+        }
 /**/
 
 
@@ -254,7 +254,7 @@ $get(input, $channel)
 
 $actorSymbol(inputToken) = $ref(input#$channel);
 if ($channel == 0) {
-	$actorSymbol(numberOfTokensSeen)++;
+        $actorSymbol(numberOfTokensSeen)++;
 }
 /* $channel of $actorSymbol() */
 $actorSymbol(correctValuesThisFiring_$channel) =

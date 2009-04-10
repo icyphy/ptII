@@ -3,5 +3,5 @@
 /**/
 
 /***scaleOnRight***/
-	$ref(output) = $multiply_$cgType(factor)_$cgType(input)($ref(factor), $ref(input));
+        $ref(output) = $multiply_$cgType(factor)_$cgType(input)($ref(factor), $ref(input));
 /**/

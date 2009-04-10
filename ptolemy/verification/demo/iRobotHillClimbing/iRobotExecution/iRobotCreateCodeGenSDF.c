@@ -1707,8 +1707,8 @@ void iRobotCreateCodeGenExperimental_iRobotActuator_Drive4_EmbeddedActor(void) {
             iRobotCreateCodeGenExperimental_iRobotActuator();
         }
         void initialize(void) {
-        	
-        	            /* initEmbeddedActor */
+                
+                            /* initEmbeddedActor */
             // Initialize the microcontroller
             initializeRobot();
             // Turn on the Create power if off

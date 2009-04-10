@@ -79,8 +79,8 @@ Token Double_add(Token thisToken, ...) {
 
     switch (otherToken.type) {
     case TYPE_Double:
-    	result = $new(Double(thisToken.payload.Double + otherToken.payload.Double));
-    	break;
+            result = $new(Double(thisToken.payload.Double + otherToken.payload.Double));
+            break;
 
 #ifdef TYPE_Array
     case TYPE_Array:
@@ -88,7 +88,7 @@ Token Double_add(Token thisToken, ...) {
         break;
 #endif
 
-	// FIXME: not finished
+        // FIXME: not finished
     default:
         fprintf(stderr, "Double_add(): Add with an unsupported type. (%d)\n", otherToken.type);
         exit(1);
@@ -112,8 +112,8 @@ Token Double_subtract(Token thisToken, ...) {
 
     switch (otherToken.type) {
     case TYPE_Double:
-    	result = $new(Double(thisToken.payload.Double - otherToken.payload.Double));
-    	break;
+            result = $new(Double(thisToken.payload.Double - otherToken.payload.Double));
+            break;
 
 #ifdef TYPE_Array
     case TYPE_Array:
@@ -121,7 +121,7 @@ Token Double_subtract(Token thisToken, ...) {
         break;
 #endif
 
-	// FIXME: not finished
+        // FIXME: not finished
     default:
         fprintf(stderr, "Double_multiply(): Multiply with an unsupported type. (%d)\n", otherToken.type);
         exit(1);

@@ -85,7 +85,7 @@ Token add_Double_DoubleArray(double a1, Token a2) {
     Token result = $new(DoubleArray(a2.payload.Array->size, 0));
 
     for (i = 0; i < a2.payload.DoubleArray->size; i++) {
-    	DoubleArray_set(result, i, $add_Double_Double(a1, DoubleArray_get(a2, i)));
+            DoubleArray_set(result, i, $add_Double_Double(a1, DoubleArray_get(a2, i)));
     }
     return result;
 }

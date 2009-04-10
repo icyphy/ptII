@@ -34,7 +34,7 @@ Token multiply_DoubleArray_Double(Token a1, double a2) {
     Token result = $new(DoubleArray(a1.payload.DoubleArray->size, 0));
 
     for (i = 0; i < a1.payload.DoubleArray->size; i++) {
-    	DoubleArray_set(result, i, $multiply_Double_Double(DoubleArray_get(a1, i), a2));
+            DoubleArray_set(result, i, $multiply_Double_Double(DoubleArray_get(a1, i), a2));
     }
     return result;
 }
@@ -76,7 +76,7 @@ double multiply_Double_Int(double a1, int a2) {
 
 /*** multiply_Double_IntArray() ***/
 Token multiply_Double_IntArray(double a1, Token a2) {
-	return $multiply_Double_DoubleArray(a1, $convert_IntArray_DoubleArray(a2));
+        return $multiply_Double_DoubleArray(a1, $convert_IntArray_DoubleArray(a2));
 }
 /**/
 
@@ -93,7 +93,7 @@ Token multiply_IntArray_Int(Token a1, int a2) {
     Token result = $new(IntArray(a1.payload.IntArray->size, 0));
 
     for (i = 0; i < a1.payload.IntArray->size; i++) {
-    	IntArray_set(result, i, $multiply_Int_Int(IntArray_get(a1, i), a2));
+            IntArray_set(result, i, $multiply_Int_Int(IntArray_get(a1, i), a2));
     }
     return result;
 }

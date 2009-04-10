@@ -63,7 +63,7 @@ Token negate_Token_Token(Token token) {
 #endif
     default:
         throw new RuntimeException("negate_Token_Token(): Conversion from an unsupported type: "
-	 + token.type);
+         + token.type);
     }
 }
 /**/

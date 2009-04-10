@@ -11,7 +11,7 @@ Token Pointer_new(void *i);
 Token Pointer_new(void *i) {
     Token result;
     result.type = TYPE_Pointer;
-		result.payload.Pointer = (PointerToken) malloc(sizeof(void *));
+                result.payload.Pointer = (PointerToken) malloc(sizeof(void *));
     result.payload.Pointer = i;
     return result;
 }

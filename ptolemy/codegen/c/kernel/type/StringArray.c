@@ -12,7 +12,7 @@ Token StringArray_new(int size, int given, ...);
 struct stringarray {
     int size;                                   // size of the array.
     string* elements;                            // array of Token elements.
-    char elementType;     	                    // type of the elements.
+    char elementType;                                 // type of the elements.
 };
 typedef struct stringarray* StringArrayToken;
 /**/
@@ -22,11 +22,11 @@ typedef struct stringarray* StringArrayToken;
 #define StringArray_length(array) ((array).payload.StringArray->size)
 
 string StringArray_get(Token array, int i) {
-	// Token result;
-	// result.type = array.payload.StringArray->elementType;
-	// result.payload.String = ((string *) array.payload.StringArray->elements)[i];
-	// return result;
-	return ((string *) array.payload.StringArray->elements)[i];
+        // Token result;
+        // result.type = array.payload.StringArray->elementType;
+        // result.payload.String = ((string *) array.payload.StringArray->elements)[i];
+        // return result;
+        return ((string *) array.payload.StringArray->elements)[i];
 }
 
 // StringArray_set: set an element of an array.
@@ -39,7 +39,7 @@ void StringArray_set(Token array, int i, string element) {
 void StringArray_resize(Token array, int size) {
     array.payload.StringArray->size = size;
     array.payload.StringArray->elements = (string*) realloc(
-    		array.payload.StringArray->elements, size * sizeof(string));
+                    array.payload.StringArray->elements, size * sizeof(string));
 }
 
 // StringArray_insert: Append the specified element to the end of an array.
@@ -124,9 +124,9 @@ Token StringArray_equals(Token thisToken, ...) {
         return $new(Boolean(false));
     }
     for (i = 0; i < thisToken.payload.StringArray->size; i++) {
-    	if (!$equals_String_String(StringArray_get(thisToken, i), StringArray_get(otherToken, i))) {
-    		return $new(Boolean(false));
-    	}
+            if (!$equals_String_String(StringArray_get(thisToken, i), StringArray_get(otherToken, i))) {
+                    return $new(Boolean(false));
+            }
     }
 
     va_end(argp);
@@ -169,7 +169,7 @@ Token StringArray_print(Token thisToken, ...) {
 // StringArray_toString: Return a string token with a string representation
 // of the specified array.
 Token StringArray_toString(Token thisToken, ...) {
-	int i;
+        int i;
     int currentSize, allocatedSize;
     char* string;
     char* elementString;
@@ -183,23 +183,23 @@ Token StringArray_toString(Token thisToken, ...) {
 
     //printf("%d\n", thisToken.payload.StringArray->size);
     for (i = 0; i < thisToken.payload.StringArray->size; i++) {
-		// Calculate the require storage size.
+                // Calculate the require storage size.
 
-    	// string temp = StringArray_get(thisToken, i);
+            // string temp = StringArray_get(thisToken, i);
         elementString = StringArray_get(thisToken, i);
         currentSize += strlen(elementString);
-		if (i != 0) {
-			currentSize += 2;
-		}
+                if (i != 0) {
+                        currentSize += 2;
+                }
 
-		// Re-allocate storage.
-		if (currentSize > allocatedSize) {
+                // Re-allocate storage.
+                if (currentSize > allocatedSize) {
             allocatedSize *= 2;
             string = (char*) realloc(string, allocatedSize);
         }
 
-		// Concat the element strings and separators.
-		if (i != 0) {
+                // Concat the element strings and separators.
+                if (i != 0) {
             strcat(string, ", ");
         }
         strcat(string, elementString);
@@ -236,11 +236,11 @@ Token StringArray_add(Token thisToken, ...) {
 
     for (i = 0; i < resultSize; i++) {
         if (size1 == 1) {
-        	StringArray_set(result, i, $add_String_String(StringArray_get(thisToken, 0),StringArray_get(otherToken, i)));
+                StringArray_set(result, i, $add_String_String(StringArray_get(thisToken, 0),StringArray_get(otherToken, i)));
         } else if (size2 == 1) {
-        	StringArray_set(result, i, $add_String_String(StringArray_get(thisToken, i),StringArray_get(otherToken, 0)));
+                StringArray_set(result, i, $add_String_String(StringArray_get(thisToken, i),StringArray_get(otherToken, 0)));
         } else {
-        	StringArray_set(result, i, $add_String_String(StringArray_get(thisToken, i),StringArray_get(otherToken, i)));
+                StringArray_set(result, i, $add_String_String(StringArray_get(thisToken, i),StringArray_get(otherToken, i)));
         }
     }
 
@@ -302,17 +302,17 @@ Token StringArray_clone(Token thisToken, ...) {
 /***StringArray_sum***/
 // FIXME: WHAT DOES THIS FUNCTION DO?
 string StringArray_sum(Token token) {
-	string result;
-	int i;
+        string result;
+        int i;
 
-	if (token.payload.StringArray->size <= 0) {
-		return StringArray_zero(token);
-	} else {
-		result = StringArray_get(token, 0);
-	}
+        if (token.payload.StringArray->size <= 0) {
+                return StringArray_zero(token);
+        } else {
+                result = StringArray_get(token, 0);
+        }
 
     for (i = 1; i < token.payload.StringArray->size; i++) {
-    	result = $add_String_String(result, StringArray_get(token, i));
+            result = $add_String_String(result, StringArray_get(token, i));
     }
     return result;
 }
@@ -320,12 +320,12 @@ string StringArray_sum(Token token) {
 
 /***StringArray_repeat***/
 Token StringArray_repeat(int number, string value) {
-	Token result;
-	result = $new(StringArray(number, 0));
-	int i;
+        Token result;
+        result = $new(StringArray(number, 0));
+        int i;
 
-	for (i = 0; i < number; i++) {
-		StringArray_set(result, i, value);
+        for (i = 0; i < number; i++) {
+                StringArray_set(result, i, value);
     }
     return result;
 }
@@ -354,16 +354,16 @@ Token StringArray_convert(Token token, ...) {
 //        element = StringArray_get(token, i);
 //        if (targetType != token.payload.StringArray->elementType) {
 //
-//        	StringArray_set(result, i, functionTable[(int)targetType][FUNC_convert](element));
+//                StringArray_set(result, i, functionTable[(int)targetType][FUNC_convert](element));
 //            // result.payload.StringArray->elements[i] = functionTable[(int)targetType][FUNC_convert](element);
 //        } else {
-//        	StringArray_set(result, i, element);
+//                StringArray_set(result, i, element);
 //        }
 //    }
 //
 //    va_end(argp);
 //    return result;
-	return token;
+        return token;
 }
 /**/
 

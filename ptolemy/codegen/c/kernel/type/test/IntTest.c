@@ -28,8 +28,8 @@
  * HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  * ENHANCEMENTS, OR MODIFICATIONS.
  *
- * 						PT_COPYRIGHT_VERSION_2
- * 						COPYRIGHTENDKEY
+ *                                                 PT_COPYRIGHT_VERSION_2
+ *                                                 COPYRIGHTENDKEY
  */
 
 // Example of Code under Test, replace me!!

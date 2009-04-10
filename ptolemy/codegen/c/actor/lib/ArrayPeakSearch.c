@@ -26,8 +26,8 @@ $ref(peakIndices) = $new(IntArray(0, 0));
     $actorClass(inputSize) = $size(input);
 
     if ($actorClass(inputSize) == 0) {
-		$ref(peakValues) = $ref(input);
-		$ref(peakIndices) = $convert_DoubleArray_IntArray($ref(input));
+                $ref(peakValues) = $ref(input);
+                $ref(peakIndices) = $convert_DoubleArray_IntArray($ref(input));
 //        for ($actorClass(i) = 0; $actorClass(i) < $val(maximumNumberOfPeaks); $actorClass(i)++) {
 //            DoubleArray_set($ref(peakValues), $actorClass(i), DoubleArray_get($ref(input), $actorClass(i)));
 //            IntArray_set($ref(peakIndices), $actorClass(i), (int) DoubleArray_get($ref(input), $actorClass(i)));

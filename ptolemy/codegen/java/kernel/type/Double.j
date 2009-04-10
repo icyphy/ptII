@@ -63,16 +63,16 @@ Token Double_add(Token thisToken, Token... tokens) {
     
     switch (otherToken.type) {
     case TYPE_Double:
-    	result = Double_new((Double)thisToken.payload + (Double)otherToken.payload);
-    	break;
-    	
+            result = Double_new((Double)thisToken.payload + (Double)otherToken.payload);
+            break;
+            
 #ifdef PTCG_TYPE_Array
     case TYPE_Array:
         result = $add_Double_Array((Double)thisToken.payload, otherToken);
         break;
 #endif
     
-	// FIXME: not finished
+        // FIXME: not finished
     default:
         throw new RuntimeException("Double_multiply(): Multiply with an unsupported type.: " + otherToken.type);
     }
@@ -88,16 +88,16 @@ Token Double_subtract(Token thisToken, Token... tokens) {
 
     switch (otherToken.type) {
     case TYPE_Double:
-    	result = Double_new((Double)thisToken.payload - (Double)otherToken.payload);
-    	break;
-    	
+            result = Double_new((Double)thisToken.payload - (Double)otherToken.payload);
+            break;
+            
 #ifdef PTCG_TYPE_Array
     case TYPE_Array:
         result = $subtract_Double_Array((Double)thisToken.payload, otherToken);
         break;
 #endif
     
-	// FIXME: not finished
+        // FIXME: not finished
     default:
         throw new RuntimeException("Double_subtract(): Multiply with an unsupported type.: " + otherToken.type);
     }
@@ -178,18 +178,18 @@ Token Double_convert(Token token, Token... elements) {
     case TYPE_String:
         // FIXME: Is this safe?
         token.type = TYPE_Double;
-	token.payload = ((Double)(token.payload)).toString();
-	return token;
+        token.payload = ((Double)(token.payload)).toString();
+        return token;
 #endif
 #ifdef PTCG_TYPE_Integer
     case TYPE_Integer:
         token.type = TYPE_Double;
         token.payload = IntegertoDouble((Integer)(token.payload));
-	return token;
+        return token;
 #endif
 
     case TYPE_Double:
-	return token;
+        return token;
         // FIXME: not finished
     default:
         throw new RuntimeException("Double_convert(): Conversion from an unsupported type.: " + token.type);

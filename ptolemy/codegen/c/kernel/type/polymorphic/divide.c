@@ -56,7 +56,7 @@ Token divide_DoubleArray_Double(Token a1, double a2) {
     Token result = $new(DoubleArray(a1.payload.DoubleArray->size, 0));
 
     for (i = 0; i < a1.payload.DoubleArray->size; i++) {
-    	DoubleArray_set(result, i, $divide_Double_Double(DoubleArray_get(a1, i), a2));
+            DoubleArray_set(result, i, $divide_Double_Double(DoubleArray_get(a1, i), a2));
     }
     return result;
 }
@@ -68,7 +68,7 @@ Token divide_DoubleArray_Int(Token a1, int a2) {
     Token result = $new(DoubleArray(a1.payload.DoubleArray->size, 0));
 
     for (i = 0; i < a1.payload.DoubleArray->size; i++) {
-    	DoubleArray_set(result, i, $divide_Double_Int(DoubleArray_get(a1, i), a2));
+            DoubleArray_set(result, i, $divide_Double_Int(DoubleArray_get(a1, i), a2));
     }
     return result;
 }

@@ -24,7 +24,7 @@ boolean equals_Long_Array(Token a1, long long a2) {
 
 /*** equals_Boolean_Boolean() ***/
 boolean equals_Boolean_Boolean(boolean a1, boolean a2) {
-	// logical comparison.
+        // logical comparison.
     return (!a1 == !a2);
 }
 /**/
@@ -149,13 +149,13 @@ boolean equals_String_Boolean(char* a1, boolean a2) {
 
 /*** equals_String_Double() ***/
 boolean equals_String_Double(char* a1, double a2) {
-	return atof(a1) == a2;
+        return atof(a1) == a2;
 }
 /**/
 
 /*** equals_String_Integer() ***/
 boolean char* equals_String_Integer(char* a1, int a2) {
-	return atoi(a1) == a2;
+        return atoi(a1) == a2;
 }
 /**/
 
@@ -202,14 +202,14 @@ boolean isCloseTo_Token_Token(Token thisToken, Token otherToken, Token tolerance
             && thisToken.payload instanceof Number
             && tolerance.payload instanceof Number) {
         result = 
-	    Math.abs((((Number)(thisToken.payload)).doubleValue() - ((Number)(otherToken.payload)).doubleValue())) < ((Number)(tolerance.payload)).doubleValue();
+            Math.abs((((Number)(thisToken.payload)).doubleValue() - ((Number)(otherToken.payload)).doubleValue())) < ((Number)(tolerance.payload)).doubleValue();
     } else if (thisToken.type == TYPE_Array
-	       && otherToken.type == TYPE_Array) {
-	return ((Boolean)(Array_isCloseTo(thisToken, otherToken, tolerance).payload)).booleanValue();
+               && otherToken.type == TYPE_Array) {
+        return ((Boolean)(Array_isCloseTo(thisToken, otherToken, tolerance).payload)).booleanValue();
 #ifdef PTCG_TYPE_Matrix
     } else if (thisToken.type == TYPE_Matrix
-	       && otherToken.type == TYPE_Matrix) {
-	return ((Boolean)(Matrix_isCloseTo(thisToken, otherToken, tolerance).payload)).booleanValue();
+               && otherToken.type == TYPE_Matrix) {
+        return ((Boolean)(Matrix_isCloseTo(thisToken, otherToken, tolerance).payload)).booleanValue();
 #endif
     } else { 
             

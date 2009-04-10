@@ -12,10 +12,10 @@ extern TYPE_Boolean;
 #include <stdio.h>
 
 struct token {
-	char type;
-	union type {
-		BooleanToken Boolean;
-	} payload;
+        char type;
+        union type {
+                BooleanToken Boolean;
+        } payload;
 };
 typedef struct token Token;
 extern Token String_new(char* string);
@@ -50,8 +50,8 @@ Token Boolean_equals(Token thisToken, ...) {
 
     va_end(argp);
     return $new(Boolean(
-    		( thisToken.payload.Boolean && otherToken.payload.Boolean ) ||
-    		( !thisToken.payload.Boolean && !otherToken.payload.Boolean )));
+                    ( thisToken.payload.Boolean && otherToken.payload.Boolean ) ||
+                    ( !thisToken.payload.Boolean && !otherToken.payload.Boolean )));
 }
 /**/
 

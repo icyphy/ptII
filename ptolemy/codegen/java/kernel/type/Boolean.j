@@ -97,7 +97,7 @@ Token Boolean_clone(Token thisToken, Token... tokens) {
 Token Boolean_convert(Token token, Token... tokens) {
     switch (token.type) {
     case TYPE_Boolean:
-	return token;
+        return token;
     default:
         throw new RuntimeException("Boolean_convert(): Conversion from an unsupported type.: " + token.type);
     }

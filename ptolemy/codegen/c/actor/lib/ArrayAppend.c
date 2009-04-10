@@ -28,7 +28,7 @@ $actorSymbol(length) = 0;
 
 /*** fillArray($channel, $elementType) ***/
 for ($actorSymbol(i) = 0; $actorSymbol(i) < $ref(input#$channel).payload.Array->size; $actorSymbol(i)++) {
-	$cgType(output)_set($ref(output), $actorSymbol(length),
+        $cgType(output)_set($ref(output), $actorSymbol(length),
     $clone_$elementType($cgType(input)_get($ref(input#$channel), $actorSymbol(i))));
     $actorSymbol(length)++;
 }

@@ -83,17 +83,17 @@ int getWriteOffset(struct pnBufferHeader* header, struct directorHeader* directo
             //pthread_mutex_lock(header->waitMutex);
             header->pendingFlag |= 0x2;
 
-			#ifdef DEBUG_PN
-			printf("[%x] waits to write [%d].\n", pthread_self(), header->waitCondition);
-			fflush(stdout);
-			#endif
+                        #ifdef DEBUG_PN
+                        printf("[%x] waits to write [%d].\n", pthread_self(), header->waitCondition);
+                        fflush(stdout);
+                        #endif
 
             pthread_cond_wait(header->waitCondition, header->waitMutex);
 
             #ifdef DEBUG_PN
-			printf("[%x] wakes up.\n", pthread_self());
-			fflush(stdout);
-			#endif
+                        printf("[%x] wakes up.\n", pthread_self());
+                        fflush(stdout);
+                        #endif
 
             if (directorHeader->terminate) {
                 pthread_exit(NULL);
@@ -135,21 +135,21 @@ int getAdvancedWriteOffset(int offset, struct pnBufferHeader* header, struct dir
             //pthread_mutex_lock(header->waitMutex);
             header->pendingFlag |= 0x2;
 
-			#ifdef DEBUG_PN
-			printf("[%x] waits to write [%d].\n", pthread_self(), header->waitCondition);
-			fflush(stdout);
-			#endif
+                        #ifdef DEBUG_PN
+                        printf("[%x] waits to write [%d].\n", pthread_self(), header->waitCondition);
+                        fflush(stdout);
+                        #endif
 
-			// Since this request is for multiple buffer spaces, there
+                        // Since this request is for multiple buffer spaces, there
             // may not be enough even if the thread is waken up.
             do {
-            	pthread_cond_wait(header->waitCondition, header->waitMutex);
+                    pthread_cond_wait(header->waitCondition, header->waitMutex);
             } while ((header->writeCount - header->readCount) >= header->capacity - offset && !directorHeader->terminate);
 
             #ifdef DEBUG_PN
-			printf("[%x] wakes up.\n", pthread_self());
-			fflush(stdout);
-			#endif
+                        printf("[%x] wakes up.\n", pthread_self());
+                        fflush(stdout);
+                        #endif
 
             if (directorHeader->terminate) {
                 pthread_exit(NULL);
@@ -187,17 +187,17 @@ int getReadOffset(struct pnBufferHeader* header, struct directorHeader* director
             // FIXME: use #define
             header->pendingFlag |= 0x1;
 
-			#ifdef DEBUG_PN
-			printf("[%x] waits to read [%d].\n", pthread_self(), header->waitCondition);
-			fflush(stdout);
-			#endif
+                        #ifdef DEBUG_PN
+                        printf("[%x] waits to read [%d].\n", pthread_self(), header->waitCondition);
+                        fflush(stdout);
+                        #endif
 
             pthread_cond_wait(header->waitCondition, header->waitMutex);
 
-			#ifdef DEBUG_PN
-			printf("[%x] wakes up.\n", pthread_self());
-			fflush(stdout);
-			#endif
+                        #ifdef DEBUG_PN
+                        printf("[%x] wakes up.\n", pthread_self());
+                        fflush(stdout);
+                        #endif
             if (directorHeader->terminate) {
                 // FIXME: need to call actor's wrapup()
                 pthread_exit(NULL);
@@ -237,21 +237,21 @@ int getAdvancedReadOffset(int offset, struct pnBufferHeader* header, struct dire
             // FIXME: use #define
             header->pendingFlag |= 0x1;
 
-			#ifdef DEBUG_PN
-			printf("[%x] waits to read [%d].\n", pthread_self(), header->waitCondition);
-			fflush(stdout);
-			#endif
+                        #ifdef DEBUG_PN
+                        printf("[%x] waits to read [%d].\n", pthread_self(), header->waitCondition);
+                        fflush(stdout);
+                        #endif
 
-			// Since this request is for multiple buffer spaces, there
+                        // Since this request is for multiple buffer spaces, there
             // may not be enough even if the thread is waken up.
             do {
-            	pthread_cond_wait(header->waitCondition, header->waitMutex);
+                    pthread_cond_wait(header->waitCondition, header->waitMutex);
             } while ((header->writeCount - header->readCount) <= offset && !directorHeader->terminate);
 
-			#ifdef DEBUG_PN
-			printf("[%x] wakes up.\n", pthread_self());
-			fflush(stdout);
-			#endif
+                        #ifdef DEBUG_PN
+                        printf("[%x] wakes up.\n", pthread_self());
+                        fflush(stdout);
+                        #endif
             if (directorHeader->terminate) {
 
                 // FIXME: need to call actor's wrapup()
@@ -278,26 +278,26 @@ inline void incrementReadBlockingThreads(struct directorHeader* directorHeader) 
     directorHeader->readBlockingThreads++;
 
     #ifdef DEBUG_PN
-    	//printf("[%x] Read Block++ rbt[%d], wbt[%d]\n", pthread_self(), directorHeader->readBlockingThreads, directorHeader->writeBlockingThreads);
-	#endif
+            //printf("[%x] Read Block++ rbt[%d], wbt[%d]\n", pthread_self(), directorHeader->readBlockingThreads, directorHeader->writeBlockingThreads);
+        #endif
 
     pthread_mutex_unlock(&directorHeader->readBlockMutex);
 
     if (directorHeader->readBlockingThreads == directorHeader->totalNumThreads) {
-	    // Real deadlock;
+            // Real deadlock;
         directorHeader->terminate = true;
 
         for (i = 0; i < directorHeader->numBuffers; i++) {
-			#ifdef DEBUG_PN
-			printf("[%x] broadcast [%d].\n", pthread_self(), &directorHeader->allConditions[i]);
-			fflush(stdout);
-			#endif
+                        #ifdef DEBUG_PN
+                        printf("[%x] broadcast [%d].\n", pthread_self(), &directorHeader->allConditions[i]);
+                        fflush(stdout);
+                        #endif
             pthread_cond_broadcast(&directorHeader->allConditions[i]);
         }
         pthread_exit(NULL);
     }
     // else if (directorHeader->readBlockingThreads + directorHeader->readBlockingThreads == directorHeader->totalNumThreads) {
-	    // FIXME: handle artificial deadlock.
+            // FIXME: handle artificial deadlock.
         // write deadlock;
     //}
 }
@@ -311,9 +311,9 @@ inline void incrementReadBlockingThreads(struct directorHeader* directorHeader) 
 inline void incrementWriteBlockingThreads(struct directorHeader* directorHeader) {
     pthread_mutex_lock(&directorHeader->writeBlockMutex);
     directorHeader->writeBlockingThreads++;
-	#ifdef DEBUG_PN
-		//printf("[%x] Write Block++ rbt[%d], wbt[%d]\n", pthread_self(), directorHeader->readBlockingThreads, directorHeader->writeBlockingThreads);
-	#endif
+        #ifdef DEBUG_PN
+                //printf("[%x] Write Block++ rbt[%d], wbt[%d]\n", pthread_self(), directorHeader->readBlockingThreads, directorHeader->writeBlockingThreads);
+        #endif
     pthread_mutex_unlock(&directorHeader->writeBlockMutex);
 
     /*
@@ -327,10 +327,10 @@ inline void incrementWriteBlockingThreads(struct directorHeader* directorHeader)
 /*** incrementWriteOffset ***/
 // Increment the write offset by 1.
 void incrementWriteOffset(struct pnBufferHeader* header, struct directorHeader* directorHeader) {
-	#ifdef DEBUG_PN
-	printf("[%x] increments [%d] write offset [%d]->[%d]\n", pthread_self(), header->waitCondition, header->writeOffset, (header->writeOffset + 1) % header->capacity);
-	fflush(stdout);
-	#endif
+        #ifdef DEBUG_PN
+        printf("[%x] increments [%d] write offset [%d]->[%d]\n", pthread_self(), header->waitCondition, header->writeOffset, (header->writeOffset + 1) % header->capacity);
+        fflush(stdout);
+        #endif
 
     header->writeOffset = (header->writeOffset + 1) % header->capacity;
     header->writeCount++;
@@ -347,18 +347,18 @@ void incrementWriteOffset(struct pnBufferHeader* header, struct directorHeader* 
 
         pthread_mutex_lock(&directorHeader->readBlockMutex);
         directorHeader->readBlockingThreads--;
-		#ifdef DEBUG_PN
-			//printf("[%x] Read Block-- rbt[%d], wbt[%d]\n", pthread_self(), directorHeader->readBlockingThreads, directorHeader->writeBlockingThreads);
-		#endif
+                #ifdef DEBUG_PN
+                        //printf("[%x] Read Block-- rbt[%d], wbt[%d]\n", pthread_self(), directorHeader->readBlockingThreads, directorHeader->writeBlockingThreads);
+                #endif
         pthread_mutex_unlock(&directorHeader->readBlockMutex);
 
-		#ifdef DEBUG_PN
-		printf("[%x] signals [%d]\n", pthread_self(), header->waitCondition);
-		fflush(stdout);
-		#endif
+                #ifdef DEBUG_PN
+                printf("[%x] signals [%d]\n", pthread_self(), header->waitCondition);
+                fflush(stdout);
+                #endif
 
-	    // Signal the consumer thread.
-	    pthread_cond_signal(header->waitCondition);
+            // Signal the consumer thread.
+            pthread_cond_signal(header->waitCondition);
     }
 
     pthread_mutex_unlock(header->waitMutex);
@@ -369,12 +369,12 @@ void incrementWriteOffset(struct pnBufferHeader* header, struct directorHeader* 
 /*** incrementWriteOffsetBy ***/
 // Increment the write offset by a specified increment.
 void incrementWriteOffsetBy(int increment, struct pnBufferHeader* header, struct directorHeader* directorHeader) {
-	#ifdef DEBUG_PN
-	printf("[%x] increments [%d] write offset [%d]->[%d]\n", pthread_self(), header->waitCondition, header->writeOffset, (header->writeOffset + increment) % header->capacity);
-	fflush(stdout);
-	#endif
+        #ifdef DEBUG_PN
+        printf("[%x] increments [%d] write offset [%d]->[%d]\n", pthread_self(), header->waitCondition, header->writeOffset, (header->writeOffset + increment) % header->capacity);
+        fflush(stdout);
+        #endif
 
-	header->writeOffset = (header->writeOffset + increment) % header->capacity;
+        header->writeOffset = (header->writeOffset + increment) % header->capacity;
     header->writeCount += increment;
 
     //-------------------------------------------------------------------//
@@ -391,10 +391,10 @@ void incrementWriteOffsetBy(int increment, struct pnBufferHeader* header, struct
         directorHeader->readBlockingThreads--;
         pthread_mutex_unlock(&directorHeader->readBlockMutex);
 
-		#ifdef DEBUG_PN
-		printf("[%x] signals [%d]\n", pthread_self(), header->waitCondition);
-		fflush(stdout);
-		#endif
+                #ifdef DEBUG_PN
+                printf("[%x] signals [%d]\n", pthread_self(), header->waitCondition);
+                fflush(stdout);
+                #endif
 
         // Signal the consumer thread.
         pthread_cond_signal(header->waitCondition);
@@ -408,10 +408,10 @@ void incrementWriteOffsetBy(int increment, struct pnBufferHeader* header, struct
 /*** incrementReadOffset ***/
 // Increment the read offset by 1.
 void incrementReadOffset(struct pnBufferHeader* header, struct directorHeader* directorHeader) {
-	#ifdef DEBUG_PN
-	printf("[%x] increments [%d] read offset [%d]->[%d]\n", pthread_self(), header->waitCondition, header->readOffset, (header->readOffset + 1) % header->capacity);
-	fflush(stdout);
-	#endif
+        #ifdef DEBUG_PN
+        printf("[%x] increments [%d] read offset [%d]->[%d]\n", pthread_self(), header->waitCondition, header->readOffset, (header->readOffset + 1) % header->capacity);
+        fflush(stdout);
+        #endif
 
     header->readOffset = (header->readOffset + 1) % header->capacity;
     header->readCount++;
@@ -428,15 +428,15 @@ void incrementReadOffset(struct pnBufferHeader* header, struct directorHeader* d
 
         pthread_mutex_lock(&directorHeader->writeBlockMutex);
         directorHeader->writeBlockingThreads--;
-		#ifdef DEBUG_PN
-			//printf("[%x] Write Block-- rbt[%d], wbt[%d]\n", pthread_self(), directorHeader->readBlockingThreads, directorHeader->writeBlockingThreads);
-		#endif
+                #ifdef DEBUG_PN
+                        //printf("[%x] Write Block-- rbt[%d], wbt[%d]\n", pthread_self(), directorHeader->readBlockingThreads, directorHeader->writeBlockingThreads);
+                #endif
         pthread_mutex_unlock(&directorHeader->writeBlockMutex);
 
-		#ifdef DEBUG_PN
-		printf("[%x] signals [%d]\n", pthread_self(), header->waitCondition);
-		fflush(stdout);
-		#endif
+                #ifdef DEBUG_PN
+                printf("[%x] signals [%d]\n", pthread_self(), header->waitCondition);
+                fflush(stdout);
+                #endif
 
         // Signal the consumer thread.
         pthread_cond_signal(header->waitCondition);
@@ -450,10 +450,10 @@ void incrementReadOffset(struct pnBufferHeader* header, struct directorHeader* d
 /*** incrementReadOffsetBy ***/
 // Increment the read offset by a specified increment.
 void incrementReadOffsetBy(int increment, struct pnBufferHeader* header, struct directorHeader* directorHeader) {
-	#ifdef DEBUG_PN
-	printf("[%x] increment [%d] read offset [%d]->[%d]\n", pthread_self(), header->waitCondition, header->readOffset, (header->readOffset + increment) % header->capacity);
-	fflush(stdout);
-	#endif
+        #ifdef DEBUG_PN
+        printf("[%x] increment [%d] read offset [%d]->[%d]\n", pthread_self(), header->waitCondition, header->readOffset, (header->readOffset + increment) % header->capacity);
+        fflush(stdout);
+        #endif
 
     header->readOffset = (header->readOffset + increment) % header->capacity;
     header->readCount += increment;
@@ -472,10 +472,10 @@ void incrementReadOffsetBy(int increment, struct pnBufferHeader* header, struct 
         directorHeader->writeBlockingThreads--;
         pthread_mutex_unlock(&directorHeader->writeBlockMutex);
 
-		#ifdef DEBUG_PN
-		printf("[%x] signals [%d]\n", pthread_self(), header->waitCondition);
-		fflush(stdout);
-		#endif
+                #ifdef DEBUG_PN
+                printf("[%x] signals [%d]\n", pthread_self(), header->waitCondition);
+                fflush(stdout);
+                #endif
 
         // Signal the consumer thread.
         pthread_cond_signal(header->waitCondition);

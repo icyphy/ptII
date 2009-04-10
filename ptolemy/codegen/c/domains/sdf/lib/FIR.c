@@ -1,12 +1,12 @@
 /*** preinitBlock ***/
-	Token $actorSymbol(_data);
-	$targetType(input) $actorSymbol(_zero);
-	int $actorSymbol(_mostRecent);
-	int $actorSymbol(_phaseLength);
-	$targetType(input) $actorSymbol(_outToken);
-	$targetType(input) $actorSymbol(_tapItem);
-	$targetType(input) $actorSymbol(_dataItem);
-	Token $actorSymbol(_taps);
+        Token $actorSymbol(_data);
+        $targetType(input) $actorSymbol(_zero);
+        int $actorSymbol(_mostRecent);
+        int $actorSymbol(_phaseLength);
+        $targetType(input) $actorSymbol(_outToken);
+        $targetType(input) $actorSymbol(_tapItem);
+        $targetType(input) $actorSymbol(_dataItem);
+        Token $actorSymbol(_taps);
 /**/
 
 /*** sharedBlock ***/
@@ -43,7 +43,7 @@
     $actorSymbol(_data) = $new($cgType(taps)($actorClass(length), 0));
 
     for ($actorClass(i) = 0; $actorClass(i) < $actorClass(length); $actorClass(i)++) {
-    	$cgType(taps)_set($actorSymbol(_data), $actorClass(i), $actorSymbol(_zero));
+            $cgType(taps)_set($actorSymbol(_data), $actorClass(i), $actorSymbol(_zero));
     }
     $actorSymbol(_mostRecent) = $actorSymbol(_phaseLength);
 /**/
@@ -51,39 +51,39 @@
 
 
 /*** prefireBlock ***/
-	$actorSymbol(_zero) = $tokenFunc($cgType(taps)_get($actorSymbol(_taps), 0)::zero());
+        $actorSymbol(_zero) = $tokenFunc($cgType(taps)_get($actorSymbol(_taps), 0)::zero());
 
-	$actorSymbol(_phaseLength) = $actorSymbol(_taps).payload.$cgType(taps)->size / $val(interpolation);
+        $actorSymbol(_phaseLength) = $actorSymbol(_taps).payload.$cgType(taps)->size / $val(interpolation);
 
-	if (($actorSymbol(_taps).payload.$cgType(taps)->size % $val(interpolation)) != 0) {
-	    $actorSymbol(_phaseLength)++;
-	}
+        if (($actorSymbol(_taps).payload.$cgType(taps)->size % $val(interpolation)) != 0) {
+            $actorSymbol(_phaseLength)++;
+        }
 
-	// Create new data array and initialize index into it.
-	// Avoid losing the data if possible.
-	// NOTE: If the filter length increases, then it is impossible
-	// to correctly initialize the delay line to contain previously
-	// seen data, because that data has not been saved.
-	$actorClass(length) = $actorSymbol(_phaseLength) + $val(decimation);
+        // Create new data array and initialize index into it.
+        // Avoid losing the data if possible.
+        // NOTE: If the filter length increases, then it is impossible
+        // to correctly initialize the delay line to contain previously
+        // seen data, because that data has not been saved.
+        $actorClass(length) = $actorSymbol(_phaseLength) + $val(decimation);
 
-	if ($actorSymbol(_data).payload.$cgType(taps)->size != $actorClass(length)) {
+        if ($actorSymbol(_data).payload.$cgType(taps)->size != $actorClass(length)) {
         //$actorSymbol(_data).payload.$cgType(taps)->elements = (Token*) realloc($actorSymbol(_data).payload.$cgType(taps)->elements, $actorClass(length) * sizeof(Token));
         $cgType(taps)_resize($actorSymbol(_data), $actorClass(length));
 
         for ($actorClass(i) = $actorSymbol(_data).payload.$cgType(taps)->size; $actorClass(i) < $actorClass(length); $actorClass(i)++) {
-        	$cgType(taps)_set($actorSymbol(_data), $actorClass(i), $actorSymbol(_zero));
+                $cgType(taps)_set($actorSymbol(_data), $actorClass(i), $actorSymbol(_zero));
         }
         $actorSymbol(_data).payload.$cgType(taps)->size = $actorClass(length);
         $actorSymbol(_mostRecent) = $actorSymbol(_phaseLength);
-	}
+        }
 /**/
 
 
 
 
 /*** fireBlock0 ***/
-	$actorClass(bufferIndex) = 0;
-	$actorClass(inputIndex) = 0;
+        $actorClass(bufferIndex) = 0;
+        $actorClass(inputIndex) = 0;
 /**/
 
 /*** fireBlock ***/

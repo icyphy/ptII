@@ -45,7 +45,7 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
 /***IntegerBlockMultiChannel($channel)***/
 $actorSymbol(inputToken) = $ref(input#$channel);
 if ($channel == 0) {
-	$actorSymbol(numberOfTokensSeen)++;
+        $actorSymbol(numberOfTokensSeen)++;
 }
 
 /* IBMC $channel of $actorSymbol() */
@@ -86,7 +86,7 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
 /***DoubleBlockMultiChannel($channel)***/
 $actorSymbol(inputToken) = $ref(input#$channel);
 if ($channel == 0) {
-	$actorSymbol(numberOfTokensSeen)++;
+        $actorSymbol(numberOfTokensSeen)++;
 }
 
 /* DBMC $channel of $actorSymbol() */
@@ -125,7 +125,7 @@ if (($actorSymbol(numberOfTokensSeen) < $size(correctValues)
 /***BooleanBlockMultiChannel($channel)***/
 $actorSymbol(inputToken) = $ref(input#$channel);
 if ($channel == 0) {
-	$actorSymbol(numberOfTokensSeen)++;
+        $actorSymbol(numberOfTokensSeen)++;
 }
 /* $channel of $actorSymbol() */
 $actorSymbol(correctValuesThisFiring_$channel) =
@@ -147,7 +147,7 @@ $actorSymbol(inputToken) = $ref(input#$channel);
 $actorSymbol(numberOfTokensSeen)++;
 if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
         && !$ref(correctValues, $actorSymbol(numberOfTokensSeen))
-	            .equals($actorSymbol(inputToken))) {
+                    .equals($actorSymbol(inputToken))) {
     throw new RuntimeException(String.format("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was a String: \"%s\". Should have been a String: \"%s\"\n",
             $actorSymbol(numberOfTokensSeen),
             $actorSymbol(inputToken),
@@ -158,7 +158,7 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
 /***StringBlockMultiChannel($channel)***/
 $actorSymbol(inputToken) = $ref(input#$channel);
 if ($channel == 0) {
-	$actorSymbol(numberOfTokensSeen)++;
+        $actorSymbol(numberOfTokensSeen)++;
 }
 /* $channel of $actorSymbol() */
 $actorSymbol(correctValuesThisFiring_$channel) =
@@ -168,11 +168,11 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
                     (String)(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload))) {
     throw new RuntimeException("Test $actorSymbol($channel) fails in iteration "
             + $actorSymbol(numberOfTokensSeen)
-	    + ".\n Value was a String: \""
-	    + $actorSymbol(inputToken)
-	    + "\". Should have been a String: \""
-	    + (String)(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload)
-	    + "\"");
+            + ".\n Value was a String: \""
+            + $actorSymbol(inputToken)
+            + "\". Should have been a String: \""
+            + (String)(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload)
+            + "\"");
 }
 /**/
 
@@ -184,21 +184,21 @@ $actorSymbol(numberOfTokensSeen)++;
 if (($type(input) != TYPE_Array
      && equals_Token_Token($actorSymbol(inputToken), Array_get($ref(correctValues), $actorSymbol(numberOfTokensSeen))))
     || ($type(input) == TYPE_Array
-	&& !$isCloseTo_Token_Token($actorSymbol(inputToken), Array_get(Array_get($ref(correctValues), $actorSymbol(numberOfTokensSeen)), 0), $actorSymbol(toleranceToken)))) {
+        && !$isCloseTo_Token_Token($actorSymbol(inputToken), Array_get(Array_get($ref(correctValues), $actorSymbol(numberOfTokensSeen)), 0), $actorSymbol(toleranceToken)))) {
     throw new RuntimeException(String.format("\nTest $actorSymbol($channel) fails in iteration "
-    			     + $actorSymbol(numberOfTokensSeen)
-			     + ".\n Value was:"
-			     + $actorSymbol(inputToken)
-			     + "Should have been within " + $ref(tolerance) + " of: "
-			     + Array_get($ref(correctValues), $actorSymbol(numberOfTokensSeen))
-			     + ".\n"));
+                                 + $actorSymbol(numberOfTokensSeen)
+                             + ".\n Value was:"
+                             + $actorSymbol(inputToken)
+                             + "Should have been within " + $ref(tolerance) + " of: "
+                             + Array_get($ref(correctValues), $actorSymbol(numberOfTokensSeen))
+                             + ".\n"));
 }
 /**/
 
 /***TokenBlockMultiChannel($channel)***/
 $actorSymbol(inputToken) = $ref(input#$channel);
 if ($channel == 0) {
-	$actorSymbol(numberOfTokensSeen)++;
+        $actorSymbol(numberOfTokensSeen)++;
 }
 /* $channel of $actorSymbol() */
 $actorSymbol(correctValuesThisFiring_$channel) = Array_get($ref(correctValues), $actorSymbol(numberOfTokensSeen));
@@ -206,11 +206,11 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
         && !$tokenFunc($actorSymbol(inputToken)::equals(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel))).payload.Boolean) {
     throw new RuntimeException("Test $actorSymbol($channel) fails in iteration "
             + $actorSymbol(numberOfTokensSeen)
-	    + ".\n Value was a String: \""
-	    + $actorSymbol(inputToken)
-	    + "\". Should have been a String: \""
-	    + (String)(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload)
-	    + "\"");
+            + ".\n Value was a String: \""
+            + $actorSymbol(inputToken)
+            + "\". Should have been a String: \""
+            + (String)(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload)
+            + "\"");
 }
 /**/
 

@@ -11,7 +11,7 @@ $actorSymbol(doDelete) = false;
 
 /*** fireBlock($elementType) ***/
 if ($actorSymbol(doDelete)) {
-	$delete_$cgType(output)($ref(output));
+        $delete_$cgType(output)($ref(output));
 }
 
 $ref(output) = $new($cgType(output)($ref(outputArrayLength), 0));

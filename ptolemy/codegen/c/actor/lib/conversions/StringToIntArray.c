@@ -15,8 +15,8 @@ if ($actorSymbol(doDelete)) {
 $actorSymbol(length) = strlen($ref(input));
 $actorSymbol(intArray) = $new(IntArray($actorSymbol(length), 0));
 for ($actorSymbol(i) = 0; $actorSymbol(i) < $actorSymbol(length); $actorSymbol(i)++) {
-	printf("%d\n", $ref(input)[$actorSymbol(i)]);
-	fflush(stdout);
+        printf("%d\n", $ref(input)[$actorSymbol(i)]);
+        fflush(stdout);
     $actorSymbol(intArray).payload.IntArray->elements[$actorSymbol(i)] = (int) ($ref(input)[$actorSymbol(i)]);
 }
 $ref(output) = $actorSymbol(intArray);

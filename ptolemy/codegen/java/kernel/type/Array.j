@@ -2,7 +2,7 @@
 // java/kernel/type/Array.j
 private class array {
     public int size;
-    public Token [] elements;	
+    public Token [] elements;        
 }
 // Definition of the array struct.
 //struct array {
@@ -79,31 +79,31 @@ Token Array_new(int size, int given, Object... elements) {
         // elementType is given as the last argument.
         elementType = (Short)elements[i];
 
-	if (elementType >= 0) {
+        if (elementType >= 0) {
            // convert the elements if needed.
-	   for (int j = 0; j < given; j++) {
+           for (int j = 0; j < given; j++) {
               if (Array_get(result, j).type != elementType) {
                 //Array_set(result, j, functionTable[(int)elementType][FUNC_convert](Array_get(result, j)));
-		switch(elementType) {
-		    case TYPE_Array:
-		        System.out.println("Array_new on an array of arrays, possible problem");
-		        break;
-		    case TYPE_Token:
-		        Array_set(result, j, Array_get(result,j));
-		        break;
+                switch(elementType) {
+                    case TYPE_Array:
+                        System.out.println("Array_new on an array of arrays, possible problem");
+                        break;
+                    case TYPE_Token:
+                        Array_set(result, j, Array_get(result,j));
+                        break;
 #ifdef PTCG_TYPE_Double
-		    case TYPE_Double:
-		        Array_set(result, j, Double_convert(Array_get(result,j)));
-		        break;
+                    case TYPE_Double:
+                        Array_set(result, j, Double_convert(Array_get(result,j)));
+                        break;
 #endif
 #ifdef PTCG_TYPE_Integer
-		    case TYPE_Integer:
-		        Array_set(result, j, Integer_convert(Array_get(result,j)));
-		        break;
+                    case TYPE_Integer:
+                        Array_set(result, j, Integer_convert(Array_get(result,j)));
+                        break;
 #endif
-		    default:
-		        throw new RuntimeException("Array_new(): Conversion from an unsupported type: "
-						   +  elementType);
+                    default:
+                        throw new RuntimeException("Array_new(): Conversion from an unsupported type: "
+                                                   +  elementType);
                    }
                 }
             }
@@ -124,7 +124,7 @@ Token Array_delete(Token token, Object... elements) {
     // Delete each elements.
     for (i = 0; i < ((array)(token.payload)).size; i++) {
             element = Array_get(token, i);
-		System.out.println("Array_delete: convert needs work");      
+                System.out.println("Array_delete: convert needs work");      
         //functionTable[(int)element.type][FUNC_delete](element);
     }
     //free(token.payload.Array->elements);
@@ -147,9 +147,9 @@ boolean Array_equals(Token thisToken, Token... tokens) {
         return false;
     }
     for (i = 0; i < ((array)(thisToken.payload)).size; i++) {
-	if (!equals_Token_Token(Array_get(thisToken, i), Array_get(otherToken, i))) {
-	    return false;
-	}
+        if (!equals_Token_Token(Array_get(thisToken, i), Array_get(otherToken, i))) {
+            return false;
+        }
     }
 
     return true;
@@ -165,19 +165,19 @@ Token Array_isCloseTo(Token thisToken, Token... elements) {
     Token tolerance = elements[1];
 
     if ( ((array)(thisToken.payload)).size != ((array)(otherToken.payload)).size) {
-	//System.out.println("Array_isCloseTo sizes different:" + ((array)(thisToken.payload)).size + " "
-	//		   + ((array)(otherToken.payload)).size);
-	//print_Token3(thisToken);
-	//print_Token3(otherToken);
+        //System.out.println("Array_isCloseTo sizes different:" + ((array)(thisToken.payload)).size + " "
+        //                   + ((array)(otherToken.payload)).size);
+        //print_Token3(thisToken);
+        //print_Token3(otherToken);
         return Boolean_new(false);
     }
     for (i = 0; i < ((array)(thisToken.payload)).size; i++) {
-	//System.out.println("Array_isCloseTo " + i);
-	//print_Token3(Array_get(thisToken, i));
-	//print_Token3(Array_get(otherToken, i));
-	if (!$isCloseTo_Token_Token(Array_get(thisToken, i), Array_get(otherToken, i), tolerance)) {
-	    return Boolean_new(false);
-	}
+        //System.out.println("Array_isCloseTo " + i);
+        //print_Token3(Array_get(thisToken, i));
+        //print_Token3(Array_get(otherToken, i));
+        if (!$isCloseTo_Token_Token(Array_get(thisToken, i), Array_get(otherToken, i), tolerance)) {
+            return Boolean_new(false);
+        }
     }
 
     return Boolean_new(true);
@@ -197,20 +197,20 @@ Token Array_print(Token thisToken, Token... tokens) {
         if (i != 0) {
             results.append(", ");
         }
-	// Arrays elements could have different types?
-	if (((array)(thisToken.payload)).elements == null) {
-	    results.append("elements == null");
-	} else if (((array)(thisToken.payload)).elements[i] == null) {
-	    results.append("elements[" + i + "] == null");
+        // Arrays elements could have different types?
+        if (((array)(thisToken.payload)).elements == null) {
+            results.append("elements == null");
+        } else if (((array)(thisToken.payload)).elements[i] == null) {
+            results.append("elements[" + i + "] == null");
         } else {
             short elementType = ((array)(thisToken.payload)).elements[i].type;
-   	    switch(elementType) {
-	        case TYPE_Array:
-  	            results.append($Array_toString(((array)(thisToken.payload)).elements[i]).payload);
-		    break;		
-  	        default: 
+               switch(elementType) {
+                case TYPE_Array:
+                      results.append($Array_toString(((array)(thisToken.payload)).elements[i]).payload);
+                    break;                
+                  default: 
                     results.append(((array)(thisToken.payload)).elements[i].payload.toString());
-		    break;		
+                    break;                
             }
         } 
     }
@@ -231,24 +231,24 @@ Token Array_toString(Token thisToken, Token... ignored) {
         if (i != 0) {
             result.append(", ");
         }
-	// Arrays elements could have different types?
-	if (((array)(thisToken.payload)).elements == null) {
-	    result.append("elements == null");
-	} else if (((array)(thisToken.payload)).elements[i] == null) {
-	    result.append("elements[" + i + "] == null");
-	    throw new RuntimeException("elements[] is null");
+        // Arrays elements could have different types?
+        if (((array)(thisToken.payload)).elements == null) {
+            result.append("elements == null");
+        } else if (((array)(thisToken.payload)).elements[i] == null) {
+            result.append("elements[" + i + "] == null");
+            throw new RuntimeException("elements[] is null");
         } else {
             short elementType = ((array)(thisToken.payload)).elements[i].type;
-   	    switch(elementType) {
-	        case TYPE_Array:
-  	            result.append(Array_toString(((array)(thisToken.payload)).elements[i]).payload);
-		    break;		
-	        case TYPE_String:
+               switch(elementType) {
+                case TYPE_Array:
+                      result.append(Array_toString(((array)(thisToken.payload)).elements[i]).payload);
+                    break;                
+                case TYPE_String:
                     result.append("\"" + ((array)(thisToken.payload)).elements[i].payload.toString() + "\"");
-		    break;
-  	        default: 
+                    break;
+                  default: 
                     result.append(((array)(thisToken.payload)).elements[i].payload.toString());
-		    break;		
+                    break;                
             }
         } 
     }
@@ -441,7 +441,7 @@ Token Array_zero(Token token, Token... tokens) {
 
     for (i = 0; i < ((array)(thisToken.payload)).size; i++) {
         element = Array_get(token, i);
-	System.out.println("Array_zero(): handle func table");
+        System.out.println("Array_zero(): handle func table");
 
         //result.payload.Array->elements[i]
         //                = functionTable[(int)element.type][FUNC_zero](element);
@@ -462,7 +462,7 @@ Token Array_one(Token token, Token... tokens) {
 
     result = Array_new(((array)(thisToken.payload)).size, 0);
     for (i = 0; i < ((array)(thisToken.payload)).size; i++) {
-	System.out.println("Array_one(): handle func table");
+        System.out.println("Array_one(): handle func table");
         //element = Array_get(token, i);
         //result.payload.Array->elements[i]
         //                = functionTable[(int)element.type][FUNC_one](element);
@@ -482,7 +482,7 @@ Token Array_clone(Token token, Token... tokens) {
 
     result = Array_new(((array)(thisToken.payload)).size, 0);
     for (i = 0; i < ((array)(thisToken.payload)).size; i++) {
-	System.out.println("Array_clone(): handle func table");
+        System.out.println("Array_clone(): handle func table");
         //element = Array_get(token, i);
         //result.payload.Array->elements[i] = functionTable[(int)element.type][FUNC_clone](element);
     }
@@ -492,15 +492,15 @@ Token Array_clone(Token token, Token... tokens) {
 
 
 /***arraySum***/
-Token arraySum(Token token) {	
-	Token result;
-	int i;
-	if (((array)(thisToken.payload)).size <= 0) {
-		return token;
-	} else {
-		result = Array_get(token, 0);
-	}
-	
+Token arraySum(Token token) {        
+        Token result;
+        int i;
+        if (((array)(thisToken.payload)).size <= 0) {
+                return token;
+        } else {
+                result = Array_get(token, 0);
+        }
+        
     for (i = 0; i < ((array)(thisToken.payload)).size; i++) {
         result = $add_Token_Token(result, Array_get(token, i));
     }
@@ -509,11 +509,11 @@ Token arraySum(Token token) {
 /**/
 
 /***arrayRepeat***/
-Token arrayRepeat(int number, Token value) {	
-	Token result = $new(Array(number, 0));
-	int i;
+Token arrayRepeat(int number, Token value) {        
+        Token result = $new(Array(number, 0));
+        int i;
 
-	for (i = 0; i < number; i++) {
+        for (i = 0; i < number; i++) {
         Array_set(result, i, value);
     }
     return result;
@@ -542,28 +542,28 @@ Token Array_convert(Token token, Short... targetTypes) {
         element = Array_get(token, i);
         if (targetType != element.type) {
             //result.payload.Array->elements[i] = functionTable[(int)targetType][FUNC_convert](element);
-	    switch (targetType) {
+            switch (targetType) {
 #ifdef PTCG_TYPE_String
-	    case TYPE_String:
-		    element = String_convert(element);
-	    break;
+            case TYPE_String:
+                    element = String_convert(element);
+            break;
 #endif
 #ifdef PTCG_TYPE_Integer
-	    case TYPE_Integer:
-		    element = Integer_convert(element);
-	    break;
+            case TYPE_Integer:
+                    element = Integer_convert(element);
+            break;
 #endif
 #ifdef PTCG_TYPE_Double
-	    case TYPE_Double:
-		    element = Double_convert(element);
-	    break;
+            case TYPE_Double:
+                    element = Double_convert(element);
+            break;
 #endif
             case TYPE_Array:
-		element = Array_convert(element, targetType);
-	    break;
+                element = Array_convert(element, targetType);
+            break;
 
            default:
-	       throw new RuntimeException("Array_convert(): Conversion from an unsupported type: " + targetType);
+               throw new RuntimeException("Array_convert(): Conversion from an unsupported type: " + targetType);
             }
             ((array)(result.payload)).elements[i] = element;
         } else {
