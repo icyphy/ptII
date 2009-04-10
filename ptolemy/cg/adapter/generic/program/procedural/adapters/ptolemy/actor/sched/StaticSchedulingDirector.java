@@ -278,7 +278,7 @@ public class StaticSchedulingDirector extends Director {
                 // Then use the parameter (attribute) instead.
             } else {            
                 String result = getReference(
-                        port, channelAndOffset, forComposite, isWrite);
+                        port, channelAndOffset, forComposite, isWrite, target);
     
                 String refType = getStrategy().codeGenType(port.getType());
     
@@ -287,7 +287,7 @@ public class StaticSchedulingDirector extends Director {
         }
     
         // Try if the name is a parameter.
-        Attribute attribute = getComponent().getAttribute(refName);
+        Attribute attribute = target.getComponent().getAttribute(refName);
     
         if (attribute != null) {
             String refType = _getRefType(attribute);
@@ -298,14 +298,14 @@ public class StaticSchedulingDirector extends Director {
             return getStrategy()._generateTypeConvertMethod(result, castType, refType);
         }
     
-        throw new IllegalActionException(getComponent(), "Reference not found: "
+        throw new IllegalActionException(target.getComponent(), "Reference not found: "
                 + name);
     }
 
     public String getReference(TypedIOPort port, 
             String[] channelAndOffset,
             boolean forComposite,
-            boolean isWrite) throws IllegalActionException {
+            boolean isWrite, CodeGeneratorAdapter target) throws IllegalActionException {
     
         StringBuffer result = new StringBuffer();
         boolean dynamicReferencesAllowed = ((BooleanToken) getCodeGenerator().
@@ -358,7 +358,7 @@ public class StaticSchedulingDirector extends Director {
     
             if (remoteReceivers.length == 0) {
                 // The channel of this output port doesn't have any sink.
-                result.append(CodeGeneratorAdapterStrategy.generateName(getComponent()));
+                result.append(CodeGeneratorAdapterStrategy.generateName(target.getComponent()));
                 result.append("_");
                 result.append(port.getName());
                 return result.toString();

@@ -27,19 +27,14 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor;
 
-import java.util.HashMap;
-import java.util.List;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.Receiver;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
-import ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy;
 import ptolemy.cg.kernel.generic.PortCodeGenerator;
-import ptolemy.cg.kernel.generic.CodeGeneratorAdapterStrategy.Channel;
 import ptolemy.cg.lib.EmbeddedCodeActor;
-import ptolemy.data.BooleanToken;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
