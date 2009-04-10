@@ -7,7 +7,7 @@
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="200">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 80.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[281.25, 70.0]">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={510, 153, 823, 514}, maximized=false}">
@@ -34,7 +34,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 65.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[401.25, 55.0]">
         </property>
     </property>
     <property name="Fs" class="ptolemy.data.expr.Parameter" value="8000">
@@ -53,20 +53,80 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 65.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[476.25, 55.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Sine Wave Generator">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 15.0}">
+        </property>
+        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
+    <property name="Annotation_1__1_" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This is a sine wave generator that produces a sine wave according to function:">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 240.0]">
+        </property>
+        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
+    <property name="Annotation_1__1_2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="sin(2 * pi * F * t / Fs)">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 260.0]">
+        </property>
+        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
+    <property name="Annotation_1__1_3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Partial evaluation can be statically performed on this function to simplify it. To automatically&#10;do this, a model transformation is designed in SinewaveOptimization.xml in the same&#10;directory. Open that transformation and execute it to see the result.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 280.0]">
+        </property>
+        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
+    <property name="Annotation_1__1_4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2, 0.2, 0.2, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Thomas Huining Feng">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 365.0]">
+        </property>
+        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 215.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[101.25, 205.0]">
         </property>
     </entity>
     <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[311.25, 145.0]">
         </property>
     </entity>
     <entity name="Multiply" class="ptolemy.actor.lib.MultiplyDivide">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[156.25, 130.0]">
         </property>
     </entity>
     <entity name="S" class="ptolemy.actor.lib.Const">
@@ -79,7 +139,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 215.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[246.25, 205.0]">
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
@@ -94,7 +154,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 90.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[81.25, 80.0]">
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
@@ -109,7 +169,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[81.25, 115.0]">
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
@@ -124,7 +184,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 160.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[81.25, 150.0]">
         </property>
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
@@ -134,7 +194,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[657, 193]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[496.25, 145.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -151,7 +211,7 @@
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[411.25, 145.0]">
         </property>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">

@@ -295,13 +295,13 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{395.0, 70.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 65.0]">
             </property>
         </property>
-        <entity name="TransformMultiply" class="ptolemy.actor.gt.controller.Transform">
+        <entity name="SimplifyMultiply" class="ptolemy.actor.gt.controller.Transform">
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 150.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 150.0]">
             </property>
             <configure>
                 <entity name="Transformation" class="ptolemy.actor.gt.TransformationRule">
@@ -418,7 +418,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{280.0, 225.0}">
             </property>
         </entity>
-        <entity name="TransformDivide" class="ptolemy.actor.gt.controller.Transform">
+        <entity name="SimplifyDivide" class="ptolemy.actor.gt.controller.Transform">
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 150.0]">
@@ -513,7 +513,7 @@
         <entity name="RemoveMultiply" class="ptolemy.actor.gt.controller.Transform">
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 150.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 150.0]">
             </property>
             <configure>
                 <entity name="Transformation" class="ptolemy.actor.gt.TransformationRule">
@@ -604,9 +604,9 @@
         <relation name="relation" class="ptolemy.domains.ptera.kernel.SchedulingRelation">
             <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
             </property>
-            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.4955271893106725">
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.495756506992695">
             </property>
-            <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.598792431098248">
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.4752852123782225">
             </property>
             <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 <display name="initialize"/>
@@ -634,9 +634,9 @@
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="matched">
                 <display name="condition"/>
             </property>
-            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.5053746288287911">
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.5092488543155564">
             </property>
-            <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.7173446872023573">
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.9000094516399963">
             </property>
             <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 <display name="initialize"/>
@@ -772,16 +772,16 @@
             <property name="triggers" class="ptolemy.data.expr.StringParameter" value="">
             </property>
         </relation>
-        <link port="TransformMultiply.incomingPort" relation="relation"/>
-        <link port="TransformMultiply.outgoingPort" relation="relation_1_2"/>
+        <link port="SimplifyMultiply.incomingPort" relation="relation"/>
+        <link port="SimplifyMultiply.outgoingPort" relation="relation_1_2"/>
         <link port="Start.outgoingPort" relation="relation"/>
         <link port="Start.outgoingPort" relation="relation_1_3"/>
         <link port="Start.outgoingPort" relation="relation_1_5"/>
         <link port="NeedRepeat.incomingPort" relation="relation_1_2"/>
         <link port="NeedRepeat.incomingPort" relation="relation_1_4"/>
         <link port="NeedRepeat.incomingPort" relation="relation_1_6"/>
-        <link port="TransformDivide.incomingPort" relation="relation_1_3"/>
-        <link port="TransformDivide.outgoingPort" relation="relation_1_4"/>
+        <link port="SimplifyDivide.incomingPort" relation="relation_1_3"/>
+        <link port="SimplifyDivide.outgoingPort" relation="relation_1_4"/>
         <link port="RemoveMultiply.incomingPort" relation="relation_1_5"/>
         <link port="RemoveMultiply.outgoingPort" relation="relation_1_6"/>
     </entity>
