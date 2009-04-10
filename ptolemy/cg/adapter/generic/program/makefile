@@ -33,7 +33,7 @@
 
 ME =		ptolemy/cg/adapter/generic/program
 
-DIRS =		html procedural
+DIRS =		procedural #html
 
 # Root of the Java directory
 ROOT =		../../../../..
