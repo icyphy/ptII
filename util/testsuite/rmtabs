@@ -105,7 +105,7 @@ do
 	        #svn commit -m "Removing tabs" $file
 	        echo $fullfile >> $filesupdated
 	    else
-		echo "Would update and commit"
+		echo "Would update and commit $fullfile"
 	    fi
 
     fi

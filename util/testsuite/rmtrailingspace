@@ -71,6 +71,8 @@ fi
 
 TMPFILE=/tmp/rmtrailingspace.tmp.$$
 
+filesupdated=/tmp/rmtrailingspace_filesupdated.$$
+
 # doit is a shell function
 doit() {
 	sed -e 's/[ 	]*$//g'  < $file > $TMPFILE
@@ -99,13 +101,18 @@ do
 	    doit
 	    if [ "$printonly" = "no" ]; then
 		cp $TMPFILE $file
-		if [ -d CVS ]; then
-		    cvs commit -m "$LOGMESSAGE" $file
-		fi
+	        echo "Not running svn commit, just copying"
+	        #svn commit -m "Removing tabs" $file
+	        echo $fullfile >> $filesupdated
 	    else
 		echo "Would update and commit"
 	    fi
 
     fi
 done
-rm -f $TMPFILE
+
+if [ "$printonly" = "no" ]; then
+    echo "Thes files should be checked in:"
+    cat $filesupdated
+fi
+rm -f $TMPFILE $filesupdated

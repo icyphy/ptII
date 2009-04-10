@@ -17,6 +17,7 @@ do
 done
 shift `expr $OPTIND - 1`
 
+filesupdated=/tmp/rmtrailingspace_filesupdated.$$
 
 search() {
 topdir=`pwd`
@@ -41,8 +42,9 @@ do
 	if [ "$printonly" = "no" ]; then
 	    cp /tmp/fix-files.tmp $file
 	    if [ -d .svn ]; then
-		#echo "NOT doing a svn commit, did a copy"
-		svn commit -m "$LOGMESSAGE" $file 
+		echo "NOT doing a svn commit, did a copy"
+		#svn commit -m "$LOGMESSAGE" $file 
+	        echo $fullfile >> $filesupdated
 	    fi	
 	else
 	    echo "Would update and commit"
@@ -58,7 +60,7 @@ doit() {
 	-e 's/){$/) {/' \
 	-e 's/if( /if (/' \
 	-e 's/if(/if (/' \
-	-e 's/\}catch/\} catch/g' \
+	-e 's/}catch/} catch/g' \
 	-e 's/catch(/catch (/g' \
 	-e 's/do{/do {/' \
 	-e 's/}while/} while/' \
@@ -83,3 +85,12 @@ EGREPMATCH='@throws'
 LOGMESSAGE='@throws -> @exception'
 
 search $@
+
+
+if [ "$printonly" = "no" ]; then
+    echo "Thes files should be checked in:"
+    cat $filesupdated
+fi
+
+rm -f $TMPFILE $filesupdated
+
