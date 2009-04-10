@@ -46,16 +46,16 @@ public interface PortCodeGenerator extends ComponentCodeGenerator {
     /** Generate the get code.
      *  @param channel The channel for which the get code is generated.
      *  @return The code that gets data from the channel.
-     */ 
+     */
     public String generateCodeForGet(String channel) throws IllegalActionException;
 
     /** Generate the send code.
      *  @param channel The channel for which the send code is generated.
      *  @param dataToken The token to be sent
      *  @return The code that sends the dataToken on the channel.
-     */ 
-    public String generateCodeForSend(String channel, String dataToken)     
-	throws IllegalActionException;
+     */
+    public String generateCodeForSend(String channel, String dataToken)
+        throws IllegalActionException;
 
     /** Get the read offset of a channel of the port.
      *  @param channelNumber The number of the channel.
@@ -64,7 +64,7 @@ public interface PortCodeGenerator extends ComponentCodeGenerator {
      *  FIXME rodiers: this is SDF specific
      */
 //    public Object getReadOffset(int channelNumber)
-//	throws IllegalActionException;
+//        throws IllegalActionException;
 
     /** Get the write offset of a channel of the port.
      *  @param channelNumber The number of the channel.
@@ -74,7 +74,7 @@ public interface PortCodeGenerator extends ComponentCodeGenerator {
      *  FIXME rodiers: this is SDF specific
      */
 //    public Object getWriteOffset(int channelNumber)
-//	throws IllegalActionException;
+//        throws IllegalActionException;
 
     /** Set the read offset of a channel of the port.
      *  @param channelNumber The number of the channel that is being set.
@@ -89,6 +89,6 @@ public interface PortCodeGenerator extends ComponentCodeGenerator {
      *  @param writeOffset The offset.
      *  FIXME rodiers: this is SDF specific
      */
-//    public void setWriteOffset(int channelNumber, Object writeOffset); 
+//    public void setWriteOffset(int channelNumber, Object writeOffset);
 
 }

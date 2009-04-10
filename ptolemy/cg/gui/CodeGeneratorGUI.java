@@ -90,7 +90,7 @@ public class CodeGeneratorGUI extends PtolemyFrame {
         super(codeGenerator, tableau);
 
         this._statusBar.setVisible(false);
-        
+
         setTitle(codeGenerator.getName());
 
         // FIXME: The following is pretty lame.  If the model hasn't been saved,
@@ -176,7 +176,7 @@ public class CodeGeneratorGUI extends PtolemyFrame {
         // Create a JTextAreaExec without Start and Cancel buttons.
         final JTextAreaExec exec = new JTextAreaExec("Code Generator Commands",
                 false);
-        
+
         exec.setPreferredSize(new Dimension(500, 300));
 
         // If we execute any commands, print the output in the text area.

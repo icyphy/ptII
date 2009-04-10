@@ -112,17 +112,17 @@ public class CCodeGeneratorAdapterStrategy extends CodeGeneratorAdapterStrategy 
     public String generateVariableDeclaration() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-	String name = CodeGeneratorAdapterStrategy.generateName(getComponent());
+        String name = CodeGeneratorAdapterStrategy.generateName(getComponent());
         // Generate variable declarations for referenced parameters.
         String referencedParameterDeclaration = _generateReferencedParameterDeclaration();
         if (referencedParameterDeclaration.length() > 1) {
             code.append(_eol
-			+ _codeGenerator.comment(name + "'s referenced parameter declarations."));
+                        + _codeGenerator.comment(name + "'s referenced parameter declarations."));
             code.append(referencedParameterDeclaration);
         }
-        
+
         Director director = getDirectorAdapter();
-        
+
         // Generate variable declarations for input ports.
         String inputVariableDeclaration = director.generateInputVariableDeclaration();
         if (inputVariableDeclaration.length() > 1) {
@@ -169,8 +169,8 @@ public class CCodeGeneratorAdapterStrategy extends CodeGeneratorAdapterStrategy 
         Set<String> files = super.getHeaderFiles();
         files.addAll(_includeFiles);
         return files;
-    }    
-    
+    }
+
     /** Get the header files needed to compile with the jvm library.
       *  @return A set of strings that are names of the header files
       *   needed by the code generated for jvm library
@@ -207,7 +207,7 @@ public class CCodeGeneratorAdapterStrategy extends CodeGeneratorAdapterStrategy 
 
         String jreBinClientPath = javaHome + File.separator + "bin"
             + File.separator + "client";
-        executeCommands.stdout(_eol + _eol 
+        executeCommands.stdout(_eol + _eol
                 + "CCodeGeneratorAdapter: appended to path "
                 + jreBinClientPath);
 
@@ -217,7 +217,7 @@ public class CCodeGeneratorAdapterStrategy extends CodeGeneratorAdapterStrategy 
         if (javaHome.endsWith("/jre")) {
             javaHome = javaHome.substring(0, javaHome.length() - 4);
         }
-            
+
         if (!(new File(javaHome + "/include").isDirectory())) {
             // It could be that we are running under WebStart
             // or otherwise in a JRE, so we should look for the JDK.
@@ -243,7 +243,7 @@ public class CCodeGeneratorAdapterStrategy extends CodeGeneratorAdapterStrategy 
                     potentialJavaHomeParentFile = new File("C:\\Program Files\\Java");
                 }
             }
-        } 
+        }
 
         getCodeGenerator().addInclude("-I\"" + javaHome + "/include\"");
 
@@ -254,76 +254,76 @@ public class CCodeGeneratorAdapterStrategy extends CodeGeneratorAdapterStrategy 
         } else if (osName.startsWith("SunOS")) {
             platform = "solaris";
         } else if (osName.startsWith("Mac OS X")) {
-	    platform = "Mac OS X";
-	}
-	String jvmLoaderDirective = "-ljvm";
-	String libjvmAbsoluteDirectory = "";
-	if (platform.equals("win32")) {
-	    getCodeGenerator().addInclude("-I\"" + javaHome + "/include/"
-					  + platform + "\"");
-
-	    // The directive we use to find jvm.dll, which is usually in 
-	    // something like c:/Program Files/Java/jre1.6.0_04/bin/client/jvm.dll
-	    jvmLoaderDirective = "-ljvm";
-
-	    String ptIIDir = StringUtilities.getProperty("ptolemy.ptII.dir").replace('\\', '/');
-	    String libjvmRelativeDirectory = "ptolemy/codegen/c/lib/win";
-	    libjvmAbsoluteDirectory = ptIIDir + "/"
-		+ libjvmRelativeDirectory;
-	    String libjvmFileName = "libjvm.dll.a"; 
-	    String libjvmPath = libjvmAbsoluteDirectory + "/" + libjvmFileName;
-		
-	    if ( !(new File(libjvmPath).canRead()) ) {
-		// If we are under WebStart or running from jar files, we
-		// will need to copy libjvm.dll.a from the jar file
-		// that gcc can find it.
-		URL libjvmURL = Thread.currentThread().getContextClassLoader()
-		    .getResource(libjvmRelativeDirectory + "/" + libjvmFileName);
-		if (libjvmURL != null) {
-		    String libjvmAbsolutePath = null;
-		    try {
-			// Look for libjvm.dll.a in the codegen directory
-			File libjvmFileCopy = new File(getCodeGenerator().codeDirectory.asFile(), "libjvm.dll.a");
-
-			if (!libjvmFileCopy.canRead()) {
-			    // Create libjvm.dll.a in the codegen directory
-			    FileUtilities.binaryCopyURLToFile(libjvmURL, 
-							      libjvmFileCopy);
-			}
-
-			libjvmAbsolutePath = libjvmFileCopy.getAbsolutePath();
-			if (libjvmFileCopy.canRead()) {
-			    libjvmAbsolutePath = libjvmAbsolutePath.replace('\\',
-									    '/'); 
-			    libjvmAbsoluteDirectory = libjvmAbsolutePath.substring(0,
-										       libjvmAbsolutePath.lastIndexOf("/"));
-
-			    // Get rid of everything before the last /lib
-			    // and the .dll.a
-			    jvmLoaderDirective = "-l"
-				+ libjvmAbsolutePath.substring(
-							       libjvmAbsolutePath.lastIndexOf("/lib") + 4,
-							       libjvmAbsolutePath.length() - 6);
-			    
-			}
-		    } catch (Exception ex) {
-			throw new IllegalActionException(getComponent(),
-							 ex, "Could not copy \"" + libjvmURL
-							 + "\" to the file system, path was: \""
-							 + libjvmAbsolutePath + "\"");
-		    }
-		}
-	    }
-	} else if (platform.equals("Mac OS X")) {
-	    if (javaHome != null) {
-		libjvmAbsoluteDirectory = javaHome + "/../Libraries";
-	    }
-	} else {
-            // Solaris, Linux etc.
-	    getCodeGenerator().addInclude("-I\"" + javaHome + "/include/"
-					  + platform + "\"");
+            platform = "Mac OS X";
         }
-	getCodeGenerator().addLibrary(
+        String jvmLoaderDirective = "-ljvm";
+        String libjvmAbsoluteDirectory = "";
+        if (platform.equals("win32")) {
+            getCodeGenerator().addInclude("-I\"" + javaHome + "/include/"
+                                          + platform + "\"");
+
+            // The directive we use to find jvm.dll, which is usually in
+            // something like c:/Program Files/Java/jre1.6.0_04/bin/client/jvm.dll
+            jvmLoaderDirective = "-ljvm";
+
+            String ptIIDir = StringUtilities.getProperty("ptolemy.ptII.dir").replace('\\', '/');
+            String libjvmRelativeDirectory = "ptolemy/codegen/c/lib/win";
+            libjvmAbsoluteDirectory = ptIIDir + "/"
+                + libjvmRelativeDirectory;
+            String libjvmFileName = "libjvm.dll.a";
+            String libjvmPath = libjvmAbsoluteDirectory + "/" + libjvmFileName;
+
+            if ( !(new File(libjvmPath).canRead()) ) {
+                // If we are under WebStart or running from jar files, we
+                // will need to copy libjvm.dll.a from the jar file
+                // that gcc can find it.
+                URL libjvmURL = Thread.currentThread().getContextClassLoader()
+                    .getResource(libjvmRelativeDirectory + "/" + libjvmFileName);
+                if (libjvmURL != null) {
+                    String libjvmAbsolutePath = null;
+                    try {
+                        // Look for libjvm.dll.a in the codegen directory
+                        File libjvmFileCopy = new File(getCodeGenerator().codeDirectory.asFile(), "libjvm.dll.a");
+
+                        if (!libjvmFileCopy.canRead()) {
+                            // Create libjvm.dll.a in the codegen directory
+                            FileUtilities.binaryCopyURLToFile(libjvmURL,
+                                                              libjvmFileCopy);
+                        }
+
+                        libjvmAbsolutePath = libjvmFileCopy.getAbsolutePath();
+                        if (libjvmFileCopy.canRead()) {
+                            libjvmAbsolutePath = libjvmAbsolutePath.replace('\\',
+                                                                            '/');
+                            libjvmAbsoluteDirectory = libjvmAbsolutePath.substring(0,
+                                                                                       libjvmAbsolutePath.lastIndexOf("/"));
+
+                            // Get rid of everything before the last /lib
+                            // and the .dll.a
+                            jvmLoaderDirective = "-l"
+                                + libjvmAbsolutePath.substring(
+                                                               libjvmAbsolutePath.lastIndexOf("/lib") + 4,
+                                                               libjvmAbsolutePath.length() - 6);
+
+                        }
+                    } catch (Exception ex) {
+                        throw new IllegalActionException(getComponent(),
+                                                         ex, "Could not copy \"" + libjvmURL
+                                                         + "\" to the file system, path was: \""
+                                                         + libjvmAbsolutePath + "\"");
+                    }
+                }
+            }
+        } else if (platform.equals("Mac OS X")) {
+            if (javaHome != null) {
+                libjvmAbsoluteDirectory = javaHome + "/../Libraries";
+            }
+        } else {
+            // Solaris, Linux etc.
+            getCodeGenerator().addInclude("-I\"" + javaHome + "/include/"
+                                          + platform + "\"");
+        }
+        getCodeGenerator().addLibrary(
                 "-L\"" + libjvmAbsoluteDirectory + "\"");
         getCodeGenerator().addLibrary(jvmLoaderDirective);
 
@@ -425,9 +425,9 @@ public class CCodeGeneratorAdapterStrategy extends CodeGeneratorAdapterStrategy 
 
         String sourceCodeGenType = codeGenType(sourceType);
         String sinkCodeGenType = codeGenType(sinkType);
-        
+
         if (!sinkCodeGenType.equals(sourceCodeGenType)) {
-            result = "$convert_" + sourceCodeGenType + "_" 
+            result = "$convert_" + sourceCodeGenType + "_"
             + sinkCodeGenType + "(" + result + ")";
         }
         return sinkRef + " = " + result + ";" + _eol;
@@ -470,9 +470,9 @@ public class CCodeGeneratorAdapterStrategy extends CodeGeneratorAdapterStrategy 
     /** Return the prototype for fire functions.
      * @return The string"(void)" so as to avoid the avr-gcc 3.4.6
      * warning: "function declaration isn't a prototype"
-     */ 
+     */
     protected String _getFireFunctionArguments() {
-	return "(void)";
+        return "(void)";
     }
 
     protected String _replaceMacro(String macro, String parameter)
@@ -499,7 +499,7 @@ public class CCodeGeneratorAdapterStrategy extends CodeGeneratorAdapterStrategy 
                 return "";
             }
         }
-        
+
         // We will assume that it is a call to a polymorphic
         // functions.
         //String[] call = macro.split("_");

@@ -67,7 +67,7 @@ public interface ActorCodeGenerator extends ComponentCodeGenerator {
     public String generateFireFunctionCode() throws IllegalActionException;
 
     public String generateIterationCode(String countExpression) throws IllegalActionException;
-    
+
     /** Generate mode transition code. It delegates to the director helper
      *  of the local director. The mode transition code generated in this
      *  method is executed after each global iteration, e.g., in HDF model.
@@ -88,7 +88,7 @@ public interface ActorCodeGenerator extends ComponentCodeGenerator {
      */
     public String generatePostfireCode() throws IllegalActionException;
 
-    
+
     /** Generate the prefire code of the associated composite actor.
     *
     *  @return The prefire code of the associated composite actor.
@@ -97,7 +97,7 @@ public interface ActorCodeGenerator extends ComponentCodeGenerator {
     */
     public String generatePrefireCode() throws IllegalActionException;
 
-    
+
     /** Generate the preinitialize code of the associated composite actor.
      *  It first creates buffer size and offset map for its input ports and
      *  output ports. It then gets the result of generatePreinitializeCode()
@@ -126,13 +126,13 @@ public interface ActorCodeGenerator extends ComponentCodeGenerator {
      */
     public String generateVariableInitialization()
             throws IllegalActionException;
-    
+
     /** Get the files needed by the code generated from this helper class.
      *  This base class returns an empty set.
      *  @return A set of strings that are header files needed by the code
      *  generated from this helper class.
      *  @exception IllegalActionException If something goes wrong.
-     *  // FIXME rodiers: this is specific for procedural code 
+     *  // FIXME rodiers: this is specific for procedural code
      */
     public Set<String> getHeaderFiles() throws IllegalActionException;
 

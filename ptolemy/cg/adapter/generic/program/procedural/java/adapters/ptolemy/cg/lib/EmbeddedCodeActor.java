@@ -54,7 +54,7 @@ public class EmbeddedCodeActor extends CompiledCompositeActor {
     public EmbeddedCodeActor(ptolemy.cg.lib.EmbeddedCodeActor component) {
         super(component);
     }
-    
+
     /////////////////////////////////////////////////////////////////////
     ////                           public methods                    ////
 
@@ -70,7 +70,7 @@ public class EmbeddedCodeActor extends CompiledCompositeActor {
     public String generateTypeConvertFireCode(boolean forComposite) throws IllegalActionException {
         return "";
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 

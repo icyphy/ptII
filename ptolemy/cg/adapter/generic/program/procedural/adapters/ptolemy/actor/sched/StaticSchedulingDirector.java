@@ -138,7 +138,7 @@ public class StaticSchedulingDirector extends Director {
 
                 code.append(CodeGeneratorAdapterStrategy.generateName((NamedObj)
                  actor) + "();" + _eol);
-                
+
                 _generateUpdatePortOffsetCode(code, actor);
 
                 if (count > 1) {
@@ -200,11 +200,11 @@ public class StaticSchedulingDirector extends Director {
                     + "break;" + _eol + _INDENT2 + "}" + _eol);
         }
          */
-        _generateUpdatePortOffsetCode(code, 
+        _generateUpdatePortOffsetCode(code,
                 (Actor) _director.getContainer());
 
         code.append(generatePostfireCode());
-        
+
         Attribute period = _director.getAttribute("period");
         if (period != null) {
             Double periodValue = ((DoubleToken) ((Variable) period).getToken())
@@ -241,17 +241,17 @@ public class StaticSchedulingDirector extends Director {
 
         return code.toString();
     }
-    
+
 
     // FIXME: documentation
-    public String getReference(String name, boolean isWrite, CodeGeneratorAdapter target) 
+    public String getReference(String name, boolean isWrite, CodeGeneratorAdapter target)
     throws IllegalActionException {
-    
+
         name = processCode(name);
         String castType = _getCastType(name);
         String refName = _getRefName(name);
         String[] channelAndOffset = _getChannelAndOffset(name);
-    
+
         // Usually given the name of an input port, getReference(String name)
         // returns variable name representing the input port. Given the name
         // of an output port, getReference(String name) returns variable names
@@ -269,48 +269,48 @@ public class StaticSchedulingDirector extends Director {
             forComposite = true;
             refName = refName.substring(1);
         }
-    
+
         TypedIOPort port = target.getStrategy().getPort(refName);
         if (port != null) {
-    
+
             if (port instanceof ParameterPort && port.numLinks() <= 0) {
-    
+
                 // Then use the parameter (attribute) instead.
-            } else {            
+            } else {
                 String result = getReference(
                         port, channelAndOffset, forComposite, isWrite, target);
-    
+
                 String refType = getStrategy().codeGenType(port.getType());
-    
+
                 return getStrategy()._generateTypeConvertMethod(result, castType, refType);
             }
         }
-    
+
         // Try if the name is a parameter.
         Attribute attribute = target.getComponent().getAttribute(refName);
-    
+
         if (attribute != null) {
             String refType = _getRefType(attribute);
-    
+
             String result = getReference(
                     attribute, channelAndOffset);
-    
+
             return getStrategy()._generateTypeConvertMethod(result, castType, refType);
         }
-    
+
         throw new IllegalActionException(target.getComponent(), "Reference not found: "
                 + name);
     }
 
-    public String getReference(TypedIOPort port, 
+    public String getReference(TypedIOPort port,
             String[] channelAndOffset,
             boolean forComposite,
             boolean isWrite, CodeGeneratorAdapter target) throws IllegalActionException {
-    
+
         StringBuffer result = new StringBuffer();
         boolean dynamicReferencesAllowed = ((BooleanToken) getCodeGenerator().
                 allowDynamicMultiportReference.getToken()).booleanValue();
-    
+
         int channelNumber = 0;
         boolean isChannelNumberInt = true;
         if (!channelAndOffset[0].equals("")) {
@@ -318,28 +318,28 @@ public class StaticSchedulingDirector extends Director {
             // when the channel specification is not an integer.
             if (dynamicReferencesAllowed) {
                 try {
-                    channelNumber = 
+                    channelNumber =
                         (Integer.valueOf(channelAndOffset[0])).intValue();
                 } catch (Exception ex) {
                     isChannelNumberInt = false;
                 }
             } else {
-                channelNumber = 
+                channelNumber =
                     (Integer.valueOf(channelAndOffset[0])).intValue();
             }
         }
-    
+
         if (!isChannelNumberInt) { // variable channel reference.
             if (port.isOutput()) {
                 throw new IllegalActionException(
                         "Variable channel reference not supported"
                         + " for output ports");
             } else {
-    
+
                 return CodeGeneratorAdapterStrategy.generatePortReference(port, channelAndOffset, isWrite);
             }
         }
-    
+
         // To support modal model, we need to check the following condition
         // first because an output port of a modal controller should be
         // mainly treated as an output port. However, during choice action,
@@ -348,14 +348,14 @@ public class StaticSchedulingDirector extends Director {
         // controller will NOT receive the tokens sent from the same port.
         if (CodeGeneratorAdapterStrategy.checkRemote(forComposite, port)) {
             Receiver[][] remoteReceivers;
-    
+
             // For the same reason as above, we cannot do: if (port.isInput())...
             if (port.isOutput()) {
                 remoteReceivers = port.getRemoteReceivers();
             } else {
                 remoteReceivers = port.deepGetReceivers();
             }
-    
+
             if (remoteReceivers.length == 0) {
                 // The channel of this output port doesn't have any sink.
                 result.append(CodeGeneratorAdapterStrategy.generateName(target.getComponent()));
@@ -363,35 +363,35 @@ public class StaticSchedulingDirector extends Director {
                 result.append(port.getName());
                 return result.toString();
             }
-    
+
             Channel sourceChannel = new Channel(port, channelNumber);
-    
+
             List<Channel> typeConvertSinks = getStrategy()._getTypeConvertSinkChannels(sourceChannel);
-    
+
             List<Channel> sinkChannels = CodeGeneratorAdapterStrategy.getSinkChannels(port, channelNumber);
-    
+
             boolean hasTypeConvertReference = false;
-    
+
             for (int i = 0; i < sinkChannels.size(); i++) {
                 Channel channel = sinkChannels.get(i);
                 IOPort sinkPort = channel.port;
                 int sinkChannelNumber = channel.channelNumber;
-    
+
                 // Type convert.
-                if (typeConvertSinks.contains(channel) && 
+                if (typeConvertSinks.contains(channel) &&
                         getStrategy().isPrimitive(((TypedIOPort) sourceChannel.port).getType())) {
-    
+
                     if (!hasTypeConvertReference) {
                         if (i != 0) {
                             result.append(" = ");
                         }
                         result.append(CodeGeneratorAdapterStrategy.getTypeConvertReference(sourceChannel));
-    
+
                         if (dynamicReferencesAllowed && port.isInput()) {
                             if (channelAndOffset[1].trim().length() > 0) {
                                 result.append("[" + channelAndOffset[1].trim() + "]");
                             } else {
-                                result.append("[" + 
+                                result.append("[" +
                                         CodeGeneratorAdapterStrategy.generateChannelOffset(
                                                 port, isWrite, channelAndOffset[0]) + "]");
                             }
@@ -415,7 +415,7 @@ public class StaticSchedulingDirector extends Director {
                         result.append(" = ");
                     }
                     result.append(CodeGeneratorAdapterStrategy.generateName(sinkPort));
-    
+
                     if (sinkPort.isMultiport()) {
                         result.append("[" + sinkChannelNumber + "]");
                     }
@@ -426,32 +426,32 @@ public class StaticSchedulingDirector extends Director {
                             sinkChannelNumber, true));
                 }
             }
-    
+
             return result.toString();
         }
-    
+
         // Note that if the width is 0, then we have no connection to
         // the port but the port might be a PortParameter, in which
         // case we want the Parameter.
         // codegen/c/actor/lib/string/test/auto/StringCompare3.xml
         // tests this.
-    
+
         if (CodeGeneratorAdapterStrategy.checkLocal(forComposite, port)) {
-    
+
             result.append(CodeGeneratorAdapterStrategy.generateName(port));
-    
+
             //if (!channelAndOffset[0].equals("")) {
             if (port.isMultiport()) {
                 // Channel number specified. This must be a multiport.
                 result.append("[" + channelAndOffset[0] + "]");
             }
-    
+
             result.append(_ports.generateOffset(port, channelAndOffset[1],
                     channelNumber, isWrite));
-    
+
             return result.toString();
         }
-    
+
         // FIXME: when does this happen?
         return "";
     }
@@ -525,7 +525,7 @@ public class StaticSchedulingDirector extends Director {
        }
 
        code.append(_ports.updateOffset(port, rate));
-   }    
+   }
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -533,9 +533,9 @@ public class StaticSchedulingDirector extends Director {
      * Generate the code that updates the input/output port offset.
      * @param code The given code buffer.
      * @param actor The given actor.
-     * @exception IllegalActionException Thrown if 
+     * @exception IllegalActionException Thrown if
      *  _updatePortOffset(IOPort, StringBuffer, int) or getRate(IOPort)
-     *  throw it.  
+     *  throw it.
      */
     private void _generateUpdatePortOffsetCode(StringBuffer code, Actor actor)
             throws IllegalActionException {
@@ -554,7 +554,7 @@ public class StaticSchedulingDirector extends Director {
             _updateConnectedPortsOffset(port, code, rate);
         }
     }
-    
+
     private String _getCastType(String name) throws IllegalActionException {
         StringTokenizer tokenizer = new StringTokenizer(name, "#,", true);
 
@@ -620,28 +620,28 @@ public class StaticSchedulingDirector extends Director {
 
     private String _getRefName(String name) throws IllegalActionException {
         StringTokenizer tokenizer = new StringTokenizer(name, "#,", true);
-    
+
         if ((tokenizer.countTokens() != 1) && (tokenizer.countTokens() != 3)
                 && (tokenizer.countTokens() != 5)) {
             throw new IllegalActionException(getComponent(),
                     "Reference not found: " + name);
         }
-    
+
         // Get the referenced name.
         String refName = tokenizer.nextToken().trim();
-    
+
         // Get the cast type (if any), so we can add the proper convert method.
         StringTokenizer tokenizer2 = new StringTokenizer(refName, "()", false);
         if (tokenizer2.countTokens() != 1 && tokenizer2.countTokens() != 2) {
             throw new IllegalActionException(getComponent(), "Invalid cast type: "
                     + refName);
         }
-    
+
         if (tokenizer2.countTokens() == 2) {
             // castType
             tokenizer2.nextToken();
         }
-    
+
         return tokenizer2.nextToken().trim();
     }
 
@@ -657,7 +657,7 @@ public class StaticSchedulingDirector extends Director {
         public PortInfo(IOPort port) {
             _port = port;
         }
-        
+
 
         /** Get the buffer size of channel of the port.
          *  @param channelNumber The number of the channel that is being set.
@@ -667,13 +667,13 @@ public class StaticSchedulingDirector extends Director {
         public int getBufferSize(int channelNumber)
             throws IllegalActionException {
             CodeGeneratorAdapterStrategy.Channel channel = _getChannel(channelNumber);
-            
+
             if (_bufferSizes.get(channel) == null) {
                 // This should be a special case for doing
                 // codegen for a sub-part of a model.
-                return channel.port.getWidth();            
+                return channel.port.getWidth();
             }
-            
+
             return _bufferSizes.get(channel);
         }
 
@@ -709,7 +709,7 @@ public class StaticSchedulingDirector extends Director {
 
             return bufferSize;
         }
-        
+
 
         /** Generate the initialize code for this director.
          *  The initialize code for the director is generated by appending the
@@ -739,7 +739,7 @@ public class StaticSchedulingDirector extends Director {
 
                 for (IOPort port : (List<IOPort>) ((Entity) actor).portList()) {
                     if (port.isOutsideConnected()) {
-                        CodeGeneratorAdapter portAdapter = 
+                        CodeGeneratorAdapter portAdapter =
                             getCodeGenerator().getAdapter(port);
                         code.append(portAdapter.generateInitializeCode());
                     }
@@ -747,8 +747,8 @@ public class StaticSchedulingDirector extends Director {
             }
             return code.toString();
         }
-        
-        
+
+
         /**Generate the expression that represents the offset in the generated
          * code.
          * @param offset The specified offset from the user.
@@ -768,15 +768,15 @@ public class StaticSchedulingDirector extends Director {
             if (_isPthread() && receiver instanceof PNQueueReceiver) {
                 String result;
                 if (offset.length() == 0 || offset.equals("0")) {
-                    result = (isWrite) ? 
+                    result = (isWrite) ?
                             "$getWriteOffset(" : "$getReadOffset(";
                 } else {
-                    result = (isWrite) ? 
+                    result = (isWrite) ?
                             "$getAdvancedWriteOffset(" : "$getAdvancedReadOffset(";
                     result += offset + ", ";
                 }
 
-                // FIXME: why does this depend on PN?            
+                // FIXME: why does this depend on PN?
                 PNDirector pnDirector = (PNDirector) _getAdapter(director);
                 result += "&" + PNDirector.generatePortHeader(port, channel) + ", ";
                 result += "&" + pnDirector.generateDirectorHeader() + ")";
@@ -787,9 +787,9 @@ public class StaticSchedulingDirector extends Director {
             } else {
                 return _generateOffset(offset, channel, isWrite);
             }
-        }        
+        }
 
-        
+
         /** Get the read offset of a channel of the port.
          *  @param channelNumber The number of the channel.
          *  @return The read offset.
@@ -800,11 +800,11 @@ public class StaticSchedulingDirector extends Director {
             throws IllegalActionException {
             CodeGeneratorAdapterStrategy.Channel channel = _getChannel(channelNumber);
             return _readOffsets.get(channel);
-            
+
         }
-        
-        
-        
+
+
+
         /** Get the write offset of a channel of the port.
          *  @param channelNumber The number of the channel.
          *  @return The write offset.
@@ -815,14 +815,14 @@ public class StaticSchedulingDirector extends Director {
         throws IllegalActionException {
             CodeGeneratorAdapterStrategy.Channel channel = _getChannel(channelNumber);
             return _writeOffsets.get(channel);
-            
+
         }
 
-        /** Initialize the offsets. 
+        /** Initialize the offsets.
          *  @return The code to initialize the offsets.
          */
         public String initializeOffsets() throws IllegalActionException {
-            
+
             /* FIXME: move pthread specific code out-of-here...
             if (_isPthread()) {
                 return "";
@@ -849,7 +849,7 @@ public class StaticSchedulingDirector extends Director {
             }
             return code.toString();
         }
-        
+
         /** Set the buffer size of channel of the port.
          *  @param channelNumber The number of the channel that is being set.
          *  @param bufferSize The size of the buffer.
@@ -859,7 +859,7 @@ public class StaticSchedulingDirector extends Director {
             CodeGeneratorAdapterStrategy.Channel channel = _getChannel(channelNumber);
             _bufferSizes.put(channel, bufferSize);
         }
-        
+
 
         /** Set the read offset of a channel of the port.
          *  @param channelNumber The number of the channel that is being set.
@@ -880,8 +880,8 @@ public class StaticSchedulingDirector extends Director {
             CodeGeneratorAdapterStrategy.Channel channel = _getChannel(channelNumber);
             _writeOffsets.put(channel, writeOffset);
         }
-        
-        
+
+
 
         // Update the write offset of the [multiple] connected ports.
         public String updateConnectedPortsOffset(int rate) throws IllegalActionException {
@@ -927,7 +927,7 @@ public class StaticSchedulingDirector extends Director {
 
                     } else if (_isPthread() && receiver instanceof PNQueueReceiver) {
 
-                        // PNReceiver.                    
+                        // PNReceiver.
                         code.append(_updatePNOffset(rate, sinkPort, sinkChannelNumber, director, true));
                         */
                      // End FIXME rodiers
@@ -967,18 +967,18 @@ public class StaticSchedulingDirector extends Director {
                                                    + CodeGeneratorAdapterStrategy.generateName(_port)));
             return code.toString();
         }
-        
+
         /** Update the read offset.
          *  @param rate  The rate of the channels.
          *  @param directorHelper The Director helper
          *  @return The offset.
          */
-        public String updateOffset(int rate) 
+        public String updateOffset(int rate)
         throws IllegalActionException {
 
             Receiver receiver = _getReceiver(null, 0, _port);
 
-            String code = getCodeGenerator().comment(_eol + "....Begin updateOffset...." 
+            String code = getCodeGenerator().comment(_eol + "....Begin updateOffset...."
                                                      + CodeGeneratorAdapterStrategy.generateName(_port));
 
             //        int width = 0;
@@ -997,13 +997,13 @@ public class StaticSchedulingDirector extends Director {
                 } else if (_isPthread() && receiver instanceof PNQueueReceiver) {
 
                     // FIXME: this is kind of hacky.
-                    //PNDirector pnDirector = (PNDirector)//directorAdapter;         
+                    //PNDirector pnDirector = (PNDirector)//directorAdapter;
                     _getAdapter(((Actor) port.getContainer()).getExecutiveDirector());
 
                     List<Channel> channels = PNDirector.getReferenceChannels(port, i);
 
                     for (Channel channel : channels) {
-                        code += _updatePNOffset(rate, channel.port, 
+                        code += _updatePNOffset(rate, channel.port,
                                 channel.channelNumber, directorAdapter, false);
                     }
                     code += getCodeGenerator().comment(_eol + "....End updateOffset (PN)...."
@@ -1018,13 +1018,13 @@ public class StaticSchedulingDirector extends Director {
             }
             return code;
         }
-        
 
-        
+
+
         private CodeGeneratorAdapterStrategy.Channel _getChannel(int channelNumber) {
-            return new CodeGeneratorAdapterStrategy.Channel((ptolemy.actor.IOPort) 
+            return new CodeGeneratorAdapterStrategy.Channel((ptolemy.actor.IOPort)
                     _port, channelNumber);
-        }        
+        }
 
         /**
          * Generate the expression that represents the offset in the generated
@@ -1036,7 +1036,7 @@ public class StaticSchedulingDirector extends Director {
          * @exception IllegalActionException If there is problems getting the port
          *  buffer size or the offset in the channel and offset map.
          */
-        private String _generateOffset(String offsetString, int channel, boolean isWrite) 
+        private String _generateOffset(String offsetString, int channel, boolean isWrite)
         throws IllegalActionException {
 
             boolean dynamicReferencesAllowed = ((BooleanToken) getCodeGenerator().allowDynamicMultiportReference
@@ -1103,7 +1103,7 @@ public class StaticSchedulingDirector extends Director {
                     //              temp = offsetObject.toString();
                     //              temp = MpiPNDirector.generateFreeSlots(_port, channel) +
                     //              "[" + MpiPNDirector.generatePortHeader(_port, channel) + ".current]";
-                    //              } else 
+                    //              } else
                     if (padBuffers) {
                         int modulo = getBufferSize(channel) - 1;
                         temp = "(" + offsetObject.toString() + " + " + offsetString
@@ -1132,8 +1132,8 @@ public class StaticSchedulingDirector extends Director {
                     //              if (MpiPNDirector.isLocalBuffer(_port, channel)) {
                     //              result = offsetObject.toString();
                     //              result = MpiPNDirector.generateFreeSlots(_port, channel) +
-                    //              "[" + MpiPNDirector.generatePortHeader(_port, channel) + ".current]";                  
-                    //              } else 
+                    //              "[" + MpiPNDirector.generatePortHeader(_port, channel) + ".current]";
+                    //              } else
                     if (padBuffers) {
                         int modulo = getBufferSize(channel) - 1;
                         result = "[" + offsetObject + "&" + modulo + "]";
@@ -1145,11 +1145,11 @@ public class StaticSchedulingDirector extends Director {
             }
             return result;
         }
-        
+
 
         private Receiver _getReceiver(String offset, int channel, ptolemy.actor.IOPort port) {
             Receiver[][] receivers = port.getReceivers();
-            
+
             // For output ports getReceivers always returns an empty table.
             if (receivers.length == 0) {
                 return null;
@@ -1190,11 +1190,11 @@ public class StaticSchedulingDirector extends Director {
                 return false;
             }
         }
-        
+
         /** Update the offset of the channel.
          *  @param channel The channel number of the channel to be offset.
          *  @param rate The firing rate of the port.
-         *  @return The code that represents the offset to the channel, 
+         *  @return The code that represents the offset to the channel,
          *  @exception IllegalActionException If thrown while getting a token,
          *  adapter, read offset or buffer size.
          */
@@ -1203,7 +1203,7 @@ public class StaticSchedulingDirector extends Director {
             boolean padBuffers = ((BooleanToken) getCodeGenerator().padBuffers
                     .getToken()).booleanValue();
 
-            // Update the offset for each channel.            
+            // Update the offset for each channel.
             if (getReadOffset(channel) instanceof Integer) {
                 int offset = ((Integer) getReadOffset(channel))
                 .intValue();
@@ -1215,41 +1215,41 @@ public class StaticSchedulingDirector extends Director {
                 String offsetVariable = (String) getReadOffset(channel);
                 if (padBuffers) {
                     int modulo = getBufferSize(channel) - 1;
-                    code.append(offsetVariable + " = (" + offsetVariable + 
+                    code.append(offsetVariable + " = (" + offsetVariable +
                             " + " + rate + ")&" + modulo + ";" + _eol);
                 } else {
-                    code.append(offsetVariable + " = (" + offsetVariable + 
-                            " + " + rate + ") % " + 
+                    code.append(offsetVariable + " = (" + offsetVariable +
+                            " + " + rate + ") % " +
                             getBufferSize(channel) + ";" + _eol);
                 }
             }
             return code.toString();
 
         }
-        
+
         /** A HashMap that keeps track of the bufferSizes of each channel
          *  of the actor.
          */
-        private HashMap<CodeGeneratorAdapterStrategy.Channel, Integer> _bufferSizes = 
+        private HashMap<CodeGeneratorAdapterStrategy.Channel, Integer> _bufferSizes =
             new HashMap<CodeGeneratorAdapterStrategy.Channel, Integer>();
 
         //TODO rodiers
         private IOPort _port;
-        
+
         /** A HashMap that keeps track of the read offsets of each input channel of
          *  the actor.
          */
-        private HashMap<CodeGeneratorAdapterStrategy.Channel, Object> _readOffsets = 
+        private HashMap<CodeGeneratorAdapterStrategy.Channel, Object> _readOffsets =
             new HashMap<CodeGeneratorAdapterStrategy.Channel, Object>();
-        
+
         /** A HashMap that keeps track of the write offsets of each input channel of
          *  the actor.
          */
-        private HashMap<CodeGeneratorAdapterStrategy.Channel, Object> _writeOffsets = 
+        private HashMap<CodeGeneratorAdapterStrategy.Channel, Object> _writeOffsets =
             new HashMap<CodeGeneratorAdapterStrategy.Channel, Object>();
-        
+
     }
-    
+
     protected class Ports
     {
 
@@ -1265,19 +1265,19 @@ public class StaticSchedulingDirector extends Director {
          */
         public String generateOffset(IOPort port, String offset, int channel, boolean isWrite) throws IllegalActionException {
             return _getPortInfo(port).generateOffset(offset, channel, isWrite);
-            
+
         }
         /** Get the buffer size of channel of the port.
          *  @param channelNumber The number of the channel that is being set.
          *  @param port The given port.
          *  @return return The size of the buffer.
-         * @throws IllegalActionException 
+         * @exception IllegalActionException
          *  @see #setBufferSize(int, int)
          */
         public int getBufferSize(IOPort port, int channelNumber) throws IllegalActionException {
             return _getPortInfo(port).getBufferSize(channelNumber);
         }
-        
+
         /**
          * Return the buffer size of a given port, which is the maximum of
          * the bufferSizes of all channels of the given port.
@@ -1290,7 +1290,7 @@ public class StaticSchedulingDirector extends Director {
         public int getBufferSize(IOPort port) throws IllegalActionException {
             return _getPortInfo(port).getBufferSize();
         }
-        
+
         /** Get the read offset in the buffer of a given channel from which a token
          *  should be read. The channel is given by its containing port and
          *  the channel number in that port.
@@ -1304,7 +1304,7 @@ public class StaticSchedulingDirector extends Director {
          */
         public Object getReadOffset(IOPort inputPort, int channelNumber) throws IllegalActionException {
             return _getPortInfo(inputPort).getReadOffset(channelNumber);
-        }        
+        }
 
         /** Get the write offset in the buffer of a given channel to which a token
          *  should be put. The channel is given by its containing port and
@@ -1328,7 +1328,7 @@ public class StaticSchedulingDirector extends Director {
         public String initializeOffsets(IOPort port) throws IllegalActionException {
             return _getPortInfo(port).initializeOffsets();
         }
-        
+
         /** Set the buffer size of channel of the port.
          *  @param channelNumber The number of the channel that is being set.
          *  @param bufferSize The size of the buffer.
@@ -1338,7 +1338,7 @@ public class StaticSchedulingDirector extends Director {
             _getPortInfo(port).setBufferSize(channelNumber, bufferSize);
         }
 
-            
+
         /** Set the read offset in a buffer of a given channel from which a token
          *  should be read.
          *  @param port The given port.
@@ -1366,7 +1366,7 @@ public class StaticSchedulingDirector extends Director {
                 Object writeOffset) throws IllegalActionException {
             _getPortInfo(port).setWriteOffset(channelNumber, writeOffset);
         }
-        
+
         // Update the write offset of the [multiple] connected ports.
         public String updateConnectedPortsOffset(IOPort port, int rate) throws IllegalActionException {
             return _getPortInfo(port).updateConnectedPortsOffset(rate);
@@ -1378,11 +1378,11 @@ public class StaticSchedulingDirector extends Director {
          *  @param directorHelper The Director helper
          *  @return The offset.
          */
-        public String updateOffset(IOPort port, int rate) 
+        public String updateOffset(IOPort port, int rate)
                 throws IllegalActionException {
             return _getPortInfo(port).updateOffset(rate);
         }
-        
+
         /**
          * @param port
          */
@@ -1396,10 +1396,10 @@ public class StaticSchedulingDirector extends Director {
             }
             return info;
         }
-        
+
         // TODO rodiers: use a HashSet i.s.o. HashMap
         private Map<IOPort, PortInfo> _portInfo = new HashMap<IOPort, PortInfo>();
     }
-    
+
     protected Ports _ports = new Ports();
 }

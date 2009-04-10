@@ -229,7 +229,7 @@ cleanDerivedJavaFiles:
 	(cd $(PTII)/ptolemy/data/expr; rm -f `make -s echo_OPTIONAL_JSRCS`)
 	(cd $(PTII)/ptolemy/moml/unit; rm -f `make -s echo_OPTIONAL_JSRCS`)
 	-(cd $(PTII)/ptolemy/copernicus/kernel/fragment; rm -f `make -s echo_OPTIONAL_JSRCS`)
-	rm -rf vendors apps
+	rm -rf vendors ptolemy/apps
 	rm -rf ptolemy/domains/ct/demo/Corba/util/*.java
 	rm -rf ptolemy/backtrack/util/java/util/*.java
 

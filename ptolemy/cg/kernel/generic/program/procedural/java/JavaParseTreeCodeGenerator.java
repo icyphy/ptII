@@ -561,8 +561,8 @@ ParseTreeCodeGenerator {
             }
             _evaluateChild(node, i + 1);
 
-            result += _specializeArgument(functionName, i, 
-                    ((ASTPtRootNode) node.jjtGetChild(i + 1)).getType(), 
+            result += _specializeArgument(functionName, i,
+                    ((ASTPtRootNode) node.jjtGetChild(i + 1)).getType(),
                     _childCode);
         }
         _childCode = _specializeReturnValue(functionName, node.getType(), result + ")");
@@ -570,21 +570,21 @@ ParseTreeCodeGenerator {
 
     private String _specializeReturnValue(String function, Type returnType,
             String returnCode) {
-        if (function.equals("$arraySum") 
+        if (function.equals("$arraySum")
                 && _isPrimitive(returnType)) {
-            
-            returnCode += ".payload." + 
+
+            returnCode += ".payload." +
             _codeGenType(returnType);
         }
         return returnCode;
     }
 
-    private String _specializeArgument(String function, 
+    private String _specializeArgument(String function,
             int argumentIndex, Type argumentType, String argumentCode) {
 
         if (function.equals("$arrayRepeat") && argumentIndex == 1) {
             if (_isPrimitive(argumentType)) {
-                return "$new(" + 
+                return "$new(" +
                 _codeGenType(argumentType)
                 + "(" + argumentCode + "))";
             }
@@ -787,13 +787,13 @@ ParseTreeCodeGenerator {
                 //_fireCode.append(label.substring(7, label.length() - 1));
                 _childCode = label.substring(7, label.length() - 1);
             } else {
-		// FIXME: handle the rest of the constants from data.expr.Constants
-		if (label.equals("Infinity")) {
-		    _childCode = "Double.POSITIVE_INFINITY";
-		} else {
-		    //_fireCode.append(label);
-		    _childCode = label;
-		}
+                // FIXME: handle the rest of the constants from data.expr.Constants
+                if (label.equals("Infinity")) {
+                    _childCode = "Double.POSITIVE_INFINITY";
+                } else {
+                    //_fireCode.append(label);
+                    _childCode = label;
+                }
             }
 
             return;
@@ -1172,8 +1172,8 @@ ParseTreeCodeGenerator {
 
             if (operator.kind == PtParserConstants.MULTIPLY) {
                 if (type != null) {
-                    result = "$multiply_" + _codeGenType(resultType) 
-                    + "_" + _codeGenType(type) + "(" + result 
+                    result = "$multiply_" + _codeGenType(resultType)
+                    + "_" + _codeGenType(type) + "(" + result
                     + ", " + _childCode + ")";
 
                     resultType = resultType.multiply(type);
@@ -1184,12 +1184,12 @@ ParseTreeCodeGenerator {
             } else if (operator.kind == PtParserConstants.DIVIDE) {
                 if (type != null) {
                     result = "$divide_" + _codeGenType(resultType)
-                    + "_" + _codeGenType(type) + "(" + result 
+                    + "_" + _codeGenType(type) + "(" + result
                     + ", " + _childCode + ")";
 
                     resultType = resultType.divide(type);
 
-                } else {                  
+                } else {
                     result += "/" + _childCode;
                 }
             } else if (operator.kind == PtParserConstants.MODULO) {
@@ -1746,7 +1746,7 @@ ParseTreeCodeGenerator {
      *  be resolved.
      */
     private /*static*/ String _codeGenType(Type ptType) {
-	// FIXME: this is duplicated code from CodeGeneratorHelper.codeGenType
+        // FIXME: this is duplicated code from CodeGeneratorHelper.codeGenType
 
         // FIXME: We may need to add more types.
         // FIXME: We have to create separate type for different matrix types.
@@ -1774,11 +1774,11 @@ ParseTreeCodeGenerator {
         //            "Cannot resolved codegen type from Ptolemy type: " + ptType);
         //}
 
-	// Java specific changes
-	if (result != null) {
-	    return result.replace("Int", "Integer").replace("Array", "Token");
-	}
-	return result;
+        // Java specific changes
+        if (result != null) {
+            return result.replace("Int", "Integer").replace("Array", "Token");
+        }
+        return result;
     }
 
     /**
@@ -1787,7 +1787,7 @@ ParseTreeCodeGenerator {
      * @return true if the given type is primitive, otherwise false.
      */
     private boolean _isPrimitive(Type ptType) {
-	// FIXME: this is duplicated code from CodeGeneratorHelper.isPrimitive()
+        // FIXME: this is duplicated code from CodeGeneratorHelper.isPrimitive()
         return _primitiveTypes.contains(_codeGenType(ptType));
     }
 
@@ -1797,7 +1797,7 @@ ParseTreeCodeGenerator {
      * @return The Java data type.
      */
     private String _targetType(Type ptType) {
-	// FIXME: this is duplicated code from CodeGeneratorHelper.targetType()
+        // FIXME: this is duplicated code from CodeGeneratorHelper.targetType()
         // FIXME: we may need to add more primitive types.
         return ptType == BaseType.INT ? "int"
                 : ptType == BaseType.STRING ? "String"
@@ -1853,13 +1853,13 @@ ParseTreeCodeGenerator {
     /** The depth, used for debugging and indenting. */
     private int _depth = 0;
 
-    private static Map cFunctionMap = new HashMap(); 
+    private static Map cFunctionMap = new HashMap();
     static {
         cFunctionMap.put("roundToInt", "(int)");
         cFunctionMap.put("repeat", "$arrayRepeat");
         cFunctionMap.put("sum", "$arraySum");
 
-	// Java Specific functions
+        // Java Specific functions
         cFunctionMap.put("NaN", "Double.NaN");
         cFunctionMap.put("abs", "Math.abs");
         cFunctionMap.put("acos", "Math.acos");

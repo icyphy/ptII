@@ -404,7 +404,7 @@ public class CodeGeneratorAdapter extends NamedObj implements ActorCodeGenerator
      * Generate the fire code. This method is intended to be
      * overwritten by sub-classes to generate actor-specific code. 
      * @return The generated code.
-     * @throws IllegalActionException Not thrown in this base class.
+     * @exception IllegalActionException Not thrown in this base class.
      */
     protected String _generateFireCode() throws IllegalActionException {
         return _strategy._generateFireCode();

@@ -97,7 +97,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
      *  @param container The container.
      *  @param name The name of the code generator.
      *  @param outputFileExtension The extension of the output file.
-     *   (for example c in case of C and java in case of Java)  
+     *   (for example c in case of C and java in case of Java)
      *  @param templateExtension The extension of the template files.
      *   (for example c in case of C and j in case of Java).
      *  @exception IllegalActionException If the super class throws the
@@ -128,7 +128,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
         new Parameter(codeDirectory, "allowFiles", BooleanToken.FALSE);
         new Parameter(codeDirectory, "allowDirectories", BooleanToken.TRUE);
 
-        generatorPackageList = new StringParameter(this, "generatorPackageList");        
+        generatorPackageList = new StringParameter(this, "generatorPackageList");
 
         inline = new Parameter(this, "inline");
         inline.setTypeEquals(BaseType.BOOLEAN);
@@ -149,7 +149,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
                 + "Double click to\ngenerate code.</text></svg>");
 
         _model = (CompositeEntity) getContainer();
-        
+
         //_generatorPackageListParser._updateGeneratorPackageList();
 
         // FIXME: We may not want this GUI dependency here...
@@ -160,7 +160,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
 
     ///////////////////////////////////////////////////////////////////
     ////                     parameters                            ////
-    
+
     /** If true, then channels in multiports can be dynamically
      *  referenced using the $ref macro.
      *  TODO: This parameter is SDF specific.
@@ -197,7 +197,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
      *  TODO: This parameter is SDF specific.
      */
     public Parameter padBuffers;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
 
@@ -219,8 +219,8 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
     }
 
     /** If the compile command does not yet containe a library,
-     * 	add a library command line argument the compile command.
-     *  
+     *         add a library command line argument the compile command.
+     *
      *  @param libraryCommand  The library command, for example
      *  "-L/usr/local/lib".
      *  @see #addLibrary(String)
@@ -250,7 +250,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
             super.attributeChanged(attribute);
         }
     }
-    
+
     /**
      * Get the corresponding type in code generation from the given Ptolemy
      * type.
@@ -267,12 +267,12 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
         if (ptType == BaseType.GENERAL) {
             return "Token";
         }
-        
+
         // FIXME: this may be the case for unconnected ports.
         if (ptType == BaseType.UNKNOWN) {
             return "Token";
         }
-        
+
         if (ptType == BaseType.SCALAR) {
             // FIXME: do we need a codegen type for scalar?
             return "";
@@ -280,13 +280,13 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
 
         // FIXME: We may need to add more types.
         // FIXME: We have to create separate type for different matrix types.
-        String result = 
-            ptType == BaseType.INT ? "Int" : 
-            ptType == BaseType.LONG ? "Long" : 
-            ptType == BaseType.STRING ? "String" : 
-            ptType == BaseType.DOUBLE ? "Double" : 
-            ptType == BaseType.BOOLEAN ? "Boolean" : 
-            ptType == BaseType.UNSIGNED_BYTE ? "UnsignedByte" : 
+        String result =
+            ptType == BaseType.INT ? "Int" :
+            ptType == BaseType.LONG ? "Long" :
+            ptType == BaseType.STRING ? "String" :
+            ptType == BaseType.DOUBLE ? "Double" :
+            ptType == BaseType.BOOLEAN ? "Boolean" :
+            ptType == BaseType.UNSIGNED_BYTE ? "UnsignedByte" :
             ptType == PointerToken.POINTER ? "Pointer" : null;
 
         if (result == null) {
@@ -310,7 +310,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
         }
         return result;
     }
-    
+
     /** Return a formatted comment containing the
      *  specified string with a specified indent level.
      *  @param comment The string to put in the comment.
@@ -329,7 +329,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
     public String comment(String comment) {
         return "";
     }
-    
+
     /** Return true if the input contains code.
      *  In this context, code is considered to be anything other
      *  than comments and whitespace.
@@ -341,7 +341,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
         return (code.replaceAll("/\\*[^*]*\\*/", "")
                 .replaceAll("[ \t\n\r]", "").length() > 0);
     }
-    
+
     /** Generate code and write it to the file specified by the
      *  <i>codeDirectory</i> parameter.
      *  @return The return value of the last subprocess that was executed.
@@ -471,7 +471,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
         ActorCodeGenerator adapter = getAdapter(getContainer());
         code.append(adapter.generateFireFunctionCode());
         return code.toString();
-    }   
+    }
 
     /**
      * Return the code associated with initialization of the containing
@@ -679,7 +679,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
     public String generateWrapupProcedureName() throws IllegalActionException {
         return "";
     }
-    
+
     /** Get the code generator adapter associated with the given component.
      *  @param component The given component.
      *  @return The code generator adapter.
@@ -688,7 +688,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
     final public  CodeGeneratorAdapter getAdapter(NamedObj component) throws IllegalActionException {
         return (CodeGeneratorAdapter) _getAdapter((Object) component);
     }
-    
+
     /** Return the name of the code file that was written, if any.
      *  If no file was written, then return null.
      *  @return The name of the file that was written.
@@ -696,7 +696,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
     final public String getCodeFileName() {
         return _codeFileName;
     }
-    
+
     /** Return the associated component, which is always the container.
      *  @return The adapter to generate code.
      */
@@ -721,7 +721,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
      */
     final public Set getModifiedVariables() throws IllegalActionException {
         return _modifiedVariables;
-    }    
+    }
 
     /**
      * Return The extention of the template files.
@@ -731,7 +731,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
     final public String getTemplateExtension() {
         return _templateExtension;
     }
-    
+
     /**
      * Determine if the given type is primitive.
      * @param cgType The given codegen type.
@@ -768,7 +768,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
     public static void main(String[] args) throws Exception {
         generateCode(args);
     }
-    
+
     /** Return the Ptolemy type that corresponds to the type named by
      *  the argument.
      *  @param cgType A String naming a type.
@@ -782,11 +782,11 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
                                         .equals("Double") ? BaseType.DOUBLE : cgType
                                                 .equals("Complex") ? BaseType.COMPLEX : cgType
                                                         .equals("Pointer") ? PointerToken.POINTER : null;
-    
+
         if (cgType.endsWith("Array")) {
             String elementType = cgType.replace("Array", "");
             result = new ArrayType(ptolemyType(elementType));
-    
+
         } else if (cgType.endsWith("Matrix")) {
             String elementType = cgType.replace("Matrix", "");
             result = elementType.equals("Int") ? BaseType.INT_MATRIX
@@ -797,7 +797,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
                                                     : elementType
                                                     .equals("Long") ? BaseType.LONG_MATRIX
                                                             : null;
-    
+
         }
         return result;
     }
@@ -866,7 +866,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
         return results;
     }
 
-    
+
     /**
      * Get the corresponding type in C from the given Ptolemy type.
      * @param ptType The given Ptolemy type.
@@ -1070,11 +1070,11 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
         return code.toString();
     }
 
-    /** 
+    /**
      * Get the code generator adapter associated with the given object.
      * @param object The given object.
      * @return The code generator adapter.
-     * @throws IllegalActionException If the adapter class cannot be found.
+     * @exception IllegalActionException If the adapter class cannot be found.
      */
     final protected Object _getAdapter(Object object) throws IllegalActionException {
 
@@ -1084,25 +1084,25 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
 
         ArrayList<String> packages = new ArrayList<String>(_generatorPackageListParser.generatorPackages());
         //ArrayList<String> packagesWorkingSet = new ArrayList<String>(packagesToBacktrack);
-        
-        Class<?> componentClass = object.getClass();        
+
+        Class<?> componentClass = object.getClass();
 
         ActorCodeGenerator adapterObject = null;
-        
+
         // We have 3 levels in which we need to seek.
         //      First the different packages
         //      Secondly the hierarchy of the object
-        //      Lastly for each package the hierarchy of the package 
-        
+        //      Lastly for each package the hierarchy of the package
+
 
         while (adapterObject == null) {
             String className = componentClass.getName();
-            
+
             if (packages.isEmpty()) {
                 throw new IllegalActionException("There is no "
                         + "codegen adaptor for " + object.getClass());
             }
-            
+
             if (!className.contains("ptolemy")) {
                 componentClass = object.getClass();
                 className = componentClass.getName();
@@ -1117,27 +1117,27 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
                     }
                 }
             }
-            
+
             for (int i = 0; i < packages.size(); ++i) {
                 String packageName = packages.get(i);
-                
+
                 // FIXME rodiers: this mombo jumbo should probably move to a utility function
                 String adapterClassName = "ptolemy.cg.adapter." + packageName + ".adapters." + className;
                 try {
                     adapterObject = _instantiateAdapter(
                             object, componentClass, adapterClassName);
-                } catch (IllegalActionException ex) { 
+                } catch (IllegalActionException ex) {
                     // If adapter class cannot be found, get to next package
                     continue;
                 }
             }
             if (adapterObject == null) {
                 // If adapter class cannot be found, search the adapter class
-                // for parent class instead.                    
+                // for parent class instead.
                 componentClass = componentClass.getSuperclass();
             }
         }
-        
+
         _adapterStore.put(object, adapterObject);
         return adapterObject;
     }
@@ -1161,7 +1161,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
 
     protected Class<? extends CodeGeneratorAdapterStrategy> _strategyClass() {
         return CodeGeneratorAdapterStrategy.class;
-        
+
     }
     /** Write the code to a directory named by the codeDirectory
      *  parameter, with a file name that is a sanitized version of the
@@ -1232,7 +1232,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
      */
     protected void _writeMakefile() throws IllegalActionException {
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -1241,7 +1241,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
      */
     private void _addActorIncludeDirectories() throws IllegalActionException {
     }
-    
+
     /** Generate code and append it to the given string buffer.
      *  Write the code to the directory specified by the codeDirectory
      *  parameter.  The file name is a sanitized version of the model
@@ -1338,7 +1338,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
         String typeResolutionCode = generateTypeConvertCode();
         //String globalCode = generateGlobalCode();
 
-        // Include files depends the generated code, so it 
+        // Include files depends the generated code, so it
         // has to be generated after everything.
         String includeFiles = _generateIncludeFiles();
 
@@ -1356,7 +1356,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
         code.append(includeFiles);
         code.append(typeResolutionCode);
         code.append(sharedCode);
-        // Don't use **** in comments, it causes the nightly build to 
+        // Don't use **** in comments, it causes the nightly build to
         // report errors.
         code.append(comment("end shared code"));
         code.append(variableDeclareCode);
@@ -1466,9 +1466,9 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
      *  @exception IllegalActionException If the adapter class cannot be found.
      */
     private ActorCodeGenerator _instantiateAdapter(Object component,
-            Class<?> componentClass, String adapterClassName) 
+            Class<?> componentClass, String adapterClassName)
     throws IllegalActionException {
-        
+
         Class<?> adapterClass = null;
 
         try {
@@ -1483,7 +1483,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
         try {
             constructor = adapterClass.getConstructor(
                     new Class[] { componentClass });
-            
+
         } catch (NoSuchMethodException e) {
             throw new IllegalActionException(this, e,
                     "There is no constructor in " + adapterClassName
@@ -1518,7 +1518,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
         } catch (IllegalAccessException e) {
             throw new InternalErrorException(e);
         }
-        
+
         castAdapterObject.setCodeGenerator(this);
 
         return castAdapterObject;
@@ -1563,15 +1563,15 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
     }
 
     /** Reset the code generator.
-     */ 
+     */
     private void _reset() {
         // Reset the indent to zero.
         _indent = 0;
-        
+
         // Reset the code file name so that getCodeFileName()
         // accurately reports whether code was generated.
         _codeFileName = null;
-        
+
         _newTypesUsed.clear();
         _tokenFuncUsed.clear();
         _typeFuncUsed.clear();
@@ -1746,7 +1746,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
                     // If the user called this with -generatorPackage ptolemy.codegen.java,
                     // the process that argument.  This is a bit hacky, but works.
                     String generatorPackageValue = "ptolemy.codegen.c";
-                    int parameterIndex = -1; 
+                    int parameterIndex = -1;
                     if ( (parameterIndex = _parameterNames.indexOf("generatorPackage")) != -1) {
                         generatorPackageValue = _parameterValues.get(parameterIndex);
                     }
@@ -1769,7 +1769,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
                         // Add a codeGenerator
                         Constructor<?> codeGeneratorConstructor =
                             generatorClass.getConstructor(new Class[] {
-                                    NamedObj.class, 
+                                    NamedObj.class,
                                     String.class});
                         codeGenerator = (GenericCodeGenerator) codeGeneratorConstructor.newInstance(new Object [] {
                                 toplevel,
@@ -1884,7 +1884,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
     static {
         _eol = StringUtilities.getProperty("line.separator");
     }
-    
+
 
     /** Execute commands to run the generated code.
      */
@@ -1933,7 +1933,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
      */
     protected static List<String> _primitiveTypes = Arrays.asList(new String[] {
             "Int", "Double", "String", "Long", "Boolean", "UnsignedByte",
-    "Pointer" });    
+    "Pointer" });
 
     /** The sanitized model name. */
     protected String _sanitizedModelName;
@@ -1953,10 +1953,10 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** A map giving the code generator adapters for each actor. */
     private Map<Object, ActorCodeGenerator> _adapterStore = new HashMap<Object, ActorCodeGenerator>();
-    
+
     /** The command-line options that are either present or not. */
     private static String[] _commandFlags = { "-help", "-version", };
 
@@ -1982,12 +1982,12 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
 
     /** The form of the command line. */
     private static final String _commandTemplate = "ptcg [ options ] [file ...]";
-    
+
     /** The name of the file that was written.
      *  If no file was written, then the value is null.
      */
     private String _codeFileName = null;
-    
+
     private GeneratorPackageListParser _generatorPackageListParser = new GeneratorPackageListParser();
 
     /** The current indent level when pretty printing code. */
@@ -2013,13 +2013,13 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
      *   (for example c in case of C and j in case of Java)
      */
     private String _templateExtension;
-       
-    
+
+
     class GeneratorPackageListParser
     {
-        public GeneratorPackageListParser() {            
+        public GeneratorPackageListParser() {
         }
-        
+
         public List<String> generatorPackages() throws IllegalActionException {
             _updateGeneratorPackageList();
             return _generatorPackages;
@@ -2030,7 +2030,7 @@ public class GenericCodeGenerator extends Attribute implements ComponentCodeGene
             String[] packages = packageList.split("; *");
             _generatorPackages = Arrays.asList(packages);
         }
-        
+
         private List<String> _generatorPackages;
     }
 

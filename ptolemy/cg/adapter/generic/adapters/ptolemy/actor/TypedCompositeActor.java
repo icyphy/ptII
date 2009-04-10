@@ -65,7 +65,7 @@ public class TypedCompositeActor extends CodeGeneratorAdapter {
                 .CompositeActor) getComponent()).getDirector());
 
         code.append(directorAdapter.generateFireCode());
-        
+
         return processCode(code.toString());
     }
 
@@ -101,10 +101,10 @@ public class TypedCompositeActor extends CodeGeneratorAdapter {
                 .CompositeActor) getComponent()).getDirector());
 
         code.append(directorAdapter.generateInitializeCode());
-        
+
         return processCode(code.toString());
     }
-    
+
     @Override
     public String generateWrapupCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
@@ -113,10 +113,10 @@ public class TypedCompositeActor extends CodeGeneratorAdapter {
                 .CompositeActor) getComponent()).getDirector());
 
         code.append(directorAdapter.generateWrapupCode());
-        
+
         return processCode(code.toString());
     }
-    
+
     @Override
     public Set<String> getSharedCode() throws IllegalActionException {
 

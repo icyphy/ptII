@@ -115,7 +115,7 @@ public class Director extends CodeGeneratorAdapter {
         StringBuffer code = new StringBuffer();
         Iterator<?> actors = ((CompositeActor) _director.getContainer())
         .deepEntityList().iterator();
-        
+
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             CodeGeneratorAdapter actorAdapter = getCodeGenerator().getAdapter((NamedObj) actor);
@@ -168,7 +168,7 @@ public class Director extends CodeGeneratorAdapter {
              * TODO rodiers: first part can certainly be removed
              * code.append(portAdapter.generateInitializeCode());
              *  also?
-             * 
+             *
             // Update write offset due to initial tokens produced.
             Iterator<?> outputPorts = actor.outputPortList().iterator();
             while (outputPorts.hasNext()) {
@@ -179,7 +179,7 @@ public class Director extends CodeGeneratorAdapter {
 
             for (IOPort port : (List<IOPort>) ((Entity) actor).portList()) {
                 if (port.isOutsideConnected()) {
-                    CodeGeneratorAdapter portAdapter = 
+                    CodeGeneratorAdapter portAdapter =
                         getCodeGenerator().getAdapter(port);
                     code.append(portAdapter.generateInitializeCode());
                 }
@@ -402,8 +402,8 @@ public class Director extends CodeGeneratorAdapter {
 
         return code.toString();
     }
-    
-    public String getReference(String name, boolean isWrite, CodeGeneratorAdapter target) 
+
+    public String getReference(String name, boolean isWrite, CodeGeneratorAdapter target)
         throws IllegalActionException {
         //TODO rodiers
         assert false;
@@ -425,7 +425,7 @@ public class Director extends CodeGeneratorAdapter {
         if ((port.isOutput() && !forComposite)
                 || (port.isInput() && forComposite)) {
 
-            List<Channel> sinkChannels = 
+            List<Channel> sinkChannels =
                 CodeGeneratorAdapterStrategy.getSinkChannels(port, channelNumber);
 
             return sinkChannels;

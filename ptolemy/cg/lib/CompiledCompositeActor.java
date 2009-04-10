@@ -152,7 +152,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
 
     /** If true, then invoke the generated code in the action methods
      *  (fire(), etc.).
-     *  If the value is false, this actor will be executed 
+     *  If the value is false, this actor will be executed
      *  executing like an ordinary composite actor.  Classes like EmbeddedJavaActor
      *  set embedded to true when there is only Java code specifying
      *  the functionality of an actor.
@@ -465,9 +465,9 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         _invokeAdapterMethod("copyFilesToCodeDirectory");
 
         File sharedObjectFile = new File(_sharedObjectPath(_sanitizedActorName));
-        
+
         Effigy effigy = Configuration.findEffigy(this.toplevel());
-        
+
         // FIXME rodiers
         // effigy.isModified() is not the correct way to deal with changes.
         // It might be the case that we already compiled after the change
@@ -530,8 +530,8 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         String fileName = "";
         try {
             if (generatorPackageString.equals("generic.program.procedural.java")) {
-                fileName = sanitizedActorName + ".class";                
-            } else if (generatorPackageString.equals("generic.program.procedural.c")) {            
+                fileName = sanitizedActorName + ".class";
+            } else if (generatorPackageString.equals("generic.program.procedural.c")) {
                 String osName = StringUtilities.getProperty("os.name");
                 if (osName != null) {
                     if (osName.startsWith("Windows")) {
@@ -540,11 +540,11 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                         fileName = "lib" + sanitizedActorName + ".dylib";
                     } else {
                         fileName = "lib" + sanitizedActorName + ".so";
-                    }                    
+                    }
                 }
             } else {
                 throw new IllegalActionException(this,
-                "generatorPackage " + generatorPackage + " not supported.");                
+                "generatorPackage " + generatorPackage + " not supported.");
             }
             sharedObjectPath = codeDirectory.asFile().getCanonicalPath()
             + File.separator + fileName;
@@ -553,7 +553,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
             throw new IllegalActionException(this, ex,
                     "Cannot generate library path.");
         }
-        
+
         return sharedObjectPath;
     }
 

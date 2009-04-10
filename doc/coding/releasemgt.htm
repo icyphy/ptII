@@ -77,7 +77,6 @@ to test the Web Start release.
 svn co svn+ssh://source.eecs.berkeley.edu/chess/ptII/trunk ptII
 cd ptII
 # Make sure empty directories are removed
-cvs update -P -d
 setenv PTII `pwd`
 ./configure
 make
@@ -103,12 +102,13 @@ either running
 
 cd $PTII
 make cleanDerivedJavaFiles
+make clean_shipping
 </pre>
 Or removing the files by hand:
 <pre>
 cd $PTII/ptolemy/actor/ptalon
 rm `make echo_OPTIONAL_JSRCS`
-cd $PTII/ptolemy/data/expr
+ cd $PTII/ptolemy/data/expr
 rm `make echo_OPTIONAL_JSRCS`
 cd $PTII/ptolemy/data/unit
 rm `make echo_OPTIONAL_JSRCS`
@@ -117,7 +117,7 @@ rm `make echo_OPTIONAL_JSRCS`
 
 # Create a file that contains the names of the java files to include
 cd $PTII
-rm -rf vendors apps
+rm -rf vendors ptolemy/apps
 rm -rf ptolemy/domains/ct/demo/Corba/util/*.java
 
 </pre>
@@ -193,7 +193,7 @@ You may need to use dos2unix to fix the files.
 <p>Check keywords in all files:
 <pre>
 cd $PTII
-cat /tmp/f | xargs $PTII/adm/bin/svnpropcheck
+cat /tmp/f | xargs $PTII/adm/bin/svnpropcheck > /tmp/props
 grep keywords: /tmp/props | grep / | awk '{print $1}' > /tmp/keys
 grep eolstyle: /tmp/props | grep / | awk '{print $1}' > /tmp/eols
 cat /tmp/keys | xargs svn propset svn:keywords "Author Date Id Revision"
@@ -438,3 +438,4 @@ make setup
 <p><font size="2" color="#cc0000">Last Updated: $Date$</font>
 </body>
 </html>
+

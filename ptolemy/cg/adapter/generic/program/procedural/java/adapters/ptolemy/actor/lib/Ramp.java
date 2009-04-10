@@ -109,7 +109,7 @@ public class Ramp extends CodeGeneratorAdapter {
         if (!getCodeGenerator().isPrimitive(type)) {
             type = "Token";
         }
-        
+
         CodeStream codeStream = getStrategy().getCodeStream();
         codeStream.appendCodeBlock(type + "FireBlock");
         return processCode(codeStream.toString());

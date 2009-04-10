@@ -79,7 +79,7 @@ public class Test extends CodeGeneratorAdapter {
         String inputType = "";
 
         CodeStream codeStream = getStrategy().getCodeStream();
-        
+
         if (actor.input.getWidth() > 1) {
             // If we have multiple inputs, use different blocks
             multiChannel = "MultiChannel";
@@ -91,10 +91,10 @@ public class Test extends CodeGeneratorAdapter {
                 inputType = getCodeGenerator().codeGenType(actor.input.getType());
             } else {
                 inputType = "Token";
-  		((JavaCodeGenerator) getCodeGenerator()).markFunctionCalled("equals_Token_Token", (JavaCodeGeneratorAdapterStrategy) getStrategy());
-  		((JavaCodeGenerator) getCodeGenerator()).markFunctionCalled("isCloseTo_Token_Token", (JavaCodeGeneratorAdapterStrategy) getStrategy());
+                  ((JavaCodeGenerator) getCodeGenerator()).markFunctionCalled("equals_Token_Token", (JavaCodeGeneratorAdapterStrategy) getStrategy());
+                  ((JavaCodeGenerator) getCodeGenerator()).markFunctionCalled("isCloseTo_Token_Token", (JavaCodeGeneratorAdapterStrategy) getStrategy());
             }
-            
+
             codeStream.appendCodeBlock(inputType + "Block" + multiChannel,
                     args);
         }
@@ -109,7 +109,7 @@ public class Test extends CodeGeneratorAdapter {
         super.generateInitializeCode();
 
         CodeStream codeStream = getStrategy().getCodeStream();
-        
+
         ptolemy.actor.lib.Test actor = (ptolemy.actor.lib.Test) getComponent();
         for (int i = 0; i < actor.input.getWidth(); i++) {
             if (!getCodeGenerator().isPrimitive(actor.input.getType())) {
@@ -134,7 +134,7 @@ public class Test extends CodeGeneratorAdapter {
         super.generatePreinitializeCode();
 
         ptolemy.actor.lib.Test actor = (ptolemy.actor.lib.Test) getComponent();
-        
+
         CodeStream codeStream = getStrategy().getCodeStream();
 
         if (actor.input.getWidth() > 1) {

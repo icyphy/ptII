@@ -157,7 +157,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
             }
 
             ptolemy.cg.lib.CompiledCompositeActor actor = (ptolemy.cg.lib.CompiledCompositeActor) compositeActor;
-            List<?> codeGenerators = actor.attributeList(JavaCodeGenerator.class);            
+            List<?> codeGenerators = actor.attributeList(JavaCodeGenerator.class);
 
             if (codeGenerators.size() == 0) {
                 // Add a codeGenerator

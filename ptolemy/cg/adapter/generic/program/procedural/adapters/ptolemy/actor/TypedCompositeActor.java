@@ -60,7 +60,7 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.AcceptedRating Red (zgang)
  */
 public class TypedCompositeActor extends ptolemy.cg.adapter.generic.adapters.ptolemy.actor.TypedCompositeActor {
-    
+
     /** Construct the code generator adapter associated
      *  with the given TypedCompositeActor.
      *  @param component The associated component.
@@ -172,7 +172,7 @@ public class TypedCompositeActor extends ptolemy.cg.adapter.generic.adapters.pto
         }
         return processCode(code.toString());
     }
-    
+
     /** Generate The fire function code. This method is called when
      *  the firing code of each actor is not inlined. Each actor's
      *  firing code is in a function with the same name as that of the

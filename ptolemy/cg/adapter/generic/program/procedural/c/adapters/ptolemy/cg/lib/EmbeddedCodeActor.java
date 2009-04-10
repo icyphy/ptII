@@ -95,6 +95,6 @@ public class EmbeddedCodeActor extends CompiledCompositeActor {
                     .setCodeBlocks(((ptolemy.cg.lib.EmbeddedCodeActor) getComponent()
                             .getContainer()).embeddedCode.getExpression());
             return super.getSharedCode();
-        }        
+        }
     }
 }
