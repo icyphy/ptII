@@ -83,7 +83,7 @@ public class PropertyDisplayGUIFactory extends EditorFactory {
         PropertyRemover remover = (PropertyRemover) getContainer();
         CompositeEntity top = (CompositeEntity) remover.getContainer();
 
-        while (top.getContainer() != null){
+        while (top.getContainer() != null) {
             top = (CompositeEntity) top.getContainer();
         }
         try {

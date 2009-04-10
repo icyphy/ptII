@@ -63,7 +63,7 @@ public class PropertyConstraintASTNodeHelper
      * Construct the property constraint helper associated
      * with the given AST node.
      * @param node The given AST node.
-     * @throws IllegalActionException Thrown if
+     * @exception IllegalActionException Thrown if
      *  PropertyConstraintHelper(NamedObj, ASTPtRootNode, boolean)
      *  throws it.
      */
@@ -80,7 +80,7 @@ public class PropertyConstraintASTNodeHelper
      * @param node The given AST node.
      * @param useDefaultConstraints Indicate whether this helper
      *  uses the default actor constraints.
-     * @throws IllegalActionException Thrown if the helper cannot
+     * @exception IllegalActionException Thrown if the helper cannot
      *  be initialized.
      */
     public PropertyConstraintASTNodeHelper(
@@ -136,7 +136,7 @@ public class PropertyConstraintASTNodeHelper
 
             for (int i = 0; i < node.jjtGetNumChildren(); i++) {
 
-                if (!constraintParent && !isNone){
+                if (!constraintParent && !isNone) {
                     // Set child >= parent.
                     setAtLeastByDefault(node.jjtGetChild(i), node);
 
@@ -156,7 +156,7 @@ public class PropertyConstraintASTNodeHelper
 //    /**
 //     * @param node The given AST node.
 //     * @return The term
-//     * @throws IllegalActionException
+//     * @exception IllegalActionException
 //     */
 //    public InequalityTerm[] getChildrenTerm(ptolemy.data.expr.ASTPtRootNode node) throws IllegalActionException {
 //        InequalityTerm children[] =
@@ -194,7 +194,7 @@ public class PropertyConstraintASTNodeHelper
      * Return the list of sub-helpers. In this base class,
      * return an empty list.
      * @return The list of sub-helpers.
-     * @throws IllegalActionException Not thrown in this base class.
+     * @exception IllegalActionException Not thrown in this base class.
      */
     protected List<PropertyHelper> _getSubHelpers() {
         return new ArrayList<PropertyHelper>();

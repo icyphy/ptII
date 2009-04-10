@@ -99,8 +99,8 @@ public class StateTypeCriterion extends Criterion {
     public boolean match(NamedObj object) {
         State state = (State) object;
         try {
-            if(isInitEnabled() && isFinalEnabled()) {
-                if( _isInit == ((BooleanToken)state.isInitialState.getToken())
+            if (isInitEnabled() && isFinalEnabled()) {
+                if (_isInit == ((BooleanToken)state.isInitialState.getToken())
                         .booleanValue() &&_isFinal == ((BooleanToken)state
                                 .isFinalState.getToken()).booleanValue()) {
                     return true;
@@ -108,8 +108,8 @@ public class StateTypeCriterion extends Criterion {
                     return false;
                 }
             }
-            else if(isInitEnabled()) {
-                if( _isInit == ((BooleanToken)state.isInitialState.getToken())
+            else if (isInitEnabled()) {
+                if (_isInit == ((BooleanToken)state.isInitialState.getToken())
                         .booleanValue()) {
                     return true;
                 } else {
@@ -117,14 +117,14 @@ public class StateTypeCriterion extends Criterion {
                 }
             }
 
-            else if(isFinalEnabled()) {
-                if( _isFinal == ((BooleanToken)state.isFinalState.getToken())
+            else if (isFinalEnabled()) {
+                if (_isFinal == ((BooleanToken)state.isFinalState.getToken())
                         .booleanValue()) {
                     return true;
                 } else {
                     return false;
                 }
-            } else if(!isFinalEnabled() && !isInitEnabled() ) {
+            } else if (!isFinalEnabled() && !isInitEnabled() ) {
                 return true;
             } else {
                 return false;

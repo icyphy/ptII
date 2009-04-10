@@ -867,7 +867,7 @@ public class Configuration extends CompositeEntity implements
         // We check only the fields declared in this class.
         // FIXME: should we check all fields?
         Field [] namedObjFields = namedObjClass.getDeclaredFields();
-        for(int i = 0; i < namedObjFields.length; i++) {
+        for (int i = 0; i < namedObjFields.length; i++) {
             Field field = namedObjFields[i];
             // Tell the security manager we want to read private fields.
             // This will fail in an applet.

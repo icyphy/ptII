@@ -61,7 +61,7 @@ public class AtomicActor extends PropertyTokenHelper {
      * are set for this helper.
      * @param solver The given solver.
      * @param actor The given ActomicActor.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public AtomicActor(PropertyTokenSolver solver,
             ptolemy.actor.AtomicActor actor)

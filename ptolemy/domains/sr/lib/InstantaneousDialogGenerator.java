@@ -134,7 +134,7 @@ public class InstantaneousDialogGenerator extends TypedAtomicActor {
     /** Override the base class to declare that the <i>dataOutput</i>
      *  and <i>indexOutput</i> ports do not depend on the <i>dataInput</i>
      *  port in a firing.
-     *  @throws IllegalActionException If the superclass throws it.
+     *  @exception IllegalActionException If the superclass throws it.
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();

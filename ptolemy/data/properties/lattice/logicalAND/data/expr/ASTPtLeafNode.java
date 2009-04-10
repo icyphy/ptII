@@ -52,7 +52,7 @@ public class ASTPtLeafNode extends ASTPtRootNode {
      * Construct an property constraint helper for the given ASTPtLeafNode.
      * @param solver The given solver to get the lattice from.
      * @param node The given ASTPtLeafNode.
-     * @throws IllegalActionException Thrown if the parent construct
+     * @exception IllegalActionException Thrown if the parent construct
      *  throws it.
      */
     public ASTPtLeafNode(PropertyConstraintSolver solver,

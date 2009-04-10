@@ -74,8 +74,8 @@ ValueListener {
     /**
      * @param container
      * @param name
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+     * @exception IllegalActionException
+     * @exception NameDuplicationException
      */
     public StateMatcher(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {

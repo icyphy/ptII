@@ -60,8 +60,8 @@ public class PteraGraphTableau extends FSMGraphTableau {
     /**
      * @param container
      * @param name
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+     * @exception IllegalActionException
+     * @exception NameDuplicationException
      */
     public PteraGraphTableau(PtolemyEffigy container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -72,8 +72,8 @@ public class PteraGraphTableau extends FSMGraphTableau {
      * @param container
      * @param name
      * @param defaultLibrary
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+     * @exception IllegalActionException
+     * @exception NameDuplicationException
      */
     public PteraGraphTableau(PtolemyEffigy container, String name,
             LibraryAttribute defaultLibrary) throws IllegalActionException,

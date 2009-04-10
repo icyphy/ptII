@@ -337,7 +337,7 @@ public class PtidesDirector extends TimedPNDirector {
      * Initialize parameters and the schedule listeners. Calculate minimum
      * delays for ports on platforms according to Ptides.
      *
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *             Thrown if other actors than CompositeActors are used in this
      *             model or embedded directors of these CompositeActors are not
      *             TimedDirectors.
@@ -627,7 +627,7 @@ public class PtidesDirector extends TimedPNDirector {
     /**
      * Initialize parameters of the director.
      *
-     * @throws NameDuplicationException
+     * @exception NameDuplicationException
      *             Could occur if parameter with same name already exists.
      */
     private void _initialize() throws IllegalActionException,

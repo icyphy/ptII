@@ -56,8 +56,8 @@ extends PropertyConstraintHelper {
      *  with the given TypedCompositeActor.
      * @param solver TODO
      * @param component The associated component.
-     *  @throws IllegalActionException
-     * @throws IllegalActionException
+     *  @exception IllegalActionException
+     * @exception IllegalActionException
      */
     public PropertyConstraintCompositeHelper(
             PropertyConstraintSolver solver, CompositeEntity component)
@@ -87,7 +87,7 @@ extends PropertyConstraintHelper {
      * returns the list of ASTNode helpers and the helpers for
      * the contained entities.
      * @return The list of sub-helpers.
-     * @throws IllegalActionException Thrown if there is an error
+     * @exception IllegalActionException Thrown if there is an error
      *  getting the helper for any contained entities.
      */
     protected List<PropertyHelper> _getSubHelpers() throws IllegalActionException {

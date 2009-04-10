@@ -316,7 +316,7 @@ public class MathematicalModelConverter extends Attribute {
      * @param formulaType The type of the graphical spec. It may be either "Risk"
      *                    or "Reachability".
      * @return The textual format of the graphical spec.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public String generateGraphicalSpec(FormulaType formulaType)
             throws IllegalActionException {

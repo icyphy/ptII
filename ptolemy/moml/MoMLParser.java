@@ -6564,7 +6564,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  @exception XmlException If the name refers to an entity in an
      *   innappropriate context or if the context is not an instance
      *   of CompositeEntity.
-     * @throws IllegalActionException If the name is ambiguous in that
+     * @exception IllegalActionException If the name is ambiguous in that
      *  more than one entity in workspace matches. This will only occur
      *  if the name is absolute and is not inside the current model.
      */

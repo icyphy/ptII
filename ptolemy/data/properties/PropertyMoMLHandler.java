@@ -282,7 +282,7 @@ public class PropertyMoMLHandler extends Attribute {
             // We don't need to specify the toplevel because
             // that is the context which we will execute the
             // change request.
-            while(momlContainer.getContainer() != null) {
+            while (momlContainer.getContainer() != null) {
                 String type = momlContainer.getElementName();
                 request = "<" + type + " name=\"" + momlContainer.getName() +
                 "\" class=\"" + momlContainer.getClassName() + "\">" +
@@ -297,7 +297,7 @@ public class PropertyMoMLHandler extends Attribute {
     /**
      * @param namedObj
      * @param property
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private String _getMoMLHighlightString(NamedObj namedObj,
             Property property) throws IllegalActionException {

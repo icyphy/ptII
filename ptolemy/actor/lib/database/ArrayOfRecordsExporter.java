@@ -109,7 +109,7 @@ public class ArrayOfRecordsExporter extends LineWriter {
 
     /** Set the type constraints and multiport property of the input
      *  port. This is done here so that derived classes can override it.
-     *  @throws IllegalActionException If making the port a multiport
+     *  @exception IllegalActionException If making the port a multiport
      *   is not allowed.
      */
     protected void _setInputConstraints() throws IllegalActionException {
@@ -162,7 +162,7 @@ public class ArrayOfRecordsExporter extends LineWriter {
             } else {
                 // Display specified fields.
                 /* FIXME
-                for(int j = 0; j < columnsValue.length(); j++) {
+                for (int j = 0; j < columnsValue.length(); j++) {
                     if (j >= numColumns) {
                         break;
                     }

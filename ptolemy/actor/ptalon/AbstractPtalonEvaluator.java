@@ -1161,7 +1161,7 @@ public abstract class AbstractPtalonEvaluator {
     /**
      *
      *  @param object
-     *  @throws PtalonRuntimeException
+     *  @exception PtalonRuntimeException
      */
     protected void _processAttributes(NamedObj object)
             throws PtalonRuntimeException {

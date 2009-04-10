@@ -61,7 +61,7 @@ public class CompositeEntity extends PropertyTokenCompositeHelper {
      * helper class.
      * @param solver The given solver.
      * @param entity The given CompositeEntity.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public CompositeEntity(PropertyTokenSolver solver,
             ptolemy.kernel.CompositeEntity entity)

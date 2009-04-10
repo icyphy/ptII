@@ -62,7 +62,7 @@ public class EmbeddedCFileActor extends CompiledCompositeActor  {
         *  @param actor The associated actor.
         */
        public EmbeddedFileActor(
-               ptolemy.actor.lib.jni.EmbeddedCFileActor.EmbeddedFileActor actor){
+               ptolemy.actor.lib.jni.EmbeddedCFileActor.EmbeddedFileActor actor) {
            super(actor);
        }
        /** Before generating the shared code, call changeEmbeddedCCode (in ptolemy/actor/

@@ -182,7 +182,7 @@ public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver 
      *
      *  @return True if this receiver is connected to boundary port;
      *   return false otherwise.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public boolean isConnectedToBoundary() throws IllegalActionException {
         return _boundaryDetector.isConnectedToBoundary();
@@ -195,8 +195,8 @@ public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver 
      *
      *  @return True if this receiver is connected to the inside of a
      *   boundary port; return false otherwise.
-     * @throws IllegalActionException
-     * @throws InvalidStateException
+     * @exception IllegalActionException
+     * @exception InvalidStateException
      */
     public boolean isConnectedToBoundaryInside() throws InvalidStateException, IllegalActionException {
         return _boundaryDetector.isConnectedToBoundaryInside();
@@ -210,7 +210,7 @@ public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver 
      *
      *  @return True if this receiver is connected to the outside of a
      *   boundary port; return false otherwise.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public boolean isConnectedToBoundaryOutside() throws IllegalActionException {
         return _boundaryDetector.isConnectedToBoundaryOutside();
@@ -221,7 +221,7 @@ public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver 
      *  a boundary port.
      *
      *  @return True if this is a consumer receiver; return false otherwise.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public boolean isConsumerReceiver() throws IllegalActionException {
         if (isConnectedToBoundary()) {

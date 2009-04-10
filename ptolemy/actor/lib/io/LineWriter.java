@@ -273,7 +273,7 @@ public class LineWriter extends Sink {
 
     /** Set the type constraints and multiport property of the input
      *  port. This is done here so that derived classes can override it.
-     *  @throws IllegalActionException If making the port a multiport
+     *  @exception IllegalActionException If making the port a multiport
      *   is not allowed.
      */
     protected void _setInputConstraints() throws IllegalActionException {

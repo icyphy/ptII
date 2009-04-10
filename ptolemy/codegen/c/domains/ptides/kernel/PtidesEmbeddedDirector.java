@@ -370,7 +370,7 @@ public class PtidesEmbeddedDirector extends Director {
 
     /** fire methods for each actor.
      * @return fire methods for each actor
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      * @exception IllegalActionException If thrown when getting the port's helper.
      */
     private String _generateActorFireCode() throws IllegalActionException {

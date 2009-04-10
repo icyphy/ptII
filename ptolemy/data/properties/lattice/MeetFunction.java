@@ -86,7 +86,7 @@ public class MeetFunction
 
     /** Return the function result.
      *  @return A Property.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public Object getValue() throws IllegalActionException {
         Property meetValue = null;

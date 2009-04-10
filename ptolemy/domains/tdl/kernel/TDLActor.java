@@ -118,7 +118,7 @@ public class TDLActor extends FSMActor {
      * @param modePeriod
      *            Current mode period.
      * @return True if input was read.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *             If
      */
     public boolean readInput(Node node, IOPort p, long modePeriod)
@@ -171,7 +171,7 @@ public class TDLActor extends FSMActor {
      *            Port for which the next event should be tested for being safe
      *            to process.
      * @return True if the event is safe to process.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *             If the minimum delay cannot be computed.
      */
     public boolean inputIsSafeToProcess(IOPort port)

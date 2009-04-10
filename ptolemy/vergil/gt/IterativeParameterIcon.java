@@ -61,8 +61,8 @@ public class IterativeParameterIcon extends XMLIcon {
     /**
      *  @param container
      *  @param name
-     *  @throws IllegalActionException
-     *  @throws NameDuplicationException
+     *  @exception IllegalActionException
+     *  @exception NameDuplicationException
      */
     public IterativeParameterIcon(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -72,7 +72,7 @@ public class IterativeParameterIcon extends XMLIcon {
     /**
      *  @param workspace
      *  @param name
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException
      */
     public IterativeParameterIcon(Workspace workspace, String name)
             throws IllegalActionException {

@@ -38,9 +38,9 @@ public class AnnotationAttribute extends StringAttribute {
 //      * case identifier needs to be associated with a PropertySolver in
 //      * the model. Bad
 //      * @param name The given name of the annotation attribute.
-//      * @throws IllegalActionException Thrown if no PropertySolver can
+//      * @exception IllegalActionException Thrown if no PropertySolver can
 //      *  be found using the given name.
-//      * @throws NameDuplicationException Not thrown in this method.
+//      * @exception NameDuplicationException Not thrown in this method.
 //      */
 //    private void _checkAttributeName(String name)
 //    throws IllegalActionException, NameDuplicationException {

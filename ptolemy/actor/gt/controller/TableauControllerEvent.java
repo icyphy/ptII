@@ -55,8 +55,8 @@ public abstract class TableauControllerEvent extends InitializableGTEvent {
     /**
      *  @param container
      *  @param name
-     *  @throws IllegalActionException
-     *  @throws NameDuplicationException
+     *  @exception IllegalActionException
+     *  @exception NameDuplicationException
      */
     public TableauControllerEvent(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {

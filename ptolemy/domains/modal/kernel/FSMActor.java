@@ -1500,7 +1500,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
         /** Return the list of identifiers within the scope.
          *  @return The list of identifiers within the scope.
-         *  @throws IllegalActionException If getting the width of
+         *  @exception IllegalActionException If getting the width of
          *   some port fails.
          */
         public Set identifierSet() throws IllegalActionException {
@@ -1712,7 +1712,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  Otherwise, return -1.
      *  @param identifier An identifier.
      *  @return A channel index, if the identifier refers to one.
-     *  @throws IllegalActionException If getting the width of the port fails.
+     *  @exception IllegalActionException If getting the width of the port fails.
      */
     protected int _getChannelForIdentifier(String identifier) throws IllegalActionException {
         Port port = _getPortForIdentifier(identifier);
@@ -1743,7 +1743,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     /** Get the port for the specified identifier, which may be of
      *  form portName, portName_isPresent, portName_i, portName_i_isPresent,
      *  etc.
-     *  @throws IllegalActionException If getting the width of the port fails.
+     *  @exception IllegalActionException If getting the width of the port fails.
      */
     protected Port _getPortForIdentifier(String identifier) throws IllegalActionException {
         if (workspace().getVersion() != _identifierToPortVersion) {

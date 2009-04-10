@@ -227,8 +227,8 @@ public class IORelation extends ComponentRelation {
      *  @param except The port to exclude, or null to not
      *   exclude any ports.
      *  @return The receivers associated with this relation.
-     * @throws IllegalActionException
-     * @throws InvalidStateException
+     * @exception IllegalActionException
+     * @exception InvalidStateException
      */
     public Receiver[][] deepReceivers(IOPort except) throws InvalidStateException, IllegalActionException {
         try {
@@ -301,7 +301,7 @@ public class IORelation extends ComponentRelation {
      *  of zero, then return one.
      *
      *  @return The width, which is at least zero.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *  @see #setWidth(int)
      */
     public int getWidth() throws IllegalActionException {
@@ -738,7 +738,7 @@ public class IORelation extends ComponentRelation {
      *  @param indent The amount of indenting.
      *  @param bracket The number of surrounding brackets (0, 1, or 2).
      *  @return A description of the object.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected String _description(int detail, int indent, int bracket) throws IllegalActionException {
         try {
@@ -817,7 +817,7 @@ public class IORelation extends ComponentRelation {
      *  element of the second array is appended behind the elements of the
      *  first array. This method is solely for deepReceivers.
      *  The two input arrays must have the same number of rows.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private Receiver[][] _cascade(Receiver[][] array1, Receiver[][] array2)
             throws InvalidStateException, IllegalActionException {
@@ -915,7 +915,7 @@ public class IORelation extends ComponentRelation {
      *  This method is not read-synchronized on the workspace, so the caller
      *  should be.
      *  @return The inferred width.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private int _inferWidth() throws IllegalActionException {
         //The old algorithm for width inference

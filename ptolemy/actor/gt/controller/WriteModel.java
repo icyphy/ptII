@@ -54,8 +54,8 @@ public class WriteModel extends GTEvent {
     /**
      * @param container
      * @param name
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+     * @exception IllegalActionException
+     * @exception NameDuplicationException
      */
     public WriteModel(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {

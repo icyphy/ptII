@@ -1362,7 +1362,7 @@ public class Director extends Attribute implements Executable {
      *  @param indent The amount of indenting.
      *  @param bracket The number of surrounding brackets (0, 1, or 2).
      *  @return A description of the object.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected String _description(int detail, int indent, int bracket) throws IllegalActionException {
         try {

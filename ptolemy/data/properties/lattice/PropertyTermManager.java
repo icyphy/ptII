@@ -135,7 +135,7 @@ public class PropertyTermManager implements PropertyTermFactory {
 
         /** Return null if this term is not effective. Otherwise, return
          *  the resolved property of this PropertyTerm.
-         * @throws IllegalActionException
+         * @exception IllegalActionException
          */
         public Object getValue() {
             if (_isEffective) {

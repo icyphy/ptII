@@ -166,7 +166,7 @@ public class ArrayOfRecordsRecorder extends Sink {
     }
 
     /** Read the input and update the display.
-     *  @throws IllegalActionException If we fail to update the
+     *  @exception IllegalActionException If we fail to update the
      *   contents parameter.
      */
     public void fire() throws IllegalActionException {

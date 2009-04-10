@@ -151,7 +151,7 @@ public class DEMessageSource extends RandomSource {
     /** Override the base class to declare that the <i>output</i>
      *  and <i>request</i> ports do not depend on the <i>next</i>
      *  port in a firing.
-     *  @throws IllegalActionException If the superclass throws it.
+     *  @exception IllegalActionException If the superclass throws it.
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();

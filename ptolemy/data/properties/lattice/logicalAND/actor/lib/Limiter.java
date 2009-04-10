@@ -55,7 +55,7 @@ public class Limiter extends AtomicActor {
     /**
      * Construct an Limiter helper.
      * @param actor the associated actor
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public Limiter(PropertyConstraintSolver solver,
             ptolemy.actor.lib.Limiter actor) throws IllegalActionException {
@@ -96,7 +96,7 @@ public class Limiter extends AtomicActor {
 
         /** Return the function result.
          *  @return A Type.
-         * @throws IllegalActionException
+         * @exception IllegalActionException
          */
         public Object getValue() throws IllegalActionException {
             Property inputProperty = (Property) getSolver().getProperty(_actor.input);

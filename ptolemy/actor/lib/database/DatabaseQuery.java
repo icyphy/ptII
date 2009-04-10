@@ -102,7 +102,7 @@ public class DatabaseQuery extends Source {
 
     /** Perform the query on the database and produce the result
      *  on the output port.
-     *  @throws IllegalActionException If the database query fails.
+     *  @exception IllegalActionException If the database query fails.
      */
     public void fire() throws IllegalActionException {
         super.fire();
@@ -113,7 +113,7 @@ public class DatabaseQuery extends Source {
         ArrayToken result = database.executeQuery(
                 ((StringToken)query.getToken()).stringValue());
         if (result != null) {
-            if(_debugging) {
+            if (_debugging) {
                 _debug("Result of query:\n" + result);
             }
             output.send(0, result);

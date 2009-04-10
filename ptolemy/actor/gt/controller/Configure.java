@@ -75,8 +75,8 @@ public class Configure extends InitializableGTEvent {
     /**
      *  @param container
      *  @param name
-     *  @throws IllegalActionException
-     *  @throws NameDuplicationException
+     *  @exception IllegalActionException
+     *  @exception NameDuplicationException
      */
     public Configure(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {

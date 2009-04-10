@@ -55,7 +55,7 @@ public class ImageReader extends PropertyConstraintHelper {
      * are set for this helper.
      * @param solver The given solver.
      * @param actor The given ImageReader.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public ImageReader(PropertyConstraintSolver solver,
             ptolemy.actor.lib.image.ImageReader actor)

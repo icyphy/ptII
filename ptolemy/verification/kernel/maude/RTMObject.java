@@ -39,7 +39,7 @@ public class RTMObject extends RTMTerm {
         if (newline)
             ret.append(front(indent));
         ret.append("< " + transId(name) + " : " + objClass + " | ");
-        for(Iterator<String> ki = attribute.keySet().iterator() ; ki.hasNext() ; ) {
+        for (Iterator<String> ki = attribute.keySet().iterator() ; ki.hasNext() ; ) {
             String k = ki.next();
             ret.append("\n" + front(indent + indentWidth) + k + " : ");
             ret.append(attribute.get(k).print(indent + indentWidth, false));

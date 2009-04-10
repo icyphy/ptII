@@ -67,8 +67,8 @@ public class ComboItem extends Item {
     /**
      *  @param container
      *  @param name
-     *  @throws IllegalActionException
-     *  @throws NameDuplicationException
+     *  @exception IllegalActionException
+     *  @exception NameDuplicationException
      */
     public ComboItem(ComboBox container, String name)
             throws IllegalActionException, NameDuplicationException {

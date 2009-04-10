@@ -130,7 +130,7 @@ public class TDLTransition extends Transition {
 
     /**
      * Compute the list of ports that are used in this guard expression.
-     * @throws IllegalActionException Thrown if guard expression cannot be parsed.
+     * @exception IllegalActionException Thrown if guard expression cannot be parsed.
      */
     private void _getDependentModuleInputPorts() throws IllegalActionException {
         String expr = getGuardExpression();
@@ -161,8 +161,8 @@ public class TDLTransition extends Transition {
 
     /**
      * Initialize the parameters of a transition.
-     * @throws IllegalActionException Thrown if frequency parameter cannot be created.
-     * @throws NameDuplicationException Thrown if The frequency parameter cannot be created.
+     * @exception IllegalActionException Thrown if frequency parameter cannot be created.
+     * @exception NameDuplicationException Thrown if The frequency parameter cannot be created.
      */
     private void _init() throws
             NameDuplicationException, IllegalActionException {

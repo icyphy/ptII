@@ -714,21 +714,21 @@ public class Plot extends PlotBox {
                     BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL,
                     0);
             ///_graphics.setStroke(stroke);
-        } else if(styleString.equalsIgnoreCase("dotted")) {
+        } else if (styleString.equalsIgnoreCase("dotted")) {
             dashvalues = new float[2];
             dashvalues[0] = (float)2.0;
             dashvalues[1] = (float)2.0;
             format.lineStroke = new BasicStroke(_width,
                     BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL,
                     0, dashvalues, 0);
-        } else if(styleString.equalsIgnoreCase("dashed")) {
+        } else if (styleString.equalsIgnoreCase("dashed")) {
             dashvalues = new float[2];
             dashvalues[0] = (float)8.0;
             dashvalues[1] = (float)4.0;
             format.lineStroke = new BasicStroke(_width,
                     BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL,
                     0, dashvalues, 0);
-        } else if(styleString.equalsIgnoreCase("dotdashed")) {
+        } else if (styleString.equalsIgnoreCase("dotdashed")) {
             dashvalues = new float[4];
             dashvalues[0] = (float)2.0;
             dashvalues[1] = (float)2.0;
@@ -737,7 +737,7 @@ public class Plot extends PlotBox {
             format.lineStroke = new BasicStroke(_width,
                     BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL,
                     0, dashvalues, 0);
-        } else if(styleString.equalsIgnoreCase("dotdotdashed")) {
+        } else if (styleString.equalsIgnoreCase("dotdotdashed")) {
             dashvalues = new float[6];
             dashvalues[0] = (float)2.0;
             dashvalues[1] = (float)2.0;

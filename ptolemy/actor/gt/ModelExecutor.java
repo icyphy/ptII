@@ -76,8 +76,8 @@ public class ModelExecutor extends TypedAtomicActor {
     /**
      * @param container
      * @param name
-     * @throws NameDuplicationException
-     * @throws IllegalActionException
+     * @exception NameDuplicationException
+     * @exception IllegalActionException
      */
     public ModelExecutor(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {

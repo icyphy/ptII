@@ -354,7 +354,7 @@ public class FigureAction extends AbstractAction {
             Iterator<?> pickFigures = CanvasUtilities.pickIter(foregroundFigures,
                     region);
 
-            while(pickFigures.hasNext() && !checkFigure) {
+            while (pickFigures.hasNext() && !checkFigure) {
                 CanvasComponent possibleFigure = (CanvasComponent)pickFigures.next();
                 if (possibleFigure == null) {
                     // Nothing to see here, move along - there is no Figure.

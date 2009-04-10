@@ -326,8 +326,8 @@ public class CSPDirector extends CompositeProcessDirector implements
 
     /** Return a string describing the status of each receiver.
      *  @return A string describing the status of each receiver.
-     * @throws IllegalActionException
-     * @throws InvalidStateException
+     * @exception IllegalActionException
+     * @exception InvalidStateException
      */
     private String _receiverStatus() throws InvalidStateException, IllegalActionException {
         StringBuffer result = new StringBuffer();

@@ -112,7 +112,7 @@ public class DatabaseInsert extends Sink {
     ////                         public methods                    ////
 
     /** Update the table to contain all the rows in input array of records.
-     *  @throws IllegalActionException If the database update fails.
+     *  @exception IllegalActionException If the database update fails.
      */
     public void fire() throws IllegalActionException {
         super.fire();
@@ -154,7 +154,7 @@ public class DatabaseInsert extends Sink {
     }
 
     /** Clear the specified table if the <i>clear</i> parameter is true.
-     *  @throws IllegalActionException If the database query fails.
+     *  @exception IllegalActionException If the database query fails.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();

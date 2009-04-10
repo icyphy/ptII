@@ -71,7 +71,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
      * with the given component.
      * @param solver TODO
      * @param component The associated component.
-     * @throws IllegalActionException Thrown if
+     * @exception IllegalActionException Thrown if
      *  PropertyConstraintHelper(NamedObj, PropertyLattice, boolean)
      *  throws it.
      */
@@ -87,7 +87,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
      * @param component The given component.
      * @param useDefaultConstraints Indicate whether this helper
      *  uses the default actor constraints.
-     * @throws IllegalActionException Thrown if the helper cannot
+     * @exception IllegalActionException Thrown if the helper cannot
      *  be initialized.
      */
     public PropertyConstraintHelper(PropertyConstraintSolver solver,
@@ -318,7 +318,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
     /**
      *
      * @param actorConstraintType
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected void _addDefaultConstraints(
             ConstraintType actorConstraintType) throws IllegalActionException {
@@ -353,7 +353,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
      * a new set of constraints each time this is invoked. Therefore,
      * multiple invocations will generate excessive constraints and
      * result in inefficiency during resolution.
-     * @throws IllegalActionException Thrown if there is any errors
+     * @exception IllegalActionException Thrown if there is any errors
      *  in getting the sub helpers and gathering the constraints for
      *  each one.
      */
@@ -403,7 +403,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
      * @param constraintType
      * @param object
      * @param objectList
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected void _constraintObject(
         ConstraintType constraintType,
@@ -479,7 +479,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
      * returns the list of ASTNode helpers that are associated
      * with the expressions of the propertyable attributes.
      * @return The list of sub-helpers.
-     * @throws IllegalActionException Not thrown in this base class.
+     * @exception IllegalActionException Not thrown in this base class.
      */
     protected List<PropertyHelper> _getSubHelpers()
             throws IllegalActionException {
@@ -520,7 +520,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
     /**
      *
      * @param constraintType
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected void _setConnectionConstraintType(
             ConstraintType constraintType,

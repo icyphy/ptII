@@ -52,7 +52,7 @@ public class AtomicActor extends PropertyCombineHelper {
      * are set for this helper.
      * @param solver The given solver.
      * @param actor The given ActomicActor.
-     * @throws KernelException
+     * @exception KernelException
      */
     public AtomicActor(PropertyCombineSolver solver,
             ptolemy.actor.AtomicActor actor)

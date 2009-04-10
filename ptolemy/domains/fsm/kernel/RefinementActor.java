@@ -68,7 +68,7 @@ public interface RefinementActor extends Actor {
      *  @param configuration The configuration that is used to open the
      *   refinement (as a look-inside action) after it is created, or null if it
      *   is not needed to open the refinement.
-     *  @throws IllegalActionException If error occurs while creating the
+     *  @exception IllegalActionException If error occurs while creating the
      *   refinement.
      */
     public void addRefinement(State state, String name,

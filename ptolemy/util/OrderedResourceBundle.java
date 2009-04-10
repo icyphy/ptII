@@ -61,9 +61,9 @@ public class OrderedResourceBundle {
          *            InputStream for reading the java properties file from which
          *            this object will take its values.  The stream is closed
          *            by this constructor.
-         * @throws IOException
+         * @exception IOException
          *             if there is a problem reading the InputStream
-         * @throws NullPointerException
+         * @exception NullPointerException
          *             if the InputStream is null
          */
         public OrderedResourceBundle(InputStream stream) throws IOException,
@@ -110,11 +110,11 @@ public class OrderedResourceBundle {
          *            </br> valid delimiters are (space) : =
          * @return OrderedResourceBundle - a ResourceBundle with its entries in the
          *         same order as those in the original properties file
-         * @throws IOException
+         * @exception IOException
          *             if there is a problem reading the file
-         * @throws MissingResourceException
+         * @exception MissingResourceException
          *             if the file cannot be found
-         * @throws NullPointerException
+         * @exception NullPointerException
          *             if baseName is null
          */
         public static OrderedResourceBundle getBundle(String baseName)

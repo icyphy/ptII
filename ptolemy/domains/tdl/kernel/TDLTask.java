@@ -58,8 +58,8 @@ public class TDLTask extends TypedCompositeActor {
          * should set the container before sending data to it. Increment the version
          * number of the workspace.
          *
-         * @throws NameDuplicationException Thrown if parameters cannot be set.
-         * @throws IllegalActionException Thrown if parameters cannot be set.
+         * @exception NameDuplicationException Thrown if parameters cannot be set.
+         * @exception IllegalActionException Thrown if parameters cannot be set.
          */
         public TDLTask() throws IllegalActionException, NameDuplicationException {
                 super();
@@ -76,8 +76,8 @@ public class TDLTask extends TypedCompositeActor {
          *
          * @param workspace
          *            The workspace that will list the actor.
-         * @throws NameDuplicationException
-         * @throws IllegalActionException
+         * @exception NameDuplicationException
+         * @exception IllegalActionException
          */
         public TDLTask(Workspace workspace) throws IllegalActionException,
                         NameDuplicationException {
@@ -167,7 +167,7 @@ public class TDLTask extends TypedCompositeActor {
          *
          * @param name Name of the TDL port.
          * @return a new TDL Task output port.
-         * @throws NameDuplicationException If the name for the port already exists.
+         * @exception NameDuplicationException If the name for the port already exists.
          */
         public Port newPort(String name) throws NameDuplicationException {
                 try {
@@ -191,8 +191,8 @@ public class TDLTask extends TypedCompositeActor {
         /**
          * Initialize the TDL task.
          *
-         * @throws NameDuplicationException Thrown if parameters cannot be set.
-         * @throws IllegalActionException Thrown if parameters cannot be set.
+         * @exception NameDuplicationException Thrown if parameters cannot be set.
+         * @exception IllegalActionException Thrown if parameters cannot be set.
          */
         private void _init() throws IllegalActionException,
                         NameDuplicationException {

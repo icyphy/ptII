@@ -290,7 +290,7 @@ public class FmvAutomaton extends FSMActor {
      *
      * @param numSpan The size of the span used to expand the domain of a variable.
      * @return a set indicating the variable used in this automaton
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private HashSet<String> _decideVariableSet(int numSpan)
             throws IllegalActionException {
@@ -536,7 +536,7 @@ public class FmvAutomaton extends FSMActor {
      * HashSet of states.
      *
      * @return A HashSet of states of a particular FmvAutomaton
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private HashSet<State> _enumerateStateSet() throws IllegalActionException {
 

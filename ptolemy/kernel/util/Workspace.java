@@ -198,7 +198,7 @@ public final class Workspace implements Nameable, Serializable {
      *  directory.  This is accomplished
      *  by calling the description method with an argument for full detail.
      *  @return A description of the workspace.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public synchronized String description() throws IllegalActionException {
         // NOTE: It is not strictly needed for this method to be
@@ -215,7 +215,7 @@ public final class Workspace implements Nameable, Serializable {
      *  are requested, then the items in the directory are also described.
      *  @param detail The level of detail.
      *  @return A description of the workspace.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public synchronized String description(int detail) throws IllegalActionException {
         // NOTE: It is not strictly needed for this method to be
@@ -790,7 +790,7 @@ public final class Workspace implements Nameable, Serializable {
      *  @param indent The amount of indenting.
      *  @param bracket The number of surrounding brackets (0, 1, or 2).
      *  @return A description of the workspace.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected synchronized String _description(int detail, int indent,
             int bracket) throws IllegalActionException {

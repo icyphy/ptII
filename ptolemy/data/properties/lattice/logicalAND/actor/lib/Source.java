@@ -57,7 +57,7 @@ public class Source extends AtomicActor {
      * be STATIC, but does not use the default actor constraints.
      * @param solver The given solver.
      * @param actor The given Source actor
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public Source(PropertyConstraintSolver solver,
             ptolemy.actor.lib.Source actor)

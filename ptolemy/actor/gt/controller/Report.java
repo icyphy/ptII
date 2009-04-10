@@ -67,8 +67,8 @@ public class Report extends TableauControllerEvent {
     /**
      *  @param container
      *  @param name
-     *  @throws IllegalActionException
-     *  @throws NameDuplicationException
+     *  @exception IllegalActionException
+     *  @exception NameDuplicationException
      */
     public Report(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {

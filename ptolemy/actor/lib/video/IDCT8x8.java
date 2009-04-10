@@ -138,7 +138,7 @@ public class IDCT8x8 extends TypedAtomicActor {
             return;
         }
 
-        for( i = 0; i < 8; i++ )
+        for ( i = 0; i < 8; i++ )
         {
             for (j = 0; j < 8; j++)
                 _block[j] = _input.getElementAt(i,j);
@@ -174,9 +174,9 @@ public class IDCT8x8 extends TypedAtomicActor {
             }
         }
 
-        for(i = 0; i < 8; i++ )
+        for (i = 0; i < 8; i++ )
         {
-            for(j = 0; j < 8; j++)
+            for (j = 0; j < 8; j++)
             {
                 _block[j] = _ftemp[j][i];
             }

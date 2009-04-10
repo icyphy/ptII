@@ -51,7 +51,7 @@ public class Scale extends AtomicActor {
     /**
      * Construct a Ramp helper.
      * @param actor the associated actor
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public Scale(PropertyConstraintSolver solver,
             ptolemy.actor.lib.Scale actor) throws IllegalActionException {

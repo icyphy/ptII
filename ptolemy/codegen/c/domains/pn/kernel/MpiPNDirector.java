@@ -190,7 +190,7 @@ public class MpiPNDirector extends Director {
                         rank++;
                 }
 
-                code.append("}" + _eol); // end of while(true)
+                code.append("}" + _eol); // end of while (true)
 
                 // print out the timer values
                 if (_doMeasureTime()) {
@@ -687,7 +687,7 @@ public class MpiPNDirector extends Director {
         // List outputList = actor.outputPortList();
         // Iterator outputIt = outputList.listIterator();
         //
-        // while(outputIt.hasNext()) {
+        // while (outputIt.hasNext()) {
         // TypedIOPort thisOutput = (TypedIOPort) outputIt.next();
         //
         // // Clear the _isMpiBuffer parameter if it already exists
@@ -837,7 +837,7 @@ public class MpiPNDirector extends Director {
         /**
          * @param functionCode
          *            The given code buffer.
-         * @throws IllegalActionException
+         * @exception IllegalActionException
          */
         private void _generateThreadFunctionCode(StringBuffer code)
                         throws IllegalActionException {

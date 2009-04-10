@@ -375,7 +375,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
      * current physical time increased by the WCET. After that time passed, the
      * actor is taken out of the list of actors in execution.
      *
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *             Thrown if an execution was missed.
      */
     public void fire() throws IllegalActionException {
@@ -634,7 +634,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
      * @param port
      *            The port to transfer tokens from.
      * @return True if data are transferred.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *             Thrown if output cannot be transfered.
      */
     public boolean transferOutputs(IOPort port) throws IllegalActionException {
@@ -710,7 +710,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
      * @param port
      *            Transfer input on this port.
      * @return True if inputs were transferred.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *             Thrown if inputs could not be transferred.
      */
     protected boolean _transferInputs(IOPort port)
@@ -793,7 +793,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
     /**
      * Transfer output ports and return true if outputs were transferred.
      *
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *             Attempted to transferOutputs on a port that is not an opaque
      *             input port.
      */
@@ -865,7 +865,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
      *
      * @param actorToFire
      *            Actor that has to be fired.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *             Thrown if actor cannot be fired.
      */
     private void _fireActorInZeroModelTime(Actor actorToFire)
@@ -1063,7 +1063,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
      *            Time stamp of the event which is checked.
      * @return True if the given port has an event with the time stamp + delay >
      *         eventTimeStamp.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private boolean _allUpstreamEventsHaveHigherTimestamps(IOPort port, IOPort currentPort,
             Collection<IOPort> visitedPorts, Time delay, Time eventTimeStamp)
@@ -1134,7 +1134,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
      * Transfer all input tokens and return true if inputs were transfered.
      *
      * @return True if input ports were transferred.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *             If reading from the associated port throws it or inputs could
      *             not be transferred.
      */
@@ -1155,7 +1155,7 @@ public class PtidesEmbeddedDirector extends Director implements TimedDirector {
      * Transfer all output tokens and return true if outputs were transfered.
      *
      * @return True if output tokens were transfered.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *             Attempted to transferOutputs on a port that is not an opaque
      *             input port.
      */

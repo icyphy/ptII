@@ -56,8 +56,8 @@ public class TransformationAttributeIcon extends EditorIcon {
     /**
      * @param container
      * @param name
-     * @throws NameDuplicationException
-     * @throws IllegalActionException
+     * @exception NameDuplicationException
+     * @exception IllegalActionException
      */
     public TransformationAttributeIcon(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {

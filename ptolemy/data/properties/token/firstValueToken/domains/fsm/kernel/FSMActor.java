@@ -56,7 +56,7 @@ public class FSMActor extends PropertyTokenFSMHelper {
      * are set for this helper.
      * @param solver The given solver.
      * @param actor The given ActomicActor.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public FSMActor(PropertyTokenSolver solver,
             ptolemy.domains.fsm.kernel.FSMActor actor)

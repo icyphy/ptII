@@ -35,7 +35,7 @@ public class PropertyTokenASTNodeHelper extends PropertyTokenHelper {
      * Return the list of sub-helpers. In this base class,
      * return an empty list.
      * @return The list of sub-helpers.
-     * @throws IllegalActionException Not thrown in this base class.
+     * @exception IllegalActionException Not thrown in this base class.
      */
     protected List<PropertyHelper> _getSubHelpers() throws IllegalActionException {
         return new ArrayList<PropertyHelper>();

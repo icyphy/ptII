@@ -225,7 +225,7 @@ public class PropertySolverTester {
      *
      * @return
      *
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected static CompositeEntity _getModel(String path, MoMLParser parser)
             throws IllegalActionException {

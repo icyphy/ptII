@@ -91,7 +91,7 @@ public class PropertyTokenHelper extends PropertyHelper {
                     outputPortList.add(port);
                 }
 //            } else if ((propertyable instanceof Attribute) && (!((propertyable instanceof StringAttribute)))) {
-            } else if ((propertyable instanceof Attribute) || (propertyable instanceof PortParameter)){
+            } else if ((propertyable instanceof Attribute) || (propertyable instanceof PortParameter)) {
                 attributeList.add((Attribute)propertyable);
             } else {
                 //FIXME: throw exception?
@@ -152,7 +152,7 @@ public class PropertyTokenHelper extends PropertyHelper {
      * the component. All ports and parameters are considered
      * property-able.
      * @return The list of property-able named object.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public List<Object> getPropertyables() throws IllegalActionException {
         List<Object> list = new ArrayList<Object>();

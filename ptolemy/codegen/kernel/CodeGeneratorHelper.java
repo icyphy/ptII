@@ -272,7 +272,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * Generate the fire code. This method is intended to be
      * overwritten by sub-classes to generate actor-specific code.
      * @return The generated code.
-     * @throws IllegalActionException Not thrown in this base class.
+     * @exception IllegalActionException Not thrown in this base class.
      */
     protected String _generateFireCode() throws IllegalActionException {
         _codeStream.clear();
@@ -1351,7 +1351,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *  @param channelNumber The given channel.
      *  @param bufferSize The buffer size to be set to that port and channel.
      *  @see #getBufferSize(IOPort)
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public void setBufferSize(IOPort port, int channelNumber,
             int bufferSize) throws IllegalActionException {
@@ -1868,7 +1868,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *  @param channelNumber The given channel number.
      *  @return The list of channel objects that are the sink channels
      *   of the given output channel.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public static List<Channel> getSinkChannels(IOPort port, int channelNumber) throws IllegalActionException {
         List sinkChannels = new LinkedList();
@@ -2540,7 +2540,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * @param channelNumber The specified channel number.
      * @param isWrite Whether this is a write or read access.
      * @return The list of reference channel.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected List<Channel> _getReferenceChannels(
             TypedIOPort port, int channelNumber, boolean isWrite) throws IllegalActionException {

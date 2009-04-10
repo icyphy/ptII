@@ -344,7 +344,7 @@ public class VergilApplication extends MoMLApplication {
                     configuration.getEntity("effigyFactory");
 
                 // Make sure there is effigyFactory
-                if(factoryContainer == null) {
+                if (factoryContainer == null) {
                     throw new IllegalActionException(
                             "Could not find effigyFactory.");
                 }
@@ -357,7 +357,7 @@ public class VergilApplication extends MoMLApplication {
                 while (factories.hasNext()) {
                     final EffigyFactory currentFactory = (EffigyFactory)
                             factories.next();
-                    if(currentFactory.getName().equals(startupName)) {
+                    if (currentFactory.getName().equals(startupName)) {
                         factory = currentFactory;
                     }
                 }

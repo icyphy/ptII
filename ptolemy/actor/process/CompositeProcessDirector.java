@@ -480,8 +480,8 @@ public class CompositeProcessDirector extends ProcessDirector {
      *
      *  @return true If one or more contained actors are externally
      *   blocked; return false otherwise.
-     * @throws IllegalActionException
-     * @throws InvalidStateException
+     * @exception IllegalActionException
+     * @exception InvalidStateException
      */
     protected boolean _areActorsExternallyBlocked() throws InvalidStateException, IllegalActionException {
         Iterator blockedReceivers = _blockedReceivers.iterator();

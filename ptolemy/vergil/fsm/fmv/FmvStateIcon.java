@@ -72,8 +72,8 @@ public class FmvStateIcon extends StateIcon {
         NamedObj container = getContainer();
         if (container instanceof FmvState) {
             try {
-                if(((BooleanToken)((FmvState) container).isReachabilityAnalysisState.getToken()).booleanValue()){
-                    if(((BooleanToken)((FmvState) container).isRiskAnalysisState.getToken()).booleanValue()){
+                if (((BooleanToken)((FmvState) container).isReachabilityAnalysisState.getToken()).booleanValue()) {
+                    if (((BooleanToken)((FmvState) container).isRiskAnalysisState.getToken()).booleanValue()) {
                         // RED and GREEN : Use yellow color for the case where both two specification exist.
                         return Color.ORANGE;
                     } else {
@@ -81,7 +81,7 @@ public class FmvStateIcon extends StateIcon {
                         return Color.GREEN;
                     }
                 } else {
-                    if(((BooleanToken)((FmvState) container).isRiskAnalysisState.getToken()).booleanValue()){
+                    if (((BooleanToken)((FmvState) container).isRiskAnalysisState.getToken()).booleanValue()) {
                         // RED
                         return Color.RED;
                     } else {

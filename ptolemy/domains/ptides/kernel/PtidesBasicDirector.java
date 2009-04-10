@@ -75,8 +75,8 @@ public class PtidesBasicDirector extends DEDirector {
     /** Construct a director with the specified container and name.
      *  @param container The container
      *  @param name The name
-     *  @throws IllegalActionException If the superclass throws it.
-     *  @throws NameDuplicationException If the superclass throws it.
+     *  @exception IllegalActionException If the superclass throws it.
+     *  @exception NameDuplicationException If the superclass throws it.
      */
     public PtidesBasicDirector(CompositeEntity container, String name)
     throws IllegalActionException, NameDuplicationException {
@@ -135,7 +135,7 @@ public class PtidesBasicDirector extends DEDirector {
     /** Initialize the actors and request a refiring at the current
      *  time of the executive director. This overrides the base class to
      *  throw an exception if there is no executive director.
-     *  @throws IllegalActionException If the superclass throws
+     *  @exception IllegalActionException If the superclass throws
      *   it or if there is no executive director.
      */
     public void initialize() throws IllegalActionException {
@@ -251,7 +251,7 @@ public class PtidesBasicDirector extends DEDirector {
 
     /** Clear any highlights on the specified actor.
      *  @param actor The actor to clear.
-     *  @throws IllegalActionException If the animateExecution
+     *  @exception IllegalActionException If the animateExecution
      *   parameter cannot be evaluated.
      */
     protected void _clearHighlight(Actor actor) throws IllegalActionException {
@@ -272,7 +272,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  but filled with red instead of green.
      *  @see VisibleAttribute
      *  @return A MoML string.
-     *  @throws IllegalActionException If the animateExecution parameter cannot
+     *  @exception IllegalActionException If the animateExecution parameter cannot
      *   be evaluated.
      */
     protected String _getExecutingIcon(Actor actorExecuting) throws IllegalActionException {
@@ -360,7 +360,7 @@ public class PtidesBasicDirector extends DEDirector {
         // since actuators only need to assert the actuation signal when physical time is equal
         // to the timestamp of the event, we do not need to do safe to process.
         // FIXME: assume execution time of an actuator is always 0.
-        if (!eventQueue.isEmpty()){
+        if (!eventQueue.isEmpty()) {
             DEEvent eventFromQueue = eventQueue.get();
             if (PtidesActorProperties.isActuator(eventFromQueue.actor())) {
                 Time timeStampOfEventFromQueue = eventFromQueue.timeStamp();
@@ -545,7 +545,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  @param color The color, given as a string description in
      *   the form "{red, green, blue, alpha}", where each of these
      *   is a number between 0.0 and 1.0.
-     *  @throws IllegalActionException If the animateExecution
+     *  @exception IllegalActionException If the animateExecution
      *   parameter cannot be evaluated.
      */
     protected void _highlightActor(Actor actor, String color) throws IllegalActionException {
@@ -590,12 +590,12 @@ public class PtidesBasicDirector extends DEDirector {
      *
      *  @param event The event checked for safe to process
      *  @return True if the event is safe to process, otherwise return false.
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException
      *  @see #setTimedInterrupt()
      */
-    protected boolean _safeToProcess(DEEvent event){
+    protected boolean _safeToProcess(DEEvent event) {
         IOPort port = event.ioPort();
-        if (port != null){
+        if (port != null) {
             try {
                 Parameter parameter = (Parameter)((NamedObj) port).getAttribute("minDelay");
                 if (parameter != null) {
@@ -629,7 +629,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  @param moml A MoML string describing the contents of the icon.
      *  @param clearFirst If true, remove the previous icon before creating a
      *   new one.
-     *  @throws IllegalActionException If the <i>animateExecution</i> parameter
+     *  @exception IllegalActionException If the <i>animateExecution</i> parameter
      *   cannot be evaluated.
      */
     protected void _setIcon(String moml, boolean clearFirst) throws IllegalActionException {

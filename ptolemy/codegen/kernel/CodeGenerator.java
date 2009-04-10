@@ -1493,7 +1493,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      * Get the code generator helper associated with the given object.
      * @param object The given object.
      * @return The code generator helper.
-     * @throws IllegalActionException If the helper class cannot be found.
+     * @exception IllegalActionException If the helper class cannot be found.
      */
     protected Object _getHelper(Object object)
     throws IllegalActionException {

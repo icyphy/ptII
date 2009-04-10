@@ -96,7 +96,7 @@ public class PtidesEmbeddedDirector extends ptolemy.codegen.c.domains.ptides.ker
      * @param port The specified port.
      * @param channelNumber The specified channel.
      * @return The code for getting data from specified channel.
-     * @throws IllegalActionException If the specified port channel has
+     * @exception IllegalActionException If the specified port channel has
      *  more than one referable queues.
      * @exception IllegalActionException If the
      * {@link #getReferenceChannels(IOPort, int), #processCode(String)}
@@ -130,7 +130,7 @@ public class PtidesEmbeddedDirector extends ptolemy.codegen.c.domains.ptides.ker
         String queue = _generateQueueReference(referencePort, referenceChannel.channelNumber);
         String waitTime = _getMaxDelay(referenceChannel);
 
-        return actorHelper.processCode("while( pdTRUE != xQueueReceive(" + queue + ", &" + dataVariable
+        return actorHelper.processCode("while ( pdTRUE != xQueueReceive(" + queue + ", &" + dataVariable
                 + ", " + waitTime + ") );" + _eol);
          */
         return "";
@@ -166,7 +166,7 @@ public class PtidesEmbeddedDirector extends ptolemy.codegen.c.domains.ptides.ker
             String queue = _generateQueueReference(referencePort, referenceChannel.channelNumber);
             String waitTime = _getMaxDelay(referenceChannel);
 
-            result.append(actorHelper.processCode("while( pdTRUE != xQueueSend(" +
+            result.append(actorHelper.processCode("while ( pdTRUE != xQueueSend(" +
                     queue + ", &" + dataToken + ", " + waitTime + ") );" + _eol));
         }
         return result.toString();
@@ -212,7 +212,7 @@ public class PtidesEmbeddedDirector extends ptolemy.codegen.c.domains.ptides.ker
 
         code.append("vTaskStartScheduler();" + _eol);
          */
-        code.append("while(true);" + _eol);
+        code.append("while (true);" + _eol);
         return code.toString();
     }
 

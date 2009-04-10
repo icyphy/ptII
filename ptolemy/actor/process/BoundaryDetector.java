@@ -71,7 +71,7 @@ public class BoundaryDetector {
      *  This method is not synchronized so the caller should be.
      * @return True if the containing receiver is connected to
      *  boundary port; return false otherwise.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public boolean isConnectedToBoundary() throws IllegalActionException {
         if (_connectedBoundaryCacheIsOn) {
@@ -148,8 +148,8 @@ public class BoundaryDetector {
      *  This method is not synchronized so the caller should be.
      * @return True if the containing receiver is connected to the
      *  inside of a boundary port; return false otherwise.
-     * @throws IllegalActionException
-     * @throws InvalidStateException
+     * @exception IllegalActionException
+     * @exception InvalidStateException
      */
     public boolean isConnectedToBoundaryInside() throws InvalidStateException, IllegalActionException {
         if (_connectedInsideOfBoundaryCacheIsOn) {
@@ -210,7 +210,7 @@ public class BoundaryDetector {
      *  This method is not synchronized so the caller should be.
      * @return True if the containing receiver is connected to the
      *  outside of a boundary port; return false otherwise.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public boolean isConnectedToBoundaryOutside() throws IllegalActionException {
         if (_connectedOutsideOfBoundaryCacheIsOn) {

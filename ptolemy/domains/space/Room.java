@@ -102,7 +102,7 @@ public class Room extends DatabaseSelect {
 
     /** Read the occupants from the database and produce them on the output
      *  port.
-     *  @throws IllegalActionException If the database query fails.
+     *  @exception IllegalActionException If the database query fails.
      */
     public void fire() throws IllegalActionException {
         pattern.setExpression("trim(bldg)='" + building.stringValue()

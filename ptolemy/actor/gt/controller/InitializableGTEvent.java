@@ -52,8 +52,8 @@ public class InitializableGTEvent extends GTEvent implements Initializable {
     /**
      *  @param container
      *  @param name
-     *  @throws IllegalActionException
-     *  @throws NameDuplicationException
+     *  @exception IllegalActionException
+     *  @exception NameDuplicationException
      */
     public InitializableGTEvent(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {

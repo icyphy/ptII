@@ -129,7 +129,7 @@ public class DCT4x4dc extends TypedAtomicActor {
             return;
         }
 
-        for( i = 0; i < 4; i++ )
+        for ( i = 0; i < 4; i++ )
         {
             s01 = _input.getElementAt(i,0) + _input.getElementAt(i,1);
             d01 = _input.getElementAt(i,0) - _input.getElementAt(i,1);
@@ -142,7 +142,7 @@ public class DCT4x4dc extends TypedAtomicActor {
             temp[3][i] = d01 + d23;
         }
 
-        for( i = 0; i < 4; i++ )
+        for ( i = 0; i < 4; i++ )
         {
             s01 = temp[i][0] + temp[i][1];
             d01 = temp[i][0] - temp[i][1];

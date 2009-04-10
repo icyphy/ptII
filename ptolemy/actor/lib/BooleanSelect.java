@@ -225,13 +225,13 @@ public class BooleanSelect extends TypedAtomicActor {
             _controlUsed = false;
         } else {
             if (_control.booleanValue()) {
-                for(int i = 0; i < trueInput.getWidth(); i++) {
+                for (int i = 0; i < trueInput.getWidth(); i++) {
                     if (output.getWidth() > i) {
                         output.send(i, trueInput.get(i));
                     }
                 }
             } else {
-                for(int i = 0; i < falseInput.getWidth(); i++) {
+                for (int i = 0; i < falseInput.getWidth(); i++) {
                     if (output.getWidth() > i) {
                         output.send(i, falseInput.get(i));
                     }
@@ -296,13 +296,13 @@ public class BooleanSelect extends TypedAtomicActor {
             return result && control.hasToken(0);
         } else {
             if (_control.booleanValue()) {
-                for(int i = 0; i < trueInput.getWidth(); i++) {
+                for (int i = 0; i < trueInput.getWidth(); i++) {
                     if (!trueInput.hasToken(i)) {
                         return false;
                     }
                 }
             } else {
-                for(int i = 0; i < falseInput.getWidth(); i++) {
+                for (int i = 0; i < falseInput.getWidth(); i++) {
                     if (!falseInput.hasToken(i)) {
                         return false;
                     }

@@ -88,18 +88,18 @@ public class EmbeddedCFileActor extends EmbeddedCActor {
 
         try {
             reader = codeBlockFile.openForReading();
-            if (reader == null){
+            if (reader == null) {
                 throw new IllegalActionException("Failed to open \""
                         + codeBlockFile + "\"");
             } else {
                 StringBuffer code = new StringBuffer();
                 // Is there a better way of reading in file into a string???
-                try{
+                try {
                     String str;
-                    while ((str = reader.readLine()) !=null){
+                    while ((str = reader.readLine()) !=null) {
                         code.append(str + "\n");
                     }
-                } catch (IOException e){
+                } catch (IOException e) {
                     throw new IllegalActionException ("Could not read file" + codeBlockFile.getExpression());
                 }
                 embeddedCCode.setExpression(code.toString());

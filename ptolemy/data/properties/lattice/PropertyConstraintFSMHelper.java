@@ -70,7 +70,7 @@ public class PropertyConstraintFSMHelper extends PropertyConstraintCompositeHelp
      * are set for this helper.
      * @param solver The given solver.
      * @param actor The given ActomicActor.
-     * @throws IllegalActionException Thrown if super class throws it.
+     * @exception IllegalActionException Thrown if super class throws it.
      */
     public PropertyConstraintFSMHelper(PropertyConstraintSolver solver,
             ptolemy.domains.fsm.kernel.FSMActor actor)
@@ -317,7 +317,7 @@ public class PropertyConstraintFSMHelper extends PropertyConstraintCompositeHelp
      * returns the list of ASTNode helpers that are associated
      * with the expressions of the propertyable attributes.
      * @return The list of sub-helpers.
-     * @throws IllegalActionException Not thrown in this base class.
+     * @exception IllegalActionException Not thrown in this base class.
      */
     protected List<PropertyHelper> _getSubHelpers() throws IllegalActionException {
         return _getASTNodeHelpers();

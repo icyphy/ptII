@@ -198,7 +198,7 @@ public class PlotFormatter extends JPanel {
                     _plot.clearCaptions();
                     String newCaption = _wideQuery.getStringValue("caption");
                     String [] captionsArray = newCaption.split("\\n");
-                    for(int i = 0; i < captionsArray.length; i++) {
+                    for (int i = 0; i < captionsArray.length; i++) {
                         _plot.read("captions: " + captionsArray[i]);
                     }
                 } else if (name.equals("xlabel")) {

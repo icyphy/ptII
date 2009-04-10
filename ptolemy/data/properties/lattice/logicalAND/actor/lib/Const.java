@@ -53,7 +53,7 @@ public class Const extends Source {
      * be STATIC, but does not use the default actor constraints.
      * @param solver The given solver.
      * @param actor The given Const actor
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public Const(PropertyConstraintSolver solver,
             ptolemy.actor.lib.Const actor)

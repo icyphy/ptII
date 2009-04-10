@@ -591,13 +591,13 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                             // The port is outside the hierarchy.
                             // The relation must be inside.
                             if ((isInput && headProperties.type == ElementInLinkType.PORT_IN_ACTOR) ||
-                                    (isOutput && headProperties.type == ElementInLinkType.STANDALONE_PORT)){
+                                    (isOutput && headProperties.type == ElementInLinkType.STANDALONE_PORT)) {
                                 newPorts
                                         .append("<property name=\"output\"/>");
                             }
 
                             if ((isOutput && headProperties.type == ElementInLinkType.PORT_IN_ACTOR) ||
-                                    (isInput && headProperties.type == ElementInLinkType.STANDALONE_PORT)){
+                                    (isInput && headProperties.type == ElementInLinkType.STANDALONE_PORT)) {
                                 newPorts
                                         .append("<property name=\"input\"/>");
                             }
@@ -1882,7 +1882,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  @exception IllegalActionException If "_vergilSize" is found but is not
      *  an instance of SizeAttribute, or if a SizeAttribute is not accepted by
      *  the current model.
-     *  @throws NameDuplicationException If the name "_vergilSize" is already
+     *  @exception NameDuplicationException If the name "_vergilSize" is already
      *  used when trying to create the SizeAttribute.
      */
     protected SizeAttribute _createSizeAttribute()

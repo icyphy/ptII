@@ -206,7 +206,7 @@ public class ObjectToken extends Token {
      *
      *  @param className The className.
      *  @return The ObjectToken.
-     *  @throws IllegalActionException If the class with className as its name
+     *  @exception IllegalActionException If the class with className as its name
      *   cannot be loaded.
      */
     public static ObjectToken object(String className)

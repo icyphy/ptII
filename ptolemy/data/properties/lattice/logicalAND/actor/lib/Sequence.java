@@ -52,7 +52,7 @@ public class Sequence extends AtomicActor {
      * Construct a Sequence helper for the logicalAND lattice.
      * @param solver The given solver.
      * @param actor The given Source actor
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public Sequence(PropertyConstraintSolver solver,
             ptolemy.actor.lib.Sequence actor)

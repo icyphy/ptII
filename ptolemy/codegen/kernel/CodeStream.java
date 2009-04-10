@@ -301,7 +301,7 @@ public class CodeStream {
      * @param blockName The given name that identifies the code block.
      * @param arguments The list of arguments to substitute in the code block.
      * @return The content contained by the code block with the given name.
-     * @throws IllegalActionException Thrown if
+     * @exception IllegalActionException Thrown if
      *  getCodeBlock(String, List, boolean) throws it.
      */
     public String getCodeBlock(String blockName, List arguments) throws IllegalActionException {
@@ -314,7 +314,7 @@ public class CodeStream {
      * @param arguments The list of arguments to substitute in the code block.
      * @param mayNotExist False to require the codeblock to exist.
      * @return The content contained by the code block with the given name.
-     * @throws IllegalActionException Thrown if a problem occurs in
+     * @exception IllegalActionException Thrown if a problem occurs in
      * constructing the code block table, or the given code block name
      * is required to exist but does not.
      */

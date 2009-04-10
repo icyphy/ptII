@@ -59,8 +59,8 @@ public class TimeAdvanceEventIcon extends EventIcon {
     /**
      *  @param container
      *  @param name
-     *  @throws NameDuplicationException
-     *  @throws IllegalActionException
+     *  @exception NameDuplicationException
+     *  @exception IllegalActionException
      */
     public TimeAdvanceEventIcon(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {

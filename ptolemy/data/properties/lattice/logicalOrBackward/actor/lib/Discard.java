@@ -49,7 +49,7 @@ public class Discard extends Sink {
     /**
      * Construct an Discard helper.
      * @param actor the associated actor
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public Discard(PropertyConstraintSolver solver,
             ptolemy.actor.lib.Discard actor) throws IllegalActionException {

@@ -216,7 +216,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
      *  @param sourceSpaceID The space to be cleared, or null to not clear it.
      *  @param sourceRecord A record containing information about the space to be shared.
      *  @param destinationRecord A record containing information about the new occupant.
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException
      */
     private void _addNewShared(DatabaseManager database, String sourceSpaceID,
             RecordToken sourceRecord, RecordToken destinationRecord)
@@ -285,8 +285,8 @@ public class Occupants extends ArrayOfRecordsRecorder {
     /** Return an array of the names of classes in the database.
      *  @param database The database manager.
      *  @return An array of class names found in the database.
-     *  @throws IllegalActionException If the table parameter is not valid.
-     *  @throws CancelException If database access is canceled or denied.
+     *  @exception IllegalActionException If the table parameter is not valid.
+     *  @exception CancelException If database access is canceled or denied.
      */
     private String[] _classes(DatabaseManager database)
             throws IllegalActionException, CancelException {
@@ -430,7 +430,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
      *  @param destinationSpaceID The spaceid of the destination.
      *  @param mode One of _ADD_NEW, _REPLACE, or _SWAP.
      *  @return False if the user cancels, true otherwise.
-     *  @throws KernelException If the table parameter can't
+     *  @exception KernelException If the table parameter can't
      *   be evaluated or if executing the database query throws it,
      *   or if re-executing the model throws it.
      */
@@ -655,7 +655,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
      *  @return An array of RecortToken for prior occupants, which may be empty
      *   if there are no prior occupants, or null if the database access is canceled
      *   or denied.
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException
      */
     private ArrayToken _priorOccupants(DatabaseManager database,
             String building, String room, String deskno)
@@ -883,7 +883,7 @@ public class Occupants extends ArrayOfRecordsRecorder {
             return new RecordToken(labels, values);
         }
         // At this point, we have one or more matching people.
-        if(matches.length() > 1) {
+        if (matches.length() > 1) {
             int selectedOne = -1;
             // Iterate until either the user selects one or cancels.
             while (selectedOne < 0) {

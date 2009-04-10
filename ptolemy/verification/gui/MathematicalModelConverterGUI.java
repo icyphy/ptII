@@ -211,8 +211,8 @@ public class MathematicalModelConverterGUI extends PtolemyFrame {
                             .outputType.getChosenValue();
                     int bufferSize = ((IntToken) modelConverter.buffer
                             .getToken()).intValue();
-                    if(formulaType == FormulaType.Risk ||
-                            formulaType == FormulaType.Reachability){
+                    if (formulaType == FormulaType.Risk ||
+                            formulaType == FormulaType.Reachability) {
                         inputTemporalFormula =
                             modelConverter.generateGraphicalSpec(formulaType);
                         formulaType = FormulaType.CTL;

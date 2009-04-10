@@ -49,8 +49,8 @@ public class TDLTaskPort extends TypedIOPort {
          * Construct a TypedIOPort with no container and no name that is neither an
          * input nor an output.
          *
-         * @throws NameDuplicationException
-         * @throws IllegalActionException
+         * @exception NameDuplicationException
+         * @exception IllegalActionException
          */
         public TDLTaskPort() throws IllegalActionException,
                         NameDuplicationException {
@@ -66,8 +66,8 @@ public class TDLTaskPort extends TypedIOPort {
          *
          * @param workspace
          *            The workspace that will list the port.
-         * @throws NameDuplicationException Thrown if the initial value parameter cannot be created.
-         * @throws IllegalActionException Thrown if the initial value parameter cannot be created.
+         * @exception NameDuplicationException Thrown if the initial value parameter cannot be created.
+         * @exception IllegalActionException Thrown if the initial value parameter cannot be created.
          */
         public TDLTaskPort(Workspace workspace)
                         throws IllegalActionException, NameDuplicationException {
@@ -144,7 +144,7 @@ public class TDLTaskPort extends TypedIOPort {
          * Sets the port of a task to an input port.
          *
          * @param isInput true if port is an input port.
-         * @throws IllegalActionException Thrown by parent class.
+         * @exception IllegalActionException Thrown by parent class.
          */
         public void setInput(boolean isInput) throws IllegalActionException {
                 super.setInput(isInput);
@@ -157,7 +157,7 @@ public class TDLTaskPort extends TypedIOPort {
          * Sets the port of a task to an output port.
          *
          * @param isOutput true if port is an output port.
-         * @throws IllegalActionException Thrown by parent class.
+         * @exception IllegalActionException Thrown by parent class.
          */
         public void setOutput(boolean isOutput) throws IllegalActionException {
                 super.setOutput(isOutput);
@@ -170,8 +170,8 @@ public class TDLTaskPort extends TypedIOPort {
 
         /**
          * Initialize the task, set an initial value parameter.
-         * @throws IllegalActionException Thrown if the initial value parameter cannot be created.
-         * @throws NameDuplicationException Thrown if the initial value parameter cannot be created.
+         * @exception IllegalActionException Thrown if the initial value parameter cannot be created.
+         * @exception NameDuplicationException Thrown if the initial value parameter cannot be created.
          */
         private void _init() throws IllegalActionException,
                         NameDuplicationException {

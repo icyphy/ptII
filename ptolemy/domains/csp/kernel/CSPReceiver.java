@@ -257,7 +257,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  of a boundary port, then return true; otherwise return false.
      *  @return True if this receiver is connected to the inside of a
      *   boundary port; return false otherwise.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public boolean isConnectedToBoundary() throws IllegalActionException {
         return _boundaryDetector.isConnectedToBoundary();
@@ -270,8 +270,8 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  return false.
      *  @return True if this receiver is connected to the inside of
      *   a boundary port; return false otherwise.
-     * @throws IllegalActionException
-     * @throws InvalidStateException
+     * @exception IllegalActionException
+     * @exception InvalidStateException
      *  @see ptolemy.actor.process.BoundaryDetector
      */
     public boolean isConnectedToBoundaryInside() throws InvalidStateException, IllegalActionException {
@@ -285,7 +285,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  return false.
      *  @return True if this receiver is connected to the outside of
      *   a boundary port; return false otherwise.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *  @see ptolemy.actor.process.BoundaryDetector
      */
     public boolean isConnectedToBoundaryOutside() throws IllegalActionException {
@@ -294,7 +294,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
 
     /** This class serves as an example of a ConsumerReceiver and
      *  hence this method returns true.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public boolean isConsumerReceiver() throws IllegalActionException {
         if (isConnectedToBoundary()) {

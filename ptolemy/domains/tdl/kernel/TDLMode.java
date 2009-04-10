@@ -48,9 +48,9 @@ public class TDLMode extends State {
          *            The container for the TDL mode.
          * @param name
          *            The name of the TDL mode.
-         * @throws NameDuplicationException
+         * @exception NameDuplicationException
          *             Thrown if the same name already exists.
-         * @throws IllegalActionException
+         * @exception IllegalActionException
          *             Thrown if the mode cannot be created.
          */
         public TDLMode(CompositeEntity container, String name)

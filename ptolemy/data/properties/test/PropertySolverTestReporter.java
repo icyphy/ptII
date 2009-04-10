@@ -266,7 +266,7 @@ public class PropertySolverTestReporter {
      *
      * @return
      *
-     * @throws IOException
+     * @exception IOException
      */
     private static Map[] _testPropertiesDirectory(String directoryPath)
             throws IOException {

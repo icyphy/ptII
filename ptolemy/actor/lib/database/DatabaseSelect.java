@@ -175,7 +175,7 @@ public class DatabaseSelect extends Source {
 
     /** Perform the query on the database and produce the result
      *  on the output port.
-     *  @throws IllegalActionException If the database query fails.
+     *  @exception IllegalActionException If the database query fails.
      */
     public void fire() throws IllegalActionException {
         super.fire();
@@ -212,12 +212,12 @@ public class DatabaseSelect extends Source {
             sqlQuery.append(orderByValue);
         }
         String query = sqlQuery.toString();
-        if(_debugging) {
+        if (_debugging) {
             _debug("Issuing query:\n" + query);
         }
         ArrayToken result = database.executeQuery(query);
         if (result != null) {
-            if(_debugging) {
+            if (_debugging) {
                 _debug("Result of query:\n" + result);
             }
             output.send(0, result);

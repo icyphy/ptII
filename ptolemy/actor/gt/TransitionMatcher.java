@@ -56,8 +56,8 @@ ValueListener {
     /**
      * @param container
      * @param name
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+     * @exception IllegalActionException
+     * @exception NameDuplicationException
      */
     public TransitionMatcher(FSMActor container, String name)
             throws IllegalActionException, NameDuplicationException {

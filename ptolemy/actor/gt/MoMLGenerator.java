@@ -53,8 +53,8 @@ public class MoMLGenerator extends Transformer {
     /**
      * @param container
      * @param name
-     * @throws NameDuplicationException
-     * @throws IllegalActionException
+     * @exception NameDuplicationException
+     * @exception IllegalActionException
      */
     public MoMLGenerator(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {

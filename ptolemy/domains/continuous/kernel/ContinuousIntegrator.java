@@ -449,7 +449,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
 
     /** Override the base class to declare that the <i>output</i>
      *  does not depend on the <i>input</i> in a firing.
-     *  @throws IllegalActionException If the superclass throws it.
+     *  @exception IllegalActionException If the superclass throws it.
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
@@ -564,7 +564,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
          *  <i>derivative</i> does not need to be known.  It will
          *  affect the future only.
          *  @param input The port to find the equivalence class of.
-         *  @throws IllegalArgumentException If the argument is not
+         *  @exception IllegalArgumentException If the argument is not
          *   contained by the associated actor.
          */
         public Collection<IOPort> equivalentPorts(IOPort input) {

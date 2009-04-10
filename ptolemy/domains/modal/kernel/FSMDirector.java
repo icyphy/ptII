@@ -1256,7 +1256,7 @@ public class FSMDirector extends Director implements
 
     /** Reset the output receivers, which are the inside receivers of
      *  the output ports of the container.
-     *  @throws IllegalActionException If getting the receivers fails.
+     *  @exception IllegalActionException If getting the receivers fails.
      */
     private void _resetOutputReceivers() throws IllegalActionException {
         List<IOPort> outputs = ((Actor)getContainer()).outputPortList();

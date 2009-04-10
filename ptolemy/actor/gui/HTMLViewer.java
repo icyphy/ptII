@@ -439,7 +439,7 @@ public class HTMLViewer extends TableauFrame implements Printable,
 //         }
 
 //         StyleSheet styleSheets[] = styleSheet.getStyleSheets();
-//         for( int i = 0; i < styleSheets.length; i++) {
+//         for ( int i = 0; i < styleSheets.length; i++) {
 //             System.out.println("  stylesSheet " + i + " "+ styleSheets[i]);
 //             rules = styleSheets[i].getStyleNames();
 //             while (rules.hasMoreElements()) {

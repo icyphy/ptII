@@ -164,7 +164,7 @@ public class DatabaseManager extends TypedAtomicActor {
     }
 
     /** Close the connection to the database, if one is open.
-     *  @throws IllegalActionException If closing the connection fails.
+     *  @exception IllegalActionException If closing the connection fails.
      */
     public void closeConnection() throws IllegalActionException {
         // If updating the database, need to commit or roll back here.
@@ -186,7 +186,7 @@ public class DatabaseManager extends TypedAtomicActor {
      *  closeConnection() after this.
      *  @param sql The query.
      *  @return The result as a string.
-     *  @throws IllegalActionException If the statement fails.
+     *  @exception IllegalActionException If the statement fails.
      */
     public String execute(String sql)
             throws IllegalActionException {
@@ -205,7 +205,7 @@ public class DatabaseManager extends TypedAtomicActor {
             // According to the docs, there are no more results when
             // ((statement.getMoreResults() == false) && (statement.getUpdateCount() == -1))
             StringBuffer resultString = new StringBuffer();
-            while(true) {
+            while (true) {
                 if (result) {
                     ResultSet resultSet = statement.getResultSet();
                     ResultSetMetaData metaData = resultSet.getMetaData();
@@ -279,7 +279,7 @@ public class DatabaseManager extends TypedAtomicActor {
      *  @return An array of record tokens containing the results,
      *   which may be empty (zero length), or null if the connection
      *   fails or is canceled.
-     *  @throws IllegalActionException If the query fails.
+     *  @exception IllegalActionException If the query fails.
      */
     public ArrayToken executeQuery(String sql)
             throws IllegalActionException {
@@ -342,7 +342,7 @@ public class DatabaseManager extends TypedAtomicActor {
      *   the update is not committed unless the result matches.
      *  @return The number of rows affected or 0 if the update
      *   does not return a value, or -1 if the connection is canceled.
-     *  @throws IllegalActionException If the query fails or if the
+     *  @exception IllegalActionException If the query fails or if the
      *   result does not match the value of <i>expectedResult</i>.
      */
     public int executeUpdate(String sql, int expectedResult)
@@ -383,7 +383,7 @@ public class DatabaseManager extends TypedAtomicActor {
      *  @param name Database manager name.
      *  @param actor The actor.
      *  @return A database manager.
-     *  @throws IllegalActionException If no database manager is found.
+     *  @exception IllegalActionException If no database manager is found.
      */
     public static DatabaseManager findDatabaseManager(String name, NamedObj actor)
             throws IllegalActionException {
@@ -406,7 +406,7 @@ public class DatabaseManager extends TypedAtomicActor {
      *  Otherwise, use the parameter values and prompt for a password to
      *  open a new connection.
      *  @return A connection to the database, or null if the user cancels.
-     *  @throws IllegalActionException If
+     *  @exception IllegalActionException If
      */
     public Connection getConnection() throws IllegalActionException {
         if (_connection != null) {

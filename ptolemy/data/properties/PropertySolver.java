@@ -69,9 +69,9 @@ public abstract class PropertySolver extends PropertySolverBase {
      *
      * @param name
      *
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *
-     * @throws NameDuplicationException
+     * @exception NameDuplicationException
      */
     public PropertySolver(NamedObj container, String name)
     throws IllegalActionException, NameDuplicationException {
@@ -107,7 +107,7 @@ public abstract class PropertySolver extends PropertySolverBase {
      * an error message that includes all the properties that does not match the
      * regression test values.
      *
-     * @throws PropertyFailedRegressionTestException Thrown if there is any
+     * @exception PropertyFailedRegressionTestException Thrown if there is any
      * errors in the regression test.
      */
     public void checkErrors() throws PropertyResolutionException {
@@ -352,7 +352,7 @@ public abstract class PropertySolver extends PropertySolverBase {
     /*
      * @param exceptionMessage
      *
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public void recordTrainedException(String exceptionMessage)
     throws IllegalActionException {
@@ -384,7 +384,7 @@ public abstract class PropertySolver extends PropertySolverBase {
     /*
      * Resolve the properties.
      *
-     * @throws KernelException
+     * @exception KernelException
      */
     public boolean resolveProperties(boolean isInvoked) throws KernelException {
         return resolveProperties(_analyzer, isInvoked);
@@ -393,7 +393,7 @@ public abstract class PropertySolver extends PropertySolverBase {
     /*
      * Resolve the properties (invoked from a ModelAnalyzer).
      *
-     * @throws KernelException
+     * @exception KernelException
      */
     public boolean resolveProperties(NamedObj analyzer)
     throws KernelException {
@@ -412,7 +412,7 @@ public abstract class PropertySolver extends PropertySolverBase {
      *
      * @return True if resolution succeeds as expected; Otherwise, false.
      *
-     * @throws IllegalActionException TODO
+     * @exception IllegalActionException TODO
      */
     public boolean resolveProperties(NamedObj analyzer, boolean isInvoked)
     throws KernelException {
@@ -568,9 +568,9 @@ public abstract class PropertySolver extends PropertySolverBase {
      * Update the property. This method is called from both invoked and
      * auxiliary solvers.
      *
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public void updateProperties() throws IllegalActionException {
         if (isView() || isClear()) {
@@ -654,7 +654,7 @@ public abstract class PropertySolver extends PropertySolverBase {
     /*
      * Record tracing statistics.
      *
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected void _addStatistics() throws IllegalActionException {
         _stats.put("# of helpers", _helperStore.size());
@@ -673,7 +673,7 @@ public abstract class PropertySolver extends PropertySolverBase {
      *
      * @return The property attribute contained by the given propertyable.
      *
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected PropertyAttribute _getPropertyAttribute(NamedObj propertyable)
     throws IllegalActionException {
@@ -745,7 +745,7 @@ public abstract class PropertySolver extends PropertySolverBase {
      *
      * @param property The given resolved property.
      *
-     * @throws PropertyResolutionException Thrown if there are errors restoring
+     * @exception PropertyResolutionException Thrown if there are errors restoring
      * the trained property.
      */
     protected void _regressionTest(NamedObj namedObj, Property property)
@@ -784,7 +784,7 @@ public abstract class PropertySolver extends PropertySolverBase {
      *
      * @param analyzer The specified model analyzer.
      *
-     * @throws IllegalActionException Not thrown in this base class.
+     * @exception IllegalActionException Not thrown in this base class.
      */
     protected void _resolveProperties(NamedObj analyzer)
     throws KernelException {
@@ -817,7 +817,7 @@ public abstract class PropertySolver extends PropertySolverBase {
      *
      * @param property
      *
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private void _updatePropertyAttribute(PropertyAttribute attribute,
             Property property) throws IllegalActionException {

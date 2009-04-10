@@ -50,7 +50,7 @@ public class Recorder extends Sink {
     /**
      * Construct an Recorder helper.
      * @param actor the associated actor
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public Recorder(PropertyConstraintSolver solver,
             ptolemy.actor.lib.Recorder actor) throws IllegalActionException {

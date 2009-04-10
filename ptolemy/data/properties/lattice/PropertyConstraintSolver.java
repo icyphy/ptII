@@ -78,8 +78,8 @@ public class PropertyConstraintSolver extends PropertySolver {
     /**
      * @param container The given container.
      * @param name The given name
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+     * @exception IllegalActionException
+     * @exception NameDuplicationException
      */
     public PropertyConstraintSolver(NamedObj container, String name)
     throws IllegalActionException, NameDuplicationException {
@@ -243,7 +243,7 @@ public class PropertyConstraintSolver extends PropertySolver {
      * Return the property term from the given object.
      * @param object The given object.
      * @return The property term of the given object.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public PropertyTerm getPropertyTerm(Object object) {
         return getPropertyTermManager().getPropertyTerm(object);
@@ -314,7 +314,7 @@ public class PropertyConstraintSolver extends PropertySolver {
 //     * @param object The given port.
 //     * @param lattice The given lattice.
 //     * @return The property value of the given port.
-//     * @throws IllegalActionException
+//     * @exception IllegalActionException
 //     */
 //  public Property getProperty(Object object) {
 //  PropertyTerm term = (PropertyTerm) getPropertyTerm(object);
@@ -347,7 +347,7 @@ public class PropertyConstraintSolver extends PropertySolver {
 
     /**
      * Update the property.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public void updateProperties() throws IllegalActionException {
         super.updateProperties();
@@ -735,7 +735,7 @@ public class PropertyConstraintSolver extends PropertySolver {
      * @param inequality
      * @param annotation
      * @return
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private List _getConstraintAsLogFileString(Inequality inequality, String annotation) throws IllegalActionException {
         List <String>logConstraints = new LinkedList<String>();
@@ -838,7 +838,7 @@ public class PropertyConstraintSolver extends PropertySolver {
      *
      * @param typeValue
      * @return
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private ConstraintType _getConstraintType(String typeValue) throws IllegalActionException {
         boolean isEquals = typeValue.contains("==");
@@ -885,7 +885,7 @@ public class PropertyConstraintSolver extends PropertySolver {
 
     /**
      * @return
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private String _getTrainedConstraintFilename() throws IllegalActionException {
         // Make an unique file name from the toplevel container.
@@ -926,7 +926,7 @@ public class PropertyConstraintSolver extends PropertySolver {
     /**
      *
      * @param helper
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private void _logHelperConstraints(PropertyConstraintHelper helper) throws IllegalActionException {
         List<Inequality>[] constraintSet = new List[2];
@@ -936,7 +936,7 @@ public class PropertyConstraintSolver extends PropertySolver {
         for (int i = 0; i < 2; i++) {
             //String whichSet = (i == 0) ? " own " : " subHelper's ";
 
-            for (Inequality constraint : constraintSet[i]){
+            for (Inequality constraint : constraintSet[i]) {
                 Iterator logConstraints = _getConstraintAsLogFileString(constraint, "").iterator();
                 while (logConstraints.hasNext()) {
                     _trainedConstraints.add((String)logConstraints.next());
@@ -996,7 +996,7 @@ public class PropertyConstraintSolver extends PropertySolver {
         for (int i = 0; i < 2; i++) {
             String whichSet = (i == 0) ? " own " : " subHelper's ";
 
-            for (Inequality constraint : constraintSet[i]){
+            for (Inequality constraint : constraintSet[i]) {
 
                 Iterator logConstraints = _getConstraintAsLogFileString(constraint, "").iterator();
                 while (logConstraints.hasNext()) {
@@ -1027,7 +1027,7 @@ public class PropertyConstraintSolver extends PropertySolver {
      * solver. If the constraint file already exists, an overwrite
      * warning message is sent to the user.
      * @param filename
-     * @throws PropertyResolutionException Thrown if there is a
+     * @exception PropertyResolutionException Thrown if there is a
      *  problem opening, writing, or closing the constraint file.
      */
     private void _updateConstraintFile(String filename) throws IllegalActionException {
@@ -1089,8 +1089,8 @@ public class PropertyConstraintSolver extends PropertySolver {
 //     * constraints as String's.
 //     * @param helper
 //     * @return
-//     * @throws IllegalActionException
-//     * @throws NameDuplicationException
+//     * @exception IllegalActionException
+//     * @exception NameDuplicationException
 //     */
 //    private ConstraintAttribute[] _getConstraintAttributes(
 //            PropertyConstraintHelper helper) throws IllegalActionException, NameDuplicationException {

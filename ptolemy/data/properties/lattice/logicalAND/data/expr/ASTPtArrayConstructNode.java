@@ -58,7 +58,7 @@ public class ASTPtArrayConstructNode extends ASTPtRootNode {
      * Construct an property constraint helper for the given ASTPtArrayConstructNode.
      * @param solver The given solver to get the lattice from.
      * @param node The given ASTPtArrayConstructNode.
-     * @throws IllegalActionException Thrown if the parent construct
+     * @exception IllegalActionException Thrown if the parent construct
      *  throws it.
      */
     public ASTPtArrayConstructNode(PropertyConstraintSolver solver,
@@ -89,7 +89,7 @@ public class ASTPtArrayConstructNode extends ASTPtRootNode {
     extends MonotonicFunction {
 
         /**
-         * @throws IllegalActionException
+         * @exception IllegalActionException
          *
          */
         public Object getValue() throws IllegalActionException {

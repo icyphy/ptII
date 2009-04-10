@@ -135,7 +135,7 @@ public class DCT8x8 extends TypedAtomicActor {
             return;
         }
 
-        for( i = 0; i < 8; i++ )
+        for ( i = 0; i < 8; i++ )
         {
             for (j = 0; j < 8; j++)
             {
@@ -177,9 +177,9 @@ public class DCT8x8 extends TypedAtomicActor {
             _ftemp[i][3] = _temp[6] * cos_values[3] - _temp[5] * cos_values[5];
         }
 
-        for(i = 0; i < 8; i++ )
+        for (i = 0; i < 8; i++ )
         {
-            for(j = 0; j < 4; j++)
+            for (j = 0; j < 4; j++)
             {
                 k = 7 - j;
                 _temp[j] = _ftemp[j][i] + _ftemp[k][i];

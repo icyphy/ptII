@@ -171,7 +171,7 @@ public class REDUtility {
      *                used for buffer overflow detection.
      * @return A Communicating Timed Automata system description of the original
      *         system
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public static StringBuffer generateREDDescription(CompositeActor PreModel,
             String pattern, FormulaType choice, int span, int bufferSizeFSM)
@@ -594,7 +594,7 @@ public class REDUtility {
      *
      * @param entity
      * @return
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private static HashSet<String> _decideSynchronizerVariableSet(Entity entity)
             throws IllegalActionException {
@@ -778,7 +778,7 @@ public class REDUtility {
      * @param actor
      *                The actor under analysis.
      * @return Set of signals used in guard expressions in the FSMActor.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private static HashSet<String> _decideGuardSignalVariableSet(FSMActor actor)
             throws IllegalActionException {
@@ -882,7 +882,7 @@ public class REDUtility {
      * @param actor Actor under analysis.
      * @param numSpan The size of the span to expand the variable domain.
      * @return The set of variables (variable names) used in the FSMActor.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private static HashSet<String> _decideVariableSet(FSMActor actor,
             int numSpan) throws IllegalActionException {
@@ -1178,7 +1178,7 @@ public class REDUtility {
      * @param actor
      *                The actor under analysis
      * @return The set of states of the FSMActor.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private static HashSet<State> _enumerateStateSet(FSMActor actor)
             throws IllegalActionException {
@@ -2316,7 +2316,7 @@ public class REDUtility {
      *                The name of the output signal. This must be derived
      *                externally.
      * @return clock description acceptable by model checker RED.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private static REDSingleEntityBean _translateClockActor(Clock clockActor,
             String outputSignalName, int numOfFSMActor)
@@ -3287,7 +3287,7 @@ public class REDUtility {
      *                externally.
      * @return description of the TimedDelayActor acceptable by model checker
      *         RED.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private static REDSingleEntityBean _translateTimedDelayedActor(
             BoundedBufferTimedDelay delayedActor, String inputSignalName,

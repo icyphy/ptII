@@ -54,8 +54,8 @@ public class ReadModel extends GTEvent {
     /**
      * @param container
      * @param name
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+     * @exception IllegalActionException
+     * @exception NameDuplicationException
      */
     public ReadModel(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {

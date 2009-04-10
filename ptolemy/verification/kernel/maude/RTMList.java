@@ -44,7 +44,7 @@ public class RTMList extends RTMTerm {
             if (newline)
                 rs.append(front(indent));
             rs.append("(");
-            for(Iterator<RTMTerm> ti = items.iterator(); ti.hasNext(); ) {
+            for (Iterator<RTMTerm> ti = items.iterator(); ti.hasNext(); ) {
                 rs.append("\n" + ti.next().print(indent + indentWidth, true));
                 if (ti.hasNext()) rs.append(saperator);
             }

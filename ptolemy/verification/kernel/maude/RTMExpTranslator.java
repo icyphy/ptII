@@ -268,7 +268,7 @@ public class RTMExpTranslator extends AbstractParseTreeVisitor {
 
     private static String _toRational(double f) {
         double base = 1.0;
-        while(Math.ceil(f * base) != f * base)
+        while (Math.ceil(f * base) != f * base)
             base = base * 10.0;
 
         int gcd = _GCD((int)f, (int)base);

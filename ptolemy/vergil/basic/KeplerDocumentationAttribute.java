@@ -466,7 +466,7 @@ public class KeplerDocumentationAttribute extends Attribute implements
     public String removeProperty(String name)
             throws IllegalActionException, NameDuplicationException {
         String retval = (String) _propertyHash.remove(name);
-        if(retval != null) {
+        if (retval != null) {
             Attribute attribute = getAttribute("prop:" + name);
             attribute.setContainer(null);
         }

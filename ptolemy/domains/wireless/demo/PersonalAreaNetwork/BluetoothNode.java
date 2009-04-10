@@ -139,7 +139,7 @@ public class BluetoothNode extends TypedAtomicActor {
     /** Override the base class to declare that the <i>output</i>
      *  does not depend on the <i>input</i> or <i>signal</i>
      *  ports in a firing.
-     *  @throws IllegalActionException If the superclass throws it.
+     *  @exception IllegalActionException If the superclass throws it.
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();

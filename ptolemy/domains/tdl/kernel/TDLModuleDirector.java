@@ -309,7 +309,7 @@ public class TDLModuleDirector extends ModalDirector {
      * execution time was specified.
      *
      * @return The worst case execution time.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public double getWCET() throws IllegalActionException {
         if (_currentWCET > 0)
@@ -430,7 +430,7 @@ public class TDLModuleDirector extends ModalDirector {
      * Check if at the current time there is something to do.
      *
      * @return True if there is something to do now.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *             Thrown if execution was missed, input ports could not be
      *             transferred or by parent class.
      */
@@ -507,7 +507,7 @@ public class TDLModuleDirector extends ModalDirector {
      *
      * @param node
      *            Given node.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *             Not thrown here but in the base class.
      */
     public void scheduleEventsAfterAction(Node node)
@@ -543,7 +543,7 @@ public class TDLModuleDirector extends ModalDirector {
      * @param port
      *            Input port.
      * @return True if ports transferred inputs.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *             Thrown if inputs are about to be transferred for a non opaque
      *             input port.
      */
@@ -569,7 +569,7 @@ public class TDLModuleDirector extends ModalDirector {
      * @param transition
      *            The mode switch.
      * @return True if the mode switch should be done.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *             If an error occurs during the transition.
      */
     private boolean _chooseTransition(Transition transition)
@@ -598,7 +598,7 @@ public class TDLModuleDirector extends ModalDirector {
      * @param additionalTime
      *            Time to be added to the current model time and the schedule
      *            time of the TDL action node.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *             Thrown if fireAt() returns false.
      */
     private void _fireAt(Node node, Time additionalTime)
@@ -691,7 +691,7 @@ public class TDLModuleDirector extends ModalDirector {
      * @param obj
      *            The object containing a guard expression.
      * @return True if the guard expression evaluates to true.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *             Thrown if guard expression could not be read.
      */
     private boolean _guardIsTrue(NamedObj obj) throws IllegalActionException {
@@ -734,7 +734,7 @@ public class TDLModuleDirector extends ModalDirector {
      *
      * @param port
      *            Port to be initialized.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *             Thrown if the initial value parameter could not be read.
      */
     private void _initializePort(IOPort port) throws IllegalActionException {
@@ -759,7 +759,7 @@ public class TDLModuleDirector extends ModalDirector {
      * Initialize output ports by reading initial value and initializing the
      * receivers.
      *
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *             Thrown if the ports could not be initialized.
      */
     private void _initializeOutputPorts() throws IllegalActionException {
@@ -818,7 +818,7 @@ public class TDLModuleDirector extends ModalDirector {
      *
      * @param port
      *            Actuator that should be updated.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *             Thrown if outputs could not be transferred.
      */
     private void _updateActuator(IOPort port) throws IllegalActionException {
@@ -851,7 +851,7 @@ public class TDLModuleDirector extends ModalDirector {
      * Read input values and update inputMap the updated inputMap is required
      * when guards are evaluated.
      *
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *             Thrown if the controller could not be retrieved or inputs
      *             could not be read.
      */
@@ -876,7 +876,7 @@ public class TDLModuleDirector extends ModalDirector {
      *
      * @param port
      *            The output port.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *             Thrown if output ports from refinement could not be read.
      */
     private void _updateOutputPort(IOPort port) throws IllegalActionException {
@@ -898,8 +898,8 @@ public class TDLModuleDirector extends ModalDirector {
      *
      * @param portList
      *            Ports containing TDL receivers that should be updated.
-     * @throws IllegalActionException
-     * @throws InvalidStateException
+     * @exception IllegalActionException
+     * @exception InvalidStateException
      */
     private void _updateReceivers(Collection portList) throws InvalidStateException, IllegalActionException {
         Iterator it = portList.iterator();
@@ -923,7 +923,7 @@ public class TDLModuleDirector extends ModalDirector {
      *
      * @param transition
      *            Mode switch that has been made.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *             If refinement or Controller could not be retrieved.
      */
     private void _transferTaskInputs(Transition transition)

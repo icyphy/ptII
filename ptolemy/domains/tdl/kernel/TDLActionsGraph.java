@@ -70,7 +70,7 @@ public class TDLActionsGraph {
      *
      * @param startmode
      *            This is the initial mode of the TDL module.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *             Thrown if TDL parameters in the module cannot be read.
      */
     public void buildGraph(State startmode) throws IllegalActionException {
@@ -282,8 +282,8 @@ public class TDLActionsGraph {
      * @param actor
      * @param modePeriod
      * @return
-     * @throws IllegalActionException
-     * @throws TDLModeSchedulerException
+     * @exception IllegalActionException
+     * @exception TDLModeSchedulerException
      */
     private LetTask _analyzeSlotSelection(TDLTask actor, Time modePeriodTime)
             throws IllegalActionException {
@@ -345,7 +345,7 @@ public class TDLActionsGraph {
      * Connect partial graphs for modes. The connection points are the mode
      * switch and after mode switch actions.
      *
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *             If new Time cannot be created.
      */
     private void _connectModes() throws IllegalActionException {
@@ -585,7 +585,7 @@ public class TDLActionsGraph {
      * @param slots
      * @param frequency
      * @return
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private ArrayList _getInvocations(String slots, int frequency)
             throws IllegalActionException {
@@ -707,8 +707,8 @@ public class TDLActionsGraph {
      *
      * @param refinement
      * @param modePeriod
-     * @throws TDLModeSchedulerException
-     * @throws IllegalActionException
+     * @exception TDLModeSchedulerException
+     * @exception IllegalActionException
      */
     private void _getTasks(State mode, Refinement refinement, Time modePeriod)
             throws IllegalActionException {
@@ -872,8 +872,8 @@ public class TDLActionsGraph {
      * @param state
      * @param refinement
      * @param modePeriod
-     * @throws IllegalActionException
-     * @throws TDLModeSchedulerException
+     * @exception IllegalActionException
+     * @exception TDLModeSchedulerException
      */
     private void _getTransitions(State mode, Refinement refinement,
             Time modePeriod) {

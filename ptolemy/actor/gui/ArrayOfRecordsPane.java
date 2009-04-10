@@ -195,7 +195,7 @@ public class ArrayOfRecordsPane extends JPanel {
 
             if (columns == null) {
                 // Figure out what the column names are.
-                for(int i = 0; i < _array.length(); i++) {
+                for (int i = 0; i < _array.length(); i++) {
                     RecordToken record = (RecordToken)_array.getElement(i);
                     Iterator labels = record.labelSet().iterator();
                     while (labels.hasNext()) {
@@ -260,7 +260,7 @@ public class ArrayOfRecordsPane extends JPanel {
                 return ("");
             }
             // Strip off the extra quotation marks if necessary.
-            if(element instanceof StringToken) {
+            if (element instanceof StringToken) {
                 return ((StringToken)element).stringValue();
             }
             return element.toString();

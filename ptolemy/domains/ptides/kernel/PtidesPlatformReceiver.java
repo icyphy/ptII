@@ -130,7 +130,7 @@ public class PtidesPlatformReceiver extends PtidesReceiver implements
      *
      * @return True if this receiver is contained on the inside of a boundary
      *         port; return false otherwise.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      * @see ptolemy.actor.process.BoundaryDetector
      */
     public boolean isConnectedToBoundary() throws IllegalActionException {
@@ -145,8 +145,8 @@ public class PtidesPlatformReceiver extends PtidesReceiver implements
      *
      * @return True if this receiver is connected to the inside of a boundary
      *         port; return false otherwise.
-     * @throws IllegalActionException
-     * @throws InvalidStateException
+     * @exception IllegalActionException
+     * @exception InvalidStateException
      * @see ptolemy.actor.process.BoundaryDetector
      */
     public boolean isConnectedToBoundaryInside() throws InvalidStateException, IllegalActionException {
@@ -161,7 +161,7 @@ public class PtidesPlatformReceiver extends PtidesReceiver implements
      *
      * @return True if this receiver is connected to the outside of a boundary
      *         port; return false otherwise.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      * @see ptolemy.actor.process.BoundaryDetector
      */
     public boolean isConnectedToBoundaryOutside() throws IllegalActionException {
@@ -173,7 +173,7 @@ public class PtidesPlatformReceiver extends PtidesReceiver implements
      * consumer receiver if it is connected to a boundary port.
      *
      * @return True if this is a consumer receiver; return false otherwise.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public boolean isConsumerReceiver() throws IllegalActionException {
         if (isConnectedToBoundary()) {

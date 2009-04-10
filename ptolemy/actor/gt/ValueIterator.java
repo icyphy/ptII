@@ -69,7 +69,7 @@ public interface ValueIterator extends Settable {
      *  thrown.
      *
      *  @return The next value, or null.
-     *  @throws IllegalActionException Thrown when trying to compute the next
+     *  @exception IllegalActionException Thrown when trying to compute the next
      *  value or to set the parameter with that value, or if the initial value
      *  has not been set, or no next value exists.
      */

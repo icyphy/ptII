@@ -546,7 +546,7 @@ public class FSMActor extends CCodeGeneratorHelper {
      *  @param codeBuffer The string buffer that the generated code is
      *  appended to.
      *  @param state The current state.
-     * @throws IllegalActionException Thrown if the corresponding code
+     * @exception IllegalActionException Thrown if the corresponding code
      *  block cannot be fetched.
      */
     protected void _updateCurrentState(StringBuffer codeBuffer, State state)

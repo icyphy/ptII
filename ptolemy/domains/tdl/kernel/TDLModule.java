@@ -81,7 +81,7 @@ public class TDLModule extends ModalModel {
          * be TDLModuleDirector.
          *
          * @param attribute Attribute to be changed.
-         * @throws IllegalActionException Thrown if director of the module, the TDLModuleDirector,
+         * @exception IllegalActionException Thrown if director of the module, the TDLModuleDirector,
          * cannot be set.
          *
          */

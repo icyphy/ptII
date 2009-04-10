@@ -157,7 +157,7 @@ public class AttributeValueIcon extends XMLIcon {
             try {
                 if (entityName.stringValue().trim().equals("")) {
                     associatedAttribute = container.getAttribute(attributeName.getExpression());
-                } else if (container instanceof CompositeEntity){
+                } else if (container instanceof CompositeEntity) {
                     NamedObj entity = ((CompositeEntity)container).getEntity(entityName.stringValue());
                     if (entity != null) {
                         associatedAttribute = entity.getAttribute(attributeName.getExpression());

@@ -54,7 +54,7 @@ public class PropertyCombineFSMHelper extends PropertyCombineCompositeHelper {
      * are set for this helper.
      * @param solver The given solver.
      * @param actor The given ActomicActor.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public PropertyCombineFSMHelper(PropertyCombineSolver solver,
             ptolemy.domains.fsm.kernel.FSMActor actor)

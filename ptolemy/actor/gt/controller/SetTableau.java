@@ -61,8 +61,8 @@ public class SetTableau extends TableauControllerEvent {
     /**
      *  @param container
      *  @param name
-     *  @throws IllegalActionException
-     *  @throws NameDuplicationException
+     *  @exception IllegalActionException
+     *  @exception NameDuplicationException
      */
     public SetTableau(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {

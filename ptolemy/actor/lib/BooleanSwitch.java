@@ -169,7 +169,7 @@ public class BooleanSwitch extends TypedAtomicActor {
             _control = ((BooleanToken) control.get(0)).booleanValue();
         }
 
-        for(int i = 0; i < input.getWidth(); i++) {
+        for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {
                 Token token = input.get(i);
 

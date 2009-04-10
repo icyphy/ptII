@@ -129,7 +129,7 @@ public class ClassChanges implements MoMLFilter {
      *  @see #remove(String)
      */
     public void put(String oldName, String newName) {
-        if(newName == null) {
+        if (newName == null) {
             _classesToRemove.add(oldName);
         } else {
             _classChanges.put(oldName, newName);
@@ -142,9 +142,9 @@ public class ClassChanges implements MoMLFilter {
      *  @see #put(String, String)
      */
     public void remove(String className) {
-        if(_classChanges.containsKey(className)) {
+        if (_classChanges.containsKey(className)) {
             _classChanges.remove(className);
-        } else if(_classesToRemove.contains(className)) {
+        } else if (_classesToRemove.contains(className)) {
             _classesToRemove.remove(className);
         }
     }

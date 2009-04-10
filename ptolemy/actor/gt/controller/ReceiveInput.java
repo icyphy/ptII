@@ -74,8 +74,8 @@ public class ReceiveInput extends TableauControllerEvent
     /**
      *  @param container
      *  @param name
-     *  @throws IllegalActionException
-     *  @throws NameDuplicationException
+     *  @exception IllegalActionException
+     *  @exception NameDuplicationException
      */
     public ReceiveInput(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {

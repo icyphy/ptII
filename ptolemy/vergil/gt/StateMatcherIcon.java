@@ -60,8 +60,8 @@ public class StateMatcherIcon extends StateIcon {
     /**
      * @param container
      * @param name
-     * @throws NameDuplicationException
-     * @throws IllegalActionException
+     * @exception NameDuplicationException
+     * @exception IllegalActionException
      */
     public StateMatcherIcon(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {

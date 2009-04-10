@@ -55,7 +55,7 @@ public class TDLRefinementPort extends RefinementPort {
          *                If the port is not of an acceptable class for the
          *                container, or if the container does not implement the
          *                TypedActor interface.
-         * @throws NameDuplicationException
+         * @exception NameDuplicationException
          */
         public TDLRefinementPort(Workspace workspace)
                         throws IllegalActionException, NameDuplicationException {
@@ -117,7 +117,7 @@ public class TDLRefinementPort extends RefinementPort {
          * Make port to an output port, for TDL this means that it is an actuator.
          *
          * @param isOutput True if port is an output port.
-         * @throws IllegalActionException Thrown by parent class.
+         * @exception IllegalActionException Thrown by parent class.
          */
         public void setOutput(boolean isOutput) throws IllegalActionException {
                 super.setOutput(isOutput);
@@ -132,7 +132,7 @@ public class TDLRefinementPort extends RefinementPort {
          * Make port to an input port, for TDL this means that it is a sensor.
          *
          * @param isInput True if port is an input port.
-         * @throws IllegalActionException Thrown by parent class.
+         * @exception IllegalActionException Thrown by parent class.
          */
         public void setInput(boolean isInput) throws IllegalActionException {
                 super.setInput(isInput);
@@ -150,8 +150,8 @@ public class TDLRefinementPort extends RefinementPort {
 
         /**
          * Initialize the parameters of the port.
-         * @throws IllegalActionException Thrown if parameters cannot be set.
-         * @throws NameDuplicationException Thrown if parameters cannot be set.
+         * @exception IllegalActionException Thrown if parameters cannot be set.
+         * @exception NameDuplicationException Thrown if parameters cannot be set.
          */
         private void _init() throws IllegalActionException,
                         NameDuplicationException {

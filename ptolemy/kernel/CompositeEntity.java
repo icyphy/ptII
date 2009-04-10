@@ -1933,7 +1933,7 @@ public class CompositeEntity extends ComponentEntity {
      *  @param indent The amount of indenting.
      *  @param bracket The number of surrounding brackets (0, 1, or 2).
      *  @return A description of the object.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected String _description(int detail, int indent, int bracket) throws IllegalActionException {
         try {
@@ -2383,7 +2383,7 @@ public class CompositeEntity extends ComponentEntity {
 
     /** A comparator for a <String><Integer> Map. */
     private static class CountComparator implements Comparator {
-        public int compare(Object object1, Object object2){
+        public int compare(Object object1, Object object2) {
             int result = 0;
             Map.Entry entry1 = (Map.Entry)object1 ;
             Map.Entry entry2 = (Map.Entry)object2 ;

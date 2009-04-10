@@ -421,7 +421,7 @@ public class GTTools {
      *
      *  @param root The root.
      *  @param records The table with the previously stored values.
-     *  @throws IllegalActionException If the values of those parameters cannot
+     *  @exception IllegalActionException If the values of those parameters cannot
      *  be set.
      */
     public static void restoreValues(ComponentEntity root,
@@ -449,7 +449,7 @@ public class GTTools {
      *
      *  @param root The root.
      *  @param records The table to store the values.
-     *  @throws IllegalActionException If the values of those parameters cannot
+     *  @exception IllegalActionException If the values of those parameters cannot
      *  be obtained.
      */
     public static void saveValues(ComponentEntity root,

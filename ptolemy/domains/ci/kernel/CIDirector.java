@@ -521,7 +521,7 @@ public class CIDirector extends Director {
      *  output.
      *  @param actor The actor to be tested whether it is active.
      *  @return True if the actor is active.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected static boolean _isActive(Actor actor) throws IllegalActionException {
         //TODO: check all inputs and outputs have the same setting.

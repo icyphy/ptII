@@ -82,8 +82,8 @@ public class Region extends TypedCompositeActor {
     ////                         private methods                   ////
 
     /** Create the parameters.
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+     * @exception IllegalActionException
+     * @exception NameDuplicationException
      */
     private void _init() throws IllegalActionException, NameDuplicationException {
         // Set the background color to white.

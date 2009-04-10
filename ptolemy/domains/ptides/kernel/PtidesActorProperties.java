@@ -119,7 +119,7 @@ public class PtidesActorProperties {
      *  @param actor The actor for which the execution time is
      *   requested.
      *  @return The execution time.
-     *  @throws IllegalActionException If there is an _executionTime
+     *  @exception IllegalActionException If there is an _executionTime
      *   attribute, but either it is not a Parameter of type double
      *   or it has as its value an expression that cannot be evaluated.
      */

@@ -189,7 +189,7 @@ public class TDLCodeGeneratorUtilities {
          * @param actor
          *            The actor to test.
          * @return True if the given actor has at least on connected input port.
-         * @throws IllegalActionException
+         * @exception IllegalActionException
          */
         public static boolean needsInputDriver(Actor actor) throws IllegalActionException {
                 boolean retVal = false;
@@ -245,7 +245,7 @@ public class TDLCodeGeneratorUtilities {
          * @param port
          *            An IO port.
          * @return A string containing the type of the port.
-         * @throws IllegalActionException
+         * @exception IllegalActionException
          */
         protected static String _getTypeString(IOPort port)
                         throws IllegalActionException {
@@ -500,7 +500,7 @@ public class TDLCodeGeneratorUtilities {
          * @param actor Actor containing the ports that code should be generated for.
          * @param type Input or output port.
          * @return Code generated for the ports.
-         * @throws IllegalActionException Thrown if port type could not be defined.
+         * @exception IllegalActionException Thrown if port type could not be defined.
          */
         private static StringBuffer _portList(StringBuffer sb, Actor actor,
                         String type) throws IllegalActionException {
@@ -559,7 +559,7 @@ public class TDLCodeGeneratorUtilities {
          * Get all modes of a module.
          * @param module TDL module.
          * @return list of all modes of a module.
-         * @throws IllegalActionException if controller of module could not be retrieved.
+         * @exception IllegalActionException if controller of module could not be retrieved.
          */
         private static List _getModes(TDLModule module)
                         throws IllegalActionException {

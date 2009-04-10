@@ -46,8 +46,8 @@ public class ModalModelMatcher extends CompositeActorMatcher {
     /**
      * @param container
      * @param name
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+     * @exception IllegalActionException
+     * @exception NameDuplicationException
      */
     public ModalModelMatcher(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {

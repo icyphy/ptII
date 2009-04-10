@@ -77,8 +77,8 @@ public class RTMaudeUtility {
      * @param formula
 
      * @return The converted .maude format of the system.
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+     * @exception IllegalActionException
+     * @exception NameDuplicationException
      */
     public static StringBuffer generateRTMDescription(CompositeActor model,
             String formula, boolean inlineFilesIfPossible)
@@ -108,8 +108,8 @@ public class RTMaudeUtility {
      * @param formula
 
      * @return The converted .maude format of the system.
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+     * @exception IllegalActionException
+     * @exception NameDuplicationException
      */
     public static StringBuffer generateRTMDescription(BufferedReader template,
             CompositeActor model, String formula) throws IllegalActionException,
@@ -278,7 +278,7 @@ public class RTMaudeUtility {
         else if (act instanceof FSMActor || act instanceof ModalModel) {
             ret.setClass("FSM-Actor");
             FSMActor target = act instanceof FSMActor ? (FSMActor) act : ((ModalModel)act).getController();
-            if( act instanceof ModalModel )
+            if (act instanceof ModalModel )
                 processedActs.add(((ModalModel)act).getController());
 
             ret.addStrAttr("currState", RTMTerm.transId(target.getInitialState().getName()));
@@ -330,7 +330,7 @@ public class RTMaudeUtility {
         // Ports
         if (act instanceof Entity) {
             RTMList portconf = new RTMList("", "none");
-            for(Port p : (List<Port>)((Entity)act).portList())
+            for (Port p : (List<Port>)((Entity)act).portList())
                 portconf.add(_translatePort(p));
             ret.addAttr("ports", portconf);
         }
@@ -351,9 +351,9 @@ public class RTMaudeUtility {
                 rent.add(_translateActor(act));
 
                 // translate connections : Same level
-                for(IOPort p : (List<IOPort>)act.outputPortList()) {
+                for (IOPort p : (List<IOPort>)act.outputPortList()) {
                     RTMList rports = new RTMList(";", "noPort");
-                    for(Port op : (List<Port>)p.sinkPortList())
+                    for (Port op : (List<Port>)p.sinkPortList())
                         if (op.getContainer() != p.getContainer().getContainer())
                             rports.add(portName(null,op));
                     if (! rports.isEmpty() )
@@ -362,9 +362,9 @@ public class RTMaudeUtility {
             }
         }
         // translate connections : From outside
-        for(IOPort ip : (List<IOPort>)((Actor)cent).inputPortList()) {
+        for (IOPort ip : (List<IOPort>)((Actor)cent).inputPortList()) {
             RTMList rports = new RTMList(";", "noPort");
-            for(Port op : (List<IOPort>)ip.insideSinkPortList())
+            for (Port op : (List<IOPort>)ip.insideSinkPortList())
                 if (exc == null || ! exc.contains(op.getContainer()))
                     rports.add(portName(ip.getContainer(), op));
             if (! rports.isEmpty() )
@@ -372,8 +372,8 @@ public class RTMaudeUtility {
         }
         // translate connections : To outside
         //FIXME : there would be the case --  1_inside : N_outside
-        for(IOPort op : (List<IOPort>)((Actor)cent).outputPortList())
-            for(Port ip : (List<IOPort>)op.insideSourcePortList())
+        for (IOPort op : (List<IOPort>)((Actor)cent).outputPortList())
+            for (Port ip : (List<IOPort>)op.insideSourcePortList())
                 if (exc == null || ! exc.contains(ip.getContainer()))
                     rcons.add( rtran.get( portName(op.getContainer(), ip), portName(null, op)) );
 
@@ -387,7 +387,7 @@ public class RTMaudeUtility {
         String flag = "";
         if (port instanceof IOPort) {
             IOPort ip = (IOPort) port;
-            if( ip.isOutput() && ip.isInput() ) flag = "InOut";
+            if (ip.isOutput() && ip.isInput() ) flag = "InOut";
             else if (ip.isOutput()) flag = "Out";
             else if (ip.isInput()) flag = "In";
         }

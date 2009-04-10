@@ -91,7 +91,7 @@ public interface Executable extends Initializable {
      *
      *  @return True if this executable is strict, meaning all inputs must
      *   be known before iteration.
-     * @throws IllegalActionException Thrown by subclass.
+     * @exception IllegalActionException Thrown by subclass.
      */
     public boolean isStrict() throws IllegalActionException;
 

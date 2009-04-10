@@ -53,8 +53,8 @@ public class Clone extends GTEvent {
     /**
      *  @param container
      *  @param name
-     *  @throws IllegalActionException
-     *  @throws NameDuplicationException
+     *  @exception IllegalActionException
+     *  @exception NameDuplicationException
      */
     public Clone(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {

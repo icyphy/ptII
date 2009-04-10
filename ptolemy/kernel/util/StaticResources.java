@@ -282,7 +282,7 @@ public class StaticResources {
      *
      * @return the String value identified by the propertyKey
      *
-     * @throws java.lang.Exception
+     * @exception java.lang.Exception
      *             if key is not found or cannot be read
      */
     protected static String _getString(String propertyKey, ResourceBundle bundle)

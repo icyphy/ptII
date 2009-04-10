@@ -219,7 +219,7 @@ public class RelationWidthInference {
                                 // If we have updated relations for this port, it means that it is consistent
                                 // and hence we don't need to check consistency anymore.
                                 portsThatCanBeIngnoredForConsistencyCheck.add(port);
-                                for(IORelation updatedRelation : updatedRelations) {
+                                for (IORelation updatedRelation : updatedRelations) {
                                     portsToCheckConsistency.addAll(updatedRelation.linkedPortList(port));
                                 }
                             }
@@ -241,7 +241,7 @@ public class RelationWidthInference {
                                 // If we have updated relations for this port, it means that it is consistent
                                 // and hence we don't need to check consistency anymore.
                                 portsThatCanBeIngnoredForConsistencyCheck.add(port);
-                                for(IORelation updatedRelation : updatedRelations) {
+                                for (IORelation updatedRelation : updatedRelations) {
                                     portsToCheckConsistency.addAll(updatedRelation.linkedPortList(port));
                                 }
                             }

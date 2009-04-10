@@ -60,8 +60,8 @@ public class Execute extends GTEvent {
     /**
      *  @param container
      *  @param name
-     *  @throws IllegalActionException
-     *  @throws NameDuplicationException
+     *  @exception IllegalActionException
+     *  @exception NameDuplicationException
      */
     public Execute(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {

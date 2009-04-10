@@ -474,7 +474,7 @@ public class ComboBox extends GUIProperty implements ItemListener {
         /** Parse the configuration source if it has not been parsed, and store
          *  the result in protected field {@link _parsedObject}.
          *
-         *  @throws Exception If it occurs in the parsing.
+         *  @exception Exception If it occurs in the parsing.
          */
         protected void _parseSource() throws Exception {
             if (_parsedObject == null) {

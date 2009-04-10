@@ -172,7 +172,7 @@ public class TableIcon extends DynamicEditorIcon {
                         if (numColumns == 0) {
                             // All columns should be included.
                             // Make a pass to figure out how many that is.
-                            for(int i = 0; i < numRows; i++) {
+                            for (int i = 0; i < numRows; i++) {
                                 Token row = ((ArrayToken)value).getElement(i);
                                 if (row instanceof RecordToken) {
                                     int rowWidth = ((RecordToken)row).labelSet().size();
@@ -192,7 +192,7 @@ public class TableIcon extends DynamicEditorIcon {
                         }
                         LabelFigure tableElement[][] = new LabelFigure[numRows][numColumns];
                         // Iterate over rows.
-                        for(int i = 0; i < numRows; i++) {
+                        for (int i = 0; i < numRows; i++) {
                             Token row = ((ArrayToken)value).getElement(i);
                             if (row instanceof RecordToken) {
                                 if (fieldsValue.length() == 0) {
@@ -215,7 +215,7 @@ public class TableIcon extends DynamicEditorIcon {
                                     }
                                 } else {
                                     // Display specified fields.
-                                    for(int j = 0; j < fieldsValue.length(); j++) {
+                                    for (int j = 0; j < fieldsValue.length(); j++) {
                                         if (j >= numColumns) {
                                             break;
                                         }
@@ -238,7 +238,7 @@ public class TableIcon extends DynamicEditorIcon {
                         // Now make a pass to position and add all the figures.
                         double rowPosition = _VERTICAL_PADDING;
                         // Iterate over rows.
-                        for(int i = 0; i < numRows; i++) {
+                        for (int i = 0; i < numRows; i++) {
                             Token row = ((ArrayToken)value).getElement(i);
                             if (row instanceof RecordToken) {
                                 if (fieldsValue.length() == 0) {
@@ -256,7 +256,7 @@ public class TableIcon extends DynamicEditorIcon {
                                 } else {
                                     // Display specified fields.
                                     double columnPosition = _HORIZONTAL_PADDING;
-                                    for(int j = 0; j < fieldsValue.length(); j++) {
+                                    for (int j = 0; j < fieldsValue.length(); j++) {
                                         // String column = ((StringToken)fieldsValue.getElement(j)).stringValue();
                                         tableElement[i][j].translateTo(columnPosition, rowPosition);
                                         result.add(tableElement[i][j]);
@@ -313,7 +313,7 @@ public class TableIcon extends DynamicEditorIcon {
         }
         Color color = Color.black;
         try {
-            if(!colorKey.stringValue().equals("")) {
+            if (!colorKey.stringValue().equals("")) {
                 Token colorToken = row.get(colorKey.stringValue());
                 if (colorToken != null) {
                     color = _uniqueColor(colorToken.toString());

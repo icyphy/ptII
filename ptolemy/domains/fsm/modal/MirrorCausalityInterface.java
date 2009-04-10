@@ -214,7 +214,7 @@ public class MirrorCausalityInterface extends CausalityInterfaceForComposites {
    /** Return the local ports whose names match the ports in the
     *  specified collection.
     *  @param ports A collection of ports.
-    *  @throws IllegalActionException If no matching port is found.
+    *  @exception IllegalActionException If no matching port is found.
     */
    private Collection<IOPort> _localMirrors(Collection<IOPort> ports)
            throws IllegalActionException {
